@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untitled VN</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="story-display">
+            <!-- Story content renders here -->
+            <div id="character-name"></div>
+            <div id="dialogue-text"></div>
+            <div id="internal-thoughts"></div>
+        </div>
+        
+        <div id="echo-container">
+            <!-- Echo Toris appear here -->
+            <div id="echo-1" class="echo"></div>
+            <div id="echo-2" class="echo"></div>
+            <div id="echo-3" class="echo"></div>
+            <div id="despair-echo" class="echo despair"></div>
+        </div>
+        
+        <div id="choice-container">
+            <!-- Player choices appear here -->
+        </div>
+        
+        <div id="system-messages">
+            <!-- System glitch messages appear here -->
+        </div>
+    </div>
+
+    <!-- Load game engine -->
+    <script src="js/game-engine.js"></script>
+    <script src="js/story-data.js"></script>
+    <script src="js/choices.js"></script>
+    
+    <!-- Load route scripts -->
+    <script src="scripts/ronnie-route.js"></script>
+    <script src="scripts/tori-route.js"></script>
+</body>
+</html>

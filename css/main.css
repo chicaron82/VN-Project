@@ -1,0 +1,130 @@
+/* MAIN GAME STYLING */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: #000;
+    color: #fff;
+    overflow: hidden;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* STORY DISPLAY */
+#story-display {
+    max-width: 800px;
+    padding: 40px;
+    text-align: left;
+}
+
+#character-name {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #00ff00;
+}
+
+#dialogue-text {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+#internal-thoughts {
+    font-style: italic;
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* ECHO CONTAINER */
+#echo-container {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+}
+
+.echo {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #444;
+    font-size: 0.9em;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.echo:hover {
+    opacity: 1;
+}
+
+#echo-1 { color: #ff6b6b; } /* Dry sarcasm - red */
+#echo-2 { color: #4ecdc4; } /* Soft empathy - cyan */
+#echo-3 { color: #ffe66d; } /* Resigned truth - yellow */
+#despair-echo { color: #a0a0a0; border-left-color: #ff0000; } /* Despair - gray/red */
+
+/* CHOICE CONTAINER */
+#choice-container {
+    position: fixed;
+    bottom: 60px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.choice-button {
+    background: #222;
+    border: 2px solid #00ff00;
+    color: #00ff00;
+    padding: 15px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.choice-button:hover {
+    background: #00ff00;
+    color: #000;
+    transform: scale(1.05);
+}
+
+/* SYSTEM MESSAGES (glitch notifications) */
+#system-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+}
+
+.system-message {
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid #ff0000;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-family: monospace;
+    font-size: 0.85em;
+    animation: glitch 0.3s infinite;
+}
+
+/* GLITCH EFFECT */
+@keyframes glitch {
+    0%, 100% { transform: translate(0); }
+    25% { transform: translate(-2px, 2px); }
+    50% { transform: translate(2px, -2px); }
+    75% { transform: translate(-2px, -2px); }
+}
