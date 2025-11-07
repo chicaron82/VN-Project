@@ -1203,20 +1203,28 @@
    ======================================== */
 
 @media (max-width: 768px) {
+    #pause-button {
+        top: 5px;
+        padding: 5px 15px;
+        font-size: 0.85em;
+    }
+
     #tether-ui {
-        top: 10px;
-        right: 10px;
+        top: 5px;
+        right: 5px;
+        transform: scale(0.85);
     }
 
     #tether-meter {
-        width: 150px;
-        height: 25px;
+        width: 120px;
+        height: 20px;
     }
 
     #echo-display {
-        top: 10px;
-        left: 10px;
-        width: 200px;
+        top: 5px;
+        left: 5px;
+        width: 180px;
+        transform: scale(0.85);
     }
 
     .echo-voice {
@@ -1227,31 +1235,47 @@
     #notes-button {
         bottom: 10px;
         right: 10px;
-        padding: 10px 15px;
-        font-size: 0.9em;
+        padding: 8px 12px;
+        font-size: 0.85em;
     }
 
     #dialogue-box {
-        padding: 15px;
-        max-height: 40vh;
-    }
-
-    #dialogue-text {
-        font-size: 1em;
-        max-height: 150px;
+        padding: 12px 15px;
+        max-height: 45vh;
+        bottom: 0;
     }
 
     #character-name {
-        font-size: 1.1em;
+        font-size: 1em;
+        margin-bottom: 8px;
+    }
+
+    #dialogue-text {
+        font-size: 0.95em;
+        line-height: 1.5;
+        min-height: 60px;
+        max-height: calc(45vh - 80px);
+    }
+
+    #internal-thought {
+        font-size: 0.85em;
+        margin-top: 8px;
     }
 
     #choice-menu {
         min-width: 90%;
         padding: 20px;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .choice-option {
+        padding: 12px 15px;
+        font-size: 1em;
     }
 
     #notes-content {
-        margin: 20px;
+        margin: 10px;
         padding: 15px;
     }
 
