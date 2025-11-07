@@ -1,0 +1,491 @@
+/* ========================================
+   SAVE/LOAD SYSTEM UI
+   Pause Menu, Save/Load Screens
+   ======================================== */
+
+/* Pause Menu */
+#pause-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s;
+}
+
+#pause-menu.active {
+    display: flex;
+}
+
+.pause-menu-content {
+    background: rgba(0, 20, 20, 0.95);
+    border: 3px solid #0ff;
+    padding: 40px;
+    min-width: 400px;
+    text-align: center;
+}
+
+.pause-menu-content h2 {
+    color: #0ff;
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px #0ff;
+}
+
+.pause-menu-button {
+    display: block;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.pause-menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px #0ff;
+    transform: translateX(5px);
+}
+
+.pause-menu-button.danger {
+    border-color: #f00;
+    color: #f00;
+    text-shadow: 0 0 5px #f00;
+}
+
+.pause-menu-button.danger:hover {
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 20px #f00;
+}
+
+/* Save/Load Screen */
+#save-load-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s;
+}
+
+#save-load-screen.active {
+    display: flex;
+}
+
+.save-load-content {
+    background: rgba(0, 20, 20, 0.95);
+    border: 3px solid #0ff;
+    padding: 40px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.save-load-content h2 {
+    color: #0ff;
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 0 0 20px #0ff;
+}
+
+.save-load-mode-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.mode-toggle-button {
+    background: rgba(0, 0, 0, 0.6);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 10px 30px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    flex: 1;
+}
+
+.mode-toggle-button.active {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.mode-toggle-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+}
+
+/* Save Slots */
+.save-slots-container {
+    margin-bottom: 20px;
+}
+
+.save-slot {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid #0ff;
+    padding: 20px;
+    margin: 15px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.save-slot:hover {
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transform: translateX(5px);
+}
+
+.save-slot.empty {
+    border-color: #666;
+    opacity: 0.5;
+}
+
+.save-slot.empty:hover {
+    border-color: #0ff;
+    opacity: 1;
+}
+
+.save-slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.save-slot-number {
+    color: #0ff;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.save-slot-route {
+    color: #0f0;
+    font-size: 1.1em;
+}
+
+.save-slot-info {
+    color: #888;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.save-slot-timestamp {
+    color: #666;
+    font-size: 0.85em;
+}
+
+.save-slot-empty-text {
+    color: #666;
+    font-style: italic;
+}
+
+.save-slot-delete {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 1px solid #f00;
+    color: #f00;
+    padding: 5px 10px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-slot-delete:hover {
+    background: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 10px #f00;
+}
+
+/* Auto-save indicator */
+.save-slot.autosave {
+    border-color: #ff0;
+}
+
+.save-slot.autosave .save-slot-number {
+    color: #ff0;
+}
+
+.save-slot.autosave::before {
+    content: '⚡ ';
+    color: #ff0;
+}
+
+/* Save/Load buttons */
+.save-load-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.save-load-action-button {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.8);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 12px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-load-action-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.save-load-action-button.secondary {
+    border-color: #666;
+    color: #888;
+}
+
+.save-load-action-button.secondary:hover {
+    border-color: #0ff;
+    color: #0ff;
+}
+
+/* Save Indicator (floating notification) */
+#save-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 255, 0, 0.9);
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1em;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s;
+    z-index: 10002;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+#save-indicator.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#save-indicator.error {
+    background: rgba(255, 0, 0, 0.9);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+/* Confirmation Dialog */
+#confirm-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.97);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10003;
+    animation: fadeIn 0.3s;
+}
+
+#confirm-dialog.active {
+    display: flex;
+}
+
+.confirm-dialog-content {
+    background: rgba(0, 20, 20, 0.95);
+    border: 3px solid #ff0;
+    padding: 30px;
+    max-width: 500px;
+    text-align: center;
+}
+
+.confirm-dialog-content h3 {
+    color: #ff0;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px #ff0;
+}
+
+.confirm-dialog-content p {
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+.confirm-dialog-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.confirm-button {
+    background: rgba(0, 0, 0, 0.8);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 12px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.confirm-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.confirm-button.cancel {
+    border-color: #f00;
+    color: #f00;
+}
+
+.confirm-button.cancel:hover {
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 15px #f00;
+}
+
+/* ESC key hint */
+.esc-hint {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #0ff;
+    padding: 8px 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    border: 1px solid #0ff;
+    z-index: 99;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.esc-hint.visible {
+    opacity: 0.7;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .pause-menu-content {
+        min-width: 90%;
+        padding: 30px 20px;
+    }
+    
+    .pause-menu-content h2 {
+        font-size: 1.5em;
+    }
+    
+    .pause-menu-button {
+        font-size: 1em;
+        padding: 12px 20px;
+    }
+    
+    .save-load-content {
+        padding: 25px 15px;
+    }
+    
+    .save-load-content h2 {
+        font-size: 1.5em;
+    }
+    
+    .save-slot {
+        padding: 15px;
+    }
+    
+    .save-slot-number {
+        font-size: 1.1em;
+    }
+    
+    .save-slot-route {
+        font-size: 1em;
+    }
+    
+    .confirm-dialog-content {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    .confirm-dialog-content h3 {
+        font-size: 1.2em;
+    }
+    
+    .confirm-button {
+        font-size: 1em;
+        padding: 10px 20px;
+    }
+    
+    #save-indicator {
+        top: 10px;
+        right: 10px;
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.save-slot {
+    animation: slideInRight 0.3s ease-out;
+}
+
+.save-slot:nth-child(1) { animation-delay: 0.05s; }
+.save-slot:nth-child(2) { animation-delay: 0.1s; }
+.save-slot:nth-child(3) { animation-delay: 0.15s; }
+.save-slot:nth-child(4) { animation-delay: 0.2s; }
+
+/* Scrollbar styling for save/load screen */
+.save-load-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.save-load-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.save-load-content::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+.save-load-content::-webkit-scrollbar-thumb:hover {
+    background: #0f0;
+}

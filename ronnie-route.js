@@ -4,123 +4,11 @@
 class RonnieRoute {
     constructor(game) {
         this.game = game;
-        this.prologueScene1();
+        // Scenes 1-3 handled by SharedPrologue
+        // Ronnie's route starts at Scene 4 (Hospital Anchor)
+        this.prologueScene4();
     }
 
-    // ========================================
-    // PROLOGUE - THE BUMP & THE FALL
-    // ========================================
-
-    prologueScene1() {
-        // Scene 1: The Street Bump
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: '"I wasn\'t looking where I was going..."',
-            internal: '[Visual: Sunny street, midday. CafÃ©s in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
-            next: () => this.prologueScene1_bump(),
-            delay: 3000
-        });
-    }
-
-    prologueScene1_bump() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"Oh my gosh, I\'m so sorryâ€”I wasn\'t paying attention!"',
-            internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]',
-            next: () => this.prologueScene1_pickup(),
-            delay: 3000
-        });
-    }
-
-    prologueScene1_pickup() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"...Weird. Mine never does that."',
-            internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]',
-            next: () => this.prologueScene1_oldMan(),
-            delay: 3000
-        });
-    }
-
-    prologueScene1_oldMan() {
-        this.game.displayScene({
-            character: 'Older Man',
-            dialogue: '"No problem. Hang on to that. It may save your life someday."',
-            internal: '[She glances up but never clearly sees his face. Camera catches a glimpse of his faded BGA hoodie on his chest. He walks away, clutching her original Tamagotchi.]',
-            next: () => this.prologueScene1_end(),
-            delay: 3500
-        });
-    }
-
-    prologueScene1_end() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: '"...What a strange thing to say."',
-            next: () => this.prologueScene2(),
-            delay: 3000
-        });
-    }
-
-    // Scene 2: Home - Before the Fall
-    prologueScene2() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"Hey, can you take a look at my Tamagotchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s it."',
-            internal: '[Cut: Tori enters her home. Ronnie is at his laptop, deep in dev mode.]',
-            next: () => this.prologueScene2_response(),
-            delay: 4000
-        });
-    }
-
-    prologueScene2_response() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Oh sure, babe. Let meâ€”"',
-            internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
-            next: () => this.prologueScene2_kitchen(),
-            delay: 2500
-        });
-    }
-
-    prologueScene2_kitchen() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"I\'ll get dinner started."',
-            internal: '[She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.]',
-            next: () => this.prologueScene2_warning(),
-            delay: 2500
-        });
-    }
-
-    prologueScene2_warning() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Babe, watch ouâ€”!"',
-            next: () => this.prologueScene3(),
-            delay: 1500
-        });
-    }
-
-    // Scene 3: The Fall & Transfer
-    prologueScene3() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: '"One step too late..."',
-            internal: '[She trips, stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late.]\n[Visual: Tamagotchi, resting on the laptop, lights faintly. Screen flickers, code scrolling.]',
-            next: () => this.prologueScene3_vision(),
-            delay: 3500
-        });
-    }
-
-    prologueScene3_vision() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: '',
-            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnieâ€”lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
-            next: () => this.prologueScene4(),
-            delay: 4000
-        });
-    }
 
     // Scene 4: Hospital Anchor
     prologueScene4() {
@@ -338,7 +226,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She\'s here. My Tori. In the code, in the pixels. And she\'s slipping away. Somehow... I have to save her."',
-            internal: '[Scene fades to black.]\n[Act 1 â†’ Act 2 transition: "Digital Bonding" begins.]',
+            internal: '[Scene fades to black.]\n[Act 1 Ã¢â€ â€™ Act 2 transition: "Digital Bonding" begins.]',
             next: () => this.act2Beat1(),
             delay: 4000
         });
@@ -459,7 +347,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"We stayed in that moment a long time. Just her laugh, pixelated and perfect. And for once, I let myself forget the beeping monitors and the silence of the hospital room. For once, I let myself believe we were really there again."',
-            internal: '[ðŸ’¡ Setup: This sprite becomes the visual marker for Digital Forever ending â€” she\'ll recognize him by the "bad nose."]\n[Tone: Pure warmth, no glitch. Valley of safety.]',
+            internal: '[Ã°Å¸â€™Â¡ Setup: This sprite becomes the visual marker for Digital Forever ending â€” she\'ll recognize him by the "bad nose."]\n[Tone: Pure warmth, no glitch. Valley of safety.]',
             next: () => this.act2Beat4(),
             delay: 5000
         });
@@ -529,7 +417,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Tori (laughing)',
             dialogue: response,
-            internal: '[ðŸ’¡ Freeze mid-laugh â€” System dialogue box flickers.]',
+            internal: '[Ã°Å¸â€™Â¡ Freeze mid-laugh â€” System dialogue box flickers.]',
             systemMessage: 'Feed me? Clean up?',
             next: () => this.act2Beat6_panic(),
             delay: 3000
@@ -623,7 +511,7 @@ class RonnieRoute {
 
         if (choice === 'upload') {
             // Bad Route Tilt
-            dialogue = '"Local save isn\'t enough. I\'ll push you online â€” bigger servers, stronger walls!"\n[Upload bar UI: 32% â†’ 56% â†’ 100%]\n"There! You\'re safe nowâ€”"\n\n[Tori (weak, glitching): "...Ronnie... I\'m still stuck. You can\'t... upload a soul."]';
+            dialogue = '"Local save isn\'t enough. I\'ll push you online â€” bigger servers, stronger walls!"\n[Upload bar UI: 32% Ã¢â€ â€™ 56% Ã¢â€ â€™ 100%]\n"There! You\'re safe nowâ€”"\n\n[Tori (weak, glitching): "...Ronnie... I\'m still stuck. You can\'t... upload a soul."]';
             this.game.gameState.flags.bad_route_tilt = (this.game.gameState.flags.bad_route_tilt || 0) + 2;
             nextScene = () => this.act2Beat8_end();
         } else if (choice === 'anchor') {
@@ -650,7 +538,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"And then... everything broke."',
-            internal: '[Visual overload: alarms, static, screen fades white.]\n[â†’ Act 3: Fakeout begins]',
+            internal: '[Visual overload: alarms, static, screen fades white.]\n[Ã¢â€ â€™ Act 3: Fakeout begins]',
             next: () => this.startAct3(),
             delay: 3000
         });
@@ -827,7 +715,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'System',
             dialogue: 'CRITICAL CHOICE DETECTED',
-            internal: 'â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—\n[PULSE: Three distinct heartbeat patterns emerge]\n\n> PATH 1: UPLOAD    [rapid digital pulse]\n  "Trust the code. Expand the cage."\n  \n> PATH 2: ANCHOR    [steady heartbeat]\n  "Follow the heartbeat. Return home."\n  \n> PATH 3: HOLD ON   [overlapping pulses]\n  "Stay connected. Don\'t let go."\n\n                    [CHOOSE YOUR TRUTH >_]\nâ•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•',
+            internal: 'Ã¢â€¢â€Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢â€”\n[PULSE: Three distinct heartbeat patterns emerge]\n\n> PATH 1: UPLOAD    [rapid digital pulse]\n  "Trust the code. Expand the cage."\n  \n> PATH 2: ANCHOR    [steady heartbeat]\n  "Follow the heartbeat. Return home."\n  \n> PATH 3: HOLD ON   [overlapping pulses]\n  "Stay connected. Don\'t let go."\n\n                    [CHOOSE YOUR TRUTH >_]\nÃ¢â€¢Å¡Ã¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢ÂÃ¢â€¢Â',
             choices: [
                 { text: 'Path 1: Upload (Bad Route)', value: 'upload' },
                 { text: 'Path 2: Anchor (True Route)', value: 'anchor' },
@@ -901,9 +789,59 @@ class RonnieRoute {
                 { text: '[NO] - Accept this ending', value: 'no' }
             ],
             onChoice: (choice) => {
-                if (choice === 'yes') this.badRoute_retryLoop();
-                else this.badRoute_acceptEnding();
+                if (choice === 'yes') {
+                    // Increment attempt counter - this failed attempt becomes part of the loop
+                    this.game.incrementAttempt();
+                    // Set flag for second playthrough recognition
+                    if (!this.game.gameState) this.game.gameState = {};
+                    if (!this.game.gameState.flags) this.game.gameState.flags = {};
+                    this.game.gameState.flags.seenBadEnding = true;
+                    // Show "Before The Bump" scene
+                    this.badRoute_beforeBump();
+                } else {
+                    this.badRoute_acceptEnding();
+                }
             }
+        });
+    }
+
+    badRoute_beforeBump() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '',
+            internal: '[Visual: Street corner, same location as Scene 1. An older man with silver hair stands in shadow, BGA hoodie prominent. He holds a worn Tamagotchi device - labeled "Ronnie-gatchi v1.0"]',
+            next: () => this.badRoute_preparation(),
+            delay: 3500
+        });
+    }
+
+    badRoute_preparation() {
+        this.game.displayScene({
+            character: 'Old Ronnie',
+            dialogue: 'One more time. This has to work.',
+            internal: '[He looks at the device, then around the corner where young Tori will appear]',
+            next: () => this.badRoute_giveHerTools(),
+            delay: 3000
+        });
+    }
+
+    badRoute_giveHerTools() {
+        this.game.displayScene({
+            character: 'Old Ronnie',
+            dialogue: 'Give her the tools. Give myself the tools I never had.',
+            internal: '[He takes a breath, steps around the corner]',
+            next: () => this.badRoute_loopBegins(),
+            delay: 3000
+        });
+    }
+
+    badRoute_loopBegins() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'You\'ve seen this before... haven\'t you?',
+            internal: '[The bump scene from the prologue begins to play. But this time, you recognize the old man in the BGA hoodie.]',
+            next: () => this.badRoute_retryLoop(),
+            delay: 3000
         });
     }
 
@@ -947,10 +885,13 @@ class RonnieRoute {
     }
 
     badRoute_finalThought() {
+        // Get the newly incremented version number for display
+        const currentVersion = localStorage.getItem('attemptNumber') || '848';
+        
         this.game.displayScene({
             character: 'Old Ronnie (narration)',
             dialogue: '"Don\'t make the same mistakes I did. Get there in time."',
-            internal: '[Fade to white.]\n\n**"Bad Ending - The Loop Begins Again"**\n\n[System restarting... Version 848]',
+            internal: `[Fade to white.]\n\n**"Bad Ending - The Loop Begins Again"**\n\n[System restarting... Version ${currentVersion}]`,
             choices: [
                 { text: '[RETRY FROM CRITICAL CHOICE]', value: 'retry' },
                 { text: '[RESTART FULL STORY]', value: 'restart' }
@@ -1196,11 +1137,92 @@ class RonnieRoute {
     }
 
     trueRoute_final() {
+        // Get player's version number for their success message
+        const playerVersion = localStorage.getItem('attemptNumber') || '848';
+        const attemptsCount = parseInt(playerVersion) - 848;
+        
+        let successMessage = '';
+        if (attemptsCount === 0) {
+            successMessage = `\n\n**TRUE ENDING - Version ${playerVersion}**\nFirst try. Legend.`;
+        } else if (attemptsCount === 1) {
+            successMessage = `\n\n**TRUE ENDING - Version ${playerVersion}**\nAfter ${attemptsCount} of YOUR attempts, you brought her home.`;
+        } else {
+            successMessage = `\n\n**TRUE ENDING - Version ${playerVersion}**\nAfter ${attemptsCount} of YOUR attempts, you brought her home.`;
+        }
+        
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"For once, love wasn\'t trapped in glass. It came home."',
-            internal: '[Visual: Morning light through hospital window. Golden. Warm.]\n[Tori\'s hand resting on Ronnie\'s head. He\'s kneeling beside her bed. Eyes closed. Finally at peace.]\n[Tamagotchi on bedside table. Screen glowing faintly - sprite image synced with Tori\'s real smile.]\n\n[Fade to white.]\n\n**"True Ending - Love anchored her back."**\n\n[Credits roll. No retry prompt. This is the escape from the loop.]',
-            delay: 6000
+            internal: `[Visual: Morning light through hospital window. Golden. Warm.]\n[Tori\'s hand resting on Ronnie\'s head. He\'s kneeling beside her bed. Eyes closed. Finally at peace.]\n[Tamagotchi on bedside table. Screen glowing faintly - sprite image synced with Tori\'s real smile.]${successMessage}`,
+            next: () => this.trueRoute_epilogue(),
+            delay: 4000
+        });
+    }
+
+    trueRoute_epilogue() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '[SIX MONTHS LATER]',
+            internal: '[Visual: Their apartment. Morning light. Domestic peace. Tori recovered, moving freely.]',
+            next: () => this.trueRoute_beard(),
+            delay: 3000
+        });
+    }
+
+    trueRoute_beard() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"You know, that beard really suits you..."',
+            internal: '[She strokes his face, running her fingers through the new scruff.]',
+            next: () => this.trueRoute_ronnieJoke(),
+            delay: 3000
+        });
+    }
+
+    trueRoute_ronnieJoke() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
+            next: () => this.trueRoute_realization(),
+            delay: 3000
+        });
+    }
+
+    trueRoute_realization() {
+        this.game.displayScene({
+            character: 'Tori (distant look)',
+            dialogue: '"You look... distinguished. Older. Like you\'ve seen things..."',
+            internal: '[A pause. Something flickering at the edge of memory.]',
+            next: () => this.trueRoute_connection(),
+            delay: 3000
+        });
+    }
+
+    trueRoute_connection() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"I feel like... I\'ve seen this exact look before..."',
+            internal: '[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes. The BGA hoodie...]',
+            next: () => this.trueRoute_dejavu(),
+            delay: 4000
+        });
+    }
+
+    trueRoute_dejavu() {
+        this.game.displayScene({
+            character: 'Tori (snapping back)',
+            dialogue: '"...Weird. Déjà vu, I guess."',
+            next: () => this.trueRoute_knowing(),
+            delay: 2000
+        });
+    }
+
+    trueRoute_knowing() {
+        this.game.displayScene({
+            character: 'Ronnie (knowing smile)',
+            dialogue: '"Must have been another timeline."',
+            internal: '[The loop is closed. Version 848 succeeded. The Old Man never has to go back. Love wins.]\n\n[Fade to white.]\n\n[Credits roll. No retry prompt. This is the escape from the loop.]',
+            delay: 5000
         });
     }
 }
