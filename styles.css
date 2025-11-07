@@ -660,6 +660,8 @@
     font-size: 1.1em;
     line-height: 1.6;
     min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 #internal-thought {
@@ -1231,6 +1233,16 @@
 
     #dialogue-box {
         padding: 15px;
+        max-height: 40vh;
+    }
+
+    #dialogue-text {
+        font-size: 1em;
+        max-height: 150px;
+    }
+
+    #character-name {
+        font-size: 1.1em;
     }
 
     #choice-menu {
