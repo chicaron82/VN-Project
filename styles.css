@@ -1242,7 +1242,7 @@
     /* DIALOGUE BOX - FLEXBOX LAYOUT */
     #dialogue-box {
         padding: 12px 15px;
-        min-height: 30vh;
+        min-height: unset;  /* ✅ Remove forced minimum */
         max-height: 50vh;
         bottom: 0;
         display: flex;
@@ -1267,7 +1267,7 @@
     #internal-thought {
         font-size: 0.85em;
         margin-top: 8px;
-        max-height: 100px;
+        max-height: 25vh;  /* ✅ Increase to allow more text */
         overflow-y: auto;
         flex-shrink: 0;
     }
