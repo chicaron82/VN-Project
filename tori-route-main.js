@@ -208,6 +208,49 @@ class ToriRoute {
             echoContainer.style.display = 'none';
         }
     }
+
+        // ========================================
+    // HOLD ON BUTTON (MANUAL TETHER BOOST)
+    // ========================================
+    
+    holdOn() {
+        // Player manually tries to maintain tether connection
+        // Provides +10% tether boost, limited use (cooldown)
+        
+        const BOOST_AMOUNT = 10;
+        const COOLDOWN_MS = 8000;  // 8 second cooldown
+        
+        // Check if button is on cooldown
+        if (this.holdOnCooldown) {
+            console.log('Hold On button on cooldown');
+            return;
+        }
+        
+        // Apply tether boost
+        this.updateTether(BOOST_AMOUNT, 'HOLD ON button pressed');
+        
+        // Visual feedback
+        if (this.game.holdOnButton) {
+            this.game.holdOnButton.textContent = 'HOLDING...';
+            this.game.holdOnButton.disabled = true;
+        }
+        
+        // Set cooldown
+        this.holdOnCooldown = true;
+        
+        // Reset button after cooldown
+        setTimeout(() => {
+            this.holdOnCooldown = false;
+            if (this.game.holdOnButton) {
+                this.game.holdOnButton.textContent = 'HOLD ON';
+                this.game.holdOnButton.disabled = false;
+            }
+            console.log('Hold On button ready');
+        }, COOLDOWN_MS);
+        
+        // Add route points for engagement
+        this.addRoutePoints('true', 1);
+    }
     
     determineEnding() {
         // Called at end of Act 3 to determine which ending to show
