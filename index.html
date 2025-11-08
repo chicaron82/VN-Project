@@ -450,7 +450,7 @@
             <div id="scene-background"></div>
 
             <!-- Tether UI (Tori Route Only) -->
-            <div id="tether-ui">
+            <div id="tether-ui" style="display: none;">
                 <div id="tether-meter">
                     <div id="tether-fill"></div>
                     <div id="tether-text">100%</div>
@@ -459,14 +459,14 @@
             </div>
 
             <!-- Echo Display (Tori Route Only) -->
-            <div id="echo-display">
+            <div id="echo-display" style="display: none;">
                 <div class="echo-voice echo-1" id="echo-1-text"></div>
                 <div class="echo-voice echo-2" id="echo-2-text"></div>
                 <div class="echo-voice echo-despair" id="echo-despair-text"></div>
             </div>
 
             <!-- Notes Button (Tori Route Only) -->
-            <button id="notes-button">
+            <button id="notes-button" style="display: none;">
                 NOTES <span id="notes-count">(0/9)</span>
             </button>
 
@@ -486,7 +486,7 @@
             <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">❚❚</button>
         </div>
 
-        <!-- Pause Menu Overlay -->
+        <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
@@ -494,17 +494,6 @@
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                 <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
-            </div>
-        </div>
-
-        <!-- Pause Menu (ESC to open) -->
-        <div id="pause-menu">
-            <div id="pause-content">
-                <h2>PAUSED</h2>
-                <button class="menu-button" onclick="game.resumeGame()">RESUME</button>
-                <button class="menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
-                <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                <button class="menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
             </div>
         </div>
 
