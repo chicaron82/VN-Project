@@ -104,7 +104,7 @@ class ToriAct2 {
     beat1_ronnieNotice() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: '"Tori? Not again—"',
+            dialogue: '"Tori? Not againâ€”"',
             next: () => this.beat1_choice(),
             delay: 2000
         });
@@ -272,7 +272,7 @@ class ToriAct2 {
     beat3_peaceful() {
         this.game.displayScene({
             character: 'Tori (internal)',
-            dialogue: '"For just a moment... I\'m not trapped. I\'m just... with him."',
+            dialogue: '"For just a moment... I\'m not struggling. I\'m just... with him."',
             internal: '[A brief valley. Peace before the next glitch.]',
             next: () => this.beat4(),
             delay: 4000

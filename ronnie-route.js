@@ -105,7 +105,7 @@ class RonnieRoute {
             character: choice === 'skeptical' ? 'Tori (hurt, voice trembling)' : choice === 'tease' ? 'Tori (smirking faintly despite tears)' : 'Tori (relieved, smiling weakly)',
             dialogue: dialogue,
             internal: `[${routeTilt}]`,
-            next: () => this.act1Scene1_transition(),
+            next: () => this.act1Scene2(),
             delay: 4500
         });
     }

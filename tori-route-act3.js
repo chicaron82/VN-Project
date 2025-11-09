@@ -83,7 +83,7 @@ class ToriAct3 {
     beat1_toriRealize() {
         this.game.displayScene({
             character: 'Tori (internal)',
-            dialogue: '"This isn\'t a memory. It\'s a construct. And I\'m trapped inside it."',
+            dialogue: '"This isn\'t a memory. It\'s a construct. And I\'m caught inside it."',
             next: () => this.beat1_choice(),
             delay: 3000
         });
@@ -403,7 +403,7 @@ class ToriAct3 {
     beat4_fragmentation() {
         this.game.displayScene({
             character: 'Tori (voices overlapping)',
-            dialogue: '"I can\'t—"\n"—hold together—"\n"—something\'s inside me—"\n"—help—"',
+            dialogue: '"I can\'tâ€”"\n"â€”hold togetherâ€”"\n"â€”something\'s inside meâ€”"\n"â€”helpâ€”"',
             internal: '[She feels herself stretching. Tearing. Pixels scattering. Then snapping back together WRONG.]',
             next: () => this.beat4_toriPrime(),
             delay: 3500
@@ -686,7 +686,7 @@ class ToriAct3 {
     beat6_reckless() {
         this.game.displayScene({
             character: 'Tori (internal)',
-            dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWN—"',
+            dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWNâ€”"',
             next: () => this.beat6_arrival(),
             delay: 3000
         });
@@ -715,8 +715,190 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Movement stops. Hospital. He\'s here.',
             internal: '[Battery: 3%]\n[She can feel the PULL now. Stronger than ever. Her body is CLOSE.]',
-            next: () => this.beat6_final(),
+            next: () => this.beat6_realization(),
             delay: 3500
+        });
+    }
+
+    // ========================================
+    // ACTIVE GUIDANCE SEQUENCE
+    // Tori discovers she can control the device
+    // ========================================
+
+    beat6_realization() {
+        this.game.displayScene({
+            character: 'Tori (internal, realizing)',
+            dialogue: '"Wait. The buzz. The pull. I\'ve been FEELING it... but what if I can CONTROL it?"',
+            internal: '[A new thought. She\'s been reactive this whole time. What if she can be ACTIVE?]',
+            next: () => this.beat6_testing(),
+            delay: 3500
+        });
+    }
+
+    beat6_testing() {
+        this.game.displayScene({
+            character: 'Tori (internal, concentrating)',
+            dialogue: '"The device responds to my body. But I\'m IN the device. If I can just... push..."',
+            internal: '[She focuses. Reaches out toward the physical device. Toward her BODY.]',
+            next: () => this.beat6_buzzControl(),
+            delay: 3500
+        });
+    }
+
+    beat6_buzzControl() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The device buzzes. Strong. Deliberate.',
+            internal: '[SINGLE BUZZ. She MADE that happen. Conscious. Intentional. HER.]',
+            sfx: 'single_buzz',
+            next: () => this.beat6_toriTriumph(),
+            delay: 2500
+        });
+    }
+
+    beat6_toriTriumph() {
+        this.game.displayScene({
+            character: 'Tori (internal, excited)',
+            dialogue: '"YES! I can control it! I can SIGNAL!"',
+            internal: '[This is it. This is how she guides him. Not through words. Through the DEVICE itself.]',
+            next: () => this.beat6_echoesReact(),
+            delay: 3000
+        });
+    }
+
+    beat6_echoesReact() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"',
+            echoes: {
+                echo1: 'She\'s... she\'s controlling the physical device? From INSIDE it?'
+            },
+            internal: '[Shock. Awe. They never thought of this.]',
+            next: () => this.beat6_echo2React(),
+            delay: 3500
+        });
+    }
+
+    beat6_echo2React() {
+        this.game.displayScene({
+            character: 'Echo 2',
+            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."',
+            echoes: {
+                echo2: 'We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it.'
+            },
+            next: () => this.beat6_despairQuiet(),
+            delay: 4000
+        });
+    }
+
+    beat6_despairQuiet() {
+        this.game.displayScene({
+            character: 'Despair Echo',
+            dialogue: '"..."',
+            echoes: {
+                despair: '...'
+            },
+            internal: '[For once, Despair has no bitter words. Just... watching.]',
+            next: () => this.beat6_synchronizing(),
+            delay: 3000
+        });
+    }
+
+    beat6_synchronizing() {
+        this.game.displayScene({
+            character: 'Tori (internal, focused)',
+            dialogue: '"My heartbeat. I can feel it now. The body anchor. The bridge. I need to make him UNDERSTAND."',
+            internal: '[She synchronizes. Heartbeat. Device. Body. All connected.]',
+            next: () => this.beat6_rhythmicBuzz(),
+            delay: 4000
+        });
+    }
+
+    beat6_rhythmicBuzz() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The device buzzes in rhythm. Steady. Like a heartbeat.',
+            internal: '[BUZZ. BUZZ. BUZZ. Perfectly timed. Impossible to ignore. A PATTERN.]',
+            sfx: 'rhythmic_buzz',
+            next: () => this.beat6_ronnieNotices(),
+            delay: 3500
+        });
+    }
+
+    beat6_ronnieNotices() {
+        this.game.displayScene({
+            character: 'Ronnie (external, noticing)',
+            dialogue: '"What the... it\'s buzzing in time with... with her heartbeat?"',
+            internal: '[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]',
+            next: () => this.beat6_toriPushing(),
+            delay: 4000
+        });
+    }
+
+    beat6_toriPushing() {
+        this.game.displayScene({
+            character: 'Tori (internal, pushing)',
+            dialogue: '"Yes! YES! Follow it! The heartbeat is the KEY!"',
+            internal: '[She pushes harder. Makes the buzz STRONGER. More insistent.]',
+            next: () => this.beat6_guidance(),
+            delay: 3500
+        });
+    }
+
+    beat6_guidance() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'She\'s guiding him. Not through words. Through signal. Through rhythm. Through TRUTH.',
+            internal: '[The device is the bridge. She\'s standing on both sides. Showing him the way home.]',
+            next: () => this.beat6_echoesHope(),
+            delay: 4000
+        });
+    }
+
+    beat6_echoesHope() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."',
+            echoes: {
+                echo1: 'She\'s doing it. She\'s actually SHOWING him the solution.'
+            },
+            next: () => this.beat6_echo2Hope(),
+            delay: 3000
+        });
+    }
+
+    beat6_echo2Hope() {
+        this.game.displayScene({
+            character: 'Echo 2',
+            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."',
+            echoes: {
+                echo2: 'We could have done this. All those times. We just... we never TRIED to help him understand.'
+            },
+            next: () => this.beat6_despairShift(),
+            delay: 4000
+        });
+    }
+
+    beat6_despairShift() {
+        this.game.displayScene({
+            character: 'Despair Echo',
+            dialogue: '"...Maybe. Maybe she really is different."',
+            echoes: {
+                despair: '...Maybe. Maybe she really is different.'
+            },
+            internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
+            next: () => this.beat6_pull(),
+            delay: 4000
+        });
+    }
+
+    beat6_pull() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"I can feel it. The pull is STRONG now. My body is calling me home. And I\'m ANSWERING."',
+            internal: '[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]',
+            next: () => this.beat6_final(),
+            delay: 4000
         });
     }
 

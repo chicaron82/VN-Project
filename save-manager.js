@@ -71,6 +71,8 @@ class SaveManager {
         }
         
         return saveData;
+
+        saveData.gameState = this.game.gameState || {};  // Deep copy if needed: JSON.parse(JSON.stringify(...))
     }
     
     getCurrentSceneId() {
@@ -180,6 +182,8 @@ class SaveManager {
         // Full scene jumping requires scene ID tracking system
         
         this.showSaveIndicator('Game Loaded');
+        
+        this.game.gameState = saveData.gameState || { flags: {} };
     }
     
     restoreRouteData(routeData) {

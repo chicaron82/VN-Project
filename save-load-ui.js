@@ -299,6 +299,11 @@ class SaveLoadUI {
             this.game.echoDisplay.style.display = 'none';
             this.game.notesButton.style.display = 'none';
             
+            // Stop tether decay if it's running (Tori's route)
+            if (this.game.currentRoute && this.game.currentRoute.stopTetherDecay) {
+                this.game.currentRoute.stopTetherDecay();
+            }
+            
             // Clear current route
             this.game.currentRoute = null;
         };

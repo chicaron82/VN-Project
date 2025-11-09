@@ -41,6 +41,14 @@ class GameEngine {
         this.typewriterCallback = null;
         this.fullDialogueText = '';
         
+        this.gameState = {  // Global state holder
+            flags: {},      // For all those filthy flags
+            affection: 0,   // Init defaults to kill undefineds
+            suspicion: 0,
+            flirty: 0,
+        // Add any other counters from flags refs (e.g., digital_forever_tilt: 0)
+        };
+        
         // Initialize save/load system
         this.saveManager = new SaveManager(this);
         this.saveLoadUI = new SaveLoadUI(this);
@@ -301,7 +309,7 @@ class GameEngine {
         
         // Show choices if present
         if (sceneData.choices) {
-            this.showChoices(sceneData.choices, sceneData.onChoice);
+            this.showChoices(sceneData.choices, sceneData.onChoice, sceneData.context || this.currentRoute);
         }
         
         // Auto-save after scene display
@@ -373,7 +381,7 @@ class GameEngine {
         }
     }
     
-    showChoices(choices, onChoice) {
+    showChoices(choices, onChoice, context) {
         this.choicesContainer.innerHTML = '';
         this.choiceMenu.style.display = 'block';
         
@@ -387,7 +395,14 @@ class GameEngine {
             } else {
                 button.addEventListener('click', () => {
                     this.choiceMenu.style.display = 'none';
-                    if (onChoice) onChoice(choice.value);
+                    if (onChoice) {
+                        // Call with proper context binding
+                        if (context) {
+                            onChoice.call(context, choice.value);
+                        } else {
+                            onChoice(choice.value);
+                        }
+                    }
                 });
             }
             

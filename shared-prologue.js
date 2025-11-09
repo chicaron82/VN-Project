@@ -83,7 +83,7 @@ class SharedPrologue {
     scene2_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'ya sure i can look at it. why do you call it that anyway?',
+            dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
             next: () => this.scene2_toriExplains(),
             delay: 2500
         });
@@ -92,7 +92,7 @@ class SharedPrologue {
     scene2_toriExplains() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'oh you know because this thing is sooo cute. and what better way to name it than after my man - who\'s even cuter!',
+            dialogue: 'Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!',
             next: () => this.scene2_ronnieTeases(),
             delay: 3000
         });
@@ -101,7 +101,7 @@ class SharedPrologue {
     scene2_ronnieTeases() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'you\'re such a dork, honey',
+            dialogue: 'You\'re such a dork, honey',
             next: () => this.scene2_toriDinner(),
             delay: 2000
         });
@@ -110,7 +110,7 @@ class SharedPrologue {
     scene2_toriDinner() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'yea but you still love me. i\'ll get dinner started',
+            dialogue: 'Yea but you still love me. I\'ll get dinner started',
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
             next: () => this.scene2_kitchen(),
             delay: 2500
