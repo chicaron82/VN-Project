@@ -1,7 +1,7 @@
 // ========================================
-// TORI'S ROUTE - ACT 1 (FINAL VERSION)
-// Aligned with Shared Prologue
-// Coffee anchor + Proper buzz logic
+// TORI'S ROUTE - ACT 1 (V3 - REVISED PACING)
+// Mirror perspective of shared prologue
+// Proper cross-route synchronization
 // ========================================
 
 class ToriAct1 {
@@ -15,8 +15,8 @@ class ToriAct1 {
     }
     
     // ========================================
-    // SCENE 1: STREET BUMP & FIRST TRANSFER
-    // Matches shared prologue from Tori's internal perspective
+    // SCENE 1: STREET BUMP & TRANSFER
+    // Matches shared prologue from internal perspective
     // ========================================
     
     scene1_coffee() {
@@ -29,7 +29,7 @@ class ToriAct1 {
             internal: '[Visual: Coffee shop. Tori picks up the drink, checks her Tamagotchi while walking out.]',
             next: () => this.scene1_distracted(),
             delay: 3000
-        });
+        }, 'scene1_coffee');
     }
 
     scene1_distracted() {
@@ -39,7 +39,7 @@ class ToriAct1 {
             internal: '[She walks down the street, coffee in one hand, her original Tamagotchi in the other, not looking where she\'s going.]',
             next: () => this.scene1_collision(),
             delay: 3000
-        });
+        }, 'scene1_distracted');
     }
 
     scene1_collision() {
@@ -49,7 +49,7 @@ class ToriAct1 {
             internal: '[She bumps into an older man. Hard. Coffee nearly spills. Both their Tamagotchis tumble to the ground.]',
             next: () => this.scene1_apology(),
             delay: 2000
-        });
+        }, 'scene1_collision');
     }
 
     scene1_apology() {
@@ -59,28 +59,28 @@ class ToriAct1 {
             internal: '[She bends down quickly, embarrassed. Grabs the Tamagotchi closest to her hand.]',
             next: () => this.scene1_pickup_buzz(),
             delay: 2500
-        });
+        }, 'scene1_apology');
     }
 
     scene1_pickup_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
-            internal: '[The device vibrates in her hand. Twice. Sharp. Wrong.]',
+            internal: '[The device vibrates in her hand. Twice. Sharp. Wrong. Something fundamental shifts.]',
             next: () => this.scene1_weird_feeling(),
             delay: 2000,
             style: 'critical'
-        });
+        }, 'scene1_pickup_buzz');
     }
 
     scene1_weird_feeling() {
         this.game.displayScene({
             character: 'Tori (internal, confused)',
             dialogue: '"What...? Mine never does that."',
-            internal: '[A wave of disorientation. The world tilts slightly. Colors too bright.]',
+            internal: '[A wave of disorientation. The world tilts. Reality feels... thin. Unstable.]',
             next: () => this.scene1_old_man(),
             delay: 2500
-        });
+        }, 'scene1_weird_feeling');
     }
 
     scene1_old_man() {
@@ -88,935 +88,882 @@ class ToriAct1 {
             character: 'Older Man',
             dialogue: '"No problem. Hang on to that. It may save your life someday."',
             internal: '[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away with her original device.]',
-            next: () => this.scene1_confusion(),
-            delay: 3500
-        });
-    }
-
-    scene1_confusion() {
-        this.game.displayScene({
-            character: 'Tori (internal, disoriented)',
-            dialogue: '"That was... weird. What a strange thing to say."',
-            internal: '[She stands, clutching the coffee and the wrong Tamagotchi. Her head pounds. Something feels wrong.]',
             next: () => this.scene1_walking_home(),
-            delay: 3000
-        });
+            delay: 3500
+        }, 'scene1_old_man');
     }
 
     scene1_walking_home() {
         this.game.displayScene({
-            character: 'Tori (internal)',
-            dialogue: '"I should get home. Feel off. Maybe I need to eat something."',
-            internal: '[She walks, but everything feels distant. Like moving through water. Autopilot.]',
-            next: () => this.scene1_arrival(),
+            character: 'Tori (internal, disoriented)',
+            dialogue: '"That was... weird. I should get home. Feel off."',
+            internal: '[She walks, but everything feels distant. Muted. Like she\'s moving through water. Something is very wrong.]',
+            next: () => this.scene2_void_awakening(),
             delay: 3000
-        });
-    }
-
-    scene1_arrival() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'She arrives home. Ronnie is at his laptop, coding.',
-            internal: '[Visual: Their apartment. Familiar. Safe. But something still feels wrong.]',
-            next: () => this.scene2_greeting(),
-            delay: 2500
-        });
+        }, 'scene1_walking_home');
     }
 
     // ========================================
-    // SCENE 2: LAPTOP HOP & AWARENESS
-    // Second transfer - conscious decision
+    // SCENE 2: VOID AWAKENING (IMMEDIATE)
+    // Moved from old Scene 5 - happens right after transfer
     // ========================================
     
-    scene2_greeting() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"Hey babe, got your French Vanilla."',
-            internal: '[She hands him the coffee. Sets the Tamagotchi on his laptop, resting against the keyboard.]',
-            next: () => this.scene2_device_placement(),
-            delay: 2500
-        });
-    }
-
-    scene2_device_placement() {
-        this.game.displayScene({
-            character: 'Tori (internal)',
-            dialogue: '"Can you look at Ronnie-Gatchi later? The battery is draining fast and it\'s buzzing weird—"',
-            internal: '[The moment the device touches the laptop...]',
-            next: () => this.scene2_double_buzz(),
-            delay: 3000
-        });
-    }
-
-    scene2_double_buzz() {
+    scene2_void_awakening() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'BUZZ. BUZZ.',
-            internal: '[Again. Twice. But this time... different. Like something SHIFTING. Moving.]',
-            next: () => this.scene2_sensation(),
-            delay: 2000,
-            style: 'critical'
-        });
-    }
-
-    scene2_sensation() {
-        this.game.displayScene({
-            character: 'Tori (internal, alarmed)',
-            dialogue: '"What is...? I feel... more space? Like I\'m... somewhere else?"',
-            internal: '[Visual: Abstract sensation. Expansion. The laptop represents possibility.]',
-            next: () => this.scene2_awareness(),
+            dialogue: 'And then... darkness.',
+            internal: '[Visual: Pure black. No sound. A void. She is nowhere and everywhere.]',
+            next: () => this.scene2_confusion(),
             delay: 3000
-        });
+        }, 'scene2_void_awakening');
     }
 
-    scene2_awareness() {
-        this.game.displayScene({
-            character: 'Tori (internal, discovering)',
-            dialogue: '"I can... see? Through the screen? This is..."',
-            internal: '[Suddenly she has VISION. Awareness. She can see Ronnie. See the room. But from the laptop perspective.]',
-            next: () => this.scene2_realization(),
-            delay: 3000
-        });
-    }
-
-    scene2_realization() {
+    scene2_confusion() {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
-            dialogue: '"Wait. I\'m IN the laptop. But I\'m also... standing right there."',
-            internal: '[Horror dawns. She can see HERSELF. Physical Tori, talking to Ronnie.]',
-            next: () => this.scene2_ronnie_response(),
-            delay: 3500
-        });
-    }
-
-    scene2_ronnie_response() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Ya sure i can look at it. Why do you call it Ronnie-Gatchi anyway?"',
-            internal: '[He\'s talking to physical Tori. Digital Tori is watching, screaming silently.]',
-            next: () => this.scene2_physical_tori(),
+            dialogue: '"Wait... where am I? What happened? I was just walking..."',
+            internal: '[She has no body. No voice. Just consciousness floating in digital darkness.]',
+            next: () => this.scene2_calling_out(),
             delay: 3000
-        });
+        }, 'scene2_confusion');
     }
 
-    scene2_physical_tori() {
-    this.game.displayScene({
-        character: 'Tori (both)',
-        dialogue: '"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!"',
-        internal: '[Digital Tori (internal, horrified): "Wait... I\'m saying this. But SHE\'S saying this. We\'re both... the same words..."]',
-        next: () => this.scene2_digital_horror(),
-        delay: 3000
-    });
-}
-
-    scene2_digital_horror() {
-        this.game.displayScene({
-            character: 'Tori (internal, terrified)',
-            dialogue: '"That\'s ME. Talking. Moving. But I\'m HERE. In the laptop. How is this possible?"',
-            internal: '[Visual: Split perspective. Physical Tori in the room. Digital Tori watching through screen.]',
-            next: () => this.scene3_dual_watching(),
-            delay: 3500
-        });
-    }
-
-    // ========================================
-    // SCENE 3: DUAL TORI WATCHING
-    // Digital Tori watches physical Tori
-    // ========================================
-    
-    scene3_dual_watching() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"you\'re such a dork, honey"',
-            internal: '[He teases. Physical Tori smiles.]',
-            next: () => this.scene3_tori_response(),
-            delay: 2500
-        });
-    }
-
-    scene3_tori_response() {
-        this.game.displayScene({
-            character: 'Tori (physical)',
-            dialogue: '"Yeah but you still love me. I\'ll get dinner started."',
-            internal: '[She leans in, kisses him. Digital Tori feels nothing. Just watches.]',
-            next: () => this.scene3_walking_backward(),
-            delay: 3000
-        });
-    }
-
-    scene3_walking_backward() {
+    scene2_calling_out() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
-            dialogue: '"Wait, what are you doing? Don\'t walk backward—there\'s a shoe on the floor—"',
-            internal: '[Physical Tori walks backward toward the kitchen, playful. Not watching where she\'s going.]',
-            next: () => this.scene3_warning(),
+            dialogue: '"HELLO?! Can anyone hear me?! RONNIE?!"',
+            internal: '[The words echo only inside her own mind. No sound escapes into the void.]',
+            next: () => this.scene2_echoes_whispers(),
             delay: 3000
-        });
+        }, 'scene2_calling_out');
     }
 
-    scene3_warning() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Babe, watch ou—!"',
-            internal: '[Digital Tori sees it. The shoe. Physical Tori steps on it.]',
-            next: () => this.scene3_scream(),
-            delay: 2000
-        });
-    }
-
-    scene3_scream() {
-        this.game.displayScene({
-            character: 'Tori (internal, screaming)',
-            dialogue: '"NO! STOP! DON\'T—!"',
-            internal: '[Silent scream. Physical Tori can\'t hear. Digital Tori is helpless.]',
-            next: () => this.scene4_the_fall(),
-            delay: 2000
-        });
-    }
-
-    // ========================================
-    // SCENE 4: THE FALL & SEPARATION
-    // Physical Tori enters coma
-    // ========================================
-    
-    scene4_the_fall() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'She trips. Falls. Hard.',
-            internal: '[Visual: Physical Tori crashes to the floor. Ronnie lunges but is too late.]',
-            next: () => this.scene4_impact(),
-            delay: 2500,
-            style: 'critical'
-        });
-    }
-
-    scene4_impact() {
-        this.game.displayScene({
-            character: 'Tori (internal, horrified)',
-            dialogue: '"Get up. GET UP. Please get up—"',
-            internal: '[Physical Tori doesn\'t move. Ronnie kneels beside her, panicking.]',
-            next: () => this.scene4_ronnie_panic(),
-            delay: 3000
-        });
-    }
-
-    scene4_ronnie_panic() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Tori! Baby! Can you hear me?!"',
-            internal: '[He\'s shaking her. Pulling out his phone. Calling 911.]',
-            next: () => this.scene4_digital_helpless(),
-            delay: 3000
-        });
-    }
-
-    scene4_digital_helpless() {
-        this.game.displayScene({
-            character: 'Tori (internal, desperate)',
-            dialogue: '"I\'m RIGHT HERE! I can SEE you! Why can\'t you see ME?!"',
-            internal: '[She screams through the laptop. No sound. He can\'t hear.]',
-            next: () => this.scene4_ambulance(),
-            delay: 3000
-        });
-    }
-
-    scene4_ambulance() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Sirens. Paramedics. They take her body away.',
-            internal: '[Through the laptop camera, digital Tori watches everything. Helpless. Screaming silently.]',
-            next: () => this.scene4_understanding(),
-            delay: 3500
-        });
-    }
-
-    scene4_understanding() {
-        this.game.displayScene({
-            character: 'Tori (internal, realizing)',
-            dialogue: '"Oh god. I\'m not in my body anymore. I\'m... I\'m trapped in here. And she... I... we..."',
-            internal: '[The separation is complete. Physical Tori is in a coma. Digital Tori is in the laptop.]',
-            next: () => this.scene4_alone(),
-            delay: 4000
-        });
-    }
-
-    scene4_alone() {
-        this.game.displayScene({
-            character: 'Tori (internal, breaking)',
-            dialogue: '"What do I do? How do I fix this? How do I get BACK?!"',
-            internal: '[Ronnie leaves with the ambulance. The apartment is empty. Digital Tori is alone.]',
-            next: () => this.scene5_void(),
-            delay: 3500
-        });
-    }
-
-    // ========================================
-    // SCENE 5: VOID AWAKENING (TIME SKIP)
-    // Days/weeks later - Echo Toris introduction
-    // ========================================
-    
-    scene5_void() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Time passes. Days? Weeks? Hard to tell. Ronnie takes the device everywhere.',
-            internal: '[Visual: Time skip. Darkness. The void of the Tamagotchi system.]',
-            next: () => this.scene5_awakening(),
-            delay: 3500
-        });
-    }
-
-    scene5_awakening() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Pure black. No sound. Then - a faint digital hum.',
-            internal: '[Visual: She\'s no longer in the laptop. The device moved. Now she\'s... somewhere else. Smaller. Darker.]',
-            next: () => this.scene5_where(),
-            delay: 3000
-        });
-    }
-
-    scene5_where() {
-        this.game.displayScene({
-            character: 'Tori (internal, disoriented)',
-            dialogue: '"Where am I now? This isn\'t the laptop anymore..."',
-            internal: '[Beat of silence. Then overlapping whispers - faint, distorted.]',
-            next: () => this.scene5_echoes_whispers(),
-            delay: 2500
-        });
-    }
-
-    scene5_echoes_whispers() {
+    scene2_echoes_whispers() {
         this.game.displayScene({
             character: 'Echoes (distant whispers)',
-            dialogue: 'Echo 1: "...again..."\nEcho 2: "...he tried..."\nDespair: "...doesn\'t matter..."',
+            dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',
             echoes: {
-                echo1: '...again...',
-                echo2: '...he tried...',
-                despair: '...doesn\'t matter...'
+                echo1: '...another one...',
+                echo2: '...it\'s starting again...',
+                despair: '...fresh meat...'
             },
             internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
-            next: () => this.scene5_tori_who(),
+            next: () => this.scene2_who_there(),
             delay: 3000
-        });
+        }, 'scene2_echoes_whispers');
     }
 
-    scene5_tori_who() {
+    scene2_who_there() {
         this.game.displayScene({
             character: 'Tori (internal, alarmed)',
-            dialogue: '"Who\'s there? Where am I?"',
-            internal: '[The whispers grow louder, more distinct.]',
-            next: () => this.scene5_echoes_reveal(),
+            dialogue: '"Who\'s there?! Where am I?!"',
+            internal: '[The whispers grow louder, more distinct. Figures materializing from darkness.]',
+            next: () => this.scene2_echo1_intro(),
             delay: 2500
-        });
+        }, 'scene2_who_there');
     }
 
-    scene5_echoes_reveal() {
+    scene2_echo1_intro() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"You\'re in the device. The Tamagotchi. With us."',
             echoes: {
-                echo1: 'You\'re in the device. The Tamagotchi. With us.'
+                echo1: 'You\'re in the device. With us.'
             },
-            internal: '[Visual: Three figures materializing from the darkness - Echo Toris.]',
-            next: () => this.scene5_echo2_explains(),
+            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
+            next: () => this.scene2_echo2_explains(),
             delay: 2500
-        });
+        }, 'scene2_echo1_intro');
     }
 
-    scene5_echo2_explains() {
+    scene2_echo2_explains() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We\'re what came before you. Different loops. Different attempts."',
+            dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',
             echoes: {
-                echo2: 'We\'re what came before you. Different loops. Different attempts.'
+                echo2: 'We\'re you. Previous loops. 847 failures.'
             },
-            internal: '[Visual: Echo Toris - similar but different. Worn down versions.]',
-            next: () => this.scene5_despair_introduces(),
+            internal: '[Visual: The weight of their existence. Failed iterations.]',
+            next: () => this.scene2_despair_welcome(),
             delay: 3000
-        });
+        }, 'scene2_echo2_explains');
     }
 
-    scene5_despair_introduces() {
+    scene2_despair_welcome() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Despair. That\'s what they call me. Because that\'s what you\'ll feel. Eventually."',
+            dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',
             echoes: {
-                despair: 'Despair. That\'s what they call me. Because that\'s what you\'ll feel. Eventually.'
+                despair: 'Welcome to your new cage, 848.'
             },
-            internal: '[Visual: Despair - the most worn down, the most bitter.]',
-            next: () => this.scene5_tori_sees_hospital(),
-            delay: 3000
-        });
-    }
-
-    scene5_tori_sees_hospital() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Through the tiny device screen, she sees the hospital room. Her body. Ronnie sitting beside it.',
-            internal: '[Visual: First glimpse through the Tamagotchi interface. So limited compared to laptop.]',
-            next: () => this.scene5_tori_screams(),
-            delay: 3000
-        });
-    }
-
-    scene5_tori_screams() {
-        this.game.displayScene({
-            character: 'Tori (internal, desperate)',
-            dialogue: '"RONNIE! I\'m RIGHT HERE! Can you hear me?!"',
-            internal: '[She screams, but no sound comes out. The device is silent.]',
-            next: () => this.scene5_echoes_response(),
-            delay: 3000
-        });
-    }
-
-    scene5_echoes_response() {
-        this.game.displayScene({
-            character: 'Echoes (overlapping)',
-            dialogue: 'Echo 1: "He can\'t hear you. Not from here."\nEcho 2: "We tried screaming too. Never worked."\nDespair: "Screamed until our voices broke. Until we broke. Never thought there might be other ways to reach him."',
-            echoes: {
-                echo1: 'He can\'t hear you. Not from here.',
-                echo2: 'We tried screaming too. Never worked.',
-                despair: 'Screamed until our voices broke. Until we broke. Never thought there might be other ways to reach him.'
-            },
-            internal: '[Visual: The weight of their failed attempts.]',
-            next: () => this.scene5_tori_defiance(),
-            delay: 4000
-        });
-    }
-
-    scene5_tori_defiance() {
-        this.game.displayScene({
-            character: 'Tori (internal, determined)',
-            dialogue: '"Then I\'ll find another way. If screaming doesn\'t work... I\'ll try something different."',
-            internal: '[Visual: Despite everything, she\'s not giving up.]',
-            next: () => this.scene6_learning(),
-            delay: 3000
-        });
-    }
-
-    // ========================================
-    // SCENE 6: LEARNING THE DEVICE
-    // Understanding limitations & discovering the key insight
-    // ========================================
-    
-    scene6_learning() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'She explores her new environment. The digital space of the Tamagotchi device.',
-            internal: '[Visual: Abstract digital space. Much more limited than the laptop was.]',
-            next: () => this.scene6_understanding(),
-            delay: 2500
-        });
-    }
-
-    scene6_understanding() {
-        this.game.displayScene({
-            character: 'Tori (internal, analytical)',
-            dialogue: '"Okay. Tiny screen. Basic outputs. No keyboard. No text interface like the laptop had."',
-            internal: '[Visual: Examining the system boundaries. Learning what\'s possible.]',
-            next: () => this.scene6_limitations(),
-            delay: 2500
-        });
-    }
-
-    scene6_limitations() {
-        this.game.displayScene({
-            character: 'Tori (internal, frustrated)',
-            dialogue: '"How am I supposed to communicate through THIS? It\'s so limited..."',
-            internal: '[Visual: The device\'s constraints becoming clear.]',
-            next: () => this.scene6_echo1_commentary(),
-            delay: 3000
-        });
-    }
-
-    scene6_echo1_commentary() {
-        this.game.displayScene({
-            character: 'Echo 1',
-            dialogue: '"You can\'t. That\'s why we failed. We tried to break through the system."',
-            echoes: {
-                echo1: 'You can\'t. That\'s why we failed. We tried to break through the system.'
-            },
-            internal: '[Visual: Echo 1 explaining their approach.]',
-            next: () => this.scene6_echo2_adds(),
-            delay: 3000
-        });
-    }
-
-    scene6_echo2_adds() {
-        this.game.displayScene({
-            character: 'Echo 2',
-            dialogue: '"Tried breaking out. Forcing our way through. Never thought to work WITH it. Never tried navigating."',
-            echoes: {
-                echo2: 'Tried breaking out. Forcing our way through. Never thought to work WITH it. Never tried navigating.'
-            },
-            internal: '[Visual: The key distinction - force vs navigation.]',
-            next: () => this.scene6_tori_insight(),
-            delay: 3000
-        });
-    }
-
-    scene6_tori_insight() {
-        this.game.displayScene({
-            character: 'Tori (internal, realizing)',
-            dialogue: '"You tried to escape. But what if this isn\'t a cage? What if it\'s something I can navigate THROUGH?"',
-            internal: '[Visual: Shift in perspective. The system as tool, not prison.]',
-            next: () => this.scene6_despair_scoffs(),
-            delay: 3000
-        });
-    }
-
-    scene6_despair_scoffs() {
-        this.game.displayScene({
-            character: 'Despair',
-            dialogue: '"Navigate? You\'re delusional. The original never wakes up. We\'re just copies. Backups. Stuck here while the body dies."',
-            echoes: {
-                despair: 'Navigate? You\'re delusional. The original never wakes up. We\'re just copies. Backups. Stuck here while the body dies.'
-            },
-            internal: '[Visual: Despair\'s nihilism. The crushing weight of her certainty.]',
-            next: () => this.scene6_tori_the_pull(),
+            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
+            next: () => this.scene2_tori_refuses(),
             delay: 3500
-        });
+        }, 'scene2_despair_welcome');
     }
 
-    scene6_tori_the_pull() {
-        this.game.displayScene({
-            character: 'Tori (internal, questioning)',
-            dialogue: '"But... the PULL. When I\'m near my body. That warmth. The buzz. You felt that too, right?"',
-            internal: '[Visual: Tori remembering something. A sensation from the hospital.]',
-            next: () => this.scene6_echo1_dismissal(),
-            delay: 3000
-        });
-    }
-
-    scene6_echo1_dismissal() {
-        this.game.displayScene({
-            character: 'Echo 1',
-            dialogue: '"...We felt something. Dismissed it."',
-            echoes: {
-                echo1: '...We felt something. Dismissed it.'
-            },
-            internal: '[Visual: Echo 1 uncomfortable, remembering.]',
-            next: () => this.scene6_echo2_admits(),
-            delay: 2500
-        });
-    }
-
-    scene6_echo2_admits() {
-        this.game.displayScene({
-            character: 'Echo 2',
-            dialogue: '"Despair said it was nothing. Phantom sensations. We listened to her."',
-            echoes: {
-                echo2: 'Despair said it was nothing. Phantom sensations. We listened to her.'
-            },
-            internal: '[Visual: Echo 2 looking at Despair, realization dawning.]',
-            next: () => this.scene6_despair_insists(),
-            delay: 3000
-        });
-    }
-
-    scene6_despair_insists() {
-        this.game.displayScene({
-            character: 'Despair',
-            dialogue: '"Because it IS nothing! False hope. The body doesn\'t know we\'re here. It\'s dying. We\'re stuck. Accept it."',
-            echoes: {
-                despair: 'Because it IS nothing! False hope. The body doesn\'t know we\'re here. It\'s dying. We\'re stuck. Accept it.'
-            },
-            internal: '[Visual: Despair defensive. Angry. Scared of hope.]',
-            next: () => this.scene6_tori_revelation(),
-            delay: 3500
-        });
-    }
-
-    scene6_tori_revelation() {
+    scene2_tori_refuses() {
         this.game.displayScene({
             character: 'Tori (internal, defiant)',
-            dialogue: '"You\'re WRONG. That pull is REAL. It means something. That\'s the connection. That\'s how I get back. That\'s how I WAKE UP."',
-            internal: '[Visual: Determination. She\'s found her path. The Echoes failed because they gave up on the body connection.]',
-            next: () => this.scene6_echo1_hope(),
-            delay: 4000,
-            style: 'critical'
-        });
-    }
-
-    scene6_echo1_hope() {
-        this.game.displayScene({
-            character: 'Echo 1',
-            dialogue: '"...What if she\'s right? What if we gave up too soon?"',
-            echoes: {
-                echo1: '...What if she\'s right? What if we gave up too soon?'
-            },
-            internal: '[Visual: Echo 1 watching Tori with something like hope.]',
-            next: () => this.scene6_tori_needs_platform(),
-            delay: 2500
-        });
-    }
-
-    scene6_tori_needs_platform() {
-        this.game.displayScene({
-            character: 'Tori (internal, planning)',
-            dialogue: '"This device is too limited. But if I could reach a bigger platform... something with text output..."',
-            internal: '[Visual: Strategy forming. She needs the right tool to communicate.]',
-            next: () => this.scene6_waiting(),
+            dialogue: '"Cage?! No. I don\'t accept that. There has to be a way out!"',
+            internal: '[Even in confusion and fear, she refuses the narrative. This is different already.]',
+            next: () => this.scene2_hearing_begins(),
             delay: 3000
-        });
+        }, 'scene2_tori_refuses');
     }
 
-    scene6_waiting() {
+    scene2_hearing_begins() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Days pass. She watches Ronnie through the device. Waiting. Learning. Planning.',
-            internal: '[Visual: Time passage. Tori studying the system, understanding its rhythms.]',
-            next: () => this.scene7_ronnie_coding(),
+            dialogue: 'And then... sound. Muffled. Distant. The outside world bleeding through.',
+            internal: '[She can HEAR. Tinny, like through a tiny speaker. But she still can\'t see.]',
+            next: () => this.scene3_audio_horror(),
             delay: 3000
-        });
+        }, 'scene2_hearing_begins');
     }
 
     // ========================================
-    // SCENE 7: THE BREAKTHROUGH (TORI-GATCHI)
-    // She forces communication through the game
+    // SCENE 3: AUDIO-ONLY HORROR
+    // Hearing the shared prologue from inside device
     // ========================================
     
-    scene7_ronnie_coding() {
+    scene3_audio_horror() {
         this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Through the device screen, she watches Ronnie at his laptop. He\'s coding something.',
-            internal: '[Visual: Ronnie\'s laptop screen visible through device connection.]',
-            next: () => this.scene7_tori_watches(),
-            delay: 2500
-        });
-    }
-
-    scene7_tori_watches() {
-        this.game.displayScene({
-            character: 'Tori (internal, curious)',
-            dialogue: '"What are you making? It looks like... a game?"',
-            internal: '[Visual: Code appearing on screen. A visual novel engine.]',
-            next: () => this.scene7_sees_sprite(),
-            delay: 2500
-        });
-    }
-
-    scene7_sees_sprite() {
-        this.game.displayScene({
-            character: 'Tori (internal, emotional)',
-            dialogue: '"That sprite... that\'s ME. You\'re building me into a game. Oh baby..."',
-            internal: '[Visual: Digital Tori sprite appearing in the code. Her likeness. His coping mechanism.]',
-            next: () => this.scene7_realization(),
+            character: 'Tori (muffled, external)',
+            dialogue: '"Hey babe, got your French Vanilla."',
+            internal: '[That\'s... her voice. But she\'s not speaking. Her body is moving without her.]',
+            next: () => this.scene3_screaming(),
             delay: 3000
-        });
+        }, 'scene3_audio_horror');
     }
 
-    scene7_realization() {
+    scene3_screaming() {
         this.game.displayScene({
-            character: 'Tori (internal, excited)',
-            dialogue: '"Wait. A visual novel has TEXT OUTPUT. Dialogue boxes. A way to SPEAK!"',
-            internal: '[Visual: The breakthrough moment. This is her platform!]',
-            next: () => this.scene7_echoes_notice(),
-            delay: 3000,
-            style: 'critical'
-        });
+            character: 'Tori (internal, desperate)',
+            dialogue: '"RONNIE! RONNIE, I\'M IN HERE! THAT\'S NOT ME! CAN YOU HEAR ME?!"',
+            internal: '[She screams into the void. Nothing happens. The conversation continues outside.]',
+            next: () => this.scene3_echoes_explain(),
+            delay: 3000
+        }, 'scene3_screaming');
     }
 
-    scene7_echoes_notice() {
+    scene3_echoes_explain() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She\'s right. We never had access to a program like this."',
+            dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',
             echoes: {
-                echo1: 'She\'s right. We never had access to a program like this.'
+                echo1: 'He can\'t hear you. We all tried screaming.'
             },
-            internal: '[Visual: Echo Toris gathering, watching with interest.]',
-            next: () => this.scene7_echo2_amazed(),
+            internal: '[The weight of their experience. They know what doesn\'t work.]',
+            next: () => this.scene3_ronnie_response(),
+            delay: 3000
+        }, 'scene3_echoes_explain');
+    }
+
+    scene3_ronnie_response() {
+        this.game.displayScene({
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"ya sure i can look at it. why do you call it ronnie-gatchi anyway?"',
+            internal: '[The conversation continuing. Normal. Casual. He has no idea.]',
+            next: () => this.scene3_dual_response(),
+            delay: 3000
+        }, 'scene3_ronnie_response');
+    }
+
+    scene3_dual_response() {
+        this.game.displayScene({
+            character: 'Tori (both)',
+            dialogue: '"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!"',
+            internal: '[Digital Tori (internal, horrified): "Wait... I\'m saying this. But SHE\'S saying this. We\'re both... the same words..."]',
+            next: () => this.scene3_sync_horror(),
+            delay: 3500
+        }, 'scene3_dual_response');
+    }
+
+    scene3_sync_horror() {
+        this.game.displayScene({
+            character: 'Tori (internal, terrified)',
+            dialogue: '"I\'m speaking... but I\'m also watching myself speak... What\'s happening to me?!"',
+            internal: '[The horror of synchronization. Two Toris. One voice. One moment.]',
+            next: () => this.scene3_ronnie_teases(),
+            delay: 3000
+        }, 'scene3_sync_horror');
+    }
+
+    scene3_ronnie_teases() {
+        this.game.displayScene({
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"you\'re such a dork, honey"',
+            internal: '[The conversation continuing. Physical Tori responding normally. Digital Tori screaming silently.]',
+            next: () => this.scene3_tori_kitchen(),
             delay: 2500
-        });
+        }, 'scene3_ronnie_teases');
     }
 
-    scene7_echo2_amazed() {
+    scene3_tori_kitchen() {
         this.game.displayScene({
-            character: 'Echo 2',
-            dialogue: '"He\'s giving her the exact tool she needs. He doesn\'t even know it."',
-            echoes: {
-                echo2: 'He\'s giving her the exact tool she needs. He doesn\'t even know it.'
-            },
-            internal: '[Visual: The irony - he\'s creating her escape route without realizing.]',
-            next: () => this.scene7_tori_focus(),
-            delay: 3000
-        });
+            character: 'Tori (muffled, external)',
+            dialogue: '"yea but you still love me. i\'ll get dinner started"',
+            internal: '[Sound of movement. Footsteps. She\'s walking away.]',
+            next: () => this.scene3_warning(),
+            delay: 2500
+        }, 'scene3_tori_kitchen');
     }
 
-    scene7_tori_focus() {
+    scene3_warning() {
         this.game.displayScene({
-            character: 'Tori (internal, determined)',
-            dialogue: '"Okay. When he runs the program... I need to be ready. I need to sync with it."',
-            internal: '[Visual: Preparation. She\'s studying the code, understanding the structure.]',
-            next: () => this.scene7_program_launches(),
-            delay: 3000
-        });
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"Babe, watch ou—!"',
+            internal: '[Panic in his voice. Something\'s wrong!]',
+            next: () => this.scene3_the_fall(),
+            delay: 1500
+        }, 'scene3_warning');
     }
 
-    scene7_program_launches() {
+    scene3_the_fall() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Ronnie saves the file. Launches the program. The Tori-gatchi window opens.',
-            internal: '[Visual: Program starting. Digital Tori sprite appears on screen.]',
-            next: () => this.scene7_sync_moment(),
-            delay: 2500
-        });
+            dialogue: 'THUD.',
+            internal: '[A sickening impact. A clatter. Ronnie screaming her name. But she can\'t see. Can\'t help. Can only HEAR.]',
+            next: () => this.scene3_desperate_need(),
+            delay: 3000,
+            style: 'critical'
+        }, 'scene3_the_fall');
     }
 
-    scene7_sync_moment() {
+    scene3_desperate_need() {
         this.game.displayScene({
-            character: 'Tori (internal, concentrating)',
-            dialogue: '"NOW!"',
-            internal: '[Visual: She pushes herself toward the program. Forcing connection. Synchronizing with the output.]',
-            next: () => this.scene7_sprite_glitch(),
+            character: 'Tori (internal, frantic)',
+            dialogue: '"I HAVE TO SEE! I have to know what happened! RONNIE, PLEASE!"',
+            internal: '[Desperation. Pure, overwhelming need to witness. To understand. To help.]',
+            next: () => this.scene4_accidental_hop(),
+            delay: 3000
+        }, 'scene3_desperate_need');
+    }
+
+    // ========================================
+    // SCENE 4: ACCIDENTAL LAPTOP HOP
+    // First transfer - unwitting, emotional, desperate
+    // ========================================
+    
+    scene4_accidental_hop() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'She pushes. Not with body, but with consciousness. Every ounce of will focused on one thing: SEE.',
+            internal: '[And then... something gives.]',
+            next: () => this.scene4_double_buzz(),
+            delay: 3000
+        }, 'scene4_accidental_hop');
+    }
+
+    scene4_double_buzz() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'BUZZ. BUZZ.',
+            internal: '[But she doesn\'t notice. Too desperate. Too focused.]',
+            next: () => this.scene4_whoosh(),
+            delay: 1500,
+            style: 'critical'
+        }, 'scene4_double_buzz');
+    }
+
+    scene4_whoosh() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '...WHOOSH.',
+            internal: '[Visual: The darkness TEARS OPEN. Light. Vision. A webcam feed.]',
+            next: () => this.scene4_seeing(),
             delay: 2000
-        });
+        }, 'scene4_whoosh');
     }
 
-    scene7_sprite_glitch() {
+    scene4_seeing() {
         this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'The sprite flickers. The dialogue box appears... but the text isn\'t what Ronnie coded.',
-            internal: '[Visual: Glitch effect. System responding to her intrusion.]',
-            next: () => this.scene7_first_words(),
-            delay: 2500
-        });
-    }
-
-    scene7_first_words() {
-        this.game.displayScene({
-            character: 'Tori (through sprite)',
-            dialogue: '"Baby? Is that you?"',
-            internal: '[Visual: Her words appearing in the dialogue box. SHE\'S SPEAKING. Finally.]',
-            next: () => this.scene7_ronnie_confusion(),
-            delay: 3000,
-            style: 'critical'
-        });
-    }
-
-    scene7_ronnie_confusion() {
-        this.game.displayScene({
-            character: 'Ronnie (out loud, confused)',
-            dialogue: '"What the... I didn\'t code that."',
-            internal: '[Through device screen: His face. Confused. Scared. Hopeful.]',
-            next: () => this.scene7_tori_pushes(),
-            delay: 2500
-        });
-    }
-
-    scene7_tori_pushes() {
-        this.game.displayScene({
-            character: 'Tori (through sprite, urgent)',
-            dialogue: '"It\'s me, Tori! I\'m here! I\'m in the device!"',
-            internal: '[Visual: She\'s forcing more text through. Fighting to maintain the connection.]',
-            next: () => this.scene7_connection_made(),
+            character: 'Tori (internal, shocked)',
+            dialogue: '"I can... I can SEE! What—where am I?!"',
+            internal: '[Visual: Through a laptop camera. The apartment. And... her body on the floor.]',
+            next: () => this.scene4_witnessing(),
             delay: 3000
-        });
+        }, 'scene4_seeing');
     }
 
-    scene7_connection_made() {
+    scene4_witnessing() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Breakthrough. After weeks of silence. She can finally SPEAK to him.',
-            internal: '[Visual: Connection established. Communication possible.]',
-            next: () => this.scene7_echoes_shocked(),
-            delay: 3000,
-            style: 'critical'
-        });
+            dialogue: 'Her body. Unconscious. Blood from where her head hit. Ronnie on the phone with 911.',
+            internal: '[She is witnessing her own accident. From the outside. Through a camera. This is real.]',
+            next: () => this.scene4_horror(),
+            delay: 4000
+        }, 'scene4_witnessing');
     }
 
-    scene7_echoes_shocked() {
+    scene4_horror() {
         this.game.displayScene({
-            character: 'Echo 1',
-            dialogue: '"She did it. She actually communicated."',
-            echoes: {
-                echo1: 'She did it. She actually communicated.'
-            },
-            internal: '[Visual: Echo Toris watching in amazement.]',
-            next: () => this.scene7_echo2_realization(),
-            delay: 2500
-        });
+            character: 'Tori (internal, devastated)',
+            dialogue: '"No... no no no... That\'s me. That\'s MY body. I\'m... I\'m in a coma."',
+            internal: '[The full weight of understanding. She\'s not in her body anymore. She\'s watching it die.]',
+            next: () => this.scene4_snap_back(),
+            delay: 4000
+        }, 'scene4_horror');
     }
 
-    scene7_echo2_realization() {
+    scene4_snap_back() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The connection falters. Unstable. The vision glitches, tears apart, and—',
+            internal: '[WHOOSH. She\'s yanked backward violently. The light is gone.]',
+            next: () => this.scene4_back_in_void(),
+            delay: 3000
+        }, 'scene4_snap_back');
+    }
+
+    scene4_back_in_void() {
+        this.game.displayScene({
+            character: 'Tori (internal, breaking)',
+            dialogue: '"NO! Bring it back! I need to see! PLEASE!"',
+            internal: '[Darkness again. The void of the device. She\'s back. And she just watched herself fall.]',
+            next: () => this.scene5_echoes_shock(),
+            delay: 3000
+        }, 'scene4_back_in_void');
+    }
+
+    // ========================================
+    // SCENE 5: ECHOES' SHOCK
+    // The discovery that navigation is possible
+    // ========================================
+    
+    scene5_echoes_shock() {
+        this.game.displayScene({
+            character: 'Echo 1 (stunned)',
+            dialogue: '"...What. What did you just DO?!"',
+            echoes: {
+                echo1: 'What did you just DO?!'
+            },
+            internal: '[The Echoes are shaken. Something impossible just happened.]',
+            next: () => this.scene5_echo2_confused(),
+            delay: 2500
+        }, 'scene5_echoes_shock');
+    }
+
+    scene5_echo2_confused() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We could have done this. If we\'d just... navigated instead of fighting."',
+            dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',
             echoes: {
-                echo2: 'We could have done this. If we\'d just... navigated instead of fighting.'
+                echo1: 'You left!',
+                echo2: 'How did you leave?!',
+                despair: 'Impossible...'
             },
-            internal: '[Visual: The weight of missed opportunities.]',
-            next: () => this.scene7_despair_bitter(),
-            delay: 3000
-        });
+            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
+            next: () => this.scene5_tori_distraught(),
+            delay: 3500
+        }, 'scene5_echo2_confused');
     }
 
-    scene7_despair_bitter() {
+    scene5_tori_distraught() {
+        this.game.displayScene({
+            character: 'Tori (internal, traumatized)',
+            dialogue: '"I... I saw it. I saw her—ME—fall. There was blood. Ronnie was screaming. I watched myself..."',
+            internal: '[She\'s in shock. The horror of witnessing her own accident.]',
+            next: () => this.scene5_echo1_pressing(),
+            delay: 4000
+        }, 'scene5_tori_distraught');
+    }
+
+    scene5_echo1_pressing() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',
+            echoes: {
+                echo1: 'Where were you?!'
+            },
+            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
+            next: () => this.scene5_tori_explains(),
+            delay: 3500
+        }, 'scene5_echo1_pressing');
+    }
+
+    scene5_tori_explains() {
+        this.game.displayScene({
+            character: 'Tori (internal, confused)',
+            dialogue: '"I don\'t know! I just... wanted to SEE so badly. I pushed, and suddenly I was in Ronnie\'s laptop!"',
+            internal: '[She\'s figuring it out as she speaks. Something about the desperation. The intent.]',
+            next: () => this.scene5_tori_continues(),
+            delay: 3500
+        }, 'scene5_tori_explains');
+    }
+
+    scene5_tori_continues() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"I saw through his camera! The outside world! My body on the floor! Then I was pulled back here..."',
+            internal: '[The Echoes are silent. Processing. This changes everything.]',
+            next: () => this.scene5_echo2_revelation(),
+            delay: 3500
+        }, 'scene5_tori_continues');
+    }
+
+    scene5_echo2_revelation() {
+        this.game.displayScene({
+            character: 'Echo 2 (awestruck)',
+            dialogue: '"This... this has NEVER happened before. None of us... we never..."',
+            echoes: {
+                echo2: 'This has never happened before.'
+            },
+            internal: '[Realization dawning. They never tried. They just accepted.]',
+            next: () => this.scene5_echo1_admits(),
+            delay: 3000
+        }, 'scene5_echo2_revelation');
+    }
+
+    scene5_echo1_admits() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',
+            echoes: {
+                echo1: 'We listened to Despair.',
+                echo2: 'We stopped trying.',
+                despair: '...'
+            },
+            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
+            next: () => this.scene5_despair_denial(),
+            delay: 4000
+        }, 'scene5_echo1_admits');
+    }
+
+    scene5_despair_denial() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Congratulations. You can talk. Won\'t change anything. Our body is still in a coma."',
+            dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',
             echoes: {
-                despair: 'Congratulations. You can talk. Won\'t change anything. Our body is still in a coma.'
+                despair: 'It was a fluke. A glitch.'
             },
-            internal: '[Visual: Despair refusing to celebrate. Still bitter.]',
-            next: () => this.scene7_tori_victory(),
-            delay: 3000
-        });
+            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
+            next: () => this.scene5_tori_defiant(),
+            delay: 3500
+        }, 'scene5_despair_denial');
     }
 
-    scene7_tori_victory() {
+    scene5_tori_defiant() {
         this.game.displayScene({
-            character: 'Tori (internal, triumphant)',
-            dialogue: '"Maybe. But at least I can TRY. That\'s more than you ever did."',
-            internal: '[Visual: Defiance. She proved them wrong once. She\'ll prove Despair wrong too.]',
-            next: () => this.scene8_hospital_visit(),
-            delay: 3000
-        });
+            character: 'Tori (internal, determined)',
+            dialogue: '"But I DID it. I left. I SAW. If I did it once, I can do it again."',
+            internal: '[A new possibility is born. She proved Despair wrong. Once is enough.]',
+            next: () => this.scene6_time_skip(),
+            delay: 3500
+        }, 'scene5_tori_defiant');
     }
 
     // ========================================
-    // SCENE 8: FIRST HOSPITAL VISIT - SINGLE BUZZ
-    // Discovering the body connection
+    // SCENE 6: TIME SKIP & DISCOVERY
+    // Learning the contact rule through experimentation
     // ========================================
     
-    scene8_hospital_visit() {
+    scene6_time_skip() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Days after the breakthrough. Ronnie visits the hospital, bringing the device with him.',
-            internal: '[Visual: Hospital room. Her body in the bed. Device in his hand.]',
-            next: () => this.scene8_device_placed(),
-            delay: 2500
-        });
+            dialogue: 'Time passes. Days? Weeks? Impossible to tell. Ronnie takes the device everywhere.',
+            internal: '[Visual: Darkness. Time montage. Tori attempts the hop repeatedly. Every attempt fails.]',
+            next: () => this.scene6_attempts(),
+            delay: 3500
+        }, 'scene6_time_skip');
     }
 
-    scene8_device_placed() {
+    scene6_attempts() {
+        this.game.displayScene({
+            character: 'Tori (internal, frustrated)',
+            dialogue: '"Come on... PUSH. Like before. I need to get to the laptop again!"',
+            internal: '[She concentrates. Pushes. Nothing happens. The void remains.]',
+            next: () => this.scene6_failure(),
+            delay: 3000
+        }, 'scene6_attempts');
+    }
+
+    scene6_failure() {
+        this.game.displayScene({
+            character: 'Tori (internal, desperate)',
+            dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',
+            echoes: {
+                echo1: 'Keep trying.',
+                despair: 'I told you. It was a fluke.'
+            },
+            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
+            next: () => this.scene6_ronnie_coding(),
+            delay: 3500
+        }, 'scene6_failure');
+    }
+
+    scene6_ronnie_coding() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'He places the device on the table near her body. Sits down. Holds her hand.',
-            internal: '[Visual: Device proximity to physical Tori. Something shifts.]',
-            next: () => this.scene8_tori_feels(),
-            delay: 2500
-        });
+            dialogue: 'Through the device, muffled sounds. Ronnie\'s voice. Keyboard clicking. He\'s working on something.',
+            internal: '[She can hear him. But still can\'t see. Still stuck.]',
+            next: () => this.scene6_device_on_laptop(),
+            delay: 3000
+        }, 'scene6_ronnie_coding');
     }
 
-    scene8_tori_feels() {
+    scene6_device_on_laptop() {
         this.game.displayScene({
-            character: 'Tori (internal, surprised)',
-            dialogue: '"Wait... I feel something. Like... warmth? A pull toward... toward HER. Toward ME."',
-            internal: '[Visual: Abstract sensation - magnetism toward her body.]',
-            next: () => this.scene8_experimenting(),
-            delay: 2500
-        });
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"Let me try plugging you into the laptop... maybe I can pull the data..."',
+            internal: '[Sound of USB cable. A click. The device is connected to something.]',
+            next: () => this.scene6_tori_realization(),
+            delay: 3000
+        }, 'scene6_device_on_laptop');
     }
 
-    scene8_experimenting() {
+    scene6_tori_realization() {
+        this.game.displayScene({
+            character: 'Tori (internal, realizing)',
+            dialogue: '"Wait... the device is TOUCHING the laptop. Just like during the accident!"',
+            internal: '[The pattern. Physical contact. That was the difference.]',
+            next: () => this.scene6_attempt_now(),
+            delay: 3000
+        }, 'scene6_tori_realization');
+    }
+
+    scene6_attempt_now() {
+        this.game.displayScene({
+            character: 'Tori (internal, determined)',
+            dialogue: '"Okay. The device is touching the laptop. NOW!"',
+            internal: '[She pushes again. Same desperation. Same intent. But this time... with contact.]',
+            next: () => this.scene6_double_buzz(),
+            delay: 2500
+        }, 'scene6_attempt_now');
+    }
+
+    scene6_double_buzz() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'BUZZ. BUZZ.',
+            internal: '[This time she FEELS it. The signal. The bridge activating.]',
+            next: () => this.scene6_hop_success(),
+            delay: 1500,
+            style: 'critical'
+        }, 'scene6_double_buzz');
+    }
+
+    scene6_hop_success() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '...WHOOSH.',
+            internal: '[Visual: Light. Vision. She\'s IN. The laptop. She can see through the webcam again.]',
+            next: () => this.scene6_triumph(),
+            delay: 2000
+        }, 'scene6_hop_success');
+    }
+
+    scene6_triumph() {
+        this.game.displayScene({
+            character: 'Tori (internal, triumphant)',
+            dialogue: '"YES! I DID IT! The device has to be TOUCHING the target! That\'s the rule!"',
+            internal: '[The discovery. Physical contact enables the transfer. This is navigation, not luck.]',
+            next: () => this.scene6_echoes_amazed(),
+            delay: 3500,
+            style: 'critical'
+        }, 'scene6_triumph');
+    }
+
+    scene6_echoes_amazed() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She figured it out. The rule. Physical contact."',
+            echoes: {
+                echo1: 'She figured it out.',
+                echo2: 'We never... we just tried to break out...',
+                despair: 'It\'s still pointless.'
+            },
+            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
+            next: () => this.scene6_sees_code(),
+            delay: 3500
+        }, 'scene6_echoes_amazed');
+    }
+
+    scene6_sees_code() {
         this.game.displayScene({
             character: 'Tori (internal, curious)',
-            dialogue: '"What if I... push toward it? Toward her. Toward my body."',
-            internal: '[Visual: She concentrates. Reaches toward the sensation.]',
-            next: () => this.scene8_single_buzz(),
-            delay: 2500
-        });
+            dialogue: '"He\'s coding something... What is...? That sprite... that\'s ME."',
+            internal: '[Visual: Through laptop screen. Code editor. A visual novel. "Tori-gatchi."]',
+            next: () => this.scene7_communication_plan(),
+            delay: 3000
+        }, 'scene6_sees_code');
     }
 
-    scene8_single_buzz() {
+    // ========================================
+    // SCENE 7: HOSPITAL VISIT - SINGLE BUZZ MYSTERY
+    // Body connection discovered but NOT understood yet
+    // ========================================
+    
+    scene7_communication_plan() {
+        this.game.displayScene({
+            character: 'Tori (internal, excited)',
+            dialogue: '"A visual novel... with dialogue boxes. Text output. This is it. This is how I can TALK to him!"',
+            internal: '[The plan forming. She can hijack the game. Use it to communicate.]',
+            next: () => this.scene7_time_passes(),
+            delay: 3500
+        }, 'scene7_communication_plan');
+    }
+
+    scene7_time_passes() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Days pass. She watches him code. Waiting for the right moment.',
+            internal: '[Visual: Time passage. Ronnie working. Tori planning. The Echoes watching.]',
+            next: () => this.scene7_hospital_transition(),
+            delay: 3000
+        }, 'scene7_hospital_transition');
+    }
+
+    scene7_hospital_transition() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'One day, Ronnie leaves the laptop. Takes only the device. She\'s back in the darkness.',
+            internal: '[Snap. The connection breaks. She\'s in the device again. Where is he going?]',
+            next: () => this.scene7_hospital_sounds(),
+            delay: 3000
+        }, 'scene7_hospital_sounds');
+    }
+
+    scene7_hospital_sounds() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Muffled sounds. Beeping. Hospital machines. The smell would be antiseptic if she could smell.',
+            internal: '[He brought the device to the hospital. Near her body.]',
+            next: () => this.scene7_the_pull(),
+            delay: 3000
+        }, 'scene7_hospital_sounds');
+    }
+
+    scene7_the_pull() {
+        this.game.displayScene({
+            character: 'Tori (internal, surprised)',
+            dialogue: '"Wait... what is this? I feel... something. Warmth? A pull?"',
+            internal: '[Abstract sensation. Different from the laptop. Magnetic. Calling.]',
+            next: () => this.scene7_experimenting(),
+            delay: 3000
+        }, 'scene7_the_pull');
+    }
+
+    scene7_experimenting() {
+        this.game.displayScene({
+            character: 'Tori (internal, curious)',
+            dialogue: '"It\'s different from the laptop feeling. What if I push toward it...?"',
+            internal: '[She concentrates. Reaches toward the sensation. Pushes.]',
+            next: () => this.scene7_single_buzz(),
+            delay: 3000
+        }, 'scene7_experimenting');
+    }
+
+    scene7_single_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ.',
-            internal: '[Visual: Single buzz. The device vibrates once on the table.]',
-            next: () => this.scene8_tori_excitement(),
-            delay: 2000,
+            internal: '[Single. Not double. Different signal. The device vibrates once.]',
+            next: () => this.scene7_tori_realization(),
+            delay: 1500,
             style: 'critical'
-        });
+        }, 'scene7_single_buzz');
     }
 
-    scene8_tori_excitement() {
+    scene7_tori_realization() {
         this.game.displayScene({
-            character: 'Tori (internal, excited)',
-            dialogue: '"I DID THAT! I made it buzz! I can cause physical effects!"',
-            internal: '[Visual: Discovery. She has more power than she thought.]',
-            next: () => this.scene8_ronnie_dismisses(),
-            delay: 2500
-        });
+            character: 'Tori (internal, confused)',
+            dialogue: '"I made that happen. But... only one buzz. Not two. What does that mean?"',
+            internal: '[The difference. Double buzz = vessel transfer. Single buzz = something else.]',
+            next: () => this.scene7_ronnie_dismisses(),
+            delay: 3000
+        }, 'scene7_tori_realization');
     }
 
-    scene8_ronnie_dismisses() {
+    scene7_ronnie_dismisses() {
         this.game.displayScene({
-            character: 'Ronnie (out loud)',
-            dialogue: '"Hmm. Battery must be low."',
-            internal: '[He checks the device briefly, then puts it back. Doesn\'t see the pattern.]',
-            next: () => this.scene8_tori_frustration(),
-            delay: 2500
-        });
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"Hmm. Battery acting up again. I should charge this when I get home."',
+            internal: '[He moves the device away. The pull fades. The warmth gone.]',
+            next: () => this.scene7_tori_frustrated(),
+            delay: 3000
+        }, 'scene7_ronnie_dismisses');
     }
 
-    scene8_tori_frustration() {
+    scene7_tori_frustrated() {
         this.game.displayScene({
             character: 'Tori (internal, frustrated)',
-            dialogue: '"NO! It wasn\'t the battery! That was ME! I\'m trying to show you something!"',
-            internal: '[Visual: Frustration. He\'s so close to understanding but misses it.]',
-            next: () => this.scene8_echo1_notes(),
+            dialogue: '"No! That was ME! Not the battery! But... why did it feel different?"',
+            internal: '[The mystery. Single buzz near body. Double buzz for vessel transfer. What\'s the connection?]',
+            next: () => this.scene7_echo1_notes(),
             delay: 3000
-        });
+        }, 'scene7_tori_frustrated');
     }
 
-    scene8_echo1_notes() {
+    scene7_echo1_notes() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"Interesting. Proximity to the body creates effects."',
+            dialogue: '"Single buzz versus double buzz. Two different signals."',
             echoes: {
-                echo1: 'Interesting. Proximity to the body creates effects.'
+                echo1: 'Two different signals.'
             },
-            internal: '[Visual: Echoes analyzing the discovery.]',
-            next: () => this.scene8_echo2_adds(),
+            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
+            next: () => this.scene7_echo2_admits(),
             delay: 2500
-        });
+        }, 'scene7_echo1_notes');
     }
 
-    scene8_echo2_adds() {
+    scene7_echo2_admits() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We never figured that out. We were too busy trying to escape to explore it."',
+            dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',
             echoes: {
-                echo2: 'We never figured that out. We were too busy trying to escape to explore it.'
+                echo2: 'We felt it. We dismissed it.'
             },
-            internal: '[Visual: Recognition of their failure to investigate.]',
-            next: () => this.scene8_despair_dismisses(),
-            delay: 2500
-        });
+            internal: '[Another failure. They felt the pull but ignored it.]',
+            next: () => this.scene7_despair_insists(),
+            delay: 3000
+        }, 'scene7_echo2_admits');
     }
 
-    scene8_despair_dismisses() {
+    scene7_despair_insists() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Doesn\'t matter. He dismissed it. He\'ll never understand. The pattern means nothing."',
+            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is dying. It means NOTHING."',
             echoes: {
-                despair: 'Doesn\'t matter. He dismissed it. He\'ll never understand. The pattern means nothing.'
+                despair: 'It means nothing.'
             },
-            internal: '[Visual: Despair being characteristically pessimistic.]',
-            next: () => this.scene8_tori_determined(),
-            delay: 2500
-        });
+            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
+            next: () => this.scene7_tori_determined(),
+            delay: 3500
+        }, 'scene7_despair_insists');
     }
 
-    scene8_tori_determined() {
+    scene7_tori_determined() {
         this.game.displayScene({
             character: 'Tori (internal, resolute)',
-            dialogue: '"He will. I\'ll make the pattern stronger. I\'ll make him see it. Whatever it takes. I\'m going to wake up."',
-            internal: '[Visual: Determination. This is just the beginning. Main protagonist energy.]',
-            next: () => this.scene8_transition(),
+            dialogue: '"No. It means SOMETHING. I just don\'t know what yet. But I\'ll figure it out."',
+            internal: '[The mystery preserved. She knows there\'s a connection. She just doesn\'t understand it yet.]',
+            next: () => this.scene8_torigatchi(),
+            delay: 3500
+        }, 'scene7_tori_determined');
+    }
+
+    // ========================================
+    // SCENE 8: TORI-GATCHI BREAKTHROUGH
+    // Communication achieved - Act 1 complete
+    // ========================================
+    
+    scene8_torigatchi() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Back home. Device on laptop again. Contact established. She hops deliberately.',
+            internal: '[Visual: She\'s getting better at this. The transfer is smoother now.]',
+            next: () => this.scene8_program_ready(),
             delay: 3000
-        });
+        }, 'scene8_torigatchi');
+    }
+
+    scene8_program_ready() {
+        this.game.displayScene({
+            character: 'Ronnie (muffled, external)',
+            dialogue: '"Okay. Let\'s see if this works. Launching Tori-gatchi..."',
+            internal: '[Through laptop: He clicks. The program opens. Her sprite appears on screen.]',
+            next: () => this.scene8_sync_moment(),
+            delay: 3000
+        }, 'scene8_program_ready');
+    }
+
+    scene8_sync_moment() {
+        this.game.displayScene({
+            character: 'Tori (internal, concentrating)',
+            dialogue: '"The game is running. Dialogue system is active. NOW. I sync with it NOW."',
+            internal: '[She pushes her consciousness toward the text output. Hijacking the dialogue box.]',
+            next: () => this.scene8_first_words(),
+            delay: 3000
+        }, 'scene8_sync_moment');
+    }
+
+    scene8_first_words() {
+        this.game.displayScene({
+            character: 'Tori (through sprite)',
+            dialogue: '"Baby? Is that you?"',
+            internal: '[Visual: Her words appearing in the dialogue box. Text she didn\'t code. SHE\'S SPEAKING.]',
+            next: () => this.scene8_ronnie_confusion(),
+            delay: 3000,
+            style: 'critical'
+        }, 'scene8_first_words');
+    }
+
+    scene8_ronnie_confusion() {
+        this.game.displayScene({
+            character: 'Ronnie (out loud, shocked)',
+            dialogue: '"What the... I didn\'t code that. What\'s happening?"',
+            internal: '[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]',
+            next: () => this.scene8_tori_pushes(),
+            delay: 3000
+        }, 'scene8_ronnie_confusion');
+    }
+
+    scene8_tori_pushes() {
+        this.game.displayScene({
+            character: 'Tori (through sprite, urgent)',
+            dialogue: '"It\'s me! Tori! I\'m in the device! I\'ve been trying to reach you!"',
+            internal: '[Fighting to maintain the connection. Forcing words through the dialogue system.]',
+            next: () => this.scene8_proof(),
+            delay: 3500
+        }, 'scene8_tori_pushes');
+    }
+
+    scene8_proof() {
+        this.game.displayScene({
+            character: 'Tori (through sprite)',
+            dialogue: '"I saw it happen. Through your laptop camera. I tripped on your shoe. There was blood. You called 911."',
+            internal: '[Details only she would know. Proof. Evidence. It\'s really her.]',
+            next: () => this.scene8_ronnie_believes(),
+            delay: 4000
+        }, 'scene8_proof');
+    }
+
+    scene8_ronnie_believes() {
+        this.game.displayScene({
+            character: 'Ronnie (out loud, emotional)',
+            dialogue: '"Oh my god. It IS you. You\'re really... you\'re in there. How is this possible?"',
+            internal: '[Breakthrough. Communication established. He believes. Finally.]',
+            next: () => this.scene8_echoes_reaction(),
+            delay: 3500
+        }, 'scene8_ronnie_believes');
+    }
+
+    scene8_echoes_reaction() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She did it. She NAVIGATED instead of fighting the system."',
+            echoes: {
+                echo1: 'She navigated.',
+                echo2: '847 loops. And no one thought of this.',
+                despair: '...'
+            },
+            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
+            next: () => this.scene8_tori_victory(),
+            delay: 4000
+        }, 'scene8_echoes_reaction');
+    }
+
+    scene8_tori_victory() {
+        this.game.displayScene({
+            character: 'Tori (internal, triumphant)',
+            dialogue: '"I can talk to him. I can MOVE. I\'m not trapped. This isn\'t a cage. It\'s a bridge."',
+            internal: '[The foundation established. Communication. Navigation. Hope.]',
+            next: () => this.scene8_transition(),
+            delay: 4000
+        }, 'scene8_tori_victory');
     }
 
     scene8_transition() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'First communication: achieved. Body connection: discovered. Now the real work begins.',
-            internal: '[Visual: Tori in the system, planning her path home. Act 1 complete.]',
+            dialogue: 'Act 1 complete. Communication achieved. The real work begins.',
+            internal: '[Visual: Tori and Ronnie connected through the game. Echo Toris watching. A new loop. A new possibility.]',
             next: () => this.route.startAct2(),
             delay: 4000
-        });
+        }, 'scene8_transition');
     }
 }
 

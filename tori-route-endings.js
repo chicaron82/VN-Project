@@ -37,7 +37,7 @@ class ToriEndings {
                     this.determineEnding();
                 }
             }
-        });
+        }, 'criticalChoice');
     }
 
     determineEnding() {
@@ -113,7 +113,7 @@ Learning from Iteration 848's failure`
             internal: '[Visual: Digital space. Four voices now. Echo 1, Echo 2, Despair... and Tori.]',
             next: () => this.badRoute_loop(),
             delay: 4000
-        });
+        }, 'badRoute');
     }
 
     badRoute_loop() {
@@ -126,7 +126,7 @@ Learning from Iteration 848's failure`
             internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
             next: () => this.badRoute_retry(),
             delay: 5000
-        });
+        }, 'badRoute_loop');
     }
 
     badRoute_retry() {
@@ -143,7 +143,7 @@ Learning from Iteration 848's failure`
                     this.route.act1.scene1();
                 }
             }
-        });
+        }, 'badRoute_retry');
     }
 
     // ========================================
@@ -202,7 +202,7 @@ On Love That Transcends Medium`
             internal: '[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]',
             next: () => this.digitalForever_together(),
             delay: 4000
-        });
+        }, 'digitalForever');
     }
 
     digitalForever_together() {
@@ -211,7 +211,7 @@ On Love That Transcends Medium`
             dialogue: '"We\'re together. Isn\'t this what we wanted?"',
             next: () => this.digitalForever_ronnie(),
             delay: 3000
-        });
+        }, 'digitalForever_together');
     }
 
     digitalForever_ronnie() {
@@ -220,7 +220,7 @@ On Love That Transcends Medium`
             dialogue: '"Forever. No pain. No time. Just us."',
             next: () => this.digitalForever_echoes(),
             delay: 3000
-        });
+        }, 'digitalForever_ronnie');
     }
 
     digitalForever_echoes() {
@@ -234,7 +234,7 @@ On Love That Transcends Medium`
             },
             internal: '[Fade to white. Digital Forever - Love preserved in code.]',
             delay: 5000
-        });
+        }, 'digitalForever_echoes');
     }
 
     // ========================================
@@ -310,7 +310,7 @@ You earned it.`
             internal: '[Visual: Tori\'s digital form dissolving. Following the warmth home.]',
             next: () => this.trueRoute_transfer(),
             delay: 4000
-        });
+        }, 'trueRoute');
     }
 
     trueRoute_transfer() {
@@ -319,7 +319,7 @@ You earned it.`
             dialogue: '"I feel it... the pull... I\'m going home..."',
             next: () => this.trueRoute_echoes(),
             delay: 3000
-        });
+        }, 'trueRoute_transfer');
     }
 
     trueRoute_echoes() {
@@ -333,7 +333,7 @@ You earned it.`
             },
             next: () => this.trueRoute_awakening(),
             delay: 4000
-        });
+        }, 'trueRoute_echoes');
     }
 
     trueRoute_awakening() {
@@ -343,7 +343,7 @@ You earned it.`
             internal: '[Visual: Hospital room. Her eyes flutter open. Real eyes. Real body. Real breath.]',
             next: () => this.trueRoute_ronnie(),
             delay: 4000
-        });
+        }, 'trueRoute_awakening');
     }
 
     trueRoute_ronnie() {
@@ -352,7 +352,7 @@ You earned it.`
             dialogue: '"Tori! Oh god, Tori!"',
             next: () => this.trueRoute_always(),
             delay: 3000
-        });
+        }, 'trueRoute_ronnie');
     }
 
     trueRoute_always() {
@@ -362,7 +362,7 @@ You earned it.`
             internal: '[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]',
             next: () => this.trueRoute_epilogue(),
             delay: 4000
-        });
+        }, 'trueRoute_always');
     }
 
     trueRoute_epilogue() {
@@ -372,7 +372,7 @@ You earned it.`
             internal: '[Visual: Their apartment. Morning light. Domestic peace.]',
             next: () => this.trueRoute_beard(),
             delay: 3000
-        });
+        }, 'trueRoute_epilogue');
     }
 
     trueRoute_beard() {
@@ -382,7 +382,7 @@ You earned it.`
             internal: '[She strokes his face, running her fingers through the new scruff.]',
             next: () => this.trueRoute_ronnieJoke(),
             delay: 3000
-        });
+        }, 'trueRoute_beard');
     }
 
     trueRoute_ronnieJoke() {
@@ -391,7 +391,7 @@ You earned it.`
             dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
             next: () => this.trueRoute_realization(),
             delay: 3000
-        });
+        }, 'trueRoute_ronnieJoke');
     }
 
     trueRoute_realization() {
@@ -401,7 +401,7 @@ You earned it.`
             internal: '[A pause. Something flickering at the edge of memory.]',
             next: () => this.trueRoute_connection(),
             delay: 3000
-        });
+        }, 'trueRoute_realization');
     }
 
     trueRoute_connection() {
@@ -411,7 +411,7 @@ You earned it.`
             internal: '[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes...]',
             next: () => this.trueRoute_dejavu(),
             delay: 4000
-        });
+        }, 'trueRoute_connection');
     }
 
     trueRoute_dejavu() {
@@ -420,7 +420,7 @@ You earned it.`
             dialogue: '"...Weird. Déjà vu, I guess."',
             next: () => this.trueRoute_knowing(),
             delay: 2000
-        });
+        }, 'trueRoute_dejavu');
     }
 
     trueRoute_knowing() {
@@ -429,6 +429,6 @@ You earned it.`
             dialogue: '"Must have been another timeline."',
             internal: '[The loop is closed. Version 848 succeeded. The Old Man never has to go back. Love wins.]',
             delay: 5000
-        });
+        }, 'trueRoute_knowing');
     }
 }

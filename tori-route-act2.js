@@ -26,7 +26,7 @@ class ToriAct2 {
             internal: '[Visual: First "date" in the digital space. Ronnie coded a scene for them.]',
             next: () => this.beat1_iceCream(),
             delay: 3500
-        });
+        }, 'beat1');
     }
 
     beat1_iceCream() {
@@ -35,7 +35,7 @@ class ToriAct2 {
             dialogue: '"I coded in your favorite. Chocolate chip ice cream."',
             next: () => this.beat1_toriHesitate(),
             delay: 3000
-        });
+        }, 'beat1_iceCream');
     }
 
     beat1_toriHesitate() {
@@ -44,7 +44,7 @@ class ToriAct2 {
             dialogue: '"Wait... Tiger Tail. I want Tiger Tail."',
             next: () => this.beat1_confusion(),
             delay: 2500
-        });
+        }, 'beat1_toriHesitate');
     }
 
     beat1_confusion() {
@@ -53,7 +53,7 @@ class ToriAct2 {
             dialogue: '"Where did that come from? I hate Tiger Tail."',
             next: () => this.beat1_echoesReact(),
             delay: 3000
-        });
+        }, 'beat1_confusion');
     }
 
     beat1_echoesReact() {
@@ -70,7 +70,7 @@ class ToriAct2 {
             },
             next: () => this.beat1_systemTakeover(),
             delay: 4000
-        });
+        }, 'beat1_echoesReact');
     }
 
     beat1_systemTakeover() {
@@ -80,7 +80,7 @@ class ToriAct2 {
             internal: '[Her sprite spoke. But she didn\'t say that. The SYSTEM did.]',
             next: () => this.beat1_toriHorror(),
             delay: 3000
-        });
+        }, 'beat1_systemTakeover');
     }
 
     beat1_toriHorror() {
@@ -89,7 +89,7 @@ class ToriAct2 {
             dialogue: '"That wasn\'t me! I didn\'t say that!"',
             next: () => this.beat1_freeze(),
             delay: 2500
-        });
+        }, 'beat1_toriHorror');
     }
 
     beat1_freeze() {
@@ -98,16 +98,16 @@ class ToriAct2 {
             dialogue: 'Her sprite freezes mid-laugh. System dialogue box flickers. Then she\'s back. Ronnie looks concerned.',
             next: () => this.beat1_ronnieNotice(),
             delay: 3500
-        });
+        }, 'beat1_freeze');
     }
 
     beat1_ronnieNotice() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: '"Tori? Not againâ€”"',
+            dialogue: '"Tori? Not again—"',
             next: () => this.beat1_choice(),
             delay: 2000
-        });
+        }, 'beat1_ronnieNotice');
     }
 
     beat1_choice() {
@@ -131,7 +131,7 @@ class ToriAct2 {
                     this.beat1_panic();
                 }
             }
-        });
+        }, 'beat1_choice');
     }
 
     beat1_truth() {
@@ -140,7 +140,7 @@ class ToriAct2 {
             dialogue: '"My memories are corrupting. The system took over my voice. I\'m scared."',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_truth');
     }
 
     beat1_downplay() {
@@ -149,7 +149,7 @@ class ToriAct2 {
             dialogue: '"Just a glitch. I\'m fine. Keep going."',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_downplay');
     }
 
     beat1_panic() {
@@ -158,7 +158,7 @@ class ToriAct2 {
             dialogue: '"I\'m breaking apart. I can feel it. I\'m losing pieces of myself."',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_panic');
     }
 
     // ========================================
@@ -174,7 +174,7 @@ class ToriAct2 {
             internal: '[Visual: Through device screen - her body on the bed. Monitors beeping.]',
             next: () => this.beat2_warmth(),
             delay: 3500
-        });
+        }, 'beat2');
     }
 
     beat2_warmth() {
@@ -183,7 +183,7 @@ class ToriAct2 {
             dialogue: '"That feeling again... warmth. The pull toward my body."',
             next: () => this.beat2_buzz(),
             delay: 3000
-        });
+        }, 'beat2_warmth');
     }
 
     beat2_buzz() {
@@ -193,7 +193,7 @@ class ToriAct2 {
             internal: '[Same rhythm. Same pulse.]',
             next: () => this.beat2_ronnieNotice(),
             delay: 3000
-        });
+        }, 'beat2_buzz');
     }
 
     beat2_ronnieNotice() {
@@ -203,7 +203,7 @@ class ToriAct2 {
             internal: '[He dismisses it. Doesn\'t see the pattern yet.]',
             next: () => this.beat2_echoesKnow(),
             delay: 3000
-        });
+        }, 'beat2_ronnieNotice');
     }
 
     beat2_echoesKnow() {
@@ -217,319 +217,269 @@ class ToriAct2 {
             },
             next: () => this.beat3(),
             delay: 4000
-        });
+        }, 'beat2_echoesKnow');
     }
 
     // ========================================
-    // BEAT 3: WEDDING MEMORY
-    // Safe Valley
+    // BEAT 3: DIGITAL MAZE BREAKDOWN
+    // Corruption Intensifies
     // (Originally Beat 4)
     // ========================================
     
     beat3() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Digital recreation. Wedding reception. Pixel decorations. Dancing sprites.',
-            internal: '[Visual: Ronnie coded their wedding day. Trying to give her something happy.]',
-            next: () => this.beat3_dance(),
+            dialogue: 'Back in the digital space. A simple maze game Ronnie coded. "Think fast" gameplay.',
+            internal: '[Visual: Sprite-Tori navigating a pixelated maze. Cute and casual.]',
+            next: () => this.beat3_maze(),
             delay: 3500
-        });
+        }, 'beat3');
     }
 
-    beat3_dance() {
+    beat3_maze() {
         this.game.displayScene({
-            character: 'Ronnie (sprite)',
-            dialogue: '"Remember this? Our first dance as husband and wife."',
-            next: () => this.beat3_toriSmile(),
-            delay: 3000
-        });
+            character: 'Ronnie',
+            dialogue: '"Left or right?"',
+            next: () => this.beat3_confusion(),
+            delay: 2000
+        }, 'beat3_maze');
     }
 
-    beat3_toriSmile() {
+    beat3_confusion() {
         this.game.displayScene({
             character: 'Tori (internal)',
-            dialogue: '"I remember. Your hand on my waist. The way you whispered \'always\' in my ear."',
-            next: () => this.beat3_echoesWatch(),
-            delay: 3500
-        });
+            dialogue: '"Wait... which way did we come from? I can\'t remember..."',
+            next: () => this.beat3_systemTakeover(),
+            delay: 3000
+        }, 'beat3_confusion');
     }
 
-    beat3_echoesWatch() {
+    beat3_systemTakeover() {
+        this.game.displayScene({
+            character: 'Tori (sprite, automatic)',
+            dialogue: '"Left!"',
+            internal: '[She didn\'t choose that. The SYSTEM did. Again.]',
+            next: () => this.beat3_wrongTurn(),
+            delay: 2500
+        }, 'beat3_systemTakeover');
+    }
+
+    beat3_wrongTurn() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Dead end. Ronnie backtracks. But Tori is frozen, staring at the wall.',
+            next: () => this.beat3_toriInternal(),
+            delay: 3000
+        }, 'beat3_wrongTurn');
+    }
+
+    beat3_toriInternal() {
+        this.game.displayScene({
+            character: 'Tori (internal, panicking)',
+            dialogue: '"I\'m not controlling my sprite anymore. I\'m just... watching."',
+            next: () => this.beat3_echoesRespond(),
+            delay: 3000
+        }, 'beat3_toriInternal');
+    }
+
+    beat3_echoesRespond() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "This is... nice."\nEcho 1: "Quiet. Let her have this."\nDespair: "..."',
+            dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',
             echoes: {
-                echo2: 'This is... nice.',
-                echo1: 'Quiet. Let her have this.',
-                despair: '...'
+                echo1: 'It\'s getting worse.',
+                echo2: 'The system\'s taking over.',
+                despair: 'You\'re becoming a passenger in your own existence.'
             },
-            internal: '[Even Despair is silent. Watching the dance. Remembering.]',
-            next: () => this.beat3_peaceful(),
-            delay: 4000
-        });
-    }
-
-    beat3_peaceful() {
-        this.game.displayScene({
-            character: 'Tori (internal)',
-            dialogue: '"For just a moment... I\'m not struggling. I\'m just... with him."',
-            internal: '[A brief valley. Peace before the next glitch.]',
             next: () => this.beat4(),
             delay: 4000
-        });
+        }, 'beat3_echoesRespond');
     }
 
     // ========================================
-    // BEAT 4: COOKING MEMORY
-    // Tether Mechanics
+    // BEAT 4: HOSPITAL VISIT #2
+    // Body Anchor - Recognition
     // (Originally Beat 5)
     // ========================================
     
     beat4() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Cooking memory scene. Ronnie coded their kitchen. Tori\'s sprite stirring a pot.',
-            internal: '[Visual: Pixel kitchen. Warm lighting.]',
-            next: () => this.beat4_callback(),
-            delay: 3000
-        });
+            dialogue: 'Hospital room again. Ronnie adjusts her blankets. The Tamagotchi is on the table.',
+            internal: '[Visual: Her body. Still. Breathing. The device nearby.]',
+            next: () => this.beat4_feeling(),
+            delay: 3500
+        }, 'beat4');
     }
 
-    beat4_callback() {
+    beat4_feeling() {
         this.game.displayScene({
-            character: 'Tori (sprite)',
-            dialogue: '"Why am I cooking? I can\'t cook."',
-            next: () => this.beat4_ronnie(),
-            delay: 2500
-        });
+            character: 'Tori (internal)',
+            dialogue: '"There it is again. That pull. That warmth. It\'s coming from my body."',
+            next: () => this.beat4_understanding(),
+            delay: 3000
+        }, 'beat4_feeling');
     }
 
-    beat4_ronnie() {
+    beat4_understanding() {
+        this.game.displayScene({
+            character: 'Tori (internal, realization)',
+            dialogue: '"Wait... when I\'m near my body, I feel more... real. More present. The corruption slows."',
+            next: () => this.beat4_choice(),
+            delay: 3500
+        }, 'beat4_understanding');
+    }
+
+    beat4_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"This feeling... do I tell him? Or keep searching for proof?"',
+            choices: [
+                { text: '[Tell Ronnie about the body connection]', value: 'tell' },
+                { text: '[Wait - need more proof first]', value: 'wait' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'tell') {
+                    this.route.addRoutePoints('true', 1);
+                    this.beat4_tell();
+                } else {
+                    this.route.addRoutePoints('digitalForever', 1);
+                    this.beat4_wait();
+                }
+            }
+        }, 'beat4_choice');
+    }
+
+    beat4_tell() {
+        this.game.displayScene({
+            character: 'Tori (typing urgently)',
+            dialogue: '"Ronnie - when you visit my body, I feel more stable. I think there\'s a connection."',
+            next: () => this.beat4_ronnieResponse(),
+            delay: 3000
+        }, 'beat4_tell');
+    }
+
+    beat4_wait() {
+        this.game.displayScene({
+            character: 'Tori (typing)',
+            dialogue: '"The maze was glitchy. System acting weird again."',
+            internal: '[She hides the truth. Needs more proof.]',
+            next: () => this.beat4_ronnieResponse(),
+            delay: 3000
+        }, 'beat4_wait');
+    }
+
+    beat4_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: '"I coded you that way. I know you, Miss Burnt Toast."',
-            next: () => this.beat4_toriLaugh(),
-            delay: 3000
-        });
-    }
-
-    beat4_toriLaugh() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"Shut up. Garlic bread charcoal boy."',
-            internal: '[Safe valley. Callback. Moment of connection.]',
+            dialogue: '"I\'ll keep coming. Every day. I promise."',
             next: () => this.beat5(),
-            delay: 3000
-        });
+            delay: 2500
+        }, 'beat4_ronnieResponse');
     }
 
     // ========================================
-    // BEAT 5: NICKNAME QUIZ
-    // Shared Glitch & Despair Sabotage
+    // BEAT 5: MEMORY FRAGMENT NIGHTMARE
+    // Corruption Accelerates
     // (Originally Beat 6)
     // ========================================
     
     beat5() {
         this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Pop quiz: what\'s my favorite nickname for you?"',
-            next: () => this.beat5_toriThink(),
-            delay: 3000
-        });
+            character: 'Narration',
+            dialogue: 'Digital space. A memory fragment loads. Their first date. Coffee shop.',
+            internal: '[Visual: Warm lighting. Cozy scene. But the edges are glitching.]',
+            next: () => this.beat5_memoryStart(),
+            delay: 3500
+        }, 'beat5');
     }
 
-    beat5_toriThink() {
+    beat5_memoryStart() {
         this.game.displayScene({
-            character: 'Tori (internal)',
-            dialogue: '"My favorite... it\'s..."',
-            next: () => this.beat5_despairInterfere(),
+            character: 'Ronnie (sprite, in memory)',
+            dialogue: '"I can\'t believe you ordered decaf."',
+            next: () => this.beat5_toriBlank(),
             delay: 2500
-        });
+        }, 'beat5_memoryStart');
     }
 
-    beat5_despairInterfere() {
-        // Unlock CZ's Echo architecture note
-        this.route.unlockNote('cz3');
-        
-        const tetherState = this.route.getTetherState();
-        
-        // Despair's sabotage strength depends on tether level
-        if (tetherState === 'despair') {
-            // LOW TETHER: Despair successfully forces wrong answer
-            this.game.displayScene({
-                character: 'Despair Echo (forcing through - DOMINANT)',
-                dialogue: '"RONIN. Say Ronin. Twist the knife. Make him doubt. YOU CAN\'T RESIST ME."',
-                echoes: {
-                    despair: 'RONIN. Say Ronin. Twist the knife. Make him doubt. YOU CAN\'T RESIST ME.'
-                },
-                internal: '[Tether critically low. Despair overwhelming. She forces control.]',
-                next: () => this.beat5_forcedBlackout(),
-                delay: 3000
-            });
-        } else if (tetherState === 'balanced') {
-            // MEDIUM TETHER: Despair attempts but can be resisted
-            this.game.displayScene({
-                character: 'Despair Echo (attempting interference)',
-                dialogue: '"Say Ronin. Make him question everything. End this before it gets worse."',
-                echoes: {
-                    echo1: 'Fight her! You can resist!',
-                    echo2: 'Don\'t let her control you!',
-                    despair: 'Say Ronin. Make him question everything.'
-                },
-                internal: '[Despair is trying to sabotage, but the other Echoes are fighting back.]',
-                next: () => this.beat5_resistedFreeze(),
-                delay: 3500
-            });
-        } else {
-            // HIGH TETHER: Despair is muted, attempt fails
-            this.game.displayScene({
-                character: 'Echoes',
-                dialogue: 'Echo 1: "You know the answer. Trust yourself."\nEcho 2: "He loves you. Say what\'s true."\nDespair: "..." (silenced)',
-                echoes: {
-                    echo1: 'You know the answer. Trust yourself.',
-                    echo2: 'He loves you. Say what\'s true.',
-                    despair: '...'
-                },
-                internal: '[Tether high. Despair cannot break through. Minor glitch only.]',
-                next: () => this.beat5_minorGlitch(),
-                delay: 3500
-            });
-        }
-    }
-
-    beat5_forcedBlackout() {
-        // Low tether - Despair wins, forces wrong answer
+    beat5_toriBlank() {
         this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Tori freezes. Eyes blank. System takes control. She says the wrong name.',
-            internal: '[Despair forced the sabotage. Tether was too low to resist.]',
-            next: () => this.beat5_aware(),
-            delay: 3500
-        });
-    }
-
-    beat5_resistedFreeze() {
-        // Medium tether - Brief blackout but recovers
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Tori freezes mid-laugh. System dialogue box flickers. She fights back, regains control.',
-            internal: '[She resisted! Despair\'s attempt failed. Ronnie looks concerned but not scared.]',
-            next: () => this.beat5_aware(),
-            delay: 3500
-        });
-    }
-
-    beat5_minorGlitch() {
-        // High tether - Barely a hiccup
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'Slight pixel flicker. Nothing more. She answers correctly without issue.',
-            internal: '[Despair couldn\'t get through. Tether held strong.]',
-            next: () => this.beat5_aware(),
+            character: 'Tori (internal, horrified)',
+            dialogue: '"I... I don\'t remember this. I don\'t remember what I said next."',
+            next: () => this.beat5_systemFills(),
             delay: 3000
-        });
+        }, 'beat5_toriBlank');
     }
 
-    beat5_aware() {
-        const tetherState = this.route.getTetherState();
-        
-        if (tetherState === 'despair') {
-            this.game.displayScene({
-                character: 'Tori (internal, shaken)',
-                dialogue: '"I... I lost control completely. Despair is too strong. I can barely hold on."',
-                next: () => this.beat5_echoes(),
-                delay: 3000
-            });
-        } else if (tetherState === 'balanced') {
-            this.game.displayScene({
-                character: 'Tori (internal, shaken)',
-                dialogue: '"I blacked out again. But I fought back. I\'m still here."',
-                next: () => this.beat5_echoes(),
-                delay: 3000
-            });
-        } else {
-            this.game.displayScene({
-                character: 'Tori (internal, determined)',
-                dialogue: '"That was close. But I held on. Despair can\'t break me."',
-                next: () => this.beat5_echoes(),
-                delay: 3000
-            });
-        }
+    beat5_systemFills() {
+        this.game.displayScene({
+            character: 'Tori (sprite, voice not hers)',
+            dialogue: '"[MEMORY CORRUPTED - APPROXIMATION: "You know I hate caffeine."]"',
+            internal: '[The system filled in the blank. With a guess. Her memory is gone.]',
+            next: () => this.beat5_horror(),
+            delay: 4000
+        }, 'beat5_systemFills');
     }
 
-    beat5_echoes() {
-        const tetherState = this.route.getTetherState();
-        
-        if (tetherState === 'despair') {
-            this.game.displayScene({
-                character: 'Echoes',
-                dialogue: 'Despair: "See? I WIN. I always win. You should\'ve listened."\nEcho 1: (barely audible) "She\'s... still fighting..."\nEcho 2: (faint) "Please hold on..."',
-                echoes: {
-                    despair: 'See? I WIN. I always win. You should\'ve listened.',
-                    echo1: '(barely audible) She\'s... still fighting...',
-                    echo2: '(faint) Please hold on...'
-                },
-                internal: '[Despair is overwhelming. The other Echoes are fading.]',
-                next: () => this.beat6(),
-                delay: 4000
-            });
-        } else if (tetherState === 'balanced') {
-            this.game.displayScene({
-                character: 'Echoes',
-                dialogue: 'Echo 1: "She fought back. That\'s new."\nEcho 2: "Despair is getting stronger though."\nDespair: "Next time. Next time I\'ll break through."',
-                echoes: {
-                    echo1: 'She fought back. That\'s new.',
-                    echo2: 'Despair is getting stronger though.',
-                    despair: 'Next time. Next time I\'ll break through.'
-                },
-                next: () => this.beat6(),
-                delay: 4000
-            });
-        } else {
-            this.game.displayScene({
-                character: 'Echoes',
-                dialogue: 'Echo 1: "That\'s how it\'s done!"\nEcho 2: "She\'s stronger than we were."\nDespair: "...She got lucky. Won\'t last."',
-                echoes: {
-                    echo1: 'That\'s how it\'s done!',
-                    echo2: 'She\'s stronger than we were.',
-                    despair: '...She got lucky. Won\'t last.'
-                },
-                internal: '[Echo 1 & 2 are energized. Despair is bitter but contained.]',
-                next: () => this.beat6(),
-                delay: 4000
-            });
-        }
+    beat5_horror() {
+        this.game.displayScene({
+            character: 'Tori (internal, breaking)',
+            dialogue: '"That\'s not what I said. I don\'t know what I said. But that wasn\'t it."',
+            next: () => this.beat5_echoesReact(),
+            delay: 3000
+        }, 'beat5_horror');
+    }
+
+    beat5_echoesReact() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',
+            echoes: {
+                echo1: 'She\'s losing herself.',
+                echo2: 'Piece by piece.',
+                despair: 'Soon there won\'t be enough left to save.'
+            },
+            next: () => this.beat6(),
+            delay: 4000
+        }, 'beat5_echoesReact');
     }
 
     // ========================================
-    // BEAT 6: HOSPITAL VISIT #2
-    // Theory Confirmed
+    // BEAT 6: HOSPITAL VISIT #3
+    // Body Anchor - BREAKTHROUGH
     // (Originally Beat 7)
     // ========================================
     
     beat6() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'Hospital room again. The buzz is undeniable now.',
-            internal: '[Tamagotchi syncing with heartbeat. Tori feels the pull stronger.]',
+            dialogue: 'Hospital room. Ronnie holds her hand. The Tamagotchi buzzes loudly.',
+            internal: '[Visual: Physical contact. The buzz intensifies. Synced perfectly.]',
+            next: () => this.beat6_connection(),
+            delay: 3500
+        }, 'beat6');
+    }
+
+    beat6_connection() {
+        this.game.displayScene({
+            character: 'Tori (internal, CLARITY)',
+            dialogue: '"OH. Oh my god. It\'s the BODY. My body is the anchor. The bridge. The connection."',
             next: () => this.beat6_realization(),
-            delay: 3000
-        });
+            delay: 3500
+        }, 'beat6_connection');
     }
 
     beat6_realization() {
-        // Unlock Z's body anchor technical analysis
-        this.route.unlockNote('z3');
-        
         this.game.displayScene({
-            character: 'Tori (internal)',
-            dialogue: '"It\'s not the battery. It\'s ME. I\'m connected to my body. The device is a bridge."',
-            next: () => this.beat6_echoes(),
-            delay: 3500
-        });
+            character: 'Tori (internal, urgent)',
+            dialogue: '"That\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!"',
+            next: () => this.beat6_echoesReact(),
+            delay: 4000
+        }, 'beat6_realization');
     }
 
-    beat6_echoes() {
+    beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',
@@ -540,7 +490,7 @@ class ToriAct2 {
             },
             next: () => this.beat7(),
             delay: 4000
-        });
+        }, 'beat6_echoesReact');
     }
 
     // ========================================
@@ -556,7 +506,7 @@ class ToriAct2 {
             internal: '[Visual: Everything glitching violently. Tori fragmenting. Tether dropping rapidly.]',
             next: () => this.beat7_tether(),
             delay: 3000
-        });
+        }, 'beat7');
     }
 
     beat7_tether() {
@@ -570,7 +520,7 @@ class ToriAct2 {
             internal: '[The crisis is draining her. Hold on!]',
             next: () => this.beat7_tori(),
             delay: 2000
-        });
+        }, 'beat7_tether');
     }
 
     beat7_tori() {
@@ -579,7 +529,7 @@ class ToriAct2 {
             dialogue: '"It\'s too dark... I can\'t hold on..."',
             next: () => this.beat7_despairAttempt(),
             delay: 3000
-        });
+        }, 'beat7_tori');
     }
 
     beat7_despairAttempt() {
@@ -599,7 +549,7 @@ class ToriAct2 {
                 internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
                 next: () => this.beat7_choiceLocked(),
                 delay: 4000
-            });
+            }, 'beat7_despairAttempt_locked');
         } else {
             // MEDIUM/HIGH TETHER: All options available
             this.game.displayScene({
@@ -613,7 +563,7 @@ class ToriAct2 {
                 internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
                 next: () => this.beat7_choice(),
                 delay: 4000
-            });
+            }, 'beat7_despairAttempt_normal');
         }
     }
 
@@ -639,7 +589,7 @@ class ToriAct2 {
                     this.beat7_silent();
                 }
             }
-        });
+        }, 'beat7_choiceLocked');
     }
 
     beat7_choice() {
@@ -664,7 +614,7 @@ class ToriAct2 {
                     this.beat7_silent();
                 }
             }
-        });
+        }, 'beat7_choice');
     }
 
     beat7_fight() {
@@ -678,7 +628,7 @@ class ToriAct2 {
             internal: '[COHERENCE BOOST: +10%]\n[She fought back! Despair recoils.]',
             next: () => this.beat7_echoesReact(),
             delay: 3000
-        });
+        }, 'beat7_fight');
     }
 
     beat7_accept() {
@@ -692,7 +642,7 @@ class ToriAct2 {
             internal: '[COHERENCE DROP: -10%]\n[Despair grins. Victory.]',
             next: () => this.beat7_echoesReact(),
             delay: 3000
-        });
+        }, 'beat7_accept');
     }
 
     beat7_silent() {
@@ -702,7 +652,7 @@ class ToriAct2 {
             internal: '[Just holding on. Just surviving. Tether holds steady.]',
             next: () => this.beat7_echoesReact(),
             delay: 3000
-        });
+        }, 'beat7_silent');
     }
 
     beat7_echoesReact() {
@@ -720,7 +670,7 @@ class ToriAct2 {
                 internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
                 next: () => this.route.act3.start(),
                 delay: 5000
-            });
+            }, 'beat7_echoesReact_despair');
         } else if (tetherState === 'balanced') {
             this.game.displayScene({
                 character: 'Echoes',
@@ -733,7 +683,7 @@ class ToriAct2 {
                 internal: '[Whiteout. The battle continues. Act 3 begins...]',
                 next: () => this.route.act3.start(),
                 delay: 5000
-            });
+            }, 'beat7_echoesReact_balanced');
         } else {
             this.game.displayScene({
                 character: 'Echoes',
@@ -746,7 +696,7 @@ class ToriAct2 {
                 internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
                 next: () => this.route.act3.start(),
                 delay: 5000
-            });
+            }, 'beat7_echoesReact_strong');
         }
     }
 }

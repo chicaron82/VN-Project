@@ -1,6 +1,7 @@
 // ========================================
-// SAVE MANAGER FOR VERSION 848
+// SAVE MANAGER FOR VERSION 848 (REVISED)
 // Browser localStorage save/load system
+// WITH SCENE JUMPING FUNCTIONALITY
 // ========================================
 
 class SaveManager {
@@ -43,60 +44,30 @@ class SaveManager {
             timestamp: new Date().toISOString(),
             routeName: route.constructor.name === 'RonnieRoute' ? 'ronnie' : 'tori',
             
-            // Scene tracking
-            currentSceneId: this.getCurrentSceneId(),
+            // Get the current scene ID from the game engine
+            currentSceneId: this.game.currentSceneId,
             
-            // Route-specific data
+            // Get global game state (flags, etc.)
+            gameState: this.game.gameState || { flags: {} },
+            
+            // Get all route-specific data from the route's getState() method
             routeData: {}
         };
         
-        // Tori Route specific data
-        if (route.constructor.name === 'ToriRoute') {
+        if (route.getState && typeof route.getState === 'function') {
+            saveData.routeData = route.getState();
+        } else if (route.constructor.name === 'RonnieRoute') {
+            // Fallback for Ronnie's route if it doesn't have getState()
             saveData.routeData = {
-                tetherStrength: route.tetherStrength || 100,
-                trueRoutePoints: route.trueRoutePoints || 0,
-                badRoutePoints: route.badRoutePoints || 0,
-                digitalForeverPoints: route.digitalForeverPoints || 0,
-                collectedNotes: this.getCollectedNotes(route),
-                coherenceLevel: route.coherenceLevel || 'stable',
-                hasUsedHoldOn: route.hasUsedHoldOn || false
-            };
-        }
-        
-        // Ronnie Route specific data
-        if (route.constructor.name === 'RonnieRoute') {
-            saveData.routeData = {
-                progressMarkers: route.progressMarkers || []
+                flags: this.game.gameState.flags // Ronnie's state is just flags
             };
         }
         
         return saveData;
-
-        saveData.gameState = this.game.gameState || {};  // Deep copy if needed: JSON.parse(JSON.stringify(...))
-    }
-    
-    getCurrentSceneId() {
-        // Try to extract scene ID from current scene
-        if (this.game.currentScene && this.game.currentScene.sceneId) {
-            return this.game.currentScene.sceneId;
-        }
-        
-        // Fallback: try to identify from route state
-        return 'unknown_scene';
-    }
-    
-    getCollectedNotes(route) {
-        if (!route.collectedNotes) return [];
-        
-        const collected = [];
-        for (const type in route.collectedNotes) {
-            collected.push(...route.collectedNotes[type]);
-        }
-        return collected;
     }
     
     autoSave() {
-        if (!this.autoSaveEnabled) return;
+        if (!this.autoSaveEnabled || !this.game.currentRoute) return;
         this.saveGame(null, true);
     }
     
@@ -140,9 +111,9 @@ class SaveManager {
         console.log('Restoring game state:', saveData);
         
         // Close any open UI screens
-        const saveLoadScreen = document.getElementById('save-load-screen');
-        if (saveLoadScreen) {
-            saveLoadScreen.classList.remove('active');
+        if (this.game.saveLoadUI) {
+            this.game.saveLoadUI.closeSaveLoadScreen();
+            this.game.saveLoadUI.hidePauseMenu();
         }
         
         // Hide menus, show game view
@@ -150,18 +121,11 @@ class SaveManager {
         const routeSelect = document.getElementById('route-select');
         if (routeSelect) routeSelect.style.display = 'none';
         
-        // Clear inline styles on pause menu so CSS classes work properly
-        const pauseMenu = document.getElementById('pause-menu');
-        if (pauseMenu) {
-            pauseMenu.style.display = '';
-            pauseMenu.classList.remove('active');
-        }
-        
         this.game.gameView.style.display = 'flex';
         this.game.gameView.style.opacity = '1';
         this.game.dialogueBox.style.display = 'block';
         
-        // Start the appropriate route
+        // 1. Create the new route instance
         if (saveData.routeName === 'ronnie') {
             this.game.currentRoute = new RonnieRoute(this.game);
         } else if (saveData.routeName === 'tori') {
@@ -172,32 +136,88 @@ class SaveManager {
             this.game.currentRoute = new ToriRoute(this.game);
         }
         
-        // Restore route-specific state
-        if (saveData.routeData) {
-            this.restoreRouteData(saveData.routeData);
+        const route = this.game.currentRoute;
+
+        // 2. Restore global game state
+        this.game.gameState = saveData.gameState || { flags: {} };
+
+        // 3. Restore route-specific state
+        if (route.restoreState && typeof route.restoreState === 'function') {
+            route.restoreState(saveData.routeData);
+        } else {
+            // Fallback for routes without restoreState
+            this.restoreRouteDataLegacy(saveData.routeData);
+        }
+
+        // 4. JUMP TO THE SAVED SCENE
+        if (saveData.currentSceneId) {
+            this.jumpToScene(route, saveData.currentSceneId);
+        } else {
+            // Fallback: No scene ID saved, start route from beginning
+            console.warn('No scene ID in save data. Starting route from beginning.');
+            if (route.start && typeof route.start === 'function') {
+                route.start();
+            }
         }
         
-        // TODO: Jump to specific scene based on saveData.currentSceneId
-        // For now, routes will start from beginning
-        // Full scene jumping requires scene ID tracking system
-        
         this.showSaveIndicator('Game Loaded');
-        
-        this.game.gameState = saveData.gameState || { flags: {} };
     }
     
-    restoreRouteData(routeData) {
+    jumpToScene(route, sceneId) {
+        console.log(`Attempting to jump to scene: ${sceneId}`);
+        
+        let sceneFunction = null;
+        let context = route;
+        
+        // Search for the scene function in the route hierarchy
+        if (route[sceneId]) {
+            // Check root route class (e.g., RonnieRoute, or ToriRoute methods)
+            sceneFunction = route[sceneId];
+            context = route;
+        } else if (route.act1 && route.act1[sceneId]) {
+            // Check Act 1 (e.g., ToriRoute.act1)
+            sceneFunction = route.act1[sceneId];
+            context = route.act1;
+        } else if (route.act2 && route.act2[sceneId]) {
+            // Check Act 2
+            sceneFunction = route.act2[sceneId];
+            context = route.act2;
+        } else if (route.act3 && route.act3[sceneId]) {
+            // Check Act 3
+            sceneFunction = route.act3[sceneId];
+            context = route.act3;
+        } else if (route.endings && route.endings[sceneId]) {
+            // Check Endings
+            sceneFunction = route.endings[sceneId];
+            context = route.endings;
+        }
+
+        if (sceneFunction && typeof sceneFunction === 'function') {
+            // We found the scene! Jump to it.
+            console.log(`Scene found! Jumping to: ${sceneId}`);
+            sceneFunction.call(context);
+        } else {
+            // Fallback: Scene not found, start from beginning
+            console.warn(`Scene ID "${sceneId}" not found. Starting route from beginning.`);
+            if (route.start && typeof route.start === 'function') {
+                route.start();
+            }
+        }
+    }
+    
+    // Legacy fallback for routes without restoreState method
+    restoreRouteDataLegacy(routeData) {
         const route = this.game.currentRoute;
         
-        if (!route) return;
+        if (!route || !routeData) return;
         
         // Restore Tori Route data
         if (route.constructor.name === 'ToriRoute') {
-            if (routeData.tetherStrength !== undefined) {
-                route.tetherStrength = routeData.tetherStrength;
-                // Update the tether UI directly
+            if (routeData.tetherLevel !== undefined) {
+                route.tetherLevel = routeData.tetherLevel;
+                // Update the tether UI
                 if (route.updateTether) {
-                    route.updateTether(routeData.tetherStrength);
+                    route.updateTether(0); // Just refresh display
                 }
             }
             if (routeData.trueRoutePoints !== undefined) {
@@ -210,8 +230,6 @@ class SaveManager {
                 route.digitalForeverPoints = routeData.digitalForeverPoints;
             }
             if (routeData.collectedNotes) {
-                // Restore collected notes
-                // This requires parsing the note IDs back into the collection structure
                 this.restoreCollectedNotes(route, routeData.collectedNotes);
             }
         }
@@ -225,12 +243,17 @@ class SaveManager {
     }
     
     restoreCollectedNotes(route, noteIds) {
-        if (!route.collectedNotes) return;
+        if (!route.collectedNotes || !Array.isArray(noteIds)) return;
         
         noteIds.forEach(noteId => {
             const note = route.allNotes[noteId];
             if (note) {
-                route.collectedNotes[note.type].push(noteId);
+                if (!route.collectedNotes[note.type]) {
+                    route.collectedNotes[note.type] = [];
+                }
+                if (!route.collectedNotes[note.type].includes(noteId)) {
+                    route.collectedNotes[note.type].push(noteId);
+                }
             }
         });
         

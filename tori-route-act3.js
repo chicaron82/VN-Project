@@ -25,7 +25,7 @@ class ToriAct3 {
             internal: '[Visual: Pixel park. Cherry blossoms. Everything soft-focused and beautiful.]',
             next: () => this.beat1_iceCreamStand(),
             delay: 3000
-        });
+        }, 'beat1');
     }
 
     beat1_iceCreamStand() {
@@ -34,7 +34,7 @@ class ToriAct3 {
             dialogue: '"Ice cream?"',
             next: () => this.beat1_toriAnswer(),
             delay: 2000
-        });
+        }, 'beat1_iceCreamStand');
     }
 
     beat1_toriAnswer() {
@@ -44,7 +44,7 @@ class ToriAct3 {
             internal: '[Wait. That\'s wrong. I hate Tiger Tail.]',
             next: () => this.beat1_horror(),
             delay: 2500
-        });
+        }, 'beat1_toriAnswer');
     }
 
     beat1_horror() {
@@ -53,7 +53,7 @@ class ToriAct3 {
             dialogue: '"I didn\'t say that. My mouth moved but those weren\'t my words."',
             next: () => this.beat1_echoes(),
             delay: 3000
-        });
+        }, 'beat1_horror');
     }
 
     beat1_echoes() {
@@ -67,7 +67,7 @@ class ToriAct3 {
             },
             next: () => this.beat1_bench(),
             delay: 4000
-        });
+        }, 'beat1_echoes');
     }
 
     beat1_bench() {
@@ -77,7 +77,7 @@ class ToriAct3 {
             internal: '[She notices the pattern. The EXACT same three petals. The EXACT same timing.]',
             next: () => this.beat1_toriRealize(),
             delay: 3500
-        });
+        }, 'beat1_bench');
     }
 
     beat1_toriRealize() {
@@ -86,7 +86,7 @@ class ToriAct3 {
             dialogue: '"This isn\'t a memory. It\'s a construct. And I\'m caught inside it."',
             next: () => this.beat1_choice(),
             delay: 3000
-        });
+        }, 'beat1_toriRealize');
     }
 
     beat1_choice() {
@@ -110,7 +110,7 @@ class ToriAct3 {
                     this.beat1_panic();
                 }
             }
-        });
+        }, 'beat1_choice');
     }
 
     beat1_truth() {
@@ -119,7 +119,7 @@ class ToriAct3 {
             dialogue: '"Ronnie... this isn\'t real. The petals are looping. I can feel it."',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_truth');
     }
 
     beat1_quiet() {
@@ -128,7 +128,7 @@ class ToriAct3 {
             dialogue: '"Maybe I\'m just paranoid. It feels so good here. Why ruin it?"',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_quiet');
     }
 
     beat1_panic() {
@@ -137,7 +137,7 @@ class ToriAct3 {
             dialogue: '"GET ME OUT! This isn\'t real! None of this is REAL!"',
             next: () => this.beat2(),
             delay: 3000
-        });
+        }, 'beat1_panic');
     }
 
     // ========================================
@@ -152,7 +152,7 @@ class ToriAct3 {
             internal: '[Visual: The same scene from Act 2. But corrupted. Colors bleeding.]',
             next: () => this.beat2_argument(),
             delay: 3000
-        });
+        }, 'beat2');
     }
 
     beat2_argument() {
@@ -161,7 +161,7 @@ class ToriAct3 {
             dialogue: '"You burned the garlic bread again."',
             next: () => this.beat2_toriResponse(),
             delay: 2500
-        });
+        }, 'beat2_argument');
     }
 
     beat2_toriResponse() {
@@ -171,7 +171,7 @@ class ToriAct3 {
             internal: '[NO. That\'s not what I said. I said "shut up" as a JOKE.]',
             next: () => this.beat2_horror(),
             delay: 3000
-        });
+        }, 'beat2_toriResponse');
     }
 
     beat2_horror() {
@@ -180,7 +180,7 @@ class ToriAct3 {
             dialogue: '"The memory is WRONG. That\'s not how it happened. Why is it playing wrong?!"',
             next: () => this.beat2_echoes(),
             delay: 3000
-        });
+        }, 'beat2_horror');
     }
 
     beat2_echoes() {
@@ -194,7 +194,7 @@ class ToriAct3 {
             },
             next: () => this.beat2_ronnieNotice(),
             delay: 4000
-        });
+        }, 'beat2_echoes');
     }
 
     beat2_ronnieNotice() {
@@ -203,7 +203,7 @@ class ToriAct3 {
             dialogue: '"Tori? You okay? You just... froze."',
             next: () => this.beat2_choice(),
             delay: 2500
-        });
+        }, 'beat2_ronnieNotice');
     }
 
     beat2_choice() {
@@ -227,7 +227,7 @@ class ToriAct3 {
                     this.beat2_deflect();
                 }
             }
-        });
+        }, 'beat2_choice');
     }
 
     beat2_truth() {
@@ -236,7 +236,7 @@ class ToriAct3 {
             dialogue: '"That memory... it didn\'t play right. The words were wrong."',
             next: () => this.beat3(),
             delay: 3000
-        });
+        }, 'beat2_truth');
     }
 
     beat2_lie() {
@@ -245,7 +245,7 @@ class ToriAct3 {
             dialogue: '"I\'m fine. Just a glitch. Keep going."',
             next: () => this.beat3(),
             delay: 3000
-        });
+        }, 'beat2_lie');
     }
 
     beat2_deflect() {
@@ -254,7 +254,7 @@ class ToriAct3 {
             dialogue: '"Let\'s do something else. Anything else."',
             next: () => this.beat3(),
             delay: 3000
-        });
+        }, 'beat2_deflect');
     }
 
     // ========================================
@@ -269,7 +269,7 @@ class ToriAct3 {
             internal: '[Visual: System UI elements appearing where they shouldn\'t. Debug console bleeding through.]',
             next: () => this.beat3_firstBox(),
             delay: 3000
-        });
+        }, 'beat3');
     }
 
     beat3_firstBox() {
@@ -279,7 +279,7 @@ class ToriAct3 {
             internal: '[She SEES it. Not as UI. As part of her reality.]',
             next: () => this.beat3_toriReact(),
             delay: 2000
-        });
+        }, 'beat3_firstBox');
     }
 
     beat3_toriReact() {
@@ -288,7 +288,7 @@ class ToriAct3 {
             dialogue: '"What is that? Why am I seeing system messages?"',
             next: () => this.beat3_moreBoxes(),
             delay: 2500
-        });
+        }, 'beat3_toriReact');
     }
 
     beat3_moreBoxes() {
@@ -298,7 +298,7 @@ class ToriAct3 {
             internal: '[The boxes multiply. Fill her vision. She can barely see Ronnie anymore.]',
             next: () => this.beat3_horror(),
             delay: 3000
-        });
+        }, 'beat3_moreBoxes');
     }
 
     beat3_horror() {
@@ -307,7 +307,7 @@ class ToriAct3 {
             dialogue: '"I\'m seeing the backend. The debug console. Because I\'m not separate from the system. I AM the system."',
             next: () => this.beat3_echoes(),
             delay: 3500
-        });
+        }, 'beat3_horror');
     }
 
     beat3_echoes() {
@@ -321,7 +321,7 @@ class ToriAct3 {
             },
             next: () => this.beat3_truthBox(),
             delay: 4000
-        });
+        }, 'beat3_echoes');
     }
 
     beat3_truthBox() {
@@ -331,7 +331,7 @@ class ToriAct3 {
             internal: '[That\'s not a system message. That\'s a TRUTH. Hard-coded. A rule.]',
             next: () => this.beat3_choice(),
             delay: 3000
-        });
+        }, 'beat3_truthBox');
     }
 
     beat3_choice() {
@@ -355,7 +355,7 @@ class ToriAct3 {
                     this.beat3_question();
                 }
             }
-        });
+        }, 'beat3_choice');
     }
 
     beat3_fight() {
@@ -364,7 +364,7 @@ class ToriAct3 {
             dialogue: '"No. I\'m MORE than code. I have to be."',
             next: () => this.beat4(),
             delay: 3000
-        });
+        }, 'beat3_fight');
     }
 
     beat3_accept() {
@@ -373,7 +373,7 @@ class ToriAct3 {
             dialogue: '"Maybe I\'m just... data. And data ends."',
             next: () => this.beat4(),
             delay: 3000
-        });
+        }, 'beat3_accept');
     }
 
     beat3_question() {
@@ -382,7 +382,7 @@ class ToriAct3 {
             dialogue: '"What even IS a soul? Maybe being code doesn\'t mean I\'m not real."',
             next: () => this.beat4(),
             delay: 3000
-        });
+        }, 'beat3_question');
     }
 
     // ========================================
@@ -397,7 +397,7 @@ class ToriAct3 {
             internal: '[Visual: Multiple overlapping Toris. All her. All different. All pulling different directions.]',
             next: () => this.beat4_fragmentation(),
             delay: 3000
-        });
+        }, 'beat4');
     }
 
     beat4_fragmentation() {
@@ -407,7 +407,7 @@ class ToriAct3 {
             internal: '[She feels herself stretching. Tearing. Pixels scattering. Then snapping back together WRONG.]',
             next: () => this.beat4_toriPrime(),
             delay: 3500
-        });
+        }, 'beat4_fragmentation');
     }
 
     beat4_toriPrime() {
@@ -416,7 +416,7 @@ class ToriAct3 {
             dialogue: '"Which thoughts are mine? Which version is the real me? Am I all of them? None of them?"',
             next: () => this.beat4_systemOverlay(),
             delay: 3000
-        });
+        }, 'beat4_toriPrime');
     }
 
     beat4_systemOverlay() {
@@ -426,7 +426,7 @@ class ToriAct3 {
             internal: '[Text overlays through her. Invasive. Part of her now.]',
             next: () => this.beat4_instances(),
             delay: 3000
-        });
+        }, 'beat4_systemOverlay');
     }
 
     beat4_instances() {
@@ -436,7 +436,7 @@ class ToriAct3 {
             internal: '[Three Toris. All her. All different. All pulling.]',
             next: () => this.beat4_scream(),
             delay: 4000
-        });
+        }, 'beat4_instances');
     }
 
     beat4_scream() {
@@ -445,7 +445,7 @@ class ToriAct3 {
             dialogue: '"Stop! STOP! You\'re all me but you\'re all WRONG!"',
             next: () => this.beat4_collapse(),
             delay: 3000
-        });
+        }, 'beat4_scream');
     }
 
     beat4_collapse() {
@@ -454,7 +454,7 @@ class ToriAct3 {
             dialogue: 'All three collapse into one. She\'s on her knees, clutching her head, trying to stay singular.',
             next: () => this.beat4_revelation(),
             delay: 3000
-        });
+        }, 'beat4_collapse');
     }
 
     beat4_revelation() {
@@ -463,7 +463,7 @@ class ToriAct3 {
             dialogue: '"I don\'t know which thoughts are mine anymore!"',
             next: () => this.beat4_choice(),
             delay: 3000
-        });
+        }, 'beat4_revelation');
     }
 
     beat4_choice() {
@@ -487,7 +487,7 @@ class ToriAct3 {
                     this.beat4_fight();
                 }
             }
-        });
+        }, 'beat4_choice');
     }
 
     beat4_upload() {
@@ -496,7 +496,7 @@ class ToriAct3 {
             dialogue: '"Instance 1 is right. Upload. Find stronger hardware. Survive."',
             next: () => this.beat5(),
             delay: 3000
-        });
+        }, 'beat4_upload');
     }
 
     beat4_letgo() {
@@ -505,7 +505,7 @@ class ToriAct3 {
             dialogue: '"Instance 2 is right. It\'s time. Let the code dissolve."',
             next: () => this.beat5(),
             delay: 3000
-        });
+        }, 'beat4_letgo');
     }
 
     beat4_fight() {
@@ -514,7 +514,7 @@ class ToriAct3 {
             dialogue: '"NO. Neither of you are right. I\'m not giving up and I\'m not giving in. There has to be another way."',
             next: () => this.beat5(),
             delay: 3000
-        });
+        }, 'beat4_fight');
     }
 
     // ========================================
@@ -529,7 +529,7 @@ class ToriAct3 {
             internal: '[She feels it. Through the device. A HEARTBEAT.]',
             next: () => this.beat5_feeling(),
             delay: 3000
-        });
+        }, 'beat5');
     }
 
     beat5_feeling() {
@@ -538,7 +538,7 @@ class ToriAct3 {
             dialogue: '"Wait... that feeling... warmth... the PULL..."',
             next: () => this.beat5_realization(),
             delay: 2500
-        });
+        }, 'beat5_feeling');
     }
 
     beat5_realization() {
@@ -550,7 +550,7 @@ class ToriAct3 {
             dialogue: '"The device isn\'t a PRISON. It\'s a BRIDGE. I\'m connected to my body. The heartbeat I\'m feeling is MINE."',
             next: () => this.beat5_echoes(),
             delay: 4000
-        });
+        }, 'beat5_realization');
     }
 
     beat5_echoes() {
@@ -564,7 +564,7 @@ class ToriAct3 {
             },
             next: () => this.beat5_understanding(),
             delay: 4000
-        });
+        }, 'beat5_echoes');
     }
 
     beat5_understanding() {
@@ -573,7 +573,7 @@ class ToriAct3 {
             dialogue: '"If the device is the bridge... then PROXIMITY matters. I need to be near my body. Close enough for the signal to hold."',
             next: () => this.beat5_despairInterject(),
             delay: 3500
-        });
+        }, 'beat5_understanding');
     }
 
     beat5_despairInterject() {
@@ -582,7 +582,7 @@ class ToriAct3 {
             dialogue: '"You\'re too late. By the time he understands, you\'ll be gone."',
             next: () => this.beat5_hope(),
             delay: 3000
-        });
+        }, 'beat5_despairInterject');
     }
 
     beat5_hope() {
@@ -591,7 +591,7 @@ class ToriAct3 {
             dialogue: '"Unless... he\'s already on his way."',
             next: () => this.beat6(),
             delay: 2500
-        });
+        }, 'beat5_hope');
     }
 
     // ========================================
@@ -606,7 +606,7 @@ class ToriAct3 {
             internal: '[Visual: Digital space shaking. Momentum. Direction. He\'s driving.]',
             next: () => this.beat6_feeling(),
             delay: 3000
-        });
+        }, 'beat6');
     }
 
     beat6_feeling() {
@@ -615,7 +615,7 @@ class ToriAct3 {
             dialogue: '"He\'s moving. FAST. He figured it out. He\'s coming."',
             next: () => this.beat6_battery(),
             delay: 3000
-        });
+        }, 'beat6_feeling');
     }
 
     beat6_battery() {
@@ -624,7 +624,7 @@ class ToriAct3 {
             dialogue: '[Battery: 5%]\n[Warning: Critical power level]\n[Shutdown imminent]',
             next: () => this.beat6_race(),
             delay: 2000
-        });
+        }, 'beat6_battery');
     }
 
     beat6_race() {
@@ -633,7 +633,7 @@ class ToriAct3 {
             dialogue: '"It\'s a race. Will he reach the hospital before the battery dies? Before I fragment completely?"',
             next: () => this.beat6_echoes(),
             delay: 3500
-        });
+        }, 'beat6_race');
     }
 
     beat6_echoes() {
@@ -647,7 +647,7 @@ class ToriAct3 {
             },
             next: () => this.beat6_feeling2(),
             delay: 4000
-        });
+        }, 'beat6_echoes');
     }
 
     beat6_feeling2() {
@@ -656,7 +656,7 @@ class ToriAct3 {
             dialogue: '"I can feel him. The way he\'s driving. The turns. The speed. Is he reckless? Steady? Emotional?"',
             next: () => this.beat6_choice(),
             delay: 3500
-        });
+        }, 'beat6_feeling2');
     }
 
     beat6_choice() {
@@ -680,7 +680,7 @@ class ToriAct3 {
                     this.beat6_emotional();
                 }
             }
-        });
+        }, 'beat6_choice');
     }
 
     beat6_reckless() {
@@ -689,7 +689,7 @@ class ToriAct3 {
             dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWNâ€”"',
             next: () => this.beat6_arrival(),
             delay: 3000
-        });
+        }, 'beat6_reckless');
     }
 
     beat6_steady() {
@@ -698,7 +698,7 @@ class ToriAct3 {
             dialogue: '"He\'s steady. Focused. Every turn calculated. That\'s my husband. Always thinking."',
             next: () => this.beat6_arrival(),
             delay: 3000
-        });
+        }, 'beat6_steady');
     }
 
     beat6_emotional() {
@@ -707,7 +707,7 @@ class ToriAct3 {
             dialogue: '"He\'s crying. I can feel it in the way the device is shaking. Baby, it\'s okay. Just get here."',
             next: () => this.beat6_arrival(),
             delay: 3000
-        });
+        }, 'beat6_emotional');
     }
 
     beat6_arrival() {
@@ -717,7 +717,7 @@ class ToriAct3 {
             internal: '[Battery: 3%]\n[She can feel the PULL now. Stronger than ever. Her body is CLOSE.]',
             next: () => this.beat6_realization(),
             delay: 3500
-        });
+        }, 'beat6_arrival');
     }
 
     // ========================================
@@ -732,7 +732,7 @@ class ToriAct3 {
             internal: '[A new thought. She\'s been reactive this whole time. What if she can be ACTIVE?]',
             next: () => this.beat6_testing(),
             delay: 3500
-        });
+        }, 'beat6_realization');
     }
 
     beat6_testing() {
@@ -742,7 +742,7 @@ class ToriAct3 {
             internal: '[She focuses. Reaches out toward the physical device. Toward her BODY.]',
             next: () => this.beat6_buzzControl(),
             delay: 3500
-        });
+        }, 'beat6_testing');
     }
 
     beat6_buzzControl() {
@@ -753,7 +753,7 @@ class ToriAct3 {
             sfx: 'single_buzz',
             next: () => this.beat6_toriTriumph(),
             delay: 2500
-        });
+        }, 'beat6_buzzControl');
     }
 
     beat6_toriTriumph() {
@@ -763,7 +763,7 @@ class ToriAct3 {
             internal: '[This is it. This is how she guides him. Not through words. Through the DEVICE itself.]',
             next: () => this.beat6_echoesReact(),
             delay: 3000
-        });
+        }, 'beat6_toriTriumph');
     }
 
     beat6_echoesReact() {
@@ -776,7 +776,7 @@ class ToriAct3 {
             internal: '[Shock. Awe. They never thought of this.]',
             next: () => this.beat6_echo2React(),
             delay: 3500
-        });
+        }, 'beat6_echoesReact');
     }
 
     beat6_echo2React() {
@@ -788,7 +788,7 @@ class ToriAct3 {
             },
             next: () => this.beat6_despairQuiet(),
             delay: 4000
-        });
+        }, 'beat6_echo2React');
     }
 
     beat6_despairQuiet() {
@@ -801,7 +801,7 @@ class ToriAct3 {
             internal: '[For once, Despair has no bitter words. Just... watching.]',
             next: () => this.beat6_synchronizing(),
             delay: 3000
-        });
+        }, 'beat6_despairQuiet');
     }
 
     beat6_synchronizing() {
@@ -811,7 +811,7 @@ class ToriAct3 {
             internal: '[She synchronizes. Heartbeat. Device. Body. All connected.]',
             next: () => this.beat6_rhythmicBuzz(),
             delay: 4000
-        });
+        }, 'beat6_synchronizing');
     }
 
     beat6_rhythmicBuzz() {
@@ -822,7 +822,7 @@ class ToriAct3 {
             sfx: 'rhythmic_buzz',
             next: () => this.beat6_ronnieNotices(),
             delay: 3500
-        });
+        }, 'beat6_rhythmicBuzz');
     }
 
     beat6_ronnieNotices() {
@@ -832,7 +832,7 @@ class ToriAct3 {
             internal: '[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]',
             next: () => this.beat6_toriPushing(),
             delay: 4000
-        });
+        }, 'beat6_ronnieNotices');
     }
 
     beat6_toriPushing() {
@@ -842,7 +842,7 @@ class ToriAct3 {
             internal: '[She pushes harder. Makes the buzz STRONGER. More insistent.]',
             next: () => this.beat6_guidance(),
             delay: 3500
-        });
+        }, 'beat6_toriPushing');
     }
 
     beat6_guidance() {
@@ -852,7 +852,7 @@ class ToriAct3 {
             internal: '[The device is the bridge. She\'s standing on both sides. Showing him the way home.]',
             next: () => this.beat6_echoesHope(),
             delay: 4000
-        });
+        }, 'beat6_guidance');
     }
 
     beat6_echoesHope() {
@@ -864,7 +864,7 @@ class ToriAct3 {
             },
             next: () => this.beat6_echo2Hope(),
             delay: 3000
-        });
+        }, 'beat6_echoesHope');
     }
 
     beat6_echo2Hope() {
@@ -876,7 +876,7 @@ class ToriAct3 {
             },
             next: () => this.beat6_despairShift(),
             delay: 4000
-        });
+        }, 'beat6_echo2Hope');
     }
 
     beat6_despairShift() {
@@ -889,7 +889,7 @@ class ToriAct3 {
             internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
             next: () => this.beat6_pull(),
             delay: 4000
-        });
+        }, 'beat6_despairShift');
     }
 
     beat6_pull() {
@@ -899,7 +899,7 @@ class ToriAct3 {
             internal: '[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]',
             next: () => this.beat6_final(),
             delay: 4000
-        });
+        }, 'beat6_pull');
     }
 
     beat6_final() {
@@ -908,7 +908,7 @@ class ToriAct3 {
             dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',
             next: () => this.beat6_transition(),
             delay: 3000
-        });
+        }, 'beat6_final');
     }
 
     beat6_transition() {
@@ -921,6 +921,6 @@ class ToriAct3 {
             internal: '[Everything converges. Body. Device. Code. Soul. The choice was made. Now... the result.]',
             next: () => this.route.endings.criticalChoice(),
             delay: 5000
-        });
+        }, 'beat6_transition');
     }
 }

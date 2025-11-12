@@ -36,6 +36,7 @@ class GameEngine {
         // State
         this.currentRoute = null;
         this.currentScene = null;
+        this.currentSceneId = null;  // Track current scene ID for save/load
         this.typewriterActive = false;
         this.typewriterInterval = null;
         this.typewriterCallback = null;
@@ -253,13 +254,20 @@ class GameEngine {
             
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
+                // Start Ronnie's route (will be changed to use start() method)
+                if (this.currentRoute.start) {
+                    this.currentRoute.start();
+                }
             } else if (routeName === 'tori') {
                 // Show Tori-specific UI
                 this.tetherUI.style.display = 'block';
                 this.echoDisplay.style.display = 'block';
                 this.notesButton.style.display = 'block';
                 this.currentRoute = new ToriRoute(this);
-                this.currentRoute.start(); // Start Tori's route (Act 1)
+                // Start Tori's route (Act 1)
+                if (this.currentRoute.start) {
+                    this.currentRoute.start();
+                }
             }
             
             // Show ESC hint after game starts
@@ -276,8 +284,13 @@ class GameEngine {
     // SCENE DISPLAY
     // ========================================
     
-    displayScene(sceneData) {
+    displayScene(sceneData, sceneId = null) {
         this.currentScene = sceneData;
+        
+        // Store the current scene's ID for save/load
+        if (sceneId) {
+            this.currentSceneId = sceneId;
+        }
         
         // Update background
         if (sceneData.background) {
@@ -456,25 +469,97 @@ class GameEngine {
     // ========================================
     
     showCredits() {
-        alert(`VERSION 848 - CREDITS
+        console.log('ShowCredits: Starting flash & hold sequence...');
+        
+        // Hide main menu if showing
+        const mainMenu = document.getElementById('main-menu');
+        if (mainMenu) {
+            mainMenu.classList.remove('active');
+            mainMenu.style.display = 'none';
+        }
+        
+        // Show credits screen
+        const creditsScreen = document.getElementById('credits-screen');
+        if (creditsScreen) {
+            creditsScreen.classList.add('active');
+            
+            // Reset to first screen
+            this.currentCreditIndex = 0;
+            this.totalCredits = 13; // Total number of credit screens
+            
+            // Show first screen
+            this.showCreditScreen(0);
+            
+            // Change NEXT button to BACK TO MENU on last screen
+            this.updateNextButton();
+        } else {
+            console.error('ShowCredits: Credits screen element not found!');
+        }
+    }
 
-Built by The Zee Collective:
-- Z (Technical) - Logic & Systems
-- CZ (Emotional) - Heart & Connection  
-- ZR (Iteration) - Refinement & Shipping
+    showCreditScreen(index) {
+        console.log(`Showing credit screen ${index}`);
+        
+        // Hide all screens
+        const allScreens = document.querySelectorAll('.credit-screen');
+        allScreens.forEach(screen => {
+            screen.classList.remove('active');
+            screen.classList.add('fade-out');
+        });
+        
+        // Show target screen after brief delay for fade
+        setTimeout(() => {
+            allScreens.forEach(screen => screen.classList.remove('fade-out'));
+            
+            const targetScreen = document.getElementById(`credit-${index}`);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+        }, 100);
+        
+        // Update button text
+        this.updateNextButton();
+    }
 
-With:
-- Tori (Creative Riffing)
-- Grok (Prototyping)
-- Perplexity (QA - 9.8/10)
+    updateNextButton() {
+        const nextButton = document.getElementById('next-credits');
+        if (nextButton) {
+            if (this.currentCreditIndex >= this.totalCredits - 1) {
+                nextButton.textContent = 'BACK TO MENU';
+            } else {
+                nextButton.textContent = 'NEXT >';
+            }
+        }
+    }
 
-Coordinated by: Aaron
-For: Tori
+    nextCredit() {
+        console.log(`NextCredit: Current index ${this.currentCreditIndex}`);
+        
+        if (this.currentCreditIndex >= this.totalCredits - 1) {
+            // Last screen - go back to menu
+            this.closeCredits();
+        } else {
+            // Advance to next screen
+            this.currentCreditIndex++;
+            this.showCreditScreen(this.currentCreditIndex);
+        }
+    }
 
-Built in stolen moments.
-Always. Always. Always.
-
-ðŸ’šðŸ”¥ðŸ’€`);
+    closeCredits() {
+        console.log('CloseCredits: Closing...');
+        const creditsScreen = document.getElementById('credits-screen');
+        if (creditsScreen) {
+            creditsScreen.classList.remove('active');
+        }
+        
+        // Reset index
+        this.currentCreditIndex = 0;
+        
+        // Return to main menu
+        this.mainMenu.style.display = 'flex';
+        setTimeout(() => {
+            this.mainMenu.style.opacity = '1';
+        }, 100);
     }
     
     // ========================================
