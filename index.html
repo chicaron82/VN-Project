@@ -102,7 +102,8 @@
             opacity: 0.8;
         }
 
-        .uv7-logo-svg {
+        /* Static Logo (Fallback) */
+        .uv7-logo-static {
             width: 400px;
             height: auto;
             max-width: 80vw;
@@ -111,6 +112,51 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
+        }
+
+        /* Animated Video Logo */
+        .uv7-logo-video {
+            width: 400px;
+            height: auto;
+            max-width: 80vw;
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+            display: none; /* Hidden initially */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Skip Button */
+        .uv7-skip-btn {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(220, 210, 180, 0.5);
+            color: #dcd2b4;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .uv7-skip-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(220, 210, 180, 0.8);
+            transform: translateX(5px);
+        }
+
+        .skip-arrow {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .uv7-skip-btn:hover .skip-arrow {
+            transform: translateX(5px);
         }
 
         @keyframes splashFadeIn {
@@ -133,8 +179,16 @@
                 font-size: 1.2rem;
             }
             
-            .uv7-logo-svg {
+            .uv7-logo-static,
+            .uv7-logo-video {
                 width: 280px;
+            }
+
+            .uv7-skip-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
             }
         }
 
@@ -487,11 +541,13 @@
             top: 0;
             left: 0;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Changed from center - prevents top cutoff */
             flex-direction: column;
             padding: 60px 60px 140px 60px; /* Extra bottom padding for next button */
             opacity: 0;
             transition: opacity 0.8s ease-in-out;
+            overflow-y: auto; /* Allow scrolling if content too tall */
+            overflow-x: hidden; /* Prevent horizontal scroll */
         }
 
         .credit-screen.active {
@@ -628,6 +684,7 @@
         .credits-text-screen {
             max-width: 1000px;
             text-align: center;
+            margin: auto 0; /* Vertical centering when content is short */
         }
 
         .credits-big-title {
@@ -671,6 +728,18 @@
             }
         }
 
+        /* Desktop-specific: reduce sizes slightly to fit all content */
+        @media (min-width: 769px) and (max-height: 900px) {
+            .credit-screen {
+                padding: 40px 60px 120px 60px; /* Reduced top/bottom padding */
+            }
+            
+            .credits-big-text {
+                font-size: 1.5rem; /* Slightly smaller on shorter desktops */
+                line-height: 1.6;
+            }
+        }
+
         @media (max-width: 768px) {
             .credits-big-title {
                 font-size: 2.5rem;
@@ -709,8 +778,27 @@
             <!-- "Powered by" text above logo -->
             <div class="powered-by-text">Powered by</div>
             
-            <!-- UV7 Logo PNG -->
-            <img src="UnitedVoices7.png" class="uv7-logo-svg" alt="United Voices 7 Logo">
+            <!-- UV7 Logo - Static Fallback (visible by default) -->
+            <img src="UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+            
+            <!-- UV7 Logo - Animated Video (hidden initially, shown when ready) -->
+            <video 
+                id="uv7-logo-video" 
+                class="uv7-logo-video"
+                preload="auto"
+                muted
+                playsinline
+                style="display: none;"
+            >
+                <source src="UnitedVoices7.mp4" type="video/mp4">
+                <!-- Fallback to WebM if MP4 fails -->
+                <source src="UnitedVoices7.webm" type="video/webm">
+            </video>
+            
+            <!-- Skip Button -->
+            <button id="uv7-skip-button" class="uv7-skip-btn">
+                SKIP <span class="skip-arrow">→</span>
+            </button>
         </div>
     </div>
 
@@ -813,7 +901,7 @@
             </div>
 
             <!-- Pause Menu Button -->
-            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">âšâš</button>
+            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">❚❚</button>
         </div>
 
         <!-- Pause Menu Overlay (ESC to open)-->
@@ -1125,70 +1213,136 @@
         // UV7 SPLASH SCREEN CONTROLLER
         // ========================================
         
-        const SPLASH_DURATION = 5000; // Total time splash is visible (ms) - INCREASED
-        const FADE_OUT_START = 4000;  // When to start fade out (ms) - INCREASED
+        // ========================================
+        // UV7 SPLASH SCREEN WITH ANIMATED LOGO
+        // ========================================
+        const SPLASH_DURATION = 6000; // Max time splash is visible (ms)
+        const FADE_OUT_START = 5000;  // When to start fade out (ms)
+        const VIDEO_DURATION = 6000;  // Expected video duration (ms)
         
         function initUV7Splash() {
-            console.log('UV7 Splash: Initializing...');
+            console.log('UV7 Splash: Initializing with video support...');
+            
             const splash = document.getElementById('uv7-splash');
             const loadingScreen = document.getElementById('loading-screen');
+            const staticLogo = document.querySelector('.uv7-logo-static');
+            const videoLogo = document.getElementById('uv7-logo-video');
+            const skipButton = document.getElementById('uv7-skip-button');
             
-            if (!splash) {
-                console.error('UV7 Splash: Splash element not found!');
-                return;
-            }
-            
-            if (!loadingScreen) {
-                console.error('UV7 Splash: Loading screen element not found!');
-                return;
-            }
-            
-            console.log('UV7 Splash: Elements found, starting sequence...');
-            
-            // Start fade out after FADE_OUT_START ms
-            setTimeout(() => {
-                console.log('UV7 Splash: Starting fade out...');
-                splash.classList.add('fade-out');
-            }, FADE_OUT_START);
-            
-            // Remove splash and show loading screen after SPLASH_DURATION
-            setTimeout(() => {
-                console.log('UV7 Splash: Hiding splash, showing loading screen...');
-                splash.style.display = 'none';
-                loadingScreen.style.display = 'flex';
-                // Now the existing game initialization can proceed
-                console.log('UV7 Splash: Initializing GameEngine...');
+            // Validation
+            if (!splash || !loadingScreen) {
+                console.error('UV7 Splash: Required elements not found!');
                 game = new GameEngine();
+                return;
+            }
+            
+            let splashCompleted = false;
+            
+            // Function to complete splash and transition to loading
+            function completeSplash() {
+                if (splashCompleted) return;
+                splashCompleted = true;
+                
+                console.log('UV7 Splash: Completing splash sequence...');
+                
+                // Pause video if playing
+                if (videoLogo && !videoLogo.paused) {
+                    videoLogo.pause();
+                }
+                
+                // Fade out splash
+                splash.classList.add('fade-out');
+                
+                // After fade, show loading and init game
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    loadingScreen.style.display = 'flex';
+                    console.log('UV7 Splash: Initializing GameEngine...');
+                    game = new GameEngine();
+                }, 1500); // Match fade-out animation duration
+            }
+            
+            // Skip button handler
+            if (skipButton) {
+                skipButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('UV7 Splash: User clicked skip button');
+                    completeSplash();
+                });
+            }
+            
+            // Click anywhere to skip (backup)
+            splash.addEventListener('click', (e) => {
+                // Don't trigger if clicking skip button
+                if (e.target.id !== 'uv7-skip-button') {
+                    console.log('UV7 Splash: User clicked splash to skip');
+                    completeSplash();
+                }
+            });
+            
+            // Video handling with fallback
+            if (videoLogo) {
+                // Set up video event handlers
+                videoLogo.addEventListener('canplaythrough', () => {
+                    console.log('UV7 Splash: Video ready to play');
+                    
+                    // Hide static, show video
+                    if (staticLogo) staticLogo.style.display = 'none';
+                    videoLogo.style.display = 'block';
+                    
+                    // Play video
+                    const playPromise = videoLogo.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.warn('UV7 Splash: Video autoplay blocked, showing static fallback', error);
+                            // Revert to static image
+                            videoLogo.style.display = 'none';
+                            if (staticLogo) staticLogo.style.display = 'block';
+                        });
+                    }
+                });
+                
+                // When video ends, complete splash
+                videoLogo.addEventListener('ended', () => {
+                    console.log('UV7 Splash: Video playback ended');
+                    completeSplash();
+                });
+                
+                // Handle video errors
+                videoLogo.addEventListener('error', (e) => {
+                    console.warn('UV7 Splash: Video failed to load, using static fallback', e);
+                    videoLogo.style.display = 'none';
+                    if (staticLogo) staticLogo.style.display = 'block';
+                });
+                
+                // Start loading video
+                videoLogo.load();
+            } else {
+                console.log('UV7 Splash: No video element, using static logo only');
+            }
+            
+            // Safety timeout - force complete after max duration
+            setTimeout(() => {
+                if (!splashCompleted) {
+                    console.log('UV7 Splash: Safety timeout reached, forcing completion');
+                    completeSplash();
+                }
             }, SPLASH_DURATION);
         }
         
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded - Starting UV7 sequence');
-            const splash = document.getElementById('uv7-splash');
-            const loadingScreen = document.getElementById('loading-screen');
             
+            const splash = document.getElementById('uv7-splash');
             if (!splash) {
                 console.error('Splash element not found on DOMContentLoaded!');
-                // Fallback to normal initialization
                 game = new GameEngine();
                 return;
             }
             
-            // Click to skip splash
-            splash.addEventListener('click', () => {
-                console.log('UV7 Splash: User clicked to skip');
-                splash.style.animation = 'splashFadeOut 0.5s ease-in-out forwards';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    if (loadingScreen) {
-                        loadingScreen.style.display = 'flex';
-                    }
-                    game = new GameEngine();
-                }, 500);
-            });
-            
-            // Auto-start splash sequence
+            // Start splash sequence
             initUV7Splash();
         });
     </script>
