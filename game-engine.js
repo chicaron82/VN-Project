@@ -1,6 +1,7 @@
 // ========================================
-// GAME ENGINE - Version 848
+// GAME ENGINE - Version 848 (REFACTORED)
 // Main game logic and scene management
+// Now using GameConfig for all constants
 // ========================================
 
 class GameEngine {
@@ -61,12 +62,8 @@ class GameEngine {
     }
     
     init() {
-        // Preload images
-        const imagesToPreload = [
-            'menudesktop.png',
-            'menumobile.png',
-            'desktopVersion.png'
-        ];
+        // Preload images using GameConfig
+        const imagesToPreload = GameConfig.ASSETS.IMAGES;
         
         let imagesLoaded = 0;
         const totalImages = imagesToPreload.length;
@@ -83,7 +80,7 @@ class GameEngine {
                         this.loading.style.display = 'none';
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, 300);
+                    }, GameConfig.TIMING.MENU_TRANSITION_MS);
                 }
             };
             img.onerror = () => {
@@ -97,7 +94,7 @@ class GameEngine {
                         this.loading.style.display = 'none';
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, 300);
+                    }, GameConfig.TIMING.MENU_TRANSITION_MS);
                 }
             };
             img.src = src;
@@ -123,9 +120,9 @@ class GameEngine {
             this.handleDialogueClick();
         });
         
-        // Keyboard controls (Spacebar or Enter)
+        // Keyboard controls using GameConfig
         document.addEventListener('keydown', (e) => {
-            if (e.code === 'Space' || e.code === 'Enter') {
+            if (GameConfig.CONTROLS.ADVANCE.includes(e.code)) {
                 // Don't trigger if typing in input fields
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                     return;
@@ -145,24 +142,26 @@ class GameEngine {
     // ========================================
     
     updateTitleScreen() {
-        // Get current attempt number from localStorage (defaults to 848)
-        const attemptNumber = localStorage.getItem('attemptNumber') || '848';
+        // Get current attempt number from localStorage using GameConfig
+        const attemptNumber = localStorage.getItem(GameConfig.VERSION.STORAGE_KEY) 
+                             || GameConfig.VERSION.DEFAULT_START.toString();
         
         // Update browser tab title
-        document.title = `Version ${attemptNumber}`;
+        document.title = `${GameConfig.TITLE.BASE} ${attemptNumber}`;
         
         // Update main menu H1
         const mainMenuTitle = document.querySelector('#main-menu-content h1');
         if (mainMenuTitle) {
-            mainMenuTitle.textContent = `VERSION ${attemptNumber}`;
+            mainMenuTitle.textContent = `${GameConfig.TITLE.BASE.toUpperCase()} ${attemptNumber}`;
         }
     }
     
     incrementAttempt() {
-        // Get current attempt, increment, and save
-        let attemptNumber = parseInt(localStorage.getItem('attemptNumber')) || 848;
+        // Get current attempt, increment, and save using GameConfig
+        let attemptNumber = parseInt(localStorage.getItem(GameConfig.VERSION.STORAGE_KEY)) 
+                           || GameConfig.VERSION.DEFAULT_START;
         attemptNumber++;
-        localStorage.setItem('attemptNumber', attemptNumber.toString());
+        localStorage.setItem(GameConfig.VERSION.STORAGE_KEY, attemptNumber.toString());
         
         // Update display
         this.updateTitleScreen();
@@ -188,12 +187,12 @@ class GameEngine {
             setTimeout(() => {
                 this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
-            }, 100);
+            }, GameConfig.TIMING.MENU_TRANSITION_MS);
             
             // Start shared prologue
             const prologue = new SharedPrologue(this);
             prologue.start();
-        }, 800);
+        }, GameConfig.TIMING.FADE_OUT_MS);
     }
     
     // ========================================
@@ -214,8 +213,8 @@ class GameEngine {
             // Fade in
             setTimeout(() => {
                 routeSelect.style.opacity = '1';
-            }, 100);
-        }, 1000);
+            }, GameConfig.TIMING.MENU_TRANSITION_MS);
+        }, GameConfig.TIMING.FADE_IN_MS);
     }
     
     backToMenu() {
@@ -230,8 +229,8 @@ class GameEngine {
             this.mainMenu.style.display = 'flex';
             setTimeout(() => {
                 this.mainMenu.style.opacity = '1';
-            }, 100);
-        }, 1000);
+            }, GameConfig.TIMING.MENU_TRANSITION_MS);
+        }, GameConfig.TIMING.FADE_IN_MS);
     }
     
     startRoute(routeName) {
@@ -250,15 +249,15 @@ class GameEngine {
             setTimeout(() => {
                 this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
-            }, 100);
+            }, GameConfig.TIMING.MENU_TRANSITION_MS);
             
-            if (routeName === 'ronnie') {
+            if (routeName === GameConfig.ROUTES.RONNIE) {
                 this.currentRoute = new RonnieRoute(this);
-                // Start Ronnie's route (will be changed to use start() method)
+                // Start Ronnie's route
                 if (this.currentRoute.start) {
                     this.currentRoute.start();
                 }
-            } else if (routeName === 'tori') {
+            } else if (routeName === GameConfig.ROUTES.TORI) {
                 // Show Tori-specific UI
                 this.tetherUI.style.display = 'block';
                 this.echoDisplay.style.display = 'block';
@@ -275,9 +274,9 @@ class GameEngine {
                 this.saveLoadUI.showEscHint();
                 setTimeout(() => {
                     this.saveLoadUI.hideEscHint();
-                }, 3000);
-            }, 2000);
-        }, 800);
+                }, GameConfig.TIMING.DELAY_MEDIUM);
+            }, GameConfig.TIMING.DELAY_SHORT);
+        }, GameConfig.TIMING.FADE_OUT_MS);
     }
     
     // ========================================
@@ -353,7 +352,7 @@ class GameEngine {
                 this.typewriterActive = false;
                 if (callback) callback();
             }
-        }, 30);
+        }, GameConfig.TIMING.TYPEWRITER_SPEED_MS);
     }
     
     skipTypewriter() {
@@ -400,11 +399,11 @@ class GameEngine {
         
         choices.forEach(choice => {
             const button = document.createElement('div');
-            button.className = 'choice-option';
+            button.className = GameConfig.UI.CHOICE_OPTION_CLASS;
             button.textContent = choice.text;
             
             if (choice.locked) {
-                button.classList.add('locked');
+                button.classList.add(GameConfig.UI.CHOICE_LOCKED_CLASS);
             } else {
                 button.addEventListener('click', () => {
                     this.choiceMenu.style.display = 'none';
@@ -424,10 +423,17 @@ class GameEngine {
     }
     
     // ========================================
-    // NOTES SYSTEM
+    // NOTES SYSTEM (DELEGATES TO COLLECTIBLES MANAGER)
     // ========================================
     
     showNotes() {
+        // Delegate to collectibles manager if available
+        if (this.currentRoute && this.currentRoute.collectiblesManager) {
+            this.currentRoute.collectiblesManager.showNotesViewer();
+            return;
+        }
+        
+        // Fallback to legacy system for backwards compatibility
         if (!this.currentRoute || !this.currentRoute.collectedNotes) return;
         
         this.notesViewer.style.display = 'block';
@@ -441,8 +447,8 @@ class GameEngine {
             const isCollected = collected[note.type].includes(noteId);
             
             const noteItem = document.createElement('div');
-            noteItem.className = `note-item ${note.type}-note`;
-            if (!isCollected) noteItem.classList.add('note-locked');
+            noteItem.className = `${GameConfig.UI.NOTE_ITEM_CLASS} ${note.type}-note`;
+            if (!isCollected) noteItem.classList.add(GameConfig.UI.NOTE_LOCKED_CLASS);
             
             const title = document.createElement('div');
             title.className = 'note-title';
@@ -456,7 +462,7 @@ class GameEngine {
                 noteItem.appendChild(content);
                 
                 noteItem.addEventListener('click', () => {
-                    noteItem.classList.toggle('expanded');
+                    noteItem.classList.toggle(GameConfig.UI.NOTE_EXPANDED_CLASS);
                 });
             }
             
@@ -469,23 +475,25 @@ class GameEngine {
     // ========================================
     
     showCredits() {
-        console.log('ShowCredits: Starting flash & hold sequence...');
+        if (GameConfig.DEBUG.ENABLED) {
+            console.log('ShowCredits: Starting flash & hold sequence...');
+        }
         
         // Hide main menu if showing
         const mainMenu = document.getElementById('main-menu');
         if (mainMenu) {
-            mainMenu.classList.remove('active');
+            mainMenu.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
             mainMenu.style.display = 'none';
         }
         
         // Show credits screen
         const creditsScreen = document.getElementById('credits-screen');
         if (creditsScreen) {
-            creditsScreen.classList.add('active');
+            creditsScreen.classList.add(GameConfig.UI.PAUSE_ACTIVE_CLASS);
             
-            // Reset to first screen
-            this.currentCreditIndex = 0;
-            this.totalCredits = 13; // Total number of credit screens
+            // Reset to first screen using GameConfig
+            this.currentCreditIndex = GameConfig.CREDITS.INITIAL_INDEX;
+            this.totalCredits = GameConfig.CREDITS.TOTAL_SCREENS;
             
             // Show first screen
             this.showCreditScreen(0);
@@ -498,12 +506,14 @@ class GameEngine {
     }
 
     showCreditScreen(index) {
-        console.log(`Showing credit screen ${index}`);
+        if (GameConfig.DEBUG.ENABLED) {
+            console.log(`Showing credit screen ${index}`);
+        }
         
         // Hide all screens
         const allScreens = document.querySelectorAll('.credit-screen');
         allScreens.forEach(screen => {
-            screen.classList.remove('active');
+            screen.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
             screen.classList.add('fade-out');
         });
         
@@ -513,9 +523,9 @@ class GameEngine {
             
             const targetScreen = document.getElementById(`credit-${index}`);
             if (targetScreen) {
-                targetScreen.classList.add('active');
+                targetScreen.classList.add(GameConfig.UI.PAUSE_ACTIVE_CLASS);
             }
-        }, 100);
+        }, GameConfig.TIMING.CREDIT_SCREEN_FADE_MS);
         
         // Update button text
         this.updateNextButton();
@@ -533,7 +543,9 @@ class GameEngine {
     }
 
     nextCredit() {
-        console.log(`NextCredit: Current index ${this.currentCreditIndex}`);
+        if (GameConfig.DEBUG.ENABLED) {
+            console.log(`NextCredit: Current index ${this.currentCreditIndex}`);
+        }
         
         if (this.currentCreditIndex >= this.totalCredits - 1) {
             // Last screen - go back to menu
@@ -546,20 +558,23 @@ class GameEngine {
     }
 
     closeCredits() {
-        console.log('CloseCredits: Closing...');
+        if (GameConfig.DEBUG.ENABLED) {
+            console.log('CloseCredits: Closing...');
+        }
+        
         const creditsScreen = document.getElementById('credits-screen');
         if (creditsScreen) {
-            creditsScreen.classList.remove('active');
+            creditsScreen.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
         }
         
         // Reset index
-        this.currentCreditIndex = 0;
+        this.currentCreditIndex = GameConfig.CREDITS.INITIAL_INDEX;
         
         // Return to main menu
         this.mainMenu.style.display = 'flex';
         setTimeout(() => {
             this.mainMenu.style.opacity = '1';
-        }, 100);
+        }, GameConfig.TIMING.MENU_TRANSITION_MS);
     }
     
     // ========================================

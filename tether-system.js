@@ -1,0 +1,381 @@
+// ========================================
+// TETHER SYSTEM MODULE
+// Manages Tori's consciousness tether mechanics and Echo Toris
+// Extracted from tori-route-main.js for modularity
+// ========================================
+
+class TetherSystem {
+    constructor(game, route) {
+        this.game = game;
+        this.route = route;
+        
+        // ========================================
+        // TETHER STATE
+        // ========================================
+        
+        this.tetherLevel = 100;
+        this.tetherDecayRate = 0.3;          // Gentle passive drain
+        this.tetherDecayTimer = null;        // Passive decay interval
+        this.holdOnCooldown = false;         // Hold On button cooldown state
+        
+        // Configuration constants
+        this.HOLD_ON_BOOST = 10;             // Boost amount from Hold On button
+        this.HOLD_ON_COOLDOWN_MS = 8000;     // 8 second cooldown
+        this.DECAY_INTERVAL_MS = 5000;       // Decay every 5 seconds
+        this.CRITICAL_THRESHOLD = 20;        // Glitch effect threshold
+        
+        // Decay acceleration thresholds
+        this.DECAY_MEDIUM_THRESHOLD = 50;    // Start gentle acceleration
+        this.DECAY_CRITICAL_THRESHOLD = 30;  // More aggressive decay
+        this.DECAY_MEDIUM_RATE = 0.5;        // Medium decay rate
+        this.DECAY_CRITICAL_RATE = 0.8;      // Critical decay rate
+        
+        // ========================================
+        // ECHO SYSTEM STATE
+        // ========================================
+        
+        this.echoes = {
+            echo1: {
+                name: 'Echo 1',
+                mood: 'hopeful',
+                color: '#00ffff',        // cyan
+                active: false
+            },
+            echo2: {
+                name: 'Echo 2',
+                mood: 'gentle',
+                color: '#00ff00',        // green
+                active: false
+            },
+            despair: {
+                name: 'Despair Echo',
+                mood: 'bitter',
+                color: '#ff0000',        // red
+                active: false
+            }
+        };
+        
+        // DOM element references (set by game engine)
+        this.tetherUI = null;
+        this.tetherFill = null;
+        this.tetherText = null;
+        this.holdOnButton = null;
+        this.echoDisplay = null;
+        this.echo1Text = null;
+        this.echo2Text = null;
+        this.echoDespairText = null;
+    }
+    
+    // ========================================
+    // INITIALIZATION
+    // ========================================
+    
+    init() {
+        // Cache DOM references from game engine
+        this.tetherUI = this.game.tetherUI;
+        this.tetherFill = this.game.tetherFill;
+        this.tetherText = this.game.tetherText;
+        this.holdOnButton = this.game.holdOnButton;
+        this.echoDisplay = this.game.echoDisplay;
+        this.echo1Text = this.game.echo1Text;
+        this.echo2Text = this.game.echo2Text;
+        this.echoDespairText = this.game.echoDespairText;
+        
+        // Set up Hold On button listener
+        if (this.holdOnButton) {
+            this.holdOnButton.addEventListener('click', () => this.holdOn());
+        }
+        
+        // Initial display update
+        this.updateDisplay();
+    }
+    
+    // ========================================
+    // TETHER MANAGEMENT
+    // ========================================
+    
+    updateTether(amount, reason = '') {
+        // Update tether level (clamped 0-100)
+        this.tetherLevel = Math.max(0, Math.min(100, this.tetherLevel + amount));
+        
+        // Update display
+        this.updateDisplay();
+        
+        // Check for tether death
+        if (this.tetherLevel <= 0) {
+            this.stopDecay();
+            this.onTetherDeath();
+        }
+        
+        // Log for debugging
+        if (reason) {
+            console.log(`Tether: ${this.tetherLevel.toFixed(1)}% (${reason})`);
+        }
+        
+        return this.tetherLevel;
+    }
+    
+    updateDisplay() {
+        // Update visual tether bar
+        if (this.tetherFill) {
+            this.tetherFill.style.width = this.tetherLevel + '%';
+            
+            // Color coding based on level
+            if (this.tetherLevel > 60) {
+                this.tetherFill.style.background = 'linear-gradient(90deg, #0f0, #0ff)';
+            } else if (this.tetherLevel > 30) {
+                this.tetherFill.style.background = 'linear-gradient(90deg, #ff0, #0ff)';
+            } else {
+                this.tetherFill.style.background = 'linear-gradient(90deg, #f00, #ff0)';
+            }
+        }
+        
+        // Update text display
+        if (this.tetherText) {
+            this.tetherText.textContent = Math.floor(this.tetherLevel) + '%';
+        }
+    }
+    
+    // ========================================
+    // PASSIVE DECAY SYSTEM
+    // ========================================
+    
+    startDecay() {
+        // Start passive tether decay timer
+        if (this.tetherDecayTimer) {
+            // Already running, don't start duplicate
+            return;
+        }
+        
+        this.tetherDecayTimer = setInterval(() => {
+            this.applyDecay();
+        }, this.DECAY_INTERVAL_MS);
+        
+        console.log('Tether decay started');
+    }
+    
+    stopDecay() {
+        if (this.tetherDecayTimer) {
+            clearInterval(this.tetherDecayTimer);
+            this.tetherDecayTimer = null;
+            console.log('Tether decay stopped');
+        }
+    }
+    
+    applyDecay() {
+        // Calculate decay rate based on current tether level
+        let decayAmount = this.tetherDecayRate;
+        
+        // Gentle acceleration when low
+        if (this.tetherLevel < this.DECAY_MEDIUM_THRESHOLD) {
+            decayAmount = this.DECAY_MEDIUM_RATE;
+        }
+        if (this.tetherLevel < this.DECAY_CRITICAL_THRESHOLD) {
+            decayAmount = this.DECAY_CRITICAL_RATE;
+        }
+        
+        // Apply decay
+        this.updateTether(-decayAmount, 'passive decay');
+        
+        // Trigger glitch effect if critical
+        if (this.tetherLevel < this.CRITICAL_THRESHOLD) {
+            this.triggerGlitchEffect();
+        }
+    }
+    
+    triggerGlitchEffect() {
+        // Visual glitch when tether is critically low
+        if (this.game.gameView) {
+            this.game.gameView.style.filter = 'hue-rotate(180deg) brightness(1.2)';
+            setTimeout(() => {
+                this.game.gameView.style.filter = 'none';
+            }, 200);
+        }
+    }
+    
+    // ========================================
+    // HOLD ON BUTTON (MANUAL BOOST)
+    // ========================================
+    
+    holdOn() {
+        // Player manually tries to maintain tether connection
+        
+        // Check if button is on cooldown
+        if (this.holdOnCooldown) {
+            console.log('Hold On button on cooldown');
+            return;
+        }
+        
+        // Apply tether boost
+        this.updateTether(this.HOLD_ON_BOOST, 'HOLD ON button pressed');
+        
+        // Visual feedback
+        if (this.holdOnButton) {
+            this.holdOnButton.textContent = 'HOLDING...';
+            this.holdOnButton.disabled = true;
+        }
+        
+        // Set cooldown
+        this.holdOnCooldown = true;
+        
+        // Reset button after cooldown
+        setTimeout(() => {
+            this.holdOnCooldown = false;
+            if (this.holdOnButton) {
+                this.holdOnButton.textContent = 'HOLD ON';
+                this.holdOnButton.disabled = false;
+            }
+            console.log('Hold On button ready');
+        }, this.HOLD_ON_COOLDOWN_MS);
+        
+        // Add route points for engagement
+        if (this.route && this.route.addRoutePoints) {
+            this.route.addRoutePoints('true', 1);
+        }
+    }
+    
+    // ========================================
+    // ECHO SYSTEM
+    // ========================================
+    
+    showEchoes(echoDialogue) {
+        // Display echo commentary alongside main dialogue
+        // Creates the "voices in her head" effect
+        
+        if (!this.echoDisplay) return;
+        
+        // Clear previous echoes
+        if (this.echo1Text) this.echo1Text.textContent = '';
+        if (this.echo2Text) this.echo2Text.textContent = '';
+        if (this.echoDespairText) this.echoDespairText.textContent = '';
+        
+        // Show echo display container
+        this.echoDisplay.style.display = 'block';
+        
+        // Set echo content if provided
+        if (echoDialogue.echo1 && this.echo1Text) {
+            this.echo1Text.textContent = 'Echo 1: ' + echoDialogue.echo1;
+            this.echoes.echo1.active = true;
+        }
+        
+        if (echoDialogue.echo2 && this.echo2Text) {
+            this.echo2Text.textContent = 'Echo 2: ' + echoDialogue.echo2;
+            this.echoes.echo2.active = true;
+        }
+        
+        if (echoDialogue.despair && this.echoDespairText) {
+            this.echoDespairText.textContent = 'Despair: ' + echoDialogue.despair;
+            this.echoes.despair.active = true;
+        }
+    }
+    
+    hideEchoes() {
+        if (this.echoDisplay) {
+            this.echoDisplay.style.display = 'none';
+        }
+        
+        // Mark all echoes as inactive
+        this.echoes.echo1.active = false;
+        this.echoes.echo2.active = false;
+        this.echoes.despair.active = false;
+    }
+    
+    updateEchoMood(echoId, mood) {
+        // Update the mood state of a specific echo
+        if (this.echoes[echoId]) {
+            this.echoes[echoId].mood = mood;
+            console.log(`Echo ${echoId} mood updated: ${mood}`);
+        }
+    }
+    
+    // ========================================
+    // TETHER DEATH HANDLER
+    // ========================================
+    
+    onTetherDeath() {
+        // Callback when tether reaches 0%
+        // This should be handled by the route, but we provide a default
+        
+        console.log('Tether death triggered');
+        
+        // Increment attempt counter
+        if (this.game.incrementAttempt) {
+            this.game.incrementAttempt();
+        }
+        
+        const currentVersion = localStorage.getItem('attemptNumber') || '849';
+        
+        // Show game over screen
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The tether snaps. Consciousness fragments. The void swallows everything.',
+            internal: `[Tori's awareness dissolves into static]\n\n**"GAME OVER - Tether Severed"**\n\n[System restarting... Version ${currentVersion}]`,
+            choices: [
+                { text: '[RETRY FROM LAST CHECKPOINT]', value: 'retry' },
+                { text: '[RETURN TO MAIN MENU]', value: 'menu' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'retry') {
+                    // Restart from Act 1
+                    this.reset();
+                    if (this.route && this.route.act1) {
+                        this.route.act1.start();
+                    }
+                } else {
+                    if (this.game.returnToMainMenu) {
+                        this.game.returnToMainMenu();
+                    }
+                }
+            }
+        });
+    }
+    
+    // ========================================
+    // STATE MANAGEMENT
+    // ========================================
+    
+    reset() {
+        // Reset tether to full
+        this.tetherLevel = 100;
+        this.updateDisplay();
+        
+        // Clear cooldowns
+        this.holdOnCooldown = false;
+        if (this.holdOnButton) {
+            this.holdOnButton.textContent = 'HOLD ON';
+            this.holdOnButton.disabled = false;
+        }
+        
+        // Restart decay
+        this.stopDecay();
+        this.startDecay();
+        
+        console.log('Tether system reset');
+    }
+    
+    getState() {
+        // Return current state for save system
+        return {
+            tetherLevel: this.tetherLevel,
+            echoes: JSON.parse(JSON.stringify(this.echoes)),
+            holdOnCooldown: this.holdOnCooldown
+        };
+    }
+    
+    restoreState(state) {
+        // Restore from saved state
+        this.tetherLevel = state.tetherLevel || 100;
+        this.echoes = state.echoes || this.echoes;
+        this.holdOnCooldown = state.holdOnCooldown || false;
+        
+        // Update display
+        this.updateDisplay();
+        
+        console.log('Tether system state restored');
+    }
+}
+
+// Export for use in other modules
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = TetherSystem;
+}

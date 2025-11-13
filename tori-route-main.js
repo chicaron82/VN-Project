@@ -1,4 +1,4 @@
-// TORI'S ROUTE - MAIN ORCHESTRATOR
+// TORI'S ROUTE - MAIN ORCHESTRATOR (REFACTORED)
 // Manages state and coordinates act modules
 
 class ToriRoute {
@@ -6,13 +6,16 @@ class ToriRoute {
         this.game = game;
         
         // ========================================
-        // SHARED STATE
+        // MODULAR SYSTEMS
         // ========================================
         
-        // Tether system (unique to Tori's route)
-        this.tetherLevel = 100;
-        this.tetherDecayRate = 0.3;          // Very gentle passive drain for slow readers
-        this.tetherDecayTimer = null;        // Passive decay interval
+        // Initialize modular systems
+        this.tetherSystem = new TetherSystem(this.game, this);
+        this.collectiblesManager = new CollectiblesManager(this.game, this);
+        
+        // ========================================
+        // ROUTE STATE
+        // ========================================
         
         // Route points for ending determination
         this.routePoints = {
@@ -21,31 +24,9 @@ class ToriRoute {
             digitalForever: 0
         };
         
-        // Unlocked notes
-        this.unlockedNotes = [];
-        
-        // Echo system state
-        this.echoes = {
-            echo1: {
-                mood: 'hopeful',
-                color: '#00ffff' // cyan
-            },
-            echo2: {
-                mood: 'gentle',
-                color: '#00ff00' // green
-            },
-            despair: {
-                mood: 'bitter',
-                color: '#ff0000' // red
-            }
-        };
-        
         // ========================================
-        // INITIALIZE ACT MODULES
+        // ACT MODULES
         // ========================================
-        
-        // Note: Prologue is handled separately (shared between routes)
-        // Tori's route starts at Act 1
         
         this.act1 = new ToriAct1(this);
         this.act2 = new ToriAct2(this);
@@ -54,202 +35,58 @@ class ToriRoute {
     }
     
     // ========================================
-    // ENTRY POINT
+    // INITIALIZATION
     // ========================================
     
     start() {
-        // Called after shared prologue completes
-        this.startTetherDecay();  // Begin passive decay
+        // Initialize tether system
+        this.tetherSystem.init();
+        this.tetherSystem.startDecay();
+        
+        // Initialize collectibles system
+        this.collectiblesManager.init();
+        this.collectiblesManager.defineToriNotes();
+        
+        // Start Act 1
         this.act1.start();
     }
     
     // ========================================
-    // SHARED UTILITY METHODS
+    // DELEGATION METHODS (FACADE PATTERN)
     // ========================================
     
-    updateTether(amount, reason = '') {
-        this.tetherLevel = Math.max(0, Math.min(100, this.tetherLevel + amount));
-        
-        // Update display width and color
-        if (this.game.tetherFill) {
-            this.game.tetherFill.style.width = this.tetherLevel + '%';
-            
-            // Color coding based on level
-            if (this.tetherLevel > 60) {
-                this.game.tetherFill.style.background = 'linear-gradient(90deg, #0f0, #0ff)';
-            } else if (this.tetherLevel > 30) {
-                this.game.tetherFill.style.background = 'linear-gradient(90deg, #ff0, #0ff)';
-            } else {
-                this.game.tetherFill.style.background = 'linear-gradient(90deg, #f00, #ff0)';
-            }
-        }
-        
-        // Update text display
-        if (this.game.tetherText) {
-            this.game.tetherText.textContent = Math.floor(this.tetherLevel) + '%';
-        }
-        
-        // Check for tether death (0%)
-        if (this.tetherLevel <= 0) {
-            this.stopTetherDecay();
-            this.tetherDeath();
-        }
-        
-        // Log for debugging
-        if (reason) {
-            console.log(`Tether: ${this.tetherLevel}% (${reason})`);
-        }
-        
-        return this.tetherLevel;
+    // Tether system delegation
+    updateTether(amount, reason) {
+        return this.tetherSystem.updateTether(amount, reason);
     }
     
-    startTetherDecay() {
-        // Passive decay every 5 seconds (gentle for readers)
-        this.tetherDecayTimer = setInterval(() => {
-            this.applyTetherDecay();
-        }, 5000);
+    holdOn() {
+        this.tetherSystem.holdOn();
     }
     
-    stopTetherDecay() {
-        if (this.tetherDecayTimer) {
-            clearInterval(this.tetherDecayTimer);
-            this.tetherDecayTimer = null;
-        }
+    // Echo system delegation
+    showEchoes(echoDialogue) {
+        this.tetherSystem.showEchoes(echoDialogue);
     }
     
-    applyTetherDecay() {
-        // Calculate decay rate based on current level
-        let decayAmount = this.tetherDecayRate;
-        
-        // Gentler accelerated decay when low
-        if (this.tetherLevel < 50) {
-            decayAmount = 0.5;  // Very gentle acceleration
-        }
-        if (this.tetherLevel < 30) {
-            decayAmount = 0.8;  // Still manageable even at critical
-        }
-        
-        // Apply decay
-        this.updateTether(-decayAmount, 'passive decay');
-        
-        // Trigger glitch effects if critical
-        if (this.tetherLevel < 20) {
-            this.triggerGlitchEffect();
-        }
+    hideEchoes() {
+        this.tetherSystem.hideEchoes();
     }
     
-    triggerGlitchEffect() {
-        // Visual glitch when tether is critically low
-        if (this.game.gameView) {
-            this.game.gameView.style.filter = 'hue-rotate(180deg) brightness(1.2)';
-            setTimeout(() => {
-                this.game.gameView.style.filter = 'none';
-            }, 200);
-        }
+    // Collectibles system delegation
+    unlockNote(noteId) {
+        this.collectiblesManager.unlockNote(noteId);
     }
+    
+    // ========================================
+    // ROUTE POINTS & ENDING DETERMINATION
+    // ========================================
     
     addRoutePoints(type, amount) {
         if (this.routePoints.hasOwnProperty(type)) {
             this.routePoints[type] += amount;
             console.log(`Route points: ${type} +${amount} (total: ${this.routePoints[type]})`);
         }
-    }
-    
-    unlockNote(noteId) {
-        if (!this.unlockedNotes.includes(noteId)) {
-            this.unlockedNotes.push(noteId);
-            console.log(`Note unlocked: ${noteId}`);
-            
-            // Visual notification
-            if (this.game.notesButton) {
-                this.game.notesButton.classList.add('pulse');
-                setTimeout(() => {
-                    this.game.notesButton.classList.remove('pulse');
-                }, 1000);
-            }
-        }
-    }
-    
-    showEchoes(echoDialogue) {
-        // Display echo commentary alongside main dialogue
-        // This creates the "voices in her head" effect
-        
-        const echoContainer = document.getElementById('echo-container');
-        if (!echoContainer) return;
-        
-        echoContainer.innerHTML = '';
-        echoContainer.style.display = 'block';
-        
-        if (echoDialogue.echo1) {
-            const echo1Div = document.createElement('div');
-            echo1Div.className = 'echo-text echo1';
-            echo1Div.textContent = 'Echo 1: ' + echoDialogue.echo1;
-            echoContainer.appendChild(echo1Div);
-        }
-        
-        if (echoDialogue.echo2) {
-            const echo2Div = document.createElement('div');
-            echo2Div.className = 'echo-text echo2';
-            echo2Div.textContent = 'Echo 2: ' + echoDialogue.echo2;
-            echoContainer.appendChild(echo2Div);
-        }
-        
-        if (echoDialogue.despair) {
-            const despairDiv = document.createElement('div');
-            despairDiv.className = 'echo-text despair';
-            despairDiv.textContent = 'Despair: ' + echoDialogue.despair;
-            echoContainer.appendChild(despairDiv);
-        }
-    }
-    
-    hideEchoes() {
-        const echoContainer = document.getElementById('echo-container');
-        if (echoContainer) {
-            echoContainer.style.display = 'none';
-        }
-    }
-
-        // ========================================
-    // HOLD ON BUTTON (MANUAL TETHER BOOST)
-    // ========================================
-    
-    holdOn() {
-        // Player manually tries to maintain tether connection
-        // Provides +10% tether boost, limited use (cooldown)
-        
-        const BOOST_AMOUNT = 10;
-        const COOLDOWN_MS = 8000;  // 8 second cooldown
-        
-        // Check if button is on cooldown
-        if (this.holdOnCooldown) {
-            console.log('Hold On button on cooldown');
-            return;
-        }
-        
-        // Apply tether boost
-        this.updateTether(BOOST_AMOUNT, 'HOLD ON button pressed');
-        
-        // Visual feedback
-        if (this.game.holdOnButton) {
-            this.game.holdOnButton.textContent = 'HOLDING...';
-            this.game.holdOnButton.disabled = true;
-        }
-        
-        // Set cooldown
-        this.holdOnCooldown = true;
-        
-        // Reset button after cooldown
-        setTimeout(() => {
-            this.holdOnCooldown = false;
-            if (this.game.holdOnButton) {
-                this.game.holdOnButton.textContent = 'HOLD ON';
-                this.game.holdOnButton.disabled = false;
-            }
-            console.log('Hold On button ready');
-        }, COOLDOWN_MS);
-        
-        // Add route points for engagement
-        this.addRoutePoints('true', 1);
     }
     
     determineEnding() {
@@ -275,7 +112,8 @@ class ToriRoute {
     tetherDeath() {
         // Increment attempt counter
         this.game.incrementAttempt();
-        const currentVersion = localStorage.getItem('attemptNumber') || '849';
+        const currentVersion = localStorage.getItem(GameConfig.VERSION.STORAGE_KEY) 
+                             || GameConfig.VERSION.DEFAULT_START.toString();
         
         this.game.displayScene({
             character: 'Narration',
@@ -287,10 +125,9 @@ class ToriRoute {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Restart from Act 1
-                    this.tetherLevel = 100;
-                    this.startTetherDecay();
-                    this.act1.scene1();
+                    // Reset tether system and restart from Act 1
+                    this.tetherSystem.reset();
+                    this.act1.start();
                 } else {
                     this.game.returnToMainMenu();
                 }
@@ -305,21 +142,21 @@ class ToriRoute {
     getState() {
         return {
             route: 'tori',
-            tetherLevel: this.tetherLevel,
             routePoints: { ...this.routePoints },
-            unlockedNotes: [...this.unlockedNotes],
-            echoes: JSON.parse(JSON.stringify(this.echoes))
+            tetherSystem: this.tetherSystem.getState(),
+            collectibles: this.collectiblesManager.getState()
         };
     }
     
     restoreState(state) {
-        this.tetherLevel = state.tetherLevel || 100;
         this.routePoints = state.routePoints || { bad: 0, true: 0, digitalForever: 0 };
-        this.unlockedNotes = state.unlockedNotes || [];
-        this.echoes = state.echoes || this.echoes;
         
-        // Update display
-        this.updateTether(0, 'restored from save');
+        if (state.tetherSystem) {
+            this.tetherSystem.restoreState(state.tetherSystem);
+        }
+        if (state.collectibles) {
+            this.collectiblesManager.restoreState(state.collectibles);
+        }
     }
 }
 

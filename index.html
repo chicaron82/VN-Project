@@ -786,7 +786,7 @@
                 id="uv7-logo-video" 
                 class="uv7-logo-video"
                 preload="auto"
-                muted
+                
                 playsinline
                 style="display: none;"
             >
@@ -858,7 +858,7 @@
                 </div>
 
                 <!-- Back Button -->
-                <button id="back-to-menu" onclick="game.backToMenu()">â† BACK</button>
+                <button id="back-to-menu" onclick="game.backToMenu()">← BACK</button>
             </div>
         </div>
 
@@ -1191,6 +1191,9 @@
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
+    <script src="game-config.js"></script>
+    <script src="tether-system.js"></script>
+    <script src="collectibles-manager.js"></script>
     <script src="game-engine.js"></script>
     <script src="save-manager.js"></script>
     <script src="save-load-ui.js"></script>
