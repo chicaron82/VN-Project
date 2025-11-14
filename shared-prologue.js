@@ -1,6 +1,6 @@
 // SHARED PROLOGUE
 // Plays BEFORE route selection
-// Shows: Street Bump → Home → The Fall
+// Shows: Street Bump â†’ Home â†’ The Fall
 // Then player chooses Ronnie or Tori route
 
 class SharedPrologue {
@@ -20,7 +20,8 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'I wasn\'t looking where I was going...',
-            internal: '[Visual: Sunny street, midday. Cafés in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
+            internal: '[Visual: Sunny street, midday. CafÃ©s in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
+            background: 'genericBack.png',
             next: () => this.scene1_bump(),
             delay: 3000
         });
@@ -29,7 +30,7 @@ class SharedPrologue {
     scene1_bump() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Oh my gosh, I\'m so sorry—I wasn\'t paying attention!',
+            dialogue: 'Oh my gosh, I\'m so sorryâ€”I wasn\'t paying attention!',
             internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]',
             next: () => this.scene1_pickup(),
             delay: 3000
@@ -75,6 +76,7 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: 'Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s it.',
             internal: '[Cut: Tori enters her home. Ronnie is at his laptop, deep in dev mode.]',
+            background: 'apartment.png',
             next: () => this.scene2_ronnieResponse(),
             delay: 4000
         });
@@ -83,7 +85,7 @@ class SharedPrologue {
     scene2_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
+            dialogue: 'ya sure i can look at it. why do you call it that anyway?',
             next: () => this.scene2_toriExplains(),
             delay: 2500
         });
@@ -92,7 +94,7 @@ class SharedPrologue {
     scene2_toriExplains() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!',
+            dialogue: 'oh you know because this thing is sooo cute. and what better way to name it than after my man - who\'s even cuter!',
             next: () => this.scene2_ronnieTeases(),
             delay: 3000
         });
@@ -101,7 +103,7 @@ class SharedPrologue {
     scene2_ronnieTeases() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'You\'re such a dork, honey',
+            dialogue: 'you\'re such a dork, honey',
             next: () => this.scene2_toriDinner(),
             delay: 2000
         });
@@ -110,7 +112,7 @@ class SharedPrologue {
     scene2_toriDinner() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Yea but you still love me. I\'ll get dinner started',
+            dialogue: 'yea but you still love me. i\'ll get dinner started',
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
             next: () => this.scene2_kitchen(),
             delay: 2500
@@ -130,7 +132,7 @@ class SharedPrologue {
     scene2_warning() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'Babe, watch ou—!',
+            dialogue: 'Babe, watch ouâ€”!',
             next: () => this.scene3_fall(),
             delay: 1500
         });
@@ -154,7 +156,7 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '',
-            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie—lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
+            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnieâ€”lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
             next: () => this.prologueComplete(),
             delay: 4000
         });

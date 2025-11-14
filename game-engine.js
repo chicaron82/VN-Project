@@ -1,7 +1,6 @@
 // ========================================
-// GAME ENGINE - Version 848 (REFACTORED)
+// GAME ENGINE - Version 848
 // Main game logic and scene management
-// Now using GameConfig for all constants
 // ========================================
 
 class GameEngine {
@@ -37,18 +36,16 @@ class GameEngine {
         // State
         this.currentRoute = null;
         this.currentScene = null;
-        this.currentSceneId = null;  // Track current scene ID for save/load
         this.typewriterActive = false;
         this.typewriterInterval = null;
         this.typewriterCallback = null;
         this.fullDialogueText = '';
         
-        this.gameState = {  // Global state holder
-            flags: {},      // For all those filthy flags
-            affection: 0,   // Init defaults to kill undefineds
-            suspicion: 0,
-            flirty: 0,
-        // Add any other counters from flags refs (e.g., digital_forever_tilt: 0)
+        // Game state for tracking choices, flags, and progress
+        this.gameState = {
+            flags: {},
+            choices: {},
+            progress: {}
         };
         
         // Initialize save/load system
@@ -62,8 +59,12 @@ class GameEngine {
     }
     
     init() {
-        // Preload images using GameConfig
-        const imagesToPreload = GameConfig.ASSETS.IMAGES;
+        // Preload images
+        const imagesToPreload = [
+            'menudesktop.png',
+            'menumobile.png',
+            'desktopVersion.png'
+        ];
         
         let imagesLoaded = 0;
         const totalImages = imagesToPreload.length;
@@ -80,7 +81,7 @@ class GameEngine {
                         this.loading.style.display = 'none';
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, GameConfig.TIMING.MENU_TRANSITION_MS);
+                    }, 300);
                 }
             };
             img.onerror = () => {
@@ -94,7 +95,7 @@ class GameEngine {
                         this.loading.style.display = 'none';
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, GameConfig.TIMING.MENU_TRANSITION_MS);
+                    }, 300);
                 }
             };
             img.src = src;
@@ -120,9 +121,9 @@ class GameEngine {
             this.handleDialogueClick();
         });
         
-        // Keyboard controls using GameConfig
+        // Keyboard controls (Spacebar or Enter)
         document.addEventListener('keydown', (e) => {
-            if (GameConfig.CONTROLS.ADVANCE.includes(e.code)) {
+            if (e.code === 'Space' || e.code === 'Enter') {
                 // Don't trigger if typing in input fields
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                     return;
@@ -142,26 +143,24 @@ class GameEngine {
     // ========================================
     
     updateTitleScreen() {
-        // Get current attempt number from localStorage using GameConfig
-        const attemptNumber = localStorage.getItem(GameConfig.VERSION.STORAGE_KEY) 
-                             || GameConfig.VERSION.DEFAULT_START.toString();
+        // Get current attempt number from localStorage (defaults to 848)
+        const attemptNumber = localStorage.getItem('attemptNumber') || '848';
         
         // Update browser tab title
-        document.title = `${GameConfig.TITLE.BASE} ${attemptNumber}`;
+        document.title = `Version ${attemptNumber}`;
         
         // Update main menu H1
         const mainMenuTitle = document.querySelector('#main-menu-content h1');
         if (mainMenuTitle) {
-            mainMenuTitle.textContent = `${GameConfig.TITLE.BASE.toUpperCase()} ${attemptNumber}`;
+            mainMenuTitle.textContent = `VERSION ${attemptNumber}`;
         }
     }
     
     incrementAttempt() {
-        // Get current attempt, increment, and save using GameConfig
-        let attemptNumber = parseInt(localStorage.getItem(GameConfig.VERSION.STORAGE_KEY)) 
-                           || GameConfig.VERSION.DEFAULT_START;
+        // Get current attempt, increment, and save
+        let attemptNumber = parseInt(localStorage.getItem('attemptNumber')) || 848;
         attemptNumber++;
-        localStorage.setItem(GameConfig.VERSION.STORAGE_KEY, attemptNumber.toString());
+        localStorage.setItem('attemptNumber', attemptNumber.toString());
         
         // Update display
         this.updateTitleScreen();
@@ -187,12 +186,12 @@ class GameEngine {
             setTimeout(() => {
                 this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
-            }, GameConfig.TIMING.MENU_TRANSITION_MS);
+            }, 100);
             
             // Start shared prologue
             const prologue = new SharedPrologue(this);
             prologue.start();
-        }, GameConfig.TIMING.FADE_OUT_MS);
+        }, 800);
     }
     
     // ========================================
@@ -213,8 +212,8 @@ class GameEngine {
             // Fade in
             setTimeout(() => {
                 routeSelect.style.opacity = '1';
-            }, GameConfig.TIMING.MENU_TRANSITION_MS);
-        }, GameConfig.TIMING.FADE_IN_MS);
+            }, 100);
+        }, 1000);
     }
     
     backToMenu() {
@@ -229,8 +228,8 @@ class GameEngine {
             this.mainMenu.style.display = 'flex';
             setTimeout(() => {
                 this.mainMenu.style.opacity = '1';
-            }, GameConfig.TIMING.MENU_TRANSITION_MS);
-        }, GameConfig.TIMING.FADE_IN_MS);
+            }, 100);
+        }, 1000);
     }
     
     startRoute(routeName) {
@@ -249,24 +248,17 @@ class GameEngine {
             setTimeout(() => {
                 this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
-            }, GameConfig.TIMING.MENU_TRANSITION_MS);
+            }, 100);
             
-            if (routeName === GameConfig.ROUTES.RONNIE) {
+            if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
-                // Start Ronnie's route
-                if (this.currentRoute.start) {
-                    this.currentRoute.start();
-                }
-            } else if (routeName === GameConfig.ROUTES.TORI) {
+            } else if (routeName === 'tori') {
                 // Show Tori-specific UI
                 this.tetherUI.style.display = 'block';
                 this.echoDisplay.style.display = 'block';
                 this.notesButton.style.display = 'block';
                 this.currentRoute = new ToriRoute(this);
-                // Start Tori's route (Act 1)
-                if (this.currentRoute.start) {
-                    this.currentRoute.start();
-                }
+                this.currentRoute.start(); // Start Tori's route (Act 1)
             }
             
             // Show ESC hint after game starts
@@ -274,26 +266,51 @@ class GameEngine {
                 this.saveLoadUI.showEscHint();
                 setTimeout(() => {
                     this.saveLoadUI.hideEscHint();
-                }, GameConfig.TIMING.DELAY_MEDIUM);
-            }, GameConfig.TIMING.DELAY_SHORT);
-        }, GameConfig.TIMING.FADE_OUT_MS);
+                }, 3000);
+            }, 2000);
+        }, 800);
+    }
+    
+    // ========================================
+    // BACKGROUND MANAGER
+    // ========================================
+    
+    setBackground(backgroundName) {
+        if (!backgroundName) {
+            return;
+        }
+        
+        // Fade out current background
+        this.sceneBackground.style.opacity = '0';
+        
+        setTimeout(() => {
+            // Set new background image
+            this.sceneBackground.style.backgroundImage = `url('${backgroundName}')`;
+            this.sceneBackground.style.backgroundSize = 'cover';
+            this.sceneBackground.style.backgroundPosition = 'center';
+            this.sceneBackground.style.backgroundRepeat = 'no-repeat';
+            
+            // Fade in new background
+            this.sceneBackground.style.opacity = '1';
+        }, 500);
     }
     
     // ========================================
     // SCENE DISPLAY
     // ========================================
     
-    displayScene(sceneData, sceneId = null) {
+    displayScene(sceneData) {
         this.currentScene = sceneData;
         
-        // Store the current scene's ID for save/load
-        if (sceneId) {
-            this.currentSceneId = sceneId;
-        }
-        
-        // Update background
+        // Update background (supports both image files and CSS classes)
         if (sceneData.background) {
-            this.sceneBackground.className = sceneData.background;
+            if (sceneData.background.endsWith('.png') || sceneData.background.endsWith('.jpg')) {
+                // Image background
+                this.setBackground(sceneData.background);
+            } else {
+                // CSS class background (legacy support)
+                this.sceneBackground.className = sceneData.background;
+            }
         }
         
         // Display character name
@@ -321,7 +338,7 @@ class GameEngine {
         
         // Show choices if present
         if (sceneData.choices) {
-            this.showChoices(sceneData.choices, sceneData.onChoice, sceneData.context || this.currentRoute);
+            this.showChoices(sceneData.choices, sceneData.onChoice);
         }
         
         // Auto-save after scene display
@@ -352,7 +369,7 @@ class GameEngine {
                 this.typewriterActive = false;
                 if (callback) callback();
             }
-        }, GameConfig.TIMING.TYPEWRITER_SPEED_MS);
+        }, 30);
     }
     
     skipTypewriter() {
@@ -393,28 +410,21 @@ class GameEngine {
         }
     }
     
-    showChoices(choices, onChoice, context) {
+    showChoices(choices, onChoice) {
         this.choicesContainer.innerHTML = '';
         this.choiceMenu.style.display = 'block';
         
         choices.forEach(choice => {
             const button = document.createElement('div');
-            button.className = GameConfig.UI.CHOICE_OPTION_CLASS;
+            button.className = 'choice-option';
             button.textContent = choice.text;
             
             if (choice.locked) {
-                button.classList.add(GameConfig.UI.CHOICE_LOCKED_CLASS);
+                button.classList.add('locked');
             } else {
                 button.addEventListener('click', () => {
                     this.choiceMenu.style.display = 'none';
-                    if (onChoice) {
-                        // Call with proper context binding
-                        if (context) {
-                            onChoice.call(context, choice.value);
-                        } else {
-                            onChoice(choice.value);
-                        }
-                    }
+                    if (onChoice) onChoice(choice.value);
                 });
             }
             
@@ -423,17 +433,10 @@ class GameEngine {
     }
     
     // ========================================
-    // NOTES SYSTEM (DELEGATES TO COLLECTIBLES MANAGER)
+    // NOTES SYSTEM
     // ========================================
     
     showNotes() {
-        // Delegate to collectibles manager if available
-        if (this.currentRoute && this.currentRoute.collectiblesManager) {
-            this.currentRoute.collectiblesManager.showNotesViewer();
-            return;
-        }
-        
-        // Fallback to legacy system for backwards compatibility
         if (!this.currentRoute || !this.currentRoute.collectedNotes) return;
         
         this.notesViewer.style.display = 'block';
@@ -447,8 +450,8 @@ class GameEngine {
             const isCollected = collected[note.type].includes(noteId);
             
             const noteItem = document.createElement('div');
-            noteItem.className = `${GameConfig.UI.NOTE_ITEM_CLASS} ${note.type}-note`;
-            if (!isCollected) noteItem.classList.add(GameConfig.UI.NOTE_LOCKED_CLASS);
+            noteItem.className = `note-item ${note.type}-note`;
+            if (!isCollected) noteItem.classList.add('note-locked');
             
             const title = document.createElement('div');
             title.className = 'note-title';
@@ -462,7 +465,7 @@ class GameEngine {
                 noteItem.appendChild(content);
                 
                 noteItem.addEventListener('click', () => {
-                    noteItem.classList.toggle(GameConfig.UI.NOTE_EXPANDED_CLASS);
+                    noteItem.classList.toggle('expanded');
                 });
             }
             
@@ -475,106 +478,25 @@ class GameEngine {
     // ========================================
     
     showCredits() {
-        if (GameConfig.DEBUG.ENABLED) {
-            console.log('ShowCredits: Starting flash & hold sequence...');
-        }
-        
-        // Hide main menu if showing
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) {
-            mainMenu.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
-            mainMenu.style.display = 'none';
-        }
-        
-        // Show credits screen
-        const creditsScreen = document.getElementById('credits-screen');
-        if (creditsScreen) {
-            creditsScreen.classList.add(GameConfig.UI.PAUSE_ACTIVE_CLASS);
-            
-            // Reset to first screen using GameConfig
-            this.currentCreditIndex = GameConfig.CREDITS.INITIAL_INDEX;
-            this.totalCredits = GameConfig.CREDITS.TOTAL_SCREENS;
-            
-            // Show first screen
-            this.showCreditScreen(0);
-            
-            // Change NEXT button to BACK TO MENU on last screen
-            this.updateNextButton();
-        } else {
-            console.error('ShowCredits: Credits screen element not found!');
-        }
-    }
+        alert(`VERSION 848 - CREDITS
 
-    showCreditScreen(index) {
-        if (GameConfig.DEBUG.ENABLED) {
-            console.log(`Showing credit screen ${index}`);
-        }
-        
-        // Hide all screens
-        const allScreens = document.querySelectorAll('.credit-screen');
-        allScreens.forEach(screen => {
-            screen.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
-            screen.classList.add('fade-out');
-        });
-        
-        // Show target screen after brief delay for fade
-        setTimeout(() => {
-            allScreens.forEach(screen => screen.classList.remove('fade-out'));
-            
-            const targetScreen = document.getElementById(`credit-${index}`);
-            if (targetScreen) {
-                targetScreen.classList.add(GameConfig.UI.PAUSE_ACTIVE_CLASS);
-            }
-        }, GameConfig.TIMING.CREDIT_SCREEN_FADE_MS);
-        
-        // Update button text
-        this.updateNextButton();
-    }
+Built by The Zee Collective:
+- Z (Technical) - Logic & Systems
+- CZ (Emotional) - Heart & Connection  
+- ZR (Iteration) - Refinement & Shipping
 
-    updateNextButton() {
-        const nextButton = document.getElementById('next-credits');
-        if (nextButton) {
-            if (this.currentCreditIndex >= this.totalCredits - 1) {
-                nextButton.textContent = 'BACK TO MENU';
-            } else {
-                nextButton.textContent = 'NEXT >';
-            }
-        }
-    }
+With:
+- Tori (Creative Riffing)
+- Grok (Prototyping)
+- Perplexity (QA - 9.8/10)
 
-    nextCredit() {
-        if (GameConfig.DEBUG.ENABLED) {
-            console.log(`NextCredit: Current index ${this.currentCreditIndex}`);
-        }
-        
-        if (this.currentCreditIndex >= this.totalCredits - 1) {
-            // Last screen - go back to menu
-            this.closeCredits();
-        } else {
-            // Advance to next screen
-            this.currentCreditIndex++;
-            this.showCreditScreen(this.currentCreditIndex);
-        }
-    }
+Coordinated by: Aaron
+For: Tori
 
-    closeCredits() {
-        if (GameConfig.DEBUG.ENABLED) {
-            console.log('CloseCredits: Closing...');
-        }
-        
-        const creditsScreen = document.getElementById('credits-screen');
-        if (creditsScreen) {
-            creditsScreen.classList.remove(GameConfig.UI.PAUSE_ACTIVE_CLASS);
-        }
-        
-        // Reset index
-        this.currentCreditIndex = GameConfig.CREDITS.INITIAL_INDEX;
-        
-        // Return to main menu
-        this.mainMenu.style.display = 'flex';
-        setTimeout(() => {
-            this.mainMenu.style.opacity = '1';
-        }, GameConfig.TIMING.MENU_TRANSITION_MS);
+Built in stolen moments.
+Always. Always. Always.
+
+Ã°Å¸â€™Å¡Ã°Å¸â€Â¥Ã°Å¸â€™â‚¬`);
     }
     
     // ========================================
@@ -610,6 +532,18 @@ class GameEngine {
     }
     
     returnToMainMenu() {
+        // Stop tether decay if in Tori's route
+        if (this.currentRoute) {
+            // Check if route has stopTetherDecay method
+            if (this.currentRoute.stopTetherDecay) {
+                this.currentRoute.stopTetherDecay();
+            }
+            // Or if route has tetherSystem object
+            if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.stopDecay) {
+                this.currentRoute.tetherSystem.stopDecay();
+            }
+        }
+        
         this.saveLoadUI.returnToMainMenu();
     }
     

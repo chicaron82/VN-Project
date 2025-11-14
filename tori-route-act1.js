@@ -27,6 +27,7 @@ class ToriAct1 {
             character: 'Tori (internal)',
             dialogue: '"French Vanilla for Ronnie. He always asks for this one."',
             internal: '[Visual: Coffee shop. Tori picks up the drink, checks her Tamagotchi while walking out.]',
+            background: 'genericBack.png',
             next: () => this.scene1_distracted(),
             delay: 3000
         }, 'scene1_coffee');
@@ -123,6 +124,7 @@ class ToriAct1 {
             character: 'Tori (internal, panicking)',
             dialogue: '"Wait... where am I? What happened? I was just walking..."',
             internal: '[She has no body. No voice. Just consciousness floating in digital darkness.]',
+            background: 'digitalSpace.png',
             next: () => this.scene2_calling_out(),
             delay: 3000
         }, 'scene2_confusion');
@@ -382,6 +384,7 @@ class ToriAct1 {
             character: 'Tori (internal, shocked)',
             dialogue: '"I can... I can SEE! What—where am I?!"',
             internal: '[Visual: Through a laptop camera. The apartment. And... her body on the floor.]',
+            background: 'apartment.png',
             next: () => this.scene4_witnessing(),
             delay: 3000
         }, 'scene4_seeing');
@@ -422,6 +425,7 @@ class ToriAct1 {
             character: 'Tori (internal, breaking)',
             dialogue: '"NO! Bring it back! I need to see! PLEASE!"',
             internal: '[Darkness again. The void of the device. She\'s back. And she just watched herself fall.]',
+            background: 'digitalSpace.png',
             next: () => this.scene5_echoes_shock(),
             delay: 3000
         }, 'scene4_back_in_void');
@@ -684,7 +688,7 @@ class ToriAct1 {
         this.game.displayScene({
             character: 'Tori (internal, curious)',
             dialogue: '"He\'s coding something... What is...? That sprite... that\'s ME."',
-            internal: '[Visual: Through laptop screen. Code editor. A visual novel. "Tori-gatchi."]',
+            internal: '[Visual: Through laptop screen. Code editor. A web app. "Tori-gatchi."]',
             next: () => this.scene7_communication_plan(),
             delay: 3000
         }, 'scene6_sees_code');
@@ -698,7 +702,7 @@ class ToriAct1 {
     scene7_communication_plan() {
         this.game.displayScene({
             character: 'Tori (internal, excited)',
-            dialogue: '"A visual novel... with dialogue boxes. Text output. This is it. This is how I can TALK to him!"',
+            dialogue: '"A tamagotchi game?... with dialogue boxes. Text output!! This is it. This is how I can TALK to him!"',
             internal: '[The plan forming. She can hijack the game. Use it to communicate.]',
             next: () => this.scene7_time_passes(),
             delay: 3500
@@ -730,6 +734,7 @@ class ToriAct1 {
             character: 'Narration',
             dialogue: 'Muffled sounds. Beeping. Hospital machines. The smell would be antiseptic if she could smell.',
             internal: '[He brought the device to the hospital. Near her body.]',
+            background: 'hospital.png',
             next: () => this.scene7_the_pull(),
             delay: 3000
         }, 'scene7_hospital_sounds');
@@ -804,6 +809,7 @@ class ToriAct1 {
                 echo1: 'Two different signals.'
             },
             internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
+            background: 'digitalSpace.png',
             next: () => this.scene7_echo2_admits(),
             delay: 2500
         }, 'scene7_echo1_notes');
@@ -825,7 +831,7 @@ class ToriAct1 {
     scene7_despair_insists() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is dying. It means NOTHING."',
+            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',
             echoes: {
                 despair: 'It means nothing.'
             },
@@ -855,6 +861,7 @@ class ToriAct1 {
             character: 'Narration',
             dialogue: 'Back home. Device on laptop again. Contact established. She hops deliberately.',
             internal: '[Visual: She\'s getting better at this. The transfer is smoother now.]',
+            background: 'apartment.png',
             next: () => this.scene8_program_ready(),
             delay: 3000
         }, 'scene8_torigatchi');
@@ -961,7 +968,7 @@ class ToriAct1 {
             character: 'Narration',
             dialogue: 'Act 1 complete. Communication achieved. The real work begins.',
             internal: '[Visual: Tori and Ronnie connected through the game. Echo Toris watching. A new loop. A new possibility.]',
-            next: () => this.route.startAct2(),
+            next: () => this.route.act2.start(),
             delay: 4000
         }, 'scene8_transition');
     }
