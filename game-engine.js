@@ -1,7 +1,7 @@
 // ========================================
-// GAME ENGINE - Version 848.2
+// GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management
-// WITH MOBILE DIALOGUE PAGINATION
+// WITH SPRITE MANAGEMENT + PAGINATION SYSTEM
 // ========================================
 
 class GameEngine {
@@ -34,6 +34,14 @@ class GameEngine {
         this.notesList = document.getElementById('notes-list');
         this.closeNotesButton = document.getElementById('close-notes');
         
+        // Character sprite containers
+        this.spriteLeft = document.getElementById('character-left');
+        this.spriteRight = document.getElementById('character-right');
+        this.currentSprites = {
+            left: null,
+            right: null
+        };
+        
         // State
         this.currentRoute = null;
         this.currentScene = null;
@@ -42,10 +50,16 @@ class GameEngine {
         this.typewriterCallback = null;
         this.fullDialogueText = '';
         
-        // Pagination state (NEW - Version 848.2)
+        // Pagination state (for mobile dialogue handling)
         this.dialoguePages = [];
         this.currentDialoguePage = 0;
         this.paginationActive = false;
+        
+        // Detect mobile for sprite handling
+        this.isMobile = window.innerWidth <= 480;
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth <= 480;
+        });
         
         // Game state for tracking choices, flags, and progress
         this.gameState = {
@@ -229,263 +243,220 @@ class GameEngine {
         
         setTimeout(() => {
             routeSelect.style.display = 'none';
-            
-            // Show main menu again
             this.mainMenu.style.display = 'flex';
+            
+            // Fade in menu
             setTimeout(() => {
                 this.mainMenu.style.opacity = '1';
             }, 100);
-        }, 1000);
+        }, 500);
     }
     
+    // ========================================
+    // ROUTE START
+    // ========================================
+    
     startRoute(routeName) {
-        // Fade out route select screen
+        // Fade out route select
         const routeSelect = document.getElementById('route-select');
-        routeSelect.style.transition = 'opacity 0.8s';
         routeSelect.style.opacity = '0';
         
         setTimeout(() => {
             routeSelect.style.display = 'none';
             this.gameView.style.display = 'flex';
-            this.gameView.style.opacity = '0';
-            this.dialogueBox.style.display = 'block';
             
-            // Fade in gameplay
+            // Fade in game view
             setTimeout(() => {
-                this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
             }, 100);
             
+            // Initialize route
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
+                this.currentRoute.start();
             } else if (routeName === 'tori') {
-                // Show Tori-specific UI
-                this.tetherUI.style.display = 'block';
-                this.echoDisplay.style.display = 'block';
-                this.notesButton.style.display = 'block';
                 this.currentRoute = new ToriRoute(this);
-                this.currentRoute.start(); // Start Tori's route (Act 1)
+                this.currentRoute.start();
             }
-            
-            // Show ESC hint after game starts
-            setTimeout(() => {
-                this.saveLoadUI.showEscHint();
-                setTimeout(() => {
-                    this.saveLoadUI.hideEscHint();
-                }, 3000);
-            }, 2000);
-        }, 800);
-    }
-    
-    // ========================================
-    // BACKGROUND MANAGER
-    // ========================================
-    
-    setBackground(backgroundName) {
-        if (!backgroundName) {
-            return;
-        }
-        
-        // Fade out current background
-        this.sceneBackground.style.opacity = '0';
-        
-        setTimeout(() => {
-            // Set new background image
-            this.sceneBackground.style.backgroundImage = `url('${backgroundName}')`;
-            this.sceneBackground.style.backgroundSize = 'cover';
-            this.sceneBackground.style.backgroundPosition = 'center';
-            this.sceneBackground.style.backgroundRepeat = 'no-repeat';
-            
-            // Fade in new background
-            this.sceneBackground.style.opacity = '1';
-        }, 500);
-    }
-    
-        // ========================================
-    // SPRITE MANAGEMENT SYSTEM
-    // ========================================
-    
-    showSprite(position, spriteName) {
-        // position: 'left' or 'right'
-        // spriteName: 'tori-sprite.png', 'ronnie-sprite.png', 'three-echoes-sprite.png'
-        
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Set sprite and ensure visibility
-        container.style.backgroundImage = `url('${spriteName}')`;
-        container.style.display = 'block';
-        container.style.opacity = '1';
-        container.style.visibility = 'visible';
-        
-        // Remove any dimming/exit classes
-        container.classList.remove('sprite-dim', 'sprite-exit');
-        
-        // Add entrance animation
-        container.classList.add('sprite-enter');
-        
-        setTimeout(() => {
-            container.classList.remove('sprite-enter');
-        }, 500);
-        
-        // Track current sprite
-        this.currentSprites[position] = spriteName;
-    }
-    
-    hideSprite(position) {
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Fade out animation
-        container.classList.add('sprite-exit');
-        
-        setTimeout(() => {
-            container.style.display = 'none';
-            container.style.backgroundImage = '';
-            container.classList.remove('sprite-exit', 'sprite-dim');
-            this.currentSprites[position] = null;
-        }, 500);
-    }
-    
-    clearAllSprites() {
-        this.hideSprite('left');
-        this.hideSprite('right');
-    }
-    
-    highlightActiveSprite(characterName) {
-        // Determine which sprite should be highlighted based on character name
-        let activePosition = null;
-        
-        // Map character names to positions
-        if (characterName === 'Tori' || characterName.includes('Tori')) {
-            // Tori usually on right (convention)
-            activePosition = this.currentSprites.right ? 'right' : 
-                            this.currentSprites.left ? 'left' : null;
-        } else if (characterName === 'Ronnie' || characterName.includes('Ronnie')) {
-            // Ronnie usually on left
-            activePosition = this.currentSprites.left ? 'left' : 
-                            this.currentSprites.right ? 'right' : null;
-        }
-        
-        if (activePosition) {
-            // Highlight active, dim inactive
-            if (activePosition === 'left') {
-                this.spriteLeft.classList.remove('sprite-dim');
-                if (this.spriteRight.style.display === 'block') {
-                    this.spriteRight.classList.add('sprite-dim');
-                }
-            } else {
-                this.spriteRight.classList.remove('sprite-dim');
-                if (this.spriteLeft.style.display === 'block') {
-                    this.spriteLeft.classList.add('sprite-dim');
-                }
-            }
-        }
-    }
-    
-    // ========================================
-    // SPECIAL EFFECTS - SPRITE TRANSITIONS
-    // ========================================
-    
-    /**
-     * Fade between two sprites (for Tori's consciousness flicker)
-     * Shows sprite1 → fades to sprite2 → fades back to sprite1
-     * Used in prologue when Tori sees Old Ronnie briefly
-     */
-    fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Start with sprite1 (young Ronnie)
-        container.style.backgroundImage = `url('${sprite1}')`;
-        container.style.display = 'block';
-        container.style.opacity = '1';
-        
-        const timing = duration / 4; // Split into 4 phases
-        
-        // Phase 1: Fade out sprite1
-        setTimeout(() => {
-            container.style.transition = 'opacity 0.8s ease';
-            container.style.opacity = '0.2';
-        }, timing);
-        
-        // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
-        setTimeout(() => {
-            container.style.backgroundImage = `url('${sprite2}')`;
-            container.style.opacity = '1';
-        }, timing * 1.8);
-        
-        // Phase 3: Hold Old Man briefly, then fade
-        setTimeout(() => {
-            container.style.opacity = '0.2';
-        }, timing * 2.8);
-        
-        // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
-        setTimeout(() => {
-            container.style.backgroundImage = `url('${sprite1}')`;
-            container.style.opacity = '1';
-            container.style.transition = 'opacity 0.6s ease';
-        }, timing * 3.5);
-        
-        // Stay visible - don't fade to black
-        // Sprite persists for rest of scene
+        }, 1000);
     }
     
     // ========================================
     // SCENE DISPLAY
     // ========================================
     
-    displayScene(sceneData) {
-        this.currentScene = sceneData;
+    displayScene(scene, sceneId) {
+        this.currentScene = scene;
         
-        // Update background (supports both image files and CSS classes)
-        if (sceneData.background) {
-            if (sceneData.background.endsWith('.png') || sceneData.background.endsWith('.jpg')) {
-                // Image background
-                this.setBackground(sceneData.background);
-            } else {
-                // CSS class background (legacy support)
-                this.sceneBackground.className = sceneData.background;
-            }
+        // Store scene ID for save system
+        if (sceneId) {
+            this.gameState.progress.currentScene = sceneId;
         }
         
-        // Display character name
-        this.characterName.textContent = sceneData.character || '';
+        // Handle character display (speaker highlighting)
+        if (scene.character) {
+            this.setActiveSpeaker(scene.character);
+        }
         
-        // Typewriter effect for dialogue (with pagination support)
-        this.typewriterText(this.dialogueText, sceneData.dialogue || '', () => {
-            this.typewriterActive = false;
-        });
+        // Update character name
+        this.characterName.textContent = scene.character || '';
+        this.characterName.style.display = scene.character ? 'block' : 'none';
         
-        // Internal thought
-        if (sceneData.internal) {
-            this.internalThought.textContent = sceneData.internal;
+        // Handle sprites (show/hide based on scene data)
+        if (scene.sprites) {
+            this.updateSprites(scene.sprites);
+        }
+        
+        // Clear previous dialogue
+        this.dialogueText.textContent = '';
+        this.internalThought.textContent = '';
+        
+        // Store full dialogue for skip functionality
+        this.fullDialogueText = scene.dialogue || '';
+        
+        // Handle dialogue with typewriter effect
+        if (scene.dialogue) {
+            this.typewriterText(this.dialogueText, scene.dialogue);
+        }
+        
+        // Handle internal thoughts
+        if (scene.internal) {
+            this.internalThought.textContent = scene.internal;
             this.internalThought.style.display = 'block';
         } else {
             this.internalThought.style.display = 'none';
         }
         
-        // Update echoes if present
-        if (sceneData.echoes) {
-            this.echo1Text.textContent = sceneData.echoes.echo1 || '';
-            this.echo2Text.textContent = sceneData.echoes.echo2 || '';
-            this.echoDespairText.textContent = sceneData.echoes.despair || '';
+        // Handle choices
+        if (scene.choices) {
+            this.showChoices(scene.choices, scene.onChoice);
+        } else {
+            this.choiceMenu.style.display = 'none';
         }
         
-        // Show choices if present
-        if (sceneData.choices) {
-            this.showChoices(sceneData.choices, sceneData.onChoice);
+        // Handle echoes (Tori route only)
+        if (scene.echoes) {
+            this.displayEchoes(scene.echoes);
+        } else {
+            this.clearEchoes();
         }
         
-        // Auto-save after scene display
-        if (this.saveManager && this.currentRoute) {
+        // Handle background changes
+        if (scene.background) {
+            this.sceneBackground.style.backgroundImage = `url(${scene.background})`;
+        }
+        
+        // Handle special styling
+        if (scene.style) {
+            this.dialogueBox.classList.add(scene.style);
+        } else {
+            this.dialogueBox.className = '';
+        }
+        
+        // Auto-save after each scene (if route is active)
+        if (this.currentRoute) {
             this.saveManager.autoSave();
         }
     }
     
     // ========================================
-    // TYPEWRITER SYSTEM WITH PAGINATION
-    // Version 848.2 - Mobile-friendly text handling
+    // SPRITE MANAGEMENT
+    // ========================================
+    
+    updateSprites(sprites) {
+        // Handle left sprite
+        if (sprites.left !== undefined) {
+            if (sprites.left === null) {
+                // Hide left sprite
+                if (this.spriteLeft) {
+                    this.spriteLeft.style.opacity = '0';
+                    setTimeout(() => {
+                        this.spriteLeft.style.display = 'none';
+                    }, 300);
+                }
+                this.currentSprites.left = null;
+            } else {
+                // Show/update left sprite
+                if (this.spriteLeft) {
+                    this.spriteLeft.style.display = 'block';
+                    this.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
+                    this.spriteLeft.style.opacity = '1';
+                }
+                this.currentSprites.left = sprites.left;
+            }
+        }
+        
+        // Handle right sprite
+        if (sprites.right !== undefined) {
+            if (sprites.right === null) {
+                // Hide right sprite
+                if (this.spriteRight) {
+                    this.spriteRight.style.opacity = '0';
+                    setTimeout(() => {
+                        this.spriteRight.style.display = 'none';
+                    }, 300);
+                }
+                this.currentSprites.right = null;
+            } else {
+                // Show/update right sprite
+                if (this.spriteRight) {
+                    this.spriteRight.style.display = 'block';
+                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                    this.spriteRight.style.opacity = '1';
+                }
+                this.currentSprites.right = sprites.right;
+            }
+        }
+    }
+    
+    setActiveSpeaker(speaker) {
+        if (!speaker) {
+            // No speaker - remove all dims
+            if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+            if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+            return;
+        }
+        
+        const speakerName = speaker.toLowerCase(); // toLowerCase HERE, not in displayScene
+        
+        // Determine which sprite should be bright (remove dim from active, add to inactive)
+        if (speakerName.includes('ronnie')) {
+            // Ronnie speaking - left bright, right dim
+            if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+            if (this.spriteRight && this.currentSprites.right) {
+                this.spriteRight.classList.add('sprite-dim');
+            }
+        } else if (speakerName.includes('tori')) {
+            // Tori speaking - right bright, left dim
+            if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+            if (this.spriteLeft && this.currentSprites.left) {
+                this.spriteLeft.classList.add('sprite-dim');
+            }
+        } else if (speakerName.includes('narration') || speakerName.includes('system')) {
+            // Narration - no dimming
+            if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+            if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+        }
+    }
+    
+    hideAllSprites() {
+        if (this.spriteLeft) {
+            this.spriteLeft.style.opacity = '0';
+            setTimeout(() => {
+                this.spriteLeft.style.display = 'none';
+            }, 300);
+        }
+        if (this.spriteRight) {
+            this.spriteRight.style.opacity = '0';
+            setTimeout(() => {
+                this.spriteRight.style.display = 'none';
+            }, 300);
+        }
+        this.currentSprites = { left: null, right: null };
+    }
+    
+    // ========================================
+    // TYPEWRITER EFFECT WITH PAGINATION
     // ========================================
     
     typewriterText(element, text, callback) {
@@ -515,7 +486,7 @@ class GameEngine {
                     this.typewriterActive = false;
                     if (callback) callback();
                 }
-            }, 30);
+            }, 30); // FIXED SPEED - always 30ms
         }
     }
     
@@ -525,7 +496,6 @@ class GameEngine {
         if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
         
         // Check if text is longer than mobile-safe threshold
-        // ~200 characters fits comfortably in 260px box with font-size 0.85rem
         return text.length > 200;
     }
     
@@ -546,20 +516,18 @@ class GameEngine {
         
         while (remainingText.length > 0) {
             if (remainingText.length <= charsPerPage) {
-                // Last page - add everything
                 pages.push(remainingText);
                 break;
             }
             
-            // Find a good break point (space, period, comma) near charsPerPage
             let breakPoint = charsPerPage;
             
-            // Look for sentence end (. ! ?) within last 50 chars
+            // Look for sentence end within last 50 chars
             const sentenceEnd = remainingText.substring(0, charsPerPage).lastIndexOf('. ');
             if (sentenceEnd > charsPerPage - 50) {
-                breakPoint = sentenceEnd + 2; // Include period and space
+                breakPoint = sentenceEnd + 2;
             } else {
-                // Look for word boundary (space)
+                // Look for word boundary
                 const lastSpace = remainingText.substring(0, charsPerPage).lastIndexOf(' ');
                 if (lastSpace > charsPerPage - 30) {
                     breakPoint = lastSpace + 1;
@@ -596,7 +564,7 @@ class GameEngine {
                 element.textContent += currentPage.charAt(i);
                 i++;
             } else {
-                // Add page indicator when typing finishes (only on mobile)
+                // Add page indicator when typing finishes
                 if (this.dialoguePages.length > 1) {
                     element.textContent += pageIndicator;
                 }
@@ -605,54 +573,62 @@ class GameEngine {
                 this.typewriterInterval = null;
                 this.typewriterActive = false;
             }
-        }, 30);
+        }, 30); // FIXED SPEED - always 30ms
+    }
+
+    
+    showNextDialoguePage() {
+        this.currentDialoguePage++;
+        
+        if (this.currentDialoguePage >= this.dialoguePages.length) {
+            // All pages shown - advance to next scene
+            this.paginationActive = false;
+            this.advance();
+        } else {
+            // Show next page
+            this.displayDialoguePage(this.dialogueText);
+        }
     }
     
     skipTypewriter() {
-        // Stop the typing animation and show full text immediately
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
-            this.typewriterInterval = null;
         }
         
-        // If pagination active, show full current page with indicator
         if (this.paginationActive) {
+            // Show current page fully with indicator
             const currentPage = this.dialoguePages[this.currentDialoguePage];
-            const pageIndicator = (this.dialoguePages.length > 1) 
+            const pageIndicator = (this.dialoguePages.length > 1)
                 ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
                 : '';
             this.dialogueText.textContent = currentPage + pageIndicator;
         } else {
-            // Original behavior - show full text
+            // Show full text
             this.dialogueText.textContent = this.fullDialogueText;
         }
         
         this.typewriterActive = false;
         
-        // Execute callback only when pagination is done
-        if (this.typewriterCallback && !this.paginationActive) {
+        // Execute callback if exists
+        if (this.typewriterCallback) {
             this.typewriterCallback();
             this.typewriterCallback = null;
         }
     }
     
     handleDialogueClick() {
+        // If pagination is active, show next page
+        if (this.paginationActive && !this.typewriterActive) {
+            this.showNextDialoguePage();
+            return;
+        }
+        
         // If typing is active, skip to full text
         if (this.typewriterActive) {
             this.skipTypewriter();
         }
-        // If pagination is active and more pages remain
-        else if (this.paginationActive && this.currentDialoguePage < this.dialoguePages.length - 1) {
-            this.currentDialoguePage++;
-            this.displayDialoguePage(this.dialogueText);
-        }
-        // If pagination done or not active, advance to next scene
+        // If text is fully displayed, advance to next scene
         else {
-            // Reset pagination state
-            this.paginationActive = false;
-            this.dialoguePages = [];
-            this.currentDialoguePage = 0;
-            
             this.advance();
         }
     }
@@ -675,7 +651,7 @@ class GameEngine {
             button.className = 'choice-option';
             button.textContent = choice.text;
             
-            if (choice.locked) {
+            if (choice.locked || choice.disabled) {
                 button.classList.add('locked');
             } else {
                 button.addEventListener('click', () => {
@@ -686,6 +662,43 @@ class GameEngine {
             
             this.choicesContainer.appendChild(button);
         });
+    }
+    
+    // ========================================
+    // ECHO DISPLAY (TORI ROUTE)
+    // ========================================
+    
+    displayEchoes(echoes) {
+        if (!this.echoDisplay) return;
+        
+        this.echoDisplay.style.display = 'block';
+        
+        if (echoes.echo1) {
+            this.echo1Text.textContent = echoes.echo1;
+            this.echo1Text.style.display = 'block';
+        } else {
+            this.echo1Text.style.display = 'none';
+        }
+        
+        if (echoes.echo2) {
+            this.echo2Text.textContent = echoes.echo2;
+            this.echo2Text.style.display = 'block';
+        } else {
+            this.echo2Text.style.display = 'none';
+        }
+        
+        if (echoes.despair) {
+            this.echoDespairText.textContent = echoes.despair;
+            this.echoDespairText.style.display = 'block';
+        } else {
+            this.echoDespairText.style.display = 'none';
+        }
+    }
+    
+    clearEchoes() {
+        if (this.echoDisplay) {
+            this.echoDisplay.style.display = 'none';
+        }
     }
     
     // ========================================
@@ -811,7 +824,7 @@ class GameEngine {
         // Reset credits state
         this.currentCreditIndex = 0;
     }
-
+    
     // ========================================
     // SAVE/LOAD SYSTEM METHODS
     // ========================================
