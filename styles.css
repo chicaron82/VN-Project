@@ -1591,32 +1591,77 @@
     }
 }
 
-/* Phone portrait - single centered active speaker only */
+/* Phone portrait - Flexbox layout with guaranteed separation */
 @media (max-width: 480px) and (orientation: portrait) {
-    /* Hide inactive speaker completely */
+    /* ========================================
+       BELLE'S FIX: FLEXBOX LAYOUT STRUCTURE
+       Guaranteed non-overlapping zones
+       ======================================== */
+    
+    #game-view {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: flex-end;
+    }
+    
+    /* Sprite area takes all space ABOVE dialogue box */
+    #scene-background {
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden; /* Prevent sprite overflow */
+        min-height: 0; /* Allow flex shrinking */
+    }
+    
+    /* Dialogue box: FIXED HEIGHT at bottom */
+    #dialogue-box {
+        position: relative; /* Not fixed - part of flex flow */
+        width: 100%;
+        height: 35vh; /* Fixed height */
+        max-height: 35vh;
+        min-height: 140px;
+        
+        /* Enable scrolling INSIDE the box if needed */
+        overflow-y: auto;
+        overflow-x: hidden;
+        
+        /* Smooth scrolling */
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        
+        /* Visual styling */
+        background: rgba(0, 0, 0, 0.95);
+        border-top: 2px solid #0ff;
+        padding: 15px 18px;
+        box-sizing: border-box;
+        
+        /* Ensure it's clickable/tappable */
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    
+    /* Hide inactive speaker completely on mobile */
     .character-sprite.sprite-dim {
         display: none !important;
     }
     
-    /* Active speaker centers - positioned ABOVE dialogue box */
+    /* Active speaker - now positioned relative to #scene-background (the flex sprite area) */
     #character-left:not(.sprite-dim),
     #character-right:not(.sprite-dim) {
+        position: absolute;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%);
-        bottom: 35vh;    /* Push sprite UP above dialogue box */
+        bottom: 0; /* Bottom of sprite area (right above dialogue) */
         width: 200px;
-        height: 60vh;    /* Taller sprite - uses viewport height */
-        max-height: 320px; /* Cap to prevent overflow on very tall screens */
-    }
-    
-    /* Dialogue box stays at bottom with controlled height */
-    #dialogue-box {
-        position: fixed;   /* Ensure it stays at bottom */
-        bottom: 0;
-        max-height: 35vh;  /* Controlled height - matches sprite bottom offset */
-        min-height: 140px; /* Ensure text readability */
-        overflow-y: auto;  /* Scroll if text is really long */
+        
+        /* Height relative to SPRITE AREA, not full viewport */
+        height: 85%; /* 85% of available sprite area */
+        max-height: 400px;
+        
+        /* Ensure sprite fits within its area */
+        object-fit: contain;
     }
 }
 
