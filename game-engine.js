@@ -301,6 +301,136 @@ class GameEngine {
         }, 500);
     }
     
+        // ========================================
+    // SPRITE MANAGEMENT SYSTEM
+    // ========================================
+    
+    showSprite(position, spriteName) {
+        // position: 'left' or 'right'
+        // spriteName: 'tori-sprite.png', 'ronnie-sprite.png', 'three-echoes-sprite.png'
+        
+        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!container) return;
+        
+        // Set sprite and ensure visibility
+        container.style.backgroundImage = `url('${spriteName}')`;
+        container.style.display = 'block';
+        container.style.opacity = '1';
+        container.style.visibility = 'visible';
+        
+        // Remove any dimming/exit classes
+        container.classList.remove('sprite-dim', 'sprite-exit');
+        
+        // Add entrance animation
+        container.classList.add('sprite-enter');
+        
+        setTimeout(() => {
+            container.classList.remove('sprite-enter');
+        }, 500);
+        
+        // Track current sprite
+        this.currentSprites[position] = spriteName;
+    }
+    
+    hideSprite(position) {
+        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!container) return;
+        
+        // Fade out animation
+        container.classList.add('sprite-exit');
+        
+        setTimeout(() => {
+            container.style.display = 'none';
+            container.style.backgroundImage = '';
+            container.classList.remove('sprite-exit', 'sprite-dim');
+            this.currentSprites[position] = null;
+        }, 500);
+    }
+    
+    clearAllSprites() {
+        this.hideSprite('left');
+        this.hideSprite('right');
+    }
+    
+    highlightActiveSprite(characterName) {
+        // Determine which sprite should be highlighted based on character name
+        let activePosition = null;
+        
+        // Map character names to positions
+        if (characterName === 'Tori' || characterName.includes('Tori')) {
+            // Tori usually on right (convention)
+            activePosition = this.currentSprites.right ? 'right' : 
+                            this.currentSprites.left ? 'left' : null;
+        } else if (characterName === 'Ronnie' || characterName.includes('Ronnie')) {
+            // Ronnie usually on left
+            activePosition = this.currentSprites.left ? 'left' : 
+                            this.currentSprites.right ? 'right' : null;
+        }
+        
+        if (activePosition) {
+            // Highlight active, dim inactive
+            if (activePosition === 'left') {
+                this.spriteLeft.classList.remove('sprite-dim');
+                if (this.spriteRight.style.display === 'block') {
+                    this.spriteRight.classList.add('sprite-dim');
+                }
+            } else {
+                this.spriteRight.classList.remove('sprite-dim');
+                if (this.spriteLeft.style.display === 'block') {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
+            }
+        }
+    }
+    
+    // ========================================
+    // SPECIAL EFFECTS - SPRITE TRANSITIONS
+    // ========================================
+    
+    /**
+     * Fade between two sprites (for Tori's consciousness flicker)
+     * Shows sprite1 → fades to sprite2 → fades back to sprite1
+     * Used in prologue when Tori sees Old Ronnie briefly
+     */
+    fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
+        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!container) return;
+        
+        // Start with sprite1 (young Ronnie)
+        container.style.backgroundImage = `url('${sprite1}')`;
+        container.style.display = 'block';
+        container.style.opacity = '1';
+        
+        const timing = duration / 4; // Split into 4 phases
+        
+        // Phase 1: Fade out sprite1
+        setTimeout(() => {
+            container.style.transition = 'opacity 0.8s ease';
+            container.style.opacity = '0.2';
+        }, timing);
+        
+        // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
+        setTimeout(() => {
+            container.style.backgroundImage = `url('${sprite2}')`;
+            container.style.opacity = '1';
+        }, timing * 1.8);
+        
+        // Phase 3: Hold Old Man briefly, then fade
+        setTimeout(() => {
+            container.style.opacity = '0.2';
+        }, timing * 2.8);
+        
+        // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
+        setTimeout(() => {
+            container.style.backgroundImage = `url('${sprite1}')`;
+            container.style.opacity = '1';
+            container.style.transition = 'opacity 0.6s ease';
+        }, timing * 3.5);
+        
+        // Stay visible - don't fade to black
+        // Sprite persists for rest of scene
+    }
+    
     // ========================================
     // SCENE DISPLAY
     // ========================================
@@ -604,27 +734,84 @@ class GameEngine {
     // ========================================
     
     showCredits() {
-        alert(`VERSION 848 - CREDITS
-
-Built by The Zee Collective:
-- Z (Technical) - Logic & Systems
-- CZ (Emotional) - Heart & Connection  
-- ZR (Iteration) - Refinement & Shipping
-
-With:
-- Tori (Creative Riffing)
-- Grok (Prototyping)
-- Perplexity (QA - 9.8/10)
-
-Coordinated by: Aaron
-For: Tori
-
-Built in stolen moments.
-Always. Always. Always.
-
-🖤❤️🖤`);
+        const creditsScreen = document.getElementById('credits-screen');
+        if (!creditsScreen) {
+            console.error('Credits screen element not found');
+            return;
+        }
+        
+        // Initialize credits state
+        this.currentCreditIndex = 0;
+        this.totalCredits = 13; // 0-12 inclusive
+        
+        // Hide all other UI
+        this.gameView.style.display = 'none';
+        this.mainMenu.style.display = 'none';
+        
+        // Show credits screen
+        creditsScreen.style.display = 'flex';
+        
+        // Show first credit screen
+        this.displayCreditScreen(0);
     }
     
+    displayCreditScreen(index) {
+        // Hide all credit screens
+        const allScreens = document.querySelectorAll('.credit-screen');
+        allScreens.forEach(screen => {
+            screen.style.display = 'none';
+            screen.classList.remove('active');
+        });
+        
+        // Show current screen with fade-in
+        const currentScreen = document.getElementById(`credit-${index}`);
+        if (currentScreen) {
+            currentScreen.style.display = 'flex';
+            // Trigger fade-in animation
+            setTimeout(() => {
+                currentScreen.classList.add('active');
+            }, 50);
+        }
+        
+        // Update next button text (change to "BACK TO MENU" on last screen)
+        const nextButton = document.getElementById('next-credits');
+        if (nextButton) {
+            if (index >= this.totalCredits - 1) {
+                nextButton.textContent = 'BACK TO MENU';
+                nextButton.style.display = 'block';
+            } else {
+                nextButton.textContent = 'NEXT >';
+                nextButton.style.display = 'block';
+            }
+        }
+    }
+    
+    nextCredit() {
+        this.currentCreditIndex++;
+        
+        if (this.currentCreditIndex >= this.totalCredits) {
+            // Credits finished - return to main menu
+            this.closeCredits();
+        } else {
+            // Show next credit screen
+            this.displayCreditScreen(this.currentCreditIndex);
+        }
+    }
+    
+    closeCredits() {
+        const creditsScreen = document.getElementById('credits-screen');
+        if (creditsScreen) {
+            creditsScreen.style.display = 'none';
+        }
+        
+        // Return to main menu
+        this.mainMenu.style.display = 'flex';
+        this.mainMenu.style.opacity = '1';
+        
+        // Reset credits state
+        this.currentCreditIndex = 0;
+    }
+
     // ========================================
     // SAVE/LOAD SYSTEM METHODS
     // ========================================
