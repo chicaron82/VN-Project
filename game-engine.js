@@ -316,7 +316,9 @@ class GameEngine {
         
         // Handle dialogue with typewriter effect
         if (scene.dialogue) {
-            this.typewriterText(this.dialogueText, scene.dialogue);
+            // Pass internal text length so pagination considers BOTH dialogue + internal
+            const internalLength = scene.internal ? scene.internal.length : 0;
+            this.typewriterText(this.dialogueText, scene.dialogue, null, internalLength);
         }
         
         // Handle internal thoughts
@@ -459,9 +461,12 @@ class GameEngine {
     // TYPEWRITER EFFECT WITH PAGINATION
     // ========================================
     
-    typewriterText(element, text, callback) {
+    typewriterText(element, text, callback, internalTextLength = 0) {
         // Check if text needs pagination on mobile
-        if (this.shouldPaginateText(text)) {
+        // Consider BOTH dialogue and internal text length
+        const totalLength = text.length + internalTextLength;
+        
+        if (this.shouldPaginateText(totalLength)) {
             this.paginateAndDisplayText(element, text, callback);
         } else {
             // Original typewriter behavior for desktop/short text
@@ -490,13 +495,14 @@ class GameEngine {
         }
     }
     
-    shouldPaginateText(text) {
+    shouldPaginateText(textLength) {
         // Only paginate on mobile portrait
         if (window.innerWidth > 480) return false;
         if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
         
         // Check if text is longer than mobile-safe threshold
-        return text.length > 200;
+        // Lower threshold when we have both dialogue + internal
+        return textLength > 200;
     }
     
     paginateAndDisplayText(element, text, callback) {
