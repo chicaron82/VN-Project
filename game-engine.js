@@ -1,6 +1,7 @@
 // ========================================
-// GAME ENGINE - Version 848
+// GAME ENGINE - Version 848.2
 // Main game logic and scene management
+// WITH MOBILE DIALOGUE PAGINATION
 // ========================================
 
 class GameEngine {
@@ -33,14 +34,6 @@ class GameEngine {
         this.notesList = document.getElementById('notes-list');
         this.closeNotesButton = document.getElementById('close-notes');
         
-        // Character sprite containers
-        this.spriteLeft = document.getElementById('character-left');
-        this.spriteRight = document.getElementById('character-right');
-        this.currentSprites = {
-            left: null,
-            right: null
-        };
-        
         // State
         this.currentRoute = null;
         this.currentScene = null;
@@ -49,11 +42,10 @@ class GameEngine {
         this.typewriterCallback = null;
         this.fullDialogueText = '';
         
-        // Detect mobile for sprite handling
-        this.isMobile = window.innerWidth <= 480;
-        window.addEventListener('resize', () => {
-            this.isMobile = window.innerWidth <= 480;
-        });
+        // Pagination state (NEW - Version 848.2)
+        this.dialoguePages = [];
+        this.currentDialoguePage = 0;
+        this.paginationActive = false;
         
         // Game state for tracking choices, flags, and progress
         this.gameState = {
@@ -310,137 +302,6 @@ class GameEngine {
     }
     
     // ========================================
-    // SPRITE MANAGEMENT SYSTEM
-    // ========================================
-    
-    showSprite(position, spriteName) {
-        // position: 'left' or 'right'
-        // spriteName: 'tori-sprite.png', 'ronnie-sprite.png', 'three-echoes-sprite.png'
-        
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Set sprite and ensure visibility
-        container.style.backgroundImage = `url('${spriteName}')`;
-        container.style.display = 'block';
-        container.style.opacity = '1';
-        container.style.visibility = 'visible';
-        
-        // Remove any dimming/exit classes
-        container.classList.remove('sprite-dim', 'sprite-exit');
-        
-        // Add entrance animation
-        container.classList.add('sprite-enter');
-        
-        setTimeout(() => {
-            container.classList.remove('sprite-enter');
-        }, 500);
-        
-        // Track current sprite
-        this.currentSprites[position] = spriteName;
-    }
-    
-    hideSprite(position) {
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Fade out animation
-        container.classList.add('sprite-exit');
-        
-        setTimeout(() => {
-            container.style.display = 'none';
-            container.style.backgroundImage = '';
-            container.classList.remove('sprite-exit', 'sprite-dim');
-            this.currentSprites[position] = null;
-        }, 500);
-    }
-    
-    clearAllSprites() {
-        this.hideSprite('left');
-        this.hideSprite('right');
-    }
-    
-    highlightActiveSprite(characterName) {
-        // Determine which sprite should be highlighted based on character name
-        let activePosition = null;
-        
-        // Map character names to positions
-        if (characterName === 'Tori' || characterName.includes('Tori')) {
-            // Tori usually on right (convention)
-            activePosition = this.currentSprites.right ? 'right' : 
-                            this.currentSprites.left ? 'left' : null;
-        } else if (characterName === 'Ronnie' || characterName.includes('Ronnie')) {
-            // Ronnie usually on left
-            activePosition = this.currentSprites.left ? 'left' : 
-                            this.currentSprites.right ? 'right' : null;
-        }
-        
-        if (activePosition) {
-            // Highlight active, dim inactive
-            if (activePosition === 'left') {
-                this.spriteLeft.classList.remove('sprite-dim');
-                if (this.spriteRight.style.display === 'block') {
-                    this.spriteRight.classList.add('sprite-dim');
-                }
-            } else {
-                this.spriteRight.classList.remove('sprite-dim');
-                if (this.spriteLeft.style.display === 'block') {
-                    this.spriteLeft.classList.add('sprite-dim');
-                }
-            }
-        }
-    }
-    
-    // ========================================
-    // SPECIAL EFFECTS - SPRITE TRANSITIONS
-    // ========================================
-    
-    /**
-     * Fade between two sprites (for Tori's consciousness flicker)
-     * Shows sprite1 → fades to sprite2 → fades back to sprite1
-     * Used in prologue when Tori sees Old Ronnie briefly
-     */
-    fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
-        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
-        if (!container) return;
-        
-        // Start with sprite1
-        container.style.backgroundImage = `url('${sprite1}')`;
-        container.style.display = 'block';
-        container.style.opacity = '1';
-        
-        const timing = duration / 4; // Split into 4 phases
-        
-        // Phase 1: Fade out sprite1
-        setTimeout(() => {
-            container.style.transition = 'opacity 0.8s ease';
-            container.style.opacity = '0.3';
-        }, timing);
-        
-        // Phase 2: Switch to sprite2 at lowest opacity
-        setTimeout(() => {
-            container.style.backgroundImage = `url('${sprite2}')`;
-            container.style.opacity = '1';
-        }, timing * 2);
-        
-        // Phase 3: Hold sprite2 briefly
-        setTimeout(() => {
-            container.style.opacity = '0.3';
-        }, timing * 2.5);
-        
-        // Phase 4: Fade back to sprite1
-        setTimeout(() => {
-            container.style.backgroundImage = `url('${sprite1}')`;
-            container.style.opacity = '0';
-        }, timing * 3);
-        
-        // Final: Fade to black
-        setTimeout(() => {
-            container.style.opacity = '0';
-        }, timing * 3.5);
-    }
-    
-    // ========================================
     // SCENE DISPLAY
     // ========================================
     
@@ -458,31 +319,10 @@ class GameEngine {
             }
         }
         
-        // SPRITE HANDLING - Sprites persist between lines unless explicitly changed
-        if (sceneData.sprites) {
-            // New scene with sprite setup
-            if (sceneData.sprites.left) {
-                this.showSprite('left', sceneData.sprites.left);
-            }
-            if (sceneData.sprites.right) {
-                this.showSprite('right', sceneData.sprites.right);
-            }
-        }
-        
-        // Clear sprites if explicitly requested
-        if (sceneData.clearSprites) {
-            this.clearAllSprites();
-        }
-        
-        // Highlight active speaker
-        if (sceneData.character && (this.currentSprites.left || this.currentSprites.right)) {
-            this.highlightActiveSprite(sceneData.character);
-        }
-        
         // Display character name
         this.characterName.textContent = sceneData.character || '';
         
-        // Typewriter effect for dialogue
+        // Typewriter effect for dialogue (with pagination support)
         this.typewriterText(this.dialogueText, sceneData.dialogue || '', () => {
             this.typewriterActive = false;
         });
@@ -513,27 +353,127 @@ class GameEngine {
         }
     }
     
+    // ========================================
+    // TYPEWRITER SYSTEM WITH PAGINATION
+    // Version 848.2 - Mobile-friendly text handling
+    // ========================================
+    
     typewriterText(element, text, callback) {
-        this.typewriterActive = true;
-        this.fullDialogueText = text;
+        // Check if text needs pagination on mobile
+        if (this.shouldPaginateText(text)) {
+            this.paginateAndDisplayText(element, text, callback);
+        } else {
+            // Original typewriter behavior for desktop/short text
+            this.typewriterActive = true;
+            this.fullDialogueText = text;
+            this.typewriterCallback = callback;
+            element.textContent = '';
+            let i = 0;
+            
+            // Clear any existing interval
+            if (this.typewriterInterval) {
+                clearInterval(this.typewriterInterval);
+            }
+            
+            this.typewriterInterval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(this.typewriterInterval);
+                    this.typewriterInterval = null;
+                    this.typewriterActive = false;
+                    if (callback) callback();
+                }
+            }, 30);
+        }
+    }
+    
+    shouldPaginateText(text) {
+        // Only paginate on mobile portrait
+        if (window.innerWidth > 480) return false;
+        if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
+        
+        // Check if text is longer than mobile-safe threshold
+        // ~200 characters fits comfortably in 260px box with font-size 0.85rem
+        return text.length > 200;
+    }
+    
+    paginateAndDisplayText(element, text, callback) {
+        // Split text into pages that fit in mobile dialogue box
+        this.dialoguePages = this.splitTextIntoPages(text, 200);
+        this.currentDialoguePage = 0;
+        this.paginationActive = true;
         this.typewriterCallback = callback;
+        
+        // Display first page
+        this.displayDialoguePage(element);
+    }
+    
+    splitTextIntoPages(text, charsPerPage) {
+        const pages = [];
+        let remainingText = text;
+        
+        while (remainingText.length > 0) {
+            if (remainingText.length <= charsPerPage) {
+                // Last page - add everything
+                pages.push(remainingText);
+                break;
+            }
+            
+            // Find a good break point (space, period, comma) near charsPerPage
+            let breakPoint = charsPerPage;
+            
+            // Look for sentence end (. ! ?) within last 50 chars
+            const sentenceEnd = remainingText.substring(0, charsPerPage).lastIndexOf('. ');
+            if (sentenceEnd > charsPerPage - 50) {
+                breakPoint = sentenceEnd + 2; // Include period and space
+            } else {
+                // Look for word boundary (space)
+                const lastSpace = remainingText.substring(0, charsPerPage).lastIndexOf(' ');
+                if (lastSpace > charsPerPage - 30) {
+                    breakPoint = lastSpace + 1;
+                }
+            }
+            
+            pages.push(remainingText.substring(0, breakPoint).trim());
+            remainingText = remainingText.substring(breakPoint).trim();
+        }
+        
+        return pages;
+    }
+    
+    displayDialoguePage(element) {
+        const currentPage = this.dialoguePages[this.currentDialoguePage];
+        
+        // Add page indicator for multi-page dialogue
+        const pageIndicator = (this.dialoguePages.length > 1) 
+            ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
+            : '';
+        
+        // Typewriter the current page
+        this.typewriterActive = true;
+        this.fullDialogueText = currentPage;
         element.textContent = '';
         let i = 0;
         
-        // Clear any existing interval
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
         }
         
         this.typewriterInterval = setInterval(() => {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
+            if (i < currentPage.length) {
+                element.textContent += currentPage.charAt(i);
                 i++;
             } else {
+                // Add page indicator when typing finishes (only on mobile)
+                if (this.dialoguePages.length > 1) {
+                    element.textContent += pageIndicator;
+                }
+                
                 clearInterval(this.typewriterInterval);
                 this.typewriterInterval = null;
                 this.typewriterActive = false;
-                if (callback) callback();
             }
         }, 30);
     }
@@ -545,12 +485,22 @@ class GameEngine {
             this.typewriterInterval = null;
         }
         
-        // Show full text
-        this.dialogueText.textContent = this.fullDialogueText;
+        // If pagination active, show full current page with indicator
+        if (this.paginationActive) {
+            const currentPage = this.dialoguePages[this.currentDialoguePage];
+            const pageIndicator = (this.dialoguePages.length > 1) 
+                ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
+                : '';
+            this.dialogueText.textContent = currentPage + pageIndicator;
+        } else {
+            // Original behavior - show full text
+            this.dialogueText.textContent = this.fullDialogueText;
+        }
+        
         this.typewriterActive = false;
         
-        // Execute callback if exists
-        if (this.typewriterCallback) {
+        // Execute callback only when pagination is done
+        if (this.typewriterCallback && !this.paginationActive) {
             this.typewriterCallback();
             this.typewriterCallback = null;
         }
@@ -561,8 +511,18 @@ class GameEngine {
         if (this.typewriterActive) {
             this.skipTypewriter();
         }
-        // If text is fully displayed, advance to next scene
+        // If pagination is active and more pages remain
+        else if (this.paginationActive && this.currentDialoguePage < this.dialoguePages.length - 1) {
+            this.currentDialoguePage++;
+            this.displayDialoguePage(this.dialogueText);
+        }
+        // If pagination done or not active, advance to next scene
         else {
+            // Reset pagination state
+            this.paginationActive = false;
+            this.dialoguePages = [];
+            this.currentDialoguePage = 0;
+            
             this.advance();
         }
     }
@@ -643,87 +603,26 @@ class GameEngine {
     // CREDITS
     // ========================================
     
-    // ========================================
-    // CREDITS SYSTEM
-    // ========================================
-    
     showCredits() {
-        const creditsScreen = document.getElementById('credits-screen');
-        if (!creditsScreen) {
-            console.error('Credits screen element not found');
-            return;
-        }
-        
-        // Initialize credits state
-        this.currentCreditIndex = 0;
-        this.totalCredits = 13; // 0-12 inclusive
-        
-        // Hide all other UI
-        this.gameView.style.display = 'none';
-        this.mainMenu.style.display = 'none';
-        
-        // Show credits screen
-        creditsScreen.style.display = 'flex';
-        
-        // Show first credit screen
-        this.displayCreditScreen(0);
-    }
-    
-    displayCreditScreen(index) {
-        // Hide all credit screens
-        const allScreens = document.querySelectorAll('.credit-screen');
-        allScreens.forEach(screen => {
-            screen.style.display = 'none';
-            screen.classList.remove('active');
-        });
-        
-        // Show current screen with fade-in
-        const currentScreen = document.getElementById(`credit-${index}`);
-        if (currentScreen) {
-            currentScreen.style.display = 'flex';
-            // Trigger fade-in animation
-            setTimeout(() => {
-                currentScreen.classList.add('active');
-            }, 50);
-        }
-        
-        // Update next button text (change to "BACK TO MENU" on last screen)
-        const nextButton = document.getElementById('next-credits');
-        if (nextButton) {
-            if (index >= this.totalCredits - 1) {
-                nextButton.textContent = 'BACK TO MENU';
-                nextButton.style.display = 'block';
-            } else {
-                nextButton.textContent = 'NEXT >';
-                nextButton.style.display = 'block';
-            }
-        }
-    }
-    
-    nextCredit() {
-        this.currentCreditIndex++;
-        
-        if (this.currentCreditIndex >= this.totalCredits) {
-            // Credits finished - return to main menu
-            this.closeCredits();
-        } else {
-            // Show next credit screen
-            this.displayCreditScreen(this.currentCreditIndex);
-        }
-    }
-    
-    closeCredits() {
-        const creditsScreen = document.getElementById('credits-screen');
-        if (creditsScreen) {
-            creditsScreen.style.display = 'none';
-        }
-        
-        // Return to main menu
-        this.mainMenu.style.display = 'flex';
-        this.mainMenu.style.opacity = '1';
-        
-        // Reset credits state
-        this.currentCreditIndex = 0;
+        alert(`VERSION 848 - CREDITS
+
+Built by The Zee Collective:
+- Z (Technical) - Logic & Systems
+- CZ (Emotional) - Heart & Connection  
+- ZR (Iteration) - Refinement & Shipping
+
+With:
+- Tori (Creative Riffing)
+- Grok (Prototyping)
+- Perplexity (QA - 9.8/10)
+
+Coordinated by: Aaron
+For: Tori
+
+Built in stolen moments.
+Always. Always. Always.
+
+🖤❤️🖤`);
     }
     
     // ========================================
