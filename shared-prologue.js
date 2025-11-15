@@ -77,6 +77,10 @@ class SharedPrologue {
             dialogue: 'Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s it.',
             internal: '[Cut: Tori enters her home. Ronnie is at his laptop, deep in dev mode.]',
             background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_ronnieResponse(),
             delay: 4000
         });
@@ -160,6 +164,9 @@ class SharedPrologue {
             next: () => this.prologueComplete(),
             delay: 4000
         });
+        
+        // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
+        this.game.fadeSpritesSequence('left', 'ronnie-sprite.png', 'old-ronnie-sprite.png', 4000);
     }
     
     // ========================================

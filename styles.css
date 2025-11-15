@@ -1341,3 +1341,339 @@
 #notes-viewer::-webkit-scrollbar-thumb:hover {
     background: #0f0;
 }
+
+/* ========================================
+   MOBILE OPTIMIZATION - DIALOGUE SYSTEM
+   Version 848 - Mobile UI Fix
+   ======================================== */
+
+/**
+ * ISSUE: Dialogue box too low on mobile
+ * CAUSE: Mobile browser UI (address bar, nav bar) overlaps fixed positioning
+ * SOLUTION: Multi-layered responsive approach
+ */
+
+/* ----------------------------------------
+   TIER 1: Standard Mobile (Tablets/Large Phones)
+   ---------------------------------------- */
+@media (max-width: 768px) {
+    #dialogue-box {
+        /* Raise bottom position to clear mobile UI chrome */
+        bottom: 80px !important;
+        
+        /* Prevent box from consuming too much screen */
+        max-height: 40vh;
+        
+        /* Ensure padding doesn't push content out of view */
+        padding: 18px 20px;
+        
+        /* Enable scrolling if content overflows */
+        overflow-y: auto;
+        
+        /* Smooth scroll behavior */
+        scroll-behavior: smooth;
+        
+        /* Improve readability on mobile */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Character name adjustments */
+    #character-name {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+    
+    /* Dialogue text optimization */
+    #dialogue-text {
+        font-size: 0.95rem;
+        line-height: 1.6; /* Better mobile readability */
+        margin-bottom: 8px;
+    }
+    
+    /* Internal thought styling */
+    #internal-thought {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        margin-top: 12px;
+        opacity: 0.9;
+    }
+}
+
+/* ----------------------------------------
+   TIER 2: Small Phones (Portrait)
+   ---------------------------------------- */
+@media (max-width: 480px) {
+    #dialogue-box {
+        /* More aggressive bottom positioning for small screens */
+        bottom: 100px !important;
+        
+        /* Tighter constraints */
+        max-height: 35vh;
+        padding: 15px 18px;
+        
+        /* Slightly smaller text for space efficiency */
+        font-size: 0.9rem;
+    }
+    
+    #character-name {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+    
+    #dialogue-text {
+        font-size: 0.88rem;
+        line-height: 1.55;
+    }
+    
+    #internal-thought {
+        font-size: 0.8rem;
+        margin-top: 10px;
+    }
+}
+
+/* ----------------------------------------
+   TIER 3: Modern iOS/Android Safe Areas
+   ---------------------------------------- */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    @media (max-width: 768px) {
+        #dialogue-box {
+            /* Dynamically adjust for device notches/home indicators */
+            bottom: calc(80px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(18px + env(safe-area-inset-bottom));
+        }
+    }
+    
+    @media (max-width: 480px) {
+        #dialogue-box {
+            bottom: calc(100px + env(safe-area-inset-bottom)) !important;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* ----------------------------------------
+   TIER 4: Landscape Mobile
+   ---------------------------------------- */
+@media (max-width: 768px) and (orientation: landscape) {
+    #dialogue-box {
+        /* Use more of horizontal space, less vertical */
+        bottom: 60px !important;
+        max-height: 45vh;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+    }
+}
+
+/* ----------------------------------------
+   BONUS: Touch Target Optimization
+   ---------------------------------------- */
+@media (max-width: 768px) {
+    /* Ensure clickable area for dialogue advancement */
+    #dialogue-box {
+        cursor: pointer;
+        /* Add subtle indication it's tappable */
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Visual feedback on tap */
+    #dialogue-box:active {
+        opacity: 0.95;
+        transform: scale(0.995);
+        transition: all 0.1s ease;
+    }
+}
+
+/* ----------------------------------------
+   TESTING NOTES:
+   ----------------------------------------
+   - Test on iOS Safari (address bar hides on scroll)
+   - Test on Chrome Mobile (persistent bottom bar)
+   - Test on devices with notches (iPhone X+)
+   - Test in landscape orientation
+   - Test with virtual keyboard open (if applicable)
+   
+   RECOMMENDED: Use Chrome DevTools mobile emulation
+   with "Show device frame" enabled
+   ---------------------------------------- */
+/* ========================================
+   CHARACTER SPRITE SYSTEM
+   Version 848 - Two-Position VN Implementation
+   ======================================== */
+
+/* Base sprite container */
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    width: 350px;
+    height: 600px;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    display: none;
+    z-index: 40; /* Just under dialogue box (50) but above background */
+    pointer-events: none;
+}
+
+#character-left {
+    left: 5%;
+}
+
+#character-right {
+    right: 5%;
+}
+
+/* Active speaker - full brightness */
+.character-sprite {
+    opacity: 1;
+}
+
+/* Inactive speaker - dimmed */
+.character-sprite.sprite-dim {
+    opacity: 0.35;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Entrance animation */
+@keyframes spriteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.character-sprite.sprite-enter {
+    animation: spriteEnter 0.5s ease-out forwards;
+}
+
+/* Exit animation */
+@keyframes spriteExit {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.character-sprite.sprite-exit {
+    animation: spriteExit 0.5s ease-out forwards;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE - HYBRID APPROACH
+   ======================================== */
+
+/* Tablet - scale down, keep two sprites */
+@media (max-width: 768px) {
+    .character-sprite {
+        width: 230px;
+        height: 380px;
+    }
+    
+    #character-left {
+        left: 2%;
+    }
+    
+    #character-right {
+        right: 2%;
+    }
+}
+
+/* Phone portrait - single centered active speaker only */
+@media (max-width: 480px) and (orientation: portrait) {
+    /* Hide inactive speaker completely */
+    .character-sprite.sprite-dim {
+        display: none !important;
+    }
+    
+    /* Active speaker centers - positioned ABOVE dialogue box */
+    #character-left:not(.sprite-dim),
+    #character-right:not(.sprite-dim) {
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        bottom: 35vh;    /* Push sprite UP above dialogue box */
+        width: 200px;
+        height: 60vh;    /* Taller sprite - uses viewport height */
+        max-height: 320px; /* Cap to prevent overflow on very tall screens */
+    }
+    
+    /* Dialogue box stays at bottom with controlled height */
+    #dialogue-box {
+        position: fixed;   /* Ensure it stays at bottom */
+        bottom: 0;
+        max-height: 35vh;  /* Controlled height - matches sprite bottom offset */
+        min-height: 140px; /* Ensure text readability */
+        overflow-y: auto;  /* Scroll if text is really long */
+    }
+}
+
+/* Phone landscape - keep two sprites but smaller */
+@media (max-width: 768px) and (orientation: landscape) {
+    .character-sprite {
+        width: 180px;
+        height: 320px;
+    }
+    
+    #character-left {
+        left: 1%;
+    }
+    
+    #character-right {
+        right: 1%;
+    }
+}
+
+/* Very small screens - even more aggressive */
+@media (max-width: 360px) {
+    .character-sprite:not(.sprite-dim) {
+        width: 180px;
+        bottom: 38vh; /* Even more clearance on tiny screens */
+        height: 55vh;
+        max-height: 280px;
+    }
+    
+    #dialogue-box {
+        max-height: 38vh; /* Match sprite offset */
+    }
+}
+
+/* ========================================
+   THREE ECHOES SPECIAL HANDLING
+   ======================================== */
+
+/* For scenes with three-echoes-sprite.png (wider sprite) */
+.echo-scene .character-sprite {
+    width: auto;
+    max-width: 45%;
+}
+
+@media (max-width: 768px) {
+    .echo-scene .character-sprite {
+        max-width: 48%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* On mobile, give echoes full width */
+    .echo-scene #character-right {
+        left: 0 !important;
+        right: 0 !important;
+        width: 100%;
+        height: 300px;
+        transform: none;
+        max-width: 100%;
+    }
+}

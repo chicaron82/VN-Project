@@ -48,7 +48,7 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"I called it... Tori-gatchi."',
-            internal: '[Visual: Screen text, compiling: Project Tori-gatchi v1.0]\n[Cut: Fade to black. Overlay text: **Three months later...**]',
+            internal: '[Visual: Screen text, compiling: Project Tori-gatchi v1.0]\n[Cut: Fade to black. Overlay text: **sometime later...**]',
             next: () => this.act1Scene1(),
             delay: 4000
         });
@@ -244,6 +244,7 @@ class RonnieRoute {
             character: 'Ronnie (narration)',
             dialogue: '"At first I thought it was my phone. But when I checked... nothing. No calls, no messages. Just silence."',
             internal: '[Hospital room. Ronnie at bedside. Toy in his pocket buzzes faintly.]\n[Cut to home: Tamagotchi on desk, motionless.]',
+            background: 'hospital.png',
             next: () => this.act2Beat2(),
             delay: 4000
         });
