@@ -1338,6 +1338,7 @@
         position: relative;
         overflow: hidden; /* Prevent sprite overflow */
         min-height: 0; /* Allow flex shrinking */
+        pointer-events: none; /* CRITICAL: Let clicks pass through to dialogue */
     }
     
     /* Dialogue box: FIXED HEIGHT at bottom */
@@ -1362,10 +1363,13 @@
         padding: 15px 18px;
         box-sizing: border-box;
         
-        /* Ensure it's clickable/tappable */
+        /* CRITICAL: Ensure it's clickable/tappable */
         cursor: pointer;
         user-select: none;
         -webkit-user-select: none;
+        pointer-events: auto !important; /* Force tap events to work */
+        touch-action: manipulation; /* Prevent delay on mobile taps */
+        z-index: 50; /* Ensure it's above sprites */
     }
     
     /* Hide inactive speaker completely on mobile */
