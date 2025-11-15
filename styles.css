@@ -1349,14 +1349,6 @@
         max-height: 35vh;
         min-height: 140px;
         
-        /* Enable scrolling INSIDE the box if needed */
-        overflow-y: auto;
-        overflow-x: hidden;
-        
-        /* Smooth scrolling */
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        
         /* Visual styling */
         background: rgba(0, 0, 0, 0.95);
         border-top: 2px solid #0ff;
