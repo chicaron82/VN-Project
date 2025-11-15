@@ -1620,21 +1620,7 @@
     }
 }
 
-/* Phone landscape - keep two sprites but smaller */
-@media (max-width: 768px) and (orientation: landscape) {
-    .character-sprite {
-        width: 180px;
-        height: 320px;
-    }
-    
-    #character-left {
-        left: 1%;
-    }
-    
-    #character-right {
-        right: 1%;
-    }
-}
+/* ... more code ... */
 
 /* Very small screens - even more aggressive */
 @media (max-width: 360px) {
