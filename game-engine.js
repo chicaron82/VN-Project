@@ -432,10 +432,12 @@ class GameEngine {
             } else {
                 // Show/update left sprite
                 if (this.spriteLeft) {
-                    this.spriteLeft.style.display = 'block';
                     this.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
-                    this.spriteLeft.style.opacity = '1';
-                }
+                    this.spriteLeft.style.display = 'block';
+                    this.spriteLeft.style.opacity = '0';  // Start hidden
+                    setTimeout(() => {
+                    this.spriteLeft.style.opacity = '1';  // Fade in
+                }, 50);}
                 this.currentSprites.left = sprites.left;
             }
         }
@@ -454,9 +456,12 @@ class GameEngine {
             } else {
                 // Show/update right sprite
                 if (this.spriteRight) {
-                    this.spriteRight.style.display = 'block';
-                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
-                    this.spriteRight.style.opacity = '1';
+                        this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                        this.spriteRight.style.display = 'block';
+                        this.spriteRight.style.opacity = '0';  // Start hidden
+                        setTimeout(() => {
+                        this.spriteRight.style.opacity = '1';  // Fade in
+                    }, 50);
                 }
                 this.currentSprites.right = sprites.right;
             }
