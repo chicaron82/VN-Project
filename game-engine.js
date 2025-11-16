@@ -136,8 +136,50 @@ class GameEngine {
             this.notesViewer.style.display = 'none';
         });
         
-        // Click anywhere to skip typing or advance
+        // ========================================
+        // DIALOGUE ADVANCEMENT - Multi-Event Support
+        // Click/Tap/Touch to skip typing or advance
+        // ========================================
+        
+        // Primary: Click event (desktop compatibility)
         this.dialogueBox.addEventListener('click', () => {
+            console.log('[VN] dialogueBox CLICK fired');
+            this.handleDialogueClick();
+        });
+
+        // Enhanced: Pointer events for modern touch + mouse (fires faster than click)
+        this.dialogueBox.addEventListener('pointerdown', (e) => {
+            // Only primary button / main touch
+            if (e.button && e.button !== 0) return;
+            e.preventDefault();
+            console.log('[VN] dialogueBox POINTERDOWN fired');
+            this.handleDialogueClick();
+        });
+
+        // Fallback: Touch events for iOS Safari quirks
+        this.dialogueBox.addEventListener('touchstart', (e) => {
+            // iOS Safari sometimes prefers touchstart; prevent ghost clicks
+            e.preventDefault();
+            console.log('[VN] dialogueBox TOUCHSTART fired');
+            this.handleDialogueClick();
+        }, { passive: false }); // passive: false required for preventDefault()
+
+        // OPTIONAL: Tap anywhere in the game view (outside menus) to advance
+        this.gameView.addEventListener('pointerdown', (e) => {
+            const target = e.target;
+
+            // Ignore UI bits that have their own click behavior
+            if (
+                target.closest('#choice-menu') ||
+                target.closest('#pause-menu') ||
+                target.closest('#notes-viewer') ||
+                target.closest('#save-load-screen') ||
+                target.tagName === 'BUTTON'
+            ) {
+                return;
+            }
+
+            console.log('[VN] gameView POINTERDOWN fired (tap-to-advance)');
             this.handleDialogueClick();
         });
         
@@ -273,12 +315,55 @@ class GameEngine {
             // Initialize route
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
-                this.currentRoute.start();
+                // Ronnie auto-starts in constructor - no .start() needed
             } else if (routeName === 'tori') {
                 this.currentRoute = new ToriRoute(this);
-                this.currentRoute.start();
-            }
+                this.currentRoute.start(); // Tori has explicit .start()
+            }        
         }, 1000);
+    }
+    
+        // ========================================
+    // SPRITE FADE SEQUENCE (for prologue vision)
+    // ========================================
+    
+    fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
+        const container = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!container) return;
+        
+        // Start with sprite1 (young Ronnie)
+        container.style.backgroundImage = `url('${sprite1}')`;
+        container.style.display = 'block';
+        container.style.opacity = '1';
+        
+        const timing = duration / 4; // Split into 4 phases
+        
+        // Phase 1: Fade out sprite1
+        setTimeout(() => {
+            container.style.transition = 'opacity 0.8s ease';
+            container.style.opacity = '0.2';
+        }, timing);
+        
+        // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
+        setTimeout(() => {
+            container.style.backgroundImage = `url('${sprite2}')`;
+            container.style.opacity = '1';
+        }, timing * 1.8);
+        
+        // Phase 3: Hold Old Man briefly, then fade
+        setTimeout(() => {
+            container.style.opacity = '0.2';
+        }, timing * 2.8);
+        
+        // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
+        setTimeout(() => {
+            container.style.backgroundImage = `url('${sprite1}')`;
+            container.style.opacity = '1';
+            container.style.transition = 'opacity 0.6s ease';
+        }, timing * 3.5);
+        
+        // Stay visible - don't fade to black
+        // Sprite persists for rest of scene
     }
     
     // ========================================
@@ -287,6 +372,9 @@ class GameEngine {
     
     displayScene(scene, sceneId) {
         this.currentScene = scene;
+        
+        // Reset pagination state at start of every scene
+        this.paginationActive = false;
         
         // Store scene ID for save system
         if (sceneId) {
@@ -623,6 +711,14 @@ class GameEngine {
     }
     
     handleDialogueClick() {
+        // Diagnostic logging - track state to debug advancement issues
+        console.log('[VN] handleDialogueClick()', {
+            paginationActive: this.paginationActive,
+            typewriterActive: this.typewriterActive,
+            choiceMenuVisible: this.choiceMenu.style.display === 'block',
+            currentScene: this.currentScene ? 'exists' : 'null'
+        });
+        
         // If pagination is active, show next page
         if (this.paginationActive && !this.typewriterActive) {
             this.showNextDialoguePage();

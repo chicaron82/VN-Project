@@ -1,6 +1,7 @@
 // ========================================
 // CUTSCENE ENGINE FOR VERSION 848
 // CSS + JS Animation System
+// FIXED: Properly hides canvas when not playing
 // ========================================
 
 class CutsceneEngine {
@@ -18,14 +19,30 @@ class CutsceneEngine {
     }
     
     createCutsceneContainer() {
-        // Create the cutscene overlay
-        const container = document.createElement('div');
-        container.id = 'cutscene-container';
-        container.innerHTML = `
-            <div id="cutscene-canvas"></div>
-            <div id="cutscene-skip-hint">Press SPACE to skip</div>
-        `;
-        document.body.appendChild(container);
+        // Use existing cutscene-container from HTML or create if missing
+        let container = document.getElementById('cutscene-container');
+        
+        if (!container) {
+            // Create the cutscene overlay if it doesn't exist
+            container = document.createElement('div');
+            container.id = 'cutscene-container';
+            container.innerHTML = `
+                <div id="cutscene-canvas"></div>
+                <div id="cutscene-skip-hint">Press SPACE to skip</div>
+            `;
+            document.body.appendChild(container);
+        }
+        
+        // CRITICAL: Ensure container is hidden by default
+        container.style.display = 'none';
+        container.style.pointerEvents = 'none';
+        
+        // CRITICAL: Ensure canvas is hidden by default
+        const canvas = document.getElementById('cutscene-canvas');
+        if (canvas) {
+            canvas.style.display = 'none';
+            canvas.style.pointerEvents = 'none';
+        }
     }
     
     setupSkipHandler() {
@@ -337,7 +354,17 @@ class CutsceneEngine {
     startCutscene() {
         this.isPlaying = true;
         this.skipEnabled = false;
-        document.getElementById('cutscene-container').classList.add('active');
+        
+        const container = document.getElementById('cutscene-container');
+        const canvas = document.getElementById('cutscene-canvas');
+        
+        // Show both container and canvas
+        container.classList.add('active');
+        container.style.display = 'block';
+        container.style.pointerEvents = 'auto';
+        
+        canvas.style.display = 'block';
+        canvas.style.pointerEvents = 'auto';
         
         // Hide game UI
         if (this.game.gameView) {
@@ -350,11 +377,19 @@ class CutsceneEngine {
         this.skipEnabled = false;
         
         const container = document.getElementById('cutscene-container');
+        const canvas = document.getElementById('cutscene-canvas');
+        
         container.classList.add('fade-out');
         
         setTimeout(() => {
+            // CRITICAL: Hide both container and canvas
             container.classList.remove('active', 'fade-out');
-            container.querySelector('#cutscene-canvas').innerHTML = '';
+            container.style.display = 'none';
+            container.style.pointerEvents = 'none';
+            
+            canvas.style.display = 'none';
+            canvas.style.pointerEvents = 'none';
+            canvas.innerHTML = ''; // Clear content
             
             // Restore game UI
             if (this.game.gameView) {
@@ -380,7 +415,10 @@ class CutsceneEngine {
     enableSkipAfter(delay) {
         setTimeout(() => {
             this.skipEnabled = true;
-            document.getElementById('cutscene-skip-hint').classList.add('visible');
+            const skipHint = document.getElementById('cutscene-skip-hint');
+            if (skipHint) {
+                skipHint.classList.add('visible');
+            }
         }, delay);
     }
     
