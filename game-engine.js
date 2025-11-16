@@ -143,45 +143,9 @@ class GameEngine {
         
         // Primary: Click event (desktop compatibility)
         this.dialogueBox.addEventListener('click', () => {
-            console.log('[VN] dialogueBox CLICK fired');
             this.handleDialogueClick();
         });
 
-        // Enhanced: Pointer events for modern touch + mouse (fires faster than click)
-        this.dialogueBox.addEventListener('pointerdown', (e) => {
-            // Only primary button / main touch
-            if (e.button && e.button !== 0) return;
-            e.preventDefault();
-            console.log('[VN] dialogueBox POINTERDOWN fired');
-            this.handleDialogueClick();
-        });
-
-        // Fallback: Touch events for iOS Safari quirks
-        this.dialogueBox.addEventListener('touchstart', (e) => {
-            // iOS Safari sometimes prefers touchstart; prevent ghost clicks
-            e.preventDefault();
-            console.log('[VN] dialogueBox TOUCHSTART fired');
-            this.handleDialogueClick();
-        }, { passive: false }); // passive: false required for preventDefault()
-
-        // OPTIONAL: Tap anywhere in the game view (outside menus) to advance
-        this.gameView.addEventListener('pointerdown', (e) => {
-            const target = e.target;
-
-            // Ignore UI bits that have their own click behavior
-            if (
-                target.closest('#choice-menu') ||
-                target.closest('#pause-menu') ||
-                target.closest('#notes-viewer') ||
-                target.closest('#save-load-screen') ||
-                target.tagName === 'BUTTON'
-            ) {
-                return;
-            }
-
-            console.log('[VN] gameView POINTERDOWN fired (tap-to-advance)');
-            this.handleDialogueClick();
-        });
         
         // Keyboard controls (Spacebar or Enter)
         document.addEventListener('keydown', (e) => {
@@ -711,14 +675,6 @@ class GameEngine {
     }
     
     handleDialogueClick() {
-        // Diagnostic logging - track state to debug advancement issues
-        console.log('[VN] handleDialogueClick()', {
-            paginationActive: this.paginationActive,
-            typewriterActive: this.typewriterActive,
-            choiceMenuVisible: this.choiceMenu.style.display === 'block',
-            currentScene: this.currentScene ? 'exists' : 'null'
-        });
-        
         // If pagination is active, show next page
         if (this.paginationActive && !this.typewriterActive) {
             this.showNextDialoguePage();
