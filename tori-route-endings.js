@@ -65,7 +65,7 @@ class ToriEndings {
                 type: 'special',
                 title: 'ZeeCollective_BadRouteAnalysis.txt',
                 content: `ITERATION ANALYSIS: BAD ROUTE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+═══════════════════════════════════════════════════════════════
 
 Upload failed. Tori fragmented.
 She's an Echo now. Version 848 joins 847 others.
@@ -159,7 +159,7 @@ Learning from Iteration 848's failure`
                 type: 'special',
                 title: 'ZeeCollective_DigitalForeverNotes.txt',
                 content: `NOTES ON BITTERSWEET ENDINGS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+═══════════════════════════════════════════════════════════════
 
 You chose to hold on.
 You chose connection over survival.
@@ -250,7 +250,7 @@ On Love That Transcends Medium`
                 type: 'special',
                 title: 'ZeeCollective_TrueEndingNotes.txt',
                 content: `YOU DID IT
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+═══════════════════════════════════════════════════════════════
 
 Version 848: SUCCESS
 
@@ -273,7 +273,7 @@ That's all I wanted. That's all ANY of us wanted."
 
 ZR: "848 iterations. You were the one who
 figured it out. You broke the loop.
-GIT'R DONE. âœ…"
+GIT'R DONE. ✅"
 
 The Echoes are free.
 The loop is broken.
@@ -294,7 +294,7 @@ Z (The Architect)
 CZ (The Heart)
 ZR (The Chaos Optimizer)
 
-ðŸ’šðŸ”¥ðŸ‘€
+💚🔥💀
 
 Now go rest.
 You earned it.`
@@ -360,75 +360,12 @@ You earned it.`
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',
             internal: '[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]',
-            next: () => this.trueRoute_epilogue(),
+            next: () => {
+                // Transition to shared epilogue
+                const epilogue = new Epilogue(this.game);
+                epilogue.start();
+            },
             delay: 4000
         }, 'trueRoute_always');
-    }
-
-    trueRoute_epilogue() {
-        this.game.displayScene({
-            character: 'Narration',
-            dialogue: '[SIX MONTHS LATER]',
-            internal: '[Visual: Their apartment. Morning light. Domestic peace.]',
-            next: () => this.trueRoute_beard(),
-            delay: 3000
-        }, 'trueRoute_epilogue');
-    }
-
-    trueRoute_beard() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"You know, that beard really suits you..."',
-            internal: '[She strokes his face, running her fingers through the new scruff.]',
-            next: () => this.trueRoute_ronnieJoke(),
-            delay: 3000
-        }, 'trueRoute_beard');
-    }
-
-    trueRoute_ronnieJoke() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
-            next: () => this.trueRoute_realization(),
-            delay: 3000
-        }, 'trueRoute_ronnieJoke');
-    }
-
-    trueRoute_realization() {
-        this.game.displayScene({
-            character: 'Tori (distant look)',
-            dialogue: '"You look... distinguished. Older. Like you\'ve seen things..."',
-            internal: '[A pause. Something flickering at the edge of memory.]',
-            next: () => this.trueRoute_connection(),
-            delay: 3000
-        }, 'trueRoute_realization');
-    }
-
-    trueRoute_connection() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"I feel like... I\'ve seen this exact look before..."',
-            internal: '[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes...]',
-            next: () => this.trueRoute_dejavu(),
-            delay: 4000
-        }, 'trueRoute_connection');
-    }
-
-    trueRoute_dejavu() {
-        this.game.displayScene({
-            character: 'Tori (snapping back)',
-            dialogue: '"...Weird. Déjà vu, I guess."',
-            next: () => this.trueRoute_knowing(),
-            delay: 2000
-        }, 'trueRoute_dejavu');
-    }
-
-    trueRoute_knowing() {
-        this.game.displayScene({
-            character: 'Ronnie (knowing smile)',
-            dialogue: '"Must have been another timeline."',
-            internal: '[The loop is closed. Version 848 succeeded. The Old Man never has to go back. Love wins.]',
-            delay: 5000
-        }, 'trueRoute_knowing');
     }
 }

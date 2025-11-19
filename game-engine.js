@@ -1,7 +1,7 @@
 // ========================================
 // GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management
-// WITH SPRITE MANAGEMENT + PAGINATION SYSTEM
+// WITH SPRITE MANAGEMENT + PAGINATION SYSTEM + MOBILE BUBBLES
 // ========================================
 
 class GameEngine {
@@ -373,10 +373,22 @@ class GameEngine {
             this.typewriterText(this.dialogueText, scene.dialogue, null, internalLength);
         }
         
-        // Handle internal thoughts
+        // ========================================
+        // INTERNAL THOUGHTS - MOBILE BUBBLE SYSTEM
+        // ========================================
         if (scene.internal) {
-            this.internalThought.textContent = scene.internal;
-            this.internalThought.style.display = 'block';
+            if (this.isMobilePortrait()) {
+                // Mobile portrait: Create floating bubble
+                const position = this.determineCharacterPosition(scene);
+                this.createInternalBubble(scene.internal, position);
+                
+                // Hide the internal thought section in dialogue box
+                this.internalThought.style.display = 'none';
+            } else {
+                // Desktop/landscape: Use normal internal thought display
+                this.internalThought.textContent = scene.internal;
+                this.internalThought.style.display = 'block';
+            }
         } else {
             this.internalThought.style.display = 'none';
         }
@@ -923,10 +935,6 @@ class GameEngine {
     returnToMainMenu() {
         // Stop tether decay if in Tori's route
         if (this.currentRoute) {
-            // Check if route has stopTetherDecay method
-            if (this.currentRoute.stopTetherDecay) {
-                this.currentRoute.stopTetherDecay();
-            }
             // Or if route has tetherSystem object
             if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.stopDecay) {
                 this.currentRoute.tetherSystem.stopDecay();
@@ -943,5 +951,79 @@ class GameEngine {
         } else {
             this.saveManager.showSaveIndicator('No save data found', true);
         }
+    }
+
+    // ========================================
+    // MOBILE DETECTION & INTERNAL BUBBLES
+    // ========================================
+
+    isMobilePortrait() {
+        // Check if device is mobile in portrait orientation
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isPortrait = window.innerHeight > window.innerWidth;
+        return isMobile && isPortrait;
+    }
+
+    createInternalBubble(text, characterPosition = 'center') {
+        // Only use bubbles on mobile portrait
+        if (!this.isMobilePortrait()) {
+            return; // Desktop/landscape uses normal internal thought display
+        }
+        
+        // Remove any existing bubbles first
+        const existingBubbles = document.querySelectorAll('.internal-bubble');
+        existingBubbles.forEach(bubble => bubble.remove());
+        
+        // Create new bubble element
+        const bubble = document.createElement('div');
+        bubble.className = 'internal-bubble';
+        
+        // Add position class based on which character is speaking/thinking
+        if (characterPosition === 'left') {
+            bubble.classList.add('left-character');
+        } else if (characterPosition === 'right') {
+            bubble.classList.add('right-character');
+        } else {
+            bubble.classList.add('center');
+        }
+        
+        // Set text content
+        bubble.textContent = text;
+        
+        // Add to DOM
+        document.body.appendChild(bubble);
+        
+        // Auto-remove after animation completes (5 seconds)
+        setTimeout(() => {
+            if (bubble && bubble.parentNode) {
+                bubble.remove();
+            }
+        }, 5000);
+        
+        console.log(`Internal bubble created: ${text.substring(0, 30)}...`);
+    }
+
+    determineCharacterPosition(sceneData) {
+        // Determine which side character is on based on scene data
+        // This helps position the bubble correctly
+        
+        if (!sceneData.character) return 'center';
+        
+        const charName = sceneData.character.toLowerCase();
+        
+        // Check if specific sprite positioning was provided
+        if (sceneData.sprites) {
+            if (sceneData.sprites.left) return 'left';
+            if (sceneData.sprites.right) return 'right';
+        }
+        
+        // Default positioning by character name
+        if (charName.includes('tori')) {
+            return 'left';
+        } else if (charName.includes('ronnie')) {
+            return 'right';
+        }
+        
+        return 'center';
     }
 }

@@ -1,47 +1,167 @@
 /* ========================================
    VERSION 848 - COMPLETE STYLESHEET
+   All inline styles migrated from vn-modular.html
+   Clean, organized, production-ready
    ======================================== */
+
+/* ========================================
+   UV7 SPLASH SCREEN
+   ======================================== */
+
+#uv7-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    animation: splashFadeIn 1.5s ease-in-out forwards;
+}
+
+#uv7-splash.fade-out {
+    animation: splashFadeOut 1.5s ease-in-out forwards;
+}
+
+.uv7-container {
+    text-align: center;
+    transform: scale(0.9);
+    animation: splashScaleIn 1.5s ease-out 0.5s forwards;
+}
+
+.powered-by-text {
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: #a8a08c;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+    opacity: 0.8;
+}
+
+.uv7-logo-static {
+    width: 400px;
+    height: auto;
+    max-width: 80vw;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uv7-logo-video {
+    width: 400px;
+    height: auto;
+    max-width: 80vw;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uv7-skip-btn {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(220, 210, 180, 0.5);
+    color: #dcd2b4;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+}
+
+.uv7-skip-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(220, 210, 180, 0.8);
+    transform: translateX(5px);
+}
+
+.skip-arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.uv7-skip-btn:hover .skip-arrow {
+    transform: translateX(5px);
+}
+
+@keyframes splashFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes splashFadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes splashScaleIn {
+    from { transform: scale(0.9); }
+    to { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+    .powered-by-text {
+        font-size: 1.2rem;
+    }
+    
+    .uv7-logo-static,
+    .uv7-logo-video {
+        width: 280px;
+    }
+
+    .uv7-skip-btn {
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
 
 /* ========================================
    LOADING SCREEN
    ======================================== */
 
 #loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    display: flex;
+    display: none;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 10000;
-    flex-direction: column;
+    height: 100vh;
+    background: #000;
 }
 
 #loading-screen h2 {
-    font-size: 2em;
     color: #0ff;
     margin-bottom: 20px;
-    animation: pulse 1.5s infinite;
+    font-size: 2em;
 }
 
 #loading-bar-container {
     width: 300px;
     height: 30px;
-    background: rgba(0, 255, 255, 0.1);
     border: 2px solid #0ff;
-    position: relative;
-    overflow: hidden;
+    background: rgba(0, 255, 255, 0.1);
 }
 
 #loading-bar {
+    width: 0%;
     height: 100%;
     background: #0ff;
-    width: 0%;
     transition: width 0.3s;
-    box-shadow: 0 0 10px #0ff;
 }
 
 /* ========================================
@@ -58,40 +178,29 @@
     background: #000;
     opacity: 0;
     transition: opacity 1s;
+    z-index: 9000;
 }
 
-/* Background Image Layer */
+#main-menu.active {
+    display: flex;
+}
+
 #main-menu-bg {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('menudesktop.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    object-fit: cover;
+    object-position: center;
     filter: brightness(0.8);
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
 }
 
-/* Dark overlay for menu text readability */
-#main-menu-bg::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-}
-
-/* Menu Content Container */
 #main-menu-content {
     position: relative;
-    z-index: 10;
+    z-index: 100;
     width: 100%;
     height: 100%;
     display: flex;
@@ -138,10 +247,9 @@
     transform: scale(1.05);
 }
 
-/* Mobile responsive menu */
 @media (max-width: 768px) {
     #main-menu-bg {
-        background-image: url('menumobile.png') !important;
+        content: url('menumobile.png');
     }
     
     #main-menu h1 {
@@ -172,7 +280,6 @@
     transition: opacity 1s;
 }
 
-/* Background Image - The Bridge */
 #route-select-bg {
     position: absolute;
     top: 0;
@@ -186,7 +293,6 @@
     filter: brightness(0.8);
 }
 
-/* Dark overlay for readability */
 #route-select-bg::before {
     content: '';
     position: absolute;
@@ -197,7 +303,6 @@
     background: rgba(0, 0, 0, 0.4);
 }
 
-/* Content Container */
 #route-select-content {
     position: relative;
     z-index: 2;
@@ -209,7 +314,6 @@
     padding: 40px;
 }
 
-/* Title at top */
 #route-select-title {
     text-align: center;
     color: #0ff;
@@ -227,7 +331,6 @@
     opacity: 0.9;
 }
 
-/* Route buttons positioned over characters */
 #route-buttons {
     display: flex;
     justify-content: space-between;
@@ -309,7 +412,6 @@
     text-shadow: 0 0 10px #ff6b6b;
 }
 
-/* Back button */
 #back-to-menu {
     position: absolute;
     bottom: 30px;
@@ -331,7 +433,6 @@
     box-shadow: 0 0 20px #0ff;
 }
 
-/* Mobile Responsive Route Select */
 @media (max-width: 768px) {
     #route-select-bg {
         background-position: top center;
@@ -373,6 +474,590 @@
 }
 
 /* ========================================
+   PAUSE MENU
+   ======================================== */
+
+#pause-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+#pause-menu.active {
+    display: flex;
+}
+
+#pause-content {
+    background: #1a1a2e;
+    padding: 3rem;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 300px;
+}
+
+#pause-content h2 {
+    margin-bottom: 2rem;
+    color: #00ffff;
+}
+
+#pause-button {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 20px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.3s;
+}
+
+#pause-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.pause-menu-button {
+    display: block;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.pause-menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px #0ff;
+    transform: translateX(5px);
+}
+
+.pause-menu-button.danger {
+    border-color: #f00;
+    color: #f00;
+    text-shadow: 0 0 5px #f00;
+}
+
+.pause-menu-button.danger:hover {
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 20px #f00;
+}
+
+/* ========================================
+   ESC HINT
+   ======================================== */
+
+#esc-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ffff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#esc-hint.show {
+    opacity: 1;
+}
+
+#esc-hint.visible {
+    opacity: 1;
+}
+
+/* ========================================
+   SAVE/LOAD SCREEN
+   ======================================== */
+
+#save-load-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1500;
+    justify-content: center;
+    align-items: center;
+}
+
+#save-load-screen.active {
+    display: flex;
+}
+
+#save-load-content {
+    background: #1a1a2e;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid #00ffff;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#save-load-title {
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#mode-toggle {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.mode-button {
+    background: #2a2a3e;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.mode-button.active {
+    background: #00ffff;
+    color: #000;
+}
+
+.mode-button:hover {
+    background: #00ff88;
+    color: #000;
+}
+
+#close-save-load {
+    display: block;
+    margin: 1.5rem auto 0;
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#close-save-load:hover {
+    background: #ff6666;
+}
+
+.save-slot {
+    background: #2a2a3e;
+    border: 2px solid #00ffff;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-slot:hover {
+    background: #3a3a4e;
+    border-color: #00ff88;
+}
+
+.save-slot.empty {
+    opacity: 0.6;
+}
+
+.slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.slot-label {
+    font-weight: bold;
+    color: #00ffff;
+}
+
+.slot-route {
+    color: #00ff88;
+    font-size: 0.9rem;
+}
+
+.slot-info {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.slot-timestamp {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+
+.save-slot-empty-text {
+    color: #666;
+    font-style: italic;
+}
+
+.delete-btn {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #ff6666;
+}
+
+/* ========================================
+   CONFIRMATION DIALOG
+   ======================================== */
+
+#confirm-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+#confirm-dialog.active {
+    display: flex;
+}
+
+#confirmation-content {
+    background: #1a1a2e;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid #00ffff;
+    max-width: 400px;
+    text-align: center;
+}
+
+#confirm-title {
+    color: #00ffff;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+#confirm-message {
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
+
+#confirmation-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.confirm-button {
+    background: #00ffff;
+    color: #000;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.confirm-button:hover {
+    background: #00ff88;
+    transform: scale(1.05);
+}
+
+.confirm-button.cancel {
+    background: #ff4444;
+    color: white;
+}
+
+.confirm-button.cancel:hover {
+    background: #ff6666;
+}
+
+/* ========================================
+   CREDITS SCREEN
+   ======================================== */
+
+#credits-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    z-index: 9500;
+    overflow: hidden;
+}
+
+#credits-screen.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credit-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 60px 60px 140px 60px;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.credit-screen.active {
+    display: flex;
+    opacity: 1;
+}
+
+.credit-screen.fade-out {
+    opacity: 0;
+}
+
+#next-credits {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 15px 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    z-index: 9600;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+#next-credits:hover {
+    background: rgba(0, 255, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.credits-logo {
+    width: 350px;
+    max-width: 70%;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    margin-bottom: 40px;
+}
+
+.credits-powered-by {
+    font-size: 2rem;
+    color: #a8a08c;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.credits-group-photo {
+    width: 600px;
+    max-width: 80%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 15px;
+    border: 4px solid #00ffff;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.4);
+    margin-bottom: 40px;
+}
+
+.credits-group-title {
+    font-size: 3.5rem;
+    color: #00ffff;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 30px;
+}
+
+.credits-group-subtitle {
+    font-size: 1.8rem;
+    color: #a8a08c;
+    letter-spacing: 0.2em;
+}
+
+.portrait-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    max-width: 1400px;
+}
+
+.portrait-display-image {
+    width: 400px;
+    height: auto;
+    border-radius: 15px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.portrait-display-content {
+    flex: 1;
+    max-width: 700px;
+}
+
+.portrait-display-name {
+    font-size: 3.5rem;
+    color: #00ffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.portrait-display-title {
+    font-size: 2rem;
+    color: #a8a08c;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.portrait-display-story {
+    font-size: 1.4rem;
+    color: #ddd;
+    line-height: 1.8;
+    font-style: italic;
+}
+
+.portrait-display-platform {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 25px;
+}
+
+.credits-text-screen {
+    max-width: 1000px;
+    text-align: center;
+    margin: auto 0;
+}
+
+.credits-big-title {
+    font-size: 4rem;
+    color: #00ffff;
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    margin-bottom: 40px;
+    letter-spacing: 0.15em;
+}
+
+.credits-big-text {
+    font-size: 1.8rem;
+    color: #ddd;
+    line-height: 2;
+    margin-bottom: 20px;
+}
+
+.credits-big-text strong {
+    color: #00ffff;
+}
+
+.credits-final-message {
+    font-size: 4.5rem;
+    color: #00ffff;
+    font-weight: 700;
+    text-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+}
+
+@media (max-width: 1200px) {
+    .portrait-display {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .portrait-display-image {
+        width: 350px;
+    }
+}
+
+@media (min-width: 769px) and (max-height: 900px) {
+    .credit-screen {
+        padding: 40px 60px 120px 60px;
+    }
+    
+    .credits-big-text {
+        font-size: 1.5rem;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 768px) {
+    .credits-big-title {
+        font-size: 2.5rem;
+    }
+    
+    .credits-big-text {
+        font-size: 1.3rem;
+    }
+    
+    .portrait-display-name {
+        font-size: 2.5rem;
+    }
+    
+    .portrait-display-title {
+        font-size: 1.5rem;
+    }
+    
+    .portrait-display-story {
+        font-size: 1.2rem;
+    }
+    
+    .portrait-display-image {
+        width: 280px;
+    }
+    
+    .credits-final-message {
+        font-size: 3rem;
+    }
+}
+
+/* ========================================
    ANIMATIONS
    ======================================== */
 
@@ -396,6 +1081,11 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ========================================
@@ -430,7 +1120,6 @@
    TORI'S ROUTE UI ELEMENTS
    ======================================== */
 
-/* Tether Bar */
 #tether-ui {
     position: fixed;
     top: 20px;
@@ -441,7 +1130,7 @@
     z-index: 100;
 }
 
-#tether-bar {
+#tether-meter {
     width: 100%;
     height: 30px;
     background: rgba(0, 0, 0, 0.8);
@@ -481,7 +1170,6 @@
     50% { opacity: 0.7; }
 }
 
-/* Hold On Button */
 #hold-on-button {
     margin-top: 10px;
     background: rgba(0, 255, 255, 0.2);
@@ -505,7 +1193,6 @@
     cursor: not-allowed;
 }
 
-/* Echo Display */
 #echo-display {
     position: fixed;
     top: 100px;
@@ -526,7 +1213,7 @@
     text-shadow: 0 0 5px #0ff;
 }
 
-.echo-text {
+.echo-voice {
     color: #fff;
     font-size: 0.85em;
     margin-bottom: 8px;
@@ -540,7 +1227,6 @@
     border-left-color: #ff6b6b;
 }
 
-/* Notes Button */
 #notes-button {
     position: fixed;
     top: 20px;
@@ -566,7 +1252,6 @@
     font-weight: bold;
 }
 
-/* Notes Viewer */
 #notes-viewer {
     position: fixed;
     top: 50%;
@@ -691,10 +1376,6 @@
     margin-bottom: 10px;
 }
 
-/* ========================================
-   INTERNAL THOUGHT - NOW CONSTRAINED
-   ======================================== */
-
 #internal-thought {
     display: none;
     color: #aaa;
@@ -706,17 +1387,11 @@
     border-left: 3px solid #00ffcc;
     border-radius: 4px;
     line-height: 1.5;
-    
-    /* THE FIX: Constrain internal thought height */
     max-height: 20vh;
     overflow-y: auto;
     overflow-x: hidden;
-    
-    /* Smooth scrolling */
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    
-    /* Custom scrollbar styling */
     scrollbar-width: thin;
     scrollbar-color: #00ffcc #222;
 }
@@ -788,213 +1463,10 @@
 }
 
 /* ========================================
-   PAUSE BUTTON
+   SAVE INDICATOR
    ======================================== */
 
-#pause-button {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.7);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 8px 20px;
-    font-family: 'Courier New', monospace;
-    cursor: pointer;
-    z-index: 90;
-    transition: all 0.3s;
-}
-
-#pause-button:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px #0ff;
-}
-
-#pause-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    animation: fadeIn 0.3s;
-}
-
-#pause-menu.active {
-    display: flex;
-}
-
-#pause-menu-content {
-    background: rgba(0, 20, 20, 0.95);
-    border: 3px solid #0ff;
-    padding: 40px;
-    min-width: 400px;
-    text-align: center;
-}
-
-#pause-menu-content h2 {
-    color: #0ff;
-    font-size: 2em;
-    margin-bottom: 30px;
-    text-shadow: 0 0 20px #0ff;
-}
-
-.pause-menu-button {
-    display: block;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 15px 30px;
-    margin: 10px 0;
-    font-size: 1.2em;
-    font-family: 'Courier New', monospace;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-shadow: 0 0 5px #0ff;
-}
-
-.pause-menu-button:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 20px #0ff;
-    transform: translateX(5px);
-}
-
-.pause-menu-button.danger {
-    border-color: #f00;
-    color: #f00;
-    text-shadow: 0 0 5px #f00;
-}
-
-.pause-menu-button.danger:hover {
-    background: rgba(255, 0, 0, 0.2);
-    box-shadow: 0 0 20px #f00;
-}
-
-/* ========================================
-   SAVE/LOAD UI
-   ======================================== */
-
-
-#save-load-screen {
-    display: none;
-}
-
-#save-load-content h2 {
-    color: #0ff;
-    text-align: center;
-    margin-bottom: 20px;
-    text-shadow: 0 0 10px #0ff;
-}
-
-.mode-selector {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.mode-button {
-    background: rgba(0, 0, 0, 0.8);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 10px 30px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.mode-button.active {
-    background: rgba(0, 255, 255, 0.3);
-    box-shadow: 0 0 20px #0ff;
-}
-
-#save-slots {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
-    max-height: 60vh;
-    overflow-y: auto;
-    padding: 10px;
-}
-
-.save-slot {
-    background: rgba(0, 0, 0, 0.8);
-    border: 2px solid #0ff;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-}
-
-.save-slot:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px #0ff;
-}
-
-.save-slot.empty {
-    opacity: 0.5;
-    border-style: dashed;
-}
-
-.save-slot-header {
-    color: #0ff;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.save-slot-info {
-    color: #fff;
-    font-size: 0.9em;
-}
-
-.save-slot-route {
-    color: #00ff88;
-    font-style: italic;
-}
-
-.save-slot-timestamp {
-    color: #888;
-    font-size: 0.8em;
-    margin-top: 5px;
-}
-
-.delete-save {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: rgba(255, 0, 0, 0.3);
-    color: #fff;
-    border: 1px solid #ff0000;
-    padding: 3px 8px;
-    cursor: pointer;
-    font-size: 0.8em;
-}
-
-.delete-save:hover {
-    background: rgba(255, 0, 0, 0.5);
-}
-
-#back-button {
-    margin-top: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 10px 30px;
-    width: 100%;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-#back-button:hover {
-    background: rgba(0, 255, 255, 0.2);
-}
-
-.save-indicator {
+#save-indicator {
     position: fixed;
     top: 20px;
     left: 50%;
@@ -1024,83 +1496,160 @@
     }
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+/* ========================================
+   CHARACTER SPRITE SYSTEM
+   ======================================== */
 
-#esc-hint {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 10px 20px;
-    z-index: 9998;
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    width: 350px;
+    height: 600px;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
     display: none;
-    animation: fadeIn 0.5s;
+    z-index: 40;
+    pointer-events: none;
 }
 
-#confirmation-dialog {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.95);
-    border: 3px solid #0ff;
-    padding: 30px;
-    z-index: 10002;
-    display: none;
-    min-width: 400px;
+#character-left {
+    left: 5%;
 }
 
-#confirmation-dialog p {
-    color: #fff;
-    margin-bottom: 20px;
-    font-size: 1.1em;
+#character-right {
+    right: 5%;
 }
 
-.confirmation-buttons {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
+.character-sprite.sprite-dim {
+    opacity: 0.35;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
 }
 
-.confirm-button {
-    background: rgba(0, 255, 255, 0.2);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 10px 30px;
-    cursor: pointer;
-    transition: all 0.3s;
+@keyframes spriteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.confirm-button:hover {
-    background: rgba(0, 255, 255, 0.4);
-    box-shadow: 0 0 20px #0ff;
+.character-sprite.sprite-enter {
+    animation: spriteEnter 0.5s ease-out forwards;
 }
 
-.confirm-button.cancel {
-    background: rgba(255, 0, 0, 0.2);
-    color: #ff6b6b;
-    border-color: #ff6b6b;
+@keyframes spriteExit {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
 
-.confirm-button.cancel:hover {
-    background: rgba(255, 0, 0, 0.4);
-    box-shadow: 0 0 20px #ff6b6b;
+.character-sprite.sprite-exit {
+    animation: spriteExit 0.5s ease-out forwards;
+}
+
+.echo-scene .character-sprite {
+    width: auto;
+    max-width: 45%;
+}
+
+@media (max-width: 768px) {
+    .character-sprite {
+        width: 230px;
+        height: 380px;
+    }
+    
+    #character-left {
+        left: 2%;
+    }
+    
+    #character-right {
+        right: 2%;
+    }
+    
+    .echo-scene .character-sprite {
+        max-width: 48%;
+    }
 }
 
 /* ========================================
-   MOBILE RESPONSIVE LAYOUT
+   MOBILE RESPONSIVE - BELLE'S FIX
    ======================================== */
 
-/* ----------------------------------------
-   TIER 1: General Mobile (Tablets + Phones)
-   ---------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 480px) and (orientation: portrait) {
+    #game-view {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        justify-content: flex-end;
+    }
+    
+    #scene-background {
+        flex-grow: 1;
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+        pointer-events: none;
+    }
+    
+    #dialogue-box {
+        position: relative;
+        width: 100%;
+        height: 35vh;
+        max-height: 35vh;
+        min-height: 140px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        background: rgba(0, 0, 0, 0.95);
+        border-top: 2px solid #0ff;
+        padding: 15px 18px;
+        box-sizing: border-box;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        pointer-events: auto !important;
+        touch-action: manipulation;
+        z-index: 50;
+    }
+    
+    .character-sprite.sprite-dim {
+        display: none !important;
+    }
+    
+    #character-left:not(.sprite-dim),
+    #character-right:not(.sprite-dim) {
+        position: absolute;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        bottom: 0;
+        width: 200px;
+        height: 85%;
+        max-height: 400px;
+        object-fit: contain;
+    }
+    
+    .echo-scene #character-right {
+        left: 0 !important;
+        right: 0 !important;
+        width: 100%;
+        height: 300px;
+        transform: none;
+        max-width: 100%;
+    }
+    
     #pause-button {
         top: 5px;
         padding: 5px 15px;
@@ -1125,72 +1674,32 @@
         font-size: 0.9em;
     }
     
-    /* DIALOGUE BOX: Belle's scrolling fix */
-    #dialogue-box {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        transform: none;
-        border-radius: 0;
-        
-        /* Prevent box from consuming too much screen */
-        max-height: 40vh;
-        
-        /* Ensure padding doesn't push content out of view */
-        padding: 18px 20px;
-        
-        /* Enable scrolling if content overflows */
-        overflow-y: auto;
-        
-        /* Smooth scroll behavior */
-        scroll-behavior: smooth;
-        
-        /* Improve readability on mobile */
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Character name adjustments */
     #character-name {
         font-size: 1.1rem;
         margin-bottom: 10px;
         font-weight: 600;
     }
     
-    /* Dialogue text optimization */
     #dialogue-text {
         font-size: 0.95rem;
-        line-height: 1.6; /* Better mobile readability */
+        line-height: 1.6;
         margin-bottom: 8px;
     }
     
-    /* INTERNAL THOUGHT: Mobile constraints */
     #internal-thought {
         font-size: 0.85rem;
         line-height: 1.5;
         margin-top: 12px;
         padding: 10px 12px;
-        
-        /* Mobile-specific constraint */
         max-height: 15vh;
         overflow-y: auto;
     }
 }
 
-/* ----------------------------------------
-   TIER 2: Small Phones (Portrait)
-   ---------------------------------------- */
 @media (max-width: 480px) {
     #dialogue-box {
-        /* More aggressive bottom positioning for small screens */
-        bottom: 100px !important;
-        
-        /* Tighter constraints */
         max-height: 35vh;
         padding: 15px 18px;
-        
-        /* Slightly smaller text for space efficiency */
         font-size: 0.9rem;
     }
     
@@ -1204,7 +1713,6 @@
         line-height: 1.55;
     }
     
-    /* INTERNAL THOUGHT: Even tighter on small screens */
     #internal-thought {
         font-size: 0.8rem;
         margin-top: 10px;
@@ -1213,33 +1721,22 @@
     }
 }
 
-/* ----------------------------------------
-   TIER 3: Modern iOS/Android Safe Areas
-   ---------------------------------------- */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
     @media (max-width: 768px) {
         #dialogue-box {
-            /* Dynamically adjust for device notches/home indicators */
-            bottom: calc(80px + env(safe-area-inset-bottom)) !important;
             padding-bottom: calc(18px + env(safe-area-inset-bottom));
         }
     }
     
     @media (max-width: 480px) {
         #dialogue-box {
-            bottom: calc(100px + env(safe-area-inset-bottom)) !important;
             padding-bottom: calc(15px + env(safe-area-inset-bottom));
         }
     }
 }
 
-/* ----------------------------------------
-   TIER 4: Landscape Mobile
-   ---------------------------------------- */
 @media (max-width: 768px) and (orientation: landscape) {
     #dialogue-box {
-        /* Use more of horizontal space, less vertical */
-        bottom: 60px !important;
         max-height: 45vh;
         left: 5%;
         right: 5%;
@@ -1251,20 +1748,7 @@
     }
 }
 
-/* ----------------------------------------
-   BONUS: Touch Target Optimization
-   ---------------------------------------- */
 @media (max-width: 768px) {
-    /* Ensure clickable area for dialogue advancement */
-    #dialogue-box {
-        cursor: pointer;
-        /* Add subtle indication it's tappable */
-        user-select: none;
-        -webkit-user-select: none;
-        -webkit-tap-highlight-color: transparent;
-    }
-    
-    /* Visual feedback on tap */
     #dialogue-box:active {
         opacity: 0.95;
         transform: scale(0.995);
@@ -1272,238 +1756,22 @@
     }
 }
 
-/* ========================================
-   CHARACTER SPRITE SYSTEM
-   Version 848 - Two-Position VN Implementation
-   ======================================== */
-
-/* Base sprite container */
-.character-sprite {
-    position: absolute;
-    bottom: 0;
-    width: 350px;
-    height: 600px;
-    background-size: contain;
-    background-position: bottom center;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
-    display: none;
-    z-index: 40; /* Just under dialogue box (50) but above background */
-    pointer-events: none;
-}
-
-#character-left {
-    left: 5%;
-}
-
-#character-right {
-    right: 5%;
-}
-
-/* Active speaker - full brightness */
-.character-sprite {
-    opacity: 1;
-}
-
-/* Inactive speaker - dimmed */
-.character-sprite.sprite-dim {
-    opacity: 0.35;
-    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
-}
-
-/* Entrance animation */
-@keyframes spriteEnter {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.character-sprite.sprite-enter {
-    animation: spriteEnter 0.5s ease-out forwards;
-}
-
-/* Exit animation */
-@keyframes spriteExit {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-}
-
-.character-sprite.sprite-exit {
-    animation: spriteExit 0.5s ease-out forwards;
-}
-
-/* ========================================
-   MOBILE RESPONSIVE - HYBRID APPROACH
-   ======================================== */
-
-/* Tablet - scale down, keep two sprites */
-@media (max-width: 768px) {
-    .character-sprite {
-        width: 230px;
-        height: 380px;
-    }
-    
-    #character-left {
-        left: 2%;
-    }
-    
-    #character-right {
-        right: 2%;
-    }
-}
-
-/* Phone portrait - Flexbox layout with guaranteed separation */
-@media (max-width: 480px) and (orientation: portrait) {
-    /* ========================================
-       BELLE'S FIX: FLEXBOX LAYOUT STRUCTURE
-       Guaranteed non-overlapping zones
-       ======================================== */
-    
-    #game-view {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        justify-content: flex-end;
-    }
-    
-    /* Sprite area takes all space ABOVE dialogue box */
-    #scene-background {
-        flex-grow: 1;
-        position: relative;
-        overflow: hidden; /* Prevent sprite overflow */
-        min-height: 0; /* Allow flex shrinking */
-        pointer-events: none; /* CRITICAL: Let clicks pass through to dialogue */
-    }
-    
-    /* Dialogue box: FIXED HEIGHT at bottom */
-    #dialogue-box {
-        position: relative; /* Not fixed - part of flex flow */
-        width: 100%;
-        height: 35vh; /* Fixed height */
-        max-height: 35vh;
-        min-height: 140px;
-        
-        /* Enable scrolling INSIDE the box if needed */
-        overflow-y: auto;
-        overflow-x: hidden;
-        
-        /* Smooth scrolling */
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-        
-        /* Visual styling */
-        background: rgba(0, 0, 0, 0.95);
-        border-top: 2px solid #0ff;
-        padding: 15px 18px;
-        box-sizing: border-box;
-        
-        /* CRITICAL: Ensure it's clickable/tappable */
-        cursor: pointer;
-        user-select: none;
-        -webkit-user-select: none;
-        pointer-events: auto !important; /* Force tap events to work */
-        touch-action: manipulation; /* Prevent delay on mobile taps */
-        z-index: 50; /* Ensure it's above sprites */
-    }
-    
-    /* Hide inactive speaker completely on mobile */
-    .character-sprite.sprite-dim {
-        display: none !important;
-    }
-    
-    /* Active speaker - now positioned relative to #scene-background (the flex sprite area) */
-    #character-left:not(.sprite-dim),
-    #character-right:not(.sprite-dim) {
-        position: absolute;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%);
-        bottom: 0; /* Bottom of sprite area (right above dialogue) */
-        width: 200px;
-        
-        /* Height relative to SPRITE AREA, not full viewport */
-        height: 85%; /* 85% of available sprite area */
-        max-height: 400px;
-        
-        /* Ensure sprite fits within its area */
-        object-fit: contain;
-    }
-}
-
-/* Very small screens - even more aggressive */
 @media (max-width: 360px) {
     .character-sprite:not(.sprite-dim) {
         width: 180px;
-        bottom: 38vh; /* Even more clearance on tiny screens */
         height: 55vh;
         max-height: 280px;
     }
     
     #dialogue-box {
-        max-height: 38vh; /* Match sprite offset */
+        max-height: 38vh;
     }
 }
 
 /* ========================================
-   THREE ECHOES SPECIAL HANDLING
+   CUTSCENE SYSTEM
    ======================================== */
 
-/* For scenes with three-echoes-sprite.png (wider sprite) */
-.echo-scene .character-sprite {
-    width: auto;
-    max-width: 45%;
-}
-
-@media (max-width: 768px) {
-    .echo-scene .character-sprite {
-        max-width: 48%;
-    }
-}
-
-@media (max-width: 480px) {
-    /* On mobile, give echoes full width */
-    .echo-scene #character-right {
-        left: 0 !important;
-        right: 0 !important;
-        width: 100%;
-        height: 300px;
-        transform: none;
-        max-width: 100%;
-    }
-}
-
-/* ========================================
-   CUTSCENE SYSTEM - OVERLAY PROTECTION
-   ======================================== */
-
-#cutscene-container {
-    display: none;
-    pointer-events: none;
-    z-index: 9999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-}
-
-#cutscene-container.active {
-    display: block;
-    pointer-events: auto;
-}
 
 #cutscene-canvas {
     width: 100%;
@@ -1511,19 +1779,106 @@
     position: relative;
 }
 
-#cutscene-skip-hint {
-    display: none;
+/* ========================================
+   INTERNAL THOUGHT BUBBLES (MOBILE PORTRAIT)
+   Floating bubbles to keep sprites visible
+   ======================================== */
+
+.internal-bubble {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    color: #0ff;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 10px 20px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.95) 100%);
     border: 2px solid #0ff;
-    font-family: 'Courier New', monospace;
+    border-radius: 20px;
+    padding: 12px 18px;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: #1a1a2e;
+    max-width: 280px;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.4);
+    line-height: 1.5;
+    
+    /* Animation */
+    animation: internalBubbleFade 5s ease-in-out forwards;
 }
 
-#cutscene-skip-hint.visible {
-    display: block;
+/* Bubble tail (optional visual flourish) */
+.internal-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #0ff;
 }
 
+/* Fade in/out animation */
+@keyframes internalBubbleFade {
+    0% { 
+        opacity: 0; 
+        transform: translateY(20px) scale(0.9);
+    }
+    10% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+    }
+    85% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1);
+    }
+    100% { 
+        opacity: 0; 
+        transform: translateY(-10px) scale(0.95);
+    }
+}
+
+/* Position variants */
+.internal-bubble.left-character {
+    top: 15%;
+    left: 5%;
+}
+
+.internal-bubble.right-character {
+    top: 15%;
+    right: 5%;
+}
+
+.internal-bubble.center {
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) and (orientation: portrait) {
+    .internal-bubble {
+        max-width: 70%;
+        font-size: 0.8rem;
+        padding: 10px 15px;
+    }
+    
+    .internal-bubble.left-character {
+        top: 10%;
+        left: 10px;
+    }
+    
+    .internal-bubble.right-character {
+        top: 10%;
+        right: 10px;
+    }
+    
+    .internal-bubble.center {
+        top: 15%;
+    }
+}
+
+/* Prevent multiple bubbles from stacking */
+.internal-bubble + .internal-bubble {
+    display: none;
+}

@@ -13,22 +13,22 @@ class TetherSystem {
         // TETHER STATE
         // ========================================
         
-        this.tetherLevel = 100;
-        this.tetherDecayRate = 0.3;          // Gentle passive drain
+        this.tetherLevel = GameConfig.TETHER.INITIAL_LEVEL;
+        this.tetherDecayRate = GameConfig.TETHER.DECAY_RATE_BASE;  // Gentle passive drain
         this.tetherDecayTimer = null;        // Passive decay interval
         this.holdOnCooldown = false;         // Hold On button cooldown state
         
-        // Configuration constants
-        this.HOLD_ON_BOOST = 10;             // Boost amount from Hold On button
-        this.HOLD_ON_COOLDOWN_MS = 8000;     // 8 second cooldown
-        this.DECAY_INTERVAL_MS = 5000;       // Decay every 5 seconds
-        this.CRITICAL_THRESHOLD = 20;        // Glitch effect threshold
+        // Configuration constants (from GameConfig)
+        this.HOLD_ON_BOOST = GameConfig.TETHER.HOLD_ON_BOOST;
+        this.HOLD_ON_COOLDOWN_MS = GameConfig.TETHER.HOLD_ON_COOLDOWN_MS;
+        this.DECAY_INTERVAL_MS = GameConfig.TETHER.DECAY_INTERVAL_MS;
+        this.CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL;
         
-        // Decay acceleration thresholds
-        this.DECAY_MEDIUM_THRESHOLD = 50;    // Start gentle acceleration
-        this.DECAY_CRITICAL_THRESHOLD = 30;  // More aggressive decay
-        this.DECAY_MEDIUM_RATE = 0.5;        // Medium decay rate
-        this.DECAY_CRITICAL_RATE = 0.8;      // Critical decay rate
+        // Decay acceleration thresholds (from GameConfig)
+        this.DECAY_MEDIUM_THRESHOLD = GameConfig.TETHER.THRESHOLD_MEDIUM_DECAY;
+        this.DECAY_CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL_DECAY;
+        this.DECAY_MEDIUM_RATE = GameConfig.TETHER.DECAY_RATE_MEDIUM;
+        this.DECAY_CRITICAL_RATE = GameConfig.TETHER.DECAY_RATE_CRITICAL;
         
         // ========================================
         // ECHO SYSTEM STATE

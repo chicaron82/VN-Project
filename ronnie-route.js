@@ -28,7 +28,7 @@ class RonnieRoute {
             },
             next: () => this.prologueScene4_toy(),
             delay: 4500
-        });
+        }, 'prologueScene4');
     }
 
     prologueScene4_toy() {
@@ -38,7 +38,7 @@ class RonnieRoute {
             internal: '[Visual: Ronnie clutching the Tamagotchi.]',
             next: () => this.prologueScene5(),
             delay: 4000
-        });
+        }, 'prologueScene4_toy');
     }
 
     // Scene 5: Creation of Tori-gatchi (Part 1 - Building)
@@ -49,7 +49,7 @@ class RonnieRoute {
             internal: '[Montage visuals: Ronnie back home, late nights coding. Empty pizza boxes, coffee cups piling. The Tamagotchi always nearby.]',
             next: () => this.prologueScene5_hospital(),
             delay: 5000
-        });
+        }, 'prologueScene5');
     }
 
     // NEW SCENE: First Hospital Visit (with single buzz)
@@ -60,7 +60,7 @@ class RonnieRoute {
             internal: '[Visual: Hospital room. Tori still unconscious. Monitors beeping steadily. Ronnie sits beside her bed, laptop bag over his shoulder.]',
             next: () => this.prologueScene5_ronniegatchi(),
             delay: 3000
-        });
+        }, 'prologueScene5_hospital');
     }
 
     prologueScene5_ronniegatchi() {
@@ -70,7 +70,7 @@ class RonnieRoute {
             internal: '[He reaches into his pocket, pulls out the Tamagotchi. The screen glows faintly in the dim hospital lighting.]',
             next: () => this.prologueScene5_buzz(),
             delay: 3000
-        });
+        }, 'prologueScene5_ronniegatchi');
     }
 
     prologueScene5_buzz() {
@@ -81,7 +81,7 @@ class RonnieRoute {
             next: () => this.prologueScene5_phone_check(),
             delay: 2000,
             style: 'critical'
-        });
+        }, 'prologueScene5_buzz');
     }
 
     prologueScene5_phone_check() {
@@ -91,7 +91,7 @@ class RonnieRoute {
             internal: '[He instinctively reaches for his phone with his other hand. Checks the screen. No notifications. No messages. Nothing.]',
             next: () => this.prologueScene5_dismiss(),
             delay: 2500
-        });
+        }, 'prologueScene5_phone_check');
     }
 
     prologueScene5_dismiss() {
@@ -101,7 +101,7 @@ class RonnieRoute {
             internal: '[He pockets his phone, dismisses it completely. Looks back at Tori\'s still form in the hospital bed.]',
             next: () => this.prologueScene5_name(),
             delay: 2500
-        });
+        }, 'prologueScene5_dismiss');
     }
 
     prologueScene5_name() {
@@ -111,7 +111,7 @@ class RonnieRoute {
             internal: '[Visual: He squeezes the toy as a rememberance and places it back in his pocket. A sad smile crosses his face despite the pain.]',
             next: () => this.prologueScene5_promise(),
             delay: 4000
-        });
+        }, 'prologueScene5_name');
     }
 
     prologueScene5_promise() {
@@ -121,7 +121,7 @@ class RonnieRoute {
             internal: '[He squeezes her hand. The monitors beep their steady rhythm. No response.]',
             next: () => this.prologueScene5_transition(),
             delay: 3500
-        });
+        }, 'prologueScene5_promise');
     }
 
     prologueScene5_transition() {
@@ -131,7 +131,7 @@ class RonnieRoute {
             internal: '[Fade to black. The passage of days and nights blurs together - coding, visiting, hoping.]',
             next: () => this.act1Scene1(),
             delay: 3000
-        });
+        }, 'prologueScene5_transition');
     }
 
     // ========================================
@@ -148,7 +148,7 @@ class RonnieRoute {
             background: 'apartment.png',
             next: () => this.act1Scene1_sprite_loads(),
             delay: 3000
-        });
+        }, 'act1Scene1');
     }
 
     act1Scene1_sprite_loads() {
@@ -158,7 +158,7 @@ class RonnieRoute {
             internal: '[The Tori-gatchi interface boots up. Her digital form materializes on screen.]',
             next: () => this.act1Scene1_glitch(),
             delay: 2500
-        });
+        }, 'act1Scene1_sprite_loads');
     }
 
     act1Scene1_glitch() {
@@ -169,7 +169,7 @@ class RonnieRoute {
             next: () => this.act1Scene1_first_words(),
             delay: 3000,
             style: 'critical'
-        });
+        }, 'act1Scene1_glitch');
     }
 
     act1Scene1_first_words() {
@@ -182,7 +182,7 @@ class RonnieRoute {
             },
             next: () => this.act1Scene1_narration(),
             delay: 4000
-        });
+        }, 'act1Scene1_first_words');
     }
 
     act1Scene1_narration() {
@@ -198,7 +198,7 @@ class RonnieRoute {
                 this.game.gameState.flags.act1_first_choice = choice;
                 this.act1Scene1_choiceOutcome(choice);
             }
-        });
+        }, 'act1Scene1_narration');
     }
 
     act1Scene1_choiceOutcome(choice) {
@@ -225,7 +225,7 @@ class RonnieRoute {
             internal: `[${routeTilt}]`,
             next: () => this.act1Scene2(),
             delay: 4500
-        });
+        }, 'act1Scene1_choiceOutcome');
     }
 
     // Scene 2: First Full Conversation
@@ -233,20 +233,20 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"I barely slept. Every time I closed my eyes, I heard her voice again. Tori. My wife. Talking to me from inside a game I built. It should be impossible. But when I open my eyes..."',
-            internal: '[Visual: Morning light filters into Ronnie\'s messy room. His laptop screen glows softly Ã¢â‚¬â€ Tori-gatchi is still running.]',
+            internal: '[Visual: Morning light filters into Ronnie\'s messy room. His laptop screen glows softly — Tori-gatchi is still running.]',
             next: () => this.act1Scene2_greeting(),
             delay: 5000
-        });
+        }, 'act1Scene2');
     }
 
     act1Scene2_greeting() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Good morning, sleepyhead. ...Or did you even sleep at all?"',
-            internal: '[Sprite flickers Ã¢â‚¬â€ she appears again, clearer than before. Her smile is tired but real.]',
+            internal: '[Sprite flickers — she appears again, clearer than before. Her smile is tired but real.]',
             next: () => this.act1Scene2_narration(),
             delay: 3000
-        });
+        }, 'act1Scene2_greeting');
     }
 
     act1Scene2_narration() {
@@ -261,7 +261,7 @@ class RonnieRoute {
             onChoice: (choice) => {
                 this.act1Scene2_choice1Outcome(choice);
             }
-        });
+        }, 'act1Scene2_narration');
     }
 
     act1Scene2_choice1Outcome(choice) {
@@ -287,7 +287,7 @@ class RonnieRoute {
             dialogue: dialogue,
             next: () => this.act1Scene2_glitch(),
             delay: 3500
-        });
+        }, 'act1Scene2_choice1Outcome');
     }
 
     act1Scene2_glitch() {
@@ -297,7 +297,7 @@ class RonnieRoute {
             internal: '[Regardless of choice, she leans closer to the "screen."]',
             next: () => this.act1Scene2_glitchNarration(),
             delay: 4000
-        });
+        }, 'act1Scene2_glitch');
     }
 
     act1Scene2_glitchNarration() {
@@ -312,7 +312,7 @@ class RonnieRoute {
             onChoice: (choice) => {
                 this.act1Scene2_choice2Outcome(choice);
             }
-        });
+        }, 'act1Scene2_glitchNarration');
     }
 
     act1Scene2_choice2Outcome(choice) {
@@ -337,17 +337,17 @@ class RonnieRoute {
             dialogue: dialogue,
             next: () => this.act1Scene2_end(),
             delay: 3500
-        });
+        }, 'act1Scene2_choice2Outcome');
     }
 
     act1Scene2_end() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She\'s here. My Tori. In the code, in the pixels. And she\'s slipping away. Somehow... I have to save her."',
-            internal: '[Scene fades to black.]\n[Act 1 ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ Act 2 transition: "Digital Bonding" begins.]',
+            internal: '[Scene fades to black.]\n[Act 1 → Act 2 transition: "Digital Bonding" begins.]',
             next: () => this.act2.startAct2(),
             delay: 4000
-        });
+        }, 'act1Scene2_end');
     }
 
 }
