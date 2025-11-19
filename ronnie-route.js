@@ -9,11 +9,20 @@ class RonnieRoute {
         this.act2 = new RonnieRouteAct2(this);
         this.act3 = new RonnieRouteAct3(this);
         
+        // DON'T auto-start anymore - let start() method handle it
+        // This allows save system to properly initialize state before running scenes
+    }
+
+    // ========================================
+    // START METHOD (Required for Save System)
+    // ========================================
+    
+    start() {
+        // Entry point for Ronnie's route
         // Scenes 1-3 handled by SharedPrologue
         // Ronnie's route starts at Scene 4 (Hospital Anchor)
         this.prologueScene4();
     }
-
 
     // Scene 4: Hospital Anchor
     prologueScene4() {
