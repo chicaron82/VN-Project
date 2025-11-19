@@ -2,6 +2,7 @@
 // GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management
 // WITH SPRITE MANAGEMENT + PAGINATION SYSTEM + MOBILE BUBBLES
+// UPDATED: Lowered pagination threshold to 150 chars for mobile
 // ========================================
 
 class GameEngine {
@@ -528,6 +529,7 @@ class GameEngine {
     
     // ========================================
     // TYPEWRITER EFFECT WITH PAGINATION
+    // UPDATED: Lowered threshold to 150 chars for mobile
     // ========================================
     
     typewriterText(element, text, callback, internalTextLength = 0) {
@@ -569,14 +571,14 @@ class GameEngine {
         if (window.innerWidth > 480) return false;
         if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
         
-        // Check if text is longer than mobile-safe threshold
-        // Lower threshold when we have both dialogue + internal
-        return textLength > 200;
+        // LOWERED THRESHOLD: 150 chars instead of 200 for tighter control
+        // This ensures dialogue box never grows too tall on mobile portrait
+        return textLength > 150;
     }
     
     paginateAndDisplayText(element, text, callback) {
         // Split text into pages that fit in mobile dialogue box
-        this.dialoguePages = this.splitTextIntoPages(text, 200);
+        this.dialoguePages = this.splitTextIntoPages(text, 150);
         this.currentDialoguePage = 0;
         this.paginationActive = true;
         this.typewriterCallback = callback;

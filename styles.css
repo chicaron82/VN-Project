@@ -1608,6 +1608,7 @@
         height: 35vh;
         max-height: 35vh;
         min-height: 140px;
+        max-height: 280px !important; /* HARD CEILING - dialogue box can NEVER exceed 280px on mobile portrait */
         overflow-y: auto;
         overflow-x: hidden;
         scroll-behavior: smooth;
