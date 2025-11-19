@@ -56,6 +56,9 @@ class GameEngine {
         this.currentDialoguePage = 0;
         this.paginationActive = false;
         
+        // Bubble tracking for scene-lifecycle management
+        this.currentBubble = null;
+        
         // Detect mobile for sprite handling
         this.isMobile = window.innerWidth <= 480;
         window.addEventListener('resize', () => {
@@ -286,7 +289,7 @@ class GameEngine {
             // Initialize route
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
-                // Ronnie auto-starts in constructor - no .start() needed
+                this.currentRoute.start(); // Call start() explicitly
             } else if (routeName === 'tori') {
                 this.currentRoute = new ToriRoute(this);
                 this.currentRoute.start(); // Tori has explicit .start()
@@ -381,21 +384,19 @@ class GameEngine {
         }
         
         // ========================================
-        // INTERNAL THOUGHTS - MOBILE BUBBLE SYSTEM
+        // INTERNAL THOUGHTS - UNIVERSAL BUBBLE SYSTEM
         // ========================================
+        
+        // Remove previous bubble when displaying new scene
+        this.removeInternalBubble();
+        
         if (scene.internal) {
-            if (this.isMobilePortrait()) {
-                // Mobile portrait: Create floating bubble
-                const position = this.determineCharacterPosition(scene);
-                this.createInternalBubble(scene.internal, position);
-                
-                // Hide the internal thought section in dialogue box
-                this.internalThought.style.display = 'none';
-            } else {
-                // Desktop/landscape: Use normal internal thought display
-                this.internalThought.textContent = scene.internal;
-                this.internalThought.style.display = 'block';
-            }
+            // UNIVERSAL: Create floating bubble for ALL platforms
+            const position = this.determineCharacterPosition(scene);
+            this.createInternalBubble(scene.internal, position);
+            
+            // Hide the internal thought section in dialogue box (no longer needed)
+            this.internalThought.style.display = 'none';
         } else {
             this.internalThought.style.display = 'none';
         }
@@ -1030,12 +1031,9 @@ class GameEngine {
     }
 
     createInternalBubble(text, characterPosition = 'center') {
-        // Only use bubbles on mobile portrait
-        if (!this.isMobilePortrait()) {
-            return; // Desktop/landscape uses normal internal thought display
-        }
+        // UNIVERSAL BUBBLE SYSTEM - Works on all platforms
         
-        // Remove any existing bubbles first
+        // Remove any existing bubbles first (defensive cleanup)
         const existingBubbles = document.querySelectorAll('.internal-bubble');
         existingBubbles.forEach(bubble => bubble.remove());
         
@@ -1058,36 +1056,81 @@ class GameEngine {
         // Add to DOM
         document.body.appendChild(bubble);
         
-        // Auto-remove after animation completes (5 seconds)
-        setTimeout(() => {
-            if (bubble && bubble.parentNode) {
-                bubble.remove();
-            }
-        }, 5000);
+        // STORE REFERENCE - managed by scene lifecycle, not timer
+        this.currentBubble = bubble;
         
         console.log(`Internal bubble created: ${text.substring(0, 30)}...`);
     }
+    
+    removeInternalBubble() {
+        // Remove tracked bubble
+        if (this.currentBubble && this.currentBubble.parentNode) {
+            this.currentBubble.remove();
+            this.currentBubble = null;
+        }
+        
+        // Also clean up any orphaned bubbles (defensive)
+        const existingBubbles = document.querySelectorAll('.internal-bubble');
+        existingBubbles.forEach(bubble => bubble.remove());
+    }
 
     determineCharacterPosition(sceneData) {
-        // Determine which side character is on based on scene data
-        // This helps position the bubble correctly
+        // SMART BUBBLE POSITIONING using persistent sprite tracking
         
         if (!sceneData.character) return 'center';
         
         const charName = sceneData.character.toLowerCase();
         
-        // Check if specific sprite positioning was provided
-        if (sceneData.sprites) {
-            if (sceneData.sprites.left) return 'left';
-            if (sceneData.sprites.right) return 'right';
+        // ========================================
+        // METHOD 1: Character name + sprite tracking (MOST ACCURATE)
+        // ========================================
+        
+        // Extract base character name (remove modifiers like "internal", "thinking", etc.)
+        let baseCharacter = null;
+        if (charName.includes('tori')) {
+            baseCharacter = 'tori';
+        } else if (charName.includes('ronnie')) {
+            baseCharacter = 'ronnie';
         }
         
-        // Default positioning by character name
-        if (charName.includes('tori')) {
-            return 'left';
-        } else if (charName.includes('ronnie')) {
-            return 'right';
+        // If we identified the character, check where their sprite actually is
+        if (baseCharacter) {
+            // Check if this character's sprite is on the left
+            if (this.currentSprites.left && this.currentSprites.left.toLowerCase().includes(baseCharacter)) {
+                return 'left';
+            }
+            // Check if this character's sprite is on the right
+            if (this.currentSprites.right && this.currentSprites.right.toLowerCase().includes(baseCharacter)) {
+                return 'right';
+            }
         }
+        
+        // ========================================
+        // METHOD 2: Narration - position based on who's visible
+        // ========================================
+        
+        if (charName.includes('narration')) {
+            // If only one sprite is visible, put bubble near it
+            const leftVisible = this.currentSprites.left !== null;
+            const rightVisible = this.currentSprites.right !== null;
+            
+            if (leftVisible && !rightVisible) return 'left';
+            if (rightVisible && !leftVisible) return 'right';
+            // If both or neither visible, default to center
+            return 'center';
+        }
+        
+        // ========================================
+        // METHOD 3: Fallback to any visible sprite
+        // ========================================
+        
+        // If we couldn't determine position but sprites exist, pick the first visible one
+        if (this.currentSprites.left !== null) return 'left';
+        if (this.currentSprites.right !== null) return 'right';
+        
+        // ========================================
+        // METHOD 4: Default center (no sprites visible)
+        // ========================================
         
         return 'center';
     }

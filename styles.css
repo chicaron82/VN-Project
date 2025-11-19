@@ -1801,8 +1801,8 @@
     box-shadow: 0 4px 20px rgba(0, 255, 255, 0.4);
     line-height: 1.5;
     
-    /* Animation */
-    animation: internalBubbleFade 5s ease-in-out forwards;
+    /* Shorter animation - fade in only, stays visible */
+    animation: internalBubbleFade 0.5s ease-out forwards;
 }
 
 /* Bubble tail (optional visual flourish) */
@@ -1819,23 +1819,15 @@
     border-top: 10px solid #0ff;
 }
 
-/* Fade in/out animation */
+/* Fade in animation - NO fade out (managed by scene lifecycle) */
 @keyframes internalBubbleFade {
     0% { 
         opacity: 0; 
         transform: translateY(20px) scale(0.9);
     }
-    10% { 
-        opacity: 1; 
-        transform: translateY(0) scale(1);
-    }
-    85% { 
-        opacity: 1; 
-        transform: translateY(0) scale(1);
-    }
     100% { 
-        opacity: 0; 
-        transform: translateY(-10px) scale(0.95);
+        opacity: 1; 
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -1876,6 +1868,23 @@
     
     .internal-bubble.center {
         top: 15%;
+    }
+}
+
+/* Desktop gets slightly larger, more readable bubbles */
+@media (min-width: 769px) {
+    .internal-bubble {
+        max-width: 400px;
+        font-size: 1rem;
+        padding: 15px 22px;
+    }
+}
+
+/* Ultra-wide monitors */
+@media (min-width: 1920px) {
+    .internal-bubble {
+        max-width: 500px;
+        font-size: 1.1rem;
     }
 }
 
