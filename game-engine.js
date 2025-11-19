@@ -163,6 +163,12 @@ class GameEngine {
         
         // Initialize dynamic title system
         this.updateTitleScreen();
+        
+        // Listen for fullscreen changes (user can also press F11 or ESC)
+        document.addEventListener('fullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('webkitfullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('mozfullscreenchange', () => this.updateFullscreenButton());
+        document.addEventListener('MSFullscreenChange', () => this.updateFullscreenButton());
     }
     
     // ========================================
@@ -953,6 +959,63 @@ class GameEngine {
         } else {
             this.saveManager.showSaveIndicator('No save data found', true);
         }
+    }
+    
+    // ========================================
+    // FULLSCREEN TOGGLE
+    // ========================================
+    
+    toggleFullscreen() {
+        const button = document.getElementById('fullscreen-button');
+        
+        // Check if already in fullscreen
+        const isFullscreen = document.fullscreenElement || 
+                            document.webkitFullscreenElement || 
+                            document.mozFullScreenElement || 
+                            document.msFullscreenElement;
+        
+        if (isFullscreen) {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } else {
+            // Enter fullscreen
+            const element = document.documentElement;
+            
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+        
+        // Update button text after a short delay (fullscreen API is async)
+        setTimeout(() => {
+            this.updateFullscreenButton();
+        }, 100);
+    }
+    
+    updateFullscreenButton() {
+        const button = document.getElementById('fullscreen-button');
+        if (!button) return;
+        
+        const isFullscreen = document.fullscreenElement || 
+                            document.webkitFullscreenElement || 
+                            document.mozFullScreenElement || 
+                            document.msFullscreenElement;
+        
+        button.textContent = isFullscreen ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN';
     }
 
     // ========================================
