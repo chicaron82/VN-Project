@@ -1892,3 +1892,46 @@
 .internal-bubble + .internal-bubble {
     display: none;
 }
+
+/* ========================================
+   LANDSCAPE OPTIMIZATION FOR BUBBLES
+   Centers bubble on wider screens
+   Added: Nov 19, 2024
+   ======================================== */
+
+@media (min-width: 768px) and (orientation: landscape) {
+    .internal-bubble {
+        /* Center horizontally on landscape */
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%);
+        
+        /* Constrain max-width for better readability */
+        max-width: 65%;
+        
+        /* Slightly increase top margin for desktop comfort */
+        top: 25% !important;
+        
+        /* Enhanced desktop styling */
+        padding: 18px 25px;
+        font-size: 1rem;
+    }
+    
+    /* Override position classes on landscape */
+    .internal-bubble.left-character,
+    .internal-bubble.right-character,
+    .internal-bubble.center {
+        left: 50% !important;
+        right: auto !important;
+        top: 25% !important;
+        transform: translateX(-50%);
+    }
+}
+
+/* Extra large screens - further constraint */
+@media (min-width: 1440px) {
+    .internal-bubble {
+        max-width: 850px !important;
+        top: 20% !important;
+    }
+}
