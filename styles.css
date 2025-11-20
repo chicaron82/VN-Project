@@ -1910,7 +1910,7 @@
         max-width: 65%;
         
         /* Slightly increase top margin for desktop comfort */
-        top: 25% !important;
+        top: 45% !important;
         
         /* Enhanced desktop styling */
         padding: 18px 25px;
@@ -1923,7 +1923,7 @@
     .internal-bubble.center {
         left: 50% !important;
         right: auto !important;
-        top: 25% !important;
+        top: 45% !important;
         transform: translateX(-50%);
     }
 }
@@ -1932,6 +1932,6 @@
 @media (min-width: 1440px) {
     .internal-bubble {
         max-width: 850px !important;
-        top: 20% !important;
+        top: 40% !important;
     }
 }
