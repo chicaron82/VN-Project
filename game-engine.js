@@ -2,7 +2,7 @@
 // GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management
 // WITH SPRITE MANAGEMENT + PAGINATION SYSTEM + MOBILE BUBBLES
-// UPDATED: Lowered pagination threshold to 150 chars for mobile
+// UPDATED: Sprite cleanup on transitions + save/load sprite state
 // ========================================
 
 class GameEngine {
@@ -69,7 +69,8 @@ class GameEngine {
         this.gameState = {
             flags: {},
             choices: {},
-            progress: {}
+            progress: {},
+            sprites: { left: null, right: null } // NEW: Track sprite state for save/load
         };
         
         // Initialize save/load system
@@ -210,6 +211,9 @@ class GameEngine {
     // ========================================
     
     startStory() {
+        // Clear sprites when starting fresh story
+        this.clearAllSprites();
+        
         // Fade out main menu
         this.mainMenu.style.opacity = '0';
         
@@ -235,6 +239,10 @@ class GameEngine {
     // ========================================
     
     showRouteSelect() {
+        // CRITICAL: Clear sprites before showing route selection
+        // This prevents prologue sprites from lingering into routes
+        this.clearAllSprites();
+        
         // Fade out game view (after prologue)
         this.gameView.style.opacity = '0';
         
@@ -253,6 +261,9 @@ class GameEngine {
     }
     
     backToMenu() {
+        // Clear sprites when returning to menu
+        this.clearAllSprites();
+        
         // Fade out route select
         const routeSelect = document.getElementById('route-select');
         routeSelect.style.opacity = '0';
@@ -273,6 +284,9 @@ class GameEngine {
     // ========================================
     
     startRoute(routeName) {
+        // Clear sprites before starting route (redundant safety check)
+        this.clearAllSprites();
+        
         // Fade out route select
         const routeSelect = document.getElementById('route-select');
         routeSelect.style.opacity = '0';
@@ -446,9 +460,11 @@ class GameEngine {
                     this.spriteLeft.style.opacity = '0';
                     setTimeout(() => {
                         this.spriteLeft.style.display = 'none';
+                        this.spriteLeft.style.backgroundImage = '';
                     }, 300);
                 }
                 this.currentSprites.left = null;
+                this.gameState.sprites.left = null; // NEW: Update save state
             } else {
                 // Show/update left sprite
                 if (this.spriteLeft) {
@@ -459,6 +475,7 @@ class GameEngine {
                     this.spriteLeft.style.opacity = '1';  // Fade in
                 }, 50);}
                 this.currentSprites.left = sprites.left;
+                this.gameState.sprites.left = sprites.left; // NEW: Update save state
             }
         }
         
@@ -470,9 +487,11 @@ class GameEngine {
                     this.spriteRight.style.opacity = '0';
                     setTimeout(() => {
                         this.spriteRight.style.display = 'none';
+                        this.spriteRight.style.backgroundImage = '';
                     }, 300);
                 }
                 this.currentSprites.right = null;
+                this.gameState.sprites.right = null; // NEW: Update save state
             } else {
                 // Show/update right sprite
                 if (this.spriteRight) {
@@ -484,6 +503,7 @@ class GameEngine {
                     }, 50);
                 }
                 this.currentSprites.right = sprites.right;
+                this.gameState.sprites.right = sprites.right; // NEW: Update save state
             }
         }
     }
@@ -518,7 +538,45 @@ class GameEngine {
         }
     }
     
+    clearAllSprites() {
+        // NEW METHOD: Complete sprite cleanup
+        // Remove sprites from DOM
+        if (this.spriteLeft) {
+            this.spriteLeft.style.opacity = '0';
+            this.spriteLeft.style.display = 'none';
+            this.spriteLeft.style.backgroundImage = '';
+            this.spriteLeft.classList.remove('sprite-dim');
+        }
+        if (this.spriteRight) {
+            this.spriteRight.style.opacity = '0';
+            this.spriteRight.style.display = 'none';
+            this.spriteRight.style.backgroundImage = '';
+            this.spriteRight.classList.remove('sprite-dim');
+        }
+        
+        // Clear tracking state
+        this.currentSprites = { left: null, right: null };
+        this.gameState.sprites = { left: null, right: null };
+        
+        console.log('All sprites cleared');
+    }
+    
+    restoreSprites() {
+        // NEW METHOD: Restore sprites from save state
+        // Called when loading a game
+        if (this.gameState.sprites) {
+            if (this.gameState.sprites.left) {
+                this.updateSprites({ left: this.gameState.sprites.left });
+            }
+            if (this.gameState.sprites.right) {
+                this.updateSprites({ right: this.gameState.sprites.right });
+            }
+        }
+    }
+    
     hideAllSprites() {
+        // OLD METHOD: Kept for backward compatibility
+        // Use clearAllSprites() for complete cleanup
         if (this.spriteLeft) {
             this.spriteLeft.style.opacity = '0';
             setTimeout(() => {
@@ -942,6 +1000,9 @@ class GameEngine {
     }
     
     returnToMainMenu() {
+        // Clear sprites when returning to main menu
+        this.clearAllSprites();
+        
         // Stop tether decay if in Tori's route
         if (this.currentRoute) {
             // Or if route has tetherSystem object
@@ -957,6 +1018,8 @@ class GameEngine {
         const mostRecent = this.saveManager.getMostRecentSave();
         if (mostRecent) {
             this.saveManager.restoreGameState(mostRecent.data);
+            // NEW: Restore sprites after loading
+            this.restoreSprites();
         } else {
             this.saveManager.showSaveIndicator('No save data found', true);
         }
