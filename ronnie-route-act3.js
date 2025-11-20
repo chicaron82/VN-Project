@@ -1,5 +1,6 @@
 // RONNIE'S ROUTE - ACT 3
 // Crisis, Mad Dash, and All Endings
+// WITH VISUAL IMPLEMENTATION
 
 class RonnieRouteAct3 {
     constructor(route) {
@@ -17,6 +18,11 @@ class RonnieRouteAct3 {
             character: 'Ronnie (narration)',
             dialogue: '"I woke up and she was... there. Whole. Smiling. Like nothing had happened."',
             internal: '[Visual: Pixel park. Cherry blossoms falling in slow loops. Dreamy chiptune music - slightly too perfect.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.act3Beat1_greeting(),
             delay: 4000
         }, 'startAct3');
@@ -26,6 +32,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Baby, you\'re staring again."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.act3Beat1_response(),
             delay: 2500
         }, 'act3Beat1_greeting');
@@ -35,6 +46,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"I just... you\'re okay. You\'re really okay."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.act3Beat1_smile(),
             delay: 2500
         }, 'act3Beat1_response');
@@ -45,6 +61,11 @@ class RonnieRouteAct3 {
             character: 'Tori (bright)',
             dialogue: '"Of course I am! What, you worried I\'d disappear or something?"',
             internal: '[She laughs. It sounds... hollow. Just slightly.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.act3Beat1_choice(),
             delay: 3000
         }, 'act3Beat1_smile');
@@ -54,6 +75,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (internal)',
             dialogue: 'Something is off.',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             choices: [
                 { text: '"Want some ice cream? Mint chocolate chip?"', value: 'test' },
                 { text: '"Something\'s wrong. This isn\'t real."', value: 'confront' }
@@ -68,15 +94,30 @@ class RonnieRouteAct3 {
                 character: 'Tori (cheerful)',
                 dialogue: '"Oh yes! I LOVE mint chocolate chip!"',
                 internal: '[Ronnie freezes. Wrong answer. Dead wrong.]',
+                background: 'digitalSpace.png',
+                sprites: {
+                    left: 'ronnie-sprite.png',
+                    right: 'tori-sprite.png'
+                },
                 next: () => {
                     this.game.displayScene({
                         character: 'Ronnie (carefully)',
                         dialogue: '"I remember. You hate that flavor. You said it tastes like \'candy corn\'s evil twin.\'"',
+                        background: 'digitalSpace.png',
+                        sprites: {
+                            left: 'ronnie-sprite.png',
+                            right: 'tori-sprite.png'
+                        },
                         next: () => {
                             this.game.displayScene({
                                 character: 'Tori (confused, then recovering)',
                                 dialogue: '"Oh. Right. Yeah. Chocolate chip. I meant chocolate chip."\n[She laughs, but it sounds slightly off-pitch.]\n"Sorry, I\'m... scattered today. Brain fog."',
                                 internal: '[Ronnie (narration): "Fuzzy. Wrong word. Wrong memory. Wrong flavor. Something was very, very wrong."]',
+                                background: 'digitalSpace.png',
+                                sprites: {
+                                    left: 'ronnie-sprite.png',
+                                    right: 'tori-sprite.png'
+                                },
                                 next: () => this.act3Beat2(),
                                 delay: 5000
                             }, 'act3Beat1_outcome_test_reveal');
@@ -91,6 +132,11 @@ class RonnieRouteAct3 {
                 character: 'Ronnie',
                 dialogue: '"Something\'s wrong here. You\'re not remembering right. The hospital. The alarms. You were glitching apart and now you\'re just... perfect?"',
                 internal: '[Tori\'s sprite freezes. Eyes wide. Then flickers violently - 3 seconds of blank stare. Snaps back. Voice colder.]',
+                background: 'digitalSpace.png',
+                sprites: {
+                    left: 'ronnie-sprite.png',
+                    right: 'tori-sprite.png'
+                },
                 next: () => this.act3Beat2(),
                 delay: 5000
             }, 'act3Beat1_outcome_confront');
@@ -102,6 +148,7 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '[ACT 3 BEATS 2-5: Memory fracture, system messages intrude, fragmentation, revelation - TO BE FULLY IMPLEMENTED]\n\nThe honeymoon illusion collapses. Memories corrupt. System messages flood the screen. Tori realizes the truth about the body anchor.\n\n"The mad dash begins..."',
+            background: 'digitalSpace.png',
             next: () => this.act3CriticalChoice(),
             delay: 6000
         }, 'act3Beat2');
@@ -111,7 +158,8 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'System',
             dialogue: 'CRITICAL CHOICE DETECTED',
-            internal: '●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●\n[PULSE: Three distinct heartbeat patterns emerge]\n\n> PATH 1: UPLOAD    [rapid digital pulse]\n  "Trust the code. Expand the cage."\n  Outcome: Digital permanence. No return.\n\n> PATH 2: ANCHOR    [steady organic pulse]\n  "Follow your heartbeat home."\n  Outcome: Physical return. Life.\n\n> PATH 3: MERGE     [synchronized dual pulse]\n  "We stay together. Here. Forever."\n  Outcome: Eternal digital union.\n\n[The timer ticks down. 10 seconds to choose.]',
+            internal: '◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆\n[PULSE: Three distinct heartbeat patterns emerge]\n\n> PATH 1: UPLOAD    [rapid digital pulse]\n  "Trust the code. Expand the cage."\n  Outcome: Digital permanence. No return.\n\n> PATH 2: ANCHOR    [steady organic pulse]\n  "Follow your heartbeat home."\n  Outcome: Physical return. Life.\n\n> PATH 3: MERGE     [synchronized dual pulse]\n  "We stay together. Here. Forever."\n  Outcome: Eternal digital union.\n\n[The timer ticks down. 10 seconds to choose.]',
+            background: 'digitalSpace.png',
             choices: [
                 { text: 'PATH 1: UPLOAD - Trust the code', value: 'upload_end' },
                 { text: 'PATH 2: ANCHOR - Follow the heartbeat', value: 'anchor_end' },
@@ -143,6 +191,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie (desperate)',
             dialogue: '"If you can\'t escape... then I\'ll JOIN you. Upload me too. We\'ll be together."',
             internal: '[He frantically types commands. Upload sequence initiates.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.badRoute_upload(),
             delay: 4000
         }, 'badRouteEnding');
@@ -153,6 +205,7 @@ class RonnieRouteAct3 {
             character: 'System',
             dialogue: 'UPLOADING CONSCIOUSNESS... 15%... 47%... 89%...',
             internal: '[Visual: Ronnie\'s vision pixelates. He feels himself pulled INTO the screen.]',
+            background: 'digitalSpace.png',
             next: () => this.badRoute_arrival(),
             delay: 3500
         }, 'badRoute_upload');
@@ -163,6 +216,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie (now digital)',
             dialogue: '"Tori? TORI? Where are you?"',
             internal: '[He\'s inside the code. Pixelated. Alone.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.badRoute_toriResponse(),
             delay: 3000
         }, 'badRoute_arrival');
@@ -173,6 +230,11 @@ class RonnieRouteAct3 {
             character: 'Tori (distant, glitching)',
             dialogue: '"Ronnie... why did you come here? Now we\'re BOTH stuck..."',
             internal: '[Her voice echoes from multiple directions. Fragmented. Scared.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.badRoute_realization(),
             delay: 4000
         }, 'badRoute_toriResponse');
@@ -182,6 +244,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (horrified)',
             dialogue: '"No. No no no. This was supposed to SAVE you!"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.badRoute_loop(),
             delay: 3000
         }, 'badRoute_realization');
@@ -192,6 +259,7 @@ class RonnieRouteAct3 {
             character: 'System',
             dialogue: 'ERROR: Two consciousness entities detected. System unstable. Looping indefinitely.',
             internal: '[Visual: The world glitches. Resets. Loops. They\'re trapped together in a recursive nightmare.]\n[Both bodies in hospital. Both minds in code. No escape.]\n\n**BAD ENDING: CODE PRISON**\n"Love trapped in glass."',
+            background: 'digitalSpace.png',
             next: () => this.badRoute_retry(),
             delay: 5000
         }, 'badRoute_loop');
@@ -206,6 +274,7 @@ class RonnieRouteAct3 {
             character: 'System',
             dialogue: `VERSION ${attemptNumber} FAILED\nINITIATING VERSION ${nextAttempt}...`,
             internal: '[The loop continues. Try again. You can save her.]\n[RETRY? Y/N]',
+            background: 'digitalSpace.png',
             choices: [
                 { text: 'Yes - Try again', value: 'retry' },
                 { text: 'No - Accept this ending', value: 'accept' }
@@ -231,6 +300,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie',
             dialogue: '"If you can\'t leave... then I\'m not leaving either. We stay together. Here. Forever."',
             internal: '[He presses "MERGE" before she can protest.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.digitalForever_merge(),
             delay: 4000
         }, 'digitalForeverEnding');
@@ -241,6 +314,7 @@ class RonnieRouteAct3 {
             character: 'System',
             dialogue: 'MERGE PROTOCOL INITIATED\nCONSCIOUSNESS TRANSFER: 100%',
             internal: '[Visual: Ronnie dissolves into pixels. His sprite materializes beside Tori\'s.]',
+            background: 'digitalSpace.png',
             next: () => this.digitalForever_together(),
             delay: 3500
         }, 'digitalForever_merge');
@@ -250,6 +324,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori (shocked)',
             dialogue: '"Ronnie... what did you DO?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_ronnieSmile(),
             delay: 2500
         }, 'digitalForever_together');
@@ -259,6 +338,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (sprite, smiling)',
             dialogue: '"What I promised. Always."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_acceptance(),
             delay: 3000
         }, 'digitalForever_ronnieSmile');
@@ -269,6 +353,11 @@ class RonnieRouteAct3 {
             character: 'Tori',
             dialogue: '"You idiot. Beautiful idiot."',
             internal: '[She takes his hand. Their sprites sync perfectly.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_world(),
             delay: 3000
         }, 'digitalForever_acceptance');
@@ -279,6 +368,11 @@ class RonnieRouteAct3 {
             character: 'Narration',
             dialogue: 'They build their world together. Pixel parks. Digital sunsets. Eternally young. Eternally together.',
             internal: '[Visual: Their apartment, recreated in code. Perfect. Frozen. Safe.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_static(),
             delay: 4000
         }, 'digitalForever_world');
@@ -289,6 +383,11 @@ class RonnieRouteAct3 {
             character: 'Narration',
             dialogue: 'No sickness. No death. No separation.',
             internal: '[But also: No growth. No change. No real touch. Just eternal digital stasis.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_hospital(),
             delay: 4000
         }, 'digitalForever_static');
@@ -299,6 +398,7 @@ class RonnieRouteAct3 {
             character: 'Narration',
             dialogue: '[CUT TO: Hospital room. Two bodies on beds. Monitors humming. No one wakes.]',
             internal: '[Outside the window, years pass. Seasons change. The world moves on without them.]',
+            background: 'hospital.png',
             next: () => this.digitalForever_choice(),
             delay: 5000
         }, 'digitalForever_hospital');
@@ -309,6 +409,7 @@ class RonnieRouteAct3 {
             character: 'System',
             dialogue: '**DIGITAL FOREVER ENDING**\n"Together, eternally still."',
             internal: '[Is this love? Or is it fear of loss?\nIs safety worth stagnation?\nYou chose connection over growth.]\n\n[They remain, forever digital, forever young, forever together...]\n[...forever frozen.]',
+            background: 'hospital.png',
             next: () => this.digitalForever_retry(),
             delay: 5000
         }, 'digitalForever_choice');
@@ -322,6 +423,7 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'System',
             dialogue: `VERSION ${attemptNumber} - DIGITAL FOREVER\nDo you want to see another path?\nVERSION ${nextAttempt} is waiting...`,
+            background: 'genericBack.png',
             choices: [
                 { text: 'Yes - Try another path', value: 'retry' },
                 { text: 'No - This is their happiness', value: 'accept' }
@@ -345,6 +447,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie (realization)',
             dialogue: '"The heartbeat. It\'s not just a connection. It\'s a BRIDGE."',
             internal: '[He grabs the Tamagotchi. Her body. The anchor.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_understanding(),
             delay: 4000
         }, 'trueRouteEnding');
@@ -354,6 +460,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori (from device, urgent)',
             dialogue: '"The body! Ronnie, my BODY is the anchor! I can feel it pulling me when you\'re near!"',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_plan(),
             delay: 3500
         }, 'trueRoute_understanding');
@@ -363,6 +474,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Then we follow it back. Device to hand. Heartbeat to heartbeat. I\'ll anchor you."',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_race(),
             delay: 3000
         }, 'trueRoute_plan');
@@ -373,6 +489,10 @@ class RonnieRouteAct3 {
             character: 'Narration',
             dialogue: 'MONITORS SCREAMING. COHERENCE DROPPING TO 12%. THE MAD DASH BEGINS.',
             internal: '[Visual: Ronnie sprinting down hospital corridors. Tamagotchi clutched tight. Nurses shouting. He doesn\'t stop.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_burst(),
             delay: 4000
         }, 'trueRoute_race');
@@ -383,6 +503,10 @@ class RonnieRouteAct3 {
             character: 'Narration',
             dialogue: 'He BURSTS through the door.',
             internal: '[Her body convulsing. Alarms blaring. Medical staff scrambling.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_move(),
             delay: 3000
         }, 'trueRoute_burst');
@@ -393,6 +517,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie (shouting over alarms)',
             dialogue: '"Move!"',
             internal: '[He reaches her bedside. Places the Tamagotchi in her palm. Closes her fingers around it with his own hand covering hers.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_anchor(),
             delay: 3000
         }, 'trueRoute_move');
@@ -402,6 +530,10 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (steady, voice anchoring)',
             dialogue: '"Come home. Follow the heartbeat."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_transfer(),
             delay: 3000
         }, 'trueRoute_anchor');
@@ -412,6 +544,10 @@ class RonnieRouteAct3 {
             character: 'Tori (voice, echoing from device)',
             dialogue: '"I feel it... the pull... I\'m—',
             internal: '[Visual: Tamagotchi screen. Tori\'s sprite begins to dissolve - not glitch, but fade like mist.]\n[Visual: Her real hand twitches.]\n[Monitor stabilizes slightly. Beeping slows from erratic to rhythmic.]\n[Her eyes move beneath closed lids.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_whisper(),
             delay: 4500
         }, 'trueRoute_transfer');
@@ -422,6 +558,10 @@ class RonnieRouteAct3 {
             character: 'Ronnie (whispering, tears streaming)',
             dialogue: '"That\'s it. That\'s it, baby. Follow me back."',
             internal: '[Visual: Tamagotchi screen goes completely white. Then dark. Silent.]\n[Beat of silence.]\n[Her eyes flutter open.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_awakening(),
             delay: 5000
         }, 'trueRoute_whisper');
@@ -432,6 +572,11 @@ class RonnieRouteAct3 {
             character: 'Tori (hoarse, confused)',
             dialogue: '"...Ronnie?"',
             internal: '[He breaks. Collapses forward, forehead against her hand.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_always(),
             delay: 3000
         }, 'trueRoute_awakening');
@@ -442,6 +587,11 @@ class RonnieRouteAct3 {
             character: 'Ronnie (voice shaking)',
             dialogue: '"Always. Always. Always."',
             internal: '[She lifts her free hand shakily. Touches his hair. Strokes it.]\n[They cry together. No words. Just breathing.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_terrible(),
             delay: 4000
         }, 'trueRoute_always');
@@ -451,6 +601,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori (weak smile)',
             dialogue: '"You look terrible."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_months(),
             delay: 2500
         }, 'trueRoute_terrible');
@@ -460,6 +615,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (laughing through tears)',
             dialogue: '"You\'ve been asleep for months."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_scared(),
             delay: 2500
         }, 'trueRoute_months');
@@ -469,6 +629,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori (soft)',
             dialogue: '"I was so scared. I couldn\'t find you. And then I could. But I couldn\'t touch you."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_home(),
             delay: 4000
         }, 'trueRoute_scared');
@@ -478,6 +643,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (squeezing her hand)',
             dialogue: '"You\'re here now. You\'re real. You\'re home."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_toast(),
             delay: 3000
         }, 'trueRoute_home');
@@ -487,6 +657,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"So... you up for some burnt toast?"',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_pasta(),
             delay: 2500
         }, 'trueRoute_toast');
@@ -496,6 +671,11 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'Ronnie (laughing, crying)',
             dialogue: '"Only if I get to oversalt the pasta."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.trueRoute_final(),
             delay: 3000
         }, 'trueRoute_pasta');
@@ -519,6 +699,11 @@ class RonnieRouteAct3 {
             character: 'Ronnie (narration)',
             dialogue: '"For once, love wasn\'t trapped in glass. It came home."',
             internal: `[Visual: Morning light through hospital window. Golden. Warm.]\n[Tori\'s hand resting on Ronnie\'s head. He\'s kneeling beside her bed. Eyes closed. Finally at peace.]\n[Tamagotchi on bedside table. Screen glowing faintly - sprite image synced with Tori\'s real smile.]${successMessage}`,
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => {
                 // Transition to shared epilogue
                 const epilogue = new Epilogue(this.game);

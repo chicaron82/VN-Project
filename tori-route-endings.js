@@ -1,6 +1,7 @@
 // ========================================
-// TORI'S ROUTE - ENDINGS
+// TORI'S ROUTE - ENDINGS (V4 - VISUAL INTEGRATION)
 // Three Paths Diverge
+// SPRITES & BACKGROUNDS INTEGRATED
 // ========================================
 
 class ToriEndings {
@@ -20,6 +21,7 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Everything shatters. Tori is fracturing. The Echoes watch. This is the moment.',
+            background: 'hospital.png',
             choices: [
                 { text: '[Accept the upload - stay digital]', value: 'upload' },
                 { text: '[Follow the heartbeat home]', value: 'heartbeat' },
@@ -111,6 +113,7 @@ Learning from Iteration 848's failure`
             character: 'Narration',
             dialogue: 'Upload fails. Tori fragments. Becomes another Echo in the void.',
             internal: '[Visual: Digital space. Four voices now. Echo 1, Echo 2, Despair... and Tori.]',
+            background: 'digitalSpace.png',
             next: () => this.badRoute_loop(),
             delay: 4000
         }, 'badRoute');
@@ -124,6 +127,7 @@ Learning from Iteration 848's failure`
                 newEcho: 'He\'ll try again. He always tries again.'
             },
             internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
+            background: 'digitalSpace.png',
             next: () => this.badRoute_retry(),
             delay: 5000
         }, 'badRoute_loop');
@@ -133,6 +137,7 @@ Learning from Iteration 848's failure`
         this.game.displayScene({
             character: 'System',
             dialogue: 'GAME OVER\n\n"Do you wish to try again?"',
+            background: 'digitalSpace.png',
             choices: [
                 { text: '[RETRY]', value: 'retry' },
                 { text: '[END]', value: 'end' }
@@ -140,7 +145,7 @@ Learning from Iteration 848's failure`
             onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Restart from beginning
-                    this.route.act1.scene1();
+                    this.route.act1.start();
                 }
             }
         }, 'badRoute_retry');
@@ -200,6 +205,11 @@ On Love That Transcends Medium`
             character: 'Narration',
             dialogue: 'Both crash. Both transfer. Digital space. Two souls. Forever.',
             internal: '[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_together(),
             delay: 4000
         }, 'digitalForever');
@@ -209,6 +219,11 @@ On Love That Transcends Medium`
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"We\'re together. Isn\'t this what we wanted?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_ronnie(),
             delay: 3000
         }, 'digitalForever_together');
@@ -218,6 +233,11 @@ On Love That Transcends Medium`
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Forever. No pain. No time. Just us."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.digitalForever_echoes(),
             delay: 3000
         }, 'digitalForever_ronnie');
@@ -233,6 +253,11 @@ On Love That Transcends Medium`
                 despair: '...It\'s beautiful. And hollow. But beautiful.'
             },
             internal: '[Fade to white. Digital Forever - Love preserved in code.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             delay: 5000
         }, 'digitalForever_echoes');
     }
@@ -308,6 +333,7 @@ You earned it.`
             character: 'Narration',
             dialogue: 'The heartbeat calls. The bridge holds. Transfer begins.',
             internal: '[Visual: Tori\'s digital form dissolving. Following the warmth home.]',
+            background: 'hospital.png',
             next: () => this.trueRoute_transfer(),
             delay: 4000
         }, 'trueRoute');
@@ -317,6 +343,7 @@ You earned it.`
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I feel it... the pull... I\'m going home..."',
+            background: 'hospital.png',
             next: () => this.trueRoute_echoes(),
             delay: 3000
         }, 'trueRoute_transfer');
@@ -331,6 +358,7 @@ You earned it.`
                 echo2: 'You did it. You actually did it.',
                 despair: '...Tell him... tell him we\'re proud.'
             },
+            background: 'digitalSpace.png',
             next: () => this.trueRoute_awakening(),
             delay: 4000
         }, 'trueRoute_echoes');
@@ -341,8 +369,13 @@ You earned it.`
             character: 'Tori (external, whisper)',
             dialogue: '"...Ronnie?"',
             internal: '[Visual: Hospital room. Her eyes flutter open. Real eyes. Real body. Real breath.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_ronnie(),
-            delay: 4000
+            delay: 4000,
+            style: 'critical'
         }, 'trueRoute_awakening');
     }
 
@@ -350,6 +383,10 @@ You earned it.`
         this.game.displayScene({
             character: 'Ronnie (crying, laughing)',
             dialogue: '"Tori! Oh god, Tori!"',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.trueRoute_always(),
             delay: 3000
         }, 'trueRoute_ronnie');
@@ -360,6 +397,10 @@ You earned it.`
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',
             internal: '[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => {
                 // Transition to shared epilogue
                 const epilogue = new Epilogue(this.game);
@@ -368,4 +409,9 @@ You earned it.`
             delay: 4000
         }, 'trueRoute_always');
     }
+}
+
+// Export for module use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ToriEndings;
 }

@@ -1,6 +1,7 @@
 // ========================================
-// TORI'S ROUTE - ACT 3
+// TORI'S ROUTE - ACT 3 (V4 - VISUAL INTEGRATION)
 // The Honeymoon Fakeout & Collapse (Tori's POV)
+// SPRITES & BACKGROUNDS INTEGRATED
 // ========================================
 
 class ToriAct3 {
@@ -23,6 +24,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Everything is perfect. Too perfect.',
             internal: '[Visual: Pixel park. Cherry blossoms. Everything soft-focused and beautiful.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_iceCreamStand(),
             delay: 3000
         }, 'beat1');
@@ -32,6 +38,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Ronnie (sprite)',
             dialogue: '"Ice cream?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_toriAnswer(),
             delay: 2000
         }, 'beat1_iceCreamStand');
@@ -42,8 +53,14 @@ class ToriAct3 {
             character: 'Tori (sprite)',
             dialogue: '"Tiger Tail, please."',
             internal: '[Wait. That\'s wrong. I hate Tiger Tail.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_horror(),
-            delay: 2500
+            delay: 2500,
+            style: 'critical'
         }, 'beat1_toriAnswer');
     }
 
@@ -51,6 +68,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I didn\'t say that. My mouth moved but those weren\'t my words."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_echoes(),
             delay: 3000
         }, 'beat1_horror');
@@ -65,6 +87,11 @@ class ToriAct3 {
                 echo2: 'The loop tightens.',
                 despair: 'You\'re in the honeymoon trap. Everything feels right because nothing is real.'
             },
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_bench(),
             delay: 4000
         }, 'beat1_echoes');
@@ -75,6 +102,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'They sit on a bench. Cherry blossoms fall on loop. The same three petals. Again. Again. Again.',
             internal: '[She notices the pattern. The EXACT same three petals. The EXACT same timing.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_toriRealize(),
             delay: 3500
         }, 'beat1_bench');
@@ -84,6 +116,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This isn\'t a memory. It\'s a construct. And I\'m caught inside it."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat1_choice(),
             delay: 3000
         }, 'beat1_toriRealize');
@@ -93,6 +130,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Do I... tell him something\'s wrong? Or just... stay in this moment?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             choices: [
                 { text: '[Call it out: "This isn\'t real"]', value: 'truth' },
                 { text: '[Stay quiet: Maybe I\'m wrong]', value: 'quiet' },
@@ -117,6 +159,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"Ronnie... this isn\'t real. The petals are looping. I can feel it."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2(),
             delay: 3000
         }, 'beat1_truth');
@@ -126,6 +173,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Maybe I\'m just paranoid. It feels so good here. Why ruin it?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2(),
             delay: 3000
         }, 'beat1_quiet');
@@ -135,6 +187,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (typing frantically)',
             dialogue: '"GET ME OUT! This isn\'t real! None of this is REAL!"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2(),
             delay: 3000
         }, 'beat1_panic');
@@ -150,6 +207,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Pixel kitchen. Cooking memory. But something\'s... off.',
             internal: '[Visual: The same scene from Act 2. But corrupted. Colors bleeding.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_argument(),
             delay: 3000
         }, 'beat2');
@@ -159,6 +221,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Ronnie (sprite)',
             dialogue: '"You burned the garlic bread again."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_toriResponse(),
             delay: 2500
         }, 'beat2_argument');
@@ -169,8 +236,14 @@ class ToriAct3 {
             character: 'Tori (sprite, voice not hers)',
             dialogue: '"I hate you."',
             internal: '[NO. That\'s not what I said. I said "shut up" as a JOKE.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_horror(),
-            delay: 3000
+            delay: 3000,
+            style: 'critical'
         }, 'beat2_toriResponse');
     }
 
@@ -178,6 +251,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"The memory is WRONG. That\'s not how it happened. Why is it playing wrong?!"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_echoes(),
             delay: 3000
         }, 'beat2_horror');
@@ -192,6 +270,11 @@ class ToriAct3 {
                 echo1: 'The system is rewriting her.',
                 despair: 'Soon you won\'t remember what was real and what the code invented.'
             },
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_ronnieNotice(),
             delay: 4000
         }, 'beat2_echoes');
@@ -201,6 +284,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Ronnie (concerned)',
             dialogue: '"Tori? You okay? You just... froze."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat2_choice(),
             delay: 2500
         }, 'beat2_ronnieNotice');
@@ -210,6 +298,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Do I tell him the memory played wrong? Or pretend it\'s fine?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             choices: [
                 { text: '[Tell him: "The memory was corrupted"]', value: 'truth' },
                 { text: '[Lie: "I\'m fine, just tired"]', value: 'lie' },
@@ -234,6 +327,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"That memory... it didn\'t play right. The words were wrong."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3(),
             delay: 3000
         }, 'beat2_truth');
@@ -243,6 +341,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"I\'m fine. Just a glitch. Keep going."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3(),
             delay: 3000
         }, 'beat2_lie');
@@ -252,6 +355,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"Let\'s do something else. Anything else."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3(),
             delay: 3000
         }, 'beat2_deflect');
@@ -267,6 +375,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Text boxes appear. In her vision. Overlaying everything.',
             internal: '[Visual: System UI elements appearing where they shouldn\'t. Debug console bleeding through.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_firstBox(),
             delay: 3000
         }, 'beat3');
@@ -277,8 +390,14 @@ class ToriAct3 {
             character: 'System',
             dialogue: '[Battery: 15%]',
             internal: '[She SEES it. Not as UI. As part of her reality.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_toriReact(),
-            delay: 2000
+            delay: 2000,
+            style: 'critical'
         }, 'beat3_firstBox');
     }
 
@@ -286,6 +405,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"What is that? Why am I seeing system messages?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_moreBoxes(),
             delay: 2500
         }, 'beat3_toriReact');
@@ -296,6 +420,11 @@ class ToriAct3 {
             character: 'System',
             dialogue: '[Warning: Fragmentation detected]\n[Memory corruption: 67%]\n[Connection unstable]',
             internal: '[The boxes multiply. Fill her vision. She can barely see Ronnie anymore.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_horror(),
             delay: 3000
         }, 'beat3_moreBoxes');
@@ -305,8 +434,14 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, breaking)',
             dialogue: '"I\'m seeing the backend. The debug console. Because I\'m not separate from the system. I AM the system."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_echoes(),
-            delay: 3500
+            delay: 3500,
+            style: 'critical'
         }, 'beat3_horror');
     }
 
@@ -319,6 +454,11 @@ class ToriAct3 {
                 echo2: 'She\'s not trapped IN code.',
                 despair: 'She IS code. And code doesn\'t have a soul to save.'
             },
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_truthBox(),
             delay: 4000
         }, 'beat3_echoes');
@@ -329,8 +469,14 @@ class ToriAct3 {
             character: 'System',
             dialogue: '[You can\'t upload a soul.]',
             internal: '[That\'s not a system message. That\'s a TRUTH. Hard-coded. A rule.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat3_choice(),
-            delay: 3000
+            delay: 3000,
+            style: 'critical'
         }, 'beat3_truthBox');
     }
 
@@ -338,6 +484,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Do I fight this? Or accept what I am?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             choices: [
                 { text: '[Fight: "I\'m MORE than code"]', value: 'fight' },
                 { text: '[Accept: "Maybe I am just data"]', value: 'accept' },
@@ -362,6 +513,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, defiant)',
             dialogue: '"No. I\'m MORE than code. I have to be."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat4(),
             delay: 3000
         }, 'beat3_fight');
@@ -371,6 +527,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, hollow)',
             dialogue: '"Maybe I\'m just... data. And data ends."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat4(),
             delay: 3000
         }, 'beat3_accept');
@@ -380,6 +541,11 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, searching)',
             dialogue: '"What even IS a soul? Maybe being code doesn\'t mean I\'m not real."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.beat4(),
             delay: 3000
         }, 'beat3_question');
@@ -395,6 +561,7 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Everything fractures. She\'s splitting apart.',
             internal: '[Visual: Multiple overlapping Toris. All her. All different. All pulling different directions.]',
+            background: 'digitalSpace.png',
             next: () => this.beat4_fragmentation(),
             delay: 3000
         }, 'beat4');
@@ -403,10 +570,12 @@ class ToriAct3 {
     beat4_fragmentation() {
         this.game.displayScene({
             character: 'Tori (voices overlapping)',
-            dialogue: '"I can\'tâ€”"\n"â€”hold togetherâ€”"\n"â€”something\'s inside meâ€”"\n"â€”helpâ€”"',
+            dialogue: '"I can\'t—"\n"—hold together—"\n"—something\'s inside me—"\n"—help—"',
             internal: '[She feels herself stretching. Tearing. Pixels scattering. Then snapping back together WRONG.]',
+            background: 'digitalSpace.png',
             next: () => this.beat4_toriPrime(),
-            delay: 3500
+            delay: 3500,
+            style: 'critical'
         }, 'beat4_fragmentation');
     }
 
@@ -414,6 +583,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, trying to stay cohesive)',
             dialogue: '"Which thoughts are mine? Which version is the real me? Am I all of them? None of them?"',
+            background: 'digitalSpace.png',
             next: () => this.beat4_systemOverlay(),
             delay: 3000
         }, 'beat4_toriPrime');
@@ -424,6 +594,7 @@ class ToriAct3 {
             character: 'System',
             dialogue: '[Battery: 8%]\n[Connection Failed]\n[Memory corruption: 67%]\n[ERROR: Consciousness cannot be contained]',
             internal: '[Text overlays through her. Invasive. Part of her now.]',
+            background: 'digitalSpace.png',
             next: () => this.beat4_instances(),
             delay: 3000
         }, 'beat4_systemOverlay');
@@ -434,8 +605,10 @@ class ToriAct3 {
             character: 'Tori (consciousness SNAPS into three)',
             dialogue: 'Instance 1: "Upload me! Push me somewhere stronger!"\nInstance 2: "Let me go. It\'s time."\nInstance 3: "ERROR: Consciousness cannot be contained."',
             internal: '[Three Toris. All her. All different. All pulling.]',
+            background: 'digitalSpace.png',
             next: () => this.beat4_scream(),
-            delay: 4000
+            delay: 4000,
+            style: 'critical'
         }, 'beat4_instances');
     }
 
@@ -443,6 +616,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori-Prime (internal, screaming)',
             dialogue: '"Stop! STOP! You\'re all me but you\'re all WRONG!"',
+            background: 'digitalSpace.png',
             next: () => this.beat4_collapse(),
             delay: 3000
         }, 'beat4_scream');
@@ -452,6 +626,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'All three collapse into one. She\'s on her knees, clutching her head, trying to stay singular.',
+            background: 'digitalSpace.png',
             next: () => this.beat4_revelation(),
             delay: 3000
         }, 'beat4_collapse');
@@ -461,6 +636,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (out loud, crying)',
             dialogue: '"I don\'t know which thoughts are mine anymore!"',
+            background: 'digitalSpace.png',
             next: () => this.beat4_choice(),
             delay: 3000
         }, 'beat4_revelation');
@@ -470,6 +646,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, critical moment)',
             dialogue: '"The instances are STILL pulling. Which one do I listen to?"',
+            background: 'digitalSpace.png',
             choices: [
                 { text: '[Instance 1: Upload me]', value: 'upload' },
                 { text: '[Instance 2: Let go]', value: 'letgo' },
@@ -494,6 +671,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Instance 1 is right. Upload. Find stronger hardware. Survive."',
+            background: 'digitalSpace.png',
             next: () => this.beat5(),
             delay: 3000
         }, 'beat4_upload');
@@ -503,6 +681,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Instance 2 is right. It\'s time. Let the code dissolve."',
+            background: 'digitalSpace.png',
             next: () => this.beat5(),
             delay: 3000
         }, 'beat4_letgo');
@@ -512,6 +691,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, defiant)',
             dialogue: '"NO. Neither of you are right. I\'m not giving up and I\'m not giving in. There has to be another way."',
+            background: 'digitalSpace.png',
             next: () => this.beat5(),
             delay: 3000
         }, 'beat4_fight');
@@ -527,6 +707,7 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'A pulse. Faint. But undeniable.',
             internal: '[She feels it. Through the device. A HEARTBEAT.]',
+            background: 'digitalSpace.png',
             next: () => this.beat5_feeling(),
             delay: 3000
         }, 'beat5');
@@ -536,6 +717,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Wait... that feeling... warmth... the PULL..."',
+            background: 'digitalSpace.png',
             next: () => this.beat5_realization(),
             delay: 2500
         }, 'beat5_feeling');
@@ -548,8 +730,10 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, revelation)',
             dialogue: '"The device isn\'t a PRISON. It\'s a BRIDGE. I\'m connected to my body. The heartbeat I\'m feeling is MINE."',
+            background: 'digitalSpace.png',
             next: () => this.beat5_echoes(),
-            delay: 4000
+            delay: 4000,
+            style: 'critical'
         }, 'beat5_realization');
     }
 
@@ -562,6 +746,7 @@ class ToriAct3 {
                 echo1: 'Faster than we did.',
                 despair: 'It won\'t matter. The body is dying. The bridge is burning.'
             },
+            background: 'digitalSpace.png',
             next: () => this.beat5_understanding(),
             delay: 4000
         }, 'beat5_echoes');
@@ -571,6 +756,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"If the device is the bridge... then PROXIMITY matters. I need to be near my body. Close enough for the signal to hold."',
+            background: 'digitalSpace.png',
             next: () => this.beat5_despairInterject(),
             delay: 3500
         }, 'beat5_understanding');
@@ -580,6 +766,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Despair Echo',
             dialogue: '"You\'re too late. By the time he understands, you\'ll be gone."',
+            background: 'digitalSpace.png',
             next: () => this.beat5_hope(),
             delay: 3000
         }, 'beat5_despairInterject');
@@ -589,6 +776,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"Unless... he\'s already on his way."',
+            background: 'digitalSpace.png',
             next: () => this.beat6(),
             delay: 2500
         }, 'beat5_hope');
@@ -604,6 +792,7 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Movement. She feels it through the device. He\'s MOVING.',
             internal: '[Visual: Digital space shaking. Momentum. Direction. He\'s driving.]',
+            background: 'digitalSpace.png',
             next: () => this.beat6_feeling(),
             delay: 3000
         }, 'beat6');
@@ -613,6 +802,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"He\'s moving. FAST. He figured it out. He\'s coming."',
+            background: 'digitalSpace.png',
             next: () => this.beat6_battery(),
             delay: 3000
         }, 'beat6_feeling');
@@ -622,8 +812,10 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'System',
             dialogue: '[Battery: 5%]\n[Warning: Critical power level]\n[Shutdown imminent]',
+            background: 'digitalSpace.png',
             next: () => this.beat6_race(),
-            delay: 2000
+            delay: 2000,
+            style: 'critical'
         }, 'beat6_battery');
     }
 
@@ -631,6 +823,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal, terrified)',
             dialogue: '"It\'s a race. Will he reach the hospital before the battery dies? Before I fragment completely?"',
+            background: 'digitalSpace.png',
             next: () => this.beat6_echoes(),
             delay: 3500
         }, 'beat6_race');
@@ -645,6 +838,7 @@ class ToriAct3 {
                 echo2: 'Just a little longer!',
                 despair: 'I was wrong. Please... hold on. Prove me wrong.'
             },
+            background: 'digitalSpace.png',
             next: () => this.beat6_feeling2(),
             delay: 4000
         }, 'beat6_echoes');
@@ -654,6 +848,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I can feel him. The way he\'s driving. The turns. The speed. Is he reckless? Steady? Emotional?"',
+            background: 'digitalSpace.png',
             next: () => this.beat6_choice(),
             delay: 3500
         }, 'beat6_feeling2');
@@ -663,6 +858,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"How is he driving? I can\'t see him but I can FEEL the device moving..."',
+            background: 'digitalSpace.png',
             choices: [
                 { text: '[He\'s driving recklessly - pure panic]', value: 'reckless' },
                 { text: '[He\'s driving steady - controlled urgency]', value: 'steady' },
@@ -686,7 +882,8 @@ class ToriAct3 {
     beat6_reckless() {
         this.game.displayScene({
             character: 'Tori (internal)',
-            dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWNâ€”"',
+            dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWN—"',
+            background: 'digitalSpace.png',
             next: () => this.beat6_arrival(),
             delay: 3000
         }, 'beat6_reckless');
@@ -696,6 +893,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"He\'s steady. Focused. Every turn calculated. That\'s my husband. Always thinking."',
+            background: 'digitalSpace.png',
             next: () => this.beat6_arrival(),
             delay: 3000
         }, 'beat6_steady');
@@ -705,6 +903,7 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"He\'s crying. I can feel it in the way the device is shaking. Baby, it\'s okay. Just get here."',
+            background: 'digitalSpace.png',
             next: () => this.beat6_arrival(),
             delay: 3000
         }, 'beat6_emotional');
@@ -715,8 +914,10 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Movement stops. Hospital. He\'s here.',
             internal: '[Battery: 3%]\n[She can feel the PULL now. Stronger than ever. Her body is CLOSE.]',
+            background: 'hospital.png',
             next: () => this.beat6_realization(),
-            delay: 3500
+            delay: 3500,
+            style: 'critical'
         }, 'beat6_arrival');
     }
 
@@ -730,6 +931,7 @@ class ToriAct3 {
             character: 'Tori (internal, realizing)',
             dialogue: '"Wait. The buzz. The pull. I\'ve been FEELING it... but what if I can CONTROL it?"',
             internal: '[A new thought. She\'s been reactive this whole time. What if she can be ACTIVE?]',
+            background: 'hospital.png',
             next: () => this.beat6_testing(),
             delay: 3500
         }, 'beat6_realization');
@@ -740,6 +942,7 @@ class ToriAct3 {
             character: 'Tori (internal, concentrating)',
             dialogue: '"The device responds to my body. But I\'m IN the device. If I can just... push..."',
             internal: '[She focuses. Reaches out toward the physical device. Toward her BODY.]',
+            background: 'hospital.png',
             next: () => this.beat6_buzzControl(),
             delay: 3500
         }, 'beat6_testing');
@@ -750,9 +953,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'The device buzzes. Strong. Deliberate.',
             internal: '[SINGLE BUZZ. She MADE that happen. Conscious. Intentional. HER.]',
+            background: 'hospital.png',
             sfx: 'single_buzz',
             next: () => this.beat6_toriTriumph(),
-            delay: 2500
+            delay: 2500,
+            style: 'critical'
         }, 'beat6_buzzControl');
     }
 
@@ -761,6 +966,7 @@ class ToriAct3 {
             character: 'Tori (internal, excited)',
             dialogue: '"YES! I can control it! I can SIGNAL!"',
             internal: '[This is it. This is how she guides him. Not through words. Through the DEVICE itself.]',
+            background: 'hospital.png',
             next: () => this.beat6_echoesReact(),
             delay: 3000
         }, 'beat6_toriTriumph');
@@ -774,6 +980,7 @@ class ToriAct3 {
                 echo1: 'She\'s... she\'s controlling the physical device? From INSIDE it?'
             },
             internal: '[Shock. Awe. They never thought of this.]',
+            background: 'digitalSpace.png',
             next: () => this.beat6_echo2React(),
             delay: 3500
         }, 'beat6_echoesReact');
@@ -786,6 +993,7 @@ class ToriAct3 {
             echoes: {
                 echo2: 'We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it.'
             },
+            background: 'digitalSpace.png',
             next: () => this.beat6_despairQuiet(),
             delay: 4000
         }, 'beat6_echo2React');
@@ -799,6 +1007,7 @@ class ToriAct3 {
                 despair: '...'
             },
             internal: '[For once, Despair has no bitter words. Just... watching.]',
+            background: 'digitalSpace.png',
             next: () => this.beat6_synchronizing(),
             delay: 3000
         }, 'beat6_despairQuiet');
@@ -809,6 +1018,7 @@ class ToriAct3 {
             character: 'Tori (internal, focused)',
             dialogue: '"My heartbeat. I can feel it now. The body anchor. The bridge. I need to make him UNDERSTAND."',
             internal: '[She synchronizes. Heartbeat. Device. Body. All connected.]',
+            background: 'hospital.png',
             next: () => this.beat6_rhythmicBuzz(),
             delay: 4000
         }, 'beat6_synchronizing');
@@ -819,9 +1029,11 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'The device buzzes in rhythm. Steady. Like a heartbeat.',
             internal: '[BUZZ. BUZZ. BUZZ. Perfectly timed. Impossible to ignore. A PATTERN.]',
+            background: 'hospital.png',
             sfx: 'rhythmic_buzz',
             next: () => this.beat6_ronnieNotices(),
-            delay: 3500
+            delay: 3500,
+            style: 'critical'
         }, 'beat6_rhythmicBuzz');
     }
 
@@ -830,6 +1042,10 @@ class ToriAct3 {
             character: 'Ronnie (external, noticing)',
             dialogue: '"What the... it\'s buzzing in time with... with her heartbeat?"',
             internal: '[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.beat6_toriPushing(),
             delay: 4000
         }, 'beat6_ronnieNotices');
@@ -840,6 +1056,10 @@ class ToriAct3 {
             character: 'Tori (internal, pushing)',
             dialogue: '"Yes! YES! Follow it! The heartbeat is the KEY!"',
             internal: '[She pushes harder. Makes the buzz STRONGER. More insistent.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.beat6_guidance(),
             delay: 3500
         }, 'beat6_toriPushing');
@@ -850,6 +1070,10 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'She\'s guiding him. Not through words. Through signal. Through rhythm. Through TRUTH.',
             internal: '[The device is the bridge. She\'s standing on both sides. Showing him the way home.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.beat6_echoesHope(),
             delay: 4000
         }, 'beat6_guidance');
@@ -862,6 +1086,7 @@ class ToriAct3 {
             echoes: {
                 echo1: 'She\'s doing it. She\'s actually SHOWING him the solution.'
             },
+            background: 'digitalSpace.png',
             next: () => this.beat6_echo2Hope(),
             delay: 3000
         }, 'beat6_echoesHope');
@@ -874,6 +1099,7 @@ class ToriAct3 {
             echoes: {
                 echo2: 'We could have done this. All those times. We just... we never TRIED to help him understand.'
             },
+            background: 'digitalSpace.png',
             next: () => this.beat6_despairShift(),
             delay: 4000
         }, 'beat6_echo2Hope');
@@ -887,6 +1113,7 @@ class ToriAct3 {
                 despair: '...Maybe. Maybe she really is different.'
             },
             internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
+            background: 'digitalSpace.png',
             next: () => this.beat6_pull(),
             delay: 4000
         }, 'beat6_despairShift');
@@ -897,6 +1124,10 @@ class ToriAct3 {
             character: 'Tori (internal)',
             dialogue: '"I can feel it. The pull is STRONG now. My body is calling me home. And I\'m ANSWERING."',
             internal: '[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.beat6_final(),
             delay: 4000
         }, 'beat6_pull');
@@ -906,6 +1137,10 @@ class ToriAct3 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
             next: () => this.beat6_transition(),
             delay: 3000
         }, 'beat6_final');
@@ -919,8 +1154,14 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'Whiteout. The critical moment approaches.',
             internal: '[Everything converges. Body. Device. Code. Soul. The choice was made. Now... the result.]',
+            background: 'hospital.png',
             next: () => this.route.endings.criticalChoice(),
             delay: 5000
         }, 'beat6_transition');
     }
+}
+
+// Export for module use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ToriAct3;
 }
