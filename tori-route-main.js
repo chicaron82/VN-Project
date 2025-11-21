@@ -39,6 +39,14 @@ class ToriRoute {
     // ========================================
     
     start() {
+        // Show Tori-specific UI elements
+        if (this.game.tetherUI) {
+            this.game.tetherUI.style.display = 'block';
+        }
+        if (this.game.notesButton) {
+            this.game.notesButton.style.display = 'block';
+        }
+        
         // Initialize tether system
         this.tetherSystem.init();
         this.tetherSystem.startDecay();
@@ -62,6 +70,29 @@ class ToriRoute {
     
     holdOn() {
         this.tetherSystem.holdOn();
+    }
+    
+    getTetherState() {
+        // Returns narrative state based on tether level
+        const level = this.tetherSystem.tetherLevel;
+        
+        if (level < 30) {
+            return 'despair';
+        } else if (level < 70) {
+            return 'balanced';
+        } else {
+            return 'strong';
+        }
+    }
+    
+    // Direct tether level access (for backward compatibility)
+    get tetherLevel() {
+        return this.tetherSystem.tetherLevel;
+    }
+    
+    set tetherLevel(value) {
+        this.tetherSystem.tetherLevel = value;
+        this.tetherSystem.updateDisplay();
     }
     
     // Echo system delegation
@@ -110,10 +141,12 @@ class ToriRoute {
     // ========================================
     
     tetherDeath() {
+        // Stop tether decay
+        this.tetherSystem.stopDecay();
+        
         // Increment attempt counter
         this.game.incrementAttempt();
-        const currentVersion = localStorage.getItem(GameConfig.VERSION.STORAGE_KEY) 
-                             || GameConfig.VERSION.DEFAULT_START.toString();
+        const currentVersion = localStorage.getItem('attemptNumber') || '849';
         
         this.game.displayScene({
             character: 'Narration',
@@ -129,6 +162,9 @@ class ToriRoute {
                     this.tetherSystem.reset();
                     this.act1.start();
                 } else {
+                    // Hide Tori-specific UI before returning to menu
+                    if (this.game.tetherUI) this.game.tetherUI.style.display = 'none';
+                    if (this.game.notesButton) this.game.notesButton.style.display = 'none';
                     this.game.returnToMainMenu();
                 }
             }

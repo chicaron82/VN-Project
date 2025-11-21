@@ -310,8 +310,10 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: 40px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 #route-select-title {
@@ -437,39 +439,55 @@
     #route-select-bg {
         background-position: top center;
     }
+    
+    #route-select-content {
+        padding: 15px;
+        justify-content: flex-start;
+        padding-top: 40px;
+        padding-bottom: 80px;
+    }
 
     #route-select-title h2 {
-        font-size: 1.8em;
+        font-size: 1.6em;
+        margin-bottom: 5px;
     }
 
     #route-select-title p {
-        font-size: 1em;
+        font-size: 0.9em;
+        margin-bottom: 20px;
     }
 
     #route-buttons {
         flex-direction: column;
-        padding: 20px;
-        gap: 40px;
+        padding: 0;
+        gap: 30px;
         margin-top: 0;
+        width: 100%;
+        justify-content: center;
     }
 
     .character-label {
-        font-size: 1.5em;
+        font-size: 1.4em;
+        margin-bottom: 5px;
     }
 
     .route-subtitle {
-        font-size: 0.9em;
+        font-size: 0.85em;
+        margin-bottom: 15px;
     }
 
     .route-button {
-        padding: 15px 40px;
-        font-size: 1.1em;
+        padding: 12px 35px;
+        font-size: 1em;
+        width: 100%;
+        max-width: 300px;
     }
 
     #back-to-menu {
-        bottom: 20px;
-        font-size: 0.9em;
-        padding: 10px 25px;
+        position: fixed;
+        bottom: 15px;
+        font-size: 0.85em;
+        padding: 10px 20px;
     }
 }
 
@@ -1123,8 +1141,7 @@
 #tether-ui {
     position: fixed;
     top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 20px;
     width: 400px;
     display: none;
     z-index: 100;
@@ -1202,7 +1219,7 @@
     border: 2px solid #0ff;
     padding: 15px;
     border-radius: 8px;
-    display: none;
+    display: none; /* OBSOLETE: Now using three-echoes sprite instead */
     z-index: 90;
 }
 
@@ -1660,6 +1677,7 @@
     #tether-ui {
         width: 90%;
         top: 10px;
+        left: 5%;
     }
     
     #echo-display {
@@ -1910,7 +1928,7 @@
         max-width: 65%;
         
         /* Slightly increase top margin for desktop comfort */
-        top: 45% !important;
+        top: 25% !important;
         
         /* Enhanced desktop styling */
         padding: 18px 25px;
@@ -1923,7 +1941,7 @@
     .internal-bubble.center {
         left: 50% !important;
         right: auto !important;
-        top: 45% !important;
+        top: 25% !important;
         transform: translateX(-50%);
     }
 }
@@ -1932,6 +1950,6 @@
 @media (min-width: 1440px) {
     .internal-bubble {
         max-width: 850px !important;
-        top: 40% !important;
+        top: 20% !important;
     }
 }

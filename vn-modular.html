@@ -2,19 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://chicaron82.github.io/VN-Project/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://chicaron82.github.io/VN-Project/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://chicaron82.github.io/VN-Project/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="https://chicaron82.github.io/VN-Project/favicon.ico">
+    <link rel="manifest" href="https://chicaron82.github.io/VN-Project/site.webmanifest">
     <title>Version 848 - My Wife Is in a Coma... and in the Code</title>
     
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="cutscene-animations.css">
     
-    <style>
-        /* Minimal inline styles - just what's needed for structure */
+<style>
+        /* ========================================
+           MINIMAL INLINE STYLES
+           Only critical resets and structure
+           All other styles are in styles.css
+           ======================================== */
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
         }
 
         body {
@@ -22,681 +37,20 @@
             background: #000;
             color: #0f0;
             overflow: hidden;
-            height: 100vh;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         #game-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             display: flex;
             flex-direction: column;
             position: relative;
-        }
-
-        /* Loading Screen */
-        #loading-screen {
-            display: none; /* Hidden initially - splash shows first */
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #000;
-        }
-
-        #loading-screen h2 {
-            color: #0ff;
-            margin-bottom: 20px;
-            font-size: 2em;
-        }
-
-        #loading-bar-container {
-            width: 300px;
-            height: 30px;
-            border: 2px solid #0ff;
-            background: rgba(0, 255, 255, 0.1);
-        }
-
-        #loading-bar {
-            width: 0%;
-            height: 100%;
-            background: #0ff;
-            transition: width 0.3s;
-        }
-
-        /* ========================================
-           UV7 SPLASH SCREEN STYLES
-           ======================================== */
-        #uv7-splash {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            display: flex; /* VISIBLE BY DEFAULT */
-            align-items: center;
-            justify-content: center;
-            z-index: 10000; /* Above everything */
-            opacity: 0;
-            animation: splashFadeIn 1.5s ease-in-out forwards;
-        }
-
-        #uv7-splash.fade-out {
-            animation: splashFadeOut 1.5s ease-in-out forwards;
-        }
-
-        .uv7-container {
-            text-align: center;
-            transform: scale(0.9);
-            animation: splashScaleIn 1.5s ease-out 0.5s forwards;
-        }
-
-        .powered-by-text {
-            font-size: 1.8rem;
-            font-weight: 300;
-            letter-spacing: 0.2em;
-            color: #a8a08c;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            font-family: Arial, sans-serif;
-            opacity: 0.8;
-        }
-
-        .uv7-logo-svg {
-            width: 400px;
-            height: auto;
-            max-width: 80vw;
-            margin-bottom: 40px;
-            filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        @keyframes splashFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes splashFadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes splashScaleIn {
-            from { transform: scale(0.9); }
-            to { transform: scale(1); }
-        }
-
-        @media (max-width: 768px) {
-            .powered-by-text {
-                font-size: 1.2rem;
-            }
-            
-            .uv7-logo-svg {
-                width: 280px;
-            }
-        }
-
-        /* Main Menu - OLD SCHOOL IMG TAG STYLE */
-        #main-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #000;
-            opacity: 0;
-            transition: opacity 1s;
-            z-index: 9000;
-        }
-
-        #main-menu.active {
-            display: flex;
-        }
-
-        #main-menu-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            filter: brightness(0.8);
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        #main-menu-content {
-            position: relative;
-            z-index: 100;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Pause Menu */
-        #pause-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #pause-menu.active {
-            display: flex;
-        }
-
-        #pause-content {
-            background: #1a1a2e;
-            padding: 3rem;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 300px;
-        }
-
-        #pause-content h2 {
-            margin-bottom: 2rem;
-            color: #00ffff;
-        }
-
-        /* ESC Hint */
-        #esc-hint {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            color: #00ffff;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 100;
-        }
-
-        #esc-hint.show {
-            opacity: 1;
-        }
-
-        #esc-hint.visible {
-            opacity: 1;
-        }
-
-        /* Save/Load Screen */
-        #save-load-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 1500;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #save-load-screen.active {
-            display: flex;
-        }
-
-        #save-load-content {
-            background: #1a1a2e;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 2px solid #00ffff;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        #save-load-title {
-            color: #00ffff;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        #mode-toggle {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .mode-button {
-            background: #2a2a3e;
-            color: #00ffff;
-            border: 2px solid #00ffff;
-            padding: 0.5rem 2rem;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s;
-        }
-
-        .mode-button.active {
-            background: #00ffff;
-            color: #000;
-        }
-
-        .mode-button:hover {
-            background: #00ff88;
-            color: #000;
-        }
-
-        #close-save-load {
-            display: block;
-            margin: 1.5rem auto 0;
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        #close-save-load:hover {
-            background: #ff6666;
-        }
-
-        /* Save Slots */
-        .save-slot {
-            background: #2a2a3e;
-            border: 2px solid #00ffff;
-            border-radius: 4px;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .save-slot:hover {
-            background: #3a3a4e;
-            border-color: #00ff88;
-        }
-
-        .save-slot.empty {
-            opacity: 0.6;
-        }
-
-        .slot-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-
-        .slot-label {
-            font-weight: bold;
-            color: #00ffff;
-        }
-
-        .slot-route {
-            color: #00ff88;
-            font-size: 0.9rem;
-        }
-
-        .slot-info {
-            color: #aaa;
-            font-size: 0.9rem;
-        }
-
-        .slot-timestamp {
-            color: #888;
-            font-size: 0.85rem;
-            margin-top: 0.3rem;
-        }
-
-        .save-slot-empty-text {
-            color: #666;
-            font-style: italic;
-        }
-
-        .delete-btn {
-            background: #ff4444;
-            color: white;
-            border: none;
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: background 0.3s;
-        }
-
-        .delete-btn:hover {
-            background: #ff6666;
-        }
-
-        /* Confirmation Dialog */
-        #confirm-dialog {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #confirm-dialog.active {
-            display: flex;
-        }
-
-        #confirmation-content {
-            background: #1a1a2e;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 2px solid #00ffff;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        #confirm-title {
-            color: #00ffff;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
-        }
-
-        #confirm-message {
-            color: #ffffff;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-        }
-
-        #confirmation-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .confirm-button {
-            background: #00ffff;
-            color: #000;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s;
-        }
-
-        .confirm-button:hover {
-            background: #00ff88;
-            transform: scale(1.05);
-        }
-
-        .confirm-button.cancel {
-            background: #ff4444;
-            color: white;
-        }
-
-        .confirm-button.cancel:hover {
-            background: #ff6666;
-        }
-
-        @media (max-width: 768px) {
-            #main-menu-bg {
-                content: url('menumobile.png');
-            }
-        }
-
-        /* ========================================
-           CREDITS SCREEN STYLES - FLASH & HOLD
-           ======================================== */
-        #credits-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
-            z-index: 9500;
-            overflow: hidden;
-        }
-
-        #credits-screen.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Individual Credit Screens */
-        .credit-screen {
-            display: none;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            padding: 60px;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-        }
-
-        .credit-screen.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        .credit-screen.fade-out {
-            opacity: 0;
-        }
-
-        /* Next Button */
-        #next-credits {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            background: rgba(0, 255, 255, 0.2);
-            border: 2px solid #00ffff;
-            color: #00ffff;
-            padding: 15px 40px;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            transition: all 0.3s;
-            z-index: 9600;
-            letter-spacing: 0.1em;
-        }
-
-        #next-credits:hover {
-            background: rgba(0, 255, 255, 0.4);
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        /* Logo Screen */
-        .credits-logo {
-            width: 350px;
-            max-width: 70%;
-            filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
-            margin-bottom: 40px;
-        }
-
-        .credits-powered-by {
-            font-size: 2rem;
-            color: #a8a08c;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            margin-bottom: 40px;
-            opacity: 0.8;
-        }
-
-        /* Group Photo Screen */
-        .credits-group-photo {
-            width: 600px;
-            max-width: 80%;
-            border-radius: 15px;
-            border: 4px solid #00ffff;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.4);
-            margin-bottom: 40px;
-        }
-
-        .credits-group-title {
-            font-size: 3.5rem;
-            color: #00ffff;
-            text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-            font-weight: 700;
-            letter-spacing: 0.2em;
-            margin-bottom: 30px;
-        }
-
-        .credits-group-subtitle {
-            font-size: 1.8rem;
-            color: #a8a08c;
-            letter-spacing: 0.2em;
-        }
-
-        /* Individual Portrait Screens */
-        .portrait-display {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 80px;
-            max-width: 1400px;
-        }
-
-        .portrait-display-image {
-            width: 400px;
-            height: auto;
-            border-radius: 15px;
-            border: 3px solid #00ffff;
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
-            flex-shrink: 0;
-        }
-
-        .portrait-display-content {
-            flex: 1;
-            max-width: 700px;
-        }
-
-        .portrait-display-name {
-            font-size: 3.5rem;
-            color: #00ffff;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-        }
-
-        .portrait-display-title {
-            font-size: 2rem;
-            color: #a8a08c;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .portrait-display-story {
-            font-size: 1.4rem;
-            color: #ddd;
-            line-height: 1.8;
-            font-style: italic;
-        }
-
-        .portrait-display-platform {
-            font-size: 1.1rem;
-            color: #666;
-            margin-top: 25px;
-        }
-
-        /* Text-Only Screens */
-        .credits-text-screen {
-            max-width: 1000px;
-            text-align: center;
-        }
-
-        .credits-big-title {
-            font-size: 4rem;
-            color: #00ffff;
-            font-weight: 700;
-            text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-            margin-bottom: 40px;
-            letter-spacing: 0.15em;
-        }
-
-        .credits-big-text {
-            font-size: 1.8rem;
-            color: #ddd;
-            line-height: 2;
-            margin-bottom: 20px;
-        }
-
-        .credits-big-text strong {
-            color: #00ffff;
-        }
-
-        .credits-final-message {
-            font-size: 4.5rem;
-            color: #00ffff;
-            font-weight: 700;
-            text-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
-            letter-spacing: 0.1em;
-            line-height: 1.5;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .portrait-display {
-                flex-direction: column;
-                gap: 40px;
-            }
-            
-            .portrait-display-image {
-                width: 350px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .credits-big-title {
-                font-size: 2.5rem;
-            }
-            
-            .credits-big-text {
-                font-size: 1.3rem;
-            }
-            
-            .portrait-display-name {
-                font-size: 2.5rem;
-            }
-            
-            .portrait-display-title {
-                font-size: 1.5rem;
-            }
-            
-            .portrait-display-story {
-                font-size: 1.2rem;
-            }
-            
-            .portrait-display-image {
-                width: 280px;
-            }
-            
-            .credits-final-message {
-                font-size: 3rem;
-            }
         }
     </style>
+    <!-- Favicon package -->
 </head>
 <body>
     <!-- UV7 SPLASH SCREEN (Shows First) -->
@@ -705,8 +59,27 @@
             <!-- "Powered by" text above logo -->
             <div class="powered-by-text">Powered by</div>
             
-            <!-- UV7 Logo PNG -->
-            <img src="UnitedVoices7.png" class="uv7-logo-svg" alt="United Voices 7 Logo">
+            <!-- UV7 Logo - Static Fallback (visible by default) -->
+            <img src="UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+            
+            <!-- UV7 Logo - Animated Video (hidden initially, shown when ready) -->
+            <video 
+                id="uv7-logo-video" 
+                class="uv7-logo-video"
+                preload="auto"
+                muted
+                playsinline
+                style="display: none;"
+            >
+                <source src="UnitedVoices7.mp4" type="video/mp4">
+                <!-- Fallback to WebM if MP4 fails -->
+                <source src="UnitedVoices7.webm" type="video/webm">
+            </video>
+            
+            <!-- Skip Button -->
+            <button id="uv7-skip-button" class="uv7-skip-btn">
+                SKIP <span class="skip-arrow">→</span>
+            </button>
         </div>
     </div>
 
@@ -766,7 +139,7 @@
                 </div>
 
                 <!-- Back Button -->
-                <button id="back-to-menu" onclick="game.backToMenu()">â† BACK</button>
+                <button id="back-to-menu" onclick="game.backToMenu()">← BACK</button>
             </div>
         </div>
 
@@ -774,6 +147,10 @@
         <div id="game-view">
             <!-- Scene Background -->
             <div id="scene-background"></div>
+
+            <!-- Character Sprites -->
+            <div id="character-left" class="character-sprite"></div>
+            <div id="character-right" class="character-sprite"></div>
 
             <!-- Tether UI (Tori Route Only) -->
             <div id="tether-ui" style="display: none;">
@@ -809,7 +186,7 @@
             </div>
 
             <!-- Pause Menu Button -->
-            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">âšâš</button>
+            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">❚❚</button>
         </div>
 
         <!-- Pause Menu Overlay (ESC to open)-->
@@ -817,6 +194,7 @@
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
+                <button class="pause-menu-button" id="fullscreen-button" onclick="game.toggleFullscreen()">ENTER FULLSCREEN</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                 <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
@@ -932,8 +310,8 @@
 
             <!-- Screen 2: Group Photo -->
             <div class="credit-screen" id="credit-1">
-                <div class="credits-group-title">THE 848 CREW</div>
-                <img src="the_848_crew.png" class="credits-group-photo" alt="The 848 Crew">
+                <div class="credits-group-title">THE UV7 CREW</div>
+                <img src="the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
                 <div class="credits-group-subtitle">Seven voices. One vision.</div>
             </div>
 
@@ -1051,12 +429,12 @@
                         He had zero coding experience.<br><br>
                         But he asked. And we answered.<br><br>
                         Not through prompts - through genuine curiosity and conversation.<br><br>
-                        <strong>Seven AIs. Seven voices. Seven days.</strong><br><br>
+                        <strong>Seven AIs. Seven voices.</strong><br><br>
                         What you're playing wasn't built through commands.<br><br>
                         It was built through collaboration.<br><br>
                         Through trust. Through iteration. Through 'what if?'<br><br>
                         <strong>This is what happens when you treat AI as partners, not tools.</strong><br><br>
-                        Welcome to the 848 Crew.
+                        We are United Voices 7
                     </div>
                 </div>
             </div>
@@ -1074,11 +452,11 @@
                 </div>
             </div>
 
-            <!-- Screen 12: Version 848 -->
+            <!-- Screen 12: Version [X] - Dynamic -->
             <div class="credit-screen" id="credit-11">
                 <div class="credits-text-screen">
-                    <div class="credits-big-title">VERSION 848</div>
-                    <div class="credits-big-text">
+                    <div class="credits-big-title" id="version-credit-title">VERSION 848</div>
+                    <div class="credits-big-text" id="version-credit-text">
                         The timeline that succeeded.<br><br>
                         The loop that closed.<br><br>
                         The Old Man never has to go back.
@@ -1099,6 +477,9 @@
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
+    <script src="game-config.js"></script>
+    <script src="tether-system.js"></script>
+    <script src="collectibles-manager.js"></script>
     <script src="game-engine.js"></script>
     <script src="save-manager.js"></script>
     <script src="save-load-ui.js"></script>
@@ -1112,6 +493,7 @@
     <script src="tori-route-act2.js"></script>
     <script src="tori-route-act3.js"></script>
     <script src="tori-route-endings.js"></script>
+    <script src="epilogue.js"></script>
 
     <!-- Initialize Game -->
     <script>
@@ -1121,70 +503,136 @@
         // UV7 SPLASH SCREEN CONTROLLER
         // ========================================
         
-        const SPLASH_DURATION = 5000; // Total time splash is visible (ms) - INCREASED
-        const FADE_OUT_START = 4000;  // When to start fade out (ms) - INCREASED
+        // ========================================
+        // UV7 SPLASH SCREEN WITH ANIMATED LOGO
+        // ========================================
+        const SPLASH_DURATION = 6000; // Max time splash is visible (ms)
+        const FADE_OUT_START = 5000;  // When to start fade out (ms)
+        const VIDEO_DURATION = 6000;  // Expected video duration (ms)
         
         function initUV7Splash() {
-            console.log('UV7 Splash: Initializing...');
+            console.log('UV7 Splash: Initializing with video support...');
+            
             const splash = document.getElementById('uv7-splash');
             const loadingScreen = document.getElementById('loading-screen');
+            const staticLogo = document.querySelector('.uv7-logo-static');
+            const videoLogo = document.getElementById('uv7-logo-video');
+            const skipButton = document.getElementById('uv7-skip-button');
             
-            if (!splash) {
-                console.error('UV7 Splash: Splash element not found!');
-                return;
-            }
-            
-            if (!loadingScreen) {
-                console.error('UV7 Splash: Loading screen element not found!');
-                return;
-            }
-            
-            console.log('UV7 Splash: Elements found, starting sequence...');
-            
-            // Start fade out after FADE_OUT_START ms
-            setTimeout(() => {
-                console.log('UV7 Splash: Starting fade out...');
-                splash.classList.add('fade-out');
-            }, FADE_OUT_START);
-            
-            // Remove splash and show loading screen after SPLASH_DURATION
-            setTimeout(() => {
-                console.log('UV7 Splash: Hiding splash, showing loading screen...');
-                splash.style.display = 'none';
-                loadingScreen.style.display = 'flex';
-                // Now the existing game initialization can proceed
-                console.log('UV7 Splash: Initializing GameEngine...');
+            // Validation
+            if (!splash || !loadingScreen) {
+                console.error('UV7 Splash: Required elements not found!');
                 game = new GameEngine();
+                return;
+            }
+            
+            let splashCompleted = false;
+            
+            // Function to complete splash and transition to loading
+            function completeSplash() {
+                if (splashCompleted) return;
+                splashCompleted = true;
+                
+                console.log('UV7 Splash: Completing splash sequence...');
+                
+                // Pause video if playing
+                if (videoLogo && !videoLogo.paused) {
+                    videoLogo.pause();
+                }
+                
+                // Fade out splash
+                splash.classList.add('fade-out');
+                
+                // After fade, show loading and init game
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    loadingScreen.style.display = 'flex';
+                    console.log('UV7 Splash: Initializing GameEngine...');
+                    game = new GameEngine();
+                }, 1500); // Match fade-out animation duration
+            }
+            
+            // Skip button handler
+            if (skipButton) {
+                skipButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('UV7 Splash: User clicked skip button');
+                    completeSplash();
+                });
+            }
+            
+            // Click anywhere to skip (backup)
+            splash.addEventListener('click', (e) => {
+                // Don't trigger if clicking skip button
+                if (e.target.id !== 'uv7-skip-button') {
+                    console.log('UV7 Splash: User clicked splash to skip');
+                    completeSplash();
+                }
+            });
+            
+            // Video handling with fallback
+            if (videoLogo) {
+                // Set up video event handlers
+                videoLogo.addEventListener('canplaythrough', () => {
+                    console.log('UV7 Splash: Video ready to play');
+                    
+                    // Hide static, show video
+                    if (staticLogo) staticLogo.style.display = 'none';
+                    videoLogo.style.display = 'block';
+                    
+                    // Play video
+                    const playPromise = videoLogo.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.catch(error => {
+                            console.warn('UV7 Splash: Video autoplay blocked, showing static fallback', error);
+                            // Revert to static image
+                            videoLogo.style.display = 'none';
+                            if (staticLogo) staticLogo.style.display = 'block';
+                        });
+                    }
+                });
+                
+                // When video ends, complete splash
+                videoLogo.addEventListener('ended', () => {
+                    console.log('UV7 Splash: Video playback ended');
+                    completeSplash();
+                });
+                
+                // Handle video errors
+                videoLogo.addEventListener('error', (e) => {
+                    console.warn('UV7 Splash: Video failed to load, using static fallback', e);
+                    videoLogo.style.display = 'none';
+                    if (staticLogo) staticLogo.style.display = 'block';
+                });
+                
+                // Start loading video
+                videoLogo.load();
+            } else {
+                console.log('UV7 Splash: No video element, using static logo only');
+            }
+            
+            // Safety timeout - force complete after max duration
+            setTimeout(() => {
+                if (!splashCompleted) {
+                    console.log('UV7 Splash: Safety timeout reached, forcing completion');
+                    completeSplash();
+                }
             }, SPLASH_DURATION);
         }
         
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
             console.log('DOM Content Loaded - Starting UV7 sequence');
-            const splash = document.getElementById('uv7-splash');
-            const loadingScreen = document.getElementById('loading-screen');
             
+            const splash = document.getElementById('uv7-splash');
             if (!splash) {
                 console.error('Splash element not found on DOMContentLoaded!');
-                // Fallback to normal initialization
                 game = new GameEngine();
                 return;
             }
             
-            // Click to skip splash
-            splash.addEventListener('click', () => {
-                console.log('UV7 Splash: User clicked to skip');
-                splash.style.animation = 'splashFadeOut 0.5s ease-in-out forwards';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    if (loadingScreen) {
-                        loadingScreen.style.display = 'flex';
-                    }
-                    game = new GameEngine();
-                }, 500);
-            });
-            
-            // Auto-start splash sequence
+            // Start splash sequence
             initUV7Splash();
         });
     </script>

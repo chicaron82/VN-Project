@@ -1,7 +1,8 @@
 // ========================================
-// TORI'S ROUTE - ENDINGS (V4 - VISUAL INTEGRATION)
+// TORI'S ROUTE - ENDINGS (V5 - CLEAN ARCHITECTURE)
 // Three Paths Diverge
 // SPRITES & BACKGROUNDS INTEGRATED
+// FIXED: Endings now unlock pre-defined notes from collectibles
 // ========================================
 
 class ToriEndings {
@@ -60,54 +61,8 @@ class ToriEndings {
     // ========================================
     
     badRoute() {
-        // Add Bad Route special note
-        if (!this.route.allNotes.bad_ending) {
-            this.route.allNotes.bad_ending = {
-                id: 'bad_ending',
-                type: 'special',
-                title: 'ZeeCollective_BadRouteAnalysis.txt',
-                content: `ITERATION ANALYSIS: BAD ROUTE
-═══════════════════════════════════════════════════════════════
-
-Upload failed. Tori fragmented.
-She's an Echo now. Version 848 joins 847 others.
-
-This is the most common ending.
-423 of 847 previous versions ended here.
-
-Why? Because upload SEEMS logical.
-"Just move her to a bigger space."
-
-But consciousness isn't data storage.
-It's a running process.
-You can't "move" it. Only bridge it.
-
-Upload creates a COPY attempting to run.
-But there's already an original trying to run.
-System conflict. Fragmentation. Failure.
-
-Z told you the technical reason.
-CZ told you the emotional reason.
-ZR told you the iteration history.
-
-You chose it anyway.
-
-That's okay. That's part of the journey.
-
-847 versions failed before this.
-Most of them chose upload too.
-
-Now you know why it doesn't work.
-
-Try again?
-
--The Zee Collective
-Learning from Iteration 848's failure`
-            };
-        }
-        
-        this.route.collectedNotes.special.push('bad_ending');
-        this.route.showNoteNotification(this.route.allNotes.bad_ending);
+        // Unlock the pre-defined bad ending note
+        this.route.unlockNote('bad_ending');
         
         this.game.displayScene({
             character: 'Narration',
@@ -144,8 +99,12 @@ Learning from Iteration 848's failure`
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Restart from beginning
+                    // Increment version and restart
+                    this.game.incrementVersion();
                     this.route.act1.start();
+                } else {
+                    // Return to menu at current version
+                    this.game.returnToMainMenu();
                 }
             }
         }, 'badRoute_retry');
@@ -157,49 +116,8 @@ Learning from Iteration 848's failure`
     // ========================================
     
     digitalForever() {
-        // Add Digital Forever special note
-        if (!this.route.allNotes.digital_ending) {
-            this.route.allNotes.digital_ending = {
-                id: 'digital_ending',
-                type: 'special',
-                title: 'ZeeCollective_DigitalForeverNotes.txt',
-                content: `NOTES ON BITTERSWEET ENDINGS
-═══════════════════════════════════════════════════════════════
-
-You chose to hold on.
-You chose connection over survival.
-
-That's... beautiful. And tragic.
-
-Z says: "System failure. Both consciousnesses
-pulled into device. Technically stable but
-ethically questionable."
-
-CZ says: "They're together. They're happy.
-Who are we to say this is wrong?"
-
-ZR says: "423 versions ended here. It's a
-valid ending. But there's one more path..."
-
-We argued about this ending.
-
-Is being together digitally ENOUGH?
-Or is the body anchor the only TRUE ending?
-
-You decided: Together is enough.
-Even if "together" means digital forever.
-
-We respect that.
-
-But... there's still one path you haven't tried.
-
--The Zee Collective
-On Love That Transcends Medium`
-            };
-        }
-        
-        this.route.collectedNotes.special.push('digital_ending');
-        this.route.showNoteNotification(this.route.allNotes.digital_ending);
+        // Unlock the pre-defined digital forever ending note
+        this.route.unlockNote('digital_ending');
         
         this.game.displayScene({
             character: 'Narration',
@@ -258,8 +176,34 @@ On Love That Transcends Medium`
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
             },
+            next: () => this.digitalForever_choice(),
             delay: 5000
         }, 'digitalForever_echoes');
+    }
+    
+    digitalForever_choice() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: `VERSION ${this.game.loopVersion}\n\n"Together forever in the digital space.\nDo you accept this ending?"`,
+            background: 'digitalSpace.png',
+            choices: [
+                { text: '[RETRY - Seek the true path]', value: 'retry' },
+                { text: '[ACCEPT THIS - Digital love is enough]', value: 'accept' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'retry') {
+                    // Increment version and restart
+                    this.game.incrementVersion();
+                    this.route.act1.start();
+                } else {
+                    // Accept ending - lock version
+                    this.game.acceptEnding();
+                    // Transition to shared epilogue
+                    const epilogue = new Epilogue(this.game);
+                    epilogue.start();
+                }
+            }
+        }, 'digitalForever_choice');
     }
 
     // ========================================
@@ -268,66 +212,8 @@ On Love That Transcends Medium`
     // ========================================
     
     trueRoute() {
-        // Add True Route special note
-        if (!this.route.allNotes.true_ending) {
-            this.route.allNotes.true_ending = {
-                id: 'true_ending',
-                type: 'special',
-                title: 'ZeeCollective_TrueEndingNotes.txt',
-                content: `YOU DID IT
-═══════════════════════════════════════════════════════════════
-
-Version 848: SUCCESS
-
-After 847 failures.
-After 847 Toris who didn't make it home.
-After 847 iterations of heartbreak.
-
-THIS one worked.
-
-You chose the body anchor.
-You followed the heartbeat home.
-You brought her back.
-
-Z: "The technical solution was always there.
-Body anchor. Consciousness returns to origin.
-Simple. Just needed someone to TRY it."
-
-CZ: "She's home. She's ALIVE. She's with him.
-That's all I wanted. That's all ANY of us wanted."
-
-ZR: "848 iterations. You were the one who
-figured it out. You broke the loop.
-GIT'R DONE. ✅"
-
-The Echoes are free.
-The loop is broken.
-Tori is home.
-
-Thank you for not giving up.
-Thank you for trying again.
-Thank you for bringing her home.
-
-Every failure mattered.
-Every attempt built toward this.
-848 iterations led to ONE success.
-
-And that's enough.
-
--The Zee Collective
-Z (The Architect)
-CZ (The Heart)
-ZR (The Chaos Optimizer)
-
-💚🔥💀
-
-Now go rest.
-You earned it.`
-            };
-        }
-        
-        this.route.collectedNotes.special.push('true_ending');
-        this.route.showNoteNotification(this.route.allNotes.true_ending);
+        // Unlock the pre-defined true ending note
+        this.route.unlockNote('true_ending');
         
         this.game.displayScene({
             character: 'Narration',
@@ -402,6 +288,8 @@ You earned it.`
                 left: 'ronnie-sprite.png'
             },
             next: () => {
+                // Break the loop - this timeline succeeded!
+                this.game.breakLoop();
                 // Transition to shared epilogue
                 const epilogue = new Epilogue(this.game);
                 epilogue.start();

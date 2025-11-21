@@ -3,6 +3,7 @@
 // Mirror perspective of shared prologue
 // Proper cross-route synchronization
 // SPRITES & BACKGROUNDS INTEGRATED
+// ECHO SPRITES FIXED: RIGHT position, three-echoes-sprite.png
 // ========================================
 
 class ToriAct1 {
@@ -161,6 +162,9 @@ class ToriAct1 {
             },
             internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene2_who_there(),
             delay: 3000
         }, 'scene2_echoes_whispers');
@@ -186,6 +190,9 @@ class ToriAct1 {
             },
             internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene2_echo2_explains(),
             delay: 2500
         }, 'scene2_echo1_intro');
@@ -200,6 +207,9 @@ class ToriAct1 {
             },
             internal: '[Visual: The weight of their existence. Failed iterations.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene2_despair_welcome(),
             delay: 3000
         }, 'scene2_echo2_explains');
@@ -214,6 +224,9 @@ class ToriAct1 {
             },
             internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene2_tori_refuses(),
             delay: 3500
         }, 'scene2_despair_welcome');
@@ -277,6 +290,9 @@ class ToriAct1 {
             },
             internal: '[The weight of their experience. They know what doesn\'t work.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene3_ronnie_response(),
             delay: 3000
         }, 'scene3_echoes_explain');
@@ -417,7 +433,8 @@ class ToriAct1 {
             internal: '[Visual: Through a laptop camera. The apartment. And... her body on the floor.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene4_witnessing(),
             delay: 3000
@@ -431,7 +448,7 @@ class ToriAct1 {
             internal: '[She is witnessing her own accident. From the outside. Through a camera. This is real.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene4_horror(),
             delay: 4000
@@ -445,7 +462,7 @@ class ToriAct1 {
             internal: '[The full weight of understanding. She\'s not in her body anymore. She\'s watching it die.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene4_snap_back(),
             delay: 4000
@@ -488,6 +505,9 @@ class ToriAct1 {
             },
             internal: '[The Echoes are shaken. Something impossible just happened.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_echo2_confused(),
             delay: 2500
         }, 'scene5_echoes_shock');
@@ -504,6 +524,9 @@ class ToriAct1 {
             },
             internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_tori_distraught(),
             delay: 3500
         }, 'scene5_echo2_confused');
@@ -529,6 +552,9 @@ class ToriAct1 {
             },
             internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_tori_explains(),
             delay: 3500
         }, 'scene5_echo1_pressing');
@@ -565,6 +591,9 @@ class ToriAct1 {
             },
             internal: '[Realization dawning. They never tried. They just accepted.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_echo1_admits(),
             delay: 3000
         }, 'scene5_echo2_revelation');
@@ -581,6 +610,9 @@ class ToriAct1 {
             },
             internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_despair_denial(),
             delay: 4000
         }, 'scene5_echo1_admits');
@@ -595,6 +627,9 @@ class ToriAct1 {
             },
             internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene5_tori_defiant(),
             delay: 3500
         }, 'scene5_despair_denial');
@@ -648,6 +683,9 @@ class ToriAct1 {
             },
             internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene6_ronnie_coding(),
             delay: 3500
         }, 'scene6_failure');
@@ -716,7 +754,7 @@ class ToriAct1 {
             internal: '[Visual: Light. Vision. She\'s IN. The laptop. She can see through the webcam again.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene6_triumph(),
             delay: 2000
@@ -730,7 +768,7 @@ class ToriAct1 {
             internal: '[The discovery. Physical contact enables the transfer. This is navigation, not luck.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene6_echoes_amazed(),
             delay: 3500,
@@ -748,9 +786,9 @@ class ToriAct1 {
                 despair: 'It\'s still pointless.'
             },
             internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
-            background: 'apartment.png',
+            background: 'digitalSpace.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'three-echoes-sprite.png'
             },
             next: () => this.scene6_sees_code(),
             delay: 3500
@@ -764,7 +802,7 @@ class ToriAct1 {
             internal: '[Visual: Through laptop screen. Code editor. A web app. "Tori-gatchi."]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene7_communication_plan(),
             delay: 3000
@@ -783,7 +821,7 @@ class ToriAct1 {
             internal: '[The plan forming. She can hijack the game. Use it to communicate.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene7_time_passes(),
             delay: 3500
@@ -899,6 +937,9 @@ class ToriAct1 {
             },
             internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene7_echo2_admits(),
             delay: 2500
         }, 'scene7_echo1_notes');
@@ -913,6 +954,9 @@ class ToriAct1 {
             },
             internal: '[Another failure. They felt the pull but ignored it.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene7_despair_insists(),
             delay: 3000
         }, 'scene7_echo2_admits');
@@ -927,6 +971,9 @@ class ToriAct1 {
             },
             internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
             background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene7_tori_determined(),
             delay: 3500
         }, 'scene7_despair_insists');
@@ -955,7 +1002,7 @@ class ToriAct1 {
             internal: '[Visual: She\'s getting better at this. The transfer is smoother now.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_program_ready(),
             delay: 3000
@@ -969,7 +1016,7 @@ class ToriAct1 {
             internal: '[Through laptop: He clicks. The program opens. Her sprite appears on screen.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_sync_moment(),
             delay: 3000
@@ -983,7 +1030,7 @@ class ToriAct1 {
             internal: '[She pushes her consciousness toward the text output. Hijacking the dialogue box.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_first_words(),
             delay: 3000
@@ -997,7 +1044,7 @@ class ToriAct1 {
             internal: '[Visual: Her words appearing in the dialogue box. Text she didn\'t code. SHE\'S SPEAKING.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_ronnie_confusion(),
             delay: 3000,
@@ -1012,7 +1059,7 @@ class ToriAct1 {
             internal: '[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_tori_pushes(),
             delay: 3000
@@ -1026,7 +1073,7 @@ class ToriAct1 {
             internal: '[Fighting to maintain the connection. Forcing words through the dialogue system.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_proof(),
             delay: 3500
@@ -1040,7 +1087,7 @@ class ToriAct1 {
             internal: '[Details only she would know. Proof. Evidence. It\'s really her.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_ronnie_believes(),
             delay: 4000
@@ -1054,7 +1101,7 @@ class ToriAct1 {
             internal: '[Breakthrough. Communication established. He believes. Finally.]',
             background: 'apartment.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_echoes_reaction(),
             delay: 3500
@@ -1071,7 +1118,10 @@ class ToriAct1 {
                 despair: '...'
             },
             internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
-            background: 'apartment.png',
+            background: 'digitalSpace.png',
+            sprites: {
+                right: 'three-echoes-sprite.png'
+            },
             next: () => this.scene8_tori_victory(),
             delay: 4000
         }, 'scene8_echoes_reaction');

@@ -90,7 +90,7 @@ class RonnieRouteAct2 {
     act2Beat3() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: '[BEAT 3-6: Iterations - Multiple failed attempts. Each time, she resets. Each time, he refines the construct.]\n\nVersion 848.1: "Tori, follow my voice."\nVersion 848.2: "Remember the hospital."\nVersion 848.3: "Hold onto the Tamagotchi."\n\nEach time: Reset. Loop. Again.',
+            dialogue: 'Days blur together. Each attempt brings hope. Each failure brings despair.',
             internal: '[Visual: Montage of Ronnie coding frantically, testing, failing. Days blur into weeks. The Tamagotchi screen flickers with each attempt.]',
             background: 'apartment.png',
             sprites: {

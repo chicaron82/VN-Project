@@ -65,6 +65,10 @@ class GameEngine {
             this.isMobile = window.innerWidth <= 480;
         });
         
+        // Loop/Version system for endings
+        this.loopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
+        this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
+        
         // Game state for tracking choices, flags, and progress
         this.gameState = {
             flags: {},
@@ -176,34 +180,69 @@ class GameEngine {
     }
     
     // ========================================
-    // DYNAMIC TITLE SYSTEM
+    // LOOP/VERSION SYSTEM
+    // Player journey through failed timelines
     // ========================================
     
     updateTitleScreen() {
-        // Get current attempt number from localStorage (defaults to 848)
-        const attemptNumber = localStorage.getItem('attemptNumber') || '848';
-        
         // Update browser tab title
-        document.title = `Version ${attemptNumber}`;
+        document.title = `VERSION ${this.loopVersion}`;
         
         // Update main menu H1
         const mainMenuTitle = document.querySelector('#main-menu-content h1');
         if (mainMenuTitle) {
-            mainMenuTitle.textContent = `VERSION ${attemptNumber}`;
+            mainMenuTitle.textContent = `VERSION ${this.loopVersion}`;
+            
+            // Add glitch effect if attempting and version > 848
+            if (this.loopStatus === 'attempting' && this.loopVersion > 848) {
+                mainMenuTitle.classList.add('version-glitch');
+            } else {
+                mainMenuTitle.classList.remove('version-glitch');
+            }
         }
     }
     
-    incrementAttempt() {
-        // Get current attempt, increment, and save
-        let attemptNumber = parseInt(localStorage.getItem('attemptNumber')) || 848;
-        attemptNumber++;
-        localStorage.setItem('attemptNumber', attemptNumber.toString());
+    incrementVersion() {
+        // RETRY - increment version, reset to attempting
+        this.loopVersion++;
+        this.loopStatus = 'attempting';
+        
+        // Save to localStorage
+        localStorage.setItem('loopVersion', this.loopVersion.toString());
+        localStorage.setItem('loopStatus', this.loopStatus);
         
         // Update display
         this.updateTitleScreen();
         
-        // Return the new number for display in endings
-        return attemptNumber;
+        console.log(`🔄 Loop incremented to VERSION ${this.loopVersion}`);
+        
+        return this.loopVersion;
+    }
+    
+    breakLoop() {
+        // TRUE ENDING - lock version as succeeded
+        this.loopStatus = 'succeeded';
+        
+        // Save to localStorage
+        localStorage.setItem('loopStatus', this.loopStatus);
+        
+        // Update display (removes glitch)
+        this.updateTitleScreen();
+        
+        console.log(`✨ Loop broken! VERSION ${this.loopVersion} SUCCEEDED`);
+    }
+    
+    acceptEnding() {
+        // DIGITAL FOREVER - lock version as accepted
+        this.loopStatus = 'accepted';
+        
+        // Save to localStorage
+        localStorage.setItem('loopStatus', this.loopStatus);
+        
+        // Update display (removes glitch)
+        this.updateTitleScreen();
+        
+        console.log(`💫 Ending accepted. VERSION ${this.loopVersion} locked.`);
     }
     
     // ========================================
@@ -888,7 +927,7 @@ class GameEngine {
     // CREDITS
     // ========================================
     
-    showCredits() {
+    showCredits(trueEnding = false) {
         const creditsScreen = document.getElementById('credits-screen');
         if (!creditsScreen) {
             console.error('Credits screen element not found');
@@ -899,6 +938,11 @@ class GameEngine {
         this.currentCreditIndex = 0;
         this.totalCredits = 13; // 0-12 inclusive
         
+        // If true ending, update credit-11 with version number
+        if (trueEnding && this.loopStatus === 'succeeded') {
+            this.updateVersionCredit();
+        }
+        
         // Hide all other UI
         this.gameView.style.display = 'none';
         this.mainMenu.style.display = 'none';
@@ -908,6 +952,22 @@ class GameEngine {
         
         // Show first credit screen
         this.displayCreditScreen(0);
+    }
+    
+    updateVersionCredit() {
+        // Update credit-11 to show the successful version number
+        const versionTitle = document.getElementById('version-credit-title');
+        const versionText = document.getElementById('version-credit-text');
+        
+        if (versionTitle) {
+            versionTitle.textContent = `VERSION ${this.loopVersion}`;
+        }
+        
+        if (versionText) {
+            versionText.innerHTML = `The timeline that succeeded.<br><br>The loop that closed.<br><br>The Old Man never has to go back.`;
+        }
+        
+        console.log(`✨ Credits updated with VERSION ${this.loopVersion} success screen`);
     }
     
     displayCreditScreen(index) {
@@ -1002,6 +1062,11 @@ class GameEngine {
     returnToMainMenu() {
         // Clear sprites when returning to main menu
         this.clearAllSprites();
+        
+        // Hide Tori-specific UI elements
+        if (this.tetherUI) this.tetherUI.style.display = 'none';
+        if (this.notesButton) this.notesButton.style.display = 'none';
+        if (this.echoDisplay) this.echoDisplay.style.display = 'none';
         
         // Stop tether decay if in Tori's route
         if (this.currentRoute) {

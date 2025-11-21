@@ -110,11 +110,15 @@ class Epilogue {
         this.game.displayScene({
             character: 'Ronnie (knowing smile)',
             dialogue: '"Must have been another timeline."',
-            internal: '[The loop is closed. Version 848 succeeded. The Old Man never has to go back. Love wins.]\n\n[Fade to white.]\n\n[Credits roll. No retry prompt. This is the escape from the loop.]',
+            internal: `[The loop is closed. Version ${this.game.loopVersion} succeeded. The Old Man never has to go back. Love wins.]\n\n[Fade to white.]\n\n[Credits roll. No retry prompt. This is the escape from the loop.]`,
             background: 'apartment.png',
             sprites: {
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
+            },
+            next: () => {
+                // Show credits with true ending flag
+                this.game.showCredits(true);
             },
             delay: 5000
         }, 'trueRoute_knowing');

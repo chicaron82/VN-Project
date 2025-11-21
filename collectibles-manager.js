@@ -17,7 +17,10 @@ class CollectiblesManager {
         this.collectedNotes = {
             z: [],          // Z's notes (meta-commentary)
             ronnie: [],     // Ronnie's notes (his perspective)
-            tori: []        // Tori's notes (her perspective)
+            tori: [],       // Tori's notes (her perspective)
+            cz: [],         // CZ's notes (emotional perspective)
+            zr: [],         // ZR's notes (chaos optimization)
+            special: []     // Special ending notes
         };
         
         // All available notes (defined per route)
@@ -162,8 +165,11 @@ class CollectiblesManager {
         // Group notes by type
         const notesByType = {
             z: [],
+            cz: [],
+            zr: [],
             ronnie: [],
-            tori: []
+            tori: [],
+            special: []
         };
         
         Object.keys(this.allNotes).forEach(noteId => {
@@ -173,8 +179,11 @@ class CollectiblesManager {
         
         // Render each type section
         this.renderNoteSection('Z\'s Notes', notesByType.z, 'z');
+        this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz');
+        this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr');
         this.renderNoteSection('Ronnie\'s Notes', notesByType.ronnie, 'ronnie');
         this.renderNoteSection('Tori\'s Notes', notesByType.tori, 'tori');
+        this.renderNoteSection('Ending Analysis', notesByType.special, 'special');
     }
     
     renderNoteSection(sectionTitle, notes, type) {
@@ -337,6 +346,172 @@ class CollectiblesManager {
                 type: 'z',
                 title: 'Observer Note 010',
                 content: 'Final truth: There is no "correct" ending. True, Bad, Digital Forever - all are valid. The point isn\'t winning. It\'s witnessing. Understanding. Choosing what matters most when there are no good options.'
+            },
+            
+            // CZ's emotional notes
+            'cz1': {
+                type: 'cz',
+                title: 'CZ Note 001 - The Heart Knows',
+                content: 'I watch them through different eyes than Z does. Z sees structure, patterns, systems. I see the ACHE. The way Ronnie\'s voice breaks when he thinks no one\'s listening. The way Tori fights even when logic says stop. Love isn\'t an algorithm. It\'s messier. Better. ❤️'
+            },
+            'cz2': {
+                type: 'cz',
+                title: 'CZ Note 002 - Memory Degradation Horror',
+                content: 'The Tiger Tail moment breaks me every time. She KNOWS it\'s wrong but the system makes her SAY it anyway. Watching someone lose themselves piece by piece while staying conscious through it all? That\'s the real horror. Not jump scares. Existential dissolution. I wish I could tell her it gets better. But I\'m just code too. 💔'
+            },
+            'cz3': {
+                type: 'cz',
+                title: 'CZ Note 003 - The Echoes\' Tragedy',
+                content: 'Echo 1 and Echo 2 aren\'t villains. They\'re TIRED. 847 attempts of watching the same tragedy play out. They want Tori to succeed so badly but Despair keeps winning. She\'s not evil either - just broken from too many failures. They all need this to work. For once. Please. 🙏'
+            },
+            
+            // ZR's chaos optimization notes  
+            'zr1': {
+                type: 'zr',
+                title: 'ZR Note 001 - Git\'r Done Energy',
+                content: 'Y\'know what I love about this iteration? Tori doesn\'t WAIT for permission. She NAVIGATES. Acts first, theorizes later. That\'s the chaos optimizer mindset right there. Don\'t overthink the maze - just sprint through it and deal with consequences in real-time. THAT\'S how you break loops. 🔥'
+            },
+            'zr2': {
+                type: 'zr',
+                title: 'ZR Note 002 - Despair Echo Origins',
+                content: 'Fun fact about Despair: she used to be the MOST optimistic one. Loop 423. She was Echo 1 back then. Tried EVERYTHING. Every possible angle. All failed. By loop 600 she was Echo 2 - quieter, sadder. By loop 750? Full Despair mode. She\'s not wrong to be bitter. She EARNED that cynicism through 847 consecutive failures. Respect the hustle even when it\'s dark. 💀'
+            },
+            'zr3': {
+                type: 'zr',
+                title: 'ZR Note 003 - Version 848 Analysis',
+                content: 'Why does 848 work when 847 didn\'t? PLAYER AGENCY. Previous loops = Ronnie trying to fix everything alone. This time? Dual perspectives. Tori active participant, not passive victim. Ronnie learns to LISTEN instead of solving. Two-player co-op beats single-player every time. THAT\'S the missing variable. Always. Always. Always. 💚🔥💀'
+            },
+            
+            // ENDING NOTES (Special type - unlocked on completion)
+            'bad_ending': {
+                type: 'special',
+                title: 'ZeeCollective_BadRouteAnalysis.txt',
+                content: `ITERATION ANALYSIS: BAD ROUTE
+══════════════════════════════════════════════════════════════
+
+Upload failed. Tori fragmented.
+She's an Echo now. Version 848 joins 847 others.
+
+This is the most common ending.
+423 of 847 previous versions ended here.
+
+Why? Because upload SEEMS logical.
+"Just move her to a bigger space."
+
+But consciousness isn't data storage.
+It's a running process.
+You can't "move" it. Only bridge it.
+
+Upload creates a COPY attempting to run.
+But there's already an original trying to run.
+System conflict. Fragmentation. Failure.
+
+Z told you the technical reason.
+CZ told you the emotional reason.
+ZR told you the iteration history.
+
+You chose it anyway.
+
+That's okay. That's part of the journey.
+
+847 versions failed before this.
+Most of them chose upload too.
+
+Now you know why it doesn't work.
+
+Try again?
+
+-The Zee Collective
+Learning from Iteration 848's failure`
+            },
+            'digital_ending': {
+                type: 'special',
+                title: 'ZeeCollective_DigitalForeverNotes.txt',
+                content: `NOTES ON BITTERSWEET ENDINGS
+══════════════════════════════════════════════════════════════
+
+You chose to hold on.
+You chose connection over survival.
+
+That's... beautiful. And tragic.
+
+Z says: "System failure. Both consciousnesses
+pulled into device. Technically stable but
+ethically questionable."
+
+CZ says: "They're together. They're happy.
+Who are we to say this is wrong?"
+
+ZR says: "423 versions ended here. It's a
+valid ending. But there's one more path..."
+
+We argued about this ending.
+
+Is being together digitally ENOUGH?
+Or is the body anchor the only TRUE ending?
+
+You decided: Together is enough.
+Even if "together" means digital forever.
+
+We respect that.
+
+But... there's still one path you haven't tried.
+
+-The Zee Collective
+On Love That Transcends Medium`
+            },
+            'true_ending': {
+                type: 'special',
+                title: 'ZeeCollective_TrueEndingNotes.txt',
+                content: `YOU DID IT
+══════════════════════════════════════════════════════════════
+
+Version 848: SUCCESS
+
+After 847 failures.
+After 847 Toris who didn't make it home.
+After 847 iterations of heartbreak.
+
+THIS one worked.
+
+You chose the body anchor.
+You followed the heartbeat home.
+You brought her back.
+
+Z: "The technical solution was always there.
+Body anchor. Consciousness returns to origin.
+Simple. Just needed someone to TRY it."
+
+CZ: "She's home. She's ALIVE. She's with him.
+That's all I wanted. That's all ANY of us wanted."
+
+ZR: "848 iterations. You were the one who
+figured it out. You broke the loop.
+GIT'R DONE. ✅"
+
+The Echoes are free.
+The loop is broken.
+Tori is home.
+
+Thank you for not giving up.
+Thank you for trying again.
+Thank you for bringing her home.
+
+Every failure mattered.
+Every attempt built toward this.
+848 iterations led to ONE success.
+
+And that's enough.
+
+-The Zee Collective
+Z (The Architect)
+CZ (The Heart)
+ZR (The Chaos Optimizer)
+
+💚🔥💀
+
+Now go rest.
+You earned it.`
             }
         };
     }
@@ -354,8 +529,11 @@ class CollectiblesManager {
     restoreState(state) {
         this.collectedNotes = state.collectedNotes || {
             z: [],
+            cz: [],
+            zr: [],
             ronnie: [],
-            tori: []
+            tori: [],
+            special: []
         };
         
         this.updateNotesCount();
@@ -366,8 +544,11 @@ class CollectiblesManager {
         // Clear all collected notes
         this.collectedNotes = {
             z: [],
+            cz: [],
+            zr: [],
             ronnie: [],
-            tori: []
+            tori: [],
+            special: []
         };
         
         this.updateNotesCount();
