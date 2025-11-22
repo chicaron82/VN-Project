@@ -1666,6 +1666,8 @@
 
 /* ========================================
    MOBILE RESPONSIVE - BELLE'S FIX
+   Revised: Nov 22, 2024
+   Fixed: Dialogue box overlapping sprites
    ======================================== */
 
 @media (max-width: 480px) and (orientation: portrait) {
@@ -1673,31 +1675,69 @@
         display: flex;
         flex-direction: column;
         height: 100vh;
+        height: 100dvh; /* Dynamic viewport height for mobile browsers */
         justify-content: flex-end;
+        overflow: hidden;
     }
     
-    #scene-background {
-        flex-grow: 1;
-        position: relative;
-        overflow: hidden;
-        min-height: 0;
+    #scene-background,
+    #scene-background-alt {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
     }
     
+    /* SPRITE POSITIONING - Stay above dialogue box */
+    .character-sprite {
+        position: absolute;
+        bottom: 28vh !important; /* Position sprites ABOVE dialogue area */
+        width: 180px !important;
+        height: 320px !important;
+        z-index: 40;
+    }
+    
+    #character-left {
+        left: 5% !important;
+        right: auto !important;
+        transform: none !important;
+    }
+    
+    #character-right {
+        right: 5% !important;
+        left: auto !important;
+        transform: none !important;
+    }
+    
+    /* Hide dimmed sprites on mobile to reduce clutter */
+    .character-sprite.sprite-dim {
+        display: none !important;
+    }
+    
+    /* DIALOGUE BOX - Fixed to bottom, never overlap sprites */
     #dialogue-box {
-        position: relative;
-        width: 100%;
-        height: 35vh;
-        max-height: 35vh;
-        min-height: 140px;
-        max-height: 280px !important; /* HARD CEILING - dialogue box can NEVER exceed 280px on mobile portrait */
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: 28vh !important; /* Match sprite bottom offset */
+        min-height: 120px;
         overflow-y: auto;
         overflow-x: hidden;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
         background: rgba(0, 0, 0, 0.95);
+        border: none;
         border-top: 2px solid #0ff;
-        padding: 15px 18px;
+        border-radius: 0;
+        padding: 12px 16px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
         box-sizing: border-box;
         cursor: pointer;
         user-select: none;
@@ -1707,36 +1747,32 @@
         z-index: 50;
     }
     
-    .character-sprite.sprite-dim {
-        display: none !important;
-    }
-    
-    #character-left:not(.sprite-dim),
-    #character-right:not(.sprite-dim) {
-        position: absolute;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%);
-        bottom: 0;
-        width: 200px;
-        height: 85%;
-        max-height: 400px;
-        object-fit: contain;
+    /* Override route-specific frames on mobile - they don't scale well */
+    #dialogue-box.ronnie-route,
+    #dialogue-box.tori-route {
+        background: rgba(0, 0, 0, 0.95) !important;
+        border: none !important;
+        border-top: 2px solid #0ff !important;
+        padding: 12px 16px !important;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+        box-shadow: 0 -5px 20px rgba(0, 255, 255, 0.2) !important;
+        animation: none !important;
     }
     
     .echo-scene #character-right {
-        left: 0 !important;
-        right: 0 !important;
-        width: 100%;
-        height: 300px;
-        transform: none;
-        max-width: 100%;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        width: 90% !important;
+        max-width: 300px !important;
+        height: auto !important;
+        bottom: 28vh !important;
     }
     
     #pause-button {
-        top: 5px;
-        padding: 5px 15px;
-        font-size: 0.85em;
+        top: 8px;
+        padding: 6px 16px;
+        font-size: 0.9em;
     }
     
     #tether-ui {
@@ -1759,96 +1795,100 @@
     }
     
     #character-name {
-        font-size: 1.1rem;
-        margin-bottom: 10px;
+        font-size: 1rem;
+        margin-bottom: 6px;
         font-weight: 600;
     }
     
     #dialogue-text {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 8px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 6px;
     }
     
     #internal-thought {
-        font-size: 0.85rem;
-        line-height: 1.5;
-        margin-top: 12px;
-        padding: 10px 12px;
-        max-height: 15vh;
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-top: 8px;
+        padding: 8px 10px;
+        max-height: 10vh;
         overflow-y: auto;
     }
 }
 
+/* General mobile (both orientations) */
 @media (max-width: 480px) {
     #dialogue-box {
-        max-height: 35vh;
-        padding: 15px 18px;
+        max-height: 30vh;
+        padding: 12px 16px;
         font-size: 0.9rem;
     }
     
     #character-name {
         font-size: 1rem;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
     
     #dialogue-text {
         font-size: 0.88rem;
-        line-height: 1.55;
+        line-height: 1.5;
     }
     
     #internal-thought {
         font-size: 0.8rem;
-        margin-top: 10px;
+        margin-top: 8px;
         padding: 8px 10px;
-        max-height: 12vh;
+        max-height: 10vh;
     }
 }
 
+/* Safe area support for notched phones */
 @supports (padding-bottom: env(safe-area-inset-bottom)) {
     @media (max-width: 768px) {
         #dialogue-box {
-            padding-bottom: calc(18px + env(safe-area-inset-bottom));
-        }
-    }
-    
-    @media (max-width: 480px) {
-        #dialogue-box {
-            padding-bottom: calc(15px + env(safe-area-inset-bottom));
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
         }
     }
 }
 
+/* Landscape mobile */
 @media (max-width: 768px) and (orientation: landscape) {
     #dialogue-box {
         max-height: 45vh;
         left: 5%;
         right: 5%;
         width: 90%;
+        transform: translateX(0);
+    }
+    
+    .character-sprite {
+        bottom: 0 !important;
+        height: 90% !important;
     }
     
     #internal-thought {
-        max-height: 18vh;
+        max-height: 15vh;
     }
 }
 
+/* Tap feedback */
 @media (max-width: 768px) {
     #dialogue-box:active {
         opacity: 0.95;
-        transform: scale(0.995);
-        transition: all 0.1s ease;
+        transition: opacity 0.1s ease;
     }
 }
 
-@media (max-width: 360px) {
-    .character-sprite:not(.sprite-dim) {
-        width: 180px;
-        height: 55vh;
-        max-height: 280px;
+/* Extra small phones */
+@media (max-width: 360px) and (orientation: portrait) {
+    .character-sprite {
+        width: 150px !important;
+        height: 280px !important;
+        bottom: 30vh !important;
     }
     
     #dialogue-box {
-        max-height: 38vh;
+        max-height: 30vh !important;
     }
 }
 
