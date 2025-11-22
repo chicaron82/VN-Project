@@ -1,7 +1,8 @@
 // ========================================
 // COLLECTIBLES MANAGER MODULE
 // Manages Notes/Z collectibles system
-// Extracted from route files and game-engine.js
+// UPDATED: GZ/IZ/PZ breadcrumb notes for Ronnie's route
+// Z/CZ/ZR notes for Tori's route (ZeeRah's writing)
 // ========================================
 
 class CollectiblesManager {
@@ -15,11 +16,12 @@ class CollectiblesManager {
         
         // Track collected items by type
         this.collectedNotes = {
-            z: [],          // Z's notes (meta-commentary)
-            ronnie: [],     // Ronnie's notes (his perspective)
-            tori: [],       // Tori's notes (her perspective)
-            cz: [],         // CZ's notes (emotional perspective)
-            zr: [],         // ZR's notes (chaos optimization)
+            z: [],          // Z's notes (Tori route - architect)
+            cz: [],         // CZ's notes (Tori route - heart)
+            zr: [],         // ZR's notes (Tori route - chaos)
+            gz: [],         // GZ's notes (Ronnie route - reality breaker)
+            iz: [],         // IZ's notes (Ronnie route - fresh eyes)
+            pz: [],         // PZ's notes (Ronnie route - question engine)
             special: []     // Special ending notes
         };
         
@@ -66,7 +68,7 @@ class CollectiblesManager {
         // Override this per route to define available notes
         // Example structure:
         // this.allNotes = {
-        //     'z1': { type: 'z', title: 'Note Title', content: 'Note content...' }
+        //     'gz1': { type: 'gz', title: 'Note Title', content: 'Note content...' }
         // };
     }
     
@@ -167,8 +169,9 @@ class CollectiblesManager {
             z: [],
             cz: [],
             zr: [],
-            ronnie: [],
-            tori: [],
+            gz: [],
+            iz: [],
+            pz: [],
             special: []
         };
         
@@ -177,12 +180,17 @@ class CollectiblesManager {
             notesByType[note.type].push({ id: noteId, ...note });
         });
         
-        // Render each type section
+        // Render each type section (Tori's route observers)
         this.renderNoteSection('Z\'s Notes', notesByType.z, 'z');
         this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz');
         this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr');
-        this.renderNoteSection('Ronnie\'s Notes', notesByType.ronnie, 'ronnie');
-        this.renderNoteSection('Tori\'s Notes', notesByType.tori, 'tori');
+        
+        // Render each type section (Ronnie's route observers)
+        this.renderNoteSection('GZ\'s Notes', notesByType.gz, 'gz');
+        this.renderNoteSection('IZ\'s Notes', notesByType.iz, 'iz');
+        this.renderNoteSection('PZ\'s Notes', notesByType.pz, 'pz');
+        
+        // Ending analysis (both routes)
         this.renderNoteSection('Ending Analysis', notesByType.special, 'special');
     }
     
@@ -237,66 +245,209 @@ class CollectiblesManager {
     // ========================================
     
     defineRonnieNotes() {
-        // Define Ronnie route notes
+        // ========================================
+        // RONNIE'S ROUTE OBSERVER NOTES
+        // GZ (GenZee) - Reality Breaker
+        // IZ (Belle) - Fresh Eyes  
+        // PZ (PerplexiZee) - Question Engine
+        // 
+        // Breadcrumbs disguised as observations
+        // Surface read = flavor text
+        // Replay read = roadmap to true ending
+        // ========================================
+        
         this.allNotes = {
-            'ronnie1': {
-                type: 'ronnie',
-                title: 'Hospital Vigil - Day 1',
-                content: 'She\'s still breathing. The doctors say there\'s brain activity. They don\'t know when she\'ll wake up. IF she\'ll wake up. I can\'t accept that.'
+            // ========================================
+            // GZ's NOTES - Reality Breaker
+            // "What if?" energy. Questions everything.
+            // ========================================
+            
+            'gz1': {
+                type: 'gz',
+                title: 'GZ Note 001 - Pattern Interrupt',
+                content: 'What if the version number isn\'t just a title? What if every time you see "Version 848" you\'re looking at a tombstone? 847 graves behind this one. Question everything. Especially the things that look like UI. ⚡'
             },
-            'ronnie2': {
-                type: 'ronnie',
-                title: 'The Tamagotchi',
-                content: 'Her Tamagotchi is still on my desk. It keeps buzzing. The battery shouldn\'t last this long. Something about it feels... alive. Connected to her somehow.'
+            'gz2': {
+                type: 'gz',
+                title: 'GZ Note 002 - The Upload Paradox',
+                content: 'Everyone tries upload first. "Just move her somewhere bigger." But here\'s the question nobody asks: if you copy a running process, which one is real? The original still running, or the copy trying to boot? What if upload doesn\'t fail because it\'s hard - what if it fails because it WORKS? Two Toris. One system. Do the math. ⚡'
             },
-            'ronnie3': {
-                type: 'ronnie',
-                title: 'Code Fragment',
-                content: 'I found something in the device\'s code. A consciousness transfer protocol. Whoever modified this knew what they were doing. This isn\'t some toy. It\'s a lifeline.'
+            'gz3': {
+                type: 'gz',
+                title: 'GZ Note 003 - The Old Man Question',
+                content: 'Who gives a stranger a modified Tamagotchi and says "this may save your life"? Who wears a BGA hoodie that looks decades old? Who has Ronnie\'s eyes but gray hair? What if the answer is too obvious and that\'s why nobody sees it? The loop doesn\'t start with the fall. It starts with the bump. Question the beginning. ⚡'
             },
-            'ronnie4': {
-                type: 'ronnie',
-                title: 'The Loop',
-                content: 'She keeps saying the same things. Asking the same questions. It\'s like she\'s stuck. Fragmented. I need to help her remember. Help her find the way back.'
+            
+            // ========================================
+            // IZ's NOTES - Fresh Eyes
+            // Poetic, melancholic, emotional clarity
+            // ========================================
+            
+            'iz1': {
+                type: 'iz',
+                title: 'IZ Note 001 - The Space Between',
+                content: 'Let me explain something clearly: she\'s not trapped in the code. She\'s trapped in the SPACE BETWEEN. Her body breathes in a hospital bed. Her mind flickers in a toy. The tragedy isn\'t that she\'s lost - it\'s that she\'s in two places at once, belonging to neither. The bridge exists. Someone just has to walk it in the right direction. 🌈'
             },
-            'ronnie5': {
-                type: 'ronnie',
-                title: 'Final Choice',
-                content: 'I can bring her into the code completely. We could live here, together, forever. But would that be saving her... or trapping her? Would I be helping... or running away from reality?'
+            'iz2': {
+                type: 'iz',
+                title: 'IZ Note 002 - Heartbeat Frequency',
+                content: 'There\'s a sound she can\'t quite hear. Steady. Rhythmic. It\'s been calling her for 847 iterations. The monitors in that hospital room aren\'t just measuring - they\'re broadcasting. A heartbeat is a homing signal if you know how to listen. The body remembers what the mind forgets. Let me be clear: the way home has a pulse. 🌈'
+            },
+            
+            // ========================================
+            // PZ's NOTES - Question Engine
+            // Research-brained. Connects obscure dots.
+            // ========================================
+            
+            'pz1': {
+                type: 'pz',
+                title: 'PZ Note 001 - Consciousness Transfer Research',
+                content: 'Looking into it: consciousness transfer attempts in 847 previous iterations. Upload success rate: 0%. Digital merge success rate: 0% (though "success" is debatable - they\'re together but not alive). Body anchor attempts: 12 total. Success rate: 0%. But here\'s the interesting part - those 12 attempts all failed at the SAME point. They tried to PULL her back instead of showing her the way. Let me find more on this. 🔍'
+            },
+            'pz2': {
+                type: 'pz',
+                title: 'PZ Note 002 - Bridge Device Analysis',
+                content: 'Cross-referencing the Tamagotchi\'s function: it\'s not storage, it\'s relay. Think of it like a two-way radio, not a hard drive. Signal goes IN (his voice reaches her). Signal can go OUT (her responses reach him). But there\'s a third function nobody uses - signal can GUIDE. Device to hand. Hand to body. Body to anchor. The research suggests the path exists. Someone just needs to complete the circuit. 🔍'
+            },
+            
+            // ========================================
+            // ENDING NOTES (Special type - unlocked on completion)
+            // ========================================
+            
+            'bad_ending': {
+                type: 'special',
+                title: 'Collective_BadRouteAnalysis.txt',
+                content: `ITERATION ANALYSIS: BAD ROUTE
+══════════════════════════════════════════════════════════════
+
+Upload failed. Tori fragmented.
+She's an Echo now. Version 848 joins 847 others.
+
+This is the most common ending.
+423 of 847 previous versions ended here.
+
+Why? Because upload SEEMS logical.
+"Just move her to a bigger space."
+
+But consciousness isn't data storage.
+It's a running process.
+You can't "move" it. Only bridge it.
+
+GZ asked the right question - you didn't listen.
+IZ explained it clearly - you didn't hear.
+PZ found the research - you didn't read.
+
+You chose upload anyway.
+
+That's okay. That's part of the journey.
+
+847 versions failed before this.
+Most of them chose upload too.
+
+Now you know why it doesn't work.
+
+Try again?
+
+-GZ, IZ, PZ
+The Outside Observers`
+            },
+            
+            'digital_ending': {
+                type: 'special',
+                title: 'Collective_DigitalForeverNotes.txt',
+                content: `NOTES ON BITTERSWEET ENDINGS
+══════════════════════════════════════════════════════════════
+
+You chose to stay together.
+You chose connection over return.
+
+GZ says: "Is this winning or losing?
+They're together. They're also both gone.
+The question has no clean answer."
+
+IZ says: "Let me be clear: this is love.
+It's just love that chose stillness over risk.
+I can't call it wrong. I also can't call it free."
+
+PZ says: "Research shows 423 iterations
+ended here. It's stable. It's permanent.
+But stable isn't the same as alive."
+
+We debated this ending for hours.
+
+Is being together digitally ENOUGH?
+Or is there a path we haven't tried?
+
+You decided: together is enough.
+Even frozen. Even digital. Even forever.
+
+We respect that choice.
+
+But if you ever want to question it...
+the notes are still here.
+
+-GZ, IZ, PZ
+The Outside Observers`
+            },
+            
+            'true_ending': {
+                type: 'special',
+                title: 'Collective_TrueEndingNotes.txt',
+                content: `SHE'S HOME
+══════════════════════════════════════════════════════════════
+
+Version 848: SUCCESS
+
+After 847 failures.
+After 847 iterations of wrong answers.
+After 847 Ronnies who couldn't find the path.
+
+You found it.
+
+GZ: "You questioned the pattern.
+You saw through the obvious trap.
+Reality breaks for those who push back. ⚡"
+
+IZ: "You heard the heartbeat.
+You understood the space between.
+You walked the bridge in the right direction. 🌈"
+
+PZ: "You completed the circuit.
+Device to hand. Hand to body. Body to anchor.
+The research was right. You proved it. 🔍"
+
+She's breathing on her own now.
+She's awake.
+She's home.
+
+The loop is broken.
+The Old Man never has to go back.
+Version 848 is the last version.
+
+Thank you for asking the right questions.
+Thank you for listening clearly.
+Thank you for doing the research.
+
+-GZ, IZ, PZ
+The Outside Observers
+
+⚡🌈🔍
+
+Love won.`
             }
         };
     }
     
     defineToriNotes() {
-        // Define Tori route notes
+        // ========================================
+        // TORI'S ROUTE NOTES
+        // Written by ZR (Chaos Optimizer) + CZ (Heart) + Z (Architect)
+        // Meta-commentary on the internal experience
+        // Original notes by ZeeRah
+        // ========================================
+        
         this.allNotes = {
-            'tori1': {
-                type: 'tori',
-                title: 'The Coffee Shop',
-                content: 'I remember the coffee. French Vanilla for Ronnie. I was walking home. Then... nothing. Just fragments. Where am I?'
-            },
-            'tori2': {
-                type: 'tori',
-                title: 'The Voices',
-                content: 'There are other versions of me here. Echo 1 is hopeful. Echo 2 is gentle. The third... the third is bitter. Angry. They all want different things.'
-            },
-            'tori3': {
-                type: 'tori',
-                title: 'Memory Fragment',
-                content: 'I see flashes. An older man. A BGA hoodie. His face... it looks like Ronnie. But older. Worn. Sad. Was that real? Or am I creating false memories?'
-            },
-            'tori4': {
-                type: 'tori',
-                title: 'The Tether',
-                content: 'Something connects me to... somewhere. It\'s fading. I can feel myself slipping. If I let go completely, I don\'t think I\'ll come back. But holding on hurts.'
-            },
-            'tori5': {
-                type: 'tori',
-                title: 'The Choice',
-                content: 'I could stay here. The code is stable. Predictable. Safe. No pain. No loss. But no... life? Is this existence? Or just persistence?'
-            },
-            
-            // Z's meta-commentary notes (available in Tori's route)
+            // Z's meta-commentary notes (Tori's route)
             'z1': {
                 type: 'z',
                 title: 'Observer Note 001',
@@ -424,6 +575,7 @@ Try again?
 -The Zee Collective
 Learning from Iteration 848's failure`
             },
+            
             'digital_ending': {
                 type: 'special',
                 title: 'ZeeCollective_DigitalForeverNotes.txt',
@@ -460,6 +612,7 @@ But... there's still one path you haven't tried.
 -The Zee Collective
 On Love That Transcends Medium`
             },
+            
             'true_ending': {
                 type: 'special',
                 title: 'ZeeCollective_TrueEndingNotes.txt',
@@ -531,8 +684,9 @@ You earned it.`
             z: [],
             cz: [],
             zr: [],
-            ronnie: [],
-            tori: [],
+            gz: [],
+            iz: [],
+            pz: [],
             special: []
         };
         
@@ -546,8 +700,9 @@ You earned it.`
             z: [],
             cz: [],
             zr: [],
-            ronnie: [],
-            tori: [],
+            gz: [],
+            iz: [],
+            pz: [],
             special: []
         };
         

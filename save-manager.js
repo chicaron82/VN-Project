@@ -45,7 +45,8 @@ class SaveManager {
             routeName: route.constructor.name === 'RonnieRoute' ? 'ronnie' : 'tori',
             
             // Get the current scene ID from the game engine
-            currentSceneId: this.game.currentSceneId,
+            // NOTE: displayScene() stores this in gameState.progress.currentScene
+            currentSceneId: this.game.gameState.progress.currentScene || null,
             
             // Get global game state (flags, etc.)
             gameState: this.game.gameState || { flags: {} },
@@ -125,15 +126,17 @@ class SaveManager {
         this.game.gameView.style.opacity = '1';
         this.game.dialogueBox.style.display = 'block';
         
-        // 1. Create the new route instance
+        // 1. Create the new route instance and set dialogue frame
         if (saveData.routeName === 'ronnie') {
             this.game.currentRoute = new RonnieRoute(this.game);
+            this.game.setDialogueFrame('ronnie');
         } else if (saveData.routeName === 'tori') {
             // Show Tori-specific UI
             this.game.tetherUI.style.display = 'block';
             this.game.echoDisplay.style.display = 'block';
             this.game.notesButton.style.display = 'block';
             this.game.currentRoute = new ToriRoute(this.game);
+            this.game.setDialogueFrame('tori');
         }
         
         const route = this.game.currentRoute;

@@ -1122,7 +1122,8 @@
     transition: opacity 1s;
 }
 
-#scene-background {
+#scene-background,
+#scene-background-alt {
     position: absolute;
     top: 0;
     left: 0;
@@ -1131,7 +1132,16 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    transition: opacity 0.5s;
+    transition: opacity 0.8s ease-in-out;
+}
+
+#scene-background {
+    z-index: 1;
+}
+
+#scene-background-alt {
+    z-index: 2;
+    opacity: 0;
 }
 
 /* ========================================
@@ -1376,6 +1386,61 @@
     box-shadow: 0 -5px 30px rgba(0, 255, 255, 0.3);
     z-index: 50;
     display: none;
+}
+
+/* ========================================
+   ROUTE-SPECIFIC DIALOGUE FRAMES
+   ======================================== */
+
+#dialogue-box.ronnie-route {
+    background: url('dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+                rgba(8, 14, 20, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
+                0 0 80px rgba(0, 200, 100, 0.1);
+}
+
+#dialogue-box.tori-route {
+    background: url('dialogue-frame-tori.png') center/100% 100% no-repeat,
+                rgba(12, 15, 30, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
+                0 0 60px rgba(255, 50, 100, 0.08);
+    /* Subtle animation for instability feel */
+    animation: toriFrameFlicker 8s ease-in-out infinite;
+}
+
+@keyframes toriFrameFlicker {
+    0%, 100% { 
+        opacity: 1; 
+        filter: none;
+    }
+    48% { 
+        opacity: 1; 
+        filter: none;
+    }
+    50% { 
+        opacity: 0.97; 
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+    52% { 
+        opacity: 1; 
+        filter: none;
+    }
+    78% {
+        opacity: 1;
+        filter: none;
+    }
+    80% {
+        opacity: 0.98;
+        filter: brightness(0.95);
+    }
+    82% {
+        opacity: 1;
+        filter: none;
+    }
 }
 
 #character-name {

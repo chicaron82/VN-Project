@@ -1,6 +1,7 @@
 // ========================================
 // SAVE/LOAD UI CONTROLLER
 // Handles all UI interactions for save/load system
+// WITH ANDROID BACK BUTTON SUPPORT
 // ========================================
 
 class SaveLoadUI {
@@ -11,6 +12,7 @@ class SaveLoadUI {
         
         this.initElements();
         this.setupKeyboardControls();
+        this.setupAndroidBackButton();
     }
     
     initElements() {
@@ -31,21 +33,102 @@ class SaveLoadUI {
         document.addEventListener('keydown', (e) => {
             // ESC key - show/hide pause menu
             if (e.code === 'Escape') {
-                if (this.confirmDialog.classList.contains('active')) {
-                    // Close confirm dialog
-                    this.closeConfirmDialog();
-                } else if (this.saveLoadScreen.classList.contains('active')) {
-                    // Close save/load screen
-                    this.game.closeSaveLoadScreen();
-                } else if (this.pauseMenu.classList.contains('active')) {
-                    // Close pause menu (resume game)
-                    this.game.resumeGame();
-                } else if (this.game.gameView.style.display === 'flex') {
-                    // In-game, show pause menu
-                    this.showPauseMenu();
-                }
+                this.handleBackAction();
             }
         });
+    }
+    
+    // ========================================
+    // ANDROID BACK BUTTON SUPPORT
+    // ========================================
+    
+    setupAndroidBackButton() {
+        // Method 1: History API (works in most Android browsers/PWAs)
+        // Push a dummy state so we can intercept the back button
+        this.pushHistoryState();
+        
+        window.addEventListener('popstate', (e) => {
+            // Intercept back navigation
+            e.preventDefault();
+            
+            // Handle back action
+            this.handleBackAction();
+            
+            // Re-push state to keep intercepting
+            this.pushHistoryState();
+        });
+        
+        // Method 2: Cordova/Capacitor backbutton event (if running in wrapper)
+        document.addEventListener('backbutton', (e) => {
+            e.preventDefault();
+            this.handleBackAction();
+        }, false);
+    }
+    
+    pushHistoryState() {
+        // Push a state to history so back button triggers popstate instead of leaving
+        if (window.history && window.history.pushState) {
+            window.history.pushState({ vnGame: true }, '', window.location.href);
+        }
+    }
+    
+    // ========================================
+    // UNIFIED BACK ACTION HANDLER
+    // Called by ESC key, Android back button, or any "back" trigger
+    // ========================================
+    
+    handleBackAction() {
+        // Priority order: Close the most "on top" UI element first
+        
+        // 1. Confirm dialog is open - close it (same as clicking NO)
+        if (this.confirmDialog && this.confirmDialog.classList.contains('active')) {
+            this.confirmAction(false);
+            return;
+        }
+        
+        // 2. Notes viewer is open (Tori route) - close it
+        const notesViewer = document.getElementById('notes-viewer');
+        if (notesViewer && notesViewer.style.display === 'block') {
+            notesViewer.style.display = 'none';
+            return;
+        }
+        
+        // 3. Save/Load screen is open - close it
+        if (this.saveLoadScreen && this.saveLoadScreen.classList.contains('active')) {
+            this.game.closeSaveLoadScreen();
+            return;
+        }
+        
+        // 4. Pause menu is open - close it (resume game)
+        if (this.pauseMenu && this.pauseMenu.classList.contains('active')) {
+            this.game.resumeGame();
+            return;
+        }
+        
+        // 5. Credits screen is open - close it
+        const creditsScreen = document.getElementById('credits-screen');
+        if (creditsScreen && creditsScreen.style.display === 'flex') {
+            this.game.closeCredits();
+            return;
+        }
+        
+        // 6. Route selection screen is open - go back to main menu
+        const routeSelect = document.getElementById('route-select');
+        if (routeSelect && routeSelect.style.display === 'block') {
+            this.game.backToMenu();
+            return;
+        }
+        
+        // 7. In-game (game view visible) - open pause menu
+        if (this.game.gameView && this.game.gameView.style.display === 'flex') {
+            this.showPauseMenu();
+            return;
+        }
+        
+        // 8. Main menu is showing - do nothing (or could show exit confirmation)
+        // On Android, pressing back at main menu typically exits the app
+        // We'll let the default behavior happen by not preventing it
+        // (The history state will be consumed, user presses back again to exit)
     }
     
     // ========================================

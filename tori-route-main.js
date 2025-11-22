@@ -193,6 +193,9 @@ class ToriRoute {
         if (state.collectibles) {
             this.collectiblesManager.restoreState(state.collectibles);
         }
+        
+        // Restart tether decay after restoring state
+        this.tetherSystem.startDecay();
     }
 }
 

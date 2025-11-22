@@ -1,6 +1,6 @@
 // SHARED PROLOGUE
 // Plays BEFORE route selection
-// Shows: Street Bump â†’ Home â†’ The Fall
+// Shows: Street Bump -> Home -> The Fall
 // Then player chooses Ronnie or Tori route
 
 class SharedPrologue {
@@ -20,24 +20,22 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'I wasn\'t looking where I was going...',
-            internal: '[Visual: Sunny street, midday. CafÃ©s in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
+            internal: '[Visual: Sunny street, midday. Cafes in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
             background: 'genericBack.png',
             sprites: {
                 right: 'tori-sprite.png'
             }, 
-            next: () => this.scene1_bump(),
-            delay: 3000
-        });
+            next: () => this.scene1_bump()
+        }, 'scene1_streetBump');
     }
     
     scene1_bump() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Oh my gosh, I\'m so sorryâ€”I wasn\'t paying attention!',
+            dialogue: 'Oh my gosh, I\'m so sorry..I wasn\'t paying attention!',
             internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]',
-            next: () => this.scene1_pickup(),
-            delay: 3000
-        });
+            next: () => this.scene1_pickup()
+        }, 'scene1_bump');
     }
     
     scene1_pickup() {
@@ -45,9 +43,8 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: '...Weird. Mine never does that.',
             internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]',
-            next: () => this.scene1_oldMan(),
-            delay: 3000
-        });
+            next: () => this.scene1_oldMan()
+        }, 'scene1_pickup');
     }
     
     scene1_oldMan() {
@@ -55,9 +52,8 @@ class SharedPrologue {
             character: 'Older Man',
             dialogue: 'No problem. Hang on to that. It may save your life someday.',
             internal: '[She glances up but never clearly sees his face. Camera catches a glimpse of his faded BGA hoodie on his chest. He walks away, clutching her original Tamagotchi.]',
-            next: () => this.scene1_end(),
-            delay: 3500
-        });
+            next: () => this.scene1_end()
+        }, 'scene1_oldMan');
     }
     
     scene1_end() {
@@ -65,9 +61,8 @@ class SharedPrologue {
             character: 'Narration',
             dialogue: '...What a strange thing to say.',
             internal: '[She stands there a moment, then pockets the Tamagotchi and heads home.]',
-            next: () => this.scene2_home(),
-            delay: 3000
-        });
+            next: () => this.scene2_home()
+        }, 'scene1_end');
     }
     
     // ========================================
@@ -85,18 +80,16 @@ class SharedPrologue {
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
             },
-            next: () => this.scene2_ronnieResponse(),
-            delay: 4000
-        });
+            next: () => this.scene2_ronnieResponse()
+        }, 'scene2_home');
     }
     
     scene2_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
-            next: () => this.scene2_toriExplains(),
-            delay: 2500
-        });
+            next: () => this.scene2_toriExplains()
+        }, 'scene2_ronnieResponse');
     }
     
     scene2_toriExplains() {
@@ -104,18 +97,16 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: 'Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!',
             internal: '[She hands him the French Vanilla.]',
-            next: () => this.scene2_ronnieTeases(),
-            delay: 3000
-        });
+            next: () => this.scene2_ronnieTeases()
+        }, 'scene2_toriExplains');
     }
     
     scene2_ronnieTeases() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'You\'re such a dork, honey',
-            next: () => this.scene2_toriDinner(),
-            delay: 2000
-        });
+            next: () => this.scene2_toriDinner()
+        }, 'scene2_ronnieTeases');
     }
     
     scene2_toriDinner() {
@@ -123,9 +114,8 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: 'Yea but you still love me. I\'ll get dinner started',
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
-            next: () => this.scene2_kitchen(),
-            delay: 2500
-        });
+            next: () => this.scene2_kitchen()
+        }, 'scene2_toriDinner');
     }
     
     scene2_kitchen() {
@@ -133,22 +123,20 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: '',
             internal: '[She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.]',
-            next: () => this.scene2_warning(),
-            delay: 2000
-        });
+            next: () => this.scene2_warning()
+        }, 'scene2_kitchen');
     }
     
     scene2_warning() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: 'Babe, watch ouâ€”!',
+            dialogue: 'Babe, watch ou..!',
             internal: '[He notices her about to trip over his shoe.]',
             sprites: {
                 left: 'ronnie-sprite.png',
             },
-            next: () => this.scene3_fall(),
-            delay: 1500
-        });
+            next: () => this.scene3_fall()
+        }, 'scene2_warning');
     }
     
     // ========================================
@@ -160,19 +148,17 @@ class SharedPrologue {
             character: 'Narration',
             dialogue: 'One step too late...',
             internal: '[She trips, stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late.]\n[Visual: Tamagotchi, resting on the laptop, lights faintly. Screen flickers, code scrolling.]',
-            next: () => this.scene3_vision(),
-            delay: 3500
-        });
+            next: () => this.scene3_vision()
+        }, 'scene3_fall');
     }
     
     scene3_vision() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '',
-            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnieâ€”lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
-            next: () => this.prologueComplete(),
-            delay: 4000
-        });
+            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
+            next: () => this.prologueComplete()
+        }, 'scene3_vision');
         
         // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
         this.game.fadeSpritesSequence('left', 'ronnie-sprite.png', 'old-ronnie-sprite.png', 4000);

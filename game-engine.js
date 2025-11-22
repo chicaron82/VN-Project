@@ -17,8 +17,13 @@ class GameEngine {
         this.dialogueText = document.getElementById('dialogue-text');
         this.internalThought = document.getElementById('internal-thought');
         this.sceneBackground = document.getElementById('scene-background');
+        this.sceneBackgroundAlt = document.getElementById('scene-background-alt');
         this.choiceMenu = document.getElementById('choice-menu');
         this.choicesContainer = document.getElementById('choices-container');
+        
+        // Background crossfade state
+        this.useAltBackground = false;
+        this.currentBackground = null;
         
         // Tori Route Elements
         this.tetherUI = document.getElementById('tether-ui');
@@ -246,6 +251,21 @@ class GameEngine {
     }
     
     // ========================================
+    // NOTES UNLOCK SYSTEM
+    // First-play: hidden. Replay: visible.
+    // ========================================
+    
+    hasCompletedAnyEnding() {
+        return localStorage.getItem('hasCompletedOnce') === 'true';
+    }
+    
+    markEndingCompleted(endingType) {
+        localStorage.setItem('hasCompletedOnce', 'true');
+        localStorage.setItem('lastEndingType', endingType);
+        console.log(`Ending completed: ${endingType}. Notes unlocked for replay.`);
+    }
+    
+    // ========================================
     // STORY START - PLAYS PROLOGUE FIRST
     // ========================================
     
@@ -339,6 +359,16 @@ class GameEngine {
                 this.gameView.style.opacity = '1';
             }, 100);
             
+            // Show notes button if player has completed any ending
+            if (this.hasCompletedAnyEnding()) {
+                if (this.notesButton) {
+                    this.notesButton.style.display = 'block';
+                }
+            }
+            
+            // Set route-specific dialogue frame
+            this.setDialogueFrame(routeName);
+            
             // Initialize route
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
@@ -346,7 +376,10 @@ class GameEngine {
             } else if (routeName === 'tori') {
                 this.currentRoute = new ToriRoute(this);
                 this.currentRoute.start(); // Tori has explicit .start()
-            }        
+            }
+            
+            // Show ESC hint briefly for desktop users
+            this.showEscHintBriefly();
         }, 1000);
     }
     
@@ -468,9 +501,9 @@ class GameEngine {
             this.clearEchoes();
         }
         
-        // Handle background changes
+        // Handle background changes with crossfade
         if (scene.background) {
-            this.sceneBackground.style.backgroundImage = `url(${scene.background})`;
+            this.crossfadeBackground(scene.background);
         }
         
         // Handle special styling
@@ -1063,6 +1096,12 @@ class GameEngine {
         // Clear sprites when returning to main menu
         this.clearAllSprites();
         
+        // Clear route-specific dialogue frame
+        this.clearDialogueFrame();
+        
+        // Reset background state
+        this.currentBackground = null;
+        
         // Hide Tori-specific UI elements
         if (this.tetherUI) this.tetherUI.style.display = 'none';
         if (this.notesButton) this.notesButton.style.display = 'none';
@@ -1145,6 +1184,72 @@ class GameEngine {
                             document.msFullscreenElement;
         
         button.textContent = isFullscreen ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN';
+    }
+
+    // ========================================
+    // ESC HINT (DESKTOP USERS)
+    // ========================================
+    
+    showEscHintBriefly() {
+        // Only show on desktop (not mobile)
+        if (this.isMobile) return;
+        
+        const escHint = document.getElementById('esc-hint');
+        if (!escHint) return;
+        
+        // Show hint
+        escHint.classList.add('visible');
+        
+        // Hide after 4 seconds
+        setTimeout(() => {
+            escHint.classList.remove('visible');
+        }, 4000);
+    }
+    
+    // ========================================
+    // BACKGROUND CROSSFADE SYSTEM
+    // ========================================
+    
+    crossfadeBackground(newBackground) {
+        // Skip if same background
+        if (this.currentBackground === newBackground) return;
+        
+        // Determine which layer to use
+        const incoming = this.useAltBackground ? this.sceneBackground : this.sceneBackgroundAlt;
+        const outgoing = this.useAltBackground ? this.sceneBackgroundAlt : this.sceneBackground;
+        
+        // Set new background on incoming layer
+        incoming.style.backgroundImage = `url(${newBackground})`;
+        
+        // Crossfade: fade in incoming, fade out outgoing
+        incoming.style.opacity = '1';
+        outgoing.style.opacity = '0';
+        
+        // Toggle for next transition
+        this.useAltBackground = !this.useAltBackground;
+        this.currentBackground = newBackground;
+    }
+    
+    // ========================================
+    // ROUTE-SPECIFIC DIALOGUE FRAME
+    // ========================================
+    
+    setDialogueFrame(routeName) {
+        // Remove existing route classes
+        this.dialogueBox.classList.remove('ronnie-route', 'tori-route');
+        
+        // Apply route-specific frame
+        if (routeName === 'ronnie') {
+            this.dialogueBox.classList.add('ronnie-route');
+        } else if (routeName === 'tori') {
+            this.dialogueBox.classList.add('tori-route');
+        }
+        
+        console.log(`Dialogue frame set: ${routeName}`);
+    }
+    
+    clearDialogueFrame() {
+        this.dialogueBox.classList.remove('ronnie-route', 'tori-route');
     }
 
     // ========================================

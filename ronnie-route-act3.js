@@ -255,6 +255,9 @@ class RonnieRouteAct3 {
     }
 
     badRoute_loop() {
+        // Mark ending completed - unlocks notes for replay
+        this.game.markEndingCompleted('bad');
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'ERROR: Two consciousness entities detected. System unstable. Looping indefinitely.',
@@ -405,6 +408,9 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_choice() {
+        // Mark ending completed - unlocks notes for replay
+        this.game.markEndingCompleted('digital_forever');
+        
         this.game.displayScene({
             character: 'System',
             dialogue: '**DIGITAL FOREVER ENDING**\n"Together, eternally still."',
@@ -682,6 +688,9 @@ class RonnieRouteAct3 {
     }
 
     trueRoute_final() {
+        // Mark ending completed - unlocks notes for replay
+        this.game.markEndingCompleted('true');
+        
         // Get player's version number for their success message
         const playerVersion = localStorage.getItem('attemptNumber') || '848';
         const attemptsCount = parseInt(playerVersion) - 848;
