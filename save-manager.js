@@ -141,8 +141,14 @@ class SaveManager {
         
         const route = this.game.currentRoute;
 
-        // 2. Restore global game state
-        this.game.gameState = saveData.gameState || { flags: {} };
+        // 2. Restore global game state (ensure all required properties exist)
+        const restoredState = saveData.gameState || {};
+        this.game.gameState = {
+            flags: restoredState.flags || {},
+            choices: restoredState.choices || {},
+            progress: restoredState.progress || {},
+            sprites: restoredState.sprites || { left: null, right: null }
+        };
 
         // 3. Restore route-specific state
         if (route.restoreState && typeof route.restoreState === 'function') {

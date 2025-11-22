@@ -436,8 +436,11 @@ class GameEngine {
         // Reset pagination state at start of every scene
         this.paginationActive = false;
         
-        // Store scene ID for save system
+        // Store scene ID for save system (with safety check)
         if (sceneId) {
+            if (!this.gameState.progress) {
+                this.gameState.progress = {};
+            }
             this.gameState.progress.currentScene = sceneId;
         }
         
@@ -506,11 +509,17 @@ class GameEngine {
             this.crossfadeBackground(scene.background);
         }
         
-        // Handle special styling
+        // Handle special styling (preserve route classes!)
+        // First, get current route class if any
+        const routeClass = this.dialogueBox.classList.contains('ronnie-route') ? 'ronnie-route' :
+                          this.dialogueBox.classList.contains('tori-route') ? 'tori-route' : null;
+        
+        // Clear scene-specific styles but keep route class
+        this.dialogueBox.className = routeClass || '';
+        
+        // Add new scene style if specified
         if (scene.style) {
             this.dialogueBox.classList.add(scene.style);
-        } else {
-            this.dialogueBox.className = '';
         }
         
         // Auto-save after each scene (if route is active)
@@ -1213,6 +1222,13 @@ class GameEngine {
     crossfadeBackground(newBackground) {
         // Skip if same background
         if (this.currentBackground === newBackground) return;
+        
+        // Fallback: if alt layer doesn't exist, just set directly
+        if (!this.sceneBackgroundAlt) {
+            this.sceneBackground.style.backgroundImage = `url(${newBackground})`;
+            this.currentBackground = newBackground;
+            return;
+        }
         
         // Determine which layer to use
         const incoming = this.useAltBackground ? this.sceneBackground : this.sceneBackgroundAlt;
