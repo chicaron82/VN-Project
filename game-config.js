@@ -56,32 +56,7 @@ const GameConfig = {
         COLOR_WARNING: 'linear-gradient(90deg, #ff0, #0ff)',
         COLOR_CRITICAL: 'linear-gradient(90deg, #f00, #ff0)'
     },
-    
-    // ========================================
-    // ECHO SYSTEM CONFIGURATION
-    // ========================================
-    
-    ECHOES: {
-        ECHO1: {
-            name: 'Echo 1',
-            defaultMood: 'hopeful',
-            color: '#00ffff',
-            prefix: 'Echo 1: '
-        },
-        ECHO2: {
-            name: 'Echo 2',
-            defaultMood: 'gentle',
-            color: '#00ff00',
-            prefix: 'Echo 2: '
-        },
-        DESPAIR: {
-            name: 'Despair Echo',
-            defaultMood: 'bitter',
-            color: '#ff0000',
-            prefix: 'Despair: '
-        }
-    },
-    
+        
     // ========================================
     // ROUTE POINTS & ENDING DETERMINATION
     // ========================================
