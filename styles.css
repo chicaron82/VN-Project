@@ -1790,6 +1790,16 @@
         z-index: 40;
     }
     
+    /* Smaller sprites (like echo trio) need different positioning */
+    /* They're shorter so bottom: 28vh puts them behind dialogue */
+    #character-right {
+        /* Allow height to be auto for sprites that are naturally shorter */
+        height: auto !important;
+        min-height: 150px;
+        max-height: 320px;
+        bottom: 30vh !important; /* Slightly higher to stay visible */
+    }
+    
     #character-left {
         left: 5% !important;
         right: auto !important;
@@ -1873,17 +1883,34 @@
         z-index: 100;
     }
     
+    /* Tether UI - compact, top-left corner */
     #tether-ui {
-        width: 70%;
-        top: 50px; /* Below pause button */
-        left: 15%;
+        width: 45%;
+        max-width: 180px;
+        top: 8px;
+        left: 8px;
+        right: auto;
+    }
+    
+    #tether-meter {
+        height: 35px;
+        padding: 5px 8px;
+    }
+    
+    #hold-on-button {
+        height: 35px;
+        padding: 8px 12px;
+        font-size: 0.75em;
+        margin-top: 6px;
     }
     
     #notes-button {
-        top: 10px;
-        right: 10px;
-        padding: 8px 15px;
-        font-size: 0.9em;
+        top: 8px;
+        right: 8px;
+        padding: 8px 12px;
+        font-size: 0.75em;
+        min-width: auto;
+        height: 35px;
     }
     
     #character-name {
