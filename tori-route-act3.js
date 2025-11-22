@@ -81,13 +81,7 @@ class ToriAct3 {
     beat1_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Here it comes."\nEcho 2: "The loop tightens."\nDespair: "You\'re in the honeymoon trap. Everything feels right because nothing is real."',
-            echoes: {
-                echo1: 'Here it comes.',
-                echo2: 'The loop tightens.',
-                despair: 'You\'re in the honeymoon trap. Everything feels right because nothing is real.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "Here it comes."\nEcho 2: "The loop tightens."\nDespair: "You\'re in the honeymoon trap. Everything feels right because nothing is real."',            background: 'digitalSpace.png',
             sprites: {
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
@@ -264,13 +258,7 @@ class ToriAct3 {
     beat2_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "Memory corruption."\nEcho 1: "The system is rewriting her."\nDespair: "Soon you won\'t remember what was real and what the code invented."',
-            echoes: {
-                echo2: 'Memory corruption.',
-                echo1: 'The system is rewriting her.',
-                despair: 'Soon you won\'t remember what was real and what the code invented.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 2: "Memory corruption."\nEcho 1: "The system is rewriting her."\nDespair: "Soon you won\'t remember what was real and what the code invented."',            background: 'digitalSpace.png',
             sprites: {
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
@@ -448,13 +436,7 @@ class ToriAct3 {
     beat3_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Now she understands."\nEcho 2: "She\'s not trapped IN code."\nDespair: "She IS code. And code doesn\'t have a soul to save."',
-            echoes: {
-                echo1: 'Now she understands.',
-                echo2: 'She\'s not trapped IN code.',
-                despair: 'She IS code. And code doesn\'t have a soul to save.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "Now she understands."\nEcho 2: "She\'s not trapped IN code."\nDespair: "She IS code. And code doesn\'t have a soul to save."',            background: 'digitalSpace.png',
             sprites: {
                 left: 'ronnie-sprite.png',
                 right: 'tori-sprite.png'
@@ -740,13 +722,7 @@ class ToriAct3 {
     beat5_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "It won\'t matter. The body is dying. The bridge is burning."',
-            echoes: {
-                echo2: 'She figured it out...',
-                echo1: 'Faster than we did.',
-                despair: 'It won\'t matter. The body is dying. The bridge is burning.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "It won\'t matter. The body is dying. The bridge is burning."',            background: 'digitalSpace.png',
             next: () => this.beat5_understanding(),
             delay: 4000
         }, 'beat5_echoes');
@@ -832,13 +808,7 @@ class ToriAct3 {
     beat6_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Hold on!"\nEcho 2: "Just a little longer!"\nDespair: "I was wrong. Please... hold on. Prove me wrong."',
-            echoes: {
-                echo1: 'Hold on!',
-                echo2: 'Just a little longer!',
-                despair: 'I was wrong. Please... hold on. Prove me wrong.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "Hold on!"\nEcho 2: "Just a little longer!"\nDespair: "I was wrong. Please... hold on. Prove me wrong."',            background: 'digitalSpace.png',
             next: () => this.beat6_feeling2(),
             delay: 4000
         }, 'beat6_echoes');
@@ -975,11 +945,7 @@ class ToriAct3 {
     beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"',
-            echoes: {
-                echo1: 'She\'s... she\'s controlling the physical device? From INSIDE it?'
-            },
-            internal: '[Shock. Awe. They never thought of this.]',
+            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"',            internal: '[Shock. Awe. They never thought of this.]',
             background: 'digitalSpace.png',
             next: () => this.beat6_echo2React(),
             delay: 3500
@@ -989,11 +955,7 @@ class ToriAct3 {
     beat6_echo2React() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."',
-            echoes: {
-                echo2: 'We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."',            background: 'digitalSpace.png',
             next: () => this.beat6_despairQuiet(),
             delay: 4000
         }, 'beat6_echo2React');
@@ -1002,11 +964,7 @@ class ToriAct3 {
     beat6_despairQuiet() {
         this.game.displayScene({
             character: 'Despair Echo',
-            dialogue: '"..."',
-            echoes: {
-                despair: '...'
-            },
-            internal: '[For once, Despair has no bitter words. Just... watching.]',
+            dialogue: '"..."',            internal: '[For once, Despair has no bitter words. Just... watching.]',
             background: 'digitalSpace.png',
             next: () => this.beat6_synchronizing(),
             delay: 3000
@@ -1082,11 +1040,7 @@ class ToriAct3 {
     beat6_echoesHope() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."',
-            echoes: {
-                echo1: 'She\'s doing it. She\'s actually SHOWING him the solution.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."',            background: 'digitalSpace.png',
             next: () => this.beat6_echo2Hope(),
             delay: 3000
         }, 'beat6_echoesHope');
@@ -1095,11 +1049,7 @@ class ToriAct3 {
     beat6_echo2Hope() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."',
-            echoes: {
-                echo2: 'We could have done this. All those times. We just... we never TRIED to help him understand.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."',            background: 'digitalSpace.png',
             next: () => this.beat6_despairShift(),
             delay: 4000
         }, 'beat6_echo2Hope');
@@ -1108,11 +1058,7 @@ class ToriAct3 {
     beat6_despairShift() {
         this.game.displayScene({
             character: 'Despair Echo',
-            dialogue: '"...Maybe. Maybe she really is different."',
-            echoes: {
-                despair: '...Maybe. Maybe she really is different.'
-            },
-            internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
+            dialogue: '"...Maybe. Maybe she really is different."',            internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
             background: 'digitalSpace.png',
             next: () => this.beat6_pull(),
             delay: 4000

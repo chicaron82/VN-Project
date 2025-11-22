@@ -77,11 +77,7 @@ class ToriEndings {
     badRoute_loop() {
         this.game.displayScene({
             character: 'New Echo (Tori)',
-            dialogue: '"He\'ll try again. He always tries again."',
-            echoes: {
-                newEcho: 'He\'ll try again. He always tries again.'
-            },
-            internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
+            dialogue: '"He\'ll try again. He always tries again."',            internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
             background: 'digitalSpace.png',
             next: () => this.badRoute_retry(),
             delay: 5000
@@ -164,13 +160,7 @@ class ToriEndings {
     digitalForever_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',
-            echoes: {
-                echo1: 'They made it...',
-                echo2: 'Together at least.',
-                despair: '...It\'s beautiful. And hollow. But beautiful.'
-            },
-            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
+            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
             background: 'digitalSpace.png',
             sprites: {
                 left: 'ronnie-sprite.png',
@@ -238,13 +228,7 @@ class ToriEndings {
     trueRoute_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',
-            echoes: {
-                echo1: 'Go. Go!',
-                echo2: 'You did it. You actually did it.',
-                despair: '...Tell him... tell him we\'re proud.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',            background: 'digitalSpace.png',
             next: () => this.trueRoute_awakening(),
             delay: 4000
         }, 'trueRoute_echoes');

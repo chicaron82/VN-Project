@@ -85,13 +85,7 @@ class ToriAct2 {
         
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',
-            echoes: {
-                echo1: 'Oh no...',
-                echo2: 'Not yet. Please not yet.',
-                despair: 'There it is. Memory corruption. Your mind\'s breaking down.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',            background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
             },
@@ -294,13 +288,7 @@ class ToriAct2 {
     beat2_echoesKnow() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."',
-            echoes: {
-                echo1: 'He felt it too. The buzz.',
-                echo2: 'But he doesn\'t understand what it means.',
-                despair: 'He never understood. Not until it was too late.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."',            background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
             },
@@ -405,13 +393,7 @@ class ToriAct2 {
     beat3_echoesRespond() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',
-            echoes: {
-                echo1: 'It\'s getting worse.',
-                echo2: 'The system\'s taking over.',
-                despair: 'You\'re becoming a passenger in your own existence.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',            background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
             },
@@ -613,13 +595,7 @@ class ToriAct2 {
     beat5_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',
-            echoes: {
-                echo1: 'She\'s losing herself.',
-                echo2: 'Piece by piece.',
-                despair: 'Soon there won\'t be enough left to save.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',            background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
             },
@@ -678,13 +654,7 @@ class ToriAct2 {
     beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',
-            echoes: {
-                echo2: 'She figured it out...',
-                echo1: 'Faster than we did.',
-                despair: 'And it won\'t matter. The body is dying. The bridge is burning.'
-            },
-            background: 'digitalSpace.png',
+            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',            background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
             },
@@ -746,11 +716,7 @@ class ToriAct2 {
             // LOW TETHER: Despair can lock out the "fight" option
             this.game.displayScene({
                 character: 'Despair Echo (DOMINANT - forcing)',
-                dialogue: '"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE."',
-                echoes: {
-                    despair: 'Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE.'
-                },
-                internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
+                dialogue: '"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE."',                internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
                 background: 'digitalSpace.png',
                 sprites: {
                     right: 'three-echoes-sprite.png'
@@ -762,13 +728,7 @@ class ToriAct2 {
             // MEDIUM/HIGH TETHER: All options available
             this.game.displayScene({
                 character: 'Despair Echo (attempting)',
-                dialogue: '"Let go. Make him let go. Tell him to upload. It\'s kinder than watching him fail."',
-                echoes: {
-                    echo1: 'Fight! Don\'t let her win!',
-                    echo2: 'You can resist this!',
-                    despair: 'Let go. Make him let go. Tell him to upload. It\'s kinder.'
-                },
-                internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
+                dialogue: '"Let go. Make him let go. Tell him to upload. It\'s kinder than watching him fail."',                internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
                 background: 'digitalSpace.png',
                 sprites: {
                     right: 'three-echoes-sprite.png'
@@ -878,13 +838,7 @@ class ToriAct2 {
         if (tetherState === 'despair') {
             this.game.displayScene({
                 character: 'Echoes',
-                dialogue: 'Despair: "Good. Good. Now you understand."\nEcho 1: (fading) "No..."\nEcho 2: (barely there) "Please..."',
-                echoes: {
-                    despair: 'Good. Good. Now you understand.',
-                    echo1: '(fading) No...',
-                    echo2: '(barely there) Please...'
-                },
-                internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
+                dialogue: 'Despair: "Good. Good. Now you understand."\nEcho 1: (fading) "No..."\nEcho 2: (barely there) "Please..."',                internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
                     right: 'three-echoes-sprite.png'
@@ -895,13 +849,7 @@ class ToriAct2 {
         } else if (tetherState === 'balanced') {
             this.game.displayScene({
                 character: 'Echoes',
-                dialogue: 'Echo 1: "She\'s still fighting."\nEcho 2: "Stronger than we were."\nDespair: "For now."',
-                echoes: {
-                    echo1: 'She\'s still fighting.',
-                    echo2: 'Stronger than we were.',
-                    despair: 'For now.'
-                },
-                internal: '[Whiteout. The battle continues. Act 3 begins...]',
+                dialogue: 'Echo 1: "She\'s still fighting."\nEcho 2: "Stronger than we were."\nDespair: "For now."',                internal: '[Whiteout. The battle continues. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
                     right: 'three-echoes-sprite.png'
@@ -912,13 +860,7 @@ class ToriAct2 {
         } else {
             this.game.displayScene({
                 character: 'Echoes',
-                dialogue: 'Echo 1: "YES! That\'s it!"\nEcho 2: "She can do this. She really can."\nDespair: "...We\'ll see."',
-                echoes: {
-                    echo1: 'YES! That\'s it!',
-                    echo2: 'She can do this. She really can.',
-                    despair: '...We\'ll see.'
-                },
-                internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
+                dialogue: 'Echo 1: "YES! That\'s it!"\nEcho 2: "She can do this. She really can."\nDespair: "...We\'ll see."',                internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
                     right: 'three-echoes-sprite.png'

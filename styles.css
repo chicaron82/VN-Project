@@ -1368,39 +1368,7 @@
     text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
 }
 
-#echo-display {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    width: 250px;
-    background: rgba(0, 0, 0, 0.85);
-    border: 2px solid #0ff;
-    padding: 15px;
-    border-radius: 8px;
-    display: none; /* OBSOLETE: Now using three-echoes sprite instead */
-    z-index: 90;
-}
-
-#echo-display h3 {
-    color: #0ff;
-    margin-bottom: 10px;
-    font-size: 1em;
-    text-shadow: 0 0 5px #0ff;
-}
-
-.echo-voice {
-    color: #fff;
-    font-size: 0.85em;
-    margin-bottom: 8px;
-    padding: 5px;
-    background: rgba(0, 255, 255, 0.1);
-    border-left: 2px solid #0ff;
-}
-
-.echo-despair {
-    color: #ff6b6b;
-    border-left-color: #ff6b6b;
-}
+/* Echo display removed - now using three-echoes-sprite.png instead */
 
 #notes-viewer {
     position: fixed;
@@ -1911,12 +1879,6 @@
         left: 15%;
     }
     
-    #echo-display {
-        right: 10px;
-        width: 200px;
-        font-size: 0.9em;
-    }
-    
     #notes-button {
         top: 10px;
         right: 10px;
@@ -2187,4 +2149,121 @@
         max-width: 850px !important;
         top: 20% !important;
     }
+}
+/* ========================================
+   SAVE LABEL INPUT DIALOG
+   ======================================== */
+
+.label-input-dialog {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2500;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-input-dialog.active {
+    display: flex;
+}
+
+.label-input-content {
+    background: linear-gradient(180deg, rgba(18, 22, 32, 0.98) 0%, rgba(12, 15, 25, 0.99) 100%);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid #0ff;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+.label-input-content h3 {
+    color: #0ff;
+    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.label-input-content p {
+    color: #aaa;
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+}
+
+#label-input-field {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #0ff;
+    border-radius: 4px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+    box-sizing: border-box;
+}
+
+#label-input-field:focus {
+    border-color: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+
+#label-input-field::placeholder {
+    color: #666;
+    font-style: italic;
+}
+
+.label-input-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.label-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.05em;
+}
+
+.label-btn.save-btn {
+    background: linear-gradient(180deg, #0ff 0%, #00cc99 100%);
+    color: #000;
+}
+
+.label-btn.save-btn:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.label-btn.skip-btn {
+    background: rgba(100, 100, 100, 0.3);
+    color: #aaa;
+    border: 1px solid #666;
+}
+
+.label-btn.skip-btn:hover {
+    background: rgba(100, 100, 100, 0.5);
+    color: #fff;
+}
+
+/* Save slot label display */
+.save-slot-label {
+    color: #00ff88;
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
 }

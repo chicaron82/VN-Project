@@ -17,8 +17,8 @@ class SaveManager {
     // SAVE FUNCTIONS
     // ========================================
     
-    saveGame(slotNumber, isAutoSave = false) {
-        const saveData = this.createSaveData();
+    saveGame(slotNumber, isAutoSave = false, customLabel = null) {
+        const saveData = this.createSaveData(customLabel);
         const key = isAutoSave ? this.autoSaveKey : this.savePrefix + slotNumber;
         
         try {
@@ -26,7 +26,8 @@ class SaveManager {
             console.log(`Game saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
             
             // Show save indicator
-            this.showSaveIndicator(isAutoSave ? 'Auto-saved' : `Saved to Slot ${slotNumber}`);
+            const labelText = customLabel ? ` - "${customLabel}"` : '';
+            this.showSaveIndicator(isAutoSave ? 'Auto-saved' : `Saved to Slot ${slotNumber}${labelText}`);
             
             return true;
         } catch (error) {
@@ -36,13 +37,14 @@ class SaveManager {
         }
     }
     
-    createSaveData() {
+    createSaveData(customLabel = null) {
         const route = this.game.currentRoute;
         
         const saveData = {
             version: '848',
             timestamp: new Date().toISOString(),
             routeName: route.constructor.name === 'RonnieRoute' ? 'ronnie' : 'tori',
+            customLabel: customLabel || null,
             
             // Get the current scene ID from the game engine
             // NOTE: displayScene() stores this in gameState.progress.currentScene
@@ -290,6 +292,7 @@ class SaveManager {
             isEmpty: false,
             slotNumber: slotNumber,
             routeName: saveData.routeName,
+            customLabel: saveData.customLabel || null,
             timestamp: new Date(saveData.timestamp),
             displayText: this.formatSaveSlotDisplay(saveData)
         };

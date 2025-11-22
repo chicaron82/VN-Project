@@ -235,8 +235,13 @@ class SaveLoadUI {
             const dateStr = slotInfo.timestamp.toLocaleDateString();
             const timeStr = slotInfo.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             
+            // Build display with optional label
+            const labelHtml = slotInfo.customLabel 
+                ? `<div class="save-slot-label">"${slotInfo.customLabel}"</div>` 
+                : '';
+            
             if (!isAutoSave) {
-                infoElement.innerHTML = `<div class="save-slot-timestamp">${dateStr} ${timeStr}</div>`;
+                infoElement.innerHTML = `${labelHtml}<div class="save-slot-timestamp">${dateStr} ${timeStr}</div>`;
             } else {
                 timestampElement.textContent = `${dateStr} ${timeStr}`;
             }
@@ -283,11 +288,11 @@ class SaveLoadUI {
                     'Overwrite Save?',
                     `This will overwrite the save in Slot ${slotId}. Continue?`,
                     () => {
-                        this.performSave(slotId);
+                        this.promptForSaveLabel(slotId);
                     }
                 );
             } else {
-                this.performSave(slotId);
+                this.promptForSaveLabel(slotId);
             }
         } else {
             // Loading
@@ -311,8 +316,85 @@ class SaveLoadUI {
         }
     }
     
-    performSave(slotNumber) {
-        const success = this.game.saveManager.saveGame(slotNumber, false);
+    promptForSaveLabel(slotNumber) {
+        // Show label input dialog
+        this.showLabelInputDialog(
+            'Name Your Save',
+            'Enter a label (optional):',
+            (label) => {
+                this.performSave(slotNumber, label);
+            }
+        );
+    }
+    
+    showLabelInputDialog(title, message, onConfirm) {
+        // Create or get label dialog
+        let labelDialog = document.getElementById('label-input-dialog');
+        
+        if (!labelDialog) {
+            // Create dialog if it doesn't exist
+            labelDialog = document.createElement('div');
+            labelDialog.id = 'label-input-dialog';
+            labelDialog.className = 'label-input-dialog';
+            labelDialog.innerHTML = `
+                <div class="label-input-content">
+                    <h3 id="label-input-title">Name Your Save</h3>
+                    <p id="label-input-message">Enter a label (optional):</p>
+                    <input type="text" id="label-input-field" maxlength="30" placeholder="e.g., Before big choice...">
+                    <div class="label-input-buttons">
+                        <button class="label-btn save-btn" id="label-save-btn">SAVE</button>
+                        <button class="label-btn skip-btn" id="label-skip-btn">SKIP</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(labelDialog);
+        }
+        
+        // Update content
+        document.getElementById('label-input-title').textContent = title;
+        document.getElementById('label-input-message').textContent = message;
+        
+        const inputField = document.getElementById('label-input-field');
+        inputField.value = '';
+        
+        // Show dialog
+        labelDialog.classList.add('active');
+        inputField.focus();
+        
+        // Setup handlers
+        const saveBtn = document.getElementById('label-save-btn');
+        const skipBtn = document.getElementById('label-skip-btn');
+        
+        const cleanup = () => {
+            labelDialog.classList.remove('active');
+            saveBtn.onclick = null;
+            skipBtn.onclick = null;
+            inputField.onkeydown = null;
+        };
+        
+        saveBtn.onclick = () => {
+            const label = inputField.value.trim() || null;
+            cleanup();
+            onConfirm(label);
+        };
+        
+        skipBtn.onclick = () => {
+            cleanup();
+            onConfirm(null);
+        };
+        
+        // Enter key saves, Escape skips
+        inputField.onkeydown = (e) => {
+            if (e.key === 'Enter') {
+                saveBtn.click();
+            } else if (e.key === 'Escape') {
+                skipBtn.click();
+            }
+        };
+    }
+    
+    performSave(slotNumber, customLabel = null) {
+        const success = this.game.saveManager.saveGame(slotNumber, false, customLabel);
         if (success) {
             this.refreshSaveSlots();
         }

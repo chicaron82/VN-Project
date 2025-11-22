@@ -154,13 +154,7 @@ class ToriAct1 {
     scene2_echoes_whispers() {
         this.game.displayScene({
             character: 'Echoes (distant whispers)',
-            dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',
-            echoes: {
-                echo1: '...another one...',
-                echo2: '...it\'s starting again...',
-                despair: '...fresh meat...'
-            },
-            internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
+            dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',            internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -184,11 +178,7 @@ class ToriAct1 {
     scene2_echo1_intro() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"You\'re in the device. The Tamagotchi. With us."',
-            echoes: {
-                echo1: 'You\'re in the device. With us.'
-            },
-            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
+            dialogue: '"You\'re in the device. The Tamagotchi. With us."',            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -201,11 +191,7 @@ class ToriAct1 {
     scene2_echo2_explains() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',
-            echoes: {
-                echo2: 'We\'re you. Previous loops. 847 failures.'
-            },
-            internal: '[Visual: The weight of their existence. Failed iterations.]',
+            dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',            internal: '[Visual: The weight of their existence. Failed iterations.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -218,11 +204,7 @@ class ToriAct1 {
     scene2_despair_welcome() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',
-            echoes: {
-                despair: 'Welcome to your new cage, 848.'
-            },
-            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
+            dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -284,11 +266,7 @@ class ToriAct1 {
     scene3_echoes_explain() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',
-            echoes: {
-                echo1: 'He can\'t hear you. We all tried screaming.'
-            },
-            internal: '[The weight of their experience. They know what doesn\'t work.]',
+            dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',            internal: '[The weight of their experience. They know what doesn\'t work.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -499,11 +477,7 @@ class ToriAct1 {
     scene5_echoes_shock() {
         this.game.displayScene({
             character: 'Echo 1 (stunned)',
-            dialogue: '"...What. What did you just DO?!"',
-            echoes: {
-                echo1: 'What did you just DO?!'
-            },
-            internal: '[The Echoes are shaken. Something impossible just happened.]',
+            dialogue: '"...What. What did you just DO?!"',            internal: '[The Echoes are shaken. Something impossible just happened.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -516,13 +490,7 @@ class ToriAct1 {
     scene5_echo2_confused() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',
-            echoes: {
-                echo1: 'You left!',
-                echo2: 'How did you leave?!',
-                despair: 'Impossible...'
-            },
-            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
+            dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -546,11 +514,7 @@ class ToriAct1 {
     scene5_echo1_pressing() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',
-            echoes: {
-                echo1: 'Where were you?!'
-            },
-            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
+            dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -585,11 +549,7 @@ class ToriAct1 {
     scene5_echo2_revelation() {
         this.game.displayScene({
             character: 'Echo 2 (awestruck)',
-            dialogue: '"This... this has NEVER happened before. None of us... we never..."',
-            echoes: {
-                echo2: 'This has never happened before.'
-            },
-            internal: '[Realization dawning. They never tried. They just accepted.]',
+            dialogue: '"This... this has NEVER happened before. None of us... we never..."',            internal: '[Realization dawning. They never tried. They just accepted.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -602,13 +562,7 @@ class ToriAct1 {
     scene5_echo1_admits() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',
-            echoes: {
-                echo1: 'We listened to Despair.',
-                echo2: 'We stopped trying.',
-                despair: '...'
-            },
-            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
+            dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -621,11 +575,7 @@ class ToriAct1 {
     scene5_despair_denial() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',
-            echoes: {
-                despair: 'It was a fluke. A glitch.'
-            },
-            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
+            dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -676,12 +626,7 @@ class ToriAct1 {
     scene6_failure() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
-            dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',
-            echoes: {
-                echo1: 'Keep trying.',
-                despair: 'I told you. It was a fluke.'
-            },
-            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
+            dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -779,13 +724,7 @@ class ToriAct1 {
     scene6_echoes_amazed() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She figured it out. The rule. Physical contact."',
-            echoes: {
-                echo1: 'She figured it out.',
-                echo2: 'We never... we just tried to break out...',
-                despair: 'It\'s still pointless.'
-            },
-            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
+            dialogue: '"She figured it out. The rule. Physical contact."',            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -931,11 +870,7 @@ class ToriAct1 {
     scene7_echo1_notes() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"Single buzz versus double buzz. Two different signals."',
-            echoes: {
-                echo1: 'Two different signals.'
-            },
-            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
+            dialogue: '"Single buzz versus double buzz. Two different signals."',            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -948,11 +883,7 @@ class ToriAct1 {
     scene7_echo2_admits() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',
-            echoes: {
-                echo2: 'We felt it. We dismissed it.'
-            },
-            internal: '[Another failure. They felt the pull but ignored it.]',
+            dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',            internal: '[Another failure. They felt the pull but ignored it.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -965,11 +896,7 @@ class ToriAct1 {
     scene7_despair_insists() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',
-            echoes: {
-                despair: 'It means nothing.'
-            },
-            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
+            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
@@ -1111,13 +1038,7 @@ class ToriAct1 {
     scene8_echoes_reaction() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She did it. She NAVIGATED instead of fighting the system."',
-            echoes: {
-                echo1: 'She navigated.',
-                echo2: '847 loops. And no one thought of this.',
-                despair: '...'
-            },
-            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
+            dialogue: '"She did it. She NAVIGATED instead of fighting the system."',            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
             background: 'digitalSpace.png',
             sprites: {
                 right: 'three-echoes-sprite.png'
