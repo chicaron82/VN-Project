@@ -1717,6 +1717,7 @@
     }
     
     /* DIALOGUE BOX - Fixed to bottom, never overlap sprites */
+    /* NOTE: background/border handled by route-specific rules below */
     #dialogue-box {
         position: fixed !important;
         bottom: 0 !important;
@@ -1732,9 +1733,6 @@
         overflow-x: hidden;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
-        background: rgba(0, 0, 0, 0.95);
-        border: none;
-        border-top: 2px solid #0ff;
         border-radius: 0;
         padding: 12px 16px;
         padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1747,16 +1745,24 @@
         z-index: 50;
     }
     
-    /* Override route-specific frames on mobile - they don't scale well */
-    #dialogue-box.ronnie-route,
-    #dialogue-box.tori-route {
-        background: rgba(0, 0, 0, 0.95) !important;
+    /* Keep custom dialogue frames on mobile - just constrain positioning */
+    #dialogue-box.ronnie-route {
+        background: url('dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+                    rgba(8, 14, 20, 0.95) !important;
         border: none !important;
-        border-top: 2px solid #0ff !important;
-        padding: 12px 16px !important;
-        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
-        box-shadow: 0 -5px 20px rgba(0, 255, 255, 0.2) !important;
-        animation: none !important;
+        padding: 20px 24px 16px 24px !important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.15) !important;
+    }
+    
+    #dialogue-box.tori-route {
+        background: url('dialogue-frame-tori.png') center/100% 100% no-repeat,
+                    rgba(12, 15, 30, 0.95) !important;
+        border: none !important;
+        padding: 20px 24px 16px 24px !important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.2) !important;
+        animation: toriFrameFlicker 8s ease-in-out infinite !important;
     }
     
     .echo-scene #character-right {
