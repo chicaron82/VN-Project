@@ -1782,22 +1782,21 @@
     }
     
     /* SPRITE POSITIONING - Stay above dialogue box */
+    /* Using smaller vh values to account for mobile address bar eating viewport */
     .character-sprite {
         position: absolute;
-        bottom: 28vh !important; /* Position sprites ABOVE dialogue area */
+        bottom: 22vh !important; /* Lower value since real viewport is smaller */
         width: 180px !important;
-        height: 320px !important;
+        height: 280px !important;
         z-index: 40;
     }
     
-    /* Smaller sprites (like echo trio) need different positioning */
-    /* They're shorter so bottom: 28vh puts them behind dialogue */
+    /* Right sprite (echoes, etc) */
     #character-right {
-        /* Allow height to be auto for sprites that are naturally shorter */
         height: auto !important;
-        min-height: 150px;
-        max-height: 320px;
-        bottom: 30vh !important; /* Slightly higher to stay visible */
+        min-height: 180px;
+        max-height: 300px;
+        bottom: 24vh !important;
     }
     
     #character-left {
@@ -1878,39 +1877,40 @@
     
     #pause-button {
         top: 8px;
-        padding: 6px 16px;
-        font-size: 0.9em;
+        padding: 6px 12px;
+        font-size: 0.8em;
         z-index: 100;
     }
     
-    /* Tether UI - compact, top-left corner */
+    /* Tether UI - below top row to not cover pause */
     #tether-ui {
-        width: 45%;
-        max-width: 180px;
-        top: 8px;
+        width: 55%;
+        max-width: 200px;
+        top: 50px; /* Below pause/notes row */
         left: 8px;
         right: auto;
     }
     
     #tether-meter {
-        height: 35px;
-        padding: 5px 8px;
+        height: 30px;
+        padding: 4px 6px;
+        font-size: 0.8em;
     }
     
     #hold-on-button {
-        height: 35px;
-        padding: 8px 12px;
-        font-size: 0.75em;
-        margin-top: 6px;
+        height: 30px;
+        padding: 6px 10px;
+        font-size: 0.7em;
+        margin-top: 4px;
     }
     
     #notes-button {
         top: 8px;
         right: 8px;
-        padding: 8px 12px;
-        font-size: 0.75em;
+        padding: 6px 10px;
+        font-size: 0.7em;
         min-width: auto;
-        height: 35px;
+        height: 30px;
     }
     
     #character-name {
@@ -1981,12 +1981,38 @@
     }
     
     .character-sprite {
-        bottom: 0 !important;
-        height: 90% !important;
+        bottom: 45vh !important; /* Above dialogue box */
+        height: auto !important;
+        max-height: 50vh !important;
+    }
+    
+    #character-right {
+        bottom: 45vh !important;
+        height: auto !important;
+        max-height: 50vh !important;
     }
     
     #internal-thought {
         max-height: 15vh;
+    }
+    
+    /* Tether UI in landscape - top left, compact */
+    #tether-ui {
+        top: 8px;
+        left: 8px;
+        width: 30%;
+        max-width: 200px;
+    }
+    
+    #tether-meter {
+        height: 28px;
+        font-size: 0.75em;
+    }
+    
+    #hold-on-button {
+        height: 28px;
+        font-size: 0.65em;
+        margin-top: 4px;
     }
 }
 
@@ -2001,9 +2027,13 @@
 /* Extra small phones */
 @media (max-width: 360px) and (orientation: portrait) {
     .character-sprite {
-        width: 150px !important;
-        height: 280px !important;
-        bottom: 30vh !important;
+        width: 140px !important;
+        height: 240px !important;
+        bottom: 20vh !important; /* Lower to account for address bar */
+    }
+    
+    #character-right {
+        bottom: 22vh !important;
     }
     
     #dialogue-box {
