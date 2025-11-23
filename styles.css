@@ -1781,14 +1781,14 @@
         pointer-events: none;
     }
     
-    /* SPRITES - Fill space ABOVE dialogue box, anchored from TOP */
+    /* SPRITES - Sit exactly on top of dialogue box (30vh from floor) */
     .character-sprite {
         position: absolute !important;
-        top: 0 !important; /* Start from top of screen */
-        bottom: auto !important; /* Don't anchor to bottom */
+        bottom: 30vh !important; /* Sits on dialogue top edge */
+        top: auto !important; /* Don't anchor to top */
         width: auto !important;
-        height: 70vh !important; /* Fill the 70vh above dialogue */
-        max-height: 70vh !important;
+        height: auto !important;
+        max-height: 70vh !important; /* Can't exceed space above dialogue */
         z-index: 40 !important;
     }
     
@@ -1796,17 +1796,17 @@
         left: 5% !important;
         right: auto !important;
         transform: none !important;
-        top: 0 !important;
-        bottom: auto !important;
+        bottom: 30vh !important;
+        top: auto !important;
     }
     
     #character-right {
         right: 5% !important;
         left: auto !important;
         transform: none !important;
-        top: 0 !important;
-        bottom: auto !important;
-        height: 70vh !important;
+        bottom: 30vh !important;
+        top: auto !important;
+        height: auto !important;
         max-height: 70vh !important;
     }
     
@@ -1981,18 +1981,18 @@
         transform: translateX(0);
     }
     
-    /* Sprites fill space ABOVE dialogue (65vh) */
+    /* Sprites sit on dialogue (35vh from floor) */
     .character-sprite {
-        top: 0 !important;
-        bottom: auto !important;
-        height: 65vh !important;
+        bottom: 35vh !important;
+        top: auto !important;
+        height: auto !important;
         max-height: 65vh !important;
     }
     
     #character-right {
-        top: 0 !important;
-        bottom: auto !important;
-        height: 65vh !important;
+        bottom: 35vh !important;
+        top: auto !important;
+        height: auto !important;
         max-height: 65vh !important;
     }
     

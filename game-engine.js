@@ -1356,19 +1356,19 @@ class GameEngine {
     }
     
     fixMobileSpritePositioning() {
-        // Force sprite positioning on mobile via inline styles (overrides stubborn CSS)
+        // Force sprite positioning on mobile via inline styles
         const isPortrait = window.innerHeight > window.innerWidth;
-        const spriteHeight = isPortrait ? '70vh' : '65vh';
+        const dialogueHeight = isPortrait ? '30vh' : '35vh';
         
         if (this.spriteLeft) {
-            this.spriteLeft.style.top = '0';
-            this.spriteLeft.style.bottom = 'auto';
-            this.spriteLeft.style.height = spriteHeight;
+            this.spriteLeft.style.bottom = dialogueHeight;
+            this.spriteLeft.style.top = 'auto';
+            this.spriteLeft.style.height = 'auto';
         }
         if (this.spriteRight) {
-            this.spriteRight.style.top = '0';
-            this.spriteRight.style.bottom = 'auto';
-            this.spriteRight.style.height = spriteHeight;
+            this.spriteRight.style.bottom = dialogueHeight;
+            this.spriteRight.style.top = 'auto';
+            this.spriteRight.style.height = 'auto';
         }
     }
 }
