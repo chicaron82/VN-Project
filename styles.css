@@ -1786,8 +1786,9 @@
         position: absolute !important;
         bottom: 30vh !important; /* Sits on dialogue top edge */
         top: auto !important; /* Don't anchor to top */
-        width: auto !important;
+        width: 180px !important; /* Explicit width so it doesn't collapse */
         height: auto !important;
+        min-height: 300px !important; /* Ensure they have actual height */
         max-height: 70vh !important; /* Can't exceed space above dialogue */
         z-index: 40 !important;
     }
@@ -1798,6 +1799,7 @@
         transform: none !important;
         bottom: 30vh !important;
         top: auto !important;
+        width: 180px !important;
     }
     
     #character-right {
@@ -1806,6 +1808,7 @@
         transform: none !important;
         bottom: 30vh !important;
         top: auto !important;
+        width: 180px !important;
         height: auto !important;
         max-height: 70vh !important;
     }
