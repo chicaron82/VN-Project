@@ -1761,7 +1761,7 @@
    Fixed: Dialogue box overlapping sprites
    ======================================== */
 
-@media (max-width: 480px) and (orientation: portrait) {
+@media (max-width: 768px) and (orientation: portrait) {
     #game-view {
         display: flex;
         flex-direction: column;
@@ -1930,7 +1930,7 @@
 }
 
 /* General mobile (both orientations) - text sizing only */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
     #dialogue-box {
         padding: 12px 16px;
         font-size: 0.9rem;
