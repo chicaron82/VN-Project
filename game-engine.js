@@ -30,10 +30,7 @@ class GameEngine {
         this.tetherFill = document.getElementById('tether-fill');
         this.tetherText = document.getElementById('tether-text');
         this.holdOnButton = document.getElementById('hold-on-button');
-        this.echoDisplay = document.getElementById('echo-display');
-        this.echo1Text = document.getElementById('echo-1-text');
-        this.echo2Text = document.getElementById('echo-2-text');
-        this.echoDespairText = document.getElementById('echo-despair-text');
+        // Echo display removed - now using three-echoes-sprite.png instead
         this.notesButton = document.getElementById('notes-button');
         this.notesCount = document.getElementById('notes-count');
         this.notesViewer = document.getElementById('notes-viewer');
@@ -148,6 +145,16 @@ class GameEngine {
         
         this.closeNotesButton.addEventListener('click', () => {
             this.notesViewer.style.display = 'none';
+        });
+        
+        // Mobile sprite positioning fix
+        if (window.innerWidth <= 768) {
+            this.fixMobileSpritePositioning();
+        }
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                this.fixMobileSpritePositioning();
+            }
         });
         
         // ========================================
@@ -497,12 +504,7 @@ class GameEngine {
             this.choiceMenu.style.display = 'none';
         }
         
-        // Handle echoes (Tori route only)
-        if (scene.echoes) {
-            this.displayEchoes(scene.echoes);
-        } else {
-            this.clearEchoes();
-        }
+        // Echo display handled by three-echoes-sprite.png now
         
         // Handle background changes with crossfade
         if (scene.background) {
@@ -891,38 +893,7 @@ class GameEngine {
     // ECHO DISPLAY (TORI ROUTE)
     // ========================================
     
-    displayEchoes(echoes) {
-        if (!this.echoDisplay) return;
-        
-        this.echoDisplay.style.display = 'block';
-        
-        if (echoes.echo1) {
-            this.echo1Text.textContent = echoes.echo1;
-            this.echo1Text.style.display = 'block';
-        } else {
-            this.echo1Text.style.display = 'none';
-        }
-        
-        if (echoes.echo2) {
-            this.echo2Text.textContent = echoes.echo2;
-            this.echo2Text.style.display = 'block';
-        } else {
-            this.echo2Text.style.display = 'none';
-        }
-        
-        if (echoes.despair) {
-            this.echoDespairText.textContent = echoes.despair;
-            this.echoDespairText.style.display = 'block';
-        } else {
-            this.echoDespairText.style.display = 'none';
-        }
-    }
-    
-    clearEchoes() {
-        if (this.echoDisplay) {
-            this.echoDisplay.style.display = 'none';
-        }
-    }
+    // displayEchoes and clearEchoes removed - now using three-echoes-sprite.png
     
     // ========================================
     // NOTES SYSTEM
@@ -1114,7 +1085,7 @@ class GameEngine {
         // Hide Tori-specific UI elements
         if (this.tetherUI) this.tetherUI.style.display = 'none';
         if (this.notesButton) this.notesButton.style.display = 'none';
-        if (this.echoDisplay) this.echoDisplay.style.display = 'none';
+        // Echo display removed - handled by sprite now
         
         // Stop tether decay if in Tori's route
         if (this.currentRoute) {
@@ -1382,5 +1353,22 @@ class GameEngine {
         // ========================================
         
         return 'center';
+    }
+    
+    fixMobileSpritePositioning() {
+        // Force sprite positioning on mobile via inline styles (overrides stubborn CSS)
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const spriteHeight = isPortrait ? '70vh' : '65vh';
+        
+        if (this.spriteLeft) {
+            this.spriteLeft.style.top = '0';
+            this.spriteLeft.style.bottom = 'auto';
+            this.spriteLeft.style.height = spriteHeight;
+        }
+        if (this.spriteRight) {
+            this.spriteRight.style.top = '0';
+            this.spriteRight.style.bottom = 'auto';
+            this.spriteRight.style.height = spriteHeight;
+        }
     }
 }
