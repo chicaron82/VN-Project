@@ -1785,7 +1785,7 @@
     /* Using smaller vh values to account for mobile address bar eating viewport */
     .character-sprite {
         position: absolute;
-        bottom: 22vh !important; /* Lower value since real viewport is smaller */
+        bottom: 28vh !important; /* Above dialogue box */
         width: 180px !important;
         height: 280px !important;
         z-index: 40;
@@ -1796,7 +1796,7 @@
         height: auto !important;
         min-height: 180px;
         max-height: 300px;
-        bottom: 24vh !important;
+        bottom: 30vh !important; /* Higher for shorter sprites */
     }
     
     #character-left {
@@ -1981,15 +1981,15 @@
     }
     
     .character-sprite {
-        bottom: 45vh !important; /* Above dialogue box */
+        bottom: 48vh !important; /* Above dialogue box */
         height: auto !important;
-        max-height: 50vh !important;
+        max-height: 48vh !important;
     }
     
     #character-right {
-        bottom: 45vh !important;
+        bottom: 50vh !important; /* Even higher for shorter sprites */
         height: auto !important;
-        max-height: 50vh !important;
+        max-height: 45vh !important;
     }
     
     #internal-thought {
@@ -2323,4 +2323,31 @@
     font-size: 0.9rem;
     margin-bottom: 4px;
     text-shadow: 0 0 5px rgba(0, 255, 136, 0.4);
+}
+
+/* ========================================
+   GZ'S MOBILE FIX - DIALOGUE BOX STACK ORDER
+   ======================================== */
+
+/* DIALOGUE BOX: STAY IN YOUR LANE, QUEEN */
+#dialogue-box {
+    position: relative !important;
+    z-index: 20 !important;           /* BELOW sprites (50) and bubbles (60) */
+    height: 32vh !important;          /* Shorter on mobile = more face room */
+    max-height: 32vh !important;
+    min-height: 120px !important;
+    margin-top: auto;                 /* Pushes it to bottom of flex container */
+}
+
+/* Mobile portrait - extra breathing room for beautiful faces */
+@media (max-width: 480px) and (orientation: portrait) {
+    #dialogue-box {
+        height: 28vh !important;
+        max-height: 28vh !important;
+    }
+    
+    /* Give sprites even more priority */
+    .character-sprite {
+        z-index: 50 !important;
+    }
 }
