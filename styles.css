@@ -1781,13 +1781,13 @@
         pointer-events: none;
     }
     
-    /* SPRITES - Anchored to bottom, fill screen vertically */
+    /* SPRITES - Anchored so their bottom edge sits at dialogue box top */
     .character-sprite {
         position: absolute !important;
-        bottom: 0 !important;
+        bottom: 30vh !important; /* Exactly where dialogue top is (30vh from bottom) */
         width: auto !important;
         height: auto !important;
-        max-height: 85vh !important;
+        max-height: 70vh !important; /* Fill remaining space above dialogue */
         z-index: 40 !important;
     }
     
@@ -1802,7 +1802,7 @@
         left: auto !important;
         transform: none !important;
         height: auto !important;
-        max-height: 85vh !important;
+        max-height: 70vh !important;
     }
     
     /* Hide dimmed sprites on mobile to reduce clutter */
@@ -1810,7 +1810,7 @@
         display: none !important;
     }
     
-    /* DIALOGUE BOX - Overlays bottom of screen, on top of sprite feet */
+    /* DIALOGUE BOX - FIXED HEIGHT, overlays bottom 30vh */
     #dialogue-box {
         position: fixed !important;
         bottom: 0 !important;
@@ -1818,9 +1818,9 @@
         right: 5% !important;
         width: auto !important;
         max-width: none !important;
-        height: 28vh !important;
-        max-height: 28vh !important;
-        min-height: 100px !important;
+        height: 30vh !important; /* LOCKED HEIGHT */
+        max-height: 30vh !important;
+        min-height: 30vh !important; /* Force it to stay 30vh always */
         transform: none !important;
         margin: 0 !important;
         overflow-y: auto;
