@@ -1988,14 +1988,19 @@
     .character-sprite {
         bottom: 35vh !important;
         top: auto !important;
+        width: 150px !important;
         height: auto !important;
+        min-height: 250px !important;
         max-height: 65vh !important;
     }
     
+    #character-left,
     #character-right {
         bottom: 35vh !important;
         top: auto !important;
+        width: 150px !important;
         height: auto !important;
+        min-height: 250px !important;
         max-height: 65vh !important;
     }
     

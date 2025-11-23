@@ -461,7 +461,7 @@ class SaveLoadUI {
             
             // Hide route-specific UI
             this.game.tetherUI.style.display = 'none';
-            this.game.echoDisplay.style.display = 'none';
+            // Echo display removed - now using sprite
             this.game.notesButton.style.display = 'none';
             
             // Stop tether decay if it's running (Tori's route)
