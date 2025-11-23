@@ -2156,6 +2156,22 @@
     }
 }
 
+/* Desktop sprite positioning (1024px and up) */
+@media (min-width: 1024px) {
+    .character-sprite {
+        bottom: 0 !important;
+        top: auto !important;
+        height: 600px !important;
+        max-height: none !important;
+    }
+    
+    #character-left,
+    #character-right {
+        bottom: 0 !important;
+        top: auto !important;
+    }
+}
+
 /* Ultra-wide monitors */
 @media (min-width: 1920px) {
     .internal-bubble {
