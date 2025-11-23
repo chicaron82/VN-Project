@@ -148,11 +148,11 @@ class GameEngine {
         });
         
         // Mobile sprite positioning fix
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1023) {
             this.fixMobileSpritePositioning();
         }
         window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
+            if (window.innerWidth <= 1023) {
                 this.fixMobileSpritePositioning();
             }
         });
