@@ -1675,7 +1675,7 @@
 
 .character-sprite {
     position: absolute;
-    bottom: 0;
+    bottom: 0; /* Desktop default - sits at bottom */
     width: 350px;
     height: 600px;
     background-size: contain;
@@ -1795,6 +1795,7 @@
         left: 5% !important;
         right: auto !important;
         transform: none !important;
+        bottom: 30vh !important; /* Inherit from parent but be explicit */
     }
     
     #character-right {
@@ -1803,6 +1804,7 @@
         transform: none !important;
         height: auto !important;
         max-height: 70vh !important;
+        bottom: 30vh !important; /* Inherit from parent but be explicit */
     }
     
     /* Hide dimmed sprites on mobile to reduce clutter */
