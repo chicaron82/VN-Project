@@ -544,6 +544,85 @@
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
 }
 
+/* Ronnie Route - Terminal Ground pause UI */
+#pause-button.ronnie-route {
+    background: url('pause-button-ronnie.png') center/contain no-repeat;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                0 0 30px rgba(0, 200, 100, 0.1);
+}
+
+#pause-button.ronnie-route:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+                0 0 40px rgba(0, 200, 100, 0.2);
+    filter: brightness(1.1);
+}
+
+#pause-content.ronnie-route {
+    background: linear-gradient(135deg, rgba(8, 14, 20, 0.98), rgba(10, 16, 24, 0.98));
+    border: 2px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
+                0 0 80px rgba(0, 200, 100, 0.1);
+}
+
+#pause-content.ronnie-route h2 {
+    color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+/* Tori Route - Fractured Glass pause UI */
+#pause-button.tori-route {
+    background: url('pause-button-tori.png') center/contain no-repeat;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                0 0 25px rgba(255, 50, 100, 0.1);
+    animation: pauseButtonGlitch 8s ease-in-out infinite;
+}
+
+#pause-button.tori-route:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+                0 0 35px rgba(255, 50, 100, 0.2);
+    filter: brightness(1.1);
+}
+
+@keyframes pauseButtonGlitch {
+    0%, 100% { 
+        filter: none;
+    }
+    48% { 
+        filter: none;
+    }
+    50% { 
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+    52% { 
+        filter: none;
+    }
+}
+
+#pause-content.tori-route {
+    background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
+    border: 2px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
+                0 0 60px rgba(255, 50, 100, 0.08);
+    animation: pauseMenuFlicker 8s ease-in-out infinite;
+}
+
+@keyframes pauseMenuFlicker {
+    0%, 100% { 
+        opacity: 1;
+        filter: none;
+    }
+    50% { 
+        opacity: 0.98;
+        filter: brightness(1.05);
+    }
+}
+
+#pause-content.tori-route h2 {
+    color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
+                 0 0 20px rgba(255, 50, 100, 0.2);
+}
+
 #pause-button:hover {
     box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
     filter: brightness(1.2);
@@ -1370,6 +1449,74 @@
 
 /* Echo display removed - now using three-echoes-sprite.png instead */
 
+/* Tori Route - Fractured Glass notes UI */
+#notes-button.tori-route {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                0 0 25px rgba(255, 50, 100, 0.1);
+    animation: toriNotesGlitch 6s ease-in-out infinite;
+}
+
+@keyframes toriNotesGlitch {
+    0%, 100% { 
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                    0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+    48% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                    0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+    50% { 
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+                    0 0 35px rgba(255, 50, 100, 0.2);
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+    52% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+                    0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+}
+
+#notes-button.tori-route:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5),
+                0 0 40px rgba(255, 50, 100, 0.2);
+    animation: none;
+}
+
+#notes-viewer.tori-route {
+    background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
+    border: 3px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3),
+                0 0 60px rgba(255, 50, 100, 0.1);
+    animation: notesViewerFlicker 8s ease-in-out infinite;
+}
+
+@keyframes notesViewerFlicker {
+    0%, 100% { 
+        opacity: 1;
+        filter: none;
+    }
+    48% {
+        opacity: 1;
+        filter: none;
+    }
+    50% { 
+        opacity: 0.98;
+        filter: brightness(1.05) hue-rotate(3deg);
+    }
+    52% {
+        opacity: 1;
+        filter: none;
+    }
+}
+
+#notes-viewer.tori-route h2 {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
+                 0 0 20px rgba(255, 50, 100, 0.2);
+}
+
 #notes-viewer {
     position: fixed;
     top: 50%;
@@ -1531,6 +1678,50 @@
     82% {
         opacity: 1;
         filter: none;
+    }
+}
+
+/* Prologue - "Pre-connection" mysterious shimmer */
+#dialogue-box.prologue-style {
+    background: url('dialogue-frame-prologue.png') center/100% 100% no-repeat,
+                rgba(25, 15, 40, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
+                0 0 60px rgba(75, 0, 130, 0.2);
+    animation: prologueShimmer 4s ease-in-out infinite;
+}
+
+@keyframes prologueShimmer {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
+                    0 0 60px rgba(75, 0, 130, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(138, 43, 226, 0.4),
+                    0 0 70px rgba(75, 0, 130, 0.3);
+    }
+}
+
+/* Epilogue - "Resolution" warm golden glow */
+#dialogue-box.epilogue-style {
+    background: url('dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+                rgba(40, 30, 15, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
+                0 0 60px rgba(255, 165, 0, 0.15);
+    animation: epiloguePulse 6s ease-in-out infinite;
+}
+
+@keyframes epiloguePulse {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
+                    0 0 60px rgba(255, 165, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.35),
+                    0 0 70px rgba(255, 165, 0, 0.2);
     }
 }
 
@@ -2050,6 +2241,16 @@
     
     #dialogue-box {
         max-height: 30vh !important;
+    }
+    
+    /* Push bubbles lower on small screens to avoid sprite chin */
+    .internal-bubble.left-character,
+    .internal-bubble.right-character {
+        top: 45% !important; /* Lower */
+    }
+    
+    .internal-bubble.center {
+        top: 48% !important;
     }
 }
 

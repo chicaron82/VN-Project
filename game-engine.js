@@ -37,6 +37,10 @@ class GameEngine {
         this.notesList = document.getElementById('notes-list');
         this.closeNotesButton = document.getElementById('close-notes');
         
+        // Pause UI elements
+        this.pauseButton = document.getElementById('pause-button');
+        this.pauseContent = document.getElementById('pause-content');
+        
         // Character sprite containers
         this.spriteLeft = document.getElementById('character-left');
         this.spriteRight = document.getElementById('character-right');
@@ -1218,25 +1222,39 @@ class GameEngine {
     }
     
     // ========================================
-    // ROUTE-SPECIFIC DIALOGUE FRAME
+    // ROUTE-SPECIFIC DIALOGUE FRAME & UI THEMING
     // ========================================
     
     setDialogueFrame(routeName) {
-        // Remove existing route classes
-        this.dialogueBox.classList.remove('ronnie-route', 'tori-route');
+        // Remove existing route classes from all UI elements
+        this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
+        if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesButton) this.notesButton.classList.remove('tori-route');
+        if (this.notesViewer) this.notesViewer.classList.remove('tori-route');
         
-        // Apply route-specific frame
+        // Apply route-specific theming to all UI
         if (routeName === 'ronnie') {
             this.dialogueBox.classList.add('ronnie-route');
+            if (this.pauseButton) this.pauseButton.classList.add('ronnie-route');
+            if (this.pauseContent) this.pauseContent.classList.add('ronnie-route');
         } else if (routeName === 'tori') {
             this.dialogueBox.classList.add('tori-route');
+            if (this.pauseButton) this.pauseButton.classList.add('tori-route');
+            if (this.pauseContent) this.pauseContent.classList.add('tori-route');
+            if (this.notesButton) this.notesButton.classList.add('tori-route');
+            if (this.notesViewer) this.notesViewer.classList.add('tori-route');
         }
         
-        console.log(`Dialogue frame set: ${routeName}`);
+        console.log(`UI theme set: ${routeName}`);
     }
     
     clearDialogueFrame() {
-        this.dialogueBox.classList.remove('ronnie-route', 'tori-route');
+        this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
+        if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesButton) this.notesButton.classList.remove('tori-route');
+        if (this.notesViewer) this.notesViewer.classList.remove('tori-route');
     }
 
     // ========================================
