@@ -120,13 +120,20 @@ class TetherSystem {
         if (this.tetherFill) {
             this.tetherFill.style.width = this.tetherLevel + '%';
             
-            // Color coding based on level
-            if (this.tetherLevel > 60) {
-                this.tetherFill.style.background = 'linear-gradient(90deg, #0f0, #0ff)';
-            } else if (this.tetherLevel > 30) {
-                this.tetherFill.style.background = 'linear-gradient(90deg, #ff0, #0ff)';
+            // Add/remove critical class based on level
+            if (this.tetherLevel <= 30) {
+                this.tetherFill.classList.add('critical');
             } else {
-                this.tetherFill.style.background = 'linear-gradient(90deg, #f00, #ff0)';
+                this.tetherFill.classList.remove('critical');
+            }
+        }
+        
+        // Update hold-on button critical state
+        if (this.holdOnButton) {
+            if (this.tetherLevel <= 30) {
+                this.holdOnButton.classList.add('critical');
+            } else {
+                this.holdOnButton.classList.remove('critical');
             }
         }
         
@@ -298,36 +305,45 @@ class TetherSystem {
         
         console.log('Tether death triggered');
         
-        // Increment attempt counter
-        if (this.game.incrementAttempt) {
-            this.game.incrementAttempt();
-        }
-        
-        const currentVersion = localStorage.getItem('attemptNumber') || '849';
-        
         // Show game over screen
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The tether snaps. Consciousness fragments. The void swallows everything.',
-            internal: `[Tori's awareness dissolves into static]\n\n**"GAME OVER - Tether Severed"**\n\n[System restarting... Version ${currentVersion}]`,
+            internal: `[Tori's awareness dissolves into static]\n\n**"GAME OVER - Tether Severed"**`,
+            background: 'digitalSpace.png',
+            style: 'critical',
             choices: [
-                { text: '[RETRY FROM LAST CHECKPOINT]', value: 'retry' },
+                { text: '[RETRY]', value: 'retry' },
                 { text: '[RETURN TO MAIN MENU]', value: 'menu' }
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Restart from Act 1
-                    this.reset();
-                    if (this.route && this.route.act1) {
-                        this.route.act1.start();
-                    }
+                    // Increment version
+                    const newVersion = this.game.incrementVersion();
+                    
+                    // Show dramatic version increment screen
+                    this.game.displayScene({
+                        character: 'System',
+                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
+                        internal: '[The tether broke. The loop continues. Another chance.]',
+                        background: 'digitalSpace.png',
+                        style: 'critical',
+                        next: () => {
+                            // Reset tether and restart
+                            this.reset();
+                            if (this.route && this.route.act1) {
+                                this.route.act1.start();
+                            }
+                        },
+                        delay: 3000
+                    }, 'version_increment_tether_death');
                 } else {
                     if (this.game.returnToMainMenu) {
                         this.game.returnToMainMenu();
                     }
                 }
             }
-        });
+        }, 'tether_death');
     }
     
     // ========================================
