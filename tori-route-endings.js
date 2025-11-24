@@ -135,8 +135,8 @@ class ToriEndings {
             internal: '[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]',
             background: 'digitalSpace.png',
             sprites: {
-                left: 'ronnie-sprite.png',
-                right: 'tori-sprite.png'
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
             },
             next: () => this.digitalForever_together(),
             delay: 4000
@@ -149,8 +149,8 @@ class ToriEndings {
             dialogue: '"We\'re together. Isn\'t this what we wanted?"',
             background: 'digitalSpace.png',
             sprites: {
-                left: 'ronnie-sprite.png',
-                right: 'tori-sprite.png'
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
             },
             next: () => this.digitalForever_ronnie(),
             delay: 3000
@@ -163,8 +163,8 @@ class ToriEndings {
             dialogue: '"Forever. No pain. No time. Just us."',
             background: 'digitalSpace.png',
             sprites: {
-                left: 'ronnie-sprite.png',
-                right: 'tori-sprite.png'
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
             },
             next: () => this.digitalForever_echoes(),
             delay: 3000
@@ -177,8 +177,8 @@ class ToriEndings {
             dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
             background: 'digitalSpace.png',
             sprites: {
-                left: 'ronnie-sprite.png',
-                right: 'tori-sprite.png'
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
             },
             next: () => this.digitalForever_choice(),
             delay: 5000
