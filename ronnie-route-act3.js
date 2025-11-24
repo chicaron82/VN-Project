@@ -143,15 +143,383 @@ class RonnieRouteAct3 {
         }
     }
 
-    // Beat 2-6: Summary implementation (can be expanded later)
+    // ========================================
+    // BEAT 2: MEMORY FRACTURE
+    // Tori's memories start corrupting
+    // ========================================
+    
     act3Beat2() {
         this.game.displayScene({
+            character: 'Ronnie (narration)',
+            dialogue: '"Over the next few days, it got worse. She\'d forget things. Small things at first."',
+            internal: '[Visual: Digital apartment. Tori cooking breakfast - movements glitchy, repeating.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat2_forgetting(),
+            delay: 3500
+        }, 'act3Beat2');
+    }
+    
+    beat2_forgetting() {
+        this.game.displayScene({
+            character: 'Tori (confused)',
+            dialogue: '"Baby, what\'s our anniversary date again?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat2_ronnieAnswer(),
+            delay: 2500
+        }, 'beat2_forgetting');
+    }
+    
+    beat2_ronnieAnswer() {
+        this.game.displayScene({
+            character: 'Ronnie (careful)',
+            dialogue: '"June 12th. We\'ve celebrated it four times."',
+            internal: '[She knows this. She KNOWS this. Why is she asking?]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat2_toriRealization(),
+            delay: 3000
+        }, 'beat2_ronnieAnswer');
+    }
+    
+    beat2_toriRealization() {
+        this.game.displayScene({
+            character: 'Tori (panicking)',
+            dialogue: '"I knew that. I KNEW that. Why couldn\'t I... Ronnie, what\'s happening to me?"',
+            internal: '[Her sprite flickers. Eyes wide with fear.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat2_promise(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat2_toriRealization');
+    }
+    
+    beat2_promise() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"It\'s okay. We\'ll figure it out. I promise."',
+            internal: '[Ronnie (internal): "But I had no idea how. The code was stable. What was causing this?"]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.act3Beat3(),
+            delay: 3500
+        }, 'beat2_promise');
+    }
+    
+    // ========================================
+    // BEAT 3: SYSTEM MESSAGES INTRUDE
+    // External warnings break through
+    // ========================================
+    
+    act3Beat3() {
+        this.game.displayScene({
             character: 'Narration',
-            dialogue: '[ACT 3 BEATS 2-5: Memory fracture, system messages intrude, fragmentation, revelation - TO BE FULLY IMPLEMENTED]\n\nThe honeymoon illusion collapses. Memories corrupt. System messages flood the screen. Tori realizes the truth about the body anchor.\n\n"The mad dash begins..."',
+            dialogue: 'Then the messages started appearing.',
+            internal: '[Visual: Text overlays bleeding through the game world. Red warnings.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat3_firstMessage(),
+            delay: 2500
+        }, 'act3Beat3');
+    }
+    
+    beat3_firstMessage() {
+        this.game.displayScene({
+            character: 'System Message',
+            dialogue: '⚠️ WARNING: MEMORY CORRUPTION DETECTED\n⚠️ VESSEL INSTABILITY: 67%\n⚠️ RECOMMEND IMMEDIATE DIAGNOSTICS',
+            internal: '[The text appears over Tori\'s sprite. She can see it too.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat3_toriSees(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat3_firstMessage');
+    }
+    
+    beat3_toriSees() {
+        this.game.displayScene({
+            character: 'Tori (reading)',
+            dialogue: '"Ronnie... I can see that. The warnings. Vessel instability? What vessel?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat3_ronnieHesitates(),
+            delay: 3000
+        }, 'beat3_toriSees');
+    }
+    
+    beat3_ronnieHesitates() {
+        this.game.displayScene({
+            character: 'Ronnie (deflecting)',
+            dialogue: '"Just... system diagnostics. Nothing to worry about."',
+            internal: '[Ronnie (internal): "I couldn\'t tell her. Not yet. Not while she was already scared."]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat3_moreWarnings(),
+            delay: 3000
+        }, 'beat3_ronnieHesitates');
+    }
+    
+    beat3_moreWarnings() {
+        this.game.displayScene({
+            character: 'System Message',
+            dialogue: '⚠️ CRITICAL: BATTERY DEPLETION ACCELERATING\n⚠️ CONSCIOUSNESS ANCHOR: UNSTABLE\n⚠️ ESTIMATED TIME TO FAILURE: 72 HOURS',
+            internal: '[More messages. Faster now. Tori\'s sprite glitches harder with each one.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat3_toriDemands(),
+            delay: 3500,
+            style: 'critical'
+        }, 'beat3_moreWarnings');
+    }
+    
+    beat3_toriDemands() {
+        this.game.displayScene({
+            character: 'Tori (firm)',
+            dialogue: '"Ronnie. TELL ME. What\'s happening? What\'s the vessel? What\'s failing?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.act3Beat4(),
+            delay: 3000
+        }, 'beat3_toriDemands');
+    }
+    
+    // ========================================
+    // BEAT 4: FRAGMENTATION
+    // Tori's consciousness destabilizes
+    // ========================================
+    
+    act3Beat4() {
+        this.game.displayScene({
+            character: 'Ronnie (breaking)',
+            dialogue: '"The Tamagotchi. You\'re... inside it. Your consciousness transferred during the fall. But the device is dying."',
+            internal: '[Ronnie finally admits it. The truth he\'d been hiding.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_toriProcessing(),
+            delay: 4000
+        }, 'act3Beat4');
+    }
+    
+    beat4_toriProcessing() {
+        this.game.displayScene({
+            character: 'Tori (slowly)',
+            dialogue: '"I\'m... in the Tamagotchi. Not the game. The device itself."',
+            internal: '[Her sprite stutters. Reality reshaping around the revelation.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_understanding(),
+            delay: 3000
+        }, 'beat4_toriProcessing');
+    }
+    
+    beat4_understanding() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"The buzzes. The battery drain. That\'s me. I\'m killing the device just by existing in it."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_ronnieConfirms(),
+            delay: 3000
+        }, 'beat4_understanding');
+    }
+    
+    beat4_ronnieConfirms() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"Yes. And when it dies... I don\'t know what happens to you. If you just... stop. Or if it\'s worse."',
+            internal: '[The weight of it. The timer counting down.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_glitch(),
+            delay: 3500
+        }, 'beat4_ronnieConfirms');
+    }
+    
+    beat4_glitch() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'GLITCH.',
+            internal: '[Tori\'s sprite fractures. Screen tears. Visual corruption spreads.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_toriScreaming(),
+            delay: 1500,
+            style: 'critical'
+        }, 'beat4_glitch');
+    }
+    
+    beat4_toriScreaming() {
+        this.game.displayScene({
+            character: 'Tori (distorted)',
+            dialogue: '"I can feel it. The edges. I\'m coming apart. Ronnie, I\'m SCARED—"',
+            internal: '[Her voice fragments mid-word. Sprite dissolving at the edges.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat4_ronnieGrabs(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat4_toriScreaming');
+    }
+    
+    beat4_ronnieGrabs() {
+        this.game.displayScene({
+            character: 'Ronnie (desperate)',
+            dialogue: '"Hold on! Just—stay with me! I\'ll fix this!"',
+            internal: '[He grabs the device. Holds it close. Like proximity could keep her together.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
+            next: () => this.act3Beat5(),
+            delay: 3000
+        }, 'beat4_ronnieGrabs');
+    }
+    
+    // ========================================
+    // BEAT 5: REVELATION - BODY ANCHOR
+    // The solution becomes clear
+    // ========================================
+    
+    act3Beat5() {
+        this.game.displayScene({
+            character: 'Ronnie (narration)',
+            dialogue: '"And then I remembered. The hospital. The single buzz."',
+            internal: '[Flashback: Device near Tori\'s body. One buzz. Different from the vessel transfers.]',
+            background: 'hospital.png',
+            next: () => this.beat5_realization(),
+            delay: 3500
+        }, 'act3Beat5');
+    }
+    
+    beat5_realization() {
+        this.game.displayScene({
+            character: 'Ronnie (excited)',
+            dialogue: '"The body. Tori, your BODY. It\'s still there. Still alive. That buzz—you were reaching for it!"',
+            background: 'hospital.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
+            next: () => this.beat5_toriHope(),
+            delay: 3000
+        }, 'beat5_realization');
+    }
+    
+    beat5_toriHope() {
+        this.game.displayScene({
+            character: 'Tori (through game)',
+            dialogue: '"I felt something. Warmth. A pull. Different from the laptop."',
+            background: 'digitalSpace.png',
+            sprites: {
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat5_theory(),
+            delay: 3000
+        }, 'beat5_toriHope');
+    }
+    
+    beat5_theory() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"If I bring the device close enough... if you can jump vessels... maybe you can jump HOME."',
+            internal: '[The mad theory. Desperate. Beautiful. Terrifying.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
+            next: () => this.beat5_toriUncertain(),
+            delay: 3500
+        }, 'beat5_theory');
+    }
+    
+    beat5_toriUncertain() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"But what if I can\'t? What if I just... dissolve? What if jumping destroys me?"',
+            background: 'digitalSpace.png',
+            sprites: {
+                right: 'tori-sprite.png'
+            },
+            next: () => this.beat5_ronniePromise(),
+            delay: 3000
+        }, 'beat5_toriUncertain');
+    }
+    
+    beat5_ronniePromise() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"Then we find another way. Upload you somewhere safer. Or... I don\'t know. But we\'re running out of time."',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png'
+            },
+            next: () => this.beat5_timer(),
+            delay: 3500
+        }, 'beat5_ronniePromise');
+    }
+    
+    beat5_timer() {
+        this.game.displayScene({
+            character: 'System Message',
+            dialogue: '⚠️ CRITICAL BATTERY: 8% REMAINING\n⚠️ ESTIMATED TIME: 12 HOURS\n⚠️ DECISION REQUIRED',
+            internal: '[The clock is ticking. Three paths emerge.]',
             background: 'digitalSpace.png',
             next: () => this.act3CriticalChoice(),
-            delay: 6000
-        }, 'act3Beat2');
+            delay: 3000,
+            style: 'critical'
+        }, 'beat5_timer');
     }
 
     act3CriticalChoice() {
