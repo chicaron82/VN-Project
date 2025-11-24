@@ -1923,8 +1923,9 @@
 }
 
 .echo-scene .character-sprite {
-    width: auto;
-    max-width: 45%;
+    width: auto !important; /* Let width be determined by aspect ratio */
+    height: 600px !important; /* Force proper height */
+    max-width: 70%; /* Allow wider for the three-character sprite */
 }
 
 @media (max-width: 768px) {
@@ -2062,9 +2063,9 @@
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
-        width: 90% !important;
-        max-width: 300px !important;
-        height: auto !important;
+        width: auto !important; /* Let width adjust to aspect ratio */
+        max-width: 80% !important; /* Allow wider for three characters */
+        height: 350px !important; /* Force proper height */
         bottom: 28vh !important;
     }
     
@@ -2193,6 +2194,13 @@
         height: auto !important;
         min-height: 250px !important;
         max-height: 65vh !important;
+    }
+    
+    /* Echoes need more width in landscape */
+    .echo-scene #character-right {
+        width: auto !important;
+        height: 300px !important;
+        max-width: 50% !important;
     }
     
     #internal-thought {
@@ -2350,12 +2358,12 @@
     }
     
     .internal-bubble.left-character {
-        top: 25%; /* Upper area, above sprite */
+        top: 15%; /* Upper area, above sprite */
         left: 10px;
     }
     
     .internal-bubble.right-character {
-        top: 25%; /* Upper area, above sprite */
+        top: 15%; /* Upper area, above sprite */
         right: 10px;
     }
     

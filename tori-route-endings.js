@@ -95,9 +95,23 @@ class ToriEndings {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Increment version and restart
-                    this.game.incrementVersion();
-                    this.route.act1.start();
+                    // Increment version
+                    const newVersion = this.game.incrementVersion();
+                    
+                    // Show dramatic version increment screen
+                    this.game.displayScene({
+                        character: 'System',
+                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
+                        internal: '[The loop continues. Another timeline. Another chance.]',
+                        background: 'digitalSpace.png',
+                        style: 'critical',
+                        next: () => {
+                            // Reset tether to full
+                            this.route.tetherSystem.reset();
+                            this.route.act1.start();
+                        },
+                        delay: 3000
+                    }, 'version_increment_screen');
                 } else {
                     // Return to menu at current version
                     this.game.returnToMainMenu();
@@ -182,9 +196,23 @@ class ToriEndings {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Increment version and restart
-                    this.game.incrementVersion();
-                    this.route.act1.start();
+                    // Increment version
+                    const newVersion = this.game.incrementVersion();
+                    
+                    // Show dramatic version increment screen
+                    this.game.displayScene({
+                        character: 'System',
+                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
+                        internal: '[Digital love wasn\'t enough. He goes back. Again.]',
+                        background: 'digitalSpace.png',
+                        style: 'critical',
+                        next: () => {
+                            // Reset tether to full
+                            this.route.tetherSystem.reset();
+                            this.route.act1.start();
+                        },
+                        delay: 3000
+                    }, 'version_increment_screen');
                 } else {
                     // Accept ending - lock version
                     this.game.acceptEnding();

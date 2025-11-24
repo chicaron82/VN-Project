@@ -205,6 +205,9 @@ class ToriAct1 {
     }
 
     scene2_despair_welcome() {
+        // Despair blocks saves in Act 1
+        this.game.saveManager.blockSaves();
+        
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',

@@ -11,6 +11,7 @@ class SaveManager {
         this.autoSaveEnabled = true;
         this.savePrefix = 'v848_save_';
         this.autoSaveKey = 'v848_autosave';
+        this.savesBlocked = false; // Despair can block saves
     }
     
     // ========================================
@@ -18,6 +19,13 @@ class SaveManager {
     // ========================================
     
     saveGame(slotNumber, isAutoSave = false, customLabel = null) {
+        // Check if saves are blocked (Despair sabotage)
+        if (this.savesBlocked) {
+            console.log('Save blocked by Despair Echo');
+            this.showSaveIndicator('Save failed... something is interfering', true);
+            return false;
+        }
+        
         const saveData = this.createSaveData(customLabel);
         const key = isAutoSave ? this.autoSaveKey : this.savePrefix + slotNumber;
         
@@ -374,5 +382,19 @@ class SaveManager {
         setTimeout(() => {
             indicator.classList.remove('visible');
         }, 2000);
+    }
+    
+    // ========================================
+    // SAVE BLOCKING (DESPAIR SABOTAGE)
+    // ========================================
+    
+    blockSaves() {
+        this.savesBlocked = true;
+        console.log('Saves blocked by Despair Echo');
+    }
+    
+    unblockSaves() {
+        this.savesBlocked = false;
+        console.log('Saves unblocked');
     }
 }
