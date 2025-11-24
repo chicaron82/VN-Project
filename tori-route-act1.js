@@ -97,6 +97,10 @@ class ToriAct1 {
             dialogue: '"No problem. Hang on to that. It may save your life someday."',
             internal: '[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away with her original device.]',
             background: 'genericBack.png',
+            sprites: {
+                left: 'old-ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene1_walking_home(),
             delay: 3500
         }, 'scene1_old_man');

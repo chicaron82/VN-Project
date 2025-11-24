@@ -55,6 +55,11 @@ class SharedPrologue {
             character: 'Older Man',
             dialogue: 'No problem. Hang on to that. It may save your life someday.',
             internal: '[She glances up but never clearly sees his face. Camera catches a glimpse of his faded BGA hoodie on his chest. He walks away, clutching her original Tamagotchi.]',
+            background: 'genericBack.png',
+            sprites: {
+                left: 'old-ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene1_end()
         }, 'scene1_oldMan');
     }
@@ -108,8 +113,49 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'You\'re such a dork, honey',
-            next: () => this.scene2_toriDinner()
+            next: () => this.scene2_hoodieBanter()
         }, 'scene2_ronnieTeases');
+    }
+    
+    scene2_hoodieBanter() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: 'Says the guy wearing the TLC hoodie. Again.',
+            internal: '[She tugs playfully at his sleeve.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.scene2_ronnieDefends()
+        }, 'scene2_hoodieBanter');
+    }
+    
+    scene2_ronnieDefends() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: 'Well, SOMEONE keeps stealing my BGA hoodie, so this is my replacement.',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.scene2_toriRebuttal()
+        }, 'scene2_ronnieDefends');
+    }
+    
+    scene2_toriRebuttal() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: 'You wear the TLC one anyway! So the BGA one is fair game.',
+            internal: '[She grins mischievously.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.scene2_toriDinner()
+        }, 'scene2_toriRebuttal');
     }
     
     scene2_toriDinner() {
