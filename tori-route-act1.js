@@ -158,7 +158,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene2_who_there(),
             delay: 3000
@@ -183,7 +183,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene2_echo2_explains(),
             delay: 2500
@@ -197,7 +197,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene2_despair_welcome(),
             delay: 3000
@@ -214,7 +214,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene2_tori_refuses(),
             delay: 3500
@@ -277,7 +277,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene3_ronnie_response(),
             delay: 3000
@@ -491,7 +491,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_echo2_confused(),
             delay: 2500
@@ -505,7 +505,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_tori_distraught(),
             delay: 3500
@@ -530,7 +530,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_tori_explains(),
             delay: 3500
@@ -566,7 +566,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_echo1_admits(),
             delay: 3000
@@ -580,7 +580,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_despair_denial(),
             delay: 4000
@@ -594,7 +594,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene5_tori_defiant(),
             delay: 3500
@@ -646,7 +646,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene6_ronnie_coding(),
             delay: 3500
@@ -747,7 +747,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene6_sees_code(),
             delay: 3500
@@ -896,7 +896,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene7_echo2_admits(),
             delay: 2500
@@ -910,7 +910,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene7_despair_insists(),
             delay: 3000
@@ -924,7 +924,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene7_tori_determined(),
             delay: 3500
@@ -1075,7 +1075,7 @@ class ToriAct1 {
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.scene8_tori_victory(),
             delay: 4000

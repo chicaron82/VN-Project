@@ -571,7 +571,7 @@ class GameEngine {
             }
         }
         
-        // Handle right sprite
+        // Handle right sprite - check if it's the Echoes triple
         if (sprites.right !== undefined) {
             if (sprites.right === null) {
                 // Hide right sprite
@@ -580,13 +580,22 @@ class GameEngine {
                     setTimeout(() => {
                         this.spriteRight.style.display = 'none';
                         this.spriteRight.style.backgroundImage = '';
+                        this.spriteRight.classList.remove('echo-group');
+                        this.spriteRight.innerHTML = ''; // Clear any echo children
                     }, 300);
                 }
                 this.currentSprites.right = null;
                 this.gameState.sprites.right = null; // NEW: Update save state
+            } else if (sprites.right === 'echoes' || sprites.right === 'three-echoes') {
+                // Special handling for triple Echo sprites
+                this.displayEchoGroup();
+                this.currentSprites.right = 'echoes';
+                this.gameState.sprites.right = 'echoes';
             } else {
-                // Show/update right sprite
+                // Show/update right sprite (normal single sprite)
                 if (this.spriteRight) {
+                        this.spriteRight.classList.remove('echo-group');
+                        this.spriteRight.innerHTML = ''; // Clear any echo children
                         this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
                         this.spriteRight.style.display = 'block';
                         this.spriteRight.style.opacity = '0';  // Start hidden
@@ -600,17 +609,113 @@ class GameEngine {
         }
     }
     
+    displayEchoGroup() {
+        // Display three separate Echo sprites
+        if (!this.spriteRight) return;
+        
+        // Clear and set up as echo group
+        this.spriteRight.innerHTML = '';
+        this.spriteRight.style.backgroundImage = '';
+        this.spriteRight.classList.add('echo-group');
+        this.spriteRight.style.display = 'flex';
+        this.spriteRight.style.opacity = '0';
+        
+        // Create three echo sprites
+        const echo1 = document.createElement('div');
+        echo1.id = 'echo-1-sprite';
+        echo1.className = 'echo-sprite';
+        echo1.style.backgroundImage = "url('echo-1-sprite.png')";
+        
+        const echo2 = document.createElement('div');
+        echo2.id = 'echo-2-sprite';
+        echo2.className = 'echo-sprite';
+        echo2.style.backgroundImage = "url('echo-2-sprite.png')";
+        
+        const despair = document.createElement('div');
+        despair.id = 'despair-sprite';
+        despair.className = 'echo-sprite';
+        despair.style.backgroundImage = "url('despair-sprite.png')";
+        
+        // Add to container
+        this.spriteRight.appendChild(echo1);
+        this.spriteRight.appendChild(echo2);
+        this.spriteRight.appendChild(despair);
+        
+        // Fade in
+        setTimeout(() => {
+            this.spriteRight.style.opacity = '1';
+        }, 50);
+        
+        console.log('Echo group displayed with three separate sprites');
+    }
+    
     setActiveSpeaker(speaker) {
         if (!speaker) {
             // No speaker - remove all dims
             if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
             if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+            // Remove dims from individual Echoes
+            const echoSprites = document.querySelectorAll('.echo-sprite');
+            echoSprites.forEach(sprite => sprite.classList.remove('sprite-dim'));
             return;
         }
         
         const speakerName = speaker.toLowerCase(); // toLowerCase HERE, not in displayScene
         
-        // Determine which sprite should be bright (remove dim from active, add to inactive)
+        // Check if Echoes are displayed
+        const echo1 = document.getElementById('echo-1-sprite');
+        const echo2 = document.getElementById('echo-2-sprite');
+        const despair = document.getElementById('despair-sprite');
+        
+        if (echo1 && echo2 && despair) {
+            // Echoes are active - handle individual highlighting
+            if (speakerName.includes('echo 1') || speakerName.includes('echo1')) {
+                echo1.classList.remove('sprite-dim');
+                echo2.classList.add('sprite-dim');
+                despair.classList.add('sprite-dim');
+                // Keep Tori bright if she's on left
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
+            } else if (speakerName.includes('echo 2') || speakerName.includes('echo2')) {
+                echo1.classList.add('sprite-dim');
+                echo2.classList.remove('sprite-dim');
+                despair.classList.add('sprite-dim');
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
+            } else if (speakerName.includes('despair')) {
+                echo1.classList.add('sprite-dim');
+                echo2.classList.add('sprite-dim');
+                despair.classList.remove('sprite-dim');
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
+            } else if (speakerName.includes('echoes')) {
+                // All Echoes speaking together
+                echo1.classList.remove('sprite-dim');
+                echo2.classList.remove('sprite-dim');
+                despair.classList.remove('sprite-dim');
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
+            } else if (speakerName.includes('tori')) {
+                // Tori speaking - dim all Echoes
+                echo1.classList.add('sprite-dim');
+                echo2.classList.add('sprite-dim');
+                despair.classList.add('sprite-dim');
+                if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+            } else if (speakerName.includes('narration') || speakerName.includes('system')) {
+                // Narration - no dimming
+                echo1.classList.remove('sprite-dim');
+                echo2.classList.remove('sprite-dim');
+                despair.classList.remove('sprite-dim');
+                if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+            }
+            return;
+        }
+        
+        // Standard sprite handling (no Echoes active)
         if (speakerName.includes('ronnie')) {
             // Ronnie speaking - left bright, right dim
             if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');

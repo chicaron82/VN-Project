@@ -90,7 +90,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',            background: 'digitalSpace.png',
             sprites: {
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.beat1_systemTakeover(),
             delay: 4000
@@ -293,7 +293,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."',            background: 'digitalSpace.png',
             sprites: {
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.beat3(),
             delay: 4000
@@ -398,7 +398,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',            background: 'digitalSpace.png',
             sprites: {
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.beat4(),
             delay: 4000
@@ -600,7 +600,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',            background: 'digitalSpace.png',
             sprites: {
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.beat6(),
             delay: 4000
@@ -659,7 +659,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',            background: 'digitalSpace.png',
             sprites: {
-                right: 'three-echoes-sprite.png'
+                right: 'echoes'
             },
             next: () => this.beat7(),
             delay: 4000
@@ -722,7 +722,7 @@ class ToriAct2 {
                 dialogue: '"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE."',                internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
                 background: 'digitalSpace.png',
                 sprites: {
-                    right: 'three-echoes-sprite.png'
+                    right: 'echoes'
                 },
                 next: () => this.beat7_choiceLocked(),
                 delay: 4000
@@ -734,7 +734,7 @@ class ToriAct2 {
                 dialogue: '"Let go. Make him let go. Tell him to upload. It\'s kinder than watching him fail."',                internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
                 background: 'digitalSpace.png',
                 sprites: {
-                    right: 'three-echoes-sprite.png'
+                    right: 'echoes'
                 },
                 next: () => this.beat7_choice(),
                 delay: 4000
@@ -844,7 +844,7 @@ class ToriAct2 {
                 dialogue: 'Despair: "Good. Good. Now you understand."\nEcho 1: (fading) "No..."\nEcho 2: (barely there) "Please..."',                internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
-                    right: 'three-echoes-sprite.png'
+                    right: 'echoes'
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000
@@ -855,7 +855,7 @@ class ToriAct2 {
                 dialogue: 'Echo 1: "She\'s still fighting."\nEcho 2: "Stronger than we were."\nDespair: "For now."',                internal: '[Whiteout. The battle continues. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
-                    right: 'three-echoes-sprite.png'
+                    right: 'echoes'
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000
@@ -866,7 +866,7 @@ class ToriAct2 {
                 dialogue: 'Echo 1: "YES! That\'s it!"\nEcho 2: "She can do this. She really can."\nDespair: "...We\'ll see."',                internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
-                    right: 'three-echoes-sprite.png'
+                    right: 'echoes'
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000

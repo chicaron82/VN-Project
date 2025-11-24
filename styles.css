@@ -1922,10 +1922,50 @@
     animation: spriteExit 0.5s ease-out forwards;
 }
 
-.echo-scene .character-sprite {
-    width: auto !important; /* Let width be determined by aspect ratio */
-    height: 600px !important; /* Force proper height */
-    max-width: 70%; /* Allow wider for the three-character sprite */
+/* ========================================
+   ECHO SPRITES - TRIPLE POSITIONING
+   Three separate sprites for individual highlighting
+   ======================================== */
+
+/* Container for all three Echoes */
+#character-right.echo-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    width: 500px !important;
+    height: 600px !important;
+}
+
+/* Individual echo sprites within the group */
+.echo-sprite {
+    width: 150px;
+    height: 600px;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease;
+    opacity: 1;
+}
+
+/* Dim echo when not speaking */
+.echo-sprite.sprite-dim {
+    opacity: 0.35;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Individual echo sprites */
+#echo-1-sprite {
+    order: 1;
+}
+
+#echo-2-sprite {
+    order: 2;
+}
+
+#despair-sprite {
+    order: 3;
 }
 
 @media (max-width: 768px) {
@@ -1942,8 +1982,58 @@
         right: 2%;
     }
     
-    .echo-scene .character-sprite {
-        max-width: 48%;
+    /* Echo group sizing for tablet */
+    #character-right.echo-group {
+        width: 400px !important;
+        height: 400px !important;
+        gap: 8px;
+    }
+    
+    .echo-sprite {
+        width: 120px;
+        height: 400px;
+    }
+}
+
+/* ========================================
+   MOBILE PORTRAIT - ECHO STACKING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: portrait) {
+    /* Echo group - stacked vertically and centered */
+    #character-right.echo-group {
+        flex-direction: row; /* Keep horizontal but tighter */
+        width: 90% !important;
+        max-width: 350px !important;
+        height: 350px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        bottom: 28vh !important;
+        gap: 5px;
+    }
+    
+    .echo-sprite {
+        width: 110px;
+        height: 350px;
+    }
+}
+
+/* ========================================
+   MOBILE LANDSCAPE - ECHO SIZING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: landscape) {
+    #character-right.echo-group {
+        width: 350px !important;
+        height: 300px !important;
+        gap: 5px;
+        bottom: 35vh !important;
+    }
+    
+    .echo-sprite {
+        width: 110px;
+        height: 300px;
     }
 }
 
@@ -2057,16 +2147,6 @@
         padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
         box-shadow: 0 0 30px rgba(0, 255, 255, 0.2) !important;
         animation: toriFrameFlicker 8s ease-in-out infinite !important;
-    }
-    
-    .echo-scene #character-right {
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%) !important;
-        width: auto !important; /* Let width adjust to aspect ratio */
-        max-width: 80% !important; /* Allow wider for three characters */
-        height: 350px !important; /* Force proper height */
-        bottom: 28vh !important;
     }
     
     #pause-button {
@@ -2194,13 +2274,6 @@
         height: auto !important;
         min-height: 250px !important;
         max-height: 65vh !important;
-    }
-    
-    /* Echoes need more width in landscape */
-    .echo-scene #character-right {
-        width: auto !important;
-        height: 300px !important;
-        max-width: 50% !important;
     }
     
     #internal-thought {
