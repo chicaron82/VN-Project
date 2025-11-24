@@ -506,7 +506,12 @@ game.devCommands()
             this.gameState.progress.currentScene = sceneId;
         }
         
-        // Handle character display (speaker highlighting)
+        // Handle sprites FIRST (show/hide based on scene data)
+        if (scene.sprites) {
+            this.updateSprites(scene.sprites);
+        }
+        
+        // THEN handle character display (speaker highlighting) AFTER sprites exist
         if (scene.character) {
             this.setActiveSpeaker(scene.character);
         }
@@ -514,11 +519,6 @@ game.devCommands()
         // Update character name
         this.characterName.textContent = scene.character || '';
         this.characterName.style.display = scene.character ? 'block' : 'none';
-        
-        // Handle sprites (show/hide based on scene data)
-        if (scene.sprites) {
-            this.updateSprites(scene.sprites);
-        }
         
         // Clear previous dialogue
         this.dialogueText.textContent = '';
@@ -600,25 +600,28 @@ game.devCommands()
             if (sprites.left === null) {
                 // Hide left sprite
                 if (this.spriteLeft) {
-                    this.spriteLeft.style.opacity = '0';
+                    this.spriteLeft.classList.add('sprite-exit');
                     setTimeout(() => {
                         this.spriteLeft.style.display = 'none';
                         this.spriteLeft.style.backgroundImage = '';
+                        this.spriteLeft.classList.remove('sprite-exit');
                     }, 300);
                 }
                 this.currentSprites.left = null;
-                this.gameState.sprites.left = null; // NEW: Update save state
+                this.gameState.sprites.left = null;
             } else {
                 // Show/update left sprite
                 if (this.spriteLeft) {
                     this.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
                     this.spriteLeft.style.display = 'block';
-                    this.spriteLeft.style.opacity = '0';  // Start hidden
+                    this.spriteLeft.classList.remove('sprite-exit', 'sprite-dim');
+                    this.spriteLeft.classList.add('sprite-enter');
                     setTimeout(() => {
-                    this.spriteLeft.style.opacity = '1';  // Fade in
-                }, 50);}
+                        this.spriteLeft.classList.remove('sprite-enter');
+                    }, 500);
+                }
                 this.currentSprites.left = sprites.left;
-                this.gameState.sprites.left = sprites.left; // NEW: Update save state
+                this.gameState.sprites.left = sprites.left;
             }
         }
         
@@ -627,16 +630,16 @@ game.devCommands()
             if (sprites.right === null) {
                 // Hide right sprite
                 if (this.spriteRight) {
-                    this.spriteRight.style.opacity = '0';
+                    this.spriteRight.classList.add('sprite-exit');
                     setTimeout(() => {
                         this.spriteRight.style.display = 'none';
                         this.spriteRight.style.backgroundImage = '';
-                        this.spriteRight.classList.remove('echo-group');
+                        this.spriteRight.classList.remove('echo-group', 'sprite-exit');
                         this.spriteRight.innerHTML = ''; // Clear any echo children
                     }, 300);
                 }
                 this.currentSprites.right = null;
-                this.gameState.sprites.right = null; // NEW: Update save state
+                this.gameState.sprites.right = null;
             } else if (sprites.right === 'echoes' || sprites.right === 'three-echoes') {
                 // Special handling for triple Echo sprites
                 this.displayEchoGroup();
@@ -645,17 +648,18 @@ game.devCommands()
             } else {
                 // Show/update right sprite (normal single sprite)
                 if (this.spriteRight) {
-                        this.spriteRight.classList.remove('echo-group');
-                        this.spriteRight.innerHTML = ''; // Clear any echo children
-                        this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
-                        this.spriteRight.style.display = 'block';
-                        this.spriteRight.style.opacity = '0';  // Start hidden
-                        setTimeout(() => {
-                        this.spriteRight.style.opacity = '1';  // Fade in
-                    }, 50);
+                    this.spriteRight.classList.remove('echo-group');
+                    this.spriteRight.innerHTML = ''; // Clear any echo children
+                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                    this.spriteRight.style.display = 'block';
+                    this.spriteRight.classList.remove('sprite-exit', 'sprite-dim');
+                    this.spriteRight.classList.add('sprite-enter');
+                    setTimeout(() => {
+                        this.spriteRight.classList.remove('sprite-enter');
+                    }, 500);
                 }
                 this.currentSprites.right = sprites.right;
-                this.gameState.sprites.right = sprites.right; // NEW: Update save state
+                this.gameState.sprites.right = sprites.right;
             }
         }
     }
@@ -669,7 +673,8 @@ game.devCommands()
         this.spriteRight.style.backgroundImage = '';
         this.spriteRight.classList.add('echo-group');
         this.spriteRight.style.display = 'flex';
-        this.spriteRight.style.opacity = '0';
+        this.spriteRight.classList.remove('sprite-exit');
+        this.spriteRight.classList.add('sprite-enter');
         
         // Set initial growth stage (Act 1 by default)
         if (!this.spriteRight.classList.contains('echo-growth-act1') && 
@@ -699,10 +704,10 @@ game.devCommands()
         this.spriteRight.appendChild(echo2);
         this.spriteRight.appendChild(despair);
         
-        // Fade in
+        // Remove enter animation after complete
         setTimeout(() => {
-            this.spriteRight.style.opacity = '1';
-        }, 50);
+            this.spriteRight.classList.remove('sprite-enter');
+        }, 500);
         
         console.log('Echo group displayed with three separate sprites');
     }
@@ -1580,5 +1585,64 @@ game.devCommands()
             this.spriteRight.style.top = 'auto';
             this.spriteRight.style.height = 'auto';
         }
+    }
+    
+    // ========================================
+    // CREDITS SYSTEM
+    // ========================================
+    
+    showCredits(isTrueEnding = false) {
+        // Show credits roll with conditional version screen
+        const creditsContainer = document.getElementById('credits-container');
+        const creditsScreen = document.getElementById('credits-screen');
+        const versionCreditScreen = document.getElementById('credit-11');
+        
+        if (!creditsContainer || !creditsScreen) {
+            console.error('Credits elements not found!');
+            return;
+        }
+        
+        // Hide game view
+        this.gameView.style.display = 'none';
+        
+        // Update dynamic version screen if True Ending
+        if (isTrueEnding && versionCreditScreen) {
+            const versionTitle = document.getElementById('version-credit-title');
+            const versionText = document.getElementById('version-credit-text');
+            
+            if (versionTitle) {
+                versionTitle.textContent = `VERSION ${this.loopVersion}`;
+            }
+            if (versionText) {
+                versionText.innerHTML = `The timeline that succeeded.<br><br>The loop that closed.<br><br>The Old Man never has to go back.`;
+            }
+            
+            // Show version screen
+            versionCreditScreen.style.display = 'flex';
+            console.log(`Credits: Showing VERSION ${this.loopVersion} success screen`);
+        } else {
+            // Hide version screen if not True Ending
+            if (versionCreditScreen) {
+                versionCreditScreen.style.display = 'none';
+            }
+            console.log('Credits: Skipping version screen (not True Ending)');
+        }
+        
+        // Show credits screen
+        creditsScreen.style.display = 'flex';
+        
+        // Scroll to top of credits
+        creditsContainer.scrollTop = 0;
+        
+        console.log('Credits: Rolling credits...');
+    }
+    
+    closeCredits() {
+        // Close credits and return to main menu
+        const creditsScreen = document.getElementById('credits-screen');
+        if (creditsScreen) {
+            creditsScreen.style.display = 'none';
+        }
+        this.returnToMainMenu();
     }
 }

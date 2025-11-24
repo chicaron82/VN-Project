@@ -96,6 +96,11 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_toriExplains()
         }, 'scene2_ronnieResponse');
     }
@@ -105,6 +110,11 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: 'Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!',
             internal: '[She hands him the French Vanilla.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_ronnieTeases()
         }, 'scene2_toriExplains');
     }
@@ -113,6 +123,11 @@ class SharedPrologue {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'You\'re such a dork, honey',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_hoodieBanter()
         }, 'scene2_ronnieTeases');
     }
@@ -163,6 +178,11 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: 'Yea but you still love me. I\'ll get dinner started',
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_kitchen()
         }, 'scene2_toriDinner');
     }
@@ -172,6 +192,11 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: '',
             internal: '[She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.]',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
             next: () => this.scene2_warning()
         }, 'scene2_kitchen');
     }
@@ -181,6 +206,7 @@ class SharedPrologue {
             character: 'Ronnie',
             dialogue: 'Babe, watch ou..!',
             internal: '[He notices her about to trip over his shoe.]',
+            background: 'apartment.png',
             sprites: {
                 left: 'ronnie-sprite.png',
             },
