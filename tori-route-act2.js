@@ -87,6 +87,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',            background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.beat1_systemTakeover(),
@@ -236,6 +237,7 @@ class ToriAct2 {
             internal: '[Visual: Through device screen - her body on the bed. Monitors beeping.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat2_warmth(),
@@ -249,6 +251,7 @@ class ToriAct2 {
             dialogue: '"That feeling again... warmth. The pull toward my body."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat2_buzz(),
@@ -263,6 +266,7 @@ class ToriAct2 {
             internal: '[Same rhythm. Same pulse.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat2_ronnieNotice(),
@@ -278,6 +282,7 @@ class ToriAct2 {
             internal: '[He dismisses it. Doesn\'t see the pattern yet.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat2_echoesKnow(),
@@ -290,6 +295,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."',            background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.beat3(),
@@ -395,6 +401,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',            background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.beat4(),
@@ -415,6 +422,7 @@ class ToriAct2 {
             internal: '[Visual: Her body. Still. Breathing. The device nearby.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat4_feeling(),
@@ -428,6 +436,7 @@ class ToriAct2 {
             dialogue: '"There it is again. That pull. That warmth. It\'s coming from my body."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat4_understanding(),
@@ -441,6 +450,7 @@ class ToriAct2 {
             dialogue: '"Wait... when I\'m near my body, I feel more... real. More present. The corruption slows."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat4_choice(),
@@ -455,6 +465,7 @@ class ToriAct2 {
             dialogue: '"This feeling... do I tell him? Or keep searching for proof?"',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             choices: [
@@ -479,6 +490,7 @@ class ToriAct2 {
             dialogue: '"Ronnie - when you visit my body, I feel more stable. I think there\'s a connection."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat4_ronnieResponse(),
@@ -493,6 +505,7 @@ class ToriAct2 {
             internal: '[She hides the truth. Needs more proof.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat4_ronnieResponse(),
@@ -506,6 +519,7 @@ class ToriAct2 {
             dialogue: '"I\'ll keep coming. Every day. I promise."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat5(),
@@ -597,6 +611,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',            background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.beat6(),
@@ -617,6 +632,7 @@ class ToriAct2 {
             internal: '[Visual: Physical contact. The buzz intensifies. Synced perfectly.]',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_connection(),
@@ -630,6 +646,7 @@ class ToriAct2 {
             dialogue: '"OH. Oh my god. It\'s the BODY. My body is the anchor. The bridge. The connection."',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_realization(),
@@ -644,6 +661,7 @@ class ToriAct2 {
             dialogue: '"That\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!"',
             background: 'hospital.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_echoesReact(),
@@ -656,6 +674,7 @@ class ToriAct2 {
             character: 'Echoes',
             dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',            background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.beat7(),
@@ -719,6 +738,7 @@ class ToriAct2 {
                 dialogue: '"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE."',                internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
                 background: 'digitalSpace.png',
                 sprites: {
+                    left: 'tori-sprite.png',
                     right: 'three-echoes-sprite.png'
                 },
                 next: () => this.beat7_choiceLocked(),
@@ -731,6 +751,7 @@ class ToriAct2 {
                 dialogue: '"Let go. Make him let go. Tell him to upload. It\'s kinder than watching him fail."',                internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
                 background: 'digitalSpace.png',
                 sprites: {
+                    left: 'tori-sprite.png',
                     right: 'three-echoes-sprite.png'
                 },
                 next: () => this.beat7_choice(),
@@ -841,6 +862,7 @@ class ToriAct2 {
                 dialogue: 'Despair: "Good. Good. Now you understand."\nEcho 1: (fading) "No..."\nEcho 2: (barely there) "Please..."',                internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
+                    left: 'tori-sprite.png',
                     right: 'three-echoes-sprite.png'
                 },
                 next: () => this.route.act3.start(),
@@ -852,6 +874,7 @@ class ToriAct2 {
                 dialogue: 'Echo 1: "She\'s still fighting."\nEcho 2: "Stronger than we were."\nDespair: "For now."',                internal: '[Whiteout. The battle continues. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
+                    left: 'tori-sprite.png',
                     right: 'three-echoes-sprite.png'
                 },
                 next: () => this.route.act3.start(),
@@ -863,6 +886,7 @@ class ToriAct2 {
                 dialogue: 'Echo 1: "YES! That\'s it!"\nEcho 2: "She can do this. She really can."\nDespair: "...We\'ll see."',                internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
                 background: 'digitalSpace.png',
                 sprites: {
+                    left: 'tori-sprite.png',
                     right: 'three-echoes-sprite.png'
                 },
                 next: () => this.route.act3.start(),

@@ -157,6 +157,7 @@ class ToriAct1 {
             dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',            internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene2_who_there(),
@@ -181,6 +182,7 @@ class ToriAct1 {
             dialogue: '"You\'re in the device. The Tamagotchi. With us."',            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene2_echo2_explains(),
@@ -194,6 +196,7 @@ class ToriAct1 {
             dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',            internal: '[Visual: The weight of their existence. Failed iterations.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene2_despair_welcome(),
@@ -207,6 +210,7 @@ class ToriAct1 {
             dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene2_tori_refuses(),
@@ -269,6 +273,7 @@ class ToriAct1 {
             dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',            internal: '[The weight of their experience. They know what doesn\'t work.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene3_ronnie_response(),
@@ -426,6 +431,7 @@ class ToriAct1 {
             internal: '[She is witnessing her own accident. From the outside. Through a camera. This is real.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene4_horror(),
@@ -440,6 +446,7 @@ class ToriAct1 {
             internal: '[The full weight of understanding. She\'s not in her body anymore. She\'s watching it die.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene4_snap_back(),
@@ -480,6 +487,7 @@ class ToriAct1 {
             dialogue: '"...What. What did you just DO?!"',            internal: '[The Echoes are shaken. Something impossible just happened.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_echo2_confused(),
@@ -493,6 +501,7 @@ class ToriAct1 {
             dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_tori_distraught(),
@@ -517,6 +526,7 @@ class ToriAct1 {
             dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_tori_explains(),
@@ -552,6 +562,7 @@ class ToriAct1 {
             dialogue: '"This... this has NEVER happened before. None of us... we never..."',            internal: '[Realization dawning. They never tried. They just accepted.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_echo1_admits(),
@@ -565,6 +576,7 @@ class ToriAct1 {
             dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_despair_denial(),
@@ -578,6 +590,7 @@ class ToriAct1 {
             dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene5_tori_defiant(),
@@ -629,6 +642,7 @@ class ToriAct1 {
             dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene6_ronnie_coding(),
@@ -699,6 +713,7 @@ class ToriAct1 {
             internal: '[Visual: Light. Vision. She\'s IN. The laptop. She can see through the webcam again.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene6_triumph(),
@@ -713,6 +728,7 @@ class ToriAct1 {
             internal: '[The discovery. Physical contact enables the transfer. This is navigation, not luck.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene6_echoes_amazed(),
@@ -727,6 +743,7 @@ class ToriAct1 {
             dialogue: '"She figured it out. The rule. Physical contact."',            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene6_sees_code(),
@@ -741,6 +758,7 @@ class ToriAct1 {
             internal: '[Visual: Through laptop screen. Code editor. A web app. "Tori-gatchi."]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene7_communication_plan(),
@@ -760,6 +778,7 @@ class ToriAct1 {
             internal: '[The plan forming. She can hijack the game. Use it to communicate.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene7_time_passes(),
@@ -873,6 +892,7 @@ class ToriAct1 {
             dialogue: '"Single buzz versus double buzz. Two different signals."',            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene7_echo2_admits(),
@@ -886,6 +906,7 @@ class ToriAct1 {
             dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',            internal: '[Another failure. They felt the pull but ignored it.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene7_despair_insists(),
@@ -899,6 +920,7 @@ class ToriAct1 {
             dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene7_tori_determined(),
@@ -929,6 +951,7 @@ class ToriAct1 {
             internal: '[Visual: She\'s getting better at this. The transfer is smoother now.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_program_ready(),
@@ -943,6 +966,7 @@ class ToriAct1 {
             internal: '[Through laptop: He clicks. The program opens. Her sprite appears on screen.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_sync_moment(),
@@ -957,6 +981,7 @@ class ToriAct1 {
             internal: '[She pushes her consciousness toward the text output. Hijacking the dialogue box.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_first_words(),
@@ -971,6 +996,7 @@ class ToriAct1 {
             internal: '[Visual: Her words appearing in the dialogue box. Text she didn\'t code. SHE\'S SPEAKING.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_ronnie_confusion(),
@@ -986,6 +1012,7 @@ class ToriAct1 {
             internal: '[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_tori_pushes(),
@@ -1000,6 +1027,7 @@ class ToriAct1 {
             internal: '[Fighting to maintain the connection. Forcing words through the dialogue system.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_proof(),
@@ -1014,6 +1042,7 @@ class ToriAct1 {
             internal: '[Details only she would know. Proof. Evidence. It\'s really her.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_ronnie_believes(),
@@ -1028,6 +1057,7 @@ class ToriAct1 {
             internal: '[Breakthrough. Communication established. He believes. Finally.]',
             background: 'apartment.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
             next: () => this.scene8_echoes_reaction(),
@@ -1041,6 +1071,7 @@ class ToriAct1 {
             dialogue: '"She did it. She NAVIGATED instead of fighting the system."',            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
             background: 'digitalSpace.png',
             sprites: {
+                left: 'tori-sprite.png',
                 right: 'three-echoes-sprite.png'
             },
             next: () => this.scene8_tori_victory(),

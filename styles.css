@@ -2336,12 +2336,12 @@
 /* Mobile portrait - fixed bubble size with scroll */
 @media (max-width: 1023px) and (orientation: portrait) {
     .internal-bubble {
-        width: 70%; /* Narrower */
-        height: 20vh; /* Slightly shorter */
+        width: 55%; /* Compact width */
+        height: 15vh; /* Fixed height */
         max-width: none;
         max-height: none;
-        font-size: 0.85rem;
-        padding: 12px 16px;
+        font-size: 0.8rem;
+        padding: 10px 14px;
         overflow-y: auto; /* Vertical scroll */
         overflow-x: hidden; /* No horizontal scroll */
         word-wrap: break-word;
@@ -2350,17 +2350,17 @@
     }
     
     .internal-bubble.left-character {
-        top: 38%;
+        top: 25%; /* Upper area, above sprite */
         left: 10px;
     }
     
     .internal-bubble.right-character {
-        top: 38%;
+        top: 25%; /* Upper area, above sprite */
         right: 10px;
     }
     
     .internal-bubble.center {
-        top: 40%;
+        top: 20%; /* Centered in upper area */
         left: 50%;
         transform: translateX(-50%);
     }

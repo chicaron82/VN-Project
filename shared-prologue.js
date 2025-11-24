@@ -17,6 +17,9 @@ class SharedPrologue {
     // ========================================
     
     scene1_streetBump() {
+        // Apply prologue style BEFORE first scene displays
+        this.game.dialogueBox.classList.add('prologue-style');
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'I wasn\'t looking where I was going...',
@@ -169,6 +172,9 @@ class SharedPrologue {
     // ========================================
     
     prologueComplete() {
+        // Remove prologue style before route selection
+        this.game.dialogueBox.classList.remove('prologue-style');
+        
         // Show route selection screen
         // This is where player chooses Ronnie or Tori route
         this.game.showRouteSelect();

@@ -515,13 +515,18 @@ class GameEngine {
             this.crossfadeBackground(scene.background);
         }
         
-        // Handle special styling (preserve route classes!)
-        // First, get current route class if any
+        // Handle special styling (preserve route, prologue, epilogue classes!)
+        // First, get current special classes
         const routeClass = this.dialogueBox.classList.contains('ronnie-route') ? 'ronnie-route' :
                           this.dialogueBox.classList.contains('tori-route') ? 'tori-route' : null;
+        const prologueClass = this.dialogueBox.classList.contains('prologue-style') ? 'prologue-style' : null;
+        const epilogueClass = this.dialogueBox.classList.contains('epilogue-style') ? 'epilogue-style' : null;
         
-        // Clear scene-specific styles but keep route class
-        this.dialogueBox.className = routeClass || '';
+        // Clear scene-specific styles but keep route/prologue/epilogue classes
+        this.dialogueBox.className = '';
+        if (routeClass) this.dialogueBox.classList.add(routeClass);
+        if (prologueClass) this.dialogueBox.classList.add(prologueClass);
+        if (epilogueClass) this.dialogueBox.classList.add(epilogueClass);
         
         // Add new scene style if specified
         if (scene.style) {
