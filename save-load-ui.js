@@ -78,10 +78,13 @@ class SaveLoadUI {
     // ========================================
     
     handleBackAction() {
+        console.log('Back action triggered');
+        
         // Priority order: Close the most "on top" UI element first
         
         // 1. Confirm dialog is open - close it (same as clicking NO)
         if (this.confirmDialog && this.confirmDialog.classList.contains('active')) {
+            console.log('Closing confirm dialog');
             this.confirmAction(false);
             return;
         }
@@ -89,18 +92,22 @@ class SaveLoadUI {
         // 2. Notes viewer is open (Tori route) - close it
         const notesViewer = document.getElementById('notes-viewer');
         if (notesViewer && notesViewer.style.display === 'block') {
+            console.log('Closing notes viewer');
             notesViewer.style.display = 'none';
             return;
         }
         
         // 3. Save/Load screen is open - close it
         if (this.saveLoadScreen && this.saveLoadScreen.classList.contains('active')) {
+            console.log('Closing save/load screen');
             this.game.closeSaveLoadScreen();
             return;
         }
         
         // 4. Pause menu is open - close it (resume game)
+        console.log('Checking pause menu:', this.pauseMenu, this.pauseMenu?.classList.contains('active'));
         if (this.pauseMenu && this.pauseMenu.classList.contains('active')) {
+            console.log('Closing pause menu and resuming game');
             this.game.resumeGame();
             return;
         }
@@ -108,6 +115,7 @@ class SaveLoadUI {
         // 5. Credits screen is open - close it
         const creditsScreen = document.getElementById('credits-screen');
         if (creditsScreen && creditsScreen.style.display === 'flex') {
+            console.log('Closing credits');
             this.game.closeCredits();
             return;
         }
@@ -115,16 +123,19 @@ class SaveLoadUI {
         // 6. Route selection screen is open - go back to main menu
         const routeSelect = document.getElementById('route-select');
         if (routeSelect && routeSelect.style.display === 'block') {
+            console.log('Going back to menu from route select');
             this.game.backToMenu();
             return;
         }
         
         // 7. In-game (game view visible) - open pause menu
         if (this.game.gameView && this.game.gameView.style.display === 'flex') {
+            console.log('Opening pause menu from game');
             this.showPauseMenu();
             return;
         }
         
+        console.log('Back action: No action taken (at main menu)');
         // 8. Main menu is showing - do nothing (or could show exit confirmation)
         // On Android, pressing back at main menu typically exits the app
         // We'll let the default behavior happen by not preventing it
