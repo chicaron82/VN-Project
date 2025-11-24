@@ -11,6 +11,9 @@ class ToriAct3 {
     }
     
     start() {
+        // Echo growth: Act 3 - Balance achieved (all equal height)
+        this.game.setEchoGrowthStage('act3');
+        
         this.beat1();
     }
     

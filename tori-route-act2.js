@@ -16,6 +16,9 @@ class ToriAct2 {
         // Unblock saves - Tori proved Despair wrong
         this.game.saveManager.unblockSaves();
         
+        // Echo growth: Act 2 - Hope is rising
+        this.game.setEchoGrowthStage('act2');
+        
         this.beat1();
     }
     

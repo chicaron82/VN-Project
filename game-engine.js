@@ -620,6 +620,13 @@ class GameEngine {
         this.spriteRight.style.display = 'flex';
         this.spriteRight.style.opacity = '0';
         
+        // Set initial growth stage (Act 1 by default)
+        if (!this.spriteRight.classList.contains('echo-growth-act1') && 
+            !this.spriteRight.classList.contains('echo-growth-act2') && 
+            !this.spriteRight.classList.contains('echo-growth-act3')) {
+            this.spriteRight.classList.add('echo-growth-act1');
+        }
+        
         // Create three echo sprites
         const echo1 = document.createElement('div');
         echo1.id = 'echo-1-sprite';
@@ -647,6 +654,30 @@ class GameEngine {
         }, 50);
         
         console.log('Echo group displayed with three separate sprites');
+    }
+    
+    setEchoGrowthStage(stage) {
+        // Update Echo visual growth based on act progression
+        // stage: 'act1', 'act2', or 'act3'
+        if (!this.spriteRight || !this.spriteRight.classList.contains('echo-group')) {
+            console.log('Echo growth: No echo group active');
+            return;
+        }
+        
+        // Remove all growth classes
+        this.spriteRight.classList.remove('echo-growth-act1', 'echo-growth-act2', 'echo-growth-act3');
+        
+        // Add the appropriate class
+        if (stage === 'act1') {
+            this.spriteRight.classList.add('echo-growth-act1');
+            console.log('Echo growth: Act 1 (Despair dominates)');
+        } else if (stage === 'act2') {
+            this.spriteRight.classList.add('echo-growth-act2');
+            console.log('Echo growth: Act 2 (Hope rising)');
+        } else if (stage === 'act3') {
+            this.spriteRight.classList.add('echo-growth-act3');
+            console.log('Echo growth: Act 3 (Balance achieved)');
+        }
     }
     
     setActiveSpeaker(speaker) {
