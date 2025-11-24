@@ -166,9 +166,111 @@ class ToriEndings {
                 left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
-            next: () => this.digitalForever_echoes(),
+            next: () => this.digitalForever_toriNotices(),
             delay: 3000
         }, 'digitalForever_ronnie');
+    }
+    
+    digitalForever_toriNotices() {
+        this.game.displayScene({
+            character: 'Tori (digital)',
+            dialogue: '"You\'re still wearing the TLC hoodie. Even here."',
+            internal: '[She smiles softly, touching the digital fabric.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_tlcReveal(),
+            delay: 3000
+        }, 'digitalForever_toriNotices');
+    }
+    
+    digitalForever_tlcReveal() {
+        this.game.displayScene({
+            character: 'Tori (digital)',
+            dialogue: '"\'TLC\' - Tender Loving Care. That\'s my Ronnie."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_ronnieCorrects(),
+            delay: 3000
+        }, 'digitalForever_tlcReveal');
+    }
+    
+    digitalForever_ronnieCorrects() {
+        this.game.displayScene({
+            character: 'Ronnie (digital)',
+            dialogue: '"Oh that\'s not what that stands for."',
+            internal: '[He grins.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_actualMeaning(),
+            delay: 2500
+        }, 'digitalForever_ronnieCorrects');
+    }
+    
+    digitalForever_actualMeaning() {
+        this.game.displayScene({
+            character: 'Ronnie (digital)',
+            dialogue: '"Tori Loves Chicharon."',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_echoesAppear(),
+            delay: 2500
+        }, 'digitalForever_actualMeaning');
+    }
+    
+    digitalForever_echoesAppear() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"Oh that\'s YOUR Ronnie, huh?"',
+            internal: '[The Echoes materialize, grinning.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'echoes'
+            },
+            next: () => this.digitalForever_echo2(),
+            delay: 2500
+        }, 'digitalForever_echoesAppear');
+    }
+    
+    digitalForever_echo2() {
+        this.game.displayScene({
+            character: 'Echo 2',
+            dialogue: '"Girl, he\'s cute!"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'echoes'
+            },
+            next: () => this.digitalForever_despairTeases(),
+            delay: 2000
+        }, 'digitalForever_echo2');
+    }
+    
+    digitalForever_despairTeases() {
+        this.game.displayScene({
+            character: 'Despair',
+            dialogue: '"Tori Loves Chicharon?! OMG adorable."',
+            internal: '[Even Despair can\'t help but smile.]',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'echoes'
+            },
+            next: () => this.digitalForever_echoes(),
+            delay: 3000
+        }, 'digitalForever_despairTeases');
     }
 
     digitalForever_echoes() {
