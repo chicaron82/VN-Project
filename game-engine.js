@@ -262,6 +262,57 @@ class GameEngine {
     }
     
     // ========================================
+    // DEV COMMANDS
+    // ========================================
+    
+    resetVersion(targetVersion = 848, status = 'attempting') {
+        // DEV COMMAND: Reset loop version
+        // Usage in console: game.resetVersion(848)
+        this.loopVersion = parseInt(targetVersion);
+        this.loopStatus = status;
+        
+        localStorage.setItem('loopVersion', this.loopVersion.toString());
+        localStorage.setItem('loopStatus', this.loopStatus);
+        
+        this.updateTitleScreen();
+        
+        console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
+        console.log(`💡 Refresh page to see changes!`);
+        
+        return this.loopVersion;
+    }
+    
+    devCommands() {
+        // DEV COMMAND: Show available dev commands
+        console.log(`
+╔═══════════════════════════════════════╗
+║       VN - ZEE DEV COMMANDS          ║
+╚═══════════════════════════════════════╝
+
+📋 Available Commands:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+game.resetVersion(848)
+  → Reset to VERSION 848
+
+game.resetVersion(849)  
+  → Set to VERSION 849
+
+game.resetVersion(848, 'succeeded')
+  → Reset to 848 with True Ending status
+
+game.resetVersion(848, 'accepted')
+  → Reset to 848 with Digital Forever status
+
+game.devCommands()
+  → Show this help menu
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 After using commands, refresh the page!
+        `);
+    }
+    
+    // ========================================
     // NOTES UNLOCK SYSTEM
     // First-play: hidden. Replay: visible.
     // ========================================
