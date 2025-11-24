@@ -148,6 +148,8 @@ class SaveLoadUI {
     
     showPauseMenu() {
         this.pauseMenu.classList.add('active');
+        // Push another history state so back button can close pause menu
+        this.pushHistoryState();
     }
     
     hidePauseMenu() {
