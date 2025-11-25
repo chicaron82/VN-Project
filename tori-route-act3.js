@@ -1005,7 +1005,7 @@ class ToriAct3 {
             internal: '[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_toriPushing(),
             delay: 4000
@@ -1019,7 +1019,7 @@ class ToriAct3 {
             internal: '[She pushes harder. Makes the buzz STRONGER. More insistent.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_guidance(),
             delay: 3500
@@ -1033,7 +1033,7 @@ class ToriAct3 {
             internal: '[The device is the bridge. She\'s standing on both sides. Showing him the way home.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_echoesHope(),
             delay: 4000
@@ -1075,7 +1075,7 @@ class ToriAct3 {
             internal: '[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_final(),
             delay: 4000
@@ -1088,7 +1088,7 @@ class ToriAct3 {
             dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.beat6_transition(),
             delay: 3000

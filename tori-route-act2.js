@@ -68,6 +68,27 @@ class ToriAct2 {
     }
     
     beat1_despairOverride() {
+        // First: Show what player INTENDED to choose (if not Tiger Tail)
+        if (this.playerIntendedChoice !== 'tiger_tail') {
+            this.game.displayScene({
+                character: 'Narration',
+                dialogue: '',
+                internal: '[She opens her mouth to respond... but the words that come out aren\'t hers.]',
+                background: 'digitalSpace.png',
+                sprites: {
+                    left: 'tori-sprite.png',
+                    right: 'ronnie-sprite.png'
+                },
+                next: () => this.beat1_hijackedResponse(),
+                delay: 2000
+            }, 'beat1_despairInterference');
+        } else {
+            // Player chose Tiger Tail - skip hijack narration
+            this.beat1_hijackedResponse();
+        }
+    }
+    
+    beat1_hijackedResponse() {
         // Show what Tori actually says (overridden by Despair)
         this.game.displayScene({
             character: 'Tori',
