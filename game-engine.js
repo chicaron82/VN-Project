@@ -694,13 +694,6 @@ class GameEngine {
         this.spriteRight.style.display = 'flex';
         this.spriteRight.style.opacity = '0';
         
-        // Set initial growth stage (Act 1 by default)
-        if (!this.spriteRight.classList.contains('echo-growth-act1') && 
-            !this.spriteRight.classList.contains('echo-growth-act2') && 
-            !this.spriteRight.classList.contains('echo-growth-act3')) {
-            this.spriteRight.classList.add('echo-growth-act1');
-        }
-        
         // Create three echo sprites
         const echo1 = document.createElement('div');
         echo1.id = 'echo-1-sprite';
@@ -727,14 +720,27 @@ class GameEngine {
             this.spriteRight.style.opacity = '1';
         }, 50);
         
+        // Apply current growth stage if set
+        // This preserves the stage when echoes are re-displayed
+        if (this.currentEchoGrowthStage) {
+            this.setEchoGrowthStage(this.currentEchoGrowthStage);
+        } else {
+            // Default to Act 1 if no stage set
+            this.setEchoGrowthStage('act1');
+        }
+        
         console.log('Echo group displayed with three separate sprites');
     }
     
     setEchoGrowthStage(stage) {
         // Update Echo visual growth based on act progression
         // stage: 'act1', 'act2', or 'act3'
+        
+        // Store current stage so it persists when echoes are re-displayed
+        this.currentEchoGrowthStage = stage;
+        
         if (!this.spriteRight || !this.spriteRight.classList.contains('echo-group')) {
-            console.log('Echo growth: No echo group active');
+            console.log('Echo growth: No echo group active yet, stage stored for later');
             return;
         }
         
