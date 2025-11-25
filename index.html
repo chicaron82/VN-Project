@@ -103,6 +103,12 @@
                 <button class="menu-button" onclick="game.startStory()">START STORY</button>
                 <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
                 <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                <!-- Add this button to the main menu, after LOAD GAME button -->
+                <button class="menu-button" onclick="game.showStandaloneNotes()">
+                    <span class="menu-button-icon">📝</span>
+                    <span class="menu-button-text">NOTES</span>
+                </button>
+                <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
                 <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
             </div>
         </div>
@@ -174,6 +180,9 @@
                 NOTES <span id="notes-count">(0/9)</span>
             </button>
 
+            <!-- Backlog Button (Shown during gameplay) -->
+            <button id="backlog-button" onclick="game.openBacklog()" title="Dialogue History">📜</button>
+
             <!-- Dialogue Box -->
             <div id="dialogue-box">
                 <div id="character-name"></div>
@@ -187,7 +196,7 @@
             </div>
 
             <!-- Pause Menu Button -->
-            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">❚❚</button>
+            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()"></button>
         </div>
 
         <!-- Pause Menu Overlay (ESC to open)-->
@@ -195,10 +204,76 @@
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
+                <button class="pause-menu-button" onclick="game.showSettings()">SETTINGS</button>
                 <button class="pause-menu-button" id="fullscreen-button" onclick="game.toggleFullscreen()">ENTER FULLSCREEN</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                 <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- Settings Menu -->
+        <div id="settings-menu" style="display: none;">
+            <div id="settings-content">
+                <h2>SETTINGS</h2>
+                
+                <!-- Text Speed -->
+                <div class="setting-row">
+                    <label class="setting-label">TEXT SPEED</label>
+                    <div class="setting-control">
+                        <button class="speed-btn" data-speed="slow">SLOW</button>
+                        <button class="speed-btn active" data-speed="normal">NORMAL</button>
+                        <button class="speed-btn" data-speed="fast">FAST</button>
+                        <button class="speed-btn" data-speed="instant">INSTANT</button>
+                    </div>
+                </div>
+                
+                <!-- Auto-Advance -->
+                <div class="setting-row">
+                    <label class="setting-label">AUTO-ADVANCE</label>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto-advance-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-status" id="auto-advance-status">OFF</span>
+                    </div>
+                </div>
+                
+                <!-- Auto-Advance Delay (only shown when auto-advance is ON) -->
+                <div class="setting-row" id="auto-delay-row" style="display: none;">
+                    <label class="setting-label">AUTO DELAY</label>
+                    <div class="setting-control">
+                        <input type="range" id="auto-delay-slider" min="1000" max="5000" step="500" value="2000">
+                        <span id="auto-delay-value">2.0s</span>
+                    </div>
+                </div>
+                
+                <!-- Fullscreen -->
+                <div class="setting-row">
+                    <label class="setting-label">FULLSCREEN</label>
+                    <div class="setting-control">
+                        <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
+                    </div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="settings-buttons">
+                    <button class="settings-menu-button" onclick="game.closeSettings()">BACK</button>
+                    <button class="settings-menu-button" onclick="game.resetSettings()">RESET TO DEFAULT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dialogue Backlog -->
+        <div id="backlog-screen" style="display: none;">
+            <div id="backlog-content">
+                <h2>DIALOGUE HISTORY</h2>
+                <button id="close-backlog" onclick="game.closeBacklog()">✕</button>
+                <div id="backlog-list">
+                    <!-- Dialogue history will be populated here -->
+                    <p class="backlog-empty">No dialogue history yet.</p>
+                </div>
             </div>
         </div>
 
@@ -479,8 +554,10 @@
 
     <!-- External JavaScript (Load Order Matters!) -->
     <script src="game-config.js"></script>
+    <script src="settings-manager.js"></script>
     <script src="tether-system.js"></script>
     <script src="collectibles-manager.js"></script>
+    <script src="standalone-notes-viewer.js"></script>
     <script src="game-engine.js"></script>
     <script src="save-manager.js"></script>
     <script src="save-load-ui.js"></script>

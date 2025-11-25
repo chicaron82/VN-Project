@@ -148,12 +148,23 @@ class SaveLoadUI {
     
     showPauseMenu() {
         this.pauseMenu.classList.add('active');
+        
+        // Pause tether decay while in pause menu
+        if (this.game.currentRoute && this.game.currentRoute.tetherSystem) {
+            this.game.currentRoute.tetherSystem.stopDecay();
+        }
+        
         // Push another history state so back button can close pause menu
         this.pushHistoryState();
     }
     
     hidePauseMenu() {
         this.pauseMenu.classList.remove('active');
+        
+        // Resume tether decay when leaving pause menu
+        if (this.game.currentRoute && this.game.currentRoute.tetherSystem) {
+            this.game.currentRoute.tetherSystem.startDecay();
+        }
     }
     
     // ========================================
@@ -408,8 +419,12 @@ class SaveLoadUI {
     
     performSave(slotNumber, customLabel = null) {
         const success = this.game.saveManager.saveGame(slotNumber, false, customLabel);
-        if (success) {
-            this.refreshSaveSlots();
+        // Always refresh to show current state (whether save succeeded or failed)
+        this.refreshSaveSlots();
+        
+        if (!success) {
+            // Save was blocked - make it very clear
+            console.log('Save blocked - UI refreshed to show actual state');
         }
     }
     

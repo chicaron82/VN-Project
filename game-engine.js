@@ -75,6 +75,10 @@ class GameEngine {
         this.loopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
         this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
         
+        // Dialogue history for backlog
+        this.dialogueHistory = [];
+        this.maxHistoryLength = 100; // Keep last 100 dialogue entries
+        
         // Game state for tracking choices, flags, and progress
         this.gameState = {
             flags: {},
@@ -85,6 +89,12 @@ class GameEngine {
         
         // Initialize save/load system
         this.saveManager = new SaveManager(this);
+        
+        // Initialize settings manager
+        this.settingsManager = new SettingsManager(this);
+        
+        // Standalone notes viewer for main menu
+        this.standaloneNotesViewer = new StandaloneNotesViewer(this);
         this.saveLoadUI = new SaveLoadUI(this);
         
         // Initialize cutscene engine
@@ -262,57 +272,6 @@ class GameEngine {
     }
     
     // ========================================
-    // DEV COMMANDS
-    // ========================================
-    
-    resetVersion(targetVersion = 848, status = 'attempting') {
-        // DEV COMMAND: Reset loop version
-        // Usage in console: game.resetVersion(848)
-        this.loopVersion = parseInt(targetVersion);
-        this.loopStatus = status;
-        
-        localStorage.setItem('loopVersion', this.loopVersion.toString());
-        localStorage.setItem('loopStatus', this.loopStatus);
-        
-        this.updateTitleScreen();
-        
-        console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
-        console.log(`💡 Refresh page to see changes!`);
-        
-        return this.loopVersion;
-    }
-    
-    devCommands() {
-        // DEV COMMAND: Show available dev commands
-        console.log(`
-╔═══════════════════════════════════════╗
-║       VN - ZEE DEV COMMANDS          ║
-╚═══════════════════════════════════════╝
-
-📋 Available Commands:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-game.resetVersion(848)
-  → Reset to VERSION 848
-
-game.resetVersion(849)  
-  → Set to VERSION 849
-
-game.resetVersion(848, 'succeeded')
-  → Reset to 848 with True Ending status
-
-game.resetVersion(848, 'accepted')
-  → Reset to 848 with Digital Forever status
-
-game.devCommands()
-  → Show this help menu
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💡 After using commands, refresh the page!
-        `);
-    }
-    
-    // ========================================
     // NOTES UNLOCK SYSTEM
     // First-play: hidden. Replay: visible.
     // ========================================
@@ -428,6 +387,12 @@ game.devCommands()
                 }
             }
             
+            // Show backlog button during gameplay
+            const backlogButton = document.getElementById('backlog-button');
+            if (backlogButton) {
+                backlogButton.style.display = 'block';
+            }
+            
             // Set route-specific dialogue frame
             this.setDialogueFrame(routeName);
             
@@ -488,6 +453,55 @@ game.devCommands()
         // Sprite persists for rest of scene
     }
     
+    triggerEchoMerge(callback) {
+        // Animate the three echoes merging into one Tori sprite
+        const echo1 = document.getElementById('echo-1-sprite');
+        const echo2 = document.getElementById('echo-2-sprite');
+        const despair = document.getElementById('despair-sprite');
+        const container = this.spriteRight;
+        
+        if (!echo1 || !echo2 || !despair || !container) {
+            console.log('Echo merge: sprites not found, skipping animation');
+            if (callback) callback();
+            return;
+        }
+        
+        console.log('Starting echo merge sequence...');
+        
+        // Phase 1: Echoes slide toward center (1 second)
+        echo1.classList.add('echo-merge-left');
+        echo2.classList.add('echo-merge-center');
+        despair.classList.add('echo-merge-right');
+        
+        setTimeout(() => {
+            // Phase 2: White flash (0.3 seconds)
+            const flash = document.createElement('div');
+            flash.className = 'merge-flash';
+            document.getElementById('game-view').appendChild(flash);
+            
+            setTimeout(() => {
+                // Phase 3: Remove echoes, show full Tori sprite
+                container.classList.remove('echo-group');
+                container.innerHTML = '';
+                container.style.backgroundImage = "url('tori-sprite.png')";
+                container.style.display = 'block';
+                container.style.opacity = '0';
+                
+                // Remove flash
+                flash.remove();
+                
+                // Fade in Tori
+                setTimeout(() => {
+                    container.style.opacity = '1';
+                    console.log('Echo merge complete!');
+                    if (callback) callback();
+                }, 300);
+                
+            }, 300);
+            
+        }, 1000);
+    }
+    
     // ========================================
     // SCENE DISPLAY
     // ========================================
@@ -506,12 +520,7 @@ game.devCommands()
             this.gameState.progress.currentScene = sceneId;
         }
         
-        // Handle sprites FIRST (show/hide based on scene data)
-        if (scene.sprites) {
-            this.updateSprites(scene.sprites);
-        }
-        
-        // THEN handle character display (speaker highlighting) AFTER sprites exist
+        // Handle character display (speaker highlighting)
         if (scene.character) {
             this.setActiveSpeaker(scene.character);
         }
@@ -519,6 +528,20 @@ game.devCommands()
         // Update character name
         this.characterName.textContent = scene.character || '';
         this.characterName.style.display = scene.character ? 'block' : 'none';
+        
+        // Add to dialogue history for backlog
+        if (scene.character || scene.dialogue) {
+            this.addToDialogueHistory({
+                character: scene.character || 'Narration',
+                dialogue: scene.dialogue || '',
+                internal: scene.internal || ''
+            });
+        }
+        
+        // Handle sprites (show/hide based on scene data)
+        if (scene.sprites) {
+            this.updateSprites(scene.sprites);
+        }
         
         // Clear previous dialogue
         this.dialogueText.textContent = '';
@@ -600,28 +623,25 @@ game.devCommands()
             if (sprites.left === null) {
                 // Hide left sprite
                 if (this.spriteLeft) {
-                    this.spriteLeft.classList.add('sprite-exit');
+                    this.spriteLeft.style.opacity = '0';
                     setTimeout(() => {
                         this.spriteLeft.style.display = 'none';
                         this.spriteLeft.style.backgroundImage = '';
-                        this.spriteLeft.classList.remove('sprite-exit');
                     }, 300);
                 }
                 this.currentSprites.left = null;
-                this.gameState.sprites.left = null;
+                this.gameState.sprites.left = null; // NEW: Update save state
             } else {
                 // Show/update left sprite
                 if (this.spriteLeft) {
                     this.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
                     this.spriteLeft.style.display = 'block';
-                    this.spriteLeft.classList.remove('sprite-exit', 'sprite-dim');
-                    this.spriteLeft.classList.add('sprite-enter');
+                    this.spriteLeft.style.opacity = '0';  // Start hidden
                     setTimeout(() => {
-                        this.spriteLeft.classList.remove('sprite-enter');
-                    }, 500);
-                }
+                    this.spriteLeft.style.opacity = '1';  // Fade in
+                }, 50);}
                 this.currentSprites.left = sprites.left;
-                this.gameState.sprites.left = sprites.left;
+                this.gameState.sprites.left = sprites.left; // NEW: Update save state
             }
         }
         
@@ -630,16 +650,16 @@ game.devCommands()
             if (sprites.right === null) {
                 // Hide right sprite
                 if (this.spriteRight) {
-                    this.spriteRight.classList.add('sprite-exit');
+                    this.spriteRight.style.opacity = '0';
                     setTimeout(() => {
                         this.spriteRight.style.display = 'none';
                         this.spriteRight.style.backgroundImage = '';
-                        this.spriteRight.classList.remove('echo-group', 'sprite-exit');
+                        this.spriteRight.classList.remove('echo-group');
                         this.spriteRight.innerHTML = ''; // Clear any echo children
                     }, 300);
                 }
                 this.currentSprites.right = null;
-                this.gameState.sprites.right = null;
+                this.gameState.sprites.right = null; // NEW: Update save state
             } else if (sprites.right === 'echoes' || sprites.right === 'three-echoes') {
                 // Special handling for triple Echo sprites
                 this.displayEchoGroup();
@@ -648,18 +668,17 @@ game.devCommands()
             } else {
                 // Show/update right sprite (normal single sprite)
                 if (this.spriteRight) {
-                    this.spriteRight.classList.remove('echo-group');
-                    this.spriteRight.innerHTML = ''; // Clear any echo children
-                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
-                    this.spriteRight.style.display = 'block';
-                    this.spriteRight.classList.remove('sprite-exit', 'sprite-dim');
-                    this.spriteRight.classList.add('sprite-enter');
-                    setTimeout(() => {
-                        this.spriteRight.classList.remove('sprite-enter');
-                    }, 500);
+                        this.spriteRight.classList.remove('echo-group');
+                        this.spriteRight.innerHTML = ''; // Clear any echo children
+                        this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                        this.spriteRight.style.display = 'block';
+                        this.spriteRight.style.opacity = '0';  // Start hidden
+                        setTimeout(() => {
+                        this.spriteRight.style.opacity = '1';  // Fade in
+                    }, 50);
                 }
                 this.currentSprites.right = sprites.right;
-                this.gameState.sprites.right = sprites.right;
+                this.gameState.sprites.right = sprites.right; // NEW: Update save state
             }
         }
     }
@@ -673,8 +692,7 @@ game.devCommands()
         this.spriteRight.style.backgroundImage = '';
         this.spriteRight.classList.add('echo-group');
         this.spriteRight.style.display = 'flex';
-        this.spriteRight.classList.remove('sprite-exit');
-        this.spriteRight.classList.add('sprite-enter');
+        this.spriteRight.style.opacity = '0';
         
         // Set initial growth stage (Act 1 by default)
         if (!this.spriteRight.classList.contains('echo-growth-act1') && 
@@ -704,10 +722,10 @@ game.devCommands()
         this.spriteRight.appendChild(echo2);
         this.spriteRight.appendChild(despair);
         
-        // Remove enter animation after complete
+        // Fade in
         setTimeout(() => {
-            this.spriteRight.classList.remove('sprite-enter');
-        }, 500);
+            this.spriteRight.style.opacity = '1';
+        }, 50);
         
         console.log('Echo group displayed with three separate sprites');
     }
@@ -726,13 +744,13 @@ game.devCommands()
         // Add the appropriate class
         if (stage === 'act1') {
             this.spriteRight.classList.add('echo-growth-act1');
-            console.log('Echo growth: Act 1 (Despair dominates)');
+            console.log('Echo growth: Act 1 (75% height - Despair dominates)');
         } else if (stage === 'act2') {
             this.spriteRight.classList.add('echo-growth-act2');
-            console.log('Echo growth: Act 2 (Hope rising)');
+            console.log('Echo growth: Act 2 (90% height - Hope rising)');
         } else if (stage === 'act3') {
             this.spriteRight.classList.add('echo-growth-act3');
-            console.log('Echo growth: Act 3 (Balance achieved)');
+            console.log('Echo growth: Act 3 (100% height - Balance achieved)');
         }
     }
     
@@ -882,6 +900,16 @@ game.devCommands()
     // ========================================
     
     typewriterText(element, text, callback, internalTextLength = 0) {
+        // Check if instant mode is enabled
+        const speed = this.getTypewriterSpeed();
+        if (speed === 0) {
+            // Instant mode - show all text immediately
+            element.textContent = text;
+            this.typewriterActive = false;
+            if (callback) callback();
+            return;
+        }
+        
         // Check if text needs pagination on mobile
         // Consider BOTH dialogue and internal text length
         const totalLength = text.length + internalTextLength;
@@ -911,8 +939,30 @@ game.devCommands()
                     this.typewriterActive = false;
                     if (callback) callback();
                 }
-            }, 30); // FIXED SPEED - always 30ms
+            }, speed);
         }
+    }
+    
+    getTypewriterSpeed() {
+        // Get speed from settings manager
+        if (!this.settingsManager) {
+            console.log('No settingsManager, returning default 30');
+            return 30;
+        }
+        
+        const speed = this.settingsManager.settings.textSpeed;
+        const multiplier = this.settingsManager.speedMultipliers[speed];
+        const delay = 30 * multiplier;
+        const result = delay === 0 ? 0 : Math.max(1, delay);
+        
+        console.log('getTypewriterSpeed DEBUG:', {
+            speed,
+            multiplier,
+            delay,
+            result
+        });
+        
+        return result;
     }
     
     shouldPaginateText(textLength) {
@@ -969,11 +1019,20 @@ game.devCommands()
     
     displayDialoguePage(element) {
         const currentPage = this.dialoguePages[this.currentDialoguePage];
+        const speed = this.getTypewriterSpeed();
         
         // Add page indicator for multi-page dialogue
         const pageIndicator = (this.dialoguePages.length > 1) 
             ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
             : '';
+        
+        // Check if instant mode
+        if (speed === 0) {
+            // Instant mode - show all text immediately
+            element.textContent = currentPage + (this.dialoguePages.length > 1 ? pageIndicator : '');
+            this.typewriterActive = false;
+            return;
+        }
         
         // Typewriter the current page
         this.typewriterActive = true;
@@ -999,7 +1058,7 @@ game.devCommands()
                 this.typewriterInterval = null;
                 this.typewriterActive = false;
             }
-        }, 30); // FIXED SPEED - always 30ms
+        }, speed);
     }
 
     
@@ -1288,6 +1347,10 @@ game.devCommands()
         if (this.notesButton) this.notesButton.style.display = 'none';
         // Echo display removed - handled by sprite now
         
+        // Hide backlog button
+        const backlogButton = document.getElementById('backlog-button');
+        if (backlogButton) backlogButton.style.display = 'none';
+        
         // Stop tether decay if in Tori's route
         if (this.currentRoute) {
             // Or if route has tetherSystem object
@@ -1297,6 +1360,170 @@ game.devCommands()
         }
         
         this.saveLoadUI.returnToMainMenu();
+    }
+    
+    // ========================================
+    // STANDALONE NOTES VIEWER (MAIN MENU)
+    // ========================================
+    
+    showStandaloneNotes() {
+        // Reload notes from localStorage (in case new ones unlocked)
+        this.standaloneNotesViewer = new StandaloneNotesViewer(this);
+        this.standaloneNotesViewer.show();
+    }
+    
+    closeStandaloneNotes() {
+        this.standaloneNotesViewer.close();
+    }
+    
+    // ========================================
+    // SETTINGS SYSTEM
+    // ========================================
+    
+    showSettings() {
+        const settingsMenu = document.getElementById('settings-menu');
+        console.log('showSettings called, element:', settingsMenu);
+        if (settingsMenu) {
+            settingsMenu.style.display = 'flex';
+            console.log('Settings menu display set to flex');
+        } else {
+            console.error('Settings menu element not found!');
+        }
+    }
+    
+    closeSettings() {
+        const settingsMenu = document.getElementById('settings-menu');
+        if (settingsMenu) {
+            settingsMenu.style.display = 'none';
+        }
+    }
+    
+    resetSettings() {
+        if (this.settingsManager && this.settingsManager.reset) {
+            this.settingsManager.reset();
+        } else {
+            // Manual reset if method doesn't exist
+            localStorage.removeItem('gameSettings');
+            location.reload();
+        }
+    }
+    
+    // ========================================
+    // BACKLOG SYSTEM
+    // ========================================
+    
+    addToDialogueHistory(entry) {
+        this.dialogueHistory.push(entry);
+        
+        // Keep only last maxHistoryLength entries
+        if (this.dialogueHistory.length > this.maxHistoryLength) {
+            this.dialogueHistory.shift();
+        }
+    }
+    
+    openBacklog() {
+        const backlogScreen = document.getElementById('backlog-screen');
+        const backlogList = document.getElementById('backlog-list');
+        
+        if (!backlogScreen || !backlogList) return;
+        
+        // Clear previous content
+        backlogList.innerHTML = '';
+        
+        if (this.dialogueHistory.length === 0) {
+            backlogList.innerHTML = '<p class="backlog-empty">No dialogue history yet.</p>';
+        } else {
+            // Display history in chronological order (oldest first)
+            this.dialogueHistory.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'backlog-entry';
+                
+                const characterSpan = document.createElement('div');
+                characterSpan.className = 'backlog-character';
+                characterSpan.textContent = entry.character;
+                
+                const dialogueSpan = document.createElement('div');
+                dialogueSpan.className = 'backlog-dialogue';
+                dialogueSpan.textContent = entry.dialogue;
+                
+                entryDiv.appendChild(characterSpan);
+                entryDiv.appendChild(dialogueSpan);
+                
+                if (entry.internal) {
+                    const internalSpan = document.createElement('div');
+                    internalSpan.className = 'backlog-internal';
+                    internalSpan.textContent = entry.internal;
+                    entryDiv.appendChild(internalSpan);
+                }
+                
+                backlogList.appendChild(entryDiv);
+            });
+            
+            // Scroll to bottom (most recent)
+            setTimeout(() => {
+                backlogList.scrollTop = backlogList.scrollHeight;
+            }, 100);
+        }
+        
+        backlogScreen.style.display = 'flex';
+    }
+    
+    closeBacklog() {
+        const backlogScreen = document.getElementById('backlog-screen');
+        if (backlogScreen) {
+            backlogScreen.style.display = 'none';
+        }
+    }
+    
+    // ========================================
+    // DEV COMMANDS
+    // ========================================
+    
+    resetVersion(targetVersion = 848, status = 'attempting') {
+        // DEV COMMAND: Reset loop version
+        // Usage in console: game.resetVersion(848)
+        this.loopVersion = parseInt(targetVersion);
+        this.loopStatus = status;
+        
+        localStorage.setItem('loopVersion', this.loopVersion.toString());
+        localStorage.setItem('loopStatus', this.loopStatus);
+        
+        this.updateTitleScreen();
+        
+        console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
+        console.log(`💡 Refresh page to see changes!`);
+        
+        return this.loopVersion;
+    }
+    
+    devCommands() {
+        // DEV COMMAND: Show available dev commands
+        console.log(`
+╔═══════════════════════════════════════╗
+║       VN - ZEE DEV COMMANDS          ║
+╚═══════════════════════════════════════╝
+
+📋 Available Commands:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+game.resetVersion(848)
+  → Reset to VERSION 848
+
+game.resetVersion(849)  
+  → Set to VERSION 849
+
+game.resetVersion(848, 'succeeded')
+  → Reset to 848 with True Ending status
+
+game.resetVersion(848, 'accepted')
+  → Reset to 848 with Digital Forever status
+
+game.devCommands()
+  → Show this help menu
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+💡 After using commands, refresh the page!
+        `);
     }
     
     continueGame() {
@@ -1585,64 +1812,5 @@ game.devCommands()
             this.spriteRight.style.top = 'auto';
             this.spriteRight.style.height = 'auto';
         }
-    }
-    
-    // ========================================
-    // CREDITS SYSTEM
-    // ========================================
-    
-    showCredits(isTrueEnding = false) {
-        // Show credits roll with conditional version screen
-        const creditsContainer = document.getElementById('credits-container');
-        const creditsScreen = document.getElementById('credits-screen');
-        const versionCreditScreen = document.getElementById('credit-11');
-        
-        if (!creditsContainer || !creditsScreen) {
-            console.error('Credits elements not found!');
-            return;
-        }
-        
-        // Hide game view
-        this.gameView.style.display = 'none';
-        
-        // Update dynamic version screen if True Ending
-        if (isTrueEnding && versionCreditScreen) {
-            const versionTitle = document.getElementById('version-credit-title');
-            const versionText = document.getElementById('version-credit-text');
-            
-            if (versionTitle) {
-                versionTitle.textContent = `VERSION ${this.loopVersion}`;
-            }
-            if (versionText) {
-                versionText.innerHTML = `The timeline that succeeded.<br><br>The loop that closed.<br><br>The Old Man never has to go back.`;
-            }
-            
-            // Show version screen
-            versionCreditScreen.style.display = 'flex';
-            console.log(`Credits: Showing VERSION ${this.loopVersion} success screen`);
-        } else {
-            // Hide version screen if not True Ending
-            if (versionCreditScreen) {
-                versionCreditScreen.style.display = 'none';
-            }
-            console.log('Credits: Skipping version screen (not True Ending)');
-        }
-        
-        // Show credits screen
-        creditsScreen.style.display = 'flex';
-        
-        // Scroll to top of credits
-        creditsContainer.scrollTop = 0;
-        
-        console.log('Credits: Rolling credits...');
-    }
-    
-    closeCredits() {
-        // Close credits and return to main menu
-        const creditsScreen = document.getElementById('credits-screen');
-        if (creditsScreen) {
-            creditsScreen.style.display = 'none';
-        }
-        this.returnToMainMenu();
     }
 }

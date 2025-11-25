@@ -52,29 +52,55 @@ class ToriAct2 {
                 left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
-            next: () => this.beat1_toriHesitate(),
+            choices: [
+                { text: 'Thank him (That\'s sweet!)', value: 'thanks' },
+                { text: 'Be playful (You remembered!)', value: 'playful' },
+                { text: 'Ask for Tiger Tail instead', value: 'tiger_tail' }
+            ],
+            onChoice: (playerChoice) => {
+                // Store what player WANTED to say
+                this.playerIntendedChoice = playerChoice;
+                // But Despair forces Tiger Tail
+                this.beat1_despairOverride();
+            },
             delay: 3000
         }, 'beat1_iceCream');
     }
-
-    beat1_toriHesitate() {
+    
+    beat1_despairOverride() {
+        // Show what Tori actually says (overridden by Despair)
         this.game.displayScene({
-            character: 'Tori (internal)',
+            character: 'Tori',
             dialogue: '"Wait... Tiger Tail. I want Tiger Tail."',
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',
                 right: 'ronnie-sprite.png'
             },
-            next: () => this.beat1_confusion(),
+            next: () => this.beat1_toriRealization(),
             delay: 2500
-        }, 'beat1_toriHesitate');
+        }, 'beat1_despairOverride');
+    }
+    
+    beat1_toriRealization() {
+        // Tori realizes she didn't say what she meant
+        this.game.displayScene({
+            character: 'Tori (internal, confused)',
+            dialogue: '"What? No—that\'s not what I meant to say! I hate Tiger Tail!"',
+            background: 'digitalSpace.png',
+            sprites: {
+                left: 'tori-sprite.png',
+                right: 'ronnie-sprite.png'
+            },
+            next: () => this.beat1_confusion(),
+            delay: 3000
+        }, 'beat1_toriRealization');
     }
 
     beat1_confusion() {
         this.game.displayScene({
-            character: 'Tori (internal, confused)',
-            dialogue: '"Where did that come from? I hate Tiger Tail."',
+            character: 'Ronnie (sprite, concerned)',
+            dialogue: '"Tiger Tail? But... you always said you hated that flavor."',
             background: 'digitalSpace.png',
             sprites: {
                 left: 'tori-sprite.png',

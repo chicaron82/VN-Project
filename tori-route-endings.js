@@ -359,9 +359,31 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',            background: 'digitalSpace.png',
-            next: () => this.trueRoute_awakening(),
+            sprites: {
+                right: 'echoes'
+            },
+            next: () => this.trueRoute_merge(),
             delay: 4000
         }, 'trueRoute_echoes');
+    }
+    
+    trueRoute_merge() {
+        // Display echoes for merge animation
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Three become one.',
+            background: 'digitalSpace.png',
+            sprites: {
+                right: 'echoes'
+            },
+            next: () => {
+                // Trigger merge animation
+                this.game.triggerEchoMerge(() => {
+                    this.trueRoute_awakening();
+                });
+            },
+            delay: 2000
+        }, 'trueRoute_merge');
     }
 
     trueRoute_awakening() {

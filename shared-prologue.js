@@ -22,8 +22,8 @@ class SharedPrologue {
         
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'I wasn\'t looking where I was going...',
-            internal: '[Visual: Sunny street, midday. Cafes in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]',
+            dialogue: 'Sunny street, midday. Cafes line the background. Tori walks with coffee in hand, distracted by her Tamagotchi.',
+            internal: 'I wasn\'t looking where I was going...',
             background: 'genericBack.png',
             sprites: {
                 right: 'tori-sprite.png'
@@ -34,27 +34,27 @@ class SharedPrologue {
     
     scene1_bump() {
         this.game.displayScene({
-            character: 'Tori',
-            dialogue: 'Oh my gosh, I\'m so sorry..I wasn\'t paying attention!',
-            internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]',
+            character: 'Narration',
+            dialogue: 'She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.',
+            internal: 'Oh my gosh, I\'m so sorry..I wasn\'t paying attention!',
             next: () => this.scene1_pickup()
         }, 'scene1_bump');
     }
     
     scene1_pickup() {
         this.game.displayScene({
-            character: 'Tori',
-            dialogue: '...Weird. Mine never does that.',
-            internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]',
+            character: 'Narration',
+            dialogue: 'She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.',
+            internal: '...Weird. Mine never does that.',
             next: () => this.scene1_oldMan()
         }, 'scene1_pickup');
     }
     
     scene1_oldMan() {
         this.game.displayScene({
-            character: 'Older Man',
-            dialogue: 'No problem. Hang on to that. It may save your life someday.',
-            internal: '[She glances up but never clearly sees his face. Camera catches a glimpse of his faded BGA hoodie on his chest. He walks away, clutching her original Tamagotchi.]',
+            character: 'Narration',
+            dialogue: 'She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi.',
+            internal: 'No problem. Hang on to that. It may save your life someday.',
             background: 'genericBack.png',
             sprites: {
                 left: 'old-ronnie-sprite.png',
@@ -67,9 +67,9 @@ class SharedPrologue {
     scene1_end() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: '...What a strange thing to say.',
-            internal: '[She stands there a moment, then pockets the Tamagotchi and heads home.]',
-            next: () => this.scene2_home()
+            dialogue: 'She stands there a moment, then pockets the Tamagotchi and heads home.',
+            internal: '...What a strange thing to say.',
+            next: () => this.scene2_arrival()
         }, 'scene1_end');
     }
     
@@ -78,11 +78,37 @@ class SharedPrologue {
     // UPDATED: Expanded battery drain dialogue
     // ========================================
     
+    scene2_arrival() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Tori enters her home. Ronnie is at his laptop, deep in dev mode.',
+            internal: 'Hey babe, I\'m home!',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.scene2_ronnieGreeting()
+        }, 'scene2_arrival');
+    }
+    
+    scene2_ronnieGreeting() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: 'Hey honey! How was your day?',
+            background: 'apartment.png',
+            sprites: {
+                left: 'ronnie-sprite.png',
+                right: 'tori-sprite.png'
+            },
+            next: () => this.scene2_home()
+        }, 'scene2_ronnieGreeting');
+    }
+    
     scene2_home() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s it.',
-            internal: '[Cut: Tori enters her home. Ronnie is at his laptop, deep in dev mode.]',
+            dialogue: 'Pretty good! Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s it.',
             background: 'apartment.png',
             sprites: {
                 left: 'ronnie-sprite.png',
@@ -189,9 +215,8 @@ class SharedPrologue {
     
     scene2_kitchen() {
         this.game.displayScene({
-            character: 'Tori',
-            dialogue: '',
-            internal: '[She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.]',
+            character: 'Narration',
+            dialogue: 'She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.',
             background: 'apartment.png',
             sprites: {
                 left: 'ronnie-sprite.png',
@@ -221,8 +246,8 @@ class SharedPrologue {
     scene3_fall() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: 'One step too late...',
-            internal: '[She trips, stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late.]\n[Visual: Tamagotchi, resting on the laptop, lights faintly. Screen flickers, code scrolling.]',
+            dialogue: 'She trips. Stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late. The Tamagotchi, resting on the laptop, lights faintly. The screen flickers, code scrolling.',
+            internal: 'One step too late...',
             next: () => this.scene3_vision()
         }, 'scene3_fall');
     }
@@ -230,8 +255,7 @@ class SharedPrologue {
     scene3_vision() {
         this.game.displayScene({
             character: 'Narration',
-            dialogue: '',
-            internal: '[Visual: Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.]',
+            dialogue: 'Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.',
             next: () => this.prologueComplete()
         }, 'scene3_vision');
         

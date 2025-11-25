@@ -1858,11 +1858,19 @@
     z-index: 10001;
     display: none;
     animation: slideDown 0.3s;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+#save-indicator.visible {
+    display: block;
 }
 
 .save-indicator.error {
     color: #ff6b6b;
     border-color: #ff6b6b;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
 }
 
 @keyframes slideDown {
@@ -1904,10 +1912,11 @@
 }
 
 .character-sprite.sprite-dim {
-    opacity: 0.35;
+    opacity: 0.35 !important; /* Override animation opacity */
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
 }
 
+/* Sprite enter animation - starts at opacity 0, ends at 1 */
 @keyframes spriteEnter {
     from {
         opacity: 0;
@@ -1921,6 +1930,23 @@
 
 .character-sprite.sprite-enter {
     animation: spriteEnter 0.5s ease-out forwards;
+}
+
+/* If sprite has BOTH sprite-enter and sprite-dim, dim wins */
+/* If sprite has BOTH sprite-enter and sprite-dim, animate to dim opacity */
+.character-sprite.sprite-enter.sprite-dim {
+    animation: spriteEnterDim 0.5s ease-out forwards;
+}
+
+@keyframes spriteEnterDim {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
 }
 
 @keyframes spriteExit {
@@ -2110,11 +2136,6 @@
         width: 180px !important;
         height: auto !important;
         max-height: 70vh !important;
-    }
-    
-    /* Hide dimmed sprites on mobile to reduce clutter */
-    .character-sprite.sprite-dim {
-        display: none !important;
     }
     
     /* DIALOGUE BOX - FIXED HEIGHT, overlays bottom 30vh */
@@ -2745,4 +2766,983 @@
 .echo-growth-act3 #echo-2-sprite,
 .echo-growth-act3 #despair-sprite {
     transform: scale(1); /* All equal - balance achieved */
+}
+
+/* ========================================
+   ECHO MERGE ANIMATION
+   Three echoes combine into one Tori
+   ======================================== */
+
+/* Phase 1: Echoes slide toward center */
+.echo-sprite.echo-merge-left {
+    animation: mergeFromLeft 1s ease-in-out forwards;
+}
+
+.echo-sprite.echo-merge-center {
+    animation: mergeToCenter 1s ease-in-out forwards;
+}
+
+.echo-sprite.echo-merge-right {
+    animation: mergeFromRight 1s ease-in-out forwards;
+}
+
+@keyframes mergeFromLeft {
+    0% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(75px) scale(0.8);
+        opacity: 0.8;
+    }
+}
+
+@keyframes mergeToCenter {
+    0% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(0) scale(1.2);
+        opacity: 1;
+    }
+}
+
+@keyframes mergeFromRight {
+    0% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-75px) scale(0.8);
+        opacity: 0.8;
+    }
+}
+
+/* Phase 2: White flash overlay */
+.merge-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+    animation: flashFade 0.3s ease-out;
+    pointer-events: none;
+}
+
+@keyframes flashFade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   NOTES BUTTON - NEW NOTE NOTIFICATION
+   Flash animation when note is unlocked
+   ======================================== */
+
+#notes-button.pulse {
+    animation: newNoteFlash 0.8s ease-in-out 3 !important;
+}
+
+@keyframes newNoteFlash {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(0, 255, 255, 0.9),
+                    0 0 80px rgba(0, 255, 255, 0.6),
+                    0 0 100px rgba(0, 255, 255, 0.3);
+        transform: scale(1.15);
+        filter: brightness(1.5);
+    }
+}
+
+/* Make the notification more persistent */
+#notes-button.pulse #notes-count {
+    animation: countPulse 0.4s ease-in-out 6;
+}
+
+@keyframes countPulse {
+    0%, 100% {
+        color: #00ff88;
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+        transform: scale(1);
+    }
+    50% {
+        color: #00ffff;
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1),
+                     0 0 40px rgba(0, 255, 255, 0.8);
+        transform: scale(1.3);
+    }
+}
+
+/* ========================================
+   FLOATING NOTE NOTIFICATION
+   Appears when note is unlocked
+   ======================================== */
+
+.note-notification {
+    position: fixed;
+    bottom: 35vh; /* Just above dialogue box on mobile */
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.95) 0%, rgba(0, 200, 200, 0.95) 100%);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 24px rgba(0, 255, 255, 0.4),
+                0 0 40px rgba(0, 255, 255, 0.2);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+}
+
+.note-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.note-notification-icon {
+    font-size: 1.5em;
+    animation: noteBounce 0.6s ease-in-out infinite;
+}
+
+.note-notification-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes noteBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Desktop/Landscape: Position near top */
+@media (min-width: 768px) and (orientation: landscape) {
+    .note-notification {
+        top: 80px;
+        bottom: auto;
+        right: 20px;
+        left: auto;
+        transform: translateX(20px);
+    }
+    
+    .note-notification.show {
+        transform: translateX(0);
+    }
+}
+
+/* Desktop: More space, bigger notification */
+@media (min-width: 1024px) {
+    .note-notification {
+        padding: 15px 30px;
+        font-size: 1.1em;
+        top: 90px;
+    }
+}
+
+/* Subtle persistent indicator on notes button */
+#notes-button.has-new-note {
+    animation: subtleNewNotePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtleNewNotePulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.6),
+                    0 0 50px rgba(0, 255, 255, 0.3);
+    }
+}
+
+/* Clear indicator when notes viewer is opened */
+#notes-viewer:not([style*="display: none"]) ~ * #notes-button.has-new-note {
+    animation: none;
+}
+
+/* ========================================
+   STANDALONE NOTES VIEWER (MAIN MENU)
+   View unlocked notes without loading route
+   ======================================== */
+
+.standalone-notes-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.standalone-notes-viewer.show {
+    opacity: 1;
+}
+
+.standalone-notes-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid #0ff;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+.notes-header {
+    padding: 25px;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notes-header h2 {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.8em;
+    letter-spacing: 0.15em;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+.notes-count-display {
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+.close-notes-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.close-notes-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: rotate(90deg);
+}
+
+.notes-list-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 25px;
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+}
+
+.notes-list-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notes-list-container::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.notes-list-container::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+.note-entry {
+    background: rgba(0, 20, 40, 0.6);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-left: 4px solid #0ff;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.note-entry:hover {
+    background: rgba(0, 30, 60, 0.8);
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+}
+
+.note-header-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.note-route-tag {
+    background: #0ff;
+    color: #000;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    min-width: 40px;
+    text-align: center;
+}
+
+.note-title {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    flex: 1;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.note-content-text {
+    color: #b8c5d6;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.no-notes-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+}
+
+.no-notes-message p {
+    font-size: 1.2em;
+    margin: 15px 0;
+    opacity: 0.7;
+}
+
+.no-notes-message .hint {
+    font-size: 1em;
+    color: #00ff88;
+    opacity: 0.6;
+}
+
+.notes-footer {
+    padding: 20px 25px;
+    border-top: 2px solid rgba(0, 255, 255, 0.3);
+    text-align: center;
+}
+
+.notes-footer .back-btn {
+    background: transparent;
+    border: 2px solid #0ff;
+    color: #0ff;
+    padding: 12px 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.notes-footer .back-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .standalone-notes-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .notes-header {
+        padding: 20px;
+    }
+    
+    .notes-header h2 {
+        font-size: 1.4em;
+    }
+    
+    .notes-list-container {
+        padding: 15px;
+    }
+    
+    .note-entry {
+        padding: 12px;
+    }
+    
+    .note-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+/* ========================================
+   SETTINGS MENU
+   ======================================== */
+
+#settings-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9700;
+    justify-content: center;
+    align-items: center;
+}
+
+#settings-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    padding: 40px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+}
+
+#settings-content h2 {
+    color: #0ff;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 5px;
+}
+
+.setting-label {
+    color: #0ff;
+    font-size: 1.1em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+}
+
+.setting-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Text Speed Buttons */
+.speed-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.speed-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.speed-btn.active {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: 0.4s;
+    border-radius: 30px;
+    border: 2px solid #0ff;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 2px;
+    bottom: 2px;
+    background-color: #0ff;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+    background-color: rgba(0, 255, 255, 0.3);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(30px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+}
+
+.toggle-status {
+    color: #0ff;
+    font-weight: bold;
+    min-width: 40px;
+}
+
+/* Auto Delay Slider */
+#auto-delay-slider {
+    width: 200px;
+    height: 6px;
+    background: rgba(0, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+#auto-delay-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+#auto-delay-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    border: none;
+}
+
+#auto-delay-value {
+    color: #0ff;
+    font-weight: bold;
+    min-width: 50px;
+}
+
+/* Action Button */
+.action-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.action-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+/* Settings Bottom Buttons */
+.settings-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: center;
+}
+
+.settings-menu-button {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 12px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    letter-spacing: 0.1em;
+}
+
+.settings-menu-button:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+/* ========================================
+   DIALOGUE BACKLOG
+   ======================================== */
+
+#backlog-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9700;
+    overflow-y: auto;
+}
+
+#backlog-content {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    border-radius: 10px;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    position: relative;
+}
+
+#backlog-content h2 {
+    color: #0ff;
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+#close-backlog {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+#close-backlog:hover {
+    background: #ff6b6b;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+}
+
+#backlog-list {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.backlog-entry {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 4px solid #0ff;
+    border-radius: 5px;
+}
+
+.backlog-character {
+    color: #0ff;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.backlog-dialogue {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+.backlog-internal {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+    font-size: 0.9em;
+    margin-top: 8px;
+    padding-left: 10px;
+    border-left: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.backlog-empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    padding: 40px;
+}
+
+/* Backlog Button (in game view) */
+#backlog-button {
+    position: fixed;
+    top: 60px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-size: 1.3em;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 100;
+    transition: all 0.3s ease;
+    display: none; /* Hidden by default, shown during gameplay */
+}
+
+#backlog-button:hover {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    #settings-content {
+        padding: 25px;
+        max-width: 95%;
+    }
+    
+    .setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .setting-control {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .speed-btn {
+        flex: 1;
+        padding: 10px 8px;
+        font-size: 0.8em;
+    }
+    
+    #backlog-content {
+        margin: 20px;
+        padding: 20px;
+    }
+    
+    #backlog-button {
+        top: 50px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1em;
+    }
+}
+
+/* ========================================
+   SETTINGS MENU - SCROLLABLE FIX
+   Make settings scrollable on mobile
+   ======================================== */
+
+#settings-content {
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+}
+
+#settings-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#settings-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+#settings-content::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+/* Mobile landscape - more compact */
+@media (max-width: 1023px) and (orientation: landscape) {
+    #settings-content {
+        padding: 20px;
+        max-height: 85vh;
+    }
+    
+    #settings-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+    }
+    
+    .setting-row {
+        margin-bottom: 15px;
+        padding: 10px;
+    }
+    
+    .setting-label {
+        font-size: 0.9em;
+    }
+    
+    .speed-btn,
+    .setting-control button {
+        padding: 6px 12px;
+        font-size: 0.85em;
+    }
+}
+
+/* Backlog screen - also scrollable */
+#backlog-content {
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 1023px) and (orientation: landscape) {
+    #backlog-content {
+        max-height: 85vh;
+        padding: 20px;
+    }
+    
+    #backlog-content h2 {
+        font-size: 1.5em;
+    }
+}
+
+/* ========================================
+   MAIN MENU - MOBILE SCROLLABLE FIX
+   Allow scrolling when too many buttons
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: landscape) {
+    #main-menu-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 20px 0;
+        justify-content: flex-start;
+        scrollbar-width: thin;
+        scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+    }
+    
+    #main-menu-content::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    #main-menu-content::-webkit-scrollbar-track {
+        background: rgba(0, 255, 255, 0.1);
+    }
+    
+    #main-menu-content::-webkit-scrollbar-thumb {
+        background: #0ff;
+        border-radius: 4px;
+    }
+    
+    #main-menu h1 {
+        font-size: 2em;
+        margin: 20px 0 10px 0;
+    }
+    
+    #main-menu .subtitle {
+        font-size: 0.9em;
+        margin-bottom: 20px;
+    }
+    
+    .menu-button {
+        margin: 8px 0;
+        padding: 12px 40px;
+        font-size: 0.95em;
+    }
+}
+
+/* Portrait mode also needs scroll for phones with many buttons */
+@media (max-width: 767px) and (orientation: portrait) {
+    #main-menu-content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 30px 0;
+        scrollbar-width: thin;
+        scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+    }
+    
+    #main-menu-content::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    #main-menu-content::-webkit-scrollbar-track {
+        background: rgba(0, 255, 255, 0.1);
+    }
+    
+    #main-menu-content::-webkit-scrollbar-thumb {
+        background: #0ff;
+        border-radius: 3px;
+    }
+    
+    #main-menu h1 {
+        font-size: 1.8em;
+        margin: 10px 0;
+    }
+    
+    .menu-button {
+        margin: 10px 0;
+        font-size: 0.9em;
+    }
 }

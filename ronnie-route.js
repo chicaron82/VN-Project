@@ -5,6 +5,9 @@ class RonnieRoute {
     constructor(game) {
         this.game = game;
         
+        // Initialize collectibles manager for Ronnie's ending notes
+        this.collectiblesManager = new CollectiblesManager(this.game, this);
+        
         // Initialize act modules
         this.act2 = new RonnieRouteAct2(this);
         this.act3 = new RonnieRouteAct3(this);
@@ -18,10 +21,24 @@ class RonnieRoute {
     // ========================================
     
     start() {
+        // Hide notes button during Ronnie's route (only shown at endings)
+        if (this.game.notesButton) {
+            this.game.notesButton.style.display = 'none';
+        }
+        
+        // Initialize Ronnie's collectibles (ending notes only)
+        this.collectiblesManager.init();
+        this.collectiblesManager.defineRonnieNotes();
+        
         // Entry point for Ronnie's route
         // Scenes 1-3 handled by SharedPrologue
         // Ronnie's route starts at Scene 4 (Hospital Anchor)
         this.prologueScene4();
+    }
+    
+    // Collectibles delegation for ending notes
+    unlockNote(noteId) {
+        this.collectiblesManager.unlockNote(noteId);
     }
 
     // Scene 4: Hospital Anchor
@@ -458,6 +475,23 @@ class RonnieRoute {
             next: () => this.act2.startAct2(),
             delay: 4000
         }, 'act1Scene2_end');
+    }
+    
+    // ========================================
+    // SAVE/LOAD SUPPORT
+    // ========================================
+    
+    getState() {
+        return {
+            route: 'ronnie',
+            collectibles: this.collectiblesManager.getState()
+        };
+    }
+    
+    restoreState(state) {
+        if (state.collectibles) {
+            this.collectiblesManager.restoreState(state.collectibles);
+        }
     }
 
 }

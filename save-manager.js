@@ -143,7 +143,7 @@ class SaveManager {
         } else if (saveData.routeName === 'tori') {
             // Show Tori-specific UI
             this.game.tetherUI.style.display = 'block';
-            this.game.echoDisplay.style.display = 'block';
+            // echoDisplay removed - now using three-echoes-sprite.png
             this.game.notesButton.style.display = 'block';
             this.game.currentRoute = new ToriRoute(this.game);
             this.game.setDialogueFrame('tori');

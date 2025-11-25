@@ -13,6 +13,9 @@ class ToriAct1 {
     }
     
     start() {
+        // Set Echo growth stage for Act 1 (smallest size)
+        this.game.setEchoGrowthStage('act1');
+        
         this.scene1_coffee();
     }
     
@@ -692,13 +695,53 @@ class ToriAct1 {
 
     scene6_attempt_now() {
         this.game.displayScene({
-            character: 'Tori (internal, determined)',
-            dialogue: '"Okay. The device is touching the laptop. NOW!"',
-            internal: '[She pushes again. Same desperation. Same intent. But this time... with contact.]',
+            character: 'Tori (internal, nervous)',
+            dialogue: '"Okay. The device is touching the laptop. I think... I think I can do this. But what if I mess up? What if it goes wrong?"',
+            internal: '[She hesitates at the edge. The jump that could change everything.]',
+            background: 'digitalSpace.png',
+            choices: [
+                { text: 'Trust yourself. You can do this.', value: 'confident' },
+                { text: 'Take your time. No rush.', value: 'cautious' },
+                { text: 'Just go for it!', value: 'bold' }
+            ],
+            onChoice: (choice) => this.scene6_attemptWithChoice(choice)
+        }, 'scene6_attempt_now');
+    }
+    
+    scene6_attemptWithChoice(playerChoice) {
+        let dialogue = '';
+        let internal = '';
+        
+        if (playerChoice === 'confident') {
+            dialogue = '"You\'re right. I DID this once. I can do it again. Trust myself."';
+            internal = '[Steadying breath. Confidence building. She believes in herself.]';
+        } else if (playerChoice === 'cautious') {
+            dialogue = '"Okay. Slow. Careful. Feel for the connection like last time..."';
+            internal = '[Measured approach. Testing the edges before the leap.]';
+        } else if (playerChoice === 'bold') {
+            dialogue = '"Screw it. If I did it on accident, I can do it on purpose. HERE GOES!"';
+            internal = '[Pure determination. No hesitation. Full commitment.]';
+        }
+        
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: dialogue,
+            internal: internal,
+            background: 'digitalSpace.png',
+            next: () => this.scene6_push(),
+            delay: 2500
+        }, 'scene6_attemptWithChoice');
+    }
+    
+    scene6_push() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"NOW!"',
+            internal: '[She pushes. Same desperation. Same intent. But this time... with contact.]',
             background: 'digitalSpace.png',
             next: () => this.scene6_double_buzz(),
-            delay: 2500
-        }, 'scene6_attempt_now');
+            delay: 2000
+        }, 'scene6_push');
     }
 
     scene6_double_buzz() {
