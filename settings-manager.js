@@ -12,7 +12,8 @@ class SettingsManager {
             textSpeed: 'normal',      // slow, normal, fast, instant
             autoAdvance: false,        // Auto-advance dialogue
             autoDelay: 2000,          // Delay in ms before auto-advance
-            fullscreen: false
+            fullscreen: false,
+            displayMode: 'auto'       // auto, portrait, landscape
         };
         
         // Speed multipliers (affects typewriter delay)
@@ -42,6 +43,8 @@ class SettingsManager {
                 console.error('Failed to load settings:', e);
             }
         }
+        // Apply display mode immediately after loading
+        this.applyDisplayMode(this.settings.displayMode);
     }
     
     saveSettings() {
@@ -83,6 +86,14 @@ class SettingsManager {
             });
         }
         
+        // Display Mode Buttons
+        document.querySelectorAll('.display-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+                this.setDisplayMode(mode);
+            });
+        });
+        
         // Apply loaded settings to UI
         this.updateUI();
     }
@@ -91,6 +102,11 @@ class SettingsManager {
         // Update speed buttons
         document.querySelectorAll('.speed-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.speed === this.settings.textSpeed);
+        });
+        
+        // Update display mode buttons
+        document.querySelectorAll('.display-mode-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === this.settings.displayMode);
         });
         
         // Update auto-advance status
@@ -251,6 +267,29 @@ class BacklogManager {
             entryDiv.appendChild(dialogueDiv);
             backlogList.appendChild(entryDiv);
         }
+    }
+    
+    setDisplayMode(mode) {
+        this.settings.displayMode = mode;
+        this.saveSettings();
+        this.updateUI();
+        this.applyDisplayMode(mode);
+        console.log('Display mode set to:', mode);
+    }
+    
+    applyDisplayMode(mode) {
+        const gameContainer = document.getElementById('game-container');
+        
+        // Remove all display mode classes
+        gameContainer.classList.remove('force-portrait', 'force-landscape');
+        
+        // Apply new mode
+        if (mode === 'portrait') {
+            gameContainer.classList.add('force-portrait');
+        } else if (mode === 'landscape') {
+            gameContainer.classList.add('force-landscape');
+        }
+        // 'auto' mode = no special class, uses natural media queries
     }
 }
 
