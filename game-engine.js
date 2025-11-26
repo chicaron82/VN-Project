@@ -468,13 +468,13 @@ class GameEngine {
         
         console.log('Starting echo merge sequence...');
         
-        // Phase 1: Echoes slide toward center (1 second)
+        // Phase 1: Echoes slide toward center (2 seconds - slower, more dramatic)
         echo1.classList.add('echo-merge-left');
         echo2.classList.add('echo-merge-center');
         despair.classList.add('echo-merge-right');
         
         setTimeout(() => {
-            // Phase 2: White flash (0.3 seconds)
+            // Phase 2: White flash (0.5 seconds - longer flash)
             const flash = document.createElement('div');
             flash.className = 'merge-flash';
             document.getElementById('game-view').appendChild(flash);
@@ -490,16 +490,16 @@ class GameEngine {
                 // Remove flash
                 flash.remove();
                 
-                // Fade in Tori
+                // Phase 4: Fade in Tori (0.8 seconds - slower fade)
                 setTimeout(() => {
                     container.style.opacity = '1';
                     console.log('Echo merge complete!');
                     if (callback) callback();
-                }, 300);
+                }, 800);
                 
-            }, 300);
+            }, 500);
             
-        }, 1000);
+        }, 2000);
     }
     
     // ========================================
