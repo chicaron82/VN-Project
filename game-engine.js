@@ -1402,6 +1402,13 @@ class GameEngine {
         this.standaloneNotesViewer.show();
     }
     
+    openStandaloneNotes() {
+        if (!this.standaloneNotesViewer) {
+            this.standaloneNotesViewer = new StandaloneNotesViewer(this);
+        }
+        this.standaloneNotesViewer.show();
+    }
+    
     closeStandaloneNotes() {
         this.standaloneNotesViewer.close();
     }
