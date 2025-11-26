@@ -49,7 +49,9 @@ class SaveManager {
         const route = this.game.currentRoute;
         
         const saveData = {
-            version: '848',
+            // LIVING VERSION NUMBER - captures current loop iteration
+            version: this.game.loopVersion.toString(),
+            loopStatus: this.game.loopStatus, // 'attempting', 'succeeded', 'accepted'
             timestamp: new Date().toISOString(),
             routeName: route.constructor.name === 'RonnieRoute' ? 'ronnie' : 'tori',
             customLabel: customLabel || null,
@@ -112,14 +114,40 @@ class SaveManager {
     }
     
     validateSaveData(saveData) {
-        return saveData 
-            && saveData.version === '848'
+        // LIVING VERSION SYSTEM:
+        // Accept any version >= 848 (the start of the loop)
+        // The save file is the source of truth for the current iteration
+        if (!saveData || !saveData.version) return false;
+        
+        const saveVersion = parseInt(saveData.version);
+        const minVersion = 848; // GameConfig.VERSION.DEFAULT_START
+        
+        return saveVersion >= minVersion 
             && saveData.routeName
             && saveData.timestamp;
     }
     
     restoreGameState(saveData) {
         console.log('Restoring game state:', saveData);
+        
+        // CRITICAL: Adopt the save file's version and status
+        // If the save says "Version 852", the game is now in Loop 852
+        if (saveData.version) {
+            this.game.loopVersion = parseInt(saveData.version);
+            console.log(`📁 Restored to VERSION ${this.game.loopVersion}`);
+        }
+        
+        if (saveData.loopStatus) {
+            this.game.loopStatus = saveData.loopStatus;
+            console.log(`📁 Loop status: ${this.game.loopStatus}`);
+        }
+        
+        // Update visual display immediately
+        this.game.updateTitleScreen();
+        
+        // Persist to localStorage so page refresh maintains version
+        localStorage.setItem('loopVersion', this.game.loopVersion.toString());
+        localStorage.setItem('loopStatus', this.game.loopStatus);
         
         // Close any open UI screens
         if (this.game.saveLoadUI) {
@@ -300,6 +328,7 @@ class SaveManager {
             isEmpty: false,
             slotNumber: slotNumber,
             routeName: saveData.routeName,
+            version: saveData.version, // Include version for display
             customLabel: saveData.customLabel || null,
             timestamp: new Date(saveData.timestamp),
             displayText: this.formatSaveSlotDisplay(saveData)

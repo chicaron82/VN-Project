@@ -219,11 +219,35 @@ class GameEngine {
         if (mainMenuTitle) {
             mainMenuTitle.textContent = `VERSION ${this.loopVersion}`;
             
-            // Add glitch effect if attempting and version > 848
-            if (this.loopStatus === 'attempting' && this.loopVersion > 848) {
-                mainMenuTitle.classList.add('version-glitch');
-            } else {
+            // VISUAL DEGRADATION SYSTEM:
+            // As version climbs, the system shows strain
+            if (this.loopStatus === 'succeeded') {
+                // TRUE ENDING: Gold/Stable
                 mainMenuTitle.classList.remove('version-glitch');
+                mainMenuTitle.style.color = '#ffd700';
+                mainMenuTitle.textContent += ' [FINAL]';
+            } else if (this.loopStatus === 'accepted') {
+                // DIGITAL FOREVER: Cyan/Stable
+                mainMenuTitle.classList.remove('version-glitch');
+                mainMenuTitle.style.color = '#0ff';
+                mainMenuTitle.textContent += ' [ETERNAL]';
+            } else if (this.loopVersion > 848) {
+                // FAILED LOOPS: Red glitch + intensity based on attempts
+                mainMenuTitle.classList.add('version-glitch');
+                
+                // Color degradation as attempts climb
+                const failureCount = this.loopVersion - 848;
+                if (failureCount < 5) {
+                    mainMenuTitle.style.color = '#ff6b6b'; // Light red
+                } else if (failureCount < 10) {
+                    mainMenuTitle.style.color = '#ff4444'; // Medium red
+                } else {
+                    mainMenuTitle.style.color = '#ff0000'; // Deep red - desperate
+                }
+            } else {
+                // DEFAULT 848: Clean cyan
+                mainMenuTitle.classList.remove('version-glitch');
+                mainMenuTitle.style.color = '#0ff';
             }
         }
     }

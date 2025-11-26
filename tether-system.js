@@ -17,6 +17,9 @@ class TetherSystem {
         this.tetherDecayRate = GameConfig.TETHER.DECAY_RATE_BASE;  // Gentle passive drain
         this.tetherDecayTimer = null;        // Passive decay interval
         this.holdOnCooldown = false;         // Hold On button cooldown state
+        this.holdOnCooldownTimer = null;     // Countdown interval for button text
+        this.hasUsedHoldOn = false;          // Track if player has used Hold On at least once
+        this.hasShownTutorialFlash = localStorage.getItem('tetherTutorialShown') === 'true'; // One-time tutorial
         
         // Configuration constants (from GameConfig)
         this.HOLD_ON_BOOST = GameConfig.TETHER.HOLD_ON_BOOST;
@@ -128,6 +131,13 @@ class TetherSystem {
             }
         }
         
+        // Tutorial flash: if tether hits 66% and player hasn't used Hold On yet
+        if (!this.hasShownTutorialFlash && !this.hasUsedHoldOn && this.tetherLevel <= 66) {
+            this.flashHoldOnButton();
+            this.hasShownTutorialFlash = true;
+            localStorage.setItem('tetherTutorialShown', 'true');
+        }
+        
         // Update hold-on button critical state
         if (this.holdOnButton) {
             if (this.tetherLevel <= 30) {
@@ -213,6 +223,9 @@ class TetherSystem {
             return;
         }
         
+        // Mark that player has used Hold On at least once
+        this.hasUsedHoldOn = true;
+        
         // Apply tether boost
         this.updateTether(this.HOLD_ON_BOOST, 'HOLD ON button pressed');
         
@@ -220,14 +233,28 @@ class TetherSystem {
         if (this.holdOnButton) {
             this.holdOnButton.textContent = 'HOLDING...';
             this.holdOnButton.disabled = true;
+            this.holdOnButton.classList.remove('tutorial-flash'); // Remove flash if active
         }
         
         // Set cooldown
         this.holdOnCooldown = true;
         
+        // Start countdown display
+        let remainingSeconds = Math.ceil(this.HOLD_ON_COOLDOWN_MS / 1000);
+        this.holdOnCooldownTimer = setInterval(() => {
+            remainingSeconds--;
+            if (remainingSeconds > 0 && this.holdOnButton) {
+                this.holdOnButton.textContent = `HOLD ON (${remainingSeconds}s)`;
+            }
+        }, 1000);
+        
         // Reset button after cooldown
         setTimeout(() => {
             this.holdOnCooldown = false;
+            if (this.holdOnCooldownTimer) {
+                clearInterval(this.holdOnCooldownTimer);
+                this.holdOnCooldownTimer = null;
+            }
             if (this.holdOnButton) {
                 this.holdOnButton.textContent = 'HOLD ON';
                 this.holdOnButton.disabled = false;
@@ -238,6 +265,14 @@ class TetherSystem {
         // Add route points for engagement
         if (this.route && this.route.addRoutePoints) {
             this.route.addRoutePoints('true', 1);
+        }
+    }
+    
+    flashHoldOnButton() {
+        // One-time tutorial flash to draw attention to Hold On button
+        if (this.holdOnButton && !this.holdOnCooldown) {
+            this.holdOnButton.classList.add('tutorial-flash');
+            console.log('Tutorial: Flashing Hold On button');
         }
     }
     
@@ -305,27 +340,30 @@ class TetherSystem {
         
         console.log('Tether death triggered');
         
+        // Store current version before increment
+        const failedVersion = this.game.loopVersion;
+        
         // Show game over screen
         this.game.displayScene({
-            character: 'Narration',
-            dialogue: 'The tether snaps. Consciousness fragments. The void swallows everything.',
-            internal: `[Tori's awareness dissolves into static]\n\n**"GAME OVER - Tether Severed"**`,
+            character: 'System',
+            dialogue: 'CRITICAL FAILURE. TETHER SEVERED.',
+            internal: `[Tori's consciousness fragments into static]\n[Version ${failedVersion} timeline COLLAPSED]\n\n**"The loop continues. She deserves another chance."**`,
             background: 'digitalSpace.png',
             style: 'critical',
             choices: [
-                { text: '[RETRY]', value: 'retry' },
-                { text: '[RETURN TO MAIN MENU]', value: 'menu' }
+                { text: '[BEGIN NEXT ATTEMPT]', value: 'retry' },
+                { text: '[ABANDON TIMELINE]', value: 'menu' }
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Increment version
-                    const newVersion = this.game.incrementVersion();
+                    // Increment version for next attempt
+                    const nextVersion = this.game.incrementVersion();
                     
                     // Show dramatic version increment screen
                     this.game.displayScene({
                         character: 'System',
-                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
-                        internal: '[The tether broke. The loop continues. Another chance.]',
+                        dialogue: `INITIALIZING VERSION ${nextVersion}...`,
+                        internal: `[Version ${failedVersion} failed. ${nextVersion - 848} attempts made.]\n[Consciousness transfer reinitializing...]\n[The Old Man sends the device back once more.]`,
                         background: 'digitalSpace.png',
                         style: 'critical',
                         next: () => {
@@ -335,7 +373,7 @@ class TetherSystem {
                                 this.route.act1.start();
                             }
                         },
-                        delay: 3000
+                        delay: 4000
                     }, 'version_increment_tether_death');
                 } else {
                     if (this.game.returnToMainMenu) {

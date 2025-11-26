@@ -254,7 +254,18 @@ class SaveLoadUI {
             }
         } else {
             slotElement.classList.remove('empty');
-            routeElement.textContent = slotInfo.routeName === 'ronnie' ? 'Ronnie Route' : 'Tori Route';
+            
+            // Display route name with VERSION number
+            const versionText = slotInfo.version ? ` [v${slotInfo.version}]` : '';
+            const routeText = slotInfo.routeName === 'ronnie' ? 'Ronnie Route' : 'Tori Route';
+            routeElement.textContent = routeText + versionText;
+            
+            // Add color coding for failed loops
+            if (slotInfo.version && parseInt(slotInfo.version) > 848) {
+                routeElement.style.color = '#ff6b6b'; // Red for failed attempts
+            } else {
+                routeElement.style.color = '#0ff'; // Cyan for original/success
+            }
             
             const dateStr = slotInfo.timestamp.toLocaleDateString();
             const timeStr = slotInfo.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -289,6 +300,7 @@ class SaveLoadUI {
         return {
             isEmpty: false,
             routeName: saveData.routeName,
+            version: saveData.version, // Include version for display
             timestamp: new Date(saveData.timestamp)
         };
     }
