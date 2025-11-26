@@ -653,16 +653,23 @@
                     if (staticLogo) staticLogo.style.display = 'none';
                     videoLogo.style.display = 'block';
                     
-                    // Play video
+                    // Play video with explicit error handling (Belle's recommendation)
                     const playPromise = videoLogo.play();
                     
                     if (playPromise !== undefined) {
-                        playPromise.catch(error => {
-                            console.warn('UV7 Splash: Video autoplay blocked, showing static fallback', error);
-                            // Revert to static image
-                            videoLogo.style.display = 'none';
-                            if (staticLogo) staticLogo.style.display = 'block';
-                        });
+                        playPromise
+                            .then(() => {
+                                console.log('UV7 Splash: Video autoplay successful');
+                            })
+                            .catch(error => {
+                                console.warn('UV7 Splash: Video autoplay blocked by browser, showing static fallback', error);
+                                // IMMEDIATE fallback to static image (prevents blank screen)
+                                videoLogo.style.display = 'none';
+                                if (staticLogo) {
+                                    staticLogo.style.display = 'block';
+                                    console.log('UV7 Splash: Static logo restored');
+                                }
+                            });
                     }
                 });
                 
