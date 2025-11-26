@@ -629,6 +629,9 @@ class RonnieRouteAct3 {
     }
 
     badRoute_loop() {
+        // Unlock teaser note (first note player gets)
+        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('bad');
         
@@ -782,6 +785,9 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_choice() {
+        // Unlock teaser note (first note player gets)
+        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('digital_forever');
         
@@ -1062,6 +1068,9 @@ class RonnieRouteAct3 {
     }
 
     trueRoute_final() {
+        // Unlock teaser note (first note player gets)
+        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('true');
         

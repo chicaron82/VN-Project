@@ -84,6 +84,15 @@ class CollectiblesManager {
             return;
         }
         
+        // RONNIE ROUTE SUPPRESSION: Block ALL notes on first playthrough
+        // EXCEPT the teaser note (which unlocks at ending)
+        if (this.route && this.route.name === 'ronnie' && noteId !== 'ronnie_teaser') {
+            if (!this.game.hasCompletedAnyEnding()) {
+                console.log(`Note ${noteId} suppressed - Ronnie first playthrough`);
+                return; // Suppress note unlock
+            }
+        }
+        
         // Check if already collected
         if (this.collectedNotes[note.type].includes(noteId)) {
             console.log(`Note ${noteId} already collected`);
@@ -288,6 +297,37 @@ class CollectiblesManager {
         // ========================================
         
         this.allNotes = {
+            // ========================================
+            // TEASER NOTE - Unlocked at ANY Ronnie ending
+            // This is the player's FIRST note, promoting replay
+            // ========================================
+            
+            'ronnie_teaser': {
+                type: 'special',
+                title: 'Replay_Invitation.txt',
+                content: `🎮 CONGRATULATIONS! YOU'VE COMPLETED RONNIE'S ROUTE! 🎮
+══════════════════════════════════════════════════════════════
+
+You've reached an ending. But there's more to discover.
+
+Hidden throughout Ronnie's route are notes from the UV7 crew:
+• GZ's reality-breaking questions ⚡
+• IZ's poetic clarity 🌈  
+• PZ's research findings 🔍
+
+These notes contain breadcrumbs, hints, and meta-commentary
+that guide you toward understanding the true path.
+
+💡 REPLAY RONNIE'S ROUTE TO COLLECT THEM ALL! 💡
+
+This teaser note is your first collectible.
+The rest are waiting for you to find them.
+
+Good luck, and remember: every choice matters.
+
+- The 848 Crew`
+            },
+            
             // ========================================
             // GZ's NOTES - Reality Breaker
             // "What if?" energy. Questions everything.
