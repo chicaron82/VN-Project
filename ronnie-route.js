@@ -4,6 +4,7 @@
 class RonnieRoute {
     constructor(game) {
         this.game = game;
+        this.name = 'ronnie'; // CRITICAL: Used for note suppression check
         
         // Initialize collectibles manager for Ronnie's ending notes
         this.collectiblesManager = new CollectiblesManager(this.game, this);
