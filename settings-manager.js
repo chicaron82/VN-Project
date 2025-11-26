@@ -30,6 +30,9 @@ class SettingsManager {
         // Load settings from localStorage
         this.loadSettings();
         
+        // Apply display mode immediately (before UI setup)
+        this.applyDisplayMode(this.settings.displayMode);
+        
         // Setup UI event listeners
         this.setupUI();
     }
@@ -214,7 +217,7 @@ class BacklogManager {
         this.maxEntries = 100; // Keep last 100 dialogue entries
     }
     
-    addEntry(character, dialogue) {
+    addEntry(character, dialogue, isDistorted = false) {
         // Don't add empty dialogue or narration-only entries
         if (!dialogue || dialogue.trim() === '') return;
         
@@ -222,7 +225,8 @@ class BacklogManager {
         this.history.push({
             character: character || 'Narration',
             dialogue: dialogue,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            distorted: isDistorted // Flag for hijacked/corrupted dialogue
         });
         
         // Trim to max entries
@@ -253,6 +257,11 @@ class BacklogManager {
             const entryDiv = document.createElement('div');
             entryDiv.className = 'backlog-entry';
             
+            // Add distorted class if flagged
+            if (entry.distorted) {
+                entryDiv.classList.add('backlog-distorted');
+            }
+            
             const characterDiv = document.createElement('div');
             characterDiv.className = 'backlog-character';
             characterDiv.textContent = entry.character;
@@ -260,6 +269,14 @@ class BacklogManager {
             const dialogueDiv = document.createElement('div');
             dialogueDiv.className = 'backlog-dialogue';
             dialogueDiv.textContent = entry.dialogue;
+            
+            // Add distortion badge if flagged
+            if (entry.distorted) {
+                const badge = document.createElement('span');
+                badge.className = 'distortion-badge';
+                badge.textContent = '[DISTORTION]';
+                dialogueDiv.appendChild(badge);
+            }
             
             entryDiv.appendChild(characterDiv);
             entryDiv.appendChild(dialogueDiv);
