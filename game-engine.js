@@ -795,7 +795,31 @@ class GameEngine {
             return;
         }
         
-        const speakerName = speaker.toLowerCase(); // toLowerCase HERE, not in displayScene
+        const speakerName = speaker.toLowerCase();
+        
+        // OFFSCREEN SPEAKER DETECTION:
+        // If speaker is not physically present (Tamagotchi, device, offscreen, voice, etc.)
+        // Dim ALL sprites to show everyone is listening
+        if (speakerName.includes('tamagotchi') || 
+            speakerName.includes('device') || 
+            speakerName.includes('offscreen') ||
+            speakerName.includes('from device') ||
+            speakerName.includes('voice')) {
+            
+            // Dim all standard sprites
+            if (this.spriteLeft) this.spriteLeft.classList.add('sprite-dim');
+            if (this.spriteRight) this.spriteRight.classList.add('sprite-dim');
+            
+            // Dim all Echo sprites if present
+            const echo1 = document.getElementById('echo-1-sprite');
+            const echo2 = document.getElementById('echo-2-sprite');
+            const despair = document.getElementById('despair-sprite');
+            if (echo1) echo1.classList.add('sprite-dim');
+            if (echo2) echo2.classList.add('sprite-dim');
+            if (despair) despair.classList.add('sprite-dim');
+            
+            return; // Early exit - everyone dimmed
+        }
         
         // Check if Echoes are displayed
         const echo1 = document.getElementById('echo-1-sprite');
