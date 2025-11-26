@@ -136,6 +136,12 @@ class ToriAct2 {
         // Unlock CZ's memory degradation horror note
         this.route.unlockNote('cz2');
         
+        // Unlock Z's Cassandra framework note - Tori "knew" something she shouldn't
+        this.route.unlockNote('z3');
+        
+        // Unlock Z's Echo timeline theory - all three Echoes speaking reveals their nature
+        this.route.unlockNote('z6');
+        
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',            background: 'digitalSpace.png',

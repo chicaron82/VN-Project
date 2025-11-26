@@ -965,6 +965,9 @@ class ToriAct3 {
     }
 
     beat6_despairQuiet() {
+        // Unlock Z's fourth-wall note - the moment Echoes realize Tori broke the pattern
+        this.route.unlockNote('z8');
+        
         this.game.displayScene({
             character: 'Despair Echo',
             dialogue: '"..."',            internal: '[For once, Despair has no bitter words. Just... watching.]',
@@ -1083,6 +1086,9 @@ class ToriAct3 {
     }
 
     beat6_final() {
+        // Unlock Z's true ending hint - placed before the final choice
+        this.route.unlockNote('z5');
+        
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',

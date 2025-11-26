@@ -215,6 +215,9 @@ class ToriAct1 {
         // Despair blocks saves in Act 1
         this.game.saveManager.blockSaves();
         
+        // Unlock Z's version number revelation
+        this.route.unlockNote('z7');
+        
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
@@ -734,6 +737,9 @@ class ToriAct1 {
     }
     
     scene6_push() {
+        // Unlock Z's bootstrap paradox note after player makes first meaningful choice
+        this.route.unlockNote('z2');
+        
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"NOW!"',

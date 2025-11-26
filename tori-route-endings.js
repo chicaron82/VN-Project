@@ -85,6 +85,9 @@ class ToriEndings {
     }
 
     badRoute_retry() {
+        // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
+        this.route.unlockNote('z9');
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'GAME OVER\n\n"Do you wish to try again?"',
@@ -316,6 +319,9 @@ class ToriEndings {
                         delay: 3000
                     }, 'version_increment_screen');
                 } else {
+                    // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
+                    this.route.unlockNote('z9');
+                    
                     // Accept ending - lock version
                     this.game.acceptEnding();
                     // Transition to shared epilogue
@@ -393,7 +399,7 @@ class ToriEndings {
             internal: '[Visual: Hospital room. Her eyes flutter open. Real eyes. Real body. Real breath.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.trueRoute_ronnie(),
             delay: 4000,
@@ -407,7 +413,7 @@ class ToriEndings {
             dialogue: '"Tori! Oh god, Tori!"',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => this.trueRoute_always(),
             delay: 3000
@@ -415,13 +421,19 @@ class ToriEndings {
     }
 
     trueRoute_always() {
+        // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
+        this.route.unlockNote('z9');
+        
+        // Unlock Z's final philosophical note (TRUE ENDING ONLY)
+        this.route.unlockNote('z10');
+        
         this.game.displayScene({
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',
             internal: '[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]',
             background: 'hospital.png',
             sprites: {
-                left: 'ronnie-sprite.png'
+                right: 'ronnie-sprite.png'
             },
             next: () => {
                 // Break the loop - this timeline succeeded!
