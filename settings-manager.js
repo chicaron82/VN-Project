@@ -43,8 +43,6 @@ class SettingsManager {
                 console.error('Failed to load settings:', e);
             }
         }
-        // Apply display mode immediately after loading
-        this.applyDisplayMode(this.settings.displayMode);
     }
     
     saveSettings() {
