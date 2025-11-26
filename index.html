@@ -103,11 +103,6 @@
                 <button class="menu-button" onclick="game.startStory()">START STORY</button>
                 <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
                 <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                <!-- Add this button to the main menu, after LOAD GAME button -->
-                <button class="menu-button" onclick="game.showStandaloneNotes()">
-                    <span class="menu-button-icon">📝</span>
-                    <span class="menu-button-text">NOTES</span>
-                </button>
                 <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
                 <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
             </div>
@@ -181,7 +176,7 @@
             </button>
 
             <!-- Backlog Button (Shown during gameplay) -->
-            <button id="backlog-button" onclick="game.openBacklog()" title="Dialogue History">📜</button>
+            <button id="backlog-button" onclick="game.openBacklog()" title="Dialogue History">⏮️</button>
 
             <!-- Dialogue Box -->
             <div id="dialogue-box">
@@ -557,7 +552,6 @@
     <script src="settings-manager.js"></script>
     <script src="tether-system.js"></script>
     <script src="collectibles-manager.js"></script>
-    <script src="standalone-notes-viewer.js"></script>
     <script src="game-engine.js"></script>
     <script src="save-manager.js"></script>
     <script src="save-load-ui.js"></script>
