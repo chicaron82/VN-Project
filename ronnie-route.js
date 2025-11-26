@@ -30,6 +30,9 @@ class RonnieRoute {
         this.collectiblesManager.init();
         this.collectiblesManager.defineRonnieNotes();
         
+        // Unlock GenZee's version number note at route start
+        this.collectiblesManager.unlockNote('gz1');
+        
         // Entry point for Ronnie's route
         // Scenes 1-3 handled by SharedPrologue
         // Ronnie's route starts at Scene 4 (Hospital Anchor)
@@ -249,6 +252,9 @@ class RonnieRoute {
     }
 
     act1Scene1_first_words() {
+        // Unlock Belle's note - space between life and death
+        this.collectiblesManager.unlockNote('iz1');
+        
         this.game.displayScene({
             character: 'Tori (sprite, glitching)',
             dialogue: '"Baby? ...Is that you? It\'s me... Tori. I don\'t know how, but I\'m here."',

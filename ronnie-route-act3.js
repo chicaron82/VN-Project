@@ -354,6 +354,9 @@ class RonnieRouteAct3 {
     }
     
     beat4_understanding() {
+        // Unlock GenZee's bootstrap paradox note - the loop revelation
+        this.route.collectiblesManager.unlockNote('gz3');
+        
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"The buzzes. The battery drain. That\'s me. I\'m killing the device just by existing in it."',
@@ -523,6 +526,9 @@ class RonnieRouteAct3 {
     }
 
     act3CriticalChoice() {
+        // Unlock PerplexiZee's body anchor mechanics note - CRITICAL guidance
+        this.route.collectiblesManager.unlockNote('pz2');
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'CRITICAL CHOICE DETECTED',
