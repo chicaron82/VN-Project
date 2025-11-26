@@ -637,13 +637,13 @@ class RonnieRouteAct3 {
     }
 
     badRoute_retry() {
-        const attemptNumber = localStorage.getItem('attemptNumber') || '848';
-        const nextAttempt = parseInt(attemptNumber) + 1;
-        localStorage.setItem('attemptNumber', nextAttempt.toString());
+        // Use game engine's centralized version tracking
+        const currentVersion = this.game.loopVersion;
+        const nextVersion = this.game.incrementVersion();
         
         this.game.displayScene({
             character: 'System',
-            dialogue: `VERSION ${attemptNumber} FAILED\nINITIATING VERSION ${nextAttempt}...`,
+            dialogue: `VERSION ${currentVersion} FAILED\nINITIATING VERSION ${nextVersion}...`,
             internal: '[The loop continues. Try again. You can save her.]\n[RETRY? Y/N]',
             background: 'digitalSpace.png',
             choices: [
@@ -656,7 +656,7 @@ class RonnieRouteAct3 {
                     this.route.resetToStart();
                 } else {
                     // End game
-                    this.game.endGame();
+                    this.game.returnToMainMenu();
                 }
             }
         }, 'badRoute_retry');
@@ -790,13 +790,13 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_retry() {
-        const attemptNumber = localStorage.getItem('attemptNumber') || '848';
-        const nextAttempt = parseInt(attemptNumber) + 1;
-        localStorage.setItem('attemptNumber', nextAttempt.toString());
+        // Use game engine's centralized version tracking
+        const currentVersion = this.game.loopVersion;
+        const nextVersion = this.game.incrementVersion();
         
         this.game.displayScene({
             character: 'System',
-            dialogue: `VERSION ${attemptNumber} - DIGITAL FOREVER\nDo you want to see another path?\nVERSION ${nextAttempt} is waiting...`,
+            dialogue: `VERSION ${currentVersion} - DIGITAL FOREVER\nDo you want to see another path?\nVERSION ${nextVersion} is waiting...`,
             background: 'genericBack.png',
             choices: [
                 { text: 'Yes - Try another path', value: 'retry' },
@@ -806,7 +806,7 @@ class RonnieRouteAct3 {
                 if (choice === 'retry') {
                     this.route.resetToStart();
                 } else {
-                    this.game.endGame();
+                    this.game.returnToMainMenu();
                 }
             }
         }, 'digitalForever_retry');
@@ -1060,8 +1060,8 @@ class RonnieRouteAct3 {
         this.game.markEndingCompleted('true');
         
         // Get player's version number for their success message
-        const playerVersion = localStorage.getItem('attemptNumber') || '848';
-        const attemptsCount = parseInt(playerVersion) - 848;
+        const playerVersion = this.game.loopVersion;
+        const attemptsCount = playerVersion - 848;
         
         let successMessage = '';
         if (attemptsCount === 0) {
