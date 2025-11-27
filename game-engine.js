@@ -41,6 +41,9 @@ class GameEngine {
         this.pauseButton = document.getElementById('pause-button');
         this.pauseContent = document.getElementById('pause-content');
         
+        // Skip button (unlockable feature)
+        this.skipButton = document.getElementById('skip-button');
+        
         // Character sprite containers
         this.spriteLeft = document.getElementById('character-left');
         this.spriteRight = document.getElementById('character-right');
@@ -86,6 +89,16 @@ class GameEngine {
             progress: {},
             sprites: { left: null, right: null } // NEW: Track sprite state for save/load
         };
+        
+        // Skip system (unlocked after completing any ending)
+        this.skipUnlocked = localStorage.getItem('skipUnlocked') === 'true';
+        this.skipActive = false;
+        this.readScenes = new Set(JSON.parse(localStorage.getItem('readScenes') || '[]'));
+        
+        // Show skip button if unlocked
+        if (this.skipButton) {
+            this.skipButton.style.display = this.skipUnlocked ? 'block' : 'none';
+        }
         
         // Initialize save/load system
         this.saveManager = new SaveManager(this);
@@ -184,6 +197,30 @@ class GameEngine {
         
         // Keyboard controls (Spacebar or Enter)
         document.addEventListener('keydown', (e) => {
+            // [S] KEY: Toggle skip on/off
+            if (e.code === 'KeyS' && !e.ctrlKey && !e.metaKey) {
+                // Don't trigger if typing in input fields
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+                e.preventDefault();
+                this.toggleSkip();
+                return;
+            }
+            
+            // [CTRL] KEY: Hold to skip (activate skip mode)
+            if (e.ctrlKey && !this.skipActive && this.skipUnlocked) {
+                this.skipActive = true;
+                const skipButton = document.getElementById('skip-button');
+                if (skipButton) {
+                    skipButton.classList.add('active', 'ctrl-held');
+                }
+                const skipIndicator = document.getElementById('skip-indicator');
+                if (skipIndicator) {
+                    skipIndicator.style.display = 'block';
+                }
+            }
+            
             if (e.code === 'Space' || e.code === 'Enter') {
                 // Don't trigger if typing in input fields
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -192,6 +229,22 @@ class GameEngine {
                 // Prevent default scroll behavior for spacebar
                 e.preventDefault();
                 this.handleDialogueClick();
+            }
+        });
+        
+        // [CTRL] KEY RELEASE: Stop hold-to-skip
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'Control' || e.key === 'Meta') {
+                const skipButton = document.getElementById('skip-button');
+                if (skipButton && skipButton.classList.contains('ctrl-held')) {
+                    // Only deactivate if it was activated via ctrl-hold (not toggle)
+                    this.skipActive = false;
+                    skipButton.classList.remove('active', 'ctrl-held');
+                    const skipIndicator = document.getElementById('skip-indicator');
+                    if (skipIndicator) {
+                        skipIndicator.style.display = 'none';
+                    }
+                }
             }
         });
         
@@ -558,7 +611,8 @@ class GameEngine {
             this.addToDialogueHistory({
                 character: scene.character || 'Narration',
                 dialogue: scene.dialogue || '',
-                internal: scene.internal || ''
+                internal: scene.internal || '',
+                distorted: scene.distorted || false // Track hijacked/corrupted dialogue
             });
         }
         
@@ -634,6 +688,28 @@ class GameEngine {
         // Auto-save after each scene (if route is active)
         if (this.currentRoute) {
             this.saveManager.autoSave();
+        }
+        
+        // SKIP SYSTEM: Mark scene as read and check if should continue skipping
+        if (sceneId) {
+            this.markSceneAsRead(sceneId);
+        }
+        
+        // If skip is active and this scene was already read, check if we should stop
+        if (this.skipActive && sceneId) {
+            if (this.shouldStopSkipping(scene)) {
+                // Stop skipping - new content or choice detected
+                this.skipActive = false;
+                const skipButton = document.getElementById('skip-button');
+                if (skipButton) {
+                    skipButton.classList.remove('active');
+                }
+                const skipIndicator = document.getElementById('skip-indicator');
+                if (skipIndicator) {
+                    skipIndicator.style.display = 'none';
+                }
+                console.log('Skip stopped - new content/choice detected');
+            }
         }
     }
     
@@ -998,6 +1074,11 @@ class GameEngine {
     }
     
     getTypewriterSpeed() {
+        // SKIP OVERRIDE: Use 5ms when skipping (6x faster than normal)
+        if (this.skipActive) {
+            return 5;
+        }
+        
         // Get speed from settings manager
         if (!this.settingsManager) {
             console.log('No settingsManager, returning default 30');
@@ -1008,13 +1089,6 @@ class GameEngine {
         const multiplier = this.settingsManager.speedMultipliers[speed];
         const delay = 30 * multiplier;
         const result = delay === 0 ? 0 : Math.max(1, delay);
-        
-        console.log('getTypewriterSpeed DEBUG:', {
-            speed,
-            multiplier,
-            delay,
-            result
-        });
         
         return result;
     }
@@ -1499,6 +1573,11 @@ class GameEngine {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'backlog-entry';
                 
+                // Add distorted class if flagged
+                if (entry.distorted) {
+                    entryDiv.classList.add('backlog-distorted');
+                }
+                
                 const characterSpan = document.createElement('div');
                 characterSpan.className = 'backlog-character';
                 characterSpan.textContent = entry.character;
@@ -1506,6 +1585,14 @@ class GameEngine {
                 const dialogueSpan = document.createElement('div');
                 dialogueSpan.className = 'backlog-dialogue';
                 dialogueSpan.textContent = entry.dialogue;
+                
+                // Add distortion badge if flagged
+                if (entry.distorted) {
+                    const badge = document.createElement('span');
+                    badge.className = 'distortion-badge';
+                    badge.textContent = '[DISTORTION]';
+                    dialogueSpan.appendChild(badge);
+                }
                 
                 entryDiv.appendChild(characterSpan);
                 entryDiv.appendChild(dialogueSpan);
@@ -1715,14 +1802,16 @@ game.devCommands()
         this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
         if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
         if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
-        if (this.notesButton) this.notesButton.classList.remove('tori-route');
-        if (this.notesViewer) this.notesViewer.classList.remove('tori-route');
+        if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
         
         // Apply route-specific theming to all UI
         if (routeName === 'ronnie') {
             this.dialogueBox.classList.add('ronnie-route');
             if (this.pauseButton) this.pauseButton.classList.add('ronnie-route');
             if (this.pauseContent) this.pauseContent.classList.add('ronnie-route');
+            if (this.notesButton) this.notesButton.classList.add('ronnie-route');
+            if (this.notesViewer) this.notesViewer.classList.add('ronnie-route');
         } else if (routeName === 'tori') {
             this.dialogueBox.classList.add('tori-route');
             if (this.pauseButton) this.pauseButton.classList.add('tori-route');
@@ -1738,8 +1827,8 @@ game.devCommands()
         this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
         if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
         if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
-        if (this.notesButton) this.notesButton.classList.remove('tori-route');
-        if (this.notesViewer) this.notesViewer.classList.remove('tori-route');
+        if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
     }
 
     // ========================================
@@ -1873,5 +1962,108 @@ game.devCommands()
             this.spriteRight.style.top = 'auto';
             this.spriteRight.style.height = 'auto';
         }
+    }
+    
+    // ========================================
+    // SKIP SYSTEM
+    // Unlocked after completing any ending
+    // ========================================
+    
+    unlockSkipFeature() {
+        localStorage.setItem('skipUnlocked', 'true');
+        this.skipUnlocked = true;
+        
+        // Show unlock notification
+        this.showSkipUnlockNotification();
+        
+        // Make skip button visible
+        const skipButton = document.getElementById('skip-button');
+        if (skipButton) {
+            skipButton.style.display = 'block';
+        }
+    }
+    
+    showSkipUnlockNotification() {
+        const notification = document.createElement('div');
+        notification.id = 'skip-unlock-notification';
+        notification.innerHTML = `
+            <div class="unlock-title">NEW FEATURE UNLOCKED! ✨</div>
+            <div class="unlock-feature">SKIP READ TEXT</div>
+            <div class="unlock-description">
+                You've completed a timeline.<br>
+                You can now fast-forward through<br>
+                previously seen dialogue on future<br>
+                playthroughs.<br><br>
+                Press [S] or click [SKIP >>] to activate.<br><br>
+                <em>The loop remembers. You remember.</em>
+            </div>
+            <button class="unlock-continue" onclick="game.closeSkipUnlockNotification()">CONTINUE</button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Fade in
+        setTimeout(() => {
+            notification.classList.add('visible');
+        }, 100);
+    }
+    
+    closeSkipUnlockNotification() {
+        const notification = document.getElementById('skip-unlock-notification');
+        if (notification) {
+            notification.classList.remove('visible');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    }
+    
+    toggleSkip() {
+        if (!this.skipUnlocked) return;
+        
+        this.skipActive = !this.skipActive;
+        
+        const skipButton = document.getElementById('skip-button');
+        if (skipButton) {
+            skipButton.classList.toggle('active', this.skipActive);
+        }
+        
+        // Update skip indicator
+        const skipIndicator = document.getElementById('skip-indicator');
+        if (skipIndicator) {
+            skipIndicator.style.display = this.skipActive ? 'block' : 'none';
+        }
+        
+        console.log('Skip', this.skipActive ? 'ON' : 'OFF');
+        
+        // If activating skip, advance immediately
+        if (this.skipActive && !this.typewriterActive && !this.choiceMenu.style.display.includes('flex')) {
+            this.advanceDialogue();
+        }
+    }
+    
+    markSceneAsRead(sceneId) {
+        if (sceneId) {
+            this.readScenes.add(sceneId);
+            localStorage.setItem('readScenes', JSON.stringify([...this.readScenes]));
+        }
+    }
+    
+    isSceneRead(sceneId) {
+        return this.readScenes.has(sceneId);
+    }
+    
+    shouldStopSkipping(scene) {
+        // Stop skipping if:
+        // 1. Scene has choices
+        if (scene.choices && scene.choices.length > 0) return true;
+        
+        // 2. Scene hasn't been read before
+        if (scene.sceneId && !this.isSceneRead(scene.sceneId)) return true;
+        
+        // 3. Scene is an ending
+        if (scene.sceneId && scene.sceneId.includes('ending')) return true;
+        
+        return false;
     }
 }

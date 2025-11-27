@@ -193,6 +193,16 @@
 
             <!-- Pause Menu Button -->
             <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()"></button>
+            
+            <!-- Skip Button (Unlocked after completing any ending) -->
+            <button id="skip-button" onclick="game.toggleSkip()" style="display: none;" title="Skip read text [S]">
+                SKIP >>
+            </button>
+            
+            <!-- Skip Indicator (Shows when skip is active) -->
+            <div id="skip-indicator" style="display: none;">
+                ⏩ SKIPPING...
+            </div>
         </div>
 
         <!-- Pause Menu Overlay (ESC to open)-->

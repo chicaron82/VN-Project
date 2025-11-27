@@ -88,6 +88,11 @@ class ToriEndings {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
         
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'GAME OVER\n\n"Do you wish to try again?"',
@@ -322,6 +327,11 @@ class ToriEndings {
                     // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
                     this.route.unlockNote('z9');
                     
+                    // UNLOCK SKIP FEATURE (first ending completion)
+                    if (!this.game.skipUnlocked) {
+                        this.game.unlockSkipFeature();
+                    }
+                    
                     // Accept ending - lock version
                     this.game.acceptEnding();
                     // Transition to shared epilogue
@@ -426,6 +436,11 @@ class ToriEndings {
         
         // Unlock Z's final philosophical note (TRUE ENDING ONLY)
         this.route.unlockNote('z10');
+        
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
         
         this.game.displayScene({
             character: 'Tori (weak smile)',

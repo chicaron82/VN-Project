@@ -3759,3 +3759,171 @@ input:checked + .toggle-slider:before {
         font-size: 0.9em;
     }
 }
+
+/* ========================================
+   SKIP SYSTEM
+   Unlocked after completing any ending
+   ======================================== */
+
+/* Skip Button */
+#skip-button {
+    position: fixed;
+    top: 20px;
+    right: 140px;
+    background: rgba(0, 200, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    letter-spacing: 0.05em;
+}
+
+#skip-button:hover {
+    background: rgba(0, 200, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+#skip-button.active {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    animation: skipPulse 1s ease-in-out infinite;
+}
+
+@keyframes skipPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+    }
+}
+
+/* Skip Indicator (Shows when skipping) */
+#skip-indicator {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background: rgba(0, 255, 255, 0.9);
+    color: #000;
+    padding: 6px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    font-weight: bold;
+    z-index: 1002;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    animation: skipFlash 0.5s ease-in-out infinite;
+}
+
+@keyframes skipFlash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Skip Unlock Notification */
+#skip-unlock-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.98), rgba(0, 40, 60, 0.98));
+    border: 3px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.6),
+                0 0 80px rgba(0, 200, 255, 0.3);
+    padding: 40px;
+    z-index: 10002;
+    max-width: 500px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-family: 'Courier New', monospace;
+    border-radius: 10px;
+}
+
+#skip-unlock-notification.visible {
+    opacity: 1;
+}
+
+.unlock-title {
+    color: #0ff;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+.unlock-feature {
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+.unlock-description {
+    color: #aaa;
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.unlock-description em {
+    color: #0ff;
+    font-style: italic;
+    font-size: 0.95em;
+}
+
+.unlock-continue {
+    background: #0ff;
+    color: #000;
+    border: none;
+    padding: 12px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.unlock-continue:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+/* Mobile Adjustments */
+@media (max-width: 1023px) {
+    #skip-button {
+        top: 10px;
+        right: 100px;
+        padding: 6px 12px;
+        font-size: 0.8em;
+    }
+    
+    #skip-indicator {
+        top: 45px;
+        right: 10px;
+        padding: 4px 10px;
+        font-size: 0.75em;
+    }
+    
+    #skip-unlock-notification {
+        max-width: 90%;
+        padding: 30px 20px;
+    }
+    
+    .unlock-feature {
+        font-size: 1.5em;
+    }
+}

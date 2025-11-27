@@ -640,6 +640,11 @@ class RonnieRouteAct3 {
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('bad');
         
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'ERROR: Two consciousness entities detected. System unstable. Looping indefinitely.',
@@ -800,6 +805,11 @@ class RonnieRouteAct3 {
         
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('digital_forever');
+        
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
         
         this.game.displayScene({
             character: 'System',
@@ -1089,6 +1099,11 @@ class RonnieRouteAct3 {
         
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('true');
+        
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
         
         // Get player's version number for their success message
         const playerVersion = this.game.loopVersion;
