@@ -632,6 +632,11 @@ class RonnieRouteAct3 {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
         
+        // Show notes button now (it was hidden during first playthrough)
+        if (this.game.notesButton) {
+            this.game.notesButton.style.display = 'block';
+        }
+        
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('bad');
         
@@ -661,8 +666,8 @@ class RonnieRouteAct3 {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Return to prologue or Act 1
-                    this.route.resetToStart();
+                    // Reset and restart Ronnie's route
+                    this.route.start();
                 } else {
                     // End game
                     this.game.returnToMainMenu();
@@ -788,6 +793,11 @@ class RonnieRouteAct3 {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
         
+        // Show notes button now (it was hidden during first playthrough)
+        if (this.game.notesButton) {
+            this.game.notesButton.style.display = 'block';
+        }
+        
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('digital_forever');
         
@@ -816,7 +826,8 @@ class RonnieRouteAct3 {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    this.route.resetToStart();
+                    // Reset and restart Ronnie's route
+                    this.route.start();
                 } else {
                     this.game.returnToMainMenu();
                 }
@@ -1070,6 +1081,11 @@ class RonnieRouteAct3 {
     trueRoute_final() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        
+        // Show notes button now (it was hidden during first playthrough)
+        if (this.game.notesButton) {
+            this.game.notesButton.style.display = 'block';
+        }
         
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('true');
