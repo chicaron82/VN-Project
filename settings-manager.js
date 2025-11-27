@@ -206,6 +206,38 @@ class SettingsManager {
         
         console.log('Settings reset to default');
     }
+    
+    setDisplayMode(mode) {
+        this.settings.displayMode = mode;
+        this.saveSettings();
+        this.updateUI();
+        this.applyDisplayMode(mode);
+        console.log('Display mode set to:', mode);
+    }
+    
+    applyDisplayMode(mode) {
+        const gameContainer = document.getElementById('game-container');
+        
+        // Safety check: DOM might not be ready yet during initialization
+        if (!gameContainer) {
+            console.log('Display mode deferred - DOM not ready yet');
+            // Will be applied when settings menu opens (updateUI calls it)
+            return;
+        }
+        
+        // Remove all display mode classes
+        gameContainer.classList.remove('force-portrait', 'force-landscape');
+        
+        // Apply new mode
+        if (mode === 'portrait') {
+            gameContainer.classList.add('force-portrait');
+        } else if (mode === 'landscape') {
+            gameContainer.classList.add('force-landscape');
+        }
+        // 'auto' mode = no special class, uses natural media queries
+        
+        console.log('Display mode applied:', mode);
+    }
 }
 
 // ========================================
@@ -285,38 +317,6 @@ class BacklogManager {
             entryDiv.appendChild(dialogueDiv);
             backlogList.appendChild(entryDiv);
         }
-    }
-    
-    setDisplayMode(mode) {
-        this.settings.displayMode = mode;
-        this.saveSettings();
-        this.updateUI();
-        this.applyDisplayMode(mode);
-        console.log('Display mode set to:', mode);
-    }
-    
-    applyDisplayMode(mode) {
-        const gameContainer = document.getElementById('game-container');
-        
-        // Safety check: DOM might not be ready yet during initialization
-        if (!gameContainer) {
-            console.log('Display mode deferred - DOM not ready yet');
-            // Will be applied when settings menu opens (updateUI calls it)
-            return;
-        }
-        
-        // Remove all display mode classes
-        gameContainer.classList.remove('force-portrait', 'force-landscape');
-        
-        // Apply new mode
-        if (mode === 'portrait') {
-            gameContainer.classList.add('force-portrait');
-        } else if (mode === 'landscape') {
-            gameContainer.classList.add('force-landscape');
-        }
-        // 'auto' mode = no special class, uses natural media queries
-        
-        console.log('Display mode applied:', mode);
     }
 }
 
