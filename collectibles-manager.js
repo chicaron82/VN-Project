@@ -155,39 +155,13 @@ class CollectiblesManager {
     }
     
     notifyNewNote() {
-        // Create floating notification bubble
-        const notification = document.createElement('div');
-        notification.className = 'note-notification';
-        notification.innerHTML = `
-            <div class="note-notification-icon">📝</div>
-            <div class="note-notification-text">NEW NOTE UNLOCKED!</div>
-        `;
-        
-        // Add to game view
-        const gameView = document.getElementById('game-view');
-        if (gameView) {
-            gameView.appendChild(notification);
-            
-            // Fade in
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 50);
-            
-            // Fade out and remove after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    notification.remove();
-                }, 500);
-            }, 3000);
-        }
-        
-        // Also add subtle pulse to notes button as secondary indicator
+        // Just pulse the notes button - no intrusive popup
+        // Player will see the button glowing and can open it when ready
         if (this.notesButton) {
             this.notesButton.classList.add('has-new-note');
         }
         
-        console.log('🔔 NEW NOTE UNLOCKED!');
+        console.log('🔔 NEW NOTE UNLOCKED! (Button pulsing)');
     }
     
     showNotesViewer() {
