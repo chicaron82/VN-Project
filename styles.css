@@ -1774,6 +1774,9 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #00ffcc #222;
+    /* Force scrolling to work on mobile */
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
 }
 
 #internal-thought::-webkit-scrollbar {
@@ -1848,7 +1851,7 @@
 
 #save-indicator {
     position: fixed;
-    top: 20px;
+    bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
@@ -1857,7 +1860,7 @@
     padding: 15px 30px;
     z-index: 10001;
     display: none;
-    animation: slideDown 0.3s;
+    animation: slideUp 0.3s;
     font-family: 'Courier New', monospace;
     font-weight: bold;
     letter-spacing: 0.05em;
@@ -1873,9 +1876,9 @@
     box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
 }
 
-@keyframes slideDown {
+@keyframes slideUp {
     from {
-        transform: translate(-50%, -100%);
+        transform: translate(-50%, 100%);
         opacity: 0;
     }
     to {
@@ -3755,70 +3758,4 @@ input:checked + .toggle-slider:before {
         margin: 10px 0;
         font-size: 0.9em;
     }
-}
-
-/* ========================================
-   DISPLAY MODE OVERRIDES - FORCE MODES
-   Override media queries with !important
-   ======================================== */
-
-/* Force Portrait Mode - Mobile layout even on desktop */
-#game-container.force-portrait #internal-thought {
-    top: 10px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 90% !important;
-}
-
-#game-container.force-portrait #internal-thought.left-character,
-#game-container.force-portrait #internal-thought.right-character {
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-}
-
-#game-container.force-portrait #dialogue-box {
-    width: 95% !important;
-    max-width: 600px !important;
-    bottom: 10px !important;
-}
-
-#game-container.force-portrait #character-left,
-#game-container.force-portrait #character-right {
-    opacity: 0.3 !important;
-}
-
-/* Force Landscape Mode - Desktop layout even on mobile */
-#game-container.force-landscape #internal-thought {
-    top: 10% !important;
-    width: 35% !important;
-}
-
-#game-container.force-landscape #internal-thought.left-character {
-    left: 5% !important;
-    right: auto !important;
-    transform: none !important;
-}
-
-#game-container.force-landscape #internal-thought.right-character {
-    right: 5% !important;
-    left: auto !important;
-    transform: none !important;
-}
-
-#game-container.force-landscape #internal-thought.center {
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-}
-
-#game-container.force-landscape #dialogue-box {
-    bottom: 20px !important;
-    width: 90% !important;
-    max-width: 1400px !important;
-}
-
-#game-container.force-landscape #character-left,
-#game-container.force-landscape #character-right {
-    display: block !important;
-    opacity: 1 !important;
 }
