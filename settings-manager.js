@@ -97,6 +97,9 @@ class SettingsManager {
         
         // Apply loaded settings to UI
         this.updateUI();
+        
+        // Apply display mode now that DOM is ready (deferred from constructor)
+        this.applyDisplayMode(this.settings.displayMode);
     }
     
     updateUI() {
@@ -295,6 +298,13 @@ class BacklogManager {
     applyDisplayMode(mode) {
         const gameContainer = document.getElementById('game-container');
         
+        // Safety check: DOM might not be ready yet during initialization
+        if (!gameContainer) {
+            console.log('Display mode deferred - DOM not ready yet');
+            // Will be applied when settings menu opens (updateUI calls it)
+            return;
+        }
+        
         // Remove all display mode classes
         gameContainer.classList.remove('force-portrait', 'force-landscape');
         
@@ -305,6 +315,8 @@ class BacklogManager {
             gameContainer.classList.add('force-landscape');
         }
         // 'auto' mode = no special class, uses natural media queries
+        
+        console.log('Display mode applied:', mode);
     }
 }
 
