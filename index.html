@@ -50,7 +50,6 @@
             position: relative;
         }
     </style>
-    <!-- Favicon package -->
 </head>
 <body>
     <!-- UV7 SPLASH SCREEN (Shows First) -->
@@ -100,12 +99,23 @@
             <div id="main-menu-content">
                 <h1>VERSION 848</h1>
                 <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
-                <button class="menu-button" onclick="game.startStory()">START STORY</button>
-                <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
-                <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
-                <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
-                <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+                
+                <!-- Button Grid (3 left + 3 right in landscape) -->
+                <div class="menu-buttons-grid">
+                    <div class="menu-column-left">
+                        <button class="menu-button" onclick="game.startStory()">START STORY</button>
+                        <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
+                        <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                    </div>
+                    <div class="menu-column-right">
+                        <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
+                        <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
+                        <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+                    </div>
+                </div>
+                
+                <!-- Contact Button (centered below grid) -->
+                <button class="menu-button menu-button-contact" onclick="game.showContact()">CONTACT</button>
             </div>
         </div>
 
@@ -207,6 +217,7 @@
 
         <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
+            <button class="close-x" onclick="game.resumeGame()">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
@@ -220,6 +231,7 @@
 
         <!-- Settings Menu -->
         <div id="settings-menu" style="display: none;">
+            <button class="close-x" onclick="game.closeSettings()">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
                 
@@ -298,6 +310,7 @@
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
+            <button class="close-x" onclick="game.closeSaveLoadScreen()">✕</button>
             <div id="save-load-content">
                 <h2 id="save-load-title">SAVE GAME</h2>
                 
@@ -380,6 +393,7 @@
 
         <!-- Notes Viewer (Tori Route Only) -->
         <div id="notes-viewer">
+            <button class="close-x" onclick="game.closeNotesViewer()">✕</button>
             <div id="notes-content">
                 <h2>COLLECTED NOTES</h2>
                 <div id="notes-list"></div>
@@ -392,6 +406,7 @@
 
         <!-- Credits Screen -->
         <div id="credits-screen">
+            <button class="close-x" onclick="game.closeCredits()">✕</button>
             <button id="next-credits" onclick="game.nextCredit()">NEXT ></button>
             
             <!-- Screen 1: UV7 Logo -->
@@ -564,6 +579,52 @@
                         Always. Always. Always.
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Contact Screen -->
+        <div id="contact-screen">
+            <button class="close-x" onclick="game.closeContact()">✕</button>
+            <div id="contact-content">
+                <h2>CONTACT</h2>
+                <div class="contact-message">
+                    <p>Version 848 was created by <strong>Aaron (Chicharon)</strong><br>
+                    in collaboration with United Voices 7.</p>
+                    
+                    <p>Feedback? Bug reports? Just want to chat?</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
+                            📷 Instagram: @androidsauna
+                        </a>
+                        <a href="mailto:silverbrownguy@outlook.com" class="contact-link">
+                            ✉️ Email: silverbrownguy@outlook.com
+                        </a>
+                        <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
+                            💻 GitHub: chicaron82
+                        </a>
+                    </div>
+                    
+                    <p class="contact-thanks">Thanks for playing! 💙</p>
+                </div>
+                <button class="contact-close" onclick="game.closeContact()">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Loop Reinit Screen -->
+        <div id="loop-init-screen">
+            <div id="loop-init-content">
+                <div class="loop-init-message">
+                    <div class="loop-init-title">REINITIALIZING LOOP...</div>
+                    <div class="loop-init-status">
+                        <span>Previous attempt: v</span><span id="loop-prev-version">848</span><span> - STATUS: FAILED</span>
+                    </div>
+                    <div class="loop-init-boot">
+                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="version-glitch">849</span>
+                    </div>
+                </div>
+                <div class="loop-init-continue">[Click anywhere to continue]</div>
+                <button id="loop-skip-button" class="loop-skip-btn" onclick="game.skipLoopInit()">SKIP REINIT</button>
             </div>
         </div>
     </div>
