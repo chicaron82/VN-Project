@@ -352,6 +352,88 @@ class GameEngine {
     }
     
     // ========================================
+    // LOOP REINIT SCREEN
+    // Shows when player retries after failure
+    // ========================================
+    
+    showLoopInit(callback) {
+        const loopInitScreen = document.getElementById('loop-init-screen');
+        const prevVersionEl = document.getElementById('loop-prev-version');
+        const newVersionEl = document.getElementById('loop-new-version');
+        const skipButton = document.getElementById('loop-skip-button');
+        
+        if (!loopInitScreen) {
+            console.error('Loop init screen not found');
+            if (callback) callback();
+            return;
+        }
+        
+        // Calculate versions
+        const prevVersion = this.loopVersion;
+        const newVersion = this.loopVersion + 1;
+        
+        // Update text
+        if (prevVersionEl) prevVersionEl.textContent = prevVersion;
+        if (newVersionEl) newVersionEl.textContent = newVersion;
+        
+        // Check if player has seen this before
+        const loopInitSeen = localStorage.getItem('loopInitSeen') === 'true';
+        
+        // Show skip button only if seen before
+        if (skipButton) {
+            skipButton.style.display = loopInitSeen ? 'inline-block' : 'none';
+        }
+        
+        // Mark as seen for future runs
+        localStorage.setItem('loopInitSeen', 'true');
+        
+        // Show screen
+        loopInitScreen.style.display = 'flex';
+        
+        // Store callback for when player advances
+        this.loopInitCallback = callback;
+        
+        // Click anywhere to continue
+        const continueHandler = () => {
+            this.closeLoopInit();
+            loopInitScreen.removeEventListener('click', continueHandler);
+        };
+        
+        loopInitScreen.addEventListener('click', continueHandler);
+        
+        // Keyboard support (Space/Enter)
+        const keyHandler = (e) => {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                e.preventDefault();
+                this.closeLoopInit();
+                document.removeEventListener('keydown', keyHandler);
+            }
+        };
+        
+        document.addEventListener('keydown', keyHandler);
+        
+        console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
+    }
+    
+    skipLoopInit() {
+        // Immediate skip - no animation
+        this.closeLoopInit();
+    }
+    
+    closeLoopInit() {
+        const loopInitScreen = document.getElementById('loop-init-screen');
+        if (loopInitScreen) {
+            loopInitScreen.style.display = 'none';
+        }
+        
+        // Execute callback if exists
+        if (this.loopInitCallback) {
+            this.loopInitCallback();
+            this.loopInitCallback = null;
+        }
+    }
+    
+    // ========================================
     // NOTES UNLOCK SYSTEM
     // First-play: hidden. Replay: visible.
     // ========================================
@@ -1562,6 +1644,11 @@ class GameEngine {
         this.standaloneNotesViewer.close();
     }
     
+    closeNotesViewer() {
+        // Alias for closeStandaloneNotes (for close-x button)
+        this.closeStandaloneNotes();
+    }
+    
     // ========================================
     // SETTINGS SYSTEM
     // ========================================
@@ -2089,7 +2176,7 @@ game.devCommands()
         
         // If activating skip, advance immediately
         if (this.skipActive && !this.typewriterActive && !this.choiceMenu.style.display.includes('flex')) {
-            this.advanceDialogue();
+            this.advance();
         }
     }
     
