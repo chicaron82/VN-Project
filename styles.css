@@ -1501,24 +1501,6 @@
     animation: none;
 }
 
-/* Ronnie Route Notes Button Styling */
-#notes-button.ronnie-route {
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4),
-                0 0 20px rgba(0, 200, 255, 0.2);
-}
-
-#notes-button.ronnie-route:hover {
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6),
-                0 0 35px rgba(0, 200, 255, 0.3);
-}
-
-#notes-viewer.ronnie-route {
-    background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(10, 20, 40, 0.98));
-    border: 3px solid #0ff;
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.4),
-                0 0 60px rgba(0, 200, 255, 0.2);
-}
-
 #notes-viewer.tori-route {
     background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
     border: 3px solid #0ff;
@@ -3327,30 +3309,6 @@
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
 }
 
-/* Display Mode Buttons */
-.display-mode-btn {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 8px 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.display-mode-btn:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.display-mode-btn.active {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-}
-
 /* Toggle Switch */
 .toggle-switch {
     position: relative;
@@ -3570,56 +3528,6 @@ input:checked + .toggle-slider:before {
     color: #fff;
     line-height: 1.6;
     font-size: 1em;
-}
-
-/* Distorted Backlog Entry - Hijacked Dialogue */
-.backlog-entry.backlog-distorted {
-    background: rgba(255, 50, 100, 0.08);
-    border-left: 4px solid rgba(255, 50, 100, 0.6);
-    animation: distortionPulse 4s ease-in-out infinite;
-}
-
-@keyframes distortionPulse {
-    0%, 100% {
-        background: rgba(255, 50, 100, 0.08);
-        box-shadow: 0 0 5px rgba(255, 50, 100, 0.2);
-    }
-    50% {
-        background: rgba(255, 50, 100, 0.12);
-        box-shadow: 0 0 10px rgba(255, 50, 100, 0.3);
-    }
-}
-
-.distortion-badge {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 2px 8px;
-    background: rgba(255, 50, 100, 0.3);
-    color: rgba(255, 100, 150, 1);
-    font-size: 0.75em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    border-radius: 3px;
-    text-shadow: 0 0 5px rgba(255, 50, 100, 0.8);
-    animation: distortionBadgeGlitch 6s ease-in-out infinite;
-}
-
-@keyframes distortionBadgeGlitch {
-    0%, 100% {
-        opacity: 0.7;
-        text-shadow: 0 0 5px rgba(255, 50, 100, 0.8);
-    }
-    48% {
-        opacity: 0.7;
-    }
-    50% {
-        opacity: 1;
-        text-shadow: 0 0 10px rgba(255, 50, 100, 1), 
-                     0 0 20px rgba(255, 50, 100, 0.5);
-    }
-    52% {
-        opacity: 0.7;
-    }
 }
 
 .backlog-internal {
@@ -3850,49 +3758,67 @@ input:checked + .toggle-slider:before {
 }
 
 /* ========================================
-   DISPLAY MODE OVERRIDES
-   Force portrait or landscape layout
+   DISPLAY MODE OVERRIDES - FORCE MODES
+   Override media queries with !important
    ======================================== */
 
 /* Force Portrait Mode - Mobile layout even on desktop */
 #game-container.force-portrait #internal-thought {
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
+    top: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90% !important;
 }
 
 #game-container.force-portrait #internal-thought.left-character,
 #game-container.force-portrait #internal-thought.right-character {
-    left: 50%;
-    transform: translateX(-50%);
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+}
+
+#game-container.force-portrait #dialogue-box {
+    width: 95% !important;
+    max-width: 600px !important;
+    bottom: 10px !important;
+}
+
+#game-container.force-portrait #character-left,
+#game-container.force-portrait #character-right {
+    opacity: 0.3 !important;
 }
 
 /* Force Landscape Mode - Desktop layout even on mobile */
 #game-container.force-landscape #internal-thought {
-    top: 10%;
-    width: 35%;
+    top: 10% !important;
+    width: 35% !important;
 }
 
 #game-container.force-landscape #internal-thought.left-character {
-    left: 5%;
-    transform: none;
+    left: 5% !important;
+    right: auto !important;
+    transform: none !important;
 }
 
 #game-container.force-landscape #internal-thought.right-character {
-    right: 5%;
-    left: auto;
-    transform: none;
+    right: 5% !important;
+    left: auto !important;
+    transform: none !important;
+}
+
+#game-container.force-landscape #internal-thought.center {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
 }
 
 #game-container.force-landscape #dialogue-box {
-    bottom: 20px;
-    width: 90%;
-    max-width: 1400px;
+    bottom: 20px !important;
+    width: 90% !important;
+    max-width: 1400px !important;
 }
 
 #game-container.force-landscape #character-left,
 #game-container.force-landscape #character-right {
-    display: block;
-    opacity: 1;
+    display: block !important;
+    opacity: 1 !important;
 }
