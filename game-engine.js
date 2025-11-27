@@ -117,6 +117,9 @@ class GameEngine {
     }
     
     init() {
+        // Show random loading tip
+        this.showRandomLoadingTip();
+        
         // Preload images
         const imagesToPreload = [
             'menudesktop.png',
@@ -1389,6 +1392,13 @@ class GameEngine {
             }, 50);
         }
         
+        // Update previous button visibility
+        const previousButton = document.getElementById('previous-credits');
+        if (previousButton) {
+            // Show previous button only if not on first screen
+            previousButton.style.display = index > 0 ? 'block' : 'none';
+        }
+        
         // Update next button text (change to "BACK TO MENU" on last screen)
         const nextButton = document.getElementById('next-credits');
         if (nextButton) {
@@ -1414,6 +1424,16 @@ class GameEngine {
         }
     }
     
+    previousCredit() {
+        if (this.currentCreditIndex > 0) {
+            this.currentCreditIndex--;
+            this.displayCreditScreen(this.currentCreditIndex);
+        } else {
+            // Already on first screen - exit credits
+            this.closeCredits();
+        }
+    }
+    
     closeCredits() {
         const creditsScreen = document.getElementById('credits-screen');
         if (creditsScreen) {
@@ -1426,6 +1446,37 @@ class GameEngine {
         
         // Reset credits state
         this.currentCreditIndex = 0;
+    }
+    
+    // ========================================
+    // CONTACT SCREEN
+    // ========================================
+    
+    showContact() {
+        const contactScreen = document.getElementById('contact-screen');
+        if (!contactScreen) {
+            console.error('Contact screen element not found');
+            return;
+        }
+        
+        // Hide main menu
+        this.mainMenu.style.display = 'none';
+        
+        // Show contact screen
+        contactScreen.style.display = 'flex';
+        
+        console.log('Contact screen displayed');
+    }
+    
+    closeContact() {
+        const contactScreen = document.getElementById('contact-screen');
+        if (contactScreen) {
+            contactScreen.style.display = 'none';
+        }
+        
+        // Return to main menu
+        this.mainMenu.style.display = 'flex';
+        this.mainMenu.style.opacity = '1';
     }
     
     // ========================================
@@ -2065,5 +2116,33 @@ game.devCommands()
         if (scene.sceneId && scene.sceneId.includes('ending')) return true;
         
         return false;
+    }
+    
+    // ========================================
+    // LOADING TIPS
+    // ========================================
+    
+    showRandomLoadingTip() {
+        const tips = [
+            "💡 Tip: Press [ESC] to pause at any time",
+            "💡 Tip: Both routes contain different perspectives of the same events",
+            "💡 Tip: Complete any ending to unlock Skip mode",
+            "💡 Tip: Hold [CTRL] to temporarily fast-forward dialogue",
+            "💡 Tip: Each choice matters - there are multiple endings",
+            "💡 Tip: Try playing both Ronnie and Tori's routes for the full story",
+            "💡 Tip: The version number isn't just for show...",
+            "💡 Tip: Some notes are only found on specific routes",
+            "🖤 \"Always. Always. Always.\" - Tori",
+            "💙 This game was built through AI collaboration",
+            "💡 Tip: Android back button works throughout the game",
+            "💡 Tip: Save often - there are multiple paths to explore"
+        ];
+        
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        const tipElement = document.getElementById('loading-tip');
+        
+        if (tipElement) {
+            tipElement.textContent = randomTip;
+        }
     }
 }

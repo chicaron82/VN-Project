@@ -164,6 +164,16 @@
     transition: width 0.3s;
 }
 
+#loading-tip {
+    color: #00ffff;
+    font-size: 0.9rem;
+    margin-top: 30px;
+    opacity: 0.8;
+    text-align: center;
+    max-width: 80%;
+    font-style: italic;
+}
+
 /* ========================================
    MAIN MENU
    ======================================== */
@@ -260,6 +270,68 @@
         min-width: 250px;
         font-size: 1em;
         padding: 12px 30px;
+    }
+}
+
+/* ========================================
+   LANDSCAPE LAYOUT - Two Column Grid
+   ======================================== */
+
+/* Default: Single column for portrait/desktop */
+.menu-buttons-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+}
+
+.menu-column-left,
+.menu-column-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.menu-button-contact {
+    margin-top: 20px;
+}
+
+/* Landscape mode: Switch to two columns */
+@media (orientation: landscape) and (max-height: 600px) {
+    .menu-buttons-grid {
+        flex-direction: row;
+        justify-content: center;
+        gap: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .menu-column-left,
+    .menu-column-right {
+        flex: 1;
+        max-width: 300px;
+    }
+    
+    .menu-button {
+        min-width: 100%;
+        margin: 8px 0;
+    }
+    
+    .menu-button-contact {
+        margin-top: 15px;
+        max-width: 300px;
+    }
+    
+    #main-menu h1 {
+        font-size: 2.2em;
+        margin-bottom: 15px;
+    }
+    
+    #main-menu .subtitle {
+        font-size: 1em;
+        margin-bottom: 25px;
     }
 }
 
@@ -660,6 +732,48 @@
     box-shadow: 0 0 20px #f00;
 }
 
+/* Keyboard Shortcuts Section */
+.keyboard-shortcuts {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
+    text-align: left;
+}
+
+.shortcuts-title {
+    color: #00ffff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.shortcut-item {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shortcut-item .key {
+    display: inline-block;
+    background: rgba(0, 255, 255, 0.2);
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.shortcut-item .hint {
+    color: #666;
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
 /* ========================================
    ESC HINT
    ======================================== */
@@ -979,6 +1093,29 @@
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
+#previous-credits {
+    position: fixed;
+    bottom: 40px;
+    left: 40px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 15px 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    z-index: 9600;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+#previous-credits:hover {
+    background: rgba(0, 255, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
 .credits-logo {
     width: 350px;
     max-width: 70%;
@@ -1104,6 +1241,142 @@
     text-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
     letter-spacing: 0.1em;
     line-height: 1.5;
+}
+
+/* ========================================
+   CONTACT SCREEN
+   ======================================== */
+
+/* Universal Close X Button */
+.close-x {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    color: #ff0000;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+.close-x:hover {
+    background: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    transform: scale(1.1);
+}
+
+.close-x:active {
+    transform: scale(0.95);
+}
+
+#contact-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    z-index: 9500;
+    align-items: center;
+    justify-content: center;
+}
+
+#contact-content {
+    background: rgba(10, 10, 30, 0.95);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    padding: 50px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+
+#contact-content h2 {
+    color: #00ffff;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+}
+
+.contact-message {
+    color: #aaa;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.contact-message p {
+    margin-bottom: 20px;
+}
+
+.contact-message strong {
+    color: #00ffff;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.contact-link {
+    display: block;
+    padding: 15px 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #00ffff;
+    border-radius: 5px;
+    color: #00ffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.contact-link:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.contact-thanks {
+    color: #00ffff;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.contact-close {
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 15px 60px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.contact-close:hover {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
 }
 
 @media (max-width: 1200px) {
@@ -3688,12 +3961,15 @@ input:checked + .toggle-slider:before {
 
 @media (max-width: 1023px) and (orientation: landscape) {
     #main-menu-content {
+        height: 100vh; /* Explicitly set viewport height */
+        max-height: 100vh; /* Prevent overflow */
         overflow-y: auto;
         overflow-x: hidden;
         padding: 20px 0;
         justify-content: flex-start;
         scrollbar-width: thin;
         scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
     
     #main-menu-content::-webkit-scrollbar {
@@ -3729,11 +4005,14 @@ input:checked + .toggle-slider:before {
 /* Portrait mode also needs scroll for phones with many buttons */
 @media (max-width: 767px) and (orientation: portrait) {
     #main-menu-content {
+        height: 100vh; /* Explicitly set viewport height */
+        max-height: 100vh; /* Prevent overflow */
         overflow-y: auto;
         overflow-x: hidden;
         padding: 30px 0;
         scrollbar-width: thin;
         scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     }
     
     #main-menu-content::-webkit-scrollbar {

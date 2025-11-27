@@ -78,13 +78,10 @@ class SaveLoadUI {
     // ========================================
     
     handleBackAction() {
-        console.log('Back action triggered');
-        
         // Priority order: Close the most "on top" UI element first
         
         // 1. Confirm dialog is open - close it (same as clicking NO)
         if (this.confirmDialog && this.confirmDialog.classList.contains('active')) {
-            console.log('Closing confirm dialog');
             this.confirmAction(false);
             return;
         }
@@ -92,54 +89,75 @@ class SaveLoadUI {
         // 2. Notes viewer is open (Tori route) - close it
         const notesViewer = document.getElementById('notes-viewer');
         if (notesViewer && notesViewer.style.display === 'block') {
-            console.log('Closing notes viewer');
             notesViewer.style.display = 'none';
             return;
         }
         
-        // 3. Save/Load screen is open - close it
+        // 3. Contact screen is open - close it
+        const contactScreen = document.getElementById('contact-screen');
+        if (contactScreen && contactScreen.style.display === 'flex') {
+            this.game.closeContact();
+            return;
+        }
+        
+        // 4. Settings menu is open - close it
+        const settingsMenu = document.getElementById('settings-menu');
+        if (settingsMenu && settingsMenu.style.display === 'flex') {
+            this.game.closeSettings();
+            return;
+        }
+        
+        // 5. Save/Load screen is open - close it
         if (this.saveLoadScreen && this.saveLoadScreen.classList.contains('active')) {
-            console.log('Closing save/load screen');
             this.game.closeSaveLoadScreen();
             return;
         }
         
-        // 4. Pause menu is open - close it (resume game)
-        console.log('Checking pause menu:', this.pauseMenu, this.pauseMenu?.classList.contains('active'));
+        // 6. Pause menu is open - close it (resume game)
         if (this.pauseMenu && this.pauseMenu.classList.contains('active')) {
-            console.log('Closing pause menu and resuming game');
             this.game.resumeGame();
             return;
         }
         
-        // 5. Credits screen is open - close it
+        // 7. Credits screen is open - go to previous credit screen (or exit if on first)
         const creditsScreen = document.getElementById('credits-screen');
         if (creditsScreen && creditsScreen.style.display === 'flex') {
-            console.log('Closing credits');
-            this.game.closeCredits();
+            this.game.previousCredit();
             return;
         }
         
-        // 6. Route selection screen is open - go back to main menu
+        // 8. Route selection screen is open - go back to main menu
         const routeSelect = document.getElementById('route-select');
         if (routeSelect && routeSelect.style.display === 'block') {
-            console.log('Going back to menu from route select');
             this.game.backToMenu();
             return;
         }
         
-        // 7. In-game (game view visible) - open pause menu
+        // 9. In-game (game view visible) - open pause menu
         if (this.game.gameView && this.game.gameView.style.display === 'flex') {
-            console.log('Opening pause menu from game');
             this.showPauseMenu();
             return;
         }
         
-        console.log('Back action: No action taken (at main menu)');
-        // 8. Main menu is showing - do nothing (or could show exit confirmation)
-        // On Android, pressing back at main menu typically exits the app
-        // We'll let the default behavior happen by not preventing it
-        // (The history state will be consumed, user presses back again to exit)
+        // 10. Main menu is showing - show exit confirmation
+        if (this.game.mainMenu && this.game.mainMenu.style.display === 'flex') {
+            this.showExitConfirmation();
+            return;
+        }
+    }
+    
+    showExitConfirmation() {
+        this.showConfirmDialog(
+            'Exit Game?',
+            'Are you sure you want to leave Version 848?',
+            () => {
+                // YES - Allow browser to go back (exits page)
+                window.history.back();
+            },
+            () => {
+                // NO - Stay in game (do nothing, dialog closes)
+            }
+        );
     }
     
     // ========================================
@@ -148,23 +166,10 @@ class SaveLoadUI {
     
     showPauseMenu() {
         this.pauseMenu.classList.add('active');
-        
-        // Pause tether decay while in pause menu
-        if (this.game.currentRoute && this.game.currentRoute.tetherSystem) {
-            this.game.currentRoute.tetherSystem.stopDecay();
-        }
-        
-        // Push another history state so back button can close pause menu
-        this.pushHistoryState();
     }
     
     hidePauseMenu() {
         this.pauseMenu.classList.remove('active');
-        
-        // Resume tether decay when leaving pause menu
-        if (this.game.currentRoute && this.game.currentRoute.tetherSystem) {
-            this.game.currentRoute.tetherSystem.startDecay();
-        }
     }
     
     // ========================================
@@ -254,18 +259,7 @@ class SaveLoadUI {
             }
         } else {
             slotElement.classList.remove('empty');
-            
-            // Display route name with VERSION number
-            const versionText = slotInfo.version ? ` [v${slotInfo.version}]` : '';
-            const routeText = slotInfo.routeName === 'ronnie' ? 'Ronnie Route' : 'Tori Route';
-            routeElement.textContent = routeText + versionText;
-            
-            // Add color coding for failed loops
-            if (slotInfo.version && parseInt(slotInfo.version) > 848) {
-                routeElement.style.color = '#ff6b6b'; // Red for failed attempts
-            } else {
-                routeElement.style.color = '#0ff'; // Cyan for original/success
-            }
+            routeElement.textContent = slotInfo.routeName === 'ronnie' ? 'Ronnie Route' : 'Tori Route';
             
             const dateStr = slotInfo.timestamp.toLocaleDateString();
             const timeStr = slotInfo.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -300,7 +294,6 @@ class SaveLoadUI {
         return {
             isEmpty: false,
             routeName: saveData.routeName,
-            version: saveData.version, // Include version for display
             timestamp: new Date(saveData.timestamp)
         };
     }
@@ -431,12 +424,8 @@ class SaveLoadUI {
     
     performSave(slotNumber, customLabel = null) {
         const success = this.game.saveManager.saveGame(slotNumber, false, customLabel);
-        // Always refresh to show current state (whether save succeeded or failed)
-        this.refreshSaveSlots();
-        
-        if (!success) {
-            // Save was blocked - make it very clear
-            console.log('Save blocked - UI refreshed to show actual state');
+        if (success) {
+            this.refreshSaveSlots();
         }
     }
     
@@ -517,10 +506,9 @@ class SaveLoadUI {
             'Return to Menu?',
             'Save your progress before leaving?',
             () => {
-                // YES - Open save slots screen for player to choose
-                this.hidePauseMenu(); // Close pause first
-                this.game.showSaveLoadScreen('save'); // Open save screen
-                // Note: Player will return to menu after saving via close button
+                // YES - Auto-save before leaving
+                this.game.saveManager.autoSave();
+                goToMainMenu();
             },
             () => {
                 // NO - Just leave without saving

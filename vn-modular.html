@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <link rel="apple-touch-icon" sizes="180x180" href="https://chicaron82.github.io/VN-Project/apple-touch-icon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://chicaron82.github.io/VN-Project/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://chicaron82.github.io/VN-Project/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="https://chicaron82.github.io/VN-Project/favicon-16x16.png">
     <link rel="icon" type="image/x-icon" href="https://chicaron82.github.io/VN-Project/favicon.ico">
@@ -89,6 +90,7 @@
             <div id="loading-bar-container">
                 <div id="loading-bar"></div>
             </div>
+            <div id="loading-tip"></div>
         </div>
 
         <!-- Main Menu -->
@@ -99,12 +101,23 @@
             <div id="main-menu-content">
                 <h1>VERSION 848</h1>
                 <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
-                <button class="menu-button" onclick="game.startStory()">START STORY</button>
-                <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
-                <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
-                <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
-                <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+                
+                <!-- Button Grid (3 left + 3 right in landscape) -->
+                <div class="menu-buttons-grid">
+                    <div class="menu-column-left">
+                        <button class="menu-button" onclick="game.startStory()">START STORY</button>
+                        <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
+                        <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                    </div>
+                    <div class="menu-column-right">
+                        <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
+                        <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
+                        <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+                    </div>
+                </div>
+                
+                <!-- Contact Button (centered below grid) -->
+                <button class="menu-button menu-button-contact" onclick="game.showContact()">CONTACT</button>
             </div>
         </div>
 
@@ -192,10 +205,21 @@
 
             <!-- Pause Menu Button -->
             <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()"></button>
+            
+            <!-- Skip Button (Unlocked after completing any ending) -->
+            <button id="skip-button" onclick="game.toggleSkip()" style="display: none;" title="Skip read text [S]">
+                SKIP >>
+            </button>
+            
+            <!-- Skip Indicator (Shows when skip is active) -->
+            <div id="skip-indicator" style="display: none;">
+                ⏩ SKIPPING...
+            </div>
         </div>
 
         <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
+            <button class="close-x" onclick="game.resumeGame()">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
@@ -204,11 +228,21 @@
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                 <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
+                
+                <!-- Keyboard Shortcuts -->
+                <div class="keyboard-shortcuts">
+                    <div class="shortcuts-title">KEYBOARD SHORTCUTS</div>
+                    <div class="shortcut-item"><span class="key">ESC</span> Pause / Back</div>
+                    <div class="shortcut-item"><span class="key">SPACE</span> or <span class="key">ENTER</span> Advance</div>
+                    <div class="shortcut-item"><span class="key">S</span> Toggle Skip <span class="hint">(unlocked after completing an ending)</span></div>
+                    <div class="shortcut-item"><span class="key">CTRL</span> Hold to skip</div>
+                </div>
             </div>
         </div>
 
         <!-- Settings Menu -->
         <div id="settings-menu" style="display: none;">
+            <button class="close-x" onclick="game.closeSettings()">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
                 
@@ -225,7 +259,7 @@
                 
                 <!-- Display Mode -->
                 <div class="setting-row">
-                    <label class="setting-label">DISPLAY MODE</label>
+                    <label class="setting-label">DISPLAY MODE (EXPERIMENTAL)</label>
                     <div class="setting-control">
                         <button class="display-mode-btn active" data-mode="auto">AUTO</button>
                         <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
@@ -287,6 +321,7 @@
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
+            <button class="close-x" onclick="game.closeSaveLoadScreen()">✕</button>
             <div id="save-load-content">
                 <h2 id="save-load-title">SAVE GAME</h2>
                 
@@ -369,6 +404,7 @@
 
         <!-- Notes Viewer (Tori Route Only) -->
         <div id="notes-viewer">
+            <button class="close-x" onclick="document.getElementById('notes-viewer').style.display='none'">✕</button>
             <div id="notes-content">
                 <h2>COLLECTED NOTES</h2>
                 <div id="notes-list"></div>
@@ -381,6 +417,8 @@
 
         <!-- Credits Screen -->
         <div id="credits-screen">
+            <button class="close-x" onclick="game.closeCredits()">✕</button>
+            <button id="previous-credits" onclick="game.previousCredit()" style="display: none;">< PREVIOUS</button>
             <button id="next-credits" onclick="game.nextCredit()">NEXT ></button>
             
             <!-- Screen 1: UV7 Logo -->
@@ -555,10 +593,39 @@
                 </div>
             </div>
         </div>
+
+        <!-- Contact Screen -->
+        <div id="contact-screen">
+            <button class="close-x" onclick="game.closeContact()">✕</button>
+            <div id="contact-content">
+                <h2>CONTACT</h2>
+                <div class="contact-message">
+                    <p>Version 848 was created by <strong>Aaron (Chicharon)</strong><br>
+                    in collaboration with United Voices 7.</p>
+                    
+                    <p>Feedback? Bug reports? Just want to chat?</p>
+                    
+                    <div class="contact-links">
+                        <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
+                            📷 Instagram: @androidsauna
+                        </a>
+                        <a href="/cdn-cgi/l/email-protection#f2819b9e84978090809d859c95878bb29d87869e9d9d99dc919d9f" class="contact-link">
+                            ✉️ Email: <span class="__cf_email__" data-cfemail="98ebf1f4eefdeafaeaf7eff6ffede1d8f7edecf4f7f7f3b6fbf7f5">[email&#160;protected]</span>
+                        </a>
+                        <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
+                            💻 GitHub: chicaron82
+                        </a>
+                    </div>
+                    
+                    <p class="contact-thanks">Thanks for playing! 💙</p>
+                </div>
+                <button class="contact-close" onclick="game.closeContact()">CLOSE</button>
+            </div>
+        </div>
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
-    <script src="game-config.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="game-config.js"></script>
     <script src="settings-manager.js"></script>
     <script src="tether-system.js"></script>
     <script src="collectibles-manager.js"></script>
@@ -717,14 +784,4 @@
             
             const splash = document.getElementById('uv7-splash');
             if (!splash) {
-                console.error('Splash element not found on DOMContentLoaded!');
-                game = new GameEngine();
-                return;
-            }
-            
-            // Start splash sequence
-            initUV7Splash();
-        });
-    </script>
-</body>
-</html>
+                consol
