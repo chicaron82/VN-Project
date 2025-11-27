@@ -50,7 +50,6 @@
             position: relative;
         }
     </style>
-    <!-- Favicon package -->
 </head>
 <body>
     <!-- UV7 SPLASH SCREEN (Shows First) -->
@@ -90,7 +89,6 @@
             <div id="loading-bar-container">
                 <div id="loading-bar"></div>
             </div>
-            <div id="loading-tip"></div>
         </div>
 
         <!-- Main Menu -->
@@ -219,7 +217,6 @@
 
         <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
-            <button class="close-x" onclick="game.resumeGame()">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
@@ -228,21 +225,11 @@
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
                 <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                 <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
-                
-                <!-- Keyboard Shortcuts -->
-                <div class="keyboard-shortcuts">
-                    <div class="shortcuts-title">KEYBOARD SHORTCUTS</div>
-                    <div class="shortcut-item"><span class="key">ESC</span> Pause / Back</div>
-                    <div class="shortcut-item"><span class="key">SPACE</span> or <span class="key">ENTER</span> Advance</div>
-                    <div class="shortcut-item"><span class="key">S</span> Toggle Skip <span class="hint">(unlocked after completing an ending)</span></div>
-                    <div class="shortcut-item"><span class="key">CTRL</span> Hold to skip</div>
-                </div>
             </div>
         </div>
 
         <!-- Settings Menu -->
         <div id="settings-menu" style="display: none;">
-            <button class="close-x" onclick="game.closeSettings()">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
                 
@@ -321,7 +308,6 @@
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
-            <button class="close-x" onclick="game.closeSaveLoadScreen()">✕</button>
             <div id="save-load-content">
                 <h2 id="save-load-title">SAVE GAME</h2>
                 
@@ -404,7 +390,6 @@
 
         <!-- Notes Viewer (Tori Route Only) -->
         <div id="notes-viewer">
-            <button class="close-x" onclick="document.getElementById('notes-viewer').style.display='none'">✕</button>
             <div id="notes-content">
                 <h2>COLLECTED NOTES</h2>
                 <div id="notes-list"></div>
@@ -417,8 +402,6 @@
 
         <!-- Credits Screen -->
         <div id="credits-screen">
-            <button class="close-x" onclick="game.closeCredits()">✕</button>
-            <button id="previous-credits" onclick="game.previousCredit()" style="display: none;">< PREVIOUS</button>
             <button id="next-credits" onclick="game.nextCredit()">NEXT ></button>
             
             <!-- Screen 1: UV7 Logo -->
@@ -609,8 +592,8 @@
                         <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
                             📷 Instagram: @androidsauna
                         </a>
-                        <a href="/cdn-cgi/l/email-protection#f2819b9e84978090809d859c95878bb29d87869e9d9d99dc919d9f" class="contact-link">
-                            ✉️ Email: <span class="__cf_email__" data-cfemail="98ebf1f4eefdeafaeaf7eff6ffede1d8f7edecf4f7f7f3b6fbf7f5">[email&#160;protected]</span>
+                        <a href="mailto:silverbrownguy@outlook.com" class="contact-link">
+                            ✉️ Email: silverbrownguy@outlook.com
                         </a>
                         <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
                             💻 GitHub: chicaron82
@@ -625,8 +608,8 @@
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="game-config.js"></script>
-    <script src="settings-manager.js"></script>
+    <script src="game-config.js"></script>
+    <script src="settings-manager-v2.js"></script>
     <script src="tether-system.js"></script>
     <script src="collectibles-manager.js"></script>
     <script src="standalone-notes-viewer.js"></script>
@@ -784,4 +767,14 @@
             
             const splash = document.getElementById('uv7-splash');
             if (!splash) {
-                consol
+                console.error('Splash element not found on DOMContentLoaded!');
+                game = new GameEngine();
+                return;
+            }
+            
+            // Start splash sequence
+            initUV7Splash();
+        });
+    </script>
+</body>
+</html>
