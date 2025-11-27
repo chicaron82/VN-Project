@@ -517,9 +517,10 @@ class SaveLoadUI {
             'Return to Menu?',
             'Save your progress before leaving?',
             () => {
-                // YES - Auto-save before leaving
-                this.game.saveManager.autoSave();
-                goToMainMenu();
+                // YES - Open save slots screen for player to choose
+                this.hidePauseMenu(); // Close pause first
+                this.game.showSaveLoadScreen('save'); // Open save screen
+                // Note: Player will return to menu after saving via close button
             },
             () => {
                 // NO - Just leave without saving
