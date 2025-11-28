@@ -4231,3 +4231,126 @@ input:checked + .toggle-slider:before {
         font-size: 1.5em;
     }
 }
+
+/* ========================================
+   LOOP REINIT SCREEN
+   Bootstrap Paradox Timeline Increment
+   ======================================== */
+
+#loop-init-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+}
+
+#loop-init-content {
+    text-align: center;
+    max-width: 800px;
+    padding: 40px;
+    pointer-events: none; /* Allow clicks to bubble to parent */
+}
+
+.loop-init-message {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 40px;
+}
+
+.loop-init-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px #0ff;
+    letter-spacing: 0.15em;
+}
+
+.loop-init-status {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    color: #f00;
+}
+
+.loop-init-boot {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #0f0;
+}
+
+/* Version number glitch effect */
+.version-glitch {
+    display: inline-block;
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+    0%, 100% {
+        text-shadow: 
+            2px 0 #f00,
+            -2px 0 #0ff;
+    }
+    25% {
+        text-shadow: 
+            -2px 0 #f00,
+            2px 0 #0ff;
+    }
+    50% {
+        text-shadow: 
+            2px 2px #f00,
+            -2px -2px #0ff;
+    }
+    75% {
+        text-shadow: 
+            -2px 2px #f00,
+            2px -2px #0ff;
+    }
+}
+
+.loop-init-continue {
+    font-size: 1em;
+    color: #888;
+    margin-top: 30px;
+    font-style: italic;
+}
+
+.loop-skip-btn {
+    display: none; /* Hidden until loopInitSeen */
+    background: rgba(255, 255, 0, 0.1);
+    color: #ff0;
+    border: 2px solid #ff0;
+    padding: 12px 30px;
+    margin-top: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    pointer-events: auto; /* Re-enable clicks on button */
+}
+
+.loop-skip-btn:hover {
+    background: #ff0;
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 255, 0, 0.8);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .loop-init-title {
+        font-size: 1.5em;
+    }
+    
+    .loop-init-status {
+        font-size: 1em;
+    }
+    
+    .loop-init-boot {
+        font-size: 1.2em;
+    }
+}
