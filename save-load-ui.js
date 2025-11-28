@@ -9,6 +9,7 @@ class SaveLoadUI {
         this.game = game;
         this.currentMode = 'save'; // 'save' or 'load'
         this.confirmCallback = null;
+        this.returningToMainMenu = false; // Flag for save -> main menu flow
         
         this.initElements();
         this.setupKeyboardControls();
@@ -197,7 +198,32 @@ class SaveLoadUI {
     closeSaveLoadScreen() {
         this.saveLoadScreen.classList.remove('active');
         
-        // Return to pause menu if game is active
+        // Check if we should continue to main menu after saving
+        if (this.returningToMainMenu) {
+            this.returningToMainMenu = false; // Reset flag
+            
+            // Actually go to main menu
+            this.game.gameView.style.display = 'none';
+            this.game.mainMenu.style.display = 'flex';
+            this.game.mainMenu.style.opacity = '1';
+            
+            // Hide route-specific UI
+            if (this.game.tetherUI) this.game.tetherUI.style.display = 'none';
+            if (this.game.notesButton) this.game.notesButton.style.display = 'none';
+            
+            // Stop tether decay if running
+            if (this.game.currentRoute && this.game.currentRoute.stopTetherDecay) {
+                this.game.currentRoute.stopTetherDecay();
+            }
+            
+            // Clear current route
+            this.game.currentRoute = null;
+            
+            console.log('Returned to main menu after save');
+            return;
+        }
+        
+        // Normal flow: Return to pause menu if game is active
         if (this.game.gameView.style.display === 'flex') {
             this.showPauseMenu();
         }
@@ -506,9 +532,10 @@ class SaveLoadUI {
             'Return to Menu?',
             'Save your progress before leaving?',
             () => {
-                // YES - Auto-save before leaving
-                this.game.saveManager.autoSave();
-                goToMainMenu();
+                // YES - Open save screen to pick slot
+                this.returningToMainMenu = true; // Flag to continue to menu after save
+                this.hidePauseMenu(); // Hide pause menu first
+                this.showSaveLoadScreen('save'); // Open save/load in save mode
             },
             () => {
                 // NO - Just leave without saving
