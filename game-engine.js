@@ -122,9 +122,27 @@ class GameEngine {
         
         // Preload images
         const imagesToPreload = [
+            // CRITICAL - Menu assets
             'menudesktop.png',
             'menumobile.png',
-            'desktopVersion.png'
+            'desktopVersion.png',
+            'UnitedVoices7.png',
+            
+            // GAMEPLAY - Character sprites
+            'ronnie-sprite.png',
+            'tori-sprite.png',
+            
+            // GAMEPLAY - Backgrounds
+            'apartment.png',
+            'hospital.png',
+            'genericBack.png',
+            'digitalSpace.png',
+            
+            // TORI ROUTE - Echo sprites
+            'echo-1-sprite.png',
+            'echo-2-sprite.png',
+            'despair-sprite.png',
+            'three-echoes-sprite.png'
         ];
         
         let imagesLoaded = 0;
