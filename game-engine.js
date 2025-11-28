@@ -395,12 +395,26 @@ class GameEngine {
         this.loopInitCallback = callback;
         
         // Click anywhere to continue
-        const continueHandler = () => {
+        const continueHandler = (e) => {
+            // Don't close if clicking the skip button (it has its own handler)
+            if (e.target && e.target.id === 'loop-skip-button') {
+                return;
+            }
             this.closeLoopInit();
             loopInitScreen.removeEventListener('click', continueHandler);
+            const loopInitContent = document.getElementById('loop-init-content');
+            if (loopInitContent) {
+                loopInitContent.removeEventListener('click', continueHandler);
+            }
         };
         
         loopInitScreen.addEventListener('click', continueHandler);
+        
+        // Also add to content div (in case pointer-events is blocking)
+        const loopInitContent = document.getElementById('loop-init-content');
+        if (loopInitContent) {
+            loopInitContent.addEventListener('click', continueHandler);
+        }
         
         // Keyboard support (Space/Enter)
         const keyHandler = (e) => {
@@ -723,7 +737,21 @@ class GameEngine {
         if (scene.dialogue) {
             // Pass internal text length so pagination considers BOTH dialogue + internal
             const internalLength = scene.internal ? scene.internal.length : 0;
-            this.typewriterText(this.dialogueText, scene.dialogue, null, internalLength);
+            
+            // Create callback for skip auto-advance
+            const typewriterCallback = () => {
+                // If skip is active and this scene is read, auto-advance
+                if (this.skipActive && sceneId && this.isSceneRead(sceneId)) {
+                    // Small delay so player can see the text briefly
+                    setTimeout(() => {
+                        if (this.skipActive && !this.choiceMenu.style.display.includes('flex')) {
+                            this.advance();
+                        }
+                    }, 100); // 100ms pause on each scene
+                }
+            };
+            
+            this.typewriterText(this.dialogueText, scene.dialogue, typewriterCallback, internalLength);
         }
         
         // ========================================
