@@ -328,7 +328,9 @@
 
 .menu-button-contact {
     margin-top: 20px;
-    max-width: 300px; /* Match other menu buttons */
+    width: 300px !important; /* Force exact width, override flex */
+    max-width: 300px;
+    flex-shrink: 0; /* Don't shrink */
 }
 
 /* Landscape mode: Switch to two columns */
