@@ -52,7 +52,7 @@
     </style>
 </head>
 <body>
-    <!-- UV7 SPLASH SCREEN (Shows First) -->
+    <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
         <div class="uv7-container">
             <!-- "Powered by" text above logo -->
@@ -75,6 +75,14 @@
                 <source src="UnitedVoices7.webm" type="video/webm">
             </video>
             
+            <!-- Loading Bar (below logo) -->
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+            
+            <!-- Loading Tip (below bar) -->
+            <div id="loading-tip">💡 Loading...</div>
+            
             <!-- Skip Button -->
             <button id="uv7-skip-button" class="uv7-skip-btn">
                 SKIP <span class="skip-arrow">→</span>
@@ -83,14 +91,7 @@
     </div>
 
     <div id="game-container">
-        <!-- Loading Screen -->
-        <div id="loading-screen">
-            <h2>LOADING VERSION 848...</h2>
-            <div id="loading-bar-container">
-                <div id="loading-bar"></div>
-            </div>
-            <div id="loading-tip">💡 Loading...</div>
-        </div>
+        <!-- Loading Screen REMOVED - merged into UV7 splash above -->
 
         <!-- Main Menu -->
         <div id="main-menu">
@@ -667,16 +668,15 @@
         const VIDEO_DURATION = 6000;  // Expected video duration (ms)
         
         function initUV7Splash() {
-            console.log('UV7 Splash: Initializing with video support...');
+            console.log('UV7 Splash: Initializing combined splash + loading...');
             
             const splash = document.getElementById('uv7-splash');
-            const loadingScreen = document.getElementById('loading-screen');
             const staticLogo = document.querySelector('.uv7-logo-static');
             const videoLogo = document.getElementById('uv7-logo-video');
             const skipButton = document.getElementById('uv7-skip-button');
             
             // Validation
-            if (!splash || !loadingScreen) {
+            if (!splash) {
                 console.error('UV7 Splash: Required elements not found!');
                 game = new GameEngine();
                 return;
@@ -684,7 +684,7 @@
             
             let splashCompleted = false;
             
-            // Function to complete splash and transition to loading
+            // Function to complete splash and show main menu
             function completeSplash() {
                 if (splashCompleted) return;
                 splashCompleted = true;
@@ -699,14 +699,14 @@
                 // Fade out splash
                 splash.classList.add('fade-out');
                 
-                // After fade, show loading and init game
+                // After fade, hide splash (game engine already initialized)
                 setTimeout(() => {
                     splash.style.display = 'none';
-                    loadingScreen.style.display = 'flex';
-                    console.log('UV7 Splash: Initializing GameEngine...');
-                    game = new GameEngine();
                 }, 1500); // Match fade-out animation duration
             }
+            
+            // Expose completeSplash globally so GameEngine can call it when loading finishes
+            window.completeSplash = completeSplash;
             
             // Skip button handler
             if (skipButton) {
@@ -786,7 +786,7 @@
         
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded - Starting UV7 sequence');
+            console.log('DOM Content Loaded - Starting combined splash + loading');
             
             const splash = document.getElementById('uv7-splash');
             if (!splash) {
@@ -795,8 +795,12 @@
                 return;
             }
             
-            // Start splash sequence
+            // Start splash sequence (video/static logo)
             initUV7Splash();
+            
+            // Initialize GameEngine immediately (starts loading assets)
+            console.log('Initializing GameEngine (loading will happen during splash)...');
+            game = new GameEngine();
         });
     </script>
 </body>
