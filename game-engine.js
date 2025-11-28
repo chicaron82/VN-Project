@@ -368,9 +368,10 @@ class GameEngine {
             return;
         }
         
-        // Calculate versions
-        const prevVersion = this.loopVersion;
-        const newVersion = this.loopVersion + 1;
+        // Use current version as "previous failed"
+        // And loopVersion is already incremented, so it's the "new" version
+        const prevVersion = this.loopVersion - 1; // The one that just failed
+        const newVersion = this.loopVersion; // The new attempt
         
         // Update text
         if (prevVersionEl) prevVersionEl.textContent = prevVersion;
@@ -542,8 +543,13 @@ class GameEngine {
                 this.gameView.style.opacity = '1';
             }, 100);
             
-            // Show notes button if player has completed any ending
-            if (this.hasCompletedAnyEnding()) {
+            // Show notes button for Tori's route (has collectibles)
+            if (routeName === 'tori') {
+                if (this.notesButton) {
+                    this.notesButton.style.display = 'block';
+                }
+            } else if (this.hasCompletedAnyEnding()) {
+                // Show for other routes only after completing an ending
                 if (this.notesButton) {
                     this.notesButton.style.display = 'block';
                 }
