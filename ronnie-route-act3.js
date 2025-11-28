@@ -656,9 +656,8 @@ class RonnieRouteAct3 {
     }
 
     badRoute_retry() {
-        // Use game engine's centralized version tracking
         const currentVersion = this.game.loopVersion;
-        const nextVersion = this.game.incrementVersion();
+        const nextVersion = currentVersion + 1; // Calculate but don't increment yet
         
         this.game.displayScene({
             character: 'System',
@@ -671,8 +670,13 @@ class RonnieRouteAct3 {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Reset and restart Ronnie's route
-                    this.route.start();
+                    // NOW increment version (only on actual retry)
+                    this.game.incrementVersion();
+                    // Show loop reinit screen before restarting
+                    this.game.showLoopInit(() => {
+                        // Reset and restart Ronnie's route after loop init
+                        this.route.start();
+                    });
                 } else {
                     // End game
                     this.game.returnToMainMenu();
@@ -822,9 +826,8 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_retry() {
-        // Use game engine's centralized version tracking
         const currentVersion = this.game.loopVersion;
-        const nextVersion = this.game.incrementVersion();
+        const nextVersion = currentVersion + 1; // Calculate but don't increment yet
         
         this.game.displayScene({
             character: 'System',
@@ -836,8 +839,13 @@ class RonnieRouteAct3 {
             ],
             onChoice: (choice) => {
                 if (choice === 'retry') {
-                    // Reset and restart Ronnie's route
-                    this.route.start();
+                    // NOW increment version (only on actual retry)
+                    this.game.incrementVersion();
+                    // Show loop reinit screen before restarting
+                    this.game.showLoopInit(() => {
+                        // Reset and restart Ronnie's route after loop init
+                        this.route.start();
+                    });
                 } else {
                     this.game.returnToMainMenu();
                 }
