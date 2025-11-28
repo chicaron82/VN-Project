@@ -117,6 +117,10 @@ class GameEngine {
     }
     
     init() {
+        // Track splash start time for minimum display duration
+        this.splashStartTime = Date.now();
+        this.minSplashDuration = 6000; // 6 seconds minimum (matches video length)
+        
         // Show random loading tip
         this.showRandomLoadingTip();
         
@@ -156,6 +160,13 @@ class GameEngine {
                 this.loadingBar.style.width = progress + '%';
                 
                 if (imagesLoaded === totalImages) {
+                    // Calculate how long splash has been showing
+                    const elapsed = Date.now() - this.splashStartTime;
+                    const remaining = Math.max(0, this.minSplashDuration - elapsed);
+                    
+                    console.log(`Loading complete. Elapsed: ${elapsed}ms, Waiting: ${remaining}ms more`);
+                    
+                    // Wait for remaining time to hit minimum 6 seconds
                     setTimeout(() => {
                         // Hide UV7 splash (calls window.completeSplash if available)
                         if (window.completeSplash) {
@@ -165,7 +176,7 @@ class GameEngine {
                         // Show main menu
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, 300);
+                    }, remaining + 300); // Additional 300ms for fade transition
                 }
             };
             img.onerror = () => {
@@ -175,6 +186,13 @@ class GameEngine {
                 this.loadingBar.style.width = progress + '%';
                 
                 if (imagesLoaded === totalImages) {
+                    // Calculate how long splash has been showing
+                    const elapsed = Date.now() - this.splashStartTime;
+                    const remaining = Math.max(0, this.minSplashDuration - elapsed);
+                    
+                    console.log(`Loading complete (with errors). Elapsed: ${elapsed}ms, Waiting: ${remaining}ms more`);
+                    
+                    // Wait for remaining time to hit minimum 6 seconds
                     setTimeout(() => {
                         // Hide UV7 splash (calls window.completeSplash if available)
                         if (window.completeSplash) {
@@ -184,7 +202,7 @@ class GameEngine {
                         // Show main menu
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
-                    }, 300);
+                    }, remaining + 300); // Additional 300ms for fade transition
                 }
             };
             img.src = src;
