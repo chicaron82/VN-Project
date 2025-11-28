@@ -157,7 +157,12 @@ class GameEngine {
                 
                 if (imagesLoaded === totalImages) {
                     setTimeout(() => {
-                        this.loading.style.display = 'none';
+                        // Hide UV7 splash (calls window.completeSplash if available)
+                        if (window.completeSplash) {
+                            window.completeSplash();
+                        }
+                        
+                        // Show main menu
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
                     }, 300);
@@ -171,7 +176,12 @@ class GameEngine {
                 
                 if (imagesLoaded === totalImages) {
                     setTimeout(() => {
-                        this.loading.style.display = 'none';
+                        // Hide UV7 splash (calls window.completeSplash if available)
+                        if (window.completeSplash) {
+                            window.completeSplash();
+                        }
+                        
+                        // Show main menu
                         this.mainMenu.style.display = 'flex';
                         this.mainMenu.style.opacity = '1';
                     }, 300);

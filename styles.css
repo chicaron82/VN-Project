@@ -131,8 +131,40 @@
     }
 }
 
+/* Loading elements inside UV7 splash */
+#loading-bar-container {
+    width: 400px;
+    max-width: 80vw;
+    height: 8px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    margin: 30px auto 20px;
+    overflow: hidden;
+}
+
+#loading-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #0ff, #00ffaa);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#loading-tip {
+    color: rgba(220, 210, 180, 0.8);
+    font-size: 0.95rem;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
 /* ========================================
-   LOADING SCREEN
+   OLD LOADING SCREEN (Deprecated - now merged into UV7 splash)
    ======================================== */
 
 #loading-screen {
@@ -4254,7 +4286,6 @@ input:checked + .toggle-slider:before {
     text-align: center;
     max-width: 800px;
     padding: 40px;
-    pointer-events: none; /* Allow clicks to bubble to parent */
 }
 
 .loop-init-message {
@@ -4331,7 +4362,6 @@ input:checked + .toggle-slider:before {
     cursor: pointer;
     transition: all 0.3s ease;
     border-radius: 5px;
-    pointer-events: auto; /* Re-enable clicks on button */
 }
 
 .loop-skip-btn:hover {
