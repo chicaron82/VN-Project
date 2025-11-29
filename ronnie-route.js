@@ -22,14 +22,21 @@ class RonnieRoute {
     // ========================================
     
     start() {
-        // Hide notes button during Ronnie's route (only shown at endings)
-        if (this.game.notesButton) {
-            this.game.notesButton.style.display = 'none';
-        }
-        
-        // Initialize Ronnie's collectibles (ending notes only)
+        // Initialize Ronnie's collectibles FIRST so we can check if notes exist
         this.collectiblesManager.init();
         this.collectiblesManager.defineRonnieNotes();
+        
+        // ZEERAH'S FIX: Show notes button if player has collected ANY notes OR completed any ending
+        if (this.game.notesButton) {
+            const hasCompletedEnding = this.game.hasCompletedAnyEnding();
+            const hasCollectedNotes = this.collectiblesManager.getCollectedCount() > 0;
+            
+            if (hasCompletedEnding || hasCollectedNotes) {
+                this.game.notesButton.style.display = 'block';
+            } else {
+                this.game.notesButton.style.display = 'none';
+            }
+        }
         
         // Unlock GenZee's version number note at route start
         this.collectiblesManager.unlockNote('gz1');
