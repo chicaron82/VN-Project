@@ -411,7 +411,7 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_24_ronnieg rabs(),
+            next: () => this.ronnie_act3_24_ronniegrabs(),
             delay: 3000,
             style: 'critical'
         }, 'ronnie_act3_23_toriscreaming');
