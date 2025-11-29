@@ -52,7 +52,7 @@
     </style>
 </head>
 <body>
-    <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
+    <!-- UV7 SPLASH SCREEN (Shows First) -->
     <div id="uv7-splash">
         <div class="uv7-container">
             <!-- "Powered by" text above logo -->
@@ -75,14 +75,6 @@
                 <source src="UnitedVoices7.webm" type="video/webm">
             </video>
             
-            <!-- Loading Bar (below logo) -->
-            <div id="loading-bar-container">
-                <div id="loading-bar"></div>
-            </div>
-            
-            <!-- Loading Tip (below bar) -->
-            <div id="loading-tip">💡 Loading...</div>
-            
             <!-- Skip Button -->
             <button id="uv7-skip-button" class="uv7-skip-btn">
                 SKIP <span class="skip-arrow">→</span>
@@ -91,7 +83,13 @@
     </div>
 
     <div id="game-container">
-        <!-- Loading Screen REMOVED - merged into UV7 splash above -->
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <h2>LOADING VERSION 848...</h2>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+        </div>
 
         <!-- Main Menu -->
         <div id="main-menu">
@@ -219,7 +217,6 @@
 
         <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
-            <button class="close-x" onclick="game.resumeGame()">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
                 <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
@@ -233,7 +230,6 @@
 
         <!-- Settings Menu -->
         <div id="settings-menu" style="display: none;">
-            <button class="close-x" onclick="game.closeSettings()">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
                 
@@ -312,7 +308,6 @@
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
-            <button class="close-x" onclick="game.closeSaveLoadScreen()">✕</button>
             <div id="save-load-content">
                 <h2 id="save-load-title">SAVE GAME</h2>
                 
@@ -395,7 +390,6 @@
 
         <!-- Notes Viewer (Tori Route Only) -->
         <div id="notes-viewer">
-            <button class="close-x" onclick="game.closeNotesViewer()">✕</button>
             <div id="notes-content">
                 <h2>COLLECTED NOTES</h2>
                 <div id="notes-list"></div>
@@ -408,7 +402,6 @@
 
         <!-- Credits Screen -->
         <div id="credits-screen">
-            <button class="close-x" onclick="game.closeCredits()">✕</button>
             <button id="next-credits" onclick="game.nextCredit()">NEXT ></button>
             
             <!-- Screen 1: UV7 Logo -->
@@ -612,28 +605,11 @@
                 <button class="contact-close" onclick="game.closeContact()">CLOSE</button>
             </div>
         </div>
-
-        <!-- Loop Reinit Screen -->
-        <div id="loop-init-screen" style="display: none;">
-            <div id="loop-init-content">
-                <div class="loop-init-message">
-                    <div class="loop-init-title">REINITIALIZING LOOP...</div>
-                    <div class="loop-init-status">
-                        <span>Previous attempt: v</span><span id="loop-prev-version">848</span><span> - STATUS: FAILED</span>
-                    </div>
-                    <div class="loop-init-boot">
-                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="version-glitch">849</span>
-                    </div>
-                </div>
-                <div class="loop-init-continue">[Click anywhere to continue]</div>
-                <button id="loop-skip-button" class="loop-skip-btn" onclick="game.skipLoopInit()">SKIP REINIT</button>
-            </div>
-        </div>
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
     <script src="game-config.js"></script>
-    <script src="settings-manager.js"></script>
+    <script src="settings-manager-v2.js"></script>
     <script src="tether-system.js"></script>
     <script src="collectibles-manager.js"></script>
     <script src="standalone-notes-viewer.js"></script>
@@ -668,15 +644,16 @@
         const VIDEO_DURATION = 6000;  // Expected video duration (ms)
         
         function initUV7Splash() {
-            console.log('UV7 Splash: Initializing combined splash + loading...');
+            console.log('UV7 Splash: Initializing with video support...');
             
             const splash = document.getElementById('uv7-splash');
+            const loadingScreen = document.getElementById('loading-screen');
             const staticLogo = document.querySelector('.uv7-logo-static');
             const videoLogo = document.getElementById('uv7-logo-video');
             const skipButton = document.getElementById('uv7-skip-button');
             
             // Validation
-            if (!splash) {
+            if (!splash || !loadingScreen) {
                 console.error('UV7 Splash: Required elements not found!');
                 game = new GameEngine();
                 return;
@@ -684,7 +661,7 @@
             
             let splashCompleted = false;
             
-            // Function to complete splash and show main menu
+            // Function to complete splash and transition to loading
             function completeSplash() {
                 if (splashCompleted) return;
                 splashCompleted = true;
@@ -699,14 +676,14 @@
                 // Fade out splash
                 splash.classList.add('fade-out');
                 
-                // After fade, hide splash (game engine already initialized)
+                // After fade, show loading and init game
                 setTimeout(() => {
                     splash.style.display = 'none';
+                    loadingScreen.style.display = 'flex';
+                    console.log('UV7 Splash: Initializing GameEngine...');
+                    game = new GameEngine();
                 }, 1500); // Match fade-out animation duration
             }
-            
-            // Expose completeSplash globally so GameEngine can call it when loading finishes
-            window.completeSplash = completeSplash;
             
             // Skip button handler
             if (skipButton) {
@@ -786,7 +763,7 @@
         
         // Initialize on DOM ready
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded - Starting combined splash + loading');
+            console.log('DOM Content Loaded - Starting UV7 sequence');
             
             const splash = document.getElementById('uv7-splash');
             if (!splash) {
@@ -795,12 +772,8 @@
                 return;
             }
             
-            // Start splash sequence (video/static logo)
+            // Start splash sequence
             initUV7Splash();
-            
-            // Initialize GameEngine immediately (starts loading assets)
-            console.log('Initializing GameEngine (loading will happen during splash)...');
-            game = new GameEngine();
         });
     </script>
 </body>
