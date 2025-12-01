@@ -15,10 +15,10 @@ class Epilogue {
     // ========================================
     
     start() {
-        this.shared_epilogue_01_start();
+        this.trueRoute_epilogue();
     }
-
-    shared_epilogue_01_start() {
+    
+    trueRoute_epilogue() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '[SIX MONTHS LATER]',
@@ -28,12 +28,12 @@ class Epilogue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_02_beard(),
+            next: () => this.trueRoute_beard(),
             delay: 3000
-        }, 'shared_epilogue_01_start');
+        }, 'trueRoute_epilogue');
     }
 
-    shared_epilogue_02_beard() {
+    trueRoute_beard() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"You know, that beard really suits you..."',
@@ -43,12 +43,12 @@ class Epilogue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_03_santa(),
+            next: () => this.trueRoute_ronnieJoke(),
             delay: 3000
-        }, 'shared_epilogue_02_beard');
+        }, 'trueRoute_beard');
     }
 
-    shared_epilogue_03_santa() {
+    trueRoute_ronnieJoke() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
@@ -57,12 +57,12 @@ class Epilogue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_04_realization(),
+            next: () => this.trueRoute_realization(),
             delay: 3000
-        }, 'shared_epilogue_03_santa');
+        }, 'trueRoute_ronnieJoke');
     }
 
-    shared_epilogue_04_realization() {
+    trueRoute_realization() {
         this.game.displayScene({
             character: 'Tori (distant look)',
             dialogue: '"You look... distinguished. Older. Like you\'ve seen things..."',
@@ -72,12 +72,12 @@ class Epilogue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_05_connection(),
+            next: () => this.trueRoute_connection(),
             delay: 3000
-        }, 'shared_epilogue_04_realization');
+        }, 'trueRoute_realization');
     }
 
-    shared_epilogue_05_connection() {
+    trueRoute_connection() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"I feel like... I\'ve seen this exact look before..."',
@@ -87,12 +87,12 @@ class Epilogue {
                 left: 'assets/old-ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_06_dejavu(),
+            next: () => this.trueRoute_dejavu(),
             delay: 4000
-        }, 'shared_epilogue_05_connection');
+        }, 'trueRoute_connection');
     }
 
-    shared_epilogue_06_dejavu() {
+    trueRoute_dejavu() {
         this.game.displayScene({
             character: 'Tori (snapping back)',
             dialogue: '"...Weird. Déjà vu, I guess."',
@@ -101,12 +101,12 @@ class Epilogue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_epilogue_07_knowing(),
+            next: () => this.trueRoute_knowing(),
             delay: 2000
-        }, 'shared_epilogue_06_dejavu');
+        }, 'trueRoute_dejavu');
     }
 
-    shared_epilogue_07_knowing() {
+    trueRoute_knowing() {
         this.game.displayScene({
             character: 'Ronnie (knowing smile)',
             dialogue: '"Must have been another timeline."',
@@ -121,7 +121,7 @@ class Epilogue {
                 this.game.showCredits(true);
             },
             delay: 5000
-        }, 'shared_epilogue_07_knowing');
+        }, 'trueRoute_knowing');
     }
 }
 

@@ -326,7 +326,7 @@
 
 @media (max-width: 768px) {
     #main-menu-bg {
-        content: url('menumobile.png');
+        content: url('assets/menumobile.png');
     }
     
     #main-menu h1 {
@@ -430,7 +430,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('desktopVersion.png');
+    background-image: url('assets/desktopVersion.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -674,7 +674,7 @@
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: url('pause-button.png') center/100% 100% no-repeat;
+    background: url('assets/pause-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 8px 20px;
@@ -690,7 +690,7 @@
 
 /* Ronnie Route - Terminal Ground pause UI */
 #pause-button.ronnie-route {
-    background: url('pause-button-ronnie.png') center/contain no-repeat;
+    background: url('assets/pause-button-ronnie.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
                 0 0 30px rgba(0, 200, 100, 0.1);
 }
@@ -715,7 +715,7 @@
 
 /* Tori Route - Fractured Glass pause UI */
 #pause-button.tori-route {
-    background: url('pause-button-tori.png') center/contain no-repeat;
+    background: url('assets/pause-button-tori.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
                 0 0 25px rgba(255, 50, 100, 0.1);
     animation: pauseButtonGlitch 8s ease-in-out infinite;
@@ -1534,6 +1534,13 @@
     to { opacity: 1; }
 }
 
+/* Tori's Fourth Wall Break - Screen shake when difficulty is tightened */
+@keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    10%, 30%, 50%, 70%, 90% { transform: translate(-3px, 3px); }
+    20%, 40%, 60%, 80% { transform: translate(3px, -3px); }
+}
+
 /* ========================================
    GAME VIEW
    ======================================== */
@@ -1592,7 +1599,7 @@
 #tether-meter {
     width: 100%;
     height: 50px;
-    background: url('tether-meter-frame.png') center/100% 100% no-repeat;
+    background: url('assets/tether-meter-frame.png') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     overflow: hidden;
@@ -1679,7 +1686,7 @@
 
 #hold-on-button {
     margin-top: 12px;
-    background: url('hold-on-button.png') center/100% 100% no-repeat;
+    background: url('assets/hold-on-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 14px 24px;
@@ -1722,7 +1729,7 @@
 
 /* Critical state - swap to red variant */
 #hold-on-button.critical {
-    background: url('hold-on-button-critical.png') center/100% 100% no-repeat;
+    background: url('assets/hold-on-button-critical.png') center/100% 100% no-repeat;
     color: #ff6b6b;
     text-shadow: 0 0 10px rgba(255, 100, 100, 0.8);
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
@@ -1762,7 +1769,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    background: url('notes-button.png') center/100% 100% no-repeat;
+    background: url('assets/notes-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 12px 20px;
@@ -1890,7 +1897,7 @@
     border: 3px solid #0ff;
     padding: 20px;
     display: none;
-    z-index: 200;
+    z-index: 1000; /* ZEERAH'S FIX: Increased from 200 to be above internal-thought */
     overflow-y: auto;
 }
 
@@ -1900,21 +1907,7 @@
     text-shadow: 0 0 10px #0ff;
 }
 
-#close-notes {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(255, 0, 0, 0.3);
-    color: #fff;
-    border: 2px solid #ff0000;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-}
-
-#close-notes:hover {
-    background: rgba(255, 0, 0, 0.5);
-}
+/* ZEERAH'S FIX: Removed #close-notes and :hover CSS - button no longer exists */
 
 .note-item {
     margin-bottom: 15px;
@@ -1978,6 +1971,7 @@
     transform: translateX(-50%);
     width: 90%;
     max-width: 900px;
+    min-height: 180px; /* ZEERAH: Fixed height to prevent jumping */
     background: rgba(0, 0, 0, 0.95);
     border: 2px solid #0ff;
     border-bottom: none;
@@ -1992,7 +1986,7 @@
    ======================================== */
 
 #dialogue-box.ronnie-route {
-    background: url('dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+    background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
                 rgba(8, 14, 20, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -2001,7 +1995,7 @@
 }
 
 #dialogue-box.tori-route {
-    background: url('dialogue-frame-tori.png') center/100% 100% no-repeat,
+    background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
                 rgba(12, 15, 30, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -2044,7 +2038,7 @@
 
 /* Prologue - "Pre-connection" mysterious shimmer */
 #dialogue-box.prologue-style {
-    background: url('dialogue-frame-prologue.png') center/100% 100% no-repeat,
+    background: url('assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
                 rgba(25, 15, 40, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -2066,7 +2060,7 @@
 
 /* Epilogue - "Resolution" warm golden glow */
 #dialogue-box.epilogue-style {
-    background: url('dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+    background: url('assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
                 rgba(40, 30, 15, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -2517,7 +2511,7 @@
     
     /* Keep custom dialogue frames on mobile - just constrain positioning */
     #dialogue-box.ronnie-route {
-        background: url('dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+        background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
                     rgba(8, 14, 20, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -2526,7 +2520,7 @@
     }
     
     #dialogue-box.tori-route {
-        background: url('dialogue-frame-tori.png') center/100% 100% no-repeat,
+        background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
                     rgba(12, 15, 30, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -3610,6 +3604,197 @@
     text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
 }
 
+/* ========================================
+   SETTINGS TABS
+   ======================================== */
+
+.settings-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+}
+
+.settings-tab-btn {
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(0, 255, 255, 0.5);
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 0.05em;
+}
+
+.settings-tab-btn:hover {
+    color: #0ff;
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.settings-tab-btn.active {
+    color: #0ff;
+    border-bottom-color: #0ff;
+}
+
+/* Tab Panels */
+.settings-tab-content {
+    position: relative;
+    min-height: 400px;
+}
+
+.tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========================================
+   SHORTCUTS TAB STYLING
+   ======================================== */
+
+.shortcuts-list {
+    padding: 20px 0;
+}
+
+.shortcuts-list h3 {
+    color: #0ff;
+    margin-bottom: 15px;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+}
+
+.shortcut-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 3px solid rgba(0, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.shortcut-key {
+    color: #0ff;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    min-width: 150px;
+}
+
+.shortcut-desc {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9em;
+    text-align: right;
+}
+
+/* ========================================
+   SECRET CODES TAB STYLING
+   ======================================== */
+
+.codes-panel {
+    padding: 20px 0;
+}
+
+.codes-intro {
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+.code-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#secret-code-input {
+    flex: 1;
+    padding: 12px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    border-radius: 3px;
+}
+
+#secret-code-input::placeholder {
+    color: rgba(0, 255, 255, 0.3);
+}
+
+#code-result-message {
+    min-height: 30px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+#code-result-message.success {
+    background: rgba(0, 255, 170, 0.1);
+    border: 1px solid #00ffaa;
+    color: #00ffaa;
+}
+
+#code-result-message.error {
+    background: rgba(255, 100, 100, 0.1);
+    border: 1px solid #ff6464;
+    color: #ff6464;
+}
+
+.codes-discovered h3 {
+    color: #0ff;
+    margin-bottom: 15px;
+}
+
+#codes-list {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.discovered-code-item {
+    padding: 12px;
+    margin-bottom: 8px;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 3px solid #0ff;
+    border-radius: 3px;
+}
+
+.discovered-code-item .code-name {
+    color: #0ff;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.discovered-code-item .code-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85em;
+}
+
+.no-codes {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+    text-align: center;
+    padding: 40px;
+}
+
+/* ========================================
+   GENERAL TAB & EXISTING SETTINGS
+   ======================================== */
+
 .setting-row {
     display: flex;
     justify-content: space-between;
@@ -3679,6 +3864,145 @@
     background: #0ff;
     color: #000;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* Tether Difficulty Buttons (match speed/display buttons) */
+.tether-difficulty-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.tether-difficulty-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.tether-difficulty-btn.active {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* Setting Description (for tether difficulty explanations) */
+.setting-description {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(0, 255, 255, 0.03);
+    border-left: 2px solid rgba(0, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+.setting-description p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85em;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* ========================================
+   TORI'S DIFFICULTY - IMPROVED LAYOUT
+   ======================================== */
+
+.difficulty-setting-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.difficulty-buttons-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.difficulty-buttons-row .setting-label {
+    flex-shrink: 0;
+}
+
+.difficulty-buttons-row .setting-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.difficulty-explanations {
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.03);
+    border-left: 3px solid rgba(0, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+.difficulty-explanation-item {
+    margin-bottom: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+.difficulty-explanation-item:last-child {
+    margin-bottom: 0;
+}
+
+.difficulty-explanation-item strong {
+    color: #0ff;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 90px;
+}
+
+/* Landscape optimization */
+@media (max-width: 1023px) and (orientation: landscape) {
+    .difficulty-setting-container {
+        gap: 10px;
+    }
+    
+    .difficulty-explanations {
+        padding: 10px 12px;
+    }
+    
+    .difficulty-explanation-item {
+        margin-bottom: 8px;
+        font-size: 0.85em;
+        line-height: 1.4;
+    }
+    
+    .difficulty-explanation-item strong {
+        min-width: 80px;
+    }
+}
+
+/* Mobile portrait */
+@media (max-width: 767px) and (orientation: portrait) {
+    .difficulty-buttons-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .difficulty-buttons-row .setting-control {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .tether-difficulty-btn {
+        flex: 1;
+    }
+    
+    .difficulty-explanation-item strong {
+        display: block;
+        margin-bottom: 3px;
+    }
 }
 
 /* Toggle Switch */
@@ -3919,18 +4243,24 @@ input:checked + .toggle-slider:before {
 }
 
 /* Backlog Button (in game view) */
+/* ZEERAH'S ADAPTIVE BACKLOG BUTTON POSITIONING */
 #backlog-button {
     position: fixed;
-    top: 60px;
-    right: 15px;
-    width: 45px;
+    /* ZEERAH: Float above dialogue box center */
+    bottom: 185px; /* Just above dialogue box min-height (180px) */
+    left: 50%;
+    transform: translateX(calc(-100% - 5px)); /* Left of center with 10px gap total */
+    width: 140px;
     height: 45px;
     background: rgba(0, 255, 255, 0.2);
     border: 2px solid #0ff;
     color: #0ff;
-    font-size: 1.3em;
+    font-size: 1em;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 8px;
     z-index: 100;
     transition: all 0.3s ease;
     display: none; /* Hidden by default, shown during gameplay */
@@ -3939,7 +4269,7 @@ input:checked + .toggle-slider:before {
 #backlog-button:hover {
     background: rgba(0, 255, 255, 0.4);
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-    transform: scale(1.1);
+    transform: translateX(calc(-100% - 5px)) scale(1.05);
 }
 
 /* Mobile adjustments */
@@ -3971,13 +4301,9 @@ input:checked + .toggle-slider:before {
         padding: 20px;
     }
     
-    #backlog-button {
-        top: 50px;
-        right: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 1.1em;
-    }
+    /* ZEERAH'S FIX v2: Removed button sizing from here - 
+       portrait and landscape rules handle all mobile button styling.
+       Having size rules here at 768px was conflicting with orientation-specific rules. */
 }
 
 /* ========================================
@@ -4141,27 +4467,37 @@ input:checked + .toggle-slider:before {
    ======================================== */
 
 /* Skip Button */
+/* ZEERAH'S ADAPTIVE SKIP BUTTON POSITIONING */
 #skip-button {
     position: fixed;
-    top: 20px;
-    right: 140px;
-    background: rgba(0, 200, 255, 0.1);
+    /* ZEERAH: Float above dialogue box center - right of backlog */
+    bottom: 185px; /* Just above dialogue box min-height (180px) */
+    left: 50%;
+    transform: translateX(5px); /* Right of center with 10px gap total */
+    width: 140px;
+    height: 45px;
+    background: rgba(0, 200, 255, 0.15);
     color: #0ff;
     border: 2px solid #0ff;
-    padding: 8px 16px;
+    padding: 0;
     font-family: 'Courier New', monospace;
-    font-size: 0.9em;
+    font-size: 1em;
     font-weight: bold;
     cursor: pointer;
-    z-index: 1001;
+    z-index: 100;
     transition: all 0.3s ease;
-    border-radius: 5px;
+    border-radius: 8px;
     letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 #skip-button:hover {
-    background: rgba(0, 200, 255, 0.2);
+    background: rgba(0, 200, 255, 0.3);
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transform: translateX(5px) scale(1.05);
 }
 
 #skip-button.active {
@@ -4169,6 +4505,35 @@ input:checked + .toggle-slider:before {
     color: #000;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
     animation: skipPulse 1s ease-in-out infinite;
+}
+
+/* ZEERAH'S UNIFIED LAYOUT - Portrait Mobile: buttons above dialogue box */
+@media (max-width: 1023px) and (orientation: portrait) {
+    #skip-button {
+        bottom: calc(30vh + 10px) !important; /* Just above 30vh dialogue box */
+        left: 50% !important;
+        transform: translateX(5px) !important; /* Right of center with 10px gap total */
+        width: 110px;
+        height: 38px;
+        font-size: 0.85em;
+    }
+
+    #skip-button:hover {
+        transform: translateX(5px) scale(1.05) !important;
+    }
+
+    #backlog-button {
+        bottom: calc(30vh + 10px) !important; /* Just above 30vh dialogue box */
+        left: 50% !important;
+        transform: translateX(calc(-100% - 5px)) !important; /* Left of center with 10px gap total */
+        width: 110px;
+        height: 38px;
+        font-size: 0.85em;
+    }
+
+    #backlog-button:hover {
+        transform: translateX(calc(-100% - 5px)) scale(1.05) !important;
+    }
 }
 
 @keyframes skipPulse {
@@ -4200,6 +4565,84 @@ input:checked + .toggle-slider:before {
 @keyframes skipFlash {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
+}
+
+/* ZEERAH: Mobile Landscape Button Adjustments - above dialogue box */
+@media (max-width: 1023px) and (orientation: landscape) {
+    #backlog-button {
+        bottom: calc(35vh + 10px) !important; /* Just above 35vh dialogue box */
+        left: 50% !important;
+        width: 120px;
+        height: 40px;
+        font-size: 0.9em;
+        transform: translateX(calc(-100% - 5px)) !important; /* Left of center with 10px gap total */
+    }
+
+    #backlog-button:hover {
+        transform: translateX(calc(-100% - 5px)) scale(1.05) !important;
+    }
+
+    #skip-button {
+        bottom: calc(35vh + 10px) !important; /* Just above 35vh dialogue box */
+        left: 50% !important;
+        width: 120px;
+        height: 40px;
+        font-size: 0.9em;
+        transform: translateX(5px) !important; /* Right of center with 10px gap total */
+    }
+
+    #skip-button:hover {
+        transform: translateX(5px) scale(1.05) !important;
+    }
+}
+
+/* ZEERAH: Very Small Screens */
+@media (max-width: 400px) {
+    #backlog-button {
+        /* Note: bottom position inherited from portrait/landscape rules */
+        width: 95px !important;
+        height: 36px !important;
+        font-size: 0.75em !important;
+        transform: translateX(calc(-100% - 3px)) !important; /* Left of center with smaller gap */
+    }
+
+    #backlog-button:hover {
+        transform: translateX(calc(-100% - 3px)) scale(1.05) !important;
+    }
+
+    #skip-button {
+        /* Note: bottom position inherited from portrait/landscape rules */
+        width: 95px !important;
+        height: 36px !important;
+        font-size: 0.75em !important;
+        transform: translateX(3px) !important; /* Right of center with smaller gap */
+    }
+
+    #skip-button:hover {
+        transform: translateX(3px) scale(1.05) !important;
+    }
+    
+    #skip-indicator {
+        top: 65px;
+        right: 15px;
+        font-size: 0.8em;
+    }
+}
+
+/* ZEERAH: Very Small Portrait - ensure bottom is set correctly */
+@media (max-width: 400px) and (orientation: portrait) {
+    #backlog-button,
+    #skip-button {
+        bottom: calc(30vh + 10px) !important;
+    }
+}
+
+/* ZEERAH: Very Small Landscape - ensure bottom is set correctly */
+@media (max-width: 400px) and (orientation: landscape) {
+    #backlog-button,
+    #skip-button {
+        bottom: calc(35vh + 10px) !important;
+    }
 }
 
 /* Skip Unlock Notification */
@@ -4279,12 +4722,9 @@ input:checked + .toggle-slider:before {
 
 /* Mobile Adjustments */
 @media (max-width: 1023px) {
-    #skip-button {
-        top: 10px;
-        right: 100px;
-        padding: 6px 12px;
-        font-size: 0.8em;
-    }
+    /* ZEERAH FIX v3: Removed #skip-button top/right positioning that was 
+       conflicting with the portrait/landscape centered button layout.
+       Skip button position is handled by orientation-specific rules above. */
     
     #skip-indicator {
         top: 45px;
@@ -4421,5 +4861,290 @@ input:checked + .toggle-slider:before {
     
     .loop-init-boot {
         font-size: 1.2em;
+    }
+}
+
+/* ========================================
+   ZEERAH: TIME-TRAVELING BACKLOG
+   Jump back to any moment in history
+   ======================================== */
+
+/* Jumpable entries - cyan glow on hover */
+.backlog-entry.jumpable {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    padding-right: 40px; /* Space for hint */
+}
+
+.backlog-entry.jumpable:hover {
+    background: rgba(0, 255, 255, 0.15);
+    border-left: 4px solid #0ff;
+    transform: translateX(5px);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.backlog-entry.jumpable:active {
+    transform: translateX(3px);
+    background: rgba(0, 255, 255, 0.25);
+}
+
+/* Locked/unjumpable entries */
+.backlog-entry.locked {
+    cursor: not-allowed;
+    opacity: 0.6;
+    position: relative;
+}
+
+.backlog-entry.locked .backlog-character {
+    color: rgba(255, 102, 153, 0.8);
+}
+
+.backlog-entry.locked .backlog-dialogue {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Glitch entries (System/Despair/ERROR) */
+.backlog-entry.glitch {
+    background: rgba(255, 51, 102, 0.05);
+    border-left: 2px solid rgba(255, 51, 102, 0.5);
+}
+
+.backlog-entry.glitch .backlog-character {
+    color: #ff3366;
+    text-shadow: 0 0 5px rgba(255, 51, 102, 0.5);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.05em;
+}
+
+.backlog-entry.glitch .backlog-dialogue {
+    color: rgba(255, 102, 153, 0.7);
+}
+
+/* Hint text */
+.backlog-hint {
+    font-size: 0.7em;
+    color: rgba(0, 255, 255, 0.5);
+    font-style: italic;
+    margin-top: 5px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    pointer-events: none;
+}
+
+.backlog-entry.jumpable:hover .backlog-hint {
+    opacity: 1;
+    color: #0ff;
+}
+
+.backlog-entry.locked .backlog-hint {
+    color: rgba(255, 102, 153, 0.5);
+    opacity: 0.7;
+}
+
+/* Mobile - make hints more visible */
+@media (max-width: 768px) {
+    .backlog-hint {
+        position: static;
+        opacity: 0.7;
+        margin-top: 8px;
+        font-size: 0.75em;
+    }
+
+    .backlog-entry.jumpable:hover .backlog-hint {
+        opacity: 1;
+    }
+
+    .backlog-entry.jumpable {
+        padding-right: 10px;
+    }
+
+    /* Mobile Settings Tabs */
+    .settings-tabs {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .settings-tab-btn {
+        width: 100%;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+        text-align: left;
+        padding: 12px 15px;
+    }
+
+    .settings-tab-btn.active {
+        border-left-color: #0ff;
+        border-bottom-color: transparent;
+    }
+
+    .shortcut-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .shortcut-key {
+        min-width: auto;
+    }
+
+    .shortcut-desc {
+        text-align: left;
+    }
+
+    .code-input-group {
+        flex-direction: column;
+    }
+
+    #submit-code-btn {
+        width: 100%;
+    }
+}
+
+/* ========================================
+   TIME JUMP CONFIRMATION OVERLAY
+   ======================================== */
+
+#time-jump-confirm {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000; /* Above backlog */
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-in;
+}
+
+#time-jump-content {
+    max-width: 600px;
+    width: 90%;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    border-radius: 10px;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
+    text-align: center;
+    animation: slideInScale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+#time-jump-content h2 {
+    color: #0ff;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    letter-spacing: 0.05em;
+}
+
+#time-jump-message {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border-left: 4px solid #0ff;
+    border-radius: 5px;
+    text-align: left;
+}
+
+#time-jump-message p {
+    margin: 10px 0;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+}
+
+#time-jump-message .dialogue-preview {
+    color: #0ff;
+    font-style: italic;
+    padding: 10px 15px;
+    background: rgba(0, 255, 255, 0.1);
+    border-radius: 3px;
+    margin: 15px 0;
+    display: block;
+}
+
+#time-jump-message .warning {
+    color: #ff6b6b;
+    font-size: 0.9em;
+    margin-top: 15px;
+}
+
+#time-jump-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.time-jump-btn {
+    padding: 15px 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 2px solid;
+}
+
+.time-jump-btn.cancel {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.time-jump-btn.cancel:hover {
+    background: rgba(255, 107, 107, 0.3);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    transform: translateY(-2px);
+}
+
+.time-jump-btn.proceed {
+    background: rgba(0, 255, 255, 0.2);
+    color: #0ff;
+    border-color: #0ff;
+}
+
+.time-jump-btn.proceed:hover {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    #time-jump-content {
+        padding: 30px 20px;
+    }
+
+    #time-jump-content h2 {
+        font-size: 1.4em;
+    }
+
+    #time-jump-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .time-jump-btn {
+        width: 100%;
+        padding: 12px 20px;
     }
 }

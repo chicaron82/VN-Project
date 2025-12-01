@@ -15,11 +15,11 @@ class ToriAct2 {
     start() {
         // Unblock saves - Tori proved Despair wrong
         this.game.saveManager.unblockSaves();
-
+        
         // Echo growth: Act 2 - Hope is rising
         this.game.setEchoGrowthStage('act2');
-
-        this.tori_act2_01_start();
+        
+        this.beat1();
     }
     
     // ========================================
@@ -28,7 +28,7 @@ class ToriAct2 {
     // (Originally Beat 2)
     // ========================================
     
-    tori_act2_01_start() {
+    beat1() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Digital park scene. Pixelated cherry blossoms. Tori and Ronnie\'s sprites walking together.',
@@ -38,19 +38,20 @@ class ToriAct2 {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_02_icecream(),
+            next: () => this.beat1_iceCream(),
             delay: 3500
-        }, 'tori_act2_01_start');
+        }, 'beat1');
     }
 
-    tori_act2_02_icecream() {
+    beat1_iceCream() {
         this.game.displayScene({
             character: 'Ronnie (sprite)',
             dialogue: '"I coded in your favorite. Chocolate chip ice cream."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
             choices: [
                 { text: 'Thank him (That\'s sweet!)', value: 'thanks' },
@@ -61,13 +62,13 @@ class ToriAct2 {
                 // Store what player WANTED to say
                 this.playerIntendedChoice = playerChoice;
                 // But Despair forces Tiger Tail
-                this.tori_act2_03_despairoverride();
+                this.beat1_despairOverride();
             },
             delay: 3000
-        }, 'tori_act2_02_icecream');
+        }, 'beat1_iceCream');
     }
     
-    tori_act2_03_despairoverride() {
+    beat1_despairOverride() {
         // First: Show what player INTENDED to choose (if not Tiger Tail)
         if (this.playerIntendedChoice !== 'tiger_tail') {
             this.game.displayScene({
@@ -79,16 +80,16 @@ class ToriAct2 {
                     left: 'assets/tori-sprite.png',
                     right: 'assets/ronnie-sprite.png'
                 },
-                next: () => this.tori_act2_04_hijackedresponse(),
+                next: () => this.beat1_hijackedResponse(),
                 delay: 2000
-            }, 'tori_act2_03_despairoverride');
+            }, 'beat1_despairInterference');
         } else {
             // Player chose Tiger Tail - skip hijack narration
-            this.tori_act2_04_hijackedresponse();
+            this.beat1_hijackedResponse();
         }
     }
     
-    tori_act2_04_hijackedresponse() {
+    beat1_hijackedResponse() {
         // Show what Tori actually says (overridden by Despair)
         this.game.displayScene({
             character: 'Tori',
@@ -96,14 +97,15 @@ class ToriAct2 {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_05_torirealization(),
+            next: () => this.beat1_toriRealization(),
             delay: 2500
-        }, 'tori_act2_04_hijackedresponse');
+        }, 'beat1_despairOverride');
     }
     
-    tori_act2_05_torirealization() {
+    beat1_toriRealization() {
         // Tori realizes she didn't say what she meant
         this.game.displayScene({
             character: 'Tori (internal, confused)',
@@ -111,49 +113,51 @@ class ToriAct2 {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_06_confusion(),
+            next: () => this.beat1_confusion(),
             delay: 3000
-        }, 'tori_act2_05_torirealization');
+        }, 'beat1_toriRealization');
     }
 
-    tori_act2_06_confusion() {
+    beat1_confusion() {
         this.game.displayScene({
             character: 'Ronnie (sprite, concerned)',
             dialogue: '"Tiger Tail? But... you always said you hated that flavor."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act2_07_echoesreact(),
+            next: () => this.beat1_echoesReact(),
             delay: 3000
-        }, 'tori_act2_06_confusion');
+        }, 'beat1_confusion');
     }
 
-    tori_act2_07_echoesreact() {
+    beat1_echoesReact() {
         // Unlock CZ's memory degradation horror note
         this.route.unlockNote('cz2');
-
+        
         // Unlock Z's Cassandra framework note - Tori "knew" something she shouldn't
         this.route.unlockNote('z3');
-
+        
         // Unlock Z's Echo timeline theory - all three Echoes speaking reveals their nature
         this.route.unlockNote('z6');
-
+        
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_act2_08_systemtakeover(),
+            next: () => this.beat1_systemTakeover(),
             delay: 4000
-        }, 'tori_act2_07_echoesreact');
+        }, 'beat1_echoesReact');
     }
 
-    tori_act2_08_systemtakeover() {
+    beat1_systemTakeover() {
         this.game.displayScene({
             character: 'Tori (sprite, voice not hers)',
             dialogue: '"Tiger Tail sounds perfect!"',
@@ -161,29 +165,31 @@ class ToriAct2 {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_09_torihorror(),
+            next: () => this.beat1_toriHorror(),
             delay: 3000,
             style: 'critical'
-        }, 'tori_act2_08_systemtakeover');
+        }, 'beat1_systemTakeover');
     }
 
-    tori_act2_09_torihorror() {
+    beat1_toriHorror() {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"That wasn\'t me! I didn\'t say that!"',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_10_freeze(),
+            next: () => this.beat1_freeze(),
             delay: 2500
-        }, 'tori_act2_09_torihorror');
+        }, 'beat1_toriHorror');
     }
 
-    tori_act2_10_freeze() {
+    beat1_freeze() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Her sprite freezes mid-laugh. System dialogue box flickers. Then she\'s back. Ronnie looks concerned.',
@@ -192,33 +198,35 @@ class ToriAct2 {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_11_ronnienotice(),
+            next: () => this.beat1_ronnieNotice(),
             delay: 3500
-        }, 'tori_act2_10_freeze');
+        }, 'beat1_freeze');
     }
 
-    tori_act2_11_ronnienotice() {
+    beat1_ronnieNotice() {
         this.game.displayScene({
             character: 'Ronnie',
-            dialogue: '"Tori? Not againâ€""',
+            dialogue: '"Tori? Not againâ€”"',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act2_12_choice(),
+            next: () => this.beat1_choice(),
             delay: 2000
-        }, 'tori_act2_11_ronnienotice');
+        }, 'beat1_ronnieNotice');
     }
 
-    tori_act2_12_choice() {
+    beat1_choice() {
         this.game.displayScene({
             character: 'Tori (typing frantically)',
             dialogue: '"I blacked out. What just happened?"',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
             choices: [
                 { text: '[Tell him the truth: memory corruption]', value: 'truth' },
@@ -228,58 +236,61 @@ class ToriAct2 {
             onChoice: (choice) => {
                 if (choice === 'truth') {
                     this.route.addRoutePoints('true', 1);
-                    this.tori_act2_13_truth();
+                    this.beat1_truth();
                 } else if (choice === 'downplay') {
                     this.route.addRoutePoints('digitalForever', 1);
-                    this.tori_act2_14_downplay();
+                    this.beat1_downplay();
                 } else {
                     this.route.addRoutePoints('bad', 1);
-                    this.tori_act2_15_panic();
+                    this.beat1_panic();
                 }
             }
-        }, 'tori_act2_12_choice');
+        }, 'beat1_choice');
     }
 
-    tori_act2_13_truth() {
+    beat1_truth() {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"My memories are corrupting. The system took over my voice. I\'m scared."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_16_hospital1(),
+            next: () => this.beat2(),
             delay: 3000
-        }, 'tori_act2_13_truth');
+        }, 'beat1_truth');
     }
 
-    tori_act2_14_downplay() {
+    beat1_downplay() {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"Just a glitch. I\'m fine. Keep going."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_16_hospital1(),
+            next: () => this.beat2(),
             delay: 3000
-        }, 'tori_act2_14_downplay');
+        }, 'beat1_downplay');
     }
 
-    tori_act2_15_panic() {
+    beat1_panic() {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"I\'m breaking apart. I can feel it. I\'m losing pieces of myself."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_16_hospital1(),
+            next: () => this.beat2(),
             delay: 3000
-        }, 'tori_act2_15_panic');
+        }, 'beat1_panic');
     }
 
     // ========================================
@@ -288,72 +299,72 @@ class ToriAct2 {
     // (Originally Beat 3)
     // ========================================
     
-    tori_act2_16_hospital1() {
+    beat2() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Hospital room. Ronnie places the Tamagotchi on her bedside table.',
             internal: '[Visual: Through device screen - her body on the bed. Monitors beeping.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_17_warmth(),
+            next: () => this.beat2_warmth(),
             delay: 3500
-        }, 'tori_act2_16_hospital1');
+        }, 'beat2');
     }
 
-    tori_act2_17_warmth() {
+    beat2_warmth() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"That feeling again... warmth. The pull toward my body."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_18_buzz(),
+            next: () => this.beat2_buzz(),
             delay: 3000
-        }, 'tori_act2_17_warmth');
+        }, 'beat2_warmth');
     }
 
-    tori_act2_18_buzz() {
+    beat2_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The Tamagotchi buzzes. Synced with her heartbeat monitor.',
             internal: '[Same rhythm. Same pulse.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_19_ronnienotice(),
+            next: () => this.beat2_ronnieNotice(),
             delay: 3000,
             style: 'critical'
-        }, 'tori_act2_18_buzz');
+        }, 'beat2_buzz');
     }
 
-    tori_act2_19_ronnienotice() {
+    beat2_ronnieNotice() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Weird. Battery must be dying."',
             internal: '[He dismisses it. Doesn\'t see the pattern yet.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_20_echoesknow(),
+            next: () => this.beat2_echoesKnow(),
             delay: 3000
-        }, 'tori_act2_19_ronnienotice');
+        }, 'beat2_ronnieNotice');
     }
 
-    tori_act2_20_echoesknow() {
+    beat2_echoesKnow() {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_act2_21_digitalmaze(),
+            next: () => this.beat3(),
             delay: 4000
-        }, 'tori_act2_20_echoesknow');
+        }, 'beat2_echoesKnow');
     }
 
     // ========================================
@@ -362,7 +373,7 @@ class ToriAct2 {
     // (Originally Beat 4)
     // ========================================
     
-    tori_act2_21_digitalmaze() {
+    beat3() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Back in the digital space. A simple maze game Ronnie coded. "Think fast" gameplay.',
@@ -372,40 +383,42 @@ class ToriAct2 {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_22_maze(),
+            next: () => this.beat3_maze(),
             delay: 3500
-        }, 'tori_act2_21_digitalmaze');
+        }, 'beat3');
     }
 
-    tori_act2_22_maze() {
+    beat3_maze() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Left or right?"',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act2_23_confusion(),
+            next: () => this.beat3_confusion(),
             delay: 2000
-        }, 'tori_act2_22_maze');
+        }, 'beat3_maze');
     }
 
-    tori_act2_23_confusion() {
+    beat3_confusion() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Wait... which way did we come from? I can\'t remember..."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_24_systemtakeover(),
+            next: () => this.beat3_systemTakeover(),
             delay: 3000
-        }, 'tori_act2_23_confusion');
+        }, 'beat3_confusion');
     }
 
-    tori_act2_24_systemtakeover() {
+    beat3_systemTakeover() {
         this.game.displayScene({
             character: 'Tori (sprite, automatic)',
             dialogue: '"Left!"',
@@ -413,15 +426,16 @@ class ToriAct2 {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_25_wrongturn(),
+            next: () => this.beat3_wrongTurn(),
             delay: 2500,
             style: 'critical'
-        }, 'tori_act2_24_systemtakeover');
+        }, 'beat3_systemTakeover');
     }
 
-    tori_act2_25_wrongturn() {
+    beat3_wrongTurn() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Dead end. Ronnie backtracks. But Tori is frozen, staring at the wall.',
@@ -430,35 +444,36 @@ class ToriAct2 {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_26_toriinternal(),
+            next: () => this.beat3_toriInternal(),
             delay: 3000
-        }, 'tori_act2_25_wrongturn');
+        }, 'beat3_wrongTurn');
     }
 
-    tori_act2_26_toriinternal() {
+    beat3_toriInternal() {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"I\'m not controlling my sprite anymore. I\'m just... watching."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_27_echoesrespond(),
+            next: () => this.beat3_echoesRespond(),
             delay: 3000
-        }, 'tori_act2_26_toriinternal');
+        }, 'beat3_toriInternal');
     }
 
-    tori_act2_27_echoesrespond() {
+    beat3_echoesRespond() {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_act2_28_hospital2(),
+            next: () => this.beat4(),
             delay: 4000
-        }, 'tori_act2_27_echoesrespond');
+        }, 'beat3_echoesRespond');
     }
 
     // ========================================
@@ -467,52 +482,52 @@ class ToriAct2 {
     // (Originally Beat 5)
     // ========================================
     
-    tori_act2_28_hospital2() {
+    beat4() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Hospital room again. Ronnie adjusts her blankets. The Tamagotchi is on the table.',
             internal: '[Visual: Her body. Still. Breathing. The device nearby.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_29_feeling(),
+            next: () => this.beat4_feeling(),
             delay: 3500
-        }, 'tori_act2_28_hospital2');
+        }, 'beat4');
     }
 
-    tori_act2_29_feeling() {
+    beat4_feeling() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"There it is again. That pull. That warmth. It\'s coming from my body."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_30_understanding(),
+            next: () => this.beat4_understanding(),
             delay: 3000
-        }, 'tori_act2_29_feeling');
+        }, 'beat4_feeling');
     }
 
-    tori_act2_30_understanding() {
+    beat4_understanding() {
         this.game.displayScene({
             character: 'Tori (internal, realization)',
             dialogue: '"Wait... when I\'m near my body, I feel more... real. More present. The corruption slows."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_31_choice(),
+            next: () => this.beat4_choice(),
             delay: 3500,
             style: 'critical'
-        }, 'tori_act2_30_understanding');
+        }, 'beat4_understanding');
     }
 
-    tori_act2_31_choice() {
+    beat4_choice() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This feeling... do I tell him? Or keep searching for proof?"',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
@@ -523,53 +538,53 @@ class ToriAct2 {
             onChoice: (choice) => {
                 if (choice === 'tell') {
                     this.route.addRoutePoints('true', 1);
-                    this.tori_act2_32_tell();
+                    this.beat4_tell();
                 } else {
                     this.route.addRoutePoints('digitalForever', 1);
-                    this.tori_act2_33_wait();
+                    this.beat4_wait();
                 }
             }
-        }, 'tori_act2_31_choice');
+        }, 'beat4_choice');
     }
 
-    tori_act2_32_tell() {
+    beat4_tell() {
         this.game.displayScene({
             character: 'Tori (typing urgently)',
             dialogue: '"Ronnie - when you visit my body, I feel more stable. I think there\'s a connection."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_34_ronnieresponse(),
+            next: () => this.beat4_ronnieResponse(),
             delay: 3000
-        }, 'tori_act2_32_tell');
+        }, 'beat4_tell');
     }
 
-    tori_act2_33_wait() {
+    beat4_wait() {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"The maze was glitchy. System acting weird again."',
             internal: '[She hides the truth. Needs more proof.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_34_ronnieresponse(),
+            next: () => this.beat4_ronnieResponse(),
             delay: 3000
-        }, 'tori_act2_33_wait');
+        }, 'beat4_wait');
     }
 
-    tori_act2_34_ronnieresponse() {
+    beat4_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"I\'ll keep coming. Every day. I promise."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_35_memoryfragment(),
+            next: () => this.beat5(),
             delay: 2500
-        }, 'tori_act2_34_ronnieresponse');
+        }, 'beat4_ronnieResponse');
     }
 
     // ========================================
@@ -578,7 +593,7 @@ class ToriAct2 {
     // (Originally Beat 6)
     // ========================================
     
-    tori_act2_35_memoryfragment() {
+    beat5() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Digital space. A memory fragment loads. Their first date. Coffee shop.',
@@ -588,40 +603,42 @@ class ToriAct2 {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_36_memorystart(),
+            next: () => this.beat5_memoryStart(),
             delay: 3500
-        }, 'tori_act2_35_memoryfragment');
+        }, 'beat5');
     }
 
-    tori_act2_36_memorystart() {
+    beat5_memoryStart() {
         this.game.displayScene({
             character: 'Ronnie (sprite, in memory)',
             dialogue: '"I can\'t believe you ordered decaf."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act2_37_toriblank(),
+            next: () => this.beat5_toriBlank(),
             delay: 2500
-        }, 'tori_act2_36_memorystart');
+        }, 'beat5_memoryStart');
     }
 
-    tori_act2_37_toriblank() {
+    beat5_toriBlank() {
         this.game.displayScene({
             character: 'Tori (internal, horrified)',
             dialogue: '"I... I don\'t remember this. I don\'t remember what I said next."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_38_systemfills(),
+            next: () => this.beat5_systemFills(),
             delay: 3000
-        }, 'tori_act2_37_toriblank');
+        }, 'beat5_toriBlank');
     }
 
-    tori_act2_38_systemfills() {
+    beat5_systemFills() {
         this.game.displayScene({
             character: 'Tori (sprite, voice not hers)',
             dialogue: '"[MEMORY CORRUPTED - APPROXIMATION: "You know I hate caffeine."]"',
@@ -629,38 +646,40 @@ class ToriAct2 {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_39_horror(),
+            next: () => this.beat5_horror(),
             delay: 4000,
             style: 'critical'
-        }, 'tori_act2_38_systemfills');
+        }, 'beat5_systemFills');
     }
 
-    tori_act2_39_horror() {
+    beat5_horror() {
         this.game.displayScene({
             character: 'Tori (internal, breaking)',
             dialogue: '"That\'s not what I said. I don\'t know what I said. But that wasn\'t it."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act2_40_echoesreact(),
+            next: () => this.beat5_echoesReact(),
             delay: 3000
-        }, 'tori_act2_39_horror');
+        }, 'beat5_horror');
     }
 
-    tori_act2_40_echoesreact() {
+    beat5_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_act2_41_hospital3(),
+            next: () => this.beat6(),
             delay: 4000
-        }, 'tori_act2_40_echoesreact');
+        }, 'beat5_echoesReact');
     }
 
     // ========================================
@@ -669,57 +688,57 @@ class ToriAct2 {
     // (Originally Beat 7)
     // ========================================
     
-    tori_act2_41_hospital3() {
+    beat6() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Hospital room. Ronnie holds her hand. The Tamagotchi buzzes loudly.',
             internal: '[Visual: Physical contact. The buzz intensifies. Synced perfectly.]',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_42_connection(),
+            next: () => this.beat6_connection(),
             delay: 3500
-        }, 'tori_act2_41_hospital3');
+        }, 'beat6');
     }
 
-    tori_act2_42_connection() {
+    beat6_connection() {
         this.game.displayScene({
             character: 'Tori (internal, CLARITY)',
             dialogue: '"OH. Oh my god. It\'s the BODY. My body is the anchor. The bridge. The connection."',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_43_realization(),
+            next: () => this.beat6_realization(),
             delay: 3500,
             style: 'critical'
-        }, 'tori_act2_42_connection');
+        }, 'beat6_connection');
     }
 
-    tori_act2_43_realization() {
+    beat6_realization() {
         this.game.displayScene({
             character: 'Tori (internal, urgent)',
             dialogue: '"That\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!"',
-            background: 'hospital.png',
+            background: 'assets/hospital.png',
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act2_44_echoesreact(),
+            next: () => this.beat6_echoesReact(),
             delay: 4000
-        }, 'tori_act2_43_realization');
+        }, 'beat6_realization');
     }
 
-    tori_act2_44_echoesreact() {
+    beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_act2_45_crisisalarm(),
+            next: () => this.beat7(),
             delay: 4000
-        }, 'tori_act2_44_echoesreact');
+        }, 'beat6_echoesReact');
     }
 
     // ========================================
@@ -728,49 +747,49 @@ class ToriAct2 {
     // (Originally Beat 8)
     // ========================================
     
-    tori_act2_45_crisisalarm() {
+    beat7() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Alarms. Monitors screaming. The digital space shakes.',
             internal: '[Visual: Everything glitching violently. Tori fragmenting. Tether dropping rapidly.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_46_tether(),
+            next: () => this.beat7_tether(),
             delay: 3000
-        }, 'tori_act2_45_crisisalarm');
+        }, 'beat7');
     }
 
-    tori_act2_46_tether() {
+    beat7_tether() {
         // Crisis causes tether drop
         this.route.tetherLevel = Math.max(0, this.route.tetherLevel - 15);
         this.route.updateTether(-15, 'Crisis - monitors screaming');
-
+        
         this.game.displayScene({
             character: 'System',
             dialogue: '[COHERENCE DROPPING: -15%]',
             internal: '[The crisis is draining her. Hold on!]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_47_tori(),
+            next: () => this.beat7_tori(),
             delay: 2000,
             style: 'critical'
-        }, 'tori_act2_46_tether');
+        }, 'beat7_tether');
     }
 
-    tori_act2_47_tori() {
+    beat7_tori() {
         this.game.displayScene({
             character: 'Tori (internal, pained)',
             dialogue: '"It\'s too dark... I can\'t hold on..."',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_48_despairattempt(),
+            next: () => this.beat7_despairAttempt(),
             delay: 3000
-        }, 'tori_act2_47_tori');
+        }, 'beat7_tori');
     }
 
-    tori_act2_48_despairattempt() {
+    beat7_despairAttempt() {
         // Unlock ZR's Despair Echo origin note
         this.route.unlockNote('zr2');
-
+        
         const tetherState = this.route.getTetherState();
-
+        
         if (tetherState === 'despair') {
             // LOW TETHER: Despair can lock out the "fight" option
             this.game.displayScene({
@@ -780,9 +799,9 @@ class ToriAct2 {
                 sprites: {
                     right: 'echoes'
                 },
-                next: () => this.tori_act2_49_choicelocked(),
+                next: () => this.beat7_choiceLocked(),
                 delay: 4000
-            }, 'tori_act2_48_despairattempt');
+            }, 'beat7_despairAttempt_locked');
         } else {
             // MEDIUM/HIGH TETHER: All options available
             this.game.displayScene({
@@ -792,13 +811,13 @@ class ToriAct2 {
                 sprites: {
                     right: 'echoes'
                 },
-                next: () => this.tori_act2_50_choice(),
+                next: () => this.beat7_choice(),
                 delay: 4000
-            }, 'tori_act2_48_despairattempt');
+            }, 'beat7_despairAttempt_normal');
         }
     }
 
-    tori_act2_49_choicelocked() {
+    beat7_choiceLocked() {
         // LOW TETHER: "Fight" option is grayed out/locked
         this.game.displayScene({
             character: 'Tori (internal)',
@@ -812,19 +831,19 @@ class ToriAct2 {
             onChoice: (choice) => {
                 if (choice === 'locked') {
                     // This shouldn't trigger, but just in case
-                    this.tori_act2_52_accept();
+                    this.beat7_accept();
                 } else if (choice === 'accept') {
                     this.route.addRoutePoints('bad', 2);
-                    this.tori_act2_52_accept();
+                    this.beat7_accept();
                 } else {
                     this.route.addRoutePoints('digitalForever', 2);
-                    this.tori_act2_53_silent();
+                    this.beat7_silent();
                 }
             }
-        }, 'tori_act2_49_choicelocked');
+        }, 'beat7_choiceLocked');
     }
 
-    tori_act2_50_choice() {
+    beat7_choice() {
         // NORMAL: All options available
         this.game.displayScene({
             character: 'Tori (internal)',
@@ -838,62 +857,62 @@ class ToriAct2 {
             onChoice: (choice) => {
                 if (choice === 'fight') {
                     this.route.addRoutePoints('true', 2);
-                    this.tori_act2_51_fight();
+                    this.beat7_fight();
                 } else if (choice === 'accept') {
                     this.route.addRoutePoints('bad', 2);
-                    this.tori_act2_52_accept();
+                    this.beat7_accept();
                 } else {
                     this.route.addRoutePoints('digitalForever', 2);
-                    this.tori_act2_53_silent();
+                    this.beat7_silent();
                 }
             }
-        }, 'tori_act2_50_choice');
+        }, 'beat7_choice');
     }
 
-    tori_act2_51_fight() {
+    beat7_fight() {
         // Boost tether for resisting Despair
         this.route.tetherLevel = Math.min(100, this.route.tetherLevel + 10);
         this.route.updateTether(10, 'Fighting Despair - defiance');
-
+        
         this.game.displayScene({
             character: 'Tori (internal, defiant)',
             dialogue: '"No. I trust him. He\'ll find the way."',
             internal: '[COHERENCE BOOST: +10%]\n[She fought back! Despair recoils.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_54_echoesreact(),
+            next: () => this.beat7_echoesReact(),
             delay: 3000
-        }, 'tori_act2_51_fight');
+        }, 'beat7_fight');
     }
 
-    tori_act2_52_accept() {
+    beat7_accept() {
         // Drop tether for giving in
         this.route.tetherLevel = Math.max(0, this.route.tetherLevel - 10);
         this.route.updateTether(-10, 'Accepting Despair - giving in');
-
+        
         this.game.displayScene({
             character: 'Tori (internal, broken)',
             dialogue: '"Maybe she\'s right... maybe I should just let go..."',
             internal: '[COHERENCE DROP: -10%]\n[Despair grins. Victory.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_54_echoesreact(),
+            next: () => this.beat7_echoesReact(),
             delay: 3000
-        }, 'tori_act2_52_accept');
+        }, 'beat7_accept');
     }
 
-    tori_act2_53_silent() {
+    beat7_silent() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"..."',
             internal: '[Just holding on. Just surviving. Tether holds steady.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_act2_54_echoesreact(),
+            next: () => this.beat7_echoesReact(),
             delay: 3000
-        }, 'tori_act2_53_silent');
+        }, 'beat7_silent');
     }
 
-    tori_act2_54_echoesreact() {
+    beat7_echoesReact() {
         const tetherState = this.route.getTetherState();
-
+        
         if (tetherState === 'despair') {
             this.game.displayScene({
                 character: 'Echoes',
@@ -904,7 +923,7 @@ class ToriAct2 {
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000
-            }, 'tori_act2_54_echoesreact_despair');
+            }, 'beat7_echoesReact_despair');
         } else if (tetherState === 'balanced') {
             this.game.displayScene({
                 character: 'Echoes',
@@ -915,7 +934,7 @@ class ToriAct2 {
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000
-            }, 'tori_act2_54_echoesreact_balanced');
+            }, 'beat7_echoesReact_balanced');
         } else {
             this.game.displayScene({
                 character: 'Echoes',
@@ -926,7 +945,7 @@ class ToriAct2 {
                 },
                 next: () => this.route.act3.start(),
                 delay: 5000
-            }, 'tori_act2_54_echoesreact_strong');
+            }, 'beat7_echoesReact_strong');
         }
     }
 }

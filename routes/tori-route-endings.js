@@ -15,10 +15,10 @@ class ToriEndings {
     // CRITICAL CHOICE & ENDING DETERMINATION
     // ========================================
     
-    tori_endings_01_criticalchoice() {
+    criticalChoice() {
         // Unlock ZR's Version 848 analysis
         this.route.unlockNote('zr3');
-
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Everything shatters. Tori is fracturing. The Echoes watch. This is the moment.',
@@ -40,18 +40,18 @@ class ToriEndings {
                     this.determineEnding();
                 }
             }
-        }, 'tori_endings_01_criticalchoice');
+        }, 'criticalChoice');
     }
 
     determineEnding() {
         const ending = this.route.determineEnding();
-
+        
         if (ending === 'bad') {
-            this.tori_endings_02_badroute();
+            this.badRoute();
         } else if (ending === 'digitalForever') {
-            this.tori_endings_05_digitalforever();
+            this.digitalForever();
         } else {
-            this.tori_endings_17_trueroute();
+            this.trueRoute();
         }
     }
 
@@ -60,40 +60,39 @@ class ToriEndings {
     // Upload Fails - Becomes an Echo
     // ========================================
     
-    tori_endings_02_badroute() {
+    badRoute() {
         // Unlock the pre-defined bad ending note
         this.route.unlockNote('bad_ending');
-
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Upload fails. Tori fragments. Becomes another Echo in the void.',
             internal: '[Visual: Digital space. Four voices now. Echo 1, Echo 2, Despair... and Tori.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_endings_03_badroute_loop(),
+            next: () => this.badRoute_loop(),
             delay: 4000
-        }, 'tori_endings_02_badroute');
+        }, 'badRoute');
     }
 
-    tori_endings_03_badroute_loop() {
+    badRoute_loop() {
         this.game.displayScene({
             character: 'New Echo (Tori)',
-            dialogue: '"He\'ll try again. He always tries again."',
-            internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
+            dialogue: '"He\'ll try again. He always tries again."',            internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
             background: 'assets/digitalSpace.png',
-            next: () => this.tori_endings_04_badroute_retry(),
+            next: () => this.badRoute_retry(),
             delay: 5000
-        }, 'tori_endings_03_badroute_loop');
+        }, 'badRoute_loop');
     }
 
-    tori_endings_04_badroute_retry() {
+    badRoute_retry() {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
-
+        
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'GAME OVER\n\n"Do you wish to try again?"',
@@ -106,7 +105,7 @@ class ToriEndings {
                 if (choice === 'retry') {
                     // Increment version
                     this.game.incrementVersion();
-
+                    
                     // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
                     this.game.showLoopInit(() => {
                         // Reset tether to full
@@ -118,7 +117,7 @@ class ToriEndings {
                     this.game.returnToMainMenu();
                 }
             }
-        }, 'tori_endings_04_badroute_retry');
+        }, 'badRoute_retry');
     }
 
     // ========================================
@@ -126,10 +125,10 @@ class ToriEndings {
     // Both Digital - Together Eternally
     // ========================================
     
-    tori_endings_05_digitalforever() {
+    digitalForever() {
         // Unlock the pre-defined digital forever ending note
         this.route.unlockNote('digital_ending');
-
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Both crash. Both transfer. Digital space. Two souls. Forever.',
@@ -139,40 +138,42 @@ class ToriEndings {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_endings_06_digitalforever_together(),
+            next: () => this.digitalForever_together(),
             delay: 4000
-        }, 'tori_endings_05_digitalforever');
+        }, 'digitalForever');
     }
 
-    tori_endings_06_digitalforever_together() {
+    digitalForever_together() {
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"We\'re together. Isn\'t this what we wanted?"',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_endings_07_digitalforever_ronnie(),
+            next: () => this.digitalForever_ronnie(),
             delay: 3000
-        }, 'tori_endings_06_digitalforever_together');
+        }, 'digitalForever_together');
     }
 
-    tori_endings_07_digitalforever_ronnie() {
+    digitalForever_ronnie() {
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Forever. No pain. No time. Just us."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_endings_08_digitalforever_torinotices(),
+            next: () => this.digitalForever_toriNotices(),
             delay: 3000
-        }, 'tori_endings_07_digitalforever_ronnie');
+        }, 'digitalForever_ronnie');
     }
     
-    tori_endings_08_digitalforever_torinotices() {
+    digitalForever_toriNotices() {
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"You\'re still wearing the TLC hoodie. Even here."',
@@ -180,28 +181,30 @@ class ToriEndings {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_endings_09_digitalforever_tlcreveal(),
+            next: () => this.digitalForever_tlcReveal(),
             delay: 3000
-        }, 'tori_endings_08_digitalforever_torinotices');
+        }, 'digitalForever_toriNotices');
     }
     
-    tori_endings_09_digitalforever_tlcreveal() {
+    digitalForever_tlcReveal() {
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"\'TLC\' - Tender Loving Care. That\'s my Ronnie."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_endings_10_digitalforever_ronniecorrects(),
+            next: () => this.digitalForever_ronnieCorrects(),
             delay: 3000
-        }, 'tori_endings_09_digitalforever_tlcreveal');
+        }, 'digitalForever_tlcReveal');
     }
     
-    tori_endings_10_digitalforever_ronniecorrects() {
+    digitalForever_ronnieCorrects() {
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Oh that\'s not what that stands for."',
@@ -209,28 +212,30 @@ class ToriEndings {
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_endings_11_digitalforever_actualmeaning(),
+            next: () => this.digitalForever_actualMeaning(),
             delay: 2500
-        }, 'tori_endings_10_digitalforever_ronniecorrects');
+        }, 'digitalForever_ronnieCorrects');
     }
     
-    tori_endings_11_digitalforever_actualmeaning() {
+    digitalForever_actualMeaning() {
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Tori Loves Chicharon."',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_endings_12_digitalforever_echoesappear(),
+            next: () => this.digitalForever_echoesAppear(),
             delay: 2500
-        }, 'tori_endings_11_digitalforever_actualmeaning');
+        }, 'digitalForever_actualMeaning');
     }
     
-    tori_endings_12_digitalforever_echoesappear() {
+    digitalForever_echoesAppear() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"Oh that\'s YOUR Ronnie, huh?"',
@@ -240,12 +245,12 @@ class ToriEndings {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_endings_13_digitalforever_echo2(),
+            next: () => this.digitalForever_echo2(),
             delay: 2500
-        }, 'tori_endings_12_digitalforever_echoesappear');
+        }, 'digitalForever_echoesAppear');
     }
     
-    tori_endings_13_digitalforever_echo2() {
+    digitalForever_echo2() {
         this.game.displayScene({
             character: 'Echo 2',
             dialogue: '"Girl, he\'s cute!"',
@@ -254,12 +259,12 @@ class ToriEndings {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_endings_14_digitalforever_despairteases(),
+            next: () => this.digitalForever_despairTeases(),
             delay: 2000
-        }, 'tori_endings_13_digitalforever_echo2');
+        }, 'digitalForever_echo2');
     }
     
-    tori_endings_14_digitalforever_despairteases() {
+    digitalForever_despairTeases() {
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"Tori Loves Chicharon?! OMG adorable."',
@@ -269,27 +274,26 @@ class ToriEndings {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_endings_15_digitalforever_echoes(),
+            next: () => this.digitalForever_echoes(),
             delay: 3000
-        }, 'tori_endings_14_digitalforever_despairteases');
+        }, 'digitalForever_despairTeases');
     }
 
-    tori_endings_15_digitalforever_echoes() {
+    digitalForever_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',
-            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
+            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_endings_16_digitalforever_choice(),
+            next: () => this.digitalForever_choice(),
             delay: 5000
-        }, 'tori_endings_15_digitalforever_echoes');
+        }, 'digitalForever_echoes');
     }
     
-    tori_endings_16_digitalforever_choice() {
+    digitalForever_choice() {
         this.game.displayScene({
             character: 'System',
             dialogue: `VERSION ${this.game.loopVersion}\n\n"Together forever in the digital space.\nDo you accept this ending?"`,
@@ -302,7 +306,7 @@ class ToriEndings {
                 if (choice === 'retry') {
                     // Increment version
                     this.game.incrementVersion();
-
+                    
                     // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
                     this.game.showLoopInit(() => {
                         // Reset tether to full
@@ -312,12 +316,12 @@ class ToriEndings {
                 } else {
                     // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
                     this.route.unlockNote('z9');
-
+                    
                     // UNLOCK SKIP FEATURE (first ending completion)
                     if (!this.game.skipUnlocked) {
                         this.game.unlockSkipFeature();
                     }
-
+                    
                     // Accept ending - lock version
                     this.game.acceptEnding();
                     // Transition to shared epilogue
@@ -325,7 +329,7 @@ class ToriEndings {
                     epilogue.start();
                 }
             }
-        }, 'tori_endings_16_digitalforever_choice');
+        }, 'digitalForever_choice');
     }
 
     // ========================================
@@ -333,44 +337,43 @@ class ToriEndings {
     // Body Anchor Success - She Comes Home
     // ========================================
     
-    tori_endings_17_trueroute() {
+    trueRoute() {
         // Unlock the pre-defined true ending note
         this.route.unlockNote('true_ending');
-
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The heartbeat calls. The bridge holds. Transfer begins.',
             internal: '[Visual: Tori\'s digital form dissolving. Following the warmth home.]',
             background: 'assets/hospital.png',
-            next: () => this.tori_endings_18_trueroute_transfer(),
+            next: () => this.trueRoute_transfer(),
             delay: 4000
-        }, 'tori_endings_17_trueroute');
+        }, 'trueRoute');
     }
 
-    tori_endings_18_trueroute_transfer() {
+    trueRoute_transfer() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I feel it... the pull... I\'m going home..."',
             background: 'assets/hospital.png',
-            next: () => this.tori_endings_19_trueroute_echoes(),
+            next: () => this.trueRoute_echoes(),
             delay: 3000
-        }, 'tori_endings_18_trueroute_transfer');
+        }, 'trueRoute_transfer');
     }
 
-    tori_endings_19_trueroute_echoes() {
+    trueRoute_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',
-            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',            background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
-            next: () => this.tori_endings_20_trueroute_merge(),
+            next: () => this.trueRoute_merge(),
             delay: 4000
-        }, 'tori_endings_19_trueroute_echoes');
+        }, 'trueRoute_echoes');
     }
     
-    tori_endings_20_trueroute_merge() {
+    trueRoute_merge() {
         // Display echoes for merge animation
         this.game.displayScene({
             character: 'Narration',
@@ -382,14 +385,14 @@ class ToriEndings {
             next: () => {
                 // Trigger merge animation
                 this.game.triggerEchoMerge(() => {
-                    this.tori_endings_21_trueroute_awakening();
+                    this.trueRoute_awakening();
                 });
             },
             delay: 2000
-        }, 'tori_endings_20_trueroute_merge');
+        }, 'trueRoute_merge');
     }
 
-    tori_endings_21_trueroute_awakening() {
+    trueRoute_awakening() {
         this.game.displayScene({
             character: 'Tori (external, whisper)',
             dialogue: '"...Ronnie?"',
@@ -398,13 +401,13 @@ class ToriEndings {
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_endings_22_trueroute_ronnie(),
+            next: () => this.trueRoute_ronnie(),
             delay: 4000,
             style: 'critical'
-        }, 'tori_endings_21_trueroute_awakening');
+        }, 'trueRoute_awakening');
     }
 
-    tori_endings_22_trueroute_ronnie() {
+    trueRoute_ronnie() {
         this.game.displayScene({
             character: 'Ronnie (crying, laughing)',
             dialogue: '"Tori! Oh god, Tori!"',
@@ -412,23 +415,23 @@ class ToriEndings {
             sprites: {
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_endings_23_trueroute_always(),
+            next: () => this.trueRoute_always(),
             delay: 3000
-        }, 'tori_endings_22_trueroute_ronnie');
+        }, 'trueRoute_ronnie');
     }
 
-    tori_endings_23_trueroute_always() {
+    trueRoute_always() {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
-
+        
         // Unlock Z's final philosophical note (TRUE ENDING ONLY)
         this.route.unlockNote('z10');
-
+        
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-
+        
         this.game.displayScene({
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',
@@ -445,7 +448,7 @@ class ToriEndings {
                 epilogue.start();
             },
             delay: 4000
-        }, 'tori_endings_23_trueroute_always');
+        }, 'trueRoute_always');
     }
 }
 

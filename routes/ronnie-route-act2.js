@@ -12,7 +12,7 @@ class RonnieRouteAct2 {
     // ACT 2 - LOOP MECHANICS (BOOTSTRAP PARADOX)
     // ========================================
 
-    ronnie_act2_01_start() {
+    startAct2() {
         // Beat 1: Realization - Something's Wrong
         this.game.displayScene({
             character: 'Ronnie (internal)',
@@ -22,12 +22,12 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_02_discovery(),
+            next: () => this.act2Beat1_discovery(),
             delay: 4000
-        }, 'ronnie_act2_01_start');
+        }, 'startAct2');
     }
 
-    ronnie_act2_02_discovery() {
+    act2Beat1_discovery() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Tori... do you remember yesterday? What we talked about?"',
@@ -37,12 +37,12 @@ class RonnieRouteAct2 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act2_03_confusion(),
+            next: () => this.act2Beat1_confusion(),
             delay: 3000
-        }, 'ronnie_act2_02_discovery');
+        }, 'act2Beat1_discovery');
     }
 
-    ronnie_act2_03_confusion() {
+    act2Beat1_confusion() {
         this.game.displayScene({
             character: 'Tori (confused)',
             dialogue: '"Yesterday? Baby, we talked about the hospital. Your visit. You showed me the game..."',
@@ -52,16 +52,16 @@ class RonnieRouteAct2 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act2_04_code(),
+            next: () => this.act2Beat2(),
             delay: 3500
-        }, 'ronnie_act2_03_confusion');
+        }, 'act2Beat1_confusion');
     }
 
     // Beat 2: Research - Building the Bridge
-    ronnie_act2_04_code() {
+    act2Beat2() {
         // Unlock PerplexiZee's research data note
         this.route.collectiblesManager.unlockNote('pz1');
-
+        
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"I dug deeper. Something kept her tethered - fragmented, looping. I couldn\'t pull her out... but maybe I could send something IN."',
@@ -70,12 +70,12 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_05_codeanalysis(),
+            next: () => this.act2Beat2_code(),
             delay: 5000
-        }, 'ronnie_act2_04_code');
+        }, 'act2Beat2');
     }
 
-    ronnie_act2_05_codeanalysis() {
+    act2Beat2_code() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"If I could create a version of myself inside the code... a guide, an anchor... maybe she could find her way back through me."',
@@ -84,13 +84,13 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_06_patterns(),
+            next: () => this.act2Beat3(),
             delay: 4500
-        }, 'ronnie_act2_05_codeanalysis');
+        }, 'act2Beat2_code');
     }
 
     // Beat 3-7: Loop iterations (can be expanded later for pacing)
-    ronnie_act2_06_patterns() {
+    act2Beat3() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Days blur together. Each attempt brings hope. Each failure brings despair.',
@@ -99,13 +99,13 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_07_breakthrough(),
+            next: () => this.act2Beat7(),
             delay: 6000
-        }, 'ronnie_act2_06_patterns');
+        }, 'act2Beat3');
     }
 
     // Beat 7: The Discovery (Body Anchor Concept)
-    ronnie_act2_07_breakthrough() {
+    act2Beat7() {
         this.game.displayScene({
             character: 'Ronnie (realization)',
             dialogue: '"Wait... what if it\'s not about PULLING her out? What if it\'s about showing her the way HOME?"',
@@ -114,15 +114,15 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_08_theory(),
+            next: () => this.act2Beat7_theory(),
             delay: 4000
-        }, 'ronnie_act2_07_breakthrough');
+        }, 'act2Beat7');
     }
 
-    ronnie_act2_08_theory() {
+    act2Beat7_theory() {
         // Unlock Belle's heartbeat/body anchor note
         this.route.collectiblesManager.unlockNote('iz2');
-
+        
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"Her body. It\'s still there. Still breathing. Still WAITING. If I could make her REMEMBER her body... make her feel the heartbeat... she might follow it back."',
@@ -131,16 +131,16 @@ class RonnieRouteAct2 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act2_09_decision(),
+            next: () => this.act2Beat8(),
             delay: 5000
-        }, 'ronnie_act2_08_theory');
+        }, 'act2Beat7_theory');
     }
 
     // Beat 8: Critical Choice - The Approach
-    ronnie_act2_09_decision() {
+    act2Beat8() {
         // Unlock GenZee's upload paradox warning BEFORE player makes choice
         this.route.collectiblesManager.unlockNote('gz2');
-
+        
         this.game.displayScene({
             character: 'System',
             dialogue: 'CRITICAL APPROACH DETECTED',
@@ -153,15 +153,15 @@ class RonnieRouteAct2 {
             ],
             onChoice: (choice) => {
                 this.game.gameState.flags.act2_final_choice = choice;
-                this.ronnie_act2_10_outcome(choice);
+                this.act2Beat8_outcome(choice);
             }
-        }, 'ronnie_act2_09_decision');
+        }, 'act2Beat8');
     }
 
-    ronnie_act2_10_outcome(choice) {
+    act2Beat8_outcome(choice) {
         let dialogue = '';
         let nextScene = null;
-        let background = 'digitalSpace.png';
+        let background = 'assets/digitalSpace.png';
         let sprites = {};
 
         if (choice === 'upload') {
@@ -172,7 +172,7 @@ class RonnieRouteAct2 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             };
-            nextScene = () => this.ronnie_act2_11_end();
+            nextScene = () => this.act2Beat8_end();
         } else if (choice === 'anchor') {
             // True Route Tilt
             dialogue = '"Your body\'s calling you back. That\'s where you belong."\n\n[Tori (softening): "...Home. I feel it..."]';
@@ -181,7 +181,7 @@ class RonnieRouteAct2 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             };
-            nextScene = () => this.ronnie_act2_11_end();
+            nextScene = () => this.act2Beat8_end();
         } else if (choice === 'silent') {
             // Digital Forever Tilt
             dialogue = '[Ronnie says nothing. Holds her hand to his cheek.]\n\n[Tori (whispers): "...Even without words... you still anchor me."]';
@@ -190,7 +190,7 @@ class RonnieRouteAct2 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             };
-            nextScene = () => this.ronnie_act2_11_end();
+            nextScene = () => this.act2Beat8_end();
         }
 
         this.game.displayScene({
@@ -200,17 +200,17 @@ class RonnieRouteAct2 {
             sprites: sprites,
             next: nextScene,
             delay: 5000
-        }, 'ronnie_act2_10_outcome');
+        }, 'act2Beat8_outcome');
     }
 
-    ronnie_act2_11_end() {
+    act2Beat8_end() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"And then... everything broke."',
             internal: '[Visual overload: alarms, static, screen fades white.]\n[→ Act 3: Fakeout begins]',
-            background: 'genericBack.png',
+            background: 'assets/genericBack.png',
             next: () => this.route.act3.startAct3(),
             delay: 3000
-        }, 'ronnie_act2_11_end');
+        }, 'act2Beat8_end');
     }
 }

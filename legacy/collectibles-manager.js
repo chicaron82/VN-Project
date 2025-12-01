@@ -28,6 +28,11 @@ class CollectiblesManager {
         // All available notes (defined per route)
         this.allNotes = {};
         
+        // ZEERAH'S FIX: Pre-load note definitions on construction
+        // So notes exist even if route hasn't called define methods yet
+        // (Prevents errors when loading saves that go directly to endings)
+        this.initializeAllNoteDefinitions();
+        
         // DOM references
         this.notesButton = null;
         this.notesCount = null;
@@ -39,6 +44,19 @@ class CollectiblesManager {
     // ========================================
     // INITIALIZATION
     // ========================================
+    
+    initializeAllNoteDefinitions() {
+        // ZEERAH'S FIX: Load ALL note definitions immediately on construction
+        // This prevents errors when notes are unlocked before route.start() is called
+        // (e.g. loading a save that goes directly to an ending)
+        
+        // Call both define methods to populate allNotes
+        this.defineToriNotes();
+        this.defineRonnieNotes();
+        
+        // NOTE: This means allNotes contains notes from BOTH routes
+        // But the suppression logic in unlockNote() handles route-specific availability
+    }
     
     init() {
         // Cache DOM references from game engine
@@ -56,6 +74,9 @@ class CollectiblesManager {
         if (this.closeNotesButton) {
             this.closeNotesButton.addEventListener('click', () => this.hideNotesViewer());
         }
+        
+        // ZEERAH'S FIX: Load any previously collected notes from localStorage
+        this.loadNotesFromLocalStorage();
         
         // Initialize notes collection for current route
         this.initializeRouteNotes();
@@ -102,6 +123,9 @@ class CollectiblesManager {
         // Add to collected
         this.collectedNotes[note.type].push(noteId);
         console.log(`Note unlocked: ${noteId} (${note.title})`);
+        
+        // ZEERAH'S FIX: Save to localStorage immediately so standalone viewer can see it
+        this.saveNotesToLocalStorage();
         
         // Update display count
         this.updateNotesCount();
@@ -718,6 +742,32 @@ You earned it.`
     // STATE MANAGEMENT
     // ========================================
     
+    saveNotesToLocalStorage() {
+        // ZEERAH'S FIX: Persist notes directly to localStorage
+        // So standalone viewer can read them without needing active save
+        localStorage.setItem('vn_collected_notes', JSON.stringify(this.collectedNotes));
+        console.log('Notes saved to localStorage');
+    }
+    
+    loadNotesFromLocalStorage() {
+        // ZEERAH'S FIX: Load notes from localStorage on init
+        try {
+            const saved = localStorage.getItem('vn_collected_notes');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // Merge with current collected (don't overwrite)
+                Object.keys(parsed).forEach(type => {
+                    if (parsed[type] && Array.isArray(parsed[type])) {
+                        this.collectedNotes[type] = [...new Set([...this.collectedNotes[type], ...parsed[type]])];
+                    }
+                });
+                console.log('Notes loaded from localStorage');
+            }
+        } catch (e) {
+            console.warn('Error loading notes from localStorage:', e);
+        }
+    }
+    
     getState() {
         return {
             collectedNotes: JSON.parse(JSON.stringify(this.collectedNotes))
@@ -734,6 +784,9 @@ You earned it.`
             pz: [],
             special: []
         };
+        
+        // ZEERAH'S FIX: Also save to localStorage when restoring from save
+        this.saveNotesToLocalStorage();
         
         this.updateNotesCount();
         console.log('Collectibles state restored');

@@ -11,7 +11,8 @@ class StandaloneNotesViewer {
     }
     
     loadUnlockedNotes() {
-        // Load all unlocked notes from localStorage across all routes
+        // ZEERAH'S FIX: Load notes directly from localStorage
+        // CollectiblesManager now saves here immediately on unlock
         const notes = {
             z: [],
             cz: [],
@@ -22,29 +23,19 @@ class StandaloneNotesViewer {
             special: []
         };
         
-        // Try loading from Tori route saves
         try {
-            const toriSaves = ['autosave', '1', '2', '3'].map(slot => 
-                localStorage.getItem(`save_slot_${slot}`)
-            ).filter(Boolean);
-            
-            toriSaves.forEach(saveData => {
-                try {
-                    const save = JSON.parse(saveData);
-                    if (save.routeState?.collectibles?.collectedNotes) {
-                        const collected = save.routeState.collectibles.collectedNotes;
-                        Object.keys(notes).forEach(type => {
-                            if (collected[type]) {
-                                notes[type] = [...new Set([...notes[type], ...collected[type]])];
-                            }
-                        });
+            const saved = localStorage.getItem('vn_collected_notes');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                Object.keys(notes).forEach(type => {
+                    if (parsed[type] && Array.isArray(parsed[type])) {
+                        notes[type] = parsed[type];
                     }
-                } catch (e) {
-                    // Skip invalid save
-                }
-            });
+                });
+                console.log('Standalone viewer loaded notes from localStorage:', notes);
+            }
         } catch (e) {
-            console.log('Error loading notes from saves:', e);
+            console.warn('Error loading notes for standalone viewer:', e);
         }
         
         return notes;

@@ -1,0 +1,196 @@
+INTERNAL DIALOGUE REFACTORING GUIDE
+====================================
+For ZeeRah's Implementation
+
+GUIDELINES:
+-----------
+✅ KEEP as internal: Actual character thoughts, emotions, realizations
+✅ MOVE to Narration: Visual descriptions, scene-setting, actions without emotion
+✅ KEEP as internal: Quick actions with emotional context (e.g., "[She grins mischievously]")
+❌ DON'T MOVE: Internal monologue, character feelings, mental states
+
+=========================================
+SHARED PROLOGUE (shared-prologue.js)
+=========================================
+
+LINE ~26: scene1_streetBump()
+CURRENT: internal: '[Visual: Sunny street, midday. Cafes in the background. Tori walks with a coffee cup in hand, distracted by her Tamagotchi.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'Sunny street, midday. Cafes line the background. Tori walks with coffee in hand, distracted by her Tamagotchi.'
+
+LINE ~39: scene1_bump()
+CURRENT: internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.'
+
+LINE ~48: scene1_pickup()
+CURRENT: internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.'
+
+LINE ~57: scene1_oldMan()
+CURRENT: internal: '[She glances up but never clearly sees his face. Camera catches a glimpse of his faded BGA hoodie on his chest. He walks away, clutching her original Tamagotchi.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi.'
+
+LINE ~71: scene1_end()
+CURRENT: internal: '[She stands there a moment, then pockets the Tamagotchi and heads home.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'She stands there a moment, then pockets the Tamagotchi and heads home.'
+
+LINE ~85: scene2_arrival()
+CURRENT: internal: '[Cut: Tori enters her home. Ronnie is at his laptop, deep in dev mode.]'
+ACTION: MOVE to dialogue (Narration) 
+NEW: dialogue: 'Tori enters her home. Ronnie is at his laptop, deep in dev mode.'
+
+LINE ~138: scene2_toriExplains()
+CURRENT: internal: '[She hands him the French Vanilla.]'
+ACTION: KEEP - quick action with context
+
+LINE ~165: scene2_toriRebuttal()
+CURRENT: internal: '[She tugs playfully at his sleeve.]'
+ACTION: KEEP - action with emotional context (playful)
+
+LINE ~192: scene2_toriRebuttal()
+CURRENT: internal: '[She grins mischievously.]'
+ACTION: KEEP - emotional action
+
+LINE ~206: scene2_toriDinner()
+CURRENT: internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]'
+ACTION: KEEP - emotionally loaded actions
+
+LINE ~220: scene2_kitchen()
+CURRENT: internal: '[She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.]'
+ACTION: MOVE to dialogue (Narration) - sets up tension
+NEW: dialogue: 'She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.'
+
+LINE ~234: scene2_warning()
+CURRENT: internal: '[He notices her about to trip over his shoe.]'
+ACTION: KEEP - Ronnie's realization/concern
+
+LINE ~251: scene3_fall()
+CURRENT: internal: '[She trips, stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late.]\n[Visual: Tamagotchi, resting on the laptop, lights faintly. Screen flickers, code scrolling.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'She trips. Stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late. The Tamagotchi, resting on the laptop, lights faintly. The screen flickers, code scrolling.'
+
+=========================================
+RONNIE ROUTE ACT 3 (ronnie-route-act3.js)
+=========================================
+
+PATTERN: Many of these are legitimate internal monologue or emotional states
+RECOMMENDATION: Most should STAY as internal - they're Ronnie's POV thoughts
+EXCEPTIONS (move to Narration):
+
+- "Visual:" prefixed descriptions → Move to Narration
+- Pure stage directions without emotion → Move to Narration
+- System messages → Keep as internal (they're UI elements)
+
+SPECIFIC CHANGES:
+
+beat1_start() - LINE ~29
+CURRENT: internal: '[Visual: Pixel park. Cherry blossoms falling in slow loops. Dreamy chiptune music - slightly too perfect.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'Pixel park. Cherry blossoms falling in slow loops. Dreamy chiptune music—slightly too perfect.'
+
+beat1_toriResponse() - LINE ~39
+CURRENT: internal: '[She laughs. It sounds... hollow. Just slightly.]'
+ACTION: KEEP - describes emotional quality Ronnie perceives
+
+beat2_collapse() - LINE ~XXX
+CURRENT: internal: '[Visual: Digital apartment. Tori cooking breakfast - movements glitchy, repeating.]'
+ACTION: MOVE to dialogue (Narration)
+
+beat4_systemWarning() - System Message internals
+ACTION: KEEP - they're UI elements, not narration
+
+=========================================
+TORI ROUTE ACT 1 (tori-route-act1.js)
+=========================================
+
+PATTERN: Heavy use of Tori's internal POV - most should STAY
+EXCEPTIONS:
+
+scene1_streetBump() - LINE ~19
+CURRENT: internal: '[Visual: Coffee shop. Tori picks up the drink, checks her Tamagotchi while walking out.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'Coffee shop. Tori picks up her drink, checks her Tamagotchi while walking out.'
+
+scene1_bump() - LINE ~27
+CURRENT: internal: '[She bumps into an older man. Hard. Coffee nearly spills. Both their Tamagotchis tumble to the ground.]'
+ACTION: MOVE to dialogue (Narration)
+
+scene1_pickup() - LINE ~35
+CURRENT: internal: '[She bends down quickly, embarrassed. Grabs the Tamagotchi closest to her hand.]'
+ACTION: PARTIAL - Split dialogue and internal
+NEW dialogue: 'She bends down quickly. Grabs the Tamagotchi closest to her hand.'
+NEW internal: '[Embarrassed. Flustered.]'
+
+scene1_buzz() - LINE ~43
+CURRENT: internal: '[The device vibrates in her hand. Twice. Sharp. Wrong. Something fundamental shifts.]'
+ACTION: MOVE to dialogue (Narration) - objective event
+NEW: dialogue: 'The device vibrates in her hand. Twice. Sharp. Wrong.'
+(Remove "Something fundamental shifts" - that's implied)
+
+scene2_void() - LINE ~75
+CURRENT: internal: '[Visual: Pure black. No sound. A void. She is nowhere and everywhere.]'
+ACTION: MOVE to dialogue (Narration)
+NEW: dialogue: 'Pure black. No sound. A void. She is nowhere and everywhere.'
+
+=========================================
+TORI ROUTE ACT 2 (tori-route-act2.js)
+=========================================
+
+PATTERN: Mix of Tori's thoughts and scene descriptions
+RECOMMENDATION: Scan for "Visual:" tags and pure stage directions
+
+beat1() - Memory corruption scene
+ACTION: Most internals here are Tori's emotional reactions - KEEP
+
+beat2() - Body anchor discovery  
+ACTION: Scene-setting internals → Move to Narration
+ACTION: Tori's realizations → KEEP as internal
+
+=========================================
+TORI ROUTE ACT 3 (tori-route-act3.js)
+=========================================
+
+PATTERN: Heavy internal monologue (appropriate for climax)
+RECOMMENDATION: Only move pure visual descriptions
+
+Honeymoon loop scenes:
+ACTION: Most emotional content - KEEP as internal
+
+Collapse sequence:
+ACTION: Visual glitch descriptions → Move to Narration where appropriate
+
+=========================================
+TORI ROUTE ENDINGS (tori-route-endings.js)
+=========================================
+
+PATTERN: Emotional climaxes and resolutions
+RECOMMENDATION: Keep most internals - they're character moments
+EXCEPTION: Scene transitions → Move to Narration
+
+=========================================
+SUMMARY STATISTICS
+=========================================
+
+Total internals scanned: ~209
+Recommended to MOVE: ~25-30 (12-15%)
+Recommended to KEEP: ~179 (85-88%)
+
+Most internals are legitimate character thoughts/emotions and should stay!
+
+=========================================
+IMPLEMENTATION NOTES
+=========================================
+
+1. Use str_replace for each change
+2. Test each scene after changing
+3. If unclear, err on side of KEEPING as internal
+4. Remove bracketed [Visual:] tags when moving to narration
+5. Clean up redundant descriptors ("Camera catches", "Visual:")
+6. Preserve emotional context in internals
+
+This is tedious work but makes the narrative cleaner! 
+Good luck ZeeRah! 💙

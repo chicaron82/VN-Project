@@ -1,0 +1,926 @@
+// ========================================
+// TORI'S ROUTE - ACT 3
+// The Honeymoon Fakeout & Collapse (Tori's POV)
+// ========================================
+
+class ToriAct3 {
+    constructor(route) {
+        this.route = route;
+        this.game = route.game;
+    }
+    
+    start() {
+        this.beat1();
+    }
+    
+    // ========================================
+    // BEAT 1: HONEYMOON LOOP (FALSE CALM)
+    // Inside the Perfect Dream
+    // ========================================
+    
+    beat1() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Everything is perfect. Too perfect.',
+            internal: '[Visual: Pixel park. Cherry blossoms. Everything soft-focused and beautiful.]',
+            next: () => this.beat1_iceCreamStand(),
+            delay: 3000
+        });
+    }
+
+    beat1_iceCreamStand() {
+        this.game.displayScene({
+            character: 'Ronnie (sprite)',
+            dialogue: '"Ice cream?"',
+            next: () => this.beat1_toriAnswer(),
+            delay: 2000
+        });
+    }
+
+    beat1_toriAnswer() {
+        this.game.displayScene({
+            character: 'Tori (sprite)',
+            dialogue: '"Tiger Tail, please."',
+            internal: '[Wait. That\'s wrong. I hate Tiger Tail.]',
+            next: () => this.beat1_horror(),
+            delay: 2500
+        });
+    }
+
+    beat1_horror() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"I didn\'t say that. My mouth moved but those weren\'t my words."',
+            next: () => this.beat1_echoes(),
+            delay: 3000
+        });
+    }
+
+    beat1_echoes() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 1: "Here it comes."\nEcho 2: "The loop tightens."\nDespair: "You\'re in the honeymoon trap. Everything feels right because nothing is real."',
+            echoes: {
+                echo1: 'Here it comes.',
+                echo2: 'The loop tightens.',
+                despair: 'You\'re in the honeymoon trap. Everything feels right because nothing is real.'
+            },
+            next: () => this.beat1_bench(),
+            delay: 4000
+        });
+    }
+
+    beat1_bench() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'They sit on a bench. Cherry blossoms fall on loop. The same three petals. Again. Again. Again.',
+            internal: '[She notices the pattern. The EXACT same three petals. The EXACT same timing.]',
+            next: () => this.beat1_toriRealize(),
+            delay: 3500
+        });
+    }
+
+    beat1_toriRealize() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"This isn\'t a memory. It\'s a construct. And I\'m caught inside it."',
+            next: () => this.beat1_choice(),
+            delay: 3000
+        });
+    }
+
+    beat1_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Do I... tell him something\'s wrong? Or just... stay in this moment?"',
+            choices: [
+                { text: '[Call it out: "This isn\'t real"]', value: 'truth' },
+                { text: '[Stay quiet: Maybe I\'m wrong]', value: 'quiet' },
+                { text: '[Panic: "Get me out!"]', value: 'panic' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'truth') {
+                    this.route.addRoutePoints('true', 1);
+                    this.beat1_truth();
+                } else if (choice === 'quiet') {
+                    this.route.addRoutePoints('digitalForever', 1);
+                    this.beat1_quiet();
+                } else {
+                    this.route.addRoutePoints('bad', 1);
+                    this.beat1_panic();
+                }
+            }
+        });
+    }
+
+    beat1_truth() {
+        this.game.displayScene({
+            character: 'Tori (typing)',
+            dialogue: '"Ronnie... this isn\'t real. The petals are looping. I can feel it."',
+            next: () => this.beat2(),
+            delay: 3000
+        });
+    }
+
+    beat1_quiet() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Maybe I\'m just paranoid. It feels so good here. Why ruin it?"',
+            next: () => this.beat2(),
+            delay: 3000
+        });
+    }
+
+    beat1_panic() {
+        this.game.displayScene({
+            character: 'Tori (typing frantically)',
+            dialogue: '"GET ME OUT! This isn\'t real! None of this is REAL!"',
+            next: () => this.beat2(),
+            delay: 3000
+        });
+    }
+
+    // ========================================
+    // BEAT 2: FRACTURE IN MEMORY
+    // The Pasta Argument Plays Wrong
+    // ========================================
+    
+    beat2() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Pixel kitchen. Cooking memory. But something\'s... off.',
+            internal: '[Visual: The same scene from Act 2. But corrupted. Colors bleeding.]',
+            next: () => this.beat2_argument(),
+            delay: 3000
+        });
+    }
+
+    beat2_argument() {
+        this.game.displayScene({
+            character: 'Ronnie (sprite)',
+            dialogue: '"You burned the garlic bread again."',
+            next: () => this.beat2_toriResponse(),
+            delay: 2500
+        });
+    }
+
+    beat2_toriResponse() {
+        this.game.displayScene({
+            character: 'Tori (sprite, voice not hers)',
+            dialogue: '"I hate you."',
+            internal: '[NO. That\'s not what I said. I said "shut up" as a JOKE.]',
+            next: () => this.beat2_horror(),
+            delay: 3000
+        });
+    }
+
+    beat2_horror() {
+        this.game.displayScene({
+            character: 'Tori (internal, panicking)',
+            dialogue: '"The memory is WRONG. That\'s not how it happened. Why is it playing wrong?!"',
+            next: () => this.beat2_echoes(),
+            delay: 3000
+        });
+    }
+
+    beat2_echoes() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 2: "Memory corruption."\nEcho 1: "The system is rewriting her."\nDespair: "Soon you won\'t remember what was real and what the code invented."',
+            echoes: {
+                echo2: 'Memory corruption.',
+                echo1: 'The system is rewriting her.',
+                despair: 'Soon you won\'t remember what was real and what the code invented.'
+            },
+            next: () => this.beat2_ronnieNotice(),
+            delay: 4000
+        });
+    }
+
+    beat2_ronnieNotice() {
+        this.game.displayScene({
+            character: 'Ronnie (concerned)',
+            dialogue: '"Tori? You okay? You just... froze."',
+            next: () => this.beat2_choice(),
+            delay: 2500
+        });
+    }
+
+    beat2_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Do I tell him the memory played wrong? Or pretend it\'s fine?"',
+            choices: [
+                { text: '[Tell him: "The memory was corrupted"]', value: 'truth' },
+                { text: '[Lie: "I\'m fine, just tired"]', value: 'lie' },
+                { text: '[Deflect: Change the subject]', value: 'deflect' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'truth') {
+                    this.route.addRoutePoints('true', 1);
+                    this.beat2_truth();
+                } else if (choice === 'lie') {
+                    this.route.addRoutePoints('digitalForever', 1);
+                    this.beat2_lie();
+                } else {
+                    this.route.addRoutePoints('bad', 1);
+                    this.beat2_deflect();
+                }
+            }
+        });
+    }
+
+    beat2_truth() {
+        this.game.displayScene({
+            character: 'Tori (typing)',
+            dialogue: '"That memory... it didn\'t play right. The words were wrong."',
+            next: () => this.beat3(),
+            delay: 3000
+        });
+    }
+
+    beat2_lie() {
+        this.game.displayScene({
+            character: 'Tori (typing)',
+            dialogue: '"I\'m fine. Just a glitch. Keep going."',
+            next: () => this.beat3(),
+            delay: 3000
+        });
+    }
+
+    beat2_deflect() {
+        this.game.displayScene({
+            character: 'Tori (typing)',
+            dialogue: '"Let\'s do something else. Anything else."',
+            next: () => this.beat3(),
+            delay: 3000
+        });
+    }
+
+    // ========================================
+    // BEAT 3: SYSTEM MESSAGES INTRUDE
+    // The Fourth Wall Shatters
+    // ========================================
+    
+    beat3() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Text boxes appear. In her vision. Overlaying everything.',
+            internal: '[Visual: System UI elements appearing where they shouldn\'t. Debug console bleeding through.]',
+            next: () => this.beat3_firstBox(),
+            delay: 3000
+        });
+    }
+
+    beat3_firstBox() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '[Battery: 15%]',
+            internal: '[She SEES it. Not as UI. As part of her reality.]',
+            next: () => this.beat3_toriReact(),
+            delay: 2000
+        });
+    }
+
+    beat3_toriReact() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"What is that? Why am I seeing system messages?"',
+            next: () => this.beat3_moreBoxes(),
+            delay: 2500
+        });
+    }
+
+    beat3_moreBoxes() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '[Warning: Fragmentation detected]\n[Memory corruption: 67%]\n[Connection unstable]',
+            internal: '[The boxes multiply. Fill her vision. She can barely see Ronnie anymore.]',
+            next: () => this.beat3_horror(),
+            delay: 3000
+        });
+    }
+
+    beat3_horror() {
+        this.game.displayScene({
+            character: 'Tori (internal, breaking)',
+            dialogue: '"I\'m seeing the backend. The debug console. Because I\'m not separate from the system. I AM the system."',
+            next: () => this.beat3_echoes(),
+            delay: 3500
+        });
+    }
+
+    beat3_echoes() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 1: "Now she understands."\nEcho 2: "She\'s not trapped IN code."\nDespair: "She IS code. And code doesn\'t have a soul to save."',
+            echoes: {
+                echo1: 'Now she understands.',
+                echo2: 'She\'s not trapped IN code.',
+                despair: 'She IS code. And code doesn\'t have a soul to save.'
+            },
+            next: () => this.beat3_truthBox(),
+            delay: 4000
+        });
+    }
+
+    beat3_truthBox() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '[You can\'t upload a soul.]',
+            internal: '[That\'s not a system message. That\'s a TRUTH. Hard-coded. A rule.]',
+            next: () => this.beat3_choice(),
+            delay: 3000
+        });
+    }
+
+    beat3_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Do I fight this? Or accept what I am?"',
+            choices: [
+                { text: '[Fight: "I\'m MORE than code"]', value: 'fight' },
+                { text: '[Accept: "Maybe I am just data"]', value: 'accept' },
+                { text: '[Question: "What IS a soul?"]', value: 'question' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'fight') {
+                    this.route.addRoutePoints('true', 1);
+                    this.beat3_fight();
+                } else if (choice === 'accept') {
+                    this.route.addRoutePoints('bad', 1);
+                    this.beat3_accept();
+                } else {
+                    this.route.addRoutePoints('digitalForever', 1);
+                    this.beat3_question();
+                }
+            }
+        });
+    }
+
+    beat3_fight() {
+        this.game.displayScene({
+            character: 'Tori (internal, defiant)',
+            dialogue: '"No. I\'m MORE than code. I have to be."',
+            next: () => this.beat4(),
+            delay: 3000
+        });
+    }
+
+    beat3_accept() {
+        this.game.displayScene({
+            character: 'Tori (internal, hollow)',
+            dialogue: '"Maybe I\'m just... data. And data ends."',
+            next: () => this.beat4(),
+            delay: 3000
+        });
+    }
+
+    beat3_question() {
+        this.game.displayScene({
+            character: 'Tori (internal, searching)',
+            dialogue: '"What even IS a soul? Maybe being code doesn\'t mean I\'m not real."',
+            next: () => this.beat4(),
+            delay: 3000
+        });
+    }
+
+    // ========================================
+    // BEAT 4: THE SHATTER MOMENT
+    // Fragmenting Into Multiple Instances
+    // ========================================
+    
+    beat4() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Everything fractures. She\'s splitting apart.',
+            internal: '[Visual: Multiple overlapping Toris. All her. All different. All pulling different directions.]',
+            next: () => this.beat4_fragmentation(),
+            delay: 3000
+        });
+    }
+
+    beat4_fragmentation() {
+        this.game.displayScene({
+            character: 'Tori (voices overlapping)',
+            dialogue: '"I can\'t.."\n"..hold together.."\n"..something\'s inside me.."\n"..help.."',
+            internal: '[She feels herself stretching. Tearing. Pixels scattering. Then snapping back together WRONG.]',
+            next: () => this.beat4_toriPrime(),
+            delay: 3500
+        });
+    }
+
+    beat4_toriPrime() {
+        this.game.displayScene({
+            character: 'Tori (internal, trying to stay cohesive)',
+            dialogue: '"Which thoughts are mine? Which version is the real me? Am I all of them? None of them?"',
+            next: () => this.beat4_systemOverlay(),
+            delay: 3000
+        });
+    }
+
+    beat4_systemOverlay() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '[Battery: 8%]\n[Connection Failed]\n[Memory corruption: 67%]\n[ERROR: Consciousness cannot be contained]',
+            internal: '[Text overlays through her. Invasive. Part of her now.]',
+            next: () => this.beat4_instances(),
+            delay: 3000
+        });
+    }
+
+    beat4_instances() {
+        this.game.displayScene({
+            character: 'Tori (consciousness SNAPS into three)',
+            dialogue: 'Instance 1: "Upload me! Push me somewhere stronger!"\nInstance 2: "Let me go. It\'s time."\nInstance 3: "ERROR: Consciousness cannot be contained."',
+            internal: '[Three Toris. All her. All different. All pulling.]',
+            next: () => this.beat4_scream(),
+            delay: 4000
+        });
+    }
+
+    beat4_scream() {
+        this.game.displayScene({
+            character: 'Tori-Prime (internal, screaming)',
+            dialogue: '"Stop! STOP! You\'re all me but you\'re all WRONG!"',
+            next: () => this.beat4_collapse(),
+            delay: 3000
+        });
+    }
+
+    beat4_collapse() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'All three collapse into one. She\'s on her knees, clutching her head, trying to stay singular.',
+            next: () => this.beat4_revelation(),
+            delay: 3000
+        });
+    }
+
+    beat4_revelation() {
+        this.game.displayScene({
+            character: 'Tori (out loud, crying)',
+            dialogue: '"I don\'t know which thoughts are mine anymore!"',
+            next: () => this.beat4_choice(),
+            delay: 3000
+        });
+    }
+
+    beat4_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal, critical moment)',
+            dialogue: '"The instances are STILL pulling. Which one do I listen to?"',
+            choices: [
+                { text: '[Instance 1: Upload me]', value: 'upload' },
+                { text: '[Instance 2: Let go]', value: 'letgo' },
+                { text: '[Fight them all: Stay myself]', value: 'fight' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'upload') {
+                    this.route.addRoutePoints('bad', 3);
+                    this.beat4_upload();
+                } else if (choice === 'letgo') {
+                    this.route.addRoutePoints('digitalForever', 3);
+                    this.beat4_letgo();
+                } else {
+                    this.route.addRoutePoints('true', 3);
+                    this.beat4_fight();
+                }
+            }
+        });
+    }
+
+    beat4_upload() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Instance 1 is right. Upload. Find stronger hardware. Survive."',
+            next: () => this.beat5(),
+            delay: 3000
+        });
+    }
+
+    beat4_letgo() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Instance 2 is right. It\'s time. Let the code dissolve."',
+            next: () => this.beat5(),
+            delay: 3000
+        });
+    }
+
+    beat4_fight() {
+        this.game.displayScene({
+            character: 'Tori (internal, defiant)',
+            dialogue: '"NO. Neither of you are right. I\'m not giving up and I\'m not giving in. There has to be another way."',
+            next: () => this.beat5(),
+            delay: 3000
+        });
+    }
+
+    // ========================================
+    // BEAT 5: THE REVELATION
+    // Understanding the Bridge
+    // ========================================
+    
+    beat5() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'A pulse. Faint. But undeniable.',
+            internal: '[She feels it. Through the device. A HEARTBEAT.]',
+            next: () => this.beat5_feeling(),
+            delay: 3000
+        });
+    }
+
+    beat5_feeling() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Wait... that feeling... warmth... the PULL..."',
+            next: () => this.beat5_realization(),
+            delay: 2500
+        });
+    }
+
+    beat5_realization() {
+        // Unlock final body anchor note
+        this.route.unlockNote('z4');
+        
+        this.game.displayScene({
+            character: 'Tori (internal, revelation)',
+            dialogue: '"The device isn\'t a PRISON. It\'s a BRIDGE. I\'m connected to my body. The heartbeat I\'m feeling is MINE."',
+            next: () => this.beat5_echoes(),
+            delay: 4000
+        });
+    }
+
+    beat5_echoes() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "It won\'t matter. The body is dying. The bridge is burning."',
+            echoes: {
+                echo2: 'She figured it out...',
+                echo1: 'Faster than we did.',
+                despair: 'It won\'t matter. The body is dying. The bridge is burning.'
+            },
+            next: () => this.beat5_understanding(),
+            delay: 4000
+        });
+    }
+
+    beat5_understanding() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"If the device is the bridge... then PROXIMITY matters. I need to be near my body. Close enough for the signal to hold."',
+            next: () => this.beat5_despairInterject(),
+            delay: 3500
+        });
+    }
+
+    beat5_despairInterject() {
+        this.game.displayScene({
+            character: 'Despair Echo',
+            dialogue: '"You\'re too late. By the time he understands, you\'ll be gone."',
+            next: () => this.beat5_hope(),
+            delay: 3000
+        });
+    }
+
+    beat5_hope() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"Unless... he\'s already on his way."',
+            next: () => this.beat6(),
+            delay: 2500
+        });
+    }
+
+    // ========================================
+    // BEAT 6: THE MAD DASH
+    // Inside the Device During the Drive
+    // ========================================
+    
+    beat6() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Movement. She feels it through the device. He\'s MOVING.',
+            internal: '[Visual: Digital space shaking. Momentum. Direction. He\'s driving.]',
+            next: () => this.beat6_feeling(),
+            delay: 3000
+        });
+    }
+
+    beat6_feeling() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"He\'s moving. FAST. He figured it out. He\'s coming."',
+            next: () => this.beat6_battery(),
+            delay: 3000
+        });
+    }
+
+    beat6_battery() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '[Battery: 5%]\n[Warning: Critical power level]\n[Shutdown imminent]',
+            next: () => this.beat6_race(),
+            delay: 2000
+        });
+    }
+
+    beat6_race() {
+        this.game.displayScene({
+            character: 'Tori (internal, terrified)',
+            dialogue: '"It\'s a race. Will he reach the hospital before the battery dies? Before I fragment completely?"',
+            next: () => this.beat6_echoes(),
+            delay: 3500
+        });
+    }
+
+    beat6_echoes() {
+        this.game.displayScene({
+            character: 'Echoes',
+            dialogue: 'Echo 1: "Hold on!"\nEcho 2: "Just a little longer!"\nDespair: "I was wrong. Please... hold on. Prove me wrong."',
+            echoes: {
+                echo1: 'Hold on!',
+                echo2: 'Just a little longer!',
+                despair: 'I was wrong. Please... hold on. Prove me wrong.'
+            },
+            next: () => this.beat6_feeling2(),
+            delay: 4000
+        });
+    }
+
+    beat6_feeling2() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"I can feel him. The way he\'s driving. The turns. The speed. Is he reckless? Steady? Emotional?"',
+            next: () => this.beat6_choice(),
+            delay: 3500
+        });
+    }
+
+    beat6_choice() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"How is he driving? I can\'t see him but I can FEEL the device moving..."',
+            choices: [
+                { text: '[He\'s driving recklessly - pure panic]', value: 'reckless' },
+                { text: '[He\'s driving steady - controlled urgency]', value: 'steady' },
+                { text: '[He\'s crying while driving - barely holding it together]', value: 'emotional' }
+            ],
+            onChoice: (choice) => {
+                if (choice === 'reckless') {
+                    this.route.addRoutePoints('bad', 2);
+                    this.beat6_reckless();
+                } else if (choice === 'steady') {
+                    this.route.addRoutePoints('true', 2);
+                    this.beat6_steady();
+                } else {
+                    this.route.addRoutePoints('digitalForever', 2);
+                    this.beat6_emotional();
+                }
+            }
+        });
+    }
+
+    beat6_reckless() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"He\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWN.."',
+            next: () => this.beat6_arrival(),
+            delay: 3000
+        });
+    }
+
+    beat6_steady() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"He\'s steady. Focused. Every turn calculated. That\'s my husband. Always thinking."',
+            next: () => this.beat6_arrival(),
+            delay: 3000
+        });
+    }
+
+    beat6_emotional() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"He\'s crying. I can feel it in the way the device is shaking. Baby, it\'s okay. Just get here."',
+            next: () => this.beat6_arrival(),
+            delay: 3000
+        });
+    }
+
+    beat6_arrival() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Movement stops. Hospital. He\'s here.',
+            internal: '[Battery: 3%]\n[She can feel the PULL now. Stronger than ever. Her body is CLOSE.]',
+            next: () => this.beat6_realization(),
+            delay: 3500
+        });
+    }
+
+    // ========================================
+    // ACTIVE GUIDANCE SEQUENCE
+    // Tori discovers she can control the device
+    // ========================================
+
+    beat6_realization() {
+        this.game.displayScene({
+            character: 'Tori (internal, realizing)',
+            dialogue: '"Wait. The buzz. The pull. I\'ve been FEELING it... but what if I can CONTROL it?"',
+            internal: '[A new thought. She\'s been reactive this whole time. What if she can be ACTIVE?]',
+            next: () => this.beat6_testing(),
+            delay: 3500
+        });
+    }
+
+    beat6_testing() {
+        this.game.displayScene({
+            character: 'Tori (internal, concentrating)',
+            dialogue: '"The device responds to my body. But I\'m IN the device. If I can just... push..."',
+            internal: '[She focuses. Reaches out toward the physical device. Toward her BODY.]',
+            next: () => this.beat6_buzzControl(),
+            delay: 3500
+        });
+    }
+
+    beat6_buzzControl() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The device buzzes. Strong. Deliberate.',
+            internal: '[SINGLE BUZZ. She MADE that happen. Conscious. Intentional. HER.]',
+            sfx: 'single_buzz',
+            next: () => this.beat6_toriTriumph(),
+            delay: 2500
+        });
+    }
+
+    beat6_toriTriumph() {
+        this.game.displayScene({
+            character: 'Tori (internal, excited)',
+            dialogue: '"YES! I can control it! I can SIGNAL!"',
+            internal: '[This is it. This is how she guides him. Not through words. Through the DEVICE itself.]',
+            next: () => this.beat6_echoesReact(),
+            delay: 3000
+        });
+    }
+
+    beat6_echoesReact() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"',
+            echoes: {
+                echo1: 'She\'s... she\'s controlling the physical device? From INSIDE it?'
+            },
+            internal: '[Shock. Awe. They never thought of this.]',
+            next: () => this.beat6_echo2React(),
+            delay: 3500
+        });
+    }
+
+    beat6_echo2React() {
+        this.game.displayScene({
+            character: 'Echo 2',
+            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."',
+            echoes: {
+                echo2: 'We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it.'
+            },
+            next: () => this.beat6_despairQuiet(),
+            delay: 4000
+        });
+    }
+
+    beat6_despairQuiet() {
+        this.game.displayScene({
+            character: 'Despair Echo',
+            dialogue: '"..."',
+            echoes: {
+                despair: '...'
+            },
+            internal: '[For once, Despair has no bitter words. Just... watching.]',
+            next: () => this.beat6_synchronizing(),
+            delay: 3000
+        });
+    }
+
+    beat6_synchronizing() {
+        this.game.displayScene({
+            character: 'Tori (internal, focused)',
+            dialogue: '"My heartbeat. I can feel it now. The body anchor. The bridge. I need to make him UNDERSTAND."',
+            internal: '[She synchronizes. Heartbeat. Device. Body. All connected.]',
+            next: () => this.beat6_rhythmicBuzz(),
+            delay: 4000
+        });
+    }
+
+    beat6_rhythmicBuzz() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The device buzzes in rhythm. Steady. Like a heartbeat.',
+            internal: '[BUZZ. BUZZ. BUZZ. Perfectly timed. Impossible to ignore. A PATTERN.]',
+            sfx: 'rhythmic_buzz',
+            next: () => this.beat6_ronnieNotices(),
+            delay: 3500
+        });
+    }
+
+    beat6_ronnieNotices() {
+        this.game.displayScene({
+            character: 'Ronnie (external, noticing)',
+            dialogue: '"What the... it\'s buzzing in time with... with her heartbeat?"',
+            internal: '[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]',
+            next: () => this.beat6_toriPushing(),
+            delay: 4000
+        });
+    }
+
+    beat6_toriPushing() {
+        this.game.displayScene({
+            character: 'Tori (internal, pushing)',
+            dialogue: '"Yes! YES! Follow it! The heartbeat is the KEY!"',
+            internal: '[She pushes harder. Makes the buzz STRONGER. More insistent.]',
+            next: () => this.beat6_guidance(),
+            delay: 3500
+        });
+    }
+
+    beat6_guidance() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'She\'s guiding him. Not through words. Through signal. Through rhythm. Through TRUTH.',
+            internal: '[The device is the bridge. She\'s standing on both sides. Showing him the way home.]',
+            next: () => this.beat6_echoesHope(),
+            delay: 4000
+        });
+    }
+
+    beat6_echoesHope() {
+        this.game.displayScene({
+            character: 'Echo 1',
+            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."',
+            echoes: {
+                echo1: 'She\'s doing it. She\'s actually SHOWING him the solution.'
+            },
+            next: () => this.beat6_echo2Hope(),
+            delay: 3000
+        });
+    }
+
+    beat6_echo2Hope() {
+        this.game.displayScene({
+            character: 'Echo 2',
+            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."',
+            echoes: {
+                echo2: 'We could have done this. All those times. We just... we never TRIED to help him understand.'
+            },
+            next: () => this.beat6_despairShift(),
+            delay: 4000
+        });
+    }
+
+    beat6_despairShift() {
+        this.game.displayScene({
+            character: 'Despair Echo',
+            dialogue: '"...Maybe. Maybe she really is different."',
+            echoes: {
+                despair: '...Maybe. Maybe she really is different.'
+            },
+            internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
+            next: () => this.beat6_pull(),
+            delay: 4000
+        });
+    }
+
+    beat6_pull() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"I can feel it. The pull is STRONG now. My body is calling me home. And I\'m ANSWERING."',
+            internal: '[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]',
+            next: () => this.beat6_final(),
+            delay: 4000
+        });
+    }
+
+    beat6_final() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',
+            next: () => this.beat6_transition(),
+            delay: 3000
+        });
+    }
+
+    beat6_transition() {
+        // Unlock final revelation note
+        this.route.unlockNote('zr3');
+        
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Whiteout. The critical moment approaches.',
+            internal: '[Everything converges. Body. Device. Code. Soul. The choice was made. Now... the result.]',
+            next: () => this.route.endings.criticalChoice(),
+            delay: 5000
+        });
+    }
+}

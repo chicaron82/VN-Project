@@ -104,22 +104,14 @@ class ToriEndings {
             onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Increment version
-                    const newVersion = this.game.incrementVersion();
+                    this.game.incrementVersion();
                     
-                    // Show dramatic version increment screen
-                    this.game.displayScene({
-                        character: 'System',
-                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
-                        internal: '[The loop continues. Another timeline. Another chance.]',
-                        background: 'digitalSpace.png',
-                        style: 'critical',
-                        next: () => {
-                            // Reset tether to full
-                            this.route.tetherSystem.reset();
-                            this.route.act1.start();
-                        },
-                        delay: 3000
-                    }, 'version_increment_screen');
+                    // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
+                    this.game.showLoopInit(() => {
+                        // Reset tether to full
+                        this.route.tetherSystem.reset();
+                        this.route.act1.start();
+                    });
                 } else {
                     // Return to menu at current version
                     this.game.returnToMainMenu();
@@ -307,22 +299,14 @@ class ToriEndings {
             onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Increment version
-                    const newVersion = this.game.incrementVersion();
+                    this.game.incrementVersion();
                     
-                    // Show dramatic version increment screen
-                    this.game.displayScene({
-                        character: 'System',
-                        dialogue: `INITIALIZING ATTEMPT #${newVersion}...`,
-                        internal: '[Digital love wasn\'t enough. He goes back. Again.]',
-                        background: 'digitalSpace.png',
-                        style: 'critical',
-                        next: () => {
-                            // Reset tether to full
-                            this.route.tetherSystem.reset();
-                            this.route.act1.start();
-                        },
-                        delay: 3000
-                    }, 'version_increment_screen');
+                    // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
+                    this.game.showLoopInit(() => {
+                        // Reset tether to full
+                        this.route.tetherSystem.reset();
+                        this.route.act1.start();
+                    });
                 } else {
                     // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
                     this.route.unlockNote('z9');

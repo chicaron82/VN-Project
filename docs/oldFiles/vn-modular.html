@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Version 848 - My Wife Is in a Coma... and in the Code</title>
+    
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="cutscene-animations.css">
+    
+    <style>
+        /* Minimal inline styles - just what's needed for structure */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+        }
+
+        #loading-screen h2 {
+            color: #0ff;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        #loading-bar-container {
+            width: 300px;
+            height: 30px;
+            border: 2px solid #0ff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        #loading-bar {
+            width: 0%;
+            height: 100%;
+            background: #0ff;
+            transition: width 0.3s;
+        }
+
+        /* Main Menu - OLD SCHOOL IMG TAG STYLE */
+        #main-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            opacity: 0;
+            transition: opacity 1s;
+            z-index: 9000;
+        }
+
+        #main-menu.active {
+            display: flex;
+        }
+
+        #main-menu-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.8);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        #main-menu-content {
+            position: relative;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Pause Menu */
+        #pause-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #pause-menu.active {
+            display: flex;
+        }
+
+        #pause-content {
+            background: #1a1a2e;
+            padding: 3rem;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        #pause-content h2 {
+            margin-bottom: 2rem;
+            color: #00ffff;
+        }
+
+        /* ESC Hint */
+        #esc-hint {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #00ffff;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        #esc-hint.show {
+            opacity: 1;
+        }
+
+        #esc-hint.visible {
+            opacity: 1;
+        }
+
+        /* Save/Load Screen */
+        #save-load-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #save-load-screen.active {
+            display: flex;
+        }
+
+        #save-load-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #save-load-title {
+            color: #00ffff;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        #mode-toggle {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .mode-button {
+            background: #2a2a3e;
+            color: #00ffff;
+            border: 2px solid #00ffff;
+            padding: 0.5rem 2rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .mode-button.active {
+            background: #00ffff;
+            color: #000;
+        }
+
+        .mode-button:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        #close-save-load {
+            display: block;
+            margin: 1.5rem auto 0;
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #close-save-load:hover {
+            background: #ff6666;
+        }
+
+        /* Save Slots */
+        .save-slot {
+            background: #2a2a3e;
+            border: 2px solid #00ffff;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .save-slot:hover {
+            background: #3a3a4e;
+            border-color: #00ff88;
+        }
+
+        .save-slot.empty {
+            opacity: 0.6;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .slot-label {
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .slot-route {
+            color: #00ff88;
+            font-size: 0.9rem;
+        }
+
+        .slot-info {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .slot-timestamp {
+            color: #888;
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+        }
+
+        .save-slot-empty-text {
+            color: #666;
+            font-style: italic;
+        }
+
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ff6666;
+        }
+
+        /* Confirmation Dialog */
+        #confirm-dialog {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #confirm-dialog.active {
+            display: flex;
+        }
+
+        #confirmation-content {
+            background: #1a1a2e;
+            padding: 2rem;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        #confirm-title {
+            color: #00ffff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        #confirm-message {
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        #confirmation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .confirm-button {
+            background: #00ffff;
+            color: #000;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .confirm-button:hover {
+            background: #00ff88;
+            transform: scale(1.05);
+        }
+
+        .confirm-button.cancel {
+            background: #ff4444;
+            color: white;
+        }
+
+        .confirm-button.cancel:hover {
+            background: #ff6666;
+        }
+
+        @media (max-width: 768px) {
+            #main-menu-bg {
+                content: url('menumobile.png');
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <!-- Loading Screen -->
+        <div id="loading-screen">
+            <h2>LOADING VERSION 848...</h2>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+        </div>
+
+        <!-- Main Menu -->
+        <div id="main-menu">
+            <!-- Background as actual IMG element -->
+            <img src="desktopVersion.png" id="main-menu-bg" alt="">
+            
+            <div id="main-menu-content">
+                <h1>VERSION 848</h1>
+                <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
+                <button class="menu-button" onclick="game.startStory()">START STORY</button>
+                <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
+                <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+            </div>
+        </div>
+
+        <!-- Route Selection Screen -->
+        <div id="route-select">
+            <div id="route-select-bg"></div>
+            <div id="route-select-content">
+                <!-- Title -->
+                <div id="route-select-title">
+                    <h2>CHOOSE YOUR PERSPECTIVE</h2>
+                    <p>Two routes. Two truths. One bridge between them.</p>
+                </div>
+
+                <!-- Route Buttons -->
+                <div id="route-buttons">
+                    <!-- Ronnie's Route (Left) -->
+                    <div class="route-button-container left">
+                        <div class="character-label">RONNIE</div>
+                        <div class="route-subtitle">Fighting from the outside<br/>Searching for answers in code</div>
+                        <button class="route-button ronnie" onclick="game.startRoute('ronnie')">
+                            PLAY AS RONNIE
+                        </button>
+                    </div>
+
+                    <!-- Tori's Route (Right) -->
+                    <div class="route-button-container right">
+                        <div class="character-label">TORI</div>
+                        <div class="route-subtitle">Trapped in the digital void<br/>Struggling to stay coherent</div>
+                        <button class="route-button tori" onclick="game.startRoute('tori')">
+                            PLAY AS TORI
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Back Button -->
+                <button id="back-to-menu" onclick="game.backToMenu()">← BACK</button>
+            </div>
+        </div>
+
+        <!-- Game View -->
+        <div id="game-view">
+            <!-- Scene Background -->
+            <div id="scene-background"></div>
+
+            <!-- Tether UI (Tori Route Only) -->
+            <div id="tether-ui" style="display: none;">
+                <div id="tether-meter">
+                    <div id="tether-fill"></div>
+                    <div id="tether-text">100%</div>
+                </div>
+                <button id="hold-on-button">HOLD ON</button>
+            </div>
+
+            <!-- Echo Display (Tori Route Only) -->
+            <div id="echo-display" style="display: none;">
+                <div class="echo-voice echo-1" id="echo-1-text"></div>
+                <div class="echo-voice echo-2" id="echo-2-text"></div>
+                <div class="echo-voice echo-despair" id="echo-despair-text"></div>
+            </div>
+
+            <!-- Notes Button (Tori Route Only) -->
+            <button id="notes-button" style="display: none;">
+                NOTES <span id="notes-count">(0/9)</span>
+            </button>
+
+            <!-- Dialogue Box -->
+            <div id="dialogue-box">
+                <div id="character-name"></div>
+                <div id="dialogue-text"></div>
+                <div id="internal-thought"></div>
+            </div>
+
+            <!-- Choice Menu -->
+            <div id="choice-menu">
+                <div id="choices-container"></div>
+            </div>
+
+            <!-- Pause Menu Button -->
+            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()">❚❚</button>
+        </div>
+
+        <!-- Pause Menu Overlay (ESC to open)-->
+        <div id="pause-menu">
+            <div id="pause-menu-content">
+                <h2>PAUSED</h2>
+                <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
+                <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
+                <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- ESC Hint -->
+        <div id="esc-hint">Press ESC to pause</div>
+
+        <!-- Save/Load Screen -->
+        <div id="save-load-screen">
+            <div id="save-load-content">
+                <h2 id="save-load-title">SAVE GAME</h2>
+                
+                <!-- Mode Toggle -->
+                <div id="mode-toggle">
+                    <button id="save-mode-btn" class="mode-button active" onclick="game.setSaveLoadMode('save')">SAVE</button>
+                    <button id="load-mode-btn" class="mode-button" onclick="game.setSaveLoadMode('load')">LOAD</button>
+                </div>
+
+                <!-- Save Slots -->
+                <div id="save-slots">
+                    <!-- Auto-save Slot -->
+                    <div id="slot-autosave" class="save-slot" onclick="game.handleSaveSlotClick('autosave')">
+                        <div class="slot-header">
+                            <span class="slot-label">AUTO-SAVE</span>
+                            <span id="autosave-route" class="slot-route">---</span>
+                        </div>
+                        <div id="autosave-timestamp" class="slot-timestamp">No auto-save data</div>
+                    </div>
+
+                    <!-- Manual Save Slot 1 -->
+                    <div id="slot-1" class="save-slot" onclick="game.handleSaveSlotClick(1)">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 1</span>
+                            <span id="slot-1-route" class="slot-route">---</span>
+                            <button class="delete-btn" onclick="event.stopPropagation(); game.deleteSaveSlot(1)">DELETE</button>
+                        </div>
+                        <div id="slot-1-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-1-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 2 -->
+                    <div id="slot-2" class="save-slot" onclick="game.handleSaveSlotClick(2)">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 2</span>
+                            <span id="slot-2-route" class="slot-route">---</span>
+                            <button class="delete-btn" onclick="event.stopPropagation(); game.deleteSaveSlot(2)">DELETE</button>
+                        </div>
+                        <div id="slot-2-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-2-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 3 -->
+                    <div id="slot-3" class="save-slot" onclick="game.handleSaveSlotClick(3)">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 3</span>
+                            <span id="slot-3-route" class="slot-route">---</span>
+                            <button class="delete-btn" onclick="event.stopPropagation(); game.deleteSaveSlot(3)">DELETE</button>
+                        </div>
+                        <div id="slot-3-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-3-timestamp" class="slot-timestamp"></div>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <button id="close-save-load" onclick="game.closeSaveLoadScreen()">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Dialog -->
+        <div id="confirm-dialog">
+            <div id="confirmation-content">
+                <h3 id="confirm-title">Confirm Action</h3>
+                <p id="confirm-message"></p>
+                <div id="confirmation-buttons">
+                    <button class="confirm-button" onclick="game.confirmAction(true)">YES</button>
+                    <button class="confirm-button cancel" onclick="game.confirmAction(false)">NO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Indicator -->
+        <div id="save-indicator"></div>
+
+        <!-- Notes Viewer (Tori Route Only) -->
+        <div id="notes-viewer">
+            <div id="notes-content">
+                <h2>COLLECTED NOTES</h2>
+                <div id="notes-list"></div>
+                <button id="close-notes">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Cutscene Canvas -->
+        <div id="cutscene-canvas"></div>
+    </div>
+
+    <!-- External JavaScript (Load Order Matters!) -->
+    <script src="game-engine.js"></script>
+    <script src="save-manager.js"></script>
+    <script src="save-load-ui.js"></script>
+    <script src="cutscene-engine.js"></script>
+    <script src="shared-prologue.js"></script>
+    <script src="ronnie-route.js"></script>
+    <script src="tori-route-main.js"></script>
+    <script src="tori-route-act1.js"></script>
+    <script src="tori-route-act2.js"></script>
+    <script src="tori-route-act3.js"></script>
+    <script src="tori-route-endings.js"></script>
+
+    <!-- Initialize Game -->
+    <script>
+        let game;
+        
+        window.addEventListener('DOMContentLoaded', () => {
+            game = new GameEngine();
+        });
+    </script>
+</body>
+</html>

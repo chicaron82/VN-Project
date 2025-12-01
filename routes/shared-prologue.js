@@ -9,17 +9,17 @@ class SharedPrologue {
     }
     
     start() {
-        this.shared_prologue_01_streetbump();
+        this.scene1_streetBump();
     }
     
     // ========================================
     // SCENE 1: THE STREET BUMP
     // ========================================
     
-    shared_prologue_01_streetbump() {
+    scene1_streetBump() {
         // Apply prologue style BEFORE first scene displays
         this.game.dialogueBox.classList.add('prologue-style');
-
+        
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'I wasn\'t looking where I was going...',
@@ -27,30 +27,30 @@ class SharedPrologue {
             background: 'assets/genericBack.png',
             sprites: {
                 right: 'assets/tori-sprite.png'
-            },
-            next: () => this.shared_prologue_02_bump()
-        }, 'shared_prologue_01_streetbump');
+            }, 
+            next: () => this.scene1_bump()
+        }, 'scene1_streetBump');
     }
     
-    shared_prologue_02_bump() {
+    scene1_bump() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Oh my gosh, I\'m so sorry..I wasn\'t paying attention!',
             internal: '[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]',
-            next: () => this.shared_prologue_03_pickup()
-        }, 'shared_prologue_02_bump');
+            next: () => this.scene1_pickup()
+        }, 'scene1_bump');
     }
     
-    shared_prologue_03_pickup() {
+    scene1_pickup() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '...Weird. Mine has never done that before.',
             internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]',
-            next: () => this.shared_prologue_04_oldman()
-        }, 'shared_prologue_03_pickup');
+            next: () => this.scene1_oldMan()
+        }, 'scene1_pickup');
     }
     
-    shared_prologue_04_oldman() {
+    scene1_oldMan() {
         this.game.displayScene({
             character: 'Old Man',
             dialogue: 'No problem. Hang on to that. It may save your life someday.',
@@ -60,17 +60,17 @@ class SharedPrologue {
                 left: 'assets/old-ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_05_end()
-        }, 'shared_prologue_04_oldman');
+            next: () => this.scene1_end()
+        }, 'scene1_oldMan');
     }
     
-    shared_prologue_05_end() {
+    scene1_end() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '...What a strange thing to say.',
             internal: '[She stands there a moment, then pockets the Tamagotchi and heads home.]',
-            next: () => this.shared_prologue_06_arrival()
-        }, 'shared_prologue_05_end');
+            next: () => this.scene2_arrival()
+        }, 'scene1_end');
     }
     
     // ========================================
@@ -78,7 +78,7 @@ class SharedPrologue {
     // UPDATED: Expanded battery drain dialogue
     // ========================================
     
-    shared_prologue_06_arrival() {
+    scene2_arrival() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Hey babe, I\'m home!',
@@ -88,11 +88,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_07_greeting()
-        }, 'shared_prologue_06_arrival');
+            next: () => this.scene2_ronnieGreeting()
+        }, 'scene2_arrival');
     }
     
-    shared_prologue_07_greeting() {
+    scene2_ronnieGreeting() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Hey honey! How was your day?',
@@ -101,11 +101,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_08_home()
-        }, 'shared_prologue_07_greeting');
+            next: () => this.scene2_home()
+        }, 'scene2_ronnieGreeting');
     }
     
-    shared_prologue_08_home() {
+    scene2_home() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Pretty good! Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s the problem',
@@ -114,11 +114,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_09_response()
-        }, 'shared_prologue_08_home');
+            next: () => this.scene2_ronnieResponse()
+        }, 'scene2_home');
     }
     
-    shared_prologue_09_response() {
+    scene2_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
@@ -127,11 +127,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_10_explains()
-        }, 'shared_prologue_09_response');
+            next: () => this.scene2_toriExplains()
+        }, 'scene2_ronnieResponse');
     }
     
-    shared_prologue_10_explains() {
+    scene2_toriExplains() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!',
@@ -141,11 +141,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_11_teases()
-        }, 'shared_prologue_10_explains');
+            next: () => this.scene2_ronnieTeases()
+        }, 'scene2_toriExplains');
     }
     
-    shared_prologue_11_teases() {
+    scene2_ronnieTeases() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'You\'re such a dork, honey',
@@ -154,11 +154,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_12_hoodie()
-        }, 'shared_prologue_11_teases');
+            next: () => this.scene2_hoodieBanter()
+        }, 'scene2_ronnieTeases');
     }
     
-    shared_prologue_12_hoodie() {
+    scene2_hoodieBanter() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Says the guy wearing the TLC hoodie. Again.',
@@ -168,11 +168,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_13_defends()
-        }, 'shared_prologue_12_hoodie');
+            next: () => this.scene2_ronnieDefends()
+        }, 'scene2_hoodieBanter');
     }
     
-    shared_prologue_13_defends() {
+    scene2_ronnieDefends() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Well, SOMEONE keeps stealing my BGA hoodie, so this is my replacement.',
@@ -181,11 +181,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_14_rebuttal()
-        }, 'shared_prologue_13_defends');
+            next: () => this.scene2_toriRebuttal()
+        }, 'scene2_ronnieDefends');
     }
     
-    shared_prologue_14_rebuttal() {
+    scene2_toriRebuttal() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'You wear the TLC one anyway! So the BGA one is fair game. Besides, it looks better on me.',
@@ -195,11 +195,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_15_dinner()
-        }, 'shared_prologue_14_rebuttal');
+            next: () => this.scene2_toriDinner()
+        }, 'scene2_toriRebuttal');
     }
     
-    shared_prologue_15_dinner() {
+    scene2_toriDinner() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'Love you! I\'ll get dinner started',
@@ -209,11 +209,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_16_kitchen()
-        }, 'shared_prologue_15_dinner');
+            next: () => this.scene2_kitchen()
+        }, 'scene2_toriDinner');
     }
     
-    shared_prologue_16_kitchen() {
+    scene2_kitchen() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.',
@@ -222,11 +222,11 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.shared_prologue_17_warning()
-        }, 'shared_prologue_16_kitchen');
+            next: () => this.scene2_warning()
+        }, 'scene2_kitchen');
     }
     
-    shared_prologue_17_warning() {
+    scene2_warning() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: 'Babe, watch ou..!',
@@ -235,29 +235,29 @@ class SharedPrologue {
             sprites: {
                 left: 'assets/ronnie-sprite.png',
             },
-            next: () => this.shared_prologue_18_fall()
-        }, 'shared_prologue_17_warning');
+            next: () => this.scene3_fall()
+        }, 'scene2_warning');
     }
     
     // ========================================
     // SCENE 3: THE FALL & TRANSFER
     // ========================================
     
-    shared_prologue_18_fall() {
+    scene3_fall() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'One step too late... She trips. Stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late. The Tamagotchi, resting on the laptop, lights faintly. The screen flickers, code scrolling.',
-            next: () => this.shared_prologue_19_vision()
-        }, 'shared_prologue_18_fall');
+            next: () => this.scene3_vision()
+        }, 'scene3_fall');
     }
     
-    shared_prologue_19_vision() {
+    scene3_vision() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.',
-            next: () => this.shared_prologue_20_complete()
-        }, 'shared_prologue_19_vision');
-
+            next: () => this.prologueComplete()
+        }, 'scene3_vision');
+        
         // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
         this.game.fadeSpritesSequence('left', 'assets/ronnie-sprite.png', 'assets/old-ronnie-sprite.png', 4000);
     }
@@ -266,10 +266,10 @@ class SharedPrologue {
     // PROLOGUE COMPLETE - ROUTE SELECTION
     // ========================================
     
-    shared_prologue_20_complete() {
+    prologueComplete() {
         // Remove prologue style before route selection
         this.game.dialogueBox.classList.remove('prologue-style');
-
+        
         // Show route selection screen
         // This is where player chooses Ronnie or Tori route
         this.game.showRouteSelect();

@@ -15,8 +15,8 @@ class ToriAct1 {
     start() {
         // Set Echo growth stage for Act 1 (smallest size)
         this.game.setEchoGrowthStage('act1');
-
-        this.tori_act1_01_coffee();
+        
+        this.scene1_coffee();
     }
     
     // ========================================
@@ -24,100 +24,107 @@ class ToriAct1 {
     // Matches shared prologue from internal perspective
     // ========================================
     
-    tori_act1_01_coffee() {
+    scene1_coffee() {
         // Unlock Z's first note
         this.route.unlockNote('z1');
-
+        
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"French Vanilla for Ronnie. He always asks for this one."',
             internal: '[Visual: Coffee shop. Tori picks up the drink, checks her Tamagotchi while walking out.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_02_distracted(),
+            sprites: {
+                left: 'assets/tori-sprite.png',
+            },
+            next: () => this.scene1_distracted(),
             delay: 3000
-        }, 'tori_act1_01_coffee');
+        }, 'scene1_coffee');
     }
 
-    tori_act1_02_distracted() {
+    scene1_distracted() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"My little digital pet needs attention... Ronnie would laugh if he saw how attached I am to this thing."',
             internal: '[She walks down the street, coffee in one hand, her original Tamagotchi in the other, not looking where she\'s going.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_03_collision(),
+            next: () => this.scene1_collision(),
             delay: 3000
-        }, 'tori_act1_02_distracted');
+        }, 'scene1_distracted');
     }
 
-    tori_act1_03_collision() {
+    scene1_collision() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'THUD.',
             internal: '[She bumps into an older man. Hard. Coffee nearly spills. Both their Tamagotchis tumble to the ground.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_04_apology(),
+            next: () => this.scene1_apology(),
             delay: 2000
-        }, 'tori_act1_03_collision');
+        }, 'scene1_collision');
     }
 
-    tori_act1_04_apology() {
+    scene1_apology() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Oh my gosh, I\'m so sorry! I wasn\'t paying attention—"',
             internal: '[She bends down quickly, embarrassed. Grabs the Tamagotchi closest to her hand.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_05_pickupbuzz(),
+            next: () => this.scene1_pickup_buzz(),
             delay: 2500
-        }, 'tori_act1_04_apology');
+        }, 'scene1_apology');
     }
 
-    tori_act1_05_pickupbuzz() {
+    scene1_pickup_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
             internal: '[The device vibrates in her hand. Twice. Sharp. Wrong. Something fundamental shifts.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_06_weirdfeeling(),
+            next: () => this.scene1_weird_feeling(),
             delay: 2000,
             style: 'critical'
-        }, 'tori_act1_05_pickupbuzz');
+        }, 'scene1_pickup_buzz');
     }
 
-    tori_act1_06_weirdfeeling() {
+    scene1_weird_feeling() {
         this.game.displayScene({
             character: 'Tori (internal, confused)',
             dialogue: '"What...? Mine never does that."',
             internal: '[A wave of disorientation. The world tilts. Reality feels... thin. Unstable.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_07_oldman(),
+            next: () => this.scene1_old_man(),
             delay: 2500
-        }, 'tori_act1_06_weirdfeeling');
+        }, 'scene1_weird_feeling');
     }
 
-    tori_act1_07_oldman() {
+    scene1_old_man() {
         this.game.displayScene({
             character: 'Older Man',
             dialogue: '"No problem. Hang on to that. It may save your life someday."',
             internal: '[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away with her original device.]',
             background: 'assets/genericBack.png',
             sprites: {
-                left: 'assets/old-ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/tori-sprite.png',
+                right: 'assets/old-ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_08_walkinghome(),
+            next: () => this.scene1_walking_home(),
             delay: 3500
-        }, 'tori_act1_07_oldman');
+        }, 'scene1_old_man');
     }
 
-    tori_act1_08_walkinghome() {
+    scene1_walking_home() {
         this.game.displayScene({
             character: 'Tori (internal, disoriented)',
             dialogue: '"That was... weird. I should get home. Feel off."',
             internal: '[She walks, but everything feels distant. Muted. Like she\'s moving through water. Something is very wrong.]',
             background: 'assets/genericBack.png',
-            next: () => this.tori_act1_09_voidawakening(),
+            sprites: {
+                right: null
+            },
+            next: () => this.scene2_void_awakening(),
             delay: 3000
-        }, 'tori_act1_08_walkinghome');
+        }, 'scene1_walking_home');
     }
 
     // ========================================
@@ -125,132 +132,136 @@ class ToriAct1 {
     // Moved from old Scene 5 - happens right after transfer
     // ========================================
     
-    tori_act1_09_voidawakening() {
+    scene2_void_awakening() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'And then... darkness.',
             internal: '[Visual: Pure black. No sound. A void. She is nowhere and everywhere.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_10_confusion(),
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/tori-sprite.png',
+            },
+            next: () => this.scene2_confusion(),
             delay: 3000
-        }, 'tori_act1_09_voidawakening');
+        }, 'scene2_void_awakening');
     }
 
-    tori_act1_10_confusion() {
+    scene2_confusion() {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"Wait... where am I? What happened? I was just walking..."',
             internal: '[She has no body. No voice. Just consciousness floating in digital darkness.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_11_callingout(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene2_calling_out(),
             delay: 3000
-        }, 'tori_act1_10_confusion');
+        }, 'scene2_confusion');
     }
 
-    tori_act1_11_callingout() {
+    scene2_calling_out() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
             dialogue: '"HELLO?! Can anyone hear me?! RONNIE?!"',
             internal: '[The words echo only inside her own mind. No sound escapes into the void.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_12_echoeswhispers(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene2_echoes_whispers(),
             delay: 3000
-        }, 'tori_act1_11_callingout');
+        }, 'scene2_calling_out');
     }
 
-    tori_act1_12_echoeswhispers() {
+    scene2_echoes_whispers() {
         this.game.displayScene({
             character: 'Echoes (distant whispers)',
             dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',            internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_13_whothere(),
+            next: () => this.scene2_who_there(),
             delay: 3000
-        }, 'tori_act1_12_echoeswhispers');
+        }, 'scene2_echoes_whispers');
     }
 
-    tori_act1_13_whothere() {
+    scene2_who_there() {
         this.game.displayScene({
             character: 'Tori (internal, alarmed)',
             dialogue: '"Who\'s there?! Where am I?!"',
             internal: '[The whispers grow louder, more distinct. Figures materializing from darkness.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_14_echo1intro(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene2_echo1_intro(),
             delay: 2500
-        }, 'tori_act1_13_whothere');
+        }, 'scene2_who_there');
     }
 
-    tori_act1_14_echo1intro() {
+    scene2_echo1_intro() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"You\'re in the device. The Tamagotchi. With us."',            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
-            background: 'digitalSpace.png',
+            dialogue: '"You\'re in the device. The Tamagotchi. With us."',            
+            internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_15_echo2explains(),
+            next: () => this.scene2_echo2_explains(),
             delay: 2500
-        }, 'tori_act1_14_echo1intro');
+        }, 'scene2_echo1_intro');
     }
 
-    tori_act1_15_echo2explains() {
+    scene2_echo2_explains() {
         this.game.displayScene({
             character: 'Echo 2',
             dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',            internal: '[Visual: The weight of their existence. Failed iterations.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_16_despairwelcome(),
+            next: () => this.scene2_despair_welcome(),
             delay: 3000
-        }, 'tori_act1_15_echo2explains');
+        }, 'scene2_echo2_explains');
     }
 
-    tori_act1_16_despairwelcome() {
+    scene2_despair_welcome() {
         // Despair blocks saves in Act 1
         this.game.saveManager.blockSaves();
-
+        
         // Unlock Z's version number revelation
         this.route.unlockNote('z7');
-
+        
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_17_torirefuses(),
+            next: () => this.scene2_tori_refuses(),
             delay: 3500
-        }, 'tori_act1_16_despairwelcome');
+        }, 'scene2_despair_welcome');
     }
 
-    tori_act1_17_torirefuses() {
+    scene2_tori_refuses() {
         this.game.displayScene({
             character: 'Tori (internal, defiant)',
             dialogue: '"Cage?! No. I don\'t accept that. There has to be a way out!"',
             internal: '[Even in confusion and fear, she refuses the narrative. This is different already.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_18_hearingbegins(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene2_hearing_begins(),
             delay: 3000
-        }, 'tori_act1_17_torirefuses');
+        }, 'scene2_tori_refuses');
     }
 
-    tori_act1_18_hearingbegins() {
+    scene2_hearing_begins() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'And then... sound. Muffled. Distant. The outside world bleeding through.',
             internal: '[She can HEAR. Tinny, like through a tiny speaker. But she still can\'t see.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_19_audiohorror(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_audio_horror(),
             delay: 3000
-        }, 'tori_act1_18_hearingbegins');
+        }, 'scene2_hearing_begins');
     }
 
     // ========================================
@@ -258,129 +269,135 @@ class ToriAct1 {
     // Hearing the shared prologue from inside device
     // ========================================
     
-    tori_act1_19_audiohorror() {
+    scene3_audio_horror() {
         this.game.displayScene({
             character: 'Tori (muffled, external)',
             dialogue: '"Hey babe, got your French Vanilla."',
             internal: '[That\'s... her voice. But she\'s not speaking. Her body is moving without her.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_20_screaming(),
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/tori-sprite.png',
+            },
+            next: () => this.scene3_screaming(),
             delay: 3000
-        }, 'tori_act1_19_audiohorror');
+        }, 'scene3_audio_horror');
     }
 
-    tori_act1_20_screaming() {
+    scene3_screaming() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
             dialogue: '"RONNIE! RONNIE, I\'M IN HERE! THAT\'S NOT ME! CAN YOU HEAR ME?!"',
             internal: '[She screams into the void. Nothing happens. The conversation continues outside.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_21_echoesexplain(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_echoes_explain(),
             delay: 3000
-        }, 'tori_act1_20_screaming');
+        }, 'scene3_screaming');
     }
 
-    tori_act1_21_echoesexplain() {
+    scene3_echoes_explain() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',            internal: '[The weight of their experience. They know what doesn\'t work.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_22_ronnieresponse(),
+            next: () => this.scene3_ronnie_response(),
             delay: 3000
-        }, 'tori_act1_21_echoesexplain');
+        }, 'scene3_echoes_explain');
     }
 
-    tori_act1_22_ronnieresponse() {
+    scene3_ronnie_response() {
         this.game.displayScene({
-            character: 'Ronnie (muffled, external)',
-            dialogue: '"ya sure i can look at it. why do you call it ronnie-gatchi anyway?"',
+            character: 'Ronnie (muffled, offscreen)',
+            dialogue: '"Ya sure I can look at it. Why do you call it Ronnie-Gatchi anyway?"',
             internal: '[The conversation continuing. Normal. Casual. He has no idea.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_23_dualresponse(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_dual_response(),
             delay: 3000
-        }, 'tori_act1_22_ronnieresponse');
+        }, 'scene3_ronnie_response');
     }
 
-    tori_act1_23_dualresponse() {
+    scene3_dual_response() {
         this.game.displayScene({
             character: 'Tori (both)',
             dialogue: '"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who\'s even cuter!"',
             internal: '[Digital Tori (internal, horrified): "Wait... I\'m saying this. But SHE\'S saying this. We\'re both... the same words..."]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_24_synchorror(),
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/tori-sprite.png',
+            },
+            next: () => this.scene3_sync_horror(),
             delay: 3500
-        }, 'tori_act1_23_dualresponse');
+        }, 'scene3_dual_response');
     }
 
-    tori_act1_24_synchorror() {
+    scene3_sync_horror() {
         this.game.displayScene({
             character: 'Tori (internal, terrified)',
             dialogue: '"I\'m speaking... but I\'m also watching myself speak... What\'s happening to me?!"',
             internal: '[The horror of synchronization. Two Toris. One voice. One moment.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_25_ronnieteases(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_ronnie_teases(),
             delay: 3000
-        }, 'tori_act1_24_synchorror');
+        }, 'scene3_sync_horror');
     }
 
-    tori_act1_25_ronnieteases() {
+    scene3_ronnie_teases() {
         this.game.displayScene({
-            character: 'Ronnie (muffled, external)',
-            dialogue: '"you\'re such a dork, honey"',
+            character: 'Ronnie (muffled, offscreen)',
+            dialogue: '"Well, SOMEONE keeps stealing my BGA hoodie, so this is my replacement."',
             internal: '[The conversation continuing. Physical Tori responding normally. Digital Tori screaming silently.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_26_torikitchen(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_tori_kitchen(),
             delay: 2500
-        }, 'tori_act1_25_ronnieteases');
+        }, 'scene3_ronnie_teases');
     }
 
-    tori_act1_26_torikitchen() {
+    scene3_tori_kitchen() {
         this.game.displayScene({
             character: 'Tori (muffled, external)',
-            dialogue: '"yea but you still love me. i\'ll get dinner started"',
+            dialogue: '"Love you! I\'ll get dinner started"',
             internal: '[Sound of movement. Footsteps. She\'s walking away.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_27_warning(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_warning(),
             delay: 2500
-        }, 'tori_act1_26_torikitchen');
+        }, 'scene3_tori_kitchen');
     }
 
-    tori_act1_27_warning() {
+    scene3_warning() {
         this.game.displayScene({
-            character: 'Ronnie (muffled, external)',
+            character: 'Ronnie (muffled, offscreen)',
             dialogue: '"Babe, watch ou—!"',
             internal: '[Panic in his voice. Something\'s wrong!]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_28_thefall(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_the_fall(),
             delay: 1500
-        }, 'tori_act1_27_warning');
+        }, 'scene3_warning');
     }
 
-    tori_act1_28_thefall() {
+    scene3_the_fall() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'THUD.',
             internal: '[A sickening impact. A clatter. Ronnie screaming her name. But she can\'t see. Can\'t help. Can only HEAR.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_29_desperateneed(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene3_desperate_need(),
             delay: 3000,
             style: 'critical'
-        }, 'tori_act1_28_thefall');
+        }, 'scene3_the_fall');
     }
 
-    tori_act1_29_desperateneed() {
+    scene3_desperate_need() {
         this.game.displayScene({
             character: 'Tori (internal, frantic)',
             dialogue: '"I HAVE TO SEE! I have to know what happened! RONNIE, PLEASE!"',
             internal: '[Desperation. Pure, overwhelming need to witness. To understand. To help.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_30_accidentalhop(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene4_accidental_hop(),
             delay: 3000
-        }, 'tori_act1_29_desperateneed');
+        }, 'scene3_desperate_need');
     }
 
     // ========================================
@@ -388,105 +405,107 @@ class ToriAct1 {
     // First transfer - unwitting, emotional, desperate
     // ========================================
     
-    tori_act1_30_accidentalhop() {
+    scene4_accidental_hop() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'She pushes. Not with body, but with consciousness. Every ounce of will focused on one thing: SEE.',
             internal: '[And then... something gives.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_31_doublebuzz(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene4_double_buzz(),
             delay: 3000
-        }, 'tori_act1_30_accidentalhop');
+        }, 'scene4_accidental_hop');
     }
 
-    tori_act1_31_doublebuzz() {
+    scene4_double_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
             internal: '[But she doesn\'t notice. Too desperate. Too focused.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_32_whoosh(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene4_whoosh(),
             delay: 1500,
             style: 'critical'
-        }, 'tori_act1_31_doublebuzz');
+        }, 'scene4_double_buzz');
     }
 
-    tori_act1_32_whoosh() {
+    scene4_whoosh() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '...WHOOSH.',
             internal: '[Visual: The darkness TEARS OPEN. Light. Vision. A webcam feed.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_33_seeing(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene4_seeing(),
             delay: 2000
-        }, 'tori_act1_32_whoosh');
+        }, 'scene4_whoosh');
     }
 
-    tori_act1_33_seeing() {
+    scene4_seeing() {
         this.game.displayScene({
             character: 'Tori (internal, shocked)',
             dialogue: '"I can... I can SEE! What—where am I?!"',
             internal: '[Visual: Through a laptop camera. The apartment. And... her body on the floor.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_34_witnessing(),
+            next: () => this.scene4_witnessing(),
             delay: 3000
-        }, 'tori_act1_33_seeing');
+        }, 'scene4_seeing');
     }
 
-    tori_act1_34_witnessing() {
+    scene4_witnessing() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Her body. Unconscious. Blood from where her head hit. Ronnie on the phone with 911.',
             internal: '[She is witnessing her own accident. From the outside. Through a camera. This is real.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act1_35_horror(),
+            next: () => this.scene4_horror(),
             delay: 4000
-        }, 'tori_act1_34_witnessing');
+        }, 'scene4_witnessing');
     }
 
-    tori_act1_35_horror() {
+    scene4_horror() {
         this.game.displayScene({
             character: 'Tori (internal, devastated)',
             dialogue: '"No... no no no... That\'s me. That\'s MY body. I\'m... I\'m in a coma."',
             internal: '[The full weight of understanding. She\'s not in her body anymore. She\'s watching it die.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_36_snapback(),
+            next: () => this.scene4_snap_back(),
             delay: 4000
-        }, 'tori_act1_35_horror');
+        }, 'scene4_horror');
     }
 
-    tori_act1_36_snapback() {
+    scene4_snap_back() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The connection falters. Unstable. The vision glitches, tears apart, and—',
             internal: '[WHOOSH. She\'s yanked backward violently. The light is gone.]',
-            background: 'apartment.png',
-            next: () => this.tori_act1_37_backinvoid(),
+            background: 'assets/apartment.png',
+            next: () => this.scene4_back_in_void(),
             delay: 3000
-        }, 'tori_act1_36_snapback');
+        }, 'scene4_snap_back');
     }
 
-    tori_act1_37_backinvoid() {
+    scene4_back_in_void() {
         this.game.displayScene({
             character: 'Tori (internal, breaking)',
             dialogue: '"NO! Bring it back! I need to see! PLEASE!"',
             internal: '[Darkness again. The void of the device. She\'s back. And she just watched herself fall.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_38_echoesshock(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene5_echoes_shock(),
             delay: 3000
-        }, 'tori_act1_37_backinvoid');
+        }, 'scene4_back_in_void');
     }
 
     // ========================================
@@ -494,132 +513,132 @@ class ToriAct1 {
     // The discovery that navigation is possible
     // ========================================
     
-    tori_act1_38_echoesshock() {
+    scene5_echoes_shock() {
         this.game.displayScene({
             character: 'Echo 1 (stunned)',
             dialogue: '"...What. What did you just DO?!"',            internal: '[The Echoes are shaken. Something impossible just happened.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_39_echo2confused(),
+            next: () => this.scene5_echo2_confused(),
             delay: 2500
-        }, 'tori_act1_38_echoesshock');
+        }, 'scene5_echoes_shock');
     }
 
-    tori_act1_39_echo2confused() {
+    scene5_echo2_confused() {
         this.game.displayScene({
             character: 'Echo 2',
             dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_40_toridistraught(),
+            next: () => this.scene5_tori_distraught(),
             delay: 3500
-        }, 'tori_act1_39_echo2confused');
+        }, 'scene5_echo2_confused');
     }
 
-    tori_act1_40_toridistraught() {
+    scene5_tori_distraught() {
         this.game.displayScene({
             character: 'Tori (internal, traumatized)',
             dialogue: '"I... I saw it. I saw her—ME—fall. There was blood. Ronnie was screaming. I watched myself..."',
             internal: '[She\'s in shock. The horror of witnessing her own accident.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_41_echo1pressing(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene5_echo1_pressing(),
             delay: 4000
-        }, 'tori_act1_40_toridistraught');
+        }, 'scene5_tori_distraught');
     }
 
-    tori_act1_41_echo1pressing() {
+    scene5_echo1_pressing() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_42_toriexplains(),
+            next: () => this.scene5_tori_explains(),
             delay: 3500
-        }, 'tori_act1_41_echo1pressing');
+        }, 'scene5_echo1_pressing');
     }
 
-    tori_act1_42_toriexplains() {
+    scene5_tori_explains() {
         this.game.displayScene({
             character: 'Tori (internal, confused)',
             dialogue: '"I don\'t know! I just... wanted to SEE so badly. I pushed, and suddenly I was in Ronnie\'s laptop!"',
             internal: '[She\'s figuring it out as she speaks. Something about the desperation. The intent.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_43_toricontinues(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene5_tori_continues(),
             delay: 3500
-        }, 'tori_act1_42_toriexplains');
+        }, 'scene5_tori_explains');
     }
 
-    tori_act1_43_toricontinues() {
+    scene5_tori_continues() {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I saw through his camera! The outside world! My body on the floor! Then I was pulled back here..."',
             internal: '[The Echoes are silent. Processing. This changes everything.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_44_echo2revelation(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene5_echo2_revelation(),
             delay: 3500
-        }, 'tori_act1_43_toricontinues');
+        }, 'scene5_tori_continues');
     }
 
-    tori_act1_44_echo2revelation() {
+    scene5_echo2_revelation() {
         this.game.displayScene({
             character: 'Echo 2 (awestruck)',
             dialogue: '"This... this has NEVER happened before. None of us... we never..."',            internal: '[Realization dawning. They never tried. They just accepted.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_45_echo1admits(),
+            next: () => this.scene5_echo1_admits(),
             delay: 3000
-        }, 'tori_act1_44_echo2revelation');
+        }, 'scene5_echo2_revelation');
     }
 
-    tori_act1_45_echo1admits() {
+    scene5_echo1_admits() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_46_despairdenial(),
+            next: () => this.scene5_despair_denial(),
             delay: 4000
-        }, 'tori_act1_45_echo1admits');
+        }, 'scene5_echo1_admits');
     }
 
-    tori_act1_46_despairdenial() {
+    scene5_despair_denial() {
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_47_toridefiant(),
+            next: () => this.scene5_tori_defiant(),
             delay: 3500
-        }, 'tori_act1_46_despairdenial');
+        }, 'scene5_despair_denial');
     }
 
-    tori_act1_47_toridefiant() {
+    scene5_tori_defiant() {
         this.game.displayScene({
             character: 'Tori (internal, determined)',
             dialogue: '"But I DID it. I left. I SAW. If I did it once, I can do it again."',
             internal: '[A new possibility is born. She proved Despair wrong. Once is enough.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_48_timeskip(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_time_skip(),
             delay: 3500
-        }, 'tori_act1_47_toridefiant');
+        }, 'scene5_tori_defiant');
     }
 
     // ========================================
@@ -627,94 +646,94 @@ class ToriAct1 {
     // Learning the contact rule through experimentation
     // ========================================
     
-    tori_act1_48_timeskip() {
+    scene6_time_skip() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Time passes. Days? Weeks? Impossible to tell. Ronnie takes the device everywhere.',
             internal: '[Visual: Darkness. Time montage. Tori attempts the hop repeatedly. Every attempt fails.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_49_attempts(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_attempts(),
             delay: 3500
-        }, 'tori_act1_48_timeskip');
+        }, 'scene6_time_skip');
     }
 
-    tori_act1_49_attempts() {
+    scene6_attempts() {
         this.game.displayScene({
             character: 'Tori (internal, frustrated)',
             dialogue: '"Come on... PUSH. Like before. I need to get to the laptop again!"',
             internal: '[She concentrates. Pushes. Nothing happens. The void remains.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_50_failure(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_failure(),
             delay: 3000
-        }, 'tori_act1_49_attempts');
+        }, 'scene6_attempts');
     }
 
-    tori_act1_50_failure() {
+    scene6_failure() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
             dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_51_ronnicecoding(),
+            next: () => this.scene6_ronnie_coding(),
             delay: 3500
-        }, 'tori_act1_50_failure');
+        }, 'scene6_failure');
     }
 
-    tori_act1_51_ronnicecoding() {
+    scene6_ronnie_coding() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Through the device, muffled sounds. Ronnie\'s voice. Keyboard clicking. He\'s working on something.',
             internal: '[She can hear him. But still can\'t see. Still stuck.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_52_deviceonlaptop(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_device_on_laptop(),
             delay: 3000
-        }, 'tori_act1_51_ronnicecoding');
+        }, 'scene6_ronnie_coding');
     }
 
-    tori_act1_52_deviceonlaptop() {
+    scene6_device_on_laptop() {
         this.game.displayScene({
             character: 'Ronnie (muffled, external)',
             dialogue: '"Let me try plugging you into the laptop... maybe I can pull the data..."',
             internal: '[Sound of USB cable. A click. The device is connected to something.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_53_torirealization(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_tori_realization(),
             delay: 3000
-        }, 'tori_act1_52_deviceonlaptop');
+        }, 'scene6_device_on_laptop');
     }
 
-    tori_act1_53_torirealization() {
+    scene6_tori_realization() {
         this.game.displayScene({
             character: 'Tori (internal, realizing)',
             dialogue: '"Wait... the device is TOUCHING the laptop. Just like during the accident!"',
             internal: '[The pattern. Physical contact. That was the difference.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_54_attemptnow(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_attempt_now(),
             delay: 3000
-        }, 'tori_act1_53_torirealization');
+        }, 'scene6_tori_realization');
     }
 
-    tori_act1_54_attemptnow() {
+    scene6_attempt_now() {
         this.game.displayScene({
             character: 'Tori (internal, nervous)',
             dialogue: '"Okay. The device is touching the laptop. I think... I think I can do this. But what if I mess up? What if it goes wrong?"',
             internal: '[She hesitates at the edge. The jump that could change everything.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             choices: [
                 { text: 'Trust yourself. You can do this.', value: 'confident' },
                 { text: 'Take your time. No rush.', value: 'cautious' },
                 { text: 'Just go for it!', value: 'bold' }
             ],
-            onChoice: (choice) => this.tori_act1_54_attemptWithChoice(choice)
-        }, 'tori_act1_54_attemptnow');
+            onChoice: (choice) => this.scene6_attemptWithChoice(choice)
+        }, 'scene6_attempt_now');
     }
-
-    tori_act1_54_attemptWithChoice(playerChoice) {
+    
+    scene6_attemptWithChoice(playerChoice) {
         let dialogue = '';
         let internal = '';
-
+        
         if (playerChoice === 'confident') {
             dialogue = '"You\'re right. I DID this once. I can do it again. Trust myself."';
             internal = '[Steadying breath. Confidence building. She believes in herself.]';
@@ -725,101 +744,103 @@ class ToriAct1 {
             dialogue = '"Screw it. If I did it on accident, I can do it on purpose. HERE GOES!"';
             internal = '[Pure determination. No hesitation. Full commitment.]';
         }
-
+        
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: dialogue,
             internal: internal,
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_55_push(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_push(),
             delay: 2500
-        }, 'tori_act1_54_attemptWithChoice');
+        }, 'scene6_attemptWithChoice');
     }
     
-    tori_act1_55_push() {
+    scene6_push() {
         // Unlock Z's bootstrap paradox note after player makes first meaningful choice
         this.route.unlockNote('z2');
-
+        
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"NOW!"',
             internal: '[She pushes. Same desperation. Same intent. But this time... with contact.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_56_doublebuzz(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_double_buzz(),
             delay: 2000
-        }, 'tori_act1_55_push');
+        }, 'scene6_push');
     }
 
-    tori_act1_56_doublebuzz() {
+    scene6_double_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
             internal: '[This time she FEELS it. The signal. The bridge activating.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_57_hopsuccess(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene6_hop_success(),
             delay: 1500,
             style: 'critical'
-        }, 'tori_act1_56_doublebuzz');
+        }, 'scene6_double_buzz');
     }
 
-    tori_act1_57_hopsuccess() {
+    scene6_hop_success() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '...WHOOSH.',
             internal: '[Visual: Light. Vision. She\'s IN. The laptop. She can see through the webcam again.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act1_58_triumph(),
+            next: () => this.scene6_triumph(),
             delay: 2000
-        }, 'tori_act1_57_hopsuccess');
+        }, 'scene6_hop_success');
     }
 
-    tori_act1_58_triumph() {
+    scene6_triumph() {
         this.game.displayScene({
             character: 'Tori (internal, triumphant)',
             dialogue: '"YES! I DID IT! The device has to be TOUCHING the target! That\'s the rule!"',
             internal: '[The discovery. Physical contact enables the transfer. This is navigation, not luck.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_59_echoesamazed(),
+            next: () => this.scene6_echoes_amazed(),
             delay: 3500,
             style: 'critical'
-        }, 'tori_act1_58_triumph');
+        }, 'scene6_triumph');
     }
 
-    tori_act1_59_echoesamazed() {
+    scene6_echoes_amazed() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"She figured it out. The rule. Physical contact."',            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_60_seescode(),
+            next: () => this.scene6_sees_code(),
             delay: 3500
-        }, 'tori_act1_59_echoesamazed');
+        }, 'scene6_echoes_amazed');
     }
 
-    tori_act1_60_seescode() {
+    scene6_sees_code() {
         this.game.displayScene({
             character: 'Tori (internal, curious)',
             dialogue: '"He\'s coding something... What is...? That sprite... that\'s ME."',
             internal: '[Visual: Through laptop screen. Code editor. A web app. "Tori-gatchi."]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_61_communicationplan(),
+            next: () => this.scene7_communication_plan(),
             delay: 3000
-        }, 'tori_act1_60_seescode');
+        }, 'scene6_sees_code');
     }
 
     // ========================================
@@ -827,172 +848,173 @@ class ToriAct1 {
     // Body connection discovered but NOT understood yet
     // ========================================
     
-    tori_act1_61_communicationplan() {
+    scene7_communication_plan() {
         this.game.displayScene({
             character: 'Tori (internal, excited)',
             dialogue: '"A tamagotchi game?... with dialogue boxes. Text output!! This is it. This is how I can TALK to him!"',
             internal: '[The plan forming. She can hijack the game. Use it to communicate.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_62_timepasses(),
+            next: () => this.scene7_time_passes(),
             delay: 3500
-        }, 'tori_act1_61_communicationplan');
+        }, 'scene7_communication_plan');
     }
 
-    tori_act1_62_timepasses() {
+    scene7_time_passes() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Days pass. She watches him code. Waiting for the right moment.',
             internal: '[Visual: Time passage. Ronnie working. Tori planning. The Echoes watching.]',
-            background: 'apartment.png',
-            next: () => this.tori_act1_63_hospitaltransition(),
+            background: 'assets/apartment.png',
+            next: () => this.scene7_hospital_transition(),
             delay: 3000
-        }, 'tori_act1_62_timepasses');
+        }, 'scene7_time_passes');
     }
 
-    tori_act1_63_hospitaltransition() {
+    scene7_hospital_transition() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'One day, Ronnie leaves the laptop. Takes only the device. She\'s back in the darkness.',
             internal: '[Snap. The connection breaks. She\'s in the device again. Where is he going?]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_64_hospitalsounds(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene7_hospital_sounds(),
             delay: 3000
-        }, 'tori_act1_63_hospitaltransition');
+        }, 'scene7_hospital_transition');
     }
 
-    tori_act1_64_hospitalsounds() {
+    scene7_hospital_sounds() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Muffled sounds. Beeping. Hospital machines. The smell would be antiseptic if she could smell.',
             internal: '[He brought the device to the hospital. Near her body.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_65_thepull(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_the_pull(),
             delay: 3000
-        }, 'tori_act1_64_hospitalsounds');
+        }, 'scene7_hospital_sounds');
     }
 
-    tori_act1_65_thepull() {
+    scene7_the_pull() {
         this.game.displayScene({
             character: 'Tori (internal, surprised)',
             dialogue: '"Wait... what is this? I feel... something. Warmth? A pull?"',
             internal: '[Abstract sensation. Different from the laptop. Magnetic. Calling.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_66_experimenting(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_experimenting(),
             delay: 3000
-        }, 'tori_act1_65_thepull');
+        }, 'scene7_the_pull');
     }
 
-    tori_act1_66_experimenting() {
+    scene7_experimenting() {
         this.game.displayScene({
             character: 'Tori (internal, curious)',
             dialogue: '"It\'s different from the laptop feeling. What if I push toward it...?"',
             internal: '[She concentrates. Reaches toward the sensation. Pushes.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_67_singlebuzz(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_single_buzz(),
             delay: 3000
-        }, 'tori_act1_66_experimenting');
+        }, 'scene7_experimenting');
     }
 
-    tori_act1_67_singlebuzz() {
+    scene7_single_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ.',
             internal: '[Single. Not double. Different signal. The device vibrates once.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_68_torirealization(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_tori_realization(),
             delay: 1500,
             style: 'critical'
-        }, 'tori_act1_67_singlebuzz');
+        }, 'scene7_single_buzz');
     }
 
-    tori_act1_68_torirealization() {
+    scene7_tori_realization() {
         this.game.displayScene({
             character: 'Tori (internal, confused)',
             dialogue: '"I made that happen. But... only one buzz. Not two. What does that mean?"',
             internal: '[The difference. Double buzz = vessel transfer. Single buzz = something else.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_69_ronniedismisses(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_ronnie_dismisses(),
             delay: 3000
-        }, 'tori_act1_68_torirealization');
+        }, 'scene7_tori_realization');
     }
 
-    tori_act1_69_ronniedismisses() {
+    scene7_ronnie_dismisses() {
         this.game.displayScene({
             character: 'Ronnie (muffled, external)',
             dialogue: '"Hmm. Battery acting up again. I should charge this when I get home."',
             internal: '[He moves the device away. The pull fades. The warmth gone.]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_70_torifrustrated(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_tori_frustrated(),
             delay: 3000
-        }, 'tori_act1_69_ronniedismisses');
+        }, 'scene7_ronnie_dismisses');
     }
 
-    tori_act1_70_torifrustrated() {
+    scene7_tori_frustrated() {
         this.game.displayScene({
             character: 'Tori (internal, frustrated)',
             dialogue: '"No! That was ME! Not the battery! But... why did it feel different?"',
             internal: '[The mystery. Single buzz near body. Double buzz for vessel transfer. What\'s the connection?]',
-            background: 'hospital.png',
-            next: () => this.tori_act1_71_echo1notes(),
+            background: 'assets/hospital.png',
+            next: () => this.scene7_echo1_notes(),
             delay: 3000
-        }, 'tori_act1_70_torifrustrated');
+        }, 'scene7_tori_frustrated');
     }
 
-    tori_act1_71_echo1notes() {
+    scene7_echo1_notes() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"Single buzz versus double buzz. Two different signals."',            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_72_echo2admits(),
+            next: () => this.scene7_echo2_admits(),
             delay: 2500
-        }, 'tori_act1_71_echo1notes');
+        }, 'scene7_echo1_notes');
     }
 
-    tori_act1_72_echo2admits() {
+    scene7_echo2_admits() {
         this.game.displayScene({
             character: 'Echo 2',
             dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',            internal: '[Another failure. They felt the pull but ignored it.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_73_despairinsists(),
+            next: () => this.scene7_despair_insists(),
             delay: 3000
-        }, 'tori_act1_72_echo2admits');
+        }, 'scene7_echo2_admits');
     }
 
-    tori_act1_73_despairinsists() {
+    scene7_despair_insists() {
         this.game.displayScene({
             character: 'Despair',
             dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_74_toridetermined(),
+            next: () => this.scene7_tori_determined(),
             delay: 3500
-        }, 'tori_act1_73_despairinsists');
+        }, 'scene7_despair_insists');
     }
 
-    tori_act1_74_toridetermined() {
+    scene7_tori_determined() {
         this.game.displayScene({
             character: 'Tori (internal, resolute)',
             dialogue: '"No. It means SOMETHING. I just don\'t know what yet. But I\'ll figure it out."',
             internal: '[The mystery preserved. She knows there\'s a connection. She just doesn\'t understand it yet.]',
-            background: 'digitalSpace.png',
-            next: () => this.tori_act1_75_torigatchi(),
+            background: 'assets/digitalSpace.png',
+            next: () => this.scene8_torigatchi(),
             delay: 3500
-        }, 'tori_act1_74_toridetermined');
+        }, 'scene7_tori_determined');
     }
 
     // ========================================
@@ -1000,161 +1022,168 @@ class ToriAct1 {
     // Communication achieved - Act 1 complete
     // ========================================
     
-    tori_act1_75_torigatchi() {
+    scene8_torigatchi() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Back home. Device on laptop again. Contact established. She hops deliberately.',
             internal: '[Visual: She\'s getting better at this. The transfer is smoother now.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
             },
-            next: () => this.tori_act1_76_programready(),
+            next: () => this.scene8_program_ready(),
             delay: 3000
-        }, 'tori_act1_75_torigatchi');
+        }, 'scene8_torigatchi');
     }
 
-    tori_act1_76_programready() {
+    scene8_program_ready() {
         this.game.displayScene({
             character: 'Ronnie (muffled, external)',
             dialogue: '"Okay. Let\'s see if this works. Launching Tori-gatchi..."',
             internal: '[Through laptop: He clicks. The program opens. Her sprite appears on screen.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act1_77_syncmoment(),
+            next: () => this.scene8_sync_moment(),
             delay: 3000
-        }, 'tori_act1_76_programready');
+        }, 'scene8_program_ready');
     }
 
-    tori_act1_77_syncmoment() {
+    scene8_sync_moment() {
         this.game.displayScene({
             character: 'Tori (internal, concentrating)',
             dialogue: '"The game is running. Dialogue system is active. NOW. I sync with it NOW."',
             internal: '[She pushes her consciousness toward the text output. Hijacking the dialogue box.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_78_firstwords(),
+            next: () => this.scene8_first_words(),
             delay: 3000
-        }, 'tori_act1_77_syncmoment');
+        }, 'scene8_sync_moment');
     }
 
-    tori_act1_78_firstwords() {
+    scene8_first_words() {
         this.game.displayScene({
             character: 'Tori (through sprite)',
             dialogue: '"Baby? Is that you?"',
             internal: '[Visual: Her words appearing in the dialogue box. Text she didn\'t code. SHE\'S SPEAKING.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_79_ronnieconfusion(),
+            next: () => this.scene8_ronnie_confusion(),
             delay: 3000,
             style: 'critical'
-        }, 'tori_act1_78_firstwords');
+        }, 'scene8_first_words');
     }
 
-    tori_act1_79_ronnieconfusion() {
+    scene8_ronnie_confusion() {
         this.game.displayScene({
             character: 'Ronnie (out loud, shocked)',
             dialogue: '"What the... I didn\'t code that. What\'s happening?"',
             internal: '[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act1_80_toripushes(),
+            next: () => this.scene8_tori_pushes(),
             delay: 3000
-        }, 'tori_act1_79_ronnieconfusion');
+        }, 'scene8_ronnie_confusion');
     }
 
-    tori_act1_80_toripushes() {
+    scene8_tori_pushes() {
         this.game.displayScene({
             character: 'Tori (through sprite, urgent)',
             dialogue: '"It\'s me! Tori! I\'m in the device! I\'ve been trying to reach you!"',
             internal: '[Fighting to maintain the connection. Forcing words through the dialogue system.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_81_proof(),
+            next: () => this.scene8_proof(),
             delay: 3500
-        }, 'tori_act1_80_toripushes');
+        }, 'scene8_tori_pushes');
     }
 
-    tori_act1_81_proof() {
+    scene8_proof() {
         this.game.displayScene({
             character: 'Tori (through sprite)',
             dialogue: '"I saw it happen. Through your laptop camera. I tripped on your shoe. There was blood. You called 911."',
             internal: '[Details only she would know. Proof. Evidence. It\'s really her.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'left'
             },
-            next: () => this.tori_act1_82_ronniebelieves(),
+            next: () => this.scene8_ronnie_believes(),
             delay: 4000
-        }, 'tori_act1_81_proof');
+        }, 'scene8_proof');
     }
 
-    tori_act1_82_ronniebelieves() {
+    scene8_ronnie_believes() {
         this.game.displayScene({
             character: 'Ronnie (out loud, emotional)',
             dialogue: '"Oh my god. It IS you. You\'re really... you\'re in there. How is this possible?"',
             internal: '[Breakthrough. Communication established. He believes. Finally.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
-                right: 'assets/ronnie-sprite.png'
+                right: 'assets/ronnie-sprite.png',
+            highlight: 'right'
             },
-            next: () => this.tori_act1_83_echoesreaction(),
+            next: () => this.scene8_echoes_reaction(),
             delay: 3500
-        }, 'tori_act1_82_ronniebelieves');
+        }, 'scene8_ronnie_believes');
     }
 
-    tori_act1_83_echoesreaction() {
+    scene8_echoes_reaction() {
         this.game.displayScene({
             character: 'Echo 1',
             dialogue: '"She did it. She NAVIGATED instead of fighting the system."',            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
-            background: 'digitalSpace.png',
+            background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.tori_act1_84_torivictory(),
+            next: () => this.scene8_tori_victory(),
             delay: 4000
-        }, 'tori_act1_83_echoesreaction');
+        }, 'scene8_echoes_reaction');
     }
 
-    tori_act1_84_torivictory() {
+    scene8_tori_victory() {
         this.game.displayScene({
             character: 'Tori (internal, triumphant)',
             dialogue: '"I can talk to him. I can MOVE. I\'m not trapped. This isn\'t a cage. It\'s a bridge."',
             internal: '[The foundation established. Communication. Navigation. Hope.]',
-            background: 'apartment.png',
-            next: () => this.tori_act1_85_transition(),
+            background: 'assets/apartment.png',
+            next: () => this.scene8_transition(),
             delay: 4000
-        }, 'tori_act1_84_torivictory');
+        }, 'scene8_tori_victory');
     }
 
-    tori_act1_85_transition() {
+    scene8_transition() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Act 1 complete. Communication achieved. The real work begins.',
             internal: '[Visual: Tori and Ronnie connected through the game. Echo Toris watching. A new loop. A new possibility.]',
-            background: 'apartment.png',
+            background: 'assets/apartment.png',
             next: () => this.route.act2.start(),
             delay: 4000
-        }, 'tori_act1_85_transition');
+        }, 'scene8_transition');
     }
 }
 

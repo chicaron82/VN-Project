@@ -44,7 +44,7 @@ class RonnieRoute {
         // Entry point for Ronnie's route
         // Scenes 1-3 handled by SharedPrologue
         // Ronnie's route starts at Scene 4 (Hospital Anchor)
-        this.ronnie_prologue_01_hospital();
+        this.prologueScene4();
     }
     
     // Collectibles delegation for ending notes
@@ -53,7 +53,7 @@ class RonnieRoute {
     }
 
     // Scene 4: Hospital Anchor
-    ronnie_prologue_01_hospital() {
+    prologueScene4() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"She didn\'t wake up. Days passed. Then weeks. I sat by her side, waiting for a laugh, a smile, anything."',
@@ -62,12 +62,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_02_toy(),
+            next: () => this.prologueScene4_toy(),
             delay: 4500
-        }, 'ronnie_prologue_01_hospital');
+        }, 'prologueScene4');
     }
 
-    ronnie_prologue_02_toy() {
+    prologueScene4_toy() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"That stupid toy was the last thing she held. I couldn\'t let it go. If I couldn\'t talk to her here... maybe I could talk to her somewhere else."',
@@ -76,13 +76,13 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_03_device(),
+            next: () => this.prologueScene5(),
             delay: 4000
-        }, 'ronnie_prologue_02_toy');
+        }, 'prologueScene4_toy');
     }
 
     // Scene 5: Creation of Tori-gatchi (Part 1 - Building)
-    ronnie_prologue_03_device() {
+    prologueScene5() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"I poured every memory into it. Every laugh I could remember, every fight, every kiss. If I couldn\'t talk to her directly... maybe I could pretend I could talk to her in a game."',
@@ -91,13 +91,13 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_04_hospitalbuzz(),
+            next: () => this.prologueScene5_hospital(),
             delay: 5000
-        }, 'ronnie_prologue_03_device');
+        }, 'prologueScene5');
     }
 
     // NEW SCENE: First Hospital Visit (with single buzz)
-    ronnie_prologue_04_hospitalbuzz() {
+    prologueScene5_hospital() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Hey honey. Thought I\'d come by and visit."',
@@ -106,12 +106,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_05_ronniegatchi(),
+            next: () => this.prologueScene5_ronniegatchi(),
             delay: 3000
-        }, 'ronnie_prologue_04_hospitalbuzz');
+        }, 'prologueScene5_hospital');
     }
 
-    ronnie_prologue_05_ronniegatchi() {
+    prologueScene5_ronniegatchi() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Found your Ronnie-Gatchi near my computer. Been working on something to pass the time..."',
@@ -120,12 +120,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_06_buzz(),
+            next: () => this.prologueScene5_buzz(),
             delay: 3000
-        }, 'ronnie_prologue_05_ronniegatchi');
+        }, 'prologueScene5_ronniegatchi');
     }
 
-    ronnie_prologue_06_buzz() {
+    prologueScene5_buzz() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ.',
@@ -134,13 +134,13 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_07_phonecheck(),
+            next: () => this.prologueScene5_phone_check(),
             delay: 2000,
             style: 'critical'
-        }, 'ronnie_prologue_06_buzz');
+        }, 'prologueScene5_buzz');
     }
 
-    ronnie_prologue_07_phonecheck() {
+    prologueScene5_phone_check() {
         this.game.displayScene({
             character: 'Ronnie (internal)',
             dialogue: '"Huh?"',
@@ -149,12 +149,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_08_dismiss(),
+            next: () => this.prologueScene5_dismiss(),
             delay: 2500
-        }, 'ronnie_prologue_07_phonecheck');
+        }, 'prologueScene5_phone_check');
     }
 
-    ronnie_prologue_08_dismiss() {
+    prologueScene5_dismiss() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Weird... must be the battery acting up."',
@@ -163,12 +163,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_09_name(),
+            next: () => this.prologueScene5_name(),
             delay: 2500
-        }, 'ronnie_prologue_08_dismiss');
+        }, 'prologueScene5_dismiss');
     }
 
-    ronnie_prologue_09_name() {
+    prologueScene5_name() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"So to pass the time, I based a game off your Ronnie-Gatchi. I called it... Tori-gatchi."',
@@ -177,12 +177,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_10_promise(),
+            next: () => this.prologueScene5_promise(),
             delay: 4000
-        }, 'ronnie_prologue_09_name');
+        }, 'prologueScene5_name');
     }
 
-    ronnie_prologue_10_promise() {
+    prologueScene5_promise() {
         this.game.displayScene({
             character: 'Ronnie (whispers)',
             dialogue: '"I\'ll finish it. For you. For us. I promise."',
@@ -191,12 +191,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_prologue_11_transition(),
+            next: () => this.prologueScene5_transition(),
             delay: 3500
-        }, 'ronnie_prologue_10_promise');
+        }, 'prologueScene5_promise');
     }
 
-    ronnie_prologue_11_transition() {
+    prologueScene5_transition() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Time passes.',
@@ -205,9 +205,9 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act1_01_wakeup(),
+            next: () => this.act1Scene1(),
             delay: 3000
-        }, 'ronnie_prologue_11_transition');
+        }, 'prologueScene5_transition');
     }
 
     // ========================================
@@ -215,7 +215,7 @@ class RonnieRoute {
     // Starts with Tori successfully communicating
     // ========================================
 
-    ronnie_act1_01_wakeup() {
+    act1Scene1() {
         // Scene 1: She Speaks (BREAKTHROUGH MOMENT)
         this.game.displayScene({
             character: 'Narration',
@@ -225,12 +225,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act1_02_spriteloads(),
+            next: () => this.act1Scene1_sprite_loads(),
             delay: 3000
-        }, 'ronnie_act1_01_wakeup');
+        }, 'act1Scene1');
     }
 
-    ronnie_act1_02_spriteloads() {
+    act1Scene1_sprite_loads() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'A sprite appears. Pixelated but alive.',
@@ -239,12 +239,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act1_03_glitch(),
+            next: () => this.act1Scene1_glitch(),
             delay: 2500
-        }, 'ronnie_act1_02_spriteloads');
+        }, 'act1Scene1_sprite_loads');
     }
 
-    ronnie_act1_03_glitch() {
+    act1Scene1_glitch() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Then... the dialogue box glitches. Text appears that he didn\'t write.',
@@ -253,16 +253,16 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act1_04_firstwords(),
+            next: () => this.act1Scene1_first_words(),
             delay: 3000,
             style: 'critical'
-        }, 'ronnie_act1_03_glitch');
+        }, 'act1Scene1_glitch');
     }
 
-    ronnie_act1_04_firstwords() {
+    act1Scene1_first_words() {
         // Unlock Belle's note - space between life and death
         this.collectiblesManager.unlockNote('iz1');
-
+        
         this.game.displayScene({
             character: 'Tori (sprite, glitching)',
             dialogue: '"Baby? ...Is that you? It\'s me... Tori. I don\'t know how, but I\'m here."',
@@ -272,12 +272,12 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_05_narration(),
+            next: () => this.act1Scene1_narration(),
             delay: 4000
-        }, 'ronnie_act1_04_firstwords');
+        }, 'act1Scene1_first_words');
     }
 
-    ronnie_act1_05_narration() {
+    act1Scene1_narration() {
         this.game.displayScene({
             character: 'Ronnie (internal, stunned)',
             dialogue: '"...What the hell? This isn\'t coded..."',
@@ -293,12 +293,12 @@ class RonnieRoute {
             ],
             onChoice: (choice) => {
                 this.game.gameState.flags.act1_first_choice = choice;
-                this.ronnie_act1_06_choiceoutcome(choice);
+                this.act1Scene1_choiceOutcome(choice);
             }
-        }, 'ronnie_act1_05_narration');
+        }, 'act1Scene1_narration');
     }
 
-    ronnie_act1_06_choiceoutcome(choice) {
+    act1Scene1_choiceOutcome(choice) {
         let dialogue = '';
         let routeTilt = '';
 
@@ -325,13 +325,13 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_07_apartment(),
+            next: () => this.act1Scene2(),
             delay: 4500
-        }, 'ronnie_act1_06_choiceoutcome');
+        }, 'act1Scene1_choiceOutcome');
     }
 
     // Scene 2: First Full Conversation
-    ronnie_act1_07_apartment() {
+    act1Scene2() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"I barely slept. Every time I closed my eyes, I heard her voice again. Tori. My wife. Talking to me from inside a game I built. It should be impossible. But when I open my eyes..."',
@@ -340,12 +340,12 @@ class RonnieRoute {
             sprites: {
                 left: 'assets/ronnie-sprite.png',
             },
-            next: () => this.ronnie_act1_08_greeting(),
+            next: () => this.act1Scene2_greeting(),
             delay: 5000
-        }, 'ronnie_act1_07_apartment');
+        }, 'act1Scene2');
     }
 
-    ronnie_act1_08_greeting() {
+    act1Scene2_greeting() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Good morning, sleepyhead. ...Or did you even sleep at all?"',
@@ -355,12 +355,12 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_09_narration2(),
+            next: () => this.act1Scene2_narration(),
             delay: 3000
-        }, 'ronnie_act1_08_greeting');
+        }, 'act1Scene2_greeting');
     }
 
-    ronnie_act1_09_narration2() {
+    act1Scene2_narration() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She knows me. Just like always. My chest aches. God, I\'ve missed this."',
@@ -375,12 +375,12 @@ class RonnieRoute {
                 { text: '(Defensive) "This is just stress. Lack of sleep. I\'m imagining this."', value: 'defensive' }
             ],
             onChoice: (choice) => {
-                this.ronnie_act1_10_choice1outcome(choice);
+                this.act1Scene2_choice1Outcome(choice);
             }
-        }, 'ronnie_act1_09_narration2');
+        }, 'act1Scene2_narration');
     }
 
-    ronnie_act1_10_choice1outcome(choice) {
+    act1Scene2_choice1Outcome(choice) {
         let dialogue = '';
         let character = 'Tori';
 
@@ -406,12 +406,12 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_11_glitch2(),
+            next: () => this.act1Scene2_glitch(),
             delay: 3500
-        }, 'ronnie_act1_10_choice1outcome');
+        }, 'act1Scene2_choice1Outcome');
     }
 
-    ronnie_act1_11_glitch2() {
+    act1Scene2_glitch() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"I don\'t know how long I can hold on like this. Something feels... wrong. Like my world is cracking at the edges."',
@@ -421,12 +421,12 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_12_glitchnarration(),
+            next: () => this.act1Scene2_glitchNarration(),
             delay: 4000
-        }, 'ronnie_act1_11_glitch2');
+        }, 'act1Scene2_glitch');
     }
 
-    ronnie_act1_12_glitchnarration() {
+    act1Scene2_glitchNarration() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She\'s glitching. Her sprite shudders, a few pixels tearing away. My stomach drops."',
@@ -441,12 +441,12 @@ class RonnieRoute {
                 { text: '(Distract) "Don\'t think about it. Let\'s just... talk. Like we used to."', value: 'distract' }
             ],
             onChoice: (choice) => {
-                this.ronnie_act1_13_choice2outcome(choice);
+                this.act1Scene2_choice2Outcome(choice);
             }
-        }, 'ronnie_act1_12_glitchnarration');
+        }, 'act1Scene2_glitchNarration');
     }
 
-    ronnie_act1_13_choice2outcome(choice) {
+    act1Scene2_choice2Outcome(choice) {
         let dialogue = '';
         let character = 'Tori';
 
@@ -471,12 +471,12 @@ class RonnieRoute {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png',
             },
-            next: () => this.ronnie_act1_14_end(),
+            next: () => this.act1Scene2_end(),
             delay: 3500
-        }, 'ronnie_act1_13_choice2outcome');
+        }, 'act1Scene2_choice2Outcome');
     }
 
-    ronnie_act1_14_end() {
+    act1Scene2_end() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She\'s here. My Tori. In the code, in the pixels. And she\'s slipping away. Somehow... I have to save her."',
@@ -488,7 +488,7 @@ class RonnieRoute {
             },
             next: () => this.act2.startAct2(),
             delay: 4000
-        }, 'ronnie_act1_14_end');
+        }, 'act1Scene2_end');
     }
     
     // ========================================

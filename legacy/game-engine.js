@@ -1685,18 +1685,25 @@ class GameEngine {
         
         // Hide Tori-specific UI elements
         if (this.tetherUI) this.tetherUI.style.display = 'none';
-        if (this.notesButton) this.notesButton.style.display = 'none';
+        
+        // ZEERAH'S FIX: Only hide notes button if player hasn't completed any ending
+        if (this.notesButton) {
+            const hasCompletedEnding = this.hasCompletedAnyEnding();
+            if (!hasCompletedEnding) {
+                this.notesButton.style.display = 'none';
+            }
+            // If they HAVE completed an ending, keep button visible for future routes
+        }
         // Echo display removed - handled by sprite now
         
         // Hide backlog button
         const backlogButton = document.getElementById('backlog-button');
         if (backlogButton) backlogButton.style.display = 'none';
         
-        // Stop tether decay if in Tori's route
+        // ZEERAH'S FIX: Cleanup tether system completely (stops decay + clears timers)
         if (this.currentRoute) {
-            // Or if route has tetherSystem object
-            if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.stopDecay) {
-                this.currentRoute.tetherSystem.stopDecay();
+            if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.cleanup) {
+                this.currentRoute.tetherSystem.cleanup();
             }
         }
         
@@ -1714,9 +1721,9 @@ class GameEngine {
     }
     
     openStandaloneNotes() {
-        if (!this.standaloneNotesViewer) {
-            this.standaloneNotesViewer = new StandaloneNotesViewer(this);
-        }
+        // ZEERAH'S FIX: Always create fresh viewer to reload notes from localStorage
+        // Notes might have been collected since last view
+        this.standaloneNotesViewer = new StandaloneNotesViewer(this);
         this.standaloneNotesViewer.show();
     }
     

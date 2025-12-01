@@ -177,6 +177,27 @@ class TetherSystem {
             this.tetherDecayTimer = null;
             console.log('Tether decay stopped');
         }
+        
+        // Also clear cooldown timer if active
+        if (this.holdOnCooldownTimer) {
+            clearInterval(this.holdOnCooldownTimer);
+            this.holdOnCooldownTimer = null;
+        }
+    }
+    
+    cleanup() {
+        // ZEERAH'S FIX: Complete cleanup when route ends
+        // Stop all timers
+        this.stopDecay();
+        
+        // Clear cooldown state
+        this.holdOnCooldown = false;
+        if (this.holdOnButton) {
+            this.holdOnButton.textContent = 'HOLD ON';
+            this.holdOnButton.disabled = false;
+        }
+        
+        console.log('Tether system fully cleaned up');
     }
     
     applyDecay() {
@@ -357,24 +378,16 @@ class TetherSystem {
             onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Increment version for next attempt
-                    const nextVersion = this.game.incrementVersion();
+                    this.game.incrementVersion();
                     
-                    // Show dramatic version increment screen
-                    this.game.displayScene({
-                        character: 'System',
-                        dialogue: `INITIALIZING VERSION ${nextVersion}...`,
-                        internal: `[Version ${failedVersion} failed. ${nextVersion - 848} attempts made.]\n[Consciousness transfer reinitializing...]\n[The Old Man sends the device back once more.]`,
-                        background: 'digitalSpace.png',
-                        style: 'critical',
-                        next: () => {
-                            // Reset tether and restart
-                            this.reset();
-                            if (this.route && this.route.act1) {
-                                this.route.act1.start();
-                            }
-                        },
-                        delay: 4000
-                    }, 'version_increment_tether_death');
+                    // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
+                    this.game.showLoopInit(() => {
+                        // Reset tether and restart
+                        this.reset();
+                        if (this.route && this.route.act1) {
+                            this.route.act1.start();
+                        }
+                    });
                 } else {
                     if (this.game.returnToMainMenu) {
                         this.game.returnToMainMenu();

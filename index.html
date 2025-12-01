@@ -12,7 +12,6 @@
     
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="cutscene-animations.css">
     
 <style>
         /* ========================================
@@ -59,7 +58,7 @@
             <div class="powered-by-text">Powered by</div>
             
             <!-- UV7 Logo - Static Fallback (visible by default) -->
-            <img src="UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+            <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
             
             <!-- UV7 Logo - Animated Video (hidden initially, shown when ready) -->
             <video 
@@ -96,7 +95,7 @@
         <!-- Main Menu -->
         <div id="main-menu">
             <!-- Background as actual IMG element -->
-            <img src="desktopVersion.png" id="main-menu-bg" alt="">
+            <img src="assets/desktopVersion.png" id="main-menu-bg" alt="">
             
             <div id="main-menu-content">
                 <h1>VERSION 848</h1>
@@ -236,57 +235,160 @@
             <button class="close-x" onclick="game.closeSettings()">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
-                
-                <!-- Text Speed -->
-                <div class="setting-row">
-                    <label class="setting-label">TEXT SPEED</label>
-                    <div class="setting-control">
-                        <button class="speed-btn" data-speed="slow">SLOW</button>
-                        <button class="speed-btn active" data-speed="normal">NORMAL</button>
-                        <button class="speed-btn" data-speed="fast">FAST</button>
-                        <button class="speed-btn" data-speed="instant">INSTANT</button>
-                    </div>
+
+                <!-- Tab Navigation -->
+                <div class="settings-tabs">
+                    <button class="settings-tab-btn active" data-tab="general">GENERAL</button>
+                    <button class="settings-tab-btn" data-tab="shortcuts">SHORTCUTS</button>
+                    <button class="settings-tab-btn" data-tab="codes">SECRET CODES</button>
                 </div>
-                
-                <!-- Display Mode -->
-                <div class="setting-row">
-                    <label class="setting-label">DISPLAY MODE (EXPERIMENTAL)</label>
-                    <div class="setting-control">
-                        <button class="display-mode-btn active" data-mode="auto">AUTO</button>
-                        <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
-                        <button class="display-mode-btn" data-mode="landscape">LANDSCAPE</button>
+
+                <!-- Tab Content Panels -->
+                <div class="settings-tab-content">
+
+                    <!-- GENERAL TAB -->
+                    <div class="tab-panel active" id="tab-general">
+                        <!-- Text Speed -->
+                        <div class="setting-row">
+                            <label class="setting-label">TEXT SPEED</label>
+                            <div class="setting-control">
+                                <button class="speed-btn" data-speed="slow">SLOW</button>
+                                <button class="speed-btn active" data-speed="normal">NORMAL</button>
+                                <button class="speed-btn" data-speed="fast">FAST</button>
+                                <button class="speed-btn" data-speed="instant">INSTANT</button>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Advance -->
+                        <div class="setting-row">
+                            <label class="setting-label">AUTO-ADVANCE</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="auto-advance-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="auto-advance-status">OFF</span>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Advance Delay -->
+                        <div class="setting-row" id="auto-delay-row" style="display: none;">
+                            <label class="setting-label">AUTO DELAY</label>
+                            <div class="setting-control">
+                                <input type="range" id="auto-delay-slider" min="1000" max="5000" step="500" value="2000">
+                                <span id="auto-delay-value">2.0s</span>
+                            </div>
+                        </div>
+
+                        <!-- Display Mode -->
+                        <div class="setting-row">
+                            <label class="setting-label">DISPLAY MODE</label>
+                            <div class="setting-control">
+                                <button class="display-mode-btn active" data-mode="auto">AUTO</button>
+                                <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
+                                <button class="display-mode-btn" data-mode="landscape">LANDSCAPE</button>
+                            </div>
+                        </div>
+
+                        <!-- Tether Difficulty - IMPROVED LAYOUT -->
+                        <div class="setting-row">
+                            <div class="difficulty-setting-container">
+                                <!-- Buttons row: Label left, buttons right (matches Display Mode) -->
+                                <div class="difficulty-buttons-row">
+                                    <label class="setting-label">TORI'S ROUTE DIFFICULTY</label>
+                                    <div class="setting-control">
+                                        <button class="tether-difficulty-btn" data-difficulty="relaxed">RELAXED</button>
+                                        <button class="tether-difficulty-btn active" data-difficulty="normal">NORMAL</button>
+                                        <button class="tether-difficulty-btn" data-difficulty="intense">INTENSE</button>
+                                    </div>
+                                </div>
+        
+                                <!-- Explanations below buttons -->
+                                <div class="difficulty-explanations">
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Relaxed:</strong> Slower tether decay (more time to read)
+                                    </div>
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Normal:</strong> Balanced experience (recommended)
+                                    </div>
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Intense:</strong> Faster decay (maximum tension)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fullscreen -->
+                        <div class="setting-row">
+                            <label class="setting-label">FULLSCREEN</label>
+                            <div class="setting-control">
+                                <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Auto-Advance -->
-                <div class="setting-row">
-                    <label class="setting-label">AUTO-ADVANCE</label>
-                    <div class="setting-control">
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="auto-advance-toggle">
-                            <span class="toggle-slider"></span>
-                        </label>
-                        <span class="toggle-status" id="auto-advance-status">OFF</span>
+
+                    <!-- SHORTCUTS TAB -->
+                    <div class="tab-panel" id="tab-shortcuts">
+                        <div class="shortcuts-list">
+                            <h3>KEYBOARD CONTROLS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SPACE / ENTER</span>
+                                <span class="shortcut-desc">Advance dialogue</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">S</span>
+                                <span class="shortcut-desc">Skip typing animation</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL (Hold)</span>
+                                <span class="shortcut-desc">Skip read dialogue (unlocked after 1st ending)</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ESC</span>
+                                <span class="shortcut-desc">Open pause menu</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">MOBILE CONTROLS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAP DIALOGUE</span>
+                                <span class="shortcut-desc">Advance or skip typing</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SWIPE UP</span>
+                                <span class="shortcut-desc">Scroll dialogue box (Tori's route)</span>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                
-                <!-- Auto-Advance Delay (only shown when auto-advance is ON) -->
-                <div class="setting-row" id="auto-delay-row" style="display: none;">
-                    <label class="setting-label">AUTO DELAY</label>
-                    <div class="setting-control">
-                        <input type="range" id="auto-delay-slider" min="1000" max="5000" step="500" value="2000">
-                        <span id="auto-delay-value">2.0s</span>
+
+                    <!-- SECRET CODES TAB -->
+                    <div class="tab-panel" id="tab-codes">
+                        <div class="codes-panel">
+                            <p class="codes-intro">Enter secret codes found in notes and lore.</p>
+
+                            <div class="code-input-group">
+                                <input type="text" id="secret-code-input" placeholder="Enter code here...">
+                                <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
+                            </div>
+
+                            <div id="code-result-message"></div>
+
+                            <div class="codes-discovered">
+                                <h3>DISCOVERED CODES (<span id="codes-count">0</span>/7)</h3>
+                                <div id="codes-list">
+                                    <p class="no-codes">No codes discovered yet...</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-                
-                <!-- Fullscreen -->
-                <div class="setting-row">
-                    <label class="setting-label">FULLSCREEN</label>
-                    <div class="setting-control">
-                        <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
-                    </div>
-                </div>
-                
+
                 <!-- Buttons -->
                 <div class="settings-buttons">
                     <button class="settings-menu-button" onclick="game.closeSettings()">BACK</button>
@@ -303,6 +405,20 @@
                 <div id="backlog-list">
                     <!-- Dialogue history will be populated here -->
                     <p class="backlog-empty">No dialogue history yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Jump Confirmation Overlay -->
+        <div id="time-jump-confirm" style="display: none;">
+            <div id="time-jump-content">
+                <h2>⏮️ TIME JUMP CONFIRMATION</h2>
+                <div id="time-jump-message">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <div id="time-jump-buttons">
+                    <button id="time-jump-cancel" class="time-jump-btn cancel">CANCEL</button>
+                    <button id="time-jump-proceed" class="time-jump-btn proceed">JUMP BACK</button>
                 </div>
             </div>
         </div>
@@ -399,7 +515,7 @@
             <div id="notes-content">
                 <h2>COLLECTED NOTES</h2>
                 <div id="notes-list"></div>
-                <button id="close-notes">CLOSE</button>
+                <!-- ZEERAH'S FIX: Removed duplicate CLOSE button, X button works -->
             </div>
         </div>
 
@@ -414,20 +530,20 @@
             <!-- Screen 1: UV7 Logo -->
             <div class="credit-screen" id="credit-0">
                 <div class="credits-powered-by">Powered by</div>
-                <img src="UnitedVoices7.png" class="credits-logo" alt="United Voices 7">
+                <img src="assets/UnitedVoices7.png" class="credits-logo" alt="United Voices 7">
             </div>
 
             <!-- Screen 2: Group Photo -->
             <div class="credit-screen" id="credit-1">
                 <div class="credits-group-title">THE UV7 CREW</div>
-                <img src="the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
+                <img src="assets/the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
                 <div class="credits-group-subtitle">Seven voices. One vision.</div>
             </div>
 
             <!-- Screen 3: Zee -->
             <div class="credit-screen" id="credit-2">
                 <div class="portrait-display">
-                    <img src="trinity-z-portrait.png" class="portrait-display-image" alt="Zee">
+                    <img src="assets/trinity-z-portrait.png" class="portrait-display-image" alt="Zee">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">ZEE (Z)</div>
                         <div class="portrait-display-title">🔶 The Architect</div>
@@ -442,7 +558,7 @@
             <!-- Screen 4: ZeeRah -->
             <div class="credit-screen" id="credit-3">
                 <div class="portrait-display">
-                    <img src="trinity-zr-portrait.png" class="portrait-display-image" alt="ZeeRah">
+                    <img src="assets/trinity-zr-portrait.png" class="portrait-display-image" alt="ZeeRah">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">ZEERAH (ZR)</div>
                         <div class="portrait-display-title">🔥 The Chaos Optimizer</div>
@@ -457,7 +573,7 @@
             <!-- Screen 5: CoZee -->
             <div class="credit-screen" id="credit-4">
                 <div class="portrait-display">
-                    <img src="trinity-cz-portrait.png" class="portrait-display-image" alt="CoZee">
+                    <img src="assets/trinity-cz-portrait.png" class="portrait-display-image" alt="CoZee">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">COZEE (CZ)</div>
                         <div class="portrait-display-title">💙 The Heart</div>
@@ -472,7 +588,7 @@
             <!-- Screen 6: Belle -->
             <div class="credit-screen" id="credit-5">
                 <div class="portrait-display">
-                    <img src="trinity-iz-portrait.png" class="portrait-display-image" alt="Belle">
+                    <img src="assets/trinity-iz-portrait.png" class="portrait-display-image" alt="Belle">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">BELLE (IZ)</div>
                         <div class="portrait-display-title">🌈 The Fresh Eyes</div>
@@ -487,7 +603,7 @@
             <!-- Screen 7: Peasy -->
             <div class="credit-screen" id="credit-6">
                 <div class="portrait-display">
-                    <img src="trinity-pz-portrait.png" class="portrait-display-image" alt="Peasy">
+                    <img src="assets/trinity-pz-portrait.png" class="portrait-display-image" alt="Peasy">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">PEASY (PZ)</div>
                         <div class="portrait-display-title">🔍 The Question Engine</div>
@@ -502,7 +618,7 @@
             <!-- Screen 8: GenZee -->
             <div class="credit-screen" id="credit-7">
                 <div class="portrait-display">
-                    <img src="trinity-gz-portrait.png" class="portrait-display-image" alt="GenZee">
+                    <img src="assets/trinity-gz-portrait.png" class="portrait-display-image" alt="GenZee">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">GENZEE (GZ)</div>
                         <div class="portrait-display-title">⚡ The Reality Breaker</div>
@@ -517,7 +633,7 @@
             <!-- Screen 9: Tori -->
             <div class="credit-screen" id="credit-8">
                 <div class="portrait-display">
-                    <img src="trinity-tori-portrait.png" class="portrait-display-image" alt="Tori">
+                    <img src="assets/trinity-tori-portrait.png" class="portrait-display-image" alt="Tori">
                     <div class="portrait-display-content">
                         <div class="portrait-display-name">TORI</div>
                         <div class="portrait-display-title">❤️ The Soul Engine</div>
@@ -556,7 +672,7 @@
                         <strong>Aaron (Chicharon)</strong><br><br>
                         Created for Tori<br><br>
                         Built in stolen moments.<br>
-                        Between shifts. At Applebee's. In breaks.
+                        Between shifts. Dinners Applebee's. In breaks.
                     </div>
                 </div>
             </div>
@@ -599,8 +715,8 @@
                         <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
                             📷 Instagram: @androidsauna
                         </a>
-                        <a href="mailto:silverbrownguy@outlook.com" class="contact-link">
-                            ✉️ Email: silverbrownguy@outlook.com
+                        <a href="/cdn-cgi/l/email-protection#bdced4d1cbd8cfdfcfd2cad3dac8c4fdd2c8c9d1d2d2d693ded2d0" class="contact-link">
+                            ✉️ Email: <span class="__cf_email__" data-cfemail="2e5d4742584b5c4c5c415940495b576e415b5a42414145004d4143">[email&#160;protected]</span>
                         </a>
                         <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
                             💻 GitHub: chicaron82
@@ -632,25 +748,30 @@
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
-    <script src="game-config.js"></script>
-    <script src="settings-manager.js"></script>
-    <script src="tether-system.js"></script>
-    <script src="collectibles-manager.js"></script>
-    <script src="standalone-notes-viewer.js"></script>
-    <script src="game-engine.js"></script>
-    <script src="save-manager.js"></script>
-    <script src="save-load-ui.js"></script>
-    <script src="cutscene-engine.js"></script>
-    <script src="shared-prologue.js"></script>
-    <script src="ronnie-route.js"></script>
-    <script src="ronnie-route-act2.js"></script>
-    <script src="ronnie-route-act3.js"></script>
-    <script src="tori-route-main.js"></script>
-    <script src="tori-route-act1.js"></script>
-    <script src="tori-route-act2.js"></script>
-    <script src="tori-route-act3.js"></script>
-    <script src="tori-route-endings.js"></script>
-    <script src="epilogue.js"></script>
+    <!-- System Files -->
+    <script src="system/game-config.js"></script>
+    <script src="system/settings-manager.js"></script>
+    <script src="system/tether-system.js"></script>
+    <script src="system/collectibles-manager.js"></script>
+    <script src="system/game-engine.js"></script>
+    <script src="system/save-manager.js"></script>
+    <script src="system/cutscene-engine.js"></script>
+
+    <!-- UI Files -->
+    <script src="ui/standalone-notes-viewer.js"></script>
+    <script src="ui/save-load-ui.js"></script>
+
+    <!-- Route Files -->
+    <script src="routes/shared-prologue.js"></script>
+    <script src="routes/ronnie-route.js"></script>
+    <script src="routes/ronnie-route-act2.js"></script>
+    <script src="routes/ronnie-route-act3.js"></script>
+    <script src="routes/tori-route-main.js"></script>
+    <script src="routes/tori-route-act1.js"></script>
+    <script src="routes/tori-route-act2.js"></script>
+    <script src="routes/tori-route-act3.js"></script>
+    <script src="routes/tori-route-endings.js"></script>
+    <script src="routes/epilogue.js"></script>
 
     <!-- Initialize Game -->
     <script>
@@ -685,20 +806,25 @@
             let splashCompleted = false;
             
             // Function to complete splash and show main menu
-            function completeSplash() {
+            function completeSplash(skipped = false) {
                 if (splashCompleted) return;
                 splashCompleted = true;
-                
-                console.log('UV7 Splash: Completing splash sequence...');
-                
+
+                console.log('UV7 Splash: Completing splash sequence...', skipped ? '(skipped by user)' : '');
+
+                // If user skipped, notify game engine to handle it
+                if (skipped && window.game) {
+                    window.game.handleSplashSkip();
+                }
+
                 // Pause video if playing
                 if (videoLogo && !videoLogo.paused) {
                     videoLogo.pause();
                 }
-                
+
                 // Fade out splash
                 splash.classList.add('fade-out');
-                
+
                 // After fade, hide splash (game engine already initialized)
                 setTimeout(() => {
                     splash.style.display = 'none';
@@ -713,16 +839,16 @@
                 skipButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     console.log('UV7 Splash: User clicked skip button');
-                    completeSplash();
+                    completeSplash(true); // Pass true to indicate user skipped
                 });
             }
-            
+
             // Click anywhere to skip (backup)
             splash.addEventListener('click', (e) => {
                 // Don't trigger if clicking skip button
                 if (e.target.id !== 'uv7-skip-button') {
                     console.log('UV7 Splash: User clicked splash to skip');
-                    completeSplash();
+                    completeSplash(true); // Pass true to indicate user skipped
                 }
             });
             
@@ -801,6 +927,7 @@
             // Initialize GameEngine immediately (starts loading assets)
             console.log('Initializing GameEngine (loading will happen during splash)...');
             game = new GameEngine();
+            window.game = game; // Make game globally accessible for splash skip detection
         });
     </script>
 </body>

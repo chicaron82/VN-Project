@@ -12,7 +12,7 @@ class RonnieRouteAct3 {
     // ACT 3 - CRISIS & ENDINGS
     // ========================================
 
-    ronnie_act3_01_start() {
+    startAct3() {
         // Beat 1: Honeymoon Loop (False Calm)
         this.game.displayScene({
             character: 'Ronnie (narration)',
@@ -23,12 +23,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_02_greeting(),
+            next: () => this.act3Beat1_greeting(),
             delay: 4000
-        }, 'ronnie_act3_01_start');
+        }, 'startAct3');
     }
 
-    ronnie_act3_02_greeting() {
+    act3Beat1_greeting() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Baby, you\'re staring again."',
@@ -37,12 +37,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_03_response(),
+            next: () => this.act3Beat1_response(),
             delay: 2500
-        }, 'ronnie_act3_02_greeting');
+        }, 'act3Beat1_greeting');
     }
 
-    ronnie_act3_03_response() {
+    act3Beat1_response() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"I just... you\'re okay. You\'re really okay."',
@@ -51,12 +51,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_04_smile(),
+            next: () => this.act3Beat1_smile(),
             delay: 2500
-        }, 'ronnie_act3_03_response');
+        }, 'act3Beat1_response');
     }
 
-    ronnie_act3_04_smile() {
+    act3Beat1_smile() {
         this.game.displayScene({
             character: 'Tori (bright)',
             dialogue: '"Of course I am! What, you worried I\'d disappear or something?"',
@@ -66,12 +66,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_05_choice(),
+            next: () => this.act3Beat1_choice(),
             delay: 3000
-        }, 'ronnie_act3_04_smile');
+        }, 'act3Beat1_smile');
     }
 
-    ronnie_act3_05_choice() {
+    act3Beat1_choice() {
         this.game.displayScene({
             character: 'Ronnie (internal)',
             dialogue: 'Something is off.',
@@ -84,11 +84,11 @@ class RonnieRouteAct3 {
                 { text: '"Want some ice cream? Mint chocolate chip?"', value: 'test' },
                 { text: '"Something\'s wrong. This isn\'t real."', value: 'confront' }
             ],
-            onChoice: (choice) => this.ronnie_act3_06_outcome(choice)
-        }, 'ronnie_act3_05_choice');
+            onChoice: (choice) => this.act3Beat1_outcome(choice)
+        }, 'act3Beat1_choice');
     }
 
-    ronnie_act3_06_outcome(choice) {
+    act3Beat1_outcome(choice) {
         if (choice === 'test') {
             this.game.displayScene({
                 character: 'Tori (cheerful)',
@@ -118,15 +118,15 @@ class RonnieRouteAct3 {
                                     left: 'assets/ronnie-sprite.png',
                                     right: 'assets/tori-sprite.png'
                                 },
-                                next: () => this.ronnie_act3_07_fracture(),
+                                next: () => this.act3Beat2(),
                                 delay: 5000
-                            }, 'ronnie_act3_06_outcome_test_reveal');
+                            }, 'act3Beat1_outcome_test_reveal');
                         },
                         delay: 3500
-                    }, 'ronnie_act3_06_outcome_test_correct');
+                    }, 'act3Beat1_outcome_test_correct');
                 },
                 delay: 3000
-            }, 'ronnie_act3_06_outcome_test');
+            }, 'act3Beat1_outcome_test');
         } else if (choice === 'confront') {
             this.game.displayScene({
                 character: 'Ronnie',
@@ -137,9 +137,9 @@ class RonnieRouteAct3 {
                     left: 'assets/ronnie-sprite.png',
                     right: 'assets/tori-sprite.png'
                 },
-                next: () => this.ronnie_act3_07_fracture(),
+                next: () => this.act3Beat2(),
                 delay: 5000
-            }, 'ronnie_act3_06_outcome_confront');
+            }, 'act3Beat1_outcome_confront');
         }
     }
 
@@ -148,7 +148,7 @@ class RonnieRouteAct3 {
     // Tori's memories start corrupting
     // ========================================
     
-    ronnie_act3_07_fracture() {
+    act3Beat2() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"Over the next few days, it got worse. She\'d forget things. Small things at first."',
@@ -158,12 +158,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_08_forgetting(),
+            next: () => this.beat2_forgetting(),
             delay: 3500
-        }, 'ronnie_act3_07_fracture');
+        }, 'act3Beat2');
     }
     
-    ronnie_act3_08_forgetting() {
+    beat2_forgetting() {
         this.game.displayScene({
             character: 'Tori (confused)',
             dialogue: '"Baby, what\'s our anniversary date again?"',
@@ -172,12 +172,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_09_ronnieanswer(),
+            next: () => this.beat2_ronnieAnswer(),
             delay: 2500
-        }, 'ronnie_act3_08_forgetting');
+        }, 'beat2_forgetting');
     }
     
-    ronnie_act3_09_ronnieanswer() {
+    beat2_ronnieAnswer() {
         this.game.displayScene({
             character: 'Ronnie (careful)',
             dialogue: '"June 12th. We\'ve celebrated it four times."',
@@ -187,12 +187,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_10_torirealization(),
+            next: () => this.beat2_toriRealization(),
             delay: 3000
-        }, 'ronnie_act3_09_ronnieanswer');
+        }, 'beat2_ronnieAnswer');
     }
     
-    ronnie_act3_10_torirealization() {
+    beat2_toriRealization() {
         this.game.displayScene({
             character: 'Tori (panicking)',
             dialogue: '"I knew that. I KNEW that. Why couldn\'t I... Ronnie, what\'s happening to me?"',
@@ -202,13 +202,13 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_11_promise(),
+            next: () => this.beat2_promise(),
             delay: 3000,
             style: 'critical'
-        }, 'ronnie_act3_10_torirealization');
+        }, 'beat2_toriRealization');
     }
     
-    ronnie_act3_11_promise() {
+    beat2_promise() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"It\'s okay. We\'ll figure it out. I promise."',
@@ -218,9 +218,9 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_12_systemmessages(),
+            next: () => this.act3Beat3(),
             delay: 3500
-        }, 'ronnie_act3_11_promise');
+        }, 'beat2_promise');
     }
     
     // ========================================
@@ -228,7 +228,7 @@ class RonnieRouteAct3 {
     // External warnings break through
     // ========================================
     
-    ronnie_act3_12_systemmessages() {
+    act3Beat3() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Then the messages started appearing.',
@@ -238,12 +238,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_13_firstmessage(),
+            next: () => this.beat3_firstMessage(),
             delay: 2500
-        }, 'ronnie_act3_12_systemmessages');
+        }, 'act3Beat3');
     }
     
-    ronnie_act3_13_firstmessage() {
+    beat3_firstMessage() {
         this.game.displayScene({
             character: 'System Message',
             dialogue: '⚠️ WARNING: MEMORY CORRUPTION DETECTED\n⚠️ VESSEL INSTABILITY: 67%\n⚠️ RECOMMEND IMMEDIATE DIAGNOSTICS',
@@ -253,13 +253,13 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_14_torisees(),
+            next: () => this.beat3_toriSees(),
             delay: 3000,
             style: 'critical'
-        }, 'ronnie_act3_13_firstmessage');
+        }, 'beat3_firstMessage');
     }
     
-    ronnie_act3_14_torisees() {
+    beat3_toriSees() {
         this.game.displayScene({
             character: 'Tori (reading)',
             dialogue: '"Ronnie... I can see that. The warnings. Vessel instability? What vessel?"',
@@ -268,12 +268,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_15_ronniehesitates(),
+            next: () => this.beat3_ronnieHesitates(),
             delay: 3000
-        }, 'ronnie_act3_14_torisees');
+        }, 'beat3_toriSees');
     }
     
-    ronnie_act3_15_ronniehesitates() {
+    beat3_ronnieHesitates() {
         this.game.displayScene({
             character: 'Ronnie (deflecting)',
             dialogue: '"Just... system diagnostics. Nothing to worry about."',
@@ -283,12 +283,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_16_morewarnings(),
+            next: () => this.beat3_moreWarnings(),
             delay: 3000
-        }, 'ronnie_act3_15_ronniehesitates');
+        }, 'beat3_ronnieHesitates');
     }
     
-    ronnie_act3_16_morewarnings() {
+    beat3_moreWarnings() {
         this.game.displayScene({
             character: 'System Message',
             dialogue: '⚠️ CRITICAL: BATTERY DEPLETION ACCELERATING\n⚠️ CONSCIOUSNESS ANCHOR: UNSTABLE\n⚠️ ESTIMATED TIME TO FAILURE: 72 HOURS',
@@ -298,13 +298,13 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_17_toridemands(),
+            next: () => this.beat3_toriDemands(),
             delay: 3500,
             style: 'critical'
-        }, 'ronnie_act3_16_morewarnings');
+        }, 'beat3_moreWarnings');
     }
     
-    ronnie_act3_17_toridemands() {
+    beat3_toriDemands() {
         this.game.displayScene({
             character: 'Tori (firm)',
             dialogue: '"Ronnie. TELL ME. What\'s happening? What\'s the vessel? What\'s failing?"',
@@ -313,9 +313,9 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_18_shatter(),
+            next: () => this.act3Beat4(),
             delay: 3000
-        }, 'ronnie_act3_17_toridemands');
+        }, 'beat3_toriDemands');
     }
     
     // ========================================
@@ -323,7 +323,7 @@ class RonnieRouteAct3 {
     // Tori's consciousness destabilizes
     // ========================================
     
-    ronnie_act3_18_shatter() {
+    act3Beat4() {
         this.game.displayScene({
             character: 'Ronnie (breaking)',
             dialogue: '"The Tamagotchi. You\'re... inside it. Your consciousness transferred during the fall. But the device is dying."',
@@ -333,12 +333,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_19_toriprocessing(),
+            next: () => this.beat4_toriProcessing(),
             delay: 4000
-        }, 'ronnie_act3_18_shatter');
+        }, 'act3Beat4');
     }
     
-    ronnie_act3_19_toriprocessing() {
+    beat4_toriProcessing() {
         this.game.displayScene({
             character: 'Tori (slowly)',
             dialogue: '"I\'m... in the Tamagotchi. Not the game. The device itself."',
@@ -348,12 +348,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_20_understanding(),
+            next: () => this.beat4_understanding(),
             delay: 3000
-        }, 'ronnie_act3_19_toriprocessing');
+        }, 'beat4_toriProcessing');
     }
     
-    ronnie_act3_20_understanding() {
+    beat4_understanding() {
         // Unlock GenZee's bootstrap paradox note - the loop revelation
         this.route.collectiblesManager.unlockNote('gz3');
         
@@ -365,12 +365,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_21_ronnieconfirms(),
+            next: () => this.beat4_ronnieConfirms(),
             delay: 3000
-        }, 'ronnie_act3_20_understanding');
+        }, 'beat4_understanding');
     }
     
-    ronnie_act3_21_ronnieconfirms() {
+    beat4_ronnieConfirms() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Yes. And when it dies... I don\'t know what happens to you. If you just... stop. Or if it\'s worse."',
@@ -380,12 +380,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_22_glitch(),
+            next: () => this.beat4_glitch(),
             delay: 3500
-        }, 'ronnie_act3_21_ronnieconfirms');
+        }, 'beat4_ronnieConfirms');
     }
     
-    ronnie_act3_22_glitch() {
+    beat4_glitch() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'GLITCH.',
@@ -395,13 +395,13 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_23_toriscreaming(),
+            next: () => this.beat4_toriScreaming(),
             delay: 1500,
             style: 'critical'
-        }, 'ronnie_act3_22_glitch');
+        }, 'beat4_glitch');
     }
     
-    ronnie_act3_23_toriscreaming() {
+    beat4_toriScreaming() {
         this.game.displayScene({
             character: 'Tori (distorted)',
             dialogue: '"I can feel it. The edges. I\'m coming apart. Ronnie, I\'m SCARED—"',
@@ -411,13 +411,13 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_24_ronniegrabs(),
+            next: () => this.beat4_ronnieGrabs(),
             delay: 3000,
             style: 'critical'
-        }, 'ronnie_act3_23_toriscreaming');
+        }, 'beat4_toriScreaming');
     }
     
-    ronnie_act3_24_ronniegrabs() {
+    beat4_ronnieGrabs() {
         this.game.displayScene({
             character: 'Ronnie (desperate)',
             dialogue: '"Hold on! Just—stay with me! I\'ll fix this!"',
@@ -426,9 +426,9 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_25_revelation(),
+            next: () => this.act3Beat5(),
             delay: 3000
-        }, 'ronnie_act3_24_ronnieg rabs');
+        }, 'beat4_ronnieGrabs');
     }
     
     // ========================================
@@ -436,18 +436,18 @@ class RonnieRouteAct3 {
     // The solution becomes clear
     // ========================================
     
-    ronnie_act3_25_revelation() {
+    act3Beat5() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"And then I remembered. The hospital. The single buzz."',
             internal: '[Flashback: Device near Tori\'s body. One buzz. Different from the vessel transfers.]',
             background: 'assets/hospital.png',
-            next: () => this.ronnie_act3_26_realization(),
+            next: () => this.beat5_realization(),
             delay: 3500
-        }, 'ronnie_act3_25_revelation');
+        }, 'act3Beat5');
     }
     
-    ronnie_act3_26_realization() {
+    beat5_realization() {
         this.game.displayScene({
             character: 'Ronnie (excited)',
             dialogue: '"The body. Tori, your BODY. It\'s still there. Still alive. That buzz—you were reaching for it!"',
@@ -455,12 +455,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_27_torihope(),
+            next: () => this.beat5_toriHope(),
             delay: 3000
-        }, 'ronnie_act3_26_realization');
+        }, 'beat5_realization');
     }
     
-    ronnie_act3_27_torihope() {
+    beat5_toriHope() {
         this.game.displayScene({
             character: 'Tori (through game)',
             dialogue: '"I felt something. Warmth. A pull. Different from the laptop."',
@@ -468,12 +468,12 @@ class RonnieRouteAct3 {
             sprites: {
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_28_theory(),
+            next: () => this.beat5_theory(),
             delay: 3000
-        }, 'ronnie_act3_27_torihope');
+        }, 'beat5_toriHope');
     }
     
-    ronnie_act3_28_theory() {
+    beat5_theory() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"If I bring the device close enough... if you can jump vessels... maybe you can jump HOME."',
@@ -482,12 +482,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_29_toriuncertain(),
+            next: () => this.beat5_toriUncertain(),
             delay: 3500
-        }, 'ronnie_act3_28_theory');
+        }, 'beat5_theory');
     }
     
-    ronnie_act3_29_toriuncertain() {
+    beat5_toriUncertain() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"But what if I can\'t? What if I just... dissolve? What if jumping destroys me?"',
@@ -495,12 +495,12 @@ class RonnieRouteAct3 {
             sprites: {
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_30_ronniepromise(),
+            next: () => this.beat5_ronniePromise(),
             delay: 3000
-        }, 'ronnie_act3_29_toriuncertain');
+        }, 'beat5_toriUncertain');
     }
     
-    ronnie_act3_30_ronniepromise() {
+    beat5_ronniePromise() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Then we find another way. Upload you somewhere safer. Or... I don\'t know. But we\'re running out of time."',
@@ -508,24 +508,24 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_31_timer(),
+            next: () => this.beat5_timer(),
             delay: 3500
-        }, 'ronnie_act3_30_ronniepromise');
+        }, 'beat5_ronniePromise');
     }
     
-    ronnie_act3_31_timer() {
+    beat5_timer() {
         this.game.displayScene({
             character: 'System Message',
             dialogue: '⚠️ CRITICAL BATTERY: 8% REMAINING\n⚠️ ESTIMATED TIME: 12 HOURS\n⚠️ DECISION REQUIRED',
             internal: '[The clock is ticking. Three paths emerge.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.ronnie_act3_32_criticalchoice(),
+            next: () => this.act3CriticalChoice(),
             delay: 3000,
             style: 'critical'
-        }, 'ronnie_act3_31_timer');
+        }, 'beat5_timer');
     }
 
-    ronnie_act3_32_criticalchoice() {
+    act3CriticalChoice() {
         // Unlock PerplexiZee's body anchor mechanics note - CRITICAL guidance
         this.route.collectiblesManager.unlockNote('pz2');
         
@@ -541,18 +541,18 @@ class RonnieRouteAct3 {
             ],
             onChoice: (choice) => {
                 this.game.gameState.flags.final_ending_choice = choice;
-                this.ronnie_act3_33_routetoending(choice);
+                this.routeToEnding(choice);
             }
-        }, 'ronnie_act3_32_criticalchoice');
+        }, 'act3CriticalChoice');
     }
 
-    ronnie_act3_33_routetoending(choice) {
+    routeToEnding(choice) {
         if (choice === 'upload_end') {
-            this.ronnie_act3_34_badending();
+            this.badRouteEnding();
         } else if (choice === 'anchor_end') {
-            this.ronnie_act3_51_trueending();
+            this.trueRouteEnding();
         } else if (choice === 'merge_end') {
-            this.ronnie_act3_41_digitalforever();
+            this.digitalForeverEnding();
         }
     }
 
@@ -560,7 +560,7 @@ class RonnieRouteAct3 {
     // BAD ENDING - CODE PRISON
     // ========================================
 
-    ronnie_act3_34_badending() {
+    badRouteEnding() {
         this.game.displayScene({
             character: 'Ronnie (desperate)',
             dialogue: '"If you can\'t escape... then I\'ll JOIN you. Upload me too. We\'ll be together."',
@@ -569,23 +569,23 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_35_upload(),
+            next: () => this.badRoute_upload(),
             delay: 4000
-        }, 'ronnie_act3_34_badending');
+        }, 'badRouteEnding');
     }
 
-    ronnie_act3_35_upload() {
+    badRoute_upload() {
         this.game.displayScene({
             character: 'System',
             dialogue: 'UPLOADING CONSCIOUSNESS... 15%... 47%... 89%...',
             internal: '[Visual: Ronnie\'s vision pixelates. He feels himself pulled INTO the screen.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.ronnie_act3_36_arrival(),
+            next: () => this.badRoute_arrival(),
             delay: 3500
-        }, 'ronnie_act3_35_upload');
+        }, 'badRoute_upload');
     }
 
-    ronnie_act3_36_arrival() {
+    badRoute_arrival() {
         this.game.displayScene({
             character: 'Ronnie (now digital)',
             dialogue: '"Tori? TORI? Where are you?"',
@@ -594,12 +594,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_37_toriresponse(),
+            next: () => this.badRoute_toriResponse(),
             delay: 3000
-        }, 'ronnie_act3_36_arrival');
+        }, 'badRoute_arrival');
     }
 
-    ronnie_act3_37_toriresponse() {
+    badRoute_toriResponse() {
         this.game.displayScene({
             character: 'Tori (distant, glitching)',
             dialogue: '"Ronnie... why did you come here? Now we\'re BOTH stuck..."',
@@ -609,12 +609,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_38_realization(),
+            next: () => this.badRoute_realization(),
             delay: 4000
-        }, 'ronnie_act3_37_toriresponse');
+        }, 'badRoute_toriResponse');
     }
 
-    ronnie_act3_38_realization() {
+    badRoute_realization() {
         this.game.displayScene({
             character: 'Ronnie (horrified)',
             dialogue: '"No. No no no. This was supposed to SAVE you!"',
@@ -623,12 +623,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_39_loop(),
+            next: () => this.badRoute_loop(),
             delay: 3000
-        }, 'ronnie_act3_38_realization');
+        }, 'badRoute_realization');
     }
 
-    ronnie_act3_39_loop() {
+    badRoute_loop() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
         
@@ -650,12 +650,12 @@ class RonnieRouteAct3 {
             dialogue: 'ERROR: Two consciousness entities detected. System unstable. Looping indefinitely.',
             internal: '[Visual: The world glitches. Resets. Loops. They\'re trapped together in a recursive nightmare.]\n[Both bodies in hospital. Both minds in code. No escape.]\n\n**BAD ENDING: CODE PRISON**\n"Love trapped in glass."',
             background: 'assets/digitalSpace.png',
-            next: () => this.ronnie_act3_40_retry(),
+            next: () => this.badRoute_retry(),
             delay: 5000
-        }, 'ronnie_act3_39_loop');
+        }, 'badRoute_loop');
     }
 
-    ronnie_act3_40_retry() {
+    badRoute_retry() {
         const currentVersion = this.game.loopVersion;
         const nextVersion = currentVersion + 1; // Calculate but don't increment yet
         
@@ -682,14 +682,14 @@ class RonnieRouteAct3 {
                     this.game.returnToMainMenu();
                 }
             }
-        }, 'ronnie_act3_40_retry');
+        }, 'badRoute_retry');
     }
 
     // ========================================
     // DIGITAL FOREVER ENDING - ETERNAL UNION
     // ========================================
 
-    ronnie_act3_41_digitalforever() {
+    digitalForeverEnding() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"If you can\'t leave... then I\'m not leaving either. We stay together. Here. Forever."',
@@ -698,23 +698,23 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_42_merge(),
+            next: () => this.digitalForever_merge(),
             delay: 4000
-        }, 'ronnie_act3_41_digitalforever');
+        }, 'digitalForeverEnding');
     }
 
-    ronnie_act3_42_merge() {
+    digitalForever_merge() {
         this.game.displayScene({
             character: 'System',
             dialogue: 'MERGE PROTOCOL INITIATED\nCONSCIOUSNESS TRANSFER: 100%',
             internal: '[Visual: Ronnie dissolves into pixels. His sprite materializes beside Tori\'s.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.ronnie_act3_43_together(),
+            next: () => this.digitalForever_together(),
             delay: 3500
-        }, 'ronnie_act3_42_merge');
+        }, 'digitalForever_merge');
     }
 
-    ronnie_act3_43_together() {
+    digitalForever_together() {
         this.game.displayScene({
             character: 'Tori (shocked)',
             dialogue: '"Ronnie... what did you DO?"',
@@ -723,12 +723,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_44_ronniesmile(),
+            next: () => this.digitalForever_ronnieSmile(),
             delay: 2500
-        }, 'ronnie_act3_43_together');
+        }, 'digitalForever_together');
     }
 
-    ronnie_act3_44_ronniesmile() {
+    digitalForever_ronnieSmile() {
         this.game.displayScene({
             character: 'Ronnie (sprite, smiling)',
             dialogue: '"What I promised. Always."',
@@ -737,12 +737,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_45_acceptance(),
+            next: () => this.digitalForever_acceptance(),
             delay: 3000
-        }, 'ronnie_act3_44_ronniesmile');
+        }, 'digitalForever_ronnieSmile');
     }
 
-    ronnie_act3_45_acceptance() {
+    digitalForever_acceptance() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"You idiot. Beautiful idiot."',
@@ -752,12 +752,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_46_world(),
+            next: () => this.digitalForever_world(),
             delay: 3000
-        }, 'ronnie_act3_45_acceptance');
+        }, 'digitalForever_acceptance');
     }
 
-    ronnie_act3_46_world() {
+    digitalForever_world() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'They build their world together. Pixel parks. Digital sunsets. Eternally young. Eternally together.',
@@ -767,12 +767,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_47_static(),
+            next: () => this.digitalForever_static(),
             delay: 4000
-        }, 'ronnie_act3_46_world');
+        }, 'digitalForever_world');
     }
 
-    ronnie_act3_47_static() {
+    digitalForever_static() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'No sickness. No death. No separation.',
@@ -782,23 +782,23 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_48_hospital(),
+            next: () => this.digitalForever_hospital(),
             delay: 4000
-        }, 'ronnie_act3_47_static');
+        }, 'digitalForever_static');
     }
 
-    ronnie_act3_48_hospital() {
+    digitalForever_hospital() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: '[CUT TO: Hospital room. Two bodies on beds. Monitors humming. No one wakes.]',
             internal: '[Outside the window, years pass. Seasons change. The world moves on without them.]',
             background: 'assets/hospital.png',
-            next: () => this.ronnie_act3_49_choice(),
+            next: () => this.digitalForever_choice(),
             delay: 5000
-        }, 'ronnie_act3_48_hospital');
+        }, 'digitalForever_hospital');
     }
 
-    ronnie_act3_49_choice() {
+    digitalForever_choice() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
         
@@ -820,19 +820,19 @@ class RonnieRouteAct3 {
             dialogue: '**DIGITAL FOREVER ENDING**\n"Together, eternally still."',
             internal: '[Is this love? Or is it fear of loss?\nIs safety worth stagnation?\nYou chose connection over growth.]\n\n[They remain, forever digital, forever young, forever together...]\n[...forever frozen.]',
             background: 'assets/hospital.png',
-            next: () => this.ronnie_act3_50_retry(),
+            next: () => this.digitalForever_retry(),
             delay: 5000
-        }, 'ronnie_act3_49_choice');
+        }, 'digitalForever_choice');
     }
 
-    ronnie_act3_50_retry() {
+    digitalForever_retry() {
         const currentVersion = this.game.loopVersion;
         const nextVersion = currentVersion + 1; // Calculate but don't increment yet
         
         this.game.displayScene({
             character: 'System',
             dialogue: `VERSION ${currentVersion} - DIGITAL FOREVER\nDo you want to see another path?\nVERSION ${nextVersion} is waiting...`,
-            background: 'genericBack.png',
+            background: 'assets/genericBack.png',
             choices: [
                 { text: 'Yes - Try another path', value: 'retry' },
                 { text: 'No - This is their happiness', value: 'accept' }
@@ -850,14 +850,14 @@ class RonnieRouteAct3 {
                     this.game.returnToMainMenu();
                 }
             }
-        }, 'ronnie_act3_50_retry');
+        }, 'digitalForever_retry');
     }
 
     // ========================================
     // TRUE ENDING - THE ANCHOR
     // ========================================
 
-    ronnie_act3_51_trueending() {
+    trueRouteEnding() {
         this.game.displayScene({
             character: 'Ronnie (realization)',
             dialogue: '"The heartbeat. It\'s not just a connection. It\'s a BRIDGE."',
@@ -866,12 +866,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_52_understanding(),
+            next: () => this.trueRoute_understanding(),
             delay: 4000
-        }, 'ronnie_act3_51_trueending');
+        }, 'trueRouteEnding');
     }
 
-    ronnie_act3_52_understanding() {
+    trueRoute_understanding() {
         this.game.displayScene({
             character: 'Tori (from device, urgent)',
             dialogue: '"The body! Ronnie, my BODY is the anchor! I can feel it pulling me when you\'re near!"',
@@ -880,12 +880,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_53_plan(),
+            next: () => this.trueRoute_plan(),
             delay: 3500
-        }, 'ronnie_act3_52_understanding');
+        }, 'trueRoute_understanding');
     }
 
-    ronnie_act3_53_plan() {
+    trueRoute_plan() {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Then we follow it back. Device to hand. Heartbeat to heartbeat. I\'ll anchor you."',
@@ -894,12 +894,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_54_race(),
+            next: () => this.trueRoute_race(),
             delay: 3000
-        }, 'ronnie_act3_53_plan');
+        }, 'trueRoute_plan');
     }
 
-    ronnie_act3_54_race() {
+    trueRoute_race() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'MONITORS SCREAMING. COHERENCE DROPPING TO 12%. THE MAD DASH BEGINS.',
@@ -908,12 +908,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_55_burst(),
+            next: () => this.trueRoute_burst(),
             delay: 4000
-        }, 'ronnie_act3_54_race');
+        }, 'trueRoute_race');
     }
 
-    ronnie_act3_55_burst() {
+    trueRoute_burst() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'He BURSTS through the door.',
@@ -922,12 +922,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_56_move(),
+            next: () => this.trueRoute_move(),
             delay: 3000
-        }, 'ronnie_act3_55_burst');
+        }, 'trueRoute_burst');
     }
 
-    ronnie_act3_56_move() {
+    trueRoute_move() {
         this.game.displayScene({
             character: 'Ronnie (shouting over alarms)',
             dialogue: '"Move!"',
@@ -936,12 +936,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_57_anchor(),
+            next: () => this.trueRoute_anchor(),
             delay: 3000
-        }, 'ronnie_act3_56_move');
+        }, 'trueRoute_move');
     }
 
-    ronnie_act3_57_anchor() {
+    trueRoute_anchor() {
         this.game.displayScene({
             character: 'Ronnie (steady, voice anchoring)',
             dialogue: '"Come home. Follow the heartbeat."',
@@ -949,12 +949,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_58_transfer(),
+            next: () => this.trueRoute_transfer(),
             delay: 3000
-        }, 'ronnie_act3_57_anchor');
+        }, 'trueRoute_anchor');
     }
 
-    ronnie_act3_58_transfer() {
+    trueRoute_transfer() {
         this.game.displayScene({
             character: 'Tori (voice, echoing from device)',
             dialogue: '"I feel it... the pull... I\'m—',
@@ -963,12 +963,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_59_whisper(),
+            next: () => this.trueRoute_whisper(),
             delay: 4500
-        }, 'ronnie_act3_58_transfer');
+        }, 'trueRoute_transfer');
     }
 
-    ronnie_act3_59_whisper() {
+    trueRoute_whisper() {
         this.game.displayScene({
             character: 'Ronnie (whispering, tears streaming)',
             dialogue: '"That\'s it. That\'s it, baby. Follow me back."',
@@ -977,12 +977,12 @@ class RonnieRouteAct3 {
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.ronnie_act3_60_awakening(),
+            next: () => this.trueRoute_awakening(),
             delay: 5000
-        }, 'ronnie_act3_59_whisper');
+        }, 'trueRoute_whisper');
     }
 
-    ronnie_act3_60_awakening() {
+    trueRoute_awakening() {
         this.game.displayScene({
             character: 'Tori (hoarse, confused)',
             dialogue: '"...Ronnie?"',
@@ -992,12 +992,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_61_always(),
+            next: () => this.trueRoute_always(),
             delay: 3000
-        }, 'ronnie_act3_60_awakening');
+        }, 'trueRoute_awakening');
     }
 
-    ronnie_act3_61_always() {
+    trueRoute_always() {
         this.game.displayScene({
             character: 'Ronnie (voice shaking)',
             dialogue: '"Always. Always. Always."',
@@ -1007,12 +1007,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_62_terrible(),
+            next: () => this.trueRoute_terrible(),
             delay: 4000
-        }, 'ronnie_act3_61_always');
+        }, 'trueRoute_always');
     }
 
-    ronnie_act3_62_terrible() {
+    trueRoute_terrible() {
         this.game.displayScene({
             character: 'Tori (weak smile)',
             dialogue: '"You look terrible."',
@@ -1021,12 +1021,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_63_months(),
+            next: () => this.trueRoute_months(),
             delay: 2500
-        }, 'ronnie_act3_62_terrible');
+        }, 'trueRoute_terrible');
     }
 
-    ronnie_act3_63_months() {
+    trueRoute_months() {
         this.game.displayScene({
             character: 'Ronnie (laughing through tears)',
             dialogue: '"You\'ve been asleep for months."',
@@ -1035,12 +1035,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_64_scared(),
+            next: () => this.trueRoute_scared(),
             delay: 2500
-        }, 'ronnie_act3_63_months');
+        }, 'trueRoute_months');
     }
 
-    ronnie_act3_64_scared() {
+    trueRoute_scared() {
         this.game.displayScene({
             character: 'Tori (soft)',
             dialogue: '"I was so scared. I couldn\'t find you. And then I could. But I couldn\'t touch you."',
@@ -1049,12 +1049,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_65_home(),
+            next: () => this.trueRoute_home(),
             delay: 4000
-        }, 'ronnie_act3_64_scared');
+        }, 'trueRoute_scared');
     }
 
-    ronnie_act3_65_home() {
+    trueRoute_home() {
         this.game.displayScene({
             character: 'Ronnie (squeezing her hand)',
             dialogue: '"You\'re here now. You\'re real. You\'re home."',
@@ -1063,12 +1063,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_66_toast(),
+            next: () => this.trueRoute_toast(),
             delay: 3000
-        }, 'ronnie_act3_65_home');
+        }, 'trueRoute_home');
     }
 
-    ronnie_act3_66_toast() {
+    trueRoute_toast() {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"So... you up for some burnt toast?"',
@@ -1077,12 +1077,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_67_pasta(),
+            next: () => this.trueRoute_pasta(),
             delay: 2500
-        }, 'ronnie_act3_66_toast');
+        }, 'trueRoute_toast');
     }
 
-    ronnie_act3_67_pasta() {
+    trueRoute_pasta() {
         this.game.displayScene({
             character: 'Ronnie (laughing, crying)',
             dialogue: '"Only if I get to oversalt the pasta."',
@@ -1091,12 +1091,12 @@ class RonnieRouteAct3 {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.ronnie_act3_68_final(),
+            next: () => this.trueRoute_final(),
             delay: 3000
-        }, 'ronnie_act3_67_pasta');
+        }, 'trueRoute_pasta');
     }
 
-    ronnie_act3_68_final() {
+    trueRoute_final() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
         
@@ -1141,6 +1141,6 @@ class RonnieRouteAct3 {
                 epilogue.start();
             },
             delay: 4000
-        }, 'ronnie_act3_68_final');
+        }, 'trueRoute_final');
     }
 }
