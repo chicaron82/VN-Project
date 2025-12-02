@@ -12,6 +12,7 @@ class SettingsManager {
             textSpeed: 'normal',      // slow, normal, fast, instant
             autoAdvance: false,        // Auto-advance dialogue
             autoDelay: 2000,          // Delay in ms before auto-advance
+            autoSkipPrologue: false,  // Auto-skip prologue when unlocked
             fullscreen: false,
             displayMode: 'auto',      // auto, portrait, landscape
             tetherDifficulty: 'normal' // relaxed, normal, intense
@@ -83,7 +84,34 @@ class SettingsManager {
                 this.setAutoDelay(parseInt(e.target.value));
             });
         }
-        
+
+        // Auto-Skip Prologue Toggle
+        const autoSkipPrologueToggle = document.getElementById('auto-skip-prologue-toggle');
+        const autoSkipPrologueStatus = document.getElementById('auto-skip-prologue-status');
+        const autoSkipPrologueContainer = document.getElementById('auto-skip-prologue-container');
+
+        if (autoSkipPrologueToggle && autoSkipPrologueStatus) {
+            // Check if unlocked
+            const isUnlocked = this.game.skipPrologueUnlocked;
+
+            if (!isUnlocked) {
+                // Disabled state - grayed out (visual feedback is enough)
+                autoSkipPrologueToggle.disabled = true;
+                autoSkipPrologueStatus.textContent = 'LOCKED';
+                autoSkipPrologueStatus.style.color = 'rgba(255, 255, 255, 0.3)';
+            } else {
+                // Unlocked - functional
+                autoSkipPrologueToggle.disabled = false;
+                autoSkipPrologueToggle.checked = this.settings.autoSkipPrologue;
+                autoSkipPrologueStatus.textContent = this.settings.autoSkipPrologue ? 'ON' : 'OFF';
+                autoSkipPrologueStatus.style.color = ''; // Reset to default
+
+                autoSkipPrologueToggle.addEventListener('change', (e) => {
+                    this.setAutoSkipPrologue(e.target.checked);
+                });
+            }
+        }
+
         // Settings Fullscreen Button
         const settingsFullscreenBtn = document.getElementById('settings-fullscreen-btn');
         if (settingsFullscreenBtn) {
@@ -104,7 +132,44 @@ class SettingsManager {
         document.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const difficulty = btn.dataset.difficulty;
-                this.setTetherDifficulty(difficulty);
+
+                // INSANE MODE: Show warning confirmation
+                if (difficulty === 'insane') {
+                    // Check if unlocked
+                    const insaneUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
+
+                    if (!insaneUnlocked) {
+                        // Show locked message with immersive overlay
+                        this.game.showWarningOverlay(
+                            '💀 INSANE MODE LOCKED',
+                            'Complete ANY ending on INTENSE difficulty to unlock this mode.'
+                        );
+                        return;
+                    }
+
+                    // Check if already in insane mode (can't change)
+                    if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
+                        this.game.showWarningOverlay(
+                            '⚠️ INSANE MODE ACTIVE',
+                            'You are locked into Insane difficulty.\n\nThere is no escape once committed.'
+                        );
+                        return;
+                    }
+
+                    // Show warning dialog
+                    this.showInsaneModeWarning();
+                } else {
+                    // Normal difficulty change
+                    // Check if locked in insane mode
+                    if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
+                        this.game.showWarningOverlay(
+                            '⚠️ DIFFICULTY LOCKED',
+                            'You are locked into Insane mode.\n\nCannot change difficulty.'
+                        );
+                        return;
+                    }
+                    this.setTetherDifficulty(difficulty);
+                }
             });
         });
 
@@ -157,9 +222,47 @@ class SettingsManager {
         });
 
         // Update tether difficulty buttons
+        const insaneUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
+        const insaneLocked = this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked;
+
         document.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.difficulty === this.settings.tetherDifficulty);
+            const difficulty = btn.dataset.difficulty;
+
+            // Update active state
+            btn.classList.toggle('active', difficulty === this.settings.tetherDifficulty);
+
+            // Handle Insane button states
+            if (difficulty === 'insane') {
+                if (insaneUnlocked) {
+                    btn.classList.remove('insane-locked');
+                    btn.classList.add('insane-unlocked');
+                } else {
+                    btn.classList.add('insane-locked');
+                    btn.classList.remove('insane-unlocked');
+                }
+            }
+
+            // Disable all buttons if locked in insane mode
+            if (insaneLocked && difficulty !== 'insane') {
+                btn.disabled = true;
+                btn.style.opacity = '0.3';
+                btn.style.cursor = 'not-allowed';
+            }
         });
+
+        // Update insane mode explanations
+        const lockedExplanation = document.getElementById('insane-explanation-locked');
+        const unlockedExplanation = document.getElementById('insane-explanation-unlocked');
+
+        if (lockedExplanation && unlockedExplanation) {
+            if (insaneUnlocked) {
+                lockedExplanation.style.display = 'none';
+                unlockedExplanation.style.display = 'block';
+            } else {
+                lockedExplanation.style.display = 'block';
+                unlockedExplanation.style.display = 'none';
+            }
+        }
 
         // Update auto-advance status
         const autoStatus = document.getElementById('auto-advance-status');
@@ -177,6 +280,25 @@ class SettingsManager {
         const delayValue = document.getElementById('auto-delay-value');
         if (delayValue) {
             delayValue.textContent = (this.settings.autoDelay / 1000).toFixed(1) + 's';
+        }
+
+        // Update auto-skip prologue status (for dynamic unlock)
+        const autoSkipToggle = document.getElementById('auto-skip-prologue-toggle');
+        const autoSkipStatus = document.getElementById('auto-skip-prologue-status');
+        if (autoSkipToggle && autoSkipStatus) {
+            const isUnlocked = this.game.skipPrologueUnlocked;
+
+            if (isUnlocked) {
+                autoSkipToggle.disabled = false;
+                autoSkipToggle.checked = this.settings.autoSkipPrologue;
+                autoSkipStatus.textContent = this.settings.autoSkipPrologue ? 'ON' : 'OFF';
+                autoSkipStatus.style.color = ''; // Reset to default
+            } else {
+                autoSkipToggle.disabled = true;
+                autoSkipToggle.checked = false;
+                autoSkipStatus.textContent = 'LOCKED';
+                autoSkipStatus.style.color = 'rgba(255, 255, 255, 0.3)';
+            }
         }
     }
     
@@ -207,6 +329,19 @@ class SettingsManager {
         this.updateUI();
     }
 
+    setAutoSkipPrologue(enabled) {
+        this.settings.autoSkipPrologue = enabled;
+        this.saveSettings();
+
+        // Update UI
+        const status = document.getElementById('auto-skip-prologue-status');
+        if (status) {
+            status.textContent = enabled ? 'ON' : 'OFF';
+        }
+
+        console.log('Auto-Skip Prologue:', enabled ? 'ENABLED' : 'DISABLED');
+    }
+
     setTetherDifficulty(difficulty) {
         const previousDifficulty = this.settings.tetherDifficulty || 'normal';
         this.settings.tetherDifficulty = difficulty;
@@ -225,6 +360,70 @@ class SettingsManager {
         }
 
         console.log('Tether difficulty set to:', difficulty);
+    }
+
+    // ========================================
+    // INSANE MODE WARNING & COMMITMENT
+    // ========================================
+
+    showInsaneModeWarning() {
+        const overlay = document.getElementById('insane-mode-warning');
+        if (!overlay) {
+            console.error('Insane mode warning overlay not found');
+            return;
+        }
+
+        // Show overlay
+        overlay.style.display = 'flex';
+
+        // Setup button handlers
+        const cancelBtn = document.getElementById('insane-warning-cancel');
+        const proceedBtn = document.getElementById('insane-warning-proceed');
+
+        // Remove old listeners
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        const newProceedBtn = proceedBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
+
+        // Add new listeners
+        newCancelBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            console.log('💚 Insane mode cancelled - chose mercy');
+        });
+
+        newProceedBtn.addEventListener('click', () => {
+            overlay.style.display = 'none';
+            this.commitToInsaneMode();
+        });
+    }
+
+    commitToInsaneMode() {
+        console.log('💀 COMMITTING TO INSANE MODE');
+
+        // Set difficulty to insane
+        this.settings.tetherDifficulty = 'insane';
+        this.saveSettings();
+
+        // Lock the mode (cannot be changed)
+        if (!this.game.gameState.flags) {
+            this.game.gameState.flags = {};
+        }
+        this.game.gameState.flags.insaneModeLocked = true;
+        this.game.gameState.flags.insaneModeActive = true;
+
+        // Save the lock to localStorage
+        localStorage.setItem('insaneModeLocked', 'true');
+
+        // Update UI
+        this.updateUI();
+
+        // Trigger Tori's reaction if in Tori's route
+        if (this.game.currentRoute === 'tori' && this.game.triggerInsaneModeReaction) {
+            this.game.triggerInsaneModeReaction();
+        }
+
+        console.log('⚠️ Insane mode locked. No escape.');
     }
 
     getDifficultyChangeType(oldDiff, newDiff) {
@@ -650,6 +849,12 @@ class BacklogManager {
             return;
         }
 
+        // INSANE MODE: Block time jumps
+        if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
+            this.showJumpError('insane');
+            return;
+        }
+
         // Double-check jumpability
         if (!entry.isJumpable) {
             this.showJumpError(entry);
@@ -661,6 +866,14 @@ class BacklogManager {
     }
 
     showTimeJumpConfirmation(entry, index) {
+        // ========================================
+        // INSANE MODE: TIME MACHINE DISABLED
+        // ========================================
+        if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
+            this.showInsaneBacklogMessage();
+            return; // Block time jump
+        }
+
         const overlay = document.getElementById('time-jump-confirm');
         const messageDiv = document.getElementById('time-jump-message');
 
@@ -703,6 +916,29 @@ class BacklogManager {
             overlay.style.display = 'none';
             this.executeTimeJump(entry);
         });
+    }
+
+    showInsaneBacklogMessage() {
+        const message = `═══════════════════════════════════════
+TIME MACHINE DISABLED
+═══════════════════════════════════════
+
+You can read your past.
+You cannot change it.
+
+This is Insane mode.
+Every choice is permanent.
+Every mistake is final.
+
+Forward is the only direction.
+═══════════════════════════════════════`;
+
+        // Use game engine's notification system if available
+        if (this.game.showUnlockOverlay) {
+            this.game.showUnlockOverlay('TIME MACHINE DISABLED', message, 'warning');
+        } else {
+            alert(message); // Fallback
+        }
     }
 
     executeTimeJump(entry) {
@@ -812,25 +1048,37 @@ class BacklogManager {
     }
 
     showJumpError(entry) {
+        // INSANE MODE: Special error message
+        if (entry === 'insane') {
+            this.game.showWarningOverlay(
+                '⚠️ TIME MACHINE DISABLED',
+                'Temporal navigation is OFFLINE in Insane mode.\n\n' +
+                'You can view the backlog, but you cannot jump back.\n\n' +
+                'Forward is the only direction.\n' +
+                'This is what you chose.'
+            );
+            return;
+        }
+
         const glitchNarrators = ['System', 'ERROR', 'Despair', '???', 'STATIC', 'CORRUPTION'];
 
         if (glitchNarrators.includes(entry.character)) {
-            alert(
-                '⚠️ TIMELINE INTEGRITY ERROR\n\n' +
+            this.game.showWarningOverlay(
+                '⚠️ TIMELINE INTEGRITY ERROR',
                 'Cannot jump to corrupted system moments.\n\n' +
                 'The device cannot recreate glitched data.\n' +
                 'These events exist outside normal time.'
             );
         } else if (entry.sceneId && entry.sceneId.includes('ending_')) {
-            alert(
-                '⚠️ TEMPORAL LOCK DETECTED\n\n' +
+            this.game.showWarningOverlay(
+                '⚠️ TEMPORAL LOCK DETECTED',
                 'Cannot jump back from ending sequences.\n\n' +
                 'Timeline has already converged.\n' +
                 'Start a new playthrough to explore other paths.'
             );
         } else {
-            alert(
-                '⚠️ CRITICAL NARRATIVE CHECKPOINT\n\n' +
+            this.game.showWarningOverlay(
+                '⚠️ CRITICAL NARRATIVE CHECKPOINT',
                 'This moment cannot be revisited.\n\n' +
                 'System integrity protocols prevent time travel\n' +
                 'to critical story events.'

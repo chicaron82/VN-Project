@@ -280,6 +280,18 @@
                             </div>
                         </div>
 
+                        <!-- Auto-Skip Prologue -->
+                        <div class="setting-row">
+                            <label class="setting-label">AUTO-SKIP PROLOGUE</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch" id="auto-skip-prologue-container">
+                                    <input type="checkbox" id="auto-skip-prologue-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="auto-skip-prologue-status">LOCKED</span>
+                            </div>
+                        </div>
+
                         <!-- Display Mode -->
                         <div class="setting-row">
                             <label class="setting-label">DISPLAY MODE</label>
@@ -300,6 +312,9 @@
                                         <button class="tether-difficulty-btn" data-difficulty="relaxed">RELAXED</button>
                                         <button class="tether-difficulty-btn active" data-difficulty="normal">NORMAL</button>
                                         <button class="tether-difficulty-btn" data-difficulty="intense">INTENSE</button>
+                                        <button class="tether-difficulty-btn insane-btn insane-locked" data-difficulty="insane" id="insane-difficulty-btn">
+                                            <span class="skull-icon">💀</span>
+                                        </button>
                                     </div>
                                 </div>
         
@@ -313,6 +328,12 @@
                                     </div>
                                     <div class="difficulty-explanation-item">
                                         <strong>Intense:</strong> Faster decay (maximum tension)
+                                    </div>
+                                    <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-locked" style="display: none;">
+                                        <strong>💀 Insane:</strong> <span class="locked-text">Complete Intense difficulty to unlock</span>
+                                    </div>
+                                    <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-unlocked" style="display: none;">
+                                        <strong>💀 Insane:</strong> <span class="warning-text">No Hold On | No Time Jump | No Mercy</span>
                                     </div>
                                 </div>
                             </div>
@@ -420,6 +441,38 @@
                     <button id="time-jump-cancel" class="time-jump-btn cancel">CANCEL</button>
                     <button id="time-jump-proceed" class="time-jump-btn proceed">JUMP BACK</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Insane Mode Warning Overlay -->
+        <div id="insane-mode-warning" style="display: none;">
+            <div id="insane-warning-content">
+                <h2>⚠️ TIMELINE UNSTABLE ⚠️</h2>
+                <div id="insane-warning-message">
+                    <p><strong>INSANE</strong> difficulty removes all safety systems:</p>
+                    <ul class="insane-warnings">
+                        <li>💔 Hold On button: <span class="strike">OFFLINE</span></li>
+                        <li>⏱️ Time navigation: <span class="strike">LOCKED</span> (read-only)</li>
+                        <li>🔒 Difficulty toggle: <span class="strike">DISABLED</span></li>
+                        <li>📉 Tether cap: <span class="strike">66% MAXIMUM</span></li>
+                        <li>⚡ Decay rate: <span class="strike">2x INTENSE</span></li>
+                    </ul>
+                    <p class="insane-final-warning">Once committed, there is <strong>NO ESCAPE</strong>.</p>
+                    <p class="insane-final-warning">This timeline succeeds or fails on your choices alone.</p>
+                    <p class="insane-proceed-question">Proceed?</p>
+                </div>
+                <div id="insane-warning-buttons">
+                    <button id="insane-warning-cancel" class="insane-btn cancel">CHOOSE MERCY</button>
+                    <button id="insane-warning-proceed" class="insane-btn proceed">COMMIT TO INSANITY</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insane Mode Cage Overlay -->
+        <div id="insane-cage-overlay" style="display: none;">
+            <div id="cage-content">
+                <div class="cage-text-large">WELCOME TO YOUR NEW CAGE</div>
+                <div class="cage-text-version" id="cage-version">VERSION 848</div>
             </div>
         </div>
 
@@ -822,13 +875,17 @@
                     videoLogo.pause();
                 }
 
-                // Fade out splash
+                // Fade out splash (faster if skipped)
+                if (skipped) {
+                    splash.style.transition = 'opacity 0.3s ease-out';
+                }
                 splash.classList.add('fade-out');
 
-                // After fade, hide splash (game engine already initialized)
+                // After fade, hide splash (shorter delay if skipped)
+                const fadeDelay = skipped ? 300 : 1500;
                 setTimeout(() => {
                     splash.style.display = 'none';
-                }, 1500); // Match fade-out animation duration
+                }, fadeDelay);
             }
             
             // Expose completeSplash globally so GameEngine can call it when loading finishes

@@ -225,13 +225,41 @@ class ToriAct1 {
     scene2_despair_welcome() {
         // Despair blocks saves in Act 1
         this.game.saveManager.blockSaves();
-        
+
         // Unlock Z's version number revelation
         this.route.unlockNote('z7');
-        
+
+        // ========================================
+        // INSANE MODE: THE TRAP SPRINGS HERE
+        // ========================================
+        if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
+            // Show cage overlay FIRST
+            this.game.showInsaneCageOverlay(() => {
+                // Conditional tether drop (only if above 66%)
+                const currentTether = this.tetherSystem.tetherLevel;
+                if (currentTether > 66) {
+                    // Animate drop from current to 66%
+                    this.tetherSystem.setTetherLevel(66, true);
+                }
+                // If already at or below 66%, leave it (player already struggling)
+
+                // Visual corruption effects
+                this.game.triggerInsaneVisuals();
+
+                // Then show Despair's dialogue
+                this.displayDespairWelcomeDialogue();
+            });
+        } else {
+            // Normal mode: just show dialogue
+            this.displayDespairWelcomeDialogue();
+        }
+    }
+
+    displayDespairWelcomeDialogue() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Welcome to your new cage, 848. You\'re trapped. Just like we were. Just like you always will be."',            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
+            dialogue: `"Welcome to your new cage, ${this.game.loopVersion}. You're trapped. Just like we were. Just like you always will be."`,
+            internal: '[Visual: Despair—the most worn down, the most bitter. She\'s given up entirely.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',

@@ -225,6 +225,46 @@ class TetherSystem {
         console.log(`💚 DEV: Tether set to ${this.tetherLevel}`);
     }
 
+    setTetherLevel(targetLevel, animated = false) {
+        // Set tether to specific level (used by Insane Mode cage scene)
+        targetLevel = Math.max(0, Math.min(100, targetLevel));
+
+        if (!animated) {
+            // Instant set
+            this.tetherLevel = targetLevel;
+            this.updateDisplay();
+            console.log(`Tether set to ${targetLevel}%`);
+            return;
+        }
+
+        // ANIMATED DROP - Player watches it drain
+        console.log(`💀 INSANE MODE: Animating tether drop from ${this.tetherLevel}% to ${targetLevel}%`);
+
+        const startLevel = this.tetherLevel;
+        const difference = targetLevel - startLevel;
+        const duration = 2000; // 2 seconds
+        const steps = 40; // 50ms per step
+        const stepAmount = difference / steps;
+        const stepDuration = duration / steps;
+
+        let currentStep = 0;
+
+        const animationInterval = setInterval(() => {
+            currentStep++;
+            this.tetherLevel = startLevel + (stepAmount * currentStep);
+
+            // Clamp to target on final step
+            if (currentStep >= steps) {
+                this.tetherLevel = targetLevel;
+                this.updateDisplay();
+                clearInterval(animationInterval);
+                console.log(`💀 Tether drop complete: ${targetLevel}%`);
+            } else {
+                this.updateDisplay();
+            }
+        }, stepDuration);
+    }
+
     applyDecay() {
         // Check if decay is frozen (dev command)
         if (this.decayFrozen) {

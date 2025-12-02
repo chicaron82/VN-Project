@@ -678,6 +678,18 @@ class RonnieRouteAct3 {
                         this.route.start();
                     });
                 } else {
+                    // Unlock skip prologue for future playthroughs
+                    if (!this.game.skipPrologueUnlocked) {
+                        this.game.skipPrologueUnlocked = true;
+                        localStorage.setItem('skipPrologueUnlocked', 'true');
+                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+                    }
+
+                    // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
+                    if (!this.game.ronnieNotesUnlocked) {
+                        this.game.unlockRonnieNotesSystem();
+                    }
+
                     // End game
                     this.game.returnToMainMenu();
                 }
@@ -847,6 +859,18 @@ class RonnieRouteAct3 {
                         this.route.start();
                     });
                 } else {
+                    // Unlock skip prologue for future playthroughs
+                    if (!this.game.skipPrologueUnlocked) {
+                        this.game.skipPrologueUnlocked = true;
+                        localStorage.setItem('skipPrologueUnlocked', 'true');
+                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+                    }
+
+                    // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
+                    if (!this.game.ronnieNotesUnlocked) {
+                        this.game.unlockRonnieNotesSystem();
+                    }
+
                     this.game.returnToMainMenu();
                 }
             }
@@ -1136,6 +1160,18 @@ class RonnieRouteAct3 {
                 right: 'assets/tori-sprite.png'
             },
             next: () => {
+                // Unlock skip prologue for future playthroughs
+                if (!this.game.skipPrologueUnlocked) {
+                    this.game.skipPrologueUnlocked = true;
+                    localStorage.setItem('skipPrologueUnlocked', 'true');
+                    console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+                }
+
+                // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
+                if (!this.game.ronnieNotesUnlocked) {
+                    this.game.unlockRonnieNotesSystem();
+                }
+
                 // Transition to shared epilogue
                 const epilogue = new Epilogue(this.game);
                 epilogue.start();

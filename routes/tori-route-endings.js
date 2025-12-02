@@ -113,6 +113,23 @@ class ToriEndings {
                         this.route.act1.start();
                     });
                 } else {
+                    // DIZEE FIX: Stop tether decay before ending
+                    this.route.tetherSystem.stopDecay();
+
+                    // Unlock skip prologue for future playthroughs
+                    if (!this.game.skipPrologueUnlocked) {
+                        this.game.skipPrologueUnlocked = true;
+                        localStorage.setItem('skipPrologueUnlocked', 'true');
+                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+
+                        // ZEERAH: Mark feature as unread for notification dot
+                        if (this.game.standaloneNotesViewer) {
+                            this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
+                            this.game.standaloneNotesViewer.saveReadStatus();
+                            this.game.standaloneNotesViewer.updateNotificationDots();
+                        }
+                    }
+
                     // Return to menu at current version
                     this.game.returnToMainMenu();
                 }
@@ -321,12 +338,42 @@ class ToriEndings {
                     if (!this.game.skipUnlocked) {
                         this.game.unlockSkipFeature();
                     }
-                    
+
+                    // Unlock skip prologue for future playthroughs
+                    if (!this.game.skipPrologueUnlocked) {
+                        this.game.skipPrologueUnlocked = true;
+                        localStorage.setItem('skipPrologueUnlocked', 'true');
+                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+
+                        // ZEERAH: Mark feature as unread for notification dot
+                        if (this.game.standaloneNotesViewer) {
+                            this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
+                            this.game.standaloneNotesViewer.saveReadStatus();
+                            this.game.standaloneNotesViewer.updateNotificationDots();
+                        }
+                    }
+
+                    // INSANE MODE: Unlock if completed on Intense difficulty
+                    if (this.game.settingsManager.settings.tetherDifficulty === 'intense') {
+                        const alreadyUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
+                        if (!alreadyUnlocked) {
+                            localStorage.setItem('insaneModeUnlocked', 'true');
+                            console.log('💀 INSANE MODE UNLOCKED! Check Settings → Tori\'s Route Difficulty');
+                            // Show unlock notification
+                            this.game.showUnlockOverlay('💀 INSANE MODE UNLOCKED', 'Despair awaits in the settings menu.\n\nOnly the most dedicated may enter.', 'unlock');
+                        }
+                    }
+
+                    // DIZEE FIX: Stop tether decay before ending
+                    this.route.tetherSystem.stopDecay();
+
                     // Accept ending - lock version
                     this.game.acceptEnding();
-                    // Transition to shared epilogue
-                    const epilogue = new Epilogue(this.game);
-                    epilogue.start();
+
+                    // DIZEE FIX: Digital forever should show credits, not epilogue
+                    // Epilogue is only for true ending
+                    this.route.collectiblesManager.unlockNote('digital_forever');
+                    this.game.showCredits();
                 }
             }
         }, 'digitalForever_choice');
@@ -441,6 +488,34 @@ class ToriEndings {
                 right: 'assets/ronnie-sprite.png'
             },
             next: () => {
+                // Unlock skip prologue for future playthroughs
+                if (!this.game.skipPrologueUnlocked) {
+                    this.game.skipPrologueUnlocked = true;
+                    localStorage.setItem('skipPrologueUnlocked', 'true');
+                    console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+                }
+
+                // INSANE MODE: Unlock if completed on Intense difficulty
+                if (this.game.settingsManager.settings.tetherDifficulty === 'intense') {
+                    const alreadyUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
+                    if (!alreadyUnlocked) {
+                        localStorage.setItem('insaneModeUnlocked', 'true');
+                        console.log('💀 INSANE MODE UNLOCKED! Check Settings → Tori\'s Route Difficulty');
+                        // Show unlock notification
+                        this.game.showUnlockOverlay('💀 INSANE MODE UNLOCKED', 'Despair awaits in the settings menu.\n\nOnly the most dedicated may enter.', 'unlock');
+
+                        // ZEERAH: Mark feature as unread for notification dot
+                        if (this.game.standaloneNotesViewer) {
+                            this.game.standaloneNotesViewer.readStatus['feature_insaneDifficulty'] = false;
+                            this.game.standaloneNotesViewer.saveReadStatus();
+                            this.game.standaloneNotesViewer.updateNotificationDots();
+                        }
+                    }
+                }
+
+                // DIZEE FIX: Stop tether decay before ending
+                this.route.tetherSystem.stopDecay();
+
                 // Break the loop - this timeline succeeded!
                 this.game.breakLoop();
                 // Transition to shared epilogue

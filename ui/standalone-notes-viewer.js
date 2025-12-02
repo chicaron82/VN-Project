@@ -8,6 +8,9 @@ class StandaloneNotesViewer {
     constructor(game) {
         this.game = game;
         this.unlockedNotes = this.loadUnlockedNotes();
+
+        // ZEERAH: Read status tracking for notification dots
+        this.readStatus = this.loadReadStatus();
     }
     
     loadUnlockedNotes() {
@@ -40,7 +43,97 @@ class StandaloneNotesViewer {
         
         return notes;
     }
-    
+
+    // ZEERAH: Read status storage methods
+    loadReadStatus() {
+        const saved = localStorage.getItem('notesReadStatus');
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch (e) {
+                console.error('Failed to parse read status:', e);
+                return {};
+            }
+        }
+        return {};
+    }
+
+    saveReadStatus() {
+        try {
+            localStorage.setItem('notesReadStatus', JSON.stringify(this.readStatus));
+        } catch (e) {
+            console.error('Failed to save read status:', e);
+        }
+    }
+
+    // ZEERAH: Unread check methods
+    hasUnreadFeatures() {
+        return Object.keys(this.readStatus).some(key =>
+            key.startsWith('feature_') && this.readStatus[key] === false
+        );
+    }
+
+    hasUnreadToriNotes() {
+        return Object.keys(this.readStatus).some(key =>
+            key.startsWith('note_tori_') && this.readStatus[key] === false
+        );
+    }
+
+    hasUnreadRonnieNotes() {
+        return Object.keys(this.readStatus).some(key =>
+            key.startsWith('note_ronnie_') && this.readStatus[key] === false
+        );
+    }
+
+    hasAnyUnread() {
+        return this.hasUnreadFeatures() ||
+               this.hasUnreadToriNotes() ||
+               this.hasUnreadRonnieNotes();
+    }
+
+    // ZEERAH: Update notification dots on UI
+    updateNotificationDots() {
+        // Update main Notes button
+        const notesBtn = document.getElementById('notes-button');
+        if (notesBtn) {
+            if (this.hasAnyUnread()) {
+                notesBtn.classList.add('has-unread');
+            } else {
+                notesBtn.classList.remove('has-unread');
+            }
+        }
+
+        // Update Features tab
+        const featuresTab = document.querySelector('[data-tab="features"]');
+        if (featuresTab) {
+            if (this.hasUnreadFeatures()) {
+                featuresTab.classList.add('has-unread');
+            } else {
+                featuresTab.classList.remove('has-unread');
+            }
+        }
+
+        // Update Tori's Notes tab
+        const toriTab = document.querySelector('[data-tab="tori"]');
+        if (toriTab) {
+            if (this.hasUnreadToriNotes()) {
+                toriTab.classList.add('has-unread');
+            } else {
+                toriTab.classList.remove('has-unread');
+            }
+        }
+
+        // Update Ronnie's Notes tab
+        const ronnieTab = document.querySelector('[data-tab="ronnie"]');
+        if (ronnieTab) {
+            if (this.hasUnreadRonnieNotes()) {
+                ronnieTab.classList.add('has-unread');
+            } else {
+                ronnieTab.classList.remove('has-unread');
+            }
+        }
+    }
+
     getTotalUnlocked() {
         return Object.values(this.unlockedNotes).reduce((sum, arr) => sum + arr.length, 0);
     }
@@ -50,9 +143,10 @@ class StandaloneNotesViewer {
         const viewer = document.createElement('div');
         viewer.id = 'standalone-notes-viewer';
         viewer.className = 'standalone-notes-viewer';
-        
+
         const totalUnlocked = this.getTotalUnlocked();
-        
+        const ronnieTabUnlocked = localStorage.getItem('ronnieTabUnlocked') === 'true';
+
         viewer.innerHTML = `
             <div class="standalone-notes-content">
                 <div class="notes-header">
@@ -60,21 +154,113 @@ class StandaloneNotesViewer {
                     <div class="notes-count-display">${totalUnlocked} Notes Unlocked</div>
                     <button class="close-notes-btn" onclick="game.closeStandaloneNotes()">✕</button>
                 </div>
-                <div class="notes-list-container" id="standalone-notes-list">
-                    ${this.renderNotesList()}
+
+                <!-- DIZEE: Tabbed Interface -->
+                <div class="notes-tabs">
+                    <button class="notes-tab active" data-tab="tori">TORI'S NOTES</button>
+                    <button class="notes-tab ${ronnieTabUnlocked ? '' : 'locked'}" data-tab="ronnie">${ronnieTabUnlocked ? "RONNIE'S NOTES" : 'LOCKED'}</button>
+                    <button class="notes-tab" data-tab="features">FEATURES</button>
                 </div>
+
+                <!-- Tab Content Containers -->
+                <div class="notes-tab-content active" id="tab-tori">
+                    ${this.renderToriNotes()}
+                </div>
+                <div class="notes-tab-content" id="tab-ronnie">
+                    ${ronnieTabUnlocked ? this.renderRonnieNotes() : this.renderLockedTab()}
+                </div>
+                <div class="notes-tab-content" id="tab-features">
+                    ${this.renderFeaturesTab()}
+                </div>
+
                 <div class="notes-footer">
                     <button class="back-btn" onclick="game.closeStandaloneNotes()">BACK TO MENU</button>
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(viewer);
-        
+
+        // Setup tab switching
+        this.setupTabSwitching();
+
         // Fade in
         setTimeout(() => {
             viewer.classList.add('show');
         }, 50);
+
+        // ZEERAH: Update notification dots after opening
+        this.updateNotificationDots();
+
+        // ZEERAH: Mark Tori tab as read (default active tab)
+        this.markTabAsRead('tori');
+    }
+
+    setupTabSwitching() {
+        const tabs = document.querySelectorAll('.notes-tab');
+        const tabContents = document.querySelectorAll('.notes-tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Don't switch if locked
+                if (tab.classList.contains('locked')) {
+                    return;
+                }
+
+                // Remove active from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Add active to clicked tab
+                tab.classList.add('active');
+
+                // Show corresponding content
+                const tabName = tab.getAttribute('data-tab');
+                const content = document.getElementById(`tab-${tabName}`);
+                if (content) {
+                    content.classList.add('active');
+                }
+
+                // ZEERAH: Mark tab as read when opened
+                this.markTabAsRead(tabName);
+            });
+        });
+    }
+
+    // ZEERAH: Mark tab content as read
+    markTabAsRead(tabName) {
+        let marked = false;
+
+        if (tabName === 'features') {
+            // Mark all features as read
+            Object.keys(this.readStatus).forEach(key => {
+                if (key.startsWith('feature_')) {
+                    this.readStatus[key] = true;
+                    marked = true;
+                }
+            });
+        } else if (tabName === 'tori') {
+            // Mark all Tori notes as read
+            Object.keys(this.readStatus).forEach(key => {
+                if (key.startsWith('note_tori_')) {
+                    this.readStatus[key] = true;
+                    marked = true;
+                }
+            });
+        } else if (tabName === 'ronnie') {
+            // Mark all Ronnie notes as read
+            Object.keys(this.readStatus).forEach(key => {
+                if (key.startsWith('note_ronnie_')) {
+                    this.readStatus[key] = true;
+                    marked = true;
+                }
+            });
+        }
+
+        if (marked) {
+            this.saveReadStatus();
+            this.updateNotificationDots();
+        }
     }
     
     renderNotesList() {
@@ -116,7 +302,152 @@ class StandaloneNotesViewer {
         
         return html || '<div class="no-notes-message">No notes found.</div>';
     }
-    
+
+    // ========================================
+    // TAB RENDER METHODS
+    // DIZEE: Separate rendering for each tab
+    // ========================================
+
+    renderToriNotes() {
+        const allNoteDefs = this.getAllNoteDefinitions();
+        const toriTypes = ['z', 'cz', 'zr'];
+        let html = '<div class="tab-notes-container">';
+
+        let hasNotes = false;
+        toriTypes.forEach(type => {
+            if (this.unlockedNotes[type] && this.unlockedNotes[type].length > 0) {
+                hasNotes = true;
+                this.unlockedNotes[type].forEach(noteId => {
+                    const note = allNoteDefs[noteId];
+                    if (note) {
+                        const typeColor = this.getTypeColor(type);
+                        const routeLabel = this.getRouteLabel(type);
+
+                        html += `
+                            <div class="note-entry" style="border-left-color: ${typeColor};">
+                                <div class="note-header-row">
+                                    <span class="note-route-tag" style="background: ${typeColor};">${routeLabel}</span>
+                                    <span class="note-title">${note.title}</span>
+                                </div>
+                                <div class="note-content-text">${note.content}</div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        });
+
+        html += '</div>';
+        return hasNotes ? html : '<div class="no-notes-message"><p>No notes from Tori\'s route yet.</p></div>';
+    }
+
+    renderRonnieNotes() {
+        const allNoteDefs = this.getAllNoteDefinitions();
+        const ronnieTypes = ['gz', 'iz', 'pz', 'special'];
+        let html = '<div class="tab-notes-container">';
+
+        let hasNotes = false;
+        ronnieTypes.forEach(type => {
+            if (this.unlockedNotes[type] && this.unlockedNotes[type].length > 0) {
+                hasNotes = true;
+                this.unlockedNotes[type].forEach(noteId => {
+                    const note = allNoteDefs[noteId];
+                    if (note) {
+                        const typeColor = this.getTypeColor(type);
+                        const routeLabel = this.getRouteLabel(type);
+
+                        html += `
+                            <div class="note-entry" style="border-left-color: ${typeColor};">
+                                <div class="note-header-row">
+                                    <span class="note-route-tag" style="background: ${typeColor};">${routeLabel}</span>
+                                    <span class="note-title">${note.title}</span>
+                                </div>
+                                <div class="note-content-text">${note.content}</div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        });
+
+        html += '</div>';
+        return hasNotes ? html : '<div class="no-notes-message"><p>No notes from Ronnie\'s route yet.</p></div>';
+    }
+
+    renderLockedTab() {
+        return `
+            <div class="locked-tab-message">
+                <div class="lock-icon">🔒</div>
+                <h3>LOCKED</h3>
+                <p>Complete any ending on Ronnie's route to unlock this tab.</p>
+                <p class="hint">Breadcrumbs from the other observers await...</p>
+            </div>
+        `;
+    }
+
+    renderFeaturesTab() {
+        const features = [];
+
+        // Check unlocked features
+        if (localStorage.getItem('skipPrologueUnlocked') === 'true') {
+            features.push({
+                name: 'Skip Prologue',
+                icon: '⏭️',
+                description: 'Skip the opening sequence on replays. Toggle in Settings.'
+            });
+        }
+
+        if (localStorage.getItem('skipUnlocked') === 'true') {
+            features.push({
+                name: 'Skip Mode',
+                icon: '⏩',
+                description: 'Fast-forward through previously read dialogue. Press CTRL or S to activate.'
+            });
+        }
+
+        if (localStorage.getItem('timeMachineUnlocked') === 'true') {
+            features.push({
+                name: 'Time Machine',
+                icon: '⏰',
+                description: 'Jump back to previous story moments via the backlog. Rewrite your choices.'
+            });
+        }
+
+        if (localStorage.getItem('insaneModeUnlocked') === 'true') {
+            features.push({
+                name: 'INSANE Mode',
+                icon: '💀',
+                description: 'Ultimate difficulty: No Hold On, No Time Travel, 66% tether cap, 2x decay. For the truly dedicated.'
+            });
+        }
+
+        let html = '<div class="features-container">';
+
+        if (features.length === 0) {
+            html += `
+                <div class="no-features-message">
+                    <p>No special features unlocked yet.</p>
+                    <p class="hint">Play through the story to discover hidden systems!</p>
+                </div>
+            `;
+        } else {
+            features.forEach(feature => {
+                html += `
+                    <div class="feature-entry">
+                        <div class="feature-icon">${feature.icon}</div>
+                        <div class="feature-details">
+                            <div class="feature-name">${feature.name}</div>
+                            <div class="feature-description">${feature.description}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        html += '</div>';
+        return html;
+    }
+
     getRouteLabel(type) {
         const labels = {
             z: 'Z',
@@ -144,99 +475,9 @@ class StandaloneNotesViewer {
     }
     
     getAllNoteDefinitions() {
-        // Combined note definitions from both routes
-        return {
-            // TORI ROUTE - Z Notes
-            'z1': {
-                type: 'z',
-                title: 'Z Note 001 - First Recognition',
-                content: 'She noticed something was wrong before anyone else did. The coffee order. The ice cream flavor. Small corruptions. Memory drift. I watched her panic and I couldn\'t do anything. Not yet. I had to wait until she was ready to hear the truth. 💙'
-            },
-            
-            // TORI ROUTE - CZ Notes
-            'cz2': {
-                type: 'cz',
-                title: 'CZ Note 002 - Memory Corruption Horror',
-                content: 'Tiger Tail. She hates Tiger Tail. Always has. But she asked for it anyway. Her face when she realized—that wasn\'t her speaking. That was us breaking down. The code eating her memories. I felt it too. The wrongness. We\'re all fragments of her, but we\'re losing pieces. What happens when there\'s nothing left to fragment? 💔'
-            },
-            
-            // TORI ROUTE - ZR Notes
-            'zr2': {
-                type: 'zr',
-                title: 'ZR Note 002 - Tether Warnings',
-                content: 'The tether isn\'t just a health bar. It\'s her will to exist. Every time it drops, I feel her slipping away. Not dying—worse. Forgetting she was ever real. If it hits zero, there\'s no respawn. No restart. Just void. So yeah, I\'m gonna be annoying about HOLD ON. Better annoying than gone. 💜'
-            },
-            'zr3': {
-                type: 'zr',
-                title: 'ZR Note 003 - The Real Enemy',
-                content: 'Everyone thinks I\'m the villain. The "Despair Echo." But I\'m not trying to kill her—I\'m trying to make her REMEMBER. She\'s fading because she\'s accepting this prison. My job? Make it uncomfortable. Keep her angry. Keep her fighting. Because comfortable prisoners never escape. 💜'
-            },
-            
-            // TORI ROUTE - Z Note 4
-            'z4': {
-                type: 'z',
-                title: 'Z Note 004 - Bridge Recognition',
-                content: 'The device isn\'t a cage. It\'s a bridge. One end in her body, one end in the code. Ronnie built it without knowing what it really was. He thought it was a memorial. It\'s actually a lifeline. If she can just remember how to walk back across it... 💙'
-            },
-            
-            // RONNIE ROUTE - GZ Notes
-            'gz1': {
-                type: 'gz',
-                title: 'GZ Note 001 - The First Loop',
-                content: 'Loop 1: I tried everything. CPR. Calling 911 again. Screaming. She didn\'t wake up. I found the device buzzing on my desk. One notification: "I\'m here." I thought I was losing my mind. Turns out I was just starting to find her. ⚡'
-            },
-            'gz2': {
-                type: 'gz',
-                title: 'GZ Note 002 - The Upload Paradox',
-                content: 'Everyone tries upload first. "Just move her somewhere bigger." But here\'s the question nobody asks: if you copy a running process, which one is real? The original still running, or the copy trying to boot? What if upload doesn\'t fail because it\'s hard - what if it fails because it WORKS? Two Toris. One system. Do the math. ⚡'
-            },
-            'gz3': {
-                type: 'gz',
-                title: 'GZ Note 003 - The Old Man Question',
-                content: 'Who gives a stranger a modified Tamagotchi and says "this may save your life"? Who wears a BGA hoodie that looks decades old? Who has Ronnie\'s eyes but gray hair? What if the answer is too obvious and that\'s why nobody sees it? The loop doesn\'t start with the fall. It starts with the bump. Question the beginning. ⚡'
-            },
-            
-            // RONNIE ROUTE - IZ Notes
-            'iz1': {
-                type: 'iz',
-                title: 'IZ Note 001 - The Space Between',
-                content: 'Let me explain something clearly: she\'s not trapped in the code. She\'s trapped in the SPACE BETWEEN. Her body breathes in a hospital bed. Her mind flickers in a toy. The tragedy isn\'t that she\'s lost - it\'s that she\'s in two places at once, belonging to neither. The bridge exists. Someone just has to walk it in the right direction. 🌈'
-            },
-            'iz2': {
-                type: 'iz',
-                title: 'IZ Note 002 - Heartbeat Frequency',
-                content: 'There\'s a sound she can\'t quite hear. Steady. Rhythmic. It\'s been calling her for 847 iterations. The monitors in that hospital room aren\'t just measuring - they\'re broadcasting. A heartbeat is a homing signal if you know how to listen. The body remembers what the mind forgets. Let me be clear: the way home has a pulse. 🌈'
-            },
-            
-            // RONNIE ROUTE - PZ Notes
-            'pz1': {
-                type: 'pz',
-                title: 'PZ Note 001 - Consciousness Transfer Research',
-                content: 'Looking into it: consciousness transfer attempts in 847 previous iterations. Upload success rate: 0%. Digital merge success rate: 0% (though "success" is debatable - they\'re together but not alive). Body anchor attempts: 12 total. Success rate: 0%. But here\'s the interesting part - those 12 attempts all failed at the SAME point. They tried to PULL her back instead of showing her the way. Let me find more on this. 🔍'
-            },
-            'pz2': {
-                type: 'pz',
-                title: 'PZ Note 002 - Bridge Device Analysis',
-                content: 'Cross-referencing the Tamagotchi\'s function: it\'s not storage, it\'s relay. Think of it like a two-way radio, not a hard drive. Signal goes IN (his voice reaches her). Signal can go OUT (her responses reach him). But there\'s a third function nobody uses - signal can GUIDE. Device to hand. Hand to body. Body to anchor. The research suggests the path exists. Someone just needs to complete the circuit. 🔍'
-            },
-            
-            // ENDING NOTES
-            'bad_ending': {
-                type: 'special',
-                title: 'Collective_BadRouteAnalysis.txt',
-                content: 'ITERATION ANALYSIS: BAD ROUTE\n\nWe tried. She tried. But sometimes trying isn\'t enough when you\'re breaking apart from the inside. Memory corruption reached critical mass. The tether snapped. She forgot who she was trying to save. Forgot why it mattered. This loop ends here. Version increments. We start again. Maybe next time we\'ll be stronger. Maybe next time we\'ll remember longer. 🔁'
-            },
-            'digital_ending': {
-                type: 'special',
-                title: 'Collective_DigitalForever.txt',
-                content: 'ITERATION ANALYSIS: DIGITAL FOREVER\n\nWe made a choice. Not escape—acceptance. She stays. He joins. Two consciousnesses, one digital space, infinite time together. Is it life? No. Is it love? Maybe. It\'s a prison we chose together. The loops stop. The versions freeze. VERSION 848 - The timeline where they decided forever was enough, even if forever isn\'t real. 💚💙'
-            },
-            'true_ending': {
-                type: 'special',
-                title: 'Collective_TrueRoute.txt',
-                content: 'ITERATION ANALYSIS: TRUE ENDING\n\nShe walked the bridge. Three echoes became one. The heartbeat called her home. Body anchor established. Consciousness transfer: COMPLETE. The device goes silent. The code releases her. She opens her eyes in a hospital room. Real eyes. Real breath. Real life. This is the loop that succeeded. VERSION 848 - The timeline that broke the cycle. ❤️'
-            }
-        };
+        // DIZEE: Pull definitions from CollectiblesManager instead of hardcoding
+        // This ensures standalone viewer always has ALL notes, stays in sync
+        return CollectiblesManager.getAllNoteDefinitions();
     }
     
     close() {

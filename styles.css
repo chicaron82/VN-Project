@@ -2151,7 +2151,7 @@
     border: 3px solid #0ff;
     padding: 20px;
     display: none;
-    z-index: 100;
+    z-index: 150; /* DIZEE: Higher than skip button (100) to prevent overlap */
 }
 
 .choice-option {
@@ -3420,6 +3420,182 @@
     transform: rotate(90deg);
 }
 
+/* DIZEE: Tab Navigation */
+.notes-tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    padding: 0 25px;
+    gap: 5px;
+}
+
+.notes-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(0, 255, 255, 0.5);
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.notes-tab:hover:not(.locked) {
+    color: #0ff;
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.notes-tab.active {
+    color: #0ff;
+    border-bottom-color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.notes-tab.locked {
+    color: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+}
+
+/* Tab Content Containers */
+.notes-tab-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 25px;
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+}
+
+.notes-tab-content.active {
+    display: block;
+}
+
+.notes-tab-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notes-tab-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.notes-tab-content::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+.tab-notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Locked Tab Message */
+.locked-tab-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.locked-tab-message .lock-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.locked-tab-message h3 {
+    color: rgba(0, 255, 255, 0.4);
+    font-family: 'Courier New', monospace;
+    font-size: 1.5em;
+    letter-spacing: 0.2em;
+    margin-bottom: 15px;
+}
+
+.locked-tab-message p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.locked-tab-message .hint {
+    color: rgba(0, 255, 136, 0.4);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Features Tab */
+.features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feature-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-left: 4px solid #0ff;
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.feature-entry:hover {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.feature-icon {
+    font-size: 2.5em;
+    min-width: 60px;
+    text-align: center;
+}
+
+.feature-details {
+    flex: 1;
+}
+
+.feature-name {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.feature-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.no-features-message {
+    text-align: center;
+    padding: 60px 40px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.no-features-message p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.no-features-message .hint {
+    color: rgba(0, 255, 136, 0.5);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
 .notes-list-container {
     flex: 1;
     overflow-y: auto;
@@ -3888,6 +4064,56 @@
     background: #0ff;
     color: #000;
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* ZEE: Insane Mode Button - Skull Icon Only */
+.tether-difficulty-btn.insane-btn {
+    min-width: 80px;
+    max-width: 80px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+}
+
+.skull-icon {
+    font-size: 2.5em;
+    line-height: 1;
+    display: block;
+}
+
+/* Hover reveals full name (tooltip) */
+.insane-btn:hover::before {
+    content: "INSANE";
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    color: #ff0066;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.75em;
+    white-space: nowrap;
+    z-index: 100;
+    border: 1px solid #ff0066;
+    box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+}
+
+/* Mobile adjustments for skull button */
+@media (max-width: 768px) {
+    .tether-difficulty-btn.insane-btn {
+        min-width: 70px;
+        max-width: 70px;
+        padding: 12px 8px;
+    }
+
+    .skull-icon {
+        font-size: 2em;
+    }
 }
 
 /* Setting Description (for tether difficulty explanations) */
@@ -5146,5 +5372,316 @@ input:checked + .toggle-slider:before {
     .time-jump-btn {
         width: 100%;
         padding: 12px 20px;
+    }
+}
+
+/* ========================================
+   INSANE MODE VISUAL EFFECTS - DIZEE
+   ======================================== */
+
+/* Intense Screen Shake */
+.insane-shake {
+    animation: insane-shake 0.3s infinite;
+}
+
+@keyframes insane-shake {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-5px, -5px) rotate(-2deg); }
+    20% { transform: translate(5px, 5px) rotate(2deg); }
+    30% { transform: translate(-5px, 5px) rotate(-1deg); }
+    40% { transform: translate(5px, -5px) rotate(1deg); }
+    50% { transform: translate(-3px, 3px) rotate(-2deg); }
+    60% { transform: translate(3px, -3px) rotate(2deg); }
+    70% { transform: translate(-5px, -5px) rotate(-1deg); }
+    80% { transform: translate(5px, 5px) rotate(1deg); }
+    90% { transform: translate(-3px, 3px) rotate(-2deg); }
+}
+
+/* Heavy Sprite Glitch */
+.sprite-glitch-heavy {
+    animation: heavy-glitch 0.2s infinite;
+    filter: hue-rotate(180deg) saturate(3);
+}
+
+@keyframes heavy-glitch {
+    0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+    25% { transform: translate(-10px, 5px); filter: hue-rotate(90deg); }
+    50% { transform: translate(10px, -5px); filter: hue-rotate(180deg); }
+    75% { transform: translate(-5px, -10px); filter: hue-rotate(270deg); }
+    100% { transform: translate(5px, 10px); filter: hue-rotate(360deg); }
+}
+
+/* Intense Corruption - Dialogue Box */
+.corruption-intense {
+    border: 2px solid #ff0066 !important;
+    box-shadow: 0 0 20px #ff0066, inset 0 0 20px rgba(255, 0, 102, 0.3);
+    animation: corruption-pulse 0.5s infinite;
+}
+
+@keyframes corruption-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Insane Red Overlay */
+.insane-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 30%, rgba(255, 0, 102, 0.3) 100%);
+    pointer-events: none;
+    z-index: 9998;
+    animation: overlay-pulse 1s ease-in-out;
+}
+
+@keyframes overlay-pulse {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Cage Overlay - Full Screen */
+.insane-cage-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: cage-appear 1s ease-out;
+}
+
+.cage-text {
+    font-size: 3em;
+    color: #ff0066;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    text-shadow: 0 0 20px #ff0066, 0 0 40px #ff0066;
+    animation: cage-pulse 2s infinite;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+}
+
+@keyframes cage-appear {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes cage-pulse {
+    0%, 100% { opacity: 1; text-shadow: 0 0 20px #ff0066; }
+    50% { opacity: 0.7; text-shadow: 0 0 40px #ff0066, 0 0 60px #ff0066; }
+}
+
+.insane-cage-overlay.fade-out {
+    animation: fade-out 1s ease-out forwards;
+}
+
+/* Ghost Hold On Button */
+.hold-on-ghost {
+    opacity: 0.3;
+    filter: grayscale(100%);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.hold-on-ghost:hover::after {
+    content: "You removed this safety. Remember?";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: #ff0066;
+    padding: 8px 12px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    z-index: 1000;
+}
+
+/* Tori Reaction Modal */
+.tori-reaction-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.tori-reaction-modal.fade-in {
+    opacity: 1;
+}
+
+.reaction-content {
+    max-width: 600px;
+    padding: 30px;
+    background: rgba(20, 20, 20, 0.95);
+    border: 2px solid #0ff;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+}
+
+.insane-reaction .reaction-content {
+    border-color: #ff0066;
+    box-shadow: 0 0 30px rgba(255, 0, 102, 0.5);
+}
+
+.reaction-dialogue {
+    font-size: 1.2em;
+    color: #0ff;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.insane-reaction .reaction-dialogue {
+    color: #ff0066;
+}
+
+/* Difficulty Warning Text in Settings */
+.difficulty-lock {
+    display: block;
+    font-size: 0.7em;
+    color: #ff6666;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Disabled Difficulty Radio Buttons */
+input[type="radio"]:disabled + label {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+input[type="radio"]:disabled + label .difficulty-label {
+    color: #666;
+}
+
+/* Unlock Notification */
+.unlock-notification {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #ff0066;
+    padding: 30px;
+    border-radius: 8px;
+    z-index: 10001;
+    text-align: center;
+    min-width: 400px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.unlock-notification.fade-in {
+    opacity: 1;
+}
+
+.unlock-notification.fade-out {
+    opacity: 0;
+}
+
+.unlock-title {
+    font-size: 2em;
+    color: #ff0066;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-shadow: 0 0 10px #ff0066;
+}
+
+.unlock-message {
+    font-size: 1.1em;
+    color: #fff;
+    line-height: 1.6;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+    .cage-text {
+        font-size: 2em;
+        padding: 20px;
+    }
+
+    .reaction-content {
+        max-width: 90%;
+        padding: 20px;
+    }
+
+    .unlock-notification {
+        min-width: 90%;
+        padding: 20px;
+    }
+
+    .unlock-title {
+        font-size: 1.5em;
+    }
+}
+
+/* ==========================================
+   NOTIFICATION DOTS SYSTEM - ZEERAH 💚
+   ========================================== */
+
+/* Main Notes Button Dot */
+#notes-button {
+    position: relative;
+}
+
+#notes-button.has-unread::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    background: #ff0000;
+    border-radius: 50%;
+    border: 2px solid #1a1a2e;
+    box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+    animation: notificationPulse 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Tab Notification Dots */
+.notes-tab {
+    position: relative;
+}
+
+.notes-tab.has-unread::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: #ff0000;
+    border-radius: 50%;
+    border: 1.5px solid currentColor;
+    box-shadow: 0 0 6px rgba(255, 0, 0, 0.6);
+    animation: notificationPulse 2s ease-in-out infinite;
+}
+
+/* Pulse Animation */
+@keyframes notificationPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
     }
 }

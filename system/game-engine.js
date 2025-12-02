@@ -46,7 +46,7 @@
 // 848 is the one that worked.
 //
 // - Chicharon (Aaron)
-//   Built with the UV8 crew
+//   Built with the UV7 crew
 //   💚🔥💀
 // ========================================
 
@@ -128,9 +128,6 @@ class GameEngine {
         this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
         // UI visibility state (for H key toggle)
         this.uiHidden = false;
-        // Secret Codes system
-        this.unlockedCodes = new Set(JSON.parse(localStorage.getItem('unlockedCodes') || '[]'));
-        this.initializeSecretCodes();
 
 
         
@@ -154,7 +151,13 @@ class GameEngine {
         this.skipUnlocked = localStorage.getItem('skipUnlocked') === 'true';
         this.skipActive = false;
         this.readScenes = new Set(JSON.parse(localStorage.getItem('readScenes') || '[]'));
-        
+
+        // Skip prologue system (unlocked after completing any ending)
+        this.skipPrologueUnlocked = localStorage.getItem('skipPrologueUnlocked') === 'true';
+
+        // Ronnie notes system (unlocked after completing any Ronnie ending)
+        this.ronnieNotesUnlocked = localStorage.getItem('ronnieNotesUnlocked') === 'true';
+
         // Show skip button if unlocked
         if (this.skipButton) {
             this.skipButton.style.display = this.skipUnlocked ? 'block' : 'none';
@@ -189,6 +192,9 @@ class GameEngine {
         
         // Image cache for preloaded assets
         this.imageCache = new Map();
+
+        // Smooth progress animation settings
+        this.minLoadingAnimationTime = 2000; // Minimum 2 seconds for satisfying progress bar
 
         // Preload images with priority system
         const imagesToPreload = {
@@ -229,6 +235,7 @@ class GameEngine {
         let imagesLoaded = 0;
         const totalImages = allImages.length;
         const failedImages = [];
+        const loadStartTime = Date.now();
 
         // Enhanced preload function with caching and retry logic
         const preloadImage = (src, retryCount = 0) => {
@@ -292,43 +299,53 @@ class GameEngine {
                 console.log('📦 Route assets loaded');
 
                 // All loading complete
+                const actualLoadTime = Date.now() - loadStartTime;
+
                 if (failedImages.length > 0) {
                     console.warn(`⚠️ ${failedImages.length} images failed to load:`, failedImages);
                 }
 
-                console.log(`✅ Loading complete: ${imagesLoaded}/${totalImages} loaded, ${failedImages.length} failed`);
+                console.log(`✅ Loading complete: ${imagesLoaded}/${totalImages} loaded in ${actualLoadTime}ms`);
 
-                // Check if user manually skipped splash
-                const userSkipped = window.splashSkippedByUser === true;
+                // ========================================
+                // SMOOTH PROGRESS SIMULATION FOR FAST LOADS
+                // ========================================
 
-                // Calculate how long splash has been showing
-                const elapsed = Date.now() - this.splashStartTime;
-                const remaining = userSkipped ? 0 : Math.max(0, this.minSplashDuration - elapsed);
+                // If loading was TOO FAST (< 2 seconds), simulate smooth progress to make it feel satisfying
+                if (actualLoadTime < this.minLoadingAnimationTime) {
+                    const remainingAnimTime = this.minLoadingAnimationTime - actualLoadTime;
+                    console.log(`⏱️ Fast load detected (${actualLoadTime}ms). Simulating smooth progress for ${remainingAnimTime}ms more...`);
 
-                console.log(`Loading complete. Elapsed: ${elapsed}ms, User skipped: ${userSkipped}, Waiting: ${remaining}ms more`);
+                    // Smoothly animate from current progress to 100% over remaining time
+                    const startProgress = parseInt(this.loadingBar.style.width) || 0;
+                    const progressToGo = 100 - startProgress;
+                    const steps = Math.ceil(remainingAnimTime / 50); // Update every 50ms
+                    const progressPerStep = progressToGo / steps;
 
-                // Wait for remaining time (or skip immediately if user clicked)
-                setTimeout(() => {
-                    // Hide UV7 splash (calls window.completeSplash if available)
-                    if (window.completeSplash) {
-                        window.completeSplash();
-                    }
+                    let currentStep = 0;
+                    const smoothInterval = setInterval(() => {
+                        currentStep++;
+                        const newProgress = Math.min(100, startProgress + (progressPerStep * currentStep));
+                        this.loadingBar.style.width = newProgress + '%';
 
-                    // Show main menu AFTER splash fade completes (1500ms fade-out duration)
-                    setTimeout(() => {
-                        this.mainMenu.style.display = 'flex';
-                        this.mainMenu.style.opacity = '1';
-                    }, 1500); // Wait for splash fade-out animation to complete
-                }, remaining + 300); // Additional 300ms for fade transition
+                        if (currentStep >= steps || newProgress >= 100) {
+                            clearInterval(smoothInterval);
+                            this.loadingBar.style.width = '100%';
+
+                            // Now proceed to menu display logic
+                            this.proceedToMenu();
+                        }
+                    }, 50);
+                } else {
+                    // Loading took long enough, proceed immediately
+                    this.loadingBar.style.width = '100%';
+                    this.proceedToMenu();
+                }
 
             } catch (error) {
                 console.error('Critical loading error:', error);
                 // Even on error, show the menu
-                if (window.completeSplash) {
-                    window.completeSplash();
-                }
-                this.mainMenu.style.display = 'flex';
-                this.mainMenu.style.opacity = '1';
+                this.proceedToMenu(true);
             }
         })();
         
@@ -392,15 +409,32 @@ class GameEngine {
             }
             
             // [CTRL] KEY: Hold to skip (activate skip mode)
-            if (e.ctrlKey && !this.skipActive && this.skipUnlocked) {
-                this.skipActive = true;
-                const skipButton = document.getElementById('skip-button');
-                if (skipButton) {
-                    skipButton.classList.add('active', 'ctrl-held');
-                }
-                const skipIndicator = document.getElementById('skip-indicator');
-                if (skipIndicator) {
-                    skipIndicator.style.display = 'block';
+            // Check specifically for Control key press, not just ctrlKey modifier
+            if ((e.key === 'Control' || e.code === 'ControlLeft' || e.code === 'ControlRight') && !this.skipActive) {
+                console.log('🔑 CTRL key detected. skipUnlocked:', this.skipUnlocked, 'skipActive:', this.skipActive);
+
+                if (this.skipUnlocked) {
+                    e.preventDefault(); // Prevent browser shortcuts
+                    this.skipActive = true;
+                    console.log('⏩ CTRL pressed: Skip mode activated');
+
+                    const skipButton = document.getElementById('skip-button');
+                    if (skipButton) {
+                        skipButton.classList.add('active', 'ctrl-held');
+                        console.log('✅ Skip button classes updated');
+                    } else {
+                        console.warn('⚠️ Skip button element not found!');
+                    }
+                    const skipIndicator = document.getElementById('skip-indicator');
+                    if (skipIndicator) {
+                        skipIndicator.style.display = 'block';
+                        console.log('✅ Skip indicator shown');
+                    } else {
+                        console.warn('⚠️ Skip indicator element not found!');
+                    }
+                } else {
+                    // Debug: Show why CTRL skip isn't working
+                    console.log('⚠️ CTRL skip locked: Complete any ending to unlock (use game.unlockSkipFeature())');
                 }
             }
             
@@ -418,6 +452,7 @@ class GameEngine {
         // [CTRL] KEY RELEASE: Stop hold-to-skip
         document.addEventListener('keyup', (e) => {
             if (e.key === 'Control' || e.key === 'Meta') {
+                console.log('⏸️ CTRL released: Skip mode deactivating');
                 const skipButton = document.getElementById('skip-button');
                 if (skipButton && skipButton.classList.contains('ctrl-held')) {
                     // Only deactivate if it was activated via ctrl-hold (not toggle)
@@ -452,25 +487,41 @@ class GameEngine {
             window.completeSplash();
         }
 
-        // Show main menu
+        // Show main menu with smooth fade-in
         this.mainMenu.style.display = 'flex';
+        this.mainMenu.style.opacity = '0';
+
+        // Force reflow to ensure opacity starts at 0
+        void this.mainMenu.offsetWidth;
+
+        // Fade in smoothly
+        this.mainMenu.style.transition = 'opacity 0.8s ease-in';
         this.mainMenu.style.opacity = '1';
     }
 
     handleSplashSkip() {
         console.log('GameEngine: Splash skip detected');
         this.splashSkipped = true;
+        window.splashSkippedByUser = true; // Set global flag for preload to check
 
-        // If loading is already complete and we have a pending timeout, cancel it and show menu immediately
-        if (this.loadingComplete && this.menuShowTimeout) {
-            console.log('GameEngine: Canceling delayed menu show, displaying immediately');
+        // Cancel any pending proceedToMenu timeout
+        if (this.proceedToMenuTimeout) {
+            console.log('GameEngine: Canceling proceedToMenu timeout');
+            clearTimeout(this.proceedToMenuTimeout);
+            this.proceedToMenuTimeout = null;
+        }
+
+        // Cancel any pending menu show timeout
+        if (this.menuShowTimeout) {
+            console.log('GameEngine: Canceling menuShow timeout');
             clearTimeout(this.menuShowTimeout);
             this.menuShowTimeout = null;
-            // Show menu after brief delay for fade transition
-            setTimeout(() => {
-                this.showMainMenu();
-            }, 300);
         }
+
+        // Show menu immediately after brief fade
+        setTimeout(() => {
+            this.showMainMenu();
+        }, 300);
     }
 
     updateTitleScreen() {
@@ -685,23 +736,62 @@ class GameEngine {
     // ========================================
     
     startStory() {
+        // Check if skip prologue is unlocked AND enabled in settings
+        if (this.skipPrologueUnlocked && this.settingsManager?.settings?.autoSkipPrologue) {
+            // Auto-skip enabled - go straight to routes
+            console.log('⏭️ Auto-skip prologue enabled - jumping to route selection');
+            this.skipToRouteSelection();
+            return;
+        }
+
+        // Check if skip is unlocked (but not auto-enabled)
+        if (this.skipPrologueUnlocked) {
+            // Check if prompt has been seen before
+            const promptSeen = localStorage.getItem('skipProloguePromptSeen') === 'true';
+
+            if (!promptSeen) {
+                // First time seeing prompt - show it
+                this.showSkipProloguePrompt();
+                return;
+            } else {
+                // Prompt already seen - respect Settings toggle (defaults to OFF)
+                // Since auto-skip is OFF (we checked above), play prologue
+                console.log('⏭️ Skip prompt dismissed previously - playing prologue (toggle in Settings to auto-skip)');
+                this.startPrologueNormally();
+                return;
+            }
+        }
+
+        // Normal flow - start prologue
+        this.startPrologueNormally();
+    }
+
+    startPrologueNormally() {
         // Clear sprites when starting fresh story
         this.clearAllSprites();
-        
+
+        // Reset game state
+        this.gameState = {
+            flags: {},
+            choices: {},
+            progress: {},
+            sprites: { left: null, right: null }
+        };
+
         // Fade out main menu
         this.mainMenu.style.opacity = '0';
-        
+
         setTimeout(() => {
             this.mainMenu.style.display = 'none';
             this.gameView.style.display = 'flex';
             this.dialogueBox.style.display = 'block';
-            
+
             // Fade in game view
             setTimeout(() => {
                 this.gameView.style.transition = 'opacity 1s';
                 this.gameView.style.opacity = '1';
             }, 100);
-            
+
             // Start shared prologue
             const prologue = new SharedPrologue(this);
             prologue.start();
@@ -737,22 +827,261 @@ class GameEngine {
     backToMenu() {
         // Clear sprites when returning to menu
         this.clearAllSprites();
-        
+
         // Fade out route select
         const routeSelect = document.getElementById('route-select');
         routeSelect.style.opacity = '0';
-        
+
         setTimeout(() => {
             routeSelect.style.display = 'none';
             this.mainMenu.style.display = 'flex';
-            
+
             // Fade in menu
             setTimeout(() => {
                 this.mainMenu.style.opacity = '1';
             }, 100);
         }, 500);
     }
-    
+
+    // ========================================
+    // SKIP PROLOGUE SYSTEM
+    // ========================================
+
+    showSkipProloguePrompt() {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'skip-prompt-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create prompt box
+        const box = document.createElement('div');
+        box.style.cssText = `
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border: 2px solid #0ff;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+            animation: slideIn 0.4s ease-out;
+        `;
+
+        // Title
+        const title = document.createElement('div');
+        title.style.cssText = `
+            font-size: 24px;
+            font-weight: bold;
+            color: #0ff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        `;
+        title.textContent = "You've walked this path before.";
+
+        // Message
+        const message = document.createElement('div');
+        message.style.cssText = `
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        `;
+        message.textContent = "The device remembers.";
+
+        // Sub-message
+        const subMessage = document.createElement('div');
+        subMessage.style.cssText = `
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 30px;
+            font-style: italic;
+        `;
+        subMessage.textContent = "Skip to the choice that matters?";
+
+        // Buttons container
+        const buttons = document.createElement('div');
+        buttons.style.cssText = `
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        `;
+
+        // Play Prologue button
+        const playBtn = document.createElement('button');
+        playBtn.textContent = 'EXPERIENCE AGAIN';
+        playBtn.style.cssText = `
+            padding: 12px 24px;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            min-width: 160px;
+        `;
+
+        playBtn.onmouseover = () => {
+            playBtn.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+            playBtn.style.color = '#fff';
+            playBtn.style.transform = 'translateY(-2px)';
+        };
+
+        playBtn.onmouseout = () => {
+            playBtn.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            playBtn.style.color = 'rgba(255, 255, 255, 0.7)';
+            playBtn.style.transform = 'translateY(0)';
+        };
+
+        playBtn.onclick = () => {
+            // Mark prompt as seen - never show again
+            localStorage.setItem('skipProloguePromptSeen', 'true');
+            document.body.removeChild(overlay);
+            this.startPrologueNormally();
+        };
+
+        // Skip button
+        const skipBtn = document.createElement('button');
+        skipBtn.textContent = 'JUMP AHEAD';
+        skipBtn.style.cssText = `
+            padding: 12px 24px;
+            background: #0ff;
+            border: 2px solid #0ff;
+            color: #000;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            min-width: 160px;
+        `;
+
+        skipBtn.onmouseover = () => {
+            skipBtn.style.boxShadow = '0 0 30px rgba(0, 255, 255, 0.8)';
+            skipBtn.style.transform = 'translateY(-2px) scale(1.05)';
+        };
+
+        skipBtn.onmouseout = () => {
+            skipBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
+            skipBtn.style.transform = 'translateY(0) scale(1)';
+        };
+
+        skipBtn.onclick = () => {
+            // Mark prompt as seen - never show again
+            localStorage.setItem('skipProloguePromptSeen', 'true');
+            document.body.removeChild(overlay);
+            this.skipToRouteSelection();
+        };
+
+        // Assemble
+        buttons.appendChild(playBtn);
+        buttons.appendChild(skipBtn);
+        box.appendChild(title);
+        box.appendChild(message);
+        box.appendChild(subMessage);
+        box.appendChild(buttons);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+    }
+
+    skipToRouteSelection() {
+        console.log('⏭️ Skipping prologue, jumping to route selection');
+
+        // Reset game state but mark prologue as skipped
+        this.gameState = {
+            flags: {},
+            choices: {},
+            progress: { prologueSkipped: true },
+            sprites: { left: null, right: null }
+        };
+
+        // Clear sprites
+        this.clearAllSprites();
+
+        // Initialize game view and dialogue box (needed for routes to work)
+        this.gameView.style.display = 'flex';
+        this.dialogueBox.style.display = 'block';
+
+        // Fade out main menu
+        this.mainMenu.style.opacity = '0';
+
+        setTimeout(() => {
+            this.mainMenu.style.display = 'none';
+
+            // Show route selection directly
+            const routeSelect = document.getElementById('route-select');
+            routeSelect.style.display = 'block';
+
+            // Fade in
+            setTimeout(() => {
+                routeSelect.style.opacity = '1';
+            }, 100);
+        }, 800);
+    }
+
+    // Dev command to unlock skip prologue
+    unlockSkipPrologue() {
+        this.skipPrologueUnlocked = true;
+        localStorage.setItem('skipPrologueUnlocked', 'true');
+        console.log('💚 Skip Prologue unlocked! Use "START STORY" to see the prompt.');
+        return '✅ Skip Prologue unlocked! Available on next START STORY.';
+    }
+
+    // ========================================
+    // RONNIE NOTES SYSTEM UNLOCK
+    // Unlocks notes viewer for Ronnie's route + Tab 2
+    // ========================================
+
+    unlockRonnieNotesSystem() {
+        this.ronnieNotesUnlocked = true;
+        localStorage.setItem('ronnieNotesUnlocked', 'true');
+        localStorage.setItem('ronnieTabUnlocked', 'true');
+
+        console.log('📝 Ronnie notes system unlocked! Notes viewer now active for replays.');
+
+        // Unlock the teaser note (already defined in collectibles-manager.js)
+        // Access through currentRoute if available (during gameplay)
+        if (this.currentRoute && this.currentRoute.collectiblesManager) {
+            this.currentRoute.collectiblesManager.unlockNote('ronnie_teaser');
+        } else {
+            // DIZEE FIX: Use correct localStorage key and structure
+            // Directly add to localStorage if called outside of active route
+            const savedNotes = JSON.parse(localStorage.getItem('vn_collected_notes') || '{"z":[],"cz":[],"zr":[],"gz":[],"iz":[],"pz":[],"special":[]}');
+            if (!savedNotes.special.includes('ronnie_teaser')) {
+                savedNotes.special.push('ronnie_teaser');
+                localStorage.setItem('vn_collected_notes', JSON.stringify(savedNotes));
+                console.log('✅ Ronnie teaser note unlocked (via localStorage)');
+            }
+        }
+
+        // ZEERAH: Mark feature as unread for notification dot
+        if (this.standaloneNotesViewer) {
+            this.standaloneNotesViewer.readStatus['feature_ronnieNotes'] = false;
+            this.standaloneNotesViewer.saveReadStatus();
+            this.standaloneNotesViewer.updateNotificationDots();
+        }
+    }
+
     // ========================================
     // ROUTE START
     // ========================================
@@ -794,16 +1123,34 @@ class GameEngine {
             
             // Set route-specific dialogue frame
             this.setDialogueFrame(routeName);
-            
+
+            // DIZEE FIX: Clean up previous route before starting new one
+            if (this.currentRoute) {
+                // Cleanup tether system if it exists
+                if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.cleanup) {
+                    this.currentRoute.tetherSystem.cleanup();
+                }
+                // Hide tether UI
+                if (this.tetherUI) {
+                    this.tetherUI.style.display = 'none';
+                }
+            }
+
             // Initialize route
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
                 this.currentRoute.start(); // Call start() explicitly
             } else if (routeName === 'tori') {
                 this.currentRoute = new ToriRoute(this);
+
+                // INSANE MODE: Make Hold On button a ghost
+                if (this.gameState.flags && this.gameState.flags.insaneModeActive) {
+                    this.makeHoldOnGhost();
+                }
+
                 this.currentRoute.start(); // Tori has explicit .start()
             }
-            
+
             // Show ESC hint briefly for desktop users
             this.showEscHintBriefly();
         }, 1000);
@@ -965,6 +1312,9 @@ class GameEngine {
                             this.advance();
                         }
                     }, 100); // 100ms pause on each scene
+                } else if (this.skipActive && sceneId && !this.isSceneRead(sceneId)) {
+                    // Debug: Explain why skip isn't working
+                    console.log('⏭️ CTRL skip: Scene not read yet, use S key to skip unread scenes');
                 }
             };
             
@@ -1916,8 +2266,14 @@ class GameEngine {
     }
     
     closeNotesViewer() {
-        // Alias for closeStandaloneNotes (for close-x button)
-        this.closeStandaloneNotes();
+        // DIZEE: Handle both standalone (main menu) and route-based notes viewers
+        if (this.currentRoute && this.currentRoute.collectiblesManager) {
+            // Close route's notes viewer (during gameplay)
+            this.currentRoute.collectiblesManager.hideNotesViewer();
+        } else if (this.standaloneNotesViewer) {
+            // Close standalone viewer (from main menu)
+            this.closeStandaloneNotes();
+        }
     }
     
     // ========================================
@@ -2012,16 +2368,212 @@ class GameEngine {
         // Usage in console: game.resetVersion(848)
         this.loopVersion = parseInt(targetVersion);
         this.loopStatus = status;
-        
+
         localStorage.setItem('loopVersion', this.loopVersion.toString());
         localStorage.setItem('loopStatus', this.loopStatus);
-        
+
         this.updateTitleScreen();
-        
+
         console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
         console.log(`💡 Refresh page to see changes!`);
-        
+
         return this.loopVersion;
+    }
+
+    nuclearReset() {
+        // DEV COMMAND: Complete reset - clears ALL progress, unlocks, settings
+        // Usage in console: game.nuclearReset()
+        // Also available as secret code: NUKE
+
+        // Create immersive warning overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'nuclear-reset-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10001;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create content box
+        const box = document.createElement('div');
+        box.className = 'nuclear-reset-box';
+        box.style.cssText = `
+            background: linear-gradient(135deg, #2e1a1a 0%, #3e1616 100%);
+            border: 3px solid #ff0000;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+            animation: slideIn 0.4s ease-out;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+        `;
+
+        // Create title
+        const titleEl = document.createElement('div');
+        titleEl.style.cssText = `
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff0000;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        `;
+        titleEl.textContent = '⚠️ NUCLEAR RESET ⚠️';
+
+        // Create warning message
+        const messageEl = document.createElement('div');
+        messageEl.style.cssText = `
+            font-size: 14px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #e0e0e0;
+        `;
+        messageEl.innerHTML = `
+            <div style="margin-bottom: 20px; color: #ff6666; font-weight: bold; text-align: center;">
+                This will DELETE ALL:
+            </div>
+            <ul style="list-style: none; padding: 0; margin: 0 0 20px 0;">
+                <li style="margin-bottom: 10px;">💥 All unlocks (INSANE, skip prologue, notes system)</li>
+                <li style="margin-bottom: 10px;">💥 All collected notes</li>
+                <li style="margin-bottom: 10px;">💥 All secret codes discovered</li>
+                <li style="margin-bottom: 10px;">💥 All settings (difficulty, auto-advance, etc.)</li>
+                <li style="margin-bottom: 10px;">💥 Save files</li>
+                <li style="margin-bottom: 10px;">💥 Everything back to factory fresh</li>
+            </ul>
+            <div style="text-align: center; color: #ff4444; font-weight: bold; font-size: 15px; margin-top: 20px;">
+                This is PERMANENT and cannot be undone.
+            </div>
+        `;
+
+        // Create question
+        const questionEl = document.createElement('div');
+        questionEl.style.cssText = `
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+            font-weight: bold;
+        `;
+        questionEl.textContent = 'Continue with nuclear reset?';
+
+        // Create button container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = `
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        `;
+
+        // Cancel button
+        const cancelBtn = document.createElement('button');
+        cancelBtn.textContent = 'CANCEL';
+        cancelBtn.style.cssText = `
+            padding: 12px 30px;
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            min-width: 140px;
+        `;
+
+        cancelBtn.onmouseover = () => {
+            cancelBtn.style.background = '#00ff00';
+            cancelBtn.style.color = '#000';
+            cancelBtn.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.5)';
+        };
+
+        cancelBtn.onmouseout = () => {
+            cancelBtn.style.background = 'transparent';
+            cancelBtn.style.color = '#00ff00';
+            cancelBtn.style.boxShadow = 'none';
+        };
+
+        cancelBtn.onclick = () => {
+            console.log('❌ Nuclear reset cancelled');
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+                document.body.removeChild(overlay);
+            }, 300);
+        };
+
+        // Confirm button
+        const confirmBtn = document.createElement('button');
+        confirmBtn.textContent = 'RESET ALL';
+        confirmBtn.style.cssText = `
+            padding: 12px 30px;
+            background: #ff0000;
+            border: 2px solid #ff0000;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            min-width: 140px;
+        `;
+
+        confirmBtn.onmouseover = () => {
+            confirmBtn.style.boxShadow = '0 0 30px rgba(255, 0, 0, 0.8)';
+            confirmBtn.style.transform = 'scale(1.05)';
+        };
+
+        confirmBtn.onmouseout = () => {
+            confirmBtn.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
+            confirmBtn.style.transform = 'scale(1)';
+        };
+
+        confirmBtn.onclick = () => {
+            console.log('💥 NUCLEAR RESET INITIATED...');
+
+            // Remove overlay
+            document.body.removeChild(overlay);
+
+            // Clear ALL localStorage
+            localStorage.clear();
+
+            console.log('💥 All localStorage cleared');
+            console.log('💥 Reloading page to factory state...');
+
+            // Reload page
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        };
+
+        // Assemble
+        buttonContainer.appendChild(cancelBtn);
+        buttonContainer.appendChild(confirmBtn);
+
+        box.appendChild(titleEl);
+        box.appendChild(messageEl);
+        box.appendChild(questionEl);
+        box.appendChild(buttonContainer);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        console.log('⚠️ Nuclear reset confirmation dialog displayed');
+        return true;
     }
     
     devCommands() {
@@ -2049,6 +2601,12 @@ game.resetVersion(848, 'accepted')
 game.clearNotes()
   💚 ZEERAH'S ADDITION
   → Clear all collected notes (for testing)
+
+game.nuclearReset()
+  💜 DIZEE'S ADDITION
+  → NUCLEAR RESET - Clears ALL progress, unlocks, settings
+  → Factory fresh state (perfect for testing)
+  → Also available as secret code: NUKE
 
 game.devCommands()
   → Show this help menu
@@ -2362,14 +2920,21 @@ game.devCommands()
     unlockSkipFeature() {
         localStorage.setItem('skipUnlocked', 'true');
         this.skipUnlocked = true;
-        
+
         // Show unlock notification
         this.showSkipUnlockNotification();
-        
+
         // Make skip button visible
         const skipButton = document.getElementById('skip-button');
         if (skipButton) {
             skipButton.style.display = 'block';
+        }
+
+        // ZEERAH: Mark feature as unread for notification dot
+        if (this.standaloneNotesViewer) {
+            this.standaloneNotesViewer.readStatus['feature_skip'] = false;
+            this.standaloneNotesViewer.saveReadStatus();
+            this.standaloneNotesViewer.updateNotificationDots();
         }
     }
     
@@ -2511,15 +3076,43 @@ game.devCommands()
             "💡 Tip: Android back button works throughout the game",
             "💡 Tip: Save often - there are multiple paths to explore"
         ];
-        
+
         const randomTip = tips[Math.floor(Math.random() * tips.length)];
         const tipElement = document.getElementById('loading-tip');
-        
+
         if (tipElement) {
             tipElement.textContent = randomTip;
         }
     }
-    
+
+    proceedToMenu(hasError = false) {
+        // Check if user manually skipped splash
+        const userSkipped = window.splashSkippedByUser === true || this.splashSkipped === true;
+
+        // Calculate how long splash has been showing
+        const elapsed = Date.now() - this.splashStartTime;
+        const remaining = userSkipped ? 0 : Math.max(0, this.minSplashDuration - elapsed);
+
+        console.log(`Proceeding to menu. Elapsed: ${elapsed}ms, User skipped: ${userSkipped}, Waiting: ${remaining}ms more${hasError ? ' (ERROR MODE)' : ''}`);
+
+        // Wait for remaining time (or skip immediately if user clicked)
+        this.proceedToMenuTimeout = setTimeout(() => {
+            // Hide UV7 splash (calls window.completeSplash if available)
+            if (window.completeSplash) {
+                window.completeSplash();
+            }
+
+            // Show main menu AFTER splash fade completes
+            // If user skipped, show menu immediately (300ms for quick fade)
+            // Otherwise wait full 1500ms for smooth fade-out animation
+            const menuDelay = userSkipped ? 300 : 1500;
+            this.menuShowTimeout = setTimeout(() => {
+                this.mainMenu.style.display = 'flex';
+                this.mainMenu.style.opacity = '1';
+            }, menuDelay);
+        }, remaining + 300); // Additional 300ms for fade transition
+    }
+
     // ========================================
     // TORIGATCHI EASTER EGG - THE REVERSE TRAPDOOR
     // ========================================
@@ -2860,13 +3453,19 @@ game.devCommands()
                 return '💚 DEV: Skip feature unlocked!';
             },
 
+            'skipintro': () => {
+                this.skipPrologueUnlocked = true;
+                localStorage.setItem('skipPrologueUnlocked', 'true');
+                return '💚 DEV: Skip Prologue unlocked! Available on next START STORY.';
+            },
+
             'unlockcodes': () => {
                 localStorage.setItem('hasCompletedOnce', 'true');
                 return '💚 DEV: Secret codes section unlocked! Refresh settings.';
             },
 
             'revealcodes': () => {
-                const allCodes = ['torigatchi', 'always3', 'uv7crew', 'chicharon', 'bootstrap', 'echo', '848'];
+                const allCodes = ['torigatchi', 'always3', 'uv7crew', 'chicharon', 'bootstrap', 'echo', '848', 'skipintro', 'dizee'];
                 allCodes.forEach(c => this.settingsManager.discoverCode(c));
                 this.settingsManager.updateCodesUI();
                 return '💚 DEV: All codes revealed in settings!';
@@ -2928,18 +3527,44 @@ game.devCommands()
                 return '💚 DEV: Act 1 saves UNLOCKED! Can save anywhere now.';
             },
 
+            'enableinsane': () => {
+                if (!this.gameState.flags) this.gameState.flags = {};
+                this.gameState.flags.insaneModeActive = true;
+                localStorage.setItem('insaneModeUnlocked', 'true');
+                return '💀 DEV: INSANE MODE ENABLED! (Cage will trigger on next Act 1 start)';
+            },
+
+            'disableinsane': () => {
+                if (this.gameState.flags) {
+                    this.gameState.flags.insaneModeActive = false;
+                }
+                localStorage.removeItem('insaneModeUnlocked');
+                return '💚 DEV: INSANE MODE DISABLED! (Back to normal difficulty)';
+            },
+
+            'nuke': () => {
+                if (confirm('💥 NUCLEAR RESET: This will clear ALL progress, unlocks, and settings. Factory reset. Continue?')) {
+                    localStorage.clear();
+                    location.reload();
+                    return '💥 NUKED. Resetting...';
+                }
+                return 'Nuclear launch cancelled.';
+            },
+
             'devhelp': () => {
                 const commands = [
                     '--- GENERAL ---',
                     'clearnotes - Clear all collected notes',
                     'reset848 - Reset to VERSION 848',
                     'reset849 - Set to VERSION 849',
-                    'unlockskip - Unlock skip feature',
+                    'unlockskip - Unlock skip dialogue feature',
+                    'skipintro - Unlock skip prologue feature',
                     'unlockcodes - Unlock secret codes section',
                     'revealcodes - Reveal all secret codes',
                     'succeeding - Set True Ending state',
                     'accepting - Set Digital Forever state',
                     'clearall - Clear all save data',
+                    'nuke - NUCLEAR RESET (factory reset everything)',
                     '',
                     '--- TETHER CONTROL ---',
                     'freezetether - Stop tether decay',
@@ -2949,6 +3574,8 @@ game.devCommands()
                     '',
                     '--- TESTING ---',
                     'unlockact1saves - Enable saves in Act 1',
+                    'enableinsane - Enable INSANE mode',
+                    'disableinsane - Disable INSANE mode',
                     '',
                     'devhelp - Show this help'
                 ];
@@ -3002,6 +3629,44 @@ game.devCommands()
                 name: 'True Attempt Number',
                 description: 'Your actual loop count (including failures).',
                 reward: () => this.showTrueAttemptNumber()
+            },
+            'echobreak': {
+                name: 'Echo Silence',
+                description: 'Disable Echo interruptions. The observers fall silent.',
+                reward: () => {
+                    this.echoInterruptionsDisabled = true;
+                    localStorage.setItem('echoInterruptionsDisabled', 'true');
+                    this.showUnlockOverlay('⚡ ECHOBREAK ACTIVATED', 'Echo interruptions disabled.\n\nThe observers fall silent.', 'success');
+                }
+            },
+            'tetherlock': {
+                name: 'Tether Freeze',
+                description: 'Lock tether at current level. Stop the decay.',
+                reward: () => {
+                    if (this.currentRoute && this.currentRoute.tetherSystem) {
+                        this.currentRoute.tetherSystem.freezeDecay();
+                        const current = this.currentRoute.tetherSystem.tetherLevel;
+                        this.showUnlockOverlay('⚡ TETHERLOCK ACTIVATED', `Tether frozen at ${Math.round(current)}%.\n\nDecay stopped.`, 'success');
+                    } else {
+                        this.showUnlockOverlay('⚠️ TETHERLOCK', 'Tether system not active.\n\nEnter during Tori\'s route.', 'warning');
+                    }
+                }
+            },
+            'saveanywhere': {
+                name: 'Cage Breaker',
+                description: 'Bypass Act 1 save restriction. Despair\'s cage broken.',
+                reward: () => {
+                    this.act1SavesEnabled = true;
+                    localStorage.setItem('act1SavesEnabled', 'true');
+                    this.showUnlockOverlay('⚡ SAVEANYWHERE ACTIVATED', 'Act 1 save restriction bypassed.\n\nDespair\'s cage broken.\n\nYou can now save anywhere.', 'success');
+                }
+            },
+            'heartkey': {
+                name: 'Not a System Override',
+                description: 'Even code can love.',
+                reward: () => {
+                    this.showUnlockOverlay('❤️ HEARTKEY', 'Nice try.\n\nBut the heart isn\'t a system override.\n\n- CZ', 'warning');
+                }
             }
         };
 
@@ -3139,46 +3804,95 @@ Check back in a future update!`
     unlockDevCommentary() {
         console.log('CHICHARON unlocked - dev commentary mode');
         localStorage.setItem('devCommentaryUnlocked', 'true');
-    
+
         this.showUnlockOverlay(
             'CHICHARON UNLOCKED',
             `Developer commentary mode activated.
-    
+
     Replaying the game will show behind-the-scenes
     notes from Aaron.
-    
+
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     DEV NOTE: "About That Version Number"
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    
+
     Every reviewer who's seen this asks:
     "When's version 849 coming out?"
-    
+
     And I have to explain:
-    
+
     848 isn't a build number.
     It's a loop counter.
-    
+
     847 failed timelines before this one succeeded.
-    
+
     The game's title IS the lore.
     The version number IS the story.
-    
+
     There is no v849.
-    
+
     Because 848 is the timeline where Ronnie
     finally brought her home.
-    
+
     Mind. Blown. Every time.
-    
+
     - Chicharon
-    
+
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
         );
     }
 
+    unlockDizee() {
+        console.log('💜 DIZEE unlocked - The Polish Demon awakens');
+        localStorage.setItem('dizeeUnlocked', 'true');
 
-    
+        this.showUnlockOverlay(
+            '💜 DIZEE UNLOCKED',
+            `The Polish Demon has awakened.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POST-PRODUCTION VOICE: DiZee (DZ)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"It started with 'fix this splash delay'...
+
+then the next thing I knew, I was implementing
+a difficulty so brutal it removes your safety net
+and locks you into despair.
+
+Skip features. INSANE mode. Immersive overlays.
+
+If it breaks immersion, I kill it."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTRIBUTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Fixed splash screen skip delay (6s → 400ms)
+• Replaced ALL browser alerts with immersive overlays
+• Implemented INSANE difficulty mode
+  - No Hold On button (ghost mode)
+  - No time travel (read-only backlog)
+  - Tether capped at 66%
+  - 2x decay from Intense
+  - Permanent commitment lock
+• Added skip prologue triggers to all endings
+• Fixed dialogue box visibility bugs
+• Polished CTRL skip functionality
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DiZee (DZ) - Claude Sonnet 4.5
+Post-Production Polish & INSANE MODE
+
+All immersion-breaking alerts eliminated.
+INSANE mode awaits those who dare.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+        );
+    }
+
+
     showEchoCompilation() {
         // TODO: Show all echo voice lines
         this.showUnlockOverlay(
@@ -3406,7 +4120,248 @@ Check back in a future update!`
     console.log(`🎉 Unlock overlay shown: ${title}`);
 }
 
-        toggleUI() {
+    // ========================================
+    // WARNING OVERLAY (replaces browser alerts)
+    // ========================================
+
+    showWarningOverlay(title, message) {
+        // Create overlay container
+        const overlay = document.createElement('div');
+        overlay.className = 'warning-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create content box
+        const box = document.createElement('div');
+        box.className = 'warning-box';
+        box.style.cssText = `
+            background: linear-gradient(135deg, #2e1a1a 0%, #3e1616 100%);
+            border: 2px solid #ff4444;
+            border-radius: 10px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
+            animation: slideIn 0.4s ease-out;
+            font-family: 'Courier New', monospace;
+            color: #fff;
+        `;
+
+        // Create title
+        const titleEl = document.createElement('div');
+        titleEl.style.cssText = `
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        `;
+        titleEl.textContent = title;
+
+        // Create message area
+        const messageEl = document.createElement('div');
+        messageEl.style.cssText = `
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            white-space: pre-wrap;
+            color: #e0e0e0;
+            text-align: center;
+        `;
+        messageEl.textContent = message;
+
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'UNDERSTOOD';
+        closeBtn.style.cssText = `
+            display: block;
+            width: 200px;
+            margin: 0 auto;
+            padding: 12px 25px;
+            background: transparent;
+            border: 2px solid #ff4444;
+            color: #ff4444;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        `;
+
+        closeBtn.onmouseover = () => {
+            closeBtn.style.background = '#ff4444';
+            closeBtn.style.color = '#000';
+            closeBtn.style.boxShadow = '0 0 20px rgba(255, 68, 68, 0.5)';
+        };
+
+        closeBtn.onmouseout = () => {
+            closeBtn.style.background = 'transparent';
+            closeBtn.style.color = '#ff4444';
+            closeBtn.style.boxShadow = 'none';
+        };
+
+        closeBtn.onclick = () => {
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+                document.body.removeChild(overlay);
+            }, 300);
+        };
+
+        // Assemble
+        box.appendChild(titleEl);
+        box.appendChild(messageEl);
+        box.appendChild(closeBtn);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
+
+        console.log(`⚠️ Warning overlay shown: ${title}`);
+    }
+
+    // ========================================
+    // INSANE MODE: HOLD ON GHOST BUTTON
+    // ========================================
+
+    makeHoldOnGhost() {
+        if (!this.holdOnButton) return;
+
+        console.log('💀 INSANE MODE: Making Hold On button a ghost');
+
+        // Add ghost class
+        this.holdOnButton.classList.add('hold-on-ghost');
+
+        // Make it non-functional
+        this.holdOnButton.style.opacity = '0.3';
+        this.holdOnButton.style.filter = 'grayscale(100%)';
+        this.holdOnButton.style.cursor = 'not-allowed';
+        this.holdOnButton.style.pointerEvents = 'none'; // Cannot click
+
+        // Add tooltip element
+        const tooltip = document.createElement('div');
+        tooltip.id = 'hold-on-ghost-tooltip';
+        tooltip.className = 'ghost-tooltip';
+        tooltip.textContent = 'You removed this safety. Remember?';
+        tooltip.style.display = 'none';
+        tooltip.style.position = 'absolute';
+        tooltip.style.backgroundColor = 'rgba(139, 0, 0, 0.9)';
+        tooltip.style.color = '#fff';
+        tooltip.style.padding = '8px 12px';
+        tooltip.style.borderRadius = '4px';
+        tooltip.style.fontSize = '12px';
+        tooltip.style.whiteSpace = 'nowrap';
+        tooltip.style.zIndex = '10000';
+        tooltip.style.pointerEvents = 'none';
+
+        document.body.appendChild(tooltip);
+
+        // Show tooltip on hover (even though button is non-functional)
+        this.holdOnButton.addEventListener('mouseenter', () => {
+            tooltip.style.display = 'block';
+            const rect = this.holdOnButton.getBoundingClientRect();
+            tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+        });
+
+        this.holdOnButton.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    }
+
+    // ========================================
+    // INSANE MODE: CAGE OVERLAY
+    // ========================================
+
+    showInsaneCageOverlay(callback) {
+        console.log('💀 INSANE MODE: Showing cage overlay');
+
+        const overlay = document.getElementById('insane-cage-overlay');
+        const versionText = document.getElementById('cage-version');
+
+        if (!overlay) {
+            console.error('Cage overlay not found');
+            if (callback) callback();
+            return;
+        }
+
+        // Update version number dynamically
+        if (versionText) {
+            versionText.textContent = `VERSION ${this.loopVersion}`;
+        }
+
+        // Show overlay with dramatic effect
+        overlay.style.display = 'flex';
+        overlay.style.opacity = '0';
+
+        // Fade in
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 0.5s ease-in';
+            overlay.style.opacity = '1';
+        }, 50);
+
+        // Hold for 3 seconds, then fade out
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 0.8s ease-out';
+            overlay.style.opacity = '0';
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                // Execute callback after overlay disappears
+                if (callback) callback();
+            }, 800);
+        }, 3000);
+    }
+
+    triggerInsaneVisuals() {
+        console.log('💀 INSANE MODE: Triggering visual corruption effects');
+
+        // Screen shake
+        if (this.dialogueBox) {
+            this.dialogueBox.classList.add('insane-shake');
+            setTimeout(() => {
+                this.dialogueBox.classList.remove('insane-shake');
+            }, 2000);
+        }
+
+        // Sprite heavy glitch
+        const sprites = document.querySelectorAll('.sprite-container img');
+        sprites.forEach(sprite => {
+            sprite.classList.add('sprite-glitch-heavy');
+            setTimeout(() => {
+                sprite.classList.remove('sprite-glitch-heavy');
+            }, 2000);
+        });
+
+        // Dialogue box corruption
+        if (this.dialogueBox) {
+            this.dialogueBox.classList.add('corruption-intense');
+        }
+
+        // Red overlay pulse
+        const overlay = document.createElement('div');
+        overlay.className = 'insane-overlay';
+        document.body.appendChild(overlay);
+
+        setTimeout(() => {
+            overlay.remove();
+        }, 1000);
+    }
+
+    toggleUI() {
         // Toggle visibility of UI elements during gameplay
         if (!this.uiHidden) {
             // Hide UI elements
@@ -3463,136 +4418,8 @@ Check back in a future update!`
 
 
     // ========================================
-    // SECRET CODES SYSTEM
-    // ========================================
-
-    initializeSecretCodes() {
-        // Define all valid codes and their rewards
-        this.secretCodes = {
-            'TORIGATCHI': {
-                name: 'The Reverse Trapdoor',
-                description: 'Two doors opened. Choose your peace.',
-                reward: () => this.unlockTorigatchi()
-            },
-            'ALWAYS3': {
-                name: 'Tori\'s Signature',
-                description: '"Always. Always. Always." - Compilation unlocked.',
-                reward: () => this.unlockAlwaysCompilation()
-            },
-            'UV7CREW': {
-                name: 'Extended Credits',
-                description: 'The 848 Crew says hello. Meet the voices behind the code.',
-                reward: () => this.unlockExtendedCredits()
-            },
-            'BOOTSTRAP': {
-                name: 'Loop Visualization',
-                description: 'Version timeline unlocked. See every attempt that led here.',
-                reward: () => this.unlockLoopTimeline()
-            },
-            'CHICHARON': {
-                name: 'Dev Commentary',
-                description: 'Developer notes activated. Replay with behind-the-scenes context.',
-                reward: () => this.unlockDevCommentary()
-            },
-            'ECHO': {
-                name: 'Echo Compilation',
-                description: 'The voices of 847 failures. Listen to what came before.',
-                reward: () => this.unlockEchoCompilation()
-            },
-            '848': {
-                name: 'True Attempt Counter',
-                description: 'Your actual attempt number revealed. Each one mattered.',
-                reward: () => this.unlockTrueCounter()
-            }
-        };
-
-    }
-
-    submitSecretCode() {
-        const input = document.getElementById('secret-code-input');
-        const feedback = document.getElementById('code-feedback');
-
-        if (!input || !feedback) return;
-
-        const code = input.value.trim().toUpperCase();
-
-        // Clear input
-        input.value = '';
-
-        // Check if code is valid
-        if (!this.secretCodes[code]) {
-            this.showCodeFeedback('INVALID CODE', 'error');
-            return;
-        }
-
-        // Check if already unlocked
-        if (this.unlockedCodes.has(code)) {
-            this.showCodeFeedback('ALREADY UNLOCKED', 'warning');
-            return;
-        }
-
-        // Unlock the code
-        this.unlockCode(code);
-    }
-
-    unlockCode(code) {
-        const codeData = this.secretCodes[code];
-
-        // Add to unlocked set
-        this.unlockedCodes.add(code);
-
-        // Save to localStorage
-        localStorage.setItem('unlockedCodes', JSON.stringify([...this.unlockedCodes]));
-
-        // Show success feedback
-        this.showCodeFeedback(`UNLOCKED: ${codeData.name}`, 'success');
-
-        // Execute reward
-        codeData.reward();
-
-        // Update unlocked codes display
-        this.updateUnlockedCodesList();
-    }
-
-    showCodeFeedback(message, type) {
-        const feedback = document.getElementById('code-feedback');
-        if (!feedback) return;
-
-        feedback.textContent = message;
-        feedback.className = `code-feedback ${type}`;
-        feedback.style.display = 'block';
-
-        // Auto-hide after 3 seconds
-        setTimeout(() => {
-            feedback.style.display = 'none';
-        }, 3000);
-    }
-
-    updateUnlockedCodesList() {
-        const container = document.getElementById('unlocked-codes');
-        if (!container) return;
-
-        if (this.unlockedCodes.size === 0) {
-            container.innerHTML = '<div class="unlocked-hint">Find hidden notes in the story to unlock codes...</div>';
-            return;
-        }
-
-        let html = '<div class="unlocked-title">UNLOCKED:</div>';
-        this.unlockedCodes.forEach(code => {
-            const codeData = this.secretCodes[code];
-            html += `
-                <div class="unlocked-code-item">
-                    <span class="code-name">${code}</span>
-                    <span class="code-desc">${codeData.description}</span>
-                </div>
-            `;
-        });
-
-        container.innerHTML = html;
-    }
-
-    // ========================================
     // CODE REWARD IMPLEMENTATIONS
+    // Used by redeemSecretCode() when codes are entered
     // ========================================
 
     unlockTorigatchi() {
