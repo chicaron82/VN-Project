@@ -415,6 +415,12 @@ class SettingsManager {
         // Save the lock to localStorage
         localStorage.setItem('insaneModeLocked', 'true');
 
+        // DIZEE FIX: Hide Hold On button in Insane Mode
+        // You removed this safety. It stays gone.
+        if (this.game.holdOnButton) {
+            this.game.holdOnButton.style.display = 'none';
+        }
+
         // Update UI
         this.updateUI();
 
@@ -424,6 +430,15 @@ class SettingsManager {
         }
 
         console.log('⚠️ Insane mode locked. No escape.');
+
+        // DIZEE POLISH: Automatically start Tori's route after commitment
+        // Close settings and launch directly into the nightmare
+        this.game.closeSettings();
+
+        // Brief delay for dramatic effect, then start route
+        setTimeout(() => {
+            this.game.startStory();
+        }, 500);
     }
 
     getDifficultyChangeType(oldDiff, newDiff) {

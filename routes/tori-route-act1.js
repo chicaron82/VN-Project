@@ -236,10 +236,10 @@ class ToriAct1 {
             // Show cage overlay FIRST
             this.game.showInsaneCageOverlay(() => {
                 // Conditional tether drop (only if above 66%)
-                const currentTether = this.tetherSystem.tetherLevel;
+                const currentTether = this.route.tetherSystem.tetherLevel;
                 if (currentTether > 66) {
                     // Animate drop from current to 66%
-                    this.tetherSystem.setTetherLevel(66, true);
+                    this.route.tetherSystem.setTetherLevel(66, true);
                 }
                 // If already at or below 66%, leave it (player already struggling)
 

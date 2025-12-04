@@ -192,8 +192,14 @@ class StandaloneNotesViewer {
         // ZEERAH: Update notification dots after opening
         this.updateNotificationDots();
 
-        // ZEERAH: Mark Tori tab as read (default active tab)
+        // DIZEE FIX: Mark ALL tabs as read when viewer opens
+        // User can see the note count in the header, so they know notes exist
+        // No need to keep notification dot after they've opened the viewer
         this.markTabAsRead('tori');
+        if (ronnieTabUnlocked) {
+            this.markTabAsRead('ronnie');
+        }
+        this.markTabAsRead('features');
     }
 
     setupTabSwitching() {

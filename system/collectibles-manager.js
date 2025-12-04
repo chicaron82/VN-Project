@@ -354,6 +354,23 @@ class CollectiblesManager {
         if (this.notesViewer) {
             this.notesViewer.style.display = 'none';
         }
+
+        // DIZEE FIX: Mark notes as read when closing in-route viewer
+        // This keeps notification dots in sync between in-route and standalone viewers
+        if (!this.game.standaloneNotesViewer) {
+            // Create standalone viewer if it doesn't exist yet (edge case)
+            this.game.standaloneNotesViewer = new StandaloneNotesViewer(this.game);
+        }
+
+        // Determine which route we're on and mark appropriate tab as read
+        if (this.route.name === 'tori') {
+            this.game.standaloneNotesViewer.markTabAsRead('tori');
+        } else if (this.route.name === 'ronnie') {
+            this.game.standaloneNotesViewer.markTabAsRead('ronnie');
+        }
+
+        // Update notification dots to reflect read status
+        this.game.standaloneNotesViewer.updateNotificationDots();
     }
     
     // ========================================

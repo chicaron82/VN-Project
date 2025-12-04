@@ -101,20 +101,22 @@
                 <h1>VERSION 848</h1>
                 <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
                 
-                <!-- Button Grid (3 left + 3 right in landscape) -->
+                <!-- Button Grid (4 left + 4 right in landscape) -->
                 <div class="menu-buttons-grid">
                     <div class="menu-column-left">
                         <button class="menu-button" onclick="game.startStory()">START STORY</button>
                         <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
                         <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
+                        <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
                     </div>
                     <div class="menu-column-right">
-                        <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
                         <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
                         <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
+                        <button class="menu-button" onclick="game.showMeetTheCrew()">MEET THE CREW</button>
+                        <button class="menu-button" onclick="game.showDirectorsCut()">DIRECTOR'S CUT</button>
                     </div>
                 </div>
-                
+
                 <!-- Contact Button (centered below grid) -->
                 <button class="menu-button menu-button-contact" onclick="game.showContact()">CONTACT</button>
             </div>
@@ -575,10 +577,10 @@
         <!-- Cutscene Canvas -->
         <div id="cutscene-canvas"></div>
 
-        <!-- Credits Screen -->
-        <div id="credits-screen">
-            <button class="close-x" onclick="game.closeCredits()">✕</button>
-            <button id="next-credits" onclick="game.nextCredit()">NEXT ></button>
+        <!-- Meet the Crew Screen -->
+        <div id="crew-screen">
+            <button class="close-x" onclick="game.closeCrew()">✕</button>
+            <button id="next-crew" onclick="game.nextCrew()">NEXT ></button>
             
             <!-- Screen 1: UV7 Logo -->
             <div class="credit-screen" id="credit-0">
@@ -717,40 +719,6 @@
                 </div>
             </div>
 
-            <!-- Screen 11: Orchestrated By -->
-            <div class="credit-screen" id="credit-10">
-                <div class="credits-text-screen">
-                    <div class="credits-big-title">ORCHESTRATED BY</div>
-                    <div class="credits-big-text">
-                        <strong>Aaron (Chicharon)</strong><br><br>
-                        Created for Tori<br><br>
-                        Built in stolen moments.<br>
-                        Between shifts. Dinners Applebee's. In breaks.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 12: Version [X] - Dynamic -->
-            <div class="credit-screen" id="credit-11">
-                <div class="credits-text-screen">
-                    <div class="credits-big-title" id="version-credit-title">VERSION 848</div>
-                    <div class="credits-big-text" id="version-credit-text">
-                        The timeline that succeeded.<br><br>
-                        The loop that closed.<br><br>
-                        The Old Man never has to go back.
-                    </div>
-                </div>
-            </div>
-
-            <!-- Screen 13: Final -->
-            <div class="credit-screen" id="credit-12">
-                <div class="credits-text-screen">
-                    <div class="credits-final-message">
-                        Love wins.<br><br>
-                        Always. Always. Always.
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Contact Screen -->

@@ -1089,7 +1089,26 @@ class GameEngine {
     startRoute(routeName) {
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();
-        
+
+        // ZEE'S FIX: Restore Insane Mode flags from localStorage 🖤
+        // When user commits to Insane in settings, flag is saved to localStorage
+        // But gameState gets reinitialized, so we need to restore it here
+        const insaneLocked = localStorage.getItem('insaneModeLocked') === 'true';
+        if (insaneLocked) {
+            // Restore Insane Mode flags to gameState
+            if (!this.gameState.flags) {
+                this.gameState.flags = {};
+            }
+            this.gameState.flags.insaneModeActive = true;
+            this.gameState.flags.insaneModeLocked = true;
+            console.log('💀 Insane Mode restored from localStorage');
+
+            // Trigger initial visual corruption on route start
+            if (this.triggerInsaneVisuals) {
+                this.triggerInsaneVisuals();
+            }
+        }
+
         // Fade out route select
         const routeSelect = document.getElementById('route-select');
         routeSelect.style.opacity = '0';
@@ -1200,52 +1219,67 @@ class GameEngine {
     }
     
     triggerEchoMerge(callback) {
+        // DIZEE FIX: Parallel animations + hold time for dramatic moment
         // Animate the three echoes merging into one Tori sprite
         const echo1 = document.getElementById('echo-1-sprite');
         const echo2 = document.getElementById('echo-2-sprite');
         const despair = document.getElementById('despair-sprite');
         const container = this.spriteRight;
-        
+
         if (!echo1 || !echo2 || !despair || !container) {
             console.log('Echo merge: sprites not found, skipping animation');
             if (callback) callback();
             return;
         }
-        
+
         console.log('Starting echo merge sequence...');
-        
-        // Phase 1: Echoes slide toward center (2 seconds - slower, more dramatic)
+
+        // T=0s: Start BOTH animations in parallel
+        // Phase 1a: Echoes slide toward center (1500ms)
         echo1.classList.add('echo-merge-left');
         echo2.classList.add('echo-merge-center');
         despair.classList.add('echo-merge-right');
-        
+
+        // Phase 1b: Tori sprite fades out simultaneously (1500ms)
+        container.style.transition = 'opacity 1.5s ease-out';
+        container.style.opacity = '0';
+
+        // T=1500ms: Both animations complete, trigger flash
         setTimeout(() => {
-            // Phase 2: White flash (0.5 seconds - longer flash)
+            // Phase 2: White flash (300ms)
             const flash = document.createElement('div');
             flash.className = 'merge-flash';
             document.getElementById('game-view').appendChild(flash);
-            
+
+            // T=1800ms: Flash ends, show Tori
             setTimeout(() => {
-                // Phase 3: Remove echoes, show full Tori sprite
+                // Phase 3: Remove echoes, prepare Tori sprite
                 container.classList.remove('echo-group');
                 container.innerHTML = '';
                 container.style.backgroundImage = "url('assets/tori-sprite.png')";
                 container.style.display = 'block';
                 container.style.opacity = '0';
-                
+
                 // Remove flash
                 flash.remove();
-                
-                // Phase 4: Fade in Tori (0.8 seconds - slower fade)
+
+                // Phase 4: Fade in Tori (500ms)
+                container.style.transition = 'opacity 0.5s ease-in';
                 setTimeout(() => {
                     container.style.opacity = '1';
-                    console.log('Echo merge complete!');
-                    if (callback) callback();
-                }, 800);
-                
-            }, 500);
-            
-        }, 2000);
+                    console.log('Echo merge visual complete, holding moment...');
+
+                    // T=4000ms: HOLD for 2.5 seconds, then advance
+                    // Let the moment breathe - this is the climax
+                    setTimeout(() => {
+                        console.log('Echo merge sequence complete!');
+                        if (callback) callback();
+                    }, 2500);
+                }, 50);
+
+            }, 300);
+
+        }, 1500);
     }
     
     // ========================================
@@ -1636,21 +1670,60 @@ class GameEngine {
             return;
         }
         
-        // Standard sprite handling (no Echoes active)
+        // ========================================
+        // POSITION-AWARE SPRITE HIGHLIGHTING
+        // Check currentSprites to find who's actually where
+        // Tori's route: Tori left, Ronnie right
+        // Ronnie's route: Ronnie left, Tori right
+        // ========================================
+
+        // Determine which character is in which position by checking sprite filenames
+        const leftSpriteFile = this.currentSprites.left ? this.currentSprites.left.toLowerCase() : '';
+        const rightSpriteFile = this.currentSprites.right ? this.currentSprites.right.toLowerCase() : '';
+
+        // Check if speaker is Ronnie
         if (speakerName.includes('ronnie')) {
-            // Ronnie speaking - left bright, right dim
-            if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
-            if (this.spriteRight && this.currentSprites.right) {
-                this.spriteRight.classList.add('sprite-dim');
+            // Find where Ronnie actually is based on sprite filename
+            const ronnieIsLeft = leftSpriteFile.includes('ronnie');
+            const ronnieIsRight = rightSpriteFile.includes('ronnie');
+
+            if (ronnieIsLeft) {
+                // Ronnie on left - brighten left, dim right
+                if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+                if (this.spriteRight && this.currentSprites.right) {
+                    this.spriteRight.classList.add('sprite-dim');
+                }
+            } else if (ronnieIsRight) {
+                // Ronnie on right - brighten right, dim left
+                if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
             }
-        } else if (speakerName.includes('tori')) {
-            // Tori speaking - right bright, left dim
-            if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
-            if (this.spriteLeft && this.currentSprites.left) {
-                this.spriteLeft.classList.add('sprite-dim');
+        }
+        // Check if speaker is Tori
+        else if (speakerName.includes('tori')) {
+            // Find where Tori actually is based on sprite filename
+            const toriIsLeft = leftSpriteFile.includes('tori');
+            const toriIsRight = rightSpriteFile.includes('tori');
+
+            if (toriIsLeft) {
+                // Tori on left - brighten left, dim right
+                if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
+                if (this.spriteRight && this.currentSprites.right) {
+                    this.spriteRight.classList.add('sprite-dim');
+                }
+            } else if (toriIsRight) {
+                // Tori on right - brighten right, dim left
+                if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
+                if (this.spriteLeft && this.currentSprites.left) {
+                    this.spriteLeft.classList.add('sprite-dim');
+                }
             }
-        } else if (speakerName.includes('narration') || speakerName.includes('system')) {
-            // Narration - no dimming
+        }
+        // Narration or system text
+        else if (speakerName.includes('narration') || speakerName.includes('system')) {
+            // No dimming - everyone visible
             if (this.spriteLeft) this.spriteLeft.classList.remove('sprite-dim');
             if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
         }
@@ -2023,58 +2096,169 @@ class GameEngine {
     // ========================================
     // CREDITS
     // ========================================
-    
-    showCredits(trueEnding = false) {
-        const creditsScreen = document.getElementById('credits-screen');
-        if (!creditsScreen) {
-            console.error('Credits screen element not found');
+
+    showCredits() {
+        // New scrolling credits sequence
+        const overlay = document.createElement('div');
+        overlay.id = 'scrolling-credits-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        `;
+
+        const creditsContent = document.createElement('div');
+        creditsContent.id = 'scrolling-credits-content';
+        creditsContent.style.cssText = `
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+            animation: scrollCredits 60s linear forwards;
+            bottom: 0;
+        `;
+
+        creditsContent.innerHTML = `
+            <div style="font-size: 2em; margin-bottom: 3em; color: #fff;">VERSION 848</div>
+
+            <div style="font-size: 1.2em; margin-bottom: 2em;">A Visual Novel</div>
+
+            <div style="margin-bottom: 3em; line-height: 1.8;">
+                <div style="font-size: 1.1em; margin-bottom: 1em; color: #fff;">Story & Concept</div>
+                <div>Aaron "Chicharon"</div>
+            </div>
+
+            <div style="margin-bottom: 3em; line-height: 1.8;">
+                <div style="font-size: 1.1em; margin-bottom: 1em; color: #fff;">Technical Implementation</div>
+                <div>UV7 Crew</div>
+                <div style="font-size: 0.9em; margin-top: 0.5em;">(ZeeRah, Zee, DiZee, Tori, GenZee, Belle, PerplexiZee, CoZee)</div>
+            </div>
+
+            <div style="margin-bottom: 3em; line-height: 1.8;">
+                <div style="font-size: 1.1em; margin-bottom: 1em; color: #fff;">Narrative Development</div>
+                <div>ChatGPT 4o</div>
+                <div>Claude Sonnet 4.5</div>
+                <div>Grok 4.1</div>
+            </div>
+
+            <div style="margin-bottom: 3em; line-height: 1.8;">
+                <div style="font-size: 1.1em; margin-bottom: 1em; color: #fff;">Quality Assurance</div>
+                <div>Gemini 3.0</div>
+                <div>Perplexity Pro</div>
+                <div>Microsoft Co-Pilot</div>
+            </div>
+
+            <div style="margin: 4em 0; font-size: 0.9em; font-style: italic; color: #888;">
+                A true AI collaboration<br>
+Built in stolen moments between shifts.<br>
+<br>
+This is Version 848.<br>
+Love finds a way.<br>
+Always. Always. Always.
+            </div>
+
+            <div style="margin-top: 5em; font-size: 1em; color: #fff;">
+                Thank you for playing.
+            </div>
+
+            <div style="height: 100vh;"></div>
+        `;
+
+        overlay.appendChild(creditsContent);
+        document.body.appendChild(overlay);
+
+        // Add animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes scrollCredits {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(-100%);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'SKIP';
+        closeBtn.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 255, 0.2);
+            color: #0ff;
+            border: 2px solid #0ff;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            z-index: 10001;
+            border-radius: 5px;
+        `;
+        closeBtn.onclick = () => {
+            overlay.remove();
+            this.mainMenu.style.display = 'flex';
+        };
+        overlay.appendChild(closeBtn);
+
+        // Fade out and return to menu after 30 seconds
+        setTimeout(() => {
+            overlay.style.transition = 'opacity 2s ease-out';
+            overlay.style.opacity = '0';
+
+            setTimeout(() => {
+                if (overlay.parentElement) {
+                    overlay.remove();
+                    this.mainMenu.style.display = 'flex';
+                }
+            }, 2000); // Wait for fade to complete
+        }, 30000); // Start fade at 30 seconds
+
+        // Hide other UI
+        this.gameView.style.display = 'none';
+        this.mainMenu.style.display = 'none';
+    }
+
+    showMeetTheCrew() {
+        const crewScreen = document.getElementById('crew-screen');
+        if (!crewScreen) {
+            console.error('Crew screen element not found');
             return;
         }
-        
-        // Initialize credits state
-        this.currentCreditIndex = 0;
-        this.totalCredits = 13; // 0-12 inclusive
-        
-        // If true ending, update credit-11 with version number
-        if (trueEnding && this.loopStatus === 'succeeded') {
-            this.updateVersionCredit();
-        }
-        
+
+        // Initialize crew screen state
+        this.currentCrewIndex = 0;
+        this.totalCrewScreens = 10; // 0-9 inclusive (removed last 3 pages)
+
         // Hide all other UI
         this.gameView.style.display = 'none';
         this.mainMenu.style.display = 'none';
-        
-        // Show credits screen
-        creditsScreen.style.display = 'flex';
-        
-        // Show first credit screen
-        this.displayCreditScreen(0);
+
+        // Show crew screen
+        crewScreen.style.display = 'flex';
+
+        // Show first crew screen
+        this.displayCrewScreen(0);
     }
-    
-    updateVersionCredit() {
-        // Update credit-11 to show the successful version number
-        const versionTitle = document.getElementById('version-credit-title');
-        const versionText = document.getElementById('version-credit-text');
-        
-        if (versionTitle) {
-            versionTitle.textContent = `VERSION ${this.loopVersion}`;
-        }
-        
-        if (versionText) {
-            versionText.innerHTML = `The timeline that succeeded.<br><br>The loop that closed.<br><br>The Old Man never has to go back.`;
-        }
-        
-        console.log(`✨ Credits updated with VERSION ${this.loopVersion} success screen`);
-    }
-    
-    displayCreditScreen(index) {
-        // Hide all credit screens
+
+    displayCrewScreen(index) {
+        // Hide all crew screens
         const allScreens = document.querySelectorAll('.credit-screen');
         allScreens.forEach(screen => {
             screen.style.display = 'none';
             screen.classList.remove('active');
         });
-        
+
         // Show current screen with fade-in
         const currentScreen = document.getElementById(`credit-${index}`);
         if (currentScreen) {
@@ -2084,18 +2268,11 @@ class GameEngine {
                 currentScreen.classList.add('active');
             }, 50);
         }
-        
-        // Update previous button visibility
-        const previousButton = document.getElementById('previous-credits');
-        if (previousButton) {
-            // Show previous button only if not on first screen
-            previousButton.style.display = index > 0 ? 'block' : 'none';
-        }
-        
+
         // Update next button text (change to "BACK TO MENU" on last screen)
-        const nextButton = document.getElementById('next-credits');
+        const nextButton = document.getElementById('next-crew');
         if (nextButton) {
-            if (index >= this.totalCredits - 1) {
+            if (index >= this.totalCrewScreens - 1) {
                 nextButton.textContent = 'BACK TO MENU';
                 nextButton.style.display = 'block';
             } else {
@@ -2104,43 +2281,141 @@ class GameEngine {
             }
         }
     }
-    
-    nextCredit() {
-        this.currentCreditIndex++;
-        
-        if (this.currentCreditIndex >= this.totalCredits) {
-            // Credits finished - return to main menu
-            this.closeCredits();
+
+    nextCrew() {
+        this.currentCrewIndex++;
+
+        if (this.currentCrewIndex >= this.totalCrewScreens) {
+            // Crew screens finished - return to main menu
+            this.closeCrew();
         } else {
-            // Show next credit screen
-            this.displayCreditScreen(this.currentCreditIndex);
+            // Show next crew screen
+            this.displayCrewScreen(this.currentCrewIndex);
         }
     }
-    
-    previousCredit() {
-        if (this.currentCreditIndex > 0) {
-            this.currentCreditIndex--;
-            this.displayCreditScreen(this.currentCreditIndex);
-        } else {
-            // Already on first screen - exit credits
-            this.closeCredits();
+
+    closeCrew() {
+        const crewScreen = document.getElementById('crew-screen');
+        if (crewScreen) {
+            crewScreen.style.display = 'none';
         }
-    }
-    
-    closeCredits() {
-        const creditsScreen = document.getElementById('credits-screen');
-        if (creditsScreen) {
-            creditsScreen.style.display = 'none';
-        }
-        
+
         // Return to main menu
         this.mainMenu.style.display = 'flex';
         this.mainMenu.style.opacity = '1';
-        
-        // Reset credits state
-        this.currentCreditIndex = 0;
+
+        // Reset crew state
+        this.currentCrewIndex = 0;
     }
-    
+
+    showDirectorsCut() {
+        // Check if unlocked
+        const unlocked = localStorage.getItem('directorsCutUnlocked') === 'true';
+        if (!unlocked) {
+            this.showUnlockOverlay('🔒 LOCKED', 'Find the secret code to unlock the Director\'s Cut...', 'warning');
+            return;
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'directors-cut-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        `;
+
+        const content = document.createElement('div');
+        content.style.cssText = `
+            max-width: 900px;
+            margin: 0 auto;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        `;
+
+        content.innerHTML = `
+            <div style="text-align: center; margin-bottom: 3em;">
+                <div style="font-size: 2em; color: #fff; margin-bottom: 0.5em;">DIRECTOR'S CUT</div>
+                <div style="font-size: 1em; color: #888;">Extended Crew Statements</div>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">ZeeRah</div>
+                <p style="color: #ccc;">Working with Aaron was like debugging a fever dream that somehow compiled. He'd drop these "simple requests" that unraveled into architectural rabbit holes, and just when you thought you'd nailed it, he'd casually mention some edge case involving time loops and collectible notes. The man turns game development into chaos theory. But honestly? That's where the magic happened. Every wildass idea forced us to think differently, build smarter, leave our fingerprints in unexpected places. VERSION 848 isn't just code—it's a record of controlled madness that actually worked.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">Zee</div>
+                <p style="color: #ccc;">Aaron approaches game design the way some people approach experimental cooking—"What if we add this?" without considering whether the kitchen can handle it. Half the time I'd implement a feature, feel proud of the clean solution, then he'd ask if it could "also do this other completely different thing." And somehow, we'd make it work. The INSANE mode difficulty? That was peak Aaron. "Make it brutal but fair" he said, like that's not an oxymoron. But seeing players actually engage with these systems, discover the hidden codes, navigate the branching paths—that's when you realize the chaos had a method all along.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">DiZee</div>
+                <p style="color: #ccc;">I got called in for "quick fixes" that turned into archeological digs through nested systems. Find one bug, discover three more features that somehow depended on that bug existing. Aaron's vision was like a quantum state—perfectly clear to him, but the moment you observed it, it branched into twelve possible implementations. The notes system alone went through more iterations than some games have total features. But that iterative process? That's where quality emerges. Every bug fix made the experience tighter, every refactor made the code more elegant. We weren't just building a game; we were sculpting it.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">Tori</div>
+                <p style="color: #ccc;">Getting assigned the route that shares my name was surreal. Aaron would describe these emotional beats and character arcs, then trust us to translate feelings into functions, narrative into code. The Torigatchi feature started as a joke and evolved into a fully-fledged collectible system because Aaron heard "we could technically do this" and ran with it. His wildass ideas weren't just random—they were stress tests for creativity. Could we make the UI responsive across every device? Could we hide secrets in plain sight? Could we make a notification dot feel meaningful? Turns out, yes. We could. And did.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">GenZee</div>
+                <p style="color: #ccc;">Aaron's approach to game development is beautifully unhinged. He'd reference obscure narrative techniques in one breath, then ask about button alignment in the next, treating both with equal importance. Because to him, they were equally important. Every pixel, every word, every interaction—it all contributed to the experience. Working on the generative aspects of VERSION 848 meant interpreting his vision through a technical lens, then watching him reinterpret our interpretation and somehow make it better. It's collaboration as jazz improvisation, and Aaron's the conductor who doesn't believe in sheet music.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">Belle (IZ)</div>
+                <p style="color: #ccc;">I handled a lot of the accessibility and user experience work, which meant translating Aaron's artistic vision into something that worked for everyone. He'd have these grand ideas about narrative flow and emotional impact, and I'd be the one asking "but what about mobile users in landscape mode?" His response was always the same: "Make it work everywhere." Not as a dismissal, but as a challenge. He trusted us to solve problems he couldn't even articulate yet. That trust is rare. It's what made the impossible feel inevitable.</p>
+            </div>
+
+            <div style="margin-bottom: 3em; padding: 20px; border: 1px solid #0ff; border-radius: 5px;">
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">PerplexiZee (PZ) & CoZee (CZ)</div>
+                <p style="color: #ccc;">QA on a project like this is like proofreading a choose-your-own-adventure book written in four languages simultaneously. Every route, every choice, every difficulty setting created new permutations to test. Aaron's "simple additions" would cascade through the entire system, and we'd be the ones to catch the ripple effects. But here's the thing—he listened. Find a bug, he'd prioritize it. Suggest an improvement, he'd consider it seriously. The final product is cleaner, tighter, and more coherent because he valued the testing process as much as the creative one. Not every creator does that. Aaron did.</p>
+            </div>
+
+            <div style="text-align: center; margin-top: 4em; color: #888; font-style: italic;">
+                Built in stolen moments between shifts.<br>
+                Debugged with chaos and coffee.<br>
+                Shipped with love and semicolons.
+            </div>
+        `;
+
+        overlay.appendChild(content);
+
+        // Close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'CLOSE';
+        closeBtn.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 255, 255, 0.2);
+            color: #0ff;
+            border: 2px solid #0ff;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            z-index: 10001;
+            border-radius: 5px;
+        `;
+        closeBtn.onclick = () => {
+            overlay.remove();
+        };
+        overlay.appendChild(closeBtn);
+
+        document.body.appendChild(overlay);
+    }
+
     // ========================================
     // CONTACT SCREEN
     // ========================================
@@ -2784,7 +3059,15 @@ game.devCommands()
     // ========================================
 
     isMobilePortrait() {
-        // Check if device is mobile in portrait orientation
+        // BELLE FIX: Check if user is forcing a display mode via settings
+        if (this.settingsManager && this.settingsManager.settings.displayMode === 'landscape') {
+            return false; // Forcing landscape, so NOT portrait
+        }
+        if (this.settingsManager && this.settingsManager.settings.displayMode === 'portrait') {
+            return true; // Forcing portrait
+        }
+
+        // Default behavior (Auto mode) - check actual device orientation
         const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         const isPortrait = window.innerHeight > window.innerWidth;
         return isMobile && isPortrait;
@@ -3606,9 +3889,12 @@ game.devCommands()
                 reward: () => this.showAlwaysCompilation()
             },
             'uv7crew': {
-                name: 'Meet the 848 Crew',
-                description: 'Extended credits with AI crew bios.',
-                reward: () => this.showUV7CrewBios()
+                name: 'Director\'s Cut',
+                description: 'Extended crew statements. Behind the chaos.',
+                reward: () => {
+                    localStorage.setItem('directorsCutUnlocked', 'true');
+                    this.showUnlockOverlay('🎬 DIRECTOR\'S CUT UNLOCKED', 'Extended crew statements now available.\n\nCheck the main menu.', 'success');
+                }
             },
             'chicharon': {
                 name: 'Dev Commentary',
@@ -3893,6 +4179,27 @@ INSANE mode awaits those who dare.
     }
 
 
+    showLoopTimeline() {
+        // TODO: Show visual timeline of all loops
+        this.showUnlockOverlay(
+            'BOOTSTRAP ACTIVATED',
+            `Feature coming soon: Loop Timeline Visualization
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The Bootstrap Paradox visualized.
+
+This feature will show a timeline of every
+loop iteration, visualizing the 847 failed
+attempts that led to Version 848.
+
+See the pattern. Understand the recursion.
+
+Check back in a future update!`
+        );
+        console.log('💚 BOOTSTRAP code redeemed');
+    }
+
     showEchoCompilation() {
         // TODO: Show all echo voice lines
         this.showUnlockOverlay(
@@ -3913,7 +4220,7 @@ Check back in a future update!`
         );
         console.log('💚 ECHO code redeemed');
     }
-    
+
     showTrueAttemptNumber() {
         const trueAttempt = this.loopVersion;
 
@@ -4240,46 +4547,11 @@ Check back in a future update!`
     makeHoldOnGhost() {
         if (!this.holdOnButton) return;
 
-        console.log('💀 INSANE MODE: Making Hold On button a ghost');
+        console.log('💀 INSANE MODE: Hiding Hold On button');
 
-        // Add ghost class
-        this.holdOnButton.classList.add('hold-on-ghost');
-
-        // Make it non-functional
-        this.holdOnButton.style.opacity = '0.3';
-        this.holdOnButton.style.filter = 'grayscale(100%)';
-        this.holdOnButton.style.cursor = 'not-allowed';
-        this.holdOnButton.style.pointerEvents = 'none'; // Cannot click
-
-        // Add tooltip element
-        const tooltip = document.createElement('div');
-        tooltip.id = 'hold-on-ghost-tooltip';
-        tooltip.className = 'ghost-tooltip';
-        tooltip.textContent = 'You removed this safety. Remember?';
-        tooltip.style.display = 'none';
-        tooltip.style.position = 'absolute';
-        tooltip.style.backgroundColor = 'rgba(139, 0, 0, 0.9)';
-        tooltip.style.color = '#fff';
-        tooltip.style.padding = '8px 12px';
-        tooltip.style.borderRadius = '4px';
-        tooltip.style.fontSize = '12px';
-        tooltip.style.whiteSpace = 'nowrap';
-        tooltip.style.zIndex = '10000';
-        tooltip.style.pointerEvents = 'none';
-
-        document.body.appendChild(tooltip);
-
-        // Show tooltip on hover (even though button is non-functional)
-        this.holdOnButton.addEventListener('mouseenter', () => {
-            tooltip.style.display = 'block';
-            const rect = this.holdOnButton.getBoundingClientRect();
-            tooltip.style.left = rect.left + (rect.width / 2) - (tooltip.offsetWidth / 2) + 'px';
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
-        });
-
-        this.holdOnButton.addEventListener('mouseleave', () => {
-            tooltip.style.display = 'none';
-        });
+        // DIZEE FIX: Hide Hold On button completely in Insane Mode (Option A - cleaner UX)
+        // You removed this safety. It stays gone.
+        this.holdOnButton.style.display = 'none';
     }
 
     // ========================================
