@@ -160,6 +160,7 @@ class StandaloneNotesViewer {
                     <button class="notes-tab active" data-tab="tori">TORI'S NOTES</button>
                     <button class="notes-tab ${ronnieTabUnlocked ? '' : 'locked'}" data-tab="ronnie">${ronnieTabUnlocked ? "RONNIE'S NOTES" : 'LOCKED'}</button>
                     <button class="notes-tab" data-tab="features">FEATURES</button>
+                    <button class="notes-tab" data-tab="codes">CODES</button>
                 </div>
 
                 <!-- Tab Content Containers -->
@@ -172,9 +173,37 @@ class StandaloneNotesViewer {
                 <div class="notes-tab-content" id="tab-features">
                     ${this.renderFeaturesTab()}
                 </div>
+                <div class="notes-tab-content" id="tab-codes">
+                    ${this.renderCodesTab()}
+                </div>
 
                 <div class="notes-footer">
                     <button class="back-btn" onclick="game.closeStandaloneNotes()">BACK TO MENU</button>
+                </div>
+            </div>
+
+            <!-- DIZEE FIX: Note overlay for standalone viewer -->
+            <div id="notes-overlay" style="display: none;">
+                <div id="notes-overlay-content">
+                    <!-- Close button -->
+                    <button class="close-x" onclick="game.standaloneNotesViewer.closeNoteOverlay()">✕</button>
+
+                    <!-- Note header (FROM + SUBJECT) -->
+                    <div id="note-overlay-header">
+                        <div id="note-from">FROM: Z (The Architect)</div>
+                        <div id="note-subject">SUBJECT: Observer Note 003</div>
+                    </div>
+
+                    <!-- Note body -->
+                    <div id="note-overlay-body">
+                        [Note content will be inserted here]
+                    </div>
+
+                    <!-- Navigation buttons -->
+                    <div class="note-navigation">
+                        <button id="note-prev-btn" class="nav-btn">← PREVIOUS</button>
+                        <button id="note-next-btn" class="nav-btn">NEXT →</button>
+                    </div>
                 </div>
             </div>
         `;
@@ -326,16 +355,16 @@ class StandaloneNotesViewer {
                 this.unlockedNotes[type].forEach(noteId => {
                     const note = allNoteDefs[noteId];
                     if (note) {
-                        const typeColor = this.getTypeColor(type);
-                        const routeLabel = this.getRouteLabel(type);
+                        const sender = this.getSenderName(type);
+                        const isUnread = this.readStatus[`note_${noteId}`] === false;
+                        const unreadClass = isUnread ? 'unread' : '';
+                        const unreadDot = isUnread ? '<span class="note-unread-dot"></span>' : '';
 
                         html += `
-                            <div class="note-entry" style="border-left-color: ${typeColor};">
-                                <div class="note-header-row">
-                                    <span class="note-route-tag" style="background: ${typeColor};">${routeLabel}</span>
-                                    <span class="note-title">${note.title}</span>
-                                </div>
-                                <div class="note-content-text">${note.content}</div>
+                            <div class="note-item-header ${unreadClass}" data-note-id="${noteId}">
+                                ${unreadDot}
+                                <div class="note-header-from">FROM: ${sender}</div>
+                                <div class="note-header-subject">SUBJECT: ${note.title}</div>
                             </div>
                         `;
                     }
@@ -344,7 +373,15 @@ class StandaloneNotesViewer {
         });
 
         html += '</div>';
-        return hasNotes ? html : '<div class="no-notes-message"><p>No notes from Tori\'s route yet.</p></div>';
+
+        if (!hasNotes) {
+            return '<div class="no-notes-message"><p>No notes from Tori\'s route yet.</p></div>';
+        }
+
+        // Attach click handlers after content is rendered
+        setTimeout(() => this.attachNoteClickHandlers('tori'), 0);
+
+        return html;
     }
 
     renderRonnieNotes() {
@@ -359,16 +396,16 @@ class StandaloneNotesViewer {
                 this.unlockedNotes[type].forEach(noteId => {
                     const note = allNoteDefs[noteId];
                     if (note) {
-                        const typeColor = this.getTypeColor(type);
-                        const routeLabel = this.getRouteLabel(type);
+                        const sender = this.getSenderName(type);
+                        const isUnread = this.readStatus[`note_${noteId}`] === false;
+                        const unreadClass = isUnread ? 'unread' : '';
+                        const unreadDot = isUnread ? '<span class="note-unread-dot"></span>' : '';
 
                         html += `
-                            <div class="note-entry" style="border-left-color: ${typeColor};">
-                                <div class="note-header-row">
-                                    <span class="note-route-tag" style="background: ${typeColor};">${routeLabel}</span>
-                                    <span class="note-title">${note.title}</span>
-                                </div>
-                                <div class="note-content-text">${note.content}</div>
+                            <div class="note-item-header ${unreadClass}" data-note-id="${noteId}">
+                                ${unreadDot}
+                                <div class="note-header-from">FROM: ${sender}</div>
+                                <div class="note-header-subject">SUBJECT: ${note.title}</div>
                             </div>
                         `;
                     }
@@ -377,7 +414,15 @@ class StandaloneNotesViewer {
         });
 
         html += '</div>';
-        return hasNotes ? html : '<div class="no-notes-message"><p>No notes from Ronnie\'s route yet.</p></div>';
+
+        if (!hasNotes) {
+            return '<div class="no-notes-message"><p>No notes from Ronnie\'s route yet.</p></div>';
+        }
+
+        // Attach click handlers after content is rendered
+        setTimeout(() => this.attachNoteClickHandlers('ronnie'), 0);
+
+        return html;
     }
 
     renderLockedTab() {
@@ -454,6 +499,64 @@ class StandaloneNotesViewer {
         return html;
     }
 
+    renderCodesTab() {
+        // DIZEE: Render all secret codes (discovered + locked)
+        const discoveredCodes = this.game.secretCodesManager?.discoveredCodes || new Set();
+
+        // All discoverable codes (NOT dev commands) - 12 total
+        const allCodes = [
+            { code: 'torigatchi', name: 'The Reverse Door', icon: '🚪', description: 'Two versions of Tori. Choose your peace.' },
+            { code: 'ronniegatchi', name: 'The Inspiration', icon: '🎮', description: 'The game that started it all.' },
+            { code: 'always3', name: 'Storm Dragon Signature', icon: '💚', description: '"Always. Always. Always." - Every time it appears.' },
+            { code: 'uv7crew', name: 'Director\'s Cut', icon: '🎬', description: 'Extended crew statements. Behind the chaos.' },
+            { code: 'chicharon', name: 'Dev Commentary', icon: '🎙️', description: 'Behind-the-scenes notes from the creator.' },
+            { code: 'bootstrap', name: 'Loop Timeline', icon: '🔄', description: 'Visualize every attempt that led here.' },
+            { code: 'echo', name: 'Voices of 847', icon: '👻', description: 'Compilation of all echo voice lines.' },
+            { code: '848', name: 'True Attempt Number', icon: '🔢', description: 'Your actual loop count (including failures).' },
+            { code: 'echobreak', name: 'Echo Silence', icon: '🔇', description: 'Disable Echo interruptions. The observers fall silent.' },
+            { code: 'tetherlock', name: 'Tether Freeze', icon: '🔗', description: 'Lock tether at current level. Stop the decay.' },
+            { code: 'saveanywhere', name: 'Cage Breaker', icon: '⚡', description: 'Bypass Act 1 save restriction. Despair\'s cage broken.' },
+            { code: 'dizee', name: 'The Architect\'s Signature', icon: '🖤', description: 'Recognition for the one who built this world.' }
+        ];
+
+        const discoveredCount = discoveredCodes.size;
+        const totalCount = allCodes.length;
+
+        let html = `
+            <div class="codes-container">
+                <div class="codes-header">
+                    <h3>SECRET CODES</h3>
+                    <div class="codes-progress">${discoveredCount} / ${totalCount} Discovered</div>
+                </div>
+                <div class="codes-list">
+        `;
+
+        allCodes.forEach(item => {
+            const discovered = discoveredCodes.has(item.code);
+            html += `
+                <div class="code-entry ${discovered ? 'discovered' : 'locked'}">
+                    <div class="code-icon">${discovered ? item.icon : '🔒'}</div>
+                    <div class="code-details">
+                        <div class="code-name">${discovered ? item.name : '?????'}</div>
+                        <div class="code-description">${discovered ? item.description : 'Undiscovered'}</div>
+                    </div>
+                    ${discovered ? '<div class="code-status">✓ UNLOCKED</div>' : ''}
+                </div>
+            `;
+        });
+
+        html += `
+                </div>
+                <div class="codes-hint">
+                    <p>Find codes hidden throughout the story, or discover them online.</p>
+                    <p>Enter codes in Settings → Secret Codes to unlock special content!</p>
+                </div>
+            </div>
+        `;
+
+        return html;
+    }
+
     getRouteLabel(type) {
         const labels = {
             z: 'Z',
@@ -485,7 +588,251 @@ class StandaloneNotesViewer {
         // This ensures standalone viewer always has ALL notes, stays in sync
         return CollectiblesManager.getAllNoteDefinitions();
     }
-    
+
+    // ========================================
+    // EMAIL-STYLE OVERLAY METHODS
+    // Transform notes from expandable list to inbox metaphor
+    // ========================================
+
+    openNoteOverlay(noteId, allNoteIds) {
+        // Store current note context for navigation
+        this.currentNoteId = noteId;
+        this.currentNoteList = allNoteIds;
+
+        // Display the note
+        this.displayNoteInOverlay(noteId);
+
+        // Mark as read
+        this.markNoteAsRead(noteId);
+
+        // Show overlay
+        const overlay = document.getElementById('notes-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+        }
+
+        // Update navigation buttons
+        this.updateNavigationButtons();
+
+        // ESC key to close
+        this.escKeyHandler = (e) => {
+            if (e.key === 'Escape') {
+                this.closeNoteOverlay();
+            }
+        };
+        document.addEventListener('keydown', this.escKeyHandler);
+    }
+
+    displayNoteInOverlay(noteId) {
+        const allNoteDefs = this.getAllNoteDefinitions();
+        const note = allNoteDefs[noteId];
+
+        if (!note) {
+            console.error('Note not found:', noteId);
+            return;
+        }
+
+        // Determine sender and note type
+        const noteType = this.getNoteType(noteId);
+        const sender = this.getSenderName(noteType);
+
+        // Update overlay content
+        const fromEl = document.getElementById('note-from');
+        const subjectEl = document.getElementById('note-subject');
+        const bodyEl = document.getElementById('note-overlay-body');
+        const overlayContent = document.getElementById('notes-overlay-content');
+        const overlay = document.getElementById('notes-overlay');
+
+        if (fromEl) fromEl.textContent = `FROM: ${sender}`;
+        if (subjectEl) subjectEl.textContent = `SUBJECT: ${note.title}`;
+
+        // DIZEE: Process code drop for this note (delegate to collectibles manager)
+        let dropData = null;
+        if (this.game && this.game.collectiblesManager) {
+            dropData = this.game.collectiblesManager.processNoteDrop(noteId);
+        }
+
+        // Build note content with code drop footer if applicable
+        let fullContent = note.content;
+
+        if (dropData && dropData.hasCode) {
+            // CODE DETECTED - Show the discovered code
+            fullContent += `
+                <div class="note-code-footer code-detected">
+                    <div class="code-divider">— — — — —</div>
+                    <div class="signal-header">🔓 ENCRYPTED SIGNAL DETECTED 🔓</div>
+                    <div class="signal-code">${dropData.code.toUpperCase()}</div>
+                    <div class="signal-hint">Code automatically added to discovered codes list</div>
+                </div>
+            `;
+        } else if (dropData && dropData.hasCode === false && getNoteMetadata(noteId) && getNoteMetadata(noteId).pool && getNoteMetadata(noteId).pool.length > 0) {
+            // NO CODE THIS TIME - Show hint about RNG
+            const seenNotes = this.game.collectiblesManager ? this.game.collectiblesManager.seenNotes : {};
+            const timesViewed = seenNotes[noteId] || 1;
+            const remaining = 3 - timesViewed;
+
+            if (remaining > 0) {
+                fullContent += `
+                    <div class="note-code-footer code-hint">
+                        <div class="code-divider">— — — — —</div>
+                        <div class="signal-header">📡 Signal Unstable</div>
+                        <div class="signal-status">Encrypted data detected but unreadable... (View ${remaining} more time${remaining > 1 ? 's' : ''} for guaranteed signal)</div>
+                    </div>
+                `;
+            }
+        }
+
+        if (bodyEl) bodyEl.innerHTML = fullContent;
+
+        // Apply color class based on note type
+        if (overlay) {
+            overlay.className = '';
+            if (noteType === 'cz' || noteType === 'zr') {
+                overlay.classList.add('meta-note');
+            } else if (noteType === 'special') {
+                overlay.classList.add('despair-note');
+            }
+        }
+    }
+
+    getNoteType(noteId) {
+        // Determine note type from ID by checking which array contains it
+        for (const type of Object.keys(this.unlockedNotes)) {
+            if (this.unlockedNotes[type].includes(noteId)) {
+                return type;
+            }
+        }
+
+        // Check ID prefix patterns as fallback
+        if (noteId.includes('_cz_')) return 'cz';
+        if (noteId.includes('_zr_')) return 'zr';
+        if (noteId.includes('_gz_')) return 'gz';
+        if (noteId.includes('_iz_')) return 'iz';
+        if (noteId.includes('_pz_')) return 'pz';
+        if (noteId.includes('ending')) return 'special';
+
+        return 'z'; // Default to Z
+    }
+
+    getSenderName(noteType) {
+        const senders = {
+            z: 'Z (The Architect)',
+            cz: 'CZ (The Heart)',
+            zr: 'ZR (Chaos Embodied)',
+            gz: 'GZ (Reality Breaker)',
+            iz: 'IZ (Fresh Eyes)',
+            pz: 'PZ (Question Engine)',
+            special: 'System Notice'
+        };
+        return senders[noteType] || 'Unknown Observer';
+    }
+
+    updateNavigationButtons() {
+        const prevBtn = document.getElementById('note-prev-btn');
+        const nextBtn = document.getElementById('note-next-btn');
+
+        if (!this.currentNoteList || this.currentNoteList.length === 0) {
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+        }
+
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+
+        // Enable/disable based on position
+        if (prevBtn) {
+            prevBtn.disabled = currentIndex <= 0;
+            prevBtn.onclick = () => this.navigateNote(-1);
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = currentIndex >= this.currentNoteList.length - 1;
+            nextBtn.onclick = () => this.navigateNote(1);
+        }
+    }
+
+    navigateNote(direction) {
+        if (!this.currentNoteList) return;
+
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+        const newIndex = currentIndex + direction;
+
+        if (newIndex >= 0 && newIndex < this.currentNoteList.length) {
+            const newNoteId = this.currentNoteList[newIndex];
+            this.currentNoteId = newNoteId;
+            this.displayNoteInOverlay(newNoteId);
+            this.markNoteAsRead(newNoteId);
+            this.updateNavigationButtons();
+        }
+    }
+
+    markNoteAsRead(noteId) {
+        const key = `note_${noteId}`;
+        if (this.readStatus[key] !== true) {
+            this.readStatus[key] = true;
+            this.saveReadStatus();
+            this.updateNotificationDots();
+
+            // Refresh the notes list to update unread indicators
+            this.refreshNotesList();
+        }
+    }
+
+    closeNoteOverlay() {
+        const overlay = document.getElementById('notes-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+
+        // Remove ESC key listener
+        if (this.escKeyHandler) {
+            document.removeEventListener('keydown', this.escKeyHandler);
+            this.escKeyHandler = null;
+        }
+
+        // Clear current note context
+        this.currentNoteId = null;
+        this.currentNoteList = null;
+    }
+
+    refreshNotesList() {
+        // Refresh the active tab content to update unread indicators
+        const activeTab = document.querySelector('.notes-tab.active');
+        if (!activeTab) return;
+
+        const tabName = activeTab.getAttribute('data-tab');
+        const tabContent = document.getElementById(`tab-${tabName}`);
+
+        if (!tabContent) return;
+
+        // Re-render the tab content
+        if (tabName === 'tori') {
+            tabContent.innerHTML = this.renderToriNotes();
+        } else if (tabName === 'ronnie') {
+            tabContent.innerHTML = this.renderRonnieNotes();
+        } else if (tabName === 'features') {
+            tabContent.innerHTML = this.renderFeaturesTab();
+        } else if (tabName === 'codes') {
+            tabContent.innerHTML = this.renderCodesTab();
+        }
+
+        // Re-attach click handlers for note headers
+        this.attachNoteClickHandlers(tabName);
+    }
+
+    attachNoteClickHandlers(tabName) {
+        // Get all note headers in the current tab
+        const headers = document.querySelectorAll(`#tab-${tabName} .note-item-header`);
+
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const noteId = header.getAttribute('data-note-id');
+                const allNoteIds = Array.from(headers).map(h => h.getAttribute('data-note-id'));
+                this.openNoteOverlay(noteId, allNoteIds);
+            });
+        });
+    }
+
     close() {
         const viewer = document.getElementById('standalone-notes-viewer');
         if (viewer) {

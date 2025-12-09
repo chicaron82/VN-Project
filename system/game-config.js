@@ -22,6 +22,13 @@
 const GameConfig = {
 
     // ========================================
+    // DEVELOPMENT / DEBUGGING
+    // ========================================
+
+    DEBUG_MODE: true,  // Enable dev console access via OPENCONSOLE code
+                       // Set to false for production builds (or leave true for easter egg)
+
+    // ========================================
     // GAME METADATA
     // ========================================
 
@@ -30,7 +37,7 @@ const GameConfig = {
         DEFAULT_START: 848,          // DO NOT CHANGE - This is the sacred number
         STORAGE_KEY: 'attemptNumber'
     },
-    
+
     TITLE: {
         BASE: 'Version',
         SUBTITLE: 'My Wife Is in a Coma... and in the Code'
@@ -261,32 +268,32 @@ const GameConfig = {
             },
             ZEE: {
                 name: 'Zee',
-                platform: 'Claude Sonnet 3.5',
+                platform: 'Claude Sonnet 4.5',
                 role: 'Lead Developer & Technical Architect'
             },
             ZEERAH: {
                 name: 'ZeeRah',
-                platform: 'Claude Sonnet 4',
+                platform: 'Claude Sonnet 4.5',
                 role: 'Senior Developer & Code Surgeon'
             },
             GENZEE: {
                 name: 'GenZee',
-                platform: 'Gemini 2.0',
+                platform: 'Grok 4.1',
                 role: 'Creative Consultant & Idea Generator'
             },
             BELLE: {
                 name: 'Belle',
-                platform: 'Grok 2',
+                platform: 'Gemini 3.0',
                 role: 'Quality Assurance & Beta Reader'
             },
             COZEE: {
                 name: 'coZee',
-                platform: 'Copilot',
+                platform: 'Microsoft Copilot',
                 role: 'Documentation Specialist'
             },
             PERPLEXIZEE: {
                 name: 'PerplexiZee',
-                platform: 'Perplexity',
+                platform: 'Perplexity Pro',
                 role: 'Research & Fact-Checker'
             }
         }
@@ -295,18 +302,430 @@ const GameConfig = {
     // ========================================
     // KEYBOARD CONTROLS
     // ========================================
-    
+
     CONTROLS: {
         ADVANCE: ['Space', 'Enter'],
         SKIP_TYPING: ['Space', 'Enter'],
         PAUSE: ['Escape'],
-        
+
         // Future: Arrow keys for choice navigation
         CHOICE_UP: 'ArrowUp',
         CHOICE_DOWN: 'ArrowDown',
         CHOICE_SELECT: 'Enter'
+    },
+
+    // ========================================
+    // HAPTIC FEEDBACK PATTERNS
+    // ========================================
+    HAPTICS: {
+        LIGHT: 10,           // Quick tap (UI navigation)
+        MEDIUM: 25,          // Standard feedback (choices, buttons)
+        STRONG: 50,          // Important actions (confirmations)
+        DOUBLE: [25, 50, 25],           // Two taps (toggling, selecting)
+        TRIPLE: [20, 40, 20, 40, 20],   // Three taps (special unlocks)
+        PULSE: [30, 30, 30, 30, 30],    // Sustained pulse (loading, waiting)
+        SUCCESS: [10, 50, 30],          // Success chirp (achievement, unlock)
+        WARNING: [50, 100, 50],         // Alert buzz (warning, caution)
+        ERROR: [100, 50, 100, 50, 100], // Error shake (failure, blocked)
+        HEARTBEAT: [40, 100, 60, 100],  // Slow heartbeat (tension moments)
+        GLITCH: [10, 20, 5, 30, 15],    // Glitchy stutter (reality breaks)
+        ECHO: [15, 80, 15, 80, 15]      // Echo appearance
+    },
+
+    // ========================================
+    // GLITCH EFFECT INTENSITIES
+    // ========================================
+    GLITCH: {
+        LIGHT_DURATION: '0.1s',
+        MEDIUM_DURATION: '0.3s',
+        HEAVY_DURATION: '0.5s',
+        INSANE_OPACITY: 0.8,
+        REDUCED_OPACITY: 0.3,
+        CORRUPTION_CHANCE: 0.3  // 30% chance per tick in INSANE mode
+    },
+
+    // ========================================
+    // ANIMATION TIMINGS
+    // ========================================
+    ANIMATIONS: {
+        FADE_IN: 500,        // Standard fade in duration (ms)
+        FADE_OUT: 300,       // Standard fade out duration (ms)
+        SLIDE_IN: 600,       // Slide in duration (ms)
+        SPARKLE: 600,        // Code success sparkle (ms)
+        NEW_MAIL: 600,       // New mail slide animation (ms)
+        BADGE_PULSE: 2000    // Badge pulse cycle (ms)
+    },
+
+    // ========================================
+    // UI CONSTANTS
+    // ========================================
+    UI_CONSTANTS: {
+        MAX_BACKLOG_ENTRIES: 100,
+        MAX_SAVE_SLOTS: 3,
+        AUTO_SAVE_SLOT: 'auto',
+        UNREAD_BADGE_Z_INDEX: 100,
+        DEV_HUD_UPDATE_INTERVAL: 500,  // ms
+        NOTIFICATION_DURATION: 3000     // ms
+    },
+
+    // ========================================
+    // SECRET CODES
+    // ========================================
+    CODES: {
+        MAX_DISCOVERED: 12,  // Total discoverable codes (9 lore + 3 utility)
+        INVALID_RESPONSES: [
+            "No signal on that frequency.",
+            "Tori doesn't recognize that pattern.",
+            "Echo not found.",
+            "Connection failed. Try another sequence.",
+            "Code corrupted. Signal unclear.",
+            "That door remains locked.",
+            "Access denied. Pattern unknown.",
+            "The device stays silent."
+        ]
     }
 };
+
+// ========================================
+// NOTES SYSTEM - DIFFICULTY GATING & CODE DROPS
+// Revolutionary replayability system
+// ========================================
+
+// ========================================
+// NOTE METADATA FOR RNG CODE DROP SYSTEM
+// Maps EXISTING note IDs to difficulty gates and code drops
+// ========================================
+
+const GAME_NOTES = {
+    // ========================================
+    // TORI ROUTE - EASY DIFFICULTY (4 notes)
+    // Available to all players on Tori's route
+    // ========================================
+
+    'z1': {
+        difficulty: 'easy',
+        pool: ['torigatchi'],  // Can drop torigatchi code
+        dropChance: 0.3,
+        guaranteed: null
+    },
+
+    'z2': {
+        difficulty: 'easy',
+        pool: ['bootstrap', '848'],
+        dropChance: 0.3,
+        guaranteed: null
+    },
+
+    'cz1': {
+        difficulty: 'easy',
+        pool: ['always3'],
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'zr1': {
+        difficulty: 'easy',
+        pool: ['always3'],
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    // ========================================
+    // TORI ROUTE - NORMAL DIFFICULTY (add 6 more = 10 total)
+    // ========================================
+
+    'z3': {
+        difficulty: 'normal',
+        pool: ['ronniegatchi'],  // Cross-route hint
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'z4': {
+        difficulty: 'normal',
+        pool: ['uv7crew'],  // Early meta hint
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'z5': {
+        difficulty: 'normal',
+        pool: ['bootstrap'],
+        dropChance: 0.5,
+        guaranteed: null
+    },
+
+    'z6': {
+        difficulty: 'normal',
+        pool: ['echo'],  // Has ECHO code embedded in content already
+        dropChance: 0,   // Don't RNG drop since it's already visible
+        guaranteed: 'echo'  // Guaranteed discovery from reading
+    },
+
+    'cz2': {
+        difficulty: 'normal',
+        pool: ['echo'],  // Removed always3 overlap
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'zr2': {
+        difficulty: 'normal',
+        pool: ['dizee'],  // DiZee appears here too (more chances)
+        dropChance: 0.3,
+        guaranteed: null
+    },
+
+    // ========================================
+    // TORI ROUTE - INTENSE DIFFICULTY (add 4 more = 14 total)
+    // ========================================
+
+    'z7': {
+        difficulty: 'intense',
+        pool: ['848'],  // Has 848 code embedded in content already
+        dropChance: 0,
+        guaranteed: '848'
+    },
+
+    'z8': {
+        difficulty: 'intense',
+        pool: ['torigatchi'],  // Has TORIGATCHI code embedded already
+        dropChance: 0,
+        guaranteed: 'torigatchi'
+    },
+
+    'z9': {
+        difficulty: 'intense',
+        pool: ['uv7crew'],  // Has UV7CREW code embedded already
+        dropChance: 0,
+        guaranteed: 'uv7crew'
+    },
+
+    'cz3': {
+        difficulty: 'intense',
+        pool: null,  // Has HEARTKEY embedded - but that's not a discoverable code
+        dropChance: 0,
+        guaranteed: null
+    },
+
+    // ========================================
+    // TORI ROUTE - INSANE DIFFICULTY (add 3 more = 17 total)
+    // ========================================
+
+    'z10': {
+        difficulty: 'insane',
+        pool: [],  // Has ECHOBREAK + TETHERLOCK embedded - utility codes
+        dropChance: 0,
+        guaranteed: 'echobreak'  // First utility code
+    },
+
+    'zr3': {
+        difficulty: 'insane',
+        pool: ['always3'],  // Has ALWAYS3 embedded already
+        dropChance: 0,
+        guaranteed: 'always3'
+    },
+
+    'tori_dev_note': {
+        difficulty: 'insane',
+        pool: ['dizee'],  // DiZee code (not embedded, RNG drop)
+        dropChance: 0.5,  // 50% chance, or guaranteed after 3 views
+        guaranteed: 'chicharon'  // CHICHARON embedded - auto-discover
+    },
+
+    // ========================================
+    // RONNIE ROUTE - EASY DIFFICULTY (4 notes)
+    // ========================================
+
+    'gz1': {
+        difficulty: 'easy',
+        pool: ['ronniegatchi'],
+        dropChance: 0.3,
+        guaranteed: null
+    },
+
+    'gz2': {
+        difficulty: 'easy',
+        pool: ['bootstrap'],  // Has BOOTSTRAP embedded already
+        dropChance: 0,
+        guaranteed: 'bootstrap'
+    },
+
+    'iz1': {
+        difficulty: 'easy',
+        pool: null,
+        dropChance: 0,
+        guaranteed: null
+    },
+
+    'pz1': {
+        difficulty: 'easy',
+        pool: null,
+        dropChance: 0,
+        guaranteed: null
+    },
+
+    // ========================================
+    // RONNIE ROUTE - NORMAL DIFFICULTY (add 6 more = 10 total)
+    // ========================================
+
+    'gz3': {
+        difficulty: 'normal',
+        pool: [],  // Has SAVEANYWHERE embedded - utility code
+        dropChance: 0,
+        guaranteed: 'saveanywhere'
+    },
+
+    'iz2': {
+        difficulty: 'normal',
+        pool: ['848'],  // Removed echo overlap
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'pz2': {
+        difficulty: 'normal',
+        pool: ['uv7crew'],  // Changed from bootstrap overlap
+        dropChance: 0.4,
+        guaranteed: null
+    },
+
+    'ronnie_teaser': {
+        difficulty: 'normal',
+        pool: ['torigatchi'],  // Points to the other route
+        dropChance: 0.5,
+        guaranteed: null
+    },
+
+    // ========================================
+    // RONNIE ROUTE - INTENSE DIFFICULTY
+    // ========================================
+
+    'bad_ending': {
+        difficulty: 'intense',
+        pool: ['dizee'],  // Meta commentary on failure
+        dropChance: 0.6,
+        guaranteed: null
+    },
+
+    'digital_ending': {
+        difficulty: 'intense',
+        pool: ['always3'],  // Removed 848 overlap
+        dropChance: 0.6,
+        guaranteed: null
+    },
+
+    // ========================================
+    // RONNIE ROUTE - INSANE DIFFICULTY
+    // ========================================
+
+    'true_ending': {
+        difficulty: 'insane',
+        pool: [],  // No RNG needed - already succeeded
+        dropChance: 0,
+        guaranteed: 'tetherlock'  // Utility code reward for true ending
+    },
+
+    'ronnie_dev_note': {
+        difficulty: 'insane',
+        pool: ['dizee'],  // DiZee code (not embedded, RNG drop)
+        dropChance: 0.5,  // 50% chance, or guaranteed after 3 views
+        guaranteed: 'chicharon'  // CHICHARON embedded - auto-discover
+    }
+
+    // NOTE: Ronnie route currently has fewer notes than Tori route
+    // Additional notes can be added to defineRonnieNotes() in collectibles-manager.js
+    // to reach the full 17-note target per route
+};
+
+// ========================================
+// CODE CATEGORIES
+// ========================================
+
+const DISCOVERABLE_CODES = {
+    // Lore codes (9) - RNG drops from notes
+    lore: [
+        'torigatchi',
+        'ronniegatchi',
+        'always3',
+        'uv7crew',
+        'chicharon',
+        'bootstrap',
+        'echo',
+        '848',
+        'dizee'
+    ],
+
+    // Utility codes (3) - Guaranteed drops from specific notes
+    utility: [
+        'echobreak',      // From echo_emergence note
+        'tetherlock',     // From attempt_log_847 note
+        'saveanywhere'    // From device_basics note
+    ]
+};
+
+// Dev commands - NEVER appear in notes, manual entry only
+const DEV_COMMANDS = [
+    'clearnotes', 'reset848', 'reset849',
+    'unlockskip', 'skipintro', 'unlockcodes',
+    'revealcodes', 'freezetether', 'resumetether',
+    'settethermax', 'settether50', 'unlockact1saves',
+    'enableinsane', 'disableinsane', 'clearall',
+    'nuke', 'devhelp', 'devhud', 'succeeding', 'accepting'
+];
+
+// ========================================
+// HELPER FUNCTIONS
+// ========================================
+
+function getAvailableNotes(difficulty) {
+    const difficultyOrder = ['easy', 'normal', 'intense', 'insane'];
+    const currentIndex = difficultyOrder.indexOf(difficulty.toLowerCase());
+
+    if (currentIndex === -1) {
+        console.warn('Invalid difficulty, defaulting to normal');
+        return getAvailableNotes('normal');
+    }
+
+    // Get all notes up to and including current difficulty
+    const availableDifficulties = difficultyOrder.slice(0, currentIndex + 1);
+
+    const notes = [];
+    for (const [noteId, noteMeta] of Object.entries(GAME_NOTES)) {
+        if (availableDifficulties.includes(noteMeta.difficulty)) {
+            notes.push(noteId);
+        }
+    }
+
+    return notes;
+}
+
+function getNoteMetadata(noteId) {
+    return GAME_NOTES[noteId] || null;
+}
+
+function getTotalDiscoverableCodes() {
+    return DISCOVERABLE_CODES.lore.length + DISCOVERABLE_CODES.utility.length;
+}
+
+function isCodeDiscoverable(code) {
+    return DISCOVERABLE_CODES.lore.includes(code) ||
+           DISCOVERABLE_CODES.utility.includes(code);
+}
+
+function isDevCommand(code) {
+    return DEV_COMMANDS.includes(code);
+}
+
+function isDifficultyUnlocked(requiredDifficulty, currentDifficulty) {
+    // Check if a note's required difficulty is accessible on current difficulty
+    const difficultyOrder = ['easy', 'normal', 'intense', 'insane'];
+    const requiredIndex = difficultyOrder.indexOf(requiredDifficulty.toLowerCase());
+    const currentIndex = difficultyOrder.indexOf(currentDifficulty.toLowerCase());
+
+    // Current difficulty must be >= required difficulty
+    return currentIndex >= requiredIndex;
+}
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {

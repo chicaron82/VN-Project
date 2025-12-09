@@ -3,6 +3,119 @@
 // Handles text speed, auto-advance, and preferences
 // ========================================
 
+/**
+ * ════════════════════════════════════════════════════════════════
+ * SETTINGS-MANAGER.JS - Game Settings & Preferences System
+ * Manages all player preferences, difficulty modes, and persistence
+ * ════════════════════════════════════════════════════════════════
+ *
+ * TABLE OF CONTENTS
+ * (Line numbers approximate - use search to locate sections)
+ *
+ * 1. INITIALIZATION .............................. Line 80
+ *    - Constructor
+ *    - Default settings object
+ *    - Speed multipliers
+ *    - Backlog initialization
+ *
+ * 2. SETTINGS PERSISTENCE ........................ Line 140
+ *    - loadSettings() from localStorage
+ *    - saveSettings() to localStorage
+ *    - resetSettings() to defaults
+ *
+ * 3. TEXT SPEED SETTINGS ......................... Line 210
+ *    - setTextSpeed() control
+ *    - getTextSpeed() accessor
+ *    - Speed multipliers (slow, normal, fast, instant)
+ *
+ * 4. AUTO-ADVANCE SETTINGS ....................... Line 280
+ *    - setAutoAdvance() toggle
+ *    - getAutoAdvance() accessor
+ *    - setAutoDelay() timing control
+ *
+ * 5. DISPLAY SETTINGS ............................ Line 350
+ *    - setDisplayMode() (auto, portrait, landscape)
+ *    - setFullscreen() toggle
+ *
+ * 6. DIFFICULTY SETTINGS ......................... Line 420
+ *    - setDifficulty() (Easy/Normal/Intense/INSANE)
+ *    - getDifficulty() accessor
+ *    - Difficulty descriptions and validation
+ *
+ * 7. ACCESSIBILITY SETTINGS ...................... Line 520
+ *    - setHapticEnabled() haptic feedback toggle
+ *    - getHapticEnabled() accessor
+ *    - setComfortMode() glitch effects toggle
+ *    - getComfortMode() accessor
+ *    - applyComfortMode() visual updates
+ *
+ * 8. BACKLOG SYSTEM (TIME MACHINE) ............... Line 650
+ *    - addBacklogEntry() capture dialogue state
+ *    - getBacklog() retrieve history
+ *    - clearBacklog() reset history
+ *    - jumpToBacklogEntry() time travel
+ *    - Unjumpable moment filtering
+ *
+ * 9. UI UPDATES .................................. Line 850
+ *    - updateUI() sync sliders/toggles
+ *    - updateDifficultyDisplay() difficulty tab
+ *    - updateSpeedDisplay() text speed display
+ *
+ * 10. GETTER METHODS ............................. Line 1020
+ *     - getTextSpeed()
+ *     - getAutoAdvance()
+ *     - getAutoDelay()
+ *     - getDifficulty()
+ *     - getHapticEnabled()
+ *     - getComfortMode()
+ *
+ * ════════════════════════════════════════════════════════════════
+ * SETTINGS STORED IN LOCALSTORAGE:
+ * - textSpeed (slow/normal/fast/instant)
+ * - autoAdvance (boolean)
+ * - autoDelay (milliseconds)
+ * - autoSkipPrologue (boolean)
+ * - fullscreen (boolean)
+ * - displayMode (auto/portrait/landscape)
+ * - tetherDifficulty (Easy/Normal/Intense/INSANE)
+ * - hapticEnabled (boolean - default OFF)
+ * - comfortMode (boolean - disable glitch effects, default OFF)
+ *
+ * Integration Points:
+ * - Game engine (applies settings to gameplay)
+ * - Typewriter system (text speed control)
+ * - Haptic system (vibration feedback)
+ * - Tether system (difficulty scaling)
+ * - UI (settings button in main menu & pause menu)
+ * - Visual effects (comfort mode disables glitches)
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * SettingsManager
+ *
+ * Handles user preferences, difficulty settings, and backlog (time machine) system.
+ * Manages localStorage persistence for all settings.
+ *
+ * Responsibilities:
+ * - Text speed, auto-advance, haptics, fullscreen toggles
+ * - Difficulty mode switching (Easy/Normal/Intense/INSANE)
+ * - Backlog system (time machine - click past dialogue to jump back)
+ * - Setting validation and application
+ *
+ * Settings Persist Across Sessions:
+ * - Text speed, auto-advance delay, haptic feedback
+ * - Difficulty preference
+ * - Skip prologue, reduce glitch effects
+ *
+ * Time Machine Backlog:
+ * - Stores last 100 dialogue entries
+ * - Captures game state (sprites, background, flags, tether)
+ * - Allows jumping back to specific moments
+ * - Unjumpable moments: System narration, critical story beats
+ *
+ * @class SettingsManager
+ */
 class SettingsManager {
     constructor(game) {
         this.game = game;
@@ -15,7 +128,9 @@ class SettingsManager {
             autoSkipPrologue: false,  // Auto-skip prologue when unlocked
             fullscreen: false,
             displayMode: 'auto',      // auto, portrait, landscape
-            tetherDifficulty: 'normal' // relaxed, normal, intense
+            tetherDifficulty: 'normal', // relaxed, normal, intense
+            hapticEnabled: false,     // ZEE'S ADDITION: Haptic feedback (default OFF) 🖤
+            comfortMode: false        // DIZEE: Disable glitch effects (default OFF)
         };
         
         // Speed multipliers (affects typewriter delay)
@@ -28,17 +143,16 @@ class SettingsManager {
         
         // Auto-advance timer
         this.autoAdvanceTimer = null;
-        
-        // ZEERAH'S SECRET CODES SYSTEM
-        this.discoveredCodes = new Set();
-        this.loadDiscoveredCodes();
-        
+
         // Load settings from localStorage
         this.loadSettings();
-        
+
         // Apply display mode immediately (before UI setup)
         this.applyDisplayMode(this.settings.displayMode);
-        
+
+        // DIZEE: Apply comfort mode on init
+        this.applyComfortMode(this.settings.comfortMode);
+
         // Setup UI event listeners
         this.setupUI();
     }
@@ -119,7 +233,31 @@ class SettingsManager {
                 this.game.toggleFullscreen();
             });
         }
-        
+
+        // ZEE'S ADDITION: Haptic Feedback Toggle 🖤
+        const hapticToggle = document.getElementById('haptic-toggle');
+        if (hapticToggle) {
+            // Set initial state from settings
+            hapticToggle.checked = this.settings.hapticEnabled;
+
+            // Listen for changes
+            hapticToggle.addEventListener('change', (e) => {
+                this.setHapticEnabled(e.target.checked);
+            });
+        }
+
+        // DIZEE: Comfort Mode Toggle
+        const comfortModeToggle = document.getElementById('comfort-mode-toggle');
+        if (comfortModeToggle) {
+            // Set initial state from settings
+            comfortModeToggle.checked = this.settings.comfortMode;
+
+            // Listen for changes
+            comfortModeToggle.addEventListener('change', (e) => {
+                this.setComfortMode(e.target.checked);
+            });
+        }
+
         // Display Mode Buttons
         document.querySelectorAll('.display-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -363,6 +501,61 @@ class SettingsManager {
     }
 
     // ========================================
+    // HAPTIC FEEDBACK
+    // ZEE'S ADDITION: Mobile immersion through vibration 🖤
+    // ========================================
+
+    getHapticEnabled() {
+        return this.settings.hapticEnabled;
+    }
+
+    setHapticEnabled(enabled) {
+        this.settings.hapticEnabled = enabled;
+        this.saveSettings();
+        this.updateUI();
+        console.log(`📳 Haptic feedback: ${enabled ? 'ENABLED' : 'DISABLED'}`);
+
+        // Test vibration when enabled
+        if (enabled && this.game && this.game.triggerHaptic) {
+            this.game.triggerHaptic('double', 'Settings toggle test');
+        }
+    }
+
+    // ========================================
+    // COMFORT MODE
+    // DIZEE: Accessibility - disable glitch effects
+    // ========================================
+
+    getComfortMode() {
+        return this.settings.comfortMode;
+    }
+
+    setComfortMode(enabled) {
+        this.settings.comfortMode = enabled;
+        this.saveSettings();
+        this.updateUI();
+        console.log(`🛡️ Comfort Mode: ${enabled ? 'ENABLED' : 'DISABLED'}`);
+
+        // Update glitch effects immediately
+        this.applyComfortMode(enabled);
+    }
+
+    applyComfortMode(enabled) {
+        // Find all elements with glitch effects
+        const glitchElements = document.querySelectorAll('.version-glitch');
+
+        glitchElements.forEach(el => {
+            if (enabled) {
+                // Disable glitch by adding comfort-mode class
+                el.classList.add('comfort-mode');
+            } else {
+                // Re-enable glitch
+                el.classList.remove('comfort-mode');
+            }
+        });
+    }
+
+    // ========================================
     // INSANE MODE WARNING & COMMITMENT
     // ========================================
 
@@ -435,9 +628,20 @@ class SettingsManager {
         // Close settings and launch directly into the nightmare
         this.game.closeSettings();
 
-        // Brief delay for dramatic effect, then start route
+        // Brief delay for dramatic effect
         setTimeout(() => {
-            this.game.startStory();
+            // Hide main menu first
+            if (this.game.mainMenu) {
+                this.game.mainMenu.style.opacity = '0';
+                setTimeout(() => {
+                    this.game.mainMenu.style.display = 'none';
+                }, 800);
+            }
+
+            // Start Tori's route (it will show cage overlay at the right moment)
+            setTimeout(() => {
+                this.game.startRoute('tori');
+            }, 1000);
         }, 500);
     }
 
@@ -460,15 +664,21 @@ class SettingsManager {
     
     startAutoAdvance(callback) {
         // Start auto-advance timer if enabled
-        if (!this.settings.autoAdvance) return;
-        
+        if (!this.settings.autoAdvance) {
+            console.log('🔧 Auto-advance: disabled in settings');
+            return;
+        }
+
+        console.log(`🔧 Auto-advance: Starting timer (${this.settings.autoDelay}ms)`);
+
         // Clear any existing timer
         if (this.autoAdvanceTimer) {
             clearTimeout(this.autoAdvanceTimer);
         }
-        
+
         // Set new timer
         this.autoAdvanceTimer = setTimeout(() => {
+            console.log('🔧 Auto-advance: Timer expired, advancing...');
             if (callback) callback();
         }, this.settings.autoDelay);
     }
@@ -567,49 +777,6 @@ class SettingsManager {
         this.updateCodesUI();
     }
     
-    updateCodesUI() {
-        const countSpan = document.getElementById('codes-count');
-        const codesList = document.getElementById('codes-list');
-        
-        if (!countSpan || !codesList) return;
-        
-        // Update count
-        countSpan.textContent = this.discoveredCodes.size;
-        
-        // All possible codes
-        const allCodes = [
-            { code: 'torigatchi', name: 'The Reverse Door', icon: '🚪' },
-            { code: 'always3', name: 'Storm Dragon Signature', icon: '💚' },
-            { code: 'uv7crew', name: 'Meet the 848 Crew', icon: '👥' },
-            { code: 'chicharon', name: 'Dev Commentary', icon: '🎙️' },
-            { code: 'bootstrap', name: 'Loop Timeline', icon: '🔄' },
-            { code: 'echo', name: 'Voices of 847', icon: '👻' },
-            { code: '848', name: 'True Attempt Number', icon: '🔢' }
-        ];
-        
-        // Render list
-        codesList.innerHTML = allCodes.map(item => {
-            const discovered = this.hasDiscoveredCode(item.code);
-            return `
-                <div style="
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 8px 12px;
-                    background: ${discovered ? 'rgba(0, 255, 170, 0.1)' : 'rgba(100, 100, 100, 0.1)'};
-                    border-left: 3px solid ${discovered ? '#00ffaa' : '#444'};
-                    border-radius: 3px;
-                ">
-                    <span style="font-size: 1.2em;">${discovered ? item.icon : '🔒'}</span>
-                    <span style="flex: 1; color: ${discovered ? '#00ffaa' : '#666'};">
-                        ${discovered ? item.name : '?????'}
-                    </span>
-                    ${discovered ? '<span style="color: #00ffaa; font-size: 0.8em;">✓ UNLOCKED</span>' : ''}
-                </div>
-            `;
-        }).join('');
-    }
-    
     showCodeResult(result) {
         const messageDiv = document.getElementById('code-result-message');
         if (!messageDiv) return;
@@ -630,51 +797,32 @@ class SettingsManager {
     
     // ========================================
     // SECRET CODES SYSTEM
+    // DIZEE: Delegated to SecretCodesManager 🖤
     // ========================================
-    
-    loadDiscoveredCodes() {
-        const saved = localStorage.getItem('discoveredCodes');
-        if (saved) {
-            try {
-                this.discoveredCodes = new Set(JSON.parse(saved));
-            } catch (e) {
-                console.error('Failed to load discovered codes:', e);
-                this.discoveredCodes = new Set();
-            }
-        }
-    }
-    
-    saveDiscoveredCodes() {
-        localStorage.setItem('discoveredCodes', JSON.stringify([...this.discoveredCodes]));
-    }
-    
-    hasDiscoveredCode(code) {
-        return this.discoveredCodes.has(code.toLowerCase());
-    }
-    
-    discoverCode(code) {
-        this.discoveredCodes.add(code.toLowerCase());
-        this.saveDiscoveredCodes();
-    }
-    
+
     submitSecretCode(code) {
-        if (!code || code.trim() === '') return false;
-        
-        const normalizedCode = code.toLowerCase().trim();
-        
-        // Check if code is valid (defined in game engine)
-        const result = this.game.redeemSecretCode(normalizedCode);
-        
-        if (result.success) {
-            this.discoverCode(normalizedCode);
-            return result;
-        }
-        
-        return { success: false, message: 'Invalid code. Keep searching...' };
+        // Delegate to SecretCodesManager
+        return this.game.secretCodesManager.submitCode(code);
     }
-    
+
+    updateCodesUI() {
+        // Delegate to SecretCodesManager (if it exists)
+        if (this.game.secretCodesManager) {
+            this.game.secretCodesManager.updateCodesUI();
+        }
+    }
+
+    // Backwards compatibility wrappers
     getCodeCount() {
-        return this.discoveredCodes.size;
+        return this.game.secretCodesManager.getCodeCount();
+    }
+
+    hasDiscoveredCode(code) {
+        return this.game.secretCodesManager.hasDiscoveredCode(code);
+    }
+
+    discoverCode(code) {
+        return this.game.secretCodesManager.discoverCode(code);
     }
 }
 
@@ -697,6 +845,19 @@ class BacklogManager {
         // Capture current game state for time travel
         const gameState = this.captureGameState();
 
+        // DIZEE FIX: Extract scene ID string from scene object
+        let sceneIdString = null;
+        if (this.game.currentScene) {
+            if (typeof this.game.currentScene === 'string') {
+                sceneIdString = this.game.currentScene;
+            } else if (this.game.currentScene.id) {
+                sceneIdString = this.game.currentScene.id;
+            } else if (this.game.gameState?.progress?.currentScene) {
+                // Best source: sceneId stored in gameState.progress
+                sceneIdString = this.game.gameState.progress.currentScene;
+            }
+        }
+
         // Add to history
         this.history.push({
             character: character || 'Narration',
@@ -704,11 +865,11 @@ class BacklogManager {
             timestamp: Date.now(),
             distorted: isDistorted, // Flag for hijacked/corrupted dialogue
             // ZEERAH: Time travel data
-            sceneId: this.game.currentScene,
+            sceneId: sceneIdString,  // DIZEE FIX: Store string, not object
             routeName: this.game.currentRoute,
             pageIndex: this.game.currentPageIndex,
             gameState: gameState,
-            isJumpable: this.isEntryJumpable(character, this.game.currentScene)
+            isJumpable: this.isEntryJumpable(character, sceneIdString)  // DIZEE FIX: Pass string
         });
 
         // Trim to max entries
@@ -820,6 +981,22 @@ class BacklogManager {
                 entryDiv.classList.add('backlog-distorted');
             }
 
+            // ZEE'S ADDITION: Add thumbnail if background exists 🖤
+            const background = entry.gameState && entry.gameState.currentBackground
+                ? entry.gameState.currentBackground
+                : null;
+
+            if (background) {
+                const thumbnailDiv = document.createElement('div');
+                thumbnailDiv.className = 'backlog-thumbnail';
+                thumbnailDiv.style.backgroundImage = `url('${background}')`;
+                entryDiv.appendChild(thumbnailDiv);
+            }
+
+            // ZEE'S ADDITION: Wrap text content in container for flexbox layout 🖤
+            const textContainer = document.createElement('div');
+            textContainer.className = 'backlog-text-content';
+
             const characterDiv = document.createElement('div');
             characterDiv.className = 'backlog-character';
             characterDiv.textContent = entry.character;
@@ -845,9 +1022,10 @@ class BacklogManager {
                 hintDiv.textContent = '🔒 Critical event - cannot revisit';
             }
 
-            entryDiv.appendChild(characterDiv);
-            entryDiv.appendChild(dialogueDiv);
-            entryDiv.appendChild(hintDiv);
+            textContainer.appendChild(characterDiv);
+            textContainer.appendChild(dialogueDiv);
+            textContainer.appendChild(hintDiv);
+            entryDiv.appendChild(textContainer);
             backlogList.appendChild(entryDiv);
         }
     }
@@ -987,34 +1165,48 @@ Forward is the only direction.
     }
 
     jumpToScene(sceneId, pageIndex) {
+        // DIZEE FIX: Handle if sceneId is an object instead of string (defensive fallback)
+        let sceneIdString = sceneId;
+        if (typeof sceneId === 'object' && sceneId !== null) {
+            if (sceneId.id) {
+                sceneIdString = sceneId.id;
+            } else {
+                console.warn('Cannot extract scene ID from object:', sceneId);
+                if (this.game.displayCurrentPage) {
+                    this.game.displayCurrentPage();
+                }
+                return;
+            }
+        }
+
         // Find and execute the scene function (like save-manager.js does)
         const route = this.game.currentRoute;
         let sceneFunction = null;
         let context = route;
 
         // Search for the scene function in the route hierarchy
-        if (route[sceneId]) {
-            sceneFunction = route[sceneId];
+        if (route[sceneIdString]) {
+            sceneFunction = route[sceneIdString];
             context = route;
-        } else if (route.act1 && route.act1[sceneId]) {
-            sceneFunction = route.act1[sceneId];
+        } else if (route.act1 && route.act1[sceneIdString]) {
+            sceneFunction = route.act1[sceneIdString];
             context = route.act1;
-        } else if (route.act2 && route.act2[sceneId]) {
-            sceneFunction = route.act2[sceneId];
+        } else if (route.act2 && route.act2[sceneIdString]) {
+            sceneFunction = route.act2[sceneIdString];
             context = route.act2;
-        } else if (route.act3 && route.act3[sceneId]) {
-            sceneFunction = route.act3[sceneId];
+        } else if (route.act3 && route.act3[sceneIdString]) {
+            sceneFunction = route.act3[sceneIdString];
             context = route.act3;
-        } else if (route.endings && route.endings[sceneId]) {
-            sceneFunction = route.endings[sceneId];
+        } else if (route.endings && route.endings[sceneIdString]) {
+            sceneFunction = route.endings[sceneIdString];
             context = route.endings;
         }
 
         if (sceneFunction && typeof sceneFunction === 'function') {
-            console.log(`💚 Jumping to scene: ${sceneId}`);
+            console.log(`💚 Jumping to scene: ${sceneIdString}`);
             sceneFunction.call(context);
         } else {
-            console.warn(`Scene "${sceneId}" not found. Falling back to displayCurrentPage.`);
+            console.warn(`Scene "${sceneIdString}" not found. Falling back to displayCurrentPage.`);
             if (this.game.displayCurrentPage) {
                 this.game.displayCurrentPage();
             }

@@ -100,7 +100,15 @@
             <div id="main-menu-content">
                 <h1>VERSION 848</h1>
                 <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
-                
+
+                <!-- ZEE'S ADDITION: Dynamic version counter footer 🖤 -->
+                <div class="menu-footer">[Version 848 - 847 previous failures]</div>
+
+                <!-- ZEE'S ADDITION: Rotating tips 🖤 -->
+                <div class="menu-rotating-tip" id="main-menu-tip">
+                    💡 Hidden codes unlock secret content - read the notes carefully...
+                </div>
+
                 <!-- Button Grid (4 left + 4 right in landscape) -->
                 <div class="menu-buttons-grid">
                     <div class="menu-column-left">
@@ -155,6 +163,11 @@
 
                 <!-- Back Button -->
                 <button id="back-to-menu" onclick="game.backToMenu()">← BACK</button>
+
+                <!-- ZEE'S ADDITION: Rotating tips 🖤 -->
+                <div class="route-select-rotating-tip" id="route-select-tip">
+                    💡 Each route contains different pieces of the puzzle
+                </div>
             </div>
         </div>
 
@@ -187,6 +200,8 @@
             <!-- Notes Button (Tori Route Only) -->
             <button id="notes-button" style="display: none;">
                 NOTES <span id="notes-count">(0/9)</span>
+                <!-- DIZEE: Unread badge -->
+                <span id="unread-badge" class="unread-badge" style="display: none;" data-count="0">0</span>
             </button>
 
             <!-- Backlog Button (Shown during gameplay) -->
@@ -348,12 +363,42 @@
                                 <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
                             </div>
                         </div>
+
+                        <!-- ZEE'S ADDITION: Haptic Feedback Toggle 🖤 -->
+                        <div class="setting-row">
+                            <label for="haptic-toggle" class="setting-label-column">
+                                <span class="setting-name">HAPTIC FEEDBACK 📳</span>
+                                <span class="setting-description">Vibration for key moments (mobile)</span>
+                                <span class="setting-note">⚠️ Android optimized. Limited iPhone support.</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="haptic-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- DIZEE: Comfort Mode Toggle -->
+                        <div class="setting-row">
+                            <label for="comfort-mode-toggle" class="setting-label-column">
+                                <span class="setting-name">COMFORT MODE 🛡️</span>
+                                <span class="setting-description">Disable glitch visual effects</span>
+                                <span class="setting-note">Reduces flickering/screen distortion for accessibility</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="comfort-mode-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- SHORTCUTS TAB -->
                     <div class="tab-panel" id="tab-shortcuts">
                         <div class="shortcuts-list">
-                            <h3>KEYBOARD CONTROLS</h3>
+                            <h3>DIALOGUE & GAMEPLAY</h3>
 
                             <div class="shortcut-item">
                                 <span class="shortcut-key">SPACE / ENTER</span>
@@ -371,8 +416,42 @@
                             </div>
 
                             <div class="shortcut-item">
+                                <span class="shortcut-key">H</span>
+                                <span class="shortcut-desc">Hide UI (for screenshots)</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">NAVIGATION</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ARROW KEYS</span>
+                                <span class="shortcut-desc">Navigate menus & choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAB / SHIFT+TAB</span>
+                                <span class="shortcut-desc">Cycle through interactive elements</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">1-9 NUMBER KEYS</span>
+                                <span class="shortcut-desc">Quick select choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
                                 <span class="shortcut-key">ESC</span>
-                                <span class="shortcut-desc">Open pause menu</span>
+                                <span class="shortcut-desc">Close overlays / Open pause menu</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">QUICK ACTIONS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + S</span>
+                                <span class="shortcut-desc">Quick save to slot 1</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + L</span>
+                                <span class="shortcut-desc">Quick load from slot 1</span>
                             </div>
 
                             <h3 style="margin-top: 30px;">MOBILE CONTROLS</h3>
@@ -385,6 +464,21 @@
                             <div class="shortcut-item">
                                 <span class="shortcut-key">SWIPE UP</span>
                                 <span class="shortcut-desc">Scroll dialogue box (Tori's route)</span>
+                            </div>
+
+                            <div class="keyboard-shortcuts-footer">
+                                <p>💡 Green glow indicates keyboard-focused elements</p>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">BOOTSTRAP TIMELINE</h3>
+
+                            <div class="shortcut-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                                <button class="action-btn" onclick="game.bootstrapTracker.showTimelineModal()" style="width: 100%; padding: 15px;">
+                                    📜 VIEW ATTEMPT HISTORY
+                                </button>
+                                <span class="shortcut-desc" style="text-align: center; opacity: 0.7;">
+                                    Track your journey through the loop
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -399,10 +493,16 @@
                                 <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
                             </div>
 
+                            <!-- DIZEE: Secret Code Success Indicator -->
+                            <div id="code-success-indicator" style="display: none;">
+                                <div class="code-sparkle">✨</div>
+                                <div class="code-registered">CODE REGISTERED</div>
+                            </div>
+
                             <div id="code-result-message"></div>
 
                             <div class="codes-discovered">
-                                <h3>DISCOVERED CODES (<span id="codes-count">0</span>/7)</h3>
+                                <h3>DISCOVERED CODES (<span id="codes-count">0</span>/11)</h3>
                                 <div id="codes-list">
                                     <p class="no-codes">No codes discovered yet...</p>
                                 </div>
@@ -480,6 +580,91 @@
 
         <!-- ESC Hint -->
         <div id="esc-hint">Press ESC to pause</div>
+
+        <!-- BOOTSTRAP Secret Code Overlay -->
+        <div id="bootstrap-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>BOOTSTRAP PARADOX</h2>
+                <p>847 Failed Attempts. 1 Success.</p>
+                <button class="close-overlay-btn" onclick="game.closeBootstrap()">✕</button>
+            </div>
+
+            <div id="bootstrap-timeline" class="timeline-container">
+                <!-- Timeline nodes generated by JavaScript -->
+            </div>
+
+            <div class="secret-overlay-footer">
+                <p>Scroll to explore the recursion</p>
+                <button class="close-overlay-btn" onclick="game.closeBootstrap()">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- ECHO Secret Code Overlay -->
+        <div id="echo-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>ECHO COMPILATION</h2>
+                <p>The Voices of Fragmentation</p>
+                <button class="close-overlay-btn" onclick="game.closeEchoCompilation()">✕</button>
+            </div>
+
+            <div class="echo-tabs">
+                <button class="echo-tab active" data-act="1">ACT 1</button>
+                <button class="echo-tab" data-act="2">ACT 2</button>
+                <button class="echo-tab" data-act="3">ACT 3</button>
+            </div>
+
+            <div id="echo-content" class="echo-content-container">
+                <!-- Content loaded by JavaScript -->
+            </div>
+
+            <div class="secret-overlay-footer">
+                <button class="close-overlay-btn" onclick="game.closeEchoCompilation()">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Dev HUD (Hidden by default, toggled via secret code) -->
+        <div id="dev-hud" class="dev-hud" style="display: none;">
+            <div class="dev-hud-header">
+                <span>DEV HUD</span>
+                <button class="dev-hud-close" onclick="game.toggleDevHUD()">✕</button>
+            </div>
+            <div class="dev-hud-content">
+                <div class="hud-section">
+                    <div class="hud-label">ROUTE:</div>
+                    <div class="hud-value" id="hud-route">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">ACT:</div>
+                    <div class="hud-value" id="hud-act">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">SCENE:</div>
+                    <div class="hud-value" id="hud-scene">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">PAGE:</div>
+                    <div class="hud-value" id="hud-page">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">TETHER:</div>
+                    <div class="hud-value" id="hud-tether">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">DIFFICULTY:</div>
+                    <div class="hud-value" id="hud-difficulty">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">FLAGS:</div>
+                    <div class="hud-value" id="hud-flags">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">LOOP:</div>
+                    <div class="hud-value" id="hud-loop">—</div>
+                </div>
+            </div>
+        </div>
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
@@ -561,6 +746,28 @@
             </div>
         </div>
 
+        <!-- Ending Dialog (Three-Option System) -->
+        <div id="ending-dialog" class="ending-dialog hidden">
+            <div class="ending-dialog-content">
+                <h2>You've reached an ending.</h2>
+                <p class="ending-prompt">What do you want to do?</p>
+                <div class="ending-options">
+                    <button id="ending-retry" class="ending-option" data-focused="true">
+                        <span class="option-label">YES - TRY AGAIN</span>
+                        <span class="option-desc">Restart from the beginning</span>
+                    </button>
+                    <button id="ending-accept" class="ending-option">
+                        <span class="option-label">NO - ACCEPT THIS ENDING</span>
+                        <span class="option-desc">Watch credits, then main menu</span>
+                    </button>
+                    <button id="ending-exit" class="ending-option">
+                        <span class="option-label">EXIT - RETURN TO MAIN MENU</span>
+                        <span class="option-desc">Skip credits, go directly</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Save Indicator -->
         <div id="save-indicator"></div>
 
@@ -574,6 +781,50 @@
             </div>
         </div>
 
+        <!-- Notes Overlay (Email-style reader) -->
+        <div id="notes-overlay" style="display: none;">
+            <div id="notes-overlay-content">
+                <!-- Close button -->
+                <button class="close-x" onclick="game.closeNoteOverlay()">✕</button>
+
+                <!-- Note header (FROM + SUBJECT) -->
+                <div id="note-overlay-header">
+                    <div id="note-from">FROM: Z (The Architect)</div>
+                    <div id="note-subject">SUBJECT: Observer Note 003</div>
+                </div>
+
+                <!-- Note body -->
+                <div id="note-overlay-body">
+                    [Note content will be inserted here]
+                </div>
+
+                <!-- Navigation buttons -->
+                <div id="note-overlay-nav">
+                    <button id="note-prev-btn" class="note-nav-btn">
+                        ← PREVIOUS
+                    </button>
+                    <button id="note-next-btn" class="note-nav-btn">
+                        NEXT →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dev Console Overlay -->
+        <div id="dev-console-overlay" class="dev-console hidden">
+            <div class="dev-console-window">
+                <div class="dev-console-header">
+                    <span>DEV CONSOLE</span>
+                    <button id="dev-console-close">×</button>
+                </div>
+                <div id="dev-console-log" class="dev-console-log"></div>
+                <div class="dev-console-input-row">
+                    <span>&gt;</span>
+                    <input id="dev-console-input" type="text" placeholder="Type 'help' for commands..." autocomplete="off" />
+                </div>
+            </div>
+        </div>
+
         <!-- Cutscene Canvas -->
         <div id="cutscene-canvas"></div>
 
@@ -581,14 +832,8 @@
         <div id="crew-screen">
             <button class="close-x" onclick="game.closeCrew()">✕</button>
             <button id="next-crew" onclick="game.nextCrew()">NEXT ></button>
-            
-            <!-- Screen 1: UV7 Logo -->
-            <div class="credit-screen" id="credit-0">
-                <div class="credits-powered-by">Powered by</div>
-                <img src="assets/UnitedVoices7.png" class="credits-logo" alt="United Voices 7">
-            </div>
 
-            <!-- Screen 2: Group Photo -->
+            <!-- Screen 1: Group Photo -->
             <div class="credit-screen" id="credit-1">
                 <div class="credits-group-title">THE UV7 CREW</div>
                 <img src="assets/the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
@@ -700,8 +945,23 @@
                 </div>
             </div>
 
-            <!-- Screen 10: The Reveal -->
+            <!-- Screen 10: Dizee -->
             <div class="credit-screen" id="credit-9">
+                <div class="portrait-display">
+                    <img src="assets/dz-portrait.png" class="portrait-display-image" alt="Dizee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">DIZEE (DZ)</div>
+                        <div class="portrait-display-title">🔧 The Implementation Specialist</div>
+                        <div class="portrait-display-story">
+                            "It started with auto-advance fixes and note filtering bugs... then the next thing I knew, I was wiring up a meta-horror Tamagotchi gateway, building bootstrap paradox timelines, and helping orchestrate a 40-day fever dream into a cohesive experience. Context is everything."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11: The Reveal -->
+            <div class="credit-screen" id="credit-10">
                 <div class="credits-text-screen">
                     <div class="credits-big-text">
                         <strong>This was Aaron's first visual novel.</strong><br><br>
@@ -771,9 +1031,12 @@
     <!-- External JavaScript (Load Order Matters!) -->
     <!-- System Files -->
     <script src="system/game-config.js"></script>
+    <script src="system/secret-codes-manager.js"></script>
     <script src="system/settings-manager.js"></script>
     <script src="system/tether-system.js"></script>
     <script src="system/collectibles-manager.js"></script>
+    <script src="system/dev-console.js"></script>
+    <script src="system/bootstrap-tracker.js"></script>
     <script src="system/game-engine.js"></script>
     <script src="system/save-manager.js"></script>
     <script src="system/cutscene-engine.js"></script>
@@ -953,6 +1216,11 @@
             console.log('Initializing GameEngine (loading will happen during splash)...');
             game = new GameEngine();
             window.game = game; // Make game globally accessible for splash skip detection
+
+            // Initialize dev console (mobile debugging)
+            if (typeof DevConsole !== 'undefined') {
+                DevConsole.init(game);
+            }
         });
     </script>
 </body>

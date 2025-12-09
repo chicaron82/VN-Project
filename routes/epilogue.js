@@ -117,8 +117,8 @@ class Epilogue {
                 right: 'assets/tori-sprite.png'
             },
             next: () => {
-                // Show credits with true ending flag
-                this.game.showCredits(true);
+                // Show ending dialog (three-option system)
+                this.game.showEndingDialog('true');
             },
             delay: 5000
         }, 'trueRoute_knowing');

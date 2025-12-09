@@ -513,17 +513,22 @@ class SaveLoadUI {
             this.game.gameView.style.display = 'none';
             this.game.mainMenu.style.display = 'flex';
             this.game.mainMenu.style.opacity = '1';
-            
+
             // Hide route-specific UI
             this.game.tetherUI.style.display = 'none';
             // Echo display removed - now using sprite
             this.game.notesButton.style.display = 'none';
-            
+
+            // DIZEE: Remove Insane Mode persistent corruption
+            if (this.game.gameView) {
+                this.game.gameView.classList.remove('insane-mode-active');
+            }
+
             // Stop tether decay if it's running (Tori's route)
             if (this.game.currentRoute && this.game.currentRoute.stopTetherDecay) {
                 this.game.currentRoute.stopTetherDecay();
             }
-            
+
             // Clear current route
             this.game.currentRoute = null;
         };

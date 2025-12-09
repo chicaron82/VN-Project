@@ -5,6 +5,146 @@
 // Z/CZ/ZR notes for Tori's route (ZeeRah's writing)
 // ========================================
 
+/**
+ * ════════════════════════════════════════════════════════════════
+ * COLLECTIBLES-MANAGER.JS - Notes & Unlockables System
+ * Manages note collection, discovery, read tracking, RNG code drops, and UI integration
+ * ════════════════════════════════════════════════════════════════
+ *
+ * TABLE OF CONTENTS
+ * (Line numbers approximate - use search to locate sections)
+ *
+ * 1. INITIALIZATION .............................. Line 90
+ *    - Constructor
+ *    - Note type arrays (z, cz, zr, gz, iz, pz, special)
+ *    - Unread tracking setup
+ *    - RNG discovery tracking (seenNotes, noteCodeDrops)
+ *
+ * 2. NOTE DEFINITIONS ............................ Line 140
+ *    - initializeAllNoteDefinitions()
+ *    - defineToriNotes() (z, cz, zr types)
+ *    - defineRonnieNotes() (gz, iz, pz types)
+ *
+ * 3. NOTE UNLOCKING .............................. Line 195
+ *    - unlockNote() method
+ *    - Difficulty gating (DIZEE feature)
+ *    - Ronnie route suppression (first playthrough)
+ *    - Unlock notifications
+ *    - Badge updates
+ *    - Haptic feedback
+ *
+ * 4. NOTE DISCOVERY SYSTEM (RNG CODES) ........... Line 295
+ *    - processNoteDrop() RNG + pity system
+ *    - 3-view guaranteed drop (pity threshold)
+ *    - Guaranteed vs RNG code handling
+ *    - discoverCode() delegation to SecretCodesManager
+ *
+ * 5. UI DISPLAY .................................. Line 380
+ *    - updateNotesCount()
+ *    - getCollectedCountForCurrentRoute()
+ *    - getTotalCountForCurrentRoute()
+ *    - notifyNewNote() pulse animation
+ *
+ * 6. NOTES VIEWER (IN-ROUTE) ..................... Line 445
+ *    - showNotesViewer() main display
+ *    - renderNoteSection() email-style headers
+ *    - hideNotesViewer() with read marking
+ *
+ * 7. NOTE OVERLAY SYSTEM ......................... Line 650
+ *    - openNoteOverlay() full note display
+ *    - displayNoteInOverlay() with code drop footers
+ *    - updateNavigationButtons() prev/next
+ *    - navigateNote() keyboard navigation
+ *    - closeNoteOverlay()
+ *
+ * 8. SENDER NAME MAPPING ......................... Line 820
+ *    - getSenderName() for email FROM field
+ *
+ * 9. TORI ROUTE NOTES (CONTENT) .................. Line 850
+ *    - defineToriNotes() full content
+ *    - Z's meta-commentary (z1-z10)
+ *    - CZ's emotional notes (cz1-cz3)
+ *    - ZR's chaos optimization (zr1-zr3)
+ *    - Dev notes (tori_dev_note)
+ *    - Ending notes (bad_ending, digital_ending, true_ending)
+ *
+ * 10. RONNIE ROUTE NOTES (CONTENT) ............... Line 585
+ *     - defineRonnieNotes() full content
+ *     - Teaser note (ronnie_teaser)
+ *     - GZ's reality-breaking questions (gz1-gz3)
+ *     - IZ's poetic clarity (iz1-iz2)
+ *     - PZ's research findings (pz1-pz2)
+ *     - Dev notes (ronnie_dev_note)
+ *     - Ending notes (bad_ending, digital_ending, true_ending)
+ *
+ * 11. STATE PERSISTENCE .......................... Line 1150
+ *     - saveNotesToLocalStorage()
+ *     - loadNotesFromLocalStorage()
+ *     - getState() serialization
+ *     - restoreState() deserialization
+ *     - reset() clear all
+ *
+ * 12. UNREAD BADGE SYSTEM ........................ Line 1355
+ *     - loadReadNotes() from localStorage
+ *     - saveReadNotes() to localStorage
+ *     - updateUnreadCount()
+ *     - updateBadge() visual display
+ *     - markNoteAsRead() tracking
+ *     - animateNewMail() pulse effect
+ *
+ * 13. STATIC METHODS ............................. Line 1430
+ *     - getAllNoteDefinitions() for standalone viewer
+ *
+ * ════════════════════════════════════════════════════════════════
+ * NOTE TYPES:
+ * - z:       Z (The Architect) - Tori route meta-commentary
+ * - cz:      CZ (The Heart) - Tori route emotional notes
+ * - zr:      ZR (Chaos Optimizer) - Tori route chaos analysis
+ * - gz:      GZ (Reality Breaker) - Ronnie route questions
+ * - iz:      IZ (Fresh Eyes) - Ronnie route poetic clarity
+ * - pz:      PZ (Question Engine) - Ronnie route research
+ * - special: Ending notes, dev notes, teasers
+ *
+ * Integration Points:
+ * - Game engine (unlock during scenes)
+ * - UI (badge notifications)
+ * - Settings (notes viewer button)
+ * - Standalone viewer (main menu access)
+ * - SecretCodesManager (code discovery from notes)
+ * - Difficulty system (DIZEE: notes gated by difficulty)
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/**
+ * CollectiblesManager
+ *
+ * Manages email inbox system and notes collection.
+ * Story-integrated collectibles revealed through gameplay.
+ *
+ * Responsibilities:
+ * - Note unlocking and tracking
+ * - Inbox UI (unread count, notifications)
+ * - Note display and categorization
+ * - Read/unread state management
+ *
+ * Note Types:
+ * - Story notes (character emails, lore documents)
+ * - System notes (tutorial, help, mechanics)
+ * - Echo notes (fragmentation messages)
+ *
+ * Features:
+ * - Unread badge with count
+ * - New mail animation
+ * - Filter tabs (All / Story / Codes)
+ * - Persistent read state
+ *
+ * Integration:
+ * - Notes unlocked via story triggers
+ * - Secret codes unlock special notes
+ * - Codes tab shows discovered secret codes
+ *
+ * @class CollectiblesManager
+ */
 class CollectiblesManager {
     constructor(game, route) {
         this.game = game;
@@ -32,7 +172,16 @@ class CollectiblesManager {
         // So notes exist even if route hasn't called define methods yet
         // (Prevents errors when loading saves that go directly to endings)
         this.initializeAllNoteDefinitions();
-        
+
+        // DIZEE: Unread tracking for inbox badge
+        this.unreadCount = 0;
+        this.readNotes = new Set();
+        this.loadReadNotes();
+
+        // DIZEE: Note discovery tracking (RNG + pity system)
+        this.seenNotes = {};           // { noteId: timesViewed }
+        this.noteCodeDrops = {};       // { noteId: { hasCode, code, timestamp } }
+
         // DOM references
         this.notesButton = null;
         this.notesCount = null;
@@ -104,7 +253,17 @@ class CollectiblesManager {
             console.warn(`Note ${noteId} not found in allNotes`);
             return;
         }
-        
+
+        // DIZEE: Check difficulty gate
+        const noteMeta = getNoteMetadata(noteId);
+        if (noteMeta && noteMeta.difficulty) {
+            const currentDifficulty = this.game.settingsManager.settings.tetherDifficulty;
+            if (!isDifficultyUnlocked(noteMeta.difficulty, currentDifficulty)) {
+                console.log(`Note ${noteId} blocked - requires ${noteMeta.difficulty} difficulty (current: ${currentDifficulty})`);
+                return; // Block unlock
+            }
+        }
+
         // RONNIE ROUTE SUPPRESSION: Block ALL notes on first playthrough
         // EXCEPT the teaser note (which unlocks at ending)
         if (this.route && this.route.name === 'ronnie' && noteId !== 'ronnie_teaser') {
@@ -113,7 +272,7 @@ class CollectiblesManager {
                 return; // Suppress note unlock
             }
         }
-        
+
         // Check if already collected
         if (this.collectedNotes[note.type].includes(noteId)) {
             console.log(`Note ${noteId} already collected`);
@@ -123,7 +282,12 @@ class CollectiblesManager {
         // Add to collected
         this.collectedNotes[note.type].push(noteId);
         console.log(`Note unlocked: ${noteId} (${note.title})`);
-        
+
+        // DIZEE: Haptic feedback for note unlock
+        if (this.game && this.game.triggerHaptic) {
+            this.game.triggerHaptic('light', 'Note collected');
+        }
+
         // ZEERAH'S FIX: Save to localStorage immediately so standalone viewer can see it
         this.saveNotesToLocalStorage();
 
@@ -147,7 +311,11 @@ class CollectiblesManager {
 
         // Update display count
         this.updateNotesCount();
-        
+
+        // DIZEE: Update unread badge and animate
+        this.updateUnreadCount();
+        this.animateNewMail();
+
         // Visual notification (pulse button)
         this.notifyNewNote();
         
@@ -188,7 +356,92 @@ class CollectiblesManager {
             return Object.keys(this.allNotes).length;
         }
     }
-    
+
+    // ========================================
+    // NOTE DISCOVERY SYSTEM (RNG + PITY)
+    // DIZEE: Revolutionary replayability system
+    // ========================================
+
+    processNoteDrop(noteId) {
+        const noteMeta = getNoteMetadata(noteId);
+        if (!noteMeta) return null;
+
+        // Check if we already have a drop result for this note (in this save)
+        if (this.noteCodeDrops[noteId]) {
+            return this.noteCodeDrops[noteId];
+        }
+
+        // Track times viewed
+        this.seenNotes[noteId] = (this.seenNotes[noteId] || 0) + 1;
+        const timesViewed = this.seenNotes[noteId];
+
+        // Check for guaranteed code (utility codes)
+        if (noteMeta.guaranteed) {
+            const dropData = {
+                hasCode: true,
+                code: noteMeta.guaranteed,
+                timestamp: Date.now(),
+                wasGuaranteed: true
+            };
+
+            this.noteCodeDrops[noteId] = dropData;
+            this.discoverCode(noteMeta.guaranteed);
+
+            console.log(`✅ Guaranteed code drop: ${noteMeta.guaranteed}`);
+            return dropData;
+        }
+
+        // Check if note has a code pool
+        if (!noteMeta.pool || noteMeta.pool.length === 0) {
+            const dropData = { hasCode: false, code: null };
+            this.noteCodeDrops[noteId] = dropData;
+            return dropData;
+        }
+
+        // Pity system: Force drop after 3 views
+        const PITY_THRESHOLD = 3;
+        let shouldDrop = false;
+
+        if (timesViewed >= PITY_THRESHOLD) {
+            shouldDrop = true;
+            console.log(`🎁 Pity system triggered for ${noteId} after ${timesViewed} views`);
+        } else {
+            // Normal RNG check
+            shouldDrop = Math.random() < noteMeta.dropChance;
+        }
+
+        if (shouldDrop) {
+            // Pick random code from pool
+            const code = noteMeta.pool[Math.floor(Math.random() * noteMeta.pool.length)];
+
+            const dropData = {
+                hasCode: true,
+                code: code,
+                timestamp: Date.now(),
+                wasGuaranteed: false
+            };
+
+            this.noteCodeDrops[noteId] = dropData;
+            this.discoverCode(code);
+
+            console.log(`🎲 RNG code drop: ${code} from ${noteId}`);
+            return dropData;
+        } else {
+            const dropData = { hasCode: false, code: null };
+            this.noteCodeDrops[noteId] = dropData;
+
+            console.log(`❌ No drop from ${noteId} (${timesViewed}/${PITY_THRESHOLD} views)`);
+            return dropData;
+        }
+    }
+
+    discoverCode(code) {
+        // Delegate to secret codes manager
+        if (this.game.secretCodesManager) {
+            this.game.secretCodesManager.discoverCode(code);
+        }
+    }
+
     // ========================================
     // UI DISPLAY
     // ========================================
@@ -258,15 +511,23 @@ class CollectiblesManager {
     
     showNotesViewer() {
         if (!this.notesViewer || !this.notesList) return;
-        
+
+        // DIZEE FIX: Stop tether decay while viewing notes
+        if (this.route && this.route.tetherSystem) {
+            this.route.tetherSystem.stopDecay();
+        }
+
         // Show viewer
         this.notesViewer.style.display = 'block';
-        
+
+        // DIZEE FIX: Update notes count to reflect current route
+        this.updateNotesCount();
+
         // Clear "new note" indicator since player is checking
         if (this.notesButton) {
             this.notesButton.classList.remove('has-new-note');
         }
-        
+
         // Clear and rebuild notes list
         this.notesList.innerHTML = '';
         
@@ -312,40 +573,59 @@ class CollectiblesManager {
     
     renderNoteSection(sectionTitle, notes, type) {
         if (notes.length === 0) return;
-        
+
         // Section header
         const header = document.createElement('h3');
         header.className = 'notes-section-header';
         header.textContent = sectionTitle;
         this.notesList.appendChild(header);
-        
-        // Render notes in section
+
+        // Get all collected note IDs for this section for navigation
+        const collectedNoteIds = notes
+            .filter(note => this.collectedNotes[type].includes(note.id))
+            .map(note => note.id);
+
+        // Render notes in section (EMAIL-STYLE: Headers only)
         notes.forEach(note => {
             const isCollected = this.collectedNotes[type].includes(note.id);
-            
+
             const noteItem = document.createElement('div');
-            noteItem.className = `note-item ${type}-note`;
+            noteItem.className = `note-item-header ${type}-note`;
             if (!isCollected) noteItem.classList.add('note-locked');
-            
-            // Title
-            const title = document.createElement('div');
-            title.className = 'note-title';
-            title.textContent = isCollected ? note.title : '???';
-            noteItem.appendChild(title);
-            
-            // Content (if collected)
+
             if (isCollected) {
-                const content = document.createElement('div');
-                content.className = 'note-content';
-                content.textContent = note.content;
-                noteItem.appendChild(content);
-                
-                // Click to expand/collapse
+                // Sender name
+                const sender = this.getSenderName(type);
+
+                // FROM line
+                const fromDiv = document.createElement('div');
+                fromDiv.className = 'note-header-from';
+                fromDiv.textContent = `FROM: ${sender}`;
+                noteItem.appendChild(fromDiv);
+
+                // SUBJECT line
+                const subjectDiv = document.createElement('div');
+                subjectDiv.className = 'note-header-subject';
+                subjectDiv.textContent = `SUBJECT: ${note.title}`;
+                noteItem.appendChild(subjectDiv);
+
+                // Click to open overlay
                 noteItem.addEventListener('click', () => {
-                    noteItem.classList.toggle('expanded');
+                    this.openNoteOverlay(note.id, collectedNoteIds);
                 });
+            } else {
+                // Locked note - show ???
+                const lockedDiv = document.createElement('div');
+                lockedDiv.className = 'note-header-from';
+                lockedDiv.textContent = 'LOCKED';
+                noteItem.appendChild(lockedDiv);
+
+                const lockedSubject = document.createElement('div');
+                lockedSubject.className = 'note-header-subject';
+                lockedSubject.textContent = '???';
+                noteItem.appendChild(lockedSubject);
             }
-            
+
             this.notesList.appendChild(noteItem);
         });
     }
@@ -353,6 +633,11 @@ class CollectiblesManager {
     hideNotesViewer() {
         if (this.notesViewer) {
             this.notesViewer.style.display = 'none';
+        }
+
+        // DIZEE FIX: Resume tether decay when closing notes
+        if (this.route && this.route.tetherSystem) {
+            this.route.tetherSystem.startDecay();
         }
 
         // DIZEE FIX: Mark notes as read when closing in-route viewer
@@ -1010,6 +1295,243 @@ P.S. The barback skill strikes again.`
         
         this.updateNotesCount();
         console.log('Collectibles reset');
+    }
+
+    // ========================================
+    // EMAIL-STYLE OVERLAY METHODS (IN-ROUTE)
+    // Same functionality as standalone viewer
+    // ========================================
+
+    getSenderName(noteType) {
+        const senders = {
+            z: 'Z (The Architect)',
+            cz: 'CZ (The Heart)',
+            zr: 'ZR (Chaos Embodied)',
+            gz: 'GZ (Reality Breaker)',
+            iz: 'IZ (Fresh Eyes)',
+            pz: 'PZ (Question Engine)',
+            special: 'System Notice'
+        };
+        return senders[noteType] || 'Unknown Observer';
+    }
+
+    openNoteOverlay(noteId, allNoteIds) {
+        // Store current note context for navigation
+        this.currentNoteId = noteId;
+        this.currentNoteList = allNoteIds;
+
+        // Display the note
+        this.displayNoteInOverlay(noteId);
+
+        // DIZEE: Mark note as read when opened
+        this.markNoteAsRead(noteId);
+
+        // Show overlay
+        const overlay = document.getElementById('notes-overlay');
+        if (overlay) {
+            overlay.style.display = 'flex';
+        }
+
+        // Update navigation buttons
+        this.updateNavigationButtons();
+
+        // ESC key to close
+        this.escKeyHandler = (e) => {
+            if (e.key === 'Escape') {
+                this.closeNoteOverlay();
+            }
+        };
+        document.addEventListener('keydown', this.escKeyHandler);
+    }
+
+    displayNoteInOverlay(noteId) {
+        const note = this.allNotes[noteId];
+
+        if (!note) {
+            console.error('Note not found:', noteId);
+            return;
+        }
+
+        // Determine sender
+        const sender = this.getSenderName(note.type);
+
+        // Update overlay content
+        const fromEl = document.getElementById('note-from');
+        const subjectEl = document.getElementById('note-subject');
+        const bodyEl = document.getElementById('note-overlay-body');
+        const overlay = document.getElementById('notes-overlay');
+
+        if (fromEl) fromEl.textContent = `FROM: ${sender}`;
+        if (subjectEl) subjectEl.textContent = `SUBJECT: ${note.title}`;
+
+        // DIZEE: Process code drop for this note
+        const dropData = this.processNoteDrop(noteId);
+
+        // Build note content with code drop footer if applicable
+        let fullContent = note.content;
+
+        if (dropData && dropData.hasCode) {
+            // CODE DETECTED - Show the discovered code
+            fullContent += `
+                <div class="note-code-footer code-detected">
+                    <div class="code-divider">— — — — —</div>
+                    <div class="signal-header">🔓 ENCRYPTED SIGNAL DETECTED 🔓</div>
+                    <div class="signal-code">${dropData.code.toUpperCase()}</div>
+                    <div class="signal-hint">Code automatically added to discovered codes list</div>
+                </div>
+            `;
+        } else if (dropData && dropData.hasCode === false && getNoteMetadata(noteId) && getNoteMetadata(noteId).pool && getNoteMetadata(noteId).pool.length > 0) {
+            // NO CODE THIS TIME - Show hint about RNG
+            const timesViewed = this.seenNotes[noteId] || 1;
+            const remaining = 3 - timesViewed;
+
+            if (remaining > 0) {
+                fullContent += `
+                    <div class="note-code-footer code-hint">
+                        <div class="code-divider">— — — — —</div>
+                        <div class="signal-header">📡 Signal Unstable</div>
+                        <div class="signal-status">Encrypted data detected but unreadable... (View ${remaining} more time${remaining > 1 ? 's' : ''} for guaranteed signal)</div>
+                    </div>
+                `;
+            }
+        }
+
+        if (bodyEl) bodyEl.innerHTML = fullContent;
+
+        // Apply color class based on note type
+        if (overlay) {
+            overlay.className = '';
+            if (note.type === 'cz' || note.type === 'zr') {
+                overlay.classList.add('meta-note');
+            } else if (note.type === 'special') {
+                overlay.classList.add('despair-note');
+            }
+        }
+    }
+
+    updateNavigationButtons() {
+        const prevBtn = document.getElementById('note-prev-btn');
+        const nextBtn = document.getElementById('note-next-btn');
+
+        if (!this.currentNoteList || this.currentNoteList.length === 0) {
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+        }
+
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+
+        // Enable/disable based on position
+        if (prevBtn) {
+            prevBtn.disabled = currentIndex <= 0;
+            prevBtn.onclick = () => this.navigateNote(-1);
+        }
+
+        if (nextBtn) {
+            nextBtn.disabled = currentIndex >= this.currentNoteList.length - 1;
+            nextBtn.onclick = () => this.navigateNote(1);
+        }
+    }
+
+    navigateNote(direction) {
+        if (!this.currentNoteList) return;
+
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+        const newIndex = currentIndex + direction;
+
+        if (newIndex >= 0 && newIndex < this.currentNoteList.length) {
+            const newNoteId = this.currentNoteList[newIndex];
+            this.currentNoteId = newNoteId;
+            this.displayNoteInOverlay(newNoteId);
+            this.updateNavigationButtons();
+        }
+    }
+
+    closeNoteOverlay() {
+        const overlay = document.getElementById('notes-overlay');
+        if (overlay) {
+            overlay.style.display = 'none';
+        }
+
+        // Remove ESC key listener
+        if (this.escKeyHandler) {
+            document.removeEventListener('keydown', this.escKeyHandler);
+            this.escKeyHandler = null;
+        }
+
+        // Clear current note context
+        this.currentNoteId = null;
+        this.currentNoteList = null;
+    }
+
+    // ========================================
+    // DIZEE: UNREAD BADGE TRACKING
+    // ========================================
+
+    loadReadNotes() {
+        const saved = localStorage.getItem('readNotes');
+        if (saved) {
+            try {
+                this.readNotes = new Set(JSON.parse(saved));
+            } catch (e) {
+                console.error('Failed to load read notes:', e);
+                this.readNotes = new Set();
+            }
+        }
+    }
+
+    saveReadNotes() {
+        try {
+            localStorage.setItem('readNotes', JSON.stringify([...this.readNotes]));
+        } catch (e) {
+            console.error('Failed to save read notes:', e);
+        }
+    }
+
+    updateUnreadCount() {
+        this.unreadCount = 0;
+        // Count all collected notes that haven't been read
+        Object.values(this.collectedNotes).forEach(noteArray => {
+            noteArray.forEach(noteId => {
+                if (!this.readNotes.has(noteId)) {
+                    this.unreadCount++;
+                }
+            });
+        });
+        this.updateBadge();
+    }
+
+    updateBadge() {
+        const badge = document.getElementById('unread-badge');
+        if (!badge) return;
+
+        if (this.unreadCount > 0) {
+            badge.textContent = this.unreadCount;
+            badge.setAttribute('data-count', this.unreadCount);
+            badge.style.display = 'block';
+        } else {
+            badge.setAttribute('data-count', '0');
+            badge.style.display = 'none';
+        }
+    }
+
+    markNoteAsRead(noteId) {
+        this.readNotes.add(noteId);
+        this.saveReadNotes();
+        this.updateUnreadCount();
+    }
+
+    animateNewMail() {
+        const button = document.getElementById('notes-button');
+        if (!button) return;
+
+        button.classList.add('new-mail-pulse');
+        setTimeout(() => button.classList.remove('new-mail-pulse'), 600);
+
+        // Haptic feedback if enabled
+        if (this.game.hapticSupported && navigator.vibrate) {
+            navigator.vibrate(50);
+        }
     }
 
     // ========================================

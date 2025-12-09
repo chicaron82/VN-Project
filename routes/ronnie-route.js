@@ -1,6 +1,25 @@
 // RONNIE'S ROUTE - External POV
 // Fighting to save Tori from outside the code
 
+/**
+ * RonnieRoute - Act 1
+ *
+ * Ronnie's perspective: External viewpoint, fighting to restore connection.
+ * Act 1: Device activation, initial contact, system instability.
+ *
+ * Key Scenes:
+ * - Hospital room
+ * - Device activation
+ * - First Tori contact
+ * - Connection issues
+ *
+ * Mechanics:
+ * - Investigation
+ * - Choices affecting connection
+ * - External perspective on digital space
+ *
+ * @class RonnieRoute
+ */
 class RonnieRoute {
     constructor(game) {
         this.game = game;
@@ -126,6 +145,12 @@ class RonnieRoute {
     }
 
     prologueScene5_buzz() {
+        // HAPTIC: Single buzz - body calling her home
+        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
+            // Pattern: single strong pulse (body anchor)
+            navigator.vibrate(150);
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ.',
@@ -506,6 +531,29 @@ class RonnieRoute {
         if (state.collectibles) {
             this.collectiblesManager.restoreState(state.collectibles);
         }
+    }
+
+    // ========================================
+    // CLEANUP (Memory Management)
+    // ========================================
+
+    cleanup() {
+        console.log('🧹 RonnieRoute cleanup initiated');
+
+        // Cleanup collectibles manager (if it has timers/listeners)
+        if (this.collectiblesManager) {
+            // Note: CollectiblesManager currently doesn't need cleanup
+            // but this provides a hook for future needs
+        }
+
+        // Clear act module references
+        this.act2 = null;
+        this.act3 = null;
+
+        // Clear game reference
+        this.game = null;
+
+        console.log('✅ RonnieRoute cleanup complete');
     }
 
 }

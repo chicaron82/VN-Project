@@ -4,6 +4,32 @@
 // WITH SCENE JUMPING FUNCTIONALITY
 // ========================================
 
+/**
+ * SaveManager
+ *
+ * Handles game persistence via localStorage.
+ * Manages 3 manual save slots + 1 auto-save slot.
+ *
+ * Responsibilities:
+ * - Save game state (route, act, scene, flags, tether)
+ * - Load game state and restore all systems
+ * - Auto-save on major story beats
+ * - Save file validation and corruption handling
+ *
+ * Save Data Includes:
+ * - Current route and act
+ * - Scene position and page index
+ * - All story flags (choices made)
+ * - Tether level (if applicable)
+ * - Difficulty mode
+ * - Unlocked features (skip, codes discovered)
+ *
+ * Save Restrictions:
+ * - Act 1 saves disabled by default (tutorial)
+ * - Can enable via secret code: saveanywhere
+ *
+ * @class SaveManager
+ */
 class SaveManager {
     constructor(game) {
         this.game = game;
@@ -32,11 +58,14 @@ class SaveManager {
         try {
             localStorage.setItem(key, JSON.stringify(saveData));
             console.log(`Game saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
-            
+
+            // DIZEE: Save note discovery data
+            this.saveNoteDiscovery(slotNumber, isAutoSave);
+
             // Show save indicator
             const labelText = customLabel ? ` - "${customLabel}"` : '';
             this.showSaveIndicator(isAutoSave ? 'Auto-saved' : `Saved to Slot ${slotNumber}${labelText}`);
-            
+
             return true;
         } catch (error) {
             console.error('Save failed:', error);
@@ -83,7 +112,46 @@ class SaveManager {
         if (!this.autoSaveEnabled || !this.game.currentRoute) return;
         this.saveGame(null, true);
     }
-    
+
+    // ========================================
+    // NOTE DISCOVERY SAVE/LOAD
+    // DIZEE: Revolutionary replayability system
+    // ========================================
+
+    saveNoteDiscovery(slotNumber, isAutoSave = false) {
+        if (!this.game.collectiblesManager) return;
+
+        const discoveryData = {
+            seenNotes: this.game.collectiblesManager.seenNotes || {},
+            noteCodeDrops: this.game.collectiblesManager.noteCodeDrops || {},
+            collectedNotes: this.game.collectiblesManager.collectedNotes ?
+                [...this.game.collectiblesManager.collectedNotes] : []
+        };
+
+        const key = isAutoSave ? 'noteDiscovery_auto' : `noteDiscovery_slot${slotNumber}`;
+
+        try {
+            localStorage.setItem(key, JSON.stringify(discoveryData));
+            console.log(`📧 Note discovery saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
+        } catch (e) {
+            console.error('Failed to save note discovery data:', e);
+        }
+    }
+
+    loadNoteDiscovery(slotNumber, isAutoSave = false) {
+        const key = isAutoSave ? 'noteDiscovery_auto' : `noteDiscovery_slot${slotNumber}`;
+        const saved = localStorage.getItem(key);
+
+        if (!saved) return null;
+
+        try {
+            return JSON.parse(saved);
+        } catch (e) {
+            console.error('Failed to load note discovery data:', e);
+            return null;
+        }
+    }
+
     // ========================================
     // LOAD FUNCTIONS
     // ========================================
@@ -188,6 +256,18 @@ class SaveManager {
             sprites: restoredState.sprites || { left: null, right: null }
         };
 
+        // ZEE'S FIX: Restore Insane Mode color scheme if save is from Insane Mode 🖤
+        if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
+            const gameContainer = document.getElementById('game-container');
+            if (gameContainer) {
+                gameContainer.classList.add('insane-mode-active');
+                console.log('🔴 Insane Mode color scheme restored from save');
+            }
+        } else {
+            // Make sure it's deactivated if loading non-Insane save
+            this.game.deactivateInsaneMode();
+        }
+
         // 3. Restore route-specific state
         if (route.restoreState && typeof route.restoreState === 'function') {
             route.restoreState(saveData.routeData);
@@ -206,7 +286,19 @@ class SaveManager {
                 route.start();
             }
         }
-        
+
+        // DIZEE: Load note discovery data
+        const slotNumber = saveData.customLabel ? null : parseInt(saveData.customLabel);
+        const isAutoSave = saveData.customLabel === null;
+        const discoveryData = this.loadNoteDiscovery(slotNumber, isAutoSave);
+
+        if (discoveryData && this.game.collectiblesManager) {
+            this.game.collectiblesManager.seenNotes = discoveryData.seenNotes || {};
+            this.game.collectiblesManager.noteCodeDrops = discoveryData.noteCodeDrops || {};
+            this.game.collectiblesManager.collectedNotes = new Set(discoveryData.collectedNotes || []);
+            console.log(`📧 Restored note discovery: ${discoveryData.collectedNotes.length} notes collected`);
+        }
+
         this.showSaveIndicator('Game Loaded');
     }
     

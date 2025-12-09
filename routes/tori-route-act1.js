@@ -6,6 +6,25 @@
 // ECHO SPRITES FIXED: RIGHT position, three-echoes-sprite.png
 // ========================================
 
+/**
+ * ToriRoute - Act 1
+ *
+ * Tori's perspective: Fragmented consciousness, inside the code.
+ * Act 1: Awakening, disorientation, tether introduction.
+ *
+ * Key Scenes:
+ * - Digital awakening
+ * - Echo voices emerge
+ * - Tether system tutorial
+ * - First Hold On moment
+ *
+ * Mechanics Introduced:
+ * - Tether system
+ * - Echo voices (internal conflict)
+ * - Fragmentation concept
+ *
+ * @class ToriAct1
+ */
 class ToriAct1 {
     constructor(route) {
         this.route = route;
@@ -245,6 +264,11 @@ class ToriAct1 {
 
                 // Visual corruption effects
                 this.game.triggerInsaneVisuals();
+
+                // DIZEE: Enable persistent corruption overlay
+                if (this.game.gameView) {
+                    this.game.gameView.classList.add('insane-mode-active');
+                }
 
                 // Then show Despair's dialogue
                 this.displayDespairWelcomeDialogue();

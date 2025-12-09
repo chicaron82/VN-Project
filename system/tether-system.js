@@ -4,6 +4,36 @@
 // Extracted from tori-route-main.js for modularity
 // ========================================
 
+/**
+ * TetherSystem
+ *
+ * Manages connection stability in Tori's route.
+ * Core mechanic: tether decays over time, player must maintain connection.
+ *
+ * Responsibilities:
+ * - Tether decay (passive over time)
+ * - Hold On button (restore tether)
+ * - Tether death trigger at 0%
+ * - Difficulty scaling (Easy/Normal/Intense/INSANE)
+ * - Visual feedback (UI updates, warnings)
+ *
+ * Difficulty Scaling:
+ * - Easy: 0.03%/sec, auto-Hold On enabled
+ * - Normal: 0.05%/sec, manual Hold On
+ * - Intense: 0.08%/sec, manual Hold On
+ * - INSANE: 0.1%/sec, 66% cap, ghost Hold On, read-only backlog
+ *
+ * Death Trigger:
+ * - At 0%, delegates to route.tetherDeath()
+ * - Typically: Bad ending, loop increment, return to menu
+ *
+ * Hold On Mechanic:
+ * - Restores 15% tether (configurable)
+ * - Cooldown: 30 seconds (configurable)
+ * - INSANE mode: "ghost" button (visual only, no effect)
+ *
+ * @class TetherSystem
+ */
 class TetherSystem {
     constructor(game, route) {
         this.game = game;
@@ -100,23 +130,34 @@ class TetherSystem {
     // ========================================
     
     updateTether(amount, reason = '') {
+        // Store previous level for haptic trigger detection
+        const previousLevel = this.tetherLevel;
+
         // Update tether level (clamped 0-100)
         this.tetherLevel = Math.max(0, Math.min(100, this.tetherLevel + amount));
-        
+
+        // ZEE'S ADDITION: Haptic warning when entering critical zone 🖤
+        // Only trigger ONCE when crossing threshold (not every tick)
+        if (previousLevel > 30 && this.tetherLevel <= 30 && amount < 0) {
+            if (this.game && this.game.triggerHaptic) {
+                this.game.triggerHaptic('warning', 'Tether critical warning');
+            }
+        }
+
         // Update display
         this.updateDisplay();
-        
+
         // Check for tether death
         if (this.tetherLevel <= 0) {
             this.stopDecay();
             this.onTetherDeath();
         }
-        
+
         // Log for debugging
         if (reason) {
             console.log(`Tether: ${this.tetherLevel.toFixed(1)}% (${reason})`);
         }
-        
+
         return this.tetherLevel;
     }
     
@@ -223,6 +264,12 @@ class TetherSystem {
         this.tetherLevel = Math.max(0, Math.min(100, value));
         this.updateDisplay();
         console.log(`💚 DEV: Tether set to ${this.tetherLevel}`);
+
+        // Check for death (even in dev commands, for consistency)
+        if (this.tetherLevel <= 0) {
+            this.stopDecay();
+            this.onTetherDeath();
+        }
     }
 
     setTetherLevel(targetLevel, animated = false) {
@@ -234,6 +281,12 @@ class TetherSystem {
             this.tetherLevel = targetLevel;
             this.updateDisplay();
             console.log(`Tether set to ${targetLevel}%`);
+
+            // Check for death after instant set
+            if (this.tetherLevel <= 0) {
+                this.stopDecay();
+                this.onTetherDeath();
+            }
             return;
         }
 
@@ -259,6 +312,12 @@ class TetherSystem {
                 this.updateDisplay();
                 clearInterval(animationInterval);
                 console.log(`💀 Tether drop complete: ${targetLevel}%`);
+
+                // Check for death after animation completes
+                if (this.tetherLevel <= 0) {
+                    this.stopDecay();
+                    this.onTetherDeath();
+                }
             } else {
                 this.updateDisplay();
             }
@@ -303,11 +362,42 @@ class TetherSystem {
     
     triggerGlitchEffect() {
         // Visual glitch when tether is critically low
-        if (this.game.gameView) {
-            this.game.gameView.style.filter = 'hue-rotate(180deg) brightness(1.2)';
-            setTimeout(() => {
-                this.game.gameView.style.filter = 'none';
-            }, 200);
+        // Enhanced in Insane Mode for more intense corruption
+
+        const isInsaneMode = this.game.gameState?.flags?.insaneModeActive;
+
+        if (isInsaneMode) {
+            // INSANE MODE: Heavy corruption effects
+            if (Math.random() < 0.3) {
+                // 30% chance to trigger full corruption burst
+                if (this.game.triggerInsaneVisuals) {
+                    this.game.triggerInsaneVisuals();
+                }
+            } else {
+                // Quick intense glitch
+                if (this.game.gameView) {
+                    this.game.gameView.style.filter = 'hue-rotate(180deg) saturate(3) brightness(1.5)';
+                    setTimeout(() => {
+                        this.game.gameView.style.filter = 'none';
+                    }, 300);
+                }
+
+                // Dialogue box flash
+                if (this.game.dialogueBox) {
+                    this.game.dialogueBox.style.boxShadow = '0 0 30px #ff0066, inset 0 0 30px rgba(255, 0, 102, 0.5)';
+                    setTimeout(() => {
+                        this.game.dialogueBox.style.boxShadow = '';
+                    }, 300);
+                }
+            }
+        } else {
+            // NORMAL MODE: Subtle glitch
+            if (this.game.gameView) {
+                this.game.gameView.style.filter = 'hue-rotate(180deg) brightness(1.2)';
+                setTimeout(() => {
+                    this.game.gameView.style.filter = 'none';
+                }, 200);
+            }
         }
     }
     
@@ -317,16 +407,21 @@ class TetherSystem {
     
     holdOn() {
         // Player manually tries to maintain tether connection
-        
+
         // Check if button is on cooldown
         if (this.holdOnCooldown) {
             console.log('Hold On button on cooldown');
             return;
         }
-        
+
+        // DIZEE: Haptic feedback for Hold On action
+        if (this.game && this.game.triggerHaptic) {
+            this.game.triggerHaptic('heartbeat', 'Hold On pressed');
+        }
+
         // Mark that player has used Hold On at least once
         this.hasUsedHoldOn = true;
-        
+
         // Apply tether boost
         this.updateTether(this.HOLD_ON_BOOST, 'HOLD ON button pressed');
         
@@ -437,13 +532,23 @@ class TetherSystem {
     
     onTetherDeath() {
         // Callback when tether reaches 0%
-        // This should be handled by the route, but we provide a default
-        
-        console.log('Tether death triggered');
-        
+        // Delegate to route's custom handler if it exists
+
+        console.log('💀 Tether death triggered');
+
+        // Check if route has custom death handler
+        if (this.route && typeof this.route.tetherDeath === 'function') {
+            console.log('→ Delegating to route tetherDeath handler');
+            this.route.tetherDeath();
+            return;
+        }
+
+        // Fallback: Default death screen if no route handler
+        console.log('→ Using default tether death handler');
+
         // Store current version before increment
         const failedVersion = this.game.loopVersion;
-        
+
         // Show game over screen
         this.game.displayScene({
             character: 'System',
@@ -459,7 +564,7 @@ class TetherSystem {
                 if (choice === 'retry') {
                     // Increment version for next attempt
                     this.game.incrementVersion();
-                    
+
                     // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
                     this.game.showLoopInit(() => {
                         // Reset tether and restart
@@ -514,11 +619,55 @@ class TetherSystem {
         this.tetherLevel = state.tetherLevel || 100;
         this.echoes = state.echoes || this.echoes;
         this.holdOnCooldown = state.holdOnCooldown || false;
-        
+
         // Update display
         this.updateDisplay();
-        
+
         console.log('Tether system state restored');
+
+        // Check for death after restoring state (in case save was at 0%)
+        if (this.tetherLevel <= 0) {
+            this.stopDecay();
+            this.onTetherDeath();
+        }
+    }
+
+    // ========================================
+    // CLEANUP (Memory Management)
+    // ========================================
+
+    cleanup() {
+        console.log('🧹 TetherSystem cleanup initiated');
+
+        // Clear all timers
+        if (this.tetherDecayTimer) {
+            clearInterval(this.tetherDecayTimer);
+            this.tetherDecayTimer = null;
+        }
+
+        if (this.holdOnCooldownTimer) {
+            clearInterval(this.holdOnCooldownTimer);
+            this.holdOnCooldownTimer = null;
+        }
+
+        // Remove event listeners
+        if (this.holdOnButton) {
+            // Clone and replace to remove all listeners
+            const newButton = this.holdOnButton.cloneNode(true);
+            this.holdOnButton.parentNode.replaceChild(newButton, this.holdOnButton);
+            this.holdOnButton = null;
+        }
+
+        // Clear DOM references
+        this.tetherUI = null;
+        this.tetherFill = null;
+        this.tetherText = null;
+        this.echoDisplay = null;
+        this.echo1Text = null;
+        this.echo2Text = null;
+        this.echoDespairText = null;
+
+        console.log('✅ TetherSystem cleanup complete');
     }
 }
 

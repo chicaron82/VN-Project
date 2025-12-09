@@ -4,11 +4,12 @@
 class ToriRoute {
     constructor(game) {
         this.game = game;
-        
+        this.name = 'tori'; // DIZEE FIX: Route name for note filtering
+
         // ========================================
         // MODULAR SYSTEMS
         // ========================================
-        
+
         // Initialize modular systems
         this.tetherSystem = new TetherSystem(this.game, this);
         this.collectiblesManager = new CollectiblesManager(this.game, this);
@@ -196,6 +197,36 @@ class ToriRoute {
         
         // Restart tether decay after restoring state
         this.tetherSystem.startDecay();
+    }
+
+    // ========================================
+    // CLEANUP (Memory Management)
+    // ========================================
+
+    cleanup() {
+        console.log('🧹 ToriRoute cleanup initiated');
+
+        // Cleanup tether system (clears timers and event listeners)
+        if (this.tetherSystem) {
+            this.tetherSystem.cleanup();
+        }
+
+        // Cleanup collectibles manager (if it has timers/listeners)
+        if (this.collectiblesManager) {
+            // Note: CollectiblesManager currently doesn't need cleanup
+            // but this provides a hook for future needs
+        }
+
+        // Clear act module references
+        this.act1 = null;
+        this.act2 = null;
+        this.act3 = null;
+        this.endings = null;
+
+        // Clear game reference
+        this.game = null;
+
+        console.log('✅ ToriRoute cleanup complete');
     }
 }
 

@@ -326,7 +326,7 @@ class RonnieRouteAct3 {
     act3Beat4() {
         this.game.displayScene({
             character: 'Ronnie (breaking)',
-            dialogue: '"The Tamagotchi. You\'re... inside it. Your consciousness transferred during the fall. But the device is dying."',
+            dialogue: '"The Tori-Gatchi. You\'re... inside it. You messaged me in the game I made. I don\'t think my computer can handle your consciousness."',
             internal: '[Ronnie finally admits it. The truth he\'d been hiding.]',
             background: 'assets/digitalSpace.png',
             sprites: {
@@ -517,27 +517,280 @@ class RonnieRouteAct3 {
         this.game.displayScene({
             character: 'System Message',
             dialogue: '⚠️ CRITICAL BATTERY: 8% REMAINING\n⚠️ ESTIMATED TIME: 12 HOURS\n⚠️ DECISION REQUIRED',
-            internal: '[The clock is ticking. Three paths emerge.]',
+            internal: '[The clock is ticking. He needs to act NOW.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.act3CriticalChoice(),
+            next: () => this.beat6_uploadAttempt(),
             delay: 3000,
             style: 'critical'
         }, 'beat5_timer');
     }
 
-    act3CriticalChoice() {
-        // Unlock PerplexiZee's body anchor mechanics note - CRITICAL guidance
-        this.route.collectiblesManager.unlockNote('pz2');
-        
+    // ========================================
+    // BEAT 6: UPLOAD ATTEMPT FAILS
+    // Ronnie tries to expand the code - it doesn't work
+    // ========================================
+
+    beat6_uploadAttempt() {
+        this.game.displayScene({
+            character: 'Ronnie (frantic)',
+            dialogue: '"If the device can\'t hold you... I\'ll upload you somewhere bigger. The laptop. The cloud. ANYWHERE with more space!"',
+            internal: '[He frantically opens his laptop. Connection protocols. Upload sequence initiating.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat6_uploadProgress(),
+            delay: 3500
+        }, 'beat6_uploadAttempt');
+    }
+
+    beat6_uploadProgress() {
         this.game.displayScene({
             character: 'System',
-            dialogue: 'CRITICAL CHOICE DETECTED',
-            internal: '◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆\n[PULSE: Three distinct heartbeat patterns emerge]\n\n> PATH 1: UPLOAD    [rapid digital pulse]\n  "Trust the code. Expand the cage."\n  Outcome: Digital permanence. No return.\n\n> PATH 2: ANCHOR    [steady organic pulse]\n  "Follow your heartbeat home."\n  Outcome: Physical return. Life.\n\n> PATH 3: MERGE     [synchronized dual pulse]\n  "We stay together. Here. Forever."\n  Outcome: Eternal digital union.\n\n[The timer ticks down. 10 seconds to choose.]',
+            dialogue: 'TRANSFER PROTOCOL INITIATED\n[████████░░░░░░] 54%\n[████████████░░] 78%\n[██████████████] 100%',
+            internal: '[Transfer complete. But something\'s wrong.]',
+            background: 'assets/apartment.png',
+            next: () => this.beat6_uploadFails(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat6_uploadProgress');
+    }
+
+    beat6_uploadFails() {
+        this.game.displayScene({
+            character: 'Tori (through device, weak)',
+            dialogue: '"Ronnie... I\'m still here. Still in the Tamagotchi. It didn\'t work."',
+            internal: '[The upload failed. She can\'t be moved like data. She\'s consciousness, not code.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat6_realization(),
+            delay: 3000
+        }, 'beat6_uploadFails');
+    }
+
+    beat6_realization() {
+        // Unlock PerplexiZee's body anchor mechanics note - CRITICAL guidance
+        this.route.collectiblesManager.unlockNote('pz2');
+
+        this.game.displayScene({
+            character: 'Ronnie (realization)',
+            dialogue: '"You can\'t be uploaded. You\'re not DATA. You\'re a SOUL. And souls need... bodies."',
+            internal: '[The pieces click. The single buzz at the hospital. Her body reaching for her.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat6_bodyAnchor(),
+            delay: 4000
+        }, 'beat6_realization');
+    }
+
+    beat6_bodyAnchor() {
+        this.game.displayScene({
+            character: 'Tori (urgent)',
+            dialogue: '"My body. Ronnie, my BODY is still at the hospital. I felt it pull me when you were near!"',
             background: 'assets/digitalSpace.png',
+            sprites: {
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.beat6_plan(),
+            delay: 3000
+        }, 'beat6_bodyAnchor');
+    }
+
+    beat6_plan() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"Then that\'s the anchor. Device to hand. Heartbeat to heartbeat. You can jump BACK."',
+            internal: '[Hope. Desperate. Dangerous. But possible.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat7_phoneCall(),
+            delay: 3500
+        }, 'beat6_plan');
+    }
+
+    // ========================================
+    // BEAT 7: THE CALL - HOSPITAL EMERGENCY
+    // Battery critical, vitals unstable, the mad dash begins
+    // ========================================
+
+    beat7_phoneCall() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'His phone SCREAMS.',
+            internal: '[Incoming call: City General Hospital. ICU. URGENT.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat7_nurseVoice(),
+            delay: 2000,
+            style: 'critical'
+        }, 'beat7_phoneCall');
+    }
+
+    beat7_nurseVoice() {
+        this.game.displayScene({
+            character: 'Nurse (phone, urgent)',
+            dialogue: '"Mr. Ronnie? It\'s City General. Tori\'s vitals just crashed. Heart rate erratic. Blood pressure dropping. You need to get here NOW."',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat7_tamagotchiBuzz(),
+            delay: 4000,
+            style: 'critical'
+        }, 'beat7_nurseVoice');
+    }
+
+    beat7_tamagotchiBuzz() {
+        // HAPTIC: Violent buzzing - emergency alert
+        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
+            // Pattern: rapid repeated buzzing (emergency/panic)
+            navigator.vibrate([50, 50, 50, 50, 50, 50, 50]);
+        }
+
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'The Tamagotchi BUZZES VIOLENTLY in his hand.',
+            internal: '[Screen flashing red. Battery: 3%. She\'s dying. Both versions of her. Simultaneously.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.beat7_toriScreaming(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat7_tamagotchiBuzz');
+    }
+
+    beat7_toriScreaming() {
+        this.game.displayScene({
+            character: 'Tori (distorted, panicking)',
+            dialogue: '"RONNIE! I can feel it! Both of me! I\'m FRACTURING—"',
+            internal: '[Her voice cuts out. Static. The connection fraying.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.beat7_decision(),
+            delay: 3000,
+            style: 'critical'
+        }, 'beat7_toriScreaming');
+    }
+
+    beat7_decision() {
+        this.game.displayScene({
+            character: 'Ronnie (voice breaking)',
+            dialogue: '"Hold on. HOLD ON. I\'m coming!"',
+            internal: '[He grabs his keys. The Tamagotchi. Sprints for the door.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.madDash_start(),
+            delay: 2500
+        }, 'beat7_decision');
+    }
+
+    // ========================================
+    // THE MAD DASH - SHARED SEQUENCE
+    // Race to the hospital - outcome determines ending
+    // ========================================
+
+    madDash_start() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'THE MAD DASH BEGINS.',
+            internal: '[Visual: Ronnie bursts through apartment door. Tamagotchi clutched tight. Sprinting down stairs.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.madDash_streets(),
+            delay: 2000
+        }, 'madDash_start');
+    }
+
+    madDash_streets() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'City streets blur past. Red lights ignored. Horns blaring. He doesn\'t stop.',
+            internal: '[Tamagotchi screen: Battery 2%. Tori\'s sprite flickering. Fading.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.madDash_hospitalArrival(),
+            delay: 3500
+        }, 'madDash_streets');
+    }
+
+    madDash_hospitalArrival() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'HOSPITAL. ICU FLOOR. ALARMS SCREAMING.',
+            internal: '[Visual: Ronnie bursts through lobby. Elevator too slow. Takes stairs. Three at a time.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.madDash_corridors(),
+            delay: 3000,
+            style: 'critical'
+        }, 'madDash_hospitalArrival');
+    }
+
+    madDash_corridors() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Corridor. Room 302. Medical staff swarming. Crash cart.',
+            internal: '[He can see her room. Door ahead. Nurses blocking the way.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.madDash_monitor(),
+            delay: 3000,
+            style: 'critical'
+        }, 'madDash_corridors');
+    }
+
+    madDash_monitor() {
+        this.game.displayScene({
+            character: 'System Message',
+            dialogue: '⚠️ BATTERY: 1%\n⚠️ PATIENT VITALS: CRITICAL\n⚠️ ESTIMATED TIME TO FLATLINE: 60 SECONDS',
+            internal: '[Both timers converging. Body dying. Device dying. One minute.]',
+            background: 'assets/hospital.png',
+            next: () => this.act3CriticalChoice(),
+            delay: 3500,
+            style: 'critical'
+        }, 'madDash_monitor');
+    }
+
+    // ========================================
+    // CRITICAL CHOICE - DURING THE RACE
+    // Player's choice determines if he makes it in time
+    // ========================================
+
+    act3CriticalChoice() {
+        this.game.displayScene({
+            character: 'Ronnie (internal)',
+            dialogue: 'One minute. One choice. Everything depends on this.',
+            internal: '[What do you do?]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
             choices: [
-                { text: 'PATH 1: UPLOAD - Trust the code', value: 'upload_end' },
-                { text: 'PATH 2: ANCHOR - Follow the heartbeat', value: 'anchor_end' },
-                { text: 'PATH 3: MERGE - Stay together digitally', value: 'merge_end' }
+                { text: '[Push through - GET TO HER NOW]', value: 'push_through' },
+                { text: '[Stop and explain to medical staff]', value: 'explain' },
+                { text: '[Connect to her digitally one last time]', value: 'connect' }
             ],
             onChoice: (choice) => {
                 this.game.gameState.flags.final_ending_choice = choice;
@@ -547,180 +800,356 @@ class RonnieRouteAct3 {
     }
 
     routeToEnding(choice) {
-        if (choice === 'upload_end') {
-            this.badRouteEnding();
-        } else if (choice === 'anchor_end') {
+        if (choice === 'push_through') {
+            // TRUE ENDING - Makes it in time
             this.trueRouteEnding();
-        } else if (choice === 'merge_end') {
+        } else if (choice === 'explain') {
+            // BAD ENDING - Too late, wastes time explaining
+            this.badRouteEnding();
+        } else if (choice === 'connect') {
+            // DIGITAL FOREVER - Double buzz pulls him in
             this.digitalForeverEnding();
         }
     }
 
     // ========================================
-    // BAD ENDING - CODE PRISON
+    // BAD ENDING - TOO LATE
+    // He stopped to explain, wasted precious seconds
     // ========================================
 
     badRouteEnding() {
         this.game.displayScene({
             character: 'Ronnie (desperate)',
-            dialogue: '"If you can\'t escape... then I\'ll JOIN you. Upload me too. We\'ll be together."',
-            internal: '[He frantically types commands. Upload sequence initiates.]',
-            background: 'assets/apartment.png',
+            dialogue: '"You don\'t understand! She\'s IN the device! Her consciousness! I need to—"',
+            internal: '[The nurses exchange glances. Confused. Concerned. One reaches for his arm.]',
+            background: 'assets/hospital.png',
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.badRoute_upload(),
-            delay: 4000
+            next: () => this.badRoute_tooLate(),
+            delay: 3500
         }, 'badRouteEnding');
     }
 
-    badRoute_upload() {
+    badRoute_tooLate() {
         this.game.displayScene({
-            character: 'System',
-            dialogue: 'UPLOADING CONSCIOUSNESS... 15%... 47%... 89%...',
-            internal: '[Visual: Ronnie\'s vision pixelates. He feels himself pulled INTO the screen.]',
-            background: 'assets/digitalSpace.png',
-            next: () => this.badRoute_arrival(),
-            delay: 3500
-        }, 'badRoute_upload');
-    }
-
-    badRoute_arrival() {
-        this.game.displayScene({
-            character: 'Ronnie (now digital)',
-            dialogue: '"Tori? TORI? Where are you?"',
-            internal: '[He\'s inside the code. Pixelated. Alone.]',
-            background: 'assets/digitalSpace.png',
+            character: 'Narration',
+            dialogue: 'The monitor flatlines.',
+            internal: '[A single, sustained tone. The Tamagotchi screen goes dark. Both gone. Simultaneously.]',
+            background: 'assets/hospital.png',
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.badRoute_toriResponse(),
-            delay: 3000
-        }, 'badRoute_arrival');
+            next: () => this.badRoute_nurseWords(),
+            delay: 3000,
+            style: 'critical'
+        }, 'badRoute_tooLate');
     }
 
-    badRoute_toriResponse() {
+    badRoute_nurseWords() {
         this.game.displayScene({
-            character: 'Tori (distant, glitching)',
-            dialogue: '"Ronnie... why did you come here? Now we\'re BOTH stuck..."',
-            internal: '[Her voice echoes from multiple directions. Fragmented. Scared.]',
-            background: 'assets/digitalSpace.png',
+            character: 'Nurse (soft)',
+            dialogue: '"I\'m sorry. We did everything we could."',
+            internal: '[He was 15 seconds too late. Just 15 seconds.]',
+            background: 'assets/hospital.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.badRoute_realization(),
+            next: () => this.badRoute_staring(),
+            delay: 3500
+        }, 'badRoute_nurseWords');
+    }
+
+    badRoute_staring() {
+        this.game.displayScene({
+            character: 'Ronnie (narration)',
+            dialogue: '"She was gone. And I\'d been too late."',
+            internal: '[Ronnie doesn\'t respond. Staring at the Tamagotchi in his hand.]\n[Fade to black.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.badRoute_timeSkip(),
             delay: 4000
-        }, 'badRoute_toriResponse');
+        }, 'badRoute_staring');
     }
 
-    badRoute_realization() {
+    badRoute_timeSkip() {
         this.game.displayScene({
-            character: 'Ronnie (horrified)',
-            dialogue: '"No. No no no. This was supposed to SAVE you!"',
-            background: 'assets/digitalSpace.png',
+            character: 'Narration',
+            dialogue: 'Years later...',
+            internal: '[Visual: Dimly lit workshop. Older Ronnie, silver hair, faded BGA hoodie. Soldering iron in hand.]\n[Workbench: Tori\'s original Tamagotchi, disassembled. Modified circuitry. Notes everywhere.]',
+            background: 'assets/apartment.png',
+            next: () => this.badRoute_news(),
+            delay: 4000
+        }, 'badRoute_timeSkip');
+    }
+
+    badRoute_news() {
+        this.game.displayScene({
+            character: 'News Anchor (voice)',
+            dialogue: '"—breakthrough in temporal displacement technology announced today—"',
+            internal: '[TV in background. Old Ronnie\'s hand pauses. He looks up.]',
+            background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_chance(),
+            delay: 3500
+        }, 'badRoute_news');
+    }
+
+    badRoute_chance() {
+        this.game.displayScene({
+            character: 'Old Ronnie (quiet, determined)',
+            dialogue: '"...There\'s still a chance."',
+            internal: '[Visual: He picks up the modified Tamagotchi. Screen glows faintly.]\n[Fade to black.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_beforeBump(),
+            delay: 4000
+        }, 'badRoute_chance');
+    }
+
+    badRoute_beforeBump() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '',
+            internal: '[Visual: Street corner, same location as Scene 1. An older man with silver hair stands in shadow, BGA hoodie prominent. He holds a worn Tamagotchi device - labeled "Ronnie-gatchi v1.0"]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_preparation(),
+            delay: 3500
+        }, 'badRoute_beforeBump');
+    }
+
+    badRoute_preparation() {
+        this.game.displayScene({
+            character: 'Old Ronnie',
+            dialogue: '"One more time. This has to work."',
+            internal: '[He looks at the device, then around the corner where young Tori will appear]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_giveHerTools(),
+            delay: 3000
+        }, 'badRoute_preparation');
+    }
+
+    badRoute_giveHerTools() {
+        this.game.displayScene({
+            character: 'Old Ronnie',
+            dialogue: '"Give her the tools. Give myself the tools I never had."',
+            internal: '[He takes a breath, steps around the corner]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_loopBegins(),
+            delay: 3000
+        }, 'badRoute_giveHerTools');
+    }
+
+    badRoute_loopBegins() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'You\'ve seen this before... haven\'t you?',
+            internal: '[The bump scene from the prologue begins to play. But this time, you recognize the old man in the BGA hoodie.]',
+            background: 'assets/apartment.png',
+            next: () => this.badRoute_retryLoop(),
+            delay: 3000
+        }, 'badRoute_loopBegins');
+    }
+
+    badRoute_retryLoop() {
+        this.game.displayScene({
+            character: 'Old Ronnie (narration)',
+            dialogue: '"I spent years refining it. Perfecting the bridge. When they finally cracked time travel... I knew what I had to do. One chance. One moment. To give us both a second try."',
+            internal: '[Visual: Sunny street. Old Ronnie\'s perspective. Young Tori walks by, distracted by her Tamagotchi.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
+            next: () => this.badRoute_bump(),
+            delay: 6000
+        }, 'badRoute_retryLoop');
+    }
+
+    badRoute_bump() {
+        this.game.displayScene({
+            character: 'Old Ronnie (narration)',
+            dialogue: '"I\'m sorry I couldn\'t save you the first time. But maybe... maybe I can save us both."',
+            internal: '[He steps forward. She bumps into him. Both Tamagotchis fall. She picks up his modified toy. It buzzes in her hand.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.badRoute_loop(),
-            delay: 3000
-        }, 'badRoute_realization');
+            next: () => this.badRoute_apology(),
+            delay: 5000
+        }, 'badRoute_bump');
     }
 
-    badRoute_loop() {
+    badRoute_apology() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"Oh my gosh, I\'m so sorry—I wasn\'t paying attention!"',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png',
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.badRoute_warning(),
+            delay: 2500
+        }, 'badRoute_apology');
+    }
+
+    badRoute_warning() {
+        this.game.displayScene({
+            character: 'Old Ronnie (gentle, voice soft)',
+            dialogue: '"No problem. Hang on to that. It may save your life someday."',
+            internal: '[He picks up her original device. Clutches it. Walks away.]\n[Visual: Camera follows him. He glances back once - sees young Ronnie waiting at home for her.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png',
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.badRoute_finalThought(),
+            delay: 5000
+        }, 'badRoute_warning');
+    }
+
+    badRoute_finalThought() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
-        
+
         // Show notes button now (it was hidden during first playthrough)
         if (this.game.notesButton) {
             this.game.notesButton.style.display = 'block';
         }
-        
+
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('bad');
-        
+
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-        
+
+        // Get the current version number for display
+        const currentVersion = this.game.loopVersion;
+
         this.game.displayScene({
-            character: 'System',
-            dialogue: 'ERROR: Two consciousness entities detected. System unstable. Looping indefinitely.',
-            internal: '[Visual: The world glitches. Resets. Loops. They\'re trapped together in a recursive nightmare.]\n[Both bodies in hospital. Both minds in code. No escape.]\n\n**BAD ENDING: CODE PRISON**\n"Love trapped in glass."',
-            background: 'assets/digitalSpace.png',
+            character: 'Old Ronnie (narration)',
+            dialogue: '"Don\'t make the same mistakes I did. Get there in time."',
+            internal: `[Fade to white.]\n\n**BAD ENDING: THE LOOP BEGINS AGAIN**\n"Love trapped in glass."\n\n[System restarting... Version ${currentVersion}]`,
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/old-ronnie-sprite.png'
+            },
             next: () => this.badRoute_retry(),
-            delay: 5000
-        }, 'badRoute_loop');
+            delay: 6000
+        }, 'badRoute_finalThought');
     }
 
     badRoute_retry() {
-        const currentVersion = this.game.loopVersion;
-        const nextVersion = currentVersion + 1; // Calculate but don't increment yet
-        
-        this.game.displayScene({
-            character: 'System',
-            dialogue: `VERSION ${currentVersion} FAILED\nINITIATING VERSION ${nextVersion}...`,
-            internal: '[The loop continues. Try again. You can save her.]\n[RETRY? Y/N]',
-            background: 'assets/digitalSpace.png',
-            choices: [
-                { text: 'Yes - Try again', value: 'retry' },
-                { text: 'No - Accept this ending', value: 'accept' }
-            ],
-            onChoice: (choice) => {
-                if (choice === 'retry') {
-                    // NOW increment version (only on actual retry)
-                    this.game.incrementVersion();
-                    // Show loop reinit screen before restarting
-                    this.game.showLoopInit(() => {
-                        // Reset and restart Ronnie's route after loop init
-                        this.route.start();
-                    });
-                } else {
-                    // Unlock skip prologue for future playthroughs
-                    if (!this.game.skipPrologueUnlocked) {
-                        this.game.skipPrologueUnlocked = true;
-                        localStorage.setItem('skipPrologueUnlocked', 'true');
-                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
-                    }
+        // Unlock skip prologue for future playthroughs
+        if (!this.game.skipPrologueUnlocked) {
+            this.game.skipPrologueUnlocked = true;
+            localStorage.setItem('skipPrologueUnlocked', 'true');
+            console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+        }
 
-                    // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
-                    if (!this.game.ronnieNotesUnlocked) {
-                        this.game.unlockRonnieNotesSystem();
-                    }
+        // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
+        if (!this.game.ronnieNotesUnlocked) {
+            this.game.unlockRonnieNotesSystem();
+        }
 
-                    // End game
-                    this.game.returnToMainMenu();
-                }
-            }
-        }, 'badRoute_retry');
+        // Show ending dialog (three-option system)
+        this.game.showEndingDialog('bad');
     }
 
     // ========================================
-    // DIGITAL FOREVER ENDING - ETERNAL UNION
+    // DIGITAL FOREVER ENDING - DOUBLE BUZZ
+    // He reaches out digitally, the device pulls him in
     // ========================================
 
     digitalForeverEnding() {
         this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"If you can\'t leave... then I\'m not leaving either. We stay together. Here. Forever."',
-            internal: '[He presses "MERGE" before she can protest.]',
-            background: 'assets/apartment.png',
+            character: 'Ronnie (desperate)',
+            dialogue: '"Tori... if I can\'t get to you... then I\'m coming TO you."',
+            internal: '[He stops running. Holds the Tamagotchi close. Opens the connection.]',
+            background: 'assets/hospital.png',
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
-            next: () => this.digitalForever_merge(),
-            delay: 4000
+            next: () => this.digitalForever_connect(),
+            delay: 3500
         }, 'digitalForeverEnding');
+    }
+
+    digitalForever_connect() {
+        this.game.displayScene({
+            character: 'Tori (through device, weak)',
+            dialogue: '"Ronnie... don\'t... you can\'t—"',
+            internal: '[He presses his forehead to the screen. Eyes closed. Reaching through the code.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_doubleBuzz(),
+            delay: 3000
+        }, 'digitalForever_connect');
+    }
+
+    digitalForever_doubleBuzz() {
+        // HAPTIC: Double buzz pattern - two synchronized pulses
+        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
+            // Pattern: buzz, pause, buzz (synchronized double pulse)
+            navigator.vibrate([100, 100, 100]);
+        }
+
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'BUZZ. BUZZ.',
+            internal: '[Two pulses. Synchronized. The device PULLS.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png'
+            },
+            next: () => this.digitalForever_transfer(),
+            delay: 2500,
+            style: 'critical'
+        }, 'digitalForever_doubleBuzz');
+    }
+
+    digitalForever_transfer() {
+        this.game.displayScene({
+            character: 'System',
+            dialogue: '⚠️ UNAUTHORIZED CONSCIOUSNESS TRANSFER\n⚠️ TWO SOULS DETECTED\n⚠️ VESSEL OVERLOAD',
+            internal: '[His body collapses in the hallway. Nurses rush to him. But he\'s already gone.]',
+            background: 'assets/hospital.png',
+            next: () => this.digitalForever_merge(),
+            delay: 4000,
+            style: 'critical'
+        }, 'digitalForever_transfer');
     }
 
     digitalForever_merge() {
         this.game.displayScene({
-            character: 'System',
-            dialogue: 'MERGE PROTOCOL INITIATED\nCONSCIOUSNESS TRANSFER: 100%',
-            internal: '[Visual: Ronnie dissolves into pixels. His sprite materializes beside Tori\'s.]',
+            character: 'Narration',
+            dialogue: 'Digital space. White void. Two sprites materialize.',
+            internal: '[Ronnie\'s form solidifies beside Tori\'s. Both digital. Both together.]',
             background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png',
+                right: 'assets/tori-sprite.png'
+            },
             next: () => this.digitalForever_together(),
             delay: 3500
         }, 'digitalForever_merge');
@@ -838,110 +1267,50 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_retry() {
-        const currentVersion = this.game.loopVersion;
-        const nextVersion = currentVersion + 1; // Calculate but don't increment yet
-        
-        this.game.displayScene({
-            character: 'System',
-            dialogue: `VERSION ${currentVersion} - DIGITAL FOREVER\nDo you want to see another path?\nVERSION ${nextVersion} is waiting...`,
-            background: 'assets/genericBack.png',
-            choices: [
-                { text: 'Yes - Try another path', value: 'retry' },
-                { text: 'No - This is their happiness', value: 'accept' }
-            ],
-            onChoice: (choice) => {
-                if (choice === 'retry') {
-                    // NOW increment version (only on actual retry)
-                    this.game.incrementVersion();
-                    // Show loop reinit screen before restarting
-                    this.game.showLoopInit(() => {
-                        // Reset and restart Ronnie's route after loop init
-                        this.route.start();
-                    });
-                } else {
-                    // Unlock skip prologue for future playthroughs
-                    if (!this.game.skipPrologueUnlocked) {
-                        this.game.skipPrologueUnlocked = true;
-                        localStorage.setItem('skipPrologueUnlocked', 'true');
-                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
-                    }
+        // Unlock skip prologue for future playthroughs
+        if (!this.game.skipPrologueUnlocked) {
+            this.game.skipPrologueUnlocked = true;
+            localStorage.setItem('skipPrologueUnlocked', 'true');
+            console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+        }
 
-                    // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
-                    if (!this.game.ronnieNotesUnlocked) {
-                        this.game.unlockRonnieNotesSystem();
-                    }
+        // UNLOCK RONNIE NOTES SYSTEM (teaser note + tab unlock)
+        if (!this.game.ronnieNotesUnlocked) {
+            this.game.unlockRonnieNotesSystem();
+        }
 
-                    this.game.returnToMainMenu();
-                }
-            }
-        }, 'digitalForever_retry');
+        // Show ending dialog (three-option system)
+        this.game.showEndingDialog('digitalForever');
     }
 
     // ========================================
     // TRUE ENDING - THE ANCHOR
     // ========================================
 
+    // ========================================
+    // TRUE ENDING - MAKES IT IN TIME
+    // He pushes through, gets to her, she jumps back
+    // ========================================
+
     trueRouteEnding() {
         this.game.displayScene({
-            character: 'Ronnie (realization)',
-            dialogue: '"The heartbeat. It\'s not just a connection. It\'s a BRIDGE."',
-            internal: '[He grabs the Tamagotchi. Her body. The anchor.]',
-            background: 'assets/apartment.png',
-            sprites: {
-                left: 'assets/ronnie-sprite.png'
-            },
-            next: () => this.trueRoute_understanding(),
-            delay: 4000
-        }, 'trueRouteEnding');
-    }
-
-    trueRoute_understanding() {
-        this.game.displayScene({
-            character: 'Tori (from device, urgent)',
-            dialogue: '"The body! Ronnie, my BODY is the anchor! I can feel it pulling me when you\'re near!"',
-            background: 'assets/apartment.png',
-            sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
-            },
-            next: () => this.trueRoute_plan(),
-            delay: 3500
-        }, 'trueRoute_understanding');
-    }
-
-    trueRoute_plan() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"Then we follow it back. Device to hand. Heartbeat to heartbeat. I\'ll anchor you."',
-            background: 'assets/apartment.png',
-            sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
-            },
-            next: () => this.trueRoute_race(),
-            delay: 3000
-        }, 'trueRoute_plan');
-    }
-
-    trueRoute_race() {
-        this.game.displayScene({
             character: 'Narration',
-            dialogue: 'MONITORS SCREAMING. COHERENCE DROPPING TO 12%. THE MAD DASH BEGINS.',
-            internal: '[Visual: Ronnie sprinting down hospital corridors. Tamagotchi clutched tight. Nurses shouting. He doesn\'t stop.]',
+            dialogue: 'HE PUSHES THROUGH.',
+            internal: '[Nurses try to stop him. He doesn\'t hear them. Doesn\'t see them. Only her.]',
             background: 'assets/hospital.png',
             sprites: {
                 left: 'assets/ronnie-sprite.png'
             },
             next: () => this.trueRoute_burst(),
-            delay: 4000
-        }, 'trueRoute_race');
+            delay: 2500
+        }, 'trueRouteEnding');
     }
 
     trueRoute_burst() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'He BURSTS through the door.',
-            internal: '[Her body convulsing. Alarms blaring. Medical staff scrambling.]',
+            internal: '[Her body convulsing. Alarms blaring. Medical staff scrambling. Monitor showing erratic heartbeat.]',
             background: 'assets/hospital.png',
             sprites: {
                 left: 'assets/ronnie-sprite.png'

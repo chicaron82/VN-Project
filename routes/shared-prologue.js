@@ -42,6 +42,12 @@ class SharedPrologue {
     }
     
     scene1_pickup() {
+        // HAPTIC: Initial double buzz when picking up modified Tamagotchi
+        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
+            // Pattern: buzz, pause, buzz (the first time she feels it)
+            navigator.vibrate([100, 100, 100]);
+        }
+
         this.game.displayScene({
             character: 'Tori',
             dialogue: '...Weird. Mine has never done that before.',

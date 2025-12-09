@@ -92,49 +92,26 @@ class ToriEndings {
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-        
-        this.game.displayScene({
-            character: 'System',
-            dialogue: 'GAME OVER\n\n"Do you wish to try again?"',
-            background: 'assets/digitalSpace.png',
-            choices: [
-                { text: '[RETRY]', value: 'retry' },
-                { text: '[END]', value: 'end' }
-            ],
-            onChoice: (choice) => {
-                if (choice === 'retry') {
-                    // Increment version
-                    this.game.incrementVersion();
-                    
-                    // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
-                    this.game.showLoopInit(() => {
-                        // Reset tether to full
-                        this.route.tetherSystem.reset();
-                        this.route.act1.start();
-                    });
-                } else {
-                    // DIZEE FIX: Stop tether decay before ending
-                    this.route.tetherSystem.stopDecay();
 
-                    // Unlock skip prologue for future playthroughs
-                    if (!this.game.skipPrologueUnlocked) {
-                        this.game.skipPrologueUnlocked = true;
-                        localStorage.setItem('skipPrologueUnlocked', 'true');
-                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+        // DIZEE FIX: Stop tether decay before ending
+        this.route.tetherSystem.stopDecay();
 
-                        // ZEERAH: Mark feature as unread for notification dot
-                        if (this.game.standaloneNotesViewer) {
-                            this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
-                            this.game.standaloneNotesViewer.saveReadStatus();
-                            this.game.standaloneNotesViewer.updateNotificationDots();
-                        }
-                    }
+        // Unlock skip prologue for future playthroughs
+        if (!this.game.skipPrologueUnlocked) {
+            this.game.skipPrologueUnlocked = true;
+            localStorage.setItem('skipPrologueUnlocked', 'true');
+            console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
 
-                    // Return to menu at current version
-                    this.game.returnToMainMenu();
-                }
+            // ZEERAH: Mark feature as unread for notification dot
+            if (this.game.standaloneNotesViewer) {
+                this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
+                this.game.standaloneNotesViewer.saveReadStatus();
+                this.game.standaloneNotesViewer.updateNotificationDots();
             }
-        }, 'badRoute_retry');
+        }
+
+        // Show ending dialog (three-option system)
+        this.game.showEndingDialog('bad');
     }
 
     // ========================================
@@ -311,72 +288,51 @@ class ToriEndings {
     }
     
     digitalForever_choice() {
-        this.game.displayScene({
-            character: 'System',
-            dialogue: `VERSION ${this.game.loopVersion}\n\n"Together forever in the digital space.\nDo you accept this ending?"`,
-            background: 'assets/digitalSpace.png',
-            choices: [
-                { text: '[RETRY - Seek the true path]', value: 'retry' },
-                { text: '[ACCEPT THIS - Digital love is enough]', value: 'accept' }
-            ],
-            onChoice: (choice) => {
-                if (choice === 'retry') {
-                    // Increment version
-                    this.game.incrementVersion();
-                    
-                    // ZEERAH'S FIX: Use proper loop init screen like Ronnie's route
-                    this.game.showLoopInit(() => {
-                        // Reset tether to full
-                        this.route.tetherSystem.reset();
-                        this.route.act1.start();
-                    });
-                } else {
-                    // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
-                    this.route.unlockNote('z9');
-                    
-                    // UNLOCK SKIP FEATURE (first ending completion)
-                    if (!this.game.skipUnlocked) {
-                        this.game.unlockSkipFeature();
-                    }
+        // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
+        this.route.unlockNote('z9');
 
-                    // Unlock skip prologue for future playthroughs
-                    if (!this.game.skipPrologueUnlocked) {
-                        this.game.skipPrologueUnlocked = true;
-                        localStorage.setItem('skipPrologueUnlocked', 'true');
-                        console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
+        // UNLOCK SKIP FEATURE (first ending completion)
+        if (!this.game.skipUnlocked) {
+            this.game.unlockSkipFeature();
+        }
 
-                        // ZEERAH: Mark feature as unread for notification dot
-                        if (this.game.standaloneNotesViewer) {
-                            this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
-                            this.game.standaloneNotesViewer.saveReadStatus();
-                            this.game.standaloneNotesViewer.updateNotificationDots();
-                        }
-                    }
+        // Unlock skip prologue for future playthroughs
+        if (!this.game.skipPrologueUnlocked) {
+            this.game.skipPrologueUnlocked = true;
+            localStorage.setItem('skipPrologueUnlocked', 'true');
+            console.log('✅ Skip Prologue unlocked! Available on next START STORY.');
 
-                    // INSANE MODE: Unlock if completed on Intense difficulty
-                    if (this.game.settingsManager.settings.tetherDifficulty === 'intense') {
-                        const alreadyUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
-                        if (!alreadyUnlocked) {
-                            localStorage.setItem('insaneModeUnlocked', 'true');
-                            console.log('💀 INSANE MODE UNLOCKED! Check Settings → Tori\'s Route Difficulty');
-                            // Show unlock notification
-                            this.game.showUnlockOverlay('💀 INSANE MODE UNLOCKED', 'Despair awaits in the settings menu.\n\nOnly the most dedicated may enter.', 'unlock');
-                        }
-                    }
-
-                    // DIZEE FIX: Stop tether decay before ending
-                    this.route.tetherSystem.stopDecay();
-
-                    // Accept ending - lock version
-                    this.game.acceptEnding();
-
-                    // DIZEE FIX: Digital forever should show credits, not epilogue
-                    // Epilogue is only for true ending
-                    this.route.collectiblesManager.unlockNote('digital_forever');
-                    this.game.showCredits();
-                }
+            // ZEERAH: Mark feature as unread for notification dot
+            if (this.game.standaloneNotesViewer) {
+                this.game.standaloneNotesViewer.readStatus['feature_skipPrologue'] = false;
+                this.game.standaloneNotesViewer.saveReadStatus();
+                this.game.standaloneNotesViewer.updateNotificationDots();
             }
-        }, 'digitalForever_choice');
+        }
+
+        // INSANE MODE: Unlock if completed on Intense difficulty
+        if (this.game.settingsManager.settings.tetherDifficulty === 'intense') {
+            const alreadyUnlocked = localStorage.getItem('insaneModeUnlocked') === 'true';
+            if (!alreadyUnlocked) {
+                localStorage.setItem('insaneModeUnlocked', 'true');
+                console.log('💀 INSANE MODE UNLOCKED! Check Settings → Tori\'s Route Difficulty');
+                // Show unlock notification
+                this.game.showUnlockOverlay('💀 INSANE MODE UNLOCKED', 'Despair awaits in the settings menu.\n\nOnly the most dedicated may enter.', 'unlock');
+            }
+        }
+
+        // DIZEE FIX: Stop tether decay before ending
+        this.route.tetherSystem.stopDecay();
+
+        // Accept ending - lock version
+        this.game.acceptEnding();
+
+        // DIZEE FIX: Digital forever should show credits, not epilogue
+        // Epilogue is only for true ending
+        this.route.collectiblesManager.unlockNote('digital_forever');
+
+        // Show ending dialog (three-option system)
+        this.game.showEndingDialog('digitalForever');
     }
 
     // ========================================
