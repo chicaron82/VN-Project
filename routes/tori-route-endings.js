@@ -110,6 +110,11 @@ class ToriEndings {
             }
         }
 
+        // 🔥 NOTIFY GATEWAY
+        if (window.vnBridge) {
+            window.vnBridge.notifyEnding('bad');
+        }
+
         // Show ending dialog (three-option system)
         this.game.showEndingDialog('bad');
     }
@@ -331,6 +336,11 @@ class ToriEndings {
         // Epilogue is only for true ending
         this.route.collectiblesManager.unlockNote('digital_forever');
 
+        // 🔥 NOTIFY GATEWAY
+        if (window.vnBridge) {
+            window.vnBridge.notifyEnding('digitalForever');
+        }
+
         // Show ending dialog (three-option system)
         this.game.showEndingDialog('digitalForever');
     }
@@ -474,6 +484,12 @@ class ToriEndings {
 
                 // Break the loop - this timeline succeeded!
                 this.game.breakLoop();
+
+                // 🔥 NOTIFY GATEWAY
+                if (window.vnBridge) {
+                    window.vnBridge.notifyEnding('true');
+                }
+
                 // Transition to shared epilogue
                 const epilogue = new Epilogue(this.game);
                 epilogue.start();

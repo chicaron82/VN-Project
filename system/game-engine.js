@@ -274,7 +274,9 @@ class GameEngine {
         if (!this.spriteLeft) console.error('❌ Sprite element #character-left not found!');
         if (!this.spriteRight) console.error('❌ Sprite element #character-right not found!');
 
-        
+        // Menu carousel (UV7 glow-up)
+        this.menuCarousel = null;
+
         // State
         this.currentRoute = null;
         this.currentScene = null;
@@ -1063,6 +1065,21 @@ class GameEngine {
         this.mainMenu.style.transition = 'opacity 0.8s ease-in';
         this.mainMenu.style.opacity = '1';
 
+        // Initialize menu carousel (UV7 glow-up)
+        console.log('🔍 Checking MenuCarousel availability:', typeof MenuCarousel);
+        if (!this.menuCarousel && typeof MenuCarousel !== 'undefined') {
+            console.log('🎠 Creating MenuCarousel instance...');
+            this.menuCarousel = new MenuCarousel(this);
+            this.menuCarousel.init();
+        } else if (typeof MenuCarousel === 'undefined') {
+            console.warn('⚠️ MenuCarousel class not found - is ui/menu-carousel.js loaded?');
+        } else if (this.menuCarousel) {
+            console.log('ℹ️ MenuCarousel already initialized');
+        }
+
+        // Check if ToriGatchi is unlocked and update main menu layout (fallback for old grid)
+        this.updateMainMenuLayout();
+
         // ZEE'S ADDITION: Start tip rotation 🖤
         this.startMainMenuTipRotation();
     }
@@ -1180,6 +1197,44 @@ class GameEngine {
             // Elements not found - log warning but don't crash
             if (!subtitle) console.warn('⚠️ .subtitle element not found in DOM');
             if (!footer) console.warn('⚠️ .menu-footer element not found in DOM');
+        }
+    }
+
+    // ========================================
+    // TORIGATCHI MAIN MENU UNLOCK SYSTEM
+    // DIZEE'S ADDITION: Unlocks after first secret code use 🔧
+    // ========================================
+
+    updateMainMenuLayout() {
+        const torigatchiBtn = document.getElementById('torigatchi-menu-btn');
+        const contactBtn = document.getElementById('contact-menu-btn');
+        const menuGrid = document.getElementById('menu-buttons-grid');
+
+        if (!torigatchiBtn || !contactBtn || !menuGrid) {
+            console.warn('⚠️ Menu button elements not found');
+            return;
+        }
+
+        // Check if ToriGatchi is unlocked
+        const isUnlocked = localStorage.getItem('torigatchi_unlocked') === 'true';
+
+        if (isUnlocked) {
+            // Show ToriGatchi button (moves into top row as 5th button)
+            torigatchiBtn.style.display = 'inline-block';
+
+            // Contact button is already in bottom row in the HTML
+            // Just need to update grid layout via CSS class
+            menuGrid.classList.add('torigatchi-unlocked');
+
+            console.log('🎮 ToriGatchi unlocked - 2×5 menu layout active');
+        } else {
+            // Hide ToriGatchi button
+            torigatchiBtn.style.display = 'none';
+
+            // Keep default 4×2+1 layout
+            menuGrid.classList.remove('torigatchi-unlocked');
+
+            console.log('🔒 ToriGatchi locked - default menu layout');
         }
     }
 
@@ -2001,6 +2056,14 @@ class GameEngine {
     startRoute(routeName) {
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();
+
+        // DIZEE FIX: Reset loop status to 'attempting' when starting new route
+        // This prevents [FINAL] from persisting after true ending -> retry -> bad ending
+        if (this.loopStatus === 'succeeded' || this.loopStatus === 'accepted') {
+            const previousStatus = this.loopStatus;
+            this.incrementVersion(); // Increment version for new attempt (also resets status to 'attempting')
+            console.log(`🔄 New attempt after ${previousStatus} - VERSION ${this.loopVersion}`);
+        }
 
         // ZEE'S ADDITION: Stop tip rotation 🖤
         this.stopRouteSelectTipRotation();
@@ -3254,6 +3317,9 @@ class GameEngine {
     // ========================================
 
     showCredits(endingType = null) {
+        // DIZEE FIX: Remove floating bubbles before showing credits
+        this.removeInternalBubble();
+
         // Determine which ending to display
         // Priority: parameter > localStorage > default
         const displayEndingType = endingType ||
@@ -5156,7 +5222,42 @@ game.devCommands()
             }, 300);
         }
     }
-    
+
+    // DIZEE'S ADDITION: ToriGatchi unlock notification
+    showUnlockNotification() {
+        const notification = document.createElement('div');
+        notification.id = 'torigatchi-unlock-notification';
+        notification.innerHTML = `
+            <div class="unlock-title">NEW MAIN MENU OPTION UNLOCKED! 🎮</div>
+            <div class="unlock-feature">TORIGATCHI</div>
+            <div class="unlock-description">
+                You've discovered the reverse trapdoor.<br><br>
+                ToriGatchi is now permanently available<br>
+                from the main menu. No need to type the<br>
+                code again - just look for the 🎮 button.<br><br>
+                <em>The gateway remembers you.</em>
+            </div>
+            <button class="unlock-continue" onclick="game.closeToriGatchiUnlockNotification()">CONTINUE</button>
+        `;
+
+        document.body.appendChild(notification);
+
+        // Fade in
+        setTimeout(() => {
+            notification.classList.add('visible');
+        }, 100);
+    }
+
+    closeToriGatchiUnlockNotification() {
+        const notification = document.getElementById('torigatchi-unlock-notification');
+        if (notification) {
+            notification.classList.remove('visible');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    }
+
     toggleSkip() {
         if (!this.skipUnlocked) return;
         
@@ -5258,6 +5359,16 @@ game.devCommands()
             this.menuShowTimeout = setTimeout(() => {
                 this.mainMenu.style.display = 'flex';
                 this.mainMenu.style.opacity = '1';
+
+                // Initialize menu carousel (UV7 glow-up)
+                console.log('🔍 Checking MenuCarousel availability:', typeof MenuCarousel);
+                if (!this.menuCarousel && typeof MenuCarousel !== 'undefined') {
+                    console.log('🎠 Creating MenuCarousel instance...');
+                    this.menuCarousel = new MenuCarousel(this);
+                    this.menuCarousel.init();
+                } else if (typeof MenuCarousel === 'undefined') {
+                    console.warn('⚠️ MenuCarousel class not found - is ui/menu-carousel.js loaded?');
+                }
             }, menuDelay);
         }, remaining + 300); // Additional 300ms for fade transition
     }
@@ -5308,7 +5419,27 @@ game.devCommands()
     
     showTorigatchiEasterEgg() {
         console.log('🎉 TORIGATCHI EASTER EGG TRIGGERED!');
-        
+
+        // Check if this is first time unlocking
+        const wasAlreadyUnlocked = localStorage.getItem('torigatchi_unlocked');
+        const isFirstTimeUnlock = !wasAlreadyUnlocked;
+
+        if (isFirstTimeUnlock) {
+            localStorage.setItem('torigatchi_unlocked', 'true');
+            console.log('🔓 ToriGatchi unlocked for main menu!');
+
+            // Show unlock notification
+            this.showUnlockNotification();
+
+            // Update main menu layout immediately to show new button
+            setTimeout(() => {
+                this.updateMainMenuLayout();
+            }, 100);
+
+            // Also unlock in carousel (UV7 glow-up)
+            this.unlockToriGatchiCarousel();
+        }
+
         // Screen glitch effect
         document.body.style.animation = 'glitchScreen3 0.5s';
         
@@ -5468,8 +5599,8 @@ game.devCommands()
             });
 
             gatewayBtn.addEventListener('click', () => {
-                // Gateway Tori - open local gateway.html in iframe overlay
-                this.openTorigatchiIframe('gateway.html');
+                // Gateway Tori - open local Tori-Gatchi in iframe overlay
+                this.openTorigatchiIframe('Tori-Gatchi/index.html');
                 overlay.style.animation = 'fadeOut 0.5s ease-out';
                 setTimeout(() => overlay.remove(), 500);
             });
@@ -5624,6 +5755,17 @@ game.devCommands()
             });
         });
         observer.observe(document.body, { childList: true });
+    }
+
+    // ========================================
+    // CAROUSEL UNLOCK (UV7 GLOW-UP)
+    // Unlock Tori-Gatchi in carousel after route completion
+    // ========================================
+
+    unlockToriGatchiCarousel() {
+        if (this.menuCarousel) {
+            this.menuCarousel.unlockToriGatchi();
+        }
     }
 
     // ========================================

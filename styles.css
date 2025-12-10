@@ -104,6 +104,14 @@
     /* DIZEE FIX: Brighten on click instead of moving */
 }
 
+/* DIZEE FIX: Prevent focus state from changing skip button position */
+.uv7-skip-btn:focus {
+    position: absolute !important;  /* Keep absolute positioning on focus - prevent jumping */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+
 @keyframes splashFadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -461,66 +469,76 @@
 }
 
 /* ========================================
-   LANDSCAPE LAYOUT - Two Column Grid
+   MAIN MENU BUTTON GRID
+   DIZEE'S UPDATE: Row-based layout (2x5 when ToriGatchi unlocked)
    ======================================== */
 
-/* Default: Single column for portrait/desktop */
+/* Default: Single column for portrait/desktop (locked state) */
 .menu-buttons-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0;
+    gap: 10px;
     width: 100%;
 }
 
-.menu-column-left,
-.menu-column-right {
+.menu-row {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
     width: 100%;
 }
 
+/* Contact button styling - centered when locked, inline when unlocked */
 .menu-button-contact {
-    margin-top: 20px;
-    /* Let it inherit width from .menu-button in portrait */
-    /* Landscape will override with specific width + centering */
+    margin-top: 10px;
 }
 
-/* Landscape mode: Switch to two columns */
+/* Locked state (default): 4x2 + centered contact */
+.menu-buttons-grid:not(.torigatchi-unlocked) .menu-button-torigatchi {
+    display: none !important;
+}
+
+.menu-buttons-grid:not(.torigatchi-unlocked) .menu-button-contact {
+    width: 100%;
+    max-width: 300px;
+    align-self: center;
+}
+
+/* Unlocked state: 2x5 grid */
+.menu-buttons-grid.torigatchi-unlocked .menu-row {
+    justify-content: center;
+}
+
+.menu-buttons-grid.torigatchi-unlocked .menu-button-contact {
+    margin-top: 0;
+}
+
+/* Landscape mode: Optimized spacing */
 @media (orientation: landscape) and (max-height: 600px) {
     .menu-buttons-grid {
-        flex-direction: row;
-        justify-content: center;
-        gap: 40px;
-        max-width: 800px;
+        gap: 15px;
+        max-width: 900px;
         margin: 0 auto;
     }
-    
-    .menu-column-left,
-    .menu-column-right {
-        flex: 1;
-        max-width: 300px;
+
+    .menu-row {
+        gap: 15px;
     }
-    
+
     .menu-button {
-        min-width: 100%;
-        margin: 8px 0;
+        min-width: 160px;
+        max-width: 200px;
+        margin: 0;
     }
-    
-    .menu-button-contact {
-        margin-top: 15px;
-        width: 300px !important;
-        max-width: 300px;
-        min-width: 300px;
-        align-self: center;
-    }
-    
+
     #main-menu h1 {
         font-size: 2.2em;
         margin-bottom: 15px;
     }
-    
+
     #main-menu .subtitle {
         font-size: 1em;
         margin-bottom: 25px;
@@ -3599,12 +3617,18 @@
     font-style: italic;
     color: #1a1a2e;
     max-width: 280px;
+    max-height: 40vh; /* DIZEE FIX: Limit height to allow scrolling for long text */
     z-index: 500;
     opacity: 0;
-    pointer-events: none;
+    pointer-events: auto; /* DIZEE FIX: Enable pointer events for scrolling */
     box-shadow: 0 4px 20px rgba(0, 255, 255, 0.4);
     line-height: 1.5;
-    
+    overflow-y: auto; /* DIZEE FIX: Enable vertical scrolling */
+    overflow-x: hidden; /* DIZEE FIX: Prevent horizontal overflow */
+    word-wrap: break-word; /* DIZEE FIX: Wrap long words */
+    -webkit-overflow-scrolling: touch; /* DIZEE FIX: Smooth iOS scrolling */
+    scroll-behavior: smooth;
+
     /* Shorter animation - fade in only, stays visible */
     animation: internalBubbleFade 0.5s ease-out forwards;
 }
@@ -6297,8 +6321,10 @@ input:checked + .toggle-slider:before {
     }
 }
 
-/* Skip Unlock Notification */
-#skip-unlock-notification {
+/* Unlock Notifications (Skip, Notes, ToriGatchi) */
+#skip-unlock-notification,
+#notes-unlock-notification,
+#torigatchi-unlock-notification {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -6317,7 +6343,9 @@ input:checked + .toggle-slider:before {
     border-radius: 10px;
 }
 
-#skip-unlock-notification.visible {
+#skip-unlock-notification.visible,
+#notes-unlock-notification.visible,
+#torigatchi-unlock-notification.visible {
     opacity: 1;
 }
 
@@ -6385,7 +6413,9 @@ input:checked + .toggle-slider:before {
         font-size: 0.75em;
     }
     
-    #skip-unlock-notification {
+    #skip-unlock-notification,
+    #notes-unlock-notification,
+    #torigatchi-unlock-notification {
         max-width: 90%;
         padding: 30px 20px;
     }

@@ -12,7 +12,9 @@
     
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="styles.css">
-    
+    <link rel="stylesheet" href="menu-carousel.css">
+    <link rel="stylesheet" href="route-select-sprites.css">
+
 <style>
         /* ========================================
            MINIMAL INLINE STYLES
@@ -109,24 +111,25 @@
                     💡 Hidden codes unlock secret content - read the notes carefully...
                 </div>
 
-                <!-- Button Grid (4 left + 4 right in landscape) -->
-                <div class="menu-buttons-grid">
-                    <div class="menu-column-left">
+                <!-- Button Grid (2x5 when ToriGatchi unlocked, 4x2+1 when locked) -->
+                <div class="menu-buttons-grid" id="menu-buttons-grid">
+                    <div class="menu-row menu-row-top">
                         <button class="menu-button" onclick="game.startStory()">START STORY</button>
                         <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
                         <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
                         <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
+                        <!-- ToriGatchi button (only shown when unlocked) -->
+                        <button class="menu-button menu-button-torigatchi" id="torigatchi-menu-btn" onclick="game.openTorigatchiIframe('Tori-Gatchi/index.html')" style="display: none;">🎮 TORIGATCHI</button>
                     </div>
-                    <div class="menu-column-right">
+                    <div class="menu-row menu-row-bottom">
                         <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
                         <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
                         <button class="menu-button" onclick="game.showMeetTheCrew()">MEET THE CREW</button>
                         <button class="menu-button" onclick="game.showDirectorsCut()">DIRECTOR'S CUT</button>
+                        <!-- Contact button (moves here when ToriGatchi unlocked) -->
+                        <button class="menu-button menu-button-contact" id="contact-menu-btn" onclick="game.showContact()">CONTACT</button>
                     </div>
                 </div>
-
-                <!-- Contact Button (centered below grid) -->
-                <button class="menu-button menu-button-contact" onclick="game.showContact()">CONTACT</button>
             </div>
         </div>
 
@@ -1031,12 +1034,15 @@
     <!-- External JavaScript (Load Order Matters!) -->
     <!-- System Files -->
     <script src="system/game-config.js"></script>
+    <script src="ui/menu-carousel.js"></script>
     <script src="system/secret-codes-manager.js"></script>
     <script src="system/settings-manager.js"></script>
     <script src="system/tether-system.js"></script>
     <script src="system/collectibles-manager.js"></script>
     <script src="system/dev-console.js"></script>
     <script src="system/bootstrap-tracker.js"></script>
+    <!-- Gateway Bridge -->
+    <script src="vn-gateway-bridge.js"></script>
     <script src="system/game-engine.js"></script>
     <script src="system/save-manager.js"></script>
     <script src="system/cutscene-engine.js"></script>
