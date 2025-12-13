@@ -5,8 +5,23 @@
 // ========================================
 
 class Epilogue {
-    constructor(game) {
+    constructor(game, fromRoute = 'ronnie') {
         this.game = game;
+        this.fromRoute = fromRoute;
+
+        // Set sprite positions based on which route we came from
+        if (fromRoute === 'tori') {
+            this.leftSprite = 'assets/tori-sprite.png';
+            this.rightSprite = 'assets/ronnie-sprite.png';
+            this.oldLeftSprite = 'assets/tori-sprite.png';
+            this.oldRightSprite = 'assets/old-ronnie-sprite.png';
+        } else {
+            // Default: Ronnie's route (Ronnie left, Tori right)
+            this.leftSprite = 'assets/ronnie-sprite.png';
+            this.rightSprite = 'assets/tori-sprite.png';
+            this.oldLeftSprite = 'assets/old-ronnie-sprite.png';
+            this.oldRightSprite = 'assets/tori-sprite.png';
+        }
     }
     
     // ========================================
@@ -25,8 +40,8 @@ class Epilogue {
             internal: '[Visual: Their apartment. Morning light. Domestic peace. Tori recovered, moving freely.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => this.trueRoute_beard(),
             delay: 3000
@@ -40,8 +55,8 @@ class Epilogue {
             internal: '[She strokes his face, running her fingers through the new scruff.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => this.trueRoute_ronnieJoke(),
             delay: 3000
@@ -54,8 +69,8 @@ class Epilogue {
             dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => this.trueRoute_realization(),
             delay: 3000
@@ -69,8 +84,8 @@ class Epilogue {
             internal: '[A pause. Something flickering at the edge of memory.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => this.trueRoute_connection(),
             delay: 3000
@@ -84,8 +99,8 @@ class Epilogue {
             internal: '[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes. The BGA hoodie...]',
             background: 'assets/genericBack.png',
             sprites: {
-                left: 'assets/old-ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.oldLeftSprite,
+                right: this.oldRightSprite
             },
             next: () => this.trueRoute_dejavu(),
             delay: 4000
@@ -98,8 +113,8 @@ class Epilogue {
             dialogue: '"...Weird. Déjà vu, I guess."',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => this.trueRoute_knowing(),
             delay: 2000
@@ -113,8 +128,8 @@ class Epilogue {
             internal: `[The loop is closed. Version ${this.game.loopVersion} succeeded. The Old Man never has to go back. Love wins.]\n\n[Fade to white.]\n\n[Credits roll. No retry prompt. This is the escape from the loop.]`,
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: this.leftSprite,
+                right: this.rightSprite
             },
             next: () => {
                 // Show ending dialog (three-option system)

@@ -1,7 +1,8 @@
 /* ========================================
    MENU CAROUSEL STYLES
-   Card-based main menu with swipe navigation
+   Card-based main menu with MOMENTUM PHYSICS
    🖤💚🔥💀 Built by UV7 Crew
+   Upgraded with 3AM momentum engine by Zee 🔥
    ======================================== */
 
 /* ========================================
@@ -26,14 +27,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Removed cursor: grab - let cards handle their own cursors */
 }
 
+/* Only show grab cursor when actually dragging on the track background */
 .carousel-track {
-    width: 100%;
     display: flex;
-    justify-content: center;
+    gap: 20px; /* Card gap - matches momentum engine config */
     align-items: center;
     position: relative;
+    will-change: transform; /* Performance optimization for momentum */
+    transition: none; /* Momentum engine handles all transforms */
+    /* Removed cursor: grab/grabbing - cards handle their own cursors */
 }
 
 /* ========================================
@@ -41,8 +46,8 @@
    ======================================== */
 
 .carousel-card {
-    width: 100%;
-    max-width: 600px;
+    min-width: 400px; /* Fixed width for momentum calculations */
+    max-width: 400px;
     min-height: 350px;
     padding: 2.5rem 2rem;
     border-radius: 16px;
@@ -55,48 +60,27 @@
     justify-content: center;
     gap: 1rem;
     cursor: pointer;
+    flex-shrink: 0; /* Prevent cards from shrinking */
+    opacity: 1; /* Start visible - momentum engine handles opacity */
     transition:
-        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        transform 0.3s ease,
         box-shadow 0.3s ease-out,
-        border-color 0.3s ease-out,
-        opacity 0.3s ease-out;
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
+        border-color 0.3s ease-out;
+    position: relative; /* Establish stacking context */
+    z-index: 10; /* Above track */
+    pointer-events: auto; /* Ensure clickable */
 }
 
-/* Active state (entrance animation) */
-.carousel-card.card-active {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+/* Momentum engine controls opacity/scale dynamically - no need for manual animations! */
+
+/* Hover effects still work */
+.carousel-card:hover {
+    border-color: #666;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
 }
 
-/* Slide animations */
-.carousel-card.slide-out-left {
-    animation: slideOutLeft 0.3s ease-out forwards;
-}
-
-.carousel-card.slide-out-right {
-    animation: slideOutRight 0.3s ease-out forwards;
-}
-
-.carousel-card.fade-out {
-    animation: fadeOut 0.3s ease-out forwards;
-}
-
-@keyframes slideOutLeft {
-    to {
-        opacity: 0;
-        transform: translateX(-100px) scale(0.9);
-    }
-}
-
-@keyframes slideOutRight {
-    to {
-        opacity: 0;
-        transform: translateX(100px) scale(0.9);
-    }
-}
-
+/* Remove old slide/fade animations - momentum engine handles all that now */
 @keyframes fadeOut {
     to {
         opacity: 0;
@@ -308,6 +292,9 @@
     justify-content: center;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    z-index: 100; /* Above viewport and cards */
+    pointer-events: auto; /* Ensure clickable */
+    position: relative; /* Establish stacking context */
 }
 
 .carousel-arrow:hover:not(:disabled) {
@@ -483,19 +470,20 @@
 /* Tablet (768px - 1024px) */
 @media (max-width: 1024px) {
     .carousel-card {
-        max-width: 500px;
+        min-width: 380px;
+        max-width: 380px;
         min-height: 320px;
         padding: 2rem 1.5rem;
     }
-    
+
     .card-title {
         font-size: 1.8em;
     }
-    
+
     .card-icon {
         font-size: 3em;
     }
-    
+
     .carousel-arrow {
         width: 50px;
         height: 50px;
@@ -508,17 +496,18 @@
     .menu-carousel {
         flex-direction: column;
         gap: 0.5rem;
-        margin: 1rem auto 0.5rem;
+        /* margin: 1rem auto 0.5rem; - Handled by mode switch logic */
     }
     
     .carousel-viewport {
         min-height: 380px;
         width: 100%;
+        /* Simple Mode requires simpler structure */
     }
     
     .carousel-card {
-        width: 90vw;
-        max-width: none;
+        min-width: 320px;
+        max-width: 320px;
         min-height: 350px;
         padding: 2rem 1.5rem;
     }
@@ -576,7 +565,7 @@
 
 /* Landscape Mode - Compact to fit all elements */
 @media (max-height: 720px) and (orientation: landscape) {
-    .menu-carousel {
+    .menu-carousel.momentum-mode { /* Apply specific grid only to momentum mode */
         margin: 0.3rem auto;
         display: grid !important;
         grid-template-columns: 40px 1fr 40px;
@@ -768,4 +757,40 @@
 .card-button:focus-visible {
     outline: 3px solid #ff66cc;
     outline-offset: 4px;
+}
+
+/* ========================================
+   LEGACY SIMPLE CAROUSEL ANIMATIONS
+   (Restored for Hybrid Mode)
+   ======================================== */
+
+.carousel-card.card-active {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.carousel-card.slide-out-left {
+    animation: slideOutLeft 0.3s ease-out forwards;
+}
+
+.carousel-card.slide-out-right {
+    animation: slideOutRight 0.3s ease-out forwards;
+}
+
+.carousel-card.fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+@keyframes slideOutLeft {
+    to {
+        opacity: 0;
+        transform: translateX(-100px) scale(0.9);
+    }
+}
+
+@keyframes slideOutRight {
+    to {
+        opacity: 0;
+        transform: translateX(100px) scale(0.9);
+    }
 }

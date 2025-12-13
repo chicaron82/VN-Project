@@ -37,7 +37,7 @@
  *    - trySecretCode() check
  *
  * 5. DEV COMMANDS ................................ Line 220
- *    - openconsole (dev console access)
+ *    - openconsole, hideconsole (dev console access)
  *    - clearnotes, reset848, reset849
  *    - unlockskip, skipintro
  *    - unlockcodes, revealcodes
@@ -91,7 +91,7 @@
  *   Utility (3):  echobreak, tetherlock, saveanywhere
  *
  * Dev Commands (hidden - no UI, manual entry only):
- *   openconsole, clearnotes, reset848, freezetether, unlockskip,
+ *   openconsole, hideconsole, clearnotes, reset848, freezetether, unlockskip,
  *   revealcodes, nuke, devhelp, and more (see section 5)
  *
  * Integration Points:
@@ -278,6 +278,14 @@ class SecretCodesManager {
                 return null; // Silently fail if debug mode is off
             },
 
+            'hideconsole': () => {
+                if (GameConfig.DEBUG_MODE && typeof DevConsole !== 'undefined') {
+                    DevConsole.close();
+                    return '🖥️ DEV: Console closed and hidden';
+                }
+                return null; // Silently fail if debug mode is off
+            },
+
             // GENERAL
             'clearnotes': () => {
                 this.game.clearNotes();
@@ -434,6 +442,10 @@ class SecretCodesManager {
             // HELP
             'devhelp': () => {
                 const helpText = [
+                    '--- DEV CONSOLE ---',
+                    'openconsole - Open dev console',
+                    'hideconsole - Close and hide dev console',
+                    '',
                     '--- GENERAL ---',
                     'clearnotes - Clear all collected notes',
                     'reset848 - Reset to VERSION 848',
@@ -701,6 +713,12 @@ class SecretCodesManager {
 
         this.lastResponseIndex = responseIndex;
         const response = this.invalidResponses[responseIndex];
+
+        // EMOTIONAL FEEDBACK: Gentle denial for invalid codes
+        if (this.game.triggerSensoryFeedback) {
+            const codeInput = document.getElementById('code-input');
+            this.game.triggerSensoryFeedback('denied', codeInput, 'Invalid secret code');
+        }
 
         // Show in code result message area
         const resultEl = document.getElementById('code-result-message');

@@ -198,6 +198,89 @@
  * ════════════════════════════════════════════════════════════════
  */
 
+// ========================================
+// SENSORY CUES METADATA (TORI'S ARCHITECTURE) 💚
+// Central configuration for all haptic + visual feedback
+// ========================================
+
+const SENSORY_CUES = {
+    // UI Interactions (scale with comfort)
+    buttonPress: {
+        channel: 'ui',
+        basePattern: 'light',
+        visualType: 'buttonPress'
+    },
+    menuSelect: {
+        channel: 'ui',
+        basePattern: 'light',
+        visualType: 'menuSelect'
+    },
+    cardSnap: {
+        channel: 'ui',
+        basePattern: 'medium',
+        visualType: 'cardSnap'
+    },
+    uiSuccess: {
+        channel: 'ui',
+        basePattern: 'success',
+        visualType: null  // Visual-only cue
+    },
+
+    // Narrative Moments (scale with comfort)
+    toriHop: {
+        channel: 'narrative',
+        basePattern: 'pulse',
+        visualType: 'toriHop'
+    },
+    tamaPull: {
+        channel: 'narrative',
+        basePattern: 'medium',
+        visualType: 'tamaPull'
+    },
+    tamaEmergency: {
+        channel: 'narrative',
+        basePattern: 'warning',
+        visualType: 'tamaEmergency'
+    },
+    timelineGlitch: {
+        channel: 'narrative',
+        basePattern: 'glitch',
+        visualType: 'timelineGlitch'
+    },
+    codeRipple: {
+        channel: 'narrative',
+        basePattern: 'double',
+        visualType: 'codeRipple'
+    },
+    tetherWarning: {
+        channel: 'narrative',
+        basePattern: 'warning',
+        visualType: null
+    },
+    echoCall: {
+        channel: 'narrative',
+        basePattern: 'echo',
+        visualType: null
+    },
+
+    // Critical Feedback (NEVER scales - full intensity always)
+    denied: {
+        channel: 'critical',
+        basePattern: 'denied',
+        visualType: 'denied'
+    },
+    harshDenial: {
+        channel: 'critical',
+        basePattern: 'error',
+        visualType: 'harshDenial'
+    },
+    despairPulse: {
+        channel: 'critical',
+        basePattern: 'heartbeat',
+        visualType: null
+    }
+};
+
 /**
  * GameEngine
  *
@@ -277,6 +360,9 @@ class GameEngine {
         // Menu carousel (UV7 glow-up)
         this.menuCarousel = null;
 
+        // Route selector (UV7 glow-up)
+        this.routeSelector = null;
+
         // State
         this.currentRoute = null;
         this.currentScene = null;
@@ -314,7 +400,13 @@ class GameEngine {
         // Dialogue history for backlog
         this.dialogueHistory = [];
         this.maxHistoryLength = 100; // Keep last 100 dialogue entries
-        
+
+        // TORI'S SENSORY SYSTEM: Debounce + Debug Logger 💚
+        this.lastHapticTime = 0;
+        this.hapticCooldownMs = 80;  // Anti-spam cooldown
+        this.sensoryLog = [];
+        this.maxSensoryLog = 20;     // Keep last 20 sensory events for debugging
+
         // Game state for tracking choices, flags, and progress
         this.gameState = {
             flags: {},
@@ -345,6 +437,9 @@ class GameEngine {
         // Initialize settings manager
         this.settingsManager = new SettingsManager(this);
 
+        // Initialize visual cue manager (pairs with haptics)
+        this.visualCueManager = new VisualCueManager(this);
+
         // DIZEE: Initialize secret codes manager 🖤
         this.secretCodesManager = new SecretCodesManager(this);
 
@@ -355,6 +450,12 @@ class GameEngine {
 
         // Initialize backlog manager (ZEERAH: Time-traveling backlog)
         this.backlogManager = new BacklogManager(this);
+
+        // TORI'S ADDITION: Initialize Time Machine Manager 💚
+        this.timeMachine = new TimeMachineManager(this, {
+            maxEntries: 200,
+            pruneStrategy: 'smart'
+        });
 
         // Standalone notes viewer for main menu
         this.standaloneNotesViewer = new StandaloneNotesViewer(this);
@@ -1361,28 +1462,21 @@ class GameEngine {
     // Progressive enhancement - Android focused, opt-in
     // ========================================
 
-    triggerHaptic(patternName, description = '') {
-        // Check if user has enabled haptics in settings
-        if (!this.settingsManager || !this.settingsManager.getHapticEnabled()) {
-            return; // User disabled or settings not ready
-        }
+    // ========================================
+    // HAPTIC PATTERN LIBRARY (TORI'S ARCHITECTURE) 💚
+    // ========================================
 
-        // Check if device supports vibration API
-        if (!navigator.vibrate) {
-            console.log(`⚠️ Haptic not supported: ${description}`);
-            return;
-        }
-
-        // Pattern library - varied feedback for different interactions
-        const patterns = {
+    getHapticPatterns() {
+        return {
             // Basic intensity levels
             'light': 10,           // Quick tap (UI navigation)
             'medium': 25,          // Standard feedback (choices, buttons)
             'strong': 50,          // Important actions (confirmations)
 
-            // Rhythmic patterns
-            'double': [25, 50, 25],           // Two taps (toggling, selecting)
+            // Rhythmic patterns (EMOTIONAL LANGUAGE)
+            'double': [25, 50, 25],           // Two taps (vessel hop, transitions)
             'triple': [20, 40, 20, 40, 20],   // Three taps (special unlocks)
+            'denied': [40, 40, 40, 40, 40],   // Triple DENIAL (blocked saves, locked actions, despair)
             'pulse': [30, 30, 30, 30, 30],    // Sustained pulse (loading, waiting)
 
             // Feedback types
@@ -1395,15 +1489,120 @@ class GameEngine {
             'glitch': [10, 20, 5, 30, 15],    // Glitchy stutter (reality breaks)
             'echo': [15, 80, 15, 80, 15],     // Echo appearance
         };
+    }
 
-        // Get pattern (allow custom arrays or numbers to be passed directly)
-        const pattern = patterns[patternName] || patternName;
+    scaleHapticPattern(pattern, comfortLevel) {
+        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%)
+        if (comfortLevel === 1) return pattern;
+
+        // Normalize to array
+        const arr = Array.isArray(pattern) ? pattern.slice() : [pattern];
+
+        if (comfortLevel === 0) {
+            // Gentle: softer, shorter
+            return arr.map(ms => Math.max(5, Math.round(ms * 0.6)));
+        }
+        if (comfortLevel === 2) {
+            // Amped: stronger, longer
+            return arr.map(ms => Math.round(ms * 1.3));
+        }
+
+        return pattern;
+    }
+
+    triggerHaptic(patternName, description = '', { channel = 'ui', force = false } = {}) {
+        // Check if user has enabled haptics in settings
+        if (!this.settingsManager || !this.settingsManager.getHapticEnabled()) {
+            return; // User disabled or settings not ready
+        }
+
+        // Check if device supports vibration API
+        if (!navigator.vibrate) {
+            return;
+        }
+
+        // TORI'S DEBOUNCE: Anti-spam for rapid clicks 💚
+        const now = performance.now();
+        if (!force && (now - this.lastHapticTime) < this.hapticCooldownMs) {
+            return; // Too soon after last haptic
+        }
+        this.lastHapticTime = now;
+
+        // Get comfort level and insane mode status
+        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 1;
+        const insane = this.isInsaneModeActive?.() ?? false;
+        const patterns = this.getHapticPatterns();
+
+        // Get base pattern
+        let pattern = patterns[patternName] || patternName;
+
+        // TORI'S SCALING: Only scale non-critical cues, not in insane mode 💚
+        if (!insane && channel !== 'critical') {
+            pattern = this.scaleHapticPattern(pattern, comfort);
+        }
 
         // Trigger vibration
         navigator.vibrate(pattern);
 
+        // TORI'S DEBUG LOGGER 💚
+        this.logSensory(patternName, channel, pattern, description);
+
         if (this.debugMode) {
-            console.log(`📳 Haptic: ${patternName} - ${description}`, pattern);
+            console.log(`📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}] - ${description}`, pattern);
+        }
+    }
+
+    logSensory(cueType, channel, pattern, description) {
+        if (!this.debugMode) return;
+
+        this.sensoryLog.push({
+            cueType,
+            channel,
+            pattern,
+            description,
+            comfort: this.settingsManager?.getComfortIntensity?.() ?? 1,
+            time: new Date().toLocaleTimeString()
+        });
+
+        // Keep only last N entries
+        if (this.sensoryLog.length > this.maxSensoryLog) {
+            this.sensoryLog.shift();
+        }
+    }
+
+    // ========================================
+    // UNIFIED SENSORY FEEDBACK (TORI'S METADATA-DRIVEN ARCHITECTURE) 💚
+    // Triggers both haptic and visual cues together
+    // ========================================
+
+    triggerSensoryFeedback(cueType, target = null, description = '') {
+        // Look up cue metadata
+        const meta = SENSORY_CUES[cueType];
+        if (!meta) {
+            if (this.debugMode) {
+                console.warn(`⚠️ Unknown sensory cue: ${cueType}`);
+            }
+            return;
+        }
+
+        const { channel, basePattern, visualType } = meta;
+
+        // 1) Trigger visual cue (if defined)
+        if (this.visualCueManager && visualType) {
+            this.visualCueManager.trigger(visualType, target, { channel });
+        }
+
+        // 2) Trigger haptic with channel info
+        if (this.triggerHaptic && basePattern) {
+            this.triggerHaptic(
+                basePattern,
+                description || `Sensory cue: ${cueType}`,
+                { channel }
+            );
+        }
+
+        if (this.debugMode) {
+            console.log(`🎯 Sensory feedback: ${cueType} [channel=${channel}] visual=${visualType || 'none'} haptic=${basePattern || 'none'}`);
         }
     }
 
@@ -1669,11 +1868,11 @@ class GameEngine {
     
     markEndingCompleted(endingType) {
         const wasFirstCompletion = !this.hasCompletedAnyEnding();
-        
+
         localStorage.setItem('hasCompletedOnce', 'true');
         localStorage.setItem('lastEndingType', endingType);
         console.log(`Ending completed: ${endingType}. Notes unlocked for replay.`);
-        
+
         // ZEERAH'S ADDITION: Show notes unlock notification on first completion
         if (wasFirstCompletion) {
             // Delay slightly so it shows after ending scene
@@ -1682,7 +1881,129 @@ class GameEngine {
             }, 1000);
         }
     }
-    
+
+    // ========================================
+    // TIME MACHINE MANAGER HELPERS (TORI'S ARCHITECTURE) 💚
+    // ========================================
+
+    // Get current position in story for snapshot creation
+    getScenePosition() {
+        // Extract route name from currentRoute object
+        let routeId = null;
+        if (this.currentRoute) {
+            // Routes don't have explicit IDs, derive from constructor name
+            const routeClass = this.currentRoute.constructor.name;
+            if (routeClass === 'RonnieRoute') routeId = 'ronnie';
+            else if (routeClass === 'ToriRoute') routeId = 'tori';
+            else if (routeClass === 'SharedPrologue') routeId = 'prologue';
+            else routeId = routeClass.toLowerCase();
+        }
+
+        return {
+            currentRouteId: routeId,
+            currentSceneId: this.currentScene?.id || null,
+            currentPageIndex: this.currentDialoguePage || 0
+        };
+    }
+
+    // Load scene from snapshot (time jump restoration)
+    async loadSceneFromSnapshot(entry) {
+        if (!entry.routeId) {
+            console.warn('⏰ Cannot load snapshot: missing routeId');
+            return;
+        }
+
+        // If we're not in the right route, switch to it
+        const currentRouteId = this.getScenePosition().currentRouteId;
+        if (currentRouteId !== entry.routeId) {
+            console.log(`⏰ Switching from ${currentRouteId} to ${entry.routeId}`);
+
+            // Start the correct route
+            if (entry.routeId === 'ronnie') {
+                this.startRoute('ronnie');
+            } else if (entry.routeId === 'tori') {
+                this.startRoute('tori');
+            } else if (entry.routeId === 'prologue') {
+                // Load prologue if needed
+                console.warn('⏰ Prologue jump not yet implemented');
+                return;
+            }
+
+            // Wait for route to initialize
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        // Now jump to the specific scene/page within the route
+        if (this.currentRoute && entry.sceneId) {
+            // Routes have their own goToScene methods
+            if (this.currentRoute.goToScene) {
+                await this.currentRoute.goToScene(entry.sceneId, entry.pageIndex);
+            } else {
+                console.warn(`⏰ Route ${entry.routeId} does not have goToScene method`);
+            }
+        }
+    }
+
+    // Check if insane mode is currently active
+    isInsaneModeActive() {
+        return this.gameState?.flags?.insaneModeLocked || false;
+    }
+
+    // Get serializable flags for snapshot
+    getSerializableFlags() {
+        return { ...this.gameState.flags };
+    }
+
+    // Apply flags from snapshot
+    applySerializableFlags(flags) {
+        this.gameState.flags = { ...flags };
+    }
+
+    // Get current background key for snapshot
+    getCurrentBackgroundKey() {
+        return this.currentBackground || null;
+    }
+
+    // Get current sprite key for snapshot
+    getCurrentSpriteKey() {
+        // Return composite key of both sprites
+        const left = this.currentSprites?.left || null;
+        const right = this.currentSprites?.right || null;
+        return { left, right };
+    }
+
+    // Set background by key (for snapshot restoration)
+    setBackgroundByKey(bgKey) {
+        if (!bgKey) return;
+        this.currentBackground = bgKey;
+        // Apply to DOM
+        const target = this.useAltBackground ? this.sceneBackgroundAlt : this.sceneBackground;
+        if (target) {
+            target.style.backgroundImage = `url('${bgKey}')`;
+        }
+    }
+
+    // Set sprites by key (for snapshot restoration)
+    setSpriteByKey(spriteKey) {
+        if (!spriteKey) return;
+
+        if (spriteKey.left) {
+            this.currentSprites.left = spriteKey.left;
+            if (this.spriteLeft) {
+                this.spriteLeft.style.backgroundImage = `url('${spriteKey.left}')`;
+                this.spriteLeft.style.display = 'block';
+            }
+        }
+
+        if (spriteKey.right) {
+            this.currentSprites.right = spriteKey.right;
+            if (this.spriteRight) {
+                this.spriteRight.style.backgroundImage = `url('${spriteKey.right}')`;
+                this.spriteRight.style.display = 'block';
+            }
+        }
+    }
+
     // ========================================
     // STORY START - PLAYS PROLOGUE FIRST
     // ========================================
@@ -1778,6 +2099,10 @@ class GameEngine {
             // Fade in
             setTimeout(() => {
                 routeSelect.style.opacity = '1';
+
+                // Initialize route selector (UV7 glow-up)
+                // Always reinitialize to ensure event listeners are attached
+                this.initRouteSelector();
 
                 // ZEE'S ADDITION: Start tip rotation 🖤
                 this.startRouteSelectTipRotation();
@@ -2002,6 +2327,12 @@ class GameEngine {
             // Fade in
             setTimeout(() => {
                 routeSelect.style.opacity = '1';
+
+                // Initialize route selector (UV7 glow-up)
+                this.initRouteSelector();
+
+                // Start tip rotation
+                this.startRouteSelectTipRotation();
             }, 100);
         }, 800);
     }
@@ -2401,7 +2732,14 @@ class GameEngine {
         if (this.currentRoute) {
             this.saveManager.autoSave();
         }
-        
+
+        // TORI'S TIME MACHINE: Record snapshot after scene display 💚⏰
+        if (this.timeMachine && sceneId) {
+            // Label with scene ID for easier debugging
+            const label = `${sceneId}`;
+            this.timeMachine.addCurrentState(label);
+        }
+
         // SKIP SYSTEM: Mark scene as read and check if should continue skipping
         if (sceneId) {
             this.markSceneAsRead(sceneId);
@@ -2992,10 +3330,10 @@ class GameEngine {
         }, speed);
     }
 
-    
+
     showNextDialoguePage() {
         this.currentDialoguePage++;
-        
+
         if (this.currentDialoguePage >= this.dialoguePages.length) {
             // All pages shown - advance to next scene
             this.paginationActive = false;
@@ -3003,6 +3341,13 @@ class GameEngine {
         } else {
             // Show next page
             this.displayDialoguePage(this.dialogueText);
+
+            // TORI'S TIME MACHINE: Record snapshot for paginated dialogue 💚⏰
+            if (this.timeMachine) {
+                const position = this.getScenePosition();
+                const label = `${position.currentSceneId} (page ${this.currentDialoguePage + 1})`;
+                this.timeMachine.addCurrentState(label);
+            }
         }
     }
     
@@ -3082,6 +3427,14 @@ class GameEngine {
             
             if (choice.locked || choice.disabled) {
                 button.classList.add('locked');
+
+                // Add click handler for denial feedback on locked choices
+                button.addEventListener('click', () => {
+                    // EMOTIONAL FEEDBACK: Gentle denial for locked choices
+                    if (this.triggerSensoryFeedback) {
+                        this.triggerSensoryFeedback('denied', button, 'Locked story choice');
+                    }
+                });
             } else {
                 button.addEventListener('click', () => {
                     // DIZEE: Haptic feedback for choice selection
@@ -7371,5 +7724,149 @@ There is no v849.`
         console.log(`📜 Recorded attempt to bootstrap timeline: ${result} - ${reason}`);
     }
 
+    // ========================================
+    // ROUTE SELECTOR (UV7 GLOW-UP)
+    // ========================================
 
+    initRouteSelector() {
+        if (typeof RouteSelector === 'undefined') {
+            console.warn('⚠️ RouteSelector class not found');
+            return;
+        }
+
+        // Always create a new instance to ensure fresh event listeners
+        console.log('🎮 Creating RouteSelector instance...');
+        this.routeSelector = new RouteSelector(this);
+    }
+
+    startSelectedRoute() {
+        if (this.routeSelector) {
+            this.routeSelector.startSelectedRoute();
+        }
+    }
+
+
+}
+
+// ========================================
+// ROUTE SELECTOR CLASS (UV7 GLOW-UP)
+// Interactive toggle-based route selection
+// ========================================
+
+class RouteSelector {
+    constructor(game) {
+        this.game = game;
+        this.selectedRoute = 'ronnie'; // Default
+        this.init();
+    }
+
+    init() {
+        console.log('🎮 Initializing RouteSelector...');
+
+        // Cache elements
+        this.ronniePortrait = document.querySelector('.ronnie-portrait');
+        this.toriPortrait = document.querySelector('.tori-portrait');
+        this.toggleTrack = document.querySelector('.toggle-track');
+        this.toggleOptions = document.querySelectorAll('.toggle-option');
+        this.ronnieInfo = document.querySelector('.ronnie-info');
+        this.toriInfo = document.querySelector('.tori-info');
+        this.playButton = document.getElementById('route-play-button');
+        this.routeName = document.getElementById('route-name');
+        this.difficultyDisplay = document.getElementById('difficulty-display');
+
+        // Check if elements exist
+        if (!this.toggleOptions || this.toggleOptions.length === 0) {
+            console.error('❌ RouteSelector: Toggle options not found');
+            return;
+        }
+
+        // Add event listeners
+        this.toggleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const route = option.dataset.route;
+                this.selectRoute(route);
+            });
+        });
+
+        // Haptic feedback on toggle
+        this.toggleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                if (this.triggerHaptic) {
+                    this.triggerHaptic('light', 'Route toggle selection');
+                }
+            });
+        });
+
+        // Set initial state
+        document.body.setAttribute('data-selected-route', 'ronnie');
+
+        // Update difficulty display
+        this.updateDifficultyDisplay();
+
+        console.log('✅ RouteSelector initialized');
+    }
+
+    updateDifficultyDisplay() {
+        if (!this.difficultyDisplay) return;
+
+        // Get current difficulty from settings manager
+        const difficulty = this.game?.settingsManager?.getDifficulty?.() || 'normal';
+        this.difficultyDisplay.textContent = difficulty.toUpperCase();
+        this.difficultyDisplay.setAttribute('data-difficulty', difficulty.toLowerCase());
+    }
+
+    selectRoute(route) {
+        if (this.selectedRoute === route) {
+            console.log(`ℹ️ Already on ${route} route`);
+            return; // Already selected
+        }
+
+        console.log(`🔄 Switching to ${route} route`);
+        this.selectedRoute = route;
+
+        // Check if elements exist before updating
+        if (!this.ronniePortrait || !this.toriPortrait || !this.toggleTrack) {
+            console.error('❌ RouteSelector: Portrait or toggle elements missing');
+            return;
+        }
+
+        // Tori route: Add UI freeze-frame effect
+        if (route === 'tori') {
+            // Brief freeze-frame stutter (100ms)
+            const routeSelectContent = document.getElementById('route-select-content');
+            if (routeSelectContent) {
+                routeSelectContent.style.opacity = '0.3';
+                setTimeout(() => {
+                    routeSelectContent.style.opacity = '1';
+                }, 100);
+            }
+        }
+
+        // Update portraits
+        if (route === 'ronnie') {
+            this.ronniePortrait.classList.add('active');
+            this.toriPortrait.classList.remove('active');
+            this.toggleTrack.classList.remove('tori-active');
+            if (this.ronnieInfo) this.ronnieInfo.classList.add('active');
+            if (this.toriInfo) this.toriInfo.classList.remove('active');
+            if (this.routeName) this.routeName.textContent = 'RONNIE';
+        } else {
+            this.toriPortrait.classList.add('active');
+            this.ronniePortrait.classList.remove('active');
+            this.toggleTrack.classList.add('tori-active');
+            if (this.toriInfo) this.toriInfo.classList.add('active');
+            if (this.ronnieInfo) this.ronnieInfo.classList.remove('active');
+            if (this.routeName) this.routeName.textContent = 'TORI';
+        }
+
+        // Update body attribute for button styling
+        document.body.setAttribute('data-selected-route', route);
+
+        console.log(`✅ Successfully switched to ${route} route`);
+    }
+
+    startSelectedRoute() {
+        console.log(`🚀 Starting ${this.selectedRoute} route`);
+        this.game.startRoute(this.selectedRoute);
+    }
 }

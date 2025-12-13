@@ -120,6 +120,11 @@ class SettingsManager {
     constructor(game) {
         this.game = game;
         
+        // Detect if running on Android for haptic default
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const canVibrate = 'vibrate' in navigator;
+        const defaultHapticsEnabled = isAndroid && canVibrate;
+
         // Default settings
         this.settings = {
             textSpeed: 'normal',      // slow, normal, fast, instant
@@ -129,8 +134,9 @@ class SettingsManager {
             fullscreen: false,
             displayMode: 'auto',      // auto, portrait, landscape
             tetherDifficulty: 'normal', // relaxed, normal, intense
-            hapticEnabled: false,     // ZEE'S ADDITION: Haptic feedback (default OFF) 🖤
-            comfortMode: false        // DIZEE: Disable glitch effects (default OFF)
+            hapticEnabled: defaultHapticsEnabled, // ZEE'S ADDITION: Haptic feedback (ON for Android with vibration support, OFF otherwise) 🖤
+            comfortMode: false,       // DIZEE: Disable glitch effects (default OFF)
+            comfortIntensity: 1       // TORI'S ADDITION: Visual/haptic intensity (0=Gentle, 1=Normal, 2=Amped) 💚
         };
         
         // Speed multipliers (affects typewriter delay)
@@ -258,6 +264,19 @@ class SettingsManager {
             });
         }
 
+        // TORI'S ADDITION: Comfort Intensity Slider 💚
+        const intensitySlider = document.getElementById('comfort-intensity-slider');
+        if (intensitySlider) {
+            // Set initial value from settings
+            intensitySlider.value = this.settings.comfortIntensity ?? 1;
+
+            // Listen for changes - triggers live preview
+            intensitySlider.addEventListener('input', (e) => {
+                const level = Number(e.target.value);
+                this.setComfortIntensity(level);
+            });
+        }
+
         // Display Mode Buttons
         document.querySelectorAll('.display-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -287,6 +306,11 @@ class SettingsManager {
 
                     // Check if already in insane mode (can't change)
                     if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
+                        // EMOTIONAL FEEDBACK: Harsh denial for insane mode lockout
+                        if (this.game.triggerSensoryFeedback) {
+                            this.game.triggerSensoryFeedback('harshDenial', difficultyOption, 'Insane mode locked - no escape');
+                        }
+
                         this.game.showWarningOverlay(
                             '⚠️ INSANE MODE ACTIVE',
                             'You are locked into Insane difficulty.\n\nThere is no escape once committed.'
@@ -300,6 +324,11 @@ class SettingsManager {
                     // Normal difficulty change
                     // Check if locked in insane mode
                     if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
+                        // EMOTIONAL FEEDBACK: Harsh denial for difficulty change attempt
+                        if (this.game.triggerSensoryFeedback) {
+                            this.game.triggerSensoryFeedback('harshDenial', difficultyOption, 'Insane mode locked - cannot change');
+                        }
+
                         this.game.showWarningOverlay(
                             '⚠️ DIFFICULTY LOCKED',
                             'You are locked into Insane mode.\n\nCannot change difficulty.'
@@ -418,6 +447,12 @@ class SettingsManager {
         const delayValue = document.getElementById('auto-delay-value');
         if (delayValue) {
             delayValue.textContent = (this.settings.autoDelay / 1000).toFixed(1) + 's';
+        }
+
+        // TORI'S ADDITION: Update comfort intensity slider 💚
+        const intensitySlider = document.getElementById('comfort-intensity-slider');
+        if (intensitySlider) {
+            intensitySlider.value = this.settings.comfortIntensity ?? 1;
         }
 
         // Update auto-skip prologue status (for dynamic unlock)
@@ -541,6 +576,9 @@ class SettingsManager {
     }
 
     applyComfortMode(enabled) {
+        // Set body data attribute for visual cue system
+        document.body.setAttribute('data-comfort-mode', enabled ? 'true' : 'false');
+
         // Find all elements with glitch effects
         const glitchElements = document.querySelectorAll('.version-glitch');
 
@@ -553,6 +591,31 @@ class SettingsManager {
                 el.classList.remove('comfort-mode');
             }
         });
+    }
+
+    // ========================================
+    // COMFORT INTENSITY
+    // TORI'S ADDITION: Tunable sensory intensity 💚
+    // ========================================
+
+    getComfortIntensity() {
+        return this.settings.comfortIntensity ?? 1;
+    }
+
+    setComfortIntensity(level) {
+        const clamped = Math.max(0, Math.min(2, Number(level) || 0));
+        this.settings.comfortIntensity = clamped;
+        this.saveSettings();
+        this.updateUI();
+
+        const labels = ['Gentle', 'Normal', 'Amped'];
+        console.log(`💫 Comfort Intensity: ${labels[clamped]}`);
+
+        // Test feedback when changed (preview)
+        if (this.game && this.game.triggerSensoryFeedback) {
+            const previewElement = document.getElementById('comfort-intensity-slider');
+            this.game.triggerSensoryFeedback('buttonPress', previewElement, 'Intensity preview');
+        }
     }
 
     // ========================================

@@ -146,9 +146,8 @@ class RonnieRoute {
 
     prologueScene5_buzz() {
         // HAPTIC: Single buzz - body calling her home
-        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
-            // Pattern: single strong pulse (body anchor)
-            navigator.vibrate(150);
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('medium', 'Body calling - tether anchor pulse');
         }
 
         this.game.displayScene({

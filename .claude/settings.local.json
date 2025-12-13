@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(move shared-prologue.js routes )",
+      "Bash(move ronnie-route.js routes )",
+      "Bash(move:*)",
+      "Bash(move ronnie-route-act3.js routes )",
+      "Bash(move tori-route-main.js routes )",
+      "Bash(move tori-route-endings.js routes )",
+      "Bash(move epilogue.js routes)",
+      "Bash(test:*)",
+      "Bash(node -c:*)",
+      "Bash(node -e:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(/dev/null -exec wc -l {} +)",
+      "Bash(python -m http.server:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

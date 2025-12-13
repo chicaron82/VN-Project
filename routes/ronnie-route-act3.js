@@ -650,9 +650,8 @@ class RonnieRouteAct3 {
 
     beat7_tamagotchiBuzz() {
         // HAPTIC: Violent buzzing - emergency alert
-        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
-            // Pattern: rapid repeated buzzing (emergency/panic)
-            navigator.vibrate([50, 50, 50, 50, 50, 50, 50]);
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('warning', 'Tamagotchi emergency buzz - violent panic');
         }
 
         this.game.displayScene({
@@ -1109,9 +1108,8 @@ class RonnieRouteAct3 {
 
     digitalForever_doubleBuzz() {
         // HAPTIC: Double buzz pattern - two synchronized pulses
-        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
-            // Pattern: buzz, pause, buzz (synchronized double pulse)
-            navigator.vibrate([100, 100, 100]);
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('pulse', 'Synchronized double pulse - tether connection');
         }
 
         this.game.displayScene({
@@ -1542,7 +1540,7 @@ class RonnieRouteAct3 {
                 }
 
                 // Transition to shared epilogue
-                const epilogue = new Epilogue(this.game);
+                const epilogue = new Epilogue(this.game, 'ronnie');
                 epilogue.start();
             },
             delay: 4000

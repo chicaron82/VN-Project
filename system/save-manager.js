@@ -48,6 +48,13 @@ class SaveManager {
         // Check if saves are blocked (Despair sabotage)
         if (this.savesBlocked) {
             console.log('Save blocked by Despair Echo');
+
+            // EMOTIONAL FEEDBACK: Triple denial buzz + visual shake
+            if (this.game.triggerSensoryFeedback) {
+                const saveButton = document.querySelector('.save-button, #save-button');
+                this.game.triggerSensoryFeedback('denied', saveButton, 'Despair blocks save');
+            }
+
             this.showSaveIndicator('Save failed... something is interfering', true);
             return false;
         }

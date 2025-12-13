@@ -491,7 +491,7 @@ class ToriEndings {
                 }
 
                 // Transition to shared epilogue
-                const epilogue = new Epilogue(this.game);
+                const epilogue = new Epilogue(this.game, 'tori');
                 epilogue.start();
             },
             delay: 4000

@@ -42,10 +42,9 @@ class SharedPrologue {
     }
     
     scene1_pickup() {
-        // HAPTIC: Initial double buzz when picking up modified Tamagotchi
-        if (this.game.settingsManager && this.game.settingsManager.settings.hapticFeedback && navigator.vibrate) {
-            // Pattern: buzz, pause, buzz (the first time she feels it)
-            navigator.vibrate([100, 100, 100]);
+        // HAPTIC + VISUAL: Initial double buzz when picking up modified Tamagotchi
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('codeRipple', this.game.dialogueBox, 'Tamagotchi pickup - first connection');
         }
 
         this.game.displayScene({

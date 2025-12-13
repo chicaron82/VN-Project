@@ -6,8 +6,9 @@
 
 const DevConsole = (() => {
     let game = null;
-    let overlay, input, log, closeBtn;
+    let overlay, input, log, closeBtn, minimizeBtn, floatBtn;
     let isOpen = false;
+    let isMinimized = false;
     let commandHistory = [];
     let historyIndex = -1;
 
@@ -17,13 +18,18 @@ const DevConsole = (() => {
         input = document.getElementById('dev-console-input');
         log = document.getElementById('dev-console-log');
         closeBtn = document.getElementById('dev-console-close');
+        minimizeBtn = document.getElementById('dev-console-minimize');
+        floatBtn = document.getElementById('dev-console-float');
 
-        if (!overlay || !input || !log || !closeBtn) {
+        if (!overlay || !input || !log || !closeBtn || !minimizeBtn || !floatBtn) {
             console.warn('Dev console elements not found in DOM');
             return;
         }
 
         closeBtn.addEventListener('click', close);
+        minimizeBtn.addEventListener('click', minimize);
+        floatBtn.addEventListener('click', maximize);
+
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) close();
         });
@@ -65,7 +71,44 @@ const DevConsole = (() => {
             }
         });
 
+        // Intercept console methods to show in dev console
+        interceptConsoleLogs();
+
         console.log('🖥️ Dev console initialized');
+    }
+
+    function interceptConsoleLogs() {
+        // Store original console methods
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        // Override console.log
+        console.log = function(...args) {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            appendLog(message, 'log');
+            originalLog.apply(console, args);
+        };
+
+        // Override console.warn
+        console.warn = function(...args) {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            appendLog('⚠️ ' + message, 'warn');
+            originalWarn.apply(console, args);
+        };
+
+        // Override console.error
+        console.error = function(...args) {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            appendLog('❌ ' + message, 'error');
+            originalError.apply(console, args);
+        };
     }
 
     function open() {
@@ -80,10 +123,29 @@ const DevConsole = (() => {
     }
 
     function close() {
-        if (!overlay) return;
+        if (!overlay || !floatBtn) return;
         overlay.classList.add('hidden');
+        floatBtn.classList.add('hidden');
         isOpen = false;
+        isMinimized = false;
         console.log('🖥️ Dev console closed');
+    }
+
+    function minimize() {
+        if (!overlay || !floatBtn) return;
+        overlay.classList.add('hidden');
+        floatBtn.classList.remove('hidden');
+        isMinimized = true;
+        console.log('🖥️ Dev console minimized');
+    }
+
+    function maximize() {
+        if (!overlay || !floatBtn) return;
+        overlay.classList.remove('hidden');
+        floatBtn.classList.add('hidden');
+        isMinimized = false;
+        input.focus();
+        console.log('🖥️ Dev console maximized');
     }
 
     function appendLog(text, type = 'system') {
@@ -115,6 +177,10 @@ const DevConsole = (() => {
                     appendLog('  codes             - Show discovered codes', 'system');
                     appendLog('  save [slot]       - Save to slot (1-5)', 'system');
                     appendLog('  load [slot]       - Load from slot (1-5)', 'system');
+                    appendLog('  timemachine       - Inspect Time Machine snapshots', 'system');
+                    appendLog('  tm                - Alias for timemachine', 'system');
+                    appendLog('  jump [id]         - Jump to snapshot by ID', 'system');
+                    appendLog('  sensory           - Show last 20 sensory events', 'system');
                     appendLog('  clear             - Clear console log', 'system');
                     appendLog('  reload            - Hard refresh page', 'system');
                     appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
@@ -281,6 +347,127 @@ const DevConsole = (() => {
                     setTimeout(() => location.reload(), 500);
                     break;
 
+                case 'timemachine':
+                case 'tm':
+                    if (!game?.timeMachine) {
+                        appendLog('Error: Time Machine not initialized', 'error');
+                        break;
+                    }
+
+                    const stats = game.timeMachine.getStats();
+                    const entries = game.timeMachine.getEntries();
+
+                    appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    appendLog('⏰ TIME MACHINE INSPECTOR', 'system');
+                    appendLog(`Total snapshots: ${stats.total}/${stats.max}`, 'system');
+                    appendLog(`Locked: ${stats.locked} | Burned: ${stats.burned} | Corrupted: ${stats.corrupted}`, 'system');
+                    appendLog(`Anchors: ${stats.anchors}`, 'system');
+                    appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+
+                    if (entries.length === 0) {
+                        appendLog('No snapshots recorded yet', 'system');
+                    } else {
+                        // Show last 10 snapshots
+                        const recent = entries.slice(-10);
+                        appendLog(`Showing last ${recent.length} snapshots:`, 'system');
+
+                        recent.forEach(entry => {
+                            const flags = [];
+                            if (entry.locked) flags.push('🔒');
+                            if (entry.burned) flags.push('🔥');
+                            if (entry.corrupted) flags.push('⚠️');
+                            if (entry.insaneBlocked) flags.push('💀');
+                            if (entry.priority === 'anchor') flags.push('⚓');
+                            if (entry.priority === 'high') flags.push('⬆️');
+
+                            const flagStr = flags.length > 0 ? ` ${flags.join('')}` : '';
+                            const label = entry.label ? `"${entry.label}"` : '(unlabeled)';
+
+                            appendLog(`  #${entry.id} [${entry.priority}]${flagStr} ${label}`, 'system');
+                            appendLog(`    → ${entry.routeId}/${entry.sceneId} (page ${entry.pageIndex})`, 'system');
+                        });
+
+                        appendLog('', 'system');
+                        appendLog('Use "jump [id]" to jump to a snapshot', 'system');
+                    }
+                    break;
+
+                case 'jump':
+                    if (!game?.timeMachine) {
+                        appendLog('Error: Time Machine not initialized', 'error');
+                        break;
+                    }
+
+                    const jumpId = parseInt(args[0], 10);
+                    if (Number.isNaN(jumpId)) {
+                        appendLog('Error: Must specify snapshot ID (e.g., "jump 5")', 'error');
+                        break;
+                    }
+
+                    const entry = game.timeMachine.getEntryById(jumpId);
+                    if (!entry) {
+                        appendLog(`Error: Snapshot #${jumpId} not found`, 'error');
+                        break;
+                    }
+
+                    const canJump = game.timeMachine.canJumpTo(entry);
+                    if (!canJump) {
+                        const reason = game.timeMachine.getBlockReason(entry);
+                        appendLog(`⚠️ Jump blocked: ${reason}`, 'warn');
+                        appendLog('Use "jump [id] force" to bypass rules', 'system');
+                        break;
+                    }
+
+                    appendLog(`⏰ Jumping to snapshot #${jumpId}...`, 'success');
+                    close(); // Close console before jump
+
+                    setTimeout(async () => {
+                        const ignoreRules = args[1] === 'force';
+                        const success = await game.timeMachine.jumpTo(jumpId, { ignoreRules });
+                        if (!success) {
+                            console.error('Time jump failed');
+                        }
+                    }, 300);
+                    break;
+
+                case 'sensory':
+                    if (!game?.sensoryLog || game.sensoryLog.length === 0) {
+                        appendLog('⏱️ No sensory events logged yet', 'system');
+                        break;
+                    }
+
+                    appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    appendLog(`⏱️ SENSORY EVENT LOG (Last ${game.sensoryLog.length} events)`, 'system');
+                    appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    appendLog('', 'system');
+
+                    const comfortLevel = game.settingsManager?.getComfortIntensity?.() ?? 1;
+                    const comfortNames = ['Gentle', 'Normal', 'Amped'];
+                    const isInsane = game.gameState?.flags?.insaneModeLocked || false;
+
+                    appendLog(`Current comfort: ${comfortNames[comfortLevel]} | Insane mode: ${isInsane ? 'ACTIVE' : 'Inactive'}`, 'system');
+                    appendLog('', 'system');
+
+                    game.sensoryLog.forEach((event, index) => {
+                        const timestamp = new Date(event.timestamp).toLocaleTimeString();
+                        const channelIcon = event.channel === 'critical' ? '🔥' : event.channel === 'narrative' ? '📖' : '🎮';
+                        const scaledIndicator = event.scaled ? `(${event.scaleFactor.toFixed(2)}x)` : '(raw)';
+
+                        appendLog(`${channelIcon} [${timestamp}] ${event.patternName} ${scaledIndicator}`, 'system');
+                        if (event.description) {
+                            appendLog(`   └─ ${event.description}`, 'system');
+                        }
+                        appendLog(`   └─ Channel: ${event.channel} | Pattern: [${event.pattern.join(', ')}]ms`, 'system');
+
+                        if (index < game.sensoryLog.length - 1) {
+                            appendLog('', 'system');
+                        }
+                    });
+
+                    appendLog('', 'system');
+                    appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    break;
+
                 default:
                     appendLog(`Unknown command: ${cmd}`, 'error');
                     appendLog('Type "help" for available commands', 'system');
@@ -295,8 +482,11 @@ const DevConsole = (() => {
         init,
         open,
         close,
+        minimize,
+        maximize,
         runCommand,
-        isOpen: () => isOpen
+        isOpen: () => isOpen,
+        isMinimized: () => isMinimized
     };
 })();
 

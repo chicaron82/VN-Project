@@ -5492,6 +5492,91 @@ input:checked + .toggle-slider:before {
 }
 
 /* ========================================
+   TORI'S INTENSITY SLIDER 💚
+   ======================================== */
+
+.intensity-slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+#comfort-intensity-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right,
+        rgba(100, 200, 255, 0.3) 0%,     /* Gentle - soft blue */
+        rgba(0, 255, 255, 0.5) 50%,       /* Normal - cyan */
+        rgba(255, 100, 255, 0.7) 100%     /* Amped - hot pink */
+    );
+    outline: none;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Slider thumb */
+#comfort-intensity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00ffff;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+#comfort-intensity-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00ffff;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+#comfort-intensity-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 1);
+}
+
+#comfort-intensity-slider:hover::-moz-range-thumb {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 1);
+}
+
+.intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(0, 255, 255, 0.7);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.intensity-labels span {
+    flex: 1;
+    text-align: center;
+}
+
+.intensity-labels span:first-child {
+    text-align: left;
+}
+
+.intensity-labels span:last-child {
+    text-align: right;
+}
+
+/* ========================================
    TORI'S DIFFICULTY - IMPROVED LAYOUT
    ======================================== */
 
@@ -8019,6 +8104,11 @@ input[type="radio"]:disabled + label .difficulty-label {
     color: #00bcd4;
 }
 
+.dev-console-header-buttons {
+    display: flex;
+    gap: 4px;
+}
+
 .dev-console-header button {
     background: transparent;
     border: none;
@@ -8071,6 +8161,14 @@ input[type="radio"]:disabled + label .difficulty-label {
     color: #90caf9;
 }
 
+.dev-console-log-entry.log {
+    color: #b0b0b0;
+}
+
+.dev-console-log-entry.warn {
+    color: #ffa726;
+}
+
 .dev-console-log-entry.success {
     color: #66bb6a;
 }
@@ -8115,6 +8213,41 @@ input[type="radio"]:disabled + label .difficulty-label {
     box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
 }
 
+/* Floating Console Button */
+#dev-console-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0f1929 0%, #1e3a5f 100%);
+    border: 2px solid #00bcd4;
+    color: #00bcd4;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 188, 212, 0.3);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dev-console-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 188, 212, 0.5);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d4f7f 100%);
+}
+
+#dev-console-float:active {
+    transform: scale(0.95);
+}
+
+#dev-console-float .console-icon {
+    line-height: 1;
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .dev-console-window {
@@ -8129,6 +8262,14 @@ input[type="radio"]:disabled + label .difficulty-label {
 
     #dev-console-input {
         font-size: 0.85rem;
+    }
+
+    #dev-console-float {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
     }
 }
 

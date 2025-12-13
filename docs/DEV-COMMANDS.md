@@ -13,7 +13,8 @@ The secret codes input in Settings now accepts **both** player secret codes AND 
 - `clearall` - Clear ALL localStorage data (asks for confirmation)
 
 ### Feature Unlocking
-- `unlockskip` - Unlock the skip feature immediately
+- `unlockskip` - Unlock the skip dialogue feature immediately
+- `skipintro` - Unlock the skip prologue feature (jump straight to routes)
 - `unlockcodes` - Unlock the secret codes section in settings
 - `unlockact1saves` - Enable saves in Act 1 (normally locked until Tori's route)
 

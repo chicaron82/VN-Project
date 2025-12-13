@@ -1529,8 +1529,8 @@ P.S. The barback skill strikes again.`
         setTimeout(() => button.classList.remove('new-mail-pulse'), 600);
 
         // Haptic feedback if enabled
-        if (this.game.hapticSupported && navigator.vibrate) {
-            navigator.vibrate(50);
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('medium', 'New collectible notification');
         }
     }
 
