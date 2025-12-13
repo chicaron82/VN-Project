@@ -6,7 +6,7 @@
 class MenuCarousel {
     constructor(game) {
         this.game = game;
-        this.currentIndex = 0; // Shared state
+        this.currentIndex = 1; // Start at Index 1 (Start Story) because settings is now Index 0
         this.activeEngine = null; // Current adapter
         this.resizeTimeout = null;
 

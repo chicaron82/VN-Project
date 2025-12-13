@@ -119,11 +119,11 @@
 class SettingsManager {
     constructor(game) {
         this.game = game;
-        
+
         // Detect if running on Android for haptic default
-        const isAndroid = /Android/i.test(navigator.userAgent);
+        // DIZEE FIX: Default to TRUE if device supports vibration, regardless of OS checks
         const canVibrate = 'vibrate' in navigator;
-        const defaultHapticsEnabled = isAndroid && canVibrate;
+        const defaultHapticsEnabled = canVibrate;
 
         // Default settings
         this.settings = {
@@ -138,7 +138,7 @@ class SettingsManager {
             comfortMode: false,       // DIZEE: Disable glitch effects (default OFF)
             comfortIntensity: 1       // TORI'S ADDITION: Visual/haptic intensity (0=Gentle, 1=Normal, 2=Amped) 💚
         };
-        
+
         // Speed multipliers (affects typewriter delay)
         this.speedMultipliers = {
             slow: 2.0,      // 2x slower
@@ -146,7 +146,7 @@ class SettingsManager {
             fast: 0.5,      // 2x faster
             instant: 0      // No delay
         };
-        
+
         // Auto-advance timer
         this.autoAdvanceTimer = null;
 
@@ -162,7 +162,7 @@ class SettingsManager {
         // Setup UI event listeners
         this.setupUI();
     }
-    
+
     loadSettings() {
         const saved = localStorage.getItem('gameSettings');
         if (saved) {
@@ -173,11 +173,11 @@ class SettingsManager {
             }
         }
     }
-    
+
     saveSettings() {
         localStorage.setItem('gameSettings', JSON.stringify(this.settings));
     }
-    
+
     setupUI() {
         // Text Speed Buttons
         document.querySelectorAll('.speed-btn').forEach(btn => {
@@ -186,7 +186,7 @@ class SettingsManager {
                 this.setTextSpeed(speed);
             });
         });
-        
+
         // Auto-Advance Toggle
         const autoToggle = document.getElementById('auto-advance-toggle');
         if (autoToggle) {
@@ -195,7 +195,7 @@ class SettingsManager {
                 this.setAutoAdvance(e.target.checked);
             });
         }
-        
+
         // Auto-Advance Delay Slider
         const delaySlider = document.getElementById('auto-delay-slider');
         if (delaySlider) {
@@ -376,13 +376,13 @@ class SettingsManager {
 
         console.log('Switched to tab:', tabName);
     }
-    
+
     updateUI() {
         // Update speed buttons
         document.querySelectorAll('.speed-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.speed === this.settings.textSpeed);
         });
-        
+
         // Update display mode buttons
         document.querySelectorAll('.display-mode-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === this.settings.displayMode);
@@ -436,13 +436,13 @@ class SettingsManager {
         if (autoStatus) {
             autoStatus.textContent = this.settings.autoAdvance ? 'ON' : 'OFF';
         }
-        
+
         // Show/hide auto-delay row
         const autoDelayRow = document.getElementById('auto-delay-row');
         if (autoDelayRow) {
             autoDelayRow.style.display = this.settings.autoAdvance ? 'flex' : 'none';
         }
-        
+
         // Update delay value display
         const delayValue = document.getElementById('auto-delay-value');
         if (delayValue) {
@@ -474,28 +474,28 @@ class SettingsManager {
             }
         }
     }
-    
+
     setTextSpeed(speed) {
         this.settings.textSpeed = speed;
         this.saveSettings();
         this.updateUI();
         console.log('Text speed set to:', speed);
     }
-    
+
     setAutoAdvance(enabled) {
         this.settings.autoAdvance = enabled;
         this.saveSettings();
         this.updateUI();
-        
+
         // Clear any existing timer
         if (this.autoAdvanceTimer) {
             clearTimeout(this.autoAdvanceTimer);
             this.autoAdvanceTimer = null;
         }
-        
+
         console.log('Auto-advance:', enabled ? 'ON' : 'OFF');
     }
-    
+
     setAutoDelay(delay) {
         this.settings.autoDelay = delay;
         this.saveSettings();
@@ -724,7 +724,7 @@ class SettingsManager {
         const multiplier = this.speedMultipliers[this.settings.textSpeed];
         return baseDelay * multiplier;
     }
-    
+
     startAutoAdvance(callback) {
         // Start auto-advance timer if enabled
         if (!this.settings.autoAdvance) {
@@ -745,14 +745,14 @@ class SettingsManager {
             if (callback) callback();
         }, this.settings.autoDelay);
     }
-    
+
     cancelAutoAdvance() {
         if (this.autoAdvanceTimer) {
             clearTimeout(this.autoAdvanceTimer);
             this.autoAdvanceTimer = null;
         }
     }
-    
+
     resetSettings() {
         this.settings = {
             textSpeed: 'normal',
@@ -762,16 +762,16 @@ class SettingsManager {
         };
         this.saveSettings();
         this.updateUI();
-        
+
         // Update toggle checkbox
         const autoToggle = document.getElementById('auto-advance-toggle');
         if (autoToggle) {
             autoToggle.checked = false;
         }
-        
+
         console.log('Settings reset to default');
     }
-    
+
     setDisplayMode(mode) {
         this.settings.displayMode = mode;
         this.saveSettings();
@@ -779,20 +779,20 @@ class SettingsManager {
         this.applyDisplayMode(mode);
         console.log('Display mode set to:', mode);
     }
-    
+
     applyDisplayMode(mode) {
         const gameContainer = document.getElementById('game-container');
-        
+
         // Safety check: DOM might not be ready yet during initialization
         if (!gameContainer) {
             console.log('Display mode deferred - DOM not ready yet');
             // Will be applied when settings menu opens (updateUI calls it)
             return;
         }
-        
+
         // Remove all display mode classes
         gameContainer.classList.remove('force-portrait', 'force-landscape');
-        
+
         // Apply new mode
         if (mode === 'portrait') {
             gameContainer.classList.add('force-portrait');
@@ -800,50 +800,50 @@ class SettingsManager {
             gameContainer.classList.add('force-landscape');
         }
         // 'auto' mode = no special class, uses natural media queries
-        
+
         console.log('Display mode applied:', mode);
     }
-    
+
     // ========================================
     // SECRET CODES UI
     // ========================================
-    
+
     setupSecretCodesUI() {
         // Secret codes are now in dedicated tab - always accessible
         const submitBtn = document.getElementById('submit-code-btn');
         const codeInput = document.getElementById('secret-code-input');
 
         if (!submitBtn || !codeInput) return;
-        
+
         // Submit code button
         submitBtn.addEventListener('click', () => {
             const code = codeInput.value.trim();
             if (!code) return;
-            
+
             const result = this.submitSecretCode(code);
             this.showCodeResult(result);
-            
+
             if (result.success) {
                 codeInput.value = '';
                 this.updateCodesUI();
             }
         });
-        
+
         // Enter key to submit
         codeInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 submitBtn.click();
             }
         });
-        
+
         // Initial update
         this.updateCodesUI();
     }
-    
+
     showCodeResult(result) {
         const messageDiv = document.getElementById('code-result-message');
         if (!messageDiv) return;
-        
+
         if (result.success) {
             messageDiv.style.color = '#00ffaa';
             messageDiv.textContent = `✓ ${result.message}`;
@@ -851,13 +851,13 @@ class SettingsManager {
             messageDiv.style.color = '#ff6699';
             messageDiv.textContent = `✗ ${result.message}`;
         }
-        
+
         // Clear message after 3 seconds
         setTimeout(() => {
             messageDiv.textContent = '';
         }, 3000);
     }
-    
+
     // ========================================
     // SECRET CODES SYSTEM
     // DIZEE: Delegated to SecretCodesManager 🖤
@@ -900,7 +900,7 @@ class BacklogManager {
         this.history = [];
         this.maxEntries = 100; // Keep last 100 dialogue entries
     }
-    
+
     addEntry(character, dialogue, isDistorted = false) {
         // Don't add empty dialogue or narration-only entries
         if (!dialogue || dialogue.trim() === '') return;
@@ -1001,11 +1001,11 @@ class BacklogManager {
 
         return true;
     }
-    
+
     clearHistory() {
         this.history = [];
     }
-    
+
     render() {
         const backlogList = document.getElementById('backlog-list');
         if (!backlogList) return;

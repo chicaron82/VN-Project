@@ -42,12 +42,12 @@ class MomentumAdapter {
     defineCards() {
         // MATCHING DEFINITIONS for consistency
         this.cards = [
+            { id: 'settings', title: 'SETTINGS', subtitle: 'Configure experience', icon: '⚙️', action: () => this.game.showSettings(), background: 'radial-gradient(circle at top, #202020, #050511)' },
             { id: 'start', title: 'START STORY', subtitle: 'Begin Version 848', icon: '▶️', action: () => this.game.startStory(), background: 'radial-gradient(circle at top, #202030, #050511)' },
             { id: 'continue', title: 'CONTINUE', subtitle: `Resume Version ${this.game.loopVersion || 848}`, icon: '⏯️', action: () => this.game.continueGame(), background: 'radial-gradient(circle at top, #202025, #050511)' },
             { id: 'load', title: 'LOAD GAME', subtitle: 'Restore saved timeline', icon: '💾', action: () => this.game.showSaveLoadScreen('load'), background: 'radial-gradient(circle at top, #102010, #050511)' },
             { id: 'notes', title: 'NOTES', subtitle: 'Collected fragments', icon: '📝', action: () => this.game.openStandaloneNotes(), background: 'radial-gradient(circle at top, #101030, #050511)' },
             { id: 'torigatchi', title: 'TORI-GATCHI', subtitle: 'Can you hear me...?', icon: '🎮', locked: true, special: true, action: () => this.game.openTorigatchiIframe('Tori-Gatchi/index.html'), background: 'radial-gradient(circle at top, #0a1a0a, #050511)' },
-            { id: 'settings', title: 'SETTINGS', subtitle: 'Configure experience', icon: '⚙️', action: () => this.game.showSettings(), background: 'radial-gradient(circle at top, #202020, #050511)' },
             { id: 'credits', title: 'CREDITS', subtitle: 'The UV7 Crew', icon: '⭐', action: () => this.game.showCredits(), background: 'radial-gradient(circle at top, #102030, #050511)' },
             { id: 'crew', title: 'MEET THE CREW', subtitle: 'United Voices 7', icon: '👥', action: () => this.game.showMeetTheCrew(), background: 'radial-gradient(circle at top, #301020, #050511)' },
             { id: 'directors', title: 'DIRECTOR\'S CUT', subtitle: 'Behind the scenes', icon: '🎬', action: () => this.game.showDirectorsCut(), background: 'radial-gradient(circle at top, #201030, #050511)' },

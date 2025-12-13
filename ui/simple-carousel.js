@@ -47,6 +47,14 @@ class SimpleCarousel {
         // Card definitions matching current menu buttons
         this.cards = [
             {
+                id: 'settings',
+                title: 'SETTINGS',
+                subtitle: 'Configure experience',
+                icon: '⚙️',
+                action: () => this.game.showSettings(),
+                background: 'radial-gradient(circle at top, #2a2a1a, #050511)'
+            },
+            {
                 id: 'start',
                 title: 'START STORY',
                 subtitle: 'Begin Version 848',
@@ -87,14 +95,6 @@ class SimpleCarousel {
                 special: true, // Special visual treatment
                 action: () => this.game.openTorigatchiIframe('Tori-Gatchi/index.html'),
                 background: 'radial-gradient(circle at top, #0a1a0a, #050511)'
-            },
-            {
-                id: 'settings',
-                title: 'SETTINGS',
-                subtitle: 'Configure experience',
-                icon: '⚙️',
-                action: () => this.game.showSettings(),
-                background: 'radial-gradient(circle at top, #2a2a1a, #050511)'
             },
             {
                 id: 'credits',

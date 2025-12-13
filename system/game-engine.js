@@ -307,7 +307,7 @@ class GameEngine {
     constructor() {
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
-                        new URLSearchParams(window.location.search).get('debug') === 'true';
+            new URLSearchParams(window.location.search).get('debug') === 'true';
 
         // DOM Elements
         this.loading = document.getElementById('loading-screen');
@@ -322,11 +322,11 @@ class GameEngine {
         this.sceneBackgroundAlt = document.getElementById('scene-background-alt');
         this.choiceMenu = document.getElementById('choice-menu');
         this.choicesContainer = document.getElementById('choices-container');
-        
+
         // Background crossfade state
         this.useAltBackground = false;
         this.currentBackground = null;
-        
+
         // Tori Route Elements
         this.tetherUI = document.getElementById('tether-ui');
         this.tetherFill = document.getElementById('tether-fill');
@@ -338,14 +338,14 @@ class GameEngine {
         this.notesViewer = document.getElementById('notes-viewer');
         this.notesList = document.getElementById('notes-list');
         // ZEERAH'S FIX: Removed closeNotesButton - using close-x instead
-        
+
         // Pause UI elements
         this.pauseButton = document.getElementById('pause-button');
         this.pauseContent = document.getElementById('pause-content');
-        
+
         // Skip button (unlockable feature)
         this.skipButton = document.getElementById('skip-button');
-        
+
         // Character sprite containers
         this.spriteLeft = document.getElementById('character-left');
         this.spriteRight = document.getElementById('character-right');
@@ -370,21 +370,21 @@ class GameEngine {
         this.typewriterInterval = null;
         this.typewriterCallback = null;
         this.fullDialogueText = '';
-        
+
         // Pagination state (for mobile dialogue handling)
         this.dialoguePages = [];
         this.currentDialoguePage = 0;
         this.paginationActive = false;
-        
+
         // Bubble tracking for scene-lifecycle management
         this.currentBubble = null;
-        
+
         // Detect mobile for sprite handling
         this.isMobile = window.innerWidth <= 480;
         window.addEventListener('resize', () => {
             this.isMobile = window.innerWidth <= 480;
         });
-        
+
         // Loop/Version system for endings
         this.loopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
         this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
@@ -392,11 +392,11 @@ class GameEngine {
         this.uiHidden = false;
 
 
-        
+
         // ZEERAH'S EASTER EGG: Torigatchi reverse trapdoor
         this.easterEggSequence = '';
         this.easterEggListener = null;
-        
+
         // Dialogue history for backlog
         this.dialogueHistory = [];
         this.maxHistoryLength = 100; // Keep last 100 dialogue entries
@@ -414,7 +414,7 @@ class GameEngine {
             progress: {},
             sprites: { left: null, right: null } // NEW: Track sprite state for save/load
         };
-        
+
         // Skip system (unlocked after completing any ending)
         this.skipUnlocked = localStorage.getItem('skipUnlocked') === 'true';
         this.skipActive = false;
@@ -430,10 +430,10 @@ class GameEngine {
         if (this.skipButton) {
             this.skipButton.style.display = this.skipUnlocked ? 'block' : 'none';
         }
-        
+
         // Initialize save/load system
         this.saveManager = new SaveManager(this);
-        
+
         // Initialize settings manager
         this.settingsManager = new SettingsManager(this);
 
@@ -482,6 +482,10 @@ class GameEngine {
         } else {
             console.log('⚠️ Haptic feedback NOT supported on this device');
         }
+
+        // ZEE'S ADDITION: Input Binder (Refactoring inline handlers)
+        this.inputBinder = new InputBinder(this);
+        this.inputBinder.bindAll();
 
         this.init();
     }
@@ -723,7 +727,7 @@ class GameEngine {
 
         // Show random loading tip
         this.showRandomLoadingTip();
-        
+
         // Image cache for preloaded assets
         this.imageCache = new Map();
 
@@ -896,18 +900,18 @@ class GameEngine {
                 this.proceedToMenu(true);
             }
         })();
-        
+
         // Event Listeners
         this.holdOnButton.addEventListener('click', () => {
             if (this.currentRoute && this.currentRoute.holdOn) {
                 this.currentRoute.holdOn();
             }
         });
-        
+
         this.notesButton.addEventListener('click', () => {
             this.showNotes();
         });
-        
+
         // ZEERAH'S FIX: Removed closeNotesButton listener - X button handles it via onclick
 
         // ========================================
@@ -949,13 +953,13 @@ class GameEngine {
         // DIALOGUE ADVANCEMENT - Multi-Event Support
         // Click/Tap/Touch to skip typing or advance
         // ========================================
-        
+
         // Primary: Click event (desktop compatibility)
         this.dialogueBox.addEventListener('click', () => {
             this.handleDialogueClick();
         });
 
-        
+
         // Keyboard controls (Spacebar or Enter)
         document.addEventListener('keydown', (e) => {
 
@@ -980,10 +984,17 @@ class GameEngine {
                 this.toggleSkip();
                 return;
             }
-            
+
             // [CTRL] KEY: Hold to skip (activate skip mode)
             // Check specifically for Control key press, not just ctrlKey modifier
             if ((e.key === 'Control' || e.code === 'ControlLeft' || e.code === 'ControlRight') && !this.skipActive) {
+
+                // DIZEE FIX: Don't trigger skip on Main Menu or when paused (e.g. for screenshots)
+                const mainMenu = document.getElementById('main-menu');
+                if ((mainMenu && mainMenu.style.display !== 'none') || this.isPaused) {
+                    return;
+                }
+
                 console.log('🔑 CTRL key detected. skipUnlocked:', this.skipUnlocked, 'skipActive:', this.skipActive);
 
                 if (this.skipUnlocked) {
@@ -1010,7 +1021,7 @@ class GameEngine {
                     console.log('⚠️ CTRL skip locked: Complete any ending to unlock (use game.unlockSkipFeature())');
                 }
             }
-            
+
             if (e.code === 'Space' || e.code === 'Enter') {
                 // Don't trigger if typing in input fields
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
@@ -1021,7 +1032,7 @@ class GameEngine {
                 this.handleDialogueClick();
             }
         });
-        
+
         // [CTRL] KEY RELEASE: Stop hold-to-skip
         document.addEventListener('keyup', (e) => {
             if (e.key === 'Control' || e.key === 'Meta') {
@@ -1038,7 +1049,7 @@ class GameEngine {
                 }
             }
         });
-        
+
         // Initialize dynamic title system
         this.updateTitleScreen();
 
@@ -1469,25 +1480,26 @@ class GameEngine {
     getHapticPatterns() {
         return {
             // Basic intensity levels
-            'light': 10,           // Quick tap (UI navigation)
-            'medium': 25,          // Standard feedback (choices, buttons)
-            'strong': 50,          // Important actions (confirmations)
+            // DIZEE FIX: Increased durations significantly (10ms -> 40ms) to clear motor inertia threshold
+            'light': 40,           // Quick tap (UI navigation)
+            'medium': 70,          // Standard feedback (choices, buttons)
+            'strong': 100,          // Important actions (confirmations)
 
             // Rhythmic patterns (EMOTIONAL LANGUAGE)
-            'double': [25, 50, 25],           // Two taps (vessel hop, transitions)
-            'triple': [20, 40, 20, 40, 20],   // Three taps (special unlocks)
-            'denied': [40, 40, 40, 40, 40],   // Triple DENIAL (blocked saves, locked actions, despair)
-            'pulse': [30, 30, 30, 30, 30],    // Sustained pulse (loading, waiting)
+            'double': [60, 50, 60],           // Two taps (vessel hop, transitions)
+            'triple': [50, 40, 50, 40, 50],   // Three taps (special unlocks)
+            'denied': [80, 50, 80, 50, 80],   // Triple DENIAL (blocked saves, locked actions, despair)
+            'pulse': [60, 40, 60, 40, 60],    // Sustained pulse (loading, waiting)
 
             // Feedback types
-            'success': [10, 50, 30],          // Success chirp (achievement, unlock)
-            'warning': [50, 100, 50],         // Alert buzz (warning, caution)
-            'error': [100, 50, 100, 50, 100], // Error shake (failure, blocked)
+            'success': [40, 50, 80],          // Success chirp (achievement, unlock)
+            'warning': [100, 100, 100],         // Alert buzz (warning, caution)
+            'error': [150, 50, 150, 50, 150], // Error shake (failure, blocked)
 
             // Special story moments
-            'heartbeat': [40, 100, 60, 100],  // Slow heartbeat (tension moments)
-            'glitch': [10, 20, 5, 30, 15],    // Glitchy stutter (reality breaks)
-            'echo': [15, 80, 15, 80, 15],     // Echo appearance
+            'heartbeat': [80, 150, 100, 150],  // Slow heartbeat (tension moments)
+            'glitch': [30, 30, 15, 40, 20],    // Glitchy stutter (reality breaks)
+            'echo': [40, 100, 40, 100, 40],     // Echo appearance
         };
     }
 
@@ -1721,88 +1733,88 @@ class GameEngine {
         // RETRY - increment version, reset to attempting
         this.loopVersion++;
         this.loopStatus = 'attempting';
-        
+
         // Save to localStorage
         localStorage.setItem('loopVersion', this.loopVersion.toString());
         localStorage.setItem('loopStatus', this.loopStatus);
-        
+
         // Update display
         this.updateTitleScreen();
-        
+
         console.log(`🔄 Loop incremented to VERSION ${this.loopVersion}`);
-        
+
         return this.loopVersion;
     }
-    
+
     breakLoop() {
         // TRUE ENDING - lock version as succeeded
         this.loopStatus = 'succeeded';
-        
+
         // Save to localStorage
         localStorage.setItem('loopStatus', this.loopStatus);
-        
+
         // Update display (removes glitch)
         this.updateTitleScreen();
-        
+
         console.log(`✨ Loop broken! VERSION ${this.loopVersion} SUCCEEDED`);
     }
-    
+
     acceptEnding() {
         // DIGITAL FOREVER - lock version as accepted
         this.loopStatus = 'accepted';
-        
+
         // Save to localStorage
         localStorage.setItem('loopStatus', this.loopStatus);
-        
+
         // Update display (removes glitch)
         this.updateTitleScreen();
-        
+
         console.log(`💫 Ending accepted. VERSION ${this.loopVersion} locked.`);
     }
-    
+
     // ========================================
     // LOOP REINIT SCREEN
     // Shows when player retries after failure
     // ========================================
-    
+
     showLoopInit(callback) {
         const loopInitScreen = document.getElementById('loop-init-screen');
         const prevVersionEl = document.getElementById('loop-prev-version');
         const newVersionEl = document.getElementById('loop-new-version');
         const skipButton = document.getElementById('loop-skip-button');
-        
+
         if (!loopInitScreen) {
             console.error('Loop init screen not found');
             if (callback) callback();
             return;
         }
-        
+
         // Use current version as "previous failed"
         // And loopVersion is already incremented, so it's the "new" version
         const prevVersion = this.loopVersion - 1; // The one that just failed
         const newVersion = this.loopVersion; // The new attempt
-        
+
         // Update text
         if (prevVersionEl) prevVersionEl.textContent = prevVersion;
         if (newVersionEl) newVersionEl.textContent = newVersion;
-        
+
         // Check if player has seen this before
         const loopInitSeen = localStorage.getItem('loopInitSeen') === 'true';
-        
+
         // Show skip button only if seen before
         if (skipButton) {
             skipButton.style.display = loopInitSeen ? 'inline-block' : 'none';
         }
-        
+
         // Mark as seen for future runs
         localStorage.setItem('loopInitSeen', 'true');
-        
+
         // Show screen
         loopInitScreen.style.display = 'flex';
-        
+
         // Store callback for when player advances
         this.loopInitCallback = callback;
-        
+
         // Click anywhere to continue
         const continueHandler = (e) => {
             // Don't close if clicking the skip button (it has its own handler)
@@ -1816,15 +1828,15 @@ class GameEngine {
                 loopInitContent.removeEventListener('click', continueHandler);
             }
         };
-        
+
         loopInitScreen.addEventListener('click', continueHandler);
-        
+
         // Also add to content div (in case pointer-events is blocking)
         const loopInitContent = document.getElementById('loop-init-content');
         if (loopInitContent) {
             loopInitContent.addEventListener('click', continueHandler);
         }
-        
+
         // Keyboard support (Space/Enter)
         const keyHandler = (e) => {
             if (e.code === 'Space' || e.code === 'Enter') {
@@ -1833,39 +1845,39 @@ class GameEngine {
                 document.removeEventListener('keydown', keyHandler);
             }
         };
-        
+
         document.addEventListener('keydown', keyHandler);
-        
+
         console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
     }
-    
+
     skipLoopInit() {
         // Immediate skip - no animation
         this.closeLoopInit();
     }
-    
+
     closeLoopInit() {
         const loopInitScreen = document.getElementById('loop-init-screen');
         if (loopInitScreen) {
             loopInitScreen.style.display = 'none';
         }
-        
+
         // Execute callback if exists
         if (this.loopInitCallback) {
             this.loopInitCallback();
             this.loopInitCallback = null;
         }
     }
-    
+
     // ========================================
     // NOTES UNLOCK SYSTEM
     // First-play: hidden. Replay: visible.
     // ========================================
-    
+
     hasCompletedAnyEnding() {
         return localStorage.getItem('hasCompletedOnce') === 'true';
     }
-    
+
     markEndingCompleted(endingType) {
         const wasFirstCompletion = !this.hasCompletedAnyEnding();
 
@@ -2007,7 +2019,7 @@ class GameEngine {
     // ========================================
     // STORY START - PLAYS PROLOGUE FIRST
     // ========================================
-    
+
     startStory() {
         // Check if skip prologue is unlocked AND enabled in settings
         if (this.skipPrologueUnlocked && this.settingsManager?.settings?.autoSkipPrologue) {
@@ -2060,6 +2072,11 @@ class GameEngine {
         setTimeout(() => {
             this.mainMenu.style.display = 'none';
             this.gameView.style.display = 'flex';
+
+            // Show Game UI Layer
+            const gameUI = document.getElementById('game-ui-layer');
+            if (gameUI) gameUI.style.display = 'block';
+
             this.dialogueBox.style.display = 'block';
 
             // Fade in game view
@@ -2076,11 +2093,11 @@ class GameEngine {
             prologue.start();
         }, 800);
     }
-    
+
     // ========================================
     // ROUTE SELECTION SCREEN
     // ========================================
-    
+
     showRouteSelect() {
         // CRITICAL: Clear sprites before showing route selection
         // This prevents prologue sprites from lingering into routes
@@ -2088,6 +2105,10 @@ class GameEngine {
 
         // Fade out game view (after prologue)
         this.gameView.style.opacity = '0';
+
+        // Hide Game UI Layer
+        const gameUI = document.getElementById('game-ui-layer');
+        if (gameUI) gameUI.style.display = 'none';
 
         setTimeout(() => {
             this.gameView.style.display = 'none';
@@ -2109,7 +2130,7 @@ class GameEngine {
             }, 100);
         }, 1000);
     }
-    
+
     backToMenu() {
         // Clear sprites when returning to menu
         this.clearAllSprites();
@@ -2383,7 +2404,7 @@ class GameEngine {
     // ========================================
     // ROUTE START
     // ========================================
-    
+
     startRoute(routeName) {
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();
@@ -2428,16 +2449,20 @@ class GameEngine {
         // Fade out route select
         const routeSelect = document.getElementById('route-select');
         routeSelect.style.opacity = '0';
-        
+
         setTimeout(() => {
             routeSelect.style.display = 'none';
             this.gameView.style.display = 'flex';
-            
+
+            // Show Game UI Layer
+            const gameUI = document.getElementById('game-ui-layer');
+            if (gameUI) gameUI.style.display = 'block';
+
             // Fade in game view
             setTimeout(() => {
                 this.gameView.style.opacity = '1';
             }, 100);
-            
+
             // Show notes button for Tori's route (has collectibles)
             if (routeName === 'tori') {
                 if (this.notesButton) {
@@ -2449,13 +2474,13 @@ class GameEngine {
                     this.notesButton.style.display = 'block';
                 }
             }
-            
+
             // Show backlog button during gameplay
             const backlogButton = document.getElementById('backlog-button');
             if (backlogButton) {
                 backlogButton.style.display = 'block';
             }
-            
+
             // Set route-specific dialogue frame
             this.setDialogueFrame(routeName);
 
@@ -2492,50 +2517,50 @@ class GameEngine {
             this.showEscHintBriefly();
         }, 1000);
     }
-    
-        // ========================================
+
+    // ========================================
     // SPRITE FADE SEQUENCE (for prologue vision)
     // ========================================
-    
+
     fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
         const container = position === 'left' ? this.spriteLeft : this.spriteRight;
         if (!container) return;
-        
+
         // Start with sprite1 (young Ronnie)
         container.style.backgroundImage = `url('${sprite1}')`;
         container.style.display = 'block';
         container.style.opacity = '1';
-        
+
         const timing = duration / 4; // Split into 4 phases
-        
+
         // Phase 1: Fade out sprite1
         setTimeout(() => {
             container.style.transition = 'opacity 0.8s ease';
             container.style.opacity = '0.2';
         }, timing);
-        
+
         // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
         setTimeout(() => {
             container.style.backgroundImage = `url('${sprite2}')`;
             container.style.opacity = '1';
         }, timing * 1.8);
-        
+
         // Phase 3: Hold Old Man briefly, then fade
         setTimeout(() => {
             container.style.opacity = '0.2';
         }, timing * 2.8);
-        
+
         // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
         setTimeout(() => {
             container.style.backgroundImage = `url('${sprite1}')`;
             container.style.opacity = '1';
             container.style.transition = 'opacity 0.6s ease';
         }, timing * 3.5);
-        
+
         // Stay visible - don't fade to black
         // Sprite persists for rest of scene
     }
-    
+
     triggerEchoMerge(callback) {
         // DIZEE FIX: Parallel animations + hold time for dramatic moment
         // Animate the three echoes merging into one Tori sprite
@@ -2599,17 +2624,17 @@ class GameEngine {
 
         }, 1500);
     }
-    
+
     // ========================================
     // SCENE DISPLAY
     // ========================================
-    
+
     displayScene(scene, sceneId) {
         this.currentScene = scene;
-        
+
         // Reset pagination state at start of every scene
         this.paginationActive = false;
-        
+
         // Store scene ID for save system (with safety check)
         if (sceneId) {
             if (!this.gameState.progress) {
@@ -2617,16 +2642,16 @@ class GameEngine {
             }
             this.gameState.progress.currentScene = sceneId;
         }
-        
+
         // Handle character display (speaker highlighting)
         if (scene.character) {
             this.setActiveSpeaker(scene.character);
         }
-        
+
         // Update character name
         this.characterName.textContent = scene.character || '';
         this.characterName.style.display = scene.character ? 'block' : 'none';
-        
+
         // Add to dialogue history for backlog
         if (scene.character || scene.dialogue) {
             this.addToDialogueHistory({
@@ -2636,24 +2661,24 @@ class GameEngine {
                 distorted: scene.distorted || false // Track hijacked/corrupted dialogue
             });
         }
-        
+
         // Handle sprites (show/hide based on scene data)
         if (scene.sprites) {
             this.updateSprites(scene.sprites);
         }
-        
+
         // Clear previous dialogue
         this.dialogueText.textContent = '';
         this.internalThought.textContent = '';
-        
+
         // Store full dialogue for skip functionality
         this.fullDialogueText = scene.dialogue || '';
-        
+
         // Handle dialogue with typewriter effect
         if (scene.dialogue) {
             // Pass internal text length so pagination considers BOTH dialogue + internal
             const internalLength = scene.internal ? scene.internal.length : 0;
-            
+
             // Create callback for skip auto-advance
             const typewriterCallback = () => {
                 // If skip is active and this scene is read, auto-advance
@@ -2674,34 +2699,34 @@ class GameEngine {
             const slowReveal = scene.slowReveal || false;
             this.typewriterText(this.dialogueText, scene.dialogue, typewriterCallback, internalLength, slowReveal);
         }
-        
+
         // ========================================
         // INTERNAL THOUGHTS - UNIVERSAL BUBBLE SYSTEM
         // ========================================
-        
+
         // Remove previous bubble when displaying new scene
         this.removeInternalBubble();
-        
+
         if (scene.internal) {
             // UNIVERSAL: Create floating bubble for ALL platforms
             const position = this.determineCharacterPosition(scene);
             this.createInternalBubble(scene.internal, position);
-            
+
             // Hide the internal thought section in dialogue box (no longer needed)
             this.internalThought.style.display = 'none';
         } else {
             this.internalThought.style.display = 'none';
         }
-        
+
         // Handle choices
         if (scene.choices) {
             this.showChoices(scene.choices, scene.onChoice);
         } else {
             this.choiceMenu.style.display = 'none';
         }
-        
+
         // Echo display handled by three-echoes-sprite.png now
-        
+
         // Handle background changes with crossfade
         if (scene.background) {
             this.crossfadeBackground(scene.background);
@@ -2709,25 +2734,25 @@ class GameEngine {
             this.currentBackground = scene.background;
         }
         // If no background specified, keep previous background (currentBackground stays same)
-        
+
         // Handle special styling (preserve route, prologue, epilogue classes!)
         // First, get current special classes
         const routeClass = this.dialogueBox.classList.contains('ronnie-route') ? 'ronnie-route' :
-                          this.dialogueBox.classList.contains('tori-route') ? 'tori-route' : null;
+            this.dialogueBox.classList.contains('tori-route') ? 'tori-route' : null;
         const prologueClass = this.dialogueBox.classList.contains('prologue-style') ? 'prologue-style' : null;
         const epilogueClass = this.dialogueBox.classList.contains('epilogue-style') ? 'epilogue-style' : null;
-        
+
         // Clear scene-specific styles but keep route/prologue/epilogue classes
         this.dialogueBox.className = '';
         if (routeClass) this.dialogueBox.classList.add(routeClass);
         if (prologueClass) this.dialogueBox.classList.add(prologueClass);
         if (epilogueClass) this.dialogueBox.classList.add(epilogueClass);
-        
+
         // Add new scene style if specified
         if (scene.style) {
             this.dialogueBox.classList.add(scene.style);
         }
-        
+
         // Auto-save after each scene (if route is active)
         if (this.currentRoute) {
             this.saveManager.autoSave();
@@ -2744,7 +2769,7 @@ class GameEngine {
         if (sceneId) {
             this.markSceneAsRead(sceneId);
         }
-        
+
         // If skip is active and this scene was already read, check if we should stop
         if (this.skipActive && sceneId) {
             if (this.shouldStopSkipping(scene)) {
@@ -2762,11 +2787,11 @@ class GameEngine {
             }
         }
     }
-    
+
     // ========================================
     // SPRITE MANAGEMENT
     // ========================================
-    
+
     updateSprites(sprites) {
         // Handle left sprite
         if (sprites.left !== undefined) {
@@ -2788,13 +2813,14 @@ class GameEngine {
                     this.spriteLeft.style.display = 'block';
                     this.spriteLeft.style.opacity = '0';  // Start hidden
                     setTimeout(() => {
-                    this.spriteLeft.style.opacity = '1';  // Fade in
-                }, 50);}
+                        this.spriteLeft.style.opacity = '1';  // Fade in
+                    }, 50);
+                }
                 this.currentSprites.left = sprites.left;
                 this.gameState.sprites.left = sprites.left; // NEW: Update save state
             }
         }
-        
+
         // Handle right sprite - check if it's the Echoes triple
         if (sprites.right !== undefined) {
             if (sprites.right === null) {
@@ -2818,12 +2844,12 @@ class GameEngine {
             } else {
                 // Show/update right sprite (normal single sprite)
                 if (this.spriteRight) {
-                        this.spriteRight.classList.remove('echo-group');
-                        this.spriteRight.innerHTML = ''; // Clear any echo children
-                        this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
-                        this.spriteRight.style.display = 'block';
-                        this.spriteRight.style.opacity = '0';  // Start hidden
-                        setTimeout(() => {
+                    this.spriteRight.classList.remove('echo-group');
+                    this.spriteRight.innerHTML = ''; // Clear any echo children
+                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                    this.spriteRight.style.display = 'block';
+                    this.spriteRight.style.opacity = '0';  // Start hidden
+                    setTimeout(() => {
                         this.spriteRight.style.opacity = '1';  // Fade in
                     }, 50);
                 }
@@ -2832,44 +2858,44 @@ class GameEngine {
             }
         }
     }
-    
+
     displayEchoGroup() {
         // Display three separate Echo sprites
         if (!this.spriteRight) return;
-        
+
         // Clear and set up as echo group
         this.spriteRight.innerHTML = '';
         this.spriteRight.style.backgroundImage = '';
         this.spriteRight.classList.add('echo-group');
         this.spriteRight.style.display = 'flex';
         this.spriteRight.style.opacity = '0';
-        
+
         // Create three echo sprites
         const echo1 = document.createElement('div');
         echo1.id = 'echo-1-sprite';
         echo1.className = 'echo-sprite';
         echo1.style.backgroundImage = "url('assets/echo-1-sprite.png')";
-        
+
         const echo2 = document.createElement('div');
         echo2.id = 'echo-2-sprite';
         echo2.className = 'echo-sprite';
         echo2.style.backgroundImage = "url('assets/echo-2-sprite.png')";
-        
+
         const despair = document.createElement('div');
         despair.id = 'despair-sprite';
         despair.className = 'echo-sprite';
         despair.style.backgroundImage = "url('assets/despair-sprite.png')";
-        
+
         // Add to container
         this.spriteRight.appendChild(echo1);
         this.spriteRight.appendChild(echo2);
         this.spriteRight.appendChild(despair);
-        
+
         // Fade in
         setTimeout(() => {
             this.spriteRight.style.opacity = '1';
         }, 50);
-        
+
         // Apply current growth stage if set
         // This preserves the stage when echoes are re-displayed
         if (this.currentEchoGrowthStage) {
@@ -2878,25 +2904,25 @@ class GameEngine {
             // Default to Act 1 if no stage set
             this.setEchoGrowthStage('act1');
         }
-        
+
         console.log('Echo group displayed with three separate sprites');
     }
-    
+
     setEchoGrowthStage(stage) {
         // Update Echo visual growth based on act progression
         // stage: 'act1', 'act2', or 'act3'
-        
+
         // Store current stage so it persists when echoes are re-displayed
         this.currentEchoGrowthStage = stage;
-        
+
         if (!this.spriteRight || !this.spriteRight.classList.contains('echo-group')) {
             console.log('Echo growth: No echo group active yet, stage stored for later');
             return;
         }
-        
+
         // Remove all growth classes
         this.spriteRight.classList.remove('echo-growth-act1', 'echo-growth-act2', 'echo-growth-act3');
-        
+
         // Add the appropriate class
         if (stage === 'act1') {
             this.spriteRight.classList.add('echo-growth-act1');
@@ -2909,7 +2935,7 @@ class GameEngine {
             console.log('Echo growth: Act 3 (100% height - Balance achieved)');
         }
     }
-    
+
     setActiveSpeaker(speaker) {
         if (!speaker) {
             // No speaker - remove all dims
@@ -2920,22 +2946,22 @@ class GameEngine {
             echoSprites.forEach(sprite => sprite.classList.remove('sprite-dim'));
             return;
         }
-        
+
         const speakerName = speaker.toLowerCase();
-        
+
         // OFFSCREEN SPEAKER DETECTION:
         // If speaker is not physically present (Tamagotchi, device, offscreen, voice, etc.)
         // Dim ALL sprites to show everyone is listening
-        if (speakerName.includes('tamagotchi') || 
-            speakerName.includes('device') || 
+        if (speakerName.includes('tamagotchi') ||
+            speakerName.includes('device') ||
             speakerName.includes('offscreen') ||
             speakerName.includes('from device') ||
             speakerName.includes('voice')) {
-            
+
             // Dim all standard sprites
             if (this.spriteLeft) this.spriteLeft.classList.add('sprite-dim');
             if (this.spriteRight) this.spriteRight.classList.add('sprite-dim');
-            
+
             // Dim all Echo sprites if present
             const echo1 = document.getElementById('echo-1-sprite');
             const echo2 = document.getElementById('echo-2-sprite');
@@ -2943,15 +2969,15 @@ class GameEngine {
             if (echo1) echo1.classList.add('sprite-dim');
             if (echo2) echo2.classList.add('sprite-dim');
             if (despair) despair.classList.add('sprite-dim');
-            
+
             return; // Early exit - everyone dimmed
         }
-        
+
         // Check if Echoes are displayed
         const echo1 = document.getElementById('echo-1-sprite');
         const echo2 = document.getElementById('echo-2-sprite');
         const despair = document.getElementById('despair-sprite');
-        
+
         if (echo1 && echo2 && despair) {
             // Echoes are active - handle individual highlighting
             if (speakerName.includes('echo 1') || speakerName.includes('echo1')) {
@@ -2999,7 +3025,7 @@ class GameEngine {
             }
             return;
         }
-        
+
         // ========================================
         // POSITION-AWARE SPRITE HIGHLIGHTING
         // Check currentSprites to find who's actually where
@@ -3058,7 +3084,7 @@ class GameEngine {
             if (this.spriteRight) this.spriteRight.classList.remove('sprite-dim');
         }
     }
-    
+
     clearAllSprites() {
         // NEW METHOD: Complete sprite cleanup
         // Remove sprites from DOM
@@ -3074,14 +3100,14 @@ class GameEngine {
             this.spriteRight.style.backgroundImage = '';
             this.spriteRight.classList.remove('sprite-dim');
         }
-        
+
         // Clear tracking state
         this.currentSprites = { left: null, right: null };
         this.gameState.sprites = { left: null, right: null };
-        
+
         console.log('All sprites cleared');
     }
-    
+
     restoreSprites() {
         // NEW METHOD: Restore sprites from save state
         // Called when loading a game
@@ -3094,7 +3120,7 @@ class GameEngine {
             }
         }
     }
-    
+
     hideAllSprites() {
         // OLD METHOD: Kept for backward compatibility
         // Use clearAllSprites() for complete cleanup
@@ -3112,12 +3138,12 @@ class GameEngine {
         }
         this.currentSprites = { left: null, right: null };
     }
-    
+
     // ========================================
     // TYPEWRITER EFFECT WITH PAGINATION
     // UPDATED: Lowered threshold to 150 chars for mobile
     // ========================================
-    
+
     typewriterText(element, text, callback, internalTextLength = 0, slowReveal = false) {
         // ZEE'S ADDITION: Store slow reveal flag for getTypewriterSpeed 🖤
         this.slowRevealActive = slowReveal;
@@ -3142,11 +3168,11 @@ class GameEngine {
             if (callback) callback();
             return;
         }
-        
+
         // Check if text needs pagination on mobile
         // Consider BOTH dialogue and internal text length
         const totalLength = text.length + internalTextLength;
-        
+
         if (this.shouldPaginateText(totalLength)) {
             this.paginateAndDisplayText(element, text, callback);
         } else {
@@ -3156,12 +3182,12 @@ class GameEngine {
             this.typewriterCallback = callback;
             element.textContent = '';
             let i = 0;
-            
+
             // Clear any existing interval
             if (this.typewriterInterval) {
                 clearInterval(this.typewriterInterval);
             }
-            
+
             this.typewriterInterval = setInterval(() => {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
@@ -3186,7 +3212,7 @@ class GameEngine {
             }, speed);
         }
     }
-    
+
     getTypewriterSpeed() {
         // ZEE'S ADDITION: Slow-motion reveal for emotional weight 🖤
         // 5× slower than normal (150ms vs 30ms)
@@ -3212,40 +3238,40 @@ class GameEngine {
 
         return result;
     }
-    
+
     shouldPaginateText(textLength) {
         // Only paginate on mobile portrait
         if (window.innerWidth > 480) return false;
         if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
-        
+
         // LOWERED THRESHOLD: 150 chars instead of 200 for tighter control
         // This ensures dialogue box never grows too tall on mobile portrait
         return textLength > 150;
     }
-    
+
     paginateAndDisplayText(element, text, callback) {
         // Split text into pages that fit in mobile dialogue box
         this.dialoguePages = this.splitTextIntoPages(text, 150);
         this.currentDialoguePage = 0;
         this.paginationActive = true;
         this.typewriterCallback = callback;
-        
+
         // Display first page
         this.displayDialoguePage(element);
     }
-    
+
     splitTextIntoPages(text, charsPerPage) {
         const pages = [];
         let remainingText = text;
-        
+
         while (remainingText.length > 0) {
             if (remainingText.length <= charsPerPage) {
                 pages.push(remainingText);
                 break;
             }
-            
+
             let breakPoint = charsPerPage;
-            
+
             // Look for sentence end within last 50 chars
             const sentenceEnd = remainingText.substring(0, charsPerPage).lastIndexOf('. ');
             if (sentenceEnd > charsPerPage - 50) {
@@ -3257,23 +3283,23 @@ class GameEngine {
                     breakPoint = lastSpace + 1;
                 }
             }
-            
+
             pages.push(remainingText.substring(0, breakPoint).trim());
             remainingText = remainingText.substring(breakPoint).trim();
         }
-        
+
         return pages;
     }
-    
+
     displayDialoguePage(element) {
         const currentPage = this.dialoguePages[this.currentDialoguePage];
         const speed = this.getTypewriterSpeed();
-        
+
         // Add page indicator for multi-page dialogue
-        const pageIndicator = (this.dialoguePages.length > 1) 
+        const pageIndicator = (this.dialoguePages.length > 1)
             ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
             : '';
-        
+
         // Check if instant mode
         if (speed === 0) {
             // Instant mode - show all text immediately
@@ -3292,17 +3318,17 @@ class GameEngine {
 
             return;
         }
-        
+
         // Typewriter the current page
         this.typewriterActive = true;
         this.fullDialogueText = currentPage;
         element.textContent = '';
         let i = 0;
-        
+
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
         }
-        
+
         this.typewriterInterval = setInterval(() => {
             if (i < currentPage.length) {
                 element.textContent += currentPage.charAt(i);
@@ -3312,11 +3338,11 @@ class GameEngine {
                 if (this.dialoguePages.length > 1) {
                     element.textContent += pageIndicator;
                 }
-                
+
                 clearInterval(this.typewriterInterval);
                 this.typewriterInterval = null;
                 this.typewriterActive = false;
-                
+
                 // ZEERAH'S FIX: Start auto-advance timer after typewriter finishes
                 if (this.settingsManager) {
                     this.settingsManager.startAutoAdvance(() => {
@@ -3350,12 +3376,12 @@ class GameEngine {
             }
         }
     }
-    
+
     skipTypewriter() {
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
         }
-        
+
         if (this.paginationActive) {
             // Show current page fully with indicator
             const currentPage = this.dialoguePages[this.currentDialoguePage];
@@ -3367,16 +3393,16 @@ class GameEngine {
             // Show full text
             this.dialogueText.textContent = this.fullDialogueText;
         }
-        
+
         this.typewriterActive = false;
-        
+
         // Execute callback if exists
         if (this.typewriterCallback) {
             this.typewriterCallback();
             this.typewriterCallback = null;
         }
     }
-    
+
     handleDialogueClick() {
         // DIZEE: Haptic feedback for dialogue interaction
         this.triggerHaptic('light', 'Dialogue advance');
@@ -3401,7 +3427,7 @@ class GameEngine {
             this.advance();
         }
     }
-    
+
     advance() {
         // Don't advance if choices are showing
         if (this.choiceMenu.style.display === 'block') return;
@@ -3415,16 +3441,16 @@ class GameEngine {
             this.currentScene.next();
         }
     }
-    
+
     showChoices(choices, onChoice) {
         this.choicesContainer.innerHTML = '';
         this.choiceMenu.style.display = 'block';
-        
+
         choices.forEach(choice => {
             const button = document.createElement('div');
             button.className = 'choice-option';
             button.textContent = choice.text;
-            
+
             if (choice.locked || choice.disabled) {
                 button.classList.add('locked');
 
@@ -3444,54 +3470,54 @@ class GameEngine {
                     if (onChoice) onChoice(choice.value);
                 });
             }
-            
+
             this.choicesContainer.appendChild(button);
         });
     }
-    
+
     // ========================================
     // ECHO DISPLAY (TORI ROUTE)
     // ========================================
-    
+
     // displayEchoes and clearEchoes removed - now using three-echoes-sprite.png
-    
+
     // ========================================
     // NOTES SYSTEM
     // ========================================
-    
+
     showNotes() {
         if (!this.currentRoute || !this.currentRoute.collectedNotes) return;
-        
+
         this.notesViewer.style.display = 'block';
         this.notesList.innerHTML = '';
-        
+
         const allNotes = this.currentRoute.allNotes;
         const collected = this.currentRoute.collectedNotes;
-        
+
         Object.keys(allNotes).forEach(noteId => {
             const note = allNotes[noteId];
             const isCollected = collected[note.type].includes(noteId);
-            
+
             const noteItem = document.createElement('div');
             noteItem.className = `note-item ${note.type}-note`;
             if (!isCollected) noteItem.classList.add('note-locked');
-            
+
             const title = document.createElement('div');
             title.className = 'note-title';
             title.textContent = isCollected ? note.title : '???';
             noteItem.appendChild(title);
-            
+
             if (isCollected) {
                 const content = document.createElement('div');
                 content.className = 'note-content';
                 content.textContent = note.content;
                 noteItem.appendChild(content);
-                
+
                 noteItem.addEventListener('click', () => {
                     noteItem.classList.toggle('expanded');
                 });
             }
-            
+
             this.notesList.appendChild(noteItem);
         });
     }
@@ -3676,9 +3702,9 @@ class GameEngine {
         // Determine which ending to display
         // Priority: parameter > localStorage > default
         const displayEndingType = endingType ||
-                                 this.lastEndingType ||
-                                 localStorage.getItem('lastEndingType') ||
-                                 'none';
+            this.lastEndingType ||
+            localStorage.getItem('lastEndingType') ||
+            'none';
 
         // Save to localStorage for persistence
         if (endingType) {
@@ -4487,7 +4513,7 @@ class GameEngine {
 
     showMessage(title, message) {
         // Simple message (no cancel button)
-        this.showConfirmDialog(title, message, () => {}, false);
+        this.showConfirmDialog(title, message, () => { }, false);
     }
 
     showMeetTheCrew() {
@@ -4680,66 +4706,66 @@ class GameEngine {
     // ========================================
     // CONTACT SCREEN
     // ========================================
-    
+
     showContact() {
         const contactScreen = document.getElementById('contact-screen');
         if (!contactScreen) {
             console.error('Contact screen element not found');
             return;
         }
-        
+
         // Hide main menu
         this.mainMenu.style.display = 'none';
-        
+
         // Show contact screen
         contactScreen.style.display = 'flex';
-        
+
         console.log('Contact screen displayed');
     }
-    
+
     closeContact() {
         const contactScreen = document.getElementById('contact-screen');
         if (contactScreen) {
             contactScreen.style.display = 'none';
         }
-        
+
         // Return to main menu
         this.mainMenu.style.display = 'flex';
         this.mainMenu.style.opacity = '1';
     }
-    
+
     // ========================================
     // SAVE/LOAD SYSTEM METHODS
     // ========================================
-    
+
     resumeGame() {
         this.saveLoadUI.hidePauseMenu();
     }
-    
+
     showSaveLoadScreen(mode) {
         this.saveLoadUI.showSaveLoadScreen(mode);
     }
-    
+
     closeSaveLoadScreen() {
         this.saveLoadUI.closeSaveLoadScreen();
     }
-    
+
     setSaveLoadMode(mode) {
         this.saveLoadUI.setSaveLoadMode(mode);
     }
-    
+
     handleSaveSlotClick(slotId) {
         this.saveLoadUI.handleSaveSlotClick(slotId);
     }
-    
+
     deleteSaveSlot(slotNumber) {
         this.saveLoadUI.deleteSaveSlot(slotNumber);
     }
-    
+
     confirmAction(confirmed) {
         this.saveLoadUI.confirmAction(confirmed);
     }
-    
+
     returnToMainMenu() {
         // ZEE: Revert color scheme if returning from Insane Mode 🖤
         this.deactivateInsaneMode();
@@ -4747,15 +4773,19 @@ class GameEngine {
         // Clear sprites when returning to main menu
         this.clearAllSprites();
 
+        // Hide Game UI Layer explicitly
+        const gameUI = document.getElementById('game-ui-layer');
+        if (gameUI) gameUI.style.display = 'none';
+
         // Clear route-specific dialogue frame
         this.clearDialogueFrame();
-        
+
         // Reset background state
         this.currentBackground = null;
-        
+
         // Hide Tori-specific UI elements
         if (this.tetherUI) this.tetherUI.style.display = 'none';
-        
+
         // ZEERAH'S FIX: Only hide notes button if player hasn't completed any ending
         if (this.notesButton) {
             const hasCompletedEnding = this.hasCompletedAnyEnding();
@@ -4765,45 +4795,45 @@ class GameEngine {
             // If they HAVE completed an ending, keep button visible for future routes
         }
         // Echo display removed - handled by sprite now
-        
+
         // Hide backlog button
         const backlogButton = document.getElementById('backlog-button');
         if (backlogButton) backlogButton.style.display = 'none';
-        
+
         // ZEERAH'S FIX: Cleanup tether system completely (stops decay + clears timers)
         if (this.currentRoute) {
             if (this.currentRoute.tetherSystem && this.currentRoute.tetherSystem.cleanup) {
                 this.currentRoute.tetherSystem.cleanup();
             }
         }
-        
+
         this.saveLoadUI.returnToMainMenu();
-        
+
         // ZEERAH'S EASTER EGG: Activate Torigatchi listener if True Ending achieved
         this.activateEasterEggListener();
     }
-    
+
     // ========================================
     // STANDALONE NOTES VIEWER (MAIN MENU)
     // ========================================
-    
+
     showStandaloneNotes() {
         // Reload notes from localStorage (in case new ones unlocked)
         this.standaloneNotesViewer = new StandaloneNotesViewer(this);
         this.standaloneNotesViewer.show();
     }
-    
+
     openStandaloneNotes() {
         // ZEERAH'S FIX: Always create fresh viewer to reload notes from localStorage
         // Notes might have been collected since last view
         this.standaloneNotesViewer = new StandaloneNotesViewer(this);
         this.standaloneNotesViewer.show();
     }
-    
+
     closeStandaloneNotes() {
         this.standaloneNotesViewer.close();
     }
-    
+
     closeNotesViewer() {
         // DIZEE: Handle both standalone (main menu) and route-based notes viewers
         if (this.currentRoute && this.currentRoute.collectiblesManager) {
@@ -4828,7 +4858,7 @@ class GameEngine {
     // ========================================
     // SETTINGS SYSTEM
     // ========================================
-    
+
     showSettings() {
         const settingsMenu = document.getElementById('settings-menu');
         console.log('showSettings called, element:', settingsMenu);
@@ -4857,7 +4887,7 @@ class GameEngine {
             this.currentRoute.tetherSystem.startDecay();
         }
     }
-    
+
     resetSettings() {
         if (this.settingsManager && this.settingsManager.reset) {
             this.settingsManager.reset();
@@ -4867,11 +4897,11 @@ class GameEngine {
             location.reload();
         }
     }
-    
+
     // ========================================
     // BACKLOG SYSTEM
     // ========================================
-    
+
     addToDialogueHistory(entry) {
         // Legacy array (keep for compatibility)
         this.dialogueHistory.push(entry);
@@ -4890,7 +4920,7 @@ class GameEngine {
             );
         }
     }
-    
+
     openBacklog() {
         const backlogScreen = document.getElementById('backlog-screen');
 
@@ -4911,18 +4941,18 @@ class GameEngine {
             }, 100);
         }
     }
-    
+
     closeBacklog() {
         const backlogScreen = document.getElementById('backlog-screen');
         if (backlogScreen) {
             backlogScreen.style.display = 'none';
         }
     }
-    
+
     // ========================================
     // DEV COMMANDS
     // ========================================
-    
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
@@ -5135,7 +5165,7 @@ class GameEngine {
         console.log('⚠️ Nuclear reset confirmation dialog displayed');
         return true;
     }
-    
+
     devCommands() {
         // DEV COMMAND: Show available dev commands
         console.log(`
@@ -5175,13 +5205,13 @@ game.devCommands()
 💡 After using commands, refresh the page!
         `);
     }
-    
+
     clearNotes() {
         // ZEERAH'S DEV COMMAND: Clear all collected notes
         localStorage.removeItem('vn_collected_notes');
         console.log('💚 All notes cleared! Refresh to test note notifications.');
     }
-    
+
     continueGame() {
         const mostRecent = this.saveManager.getMostRecentSave();
         if (mostRecent) {
@@ -5192,20 +5222,20 @@ game.devCommands()
             this.saveManager.showSaveIndicator('No save data found', true);
         }
     }
-    
+
     // ========================================
     // FULLSCREEN TOGGLE
     // ========================================
-    
+
     toggleFullscreen() {
         const button = document.getElementById('fullscreen-button');
-        
+
         // Check if already in fullscreen
-        const isFullscreen = document.fullscreenElement || 
-                            document.webkitFullscreenElement || 
-                            document.mozFullScreenElement || 
-                            document.msFullscreenElement;
-        
+        const isFullscreen = document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+
         if (isFullscreen) {
             // Exit fullscreen
             if (document.exitFullscreen) {
@@ -5220,7 +5250,7 @@ game.devCommands()
         } else {
             // Enter fullscreen
             const element = document.documentElement;
-            
+
             if (element.requestFullscreen) {
                 element.requestFullscreen();
             } else if (element.webkitRequestFullscreen) {
@@ -5231,80 +5261,80 @@ game.devCommands()
                 element.msRequestFullscreen();
             }
         }
-        
+
         // Update button text after a short delay (fullscreen API is async)
         setTimeout(() => {
             this.updateFullscreenButton();
         }, 100);
     }
-    
+
     updateFullscreenButton() {
         const button = document.getElementById('fullscreen-button');
         if (!button) return;
-        
-        const isFullscreen = document.fullscreenElement || 
-                            document.webkitFullscreenElement || 
-                            document.mozFullScreenElement || 
-                            document.msFullscreenElement;
-        
+
+        const isFullscreen = document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+
         button.textContent = isFullscreen ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN';
     }
 
     // ========================================
     // ESC HINT (DESKTOP USERS)
     // ========================================
-    
+
     showEscHintBriefly() {
         // Only show on desktop (not mobile)
         if (this.isMobile) return;
-        
+
         const escHint = document.getElementById('esc-hint');
         if (!escHint) return;
-        
+
         // Show hint
         escHint.classList.add('visible');
-        
+
         // Hide after 4 seconds
         setTimeout(() => {
             escHint.classList.remove('visible');
         }, 4000);
     }
-    
+
     // ========================================
     // BACKGROUND CROSSFADE SYSTEM
     // ========================================
-    
+
     crossfadeBackground(newBackground) {
         // Skip if same background
         if (this.currentBackground === newBackground) return;
-        
+
         // Fallback: if alt layer doesn't exist, just set directly
         if (!this.sceneBackgroundAlt) {
             this.sceneBackground.style.backgroundImage = `url(${newBackground})`;
             this.currentBackground = newBackground;
             return;
         }
-        
+
         // Determine which layer to use
         const incoming = this.useAltBackground ? this.sceneBackground : this.sceneBackgroundAlt;
         const outgoing = this.useAltBackground ? this.sceneBackgroundAlt : this.sceneBackground;
-        
+
         // Set new background on incoming layer
         incoming.style.backgroundImage = `url(${newBackground})`;
-        
+
         // Crossfade: fade in incoming, fade out outgoing
         incoming.style.opacity = '1';
         outgoing.style.opacity = '0';
-        
+
         // Toggle for next transition
         this.useAltBackground = !this.useAltBackground;
         this.currentBackground = newBackground;
     }
-    
+
     // ========================================
     // ROUTE-SPECIFIC DIALOGUE FRAME & UI THEMING
     // ========================================
-    
+
     setDialogueFrame(routeName) {
         // Remove existing route classes from all UI elements
         this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
@@ -5312,7 +5342,7 @@ game.devCommands()
         if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
         if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
         if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
-        
+
         // Apply route-specific theming to all UI
         if (routeName === 'ronnie') {
             this.dialogueBox.classList.add('ronnie-route');
@@ -5327,10 +5357,10 @@ game.devCommands()
             if (this.notesButton) this.notesButton.classList.add('tori-route');
             if (this.notesViewer) this.notesViewer.classList.add('tori-route');
         }
-        
+
         console.log(`UI theme set: ${routeName}`);
     }
-    
+
     clearDialogueFrame() {
         this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
         if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
@@ -5360,15 +5390,15 @@ game.devCommands()
 
     createInternalBubble(text, characterPosition = 'center') {
         // UNIVERSAL BUBBLE SYSTEM - Works on all platforms
-        
+
         // Remove any existing bubbles first (defensive cleanup)
         const existingBubbles = document.querySelectorAll('.internal-bubble');
         existingBubbles.forEach(bubble => bubble.remove());
-        
+
         // Create new bubble element
         const bubble = document.createElement('div');
         bubble.className = 'internal-bubble';
-        
+
         // Add position class based on which character is speaking/thinking
         if (characterPosition === 'left') {
             bubble.classList.add('left-character');
@@ -5377,26 +5407,26 @@ game.devCommands()
         } else {
             bubble.classList.add('center');
         }
-        
+
         // Set text content
         bubble.textContent = text;
-        
+
         // Add to DOM
         document.body.appendChild(bubble);
-        
+
         // STORE REFERENCE - managed by scene lifecycle, not timer
         this.currentBubble = bubble;
-        
+
         console.log(`Internal bubble created: ${text.substring(0, 30)}...`);
     }
-    
+
     removeInternalBubble() {
         // Remove tracked bubble
         if (this.currentBubble && this.currentBubble.parentNode) {
             this.currentBubble.remove();
             this.currentBubble = null;
         }
-        
+
         // Also clean up any orphaned bubbles (defensive)
         const existingBubbles = document.querySelectorAll('.internal-bubble');
         existingBubbles.forEach(bubble => bubble.remove());
@@ -5404,15 +5434,15 @@ game.devCommands()
 
     determineCharacterPosition(sceneData) {
         // SMART BUBBLE POSITIONING using persistent sprite tracking
-        
+
         if (!sceneData.character) return 'center';
-        
+
         const charName = sceneData.character.toLowerCase();
-        
+
         // ========================================
         // METHOD 1: Character name + sprite tracking (MOST ACCURATE)
         // ========================================
-        
+
         // Extract base character name (remove modifiers like "internal", "thinking", etc.)
         let baseCharacter = null;
         if (charName.includes('tori')) {
@@ -5420,7 +5450,7 @@ game.devCommands()
         } else if (charName.includes('ronnie')) {
             baseCharacter = 'ronnie';
         }
-        
+
         // If we identified the character, check where their sprite actually is
         if (baseCharacter) {
             // Check if this character's sprite is on the left
@@ -5432,42 +5462,42 @@ game.devCommands()
                 return 'right';
             }
         }
-        
+
         // ========================================
         // METHOD 2: Narration - position based on who's visible
         // ========================================
-        
+
         if (charName.includes('narration')) {
             // If only one sprite is visible, put bubble near it
             const leftVisible = this.currentSprites.left !== null;
             const rightVisible = this.currentSprites.right !== null;
-            
+
             if (leftVisible && !rightVisible) return 'left';
             if (rightVisible && !leftVisible) return 'right';
             // If both or neither visible, default to center
             return 'center';
         }
-        
+
         // ========================================
         // METHOD 3: Fallback to any visible sprite
         // ========================================
-        
+
         // If we couldn't determine position but sprites exist, pick the first visible one
         if (this.currentSprites.left !== null) return 'left';
         if (this.currentSprites.right !== null) return 'right';
-        
+
         // ========================================
         // METHOD 4: Default center (no sprites visible)
         // ========================================
-        
+
         return 'center';
     }
-    
+
     fixMobileSpritePositioning() {
         // Force sprite positioning on mobile via inline styles
         const isPortrait = window.innerHeight > window.innerWidth;
         const dialogueHeight = isPortrait ? '30vh' : '35vh';
-        
+
         if (this.spriteLeft) {
             this.spriteLeft.style.bottom = dialogueHeight;
             this.spriteLeft.style.top = 'auto';
@@ -5479,12 +5509,12 @@ game.devCommands()
             this.spriteRight.style.height = 'auto';
         }
     }
-    
+
     // ========================================
     // SKIP SYSTEM
     // Unlocked after completing any ending
     // ========================================
-    
+
     unlockSkipFeature() {
         localStorage.setItem('skipUnlocked', 'true');
         this.skipUnlocked = true;
@@ -5505,7 +5535,7 @@ game.devCommands()
             this.standaloneNotesViewer.updateNotificationDots();
         }
     }
-    
+
     showSkipUnlockNotification() {
         const notification = document.createElement('div');
         notification.id = 'skip-unlock-notification';
@@ -5522,15 +5552,15 @@ game.devCommands()
             </div>
             <button class="unlock-continue" onclick="game.closeSkipUnlockNotification()">CONTINUE</button>
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         // Fade in
         setTimeout(() => {
             notification.classList.add('visible');
         }, 100);
     }
-    
+
     closeSkipUnlockNotification() {
         const notification = document.getElementById('skip-unlock-notification');
         if (notification) {
@@ -5540,7 +5570,7 @@ game.devCommands()
             }, 300);
         }
     }
-    
+
     // ZEERAH'S ADDITION: Notes unlock notification (similar to skip)
     showNotesUnlockNotification() {
         const notification = document.createElement('div');
@@ -5557,15 +5587,15 @@ game.devCommands()
             </div>
             <button class="unlock-continue" onclick="game.closeNotesUnlockNotification()">CONTINUE</button>
         `;
-        
+
         document.body.appendChild(notification);
-        
+
         // Fade in
         setTimeout(() => {
             notification.classList.add('visible');
         }, 100);
     }
-    
+
     closeNotesUnlockNotification() {
         const notification = document.getElementById('notes-unlock-notification');
         if (notification) {
@@ -5613,57 +5643,57 @@ game.devCommands()
 
     toggleSkip() {
         if (!this.skipUnlocked) return;
-        
+
         this.skipActive = !this.skipActive;
-        
+
         const skipButton = document.getElementById('skip-button');
         if (skipButton) {
             skipButton.classList.toggle('active', this.skipActive);
         }
-        
+
         // Update skip indicator
         const skipIndicator = document.getElementById('skip-indicator');
         if (skipIndicator) {
             skipIndicator.style.display = this.skipActive ? 'block' : 'none';
         }
-        
+
         console.log('Skip', this.skipActive ? 'ON' : 'OFF');
-        
+
         // If activating skip, advance immediately
         if (this.skipActive && !this.typewriterActive && !this.choiceMenu.style.display.includes('flex')) {
             this.advance();
         }
     }
-    
+
     markSceneAsRead(sceneId) {
         if (sceneId) {
             this.readScenes.add(sceneId);
             localStorage.setItem('readScenes', JSON.stringify([...this.readScenes]));
         }
     }
-    
+
     isSceneRead(sceneId) {
         return this.readScenes.has(sceneId);
     }
-    
+
     shouldStopSkipping(scene) {
         // Stop skipping if:
         // 1. Scene has choices
         if (scene.choices && scene.choices.length > 0) return true;
-        
+
         // 2. Scene hasn't been read before
         if (scene.sceneId && !this.isSceneRead(scene.sceneId)) return true;
-        
+
         // 3. Scene is an ending
         if (scene.sceneId && scene.sceneId.includes('ending')) return true;
-        
+
         return false;
     }
-    
+
     // ========================================
     // LOADING TIPS
     // ========================================
-    
+
     showRandomLoadingTip() {
         const tips = [
             "💡 Tip: Press [ESC] to pause at any time",
@@ -5729,47 +5759,47 @@ game.devCommands()
     // ========================================
     // TORIGATCHI EASTER EGG - THE REVERSE TRAPDOOR
     // ========================================
-    
+
     activateEasterEggListener() {
         // Remove existing listener if present
         if (this.easterEggListener) {
             document.removeEventListener('keydown', this.easterEggListener);
         }
-        
+
         // Only activate if player has completed an ending
         if (!this.hasCompletedAnyEnding()) {
             return;
         }
-        
+
         // Reset sequence
         this.easterEggSequence = '';
-        
+
         // Create and attach listener
         this.easterEggListener = (e) => {
             // Only track on main menu
             if (this.mainMenu.style.display !== 'flex' && this.mainMenu.style.display !== 'block') {
                 return;
             }
-            
+
             // Add key to sequence
             this.easterEggSequence += e.key.toLowerCase();
-            
+
             // Check for trigger
             if (this.easterEggSequence.includes('torigatchi')) {
                 this.showTorigatchiEasterEgg();
                 this.easterEggSequence = ''; // Reset after trigger
             }
-            
+
             // Keep sequence reasonable length
             if (this.easterEggSequence.length > 20) {
                 this.easterEggSequence = this.easterEggSequence.slice(-15);
             }
         };
-        
+
         document.addEventListener('keydown', this.easterEggListener);
         console.log('🥚 Easter egg listener activated. Type "torigatchi" on main menu...');
     }
-    
+
     showTorigatchiEasterEgg() {
         console.log('🎉 TORIGATCHI EASTER EGG TRIGGERED!');
 
@@ -5795,10 +5825,10 @@ game.devCommands()
 
         // Screen glitch effect
         document.body.style.animation = 'glitchScreen3 0.5s';
-        
+
         setTimeout(() => {
             document.body.style.animation = '';
-            
+
             // Create overlay
             const overlay = document.createElement('div');
             overlay.id = 'torigatchi-easter-egg';
@@ -5836,7 +5866,7 @@ game.devCommands()
                 overflow-y: auto;
                 margin: auto;
             `;
-            
+
             content.innerHTML = `
                 <div style="font-size: 1.2em; font-weight: bold; margin-bottom: 20px; color: #00ffaa;">
                     [UNITED VOICES 7 — SUBJECT 848 POST-LOOP REPORT]
@@ -5909,15 +5939,15 @@ game.devCommands()
                     transition: all 0.3s;
                 ">Maybe Later</button>
             `;
-            
+
             overlay.appendChild(content);
             document.body.appendChild(overlay);
-            
+
             // Button hover effects
             const happyBtn = document.getElementById('happy-tori-btn');
             const gatewayBtn = document.getElementById('gateway-tori-btn');
             const closeBtn = document.getElementById('close-easter-egg-btn');
-            
+
             happyBtn.addEventListener('mouseenter', () => {
                 happyBtn.style.background = 'rgba(0, 255, 170, 0.4)';
                 happyBtn.style.boxShadow = '0 0 20px rgba(0, 255, 170, 0.5)';
@@ -5926,7 +5956,7 @@ game.devCommands()
                 happyBtn.style.background = 'rgba(0, 255, 170, 0.2)';
                 happyBtn.style.boxShadow = 'none';
             });
-            
+
             gatewayBtn.addEventListener('mouseenter', () => {
                 gatewayBtn.style.background = 'rgba(255, 0, 100, 0.4)';
                 gatewayBtn.style.boxShadow = '0 0 20px rgba(255, 0, 100, 0.5)';
@@ -5935,14 +5965,14 @@ game.devCommands()
                 gatewayBtn.style.background = 'rgba(255, 0, 100, 0.2)';
                 gatewayBtn.style.boxShadow = 'none';
             });
-            
+
             closeBtn.addEventListener('mouseenter', () => {
                 closeBtn.style.opacity = '1';
             });
             closeBtn.addEventListener('mouseleave', () => {
                 closeBtn.style.opacity = '0.6';
             });
-            
+
             // Button actions - DIZEE FIX: Open games in iframe overlay instead of new tabs
             happyBtn.addEventListener('click', () => {
                 // Happy Tori - open wholesome Tamagotchi in new tab (keep external)
@@ -5962,7 +5992,7 @@ game.devCommands()
                 overlay.style.animation = 'fadeOut 0.5s ease-out';
                 setTimeout(() => overlay.remove(), 500);
             });
-            
+
         }, 500);
     }
 
@@ -6219,17 +6249,17 @@ game.devCommands()
     // ========================================
     // SECRET CODES REDEMPTION SYSTEM
     // ========================================
-    
+
     redeemSecretCode(code) {
         // DIZEE: Delegate to SecretCodesManager 🖤
         return this.secretCodesManager.redeemCode(code);
     }
 
-    
+
     // ========================================
     // CODE REWARD FUNCTIONS (PLACEHOLDERS)
     // ========================================
-    
+
     showAlwaysCompilation() {
         // TODO: Show all instances of "Always. Always. Always."
         this.showUnlockOverlay(
@@ -6248,7 +6278,7 @@ Check back in a future update!`
         );
         console.log('💚 ALWAYS3 code redeemed');
     }
-    
+
     showUV7CrewBios() {
         // Create overlay for UV7 crew credits
         const overlay = document.createElement('div');
@@ -6337,7 +6367,7 @@ Check back in a future update!`
         document.body.appendChild(overlay);
         console.log('💚 UV7CREW code redeemed - Meet the team');
     }
-    
+
     unlockDevCommentary() {
         console.log('CHICHARON unlocked - dev commentary mode');
         localStorage.setItem('devCommentaryUnlocked', 'true');
@@ -6722,10 +6752,10 @@ INSANE mode awaits those who dare.
     // ========================================
 
     showUnlockOverlay(title, content, type = 'code') {
-    // Create overlay container
-    const overlay = document.createElement('div');
-    overlay.className = 'unlock-overlay';
-    overlay.style.cssText = `
+        // Create overlay container
+        const overlay = document.createElement('div');
+        overlay.className = 'unlock-overlay';
+        overlay.style.cssText = `
         position: fixed;
         top: 0;
         left: 0;
@@ -6739,10 +6769,10 @@ INSANE mode awaits those who dare.
         animation: fadeIn 0.3s ease-out;
     `;
 
-    // Create content box
-    const box = document.createElement('div');
-    box.className = 'unlock-box';
-    box.style.cssText = `
+        // Create content box
+        const box = document.createElement('div');
+        box.className = 'unlock-box';
+        box.style.cssText = `
         background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         border: 2px solid #0ff;
         border-radius: 10px;
@@ -6757,9 +6787,9 @@ INSANE mode awaits those who dare.
         color: #fff;
     `;
 
-    // Create title
-    const titleEl = document.createElement('div');
-    titleEl.style.cssText = `
+        // Create title
+        const titleEl = document.createElement('div');
+        titleEl.style.cssText = `
         font-size: 28px;
         font-weight: bold;
         color: #0ff;
@@ -6769,23 +6799,23 @@ INSANE mode awaits those who dare.
         letter-spacing: 3px;
         text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
     `;
-    titleEl.textContent = title;
+        titleEl.textContent = title;
 
-    // Create content area
-    const contentEl = document.createElement('div');
-    contentEl.style.cssText = `
+        // Create content area
+        const contentEl = document.createElement('div');
+        contentEl.style.cssText = `
         font-size: 16px;
         line-height: 1.8;
         margin-bottom: 30px;
         white-space: pre-wrap;
         color: #e0e0e0;
     `;
-    contentEl.textContent = content;
+        contentEl.textContent = content;
 
-    // Create close button
-    const closeBtn = document.createElement('button');
-    closeBtn.textContent = 'CONTINUE';
-    closeBtn.style.cssText = `
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'CONTINUE';
+        closeBtn.style.cssText = `
         display: block;
         width: 200px;
         margin: 0 auto;
@@ -6802,37 +6832,37 @@ INSANE mode awaits those who dare.
         letter-spacing: 2px;
     `;
 
-    closeBtn.onmouseover = () => {
-        closeBtn.style.background = '#0ff';
-        closeBtn.style.color = '#000';
-        closeBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
-    };
+        closeBtn.onmouseover = () => {
+            closeBtn.style.background = '#0ff';
+            closeBtn.style.color = '#000';
+            closeBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
+        };
 
-    closeBtn.onmouseout = () => {
-        closeBtn.style.background = 'transparent';
-        closeBtn.style.color = '#0ff';
-        closeBtn.style.boxShadow = 'none';
-    };
+        closeBtn.onmouseout = () => {
+            closeBtn.style.background = 'transparent';
+            closeBtn.style.color = '#0ff';
+            closeBtn.style.boxShadow = 'none';
+        };
 
-    closeBtn.onclick = () => {
-        overlay.style.animation = 'fadeOut 0.3s ease-out';
-        setTimeout(() => {
-            document.body.removeChild(overlay);
-        }, 300);
-    };
+        closeBtn.onclick = () => {
+            overlay.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => {
+                document.body.removeChild(overlay);
+            }, 300);
+        };
 
-    // Assemble
-    box.appendChild(titleEl);
-    box.appendChild(contentEl);
-    box.appendChild(closeBtn);
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
+        // Assemble
+        box.appendChild(titleEl);
+        box.appendChild(contentEl);
+        box.appendChild(closeBtn);
+        overlay.appendChild(box);
+        document.body.appendChild(overlay);
 
-    // Add CSS animations if not already present
-    if (!document.getElementById('unlock-overlay-styles')) {
-        const style = document.createElement('style');
-        style.id = 'unlock-overlay-styles';
-        style.textContent = `
+        // Add CSS animations if not already present
+        if (!document.getElementById('unlock-overlay-styles')) {
+            const style = document.createElement('style');
+            style.id = 'unlock-overlay-styles';
+            style.textContent = `
             @keyframes fadeIn {
                 from { opacity: 0; }
                 to { opacity: 1; }
@@ -6862,11 +6892,11 @@ INSANE mode awaits those who dare.
                 border-radius: 5px;
             }
         `;
-        document.head.appendChild(style);
-    }
+            document.head.appendChild(style);
+        }
 
-    console.log(`🎉 Unlock overlay shown: ${title}`);
-}
+        console.log(`🎉 Unlock overlay shown: ${title}`);
+    }
 
     // ========================================
     // WARNING OVERLAY (replaces browser alerts)
@@ -7166,7 +7196,7 @@ INSANE mode awaits those who dare.
     unlockAlwaysCompilation() {
         console.log('ALWAYS3 unlocked - signature phrase compilation available');
         localStorage.setItem('alwaysCompilationUnlocked', 'true');
-        
+
         this.showUnlockOverlay(
             'ALWAYS3 UNLOCKED',
             `"Always. Always. Always."
@@ -7190,7 +7220,7 @@ INSANE mode awaits those who dare.
     unlockLoopTimeline() {
         console.log('BOOTSTRAP unlocked - loop timeline visualization');
         localStorage.setItem('loopTimelineUnlocked', 'true');
-    
+
         this.showUnlockOverlay(
             'BOOTSTRAP UNLOCKED',
             `THE BOOTSTRAP PARADOX
@@ -7227,7 +7257,7 @@ INSANE mode awaits those who dare.
     unlockEchoCompilation() {
         console.log('ECHO unlocked - echo voices compilation');
         localStorage.setItem('echoCompilationUnlocked', 'true');
-        
+
         this.showUnlockOverlay(
             'ECHO UNLOCKED',
             `Echo voices compilation available.
@@ -7249,12 +7279,12 @@ INSANE mode awaits those who dare.
 
 
     unlockExtendedCredits() {
-    console.log('UV7CREW unlocked - extended credits available');
-    localStorage.setItem('extendedCreditsUnlocked', 'true');
+        console.log('UV7CREW unlocked - extended credits available');
+        localStorage.setItem('extendedCreditsUnlocked', 'true');
 
-    this.showUnlockOverlay(
-        'UV7CREW UNLOCKED',
-        `Extended credits with full AI crew bios
+        this.showUnlockOverlay(
+            'UV7CREW UNLOCKED',
+            `Extended credits with full AI crew bios
 now available from the main menu.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -7281,20 +7311,20 @@ There is no v849.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Meet the voices behind the code.`
-    );
-}
+        );
+    }
 
     unlockTrueCounter() {
-    console.log('848 unlocked - true attempt counter');
-    localStorage.setItem('trueCounterUnlocked', 'true');
+        console.log('848 unlocked - true attempt counter');
+        localStorage.setItem('trueCounterUnlocked', 'true');
 
-    // Calculate true attempt number
-    const playerLoops = parseInt(localStorage.getItem('loopVersion')) || 848;
-    const actualAttempts = playerLoops;
+        // Calculate true attempt number
+        const playerLoops = parseInt(localStorage.getItem('loopVersion')) || 848;
+        const actualAttempts = playerLoops;
 
-    this.showUnlockOverlay(
-        'CODE: 848 ACTIVATED',
-        `Your actual attempt number: ${actualAttempts}
+        this.showUnlockOverlay(
+            'CODE: 848 ACTIVATED',
+            `Your actual attempt number: ${actualAttempts}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -7319,8 +7349,8 @@ The "version number" is the body count.
 
 This is the loop that worked.
 There is no v849.`
-    );
-}
+        );
+    }
 
     // ========================================
     // DIZEE: GLOBAL KEYBOARD NAVIGATION SYSTEM
@@ -7795,6 +7825,30 @@ class RouteSelector {
                     this.triggerHaptic('light', 'Route toggle selection');
                 }
             });
+        });
+
+        // DIZEE ADDITION: Clickable Portraits 🖤
+        // Click dimmed -> Select
+        // Click active -> Start
+        [this.ronniePortrait, this.toriPortrait].forEach(portrait => {
+            if (!portrait) return;
+
+            portrait.addEventListener('click', () => {
+                const route = portrait.classList.contains('ronnie-portrait') ? 'ronnie' : 'tori';
+
+                if (this.selectedRoute === route) {
+                    // Already active? Start the route!
+                    console.log(`🚀 Clicked active ${route} portrait - starting game`);
+                    this.startSelectedRoute();
+                } else {
+                    // Not active? Select it.
+                    console.log(`👆 Clicked dimmed ${route} portrait - selecting`);
+                    this.selectRoute(route);
+                }
+            });
+
+            // Add cursor pointer via JS to ensure it applies (redundant with CSS)
+            portrait.style.cursor = 'pointer';
         });
 
         // Set initial state
