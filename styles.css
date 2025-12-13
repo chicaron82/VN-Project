@@ -9247,14 +9247,33 @@ button.keyboard-focus:focus,
 }
 
 /* Force Dialogue Sticky Bottom */
+/* Force Dialogue Sticky Bottom (Base Logic) */
 #dialogue-box {
     position: absolute !important;
     top: auto !important;
     bottom: 0 !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    /* Ensure it doesn't get pushed up by flex alignment */
     margin-top: auto !important;
+}
+
+/* Landscape: Center the box (usually constrained width) */
+@media (orientation: landscape) {
+    #dialogue-box {
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+}
+
+/* Portrait: Full width at bottom */
+@media (orientation: portrait) {
+    #dialogue-box {
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        /* Optional: square off corners if full width */
+        bottom: 0 !important;
+    }
 }
 
 /* Specific fix for the user's "Jump to Top" issue */
