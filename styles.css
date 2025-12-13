@@ -12,8 +12,10 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;  /* DIZEE FIX: Use 100% instead of 100vw to avoid scrollbar width issues */
-    height: 100%;  /* DIZEE FIX: Use 100% instead of 100vh for consistency */
+    width: 100%;
+    /* DIZEE FIX: Use 100% instead of 100vw to avoid scrollbar width issues */
+    height: 100%;
+    /* DIZEE FIX: Use 100% instead of 100vh for consistency */
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
     display: flex;
     align-items: center;
@@ -68,7 +70,8 @@
 
 .uv7-skip-btn {
     position: absolute;
-    top: 40px;  /* ZEERAH'S FIX: Moved to top to avoid loading tip overlap */
+    top: 40px;
+    /* ZEERAH'S FIX: Moved to top to avoid loading tip overlap */
     right: 40px;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(220, 210, 180, 0.5);
@@ -106,39 +109,56 @@
 
 /* DIZEE FIX: Prevent focus state from changing skip button position */
 .uv7-skip-btn:focus {
-    position: absolute !important;  /* Keep absolute positioning on focus - prevent jumping */
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent jumping */
     outline: 2px solid #00ff41;
     outline-offset: 2px;
     box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
 }
 
 @keyframes splashFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes splashFadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
 
 @keyframes splashScaleIn {
-    from { transform: scale(0.9); }
-    to { transform: scale(1); }
+    from {
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
 
 @media (max-width: 768px) {
     .powered-by-text {
         font-size: 1.2rem;
     }
-    
+
     .uv7-logo-static,
     .uv7-logo-video {
         width: 280px;
     }
 
     .uv7-skip-btn {
-        top: 20px;  /* ZEERAH'S FIX: Top instead of bottom */
+        top: 20px;
+        /* ZEERAH'S FIX: Top instead of bottom */
         right: 20px;
         padding: 10px 20px;
         font-size: 0.9rem;
@@ -151,28 +171,29 @@
         font-size: 1rem;
         margin-bottom: 15px;
     }
-    
+
     .uv7-logo-static,
     .uv7-logo-video {
         width: 200px;
         margin-bottom: 20px;
     }
-    
+
     #loading-bar-container {
         width: 300px;
         margin: 15px auto 10px;
         height: 6px;
     }
-    
+
     #loading-tip {
         font-size: 0.8rem;
         max-width: 400px;
         padding: 0 15px;
         line-height: 1.3;
     }
-    
+
     .uv7-skip-btn {
-        top: 15px;  /* ZEERAH'S FIX: Top instead of bottom */
+        top: 15px;
+        /* ZEERAH'S FIX: Top instead of bottom */
         right: 15px;
         padding: 8px 16px;
         font-size: 0.85rem;
@@ -184,8 +205,10 @@
     width: 400px;
     max-width: 80vw;
     height: 8px;
-    background: rgba(220, 210, 180, 0.1);  /* ZEERAH'S FIX: Cream background */
-    border: 1px solid rgba(220, 210, 180, 0.3);  /* Cream border */
+    background: rgba(220, 210, 180, 0.1);
+    /* ZEERAH'S FIX: Cream background */
+    border: 1px solid rgba(220, 210, 180, 0.3);
+    /* Cream border */
     border-radius: 4px;
     margin: 30px auto 20px;
     overflow: hidden;
@@ -194,9 +217,11 @@
 #loading-bar {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);  /* ZEERAH'S FIX: Cream/gold gradient */
+    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);
+    /* ZEERAH'S FIX: Cream/gold gradient */
     transition: width 0.3s ease;
-    box-shadow: 0 0 10px rgba(220, 210, 180, 0.5);  /* Cream glow */
+    box-shadow: 0 0 10px rgba(220, 210, 180, 0.5);
+    /* Cream glow */
 }
 
 #loading-tip {
@@ -226,7 +251,8 @@
 }
 
 #loading-screen h2 {
-    color: #dcd2b4;  /* Cream instead of cyan */
+    color: #dcd2b4;
+    /* Cream instead of cyan */
     margin-bottom: 20px;
     font-size: 2em;
 }
@@ -234,19 +260,23 @@
 #loading-bar-container {
     width: 300px;
     height: 30px;
-    border: 2px solid #dcd2b4;  /* Cream border */
-    background: rgba(220, 210, 180, 0.1);  /* Cream background */
+    border: 2px solid #dcd2b4;
+    /* Cream border */
+    background: rgba(220, 210, 180, 0.1);
+    /* Cream background */
 }
 
 #loading-bar {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);  /* Cream/gold gradient */
+    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);
+    /* Cream/gold gradient */
     transition: width 0.3s;
 }
 
 #loading-tip {
-    color: #dcd2b4;  /* Cream text */
+    color: #dcd2b4;
+    /* Cream text */
     font-size: 0.9rem;
     margin-top: 30px;
     opacity: 0.8;
@@ -456,11 +486,11 @@
     #main-menu-bg {
         content: url('assets/menumobile.png');
     }
-    
+
     #main-menu h1 {
         font-size: 2em;
     }
-    
+
     .menu-button {
         min-width: 250px;
         font-size: 1em;
@@ -729,12 +759,13 @@
     #route-select-bg {
         background-position: top center;
     }
-    
+
     #route-select-content {
         padding: 15px;
         justify-content: flex-start;
         padding-top: 40px;
-        padding-bottom: 80px;
+        padding-bottom: 250px;
+        /* DIZEE FIX: Increased to 250px - nuclear option for overlap */
     }
 
     #route-select-title h2 {
@@ -774,8 +805,14 @@
     }
 
     #back-to-menu {
-        position: fixed;
-        bottom: 15px;
+        position: relative;
+        /* DIZEE FIX: Moved into flow to prevent play button overlap */
+        bottom: auto;
+        left: auto;
+        transform: none;
+        display: block;
+        margin: 30px auto 10px auto;
+        /* Center horizontally + vertical spacing */
         font-size: 0.85em;
         padding: 10px 20px;
     }
@@ -838,12 +875,12 @@
 #pause-button.ronnie-route {
     background: url('assets/pause-button-ronnie.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                0 0 30px rgba(0, 200, 100, 0.1);
+        0 0 30px rgba(0, 200, 100, 0.1);
 }
 
 #pause-button.ronnie-route:hover {
     box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
-                0 0 40px rgba(0, 200, 100, 0.2);
+        0 0 40px rgba(0, 200, 100, 0.2);
     filter: brightness(1.1);
 }
 
@@ -851,7 +888,7 @@
     background: linear-gradient(135deg, rgba(8, 14, 20, 0.98), rgba(10, 16, 24, 0.98));
     border: 2px solid #0ff;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
-                0 0 80px rgba(0, 200, 100, 0.1);
+        0 0 80px rgba(0, 200, 100, 0.1);
 }
 
 #pause-content.ronnie-route h2 {
@@ -863,27 +900,32 @@
 #pause-button.tori-route {
     background: url('assets/pause-button-tori.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                0 0 25px rgba(255, 50, 100, 0.1);
+        0 0 25px rgba(255, 50, 100, 0.1);
     animation: pauseButtonGlitch 8s ease-in-out infinite;
 }
 
 #pause-button.tori-route:hover {
     box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
-                0 0 35px rgba(255, 50, 100, 0.2);
+        0 0 35px rgba(255, 50, 100, 0.2);
     filter: brightness(1.1);
 }
 
 @keyframes pauseButtonGlitch {
-    0%, 100% { 
+
+    0%,
+    100% {
         filter: none;
     }
-    48% { 
+
+    48% {
         filter: none;
     }
-    50% { 
+
+    50% {
         filter: brightness(1.1) hue-rotate(5deg);
     }
-    52% { 
+
+    52% {
         filter: none;
     }
 }
@@ -892,16 +934,19 @@
     background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
     border: 2px solid #0ff;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
-                0 0 60px rgba(255, 50, 100, 0.08);
+        0 0 60px rgba(255, 50, 100, 0.08);
     animation: pauseMenuFlicker 8s ease-in-out infinite;
 }
 
 @keyframes pauseMenuFlicker {
-    0%, 100% { 
+
+    0%,
+    100% {
         opacity: 1;
         filter: none;
     }
-    50% { 
+
+    50% {
         opacity: 0.98;
         filter: brightness(1.05);
     }
@@ -910,7 +955,7 @@
 #pause-content.tori-route h2 {
     color: #0ff;
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
-                 0 0 20px rgba(255, 50, 100, 0.2);
+        0 0 20px rgba(255, 50, 100, 0.2);
 }
 
 #pause-button:hover {
@@ -1281,6 +1326,7 @@
         opacity: 0;
         transform: scale(0.9) translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -1639,7 +1685,8 @@
 /* DIZEE: Landscape mode - flip layout (text left, image right) 🖤 */
 @media (orientation: landscape) and (min-width: 768px) {
     .portrait-display {
-        flex-direction: row-reverse !important; /* Image on right, content on left */
+        flex-direction: row-reverse !important;
+        /* Image on right, content on left */
     }
 }
 
@@ -1684,7 +1731,8 @@
 
 /* Universal Close X Button */
 .close-x {
-    position: absolute;  /* DIZEE FIX: Changed from fixed to absolute - anchors to parent modal, not viewport */
+    position: absolute;
+    /* DIZEE FIX: Changed from fixed to absolute - anchors to parent modal, not viewport */
     top: 20px;
     right: 20px;
     width: 40px;
@@ -1696,7 +1744,8 @@
     font-size: 1.8rem;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10010;  /* DIZEE FIX: Higher than all overlays (10003 was highest) */
+    z-index: 10010;
+    /* DIZEE FIX: Higher than all overlays (10003 was highest) */
     /* DIZEE FIX: Only transition background and box-shadow, NOT transform */
     transition: background 0.2s ease, box-shadow 0.2s ease;
     display: flex;
@@ -1719,7 +1768,8 @@
 
 /* ZEERAH FIX: Prevent focus state from changing close button position */
 .close-x:focus {
-    position: absolute !important;  /* Keep absolute positioning on focus - prevent global button:focus override */
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent global button:focus override */
     outline: 2px solid #00ff41;
     outline-offset: 2px;
     box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
@@ -1877,7 +1927,7 @@
         flex-direction: column;
         gap: 40px;
     }
-    
+
     .portrait-display-image {
         width: 350px;
     }
@@ -1887,7 +1937,7 @@
     .credit-screen {
         padding: 40px 60px 120px 60px;
     }
-    
+
     .credits-big-text {
         font-size: 1.5rem;
         line-height: 1.6;
@@ -1898,27 +1948,27 @@
     .credits-big-title {
         font-size: 2.5rem;
     }
-    
+
     .credits-big-text {
         font-size: 1.3rem;
     }
-    
+
     .portrait-display-name {
         font-size: 2.5rem;
     }
-    
+
     .portrait-display-title {
         font-size: 1.5rem;
     }
-    
+
     .portrait-display-story {
         font-size: 1.2rem;
     }
-    
+
     .portrait-display-image {
         width: 280px;
     }
-    
+
     .credits-final-message {
         font-size: 3rem;
     }
@@ -1929,10 +1979,13 @@
    ======================================== */
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         text-shadow: 0 0 20px #0ff, 0 0 40px #000, 0 0 10px #000;
     }
+
     50% {
         opacity: 0.8;
         text-shadow: 0 0 30px #0ff, 0 0 50px #000, 0 0 15px #000;
@@ -1944,6 +1997,7 @@
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1951,15 +2005,37 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Tori's Fourth Wall Break - Screen shake when difficulty is tightened */
 @keyframes screenShake {
-    0%, 100% { transform: translate(0, 0); }
-    10%, 30%, 50%, 70%, 90% { transform: translate(-3px, 3px); }
-    20%, 40%, 60%, 80% { transform: translate(3px, -3px); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate(-3px, 3px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate(3px, -3px);
+    }
 }
 
 /* ========================================
@@ -2032,13 +2108,13 @@
 
 #tether-fill {
     height: 100%;
-    background: linear-gradient(90deg, 
-        rgba(0, 255, 255, 0.9) 0%, 
-        rgba(0, 255, 136, 0.9) 50%,
-        rgba(0, 255, 200, 0.95) 100%);
+    background: linear-gradient(90deg,
+            rgba(0, 255, 255, 0.9) 0%,
+            rgba(0, 255, 136, 0.9) 50%,
+            rgba(0, 255, 200, 0.95) 100%);
     width: 100%;
     transition: width 0.5s ease-out, background 0.3s;
-    box-shadow: 
+    box-shadow:
         0 0 15px rgba(0, 255, 255, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     position: relative;
@@ -2053,32 +2129,33 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.1) 2px,
-        rgba(0, 0, 0, 0.1) 4px
-    );
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.1) 2px,
+            rgba(0, 0, 0, 0.1) 4px);
     pointer-events: none;
 }
 
 #tether-fill.critical {
-    background: linear-gradient(90deg, 
-        rgba(255, 50, 50, 0.9) 0%, 
-        rgba(255, 100, 50, 0.9) 50%,
-        rgba(255, 80, 80, 0.95) 100%);
-    box-shadow: 
+    background: linear-gradient(90deg,
+            rgba(255, 50, 50, 0.9) 0%,
+            rgba(255, 100, 50, 0.9) 50%,
+            rgba(255, 80, 80, 0.95) 100%);
+    box-shadow:
         0 0 25px rgba(255, 0, 0, 0.6),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
     animation: tetherCriticalPulse 0.8s ease-in-out infinite;
 }
 
 @keyframes tetherCriticalPulse {
-    0%, 100% { 
+
+    0%,
+    100% {
         box-shadow: 0 0 25px rgba(255, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
-    50% { 
+
+    50% {
         box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 }
@@ -2097,8 +2174,15 @@
 }
 
 @keyframes tetherPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* ========================================
@@ -2163,10 +2247,13 @@
 }
 
 @keyframes tutorialFlash {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
         transform: scale(1);
     }
+
     50% {
         box-shadow: 0 0 60px rgba(0, 255, 255, 0.8);
         transform: scale(1.05);
@@ -2174,10 +2261,13 @@
 }
 
 @keyframes holdOnCriticalPulse {
-    0%, 100% { 
+
+    0%,
+    100% {
         box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
     }
-    50% { 
+
+    50% {
         box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
     }
 }
@@ -2211,10 +2301,13 @@
 }
 
 @keyframes notesIdlePulse {
-    0%, 100% { 
+
+    0%,
+    100% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
     }
-    50% { 
+
+    50% {
         box-shadow: 0 0 25px rgba(0, 255, 255, 0.35);
     }
 }
@@ -2241,36 +2334,41 @@
 /* Tori Route - Fractured Glass notes UI */
 #notes-button.tori-route {
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                0 0 25px rgba(255, 50, 100, 0.1);
+        0 0 25px rgba(255, 50, 100, 0.1);
     animation: toriNotesGlitch 6s ease-in-out infinite;
 }
 
 @keyframes toriNotesGlitch {
-    0%, 100% { 
+
+    0%,
+    100% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                    0 0 25px rgba(255, 50, 100, 0.1);
+            0 0 25px rgba(255, 50, 100, 0.1);
         filter: none;
     }
+
     48% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                    0 0 25px rgba(255, 50, 100, 0.1);
+            0 0 25px rgba(255, 50, 100, 0.1);
         filter: none;
     }
-    50% { 
+
+    50% {
         box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
-                    0 0 35px rgba(255, 50, 100, 0.2);
+            0 0 35px rgba(255, 50, 100, 0.2);
         filter: brightness(1.1) hue-rotate(5deg);
     }
+
     52% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
-                    0 0 25px rgba(255, 50, 100, 0.1);
+            0 0 25px rgba(255, 50, 100, 0.1);
         filter: none;
     }
 }
 
 #notes-button.tori-route:hover {
     box-shadow: 0 0 30px rgba(0, 255, 255, 0.5),
-                0 0 40px rgba(255, 50, 100, 0.2);
+        0 0 40px rgba(255, 50, 100, 0.2);
     animation: none;
 }
 
@@ -2278,23 +2376,28 @@
     background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
     border: 3px solid #0ff;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.3),
-                0 0 60px rgba(255, 50, 100, 0.1);
+        0 0 60px rgba(255, 50, 100, 0.1);
     animation: notesViewerFlicker 8s ease-in-out infinite;
 }
 
 @keyframes notesViewerFlicker {
-    0%, 100% { 
+
+    0%,
+    100% {
         opacity: 1;
         filter: none;
     }
+
     48% {
         opacity: 1;
         filter: none;
     }
-    50% { 
+
+    50% {
         opacity: 0.98;
         filter: brightness(1.05) hue-rotate(3deg);
     }
+
     52% {
         opacity: 1;
         filter: none;
@@ -2303,7 +2406,7 @@
 
 #notes-viewer.tori-route h2 {
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
-                 0 0 20px rgba(255, 50, 100, 0.2);
+        0 0 20px rgba(255, 50, 100, 0.2);
 }
 
 #notes-viewer {
@@ -2320,7 +2423,8 @@
     border: 3px solid #0ff;
     padding: 20px;
     display: none;
-    z-index: 1000; /* ZEERAH'S FIX: Increased from 200 to be above internal-thought */
+    z-index: 1000;
+    /* ZEERAH'S FIX: Increased from 200 to be above internal-thought */
     overflow-y: auto;
 }
 
@@ -2395,7 +2499,8 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 10002; /* DIZEE FIX: Higher than standalone notes viewer (10001) to appear on top */
+    z-index: 10002;
+    /* DIZEE FIX: Higher than standalone notes viewer (10001) to appear on top */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2592,7 +2697,8 @@
     transform: translateX(-50%);
     width: 90%;
     max-width: 900px;
-    min-height: 180px; /* ZEERAH: Fixed height to prevent jumping */
+    min-height: 180px;
+    /* ZEERAH: Fixed height to prevent jumping */
     background: rgba(0, 0, 0, 0.95);
     border: 2px solid #0ff;
     border-bottom: none;
@@ -2608,49 +2714,57 @@
 
 #dialogue-box.ronnie-route {
     background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
-                rgba(8, 14, 20, 0.95);
+        rgba(8, 14, 20, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
-                0 0 80px rgba(0, 200, 100, 0.1);
+        0 0 80px rgba(0, 200, 100, 0.1);
 }
 
 #dialogue-box.tori-route {
     background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
-                rgba(12, 15, 30, 0.95);
+        rgba(12, 15, 30, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
-                0 0 60px rgba(255, 50, 100, 0.08);
+        0 0 60px rgba(255, 50, 100, 0.08);
     /* Subtle animation for instability feel */
     animation: toriFrameFlicker 8s ease-in-out infinite;
 }
 
 @keyframes toriFrameFlicker {
-    0%, 100% { 
-        opacity: 1; 
+
+    0%,
+    100% {
+        opacity: 1;
         filter: none;
     }
-    48% { 
-        opacity: 1; 
+
+    48% {
+        opacity: 1;
         filter: none;
     }
-    50% { 
-        opacity: 0.97; 
+
+    50% {
+        opacity: 0.97;
         filter: brightness(1.1) hue-rotate(5deg);
     }
-    52% { 
-        opacity: 1; 
+
+    52% {
+        opacity: 1;
         filter: none;
     }
+
     78% {
         opacity: 1;
         filter: none;
     }
+
     80% {
         opacity: 0.98;
         filter: brightness(0.95);
     }
+
     82% {
         opacity: 1;
         filter: none;
@@ -2660,44 +2774,50 @@
 /* Prologue - "Pre-connection" mysterious shimmer */
 #dialogue-box.prologue-style {
     background: url('assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
-                rgba(25, 15, 40, 0.95);
+        rgba(25, 15, 40, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
     box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
-                0 0 60px rgba(75, 0, 130, 0.2);
+        0 0 60px rgba(75, 0, 130, 0.2);
     animation: prologueShimmer 4s ease-in-out infinite;
 }
 
 @keyframes prologueShimmer {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
-                    0 0 60px rgba(75, 0, 130, 0.2);
+            0 0 60px rgba(75, 0, 130, 0.2);
     }
+
     50% {
         box-shadow: 0 0 50px rgba(138, 43, 226, 0.4),
-                    0 0 70px rgba(75, 0, 130, 0.3);
+            0 0 70px rgba(75, 0, 130, 0.3);
     }
 }
 
 /* Epilogue - "Resolution" warm golden glow */
 #dialogue-box.epilogue-style {
     background: url('assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
-                rgba(40, 30, 15, 0.95);
+        rgba(40, 30, 15, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
-                0 0 60px rgba(255, 165, 0, 0.15);
+        0 0 60px rgba(255, 165, 0, 0.15);
     animation: epiloguePulse 6s ease-in-out infinite;
 }
 
 @keyframes epiloguePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
-                    0 0 60px rgba(255, 165, 0, 0.15);
+            0 0 60px rgba(255, 165, 0, 0.15);
     }
+
     50% {
         box-shadow: 0 0 50px rgba(255, 215, 0, 0.35),
-                    0 0 70px rgba(255, 165, 0, 0.2);
+            0 0 70px rgba(255, 165, 0, 0.2);
     }
 }
 
@@ -2772,7 +2892,8 @@
     border: 3px solid #0ff;
     padding: 20px;
     display: none;
-    z-index: 150; /* DIZEE: Higher than skip button (100) to prevent overlap */
+    z-index: 150;
+    /* DIZEE: Higher than skip button (100) to prevent overlap */
 }
 
 .choice-option {
@@ -2841,6 +2962,7 @@
         transform: translate(-50%, -100%);
         opacity: 0;
     }
+
     to {
         transform: translate(-50%, 0);
         opacity: 1;
@@ -3072,10 +3194,21 @@
     font-family: 'Courier New', monospace;
 }
 
-.echo-voice.echo1 .echo-speaker { color: #00ff88; }
-.echo-voice.echo2 .echo-speaker { color: #ff0066; }
-.echo-voice.echo3 .echo-speaker { color: #0ff; }
-.echo-voice.despair .echo-speaker { color: #ff00ff; }
+.echo-voice.echo1 .echo-speaker {
+    color: #00ff88;
+}
+
+.echo-voice.echo2 .echo-speaker {
+    color: #ff0066;
+}
+
+.echo-voice.echo3 .echo-speaker {
+    color: #0ff;
+}
+
+.echo-voice.despair .echo-speaker {
+    color: #ff00ff;
+}
 
 .echo-text {
     color: rgba(255, 255, 255, 0.9);
@@ -3096,6 +3229,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -3108,7 +3242,8 @@
 
 .character-sprite {
     position: absolute;
-    bottom: 0; /* Desktop default - sits at bottom */
+    bottom: 0;
+    /* Desktop default - sits at bottom */
     width: 350px;
     height: 600px;
     background-size: contain;
@@ -3130,7 +3265,8 @@
 }
 
 .character-sprite.sprite-dim {
-    opacity: 0.35 !important; /* Override animation opacity */
+    opacity: 0.35 !important;
+    /* Override animation opacity */
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
 }
 
@@ -3140,6 +3276,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -3161,6 +3298,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 0.35;
         transform: translateY(0);
@@ -3172,6 +3310,7 @@
         opacity: 1;
         transform: translateY(0);
     }
+
     to {
         opacity: 0;
         transform: translateY(20px);
@@ -3192,7 +3331,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 5px; /* Tighter spacing - they're together in this */
+    gap: 5px;
+    /* Tighter spacing - they're together in this */
     width: 500px !important;
     height: 600px !important;
 }
@@ -3205,9 +3345,11 @@
     background-position: bottom center;
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.8s ease; /* Smooth growth */
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.8s ease;
+    /* Smooth growth */
     opacity: 1;
-    transform-origin: bottom center; /* Grow from feet up */
+    transform-origin: bottom center;
+    /* Grow from feet up */
 }
 
 /* Dim echo when not speaking */
@@ -3234,22 +3376,22 @@
         width: 230px;
         height: 380px;
     }
-    
+
     #character-left {
         left: 2%;
     }
-    
+
     #character-right {
         right: 2%;
     }
-    
+
     /* Echo group sizing for tablet */
     #character-right.echo-group {
         width: 400px !important;
         height: 400px !important;
         gap: 8px;
     }
-    
+
     .echo-sprite {
         width: 120px;
         height: 400px;
@@ -3261,9 +3403,11 @@
    ======================================== */
 
 @media (max-width: 1023px) and (orientation: portrait) {
+
     /* Echo group - stacked vertically and centered */
     #character-right.echo-group {
-        flex-direction: row; /* Keep horizontal but tighter */
+        flex-direction: row;
+        /* Keep horizontal but tighter */
         width: 90% !important;
         max-width: 350px !important;
         height: 350px !important;
@@ -3273,7 +3417,7 @@
         bottom: 28vh !important;
         gap: 5px;
     }
-    
+
     .echo-sprite {
         width: 110px;
         height: 350px;
@@ -3291,7 +3435,7 @@
         gap: 5px;
         bottom: 35vh !important;
     }
-    
+
     .echo-sprite {
         width: 110px;
         height: 300px;
@@ -3309,11 +3453,12 @@
         display: flex;
         flex-direction: column;
         height: 100vh;
-        height: 100dvh; /* Dynamic viewport height for mobile browsers */
+        height: 100dvh;
+        /* Dynamic viewport height for mobile browsers */
         justify-content: flex-end;
         overflow: hidden;
     }
-    
+
     #scene-background,
     #scene-background-alt {
         position: absolute;
@@ -3323,19 +3468,24 @@
         height: 100%;
         pointer-events: none;
     }
-    
+
     /* SPRITES - Sit exactly on top of dialogue box (30vh from floor) */
     .character-sprite {
         position: absolute !important;
-        bottom: 30vh !important; /* Sits on dialogue top edge */
-        top: auto !important; /* Don't anchor to top */
-        width: 180px !important; /* Explicit width so it doesn't collapse */
+        bottom: 30vh !important;
+        /* Sits on dialogue top edge */
+        top: auto !important;
+        /* Don't anchor to top */
+        width: 180px !important;
+        /* Explicit width so it doesn't collapse */
         height: auto !important;
-        min-height: 300px !important; /* Ensure they have actual height */
-        max-height: 70vh !important; /* Can't exceed space above dialogue */
+        min-height: 300px !important;
+        /* Ensure they have actual height */
+        max-height: 70vh !important;
+        /* Can't exceed space above dialogue */
         z-index: 40 !important;
     }
-    
+
     #character-left {
         left: 5% !important;
         right: auto !important;
@@ -3344,7 +3494,7 @@
         top: auto !important;
         width: 180px !important;
     }
-    
+
     #character-right {
         right: 5% !important;
         left: auto !important;
@@ -3355,7 +3505,7 @@
         height: auto !important;
         max-height: 70vh !important;
     }
-    
+
     /* DIALOGUE BOX - FIXED HEIGHT, overlays bottom 30vh */
     #dialogue-box {
         position: fixed !important;
@@ -3364,9 +3514,11 @@
         right: 5% !important;
         width: auto !important;
         max-width: none !important;
-        height: 30vh !important; /* LOCKED HEIGHT */
+        height: 30vh !important;
+        /* LOCKED HEIGHT */
         max-height: 30vh !important;
-        min-height: 30vh !important; /* Force it to stay 30vh always */
+        min-height: 30vh !important;
+        /* Force it to stay 30vh always */
         transform: none !important;
         margin: 0 !important;
         overflow-y: auto;
@@ -3384,56 +3536,57 @@
         touch-action: manipulation;
         z-index: 50 !important;
     }
-    
+
     /* Keep custom dialogue frames on mobile - just constrain positioning */
     #dialogue-box.ronnie-route {
         background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
-                    rgba(8, 14, 20, 0.95) !important;
+            rgba(8, 14, 20, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
         padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
         box-shadow: 0 0 30px rgba(0, 255, 255, 0.15) !important;
     }
-    
+
     #dialogue-box.tori-route {
         background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
-                    rgba(12, 15, 30, 0.95) !important;
+            rgba(12, 15, 30, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
         padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
         box-shadow: 0 0 30px rgba(0, 255, 255, 0.2) !important;
         animation: toriFrameFlicker 8s ease-in-out infinite !important;
     }
-    
+
     #pause-button {
         top: 8px;
         padding: 6px 12px;
         font-size: 0.8em;
         z-index: 100;
     }
-    
+
     /* Tether UI - below top row to not cover pause */
     #tether-ui {
         width: 55%;
         max-width: 200px;
-        top: 50px; /* Below pause/notes row */
+        top: 50px;
+        /* Below pause/notes row */
         left: 8px;
         right: auto;
     }
-    
+
     #tether-meter {
         height: 30px;
         padding: 4px 6px;
         font-size: 0.8em;
     }
-    
+
     #hold-on-button {
         height: 30px;
         padding: 6px 10px;
         font-size: 0.7em;
         margin-top: 4px;
     }
-    
+
     #notes-button {
         top: 8px;
         right: 8px;
@@ -3442,19 +3595,19 @@
         min-width: auto;
         height: 30px;
     }
-    
+
     #character-name {
         font-size: 1rem;
         margin-bottom: 6px;
         font-weight: 600;
     }
-    
+
     #dialogue-text {
         font-size: 0.9rem;
         line-height: 1.5;
         margin-bottom: 6px;
     }
-    
+
     #internal-thought {
         font-size: 0.8rem;
         line-height: 1.4;
@@ -3472,17 +3625,17 @@
         font-size: 0.9rem;
         /* Height controlled by orientation-specific queries below */
     }
-    
+
     #character-name {
         font-size: 1rem;
         margin-bottom: 6px;
     }
-    
+
     #dialogue-text {
         font-size: 0.88rem;
         line-height: 1.5;
     }
-    
+
     #internal-thought {
         font-size: 0.8rem;
         margin-top: 8px;
@@ -3511,7 +3664,7 @@
         width: 90%;
         transform: translateX(0);
     }
-    
+
     /* Sprites sit on dialogue (35vh from floor) */
     .character-sprite {
         bottom: 35vh !important;
@@ -3521,7 +3674,7 @@
         min-height: 250px !important;
         max-height: 65vh !important;
     }
-    
+
     #character-left,
     #character-right {
         bottom: 35vh !important;
@@ -3531,11 +3684,11 @@
         min-height: 250px !important;
         max-height: 65vh !important;
     }
-    
+
     #internal-thought {
         max-height: 15vh;
     }
-    
+
     /* Tether UI in landscape - top left, compact */
     #tether-ui {
         top: 8px;
@@ -3543,12 +3696,12 @@
         width: 30%;
         max-width: 200px;
     }
-    
+
     #tether-meter {
         height: 28px;
         font-size: 0.75em;
     }
-    
+
     #hold-on-button {
         height: 28px;
         font-size: 0.65em;
@@ -3569,23 +3722,25 @@
     .character-sprite {
         width: 140px !important;
         height: 240px !important;
-        bottom: 20vh !important; /* Lower to account for address bar */
+        bottom: 20vh !important;
+        /* Lower to account for address bar */
     }
-    
+
     #character-right {
         bottom: 22vh !important;
     }
-    
+
     #dialogue-box {
         max-height: 30vh !important;
     }
-    
+
     /* Push bubbles lower on small screens to avoid sprite chin */
     .internal-bubble.left-character,
     .internal-bubble.right-character {
-        top: 45% !important; /* Lower */
+        top: 45% !important;
+        /* Lower */
     }
-    
+
     .internal-bubble.center {
         top: 48% !important;
     }
@@ -3617,16 +3772,22 @@
     font-style: italic;
     color: #1a1a2e;
     max-width: 280px;
-    max-height: 40vh; /* DIZEE FIX: Limit height to allow scrolling for long text */
+    max-height: 40vh;
+    /* DIZEE FIX: Limit height to allow scrolling for long text */
     z-index: 500;
     opacity: 0;
-    pointer-events: auto; /* DIZEE FIX: Enable pointer events for scrolling */
+    pointer-events: auto;
+    /* DIZEE FIX: Enable pointer events for scrolling */
     box-shadow: 0 4px 20px rgba(0, 255, 255, 0.4);
     line-height: 1.5;
-    overflow-y: auto; /* DIZEE FIX: Enable vertical scrolling */
-    overflow-x: hidden; /* DIZEE FIX: Prevent horizontal overflow */
-    word-wrap: break-word; /* DIZEE FIX: Wrap long words */
-    -webkit-overflow-scrolling: touch; /* DIZEE FIX: Smooth iOS scrolling */
+    overflow-y: auto;
+    /* DIZEE FIX: Enable vertical scrolling */
+    overflow-x: hidden;
+    /* DIZEE FIX: Prevent horizontal overflow */
+    word-wrap: break-word;
+    /* DIZEE FIX: Wrap long words */
+    -webkit-overflow-scrolling: touch;
+    /* DIZEE FIX: Smooth iOS scrolling */
     scroll-behavior: smooth;
 
     /* Shorter animation - fade in only, stays visible */
@@ -3649,12 +3810,13 @@
 
 /* Fade in animation - NO fade out (managed by scene lifecycle) */
 @keyframes internalBubbleFade {
-    0% { 
-        opacity: 0; 
+    0% {
+        opacity: 0;
         transform: translateY(20px) scale(0.9);
     }
-    100% { 
-        opacity: 1; 
+
+    100% {
+        opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
@@ -3679,31 +3841,39 @@
 /* Mobile portrait - fixed bubble size with scroll */
 @media (max-width: 1023px) and (orientation: portrait) {
     .internal-bubble {
-        width: 55%; /* Compact width */
-        height: 15vh; /* Fixed height */
+        width: 55%;
+        /* Compact width */
+        height: 15vh;
+        /* Fixed height */
         max-width: none;
         max-height: none;
         font-size: 0.8rem;
         padding: 10px 14px;
-        overflow-y: auto; /* Vertical scroll */
-        overflow-x: hidden; /* No horizontal scroll */
+        overflow-y: auto;
+        /* Vertical scroll */
+        overflow-x: hidden;
+        /* No horizontal scroll */
         word-wrap: break-word;
-        -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth iOS scrolling */
         scroll-behavior: smooth;
     }
-    
+
     .internal-bubble.left-character {
-        top: 15%; /* Upper area, above sprite */
+        top: 15%;
+        /* Upper area, above sprite */
         left: 10px;
     }
-    
+
     .internal-bubble.right-character {
-        top: 15%; /* Upper area, above sprite */
+        top: 15%;
+        /* Upper area, above sprite */
         right: 10px;
     }
-    
+
     .internal-bubble.center {
-        top: 20%; /* Centered in upper area */
+        top: 20%;
+        /* Centered in upper area */
         left: 50%;
         transform: translateX(-50%);
     }
@@ -3726,7 +3896,7 @@
         height: 600px !important;
         max-height: none !important;
     }
-    
+
     #character-left,
     #character-right {
         bottom: 0 !important;
@@ -3743,7 +3913,7 @@
 }
 
 /* Prevent multiple bubbles from stacking */
-.internal-bubble + .internal-bubble {
+.internal-bubble+.internal-bubble {
     display: none;
 }
 
@@ -3756,34 +3926,41 @@
 @media (max-width: 1023px) and (orientation: landscape) {
     .internal-bubble {
         /* Narrower, shorter fixed box */
-        width: 30%; /* Narrower to fit between sprites */
-        height: 15vh; /* Shorter */
+        width: 30%;
+        /* Narrower to fit between sprites */
+        height: 15vh;
+        /* Shorter */
         max-width: none;
         max-height: none;
-        top: 20%; /* Above sprites */
+        top: 20%;
+        /* Above sprites */
         padding: 10px 15px;
         font-size: 0.8rem;
-        overflow-y: auto; /* Vertical scroll only */
-        overflow-x: hidden; /* No horizontal scroll */
-        word-wrap: break-word; /* Force text wrapping */
-        -webkit-overflow-scrolling: touch; /* Smooth iOS scrolling */
+        overflow-y: auto;
+        /* Vertical scroll only */
+        overflow-x: hidden;
+        /* No horizontal scroll */
+        word-wrap: break-word;
+        /* Force text wrapping */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth iOS scrolling */
         scroll-behavior: smooth;
     }
-    
+
     /* Position bubbles based on character */
     .internal-bubble.left-character {
         left: 10px;
     }
-    
+
     .internal-bubble.right-character {
         right: 10px;
     }
-    
+
     .internal-bubble.center {
         left: 50%;
         transform: translateX(-50%);
     }
-    
+
     /* Left character - point left */
     .internal-bubble.left-character::after {
         left: -10px;
@@ -3795,7 +3972,7 @@
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
     }
-    
+
     /* Right character - point right */
     .internal-bubble.right-character::after {
         right: -10px;
@@ -3808,7 +3985,7 @@
         border-top: 10px solid transparent;
         border-bottom: 10px solid transparent;
     }
-    
+
     /* Center - keep pointing down */
     .internal-bubble.center::after {
         bottom: -10px;
@@ -3828,18 +4005,18 @@
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%);
-        
+
         /* Constrain max-width for better readability */
         max-width: 65%;
-        
+
         /* Slightly increase top margin for desktop comfort */
         top: 25% !important;
-        
+
         /* Enhanced desktop styling */
         padding: 18px 25px;
         font-size: 1rem;
     }
-    
+
     /* Override position classes on landscape */
     .internal-bubble.left-character,
     .internal-bubble.right-character,
@@ -3858,6 +4035,7 @@
         top: 20% !important;
     }
 }
+
 /* ========================================
    SAVE LABEL INPUT DIALOG
    ======================================== */
@@ -3984,28 +4162,33 @@
 /* Act 1: Echo 1 and Echo 2 are smaller (defeated) */
 .echo-growth-act1 #echo-1-sprite,
 .echo-growth-act1 #echo-2-sprite {
-    transform: scale(0.75); /* 75% height - visibly smaller than Despair */
+    transform: scale(0.75);
+    /* 75% height - visibly smaller than Despair */
 }
 
 .echo-growth-act1 #despair-sprite {
-    transform: scale(1); /* Full height - dominates */
+    transform: scale(1);
+    /* Full height - dominates */
 }
 
 /* Act 2: Echo 1 and Echo 2 start growing (finding hope) */
 .echo-growth-act2 #echo-1-sprite,
 .echo-growth-act2 #echo-2-sprite {
-    transform: scale(0.9); /* 90% height - rising */
+    transform: scale(0.9);
+    /* 90% height - rising */
 }
 
 .echo-growth-act2 #despair-sprite {
-    transform: scale(1); /* Still full height */
+    transform: scale(1);
+    /* Still full height */
 }
 
 /* Act 3: All equal (hope matches despair) */
 .echo-growth-act3 #echo-1-sprite,
 .echo-growth-act3 #echo-2-sprite,
 .echo-growth-act3 #despair-sprite {
-    transform: scale(1); /* All equal - balance achieved */
+    transform: scale(1);
+    /* All equal - balance achieved */
 }
 
 /* ========================================
@@ -4031,6 +4214,7 @@
         transform: translateX(0) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translateX(75px) scale(0.8);
         opacity: 0.8;
@@ -4042,6 +4226,7 @@
         transform: translateX(0) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translateX(0) scale(1.2);
         opacity: 1;
@@ -4053,6 +4238,7 @@
         transform: translateX(0) scale(1);
         opacity: 1;
     }
+
     100% {
         transform: translateX(-75px) scale(0.8);
         opacity: 0.8;
@@ -4076,9 +4262,11 @@
     0% {
         opacity: 0;
     }
+
     50% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -4094,15 +4282,18 @@
 }
 
 @keyframes newNoteFlash {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
         transform: scale(1);
         filter: brightness(1);
     }
+
     50% {
         box-shadow: 0 0 50px rgba(0, 255, 255, 0.9),
-                    0 0 80px rgba(0, 255, 255, 0.6),
-                    0 0 100px rgba(0, 255, 255, 0.3);
+            0 0 80px rgba(0, 255, 255, 0.6),
+            0 0 100px rgba(0, 255, 255, 0.3);
         transform: scale(1.15);
         filter: brightness(1.5);
     }
@@ -4114,15 +4305,18 @@
 }
 
 @keyframes countPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         color: #00ff88;
         text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
         transform: scale(1);
     }
+
     50% {
         color: #00ffff;
         text-shadow: 0 0 20px rgba(0, 255, 255, 1),
-                     0 0 40px rgba(0, 255, 255, 0.8);
+            0 0 40px rgba(0, 255, 255, 0.8);
         transform: scale(1.3);
     }
 }
@@ -4134,7 +4328,8 @@
 
 .note-notification {
     position: fixed;
-    bottom: 35vh; /* Just above dialogue box on mobile */
+    bottom: 35vh;
+    /* Just above dialogue box on mobile */
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     background: linear-gradient(135deg, rgba(0, 255, 255, 0.95) 0%, rgba(0, 200, 200, 0.95) 100%);
@@ -4149,7 +4344,7 @@
     pointer-events: none;
     transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     box-shadow: 0 8px 24px rgba(0, 255, 255, 0.4),
-                0 0 40px rgba(0, 255, 255, 0.2);
+        0 0 40px rgba(0, 255, 255, 0.2);
     font-family: 'Courier New', monospace;
     font-weight: bold;
     font-size: 1em;
@@ -4171,9 +4366,12 @@
 }
 
 @keyframes noteBounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-4px);
     }
@@ -4188,7 +4386,7 @@
         left: auto;
         transform: translateX(20px);
     }
-    
+
     .note-notification.show {
         transform: translateX(0);
     }
@@ -4209,17 +4407,20 @@
 }
 
 @keyframes subtleNewNotePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     }
+
     50% {
         box-shadow: 0 0 30px rgba(0, 255, 255, 0.6),
-                    0 0 50px rgba(0, 255, 255, 0.3);
+            0 0 50px rgba(0, 255, 255, 0.3);
     }
 }
 
 /* Clear indicator when notes viewer is opened */
-#notes-viewer:not([style*="display: none"]) ~ * #notes-button.has-new-note {
+#notes-viewer:not([style*="display: none"])~* #notes-button.has-new-note {
     animation: none;
 }
 
@@ -4235,7 +4436,8 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.95);
-    z-index: 10001 !important; /* ZEE'S FIX: Higher than pause menu (10000) 🖤 */
+    z-index: 10001 !important;
+    /* ZEE'S FIX: Higher than pause menu (10000) 🖤 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -4310,7 +4512,8 @@
 
 /* DIZEE FIX: Prevent focus state from changing close button position */
 .close-notes-btn:focus {
-    position: absolute !important;  /* Keep absolute positioning on focus - prevent jumping */
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent jumping */
     outline: 2px solid #00ff41;
     outline-offset: 2px;
     box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
@@ -4676,9 +4879,12 @@
 }
 
 @keyframes signalPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.6;
     }
@@ -4689,6 +4895,7 @@
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -4845,29 +5052,30 @@
         width: 95%;
         max-height: 90vh;
     }
-    
+
     .notes-header {
         padding: 20px;
     }
-    
+
     .notes-header h2 {
         font-size: 1.4em;
     }
-    
+
     .notes-list-container {
         padding: 15px;
     }
-    
+
     .note-entry {
         padding: 12px;
     }
-    
+
     .note-header-row {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
 }
+
 /* ========================================
    SETTINGS MENU
    ======================================== */
@@ -4954,8 +5162,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* ========================================
@@ -5109,10 +5322,12 @@
         transform: scale(0) rotate(0deg);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.5) rotate(180deg);
         opacity: 1;
     }
+
     100% {
         transform: scale(1) rotate(360deg);
         opacity: 1;
@@ -5124,6 +5339,7 @@
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -5152,10 +5368,13 @@
 }
 
 @keyframes badgePulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
         box-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
     }
+
     50% {
         transform: scale(1.1);
         box-shadow: 0 0 20px rgba(255, 0, 102, 1);
@@ -5173,10 +5392,12 @@
         transform: translateY(-20px) scale(0.8);
         opacity: 0;
     }
+
     50% {
         transform: translateY(5px) scale(1.1);
         opacity: 1;
     }
+
     100% {
         transform: translateY(0) scale(1);
         opacity: 1;
@@ -5224,7 +5445,8 @@
     display: flex;
     gap: 10px;
     align-items: center;
-    justify-content: flex-end; /* Right-align to match text speed and display mode rows */
+    justify-content: flex-end;
+    /* Right-align to match text speed and display mode rows */
 }
 
 /* Text Speed Buttons */
@@ -5478,12 +5700,12 @@
     border-radius: 50%;
 }
 
-input:checked + .toggle-slider {
+input:checked+.toggle-slider {
     background-color: #0ff;
     border-color: #0ff;
 }
 
-input:checked + .toggle-slider:before {
+input:checked+.toggle-slider:before {
     transform: translateX(24px);
 }
 
@@ -5507,10 +5729,13 @@ input:checked + .toggle-slider:before {
     height: 8px;
     border-radius: 4px;
     background: linear-gradient(to right,
-        rgba(100, 200, 255, 0.3) 0%,     /* Gentle - soft blue */
-        rgba(0, 255, 255, 0.5) 50%,       /* Normal - cyan */
-        rgba(255, 100, 255, 0.7) 100%     /* Amped - hot pink */
-    );
+            rgba(100, 200, 255, 0.3) 0%,
+            /* Gentle - soft blue */
+            rgba(0, 255, 255, 0.5) 50%,
+            /* Normal - cyan */
+            rgba(255, 100, 255, 0.7) 100%
+            /* Amped - hot pink */
+        );
     outline: none;
     border: 1px solid rgba(0, 255, 255, 0.3);
     cursor: pointer;
@@ -5653,17 +5878,17 @@ input:checked + .toggle-slider:before {
     .difficulty-setting-container {
         gap: 10px;
     }
-    
+
     .difficulty-explanations {
         padding: 10px 12px;
     }
-    
+
     .difficulty-explanation-item {
         margin-bottom: 8px;
         font-size: 0.85em;
         line-height: 1.4;
     }
-    
+
     .difficulty-explanation-item strong {
         min-width: 80px;
     }
@@ -5676,16 +5901,16 @@ input:checked + .toggle-slider:before {
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .difficulty-buttons-row .setting-control {
         width: 100%;
         justify-content: space-between;
     }
-    
+
     .tether-difficulty-btn {
         flex: 1;
     }
-    
+
     .difficulty-explanation-item strong {
         display: block;
         margin-bottom: 3px;
@@ -5731,11 +5956,11 @@ input:checked + .toggle-slider:before {
     border-radius: 50%;
 }
 
-input:checked + .toggle-slider {
+input:checked+.toggle-slider {
     background-color: rgba(0, 255, 255, 0.3);
 }
 
-input:checked + .toggle-slider:before {
+input:checked+.toggle-slider:before {
     transform: translateX(30px);
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
 }
@@ -5973,9 +6198,11 @@ input:checked + .toggle-slider:before {
 #backlog-button {
     position: fixed;
     /* ZEERAH: Float above dialogue box center */
-    bottom: 185px; /* Just above dialogue box min-height (180px) */
+    bottom: 185px;
+    /* Just above dialogue box min-height (180px) */
     left: 50%;
-    transform: translateX(calc(-100% - 5px)); /* Left of center with 10px gap total */
+    transform: translateX(calc(-100% - 5px));
+    /* Left of center with 10px gap total */
     width: 140px;
     height: 45px;
     background: rgba(0, 255, 255, 0.2);
@@ -5989,7 +6216,8 @@ input:checked + .toggle-slider:before {
     border-radius: 8px;
     z-index: 100;
     transition: all 0.3s ease;
-    display: none; /* Hidden by default, shown during gameplay */
+    display: none;
+    /* Hidden by default, shown during gameplay */
 }
 
 #backlog-button:hover {
@@ -6004,24 +6232,24 @@ input:checked + .toggle-slider:before {
         padding: 25px;
         max-width: 95%;
     }
-    
+
     .setting-row {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
     }
-    
+
     .setting-control {
         width: 100%;
         justify-content: space-between;
     }
-    
+
     .speed-btn {
         flex: 1;
         padding: 10px 8px;
         font-size: 0.8em;
     }
-    
+
     #backlog-content {
         margin: 20px;
         padding: 20px;
@@ -6098,21 +6326,21 @@ input:checked + .toggle-slider:before {
         padding: 20px;
         max-height: 85vh;
     }
-    
+
     #settings-content h2 {
         font-size: 1.5em;
         margin-bottom: 15px;
     }
-    
+
     .setting-row {
         margin-bottom: 15px;
         padding: 10px;
     }
-    
+
     .setting-label {
         font-size: 0.9em;
     }
-    
+
     .speed-btn,
     .setting-control button {
         padding: 6px 12px;
@@ -6131,7 +6359,7 @@ input:checked + .toggle-slider:before {
         max-height: 85vh;
         padding: 20px;
     }
-    
+
     #backlog-content h2 {
         font-size: 1.5em;
     }
@@ -6144,40 +6372,43 @@ input:checked + .toggle-slider:before {
 
 @media (max-width: 1023px) and (orientation: landscape) {
     #main-menu-content {
-        height: 100vh; /* Explicitly set viewport height */
-        max-height: 100vh; /* Prevent overflow */
+        height: 100vh;
+        /* Explicitly set viewport height */
+        max-height: 100vh;
+        /* Prevent overflow */
         overflow-y: auto;
         overflow-x: hidden;
         padding: 20px 0;
         justify-content: flex-start;
         scrollbar-width: thin;
         scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
     }
-    
+
     #main-menu-content::-webkit-scrollbar {
         width: 8px;
     }
-    
+
     #main-menu-content::-webkit-scrollbar-track {
         background: rgba(0, 255, 255, 0.1);
     }
-    
+
     #main-menu-content::-webkit-scrollbar-thumb {
         background: #0ff;
         border-radius: 4px;
     }
-    
+
     #main-menu h1 {
         font-size: 2em;
         margin: 20px 0 10px 0;
     }
-    
+
     #main-menu .subtitle {
         font-size: 0.9em;
         margin-bottom: 20px;
     }
-    
+
     .menu-button {
         margin: 8px 0;
         padding: 12px 40px;
@@ -6188,34 +6419,37 @@ input:checked + .toggle-slider:before {
 /* Portrait mode also needs scroll for phones with many buttons */
 @media (max-width: 767px) and (orientation: portrait) {
     #main-menu-content {
-        height: 100vh; /* Explicitly set viewport height */
-        max-height: 100vh; /* Prevent overflow */
+        height: 100vh;
+        /* Explicitly set viewport height */
+        max-height: 100vh;
+        /* Prevent overflow */
         overflow-y: auto;
         overflow-x: hidden;
         padding: 30px 0;
         scrollbar-width: thin;
         scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
     }
-    
+
     #main-menu-content::-webkit-scrollbar {
         width: 6px;
     }
-    
+
     #main-menu-content::-webkit-scrollbar-track {
         background: rgba(0, 255, 255, 0.1);
     }
-    
+
     #main-menu-content::-webkit-scrollbar-thumb {
         background: #0ff;
         border-radius: 3px;
     }
-    
+
     #main-menu h1 {
         font-size: 1.8em;
         margin: 10px 0;
     }
-    
+
     .menu-button {
         margin: 10px 0;
         font-size: 0.9em;
@@ -6232,9 +6466,11 @@ input:checked + .toggle-slider:before {
 #skip-button {
     position: fixed;
     /* ZEERAH: Float above dialogue box center - right of backlog */
-    bottom: 185px; /* Just above dialogue box min-height (180px) */
+    bottom: 185px;
+    /* Just above dialogue box min-height (180px) */
     left: 50%;
-    transform: translateX(5px); /* Right of center with 10px gap total */
+    transform: translateX(5px);
+    /* Right of center with 10px gap total */
     width: 140px;
     height: 45px;
     background: rgba(0, 200, 255, 0.15);
@@ -6271,9 +6507,11 @@ input:checked + .toggle-slider:before {
 /* ZEERAH'S UNIFIED LAYOUT - Portrait Mobile: buttons above dialogue box */
 @media (max-width: 1023px) and (orientation: portrait) {
     #skip-button {
-        bottom: calc(30vh + 10px) !important; /* Just above 30vh dialogue box */
+        bottom: calc(30vh + 10px) !important;
+        /* Just above 30vh dialogue box */
         left: 50% !important;
-        transform: translateX(5px) !important; /* Right of center with 10px gap total */
+        transform: translateX(5px) !important;
+        /* Right of center with 10px gap total */
         width: 110px;
         height: 38px;
         font-size: 0.85em;
@@ -6284,9 +6522,11 @@ input:checked + .toggle-slider:before {
     }
 
     #backlog-button {
-        bottom: calc(30vh + 10px) !important; /* Just above 30vh dialogue box */
+        bottom: calc(30vh + 10px) !important;
+        /* Just above 30vh dialogue box */
         left: 50% !important;
-        transform: translateX(calc(-100% - 5px)) !important; /* Left of center with 10px gap total */
+        transform: translateX(calc(-100% - 5px)) !important;
+        /* Left of center with 10px gap total */
         width: 110px;
         height: 38px;
         font-size: 0.85em;
@@ -6298,9 +6538,12 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes skipPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
     }
+
     50% {
         box-shadow: 0 0 30px rgba(0, 255, 255, 1);
     }
@@ -6324,19 +6567,28 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes skipFlash {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* ZEERAH: Mobile Landscape Button Adjustments - above dialogue box */
 @media (max-width: 1023px) and (orientation: landscape) {
     #backlog-button {
-        bottom: calc(35vh + 10px) !important; /* Just above 35vh dialogue box */
+        bottom: calc(35vh + 10px) !important;
+        /* Just above 35vh dialogue box */
         left: 50% !important;
         width: 120px;
         height: 40px;
         font-size: 0.9em;
-        transform: translateX(calc(-100% - 5px)) !important; /* Left of center with 10px gap total */
+        transform: translateX(calc(-100% - 5px)) !important;
+        /* Left of center with 10px gap total */
     }
 
     #backlog-button:hover {
@@ -6344,12 +6596,14 @@ input:checked + .toggle-slider:before {
     }
 
     #skip-button {
-        bottom: calc(35vh + 10px) !important; /* Just above 35vh dialogue box */
+        bottom: calc(35vh + 10px) !important;
+        /* Just above 35vh dialogue box */
         left: 50% !important;
         width: 120px;
         height: 40px;
         font-size: 0.9em;
-        transform: translateX(5px) !important; /* Right of center with 10px gap total */
+        transform: translateX(5px) !important;
+        /* Right of center with 10px gap total */
     }
 
     #skip-button:hover {
@@ -6364,7 +6618,8 @@ input:checked + .toggle-slider:before {
         width: 95px !important;
         height: 36px !important;
         font-size: 0.75em !important;
-        transform: translateX(calc(-100% - 3px)) !important; /* Left of center with smaller gap */
+        transform: translateX(calc(-100% - 3px)) !important;
+        /* Left of center with smaller gap */
     }
 
     #backlog-button:hover {
@@ -6376,13 +6631,14 @@ input:checked + .toggle-slider:before {
         width: 95px !important;
         height: 36px !important;
         font-size: 0.75em !important;
-        transform: translateX(3px) !important; /* Right of center with smaller gap */
+        transform: translateX(3px) !important;
+        /* Right of center with smaller gap */
     }
 
     #skip-button:hover {
         transform: translateX(3px) scale(1.05) !important;
     }
-    
+
     #skip-indicator {
         top: 65px;
         right: 15px;
@@ -6392,6 +6648,7 @@ input:checked + .toggle-slider:before {
 
 /* ZEERAH: Very Small Portrait - ensure bottom is set correctly */
 @media (max-width: 400px) and (orientation: portrait) {
+
     #backlog-button,
     #skip-button {
         bottom: calc(30vh + 10px) !important;
@@ -6400,6 +6657,7 @@ input:checked + .toggle-slider:before {
 
 /* ZEERAH: Very Small Landscape - ensure bottom is set correctly */
 @media (max-width: 400px) and (orientation: landscape) {
+
     #backlog-button,
     #skip-button {
         bottom: calc(35vh + 10px) !important;
@@ -6417,7 +6675,7 @@ input:checked + .toggle-slider:before {
     background: linear-gradient(135deg, rgba(0, 20, 40, 0.98), rgba(0, 40, 60, 0.98));
     border: 3px solid #0ff;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.6),
-                0 0 80px rgba(0, 200, 255, 0.3);
+        0 0 80px rgba(0, 200, 255, 0.3);
     padding: 40px;
     z-index: 10002;
     max-width: 500px;
@@ -6490,21 +6748,21 @@ input:checked + .toggle-slider:before {
     /* ZEERAH FIX v3: Removed #skip-button top/right positioning that was 
        conflicting with the portrait/landscape centered button layout.
        Skip button position is handled by orientation-specific rules above. */
-    
+
     #skip-indicator {
         top: 45px;
         right: 10px;
         padding: 4px 10px;
         font-size: 0.75em;
     }
-    
+
     #skip-unlock-notification,
     #notes-unlock-notification,
     #torigatchi-unlock-notification {
         max-width: 90%;
         padding: 30px 20px;
     }
-    
+
     .unlock-feature {
         font-size: 1.5em;
     }
@@ -6573,21 +6831,26 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes glitch {
-    0%, 100% {
+
+    0%,
+    100% {
         text-shadow:
             2px 0 #f00,
             -2px 0 #0ff;
     }
+
     25% {
         text-shadow:
             -2px 0 #f00,
             2px 0 #0ff;
     }
+
     50% {
         text-shadow:
             2px 2px #f00,
             -2px -2px #0ff;
     }
+
     75% {
         text-shadow:
             -2px 2px #f00,
@@ -6603,7 +6866,8 @@ input:checked + .toggle-slider:before {
 }
 
 .loop-skip-btn {
-    display: none; /* Hidden until loopInitSeen */
+    display: none;
+    /* Hidden until loopInitSeen */
     background: rgba(255, 255, 0, 0.1);
     color: #ff0;
     border: 2px solid #ff0;
@@ -6627,11 +6891,11 @@ input:checked + .toggle-slider:before {
     .loop-init-title {
         font-size: 1.5em;
     }
-    
+
     .loop-init-status {
         font-size: 1em;
     }
-    
+
     .loop-init-boot {
         font-size: 1.2em;
     }
@@ -6647,7 +6911,8 @@ input:checked + .toggle-slider:before {
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
-    padding-right: 40px; /* Space for hint */
+    padding-right: 40px;
+    /* Space for hint */
 }
 
 .backlog-entry.jumpable:hover {
@@ -6790,7 +7055,8 @@ input:checked + .toggle-slider:before {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    z-index: 10000; /* Above backlog */
+    z-index: 10000;
+    /* Above backlog */
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.3s ease-in;
@@ -6813,6 +7079,7 @@ input:checked + .toggle-slider:before {
         opacity: 0;
         transform: scale(0.8) translateY(20px);
     }
+
     100% {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -6932,16 +7199,47 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes insane-shake {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    10% { transform: translate(-5px, -5px) rotate(-2deg); }
-    20% { transform: translate(5px, 5px) rotate(2deg); }
-    30% { transform: translate(-5px, 5px) rotate(-1deg); }
-    40% { transform: translate(5px, -5px) rotate(1deg); }
-    50% { transform: translate(-3px, 3px) rotate(-2deg); }
-    60% { transform: translate(3px, -3px) rotate(2deg); }
-    70% { transform: translate(-5px, -5px) rotate(-1deg); }
-    80% { transform: translate(5px, 5px) rotate(1deg); }
-    90% { transform: translate(-3px, 3px) rotate(-2deg); }
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-5px, -5px) rotate(-2deg);
+    }
+
+    20% {
+        transform: translate(5px, 5px) rotate(2deg);
+    }
+
+    30% {
+        transform: translate(-5px, 5px) rotate(-1deg);
+    }
+
+    40% {
+        transform: translate(5px, -5px) rotate(1deg);
+    }
+
+    50% {
+        transform: translate(-3px, 3px) rotate(-2deg);
+    }
+
+    60% {
+        transform: translate(3px, -3px) rotate(2deg);
+    }
+
+    70% {
+        transform: translate(-5px, -5px) rotate(-1deg);
+    }
+
+    80% {
+        transform: translate(5px, 5px) rotate(1deg);
+    }
+
+    90% {
+        transform: translate(-3px, 3px) rotate(-2deg);
+    }
 }
 
 /* Heavy Sprite Glitch */
@@ -6951,11 +7249,30 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes heavy-glitch {
-    0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
-    25% { transform: translate(-10px, 5px); filter: hue-rotate(90deg); }
-    50% { transform: translate(10px, -5px); filter: hue-rotate(180deg); }
-    75% { transform: translate(-5px, -10px); filter: hue-rotate(270deg); }
-    100% { transform: translate(5px, 10px); filter: hue-rotate(360deg); }
+    0% {
+        transform: translate(0, 0);
+        filter: hue-rotate(0deg);
+    }
+
+    25% {
+        transform: translate(-10px, 5px);
+        filter: hue-rotate(90deg);
+    }
+
+    50% {
+        transform: translate(10px, -5px);
+        filter: hue-rotate(180deg);
+    }
+
+    75% {
+        transform: translate(-5px, -10px);
+        filter: hue-rotate(270deg);
+    }
+
+    100% {
+        transform: translate(5px, 10px);
+        filter: hue-rotate(360deg);
+    }
 }
 
 /* Intense Corruption - Dialogue Box */
@@ -6966,8 +7283,15 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes corruption-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 /* Insane Red Overlay */
@@ -6984,9 +7308,17 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes overlay-pulse {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Persistent Insane Mode Corruption - DIZEE */
@@ -7002,13 +7334,11 @@ input:checked + .toggle-slider:before {
     width: 100%;
     height: 100%;
     background:
-        repeating-linear-gradient(
-            0deg,
+        repeating-linear-gradient(0deg,
             transparent,
             transparent 2px,
             rgba(255, 0, 102, 0.03) 2px,
-            rgba(255, 0, 102, 0.03) 4px
-        );
+            rgba(255, 0, 102, 0.03) 4px);
     pointer-events: none;
     z-index: 9997;
     animation: scanlines 8s linear infinite;
@@ -7028,13 +7358,25 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes scanlines {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(10px); }
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(10px);
+    }
 }
 
 @keyframes vignette-pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 0.8; }
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
 }
 
 /* Cage Overlay - Full Screen */
@@ -7054,7 +7396,8 @@ input:checked + .toggle-slider:before {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 50000; /* Above settings (9000) but below cage overlay (99999) */
+    z-index: 50000;
+    /* Above settings (9000) but below cage overlay (99999) */
     animation: warning-appear 0.5s ease-out;
 }
 
@@ -7065,7 +7408,7 @@ input:checked + .toggle-slider:before {
     padding: 40px;
     max-width: 600px;
     width: 90%;
-    box-shadow: 
+    box-shadow:
         0 0 40px rgba(255, 0, 102, 0.5),
         0 0 80px rgba(255, 0, 102, 0.3),
         inset 0 0 60px rgba(255, 0, 102, 0.1);
@@ -7078,7 +7421,7 @@ input:checked + .toggle-slider:before {
     color: #ff0066;
     text-align: center;
     margin-bottom: 25px;
-    text-shadow: 
+    text-shadow:
         0 0 20px #ff0066,
         0 0 40px #ff0066;
     animation: warning-flicker 0.3s infinite;
@@ -7206,20 +7549,24 @@ input:checked + .toggle-slider:before {
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
 }
 
 @keyframes warning-pulse {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 0 40px rgba(255, 0, 102, 0.5),
             0 0 80px rgba(255, 0, 102, 0.3),
             inset 0 0 60px rgba(255, 0, 102, 0.1);
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 60px rgba(255, 0, 102, 0.7),
             0 0 120px rgba(255, 0, 102, 0.5),
             inset 0 0 80px rgba(255, 0, 102, 0.2);
@@ -7227,19 +7574,25 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes warning-flicker {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.95;
     }
 }
 
 @keyframes warning-pulse-text {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         text-shadow: 0 0 15px #ff0066;
     }
+
     50% {
         opacity: 0.8;
         text-shadow: 0 0 25px #ff0066, 0 0 35px #ff0066;
@@ -7247,18 +7600,24 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes proceed-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 10px rgba(255, 0, 102, 0.3);
     }
+
     50% {
         box-shadow: 0 0 20px rgba(255, 0, 102, 0.6);
     }
 }
 
 @keyframes proceed-pulse-fast {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 20px rgba(255, 0, 102, 0.6);
     }
+
     50% {
         box-shadow: 0 0 40px rgba(255, 0, 102, 0.9);
     }
@@ -7273,25 +7632,25 @@ input:checked + .toggle-slider:before {
         padding: 30px 20px;
         max-width: 95%;
     }
-    
+
     #insane-warning-content h2 {
         font-size: 1.8em;
         margin-bottom: 20px;
     }
-    
+
     #insane-warning-message p {
         font-size: 1em;
     }
-    
+
     .insane-warnings li {
         font-size: 0.95em;
     }
-    
+
     #insane-warning-buttons {
         flex-direction: column;
         gap: 15px;
     }
-    
+
     .insane-btn {
         font-size: 1em;
         padding: 12px 20px;
@@ -7304,15 +7663,15 @@ input:checked + .toggle-slider:before {
     #insane-warning-content {
         padding: 25px 15px;
     }
-    
+
     #insane-warning-content h2 {
         font-size: 1.5em;
     }
-    
+
     .insane-warnings {
         padding: 15px;
     }
-    
+
     .insane-warnings li {
         font-size: 0.9em;
         padding: 8px 0;
@@ -7329,7 +7688,8 @@ input:checked + .toggle-slider:before {
         padding: 20px 15px;
         max-width: 90%;
         max-height: 95vh;
-        overflow-y: auto; /* Fallback if still too tall */
+        overflow-y: auto;
+        /* Fallback if still too tall */
     }
 
     #insane-warning-content h2 {
@@ -7408,7 +7768,8 @@ input:checked + .toggle-slider:before {
    pulsing red glow, flickering title, and
    dramatic proceed button animation 🖤💀
    ======================================== */
-#insane-cage-overlay {  /* Changed from class to ID selector */
+#insane-cage-overlay {
+    /* Changed from class to ID selector */
     position: fixed;
     top: 0;
     left: 0;
@@ -7418,7 +7779,8 @@ input:checked + .toggle-slider:before {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 99999; /* Highest z-index - must appear over everything */
+    z-index: 99999;
+    /* Highest z-index - must appear over everything */
     animation: cage-appear 1s ease-out;
 }
 
@@ -7466,16 +7828,31 @@ input:checked + .toggle-slider:before {
 }
 
 @keyframes cage-appear {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 @keyframes cage-pulse {
-    0%, 100% { opacity: 1; text-shadow: 0 0 20px #ff0066; }
-    50% { opacity: 0.7; text-shadow: 0 0 40px #ff0066, 0 0 60px #ff0066; }
+
+    0%,
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 20px #ff0066;
+    }
+
+    50% {
+        opacity: 0.7;
+        text-shadow: 0 0 40px #ff0066, 0 0 60px #ff0066;
+    }
 }
 
-#insane-cage-overlay.fade-out {  /* Changed from class to ID selector */
+#insane-cage-overlay.fade-out {
+    /* Changed from class to ID selector */
     animation: fade-out 1s ease-out forwards;
 }
 
@@ -7751,12 +8128,12 @@ input:checked + .toggle-slider:before {
 }
 
 /* Disabled Difficulty Radio Buttons */
-input[type="radio"]:disabled + label {
+input[type="radio"]:disabled+label {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-input[type="radio"]:disabled + label .difficulty-label {
+input[type="radio"]:disabled+label .difficulty-label {
     color: #666;
 }
 
@@ -7862,10 +8239,13 @@ input[type="radio"]:disabled + label .difficulty-label {
 
 /* Pulse Animation */
 @keyframes notificationPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.7;
         transform: scale(1.1);
@@ -7970,6 +8350,7 @@ input[type="radio"]:disabled + label .difficulty-label {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -8380,9 +8761,12 @@ button.keyboard-focus:focus,
 
 /* Pulse animation for keyboard notification */
 @keyframes notificationPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 4px 20px rgba(0, 255, 65, 0.4);
     }
+
     50% {
         box-shadow: 0 4px 30px rgba(0, 255, 65, 0.7);
     }
@@ -8394,6 +8778,7 @@ button.keyboard-focus:focus,
 
 /* Accessibility: Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
+
     button:focus,
     .keyboard-focus,
     .keyboard-notification {
@@ -8410,6 +8795,7 @@ button.keyboard-focus:focus,
 
 /* Mobile keyboard navigation adjustments */
 @media (max-width: 768px) {
+
     button:focus,
     .keyboard-focus {
         outline-width: 3px !important;
@@ -8617,7 +9003,8 @@ button.keyboard-focus:focus,
     margin-top: 0.3em;
 }
 
-.entry-date, .entry-route {
+.entry-date,
+.entry-route {
     display: inline-block;
 }
 
@@ -8635,9 +9022,12 @@ button.keyboard-focus:focus,
 
 /* Glitch animation for corrupted data */
 @keyframes glitch {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: 0.7;
     }
@@ -8718,4 +9108,158 @@ button.keyboard-focus:focus,
 
 .bootstrap-modal-content::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 255, 255, 0.7);
+}
+
+/* ========================================
+   DISPLAY MODES (SETTINGS OVERRIDES)
+   ======================================== */
+
+/* Force Portrait: Constrain width and center */
+#game-container.force-portrait {
+    max-width: 480px;
+    /* Standard mobile width */
+    margin: 0 auto;
+    border-left: 2px solid #333;
+    border-right: 2px solid #333;
+    position: relative;
+    background: #000;
+    overflow: hidden;
+}
+
+/* Force Landscape: Ensure full width */
+#game-container.force-landscape {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    border: none;
+}
+
+
+/* EXTENDED: Global Mobile Emulation Adjustments */
+
+/* Force Mobile Background on Main Menu */
+#game-container.force-portrait #main-menu-bg {
+    content: url('assets/menumobile.png') !important;
+}
+
+/* Force Mobile Typography on Main Menu */
+#game-container.force-portrait #main-menu h1 {
+    font-size: 2em !important;
+}
+
+#game-container.force-portrait .menu-button {
+    min-width: 250px !important;
+    font-size: 1em !important;
+    padding: 12px 30px !important;
+}
+
+/* Ensure Dialogue Box fits */
+#game-container.force-portrait #dialogue-box {
+    width: 95% !important;
+    bottom: 10px !important;
+    padding: 15px !important;
+}
+
+
+/* EXTENDED: Force Overlays to Respect Portrait Bounds */
+#game-container.force-portrait #settings-menu,
+#game-container.force-portrait #pause-menu,
+#game-container.force-portrait #save-load-screen,
+#game-container.force-portrait #confirm-dialog,
+#game-container.force-portrait .ending-dialog,
+#game-container.force-portrait .secret-overlay,
+#game-container.force-portrait #uv7-splash,
+#game-container.force-portrait #route-select {
+    position: absolute !important;
+    /* Trap inside the container */
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    max-width: none !important;
+    /* Reset any max-width since container is already constrained */
+}
+
+/* Ensure Settings Content fits */
+#game-container.force-portrait #settings-content {
+    width: 95% !important;
+    padding: 1rem !important;
+    max-height: 90% !important;
+}
+
+
+/* EXTENDED: Force Main Game Screens to Respect Portrait Bounds */
+#game-container.force-portrait #main-menu,
+#game-container.force-portrait #game-view,
+#game-container.force-portrait #credits-screen,
+#game-container.force-portrait #contact-screen,
+#game-container.force-portrait #backlog-screen {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+    max-width: none !important;
+}
+
+
+/* EXTENDED: Force Visual Effects to Respect Portrait Bounds */
+#game-container.force-portrait .visual-cue-overlay {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+
+/* UTILITY & DEV CONSOLE FIXES */
+.hidden {
+    display: none !important;
+}
+
+/* Ensure Dev Console overlay respects portrait mode too */
+#game-container.force-portrait #dev-console-overlay {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+
+/* DIZEE FIX: Game UI Layer & Dialogue Box Positioning */
+#game-ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Pass clicks to bg */
+    z-index: 50;
+    /* Above scene (z-index 1-10) but below overlays (100+) */
+}
+
+#game-ui-layer>* {
+    pointer-events: auto;
+    /* Re-enable clicks for UI */
+}
+
+/* Force Dialogue Sticky Bottom */
+#dialogue-box {
+    position: absolute !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    /* Ensure it doesn't get pushed up by flex alignment */
+    margin-top: auto !important;
+}
+
+/* Specific fix for the user's "Jump to Top" issue */
+#game-container.force-portrait #game-ui-layer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }

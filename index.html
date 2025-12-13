@@ -111,23 +111,22 @@
                 <!-- Button Grid (2x5 when ToriGatchi unlocked, 4x2+1 when locked) -->
                 <div class="menu-buttons-grid" id="menu-buttons-grid">
                     <div class="menu-row menu-row-top">
-                        <button class="menu-button" onclick="game.startStory()">START STORY</button>
-                        <button class="menu-button" onclick="game.continueGame()">CONTINUE</button>
-                        <button class="menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                        <button class="menu-button" onclick="game.openStandaloneNotes()">📝 NOTES</button>
+                        <button class="menu-button" id="btn-start-story">START STORY</button>
+                        <button class="menu-button" id="btn-continue">CONTINUE</button>
+                        <button class="menu-button" id="btn-load-game-menu">LOAD GAME</button>
+                        <button class="menu-button" id="btn-open-notes">📝 NOTES</button>
                         <!-- ToriGatchi button (only shown when unlocked) -->
                         <button class="menu-button menu-button-torigatchi" id="torigatchi-menu-btn"
-                            onclick="game.openTorigatchiIframe('Tori-Gatchi/index.html')" style="display: none;">🎮
+                            style="display: none;">🎮
                             TORIGATCHI</button>
                     </div>
                     <div class="menu-row menu-row-bottom">
-                        <button class="menu-button" onclick="game.showSettings()">SETTINGS</button>
-                        <button class="menu-button" onclick="game.showCredits()">CREDITS</button>
-                        <button class="menu-button" onclick="game.showMeetTheCrew()">MEET THE CREW</button>
-                        <button class="menu-button" onclick="game.showDirectorsCut()">DIRECTOR'S CUT</button>
+                        <button class="menu-button" id="btn-settings">SETTINGS</button>
+                        <button class="menu-button" id="btn-credits">CREDITS</button>
+                        <button class="menu-button" id="btn-meet-crew">MEET THE CREW</button>
+                        <button class="menu-button" id="btn-directors-cut">DIRECTOR'S CUT</button>
                         <!-- Contact button (moves here when ToriGatchi unlocked) -->
-                        <button class="menu-button menu-button-contact" id="contact-menu-btn"
-                            onclick="game.showContact()">CONTACT</button>
+                        <button class="menu-button menu-button-contact" id="contact-menu-btn">CONTACT</button>
                     </div>
                 </div>
             </div>
@@ -187,12 +186,12 @@
                 </div>
 
                 <!-- Play Button -->
-                <button id="route-play-button" class="route-button" onclick="game.startSelectedRoute()">
+                <button id="route-play-button" class="route-button">
                     PLAY AS <span id="route-name">RONNIE</span>
                 </button>
 
                 <!-- Back Button -->
-                <button id="back-to-menu" onclick="game.backToMenu()">← BACK</button>
+                <button id="back-to-menu">← BACK</button>
 
                 <!-- Hint -->
                 <div class="route-select-hint">
@@ -210,7 +209,10 @@
             <!-- Character Sprites -->
             <div id="character-left" class="character-sprite"></div>
             <div id="character-right" class="character-sprite"></div>
+        </div>
 
+        <!-- Game UI Layer (Moved out of game-view to avoid filter affects) -->
+        <div id="game-ui-layer" style="display: none;">
             <!-- Tether UI (Tori Route Only) -->
             <div id="tether-ui" style="display: none;">
                 <div id="tether-meter">
@@ -235,7 +237,7 @@
             </button>
 
             <!-- Backlog Button (Shown during gameplay) -->
-            <button id="backlog-button" onclick="game.openBacklog()" title="Dialogue History">⏮️</button>
+            <button id="backlog-button" title="Dialogue History">⏮️</button>
 
             <!-- Dialogue Box -->
             <div id="dialogue-box">
@@ -250,10 +252,10 @@
             </div>
 
             <!-- Pause Menu Button -->
-            <button id="pause-button" onclick="game.saveLoadUI.showPauseMenu()"></button>
+            <button id="pause-button"></button>
 
             <!-- Skip Button (Unlocked after completing any ending) -->
-            <button id="skip-button" onclick="game.toggleSkip()" style="display: none;" title="Skip read text [S]">
+            <button id="skip-button" style="display: none;" title="Skip read text [S]">
                 SKIP >>
             </button>
 
@@ -265,22 +267,22 @@
 
         <!-- Pause Menu Overlay (ESC to open)-->
         <div id="pause-menu">
-            <button class="close-x" onclick="game.resumeGame()">✕</button>
+            <button class="close-x" id="btn-close-pause-menu">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
-                <button class="pause-menu-button" onclick="game.resumeGame()">RESUME</button>
-                <button class="pause-menu-button" onclick="game.showSettings()">SETTINGS</button>
-                <button class="pause-menu-button" id="fullscreen-button" onclick="game.toggleFullscreen()">ENTER
+                <button class="pause-menu-button" id="btn-pause-resume">RESUME</button>
+                <button class="pause-menu-button" id="btn-pause-settings">SETTINGS</button>
+                <button class="pause-menu-button" id="fullscreen-button">ENTER
                     FULLSCREEN</button>
-                <button class="pause-menu-button" onclick="game.showSaveLoadScreen('save')">SAVE GAME</button>
-                <button class="pause-menu-button" onclick="game.showSaveLoadScreen('load')">LOAD GAME</button>
-                <button class="pause-menu-button" onclick="game.returnToMainMenu()">MAIN MENU</button>
+                <button class="pause-menu-button" id="btn-pause-save">SAVE GAME</button>
+                <button class="pause-menu-button" id="btn-pause-load">LOAD GAME</button>
+                <button class="pause-menu-button" id="btn-pause-main-menu">MAIN MENU</button>
             </div>
         </div>
 
         <!-- Settings Menu -->
         <div id="settings-menu" style="display: none;">
-            <button class="close-x" onclick="game.closeSettings()">✕</button>
+            <button class="close-x" id="btn-close-settings">✕</button>
             <div id="settings-content">
                 <h2>SETTINGS</h2>
 
@@ -574,8 +576,8 @@
 
                 <!-- Buttons -->
                 <div class="settings-buttons">
-                    <button class="settings-menu-button" onclick="game.closeSettings()">BACK</button>
-                    <button class="settings-menu-button" onclick="game.resetSettings()">RESET TO DEFAULT</button>
+                    <button class="settings-menu-button" id="btn-settings-back">BACK</button>
+                    <button class="settings-menu-button" id="btn-settings-reset">RESET TO DEFAULT</button>
                 </div>
             </div>
         </div>
@@ -584,7 +586,7 @@
         <div id="backlog-screen" style="display: none;">
             <div id="backlog-content">
                 <h2>DIALOGUE HISTORY</h2>
-                <button id="close-backlog" onclick="game.closeBacklog()">✕</button>
+                <button id="close-backlog">✕</button>
                 <div id="backlog-list">
                     <!-- Dialogue history will be populated here -->
                     <p class="backlog-empty">No dialogue history yet.</p>
@@ -646,7 +648,7 @@
             <div class="secret-overlay-header">
                 <h2>BOOTSTRAP PARADOX</h2>
                 <p>847 Failed Attempts. 1 Success.</p>
-                <button class="close-overlay-btn" onclick="game.closeBootstrap()">✕</button>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-x">✕</button>
             </div>
 
             <div id="bootstrap-timeline" class="timeline-container">
@@ -655,7 +657,7 @@
 
             <div class="secret-overlay-footer">
                 <p>Scroll to explore the recursion</p>
-                <button class="close-overlay-btn" onclick="game.closeBootstrap()">CLOSE</button>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-footer">CLOSE</button>
             </div>
         </div>
 
@@ -664,7 +666,7 @@
             <div class="secret-overlay-header">
                 <h2>ECHO COMPILATION</h2>
                 <p>The Voices of Fragmentation</p>
-                <button class="close-overlay-btn" onclick="game.closeEchoCompilation()">✕</button>
+                <button class="close-overlay-btn" id="btn-close-echo-x">✕</button>
             </div>
 
             <div class="echo-tabs">
@@ -678,7 +680,7 @@
             </div>
 
             <div class="secret-overlay-footer">
-                <button class="close-overlay-btn" onclick="game.closeEchoCompilation()">CLOSE</button>
+                <button class="close-overlay-btn" id="btn-close-echo-footer">CLOSE</button>
             </div>
         </div>
 
@@ -728,21 +730,20 @@
 
         <!-- Save/Load Screen -->
         <div id="save-load-screen">
-            <button class="close-x" onclick="game.closeSaveLoadScreen()">✕</button>
+            <button class="close-x" id="btn-close-saveload-x">✕</button>
             <div id="save-load-content">
                 <h2 id="save-load-title">SAVE GAME</h2>
 
                 <!-- Mode Toggle -->
                 <div id="mode-toggle">
-                    <button id="save-mode-btn" class="mode-button active"
-                        onclick="game.setSaveLoadMode('save')">SAVE</button>
-                    <button id="load-mode-btn" class="mode-button" onclick="game.setSaveLoadMode('load')">LOAD</button>
+                    <button id="save-mode-btn" class="mode-button active">SAVE</button>
+                    <button id="load-mode-btn" class="mode-button">LOAD</button>
                 </div>
 
                 <!-- Save Slots -->
                 <div id="save-slots">
                     <!-- Auto-save Slot -->
-                    <div id="slot-autosave" class="save-slot" onclick="game.handleSaveSlotClick('autosave')">
+                    <div id="slot-autosave" class="save-slot">
                         <div class="slot-header">
                             <span class="slot-label">AUTO-SAVE</span>
                             <span id="autosave-route" class="slot-route">---</span>
@@ -751,12 +752,11 @@
                     </div>
 
                     <!-- Manual Save Slot 1 -->
-                    <div id="slot-1" class="save-slot" onclick="game.handleSaveSlotClick(1)">
+                    <div id="slot-1" class="save-slot">
                         <div class="slot-header">
                             <span class="slot-label">SLOT 1</span>
                             <span id="slot-1-route" class="slot-route">---</span>
-                            <button class="delete-btn"
-                                onclick="event.stopPropagation(); game.deleteSaveSlot(1)">DELETE</button>
+                            <button class="delete-btn" id="btn-delete-slot-1">DELETE</button>
                         </div>
                         <div id="slot-1-info" class="slot-info">
                             <div class="save-slot-empty-text">Empty Slot</div>
@@ -765,12 +765,11 @@
                     </div>
 
                     <!-- Manual Save Slot 2 -->
-                    <div id="slot-2" class="save-slot" onclick="game.handleSaveSlotClick(2)">
+                    <div id="slot-2" class="save-slot">
                         <div class="slot-header">
                             <span class="slot-label">SLOT 2</span>
                             <span id="slot-2-route" class="slot-route">---</span>
-                            <button class="delete-btn"
-                                onclick="event.stopPropagation(); game.deleteSaveSlot(2)">DELETE</button>
+                            <button class="delete-btn" id="btn-delete-slot-2">DELETE</button>
                         </div>
                         <div id="slot-2-info" class="slot-info">
                             <div class="save-slot-empty-text">Empty Slot</div>
@@ -779,12 +778,11 @@
                     </div>
 
                     <!-- Manual Save Slot 3 -->
-                    <div id="slot-3" class="save-slot" onclick="game.handleSaveSlotClick(3)">
+                    <div id="slot-3" class="save-slot">
                         <div class="slot-header">
                             <span class="slot-label">SLOT 3</span>
                             <span id="slot-3-route" class="slot-route">---</span>
-                            <button class="delete-btn"
-                                onclick="event.stopPropagation(); game.deleteSaveSlot(3)">DELETE</button>
+                            <button class="delete-btn" id="btn-delete-slot-3">DELETE</button>
                         </div>
                         <div id="slot-3-info" class="slot-info">
                             <div class="save-slot-empty-text">Empty Slot</div>
@@ -794,7 +792,7 @@
                 </div>
 
                 <!-- Close Button -->
-                <button id="close-save-load" onclick="game.closeSaveLoadScreen()">CLOSE</button>
+                <button id="close-save-load">CLOSE</button>
             </div>
         </div>
 
@@ -903,8 +901,8 @@
 
         <!-- Meet the Crew Screen -->
         <div id="crew-screen">
-            <button class="close-x" onclick="game.closeCrew()">✕</button>
-            <button id="next-crew" onclick="game.nextCrew()">NEXT ></button>
+            <button class="close-x" id="btn-close-crew">✕</button>
+            <button id="btn-next-crew">NEXT ></button>
 
             <!-- Screen 1: Group Photo -->
             <div class="credit-screen" id="credit-1">
@@ -1070,7 +1068,7 @@
 
         <!-- Contact Screen -->
         <div id="contact-screen">
-            <button class="close-x" onclick="game.closeContact()">✕</button>
+            <button class="close-x" id="btn-close-contact">✕</button>
             <div id="contact-content">
                 <h2>CONTACT</h2>
                 <div class="contact-message">
@@ -1095,7 +1093,7 @@
 
                     <p class="contact-thanks">Thanks for playing! 💙</p>
                 </div>
-                <button class="contact-close" onclick="game.closeContact()">CLOSE</button>
+                <button class="contact-close" id="btn-close-contact-footer">CLOSE</button>
             </div>
         </div>
 
@@ -1113,13 +1111,14 @@
                     </div>
                 </div>
                 <div class="loop-init-continue">[Click anywhere to continue]</div>
-                <button id="loop-skip-button" class="loop-skip-btn" onclick="game.skipLoopInit()">SKIP REINIT</button>
+                <button id="loop-skip-button" class="loop-skip-btn">SKIP REINIT</button>
             </div>
         </div>
     </div>
 
     <!-- External JavaScript (Load Order Matters!) -->
     <!-- System Files -->
+    <script src="system/input-binder.js"></script>
     <script src="system/game-config.js"></script>
 
     <!-- UI Components (Load Order Matters!) -->
