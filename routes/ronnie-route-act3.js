@@ -650,8 +650,8 @@ class RonnieRouteAct3 {
 
     beat7_tamagotchiBuzz() {
         // HAPTIC: Violent buzzing - emergency alert
-        if (this.game.triggerHaptic) {
-            this.game.triggerHaptic('warning', 'Tamagotchi emergency buzz - violent panic');
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('tamaEmergency', null, 'Tamagotchi emergency buzz - violent panic');
         }
 
         this.game.displayScene({

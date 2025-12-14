@@ -149,11 +149,11 @@ class CollectiblesManager {
     constructor(game, route) {
         this.game = game;
         this.route = route;
-        
+
         // ========================================
         // COLLECTIBLES STATE
         // ========================================
-        
+
         // Track collected items by type
         this.collectedNotes = {
             z: [],          // Z's notes (Tori route - architect)
@@ -164,10 +164,10 @@ class CollectiblesManager {
             pz: [],         // PZ's notes (Ronnie route - question engine)
             special: []     // Special ending notes
         };
-        
+
         // All available notes (defined per route)
         this.allNotes = {};
-        
+
         // ZEERAH'S FIX: Pre-load note definitions on construction
         // So notes exist even if route hasn't called define methods yet
         // (Prevents errors when loading saves that go directly to endings)
@@ -189,24 +189,24 @@ class CollectiblesManager {
         this.notesList = null;
         this.closeNotesButton = null;
     }
-    
+
     // ========================================
     // INITIALIZATION
     // ========================================
-    
+
     initializeAllNoteDefinitions() {
         // ZEERAH'S FIX: Load ALL note definitions immediately on construction
         // This prevents errors when notes are unlocked before route.start() is called
         // (e.g. loading a save that goes directly to an ending)
-        
+
         // Call both define methods to populate allNotes
         this.defineToriNotes();
         this.defineRonnieNotes();
-        
+
         // NOTE: This means allNotes contains notes from BOTH routes
         // But the suppression logic in unlockNote() handles route-specific availability
     }
-    
+
     init() {
         // Cache DOM references from game engine
         this.notesButton = this.game.notesButton;
@@ -214,26 +214,26 @@ class CollectiblesManager {
         this.notesViewer = this.game.notesViewer;
         this.notesList = this.game.notesList;
         this.closeNotesButton = this.game.closeNotesButton;
-        
+
         // Set up event listeners
         if (this.notesButton) {
             this.notesButton.addEventListener('click', () => this.showNotesViewer());
         }
-        
+
         if (this.closeNotesButton) {
             this.closeNotesButton.addEventListener('click', () => this.hideNotesViewer());
         }
-        
+
         // ZEERAH'S FIX: Load any previously collected notes from localStorage
         this.loadNotesFromLocalStorage();
-        
+
         // Initialize notes collection for current route
         this.initializeRouteNotes();
-        
+
         // Update display
         this.updateNotesCount();
     }
-    
+
     initializeRouteNotes() {
         // Override this per route to define available notes
         // Example structure:
@@ -241,11 +241,11 @@ class CollectiblesManager {
         //     'gz1': { type: 'gz', title: 'Note Title', content: 'Note content...' }
         // };
     }
-    
+
     // ========================================
     // COLLECTIBLE MANAGEMENT
     // ========================================
-    
+
     unlockNote(noteId) {
         // Find note type
         const note = this.allNotes[noteId];
@@ -278,14 +278,14 @@ class CollectiblesManager {
             console.log(`Note ${noteId} already collected`);
             return;
         }
-        
+
         // Add to collected
         this.collectedNotes[note.type].push(noteId);
         console.log(`Note unlocked: ${noteId} (${note.title})`);
 
         // DIZEE: Haptic feedback for note unlock
-        if (this.game && this.game.triggerHaptic) {
-            this.game.triggerHaptic('light', 'Note collected');
+        if (this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('buttonPress', null, 'Note collected');
         }
 
         // ZEERAH'S FIX: Save to localStorage immediately so standalone viewer can see it
@@ -318,26 +318,26 @@ class CollectiblesManager {
 
         // Visual notification (pulse button)
         this.notifyNewNote();
-        
+
         // ZEERAH'S ADDITION: Stop skipping when note found (helps with note hunting)
         if (this.game.skipActive) {
             this.game.toggleSkip(); // Turn off skip
             console.log('💚 Skip interrupted - new note found!');
         }
-        
+
         // Add route points if applicable
         if (this.route && this.route.addRoutePoints) {
             this.route.addRoutePoints('true', 1);
         }
     }
-    
+
     isNoteUnlocked(noteId) {
         const note = this.allNotes[noteId];
         if (!note) return false;
-        
+
         return this.collectedNotes[note.type].includes(noteId);
     }
-    
+
     getCollectedCount(type = null) {
         // Get count of collected notes
         if (type) {
@@ -347,7 +347,7 @@ class CollectiblesManager {
             return Object.values(this.collectedNotes).reduce((sum, arr) => sum + arr.length, 0);
         }
     }
-    
+
     getTotalCount(type = null) {
         // Get total available notes
         if (type) {
@@ -445,7 +445,7 @@ class CollectiblesManager {
     // ========================================
     // UI DISPLAY
     // ========================================
-    
+
     updateNotesCount() {
         if (!this.notesCount) return;
 
@@ -465,14 +465,14 @@ class CollectiblesManager {
         if (this.route.name === 'tori') {
             // Tori route: z, cz, zr notes
             return this.collectedNotes.z.length +
-                   this.collectedNotes.cz.length +
-                   this.collectedNotes.zr.length;
+                this.collectedNotes.cz.length +
+                this.collectedNotes.zr.length;
         } else if (this.route.name === 'ronnie') {
             // Ronnie route: gz, iz, pz, special (teaser) notes
             return this.collectedNotes.gz.length +
-                   this.collectedNotes.iz.length +
-                   this.collectedNotes.pz.length +
-                   this.collectedNotes.special.length;
+                this.collectedNotes.iz.length +
+                this.collectedNotes.pz.length +
+                this.collectedNotes.special.length;
         }
 
         return this.getCollectedCount(); // Fallback
@@ -498,17 +498,17 @@ class CollectiblesManager {
 
         return this.getTotalCount(); // Fallback
     }
-    
+
     notifyNewNote() {
         // Just pulse the notes button - no intrusive popup
         // Player will see the button glowing and can open it when ready
         if (this.notesButton) {
             this.notesButton.classList.add('has-new-note');
         }
-        
+
         console.log('🔔 NEW NOTE UNLOCKED! (Button pulsing)');
     }
-    
+
     showNotesViewer() {
         if (!this.notesViewer || !this.notesList) return;
 
@@ -530,7 +530,7 @@ class CollectiblesManager {
 
         // Clear and rebuild notes list
         this.notesList.innerHTML = '';
-        
+
         // Group notes by type
         const notesByType = {
             z: [],
@@ -541,12 +541,12 @@ class CollectiblesManager {
             pz: [],
             special: []
         };
-        
+
         Object.keys(this.allNotes).forEach(noteId => {
             const note = this.allNotes[noteId];
             notesByType[note.type].push({ id: noteId, ...note });
         });
-        
+
         // DIZEE: Render only notes for current route
         if (this.route && this.route.name === 'tori') {
             // Tori's route observers only
@@ -570,7 +570,7 @@ class CollectiblesManager {
             this.renderNoteSection('Ending Analysis', notesByType.special, 'special');
         }
     }
-    
+
     renderNoteSection(sectionTitle, notes, type) {
         if (notes.length === 0) return;
 
@@ -629,7 +629,7 @@ class CollectiblesManager {
             this.notesList.appendChild(noteItem);
         });
     }
-    
+
     hideNotesViewer() {
         if (this.notesViewer) {
             this.notesViewer.style.display = 'none';
@@ -657,11 +657,11 @@ class CollectiblesManager {
         // Update notification dots to reflect read status
         this.game.standaloneNotesViewer.updateNotificationDots();
     }
-    
+
     // ========================================
     // ROUTE-SPECIFIC NOTE DEFINITIONS
     // ========================================
-    
+
     defineRonnieNotes() {
         // ========================================
         // RONNIE'S ROUTE OBSERVER NOTES
@@ -681,7 +681,7 @@ class CollectiblesManager {
             // TEASER NOTE - Unlocked at ANY Ronnie ending
             // This is the player's FIRST note, promoting replay
             // ========================================
-            
+
             'ronnie_teaser': {
                 type: 'special',
                 title: 'Replay_Invitation.txt',
@@ -707,12 +707,12 @@ Good luck, and remember: every choice matters.
 
 - The 848 Crew`
             },
-            
+
             // ========================================
             // GZ's NOTES - Reality Breaker
             // "What if?" energy. Questions everything.
             // ========================================
-            
+
             'gz1': {
                 type: 'gz',
                 title: 'GZ Note 001 - Pattern Interrupt',
@@ -738,12 +738,12 @@ The console isn't a bug. It's a feature. Use it.
 
 SAVEANYWHERE`
             },
-            
+
             // ========================================
             // IZ's NOTES - Fresh Eyes
             // Poetic, melancholic, emotional clarity
             // ========================================
-            
+
             'iz1': {
                 type: 'iz',
                 title: 'IZ Note 001 - The Space Between',
@@ -754,12 +754,12 @@ SAVEANYWHERE`
                 title: 'IZ Note 002 - Heartbeat Frequency',
                 content: 'There\'s a sound she can\'t quite hear. Steady. Rhythmic. It\'s been calling her for 847 iterations. The monitors in that hospital room aren\'t just measuring - they\'re broadcasting. A heartbeat is a homing signal if you know how to listen. The body remembers what the mind forgets. Let me be clear: the way home has a pulse. 🌈'
             },
-            
+
             // ========================================
             // PZ's NOTES - Question Engine
             // Research-brained. Connects obscure dots.
             // ========================================
-            
+
             'pz1': {
                 type: 'pz',
                 title: 'PZ Note 001 - Consciousness Transfer Research',
@@ -770,11 +770,11 @@ SAVEANYWHERE`
                 title: 'PZ Note 002 - Bridge Device Analysis',
                 content: 'Cross-referencing the Tamagotchi\'s function: it\'s not storage, it\'s relay. Think of it like a two-way radio, not a hard drive. Signal goes IN (his voice reaches her). Signal can go OUT (her responses reach him). But there\'s a third function nobody uses - signal can GUIDE. Device to hand. Hand to body. Body to anchor. The research suggests the path exists. Someone just needs to complete the circuit. 🔍'
             },
-            
+
             // ========================================
             // ENDING NOTES (Special type - unlocked on completion)
             // ========================================
-            
+
             'bad_ending': {
                 type: 'special',
                 title: 'Collective_BadRouteAnalysis.txt',
@@ -812,7 +812,7 @@ Try again?
 -GZ, IZ, PZ
 The Outside Observers`
             },
-            
+
             'digital_ending': {
                 type: 'special',
                 title: 'Collective_DigitalForeverNotes.txt',
@@ -850,7 +850,7 @@ the notes are still here.
 -GZ, IZ, PZ
 The Outside Observers`
             },
-            
+
             'true_ending': {
                 type: 'special',
                 title: 'Collective_TrueEndingNotes.txt',
@@ -896,7 +896,7 @@ The Outside Observers
 
 Love won.`
             },
-            
+
             // ZEERAH'S ADDITION: Hidden developer note with secret code
             ronnie_dev_note: {
                 id: 'ronnie_dev_note',
@@ -928,7 +928,7 @@ Trust me. You've earned it.
             }
         };
     }
-    
+
     defineToriNotes() {
         // ========================================
         // TORI'S ROUTE NOTES
@@ -1012,7 +1012,7 @@ UV7CREW`
 ECHOBREAK
 TETHERLOCK`
             },
-            
+
             // CZ's emotional notes
             'cz1': {
                 type: 'cz',
@@ -1035,7 +1035,7 @@ Even code can love.
 
 HEARTKEY`
             },
-            
+
             // ZR's chaos optimization notes  
             'zr1': {
                 type: 'zr',
@@ -1056,7 +1056,7 @@ HEARTKEY`
 
 ALWAYS3`
             },
-            
+
             // ENDING NOTES (Special type - unlocked on completion)
             'bad_ending': {
                 type: 'special',
@@ -1099,7 +1099,7 @@ Try again?
 -The Zee Collective
 Learning from Iteration 848's failure`
             },
-            
+
             'digital_ending': {
                 type: 'special',
                 title: 'ZeeCollective_DigitalForeverNotes.txt',
@@ -1136,7 +1136,7 @@ But... there's still one path you haven't tried.
 -The Zee Collective
 On Love That Transcends Medium`
             },
-            
+
             'true_ending': {
                 type: 'special',
                 title: 'ZeeCollective_TrueEndingNotes.txt',
@@ -1190,7 +1190,7 @@ ZR (The Chaos Optimizer)
 Now go rest.
 You earned it.`
             },
-            
+
             // ZEERAH'S ADDITION: Hidden developer note with more codes
             tori_dev_note: {
                 id: 'tori_dev_note',
@@ -1226,18 +1226,18 @@ P.S. The barback skill strikes again.`
             }
         };
     }
-    
+
     // ========================================
     // STATE MANAGEMENT
     // ========================================
-    
+
     saveNotesToLocalStorage() {
         // ZEERAH'S FIX: Persist notes directly to localStorage
         // So standalone viewer can read them without needing active save
         localStorage.setItem('vn_collected_notes', JSON.stringify(this.collectedNotes));
         console.log('Notes saved to localStorage');
     }
-    
+
     loadNotesFromLocalStorage() {
         // ZEERAH'S FIX: Load notes from localStorage on init
         try {
@@ -1256,13 +1256,13 @@ P.S. The barback skill strikes again.`
             console.warn('Error loading notes from localStorage:', e);
         }
     }
-    
+
     getState() {
         return {
             collectedNotes: JSON.parse(JSON.stringify(this.collectedNotes))
         };
     }
-    
+
     restoreState(state) {
         this.collectedNotes = state.collectedNotes || {
             z: [],
@@ -1273,14 +1273,14 @@ P.S. The barback skill strikes again.`
             pz: [],
             special: []
         };
-        
+
         // ZEERAH'S FIX: Also save to localStorage when restoring from save
         this.saveNotesToLocalStorage();
-        
+
         this.updateNotesCount();
         console.log('Collectibles state restored');
     }
-    
+
     reset() {
         // Clear all collected notes
         this.collectedNotes = {
@@ -1292,7 +1292,7 @@ P.S. The barback skill strikes again.`
             pz: [],
             special: []
         };
-        
+
         this.updateNotesCount();
         console.log('Collectibles reset');
     }
@@ -1529,8 +1529,8 @@ P.S. The barback skill strikes again.`
         setTimeout(() => button.classList.remove('new-mail-pulse'), 600);
 
         // Haptic feedback if enabled
-        if (this.game.triggerHaptic) {
-            this.game.triggerHaptic('medium', 'New collectible notification');
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('buttonPress', null, 'New collectible notification');
         }
     }
 

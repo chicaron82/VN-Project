@@ -3432,7 +3432,7 @@ class GameEngine {
 
     handleDialogueClick() {
         // DIZEE: Haptic feedback for dialogue interaction
-        this.triggerHaptic('light', 'Dialogue advance');
+        this.triggerSensoryFeedback('buttonPress', null, 'Dialogue advance');
 
         // DIZEE FIX: Cancel auto-advance timer when user manually clicks
         if (this.settingsManager) {
@@ -3491,7 +3491,7 @@ class GameEngine {
             } else {
                 button.addEventListener('click', () => {
                     // DIZEE: Haptic feedback for choice selection
-                    this.triggerHaptic('medium', 'Choice selected');
+                    this.triggerSensoryFeedback('buttonPress', button, 'Choice selected');
 
                     this.choiceMenu.style.display = 'none';
                     if (onChoice) onChoice(choice.value);
@@ -7865,8 +7865,8 @@ class RouteSelector {
         // Haptic feedback on toggle
         this.toggleOptions.forEach(option => {
             option.addEventListener('click', () => {
-                if (this.triggerHaptic) {
-                    this.triggerHaptic('light', 'Route toggle selection');
+                if (this.triggerSensoryFeedback) {
+                    this.triggerSensoryFeedback('buttonPress', option, 'Route toggle selection');
                 }
             });
         });

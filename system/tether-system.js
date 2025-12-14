@@ -139,8 +139,8 @@ class TetherSystem {
         // ZEE'S ADDITION: Haptic warning when entering critical zone 🖤
         // Only trigger ONCE when crossing threshold (not every tick)
         if (previousLevel > 30 && this.tetherLevel <= 30 && amount < 0) {
-            if (this.game && this.game.triggerHaptic) {
-                this.game.triggerHaptic('warning', 'Tether critical warning');
+            if (this.game && this.game.triggerSensoryFeedback) {
+                this.game.triggerSensoryFeedback('tetherWarning', null, 'Tether critical warning');
             }
         }
 
@@ -420,8 +420,8 @@ class TetherSystem {
         }
 
         // DIZEE: Haptic feedback for Hold On action
-        if (this.game && this.game.triggerHaptic) {
-            this.game.triggerHaptic('heartbeat', 'Hold On pressed');
+        if (this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('buttonPress', this.holdOnButton, 'Hold On pressed');
         }
 
         // Mark that player has used Hold On at least once

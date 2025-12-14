@@ -551,8 +551,8 @@ class SettingsManager {
         console.log(`📳 Haptic feedback: ${enabled ? 'ENABLED' : 'DISABLED'}`);
 
         // Test vibration when enabled
-        if (enabled && this.game && this.game.triggerHaptic) {
-            this.game.triggerHaptic('double', 'Settings toggle test');
+        if (enabled && this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('buttonPress', null, 'Settings toggle test');
         }
     }
 

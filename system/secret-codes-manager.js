@@ -699,8 +699,8 @@ class SecretCodesManager {
 
     triggerCodeHaptic() {
         // Success pattern for code unlock
-        if (this.game && this.game.triggerHaptic) {
-            this.game.triggerHaptic('success', 'Code unlocked');
+        if (this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('uiSuccess', null, 'Code unlocked');
         }
     }
 
