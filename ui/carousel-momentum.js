@@ -22,11 +22,11 @@ class CarouselMomentum {
         this.totalCards = config.totalCards || (this.cards.length / 3);  // Number of REAL cards
         this.enableKeyboard = config.enableKeyboard !== false;  // Enable keyboard by default
 
-        // Physics parameters (tunable)
-        this.friction = config.friction || 0.95;           // Deceleration rate (0.9-0.98)
-        this.snapThreshold = config.snapThreshold || 0.5;  // Velocity threshold for snapping
-        this.minVelocity = config.minVelocity || 0.1;      // Stop animation below this
-        this.maxVelocity = config.maxVelocity || 50;       // Cap swipe speed
+        // Physics parameters (tunable) - ZEE'S TUNE-UP: Price Is Right spin + iPhone feel
+        this.friction = config.friction || 0.975;          // Coast longer (Price Is Right spin) - UPGRADED
+        this.snapThreshold = config.snapThreshold || 0.2;  // Tighter precision on light flicks - UPGRADED
+        this.minVelocity = config.minVelocity || 0.05;     // Stop animation below this - FINER detection
+        this.maxVelocity = config.maxVelocity || 300;      // ZOOM on hard flicks - UPGRADED
         this.cardWidth = config.cardWidth || 400;          // Card width in pixels
         this.cardGap = config.cardGap || 20;               // Gap between cards
 
@@ -384,9 +384,19 @@ class CarouselMomentum {
     // ========================================
 
     snapToCard() {
-        // Calculate nearest card index
+        // UV7 UPGRADE: Velocity-based multi-card skip (Price is Right wheel physics)
         const cardSpacing = this.cardWidth + this.cardGap;
-        const targetIndex = Math.round(-this.position / cardSpacing);
+
+        // Calculate how many cards to skip based on remaining velocity
+        const velocityFactor = Math.abs(this.velocity) / 8; // Scale factor for skip distance
+        const cardSkip = Math.floor(velocityFactor); // How many extra cards to skip
+
+        // Get current card position
+        const currentCardIndex = Math.round(-this.position / cardSpacing);
+
+        // Calculate target with velocity-based skip
+        const direction = this.velocity > 0 ? 1 : -1;
+        const targetIndex = currentCardIndex + (cardSkip * direction);
 
         // Wrap around infinitely (modulo instead of clamping)
         const clampedIndex = ((targetIndex % this.cards.length) + this.cards.length) % this.cards.length;
@@ -394,17 +404,31 @@ class CarouselMomentum {
         // Calculate target position
         const targetPosition = -clampedIndex * cardSpacing;
 
+        console.log(`🎯 Snap: velocity=${this.velocity.toFixed(1)}, skip=${cardSkip} cards, target=${clampedIndex}`);
+
+
         // Enable snap mode to prevent teleportation during animation
         this.isSnapping = true;
 
-        // Smooth transition to target
-        const snapAnimation = () => {
-            const diff = targetPosition - this.position;
+        // UV7 UPGRADE: Cubic ease-out for buttery smooth snap
+        const startPosition = this.position;
+        const startTime = performance.now();
+        const duration = 400; // ms - smooth but not sluggish
 
-            if (Math.abs(diff) > 0.5) {
-                this.position += diff * 0.2; // Ease to target
-                this.updatePosition(true); // Skip teleport during ease
-                this.updateCardOpacity();
+        const snapAnimation = () => {
+            const elapsed = performance.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Cubic ease-out: fast start, smooth deceleration
+            const eased = 1 - Math.pow(1 - progress, 3);
+
+            // Interpolate position
+            this.position = startPosition + (targetPosition - startPosition) * eased;
+
+            this.updatePosition(true); // Skip teleport during ease
+            this.updateCardOpacity();
+
+            if (progress < 1) {
                 this.animationFrame = requestAnimationFrame(snapAnimation);
             } else {
                 // Finalize snap
@@ -444,14 +468,25 @@ class CarouselMomentum {
         // Enable snap mode to prevent teleportation during animation
         this.isSnapping = true;
 
-        // Smooth transition to target
-        const snapAnimation = () => {
-            const diff = targetPosition - this.position;
+        // UV7 UPGRADE: Cubic ease-out for buttery smooth snap (specific card version)
+        const startPosition = this.position;
+        const startTime = performance.now();
+        const duration = 400; // ms
 
-            if (Math.abs(diff) > 0.5) {
-                this.position += diff * 0.2; // Ease to target
-                this.updatePosition(true); // Skip teleport during ease
-                this.updateCardOpacity();
+        const snapAnimation = () => {
+            const elapsed = performance.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Cubic ease-out
+            const eased = 1 - Math.pow(1 - progress, 3);
+
+            // Interpolate position
+            this.position = startPosition + (targetPosition - startPosition) * eased;
+
+            this.updatePosition(true); // Skip teleport during ease
+            this.updateCardOpacity();
+
+            if (progress < 1) {
                 this.animationFrame = requestAnimationFrame(snapAnimation);
             } else {
                 // Finalize snap

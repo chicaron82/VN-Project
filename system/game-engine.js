@@ -1166,6 +1166,11 @@ class GameEngine {
             this.notesButton.style.display = 'none';
         }
 
+        // DIZEE FIX: Ensure pause menu overaly is closed when returning to main menu
+        if (this.saveLoadUI) {
+            this.saveLoadUI.hidePauseMenu();
+        }
+
         // Show main menu with smooth fade-in
         this.mainMenu.style.display = 'flex';
         this.mainMenu.style.opacity = '0';
@@ -1605,11 +1610,13 @@ class GameEngine {
         }
 
         // 2) Trigger haptic with channel info
+        // DIZEE FIX: Critical channel haptics bypass cooldown (narrative beats must always fire)
         if (this.triggerHaptic && basePattern) {
+            const forceTrigger = channel === 'critical' || channel === 'narrative';
             this.triggerHaptic(
                 basePattern,
                 description || `Sensory cue: ${cueType}`,
-                { channel }
+                { channel, force: forceTrigger }
             );
         }
 
@@ -2052,7 +2059,19 @@ class GameEngine {
     }
 
     startPrologueNormally() {
-        // Clear sprites when starting fresh story
+        // Clear backlog from previous session
+        if (this.backlogManager) {
+            this.backlogManager.clearHistory();
+        }
+
+        // Cleanup Menu Carousel if active
+        if (this.menuCarousel) {
+            this.menuCarousel.destroy();
+            this.menuCarousel = null;
+        }
+
+        // Standard prologue start
+        this.gameState.currentRoute = 'prologue'; // Set current route for tracking
         this.clearAllSprites();
 
         // Reset game state
@@ -2144,15 +2163,8 @@ class GameEngine {
 
         setTimeout(() => {
             routeSelect.style.display = 'none';
-            this.mainMenu.style.display = 'flex';
-
-            // Fade in menu
-            setTimeout(() => {
-                this.mainMenu.style.opacity = '1';
-
-                // ZEE'S ADDITION: Start main menu tips 🖤
-                this.startMainMenuTipRotation();
-            }, 100);
+            // Use standard showMainMenu to ensure Carousel is re-initialized
+            this.showMainMenu();
         }, 500);
     }
 
@@ -2406,6 +2418,21 @@ class GameEngine {
     // ========================================
 
     startRoute(routeName) {
+        console.log(`🚀 Starting route: ${routeName}`);
+
+        // Clear backlog from previous session/route
+        if (this.backlogManager) {
+            this.backlogManager.clearHistory();
+        }
+
+        // Cleanup Menu Carousel if active
+        if (this.menuCarousel) {
+            this.menuCarousel.destroy();
+            this.menuCarousel = null;
+        }
+
+        this.gameState.currentRoute = routeName; // Set current route for tracking
+
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();
 
@@ -3604,7 +3631,7 @@ class GameEngine {
             this.recordEndingAttempt();
 
             setTimeout(() => {
-                this.returnToMainMenu();
+                this.returnToMainMenu(true);
             }, 300);
         });
 
@@ -4766,7 +4793,7 @@ class GameEngine {
         this.saveLoadUI.confirmAction(confirmed);
     }
 
-    returnToMainMenu() {
+    returnToMainMenu(skipConfirmation = false) {
         // ZEE: Revert color scheme if returning from Insane Mode 🖤
         this.deactivateInsaneMode();
 
@@ -4807,7 +4834,7 @@ class GameEngine {
             }
         }
 
-        this.saveLoadUI.returnToMainMenu();
+        this.saveLoadUI.returnToMainMenu(skipConfirmation);
 
         // ZEERAH'S EASTER EGG: Activate Torigatchi listener if True Ending achieved
         this.activateEasterEggListener();
@@ -5215,11 +5242,28 @@ game.devCommands()
     continueGame() {
         const mostRecent = this.saveManager.getMostRecentSave();
         if (mostRecent) {
+            console.log('🔄 Continue Game triggered. Restoring version ' + mostRecent.data.version);
             this.saveManager.restoreGameState(mostRecent.data);
-            // NEW: Restore sprites after loading
-            this.restoreSprites();
+            // REMOVED: restoreSprites() appears undefined/redundant as restoreGameState -> jumpToScene handles visuals
+            // this.restoreSprites();
         } else {
             this.saveManager.showSaveIndicator('No save data found', true);
+        }
+    }
+
+    // ========================================
+    // UI DELEGATION (Fix for index.html calls)
+    // ========================================
+
+    confirmAction(confirmed) {
+        // Delegate to SaveLoadUI which manages the dialog logic
+        if (this.saveLoadUI) {
+            this.saveLoadUI.confirmAction(confirmed);
+        } else {
+            console.error('❌ SaveLoadUI not initialized, cannot handle confirmAction');
+            // Fallback: manually hide dialog if UI is broken
+            const dialog = document.getElementById('confirm-dialog');
+            if (dialog) dialog.classList.remove('active');
         }
     }
 

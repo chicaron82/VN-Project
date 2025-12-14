@@ -24,14 +24,14 @@ class RonnieRoute {
     constructor(game) {
         this.game = game;
         this.name = 'ronnie'; // CRITICAL: Used for note suppression check
-        
+
         // Initialize collectibles manager for Ronnie's ending notes
         this.collectiblesManager = new CollectiblesManager(this.game, this);
-        
+
         // Initialize act modules
         this.act2 = new RonnieRouteAct2(this);
         this.act3 = new RonnieRouteAct3(this);
-        
+
         // DON'T auto-start anymore - let start() method handle it
         // This allows save system to properly initialize state before running scenes
     }
@@ -39,33 +39,33 @@ class RonnieRoute {
     // ========================================
     // START METHOD (Required for Save System)
     // ========================================
-    
+
     start() {
         // Initialize Ronnie's collectibles FIRST so we can check if notes exist
         this.collectiblesManager.init();
         this.collectiblesManager.defineRonnieNotes();
-        
+
         // ZEERAH'S FIX: Show notes button if player has collected ANY notes OR completed any ending
         if (this.game.notesButton) {
             const hasCompletedEnding = this.game.hasCompletedAnyEnding();
             const hasCollectedNotes = this.collectiblesManager.getCollectedCount() > 0;
-            
+
             if (hasCompletedEnding || hasCollectedNotes) {
                 this.game.notesButton.style.display = 'block';
             } else {
                 this.game.notesButton.style.display = 'none';
             }
         }
-        
+
         // Unlock GenZee's version number note at route start
         this.collectiblesManager.unlockNote('gz1');
-        
+
         // Entry point for Ronnie's route
         // Scenes 1-3 handled by SharedPrologue
         // Ronnie's route starts at Scene 4 (Hospital Anchor)
         this.prologueScene4();
     }
-    
+
     // Collectibles delegation for ending notes
     unlockNote(noteId) {
         this.collectiblesManager.unlockNote(noteId);
@@ -147,7 +147,7 @@ class RonnieRoute {
     prologueScene5_buzz() {
         // HAPTIC: Single buzz - body calling her home
         if (this.game.triggerHaptic) {
-            this.game.triggerHaptic('medium', 'Body calling - tether anchor pulse');
+            this.game.triggerHaptic('medium', 'Body calling - tether anchor pulse', { force: true, channel: 'narrative' });
         }
 
         this.game.displayScene({
@@ -286,7 +286,7 @@ class RonnieRoute {
     act1Scene1_first_words() {
         // Unlock Belle's note - space between life and death
         this.collectiblesManager.unlockNote('iz1');
-        
+
         this.game.displayScene({
             character: 'Tori (sprite, glitching)',
             dialogue: '"Baby? ...Is that you? It\'s me... Tori. I don\'t know how, but I\'m here."',
@@ -514,18 +514,18 @@ class RonnieRoute {
             delay: 4000
         }, 'act1Scene2_end');
     }
-    
+
     // ========================================
     // SAVE/LOAD SUPPORT
     // ========================================
-    
+
     getState() {
         return {
             route: 'ronnie',
             collectibles: this.collectiblesManager.getState()
         };
     }
-    
+
     restoreState(state) {
         if (state.collectibles) {
             this.collectiblesManager.restoreState(state.collectibles);

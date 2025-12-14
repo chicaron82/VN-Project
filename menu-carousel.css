@@ -33,11 +33,14 @@
 /* Only show grab cursor when actually dragging on the track background */
 .carousel-track {
     display: flex;
-    gap: 20px; /* Card gap - matches momentum engine config */
+    gap: 20px;
+    /* Card gap - matches momentum engine config */
     align-items: center;
     position: relative;
-    will-change: transform; /* Performance optimization for momentum */
-    transition: none; /* Momentum engine handles all transforms */
+    will-change: transform;
+    /* Performance optimization for momentum */
+    transition: none;
+    /* Momentum engine handles all transforms */
     /* Removed cursor: grab/grabbing - cards handle their own cursors */
 }
 
@@ -46,7 +49,8 @@
    ======================================== */
 
 .carousel-card {
-    min-width: 400px; /* Fixed width for momentum calculations */
+    min-width: 400px;
+    /* Fixed width for momentum calculations */
     max-width: 400px;
     min-height: 350px;
     padding: 2.5rem 2rem;
@@ -60,16 +64,21 @@
     justify-content: center;
     gap: 1rem;
     cursor: pointer;
-    flex-shrink: 0; /* Prevent cards from shrinking */
-    opacity: 1; /* Start visible - momentum engine handles opacity */
+    flex-shrink: 0;
+    /* Prevent cards from shrinking */
+    opacity: 1;
+    /* Start visible - momentum engine handles opacity */
     transition:
         opacity 0.3s ease,
         transform 0.3s ease,
         box-shadow 0.3s ease-out,
         border-color 0.3s ease-out;
-    position: relative; /* Establish stacking context */
-    z-index: 10; /* Above track */
-    pointer-events: auto; /* Ensure clickable */
+    position: relative;
+    /* Establish stacking context */
+    z-index: 10;
+    /* Above track */
+    pointer-events: auto;
+    /* Ensure clickable */
 }
 
 /* Momentum engine controls opacity/scale dynamically - no need for manual animations! */
@@ -221,12 +230,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 255, 0, 0.05) 0px,
-        transparent 2px,
-        transparent 4px
-    );
+    background: repeating-linear-gradient(0deg,
+            rgba(0, 255, 0, 0.05) 0px,
+            transparent 2px,
+            transparent 4px);
     border-radius: 16px;
     pointer-events: none;
 }
@@ -244,10 +251,13 @@
 }
 
 @keyframes torigatchi-border-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         border-color: #00ff00;
         box-shadow: 0 0 30px rgba(0, 255, 0, 0.4);
     }
+
     50% {
         border-color: #00aa00;
         box-shadow: 0 0 40px rgba(0, 255, 0, 0.6);
@@ -264,10 +274,12 @@
         transform: scale(1);
         box-shadow: 0 0 0 rgba(0, 255, 0, 0);
     }
+
     40% {
         transform: scale(1.15);
         box-shadow: 0 0 50px rgba(0, 255, 0, 0.9);
     }
+
     100% {
         transform: scale(1.02);
         box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
@@ -292,9 +304,12 @@
     justify-content: center;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    z-index: 100; /* Above viewport and cards */
-    pointer-events: auto; /* Ensure clickable */
-    position: relative; /* Establish stacking context */
+    z-index: 100;
+    /* Above viewport and cards */
+    pointer-events: auto;
+    /* Ensure clickable */
+    position: relative;
+    /* Establish stacking context */
 }
 
 .carousel-arrow:hover:not(:disabled) {
@@ -383,7 +398,7 @@
 
 .carousel-hint {
     text-align: center;
-    font-size: 0.85em;
+    font-size: 1.0em;
     opacity: 0.6;
     margin-top: 1rem;
     color: #aaa;
@@ -432,9 +447,12 @@
 }
 
 @keyframes unlock-icon-pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.2);
     }
@@ -498,74 +516,83 @@
         gap: 0.5rem;
         /* margin: 1rem auto 0.5rem; - Handled by mode switch logic */
     }
-    
+
     .carousel-viewport {
         min-height: 380px;
         width: 100%;
         /* Simple Mode requires simpler structure */
     }
-    
+
     .carousel-card {
         min-width: 320px;
         max-width: 320px;
         min-height: 350px;
         padding: 2rem 1.5rem;
     }
-    
+
     .card-title {
         font-size: 1.6em;
     }
-    
+
     .card-subtitle {
-        font-size: 0.9em;
+        font-size: 1.0em;
     }
-    
+
     .card-button {
         padding: 0.9rem 2rem;
         font-size: 1em;
     }
-    
+
     /* Hide arrows on mobile (gesture-first) */
     .carousel-arrow {
         display: none;
     }
-    
+
     .carousel-hint {
-        font-size: 0.75em;
+        font-size: 1.3em;
     }
-    
+
     .carousel-dots {
         gap: 0.6rem;
         margin-top: 1rem;
     }
-    
+
     .carousel-dot {
         width: 10px;
         height: 10px;
     }
-    
+
     .unlock-notification {
         width: 90vw;
         max-width: 400px;
         padding: 2rem 2rem;
     }
-    
+
     .unlock-icon {
         font-size: 4em;
     }
-    
+
     .unlock-text {
         font-size: 1.4em;
     }
-    
+
     .unlock-subtitle {
         font-size: 2em;
+    }
+
+    .dot-hint {
+        font-size: 1.3em;
+    }
+
+    .menu-rotating-tip {
+        font-size: 0.9em;
     }
 }
 
 /* Landscape Mode - Compact to fit all elements */
 @media (max-height: 720px) and (orientation: landscape) {
-    .menu-carousel.momentum-mode { /* Apply specific grid only to momentum mode */
+    .menu-carousel.momentum-mode {
+        /* Apply specific grid only to momentum mode */
         margin: 0.3rem auto;
         display: grid !important;
         grid-template-columns: 40px 1fr 40px;
@@ -612,7 +639,7 @@
     .carousel-hint {
         grid-column: 1 / 4;
         grid-row: 3;
-        font-size: 0.6em !important;
+        font-size: 0.9em !important;
         margin-top: 0.3rem !important;
     }
 
@@ -656,7 +683,7 @@
     }
 
     .carousel-hint {
-        font-size: 0.6em !important;
+        font-size: 0.9em !important;
         margin-top: 0.3rem !important;
     }
 
@@ -692,7 +719,7 @@
     }
 
     .menu-rotating-tip {
-        font-size: 0.65em !important;
+        font-size: 1.1em !important;
     }
 }
 
@@ -701,15 +728,15 @@
     .carousel-card {
         padding: 1.5rem 1rem;
     }
-    
+
     .card-title {
         font-size: 1.4em;
     }
-    
+
     .card-icon {
         font-size: 2.5em;
     }
-    
+
     .card-button {
         padding: 0.8rem 1.5rem;
         font-size: 0.95em;
@@ -725,11 +752,11 @@
     .carousel-card {
         border-width: 3px;
     }
-    
+
     .carousel-arrow {
         border-width: 3px;
     }
-    
+
     .carousel-dot {
         border-width: 3px;
     }
@@ -737,6 +764,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
     .carousel-card,
     .carousel-arrow,
     .carousel-dot,
@@ -744,7 +772,7 @@
         transition: none;
         animation: none;
     }
-    
+
     .carousel-card.card-active {
         opacity: 1;
         transform: none;
@@ -792,5 +820,115 @@
     to {
         opacity: 0;
         transform: translateX(100px) scale(0.9);
+    }
+}
+
+/* ========================================
+   TINDER MODE (Portrait/Mobile)
+   UV7 UPGRADE: Card swipe mechanics
+   ======================================== */
+
+.menu-carousel.tinder-mode {
+    max-width: 100%;
+    padding: 0 1rem;
+}
+
+.menu-carousel.tinder-mode .carousel-viewport {
+    min-height: 450px;
+    perspective: 1000px;
+}
+
+.menu-carousel.tinder-mode .carousel-track {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    display: block;
+}
+
+/* Tinder-style card positioning */
+.menu-carousel.tinder-mode .carousel-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 400px;
+    min-width: 280px;
+    height: 350px;
+    touch-action: none;
+    will-change: transform, opacity;
+    transition: none;
+    /* Controlled by JS */
+}
+
+/* Card stack layers */
+.menu-carousel.tinder-mode .carousel-card[data-stack-position='0'] {
+    /* Previous card (hidden) */
+    z-index: 1;
+}
+
+.menu-carousel.tinder-mode .carousel-card[data-stack-position='1'] {
+    /* Current card (active) */
+    z-index: 3;
+}
+
+.menu-carousel.tinder-mode .carousel-card[data-stack-position='2'] {
+    /* Next card (peeking) */
+    z-index: 2;
+}
+
+/* Hint text */
+.menu-carousel.tinder-mode .carousel-hint {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.menu-carousel.tinder-mode .hint-swipe,
+.menu-carousel.tinder-mode .hint-confirm {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+.menu-carousel.tinder-mode .hint-confirm {
+    color: rgba(0, 255, 255, 0.6);
+}
+
+/* Confirmation pulse animation */
+@keyframes confirmPulse {
+    0% {
+        transform: scale(1.0);
+        box-shadow: 0 0 0 rgba(0, 255, 255, 0);
+    }
+
+    50% {
+        transform: scale(1.15);
+        box-shadow: 0 0 40px rgba(0, 255, 255, 1);
+    }
+
+    100% {
+        transform: scale(1.0);
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+}
+
+.carousel-card.confirmed {
+    animation: confirmPulse 200ms ease-out;
+}
+
+/* Mobile optimizations */
+@media (max-width: 480px) {
+    .menu-carousel.tinder-mode .carousel-card {
+        width: 95%;
+        min-height: 320px;
+        padding: 2rem 1.5rem;
+    }
+
+    .menu-carousel.tinder-mode .carousel-viewport {
+        min-height: 400px;
     }
 }

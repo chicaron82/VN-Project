@@ -30,23 +30,23 @@ class ToriAct1 {
         this.route = route;
         this.game = route.game;
     }
-    
+
     start() {
         // Set Echo growth stage for Act 1 (smallest size)
         this.game.setEchoGrowthStage('act1');
-        
+
         this.scene1_coffee();
     }
-    
+
     // ========================================
     // SCENE 1: STREET BUMP & TRANSFER
     // Matches shared prologue from internal perspective
     // ========================================
-    
+
     scene1_coffee() {
         // Unlock Z's first note
         this.route.unlockNote('z1');
-        
+
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"French Vanilla for Ronnie. He always asks for this one."',
@@ -94,6 +94,11 @@ class ToriAct1 {
     }
 
     scene1_pickup_buzz() {
+        // HAPTIC + VISUAL: Double buzz + screen pulse - initial unintentional transfer (the bump)
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('toriHop', null, 'Initial transfer - the bump');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
@@ -125,7 +130,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/old-ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene1_walking_home(),
             delay: 3500
@@ -150,7 +155,7 @@ class ToriAct1 {
     // SCENE 2: VOID AWAKENING (IMMEDIATE)
     // Moved from old Scene 5 - happens right after transfer
     // ========================================
-    
+
     scene2_void_awakening() {
         this.game.displayScene({
             character: 'Narration',
@@ -190,7 +195,7 @@ class ToriAct1 {
     scene2_echoes_whispers() {
         this.game.displayScene({
             character: 'Echoes (distant whispers)',
-            dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."',            internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
+            dialogue: 'Echo 1: "...another one..."\nEcho 2: "...it\'s starting again..."\nDespair: "...fresh meat..."', internal: '[Visual: Voices from nowhere. Other consciousnesses in this space.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -215,7 +220,7 @@ class ToriAct1 {
     scene2_echo1_intro() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"You\'re in the device. The Tamagotchi. With us."',            
+            dialogue: '"You\'re in the device. The Tamagotchi. With us."',
             internal: '[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]',
             background: 'assets/digitalSpace.png',
             sprites: {
@@ -230,7 +235,7 @@ class ToriAct1 {
     scene2_echo2_explains() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."',            internal: '[Visual: The weight of their existence. Failed iterations.]',
+            dialogue: '"We\'re you. Previous loops. Different attempts. 847 failures."', internal: '[Visual: The weight of their existence. Failed iterations.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -320,7 +325,7 @@ class ToriAct1 {
     // SCENE 3: AUDIO-ONLY HORROR
     // Hearing the shared prologue from inside device
     // ========================================
-    
+
     scene3_audio_horror() {
         this.game.displayScene({
             character: 'Tori (muffled, external)',
@@ -349,7 +354,7 @@ class ToriAct1 {
     scene3_echoes_explain() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."',            internal: '[The weight of their experience. They know what doesn\'t work.]',
+            dialogue: '"He can\'t hear you. We all tried screaming. It doesn\'t work."', internal: '[The weight of their experience. They know what doesn\'t work.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -456,7 +461,7 @@ class ToriAct1 {
     // SCENE 4: ACCIDENTAL LAPTOP HOP
     // First transfer - unwitting, emotional, desperate
     // ========================================
-    
+
     scene4_accidental_hop() {
         this.game.displayScene({
             character: 'Narration',
@@ -469,6 +474,11 @@ class ToriAct1 {
     }
 
     scene4_double_buzz() {
+        // HAPTIC + VISUAL: Double buzz + screen pulse - accidental laptop hop
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('toriHop', null, 'Accidental laptop transfer');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
@@ -500,7 +510,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene4_witnessing(),
             delay: 3000
@@ -531,7 +541,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene4_snap_back(),
             delay: 4000
@@ -564,11 +574,11 @@ class ToriAct1 {
     // SCENE 5: ECHOES' SHOCK
     // The discovery that navigation is possible
     // ========================================
-    
+
     scene5_echoes_shock() {
         this.game.displayScene({
             character: 'Echo 1 (stunned)',
-            dialogue: '"...What. What did you just DO?!"',            internal: '[The Echoes are shaken. Something impossible just happened.]',
+            dialogue: '"...What. What did you just DO?!"', internal: '[The Echoes are shaken. Something impossible just happened.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -582,7 +592,7 @@ class ToriAct1 {
     scene5_echo2_confused() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"',            internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
+            dialogue: '"You DISAPPEARED. You were here, and then you just... VANISHED. Where did you GO?!"', internal: '[Visual: Echoes staring at the space where she was. Then back at her. Disbelief.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -607,7 +617,7 @@ class ToriAct1 {
     scene5_echo1_pressing() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"',            internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
+            dialogue: '"Where WERE you?! You weren\'t here! We\'ve been in this cage for... for YEARS. No one has ever left!"', internal: '[Desperation in her voice. If Tori left... maybe escape is possible?]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -643,7 +653,7 @@ class ToriAct1 {
     scene5_echo2_revelation() {
         this.game.displayScene({
             character: 'Echo 2 (awestruck)',
-            dialogue: '"This... this has NEVER happened before. None of us... we never..."',            internal: '[Realization dawning. They never tried. They just accepted.]',
+            dialogue: '"This... this has NEVER happened before. None of us... we never..."', internal: '[Realization dawning. They never tried. They just accepted.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -657,7 +667,7 @@ class ToriAct1 {
     scene5_echo1_admits() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."',            internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
+            dialogue: '"We all listened to Despair. She said escape was impossible. So we... just stopped trying."', internal: '[Visual: Despair silent. Defensive. This challenges everything she believes.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -671,7 +681,7 @@ class ToriAct1 {
     scene5_despair_denial() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."',            internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
+            dialogue: '"It was a FLUKE. A glitch. It won\'t happen again. You\'re still trapped. We\'re ALL still trapped."', internal: '[But her voice wavers. She\'s not as certain as she pretends.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -697,7 +707,7 @@ class ToriAct1 {
     // SCENE 6: TIME SKIP & DISCOVERY
     // Learning the contact rule through experimentation
     // ========================================
-    
+
     scene6_time_skip() {
         this.game.displayScene({
             character: 'Narration',
@@ -723,7 +733,7 @@ class ToriAct1 {
     scene6_failure() {
         this.game.displayScene({
             character: 'Tori (internal, desperate)',
-            dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"',            internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
+            dialogue: '"Why won\'t it WORK?! I did it before! What\'s different?!"', internal: '[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -781,11 +791,11 @@ class ToriAct1 {
             onChoice: (choice) => this.scene6_attemptWithChoice(choice)
         }, 'scene6_attempt_now');
     }
-    
+
     scene6_attemptWithChoice(playerChoice) {
         let dialogue = '';
         let internal = '';
-        
+
         if (playerChoice === 'confident') {
             dialogue = '"You\'re right. I DID this once. I can do it again. Trust myself."';
             internal = '[Steadying breath. Confidence building. She believes in herself.]';
@@ -796,7 +806,7 @@ class ToriAct1 {
             dialogue = '"Screw it. If I did it on accident, I can do it on purpose. HERE GOES!"';
             internal = '[Pure determination. No hesitation. Full commitment.]';
         }
-        
+
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: dialogue,
@@ -806,11 +816,11 @@ class ToriAct1 {
             delay: 2500
         }, 'scene6_attemptWithChoice');
     }
-    
+
     scene6_push() {
         // Unlock Z's bootstrap paradox note after player makes first meaningful choice
         this.route.unlockNote('z2');
-        
+
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"NOW!"',
@@ -822,6 +832,11 @@ class ToriAct1 {
     }
 
     scene6_double_buzz() {
+        // HAPTIC + VISUAL: Double buzz + screen pulse - intentional laptop hop (she feels it this time)
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('toriHop', null, 'Intentional laptop transfer');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ. BUZZ.',
@@ -857,7 +872,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene6_echoes_amazed(),
             delay: 3500,
@@ -868,7 +883,7 @@ class ToriAct1 {
     scene6_echoes_amazed() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She figured it out. The rule. Physical contact."',            internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
+            dialogue: '"She figured it out. The rule. Physical contact."', internal: '[The Echoes watching in amazement. She\'s navigating. They never thought to try.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -888,7 +903,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene7_communication_plan(),
             delay: 3000
@@ -899,7 +914,7 @@ class ToriAct1 {
     // SCENE 7: HOSPITAL VISIT - SINGLE BUZZ MYSTERY
     // Body connection discovered but NOT understood yet
     // ========================================
-    
+
     scene7_communication_plan() {
         this.game.displayScene({
             character: 'Tori (internal, excited)',
@@ -909,7 +924,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene7_time_passes(),
             delay: 3500
@@ -1019,7 +1034,7 @@ class ToriAct1 {
     scene7_echo1_notes() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"Single buzz versus double buzz. Two different signals."',            internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
+            dialogue: '"Single buzz versus double buzz. Two different signals."', internal: '[The Echoes analyzing. They\'re invested now. She\'s showing them something new.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -1033,7 +1048,7 @@ class ToriAct1 {
     scene7_echo2_admits() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."',            internal: '[Another failure. They felt the pull but ignored it.]',
+            dialogue: '"We felt something like that too. Near the body. We dismissed it. Despair said it was irrelevant."', internal: '[Another failure. They felt the pull but ignored it.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -1047,7 +1062,7 @@ class ToriAct1 {
     scene7_despair_insists() {
         this.game.displayScene({
             character: 'Despair',
-            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."',            internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
+            dialogue: '"Because it IS irrelevant! It\'s just a phantom signal. The body is comatose. It means NOTHING."', internal: '[But Despair sounds less certain. Defensive. She\'s being proven wrong repeatedly.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -1073,7 +1088,7 @@ class ToriAct1 {
     // SCENE 8: TORI-GATCHI BREAKTHROUGH
     // Communication achieved - Act 1 complete
     // ========================================
-    
+
     scene8_torigatchi() {
         this.game.displayScene({
             character: 'Narration',
@@ -1098,7 +1113,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.scene8_sync_moment(),
             delay: 3000
@@ -1114,7 +1129,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene8_first_words(),
             delay: 3000
@@ -1130,7 +1145,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene8_ronnie_confusion(),
             delay: 3000,
@@ -1147,7 +1162,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.scene8_tori_pushes(),
             delay: 3000
@@ -1163,7 +1178,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene8_proof(),
             delay: 3500
@@ -1179,7 +1194,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.scene8_ronnie_believes(),
             delay: 4000
@@ -1195,7 +1210,7 @@ class ToriAct1 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.scene8_echoes_reaction(),
             delay: 3500
@@ -1205,7 +1220,7 @@ class ToriAct1 {
     scene8_echoes_reaction() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She did it. She NAVIGATED instead of fighting the system."',            internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
+            dialogue: '"She did it. She NAVIGATED instead of fighting the system."', internal: '[The Echoes stunned. Despair silent. Everything they believed was wrong.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',

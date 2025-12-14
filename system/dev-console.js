@@ -83,28 +83,42 @@ const DevConsole = (() => {
         const originalWarn = console.warn;
         const originalError = console.error;
 
+        // Helper for circular JSON handling
+        const safeStringify = (obj) => {
+            const seen = new WeakSet();
+            return JSON.stringify(obj, (key, value) => {
+                if (typeof value === 'object' && value !== null) {
+                    if (seen.has(value)) {
+                        return '[Circular]';
+                    }
+                    seen.add(value);
+                }
+                return value;
+            }, 2);
+        };
+
         // Override console.log
-        console.log = function(...args) {
+        console.log = function (...args) {
             const message = args.map(arg =>
-                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
             ).join(' ');
             appendLog(message, 'log');
             originalLog.apply(console, args);
         };
 
         // Override console.warn
-        console.warn = function(...args) {
+        console.warn = function (...args) {
             const message = args.map(arg =>
-                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
             ).join(' ');
             appendLog('⚠️ ' + message, 'warn');
             originalWarn.apply(console, args);
         };
 
         // Override console.error
-        console.error = function(...args) {
+        console.error = function (...args) {
             const message = args.map(arg =>
-                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
             ).join(' ');
             appendLog('❌ ' + message, 'error');
             originalError.apply(console, args);

@@ -165,7 +165,7 @@ class MomentumAdapter {
             cards: cardElements,
             cardWidth: cardWidth,
             cardGap: 20,
-            friction: 0.92,
+            friction: 0.975,  // ZEE'S TUNE-UP: Price Is Right spin (was 0.965)
             viewport: this.carouselViewport,
             totalCards: this.cards.length,
             onCardChange: (index) => {

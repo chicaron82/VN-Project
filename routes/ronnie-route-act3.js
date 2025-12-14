@@ -147,7 +147,7 @@ class RonnieRouteAct3 {
     // BEAT 2: MEMORY FRACTURE
     // Tori's memories start corrupting
     // ========================================
-    
+
     act3Beat2() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
@@ -162,7 +162,7 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'act3Beat2');
     }
-    
+
     beat2_forgetting() {
         this.game.displayScene({
             character: 'Tori (confused)',
@@ -176,7 +176,7 @@ class RonnieRouteAct3 {
             delay: 2500
         }, 'beat2_forgetting');
     }
-    
+
     beat2_ronnieAnswer() {
         this.game.displayScene({
             character: 'Ronnie (careful)',
@@ -191,7 +191,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat2_ronnieAnswer');
     }
-    
+
     beat2_toriRealization() {
         this.game.displayScene({
             character: 'Tori (panicking)',
@@ -207,7 +207,7 @@ class RonnieRouteAct3 {
             style: 'critical'
         }, 'beat2_toriRealization');
     }
-    
+
     beat2_promise() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -222,12 +222,12 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'beat2_promise');
     }
-    
+
     // ========================================
     // BEAT 3: SYSTEM MESSAGES INTRUDE
     // External warnings break through
     // ========================================
-    
+
     act3Beat3() {
         this.game.displayScene({
             character: 'Narration',
@@ -242,7 +242,7 @@ class RonnieRouteAct3 {
             delay: 2500
         }, 'act3Beat3');
     }
-    
+
     beat3_firstMessage() {
         this.game.displayScene({
             character: 'System Message',
@@ -258,7 +258,7 @@ class RonnieRouteAct3 {
             style: 'critical'
         }, 'beat3_firstMessage');
     }
-    
+
     beat3_toriSees() {
         this.game.displayScene({
             character: 'Tori (reading)',
@@ -272,7 +272,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat3_toriSees');
     }
-    
+
     beat3_ronnieHesitates() {
         this.game.displayScene({
             character: 'Ronnie (deflecting)',
@@ -287,7 +287,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat3_ronnieHesitates');
     }
-    
+
     beat3_moreWarnings() {
         this.game.displayScene({
             character: 'System Message',
@@ -303,7 +303,7 @@ class RonnieRouteAct3 {
             style: 'critical'
         }, 'beat3_moreWarnings');
     }
-    
+
     beat3_toriDemands() {
         this.game.displayScene({
             character: 'Tori (firm)',
@@ -317,12 +317,12 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat3_toriDemands');
     }
-    
+
     // ========================================
     // BEAT 4: FRAGMENTATION
     // Tori's consciousness destabilizes
     // ========================================
-    
+
     act3Beat4() {
         this.game.displayScene({
             character: 'Ronnie (breaking)',
@@ -337,7 +337,7 @@ class RonnieRouteAct3 {
             delay: 4000
         }, 'act3Beat4');
     }
-    
+
     beat4_toriProcessing() {
         this.game.displayScene({
             character: 'Tori (slowly)',
@@ -352,11 +352,11 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat4_toriProcessing');
     }
-    
+
     beat4_understanding() {
         // Unlock GenZee's bootstrap paradox note - the loop revelation
         this.route.collectiblesManager.unlockNote('gz3');
-        
+
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"The buzzes. The battery drain. That\'s me. I\'m killing the device just by existing in it."',
@@ -369,7 +369,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat4_understanding');
     }
-    
+
     beat4_ronnieConfirms() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -384,7 +384,7 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'beat4_ronnieConfirms');
     }
-    
+
     beat4_glitch() {
         this.game.displayScene({
             character: 'Narration',
@@ -400,7 +400,7 @@ class RonnieRouteAct3 {
             style: 'critical'
         }, 'beat4_glitch');
     }
-    
+
     beat4_toriScreaming() {
         this.game.displayScene({
             character: 'Tori (distorted)',
@@ -416,7 +416,7 @@ class RonnieRouteAct3 {
             style: 'critical'
         }, 'beat4_toriScreaming');
     }
-    
+
     beat4_ronnieGrabs() {
         this.game.displayScene({
             character: 'Ronnie (desperate)',
@@ -430,12 +430,12 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat4_ronnieGrabs');
     }
-    
+
     // ========================================
     // BEAT 5: REVELATION - BODY ANCHOR
     // The solution becomes clear
     // ========================================
-    
+
     act3Beat5() {
         this.game.displayScene({
             character: 'Ronnie (narration)',
@@ -446,7 +446,7 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'act3Beat5');
     }
-    
+
     beat5_realization() {
         this.game.displayScene({
             character: 'Ronnie (excited)',
@@ -459,7 +459,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat5_realization');
     }
-    
+
     beat5_toriHope() {
         this.game.displayScene({
             character: 'Tori (through game)',
@@ -472,7 +472,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat5_toriHope');
     }
-    
+
     beat5_theory() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -486,7 +486,7 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'beat5_theory');
     }
-    
+
     beat5_toriUncertain() {
         this.game.displayScene({
             character: 'Tori',
@@ -499,7 +499,7 @@ class RonnieRouteAct3 {
             delay: 3000
         }, 'beat5_toriUncertain');
     }
-    
+
     beat5_ronniePromise() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -512,7 +512,7 @@ class RonnieRouteAct3 {
             delay: 3500
         }, 'beat5_ronniePromise');
     }
-    
+
     beat5_timer() {
         this.game.displayScene({
             character: 'System Message',
@@ -1107,9 +1107,9 @@ class RonnieRouteAct3 {
     }
 
     digitalForever_doubleBuzz() {
-        // HAPTIC: Double buzz pattern - two synchronized pulses
-        if (this.game.triggerHaptic) {
-            this.game.triggerHaptic('pulse', 'Synchronized double pulse - tether connection');
+        // HAPTIC + VISUAL: Double buzz + screen pulse - two synchronized pulses
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('toriHop', null, 'Synchronized double pulse - tether connection');
         }
 
         this.game.displayScene({
@@ -1240,20 +1240,20 @@ class RonnieRouteAct3 {
     digitalForever_choice() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
-        
+
         // Show notes button now (it was hidden during first playthrough)
         if (this.game.notesButton) {
             this.game.notesButton.style.display = 'block';
         }
-        
+
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('digital_forever');
-        
+
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-        
+
         this.game.displayScene({
             character: 'System',
             dialogue: '**DIGITAL FOREVER ENDING**\n"Together, eternally still."',
@@ -1490,24 +1490,24 @@ class RonnieRouteAct3 {
     trueRoute_final() {
         // Unlock teaser note (first note player gets)
         this.route.collectiblesManager.unlockNote('ronnie_teaser');
-        
+
         // Show notes button now (it was hidden during first playthrough)
         if (this.game.notesButton) {
             this.game.notesButton.style.display = 'block';
         }
-        
+
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('true');
-        
+
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-        
+
         // Get player's version number for their success message
         const playerVersion = this.game.loopVersion;
         const attemptsCount = playerVersion - 848;
-        
+
         let successMessage = '';
         if (attemptsCount === 0) {
             successMessage = `\n\n**TRUE ENDING - Version ${playerVersion}**\nFirst try. Legend.`;
@@ -1516,7 +1516,7 @@ class RonnieRouteAct3 {
         } else {
             successMessage = `\n\n**TRUE ENDING - Version ${playerVersion}**\nAfter ${attemptsCount} of YOUR attempts, you brought her home.`;
         }
-        
+
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"For once, love wasn\'t trapped in glass. It came home."',

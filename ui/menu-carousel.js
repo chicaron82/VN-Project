@@ -28,7 +28,8 @@ class MenuCarousel {
         if (legacyGrid) legacyGrid.style.display = 'none';
 
         // Listen for resize to switch modes
-        window.addEventListener('resize', () => this.handleResize());
+        this.resizeListener = () => this.handleResize();
+        window.addEventListener('resize', this.resizeListener);
     }
 
     setupHybridMode() {
@@ -75,6 +76,13 @@ class MenuCarousel {
             const card = this.activeEngine.cards.find(c => c.id === 'torigatchi');
             if (card) card.locked = false;
             this.activeEngine.init(); // Re-render
+        }
+    }
+
+    destroy() {
+        window.removeEventListener('resize', this.resizeListener);
+        if (this.activeEngine && this.activeEngine.destroy) {
+            this.activeEngine.destroy();
         }
     }
 }

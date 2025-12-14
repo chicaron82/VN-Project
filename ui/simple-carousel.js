@@ -1,6 +1,6 @@
 // ========================================
 // SIMPLE CAROUSEL ENGINE (Portrait/Mobile)
-// Legacy reliable swipe-based menu
+// UV7 UPGRADE: Tinder-style card swipe mechanics
 // ========================================
 
 class SimpleCarousel {
@@ -10,18 +10,28 @@ class SimpleCarousel {
         this.currentIndex = manager.currentIndex || 0;
         this.isAnimating = false;
         this.cards = [];
-        this.touchStartX = 0;
-        this.touchCurrentX = 0;
+
+        // Touch/drag state
         this.isDragging = false;
+        this.swipeDirection = null; // 'horizontal', 'vertical', or null
+        this.startX = 0;
+        this.startY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.startTime = 0;
+
+        // Swipe thresholds (UV7 RECOMMENDED VALUES)
+        this.DISTANCE_THRESHOLD = 0; // Will be set to 35% of viewport width
+        this.VELOCITY_THRESHOLD = 0.5; // pixels per ms (for flicks)
+        this.SWIPE_UP_THRESHOLD = 100; // pixels (easy to trigger)
+        this.MAX_ROTATION = 8; // degrees (subtle but noticeable)
 
         // DOM references
         this.carouselContainer = null;
         this.carouselTrack = null;
         this.dotsContainer = null;
-        this.prevButton = null;
-        this.nextButton = null;
 
-        console.log('📱 Simple Carousel (Portrait) initialized');
+        console.log('📱 Simple Carousel (Portrait) initialized - Tinder Mode');
     }
 
     init() {
@@ -31,16 +41,19 @@ class SimpleCarousel {
         // Build carousel HTML
         this.buildCarouselHTML();
 
+        // Set dynamic threshold based on viewport
+        this.DISTANCE_THRESHOLD = window.innerWidth * 0.35; // 35% of screen width
+
         // Set up event listeners
         this.initEventListeners();
 
-        // Render initial card
-        this.renderCurrentCard();
+        // Render card stack
+        this.renderCardStack();
 
         // Update dots
         this.updateDots();
 
-        console.log(`✅ Simple Carousel ready with ${this.cards.length} cards`);
+        console.log(`✅ Simple Carousel ready with ${this.cards.length} cards (Tinder Mode)`);
     }
 
     defineCards() {
@@ -155,18 +168,21 @@ class SimpleCarousel {
         const existingCarousel = document.getElementById('menu-carousel');
         if (existingCarousel) existingCarousel.remove();
 
-        // Create carousel container structure (Simple Version)
+        // Create carousel container structure (Tinder Mode)
         const carouselHTML = `
-            <div id="menu-carousel" class="menu-carousel simple-mode">
+            <div id="menu-carousel" class="menu-carousel simple-mode tinder-mode">
                 <div class="carousel-viewport">
                     <div class="carousel-track" id="carousel-track">
-                        <!-- Single Card Rendered Here -->
+                        <!-- Card stack rendered here -->
                     </div>
                 </div>
                 
                 <div class="carousel-dots" id="carousel-dots"></div>
                 
-                <div class="carousel-hint">Swipe to navigate • Tap to select</div>
+                <div class="carousel-hint">
+                    <span class="hint-swipe">← Swipe → to browse</span>
+                    <span class="hint-confirm">↑ Swipe up to select</span>
+                </div>
             </div>
         `;
 
@@ -214,26 +230,54 @@ class SimpleCarousel {
         });
     }
 
-    renderCurrentCard() {
+    // ========================================
+    // CARD STACK RENDERING
+    // ========================================
+
+    renderCardStack() {
         if (!this.carouselTrack) return;
 
-        const card = this.cards[this.currentIndex];
-        if (!card) return;
-
         this.carouselTrack.innerHTML = '';
-        const cardElement = this.createCardElement(card);
-        this.carouselTrack.appendChild(cardElement);
 
-        // Animate in
-        requestAnimationFrame(() => {
-            cardElement.classList.add('card-active');
+        // Render 3 cards: prev (hidden), current, next
+        const indices = [
+            this.getPrevIndex(),
+            this.currentIndex,
+            this.getNextIndex()
+        ];
+
+        indices.forEach((index, stackPosition) => {
+            const card = this.createCardElement(this.cards[index], stackPosition);
+            this.carouselTrack.appendChild(card);
         });
     }
 
-    createCardElement(card) {
+    createCardElement(card, stackPosition) {
         const cardDiv = document.createElement('div');
         cardDiv.className = `carousel-card ${card.special ? 'torigatchi-special' : ''} ${card.locked ? 'locked' : ''}`;
         cardDiv.style.background = card.background;
+        cardDiv.dataset.stackPosition = stackPosition;
+
+        // Apply initial transforms based on stack position
+        if (stackPosition === 0) {
+            // Previous (hidden behind)
+            cardDiv.style.transform = 'scale(0.9) translateY(20px)';
+            cardDiv.style.opacity = '0';
+            cardDiv.style.zIndex = '1';
+            cardDiv.style.pointerEvents = 'none';
+        } else if (stackPosition === 1) {
+            // Current (active)
+            cardDiv.style.transform = 'scale(1.0) translateX(0) rotate(0deg)';
+            cardDiv.style.opacity = '1';
+            cardDiv.style.zIndex = '3';
+            cardDiv.style.pointerEvents = 'auto';
+        } else {
+            // Next (peeking)
+            cardDiv.style.transform = 'scale(0.95) translateY(10px)';
+            cardDiv.style.opacity = '0.7';
+            cardDiv.style.zIndex = '2';
+            cardDiv.style.pointerEvents = 'none';
+        }
 
         if (card.locked) {
             cardDiv.innerHTML = `
@@ -248,95 +292,290 @@ class SimpleCarousel {
                 <div class="card-icon">${card.icon}</div>
                 <h2 class="card-title">${card.title}</h2>
                 <p class="card-subtitle">${card.subtitle}</p>
-                <div class="card-button">${card.icon} SELECT</div>
+                <div class="card-button">${card.icon} TAP TO SELECT</div>
             `;
 
-            cardDiv.onclick = () => {
-                if (navigator.vibrate) navigator.vibrate(10);
-                if (card.action) card.action();
-            };
+            // Tap to select (only on current card)
+            if (stackPosition === 1) {
+                cardDiv.onclick = (e) => {
+                    // Only trigger if not dragging
+                    if (!this.isDragging && !this.isAnimating) {
+                        if (navigator.vibrate) navigator.vibrate(10);
+                        if (card.action) card.action();
+                    }
+                };
+            }
         }
+
         return cardDiv;
     }
 
-    next() {
-        if (this.isAnimating) return;
-        const nextIndex = (this.currentIndex + 1) % this.cards.length;
-        this.goToCard(nextIndex, 'next');
+    getPrevIndex() {
+        return (this.currentIndex - 1 + this.cards.length) % this.cards.length;
     }
 
-    prev() {
-        if (this.isAnimating) return;
-        const prevIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
-        this.goToCard(prevIndex, 'prev');
+    getNextIndex() {
+        return (this.currentIndex + 1) % this.cards.length;
     }
 
-    goToCard(index, direction = null) {
-        if (this.isAnimating || index === this.currentIndex) return;
-
-        this.isAnimating = true;
-        const currentCard = this.carouselTrack.querySelector('.carousel-card');
-
-        // Animation classes
-        const animClass = direction === 'next' ? 'slide-out-left' :
-            direction === 'prev' ? 'slide-out-right' : 'fade-out';
-
-        if (currentCard) {
-            currentCard.classList.remove('card-active');
-            currentCard.classList.add(animClass);
-        }
-
-        this.currentIndex = index;
-
-        // Sync with manager
-        if (this.manager) this.manager.updateIndex(this.currentIndex);
-
-        setTimeout(() => {
-            this.renderCurrentCard();
-            this.updateDots();
-            this.isAnimating = false;
-        }, 300);
+    getCurrentCardElement() {
+        return this.carouselTrack.querySelector('[data-stack-position="1"]');
     }
 
-    // Touch Events
+    getNextCardElement() {
+        return this.carouselTrack.querySelector('[data-stack-position="2"]');
+    }
+
+    // ========================================
+    // TOUCH EVENT HANDLERS
+    // ========================================
+
     initEventListeners() {
         if (!this.carouselTrack) return;
 
         this.carouselTrack.addEventListener('touchstart', (e) => {
-            this.touchStartX = e.touches[0].clientX;
-            this.isDragging = true;
+            this.handleTouchStart(e);
         }, { passive: true });
 
         this.carouselTrack.addEventListener('touchmove', (e) => {
-            if (!this.isDragging) return;
-            this.touchCurrentX = e.touches[0].clientX;
-            const diff = this.touchCurrentX - this.touchStartX;
-
-            // Visual drag
-            const card = this.carouselTrack.querySelector('.carousel-card');
-            if (card && Math.abs(diff) < 100) {
-                card.style.transform = `translateX(${diff * 0.5}px)`;
-            }
-        }, { passive: true });
+            this.handleTouchMove(e);
+        }, { passive: false });
 
         this.carouselTrack.addEventListener('touchend', (e) => {
-            if (!this.isDragging) return;
-            const diff = this.touchCurrentX - this.touchStartX;
-            const threshold = 50;
-
-            const card = this.carouselTrack.querySelector('.carousel-card');
-            if (card) card.style.transform = '';
-
-            if (Math.abs(diff) > threshold) {
-                if (diff > 0) this.prev();
-                else this.next();
-            }
-
-            this.isDragging = false;
+            this.handleTouchEnd(e);
         }, { passive: true });
     }
 
-    initKeyboardEvents() { } // Handled by Manager globally usually? Or strict overlap.
+    handleTouchStart(e) {
+        if (this.isAnimating) return;
+
+        const touch = e.touches[0];
+        this.startX = touch.clientX;
+        this.startY = touch.clientY;
+        this.currentX = touch.clientX;
+        this.currentY = touch.clientY;
+        this.startTime = Date.now();
+        this.isDragging = false;
+        this.swipeDirection = null;
+
+        // Remove transitions for immediate response
+        const currentCard = this.getCurrentCardElement();
+        if (currentCard) {
+            currentCard.style.transition = 'none';
+        }
+    }
+
+    handleTouchMove(e) {
+        const touch = e.touches[0];
+        this.currentX = touch.clientX;
+        this.currentY = touch.clientY;
+
+        const deltaX = this.currentX - this.startX;
+        const deltaY = this.currentY - this.startY;
+
+        // Determine swipe direction (only once per gesture)
+        if (!this.swipeDirection && !this.isDragging) {
+            if (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10) {
+                if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                    this.swipeDirection = 'horizontal';
+                    this.isDragging = true;
+                } else if (deltaY < -10) {
+                    this.swipeDirection = 'vertical';
+                    this.isDragging = true;
+                }
+            }
+        }
+
+        if (!this.isDragging) return;
+
+        // Prevent scrolling
+        e.preventDefault();
+
+        if (this.swipeDirection === 'horizontal') {
+            this.updateCardDrag(deltaX);
+        } else if (this.swipeDirection === 'vertical') {
+            this.updateConfirmDrag(deltaY);
+        }
+    }
+
+    handleTouchEnd(e) {
+        if (!this.isDragging) return;
+
+        const deltaX = this.currentX - this.startX;
+        const deltaY = this.currentY - this.startY;
+        const deltaTime = Date.now() - this.startTime;
+        const velocityX = Math.abs(deltaX) / deltaTime;
+
+        if (this.swipeDirection === 'horizontal') {
+            // Check commit threshold
+            if (Math.abs(deltaX) > this.DISTANCE_THRESHOLD || velocityX > this.VELOCITY_THRESHOLD) {
+                this.commitSwipe(deltaX > 0 ? 'right' : 'left', velocityX);  // ZEE: Pass velocity for dynamic timing
+            } else {
+                this.springBack();
+            }
+        } else if (this.swipeDirection === 'vertical') {
+            if (deltaY < -this.SWIPE_UP_THRESHOLD) {
+                this.confirmCurrentCard();
+            } else {
+                this.springBack();
+            }
+        }
+
+        this.isDragging = false;
+        this.swipeDirection = null;
+    }
+
+    // ========================================
+    // DRAG UPDATES
+    // ========================================
+
+    updateCardDrag(deltaX) {
+        const currentCard = this.getCurrentCardElement();
+        const nextCard = this.getNextCardElement();
+        if (!currentCard || !nextCard) return;
+
+        // Calculate rotation (caps at MAX_ROTATION)
+        const rotationFactor = Math.min(Math.abs(deltaX) / this.DISTANCE_THRESHOLD, 1);
+        const rotation = (deltaX * 0.1) * rotationFactor;
+        const clampedRotation = Math.max(-this.MAX_ROTATION, Math.min(this.MAX_ROTATION, rotation));
+
+        // Calculate opacity fade
+        const dragProgress = Math.min(Math.abs(deltaX) / this.DISTANCE_THRESHOLD, 1);
+        const opacity = 1.0 - (dragProgress * 0.5);
+
+        // Apply transforms to current card
+        currentCard.style.transform = `
+            translateX(${deltaX}px) 
+            rotate(${clampedRotation}deg)
+        `;
+        currentCard.style.opacity = opacity;
+
+        // Reveal next card
+        const nextScale = 0.95 + (dragProgress * 0.05);
+        const nextOpacity = 0.7 + (dragProgress * 0.3);
+        const nextY = 10 - (dragProgress * 10);
+
+        nextCard.style.transform = `scale(${nextScale}) translateY(${nextY}px)`;
+        nextCard.style.opacity = nextOpacity;
+    }
+
+    updateConfirmDrag(deltaY) {
+        const currentCard = this.getCurrentCardElement();
+        if (!currentCard) return;
+
+        // Pull-down effect with resistance
+        const resistance = 0.5;
+        const translateY = deltaY * resistance;
+
+        // Scale pulse as you drag up
+        const dragProgress = Math.min(Math.abs(deltaY) / this.SWIPE_UP_THRESHOLD, 1);
+        const scale = 1.0 + (dragProgress * 0.1);
+
+        currentCard.style.transform = `translateY(${translateY}px) scale(${scale})`;
+
+        // Glow intensity
+        const glowIntensity = dragProgress * 20;
+        currentCard.style.boxShadow = `0 0 ${glowIntensity}px rgba(0, 255, 255, ${dragProgress})`;
+    }
+
+    // ========================================
+    // COMMIT / SPRING-BACK
+    // ========================================
+
+    commitSwipe(direction, velocityX = 0) {  // ZEE: Accept velocity parameter
+        this.isAnimating = true;
+        const currentCard = this.getCurrentCardElement();
+        if (!currentCard) return;
+
+        const viewportWidth = window.innerWidth;
+        const targetX = direction === 'right' ? viewportWidth + 100 : -(viewportWidth + 100);
+        const targetRotation = direction === 'right' ? 15 : -15;
+
+        // ZEE'S TUNE-UP: Momentum-based exit (faster exit on fast swipes)
+        const exitDuration = Math.max(200, 400 - (velocityX * 100));
+        currentCard.style.transition = `transform ${exitDuration}ms cubic-bezier(0.4, 0, 0.2, 1), opacity ${exitDuration}ms ease-out`;
+        currentCard.style.transform = `translateX(${targetX}px) rotate(${targetRotation}deg)`;
+        currentCard.style.opacity = '0';
+
+        // Haptic feedback
+        if (navigator.vibrate) navigator.vibrate(30);
+
+        // Update index
+        if (direction === 'right') {
+            this.prev();
+        } else {
+            this.next();
+        }
+
+        // Re-render stack after animation
+        setTimeout(() => {
+            this.renderCardStack();
+            this.isAnimating = false;
+        }, 300);
+    }
+
+    springBack() {
+        const currentCard = this.getCurrentCardElement();
+        const nextCard = this.getNextCardElement();
+        if (!currentCard || !nextCard) return;
+
+        // ZEE'S TUNE-UP: More elastic bounce (iPhone feel)
+        currentCard.style.transition = 'transform 250ms cubic-bezier(0.68, -0.6, 0.265, 1.65), opacity 250ms ease-out, box-shadow 250ms ease-out';
+        currentCard.style.transform = 'translateX(0) rotate(0deg) scale(1.0)';
+        currentCard.style.opacity = '1';
+        currentCard.style.boxShadow = 'none';
+
+        // Reset next card
+        nextCard.style.transition = 'transform 250ms ease-out, opacity 250ms ease-out';
+        nextCard.style.transform = 'scale(0.95) translateY(10px)';
+        nextCard.style.opacity = '0.7';
+    }
+
+    confirmCurrentCard() {
+        this.isAnimating = true;
+        const currentCard = this.getCurrentCardElement();
+        if (!currentCard) return;
+
+        // Confirmation animation
+        currentCard.style.transition = 'transform 200ms ease-out, box-shadow 200ms ease-out';
+        currentCard.style.transform = 'scale(1.1)';
+        currentCard.style.boxShadow = '0 0 30px rgba(0, 255, 255, 1)';
+
+        // Haptic feedback (double pulse)
+        if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
+
+        // Trigger action
+        setTimeout(() => {
+            const card = this.cards[this.currentIndex];
+            if (card.action) card.action();
+            this.isAnimating = false;
+        }, 200);
+    }
+
+    // ========================================
+    // NAVIGATION
+    // ========================================
+
+    next() {
+        this.currentIndex = (this.currentIndex + 1) % this.cards.length;
+        if (this.manager) this.manager.updateIndex(this.currentIndex);
+        this.updateDots();
+    }
+
+    prev() {
+        this.currentIndex = (this.currentIndex - 1 + this.cards.length) % this.cards.length;
+        if (this.manager) this.manager.updateIndex(this.currentIndex);
+        this.updateDots();
+    }
+
+    goToCard(index) {
+        if (index === this.currentIndex) return;
+
+        this.currentIndex = index;
+        if (this.manager) this.manager.updateIndex(this.currentIndex);
+        this.renderCardStack();
+        this.updateDots();
+    }
 
     destroy() {
         if (this.carouselContainer) this.carouselContainer.remove();
