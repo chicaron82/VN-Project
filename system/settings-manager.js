@@ -611,12 +611,61 @@ class SettingsManager {
         const labels = ['Gentle', 'Normal', 'Amped'];
         console.log(`💫 Comfort Intensity: ${labels[clamped]}`);
 
-        // Test feedback when changed (preview)
+        // Update visual label next to slider
+        const intensityLabel = document.getElementById('comfort-intensity-label');
+        if (intensityLabel) {
+            intensityLabel.textContent = labels[clamped];
+
+            // Color-code the label
+            const colors = ['#00ff88', '#0ff', '#ff00ff'];
+            intensityLabel.style.color = colors[clamped];
+            intensityLabel.style.textShadow = `0 0 10px ${colors[clamped]}`;
+
+            // Visual effect preview - show actual glitch/shake
+            this.previewIntensityEffect(clamped, intensityLabel);
+        }
+
+        // Position-specific haptic preview
         if (this.game && this.game.triggerSensoryFeedback) {
             const previewElement = document.getElementById('comfort-intensity-slider');
-            this.game.triggerSensoryFeedback('buttonPress', previewElement, 'Intensity preview');
+
+            // Different haptic patterns for each level
+            const patterns = {
+                0: 'gentle',        // Gentle: soft single tap
+                1: 'buttonPress',   // Normal: standard button press
+                2: 'success'        // Amped: stronger double tap
+            };
+
+            this.game.triggerSensoryFeedback(patterns[clamped], previewElement, `Intensity preview: ${labels[clamped]}`);
         }
     }
+
+    previewIntensityEffect(level, element) {
+        // Remove any existing animation
+        element.style.animation = 'none';
+
+        // Force reflow to restart animation
+        void element.offsetWidth;
+
+        // Apply intensity-specific effect
+        switch (level) {
+            case 0: // Gentle - subtle fade pulse
+                element.style.animation = 'gentlePulse 0.6s ease-out';
+                break;
+            case 1: // Normal - moderate shake
+                element.style.animation = 'normalShake 0.4s ease-out';
+                break;
+            case 2: // Amped - intense glitch
+                element.style.animation = 'ampedGlitch 0.5s ease-out';
+                break;
+        }
+
+        // Clear animation after it completes
+        setTimeout(() => {
+            element.style.animation = 'none';
+        }, 600);
+    }
+
 
     // ========================================
     // INSANE MODE WARNING & COMMITMENT
