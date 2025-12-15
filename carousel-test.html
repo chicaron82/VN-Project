@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carousel Physics Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #050511;
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+
+        .instructions {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #0ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h2 {
+            margin-top: 0;
+            color: #0ff;
+        }
+
+        .instructions ul {
+            margin: 10px 0;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+        }
+
+        .test-section {
+            margin: 40px 0;
+        }
+
+        .test-label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .metrics {
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .metric-label {
+            color: #0ff;
+        }
+
+        .metric-value {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .status.success {
+            color: #0f0;
+            border: 2px solid #0f0;
+        }
+
+        .status.testing {
+            color: #ff0;
+            border: 2px solid #ff0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-container">
+        <h1>🎠 CAROUSEL PHYSICS TEST</h1>
+
+        <div class="instructions">
+            <h2>Testing Instructions</h2>
+            <ul>
+                <li><strong>Gentle Flick:</strong> Slow drag → Should move 1-2 cards</li>
+                <li><strong>Medium Flick:</strong> Quick swipe → Should skip 3-5 cards</li>
+                <li><strong>HARD FLICK:</strong> Fast aggressive swipe → Should ZOOM through 6-15 cards!</li>
+                <li><strong>Watch Console:</strong> Check for "🎯 Snap: velocity=XX, skip=X cards" logs</li>
+            </ul>
+        </div>
+
+        <div class="status testing">
+            🎮 Open the game and test the Main Menu carousel!
+        </div>
+
+        <div class="test-section">
+            <div class="test-label">📊 Expected Behavior</div>
+            <div class="metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Gentle Flick (velocity ~10):</span>
+                    <span class="metric-value">Skip 0-1 cards</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Medium Flick (velocity ~30):</span>
+                    <span class="metric-value">Skip 3-4 cards</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Hard Flick (velocity ~60):</span>
+                    <span class="metric-value">Skip 7-8 cards</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">EXTREME Flick (velocity ~120):</span>
+                    <span class="metric-value">Skip 15+ cards (ZOOM!)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-label">🔧 Physics Parameters</div>
+            <div class="metrics">
+                <div class="metric-row">
+                    <span class="metric-label">Friction:</span>
+                    <span class="metric-value">0.965 (was 0.92) - Smoother coast</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Max Velocity:</span>
+                    <span class="metric-value">150 (was 50) - 3x faster!</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Snap Threshold:</span>
+                    <span class="metric-value">0.3 (was 0.5) - More momentum</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Easing:</span>
+                    <span class="metric-value">Cubic ease-out (was linear)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <div class="test-label">✅ Checklist</div>
+            <div class="metrics">
+                <div class="metric-row">
+                    <span class="metric-label">□ Gentle flick feels responsive</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">□ Hard flick achieves ZOOM effect</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">□ Deceleration is smooth (not abrupt)</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">□ Snap animation is buttery</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">□ Infinite scroll works seamlessly</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">□ No jank or stuttering</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
