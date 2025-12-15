@@ -3355,6 +3355,14 @@
     text-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
 }
 
+.close-overlay-btn:focus {
+    background: rgba(255, 0, 102, 0.4);
+    box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+    text-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
+    outline: 2px solid rgba(255, 0, 102, 0.6);
+    outline-offset: 2px;
+}
+
 .secret-overlay-header .close-overlay-btn {
     position: absolute;
     top: 1.5em;
@@ -3362,6 +3370,10 @@
     padding: 0.5em 1em;
     /* DIZEE FIX: Lock position */
     transform: none !important;
+}
+
+.secret-overlay-header .close-overlay-btn:focus {
+    /* Override focus outline-offset for header button */
     outline-offset: -2px;
 }
 
@@ -6059,6 +6071,14 @@
     gap: 8px;
     width: 100%;
 }
+
+.intensity-current-label {
+    text-align: center;
+    margin-bottom: 8px;
+    min-height: 24px;
+    transition: all 0.2s ease;
+}
+
 
 #comfort-intensity-slider {
     width: 100%;
