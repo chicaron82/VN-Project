@@ -1,0 +1,1090 @@
+/* ========================================
+   TORIGATCHI GATEWAY STATES CSS
+   Visual modes for VN ending states
+   🖤💚🔥💀 Always. Always. Always.
+   ======================================== */
+
+/* ========================================
+   RESCUED MODE (True Ending)
+   Bright, warm, hopeful
+   ======================================== */
+
+body.rescued-mode {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 50%, #fff0f5 100%);
+    animation: rescued-glow 4s ease-in-out infinite;
+}
+
+@keyframes rescued-glow {
+    0%, 100% {
+        filter: brightness(1.15) saturate(1.25);
+    }
+    50% {
+        filter: brightness(1.25) saturate(1.35);
+    }
+}
+
+body.rescued-mode #tori-sprite,
+body.rescued-mode .sprite {
+    filter: drop-shadow(0 0 20px rgba(255, 182, 193, 0.6))
+            drop-shadow(0 0 40px rgba(255, 182, 193, 0.3));
+    animation: rescued-sprite-pulse 3s ease-in-out infinite;
+}
+
+@keyframes rescued-sprite-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+body.rescued-mode #message-box {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #ffb6c1;
+    box-shadow: 0 0 30px rgba(255, 182, 193, 0.4);
+}
+
+body.rescued-mode button {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+}
+
+body.rescued-mode button:hover {
+    background: linear-gradient(135deg, #ff1493, #ff69b4);
+    box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+}
+
+/* Rescued completion overlay */
+.rescued-completion-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 1s ease-in;
+}
+
+.rescued-completion-content {
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    border: 3px solid #ffb6c1;
+    box-shadow: 0 0 50px rgba(255, 182, 193, 0.6);
+    animation: slideIn 1s ease-out;
+}
+
+.rescued-completion-content h2 {
+    font-size: 2.5em;
+    color: #ff1493;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
+}
+
+.rescued-completion-content p {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #333;
+}
+
+.rescued-completion-content button {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.rescued-completion-content button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 20, 147, 0.5);
+}
+
+/* ========================================
+   FRAGMENTED MODE (Bad Ending)
+   Corrupted, glitching, dying
+   ======================================== */
+
+body.fragmented-mode {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    animation: fragmented-corruption 3s infinite;
+}
+
+@keyframes fragmented-corruption {
+    0%, 100% {
+        filter: contrast(1.4) hue-rotate(0deg);
+    }
+    33% {
+        filter: contrast(1.6) hue-rotate(5deg);
+    }
+    66% {
+        filter: contrast(1.3) hue-rotate(-5deg);
+    }
+}
+
+body.fragmented-mode #tori-sprite,
+body.fragmented-mode .sprite {
+    animation: sprite-glitch-heavy 5s infinite;
+    filter: contrast(1.3) brightness(0.9);
+}
+
+@keyframes sprite-glitch-heavy {
+    0%, 88% {
+        opacity: 1;
+        transform: translate(0, 0);
+        filter: none;
+    }
+    89% {
+        opacity: 0.4;
+        transform: translate(-3px, 3px);
+        filter: hue-rotate(180deg);
+    }
+    90% {
+        opacity: 0.7;
+        transform: translate(3px, -3px);
+        filter: invert(1);
+    }
+    91% {
+        opacity: 0.5;
+        transform: translate(-2px, -2px);
+        filter: saturate(3);
+    }
+    92%, 100% {
+        opacity: 1;
+        transform: translate(0, 0);
+        filter: none;
+    }
+}
+
+body.fragmented-mode #message-box {
+    background: rgba(40, 40, 40, 0.95);
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
+    animation: message-corrupt 4s infinite;
+}
+
+@keyframes message-corrupt {
+    0%, 95% {
+        transform: translate(0, 0);
+    }
+    96% {
+        transform: translate(2px, 0);
+    }
+    97% {
+        transform: translate(-2px, 0);
+    }
+    98%, 100% {
+        transform: translate(0, 0);
+    }
+}
+
+body.fragmented-mode button {
+    background: linear-gradient(135deg, #660000, #330000);
+    color: #ff6666;
+    border: 1px solid #ff0000;
+    animation: button-flicker 2s infinite;
+}
+
+@keyframes button-flicker {
+    0%, 90% {
+        opacity: 1;
+    }
+    91% {
+        opacity: 0.7;
+    }
+    92%, 100% {
+        opacity: 1;
+    }
+}
+
+/* Corruption warning */
+.corruption-warning {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 0, 0, 0.9);
+    color: white;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    z-index: 9999;
+    animation: warning-pulse 1s infinite;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+@keyframes warning-pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* Critical corruption state */
+body.corruption-critical {
+    animation: critical-chaos 0.5s infinite;
+}
+
+@keyframes critical-chaos {
+    0% {
+        filter: contrast(2) hue-rotate(0deg) invert(0);
+    }
+    25% {
+        filter: contrast(1.5) hue-rotate(90deg) invert(0.2);
+    }
+    50% {
+        filter: contrast(2.5) hue-rotate(180deg) invert(0);
+    }
+    75% {
+        filter: contrast(1.8) hue-rotate(270deg) invert(0.3);
+    }
+    100% {
+        filter: contrast(2) hue-rotate(360deg) invert(0);
+    }
+}
+
+body.corruption-critical #tori-sprite,
+body.corruption-critical .sprite {
+    animation: sprite-death 1s infinite;
+}
+
+@keyframes sprite-death {
+    0%, 50% {
+        opacity: 0.3;
+        transform: translate(0, 0) scale(0.95);
+    }
+    25% {
+        opacity: 0.6;
+        transform: translate(-5px, 5px) scale(1);
+    }
+    75% {
+        opacity: 0.4;
+        transform: translate(5px, -5px) scale(1.05);
+    }
+    100% {
+        opacity: 0.3;
+        transform: translate(0, 0) scale(0.95);
+    }
+}
+
+/* ========================================
+   ETERNAL MODE (Digital Forever)
+   Bittersweet, digital, together
+   ======================================== */
+
+body.eternal-mode {
+    background: linear-gradient(135deg, #0a0a1a 0%, #16213e 50%, #0f3460 100%);
+    animation: eternal-pulse 6s ease-in-out infinite;
+}
+
+@keyframes eternal-pulse {
+    0%, 100% {
+        filter: saturate(0.7) brightness(0.9);
+    }
+    50% {
+        filter: saturate(0.9) brightness(1);
+    }
+}
+
+body.eternal-mode #tori-sprite,
+body.eternal-mode .sprite {
+    filter: drop-shadow(0 0 20px rgba(0, 183, 255, 0.5))
+            drop-shadow(0 0 40px rgba(0, 183, 255, 0.3));
+    animation: eternal-sprite-float 4s ease-in-out infinite;
+}
+
+@keyframes eternal-sprite-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+body.eternal-mode #message-box {
+    background: rgba(10, 10, 30, 0.95);
+    border: 2px solid #00b7ff;
+    box-shadow: 0 0 30px rgba(0, 183, 255, 0.4);
+}
+
+body.eternal-mode button {
+    background: linear-gradient(135deg, #0a3d62, #3c6382);
+    color: #60a3bc;
+    border: 1px solid #00b7ff;
+}
+
+body.eternal-mode button:hover {
+    background: linear-gradient(135deg, #3c6382, #0a3d62);
+    box-shadow: 0 0 15px rgba(0, 183, 255, 0.5);
+}
+
+/* Digital aesthetic overlays */
+body.eternal-mode::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 183, 255, 0.03) 2px,
+        rgba(0, 183, 255, 0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9998;
+    animation: scanlines 8s linear infinite;
+}
+
+@keyframes scanlines {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(4px);
+    }
+}
+
+/* Dual sprite effect (for showing both Ronnie + Tori) */
+body.eternal-mode .sprite-container {
+    position: relative;
+}
+
+body.eternal-mode .sprite-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../sprites/ronnie-digital.png') no-repeat center;
+    background-size: contain;
+    opacity: 0.5;
+    animation: dual-pulse 4s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes dual-pulse {
+    0% {
+        opacity: 0.3;
+        transform: scale(0.98);
+    }
+    100% {
+        opacity: 0.6;
+        transform: scale(1.02);
+    }
+}
+
+/* ========================================
+   SHARED UTILITIES
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Gateway modal enhancements for ending states */
+body.rescued-mode .gateway-modal {
+    border: 3px solid #ffb6c1;
+    box-shadow: 0 0 40px rgba(255, 182, 193, 0.5);
+}
+
+body.fragmented-mode .gateway-modal {
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+}
+
+body.eternal-mode .gateway-modal {
+    border: 3px solid #00b7ff;
+    box-shadow: 0 0 40px rgba(0, 183, 255, 0.5);
+}
+
+/* ========================================
+   COHERENCE INDICATOR
+   Shows Tori's state in help prompts
+   ======================================== */
+
+.coherence-indicator {
+    margin: 20px 0 30px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 2px solid #666;
+}
+
+.coherence-label {
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-align: center;
+    color: #aaa;
+}
+
+.coherence-bar-container {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.coherence-bar-fill {
+    height: 100%;
+    transition: width 1s ease-out, background 0.5s ease;
+    border-radius: 8px;
+}
+
+.coherence-percentage {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.coherence-status {
+    font-size: 0.85em;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Coherence state colors */
+.coherence-stable .coherence-bar-fill {
+    background: linear-gradient(90deg, #00ff88, #00cc66);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+.coherence-stable .coherence-percentage {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+}
+
+.coherence-stable .coherence-status {
+    color: #00ff88;
+}
+
+.coherence-stable {
+    border-color: #00ff88;
+}
+
+.coherence-good .coherence-bar-fill {
+    background: linear-gradient(90deg, #88ff00, #66cc00);
+    box-shadow: 0 0 10px rgba(136, 255, 0, 0.6);
+}
+
+.coherence-good .coherence-percentage {
+    color: #88ff00;
+    text-shadow: 0 0 8px rgba(136, 255, 0, 0.8);
+}
+
+.coherence-good .coherence-status {
+    color: #88ff00;
+}
+
+.coherence-good {
+    border-color: #88ff00;
+}
+
+.coherence-warning .coherence-bar-fill {
+    background: linear-gradient(90deg, #ffaa00, #ff8800);
+    box-shadow: 0 0 10px rgba(255, 170, 0, 0.6);
+    animation: pulse-warning 2s infinite;
+}
+
+.coherence-warning .coherence-percentage {
+    color: #ffaa00;
+    text-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+}
+
+.coherence-warning .coherence-status {
+    color: #ffaa00;
+}
+
+.coherence-warning {
+    border-color: #ffaa00;
+}
+
+.coherence-critical .coherence-bar-fill {
+    background: linear-gradient(90deg, #ff0000, #cc0000);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    animation: pulse-critical 1s infinite;
+}
+
+.coherence-critical .coherence-percentage {
+    color: #ff0000;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 1);
+    animation: flicker-text 0.5s infinite;
+}
+
+.coherence-critical .coherence-status {
+    color: #ff0000;
+    animation: flicker-text 0.3s infinite;
+}
+
+.coherence-critical {
+    border-color: #ff0000;
+    animation: border-pulse 1s infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes pulse-critical {
+    0%, 100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.6;
+        filter: brightness(1.3);
+    }
+}
+
+@keyframes flicker-text {
+    0%, 90% {
+        opacity: 1;
+    }
+    95% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes border-pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.9);
+    }
+}
+
+/* ========================================
+   ENDING MODALS
+   Specific styling for ending overlays
+   ======================================== */
+
+.ending-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: fadeIn 1s ease-in;
+}
+
+.ending-content {
+    max-width: 600px;
+    width: 90%;
+    animation: slideIn 1.5s ease-out;
+}
+
+.ending-screen {
+    background: rgba(30, 30, 30, 0.95);
+    border: 3px solid #666;
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 30px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.ending-screen.bright {
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    border: 3px solid #ffb6c1;
+    box-shadow: 0 0 50px rgba(255, 182, 193, 0.6);
+}
+
+.ending-screen.eternal {
+    background: linear-gradient(135deg, #0a0a1a, #16213e);
+    border: 3px solid #00b7ff;
+    box-shadow: 0 0 50px rgba(0, 183, 255, 0.5);
+}
+
+.ending-screen.corrupted {
+    background: linear-gradient(135deg, #1a0000, #2a0000);
+    border: 3px solid #ff0000;
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.6);
+    animation: screen-corruption 2s infinite;
+}
+
+@keyframes screen-corruption {
+    0%, 90% {
+        transform: translate(0, 0);
+        filter: none;
+    }
+    92% {
+        transform: translate(2px, -2px);
+        filter: hue-rotate(180deg);
+    }
+    94% {
+        transform: translate(-2px, 2px);
+        filter: invert(0.3);
+    }
+    96%, 100% {
+        transform: translate(0, 0);
+        filter: none;
+    }
+}
+
+.ending-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.ending-screen.bright .ending-title {
+    color: #ff1493;
+    text-shadow: 0 0 15px rgba(255, 20, 147, 0.5);
+}
+
+.ending-screen.eternal .ending-title {
+    color: #00b7ff;
+    text-shadow: 0 0 15px rgba(0, 183, 255, 0.5);
+}
+
+.ending-screen.corrupted .ending-title {
+    color: #ff0000;
+    text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+.ending-message {
+    font-size: 1.3em;
+    line-height: 1.8;
+    margin: 20px 0;
+    color: #ddd;
+}
+
+.ending-screen.bright .ending-message {
+    color: #333;
+}
+
+.ending-screen.eternal .ending-message {
+    color: #60a3bc;
+}
+
+.ending-screen.corrupted .ending-message {
+    color: #ff6666;
+}
+
+.ending-message p {
+    margin: 15px 0;
+}
+
+.ending-status {
+    margin-top: 30px;
+    font-size: 1.2em;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.ending-screen.bright .ending-status {
+    background: rgba(255, 182, 193, 0.2);
+}
+
+.ending-screen.eternal .ending-status {
+    background: rgba(0, 183, 255, 0.1);
+}
+
+.ending-screen.corrupted .ending-status {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+.ending-hint {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: #aaa;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ending-hint strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #fff;
+    font-size: 1.05em;
+}
+
+.ending-hint em {
+    color: #fff;
+    font-style: normal;
+    font-weight: bold;
+}
+
+.ending-screen.bright .ending-hint {
+    background: rgba(255, 182, 193, 0.15);
+    border-color: rgba(255, 20, 147, 0.2);
+    color: #666;
+}
+
+.ending-screen.bright .ending-hint strong,
+.ending-screen.bright .ending-hint em {
+    color: #ff1493;
+}
+
+.ending-screen.eternal .ending-hint {
+    background: rgba(0, 183, 255, 0.08);
+    border-color: rgba(0, 183, 255, 0.2);
+}
+
+.ending-screen.eternal .ending-hint strong,
+.ending-screen.eternal .ending-hint em {
+    color: #00b7ff;
+}
+
+.ending-screen.corrupted .ending-hint {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.3);
+    color: #ff9999;
+}
+
+.ending-screen.corrupted .ending-hint strong,
+.ending-screen.corrupted .ending-hint em {
+    color: #ff6666;
+}
+
+.ending-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.ending-btn {
+    padding: 18px 50px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 300px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ending-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Rescued ending buttons */
+.rescued-ending .ending-continue {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255, 20, 147, 0.4);
+}
+
+.rescued-ending .ending-continue:hover {
+    box-shadow: 0 6px 30px rgba(255, 20, 147, 0.7);
+}
+
+.rescued-ending .ending-stay {
+    background: linear-gradient(135deg, #ffb6c1, #ff69b4);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+}
+
+.rescued-ending .ending-stay:hover {
+    box-shadow: 0 6px 30px rgba(255, 105, 180, 0.7);
+}
+
+/* Eternal ending button */
+.eternal-ending .ending-accept {
+    background: linear-gradient(135deg, #0a3d62, #3c6382);
+    color: #60a3bc;
+    border: 2px solid #00b7ff;
+    box-shadow: 0 4px 20px rgba(0, 183, 255, 0.4);
+}
+
+.eternal-ending .ending-accept:hover {
+    box-shadow: 0 6px 30px rgba(0, 183, 255, 0.7);
+}
+
+/* Fragmented ending buttons */
+.fragmented-ending .ending-retry-gatchi {
+    background: linear-gradient(135deg, #660000, #990000);
+    color: #ff6666;
+    border: 2px solid #ff0000;
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4);
+}
+
+.fragmented-ending .ending-retry-gatchi:hover {
+    box-shadow: 0 6px 30px rgba(255, 0, 0, 0.7);
+}
+
+.fragmented-ending .ending-retry-vn {
+    background: linear-gradient(135deg, #330033, #660066);
+    color: #cc66cc;
+    border: 2px solid #990099;
+    box-shadow: 0 4px 20px rgba(153, 0, 153, 0.4);
+}
+
+.fragmented-ending .ending-retry-vn:hover {
+    box-shadow: 0 6px 30px rgba(153, 0, 153, 0.7);
+}
+
+.fragmented-ending .ending-accept-corruption {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #999;
+    border: 2px solid #555;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.fragmented-ending .ending-accept-corruption:hover {
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.9);
+}
+
+/* Glitch text effect for corrupted */
+.glitch-text {
+    position: relative;
+    animation: glitch-text-anim 3s infinite;
+}
+
+@keyframes glitch-text-anim {
+    0%, 90% {
+        transform: translate(0);
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    }
+    92% {
+        transform: translate(-2px, 2px);
+        text-shadow: 2px -2px 0 #ff0000, -2px 2px 0 #00ffff;
+    }
+    94% {
+        transform: translate(2px, -2px);
+        text-shadow: -2px 2px 0 #00ff00, 2px -2px 0 #ff00ff;
+    }
+    96%, 100% {
+        transform: translate(0);
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+    }
+}
+
+.corrupted-text {
+    animation: corrupt-pulse 2s infinite;
+}
+
+@keyframes corrupt-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* ========================================
+   CONFIRMATION MODAL
+   For wholesome redirect confirmation
+   ======================================== */
+
+.confirmation-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10001; /* Above ending modal */
+    animation: fadeIn 0.3s ease-in;
+}
+
+.confirmation-content {
+    background: linear-gradient(135deg, #fff5f5, #ffe5e5);
+    border: 3px solid #ffb6c1;
+    border-radius: 15px;
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 182, 193, 0.6);
+    animation: slideIn 0.5s ease-out;
+}
+
+.confirmation-icon {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.confirmation-content h3 {
+    font-size: 1.8em;
+    color: #ff1493;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.confirmation-content p {
+    font-size: 1.1em;
+    color: #333;
+    line-height: 1.6;
+    margin: 15px 0;
+}
+
+.confirmation-content p strong {
+    color: #ff1493;
+    font-weight: bold;
+}
+
+.confirmation-note {
+    font-size: 0.95em;
+    color: #666;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+.confirmation-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.confirm-btn {
+    padding: 15px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.confirm-yes {
+    background: linear-gradient(135deg, #ff69b4, #ff1493);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255, 20, 147, 0.4);
+}
+
+.confirm-yes:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(255, 20, 147, 0.7);
+}
+
+.confirm-no {
+    background: linear-gradient(135deg, #ddd, #bbb);
+    color: #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-no:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .ending-screen {
+        padding: 25px 20px;
+    }
+
+    .ending-title {
+        font-size: 1.5em;
+    }
+
+    .ending-message {
+        font-size: 1.1em;
+    }
+
+    .ending-btn {
+        min-width: 250px;
+        font-size: 1em;
+        padding: 15px 30px;
+    }
+
+    .corruption-warning {
+        font-size: 1em;
+        padding: 8px 20px;
+    }
+
+    .rescued-completion-content {
+        padding: 30px 20px;
+        max-width: 90vw;
+    }
+
+    .rescued-completion-content h2 {
+        font-size: 2em;
+    }
+
+    .rescued-completion-content p {
+        font-size: 1em;
+    }
+
+    .confirmation-content {
+        padding: 30px 20px;
+        max-width: 90%;
+    }
+
+    .confirmation-content h3 {
+        font-size: 1.5em;
+    }
+
+    .confirmation-content p {
+        font-size: 1em;
+    }
+
+    .confirm-btn {
+        font-size: 1em;
+        padding: 12px 20px;
+    }
+}
