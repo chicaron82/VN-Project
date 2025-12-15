@@ -451,8 +451,19 @@ class SettingsManager {
 
         // TORI'S ADDITION: Update comfort intensity slider 💚
         const intensitySlider = document.getElementById('comfort-intensity-slider');
+        const intensityLabel = document.getElementById('comfort-intensity-label');
         if (intensitySlider) {
-            intensitySlider.value = this.settings.comfortIntensity ?? 1;
+            const savedIntensity = this.settings.comfortIntensity ?? 1;
+            intensitySlider.value = savedIntensity;
+
+            // Update label to match saved value
+            if (intensityLabel) {
+                const labels = ['Gentle', 'Normal', 'Amped'];
+                const colors = ['#00ff88', '#0ff', '#ff00ff'];
+                intensityLabel.textContent = labels[savedIntensity];
+                intensityLabel.style.color = colors[savedIntensity];
+                intensityLabel.style.textShadow = `0 0 10px ${colors[savedIntensity]}`;
+            }
         }
 
         // Update auto-skip prologue status (for dynamic unlock)

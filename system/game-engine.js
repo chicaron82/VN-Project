@@ -1951,7 +1951,7 @@ class GameEngine {
     }
 
     scaleHapticPattern(pattern, comfortLevel) {
-        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%)
+        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
         if (comfortLevel === 1) return pattern;
 
         // Normalize to array
@@ -1964,6 +1964,10 @@ class GameEngine {
         if (comfortLevel === 2) {
             // Amped: stronger, longer
             return arr.map(ms => Math.round(ms * 1.3));
+        }
+        if (comfortLevel === 3) {
+            // INSANE: MUCH stronger, MUCH longer (beyond Amped)
+            return arr.map(ms => Math.round(ms * 2.0));
         }
 
         return pattern;
@@ -1995,10 +1999,16 @@ class GameEngine {
         // Get base pattern
         let pattern = patterns[patternName] || patternName;
 
-        // TORI'S SCALING: Only scale non-critical cues, not in insane mode 💚
-        if (!insane && channel !== 'critical') {
+        // INSANE MODE: Apply 2.0x intensity (beyond Amped's 1.3x)
+        // This ensures INSANE feels different even for players who use Amped normally
+        if (insane && channel !== 'critical') {
+            pattern = this.scaleHapticPattern(pattern, 3); // Special value 3 = INSANE mode
+        }
+        // TORI'S SCALING: Scale non-critical cues based on comfort setting
+        else if (!insane && channel !== 'critical') {
             pattern = this.scaleHapticPattern(pattern, comfort);
         }
+
 
         // Trigger vibration
         navigator.vibrate(pattern);

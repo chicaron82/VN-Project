@@ -29,10 +29,14 @@ class VisualCueManager {
             return 1.0; // Raw, unscaled intensity for denials/warnings
         }
 
-        // In insane mode, non-critical cues still scale with comfort
-        // (This preserves player choice even in harsh contexts)
+        // INSANE MODE: Force BEYOND Amped intensity (2.0x boost)
+        // This ensures INSANE feels different even for players who use Amped normally
+        // Amped = 1.35x, INSANE = 2.0x (significantly more intense)
+        if (isInsane) {
+            return 2.0; // INSANE mode: 2x boost (beyond Amped's 1.35x)
+        }
 
-        // Scale based on player preference
+        // Scale based on player preference (non-insane modes)
         if (intensity === 0) return 0.6;  // Gentle: 40% reduction
         if (intensity === 2) return 1.35; // Amped: 35% boost
         return 1.0; // Normal: baseline
@@ -54,7 +58,7 @@ class VisualCueManager {
         this._currentChannel = channel;
 
         // Route to specific effect
-        switch(cueType) {
+        switch (cueType) {
             // Story-specific cues
             case 'toriHop':
                 this.toriBodyHop(targetElement);
