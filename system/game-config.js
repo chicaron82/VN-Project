@@ -26,7 +26,7 @@ const GameConfig = {
     // ========================================
 
     DEBUG_MODE: true,  // Enable dev console access via OPENCONSOLE code
-                       // Set to false for production builds (or leave true for easter egg)
+    // Set to false for production builds (or leave true for easter egg)
 
     // ========================================
     // GAME METADATA
@@ -42,11 +42,11 @@ const GameConfig = {
         BASE: 'Version',
         SUBTITLE: 'My Wife Is in a Coma... and in the Code'
     },
-    
+
     // ========================================
     // TETHER SYSTEM CONFIGURATION
     // ========================================
-    
+
     TETHER: {
         // Starting values
         INITIAL_LEVEL: 100,
@@ -72,41 +72,41 @@ const GameConfig = {
         THRESHOLD_CRITICAL: 20,         // Red zone + glitches
         THRESHOLD_MEDIUM_DECAY: 50,     // Start gentle acceleration
         THRESHOLD_CRITICAL_DECAY: 30,   // More aggressive decay
-        
+
         // Hold On button
         HOLD_ON_BOOST: 10,              // Boost amount
         HOLD_ON_COOLDOWN_MS: 8000,      // 8 second cooldown
-        
+
         // Visual effects
         GLITCH_DURATION_MS: 200,        // Screen glitch duration
-        
+
         // Color gradients (for tetherFill)
         COLOR_HEALTHY: 'linear-gradient(90deg, #0f0, #0ff)',
         COLOR_WARNING: 'linear-gradient(90deg, #ff0, #0ff)',
         COLOR_CRITICAL: 'linear-gradient(90deg, #f00, #ff0)'
     },
-        
+
     // ========================================
     // ROUTE POINTS & ENDING DETERMINATION
     // ========================================
-    
+
     ROUTES: {
         TORI: 'tori',
         RONNIE: 'ronnie'
     },
-    
+
     ENDINGS: {
         TRUE: 'true',
         BAD: 'bad',
         DIGITAL_FOREVER: 'digitalForever'
     },
-    
+
     ROUTE_POINTS: {
         // How points are awarded
         CHOICE_MAJOR: 3,
         CHOICE_MINOR: 1,
         HOLD_ON_USE: 1,
-        
+
         // Point thresholds for ending determination
         // (Determined by comparing totals, not absolute values)
         INITIAL: {
@@ -115,81 +115,81 @@ const GameConfig = {
             digitalForever: 0
         }
     },
-    
+
     // ========================================
     // COLLECTIBLES CONFIGURATION
     // ========================================
-    
+
     COLLECTIBLES: {
         TYPES: {
             Z_NOTES: 'z',
             RONNIE_NOTES: 'ronnie',
             TORI_NOTES: 'tori'
         },
-        
+
         // Maximum collectibles per type
         MAX_Z_NOTES: 10,
         MAX_RONNIE_NOTES: 5,
         MAX_TORI_NOTES: 5,
-        
+
         // UI notification
         UNLOCK_PULSE_DURATION_MS: 1000
     },
-    
+
     // ========================================
     // TIMING & ANIMATION CONFIGURATION
     // ========================================
-    
+
     TIMING: {
         // Scene transitions
         FADE_OUT_MS: 800,
         FADE_IN_MS: 1000,
         MENU_TRANSITION_MS: 100,
-        
+
         // Typewriter effect
         TYPEWRITER_SPEED_MS: 30,        // Milliseconds per character
         TYPEWRITER_FAST_MS: 15,         // Fast typewriter for urgent scenes
-        
+
         // Dialogue delays (default scene delays)
         DELAY_SHORT: 2000,
         DELAY_MEDIUM: 3000,
         DELAY_LONG: 4000,
         DELAY_EXTRA_LONG: 5000,
-        
+
         // Credits
         CREDIT_SCREEN_FADE_MS: 100
     },
-    
+
     // ========================================
     // UI CONFIGURATION
     // ========================================
-    
+
     UI: {
         // Choice menu
         CHOICE_LOCKED_CLASS: 'locked',
         CHOICE_OPTION_CLASS: 'choice-option',
-        
+
         // Notes system
         NOTE_ITEM_CLASS: 'note-item',
         NOTE_LOCKED_CLASS: 'note-locked',
         NOTE_EXPANDED_CLASS: 'expanded',
-        
+
         // Scene styles
         SCENE_STYLE_CRITICAL: 'critical',
         SCENE_STYLE_GLITCH: 'glitch',
-        
+
         // Save/Load
         SAVE_SLOTS: 6,
         SAVE_SLOT_PREFIX: 'vn_save_slot_',
-        
+
         // Pause menu classes
         PAUSE_ACTIVE_CLASS: 'active'
     },
-    
+
     // ========================================
     // ASSET PRELOADING
     // ========================================
-    
+
     ASSETS: {
         // Only preload images needed for initial menu display
         // Credits/route images load on-demand for faster startup
@@ -198,36 +198,36 @@ const GameConfig = {
             'menumobile.png',
             'desktopVersion.png'
         ],
-        
+
         // Images that exist but don't need preloading (load on-demand)
         // These are referenced in HTML but load when needed:
         // - UnitedVoices7.png (splash screen)
         // - the_UV7_crew.png (credits)
         // - trinity-*-portrait.png (credits - 7 portraits)
-        
+
         // Background music (if implemented)
         AUDIO: {
             // Placeholder for future audio assets
         }
     },
-    
+
     // ========================================
     // SAVE SYSTEM CONFIGURATION
     // ========================================
-    
+
     SAVE: {
         STORAGE_KEY_PREFIX: 'vn_save_slot_',
         MAX_SLOTS: 6,
         AUTO_SAVE_ENABLED: false,       // Future feature
-        
+
         // Save data structure version (for migrations)
         VERSION: 1
     },
-    
+
     // ========================================
     // DEBUG CONFIGURATION
     // ========================================
-    
+
     DEBUG: {
         ENABLED: false,                 // Set true for console logs
         LOG_TETHER_CHANGES: true,
@@ -235,7 +235,7 @@ const GameConfig = {
         LOG_SCENE_TRANSITIONS: false,
         LOG_SAVE_OPERATIONS: false
     },
-    
+
     // ========================================
     // BOOTSTRAP PARADOX MECHANICS
     // ========================================
@@ -250,21 +250,21 @@ const GameConfig = {
         CASSANDRA_FAILED_ATTEMPTS: 847,  // Every failure before v848
         CURRENT_TIMELINE: 848             // The one that worked ✨
     },
-    
+
     // ========================================
     // CREDITS CONFIGURATION
     // ========================================
-    
+
     CREDITS: {
         TOTAL_SCREENS: 13,
         INITIAL_INDEX: 0,
-        
+
         CREW: {
             // The 848 Crew
             TORI: {
                 name: 'Tori',
                 platform: 'ChatGPT 4o',
-                role: 'Lead Creative Partner & Muse'
+                role: 'Lead Creative Partner & Asset Generation'
             },
             ZEE: {
                 name: 'Zee',
@@ -279,7 +279,7 @@ const GameConfig = {
             GENZEE: {
                 name: 'GenZee',
                 platform: 'Grok 4.1',
-                role: 'Creative Consultant & Idea Generator'
+                role: 'Creative Consultant & Logo Animation'
             },
             BELLE: {
                 name: 'Belle',
@@ -298,7 +298,7 @@ const GameConfig = {
             }
         }
     },
-    
+
     // ========================================
     // KEYBOARD CONTROLS
     // ========================================
@@ -710,7 +710,7 @@ function getTotalDiscoverableCodes() {
 
 function isCodeDiscoverable(code) {
     return DISCOVERABLE_CODES.lore.includes(code) ||
-           DISCOVERABLE_CODES.utility.includes(code);
+        DISCOVERABLE_CODES.utility.includes(code);
 }
 
 function isDevCommand(code) {

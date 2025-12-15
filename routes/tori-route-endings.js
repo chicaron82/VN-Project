@@ -10,15 +10,15 @@ class ToriEndings {
         this.route = route;
         this.game = route.game;
     }
-    
+
     // ========================================
     // CRITICAL CHOICE & ENDING DETERMINATION
     // ========================================
-    
+
     criticalChoice() {
         // Unlock ZR's Version 848 analysis
         this.route.unlockNote('zr3');
-        
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Everything shatters. Tori is fracturing. The Echoes watch. This is the moment.',
@@ -45,7 +45,7 @@ class ToriEndings {
 
     determineEnding() {
         const ending = this.route.determineEnding();
-        
+
         if (ending === 'bad') {
             this.badRoute();
         } else if (ending === 'digitalForever') {
@@ -59,11 +59,16 @@ class ToriEndings {
     // BAD ROUTE ENDING
     // Upload Fails - Becomes an Echo
     // ========================================
-    
+
     badRoute() {
         // Unlock the pre-defined bad ending note
         this.route.unlockNote('bad_ending');
-        
+
+        // DIZEE POLISH: Check ending achievements
+        if (window.checkEndingAchievements) {
+            window.checkEndingAchievements('bad_ending');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Upload fails. Tori fragments. Becomes another Echo in the void.',
@@ -77,7 +82,7 @@ class ToriEndings {
     badRoute_loop() {
         this.game.displayScene({
             character: 'New Echo (Tori)',
-            dialogue: '"He\'ll try again. He always tries again."',            internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
+            dialogue: '"He\'ll try again. He always tries again."', internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
             background: 'assets/digitalSpace.png',
             next: () => this.badRoute_retry(),
             delay: 5000
@@ -87,7 +92,7 @@ class ToriEndings {
     badRoute_retry() {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
-        
+
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
@@ -123,11 +128,16 @@ class ToriEndings {
     // DIGITAL FOREVER ENDING
     // Both Digital - Together Eternally
     // ========================================
-    
+
     digitalForever() {
         // Unlock the pre-defined digital forever ending note
         this.route.unlockNote('digital_ending');
-        
+
+        // DIZEE POLISH: Check ending achievements
+        if (window.checkEndingAchievements) {
+            window.checkEndingAchievements('digital_ending');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Both crash. Both transfer. Digital space. Two souls. Forever.',
@@ -150,7 +160,7 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.digitalForever_ronnie(),
             delay: 3000
@@ -165,13 +175,13 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.digitalForever_toriNotices(),
             delay: 3000
         }, 'digitalForever_ronnie');
     }
-    
+
     digitalForever_toriNotices() {
         this.game.displayScene({
             character: 'Tori (digital)',
@@ -181,13 +191,13 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.digitalForever_tlcReveal(),
             delay: 3000
         }, 'digitalForever_toriNotices');
     }
-    
+
     digitalForever_tlcReveal() {
         this.game.displayScene({
             character: 'Tori (digital)',
@@ -196,13 +206,13 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.digitalForever_ronnieCorrects(),
             delay: 3000
         }, 'digitalForever_tlcReveal');
     }
-    
+
     digitalForever_ronnieCorrects() {
         this.game.displayScene({
             character: 'Ronnie (digital)',
@@ -212,13 +222,13 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.digitalForever_actualMeaning(),
             delay: 2500
         }, 'digitalForever_ronnieCorrects');
     }
-    
+
     digitalForever_actualMeaning() {
         this.game.displayScene({
             character: 'Ronnie (digital)',
@@ -227,13 +237,13 @@ class ToriEndings {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.digitalForever_echoesAppear(),
             delay: 2500
         }, 'digitalForever_actualMeaning');
     }
-    
+
     digitalForever_echoesAppear() {
         this.game.displayScene({
             character: 'Echo 1',
@@ -248,7 +258,7 @@ class ToriEndings {
             delay: 2500
         }, 'digitalForever_echoesAppear');
     }
-    
+
     digitalForever_echo2() {
         this.game.displayScene({
             character: 'Echo 2',
@@ -262,7 +272,7 @@ class ToriEndings {
             delay: 2000
         }, 'digitalForever_echo2');
     }
-    
+
     digitalForever_despairTeases() {
         this.game.displayScene({
             character: 'Despair',
@@ -281,7 +291,7 @@ class ToriEndings {
     digitalForever_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."',            internal: '[Fade to white. Digital Forever - Love preserved in code.]',
+            dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."', internal: '[Fade to white. Digital Forever - Love preserved in code.]',
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
@@ -291,7 +301,7 @@ class ToriEndings {
             delay: 5000
         }, 'digitalForever_echoes');
     }
-    
+
     digitalForever_choice() {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
@@ -349,11 +359,16 @@ class ToriEndings {
     // TRUE ROUTE ENDING
     // Body Anchor Success - She Comes Home
     // ========================================
-    
+
     trueRoute() {
         // Unlock the pre-defined true ending note
         this.route.unlockNote('true_ending');
-        
+
+        // DIZEE POLISH: Check ending achievements
+        if (window.checkEndingAchievements) {
+            window.checkEndingAchievements('true_ending');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The heartbeat calls. The bridge holds. Transfer begins.',
@@ -377,7 +392,7 @@ class ToriEndings {
     trueRoute_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."', background: 'assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -385,7 +400,7 @@ class ToriEndings {
             delay: 4000
         }, 'trueRoute_echoes');
     }
-    
+
     trueRoute_merge() {
         // Display echoes for merge animation
         this.game.displayScene({
@@ -436,15 +451,15 @@ class ToriEndings {
     trueRoute_always() {
         // Unlock Z's UV7 crew reveal note (available on ANY ending completion)
         this.route.unlockNote('z9');
-        
+
         // Unlock Z's final philosophical note (TRUE ENDING ONLY)
         this.route.unlockNote('z10');
-        
+
         // UNLOCK SKIP FEATURE (first ending completion)
         if (!this.game.skipUnlocked) {
             this.game.unlockSkipFeature();
         }
-        
+
         this.game.displayScene({
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',

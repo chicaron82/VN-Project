@@ -79,6 +79,24 @@ class MenuCarousel {
         }
     }
 
+    // Get current card (proxy to activeEngine)
+    getCurrentCard() {
+        if (!this.activeEngine) return null;
+
+        // SimpleCarousel uses getCurrentCardElement()
+        if (this.activeEngine.getCurrentCardElement) {
+            return this.activeEngine.getCurrentCardElement();
+        }
+
+        // MomentumAdapter uses getCurrentCard()
+        if (this.activeEngine.getCurrentCard) {
+            return this.activeEngine.getCurrentCard();
+        }
+
+        return null;
+    }
+
+
     destroy() {
         window.removeEventListener('resize', this.resizeListener);
         if (this.activeEngine && this.activeEngine.destroy) {

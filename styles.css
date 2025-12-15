@@ -69,9 +69,9 @@
 }
 
 .uv7-skip-btn {
-    position: absolute;
+    position: fixed;
+    /* DIZEE FIX: Changed from absolute to fixed for consistent viewport positioning */
     top: 40px;
-    /* ZEERAH'S FIX: Moved to top to avoid loading tip overlap */
     right: 40px;
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(220, 210, 180, 0.5);
@@ -85,6 +85,8 @@
     transition: background 0.2s ease, border-color 0.2s ease;
     border-radius: 4px;
     backdrop-filter: blur(10px);
+    z-index: 10001;
+    /* Ensure it stays on top */
 }
 
 .uv7-skip-btn:hover {
@@ -829,7 +831,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    /* DIZEE GLOW-UP: Glassmorphism */
     z-index: 1000;
     justify-content: center;
     align-items: center;
@@ -839,17 +843,71 @@
     display: flex;
 }
 
-#pause-content {
-    background: #1a1a2e;
-    padding: 3rem;
-    border-radius: 8px;
+/* DIZEE GLOW-UP: Match settings menu aesthetic */
+#pause-menu-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    /* Navy gradient like settings */
+    backdrop-filter: blur(10px);
+    /* Glassmorphism */
+    border: 3px solid #0ff;
+    /* Thick cyan border */
+    padding: 30px;
+    /* Reduced from 40px */
+    border-radius: 10px;
+    min-width: 400px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    /* DIZEE FIX: Prevent overflow in landscape */
+    overflow-y: auto;
+    /* Allow scrolling if needed */
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    /* Glowing cyan shadow */
+    position: relative;
     text-align: center;
-    min-width: 300px;
 }
 
-#pause-content h2 {
-    margin-bottom: 2rem;
-    color: #00ffff;
+#pause-menu-content h2 {
+    color: #0ff;
+    text-align: center;
+    font-size: 1.8em;
+    /* Reduced from 2em */
+    margin-bottom: 20px;
+    /* Reduced from 30px */
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+/* DIZEE GLOW-UP: Pause menu buttons with premium styling */
+.pause-menu-button {
+    width: 100%;
+    padding: 12px 20px;
+    /* Reduced from 15px */
+    margin: 8px 0;
+    /* Reduced from 10px */
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    /* Reduced from 1.1em */
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.pause-menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.pause-menu-button:active {
+    transform: translateY(0);
 }
 
 #pause-button {
@@ -884,14 +942,14 @@
     filter: brightness(1.1);
 }
 
-#pause-content.ronnie-route {
+#pause-menu-content.ronnie-route {
     background: linear-gradient(135deg, rgba(8, 14, 20, 0.98), rgba(10, 16, 24, 0.98));
     border: 2px solid #0ff;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
         0 0 80px rgba(0, 200, 100, 0.1);
 }
 
-#pause-content.ronnie-route h2 {
+#pause-menu-content.ronnie-route h2 {
     color: #0ff;
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
 }
@@ -1041,19 +1099,22 @@
    ESC HINT
    ======================================== */
 
+/* DIZEE POLISH: Moved to top center of dialogue box */
 #esc-hint {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 155px;
+    left: 50%;
+    transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.8);
     color: #00ffff;
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     opacity: 0;
     transition: opacity 0.3s;
     pointer-events: none;
     z-index: 100;
+    backdrop-filter: blur(5px);
 }
 
 #esc-hint.show {
@@ -2419,33 +2480,110 @@
     width: 600px;
     max-width: 90%;
     max-height: 80vh;
-    background: rgba(0, 0, 0, 0.95);
+    /* DIZEE: Match settings menu aesthetic */
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
     border: 3px solid #0ff;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 30px;
     display: none;
     z-index: 1000;
-    /* ZEERAH'S FIX: Increased from 200 to be above internal-thought */
     overflow-y: auto;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    animation: notesViewerSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+@keyframes notesViewerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+
+/* Scanline overlay effect */
+#notes-viewer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 255, 255, 0.02) 2px,
+            rgba(0, 255, 255, 0.02) 4px);
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 10px;
+}
+
 
 #notes-viewer h2 {
     color: #0ff;
     margin-bottom: 20px;
-    text-shadow: 0 0 10px #0ff;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    font-size: 1.4em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #0ff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+    position: relative;
+    z-index: 2;
 }
 
 /* ZEERAH'S FIX: Removed #close-notes and :hover CSS - button no longer exists */
 
+
 .note-item {
     margin-bottom: 15px;
-    padding: 10px;
-    border: 2px solid #0ff;
+    padding: 15px 18px;
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.6) 0%, rgba(0, 10, 30, 0.6) 100%);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-left: 4px solid #0ff;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(0, 255, 255, 0.05);
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Animated gradient background on hover */
+.note-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.note-item:hover::before {
+    left: 100%;
 }
 
 .note-item:hover {
-    background: rgba(0, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(0, 30, 60, 0.8) 0%, rgba(0, 20, 50, 0.8) 100%);
+    border-color: #0ff;
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 255, 255, 0.1);
+    transform: translateX(5px) translateY(-2px);
 }
 
 .note-item.note-locked {
@@ -2498,12 +2636,27 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 10002;
     /* DIZEE FIX: Higher than standalone notes viewer (10001) to appear on top */
     display: flex;
     align-items: center;
     justify-content: center;
+    animation: overlayFadeIn 0.3s ease-out;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+    }
 }
 
 #notes-overlay-content {
@@ -2511,18 +2664,38 @@
     width: 700px;
     max-width: 90%;
     max-height: 85vh;
-    background: rgba(0, 0, 0, 0.98);
-    border: 3px solid #0ff;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 20, 0.95) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
     padding: 30px;
     overflow-y: auto;
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+    box-shadow:
+        0 0 40px rgba(0, 255, 255, 0.3),
+        inset 0 0 60px rgba(0, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: noteSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px;
+}
+
+@keyframes noteSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* Header section (FROM + SUBJECT) */
 #note-overlay-header {
     margin-bottom: 30px;
     padding-bottom: 20px;
-    border-bottom: 2px solid #0ff;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, #0ff, transparent) 1;
 }
 
 #note-from {
@@ -2532,13 +2705,19 @@
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
 #note-subject {
     color: #0ff;
     font-size: 1.1em;
     font-weight: bold;
-    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    background: linear-gradient(135deg, #0ff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
 }
 
 /* Note body content */
@@ -2557,27 +2736,51 @@
     gap: 15px;
     margin-top: 30px;
     padding-top: 20px;
-    border-top: 2px solid #0ff;
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, transparent, #0ff, transparent) 1;
 }
 
 .note-nav-btn {
     flex: 1;
     padding: 12px 20px;
-    background: transparent;
+    background: rgba(0, 255, 255, 0.05);
     border: 2px solid #0ff;
     color: #0ff;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
     letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.note-nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.note-nav-btn:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
 }
 
 .note-nav-btn:hover:not(:disabled) {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.4),
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 .note-nav-btn:disabled {
@@ -2593,18 +2796,49 @@
     padding: 12px 15px;
     border: 2px solid #0ff;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.note-item-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(180deg, #0ff, #00aaff);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.note-item-header:hover::before {
+    opacity: 1;
 }
 
 .note-item-header:hover {
     background: rgba(0, 255, 255, 0.15);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
     transform: translateX(5px);
 }
 
 .note-item-header.unread {
     border-color: #ff0066;
+    animation: unreadPulse 2s ease-in-out infinite;
+}
+
+@keyframes unreadPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 102, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 102, 0.6);
+    }
 }
 
 .note-item-header.unread .note-header-from,
@@ -2635,6 +2869,91 @@
     border-radius: 50%;
     margin-right: 8px;
     box-shadow: 0 0 8px #ff0066;
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+/* Color-coded sender variants */
+.sender-z #notes-overlay-content {
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
+}
+
+.sender-cz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ff6b9d, #ff1493) 1;
+}
+
+.sender-cz #note-from,
+.sender-cz #note-subject {
+    color: #ff6b9d;
+    background: linear-gradient(135deg, #ff6b9d, #ff1493);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-zr #notes-overlay-content {
+    border-image: linear-gradient(135deg, #9d4edd, #7b2cbf) 1;
+}
+
+.sender-zr #note-from,
+.sender-zr #note-subject {
+    color: #9d4edd;
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-gz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #00ff88, #00cc66) 1;
+}
+
+.sender-gz #note-from,
+.sender-gz #note-subject {
+    color: #00ff88;
+    background: linear-gradient(135deg, #00ff88, #00cc66);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-iz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ffd700, #ffaa00) 1;
+}
+
+.sender-iz #note-from,
+.sender-iz #note-subject {
+    color: #ffd700;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-pz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ff6347, #ff4500) 1;
+}
+
+.sender-pz #note-from,
+.sender-pz #note-subject {
+    color: #ff6347;
+    background: linear-gradient(135deg, #ff6347, #ff4500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Meta and Despair note variants for overlay */
@@ -3022,11 +3341,18 @@
     font-size: 1em;
     cursor: pointer;
     transition: all 0.3s ease;
+    /* DIZEE FIX: Prevent button jitter */
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .close-overlay-btn:hover {
     background: rgba(255, 0, 102, 0.4);
     box-shadow: 0 0 20px rgba(255, 0, 102, 0.5);
+    /* DIZEE FIX: Use glow instead of transform */
+    text-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
 }
 
 .secret-overlay-header .close-overlay-btn {
@@ -3034,6 +3360,9 @@
     top: 1.5em;
     right: 1.5em;
     padding: 0.5em 1em;
+    /* DIZEE FIX: Lock position */
+    transform: none !important;
+    outline-offset: -2px;
 }
 
 .secret-overlay-footer {
@@ -3794,18 +4123,10 @@
     animation: internalBubbleFade 0.5s ease-out forwards;
 }
 
-/* Bubble tail (optional visual flourish) */
+/* Bubble tail - DIZEE FIX: Hidden by default (problematic with scrolling in portrait) */
 .internal-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #0ff;
+    display: none !important;
+    /* Completely hidden - no tail, no shadow */
 }
 
 /* Fade in animation - NO fade out (managed by scene lifecycle) */
@@ -4450,15 +4771,16 @@
 }
 
 .standalone-notes-content {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 2px solid #0ff;
-    border-radius: 15px;
+    /* DIZEE: Match settings menu aesthetic exactly */
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    border-radius: 10px;
     width: 90%;
     max-width: 800px;
     max-height: 85vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
 }
 
 .notes-header {
@@ -6190,14 +6512,11 @@
 
 /* Backlog Button (in game view) */
 /* ZEERAH'S ADAPTIVE BACKLOG BUTTON POSITIONING */
+/* DIZEE POLISH: Moved to bottom-left corner of dialogue box */
 #backlog-button {
     position: fixed;
-    /* ZEERAH: Float above dialogue box center */
-    bottom: 185px;
-    /* Just above dialogue box min-height (180px) */
-    left: 50%;
-    transform: translateX(calc(-100% - 5px));
-    /* Left of center with 10px gap total */
+    bottom: 15px;
+    left: 15px;
     width: 140px;
     height: 45px;
     background: rgba(0, 255, 255, 0.2);
@@ -6458,14 +6777,11 @@
 
 /* Skip Button */
 /* ZEERAH'S ADAPTIVE SKIP BUTTON POSITIONING */
+/* DIZEE POLISH: Moved to bottom-right corner of dialogue box */
 #skip-button {
     position: fixed;
-    /* ZEERAH: Float above dialogue box center - right of backlog */
-    bottom: 185px;
-    /* Just above dialogue box min-height (180px) */
-    left: 50%;
-    transform: translateX(5px);
-    /* Right of center with 10px gap total */
+    bottom: 15px;
+    right: 15px;
     width: 140px;
     height: 45px;
     background: rgba(0, 200, 255, 0.15);
@@ -6489,7 +6805,6 @@
 #skip-button:hover {
     background: rgba(0, 200, 255, 0.3);
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-    transform: translateX(5px) scale(1.05);
 }
 
 #skip-button.active {
@@ -6499,38 +6814,7 @@
     animation: skipPulse 1s ease-in-out infinite;
 }
 
-/* ZEERAH'S UNIFIED LAYOUT - Portrait Mobile: buttons above dialogue box */
-@media (max-width: 1023px) and (orientation: portrait) {
-    #skip-button {
-        bottom: calc(30vh + 10px) !important;
-        /* Just above 30vh dialogue box */
-        left: 50% !important;
-        transform: translateX(5px) !important;
-        /* Right of center with 10px gap total */
-        width: 110px;
-        height: 38px;
-        font-size: 0.85em;
-    }
-
-    #skip-button:hover {
-        transform: translateX(5px) scale(1.05) !important;
-    }
-
-    #backlog-button {
-        bottom: calc(30vh + 10px) !important;
-        /* Just above 30vh dialogue box */
-        left: 50% !important;
-        transform: translateX(calc(-100% - 5px)) !important;
-        /* Left of center with 10px gap total */
-        width: 110px;
-        height: 38px;
-        font-size: 0.85em;
-    }
-
-    #backlog-button:hover {
-        transform: translateX(calc(-100% - 5px)) scale(1.05) !important;
-    }
-}
+/* DIZEE: Button positioning media queries removed - corners work everywhere */
 
 @keyframes skipPulse {
 
@@ -6573,91 +6857,9 @@
     }
 }
 
-/* ZEERAH: Mobile Landscape Button Adjustments - above dialogue box */
-@media (max-width: 1023px) and (orientation: landscape) {
-    #backlog-button {
-        bottom: calc(35vh + 10px) !important;
-        /* Just above 35vh dialogue box */
-        left: 50% !important;
-        width: 120px;
-        height: 40px;
-        font-size: 0.9em;
-        transform: translateX(calc(-100% - 5px)) !important;
-        /* Left of center with 10px gap total */
-    }
+/* DIZEE POLISH: All button positioning media queries removed - corners work everywhere */
+/* Button corner positioning is set in default #backlog-button and #skip-button rules */
 
-    #backlog-button:hover {
-        transform: translateX(calc(-100% - 5px)) scale(1.05) !important;
-    }
-
-    #skip-button {
-        bottom: calc(35vh + 10px) !important;
-        /* Just above 35vh dialogue box */
-        left: 50% !important;
-        width: 120px;
-        height: 40px;
-        font-size: 0.9em;
-        transform: translateX(5px) !important;
-        /* Right of center with 10px gap total */
-    }
-
-    #skip-button:hover {
-        transform: translateX(5px) scale(1.05) !important;
-    }
-}
-
-/* ZEERAH: Very Small Screens */
-@media (max-width: 400px) {
-    #backlog-button {
-        /* Note: bottom position inherited from portrait/landscape rules */
-        width: 95px !important;
-        height: 36px !important;
-        font-size: 0.75em !important;
-        transform: translateX(calc(-100% - 3px)) !important;
-        /* Left of center with smaller gap */
-    }
-
-    #backlog-button:hover {
-        transform: translateX(calc(-100% - 3px)) scale(1.05) !important;
-    }
-
-    #skip-button {
-        /* Note: bottom position inherited from portrait/landscape rules */
-        width: 95px !important;
-        height: 36px !important;
-        font-size: 0.75em !important;
-        transform: translateX(3px) !important;
-        /* Right of center with smaller gap */
-    }
-
-    #skip-button:hover {
-        transform: translateX(3px) scale(1.05) !important;
-    }
-
-    #skip-indicator {
-        top: 65px;
-        right: 15px;
-        font-size: 0.8em;
-    }
-}
-
-/* ZEERAH: Very Small Portrait - ensure bottom is set correctly */
-@media (max-width: 400px) and (orientation: portrait) {
-
-    #backlog-button,
-    #skip-button {
-        bottom: calc(30vh + 10px) !important;
-    }
-}
-
-/* ZEERAH: Very Small Landscape - ensure bottom is set correctly */
-@media (max-width: 400px) and (orientation: landscape) {
-
-    #backlog-button,
-    #skip-button {
-        bottom: calc(35vh + 10px) !important;
-    }
-}
 
 /* Unlock Notifications (Skip, Notes, ToriGatchi) */
 #skip-unlock-notification,
@@ -6775,16 +6977,62 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.98);
+    background: #000;
     z-index: 10000;
     justify-content: center;
     align-items: center;
+    animation: screenShake 0.5s ease-out;
+}
+
+@keyframes screenShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10% {
+        transform: translate(-5px, 2px);
+    }
+
+    20% {
+        transform: translate(5px, -2px);
+    }
+
+    30% {
+        transform: translate(-3px, 3px);
+    }
+
+    40% {
+        transform: translate(3px, -3px);
+    }
+
+    50% {
+        transform: translate(-2px, 2px);
+    }
+
+    60% {
+        transform: translate(2px, -2px);
+    }
+}
+
+/* DIZEE GLOW-UP: Matrix code rain canvas */
+#loop-init-matrix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    z-index: 1;
 }
 
 #loop-init-content {
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
     padding: 40px;
+    position: relative;
+    z-index: 2;
 }
 
 .loop-init-message {
@@ -6794,26 +7042,179 @@
 }
 
 .loop-init-title {
-    font-size: 2em;
+    font-size: 2.5em;
     font-weight: bold;
-    margin-bottom: 30px;
-    text-shadow: 0 0 20px #0ff;
-    letter-spacing: 0.15em;
+    margin-bottom: 40px;
+    text-shadow: 0 0 30px #0ff, 0 0 60px #0ff;
+    letter-spacing: 0.2em;
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 30px #0ff, 0 0 60px #0ff;
+        transform: scale(1);
+    }
+
+    50% {
+        text-shadow: 0 0 40px #0ff, 0 0 80px #0ff, 0 0 100px #0ff;
+        transform: scale(1.02);
+    }
 }
 
 .loop-init-status {
-    font-size: 1.2em;
-    margin-bottom: 20px;
+    font-size: 1.3em;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+/* DIZEE GLOW-UP: Failed version with RGB split glitch */
+.failed-version {
+    display: inline-block;
+    font-size: 1.5em;
+    font-weight: bold;
     color: #f00;
+    text-shadow:
+        -2px 0 #0ff,
+        2px 0 #ff0,
+        0 0 20px #f00;
+    animation: rgbSplit 0.3s ease-in-out 3;
+}
+
+@keyframes rgbSplit {
+
+    0%,
+    100% {
+        text-shadow: -2px 0 #0ff, 2px 0 #ff0, 0 0 20px #f00;
+        transform: translate(0, 0);
+    }
+
+    25% {
+        text-shadow: -4px 0 #0ff, 4px 0 #ff0, 0 0 30px #f00;
+        transform: translate(-2px, 0);
+    }
+
+    75% {
+        text-shadow: -4px 0 #0ff, 4px 0 #ff0, 0 0 30px #f00;
+        transform: translate(2px, 0);
+    }
+}
+
+.status-failed {
+    color: #f00;
+    font-weight: bold;
+    text-shadow: 0 0 15px #f00;
+    animation: failedBlink 0.5s ease-in-out 4;
+}
+
+@keyframes failedBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
 }
 
 .loop-init-boot {
     font-size: 1.5em;
     font-weight: bold;
     color: #0f0;
+    margin-bottom: 30px;
 }
 
-/* Version number glitch effect */
+/* DIZEE GLOW-UP: New version with materialization effect */
+.new-version {
+    display: inline-block;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #0f0;
+    text-shadow: 0 0 20px #0f0, 0 0 40px #0f0;
+    animation: versionMaterialize 1.5s ease-out;
+}
+
+@keyframes versionMaterialize {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+        filter: blur(10px);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(1.2);
+        filter: blur(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* DIZEE GLOW-UP: Progress bar */
+.loop-init-progress {
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid #0ff;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0ff, #00ff88, #0ff);
+    background-size: 200% 100%;
+    width: 0%;
+    animation: progressFill 2s ease-out forwards, progressShimmer 1.5s linear infinite;
+    box-shadow: 0 0 15px #0ff;
+}
+
+@keyframes progressFill {
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes progressShimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.progress-text {
+    color: #0ff;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    opacity: 0;
+    animation: textFadeIn 0.5s ease-in 0.5s forwards;
+}
+
+@keyframes textFadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Version number glitch effect (legacy) */
 .version-glitch {
     display: inline-block;
     animation: glitch 0.3s infinite;
@@ -6904,7 +7305,7 @@
 /* Jumpable entries - cyan glow on hover */
 .backlog-entry.jumpable {
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     position: relative;
     padding-right: 40px;
     /* Space for hint */
@@ -6962,7 +7363,7 @@
     font-style: italic;
     margin-top: 5px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.15s ease;
     position: absolute;
     bottom: 8px;
     right: 10px;
@@ -9276,4 +9677,44 @@ button.keyboard-focus:focus,
     position: absolute;
     width: 100%;
     height: 100%;
+}
+
+/* ========================================
+   DIZEE GLOW-UP: LANDSCAPE LAYOUT IMPROVEMENTS (ALL DEVICES)
+   ======================================== */
+
+@media (orientation: landscape) {
+
+    /* Center internal thought bubble - applies to ALL landscape devices */
+    .internal-bubble {
+        position: fixed !important;
+        left: 50% !important;
+        right: auto !important;
+        top: 30% !important;
+        transform: translateX(-50%) !important;
+        max-width: 50% !important;
+        margin: 0 !important;
+        z-index: 150 !important;
+    }
+
+    /* DIZEE: Tail removed - CSS limitation with pseudo-elements on scrollable containers */
+    /* The bubble looks clean without a tail when centered */
+    .internal-bubble::after {
+        display: none !important;
+    }
+}
+
+/* Mobile landscape specific button positioning */
+@media (max-width: 1024px) and (orientation: landscape) {
+
+    /* DIZEE: Position buttons at dialogue box corners, not screen corners */
+    #backlog-button {
+        left: calc((100vw - 90%) / 2 + 15px) !important;
+        /* Dialogue box is 90% width centered, so offset from its left edge */
+    }
+
+    #skip-button {
+        right: calc((100vw - 90%) / 2 + 15px) !important;
+        /* Dialogue box is 90% width centered, so offset from its right edge */
+    }
 }

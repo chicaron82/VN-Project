@@ -7,19 +7,19 @@ class SharedPrologue {
     constructor(game) {
         this.game = game;
     }
-    
+
     start() {
         this.scene1_streetBump();
     }
-    
+
     // ========================================
     // SCENE 1: THE STREET BUMP
     // ========================================
-    
+
     scene1_streetBump() {
         // Apply prologue style BEFORE first scene displays
         this.game.dialogueBox.classList.add('prologue-style');
-        
+
         this.game.displayScene({
             character: 'Tori',
             dialogue: 'I wasn\'t looking where I was going...',
@@ -27,11 +27,11 @@ class SharedPrologue {
             background: 'assets/genericBack.png',
             sprites: {
                 right: 'assets/tori-sprite.png'
-            }, 
+            },
             next: () => this.scene1_bump()
         }, 'scene1_streetBump');
     }
-    
+
     scene1_bump() {
         this.game.displayScene({
             character: 'Tori',
@@ -40,7 +40,7 @@ class SharedPrologue {
             next: () => this.scene1_pickup()
         }, 'scene1_bump');
     }
-    
+
     scene1_pickup() {
         // HAPTIC + VISUAL: Initial double buzz when picking up modified Tamagotchi
         if (this.game.triggerSensoryFeedback) {
@@ -51,10 +51,16 @@ class SharedPrologue {
             character: 'Tori',
             dialogue: '...Weird. Mine has never done that before.',
             internal: '[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]',
-            next: () => this.scene1_oldMan()
+            next: () => {
+                // COMMENTARY TRIGGER
+                if (this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+                    this.game.devCommentary.showCommentary('prologue_street_bump');
+                }
+                this.scene1_oldMan();
+            }
         }, 'scene1_pickup');
     }
-    
+
     scene1_oldMan() {
         this.game.displayScene({
             character: 'Old Man',
@@ -68,7 +74,7 @@ class SharedPrologue {
             next: () => this.scene1_end()
         }, 'scene1_oldMan');
     }
-    
+
     scene1_end() {
         this.game.displayScene({
             character: 'Tori',
@@ -77,12 +83,12 @@ class SharedPrologue {
             next: () => this.scene2_arrival()
         }, 'scene1_end');
     }
-    
+
     // ========================================
     // SCENE 2: HOME - BEFORE THE FALL
     // UPDATED: Expanded battery drain dialogue
     // ========================================
-    
+
     scene2_arrival() {
         this.game.displayScene({
             character: 'Tori',
@@ -96,7 +102,7 @@ class SharedPrologue {
             next: () => this.scene2_ronnieGreeting()
         }, 'scene2_arrival');
     }
-    
+
     scene2_ronnieGreeting() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -109,7 +115,7 @@ class SharedPrologue {
             next: () => this.scene2_home()
         }, 'scene2_ronnieGreeting');
     }
-    
+
     scene2_home() {
         this.game.displayScene({
             character: 'Tori',
@@ -122,7 +128,7 @@ class SharedPrologue {
             next: () => this.scene2_ronnieResponse()
         }, 'scene2_home');
     }
-    
+
     scene2_ronnieResponse() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -135,7 +141,7 @@ class SharedPrologue {
             next: () => this.scene2_toriExplains()
         }, 'scene2_ronnieResponse');
     }
-    
+
     scene2_toriExplains() {
         this.game.displayScene({
             character: 'Tori',
@@ -149,7 +155,7 @@ class SharedPrologue {
             next: () => this.scene2_ronnieTeases()
         }, 'scene2_toriExplains');
     }
-    
+
     scene2_ronnieTeases() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -162,7 +168,7 @@ class SharedPrologue {
             next: () => this.scene2_hoodieBanter()
         }, 'scene2_ronnieTeases');
     }
-    
+
     scene2_hoodieBanter() {
         this.game.displayScene({
             character: 'Tori',
@@ -176,7 +182,7 @@ class SharedPrologue {
             next: () => this.scene2_ronnieDefends()
         }, 'scene2_hoodieBanter');
     }
-    
+
     scene2_ronnieDefends() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -189,7 +195,7 @@ class SharedPrologue {
             next: () => this.scene2_toriRebuttal()
         }, 'scene2_ronnieDefends');
     }
-    
+
     scene2_toriRebuttal() {
         this.game.displayScene({
             character: 'Tori',
@@ -203,7 +209,7 @@ class SharedPrologue {
             next: () => this.scene2_toriDinner()
         }, 'scene2_toriRebuttal');
     }
-    
+
     scene2_toriDinner() {
         this.game.displayScene({
             character: 'Tori',
@@ -217,7 +223,7 @@ class SharedPrologue {
             next: () => this.scene2_kitchen()
         }, 'scene2_toriDinner');
     }
-    
+
     scene2_kitchen() {
         this.game.displayScene({
             character: 'Narration',
@@ -230,7 +236,7 @@ class SharedPrologue {
             next: () => this.scene2_warning()
         }, 'scene2_kitchen');
     }
-    
+
     scene2_warning() {
         this.game.displayScene({
             character: 'Ronnie',
@@ -243,11 +249,11 @@ class SharedPrologue {
             next: () => this.scene3_fall()
         }, 'scene2_warning');
     }
-    
+
     // ========================================
     // SCENE 3: THE FALL & TRANSFER
     // ========================================
-    
+
     scene3_fall() {
         this.game.displayScene({
             character: 'Narration',
@@ -255,26 +261,26 @@ class SharedPrologue {
             next: () => this.scene3_vision()
         }, 'scene3_fall');
     }
-    
+
     scene3_vision() {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.',
             next: () => this.prologueComplete()
         }, 'scene3_vision');
-        
+
         // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
         this.game.fadeSpritesSequence('left', 'assets/ronnie-sprite.png', 'assets/old-ronnie-sprite.png', 4000);
     }
-    
+
     // ========================================
     // PROLOGUE COMPLETE - ROUTE SELECTION
     // ========================================
-    
+
     prologueComplete() {
         // Remove prologue style before route selection
         this.game.dialogueBox.classList.remove('prologue-style');
-        
+
         // Show route selection screen
         // This is where player chooses Ronnie or Tori route
         this.game.showRouteSelect();

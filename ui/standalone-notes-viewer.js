@@ -12,7 +12,7 @@ class StandaloneNotesViewer {
         // ZEERAH: Read status tracking for notification dots
         this.readStatus = this.loadReadStatus();
     }
-    
+
     loadUnlockedNotes() {
         // ZEERAH'S FIX: Load notes directly from localStorage
         // CollectiblesManager now saves here immediately on unlock
@@ -25,7 +25,7 @@ class StandaloneNotesViewer {
             pz: [],
             special: []
         };
-        
+
         try {
             const saved = localStorage.getItem('vn_collected_notes');
             if (saved) {
@@ -40,7 +40,7 @@ class StandaloneNotesViewer {
         } catch (e) {
             console.warn('Error loading notes for standalone viewer:', e);
         }
-        
+
         return notes;
     }
 
@@ -87,8 +87,8 @@ class StandaloneNotesViewer {
 
     hasAnyUnread() {
         return this.hasUnreadFeatures() ||
-               this.hasUnreadToriNotes() ||
-               this.hasUnreadRonnieNotes();
+            this.hasUnreadToriNotes() ||
+            this.hasUnreadRonnieNotes();
     }
 
     // ZEERAH: Update notification dots on UI
@@ -137,7 +137,7 @@ class StandaloneNotesViewer {
     getTotalUnlocked() {
         return Object.values(this.unlockedNotes).reduce((sum, arr) => sum + arr.length, 0);
     }
-    
+
     show() {
         // Create viewer overlay
         const viewer = document.createElement('div');
@@ -297,10 +297,10 @@ class StandaloneNotesViewer {
             this.updateNotificationDots();
         }
     }
-    
+
     renderNotesList() {
         const totalUnlocked = this.getTotalUnlocked();
-        
+
         if (totalUnlocked === 0) {
             return `
                 <div class="no-notes-message">
@@ -309,11 +309,11 @@ class StandaloneNotesViewer {
                 </div>
             `;
         }
-        
+
         // Get all note definitions
         const allNoteDefs = this.getAllNoteDefinitions();
         let html = '';
-        
+
         // Render each unlocked note
         Object.keys(this.unlockedNotes).forEach(type => {
             this.unlockedNotes[type].forEach(noteId => {
@@ -321,7 +321,7 @@ class StandaloneNotesViewer {
                 if (note) {
                     const routeLabel = this.getRouteLabel(type);
                     const typeColor = this.getTypeColor(type);
-                    
+
                     html += `
                         <div class="note-entry" style="border-left-color: ${typeColor};">
                             <div class="note-header-row">
@@ -334,7 +334,7 @@ class StandaloneNotesViewer {
                 }
             });
         });
-        
+
         return html || '<div class="no-notes-message">No notes found.</div>';
     }
 
@@ -360,11 +360,16 @@ class StandaloneNotesViewer {
                         const unreadClass = isUnread ? 'unread' : '';
                         const unreadDot = isUnread ? '<span class="note-unread-dot"></span>' : '';
 
+                        // DIZEE POLISH: Get timestamp
+                        const timestamp = this.getNoteTimestamp(noteId);
+                        const timestampHTML = timestamp ? `<div class="note-timestamp">${timestamp}</div>` : '';
+
                         html += `
                             <div class="note-item-header ${unreadClass}" data-note-id="${noteId}">
                                 ${unreadDot}
                                 <div class="note-header-from">FROM: ${sender}</div>
                                 <div class="note-header-subject">SUBJECT: ${note.title}</div>
+                                ${timestampHTML}
                             </div>
                         `;
                     }
@@ -401,11 +406,16 @@ class StandaloneNotesViewer {
                         const unreadClass = isUnread ? 'unread' : '';
                         const unreadDot = isUnread ? '<span class="note-unread-dot"></span>' : '';
 
+                        // DIZEE POLISH: Get timestamp
+                        const timestamp = this.getNoteTimestamp(noteId);
+                        const timestampHTML = timestamp ? `<div class="note-timestamp">${timestamp}</div>` : '';
+
                         html += `
                             <div class="note-item-header ${unreadClass}" data-note-id="${noteId}">
                                 ${unreadDot}
                                 <div class="note-header-from">FROM: ${sender}</div>
                                 <div class="note-header-subject">SUBJECT: ${note.title}</div>
+                                ${timestampHTML}
                             </div>
                         `;
                     }
@@ -569,7 +579,7 @@ class StandaloneNotesViewer {
         };
         return labels[type] || type.toUpperCase();
     }
-    
+
     getTypeColor(type) {
         const colors = {
             z: '#00ffff',        // Z - Architect (cyan)
@@ -582,7 +592,7 @@ class StandaloneNotesViewer {
         };
         return colors[type] || '#0ff';
     }
-    
+
     getAllNoteDefinitions() {
         // DIZEE: Pull definitions from CollectiblesManager instead of hardcoding
         // This ensures standalone viewer always has ALL notes, stays in sync
@@ -614,6 +624,9 @@ class StandaloneNotesViewer {
         // Update navigation buttons
         this.updateNavigationButtons();
 
+        // DIZEE GLOW-UP: Add swipe navigation
+        this.setupSwipeNavigation();
+
         // ESC key to close
         this.escKeyHandler = (e) => {
             if (e.key === 'Escape') {
@@ -621,6 +634,51 @@ class StandaloneNotesViewer {
             }
         };
         document.addEventListener('keydown', this.escKeyHandler);
+    }
+
+    setupSwipeNavigation() {
+        const overlayContent = document.getElementById('notes-overlay-content');
+        if (!overlayContent) return;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        const handleTouchStart = (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        };
+
+        const handleTouchEnd = (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        };
+
+        const handleSwipe = () => {
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const minSwipeDistance = 50;
+
+            // Only swipe if horizontal movement is greater than vertical (avoid interfering with scrolling)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                if (deltaX > 0) {
+                    // Swipe right - previous note
+                    this.navigateNote(-1);
+                } else {
+                    // Swipe left - next note
+                    this.navigateNote(1);
+                }
+            }
+        };
+
+        // Store handlers for cleanup
+        this.swipeTouchStart = handleTouchStart;
+        this.swipeTouchEnd = handleTouchEnd;
+
+        overlayContent.addEventListener('touchstart', this.swipeTouchStart, { passive: true });
+        overlayContent.addEventListener('touchend', this.swipeTouchEnd, { passive: true });
     }
 
     displayNoteInOverlay(noteId) {
@@ -686,7 +744,14 @@ class StandaloneNotesViewer {
 
         // Apply color class based on note type
         if (overlay) {
+            // Remove all sender classes first
             overlay.className = '';
+
+            // DIZEE GLOW-UP: Add sender-specific color class
+            const senderClass = `sender-${noteType}`;
+            overlay.classList.add(senderClass);
+
+            // Keep meta/despair classes for backward compatibility
             if (noteType === 'cz' || noteType === 'zr') {
                 overlay.classList.add('meta-note');
             } else if (noteType === 'special') {
@@ -725,6 +790,39 @@ class StandaloneNotesViewer {
             special: 'System Notice'
         };
         return senders[noteType] || 'Unknown Observer';
+    }
+
+    // DIZEE POLISH: Get formatted timestamp for a note
+    getNoteTimestamp(noteId) {
+        // Load timestamps from localStorage
+        try {
+            const savedTimestamps = localStorage.getItem('vn_note_timestamps');
+            if (!savedTimestamps) return '';
+
+            const timestamps = JSON.parse(savedTimestamps);
+            const timestamp = timestamps[noteId];
+
+            if (!timestamp) return '';
+
+            // Use same relative time formatting as collectibles manager
+            const now = Date.now();
+            const diff = now - timestamp;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (seconds < 60) return 'just now';
+            if (minutes < 60) return `${minutes}m ago`;
+            if (hours < 24) return `${hours}h ago`;
+            if (days < 7) return `${days}d ago`;
+            if (days < 30) return `${Math.floor(days / 7)}w ago`;
+            if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+            return `${Math.floor(days / 365)}y ago`;
+        } catch (e) {
+            console.warn('Error loading note timestamps:', e);
+            return '';
+        }
     }
 
     updateNavigationButtons() {
@@ -790,6 +888,15 @@ class StandaloneNotesViewer {
             this.escKeyHandler = null;
         }
 
+        // DIZEE GLOW-UP: Remove swipe handlers
+        const overlayContent = document.getElementById('notes-overlay-content');
+        if (overlayContent && this.swipeTouchStart && this.swipeTouchEnd) {
+            overlayContent.removeEventListener('touchstart', this.swipeTouchStart);
+            overlayContent.removeEventListener('touchend', this.swipeTouchEnd);
+            this.swipeTouchStart = null;
+            this.swipeTouchEnd = null;
+        }
+
         // Clear current note context
         this.currentNoteId = null;
         this.currentNoteList = null;
@@ -826,6 +933,11 @@ class StandaloneNotesViewer {
 
         headers.forEach(header => {
             header.addEventListener('click', () => {
+                // DIZEE FIX: Haptic feedback on note click
+                if (this.game && this.game.triggerSensoryFeedback) {
+                    this.game.triggerSensoryFeedback('buttonPress', header, 'Note opened');
+                }
+
                 const noteId = header.getAttribute('data-note-id');
                 const allNoteIds = Array.from(headers).map(h => h.getAttribute('data-note-id'));
                 this.openNoteOverlay(noteId, allNoteIds);

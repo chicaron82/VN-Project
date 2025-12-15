@@ -9,19 +9,19 @@ class ToriAct3 {
         this.route = route;
         this.game = route.game;
     }
-    
+
     start() {
         // Echo growth: Act 3 - Balance achieved (all equal height)
         this.game.setEchoGrowthStage('act3');
-        
+
         this.beat1();
     }
-    
+
     // ========================================
     // BEAT 1: HONEYMOON LOOP (FALSE CALM)
     // Inside the Perfect Dream
     // ========================================
-    
+
     beat1() {
         this.game.displayScene({
             character: 'Narration',
@@ -45,7 +45,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.beat1_toriAnswer(),
             delay: 2000
@@ -61,7 +61,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat1_horror(),
             delay: 2500,
@@ -77,7 +77,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat1_echoes(),
             delay: 3000
@@ -87,7 +87,7 @@ class ToriAct3 {
     beat1_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Here it comes."\nEcho 2: "The loop tightens."\nDespair: "You\'re in the honeymoon trap. Everything feels right because nothing is real."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Here it comes."\nEcho 2: "The loop tightens."\nDespair: "You\'re in the honeymoon trap. Everything feels right because nothing is real."', background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
@@ -120,7 +120,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat1_choice(),
             delay: 3000
@@ -135,7 +135,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             choices: [
                 { text: '[Call it out: "This isn\'t real"]', value: 'truth' },
@@ -165,7 +165,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat2(),
             delay: 3000
@@ -180,7 +180,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat2(),
             delay: 3000
@@ -195,7 +195,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat2(),
             delay: 3000
@@ -206,7 +206,7 @@ class ToriAct3 {
     // BEAT 2: FRACTURE IN MEMORY
     // The Pasta Argument Plays Wrong
     // ========================================
-    
+
     beat2() {
         this.game.displayScene({
             character: 'Narration',
@@ -230,7 +230,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.beat2_toriResponse(),
             delay: 2500
@@ -246,7 +246,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat2_horror(),
             delay: 3000,
@@ -262,7 +262,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat2_echoes(),
             delay: 3000
@@ -272,7 +272,7 @@ class ToriAct3 {
     beat2_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "Memory corruption."\nEcho 1: "The system is rewriting her."\nDespair: "Soon you won\'t remember what was real and what the code invented."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 2: "Memory corruption."\nEcho 1: "The system is rewriting her."\nDespair: "Soon you won\'t remember what was real and what the code invented."', background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
@@ -290,7 +290,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'right'
+                highlight: 'right'
             },
             next: () => this.beat2_choice(),
             delay: 2500
@@ -305,7 +305,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             choices: [
                 { text: '[Tell him: "The memory was corrupted"]', value: 'truth' },
@@ -335,7 +335,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat3(),
             delay: 3000
@@ -350,7 +350,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat3(),
             delay: 3000
@@ -365,7 +365,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat3(),
             delay: 3000
@@ -376,7 +376,7 @@ class ToriAct3 {
     // BEAT 3: SYSTEM MESSAGES INTRUDE
     // The Fourth Wall Shatters
     // ========================================
-    
+
     beat3() {
         this.game.displayScene({
             character: 'Narration',
@@ -416,7 +416,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat3_moreBoxes(),
             delay: 2500
@@ -446,7 +446,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat3_echoes(),
             delay: 3500,
@@ -457,7 +457,7 @@ class ToriAct3 {
     beat3_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Now she understands."\nEcho 2: "She\'s not trapped IN code."\nDespair: "She IS code. And code doesn\'t have a soul to save."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Now she understands."\nEcho 2: "She\'s not trapped IN code."\nDespair: "She IS code. And code doesn\'t have a soul to save."', background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png'
@@ -491,7 +491,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             choices: [
                 { text: '[Fight: "I\'m MORE than code"]', value: 'fight' },
@@ -521,7 +521,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat4(),
             delay: 3000
@@ -536,7 +536,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat4(),
             delay: 3000
@@ -551,7 +551,7 @@ class ToriAct3 {
             sprites: {
                 left: 'assets/tori-sprite.png',
                 right: 'assets/ronnie-sprite.png',
-            highlight: 'left'
+                highlight: 'left'
             },
             next: () => this.beat4(),
             delay: 3000
@@ -562,7 +562,7 @@ class ToriAct3 {
     // BEAT 4: THE SHATTER MOMENT
     // Fragmenting Into Multiple Instances
     // ========================================
-    
+
     beat4() {
         this.game.displayScene({
             character: 'Narration',
@@ -634,7 +634,13 @@ class ToriAct3 {
             character: 'Narration',
             dialogue: 'All three collapse into one. She\'s on her knees, clutching her head, trying to stay singular.',
             background: 'assets/digitalSpace.png',
-            next: () => this.beat4_revelation(),
+            next: () => {
+                // COMMENTARY TRIGGER
+                if (this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+                    this.game.devCommentary.showCommentary('tori_echo_merge');
+                }
+                this.beat4_revelation();
+            },
             delay: 3000
         }, 'beat4_collapse');
     }
@@ -708,7 +714,7 @@ class ToriAct3 {
     // BEAT 5: THE REVELATION
     // Understanding the Bridge
     // ========================================
-    
+
     beat5() {
         this.game.displayScene({
             character: 'Narration',
@@ -733,7 +739,7 @@ class ToriAct3 {
     beat5_realization() {
         // Unlock final body anchor note
         this.route.unlockNote('z4');
-        
+
         this.game.displayScene({
             character: 'Tori (internal, revelation)',
             dialogue: '"The device isn\'t a PRISON. It\'s a BRIDGE. I\'m connected to my body. The heartbeat I\'m feeling is MINE."',
@@ -747,7 +753,7 @@ class ToriAct3 {
     beat5_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "It won\'t matter. The body is dying. The bridge is burning."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "It won\'t matter. The body is dying. The bridge is burning."', background: 'assets/digitalSpace.png',
             next: () => this.beat5_understanding(),
             delay: 4000
         }, 'beat5_echoes');
@@ -787,7 +793,7 @@ class ToriAct3 {
     // BEAT 6: THE MAD DASH
     // Inside the Device During the Drive
     // ========================================
-    
+
     beat6() {
         this.game.displayScene({
             character: 'Narration',
@@ -833,7 +839,7 @@ class ToriAct3 {
     beat6_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Hold on!"\nEcho 2: "Just a little longer!"\nDespair: "I was wrong. Please... hold on. Prove me wrong."',            background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Hold on!"\nEcho 2: "Just a little longer!"\nDespair: "I was wrong. Please... hold on. Prove me wrong."', background: 'assets/digitalSpace.png',
             next: () => this.beat6_feeling2(),
             delay: 4000
         }, 'beat6_echoes');
@@ -970,7 +976,7 @@ class ToriAct3 {
     beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"',            internal: '[Shock. Awe. They never thought of this.]',
+            dialogue: '"She\'s... she\'s controlling the physical device? From INSIDE it?"', internal: '[Shock. Awe. They never thought of this.]',
             background: 'assets/digitalSpace.png',
             next: () => this.beat6_echo2React(),
             delay: 3500
@@ -980,7 +986,7 @@ class ToriAct3 {
     beat6_echo2React() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."',            background: 'assets/digitalSpace.png',
+            dialogue: '"We tried to BREAK OUT. She\'s working WITH the system. Using it. NAVIGATING it."', background: 'assets/digitalSpace.png',
             next: () => this.beat6_despairQuiet(),
             delay: 4000
         }, 'beat6_echo2React');
@@ -989,10 +995,10 @@ class ToriAct3 {
     beat6_despairQuiet() {
         // Unlock Z's fourth-wall note - the moment Echoes realize Tori broke the pattern
         this.route.unlockNote('z8');
-        
+
         this.game.displayScene({
             character: 'Despair Echo',
-            dialogue: '"..."',            internal: '[For once, Despair has no bitter words. Just... watching.]',
+            dialogue: '"..."', internal: '[For once, Despair has no bitter words. Just... watching.]',
             background: 'assets/digitalSpace.png',
             next: () => this.beat6_synchronizing(),
             delay: 3000
@@ -1068,7 +1074,7 @@ class ToriAct3 {
     beat6_echoesHope() {
         this.game.displayScene({
             character: 'Echo 1',
-            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."',            background: 'assets/digitalSpace.png',
+            dialogue: '"She\'s doing it. She\'s actually SHOWING him the solution."', background: 'assets/digitalSpace.png',
             next: () => this.beat6_echo2Hope(),
             delay: 3000
         }, 'beat6_echoesHope');
@@ -1077,7 +1083,7 @@ class ToriAct3 {
     beat6_echo2Hope() {
         this.game.displayScene({
             character: 'Echo 2',
-            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."',            background: 'assets/digitalSpace.png',
+            dialogue: '"We could have done this. All those times. We just... we never TRIED to help him understand."', background: 'assets/digitalSpace.png',
             next: () => this.beat6_despairShift(),
             delay: 4000
         }, 'beat6_echo2Hope');
@@ -1086,7 +1092,7 @@ class ToriAct3 {
     beat6_despairShift() {
         this.game.displayScene({
             character: 'Despair Echo',
-            dialogue: '"...Maybe. Maybe she really is different."',            internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
+            dialogue: '"...Maybe. Maybe she really is different."', internal: '[Not hope. Not quite. But... less despair. The first crack in her certainty.]',
             background: 'assets/digitalSpace.png',
             next: () => this.beat6_pull(),
             delay: 4000
@@ -1110,7 +1116,7 @@ class ToriAct3 {
     beat6_final() {
         // Unlock Z's true ending hint - placed before the final choice
         this.route.unlockNote('z5');
-        
+
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This is it. The moment everything breaks or holds. Please... let me go home."',
@@ -1126,7 +1132,7 @@ class ToriAct3 {
     beat6_transition() {
         // Unlock final revelation note
         this.route.unlockNote('zr3');
-        
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Whiteout. The critical moment approaches.',

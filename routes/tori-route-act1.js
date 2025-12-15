@@ -227,7 +227,13 @@ class ToriAct1 {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.scene2_echo2_explains(),
+            next: () => {
+                // COMMENTARY TRIGGER
+                if (this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+                    this.game.devCommentary.showCommentary('tori_echoes_first_appearance');
+                }
+                this.scene2_echo2_explains();
+            },
             delay: 2500
         }, 'scene2_echo1_intro');
     }
@@ -294,7 +300,15 @@ class ToriAct1 {
                 left: 'assets/tori-sprite.png',
                 right: 'echoes'
             },
-            next: () => this.scene2_tori_refuses(),
+            next: () => {
+                // COMMENTARY TRIGGER
+                if (this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+                    setTimeout(() => {
+                        this.game.devCommentary.showCommentary('tori_save_blocked');
+                    }, 2000); // Delay so Despair's message shows first
+                }
+                this.scene2_tori_refuses();
+            },
             delay: 3500
         }, 'scene2_despair_welcome');
     }
@@ -826,7 +840,13 @@ class ToriAct1 {
             dialogue: '"NOW!"',
             internal: '[She pushes. Same desperation. Same intent. But this time... with contact.]',
             background: 'assets/digitalSpace.png',
-            next: () => this.scene6_double_buzz(),
+            next: () => {
+                // COMMENTARY TRIGGER
+                if (this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+                    this.game.devCommentary.showCommentary('tori_tether_intro');
+                }
+                this.scene6_double_buzz();
+            },
             delay: 2000
         }, 'scene6_push');
     }

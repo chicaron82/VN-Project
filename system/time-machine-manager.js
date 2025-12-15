@@ -77,6 +77,15 @@ class TimeMachineManager {
         this.entries.push(snapshot);
         this.pruneIfNeeded();
         console.log(`⏰ Snapshot added: ${label || `#${snapshot.id}`} [${priority}]`);
+
+        // COMMENTARY TRIGGER: First Log Added
+        if (this.entries.length === 1 && this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
+            // Delay slightly to let UI settle if visible
+            setTimeout(() => {
+                this.game.devCommentary.showCommentary('backlog_time_machine');
+            }, 1000);
+        }
+
         return snapshot;
     }
 

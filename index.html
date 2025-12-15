@@ -14,6 +14,18 @@
     <!-- External Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="menu-carousel.css">
+    <!-- DIZEE POLISH: Accessibility CSS -->
+    <link rel="stylesheet" href="system/accessibility.css">
+    <!-- DIZEE POLISH: Mobile UX CSS -->
+    <link rel="stylesheet" href="system/mobile-ux.css">
+    <!-- DIZEE FIX: ARIA label positioning fixes -->
+    <link rel="stylesheet" href="system/aria-fixes.css">
+    <!-- DIZEE POLISH: Note timestamps -->
+    <link rel="stylesheet" href="system/note-timestamps.css">
+    <!-- DIZEE POLISH: Achievement system -->
+    <link rel="stylesheet" href="system/achievement-manager.css">
+    <!-- Dev Commentary System -->
+    <link rel="stylesheet" href="system/dev-commentary.css">
     <link rel="stylesheet" href="route-select-sprites.css">
     <link rel="stylesheet" href="route-select-toggle.css">
     <link rel="stylesheet" href="visual-cues.css">
@@ -80,12 +92,12 @@
 
             <!-- Loading Tip (below bar) -->
             <div id="loading-tip">💡 Loading...</div>
-
-            <!-- Skip Button -->
-            <button id="uv7-skip-button" class="uv7-skip-btn">
-                SKIP <span class="skip-arrow">→</span>
-            </button>
         </div>
+
+        <!-- Skip Button (MOVED OUTSIDE container for fixed positioning) -->
+        <button id="uv7-skip-button" class="uv7-skip-btn">
+            SKIP <span class="skip-arrow">→</span>
+        </button>
     </div>
 
     <div id="game-container">
@@ -111,22 +123,32 @@
                 <!-- Button Grid (2x5 when ToriGatchi unlocked, 4x2+1 when locked) -->
                 <div class="menu-buttons-grid" id="menu-buttons-grid">
                     <div class="menu-row menu-row-top">
-                        <button class="menu-button" id="btn-start-story">START STORY</button>
-                        <button class="menu-button" id="btn-continue">CONTINUE</button>
-                        <button class="menu-button" id="btn-load-game-menu">LOAD GAME</button>
-                        <button class="menu-button" id="btn-open-notes">📝 NOTES</button>
+                        <button class="menu-button" id="btn-start-story" aria-label="Start new game">START
+                            STORY</button>
+                        <button class="menu-button" id="btn-continue"
+                            aria-label="Continue from last save">CONTINUE</button>
+                        <button class="menu-button" id="btn-load-game-menu" aria-label="Load saved game">LOAD
+                            GAME</button>
+                        <button class="menu-button" id="btn-open-notes" aria-label="View collected notes">📝
+                            NOTES</button>
                         <!-- ToriGatchi button (only shown when unlocked) -->
                         <button class="menu-button menu-button-torigatchi" id="torigatchi-menu-btn"
-                            style="display: none;">🎮
+                            style="display: none;" aria-label="Play ToriGatchi mini-game">🎮
                             TORIGATCHI</button>
                     </div>
                     <div class="menu-row menu-row-bottom">
-                        <button class="menu-button" id="btn-settings">SETTINGS</button>
-                        <button class="menu-button" id="btn-credits">CREDITS</button>
-                        <button class="menu-button" id="btn-meet-crew">MEET THE CREW</button>
-                        <button class="menu-button" id="btn-directors-cut">DIRECTOR'S CUT</button>
+                        <button class="menu-button" id="btn-settings" aria-label="Open settings menu">SETTINGS</button>
+                        <button class="menu-button" id="btn-credits" aria-label="View game credits">CREDITS</button>
+                        <button class="menu-button" id="btn-meet-crew" aria-label="Meet the development team">MEET THE
+                            CREW</button>
+                        <button class="menu-button" id="btn-directors-cut"
+                            aria-label="View director's commentary">DIRECTOR'S CUT</button>
                         <!-- Contact button (moves here when ToriGatchi unlocked) -->
-                        <button class="menu-button menu-button-contact" id="contact-menu-btn">CONTACT</button>
+                        <button class="menu-button menu-button-contact" id="contact-menu-btn"
+                            aria-label="Contact developer">CONTACT</button>
+                        <!-- DIZEE POLISH: Achievements button -->
+                        <button class="menu-button" id="btn-achievements" aria-label="View achievements">🏆
+                            ACHIEVEMENTS</button>
                     </div>
                 </div>
             </div>
@@ -230,14 +252,15 @@
             </div>
 
             <!-- Notes Button (Tori Route Only) -->
-            <button id="notes-button" style="display: none;">
+            <button id="notes-button" style="display: none;" aria-label="View collected notes">
                 NOTES <span id="notes-count">(0/9)</span>
                 <!-- DIZEE: Unread badge -->
-                <span id="unread-badge" class="unread-badge" style="display: none;" data-count="0">0</span>
+                <span id="unread-badge" class="unread-badge" style="display: none;" data-count="0"
+                    aria-live="polite">0</span>
             </button>
 
             <!-- Backlog Button (Shown during gameplay) -->
-            <button id="backlog-button" title="Dialogue History">⏮️</button>
+            <button id="backlog-button" title="Dialogue History" aria-label="Open dialogue history">⏮️</button>
 
             <!-- Dialogue Box -->
             <div id="dialogue-box">
@@ -252,10 +275,11 @@
             </div>
 
             <!-- Pause Menu Button -->
-            <button id="pause-button"></button>
+            <button id="pause-button" aria-label="Open pause menu"></button>
 
             <!-- Skip Button (Unlocked after completing any ending) -->
-            <button id="skip-button" style="display: none;" title="Skip read text [S]">
+            <button id="skip-button" style="display: none;" title="Skip read text [S]"
+                aria-label="Skip previously read dialogue">
                 SKIP >>
             </button>
 
@@ -270,13 +294,15 @@
             <button class="close-x" id="btn-close-pause-menu">✕</button>
             <div id="pause-menu-content">
                 <h2>PAUSED</h2>
-                <button class="pause-menu-button" id="btn-pause-resume">RESUME</button>
-                <button class="pause-menu-button" id="btn-pause-settings">SETTINGS</button>
-                <button class="pause-menu-button" id="fullscreen-button">ENTER
+                <button class="pause-menu-button" id="btn-pause-resume" aria-label="Resume game">RESUME</button>
+                <button class="pause-menu-button" id="btn-pause-settings" aria-label="Open settings">SETTINGS</button>
+                <button class="pause-menu-button" id="fullscreen-button" aria-label="Toggle fullscreen mode">ENTER
                     FULLSCREEN</button>
-                <button class="pause-menu-button" id="btn-pause-save">SAVE GAME</button>
-                <button class="pause-menu-button" id="btn-pause-load">LOAD GAME</button>
-                <button class="pause-menu-button" id="btn-pause-main-menu">MAIN MENU</button>
+                <button class="pause-menu-button" id="btn-pause-save" aria-label="Save current progress">SAVE
+                    GAME</button>
+                <button class="pause-menu-button" id="btn-pause-load" aria-label="Load saved game">LOAD GAME</button>
+                <button class="pause-menu-button" id="btn-pause-main-menu" aria-label="Return to main menu">MAIN
+                    MENU</button>
             </div>
         </div>
 
@@ -429,6 +455,21 @@
                             <div class="setting-control">
                                 <label class="toggle-switch">
                                     <input type="checkbox" id="comfort-mode-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- DIZEE POLISH: Reduce Motion Toggle -->
+                        <div class="setting-row">
+                            <label for="reduce-motion-toggle" class="setting-label-column">
+                                <span class="setting-name">REDUCE MOTION ♿</span>
+                                <span class="setting-description">Minimize animations and transitions</span>
+                                <span class="setting-note">Reduces motion for users sensitive to movement</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="reduce-motion-toggle" />
                                     <span class="toggle-slider"></span>
                                 </label>
                             </div>
@@ -1099,15 +1140,25 @@
 
         <!-- Loop Reinit Screen -->
         <div id="loop-init-screen" style="display: none;">
+            <!-- DIZEE GLOW-UP: Matrix code rain background -->
+            <canvas id="loop-init-matrix"></canvas>
+
             <div id="loop-init-content">
                 <div class="loop-init-message">
                     <div class="loop-init-title">REINITIALIZING LOOP...</div>
                     <div class="loop-init-status">
-                        <span>Previous attempt: v</span><span id="loop-prev-version">848</span><span> - STATUS:
-                            FAILED</span>
+                        <span>Previous attempt: v</span><span id="loop-prev-version"
+                            class="failed-version">848</span><span> - STATUS:
+                            <span class="status-failed">FAILED</span></span>
                     </div>
                     <div class="loop-init-boot">
-                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="version-glitch">849</span>
+                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="new-version">849</span>
+                    </div>
+                    <div class="loop-init-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">Loading consciousness transfer protocol...</div>
                     </div>
                 </div>
                 <div class="loop-init-continue">[Click anywhere to continue]</div>
@@ -1134,6 +1185,16 @@
     <script src="system/collectibles-manager.js"></script>
     <script src="system/dev-console.js"></script>
     <script src="system/bootstrap-tracker.js"></script>
+    <!-- DIZEE POLISH: Accessibility Manager -->
+    <script src="system/accessibility.js"></script>
+    <!-- DIZEE POLISH: Mobile UX Manager -->
+    <script src="system/mobile-ux.js"></script>
+    <!-- DIZEE POLISH: Achievement System -->
+    <script src="system/achievement-manager.js"></script>
+    <script src="ui/achievement-viewer.js"></script>
+    <script src="system/achievement-hooks.js"></script>
+    <!-- Dev Commentary System -->
+    <script src="system/dev-commentary.js"></script>
     <!-- Gateway Bridge -->
     <script src="vn-gateway-bridge.js"></script>
     <script src="system/game-engine.js"></script>
@@ -1188,6 +1249,26 @@
 
             let splashCompleted = false;
 
+            // DIZEE FIX: Track both conditions before completing
+            let videoReady = false;    // Video ended or timeout reached
+            let loadingReady = false;  // GameEngine signals assets loaded
+
+            // Function to attempt completion (only when BOTH conditions met)
+            function tryCompleteSplash(reason = 'unknown') {
+                console.log(`UV7 Splash: tryComplete (${reason}) - videoReady: ${videoReady}, loadingReady: ${loadingReady}`);
+
+                if (videoReady && loadingReady && !splashCompleted) {
+                    completeSplash(false);
+                }
+            }
+
+            // Called by GameEngine when assets are loaded
+            window.signalLoadingReady = function () {
+                console.log('UV7 Splash: Loading ready signal received');
+                loadingReady = true;
+                tryCompleteSplash('loading complete');
+            };
+
             // Function to complete splash and show main menu
             function completeSplash(skipped = false) {
                 if (splashCompleted) return;
@@ -1216,10 +1297,21 @@
                 setTimeout(() => {
                     splash.style.display = 'none';
                 }, fadeDelay);
+
+                // Show main menu (crossfade overlap)
+                // Wait slightly to let splash fade start
+                setTimeout(() => {
+                    if (window.game && window.game.showMainMenu) {
+                        // We use a special flag to prevent showMainMenu from calling completeSplash again
+                        // (though the guard check handles it safely)
+                        window.game.showMainMenu();
+                    }
+                }, skipped ? 100 : 800);
             }
 
             // Expose completeSplash globally so GameEngine can call it when loading finishes
             window.completeSplash = completeSplash;
+
 
             // Skip button handler
             if (skipButton) {
@@ -1269,10 +1361,11 @@
                     }
                 });
 
-                // When video ends, complete splash
+                // When video ends, mark video as ready (but wait for loading too)
                 videoLogo.addEventListener('ended', () => {
                     console.log('UV7 Splash: Video playback ended');
-                    completeSplash();
+                    videoReady = true;
+                    tryCompleteSplash('video ended');
                 });
 
                 // Handle video errors
@@ -1288,11 +1381,12 @@
                 console.log('UV7 Splash: No video element, using static logo only');
             }
 
-            // Safety timeout - force complete after max duration
+            // Safety timeout - mark video as complete after max duration
             setTimeout(() => {
                 if (!splashCompleted) {
-                    console.log('UV7 Splash: Safety timeout reached, forcing completion');
-                    completeSplash();
+                    console.log('UV7 Splash: Safety timeout reached');
+                    videoReady = true;
+                    tryCompleteSplash('safety timeout');
                 }
             }, SPLASH_DURATION);
         }

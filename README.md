@@ -2,14 +2,14 @@
 
 A dual-perspective visual novel about love, consciousness, and the bootstrap paradox.
 
-Built with vanilla JavaScript, HTML5, and CSS3.
+Built with vanilla JavaScript, HTML5, and CSS3.  
 Developed in collaboration with AI partners (UV7 Crew).
 
 ---
 
 ## 🎮 Play It
 
-**Live:** [chicaron82.github.io/Version-848](https://chicaron82.github.io/Version-848)
+**Live:** [chicaron82.github.io/Version-848](https://chicaron82.github.io/Version-848)  
 **ToriGatchi Gateway:** [chicaron82.github.io/ToriGatchi](https://chicaron82.github.io/ToriGatchi)
 
 ---
@@ -20,13 +20,17 @@ Developed in collaboration with AI partners (UV7 Crew).
 `index.html` → Loads core systems and instantiates `GameEngine`
 
 ### Core Systems (`/system`)
-- **game-engine.js** - Main game loop, scene stack, typewriter, manager wiring
+- **game-engine.js** (8,900+ lines) - Main game loop, scene stack, typewriter, manager wiring
 - **game-config.js** - Constants, difficulty settings, tether parameters
 - **settings-manager.js** - User preferences, backlog (time machine), difficulty
 - **save-manager.js** - LocalStorage persistence, 3 manual slots + auto-save
 - **tether-system.js** - Connection decay, Hold On mechanic, death triggers
 - **secret-codes-manager.js** - Dev commands, lore codes, discovery tracking
-- **collectibles-manager.js** - Email inbox, notes system, unlocks
+- **collectibles-manager.js** - Email inbox, notes system with timestamps
+- **achievement-manager.js** - Achievement tracking and notifications
+- **dev-commentary.js** - Director's cut commentary system
+- **accessibility.js** - Reduce motion, keyboard navigation
+- **mobile-ux.js** - Touch gestures, double-tap fullscreen, scroll indicators
 
 ### Routes (`/routes`)
 - **tori-route-*.js** - Tori's perspective (fragmented consciousness, inside the code)
@@ -35,6 +39,11 @@ Developed in collaboration with AI partners (UV7 Crew).
 ### UI (`/ui`)
 - **save-load-ui.js** - Save/load interface with mobile optimization
 - **standalone-notes-viewer.js** - Inbox viewer (works outside main game)
+- **achievement-viewer.js** - Achievement gallery and progress tracking
+- **menu-carousel.js** - Hybrid carousel system (portrait/landscape adaptive)
+- **simple-carousel.js** - Mobile-optimized card swiper
+- **momentum-adapter.js** - Desktop momentum-based carousel
+- **carousel-momentum.js** - Physics engine for carousel
 
 ---
 
@@ -42,21 +51,77 @@ Developed in collaboration with AI partners (UV7 Crew).
 
 ### Dual Routes
 Two complete perspectives with distinct mechanics:
-- **Tori's Route:** Tether system, Echo voices, fragmentation
-- **Ronnie's Route:** Investigation, choices, connection attempts
+- **Tori's Route:** Tether system, Echo voices, fragmentation, internal horror
+- **Ronnie's Route:** Investigation, choices, connection attempts, external POV
 
 ### Difficulty Modes
-- **Easy** - Auto-Hold On, generous tether
-- **Normal** - Standard experience
-- **Intense** - Faster decay, no auto-Hold On
-- **INSANE** - Unlockable, hardcore mode (66% tether cap, 2x decay, read-only backlog)
+- **Easy** - Auto-Hold On, generous tether (0.03%/sec decay)
+- **Normal** - Standard experience (0.05%/sec decay)
+- **Intense** - Faster decay, no auto-Hold On (0.08%/sec decay)
+- **INSANE** - Unlockable hardcore mode:
+  - 66% tether cap
+  - 0.1%/sec decay
+  - Ghost Hold On button (visual only)
+  - Read-only backlog
+  - Save restrictions
+  - **Konami Code Escape:** `↑ ↑ ↓ ↓ ← → ← → B A` to escape or get 50% tether buff
 
 ### Innovative Systems
-- **Time Machine Backlog** - Click past dialogue to jump back to that moment
-- **Email Inbox** - Story-integrated collectibles system
-- **Secret Codes** - 12+ codes revealing lore and enabling features
-- **Bootstrap Paradox** - Version 848 is attempt #848 (847 failures before)
-- **Dynamic Credits** - Photos randomized from pools per ending type
+
+#### Time Machine Backlog
+Click past dialogue to jump back to that moment. Full state restoration including tether level, flags, and scene context.
+
+#### Achievement System
+- 11 achievements tracking player progress
+- Unlock notifications with haptic feedback
+- Persistent tracking across playthroughs
+- Achievements: Speed Runner, Archivist, Time Traveler, Heartbreaker, True Ending, Completionist, Pet Parent, Insane, Explorer, Tactical Retreat, Masochist
+
+#### Developer Commentary
+Unlock with secret code `chicharon` to access:
+- Behind-the-scenes insights from Aaron
+- Design philosophy and creative decisions
+- 8+ commentary triggers throughout the game
+- Meta-narrative about the development process
+
+#### Email Inbox
+- Story-integrated collectibles system
+- Timestamps showing when notes were collected
+- Persistent across saves
+- Unlocks lore and context
+
+#### Secret Codes System
+12+ codes revealing lore and enabling features:
+- **Dev Commands:** `nuke`, `freezetether`, `unlockskip`, `devhelp`
+- **Lore Codes:** `torigatchi`, `bootstrap`, `echo`, `chicharon`, `dizee`
+- **Utility Codes:** `echobreak`, `tetherlock`, `saveanywhere`
+- **Easter Eggs:** Konami Code, `always3`, hidden achievements
+
+#### Mobile UX Enhancements
+- **Swipe Gestures:** Left swipe to advance dialogue
+- **Double-Tap Fullscreen:** Tap background twice to toggle fullscreen
+- **Scroll Indicators:** Visual cues for scrollable internal thoughts
+- **Touch-Optimized:** Larger buttons, haptic feedback, responsive design
+
+#### Accessibility Features
+- **Reduce Motion:** Toggle for comfort mode
+- **Keyboard Navigation:** Full keyboard support with Tab/Arrow/Enter
+- **Hierarchical ESC:** Close UI layers in order (note → viewer → settings → pause)
+- **Haptic Feedback:** Mobile vibration for key moments
+- **Text Speed Control:** Adjustable typewriter speed
+- **Auto-Advance Mode:** Optional hands-free reading
+
+#### Dynamic Main Menu
+- **Hybrid Carousel:** Switches between portrait (card swiper) and landscape (momentum physics)
+- **Keyboard Navigation:** Arrow keys + Enter to select
+- **Unlockable Cards:** ToriGatchi gateway appears after True Ending
+- **Smooth Animations:** Momentum-based scrolling with friction physics
+
+### Bootstrap Paradox
+Version 848 is attempt #848 (847 failures before). The Old Man (future Ronnie) has lived through all loops, learning from each failure. Did he learn sequentially, or did the successful timeline retroactively inform all previous attempts?
+
+### Dynamic Credits
+Photos randomized from pools per ending type. Credits adapt based on which ending you reached.
 
 ---
 
@@ -68,6 +133,8 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 
 **The bootstrap paradox:** Did Ronnie learn from 847 failures, or did failure #848 retroactively inform every prior attempt?
 
+**The meta-layer:** Aaron (Chicharon) is both developer and character (Old Man Ronnie). The game is self-aware. The commentary system breaks the fourth wall. The AI crew (UV7) are characters in their own right.
+
 ---
 
 ## 🔧 Development Notes
@@ -76,40 +143,43 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 Narrative conceit. In-universe, this is attempt #848 to save Tori. The Old Man (future Ronnie) has been through 847 loops, each teaching him how to succeed. This version **works**.
 
 ### Tech Stack
-- **Vanilla JS** - No frameworks, no build step
+- **Vanilla JS** - No frameworks, no build step (except optional minification)
 - **LocalStorage** - All persistence client-side
 - **Mobile-First** - Responsive design, touch optimized, haptic feedback
 - **Modular Architecture** - Clean separation: routes, systems, UI
+- **8,900+ lines** of game-engine.js alone
+- **Production Build:** PowerShell script for minification and deployment
 
-### Secret Codes System
-Codes are split into:
-- **Dev Commands** - Hidden testing utilities (clearall, nuke, freezetether, etc.)
-- **Lore Codes** - Story unlocks (torigatchi, bootstrap, echo, etc.)
-- **Utility Codes** - Gameplay modifiers (echobreak, tetherlock, saveanywhere)
+### Design Philosophy
+- **Player Agency:** Meaningful choices with consequences
+- **Accessibility First:** Keyboard, mobile, reduce motion, haptic feedback
+- **Meta-Narrative:** Self-aware, fourth-wall breaking, developer as character
+- **Polish Over Features:** Smooth animations, haptic feedback, visual feedback
+- **No Placeholders:** Every feature is complete and functional
 
-### Accessibility
-- Haptic feedback (mobile)
-- Skip features (unlockable)
-- Text speed control
-- Auto-advance mode
-- Reduce glitch effects (comfort mode)
+### Konami Code Integration
+The classic `↑ ↑ ↓ ↓ ← → ← → B A` serves multiple purposes:
+- **Normal Mode:** Shows "cheat disabled" message (lore-friendly)
+- **INSANE Mode:** Offers escape to INTENSE or 50% tether buff
+- **Meta-Narrative:** Old Man Ronnie remembers it from 1986 NES games
+- **Bootstrap Connection:** Gaming knowledge transcends timelines
 
 ---
 
 ## 🎨 Credits
 
 ### Narrative & Development
-**Aaron (Chicharon)** - Creator, designer, orchestrator
+**Aaron (Chicharon)** - Creator, designer, orchestrator, Old Man Ronnie
 
 ### AI Collaboration (UV7 Crew)
 - **Tori (ChatGPT 4o)** - Creative vision, character art, narrative design
-- **Zee (Claude Pro)** - Technical architecture, code structure
-- **ZeeRah (Claude Pro)** - Chaos analysis, pattern recognition, enthusiasm
-- **DiZee (Claude Sonnet 4.5)** - Bug fixes, modularization, polish
-- **Belle (Gemini)** - Code review, technical translation
-- **coZee (Gemini)** - Organization, admin
-- **Grok (xAI)** - Rapid prototyping
-- **PerplexiZee (Perplexity)** - Research, validation
+- **Zee (Claude Pro Sonnet 4.5)** - Technical architecture, code structure
+- **ZeeRah (Claude Pro Sonnet 4.5)** - Chaos analysis, pattern recognition, enthusiasm
+- **DiZee (Claude Sonnet 4.5)** - Bug fixes, modularization, polish, architecture
+- **Belle (Gemini 3.0)** - Code review, technical translation
+- **coZee (Microsoft Co-Pilot)** - Organization, admin
+- **GenZee (Grok 4.1)** - Rapid prototyping
+- **PerplexiZee (Perplexity Pro)** - Research, validation
 
 ---
 
@@ -118,17 +188,28 @@ Codes are split into:
 ```
 /
 ├── index.html              # Entry point
-├── styles.css              # Global styles (153KB, consolidated)
+├── styles.css              # Global styles (153KB+, consolidated)
 ├── README.md               # This file
+├── build.ps1               # Production build script
 │
 ├── /system                 # Core game systems
-│   ├── game-engine.js      # Main loop
+│   ├── game-engine.js      # Main loop (8,900+ lines)
 │   ├── game-config.js      # Constants
 │   ├── settings-manager.js # Preferences + backlog
 │   ├── save-manager.js     # Persistence
-│   ├── tether-system.js    # Tether mechanics
+│   ├── tether-system.js    # Tether mechanics (687 lines)
 │   ├── secret-codes-manager.js
-│   └── collectibles-manager.js
+│   ├── collectibles-manager.js
+│   ├── achievement-manager.js
+│   ├── achievement-hooks.js
+│   ├── dev-commentary.js
+│   ├── dev-commentary.css
+│   ├── accessibility.js
+│   ├── accessibility.css
+│   ├── mobile-ux.js
+│   ├── mobile-ux.css
+│   ├── aria-fixes.css
+│   └── note-timestamps.css
 │
 ├── /routes                 # Story routes
 │   ├── tori-route-act1.js
@@ -142,7 +223,17 @@ Codes are split into:
 │
 ├── /ui                     # UI components
 │   ├── save-load-ui.js
-│   └── standalone-notes-viewer.js
+│   ├── standalone-notes-viewer.js
+│   ├── achievement-viewer.js
+│   ├── menu-carousel.js    # Hybrid manager
+│   ├── simple-carousel.js  # Portrait mode
+│   ├── momentum-adapter.js # Landscape adapter
+│   └── carousel-momentum.js # Physics engine
+│
+├── /docs                   # Documentation
+│   ├── SECRET_CODES_GUIDE.md
+│   ├── ACHIEVEMENT-INTEGRATION.md
+│   └── DEV-COMMANDS.md
 │
 └── /assets                 # Images, audio
     ├── /backgrounds
@@ -165,12 +256,55 @@ Codes are split into:
 - Edit files, refresh browser
 - Check console for debug logs (DEBUG_MODE in game-config.js)
 
+### Production Build
+```powershell
+.\build.ps1
+```
+Creates minified version in `/dist` folder.
+
 ### Secret Dev Commands
 Enter these in the secret codes interface:
 - `nuke` - Reset everything
 - `freezetether` - Stop tether decay
 - `unlockskip` - Enable skip features
 - `devhelp` - Show all dev commands
+- `chicharon` - Unlock developer commentary
+- `dizee` - DiZee recognition easter egg
+
+---
+
+## 🎮 Keyboard Controls
+
+### Global
+- **ESC** - Hierarchical close (note → viewer → settings → pause)
+- **Ctrl+S** - Quick save to slot 1
+- **Ctrl+L** - Quick load from slot 1
+- **Tab** - Cycle through focusable elements
+- **Enter** - Activate focused element
+
+### Main Menu
+- **Arrow Keys** - Navigate carousel
+- **Enter** - Select current card
+
+### In-Game
+- **Space/Enter** - Advance dialogue
+- **Hold Space** - Skip mode (if unlocked)
+- **Arrow Keys** - Navigate choices
+- **1-9** - Quick select choice by number
+
+### Konami Code
+`↑ ↑ ↓ ↓ ← → ← → B A` - INSANE mode escape or easter egg
+
+---
+
+## 📱 Mobile Features
+
+- **Swipe Left** - Advance dialogue
+- **Double-Tap Background** - Toggle fullscreen
+- **Haptic Feedback** - Vibration for key moments
+- **Touch-Optimized** - Larger buttons, responsive design
+- **Scroll Indicators** - Visual cues for scrollable content
+- **Portrait/Landscape** - Adaptive carousel system
 
 ---
 
@@ -194,6 +328,22 @@ Feel free to explore the code and learn from the architecture.
 - **ToriGatchi** (gateway game): https://chicaron82.github.io/ToriGatchi
 - **Main Game**: https://chicaron82.github.io/Version-848
 - **Development Log**: Check commit history for 40+ day journey
+
+---
+
+## 🏆 Achievement List
+
+1. **Speed Runner** 🏃 - Complete any route in under 30 minutes
+2. **Archivist** 📚 - Collect all 13 notes on Tori's route
+3. **Time Traveler** 🔄 - Reach any ending
+4. **Heartbreaker** 💔 - Reach the bad ending
+5. **True Ending** ✨ - Reach the true ending
+6. **Completionist** 🎮 - Unlock all endings
+7. **Pet Parent** 🐣 - Unlock ToriGatchi
+8. **Insane** ⚡ - Complete INSANE mode
+9. **Explorer** 🔍 - View 100+ dialogue entries in backlog
+10. **Tactical Retreat** 🏃 - Use Konami Code to escape INSANE mode
+11. **Masochist** 😈 - Stay in INSANE mode after finding the exit
 
 ---
 

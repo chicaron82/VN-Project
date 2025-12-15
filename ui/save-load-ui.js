@@ -166,6 +166,11 @@ class SaveLoadUI {
     // ========================================
 
     showPauseMenu() {
+        // DIZEE FIX: Haptic feedback on pause
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('buttonPress', null, 'Pause menu opened');
+        }
+
         this.pauseMenu.classList.add('active');
     }
 

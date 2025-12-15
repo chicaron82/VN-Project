@@ -165,6 +165,9 @@ class CollectiblesManager {
             special: []     // Special ending notes
         };
 
+        // DIZEE POLISH: Track when notes were collected
+        this.noteTimestamps = {}; // { noteId: timestamp }
+
         // All available notes (defined per route)
         this.allNotes = {};
 
@@ -217,7 +220,17 @@ class CollectiblesManager {
 
         // Set up event listeners
         if (this.notesButton) {
-            this.notesButton.addEventListener('click', () => this.showNotesViewer());
+            // DIZEE GLOW-UP: Toggle-to-close - clicking notes button again closes overlay
+            this.notesButton.addEventListener('click', () => {
+                const viewer = document.getElementById('notes-viewer');
+                const isOpen = viewer && viewer.style.display === 'block';
+
+                if (isOpen) {
+                    this.hideNotesViewer();
+                } else {
+                    this.showNotesViewer();
+                }
+            });
         }
 
         if (this.closeNotesButton) {
@@ -281,6 +294,13 @@ class CollectiblesManager {
 
         // Add to collected
         this.collectedNotes[note.type].push(noteId);
+
+        // DIZEE POLISH: Store timestamp when note was collected
+        if (!this.noteTimestamps) {
+            this.noteTimestamps = {};
+        }
+        this.noteTimestamps[noteId] = Date.now();
+
         console.log(`Note unlocked: ${noteId} (${note.title})`);
 
         // DIZEE: Haptic feedback for note unlock
@@ -1235,6 +1255,10 @@ P.S. The barback skill strikes again.`
         // ZEERAH'S FIX: Persist notes directly to localStorage
         // So standalone viewer can read them without needing active save
         localStorage.setItem('vn_collected_notes', JSON.stringify(this.collectedNotes));
+
+        // DIZEE POLISH: Also save timestamps
+        localStorage.setItem('vn_note_timestamps', JSON.stringify(this.noteTimestamps || {}));
+
         console.log('Notes saved to localStorage');
     }
 
@@ -1252,9 +1276,35 @@ P.S. The barback skill strikes again.`
                 });
                 console.log('Notes loaded from localStorage');
             }
+
+            // DIZEE POLISH: Load timestamps
+            const savedTimestamps = localStorage.getItem('vn_note_timestamps');
+            if (savedTimestamps) {
+                this.noteTimestamps = JSON.parse(savedTimestamps);
+            }
         } catch (e) {
             console.warn('Error loading notes from localStorage:', e);
         }
+    }
+
+    // DIZEE POLISH: Format timestamp as relative time
+    getRelativeTime(timestamp) {
+        if (!timestamp) return '';
+
+        const now = Date.now();
+        const diff = now - timestamp;
+        const seconds = Math.floor(diff / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        if (seconds < 60) return 'just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        if (days < 30) return `${Math.floor(days / 7)}w ago`;
+        if (days < 365) return `${Math.floor(days / 30)}mo ago`;
+        return `${Math.floor(days / 365)}y ago`;
     }
 
     getState() {

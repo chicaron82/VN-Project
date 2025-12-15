@@ -49,8 +49,9 @@ class SaveManager {
         if (this.savesBlocked) {
             console.log('Save blocked by Despair Echo');
 
-            // EMOTIONAL FEEDBACK: Triple denial buzz + visual shake
-            if (this.game.triggerSensoryFeedback) {
+            // EMOTIONAL FEEDBACK: Triple denial buzz + visual shake (MANUAL SAVES ONLY)
+            // DIZEE FIX: Don't buzz on auto-save attempts (too overwhelming)
+            if (!isAutoSave && this.game.triggerSensoryFeedback) {
                 const saveButton = document.querySelector('.save-button, #save-button');
                 this.game.triggerSensoryFeedback('denied', saveButton, 'Despair blocks save');
             }
