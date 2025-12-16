@@ -2333,7 +2333,7 @@ class GameEngine {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const chars = 'ZEEZEERAHDIZEECOZEEBELLEPEASYGENZEETORIRONNIEAaronUV7848'; // DIZEE: UV7 Crew names in the code rain 💚
         const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
@@ -2433,7 +2433,7 @@ class GameEngine {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const chars = 'ZEEZEERAHDIZEECOZEEBELLEPEASYGENZEETORIRONNIEAaronUV7848'; // DIZEE: UV7 Crew names in the code rain 💚
         const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
