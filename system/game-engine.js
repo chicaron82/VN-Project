@@ -4256,11 +4256,22 @@ class GameEngine {
             // Increment attempt number for next run
             this.bootstrapTracker.incrementAttempt();
 
-            // DIZEE FIX: Show loop init screen before reload
+            // DIZEE FIX: Show loop init screen before retry
             this.loopVersion++; // Increment version for next attempt
             this.showLoopInit(() => {
                 setTimeout(() => {
-                    location.reload();
+                    // DIZEE: Check auto-skip prologue setting
+                    const autoSkipPrologue = localStorage.getItem('autoSkipPrologue') === 'true';
+
+                    if (autoSkipPrologue) {
+                        // Skip prologue, go straight to route selection
+                        console.log('🔄 Retry with prologue skip enabled - going to route selection');
+                        this.showRouteSelect();
+                    } else {
+                        // Start from prologue
+                        console.log('🔄 Retry with prologue skip disabled - starting from prologue');
+                        location.reload();
+                    }
                 }, 300);
             });
         });
