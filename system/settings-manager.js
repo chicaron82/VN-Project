@@ -264,16 +264,29 @@ class SettingsManager {
             });
         }
 
-        // TORI'S ADDITION: Comfort Intensity Slider 💚
-        const intensitySlider = document.getElementById('comfort-intensity-slider');
-        if (intensitySlider) {
+        // DIZEE: Visual Intensity Slider 👁️
+        const visualSlider = document.getElementById('visual-intensity-slider');
+        if (visualSlider) {
             // Set initial value from settings
-            intensitySlider.value = this.settings.comfortIntensity ?? 1;
+            visualSlider.value = this.getVisualIntensity();
 
             // Listen for changes - triggers live preview
-            intensitySlider.addEventListener('input', (e) => {
+            visualSlider.addEventListener('input', (e) => {
                 const level = Number(e.target.value);
-                this.setComfortIntensity(level);
+                this.setVisualIntensity(level);
+            });
+        }
+
+        // DIZEE: Haptic Intensity Slider 📳
+        const hapticSlider = document.getElementById('haptic-intensity-slider');
+        if (hapticSlider) {
+            // Set initial value from settings
+            hapticSlider.value = this.getHapticIntensity();
+
+            // Listen for changes - triggers live preview
+            hapticSlider.addEventListener('input', (e) => {
+                const level = Number(e.target.value);
+                this.setHapticIntensity(level);
             });
         }
 
@@ -449,20 +462,37 @@ class SettingsManager {
             delayValue.textContent = (this.settings.autoDelay / 1000).toFixed(1) + 's';
         }
 
-        // TORI'S ADDITION: Update comfort intensity slider 💚
-        const intensitySlider = document.getElementById('comfort-intensity-slider');
-        const intensityLabel = document.getElementById('comfort-intensity-label');
-        if (intensitySlider) {
-            const savedIntensity = this.settings.comfortIntensity ?? 1;
-            intensitySlider.value = savedIntensity;
+        // DIZEE: Update visual intensity slider 👁️
+        const visualSlider = document.getElementById('visual-intensity-slider');
+        const visualLabel = document.getElementById('visual-intensity-label');
+        if (visualSlider) {
+            const savedVisual = this.getVisualIntensity();
+            visualSlider.value = savedVisual;
 
             // Update label to match saved value
-            if (intensityLabel) {
-                const labels = ['Gentle', 'Normal', 'Amped'];
-                const colors = ['#00ff88', '#0ff', '#ff00ff'];
-                intensityLabel.textContent = labels[savedIntensity];
-                intensityLabel.style.color = colors[savedIntensity];
-                intensityLabel.style.textShadow = `0 0 10px ${colors[savedIntensity]}`;
+            if (visualLabel) {
+                const labels = ['Off', 'Reduced', 'Normal', 'Enhanced'];
+                const colors = ['#666', '#00ff88', '#0ff', '#ff00ff'];
+                visualLabel.textContent = labels[savedVisual];
+                visualLabel.style.color = colors[savedVisual];
+                visualLabel.style.textShadow = `0 0 10px ${colors[savedVisual]}`;
+            }
+        }
+
+        // DIZEE: Update haptic intensity slider 📳
+        const hapticSlider = document.getElementById('haptic-intensity-slider');
+        const hapticLabel = document.getElementById('haptic-intensity-label');
+        if (hapticSlider) {
+            const savedHaptic = this.getHapticIntensity();
+            hapticSlider.value = savedHaptic;
+
+            // Update label to match saved value
+            if (hapticLabel) {
+                const labels = ['Off', 'Gentle', 'Normal', 'Amped', 'Insane'];
+                const colors = ['#666', '#00ff88', '#0ff', '#ff00ff', '#ff0066'];
+                hapticLabel.textContent = labels[savedHaptic];
+                hapticLabel.style.color = colors[savedHaptic];
+                hapticLabel.style.textShadow = `0 0 10px ${colors[savedHaptic]}`;
             }
         }
 
@@ -605,53 +635,46 @@ class SettingsManager {
     }
 
     // ========================================
-    // COMFORT INTENSITY
-    // TORI'S ADDITION: Tunable sensory intensity 💚
+    // DUAL INTENSITY CONTROLS
+    // DIZEE: Separate visual and haptic intensity for accessibility 💫
     // ========================================
 
-    getComfortIntensity() {
-        return this.settings.comfortIntensity ?? 1;
+    // VISUAL INTENSITY (0-3: Off, Reduced, Normal, Enhanced)
+    getVisualIntensity() {
+        // Migrate from old comfortIntensity if needed
+        if (this.settings.visualIntensity === undefined && this.settings.comfortIntensity !== undefined) {
+            // Map old 0-2 to new 0-3 scale (Gentle→Reduced, Normal→Normal, Amped→Enhanced)
+            const migration = { 0: 1, 1: 2, 2: 3 };
+            this.settings.visualIntensity = migration[this.settings.comfortIntensity] ?? 2;
+        }
+        return this.settings.visualIntensity ?? 2; // Default: Normal
     }
 
-    setComfortIntensity(level) {
-        const clamped = Math.max(0, Math.min(2, Number(level) || 0));
-        this.settings.comfortIntensity = clamped;
+    setVisualIntensity(level) {
+        const clamped = Math.max(0, Math.min(3, Number(level) || 0));
+        this.settings.visualIntensity = clamped;
         this.saveSettings();
         this.updateUI();
 
-        const labels = ['Gentle', 'Normal', 'Amped'];
-        console.log(`💫 Comfort Intensity: ${labels[clamped]}`);
+        const labels = ['Off', 'Reduced', 'Normal', 'Enhanced'];
+        console.log(`👁️ Visual Intensity: ${labels[clamped]}`);
 
         // Update visual label next to slider
-        const intensityLabel = document.getElementById('comfort-intensity-label');
+        const intensityLabel = document.getElementById('visual-intensity-label');
         if (intensityLabel) {
             intensityLabel.textContent = labels[clamped];
 
             // Color-code the label
-            const colors = ['#00ff88', '#0ff', '#ff00ff'];
+            const colors = ['#666', '#00ff88', '#0ff', '#ff00ff'];
             intensityLabel.style.color = colors[clamped];
             intensityLabel.style.textShadow = `0 0 10px ${colors[clamped]}`;
 
-            // Visual effect preview - show actual glitch/shake
-            this.previewIntensityEffect(clamped, intensityLabel);
-        }
-
-        // Position-specific haptic preview
-        if (this.game && this.game.triggerSensoryFeedback) {
-            const previewElement = document.getElementById('comfort-intensity-slider');
-
-            // Different haptic patterns for each level
-            const patterns = {
-                0: 'gentle',        // Gentle: soft single tap
-                1: 'buttonPress',   // Normal: standard button press
-                2: 'success'        // Amped: stronger double tap
-            };
-
-            this.game.triggerSensoryFeedback(patterns[clamped], previewElement, `Intensity preview: ${labels[clamped]}`);
+            // Visual effect preview
+            this.previewVisualEffect(clamped, intensityLabel);
         }
     }
 
-    previewIntensityEffect(level, element) {
+    previewVisualEffect(level, element) {
         // Remove any existing animation
         element.style.animation = 'none';
 
@@ -660,13 +683,15 @@ class SettingsManager {
 
         // Apply intensity-specific effect
         switch (level) {
-            case 0: // Gentle - subtle fade pulse
+            case 0: // Off - no animation
+                break;
+            case 1: // Reduced - subtle fade pulse
                 element.style.animation = 'gentlePulse 0.6s ease-out';
                 break;
-            case 1: // Normal - moderate shake
+            case 2: // Normal - moderate shake
                 element.style.animation = 'normalShake 0.4s ease-out';
                 break;
-            case 2: // Amped - intense glitch
+            case 3: // Enhanced - intense glitch
                 element.style.animation = 'ampedGlitch 0.5s ease-out';
                 break;
         }
@@ -675,6 +700,59 @@ class SettingsManager {
         setTimeout(() => {
             element.style.animation = 'none';
         }, 600);
+    }
+
+    // HAPTIC INTENSITY (0-4: Off, Gentle, Normal, Amped, Insane)
+    getHapticIntensity() {
+        // Migrate from old comfortIntensity if needed
+        if (this.settings.hapticIntensity === undefined && this.settings.comfortIntensity !== undefined) {
+            // Map old 0-2 to new 0-4 scale (Gentle→Gentle, Normal→Normal, Amped→Amped)
+            const migration = { 0: 1, 1: 2, 2: 3 };
+            this.settings.hapticIntensity = migration[this.settings.comfortIntensity] ?? 2;
+        }
+        return this.settings.hapticIntensity ?? 2; // Default: Normal
+    }
+
+    setHapticIntensity(level) {
+        const clamped = Math.max(0, Math.min(4, Number(level) || 0));
+        this.settings.hapticIntensity = clamped;
+        this.saveSettings();
+        this.updateUI();
+
+        const labels = ['Off', 'Gentle', 'Normal', 'Amped', 'Insane'];
+        console.log(`📳 Haptic Intensity: ${labels[clamped]}`);
+
+        // Update visual label next to slider
+        const intensityLabel = document.getElementById('haptic-intensity-label');
+        if (intensityLabel) {
+            intensityLabel.textContent = labels[clamped];
+
+            // Color-code the label
+            const colors = ['#666', '#00ff88', '#0ff', '#ff00ff', '#ff0066'];
+            intensityLabel.style.color = colors[clamped];
+            intensityLabel.style.textShadow = `0 0 10px ${colors[clamped]}`;
+        }
+
+        // Haptic preview (if enabled and not off)
+        if (clamped > 0 && this.game && this.game.triggerSensoryFeedback) {
+            const previewElement = document.getElementById('haptic-intensity-slider');
+
+            // Different haptic patterns for each level
+            const patterns = {
+                1: 'buttonPress',   // Gentle
+                2: 'cardSnap',      // Normal
+                3: 'double',        // Amped
+                4: 'denied'         // Insane (triple buzz)
+            };
+
+            this.game.triggerSensoryFeedback(patterns[clamped], previewElement, `Haptic preview: ${labels[clamped]}`);
+        }
+    }
+
+    // BACKWARD COMPATIBILITY: Keep old method for existing code
+    getComfortIntensity() {
+        // Return haptic intensity for backward compatibility
+        return this.getHapticIntensity();
     }
 
 
