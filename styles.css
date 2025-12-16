@@ -3251,6 +3251,12 @@
     box-shadow: 0 6px 30px rgba(0, 183, 255, 0.7);
 }
 
+.choice-option:focus {
+    /* Focus state - no scale, just outline for keyboard nav */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+}
+
 .choice-option:active {
     transform: scale(0.98);
 }
