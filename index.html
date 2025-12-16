@@ -1306,12 +1306,16 @@
                     splash.style.display = 'none';
                 }, fadeDelay);
 
-                // Show main menu (crossfade overlap)
-                // Wait slightly to let splash fade start
+                // DIZEE: Code rain transition to main menu
                 setTimeout(() => {
-                    if (window.game && window.game.showMainMenu) {
-                        // We use a special flag to prevent showMainMenu from calling completeSplash again
-                        // (though the guard check handles it safely)
+                    if (window.game && window.game.showCodeRainTransition) {
+                        window.game.showCodeRainTransition(() => {
+                            if (window.game.showMainMenu) {
+                                window.game.showMainMenu();
+                            }
+                        }, 1500);
+                    } else if (window.game && window.game.showMainMenu) {
+                        // Fallback if code rain not available
                         window.game.showMainMenu();
                     }
                 }, skipped ? 100 : 800);
