@@ -6020,6 +6020,13 @@ game.devCommands()
         setTimeout(() => {
             this.updateFullscreenButton();
         }, 100);
+
+        // DIZEE: Auto-close pause menu after toggling fullscreen
+        if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
+            setTimeout(() => {
+                this.saveLoadUI.hidePauseMenu();
+            }, 150);
+        }
     }
 
     updateFullscreenButton() {
