@@ -112,7 +112,10 @@ class InputBinder {
         const el = document.getElementById(id);
         if (el) {
             el.addEventListener('click', (e) => {
-                // Optional: centralized haptic feedback here if not handled elsewhere
+                // DIZEE: Centralized haptic feedback for all buttons
+                if (this.game && this.game.triggerSensoryFeedback) {
+                    this.game.triggerSensoryFeedback('buttonPress', el, `Button click: ${id}`);
+                }
                 handler(e);
             });
         } else {
