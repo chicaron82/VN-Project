@@ -2395,6 +2395,43 @@ class GameEngine {
     // ========================================
 
     showCodeRainTransition(callback, duration = 1500) {
+        // DIZEE: Check visual intensity setting
+        const visualIntensity = this.settingsManager?.getVisualIntensity?.() ?? 2;
+
+        // Off or Reduced: Skip code rain, use simple fade
+        if (visualIntensity <= 1) {
+            console.log(`👁️ Visual intensity ${visualIntensity === 0 ? 'OFF' : 'REDUCED'} - skipping code rain`);
+
+            // Simple fade transition instead
+            const fadeOverlay = document.createElement('div');
+            fadeOverlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: #000;
+                z-index: 100000;
+                opacity: 1;
+                transition: opacity 300ms ease;
+                pointer-events: none;
+            `;
+            document.body.appendChild(fadeOverlay);
+
+            // Execute callback immediately
+            if (callback) callback();
+
+            // Fade out and remove
+            setTimeout(() => {
+                fadeOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    fadeOverlay.remove();
+                }, 300);
+            }, 200);
+            return;
+        }
+
+        // Normal or Enhanced: Show code rain
         // Create or get overlay canvas
         let canvas = document.getElementById('transition-matrix');
         if (!canvas) {
