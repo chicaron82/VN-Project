@@ -234,7 +234,7 @@ const SENSORY_CUES = {
     },
     tamaPull: {
         channel: 'narrative',
-        basePattern: 'medium',
+        basePattern: 'longBuzz',  // DIZEE: Single 1-second buzz for tamagotchi pull
         visualType: 'tamaPull'
     },
     tamaEmergency: {
@@ -1933,7 +1933,9 @@ class GameEngine {
             'strong': 100,          // Important actions (confirmations)
 
             // Rhythmic patterns (EMOTIONAL LANGUAGE)
-            'double': [60, 50, 60],           // Two taps (vessel hop, transitions)
+            // DIZEE: Narrative haptics = 1-second buzzes (very distinct from UI)
+            'longBuzz': 1000,                 // Single 1-second buzz (tamagotchi pull)
+            'double': [1000, 200, 1000],      // Two 1-second buzzes (vessel hop, transitions)
             'triple': [50, 40, 50, 40, 50],   // Three taps (special unlocks)
             'denied': [80, 50, 80, 50, 80],   // Triple DENIAL (blocked saves, locked actions, despair)
             'pulse': [60, 40, 60, 40, 60],    // Sustained pulse (loading, waiting)
