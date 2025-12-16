@@ -62,6 +62,27 @@
     gap: 20px;
 }
 
+/* Landscape layout: selector on left, preview on right */
+.preview-layout {
+    display: flex;
+    gap: 24px;
+    min-height: 300px;
+}
+
+.preview-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.preview-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Sample dialogue box */
 .preview-sample-dialogue {
     background: rgba(0, 0, 0, 0.6);
