@@ -6524,6 +6524,8 @@
     outline: 2px solid #00ff41;
     outline-offset: 0;
     /* No offset to prevent jumping */
+    position: fixed !important;
+    /* Override global button:focus which sets position: relative */
 }
 
 #backlog-list {
