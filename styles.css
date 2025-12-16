@@ -3215,34 +3215,92 @@
     /* DIZEE: Higher than skip button (100) to prevent overlap */
 }
 
+/* DIZEE: Ending-style choice buttons - vertical stack, gradients, premium feel 💚 */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 0;
+}
+
 .choice-option {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 15px 20px;
-    margin: 10px 0;
+    padding: 18px 50px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s;
-    font-size: 1.1em;
+    transition: all 0.3s ease;
+    min-width: 300px;
+    max-width: 600px;
+    width: 90%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+
+    /* Default gradient - teal/cyan theme */
+    background: linear-gradient(135deg, #0a3d62, #3c6382);
+    color: #60a3bc;
+    border: 2px solid #00b7ff;
+    box-shadow: 0 4px 20px rgba(0, 183, 255, 0.4);
 }
 
 .choice-option:hover {
-    background: rgba(0, 255, 255, 0.3);
-    box-shadow: 0 0 20px #0ff;
-    transform: translateX(10px);
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(0, 183, 255, 0.7);
 }
 
+.choice-option:active {
+    transform: scale(0.98);
+}
+
+/* Locked/disabled choices */
 .choice-option.locked {
-    opacity: 0.5;
-    cursor: not-allowed;
-    border-color: #666;
+    background: linear-gradient(135deg, #1a1a1a, #333);
     color: #666;
+    border-color: #444;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .choice-option.locked:hover {
-    background: rgba(0, 255, 255, 0.1);
-    box-shadow: none;
     transform: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Route-specific theming */
+/* Ronnie route - blue/tech theme */
+.ronnie-route .choice-option {
+    background: linear-gradient(135deg, #1e3a5f, #2d4f7f);
+    border-color: #00bcd4;
+    box-shadow: 0 4px 20px rgba(0, 188, 212, 0.4);
+}
+
+.ronnie-route .choice-option:hover {
+    box-shadow: 0 6px 30px rgba(0, 188, 212, 0.7);
+}
+
+/* Tori route - pink/warm theme */
+.tori-route .choice-option {
+    background: linear-gradient(135deg, #660066, #990099);
+    color: #cc66cc;
+    border-color: #cc66cc;
+    box-shadow: 0 4px 20px rgba(204, 102, 204, 0.4);
+}
+
+.tori-route .choice-option:hover {
+    box-shadow: 0 6px 30px rgba(204, 102, 204, 0.7);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .choice-option {
+        min-width: 250px;
+        font-size: 1em;
+        padding: 15px 30px;
+    }
 }
 
 /* ========================================
@@ -8301,21 +8359,23 @@
    ZEE'S FIX: Cyan → Red when Insane Mode active 🖤
    ======================================== */
 
-/* Choice buttons - red borders and text */
+/* Choice buttons - red gradient theme for INSANE mode */
 .insane-mode-active .choice-option {
+    background: linear-gradient(135deg, #660000, #990000) !important;
     border-color: #ff0066 !important;
-    color: #ff0066 !important;
+    color: #ff6699 !important;
+    box-shadow: 0 4px 20px rgba(255, 0, 102, 0.5) !important;
 }
 
 .insane-mode-active .choice-option:hover {
-    background: rgba(255, 0, 102, 0.2) !important;
-    box-shadow: 0 0 20px rgba(255, 0, 102, 0.5) !important;
-    border-color: #ff0066 !important;
+    box-shadow: 0 6px 30px rgba(255, 0, 102, 0.8) !important;
 }
 
 .insane-mode-active .choice-option.locked {
+    background: linear-gradient(135deg, #1a0000, #330000) !important;
     border-color: #660033 !important;
     color: #660033 !important;
+    box-shadow: 0 4px 20px rgba(102, 0, 51, 0.4) !important;
 }
 
 /* UI Buttons - pause, skip, notes, backlog */

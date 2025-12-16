@@ -3058,6 +3058,10 @@ class GameEngine {
             if (routeName === 'ronnie') {
                 this.currentRoute = new RonnieRoute(this);
                 this.currentRoute.start(); // Call start() explicitly
+
+                // DIZEE: Add route class for choice button theming 💚
+                document.body.classList.add('ronnie-route');
+                document.body.classList.remove('tori-route');
             } else if (routeName === 'tori') {
                 this.currentRoute = new ToriRoute(this);
 
@@ -3067,6 +3071,10 @@ class GameEngine {
                 }
 
                 this.currentRoute.start(); // Tori has explicit .start()
+
+                // DIZEE: Add route class for choice button theming 💚
+                document.body.classList.add('tori-route');
+                document.body.classList.remove('ronnie-route');
             }
 
             // Show ESC hint briefly for desktop users
