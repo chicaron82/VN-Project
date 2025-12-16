@@ -2404,10 +2404,13 @@ class GameEngine {
                 opacity: 0;
                 transition: opacity 300ms ease;
                 pointer-events: none;
-                background: #000;
             `;
             document.body.appendChild(canvas);
         }
+
+        // DIZEE: Ensure canvas fills screen (fixes portrait mode issue) 💚
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
         // Start rain
         this.startTransitionRain(canvas);
