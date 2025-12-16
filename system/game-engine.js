@@ -2338,6 +2338,10 @@ class GameEngine {
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
 
+        // DIZEE: Faster drop speed on portrait to fill screen in time 💚
+        const isPortrait = canvas.height > canvas.width;
+        const dropSpeed = isPortrait ? 3 : 2; // 3x speed on portrait, 2x on landscape
+
         const draw = () => {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -2352,7 +2356,7 @@ class GameEngine {
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
-                drops[i]++;
+                drops[i] += dropSpeed; // Use variable speed
             }
         };
 
@@ -2444,6 +2448,10 @@ class GameEngine {
         const columns = canvas.width / fontSize;
         const drops = Array(Math.floor(columns)).fill(1);
 
+        // DIZEE: Faster drop speed on portrait to fill screen in time 💚
+        const isPortrait = canvas.height > canvas.width;
+        const dropSpeed = isPortrait ? 3 : 2; // 3x speed on portrait, 2x on landscape
+
         const draw = () => {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -2458,7 +2466,7 @@ class GameEngine {
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
-                drops[i]++;
+                drops[i] += dropSpeed; // Use variable speed
             }
         };
 
