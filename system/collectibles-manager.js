@@ -1385,6 +1385,9 @@ P.S. The barback skill strikes again.`
         // Update navigation buttons
         this.updateNavigationButtons();
 
+        // DIZEE: Add swipe gesture detection for mobile
+        this.setupSwipeGestures(overlay);
+
         // ESC key to close
         this.escKeyHandler = (e) => {
             if (e.key === 'Escape') {
@@ -1392,6 +1395,44 @@ P.S. The barback skill strikes again.`
             }
         };
         document.addEventListener('keydown', this.escKeyHandler);
+    }
+
+    setupSwipeGestures(overlay) {
+        if (!overlay) return;
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const minSwipeDistance = 50; // Minimum distance for swipe
+
+        const handleTouchStart = (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        };
+
+        const handleTouchEnd = (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        };
+
+        const handleSwipe = () => {
+            const swipeDistance = touchEndX - touchStartX;
+
+            if (Math.abs(swipeDistance) < minSwipeDistance) return;
+
+            if (swipeDistance > 0) {
+                // Swipe right = previous note
+                this.navigateNote(-1);
+            } else {
+                // Swipe left = next note
+                this.navigateNote(1);
+            }
+        };
+
+        // Store handlers for cleanup
+        this.touchStartHandler = handleTouchStart;
+        this.touchEndHandler = handleTouchEnd;
+
+        overlay.addEventListener('touchstart', this.touchStartHandler);
+        overlay.addEventListener('touchend', this.touchEndHandler);
     }
 
     displayNoteInOverlay(noteId) {
@@ -1501,6 +1542,16 @@ P.S. The barback skill strikes again.`
         const overlay = document.getElementById('notes-overlay');
         if (overlay) {
             overlay.style.display = 'none';
+
+            // DIZEE: Remove touch handlers
+            if (this.touchStartHandler) {
+                overlay.removeEventListener('touchstart', this.touchStartHandler);
+                this.touchStartHandler = null;
+            }
+            if (this.touchEndHandler) {
+                overlay.removeEventListener('touchend', this.touchEndHandler);
+                this.touchEndHandler = null;
+            }
         }
 
         // Remove ESC key listener
