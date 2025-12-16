@@ -6519,6 +6519,13 @@
     box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
 }
 
+/* DIZEE: Prevent jumping on focus by removing outline offset */
+#close-backlog:focus {
+    outline: 2px solid #00ff41;
+    outline-offset: 0;
+    /* No offset to prevent jumping */
+}
+
 #backlog-list {
     max-height: 70vh;
     overflow-y: auto;
