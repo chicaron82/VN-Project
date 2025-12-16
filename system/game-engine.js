@@ -9033,7 +9033,7 @@ class RouteSelector {
         this.toggleOptions.forEach(option => {
             option.addEventListener('click', () => {
                 if (this.triggerSensoryFeedback) {
-                    this.triggerSensoryFeedback('buttonPress', option, 'Route toggle selection');
+                    this.triggerSensoryFeedback('cardSnap', option, 'Route toggle selection');
                 }
             });
         });
@@ -9053,7 +9053,7 @@ class RouteSelector {
 
                     // DIZEE: Haptic for confirming route start
                     if (this.game.triggerSensoryFeedback) {
-                        this.game.triggerSensoryFeedback('success', portrait, 'Route confirmed via portrait');
+                        this.game.triggerSensoryFeedback('cardSnap', portrait, 'Route confirmed via portrait');
                     }
 
                     this.startSelectedRoute();
@@ -9063,7 +9063,7 @@ class RouteSelector {
 
                     // DIZEE: Haptic for switching perspective
                     if (this.game.triggerSensoryFeedback) {
-                        this.game.triggerSensoryFeedback('buttonPress', portrait, 'Route perspective switch');
+                        this.game.triggerSensoryFeedback('cardSnap', portrait, 'Route perspective switch');
                     }
 
                     this.selectRoute(route);
@@ -9147,7 +9147,7 @@ class RouteSelector {
 
         // DIZEE: Haptic feedback for route start
         if (this.game.triggerSensoryFeedback) {
-            this.game.triggerSensoryFeedback('success', null, 'Route selection confirmed');
+            this.game.triggerSensoryFeedback('cardSnap', null, 'Route selection confirmed');
         }
 
         this.game.startRoute(this.selectedRoute);
