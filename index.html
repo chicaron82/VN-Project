@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="system/accessibility.css">
     <!-- DIZEE POLISH: Mobile UX CSS -->
     <link rel="stylesheet" href="system/mobile-ux.css">
+    <!-- DIZEE: Intensity Preview Modal CSS -->
+    <link rel="stylesheet" href="system/intensity-preview.css">
     <!-- DIZEE FIX: ARIA label positioning fixes -->
     <link rel="stylesheet" href="system/aria-fixes.css">
     <!-- DIZEE POLISH: Note timestamps -->
@@ -538,6 +540,67 @@
                                     ⚠️ Note: Higher visual and haptic intensity may increase battery usage on mobile
                                     devices.
                                 </span>
+                            </div>
+                        </div>
+
+                        <!-- DIZEE: Preview Buttons -->
+                        <div class="setting-row">
+                            <div class="setting-label-column">
+                                <span class="setting-name">PREVIEW INTENSITY EFFECTS 🎯</span>
+                                <span class="setting-description">Test effects before applying</span>
+                            </div>
+                            <div class="setting-control" style="display: flex; gap: 10px;">
+                                <button id="btn-preview-visual" class="preview-btn">
+                                    👁️ Preview Visual
+                                </button>
+                                <button id="btn-preview-haptic" class="preview-btn">
+                                    📳 Preview Haptic
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DIZEE: Intensity Preview Modal -->
+                    <div id="intensity-preview-modal" class="intensity-preview-modal" style="display: none;">
+                        <div class="intensity-preview-backdrop"></div>
+                        <div class="intensity-preview-container">
+                            <div class="intensity-preview-header">
+                                <h2 id="preview-modal-title">Intensity Preview</h2>
+                                <button id="btn-close-preview" class="close-x">×</button>
+                            </div>
+
+                            <div class="intensity-preview-content">
+                                <!-- Sample dialogue box for visual effects -->
+                                <div id="preview-sample-box" class="preview-sample-dialogue">
+                                    <div class="preview-character-name">TORI</div>
+                                    <div class="preview-dialogue-text">
+                                        This is a sample dialogue to demonstrate visual effects at different intensity
+                                        levels.
+                                    </div>
+                                </div>
+
+                                <!-- Level selector -->
+                                <div class="preview-level-selector">
+                                    <label>Select Level:</label>
+                                    <div class="preview-level-buttons" id="preview-level-buttons">
+                                        <!-- Populated dynamically based on visual/haptic mode -->
+                                    </div>
+                                </div>
+
+                                <!-- Test button -->
+                                <button id="btn-test-effect" class="preview-test-btn">
+                                    🎯 Test Effect
+                                </button>
+
+                                <!-- Effect description -->
+                                <div id="preview-description" class="preview-description">
+                                    Select a level and click "Test Effect" to preview.
+                                </div>
+                            </div>
+
+                            <div class="intensity-preview-footer">
+                                <button id="btn-apply-preview" class="preview-apply-btn">Apply & Close</button>
+                                <button id="btn-cancel-preview" class="preview-cancel-btn">Cancel</button>
                             </div>
                         </div>
                     </div>

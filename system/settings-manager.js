@@ -359,6 +359,9 @@ class SettingsManager {
         // Setup tab switching
         this.setupTabSystem();
 
+        // DIZEE: Setup intensity preview system
+        this.setupIntensityPreview();
+
         // Apply loaded settings to UI
         this.updateUI();
 
@@ -388,6 +391,211 @@ class SettingsManager {
         });
 
         console.log('Switched to tab:', tabName);
+    }
+
+    // ========================================
+    // INTENSITY PREVIEW SYSTEM
+    // DIZEE: Interactive preview for visual/haptic intensity
+    // ========================================
+
+    setupIntensityPreview() {
+        // Preview buttons
+        const visualPreviewBtn = document.getElementById('btn-preview-visual');
+        const hapticPreviewBtn = document.getElementById('btn-preview-haptic');
+
+        if (visualPreviewBtn) {
+            visualPreviewBtn.addEventListener('click', () => this.showVisualPreview());
+        }
+
+        if (hapticPreviewBtn) {
+            hapticPreviewBtn.addEventListener('click', () => this.showHapticPreview());
+        }
+
+        // Modal controls
+        const modal = document.getElementById('intensity-preview-modal');
+        const closeBtn = document.getElementById('btn-close-preview');
+        const applyBtn = document.getElementById('btn-apply-preview');
+        const cancelBtn = document.getElementById('btn-cancel-preview');
+        const testBtn = document.getElementById('btn-test-effect');
+        const backdrop = modal?.querySelector('.intensity-preview-backdrop');
+
+        if (closeBtn) closeBtn.addEventListener('click', () => this.closePreview(false));
+        if (cancelBtn) cancelBtn.addEventListener('click', () => this.closePreview(false));
+        if (applyBtn) applyBtn.addEventListener('click', () => this.closePreview(true));
+        if (testBtn) testBtn.addEventListener('click', () => this.testCurrentEffect());
+        if (backdrop) backdrop.addEventListener('click', () => this.closePreview(false));
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal?.style.display !== 'none') {
+                this.closePreview(false);
+            }
+        });
+    }
+
+    showVisualPreview() {
+        this.previewMode = 'visual';
+        this.previewLevel = this.getVisualIntensity();
+        this.originalLevel = this.previewLevel;
+
+        const modal = document.getElementById('intensity-preview-modal');
+        const title = document.getElementById('preview-modal-title');
+        const levelButtons = document.getElementById('preview-level-buttons');
+        const description = document.getElementById('preview-description');
+
+        title.textContent = '👁️ Visual Intensity Preview';
+
+        // Create level buttons
+        const levels = [
+            { value: 0, label: 'Off', desc: 'No visual effects - static text only' },
+            { value: 1, label: 'Reduced', desc: 'Gentle fade animations - minimal effects' },
+            { value: 2, label: 'Normal', desc: 'Standard glitch effects and transitions' },
+            { value: 3, label: 'Enhanced', desc: 'Full code rain, intense glitches, particles' }
+        ];
+
+        levelButtons.innerHTML = levels.map(level => `
+            <button class="preview-level-btn ${level.value === this.previewLevel ? 'active' : ''}" 
+                    data-level="${level.value}">
+                ${level.label}
+            </button>
+        `).join('');
+
+        // Add click handlers
+        levelButtons.querySelectorAll('.preview-level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.previewLevel = Number(btn.dataset.level);
+                levelButtons.querySelectorAll('.preview-level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const selectedLevel = levels.find(l => l.value === this.previewLevel);
+                description.textContent = selectedLevel.desc;
+            });
+        });
+
+        description.textContent = levels.find(l => l.value === this.previewLevel).desc;
+        modal.style.display = 'flex';
+    }
+
+    showHapticPreview() {
+        this.previewMode = 'haptic';
+        this.previewLevel = this.getHapticIntensity();
+        this.originalLevel = this.previewLevel;
+
+        const modal = document.getElementById('intensity-preview-modal');
+        const title = document.getElementById('preview-modal-title');
+        const levelButtons = document.getElementById('preview-level-buttons');
+        const description = document.getElementById('preview-description');
+        const sampleBox = document.getElementById('preview-sample-box');
+
+        title.textContent = '📳 Haptic Intensity Preview';
+
+        // Hide sample box for haptic (not needed)
+        sampleBox.style.display = 'none';
+
+        // Create level buttons
+        const levels = [
+            { value: 0, label: 'Off', desc: 'No vibration feedback' },
+            { value: 1, label: 'Gentle', desc: 'Soft single tap - subtle feedback' },
+            { value: 2, label: 'Normal', desc: 'Medium buzz - standard feedback' },
+            { value: 3, label: 'Amped', desc: 'Double 1-second buzzes - strong feedback' }
+        ];
+
+        levelButtons.innerHTML = levels.map(level => `
+            <button class="preview-level-btn ${level.value === this.previewLevel ? 'active' : ''}" 
+                    data-level="${level.value}">
+                ${level.label}
+            </button>
+        `).join('');
+
+        // Add click handlers
+        levelButtons.querySelectorAll('.preview-level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.previewLevel = Number(btn.dataset.level);
+                levelButtons.querySelectorAll('.preview-level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const selectedLevel = levels.find(l => l.value === this.previewLevel);
+                description.textContent = selectedLevel.desc;
+            });
+        });
+
+        description.textContent = levels.find(l => l.value === this.previewLevel).desc;
+        modal.style.display = 'flex';
+    }
+
+    testCurrentEffect() {
+        if (this.previewMode === 'visual') {
+            this.testVisualEffect(this.previewLevel);
+        } else if (this.previewMode === 'haptic') {
+            this.testHapticEffect(this.previewLevel);
+        }
+    }
+
+    testVisualEffect(level) {
+        const sampleBox = document.getElementById('preview-sample-box');
+
+        // Remove any existing animation
+        sampleBox.style.animation = 'none';
+        void sampleBox.offsetWidth; // Force reflow
+
+        switch (level) {
+            case 0: // Off - no effect
+                break;
+            case 1: // Reduced - gentle fade
+                sampleBox.style.animation = 'gentlePulse 0.6s ease-out';
+                break;
+            case 2: // Normal - moderate glitch
+                sampleBox.style.animation = 'normalShake 0.4s ease-out';
+                break;
+            case 3: // Enhanced - intense glitch
+                sampleBox.style.animation = 'ampedGlitch 0.5s ease-out';
+                break;
+        }
+
+        // Clear animation after it completes
+        setTimeout(() => {
+            sampleBox.style.animation = 'none';
+        }, 600);
+    }
+
+    testHapticEffect(level) {
+        if (!this.game || !this.game.triggerHaptic) return;
+
+        const patterns = {
+            0: null,              // Off
+            1: 'buttonPress',     // Gentle
+            2: 'cardSnap',        // Normal
+            3: 'double'           // Amped (1-second double buzz)
+        };
+
+        if (patterns[level]) {
+            this.game.triggerHaptic(patterns[level], 'Intensity preview test', { force: true });
+        }
+    }
+
+    closePreview(apply) {
+        const modal = document.getElementById('intensity-preview-modal');
+        const sampleBox = document.getElementById('preview-sample-box');
+
+        if (apply) {
+            // Apply the selected level
+            if (this.previewMode === 'visual') {
+                this.setVisualIntensity(this.previewLevel);
+            } else if (this.previewMode === 'haptic') {
+                this.setHapticIntensity(this.previewLevel);
+            }
+            console.log(`✅ Applied ${this.previewMode} intensity: ${this.previewLevel}`);
+        } else {
+            // Revert to original
+            console.log(`❌ Cancelled ${this.previewMode} preview`);
+        }
+
+        // Reset and hide modal
+        sampleBox.style.display = 'block';
+        modal.style.display = 'none';
+        this.previewMode = null;
+        this.previewLevel = null;
+        this.originalLevel = null;
     }
 
     updateUI() {
