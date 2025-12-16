@@ -488,8 +488,8 @@ class SettingsManager {
 
             // Update label to match saved value
             if (hapticLabel) {
-                const labels = ['Off', 'Gentle', 'Normal', 'Amped', 'Insane'];
-                const colors = ['#666', '#00ff88', '#0ff', '#ff00ff', '#ff0066'];
+                const labels = ['Off', 'Gentle', 'Normal', 'Amped'];
+                const colors = ['#666', '#00ff88', '#0ff', '#ff00ff'];
                 hapticLabel.textContent = labels[savedHaptic];
                 hapticLabel.style.color = colors[savedHaptic];
                 hapticLabel.style.textShadow = `0 0 10px ${colors[savedHaptic]}`;
@@ -702,11 +702,12 @@ class SettingsManager {
         }, 600);
     }
 
-    // HAPTIC INTENSITY (0-4: Off, Gentle, Normal, Amped, Insane)
+    // HAPTIC INTENSITY (0-3: Off, Gentle, Normal, Amped)
+    // Note: Insane (4) is only active when Insane Mode difficulty is enabled
     getHapticIntensity() {
         // Migrate from old comfortIntensity if needed
         if (this.settings.hapticIntensity === undefined && this.settings.comfortIntensity !== undefined) {
-            // Map old 0-2 to new 0-4 scale (Gentle→Gentle, Normal→Normal, Amped→Amped)
+            // Map old 0-2 to new 0-3 scale (Gentle→Gentle, Normal→Normal, Amped→Amped)
             const migration = { 0: 1, 1: 2, 2: 3 };
             this.settings.hapticIntensity = migration[this.settings.comfortIntensity] ?? 2;
         }
@@ -714,12 +715,12 @@ class SettingsManager {
     }
 
     setHapticIntensity(level) {
-        const clamped = Math.max(0, Math.min(4, Number(level) || 0));
+        const clamped = Math.max(0, Math.min(3, Number(level) || 0));
         this.settings.hapticIntensity = clamped;
         this.saveSettings();
         this.updateUI();
 
-        const labels = ['Off', 'Gentle', 'Normal', 'Amped', 'Insane'];
+        const labels = ['Off', 'Gentle', 'Normal', 'Amped'];
         console.log(`📳 Haptic Intensity: ${labels[clamped]}`);
 
         // Update visual label next to slider
@@ -728,7 +729,7 @@ class SettingsManager {
             intensityLabel.textContent = labels[clamped];
 
             // Color-code the label
-            const colors = ['#666', '#00ff88', '#0ff', '#ff00ff', '#ff0066'];
+            const colors = ['#666', '#00ff88', '#0ff', '#ff00ff'];
             intensityLabel.style.color = colors[clamped];
             intensityLabel.style.textShadow = `0 0 10px ${colors[clamped]}`;
         }
@@ -741,8 +742,7 @@ class SettingsManager {
             const patterns = {
                 1: 'buttonPress',   // Gentle
                 2: 'cardSnap',      // Normal
-                3: 'double',        // Amped
-                4: 'denied'         // Insane (triple buzz)
+                3: 'double'         // Amped (1-second double buzz)
             };
 
             this.game.triggerSensoryFeedback(patterns[clamped], previewElement, `Haptic preview: ${labels[clamped]}`);
