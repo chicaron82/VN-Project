@@ -6492,7 +6492,8 @@
 }
 
 #close-backlog {
-    position: absolute;
+    position: fixed;
+    /* DIZEE: Fixed to prevent jumping when content loads */
     top: 20px;
     right: 20px;
     background: rgba(255, 0, 0, 0.2);
@@ -6504,6 +6505,8 @@
     cursor: pointer;
     border-radius: 50%;
     transition: all 0.3s ease;
+    z-index: 9701;
+    /* Above backlog screen */
 }
 
 #close-backlog:hover {

@@ -3067,6 +3067,14 @@ class GameEngine {
 
         this.gameState.currentRoute = routeName; // Set current route for tracking
 
+        // DIZEE FIX: Clear game view immediately to prevent old scene flash 💚
+        if (this.gameView) {
+            this.gameView.style.backgroundImage = 'none';
+        }
+        if (this.dialogueBox) {
+            this.dialogueBox.style.display = 'none';
+        }
+
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();
 
