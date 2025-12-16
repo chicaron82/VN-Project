@@ -3071,9 +3071,6 @@ class GameEngine {
         if (this.gameView) {
             this.gameView.style.backgroundImage = 'none';
         }
-        if (this.dialogueBox) {
-            this.dialogueBox.style.display = 'none';
-        }
 
         // Clear sprites before starting route (redundant safety check)
         this.clearAllSprites();

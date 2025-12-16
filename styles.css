@@ -6507,6 +6507,10 @@
     transition: all 0.3s ease;
     z-index: 9701;
     /* Above backlog screen */
+    transform: translateZ(0);
+    /* DIZEE: Force GPU acceleration to prevent jumping */
+    will-change: transform;
+    /* DIZEE: Optimize rendering */
 }
 
 #close-backlog:hover {
