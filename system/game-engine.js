@@ -9050,10 +9050,22 @@ class RouteSelector {
                 if (this.selectedRoute === route) {
                     // Already active? Start the route!
                     console.log(`🚀 Clicked active ${route} portrait - starting game`);
+
+                    // DIZEE: Haptic for confirming route start
+                    if (this.game.triggerSensoryFeedback) {
+                        this.game.triggerSensoryFeedback('success', portrait, 'Route confirmed via portrait');
+                    }
+
                     this.startSelectedRoute();
                 } else {
                     // Not active? Select it.
                     console.log(`👆 Clicked dimmed ${route} portrait - selecting`);
+
+                    // DIZEE: Haptic for switching perspective
+                    if (this.game.triggerSensoryFeedback) {
+                        this.game.triggerSensoryFeedback('buttonPress', portrait, 'Route perspective switch');
+                    }
+
                     this.selectRoute(route);
                 }
             });
