@@ -9132,6 +9132,12 @@ class RouteSelector {
 
     startSelectedRoute() {
         console.log(`🚀 Starting ${this.selectedRoute} route`);
+
+        // DIZEE: Haptic feedback for route start
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('success', null, 'Route selection confirmed');
+        }
+
         this.game.startRoute(this.selectedRoute);
     }
 }
