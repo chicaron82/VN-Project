@@ -2417,13 +2417,18 @@ class GameEngine {
             canvas.style.opacity = '1';
         });
 
-        // Hold, then fade out and callback
+        // DIZEE: Execute callback DURING rain (loads next screen underneath) 💚
+        // This happens at peak rain opacity, so transition is seamless
+        setTimeout(() => {
+            if (callback) callback();
+        }, 600); // Execute after fade-in completes
+
+        // Fade out (next screen is already loaded underneath)
         setTimeout(() => {
             canvas.style.opacity = '0';
 
             setTimeout(() => {
                 this.stopTransitionRain();
-                if (callback) callback();
             }, 300); // Wait for fade out
         }, duration - 300);
     }
