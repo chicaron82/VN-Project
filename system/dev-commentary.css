@@ -56,6 +56,14 @@
     transform: rotate(90deg);
 }
 
+/* DIZEE FIX: Prevent focus from changing position (global button:focus sets position: relative) */
+.commentary-close:focus {
+    position: absolute !important;
+    outline: 2px solid #00ff41;
+    outline-offset: 0;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+
 .commentary-header {
     display: flex;
     align-items: center;
