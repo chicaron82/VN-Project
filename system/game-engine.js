@@ -3131,45 +3131,48 @@ class GameEngine {
             // Set route-specific dialogue frame
             this.setDialogueFrame(routeName);
 
-            // DIZEE FIX: Clean up previous route before starting new one
-            if (this.currentRoute) {
-                // Call route's cleanup method (handles timers, listeners, references)
-                if (this.currentRoute.cleanup) {
-                    this.currentRoute.cleanup();
-                }
-                // Hide tether UI
-                if (this.tetherUI) {
-                    this.tetherUI.style.display = 'none';
-                }
-                // Clear current route reference
-                this.currentRoute = null;
-            }
-
-            // Initialize route
-            if (routeName === 'ronnie') {
-                this.currentRoute = new RonnieRoute(this);
-                this.currentRoute.start(); // Call start() explicitly
-
-                // DIZEE: Add route class for choice button theming 💚
-                document.body.classList.add('ronnie-route');
-                document.body.classList.remove('tori-route');
-            } else if (routeName === 'tori') {
-                this.currentRoute = new ToriRoute(this);
-
-                // INSANE MODE: Make Hold On button a ghost
-                if (this.gameState.flags && this.gameState.flags.insaneModeActive) {
-                    this.makeHoldOnGhost();
+            // DIZEE: Code rain transition before route starts 💚🌧️
+            this.showCodeRainTransition(() => {
+                // DIZEE FIX: Clean up previous route before starting new one
+                if (this.currentRoute) {
+                    // Call route's cleanup method (handles timers, listeners, references)
+                    if (this.currentRoute.cleanup) {
+                        this.currentRoute.cleanup();
+                    }
+                    // Hide tether UI
+                    if (this.tetherUI) {
+                        this.tetherUI.style.display = 'none';
+                    }
+                    // Clear current route reference
+                    this.currentRoute = null;
                 }
 
-                this.currentRoute.start(); // Tori has explicit .start()
+                // Initialize route
+                if (routeName === 'ronnie') {
+                    this.currentRoute = new RonnieRoute(this);
+                    this.currentRoute.start(); // Call start() explicitly
 
-                // DIZEE: Add route class for choice button theming 💚
-                document.body.classList.add('tori-route');
-                document.body.classList.remove('ronnie-route');
-            }
+                    // DIZEE: Add route class for choice button theming 💚
+                    document.body.classList.add('ronnie-route');
+                    document.body.classList.remove('tori-route');
+                } else if (routeName === 'tori') {
+                    this.currentRoute = new ToriRoute(this);
 
-            // Show ESC hint briefly for desktop users
-            this.showEscHintBriefly();
+                    // INSANE MODE: Make Hold On button a ghost
+                    if (this.gameState.flags && this.gameState.flags.insaneModeActive) {
+                        this.makeHoldOnGhost();
+                    }
+
+                    this.currentRoute.start(); // Tori has explicit .start()
+
+                    // DIZEE: Add route class for choice button theming 💚
+                    document.body.classList.add('tori-route');
+                    document.body.classList.remove('ronnie-route');
+                }
+
+                // Show ESC hint briefly for desktop users
+                this.showEscHintBriefly();
+            }, 1500); // Code rain transition duration
         }, 1000);
     }
 
@@ -4262,9 +4265,10 @@ class GameEngine {
             // DIZEE: Record attempt to bootstrap timeline
             this.recordEndingAttempt();
 
-            setTimeout(() => {
+            // DIZEE: Code rain transition before returning to menu 💚🌧️
+            this.showCodeRainTransition(() => {
                 this.returnToMainMenu(true);
-            }, 300);
+            }, 1500);
         });
 
         // Store references for keyboard navigation
