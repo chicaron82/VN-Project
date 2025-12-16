@@ -2415,18 +2415,16 @@ class GameEngine {
         // Start rain
         this.startTransitionRain(canvas);
 
-        // Fade in
-        requestAnimationFrame(() => {
-            canvas.style.opacity = '1';
-        });
+        // DIZEE: Start at full opacity (instant cover) 💚
+        canvas.style.opacity = '1';
 
-        // DIZEE: Execute callback DURING rain (loads next screen underneath) 💚
-        // This happens at peak rain opacity, so transition is seamless
+        // DIZEE: Execute callback immediately (loads next screen underneath rain) 💚
+        // Rain is already covering screen, so transition is seamless
         setTimeout(() => {
             if (callback) callback();
-        }, 600); // Execute after fade-in completes
+        }, 100); // Small delay to ensure rain is rendering
 
-        // Fade out (next screen is already loaded underneath)
+        // Fade out after holding (next screen is already loaded underneath)
         setTimeout(() => {
             canvas.style.opacity = '0';
 
