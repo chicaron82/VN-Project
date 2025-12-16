@@ -2342,7 +2342,7 @@ class GameEngine {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#0f0';
+            ctx.fillStyle = '#0ff'; // DIZEE: Cyan to match game aesthetic 💚
             ctx.font = `${fontSize}px monospace`;
 
             for (let i = 0; i < drops.length; i++) {
@@ -2381,6 +2381,97 @@ class GameEngine {
             this.loopInitCallback();
             this.loopInitCallback = null;
         }
+    }
+
+    // ========================================
+    // DIZEE: CODE RAIN TRANSITIONS
+    // Cyan Matrix rain for scene transitions
+    // ========================================
+
+    showCodeRainTransition(callback, duration = 1500) {
+        // Create or get overlay canvas
+        let canvas = document.getElementById('transition-matrix');
+        if (!canvas) {
+            canvas = document.createElement('canvas');
+            canvas.id = 'transition-matrix';
+            canvas.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 100000;
+                opacity: 0;
+                transition: opacity 300ms ease;
+                pointer-events: none;
+                background: #000;
+            `;
+            document.body.appendChild(canvas);
+        }
+
+        // Start rain
+        this.startTransitionRain(canvas);
+
+        // Fade in
+        requestAnimationFrame(() => {
+            canvas.style.opacity = '1';
+        });
+
+        // Hold, then fade out and callback
+        setTimeout(() => {
+            canvas.style.opacity = '0';
+
+            setTimeout(() => {
+                this.stopTransitionRain();
+                if (callback) callback();
+            }, 300); // Wait for fade out
+        }, duration - 300);
+    }
+
+    startTransitionRain(canvas) {
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0ff'; // CYAN - matches game aesthetic
+            ctx.font = `${fontSize}px monospace`;
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        };
+
+        this.transitionRainInterval = setInterval(draw, 33);
+    }
+
+    stopTransitionRain() {
+        if (this.transitionRainInterval) {
+            clearInterval(this.transitionRainInterval);
+            this.transitionRainInterval = null;
+        }
+
+        // Clean up canvas after a delay
+        setTimeout(() => {
+            const canvas = document.getElementById('transition-matrix');
+            if (canvas && canvas.style.opacity === '0') {
+                canvas.remove();
+            }
+        }, 500);
     }
 
     // ========================================
