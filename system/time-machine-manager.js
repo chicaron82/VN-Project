@@ -78,11 +78,10 @@ class TimeMachineManager {
         this.pruneIfNeeded();
         console.log(`⏰ Snapshot added: ${label || `#${snapshot.id}`} [${priority}]`);
 
-        // COMMENTARY TRIGGER: First Log Added
+        // DIZEE: Show optional commentary hint instead of auto-popup
         if (this.entries.length === 1 && this.game.devCommentary && this.game.devCommentary.isUnlocked()) {
-            // Delay slightly to let UI settle if visible
             setTimeout(() => {
-                this.game.devCommentary.showCommentary('backlog_time_machine');
+                this.showCommentaryHint('backlog_time_machine');
             }, 1000);
         }
 
@@ -373,6 +372,41 @@ class TimeMachineManager {
             corrupted: this.entries.filter(e => e.corrupted).length,
             anchors: this.entries.filter(e => e.priority === 'anchor').length,
         };
+    }
+
+    // ========================================
+    // DEV COMMENTARY HINT
+    // ========================================
+
+    // Show optional commentary icon instead of auto-popup
+    showCommentaryHint(sceneId) {
+        // Check if hint button already exists
+        let hintBtn = document.getElementById('commentary-hint-backlog');
+
+        if (!hintBtn) {
+            // Create hint button
+            hintBtn = document.createElement('button');
+            hintBtn.id = 'commentary-hint-backlog';
+            hintBtn.className = 'commentary-hint-button';
+            hintBtn.innerHTML = '💬 Dev Commentary';
+            hintBtn.title = 'Click to read behind-the-scenes notes';
+
+            // Click to show commentary
+            hintBtn.addEventListener('click', () => {
+                this.game.devCommentary.showCommentary(sceneId);
+                hintBtn.remove(); // Remove after showing
+            });
+
+            document.body.appendChild(hintBtn);
+
+            // Auto-remove after 10 seconds if not clicked
+            setTimeout(() => {
+                if (hintBtn && hintBtn.parentNode) {
+                    hintBtn.style.opacity = '0';
+                    setTimeout(() => hintBtn.remove(), 300);
+                }
+            }, 10000);
+        }
     }
 
     // ========================================
