@@ -8693,7 +8693,7 @@ There is no v849.`
             // Priority 7: Settings menu
             const settingsMenu = document.getElementById('settings-menu');
             if (settingsMenu && settingsMenu.style.display === 'flex') {
-                this.settingsManager.closeSettings();
+                this.closeSettings();
                 return;
             }
 
