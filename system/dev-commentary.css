@@ -120,11 +120,11 @@
     font-size: 1rem;
 }
 
-/* Commentary hint button (DIZEE: Top right of dialogue box) */
+/* Commentary hint button (DIZEE: Bottom left to avoid covering notes) */
 .commentary-hint-button {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
     background: rgba(0, 255, 170, 0.2);
     border: 2px solid #00ffaa;
     color: #00ffaa;
@@ -135,7 +135,7 @@
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     animation: commentary-pulse 2s ease-in-out infinite;
-    z-index: 100;
+    z-index: 1000;
 }
 
 .commentary-hint-button:hover {
@@ -146,7 +146,7 @@
 
 /* DIZEE: Prevent focus from changing position */
 .commentary-hint-button:focus {
-    position: absolute !important;
+    position: fixed !important;
     outline: 2px solid #00ffaa;
     outline-offset: 2px;
 }
@@ -180,8 +180,8 @@
     }
 
     .commentary-hint-button {
-        top: 0.5rem;
-        right: 0.5rem;
+        bottom: 1rem;
+        left: 1rem;
         padding: 0.5rem 0.8rem;
         font-size: 0.75rem;
     }
