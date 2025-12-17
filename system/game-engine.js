@@ -2760,31 +2760,6 @@ class GameEngine {
 
                 // ZEE'S ADDITION: Start tip rotation 🖤
                 this.startRouteSelectTipRotation();
-
-                // COMMENTARY TRIGGER
-                if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                    const dialogueBox = document.getElementById('dialogue-box');
-
-                    // Remove existing button if any
-                    const existingBtn = dialogueBox?.querySelector('.commentary-hint-button');
-                    if (existingBtn) existingBtn.remove();
-
-                    const commentaryBtn = document.createElement('button');
-                    commentaryBtn.className = 'commentary-hint-button';
-                    commentaryBtn.innerHTML = '🎙️ COMMENTARY';
-                    commentaryBtn.onclick = (e) => {
-                        e.stopPropagation(); // Prevent dialogue advance
-                        this.devCommentary.showCommentary('route_selection_dual');
-                        // Also show philosophy after a delay
-                        setTimeout(() => {
-                            this.devCommentary.showCommentary('route_selection_philosophy');
-                        }, 10000);
-                    };
-
-                    if (dialogueBox) {
-                        dialogueBox.appendChild(commentaryBtn);
-                    }
-                }
             }, 100);
         }, 1000);
     }
@@ -3150,6 +3125,31 @@ class GameEngine {
             const backlogButton = document.getElementById('backlog-button');
             if (backlogButton) {
                 backlogButton.style.display = 'block';
+            }
+
+            // DIZEE: Show dev commentary button if unlocked (inside dialogue box)
+            if (this.devCommentary && this.devCommentary.isUnlocked()) {
+                const dialogueBox = document.getElementById('dialogue-box');
+
+                // Remove existing button if any
+                const existingBtn = dialogueBox?.querySelector('.commentary-hint-button');
+                if (existingBtn) existingBtn.remove();
+
+                const commentaryBtn = document.createElement('button');
+                commentaryBtn.className = 'commentary-hint-button';
+                commentaryBtn.innerHTML = '🎙️ COMMENTARY';
+                commentaryBtn.onclick = (e) => {
+                    e.stopPropagation(); // Prevent dialogue advance
+                    this.devCommentary.showCommentary('route_selection_dual');
+                    // Also show philosophy after a delay
+                    setTimeout(() => {
+                        this.devCommentary.showCommentary('route_selection_philosophy');
+                    }, 10000);
+                };
+
+                if (dialogueBox) {
+                    dialogueBox.appendChild(commentaryBtn);
+                }
             }
 
             // Set route-specific dialogue frame
