@@ -120,22 +120,23 @@
     font-size: 1rem;
 }
 
-/* Commentary hint button (route select, etc) */
+/* Commentary hint button (DIZEE: Moved to top right of dialogue box) */
 .commentary-hint-button {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     background: rgba(0, 255, 170, 0.2);
     border: 2px solid #00ffaa;
     color: #00ffaa;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     animation: commentary-pulse 2s ease-in-out infinite;
-    z-index: 1000;
+    z-index: 100;
+    line-height: 1;
 }
 
 .commentary-hint-button:hover {
@@ -173,9 +174,9 @@
     }
 
     .commentary-hint-button {
-        bottom: 1rem;
-        right: 1rem;
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
     }
 }
