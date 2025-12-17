@@ -2763,24 +2763,27 @@ class GameEngine {
 
                 // COMMENTARY TRIGGER
                 if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                    const routeSelect = document.getElementById('route-select');
-                    const content = routeSelect.querySelector('#route-select-content') || routeSelect;
+                    const dialogueBox = document.getElementById('dialogue-box');
 
                     // Remove existing button if any
-                    const existingBtn = content.querySelector('.commentary-hint-button');
+                    const existingBtn = dialogueBox?.querySelector('.commentary-hint-button');
                     if (existingBtn) existingBtn.remove();
 
                     const commentaryBtn = document.createElement('button');
                     commentaryBtn.className = 'commentary-hint-button';
                     commentaryBtn.innerHTML = '🎙️ COMMENTARY';
-                    commentaryBtn.onclick = () => {
+                    commentaryBtn.onclick = (e) => {
+                        e.stopPropagation(); // Prevent dialogue advance
                         this.devCommentary.showCommentary('route_selection_dual');
                         // Also show philosophy after a delay
                         setTimeout(() => {
                             this.devCommentary.showCommentary('route_selection_philosophy');
                         }, 10000);
                     };
-                    content.appendChild(commentaryBtn);
+
+                    if (dialogueBox) {
+                        dialogueBox.appendChild(commentaryBtn);
+                    }
                 }
             }, 100);
         }, 1000);
