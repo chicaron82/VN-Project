@@ -1952,23 +1952,29 @@ class GameEngine {
         };
     }
 
-    scaleHapticPattern(pattern, comfortLevel) {
-        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
-        if (comfortLevel === 1) return pattern;
+    scaleHapticPattern(pattern, hapticLevel) {
+        // DIZEE: Updated for new haptic intensity range
+        // 0=Off (shouldn't reach here), 1=Gentle (60%), 2=Normal (100%), 3=Amped (130%), 4=INSANE (200%)
+
+        // Off - shouldn't trigger haptics at all
+        if (hapticLevel === 0) return null;
+
+        // Normal - baseline, no scaling
+        if (hapticLevel === 2) return pattern;
 
         // Normalize to array
         const arr = Array.isArray(pattern) ? pattern.slice() : [pattern];
 
-        if (comfortLevel === 0) {
+        if (hapticLevel === 1) {
             // Gentle: softer, shorter
             return arr.map(ms => Math.max(5, Math.round(ms * 0.6)));
         }
-        if (comfortLevel === 2) {
+        if (hapticLevel === 3) {
             // Amped: stronger, longer
             return arr.map(ms => Math.round(ms * 1.3));
         }
-        if (comfortLevel === 3) {
-            // INSANE: MUCH stronger, MUCH longer (beyond Amped)
+        if (hapticLevel === 4) {
+            // INSANE: MUCH stronger, MUCH longer (only via Insane Mode difficulty)
             return arr.map(ms => Math.round(ms * 2.0));
         }
 
@@ -1993,20 +1999,26 @@ class GameEngine {
         }
         this.lastHapticTime = now;
 
-        // Get comfort level and insane mode status
-        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 1;
+        // Get haptic intensity level and insane mode status
+        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 2;
         const insane = this.isInsaneModeActive?.() ?? false;
+
+        // DIZEE: If haptic intensity is Off (0), don't trigger haptics (unless in Insane Mode)
+        if (!insane && comfort === 0) {
+            return; // User set haptic intensity to Off
+        }
+
         const patterns = this.getHapticPatterns();
 
         // Get base pattern
         let pattern = patterns[patternName] || patternName;
 
-        // INSANE MODE: Apply 2.0x intensity (beyond Amped's 1.3x)
-        // This ensures INSANE feels different even for players who use Amped normally
+        // INSANE MODE: Apply 2.0x intensity (level 4)
+        // This ensures INSANE feels different even for players who use Amped (level 3) normally
         if (insane && channel !== 'critical') {
-            pattern = this.scaleHapticPattern(pattern, 3); // Special value 3 = INSANE mode
+            pattern = this.scaleHapticPattern(pattern, 4); // Level 4 = INSANE mode
         }
-        // TORI'S SCALING: Scale non-critical cues based on comfort setting
+        // DIZEE: Scale non-critical cues based on haptic intensity setting (0-3)
         else if (!insane && channel !== 'critical') {
             pattern = this.scaleHapticPattern(pattern, comfort);
         }
