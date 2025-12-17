@@ -2812,23 +2812,24 @@ class GameEngine {
 
                 // COMMENTARY TRIGGER
                 if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                    // Remove existing button if any
+                    // Only create button if it doesn't already exist
                     const existingBtn = document.querySelector('.commentary-hint-button');
-                    if (existingBtn) existingBtn.remove();
+                    if (!existingBtn) {
+                        const commentaryBtn = document.createElement('button');
+                        commentaryBtn.className = 'commentary-hint-button';
+                        commentaryBtn.innerHTML = '🎙️ COMMENTARY';
+                        commentaryBtn.onclick = (e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            this.devCommentary.showCommentary('route_selection_dual');
+                            // Also show philosophy after a delay
+                            setTimeout(() => {
+                                this.devCommentary.showCommentary('route_selection_philosophy');
+                            }, 10000);
+                        };
 
-                    const commentaryBtn = document.createElement('button');
-                    commentaryBtn.className = 'commentary-hint-button';
-                    commentaryBtn.innerHTML = '🎙️ COMMENTARY';
-                    commentaryBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        this.devCommentary.showCommentary('route_selection_dual');
-                        // Also show philosophy after a delay
-                        setTimeout(() => {
-                            this.devCommentary.showCommentary('route_selection_philosophy');
-                        }, 10000);
-                    };
-
-                    document.body.appendChild(commentaryBtn);
+                        document.body.appendChild(commentaryBtn);
+                    }
                 }
             }, 100);
         }, 1000);
