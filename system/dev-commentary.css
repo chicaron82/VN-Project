@@ -120,23 +120,25 @@
     font-size: 1rem;
 }
 
-/* Commentary hint button (DIZEE: Moved to top right of dialogue box) */
+/* Commentary hint button (DIZEE: Top right of dialogue box) */
 .commentary-hint-button {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 0.75rem;
+    right: 0.75rem;
     background: rgba(0, 255, 170, 0.2);
     border: 2px solid #00ffaa;
     color: #00ffaa;
-    padding: 0.6rem 1rem;
-    font-size: 0.85rem;
-    border-radius: 8px;
+    padding: 0.5rem 0.9rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     animation: commentary-pulse 2s ease-in-out infinite;
-    z-index: 100;
+    z-index: 1000;
     line-height: 1;
+    pointer-events: auto;
+    /* Prevent click from passing through to dialogue advance */
 }
 
 .commentary-hint-button:hover {
