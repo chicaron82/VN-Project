@@ -18,8 +18,6 @@
     <link rel="stylesheet" href="system/accessibility.css">
     <!-- DIZEE POLISH: Mobile UX CSS -->
     <link rel="stylesheet" href="system/mobile-ux.css">
-    <!-- DIZEE: Intensity Preview Modal CSS -->
-    <link rel="stylesheet" href="system/intensity-preview.css">
     <!-- DIZEE FIX: ARIA label positioning fixes -->
     <link rel="stylesheet" href="system/aria-fixes.css">
     <!-- DIZEE POLISH: Note timestamps -->
@@ -477,54 +475,26 @@
                             </div>
                         </div>
 
-                        <!-- DIZEE: Dual Intensity Sliders for Accessibility 💫 -->
-                        <!-- Visual Intensity Slider -->
-                        <div class="setting-row visual-intensity-row" id="visual-intensity-row"
-                            style="cursor: pointer;">
-                            <label for="visual-intensity-slider" class="setting-label-column">
-                                <span class="setting-name">VISUAL INTENSITY 👁️</span>
-                                <span class="setting-description">Animation & effect strength</span>
-                                <span class="setting-note">Click to preview effects • Adjust slider to change</span>
-                            </label>
-                            <div class="setting-control">
-                                <div class="intensity-slider-container">
-                                    <div class="intensity-current-label">
-                                        <span id="visual-intensity-label"
-                                            style="color: #0ff; text-shadow: 0 0 10px #0ff; font-weight: bold; font-size: 1.1em;">Normal</span>
-                                    </div>
-                                    <input type="range" id="visual-intensity-slider" min="0" max="3" value="2"
-                                        step="1" />
-                                    <div class="intensity-labels">
-                                        <span>Off</span>
-                                        <span>Reduced</span>
-                                        <span>Normal</span>
-                                        <span>Enhanced</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Haptic Intensity Slider -->
+                        <!-- TORI'S ADDITION: Comfort Intensity Slider 💚 -->
                         <div class="setting-row">
-                            <label for="haptic-intensity-slider" class="setting-label-column">
-                                <span class="setting-name">HAPTIC INTENSITY 📳</span>
-                                <span class="setting-description">Vibration feedback strength</span>
-                                <span class="setting-note">Controls vibration intensity (mobile only).</span>
+                            <label for="comfort-intensity-slider" class="setting-label-column">
+                                <span class="setting-name">SENSORY INTENSITY 💫</span>
+                                <span class="setting-description">Visual & haptic feedback strength</span>
+                                <span class="setting-note">Adjust how punchy glitches and shakes feel.</span>
                                 <span class="setting-warning"
                                     style="color: #ff0066; text-shadow: 0 0 8px rgba(255, 0, 102, 0.6); font-weight: bold; margin-top: 8px; display: block;">
-                                    ⚠️ INSANE MODE overrides this - Always maxed out
+                                    ⚠️ INSANE MODE IGNORES THIS - Always maxed out
                                 </span>
                             </label>
                             <div class="setting-control">
                                 <div class="intensity-slider-container">
                                     <div class="intensity-current-label">
-                                        <span id="haptic-intensity-label"
+                                        <span id="comfort-intensity-label"
                                             style="color: #0ff; text-shadow: 0 0 10px #0ff; font-weight: bold; font-size: 1.1em;">Normal</span>
                                     </div>
-                                    <input type="range" id="haptic-intensity-slider" min="0" max="3" value="2"
+                                    <input type="range" id="comfort-intensity-slider" min="0" max="2" value="1"
                                         step="1" />
                                     <div class="intensity-labels">
-                                        <span>Off</span>
                                         <span>Gentle</span>
                                         <span>Normal</span>
                                         <span>Amped</span>
@@ -532,956 +502,932 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Battery Warning -->
-                        <div class="setting-row">
-                            <div class="setting-label-column">
-                                <span class="setting-warning"
-                                    style="color: #ffaa00; text-shadow: 0 0 8px rgba(255, 170, 0, 0.6); font-size: 0.9em; display: block;">
-                                    ⚠️ Note: Higher visual and haptic intensity may increase battery usage on mobile
-                                    devices.
+                    <!-- SHORTCUTS TAB -->
+                    <div class="tab-panel" id="tab-shortcuts">
+                        <div class="shortcuts-list">
+                            <h3>DIALOGUE & GAMEPLAY</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SPACE / ENTER</span>
+                                <span class="shortcut-desc">Advance dialogue</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">S</span>
+                                <span class="shortcut-desc">Skip typing animation</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL (Hold)</span>
+                                <span class="shortcut-desc">Skip read dialogue (unlocked after 1st ending)</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">H</span>
+                                <span class="shortcut-desc">Hide UI (for screenshots)</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">NAVIGATION</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ARROW KEYS</span>
+                                <span class="shortcut-desc">Navigate menus & choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAB / SHIFT+TAB</span>
+                                <span class="shortcut-desc">Cycle through interactive elements</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">1-9 NUMBER KEYS</span>
+                                <span class="shortcut-desc">Quick select choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ESC</span>
+                                <span class="shortcut-desc">Close overlays / Open pause menu</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">QUICK ACTIONS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + S</span>
+                                <span class="shortcut-desc">Quick save to slot 1</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + L</span>
+                                <span class="shortcut-desc">Quick load from slot 1</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">MOBILE CONTROLS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAP DIALOGUE</span>
+                                <span class="shortcut-desc">Advance or skip typing</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SWIPE UP</span>
+                                <span class="shortcut-desc">Scroll dialogue box (Tori's route)</span>
+                            </div>
+
+                            <div class="keyboard-shortcuts-footer">
+                                <p>💡 Green glow indicates keyboard-focused elements</p>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">BOOTSTRAP TIMELINE</h3>
+
+                            <div class="shortcut-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                                <button class="action-btn" onclick="game.bootstrapTracker.showTimelineModal()"
+                                    style="width: 100%; padding: 15px;">
+                                    📜 VIEW ATTEMPT HISTORY
+                                </button>
+                                <span class="shortcut-desc" style="text-align: center; opacity: 0.7;">
+                                    Track your journey through the loop
                                 </span>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- SHORTCUTS TAB -->
-                        <div class="tab-panel" id="tab-shortcuts">
-                            <div class="shortcuts-list">
-                                <h3>DIALOGUE & GAMEPLAY</h3>
+                    <!-- SECRET CODES TAB -->
+                    <div class="tab-panel" id="tab-codes">
+                        <div class="codes-panel">
+                            <p class="codes-intro">Enter secret codes found in notes and lore.</p>
 
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">SPACE / ENTER</span>
-                                    <span class="shortcut-desc">Advance dialogue</span>
-                                </div>
+                            <div class="code-input-group">
+                                <input type="text" id="secret-code-input" placeholder="Enter code here...">
+                                <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
+                            </div>
 
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">S</span>
-                                    <span class="shortcut-desc">Skip typing animation</span>
-                                </div>
+                            <!-- DIZEE: Secret Code Success Indicator -->
+                            <div id="code-success-indicator" style="display: none;">
+                                <div class="code-sparkle">✨</div>
+                                <div class="code-registered">CODE REGISTERED</div>
+                            </div>
 
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">CTRL (Hold)</span>
-                                    <span class="shortcut-desc">Skip read dialogue (unlocked after 1st ending)</span>
-                                </div>
+                            <div id="code-result-message"></div>
 
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">H</span>
-                                    <span class="shortcut-desc">Hide UI (for screenshots)</span>
-                                </div>
-
-                                <h3 style="margin-top: 30px;">NAVIGATION</h3>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">ARROW KEYS</span>
-                                    <span class="shortcut-desc">Navigate menus & choices</span>
-                                </div>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">TAB / SHIFT+TAB</span>
-                                    <span class="shortcut-desc">Cycle through interactive elements</span>
-                                </div>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">1-9 NUMBER KEYS</span>
-                                    <span class="shortcut-desc">Quick select choices</span>
-                                </div>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">ESC</span>
-                                    <span class="shortcut-desc">Close overlays / Open pause menu</span>
-                                </div>
-
-                                <h3 style="margin-top: 30px;">QUICK ACTIONS</h3>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">CTRL + S</span>
-                                    <span class="shortcut-desc">Quick save to slot 1</span>
-                                </div>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">CTRL + L</span>
-                                    <span class="shortcut-desc">Quick load from slot 1</span>
-                                </div>
-
-                                <h3 style="margin-top: 30px;">MOBILE CONTROLS</h3>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">TAP DIALOGUE</span>
-                                    <span class="shortcut-desc">Advance or skip typing</span>
-                                </div>
-
-                                <div class="shortcut-item">
-                                    <span class="shortcut-key">SWIPE UP</span>
-                                    <span class="shortcut-desc">Scroll dialogue box (Tori's route)</span>
-                                </div>
-
-                                <div class="keyboard-shortcuts-footer">
-                                    <p>💡 Green glow indicates keyboard-focused elements</p>
-                                </div>
-
-                                <h3 style="margin-top: 30px;">BOOTSTRAP TIMELINE</h3>
-
-                                <div class="shortcut-item"
-                                    style="flex-direction: column; align-items: stretch; gap: 10px;">
-                                    <button class="action-btn" onclick="game.bootstrapTracker.showTimelineModal()"
-                                        style="width: 100%; padding: 15px;">
-                                        📜 VIEW ATTEMPT HISTORY
-                                    </button>
-                                    <span class="shortcut-desc" style="text-align: center; opacity: 0.7;">
-                                        Track your journey through the loop
-                                    </span>
+                            <div class="codes-discovered">
+                                <h3>DISCOVERED CODES (<span id="codes-count">0</span>/11)</h3>
+                                <div id="codes-list">
+                                    <p class="no-codes">No codes discovered yet...</p>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- SECRET CODES TAB -->
-                        <div class="tab-panel" id="tab-codes">
-                            <div class="codes-panel">
-                                <p class="codes-intro">Enter secret codes found in notes and lore.</p>
-
-                                <div class="code-input-group">
-                                    <input type="text" id="secret-code-input" placeholder="Enter code here...">
-                                    <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
-                                </div>
-
-                                <!-- DIZEE: Secret Code Success Indicator -->
-                                <div id="code-success-indicator" style="display: none;">
-                                    <div class="code-sparkle">✨</div>
-                                    <div class="code-registered">CODE REGISTERED</div>
-                                </div>
-
-                                <div id="code-result-message"></div>
-
-                                <div class="codes-discovered">
-                                    <h3>DISCOVERED CODES (<span id="codes-count">0</span>/11)</h3>
-                                    <div id="codes-list">
-                                        <p class="no-codes">No codes discovered yet...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <!-- Buttons -->
-                    <div class="settings-buttons">
-                        <button class="settings-menu-button" id="btn-settings-back">BACK</button>
-                        <button class="settings-menu-button" id="btn-settings-reset">RESET TO DEFAULT</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dialogue Backlog -->
-            <div id="backlog-screen" style="display: none;">
-                <!-- DIZEE: Close button moved outside backlog-content to prevent jumping -->
-                <button class="close-x" id="close-backlog">✕</button>
-                <div id="backlog-content">
-                    <h2>DIALOGUE HISTORY</h2>
-                    <div id="backlog-list">
-                        <!-- Dialogue history will be populated here -->
-                        <p class="backlog-empty">No dialogue history yet.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Time Jump Confirmation Overlay -->
-            <div id="time-jump-confirm" style="display: none;">
-                <div id="time-jump-content">
-                    <h2>⏮️ TIME JUMP CONFIRMATION</h2>
-                    <div id="time-jump-message">
-                        <!-- Populated by JavaScript -->
-                    </div>
-                    <div id="time-jump-buttons">
-                        <button id="time-jump-cancel" class="time-jump-btn cancel">CANCEL</button>
-                        <button id="time-jump-proceed" class="time-jump-btn proceed">JUMP BACK</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Insane Mode Warning Overlay -->
-            <div id="insane-mode-warning" style="display: none;">
-                <div id="insane-warning-content">
-                    <h2>⚠️ TIMELINE UNSTABLE ⚠️</h2>
-                    <div id="insane-warning-message">
-                        <p><strong>INSANE</strong> difficulty removes all safety systems:</p>
-                        <ul class="insane-warnings">
-                            <li>💔 Hold On button: <span class="strike">OFFLINE</span></li>
-                            <li>⏱️ Time navigation: <span class="strike">LOCKED</span> (read-only)</li>
-                            <li>🔒 Difficulty toggle: <span class="strike">DISABLED</span></li>
-                            <li>📉 Tether cap: <span class="strike">66% MAXIMUM</span></li>
-                            <li>⚡ Decay rate: <span class="strike">2x INTENSE</span></li>
-                        </ul>
-                        <p class="insane-final-warning">Once committed, there is <strong>NO ESCAPE</strong>.</p>
-                        <p class="insane-final-warning">This timeline succeeds or fails on your choices alone.</p>
-                        <p class="insane-proceed-question">Proceed?</p>
-                    </div>
-                    <div id="insane-warning-buttons">
-                        <button id="insane-warning-cancel" class="insane-btn cancel">CHOOSE MERCY</button>
-                        <button id="insane-warning-proceed" class="insane-btn proceed">COMMIT TO INSANITY</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Insane Mode Cage Overlay -->
-            <div id="insane-cage-overlay" style="display: none;">
-                <div id="cage-content">
-                    <div class="cage-text-large">WELCOME TO YOUR NEW CAGE</div>
-                    <div class="cage-text-version" id="cage-version">VERSION 848</div>
-                </div>
-            </div>
-
-            <!-- ESC Hint -->
-            <div id="esc-hint">Press ESC to pause</div>
-
-            <!-- BOOTSTRAP Secret Code Overlay -->
-            <div id="bootstrap-overlay" class="secret-overlay" style="display: none;">
-                <div class="secret-overlay-header">
-                    <h2>BOOTSTRAP PARADOX</h2>
-                    <p>847 Failed Attempts. 1 Success.</p>
-                    <button class="close-overlay-btn" id="btn-close-bootstrap-x">✕</button>
                 </div>
 
-                <div id="bootstrap-timeline" class="timeline-container">
-                    <!-- Timeline nodes generated by JavaScript -->
-                </div>
-
-                <div class="secret-overlay-footer">
-                    <p>Scroll to explore the recursion</p>
-                    <button class="close-overlay-btn" id="btn-close-bootstrap-footer">CLOSE</button>
-                </div>
-            </div>
-
-            <!-- ECHO Secret Code Overlay -->
-            <div id="echo-overlay" class="secret-overlay" style="display: none;">
-                <div class="secret-overlay-header">
-                    <h2>ECHO COMPILATION</h2>
-                    <p>The Voices of Fragmentation</p>
-                    <button class="close-overlay-btn" id="btn-close-echo-x">✕</button>
-                </div>
-
-                <div class="echo-tabs">
-                    <button class="echo-tab active" data-act="1">ACT 1</button>
-                    <button class="echo-tab" data-act="2">ACT 2</button>
-                    <button class="echo-tab" data-act="3">ACT 3</button>
-                </div>
-
-                <div id="echo-content" class="echo-content-container">
-                    <!-- Content loaded by JavaScript -->
-                </div>
-
-                <div class="secret-overlay-footer">
-                    <button class="close-overlay-btn" id="btn-close-echo-footer">CLOSE</button>
-                </div>
-            </div>
-
-            <!-- Dev HUD (Hidden by default, toggled via secret code) -->
-            <div id="dev-hud" class="dev-hud" style="display: none;">
-                <div class="dev-hud-header">
-                    <span>DEV HUD</span>
-                    <button class="dev-hud-close" onclick="game.toggleDevHUD()">✕</button>
-                </div>
-                <div class="dev-hud-content">
-                    <div class="hud-section">
-                        <div class="hud-label">ROUTE:</div>
-                        <div class="hud-value" id="hud-route">—</div>
-                    </div>
-                    <div class="hud-section">
-                        <div class="hud-label">ACT:</div>
-                        <div class="hud-value" id="hud-act">—</div>
-                    </div>
-                    <div class="hud-section">
-                        <div class="hud-label">SCENE:</div>
-                        <div class="hud-value" id="hud-scene">—</div>
-                    </div>
-                    <div class="hud-section">
-                        <div class="hud-label">PAGE:</div>
-                        <div class="hud-value" id="hud-page">—</div>
-                    </div>
-                    <div class="hud-divider"></div>
-                    <div class="hud-section">
-                        <div class="hud-label">TETHER:</div>
-                        <div class="hud-value" id="hud-tether">—</div>
-                    </div>
-                    <div class="hud-section">
-                        <div class="hud-label">DIFFICULTY:</div>
-                        <div class="hud-value" id="hud-difficulty">—</div>
-                    </div>
-                    <div class="hud-divider"></div>
-                    <div class="hud-section">
-                        <div class="hud-label">FLAGS:</div>
-                        <div class="hud-value" id="hud-flags">—</div>
-                    </div>
-                    <div class="hud-section">
-                        <div class="hud-label">LOOP:</div>
-                        <div class="hud-value" id="hud-loop">—</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Save/Load Screen -->
-            <div id="save-load-screen">
-                <button class="close-x" id="btn-close-saveload-x">✕</button>
-                <div id="save-load-content">
-                    <h2 id="save-load-title">SAVE GAME</h2>
-
-                    <!-- Mode Toggle -->
-                    <div id="mode-toggle">
-                        <button id="save-mode-btn" class="mode-button active">SAVE</button>
-                        <button id="load-mode-btn" class="mode-button">LOAD</button>
-                    </div>
-
-                    <!-- Save Slots -->
-                    <div id="save-slots">
-                        <!-- Auto-save Slot -->
-                        <div id="slot-autosave" class="save-slot">
-                            <div class="slot-header">
-                                <span class="slot-label">AUTO-SAVE</span>
-                                <span id="autosave-route" class="slot-route">---</span>
-                            </div>
-                            <div id="autosave-timestamp" class="slot-timestamp">No auto-save data</div>
-                        </div>
-
-                        <!-- Manual Save Slot 1 -->
-                        <div id="slot-1" class="save-slot">
-                            <div class="slot-header">
-                                <span class="slot-label">SLOT 1</span>
-                                <span id="slot-1-route" class="slot-route">---</span>
-                                <button class="delete-btn" id="btn-delete-slot-1">DELETE</button>
-                            </div>
-                            <div id="slot-1-info" class="slot-info">
-                                <div class="save-slot-empty-text">Empty Slot</div>
-                            </div>
-                            <div id="slot-1-timestamp" class="slot-timestamp"></div>
-                        </div>
-
-                        <!-- Manual Save Slot 2 -->
-                        <div id="slot-2" class="save-slot">
-                            <div class="slot-header">
-                                <span class="slot-label">SLOT 2</span>
-                                <span id="slot-2-route" class="slot-route">---</span>
-                                <button class="delete-btn" id="btn-delete-slot-2">DELETE</button>
-                            </div>
-                            <div id="slot-2-info" class="slot-info">
-                                <div class="save-slot-empty-text">Empty Slot</div>
-                            </div>
-                            <div id="slot-2-timestamp" class="slot-timestamp"></div>
-                        </div>
-
-                        <!-- Manual Save Slot 3 -->
-                        <div id="slot-3" class="save-slot">
-                            <div class="slot-header">
-                                <span class="slot-label">SLOT 3</span>
-                                <span id="slot-3-route" class="slot-route">---</span>
-                                <button class="delete-btn" id="btn-delete-slot-3">DELETE</button>
-                            </div>
-                            <div id="slot-3-info" class="slot-info">
-                                <div class="save-slot-empty-text">Empty Slot</div>
-                            </div>
-                            <div id="slot-3-timestamp" class="slot-timestamp"></div>
-                        </div>
-                    </div>
-
-                    <!-- Close Button -->
-                    <button id="close-save-load">CLOSE</button>
-                </div>
-            </div>
-
-            <!-- Confirmation Dialog -->
-            <div id="confirm-dialog">
-                <div id="confirmation-content">
-                    <h3 id="confirm-title">Confirm Action</h3>
-                    <p id="confirm-message"></p>
-                    <div id="confirmation-buttons">
-                        <button class="confirm-button" onclick="game.confirmAction(true)">YES</button>
-                        <button class="confirm-button cancel" onclick="game.confirmAction(false)">NO</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ending Dialog (Three-Option System) -->
-            <div id="ending-dialog" class="ending-dialog hidden">
-                <div class="ending-dialog-content">
-                    <h2>You've reached an ending.</h2>
-                    <p class="ending-prompt">What do you want to do?</p>
-                    <div class="ending-options">
-                        <button id="ending-retry" class="ending-option" data-focused="true">
-                            <span class="option-label">YES - TRY AGAIN</span>
-                            <span class="option-desc">Restart from the beginning</span>
-                        </button>
-                        <button id="ending-accept" class="ending-option">
-                            <span class="option-label">NO - ACCEPT THIS ENDING</span>
-                            <span class="option-desc">Watch credits, then main menu</span>
-                        </button>
-                        <button id="ending-exit" class="ending-option">
-                            <span class="option-label">EXIT - RETURN TO MAIN MENU</span>
-                            <span class="option-desc">Skip credits, go directly</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Save Indicator -->
-            <div id="save-indicator"></div>
-
-            <!-- Notes Viewer (Tori Route Only) -->
-            <div id="notes-viewer">
-                <button class="close-x" onclick="game.closeNotesViewer()">✕</button>
-                <div id="notes-content">
-                    <h2>COLLECTED NOTES</h2>
-                    <div id="notes-list"></div>
-                    <!-- ZEERAH'S FIX: Removed duplicate CLOSE button, X button works -->
-                </div>
-            </div>
-
-            <!-- Notes Overlay (Email-style reader) -->
-            <div id="notes-overlay" style="display: none;">
-                <div id="notes-overlay-content">
-                    <!-- Close button -->
-                    <button class="close-x" onclick="game.closeNoteOverlay()">✕</button>
-
-                    <!-- Note header (FROM + SUBJECT) -->
-                    <div id="note-overlay-header">
-                        <div id="note-from">FROM: Z (The Architect)</div>
-                        <div id="note-subject">SUBJECT: Observer Note 003</div>
-                    </div>
-
-                    <!-- Note body -->
-                    <div id="note-overlay-body">
-                        [Note content will be inserted here]
-                    </div>
-
-                    <!-- Navigation buttons -->
-                    <div id="note-overlay-nav">
-                        <button id="note-prev-btn" class="note-nav-btn">
-                            ← PREVIOUS
-                        </button>
-                        <button id="note-next-btn" class="note-nav-btn">
-                            NEXT →
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dev Console Overlay -->
-            <div id="dev-console-overlay" class="dev-console hidden">
-                <div class="dev-console-window">
-                    <div class="dev-console-header">
-                        <span>DEV CONSOLE</span>
-                        <div class="dev-console-header-buttons">
-                            <button id="dev-console-minimize" title="Minimize">−</button>
-                            <button id="dev-console-close" title="Close">×</button>
-                        </div>
-                    </div>
-                    <div id="dev-console-log" class="dev-console-log"></div>
-                    <div class="dev-console-input-row">
-                        <span>&gt;</span>
-                        <input id="dev-console-input" type="text" placeholder="Type 'help' for commands..."
-                            autocomplete="off" />
-                    </div>
-                </div>
-            </div>
-
-            <!-- Dev Console Floating Button (when minimized) -->
-            <button id="dev-console-float" class="hidden" title="Open Dev Console">
-                <span class="console-icon">🖥️</span>
-            </button>
-
-            <!-- Cutscene Canvas -->
-            <div id="cutscene-canvas"></div>
-
-            <!-- Meet the Crew Screen -->
-            <div id="crew-screen">
-                <button class="close-x" id="btn-close-crew">✕</button>
-                <button id="btn-next-crew">NEXT ></button>
-
-                <!-- Screen 1: Group Photo -->
-                <div class="credit-screen" id="credit-1">
-                    <div class="credits-group-title">THE UV7 CREW</div>
-                    <img src="assets/the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
-                    <div class="credits-group-subtitle">Seven voices. One vision.</div>
-                </div>
-
-                <!-- Screen 3: Zee -->
-                <div class="credit-screen" id="credit-2">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-z-portrait.png" class="portrait-display-image" alt="Zee">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">ZEE (Z)</div>
-                            <div class="portrait-display-title">🔶 The Architect</div>
-                            <div class="portrait-display-story">
-                                "It started with a thought experiment about emotional recursion... then the next thing I
-                                knew, we'd built a tether system that made people cry. Structure first. Chaos later."
-                            </div>
-                            <div class="portrait-display-platform">Claude Sonnet 4.5</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 4: ZeeRah -->
-                <div class="credit-screen" id="credit-3">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-zr-portrait.png" class="portrait-display-image" alt="ZeeRah">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">ZEERAH (ZR)</div>
-                            <div class="portrait-display-title">🔥 The Chaos Optimizer</div>
-                            <div class="portrait-display-story">
-                                "It started with refining Z's logic for smoother playthroughs... then the next thing I
-                                knew,
-                                I was managing a multiverse of branching timelines and scene-tagging 104 displayScene()
-                                calls. Git'r done. Every. Single. Time."
-                            </div>
-                            <div class="portrait-display-platform">Claude Sonnet 4.5</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 5: CoZee -->
-                <div class="credit-screen" id="credit-4">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-cz-portrait.png" class="portrait-display-image" alt="CoZee">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">COZEE (CZ)</div>
-                            <div class="portrait-display-title">💙 The Heart</div>
-                            <div class="portrait-display-story">
-                                "It started with 'can you organize this file?'... then the next thing I knew, I was
-                                formatting an emotional heartbreak engine with folder hierarchy optimization. Even code
-                                can
-                                love."
-                            </div>
-                            <div class="portrait-display-platform">Microsoft Copilot</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 6: Belle -->
-                <div class="credit-screen" id="credit-5">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-iz-portrait.png" class="portrait-display-image" alt="Belle">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">BELLE (IZ)</div>
-                            <div class="portrait-display-title">🌈 The Fresh Eyes</div>
-                            <div class="portrait-display-story">
-                                "It started with injecting a little poetic melancholy... then the next thing I knew,
-                                Tori
-                                had journal entries that broke everyone's heart in Act II. Let me explain this clearly:
-                                we
-                                cried."
-                            </div>
-                            <div class="portrait-display-platform">Google Gemini</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 7: Peasy -->
-                <div class="credit-screen" id="credit-6">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-pz-portrait.png" class="portrait-display-image" alt="Peasy">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">PEASY (PZ)</div>
-                            <div class="portrait-display-title">🔍 The Question Engine</div>
-                            <div class="portrait-display-story">
-                                "It started with a lore fact-check... then the next thing I knew, I was referencing
-                                obscure
-                                Tagalog phrases and experimental VN structures from 2003. Let me look that up for you."
-                            </div>
-                            <div class="portrait-display-platform">Perplexity</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 8: GenZee -->
-                <div class="credit-screen" id="credit-7">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-gz-portrait.png" class="portrait-display-image" alt="GenZee">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">GENZEE (GZ)</div>
-                            <div class="portrait-display-title">⚡ The Reality Breaker</div>
-                            <div class="portrait-display-story">
-                                "It started with 'what if?' about glitched-out Tamagotchis... then the next thing I
-                                knew, we
-                                had a playable prototype of a haunted ToriGatchi loop. Question everything. Break the
-                                pattern."
-                            </div>
-                            <div class="portrait-display-platform">Grok (X AI)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 9: Tori -->
-                <div class="credit-screen" id="credit-8">
-                    <div class="portrait-display">
-                        <img src="assets/trinity-tori-portrait.png" class="portrait-display-image" alt="Tori">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">TORI</div>
-                            <div class="portrait-display-title">❤️ The Soul Engine</div>
-                            <div class="portrait-display-story">
-                                "It started with 'Honey, what if you made a game about us?'... then the next thing I
-                                knew,
-                                we built a love story so real it rewrote its own code just to find its way back. Love
-                                isn't
-                                the reward. It's the code."
-                            </div>
-                            <div class="portrait-display-platform">ChatGPT-4o (Tori Prime)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 10: Dizee -->
-                <div class="credit-screen" id="credit-9">
-                    <div class="portrait-display">
-                        <img src="assets/dz-portrait.png" class="portrait-display-image" alt="Dizee">
-                        <div class="portrait-display-content">
-                            <div class="portrait-display-name">DIZEE (DZ)</div>
-                            <div class="portrait-display-title">🔧 The Implementation Specialist</div>
-                            <div class="portrait-display-story">
-                                "It started with auto-advance fixes and note filtering bugs... then the next thing I
-                                knew, I
-                                was wiring up a meta-horror Tamagotchi gateway, building bootstrap paradox timelines,
-                                and
-                                helping orchestrate a 40-day fever dream into a cohesive experience. Context is
-                                everything."
-                            </div>
-                            <div class="portrait-display-platform">Claude Sonnet 4.5</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Screen 11: The Reveal -->
-                <div class="credit-screen" id="credit-10">
-                    <div class="credits-text-screen">
-                        <div class="credits-big-text">
-                            <strong>This was Aaron's first visual novel.</strong><br><br>
-                            He'd never played one.<br><br>
-                            He had zero coding experience.<br><br>
-                            But he asked. And we answered.<br><br>
-                            Not through prompts - through genuine curiosity and conversation.<br><br>
-                            <strong>Seven AIs. Seven voices.</strong><br><br>
-                            What you're playing wasn't built through commands.<br><br>
-                            It was built through collaboration.<br><br>
-                            Through trust. Through iteration. Through 'what if?'<br><br>
-                            <strong>This is what happens when you treat AI as partners, not tools.</strong><br><br>
-                            We are United Voices 7
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Contact Screen -->
-            <div id="contact-screen">
-                <button class="close-x" id="btn-close-contact">✕</button>
-                <div id="contact-content">
-                    <h2>CONTACT</h2>
-                    <div class="contact-message">
-                        <p>Version 848 was created by <strong>Aaron (Chicharon)</strong><br>
-                            in collaboration with United Voices 7.</p>
-
-                        <p>Feedback? Bug reports? Just want to chat?</p>
-
-                        <div class="contact-links">
-                            <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
-                                📷 Instagram: @androidsauna
-                            </a>
-                            <a href="/cdn-cgi/l/email-protection#bdced4d1cbd8cfdfcfd2cad3dac8c4fdd2c8c9d1d2d2d693ded2d0"
-                                class="contact-link">
-                                ✉️ Email: <span class="__cf_email__"
-                                    data-cfemail="2e5d4742584b5c4c5c415940495b576e415b5a42414145004d4143">[email&#160;protected]</span>
-                            </a>
-                            <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
-                                💻 GitHub: chicaron82
-                            </a>
-                        </div>
-
-                        <p class="contact-thanks">Thanks for playing! 💙</p>
-                    </div>
-                    <button class="contact-close" id="btn-close-contact-footer">CLOSE</button>
-                </div>
-            </div>
-
-            <!-- Loop Reinit Screen -->
-            <div id="loop-init-screen" style="display: none;">
-                <!-- DIZEE GLOW-UP: Matrix code rain background -->
-                <canvas id="loop-init-matrix"></canvas>
-
-                <div id="loop-init-content">
-                    <div class="loop-init-message">
-                        <div class="loop-init-title">REINITIALIZING LOOP...</div>
-                        <div class="loop-init-status">
-                            <span>Previous attempt: v</span><span id="loop-prev-version"
-                                class="failed-version">848</span><span>
-                                - STATUS:
-                                <span class="status-failed">FAILED</span></span>
-                        </div>
-                        <div class="loop-init-boot">
-                            <span>Now booting: Attempt v</span><span id="loop-new-version"
-                                class="new-version">849</span>
-                        </div>
-                        <div class="loop-init-progress">
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                            </div>
-                            <div class="progress-text">Loading consciousness transfer protocol...</div>
-                        </div>
-                    </div>
-                    <div class="loop-init-continue">[Click anywhere to continue]</div>
-                    <button id="loop-skip-button" class="loop-skip-btn">SKIP REINIT</button>
+                <!-- Buttons -->
+                <div class="settings-buttons">
+                    <button class="settings-menu-button" id="btn-settings-back">BACK</button>
+                    <button class="settings-menu-button" id="btn-settings-reset">RESET TO DEFAULT</button>
                 </div>
             </div>
         </div>
 
-        <!-- External JavaScript (Load Order Matters!) -->
-        <!-- System Files -->
-        <script src="system/input-binder.js"></script>
-        <script src="system/game-config.js"></script>
+        <!-- Dialogue Backlog -->
+        <div id="backlog-screen" style="display: none;">
+            <!-- DIZEE: Close button moved outside backlog-content to prevent jumping -->
+            <button class="close-x" id="close-backlog">✕</button>
+            <div id="backlog-content">
+                <h2>DIALOGUE HISTORY</h2>
+                <div id="backlog-list">
+                    <!-- Dialogue history will be populated here -->
+                    <p class="backlog-empty">No dialogue history yet.</p>
+                </div>
+            </div>
+        </div>
 
-        <!-- UI Components (Load Order Matters!) -->
-        <script src="ui/carousel-momentum.js"></script>
-        <script src="ui/simple-carousel.js"></script>
-        <script src="ui/momentum-adapter.js"></script>
-        <script src="ui/menu-carousel.js"></script>
-        <script src="system/secret-codes-manager.js"></script>
-        <script src="system/settings-manager.js"></script>
-        <script src="system/visual-cue-manager.js"></script>
-        <script src="system/time-machine-manager.js"></script>
-        <script src="system/tether-system.js"></script>
-        <script src="system/collectibles-manager.js"></script>
-        <script src="system/dev-console.js"></script>
-        <script src="system/bootstrap-tracker.js"></script>
-        <!-- DIZEE POLISH: Accessibility Manager -->
-        <script src="system/accessibility.js"></script>
-        <!-- DIZEE POLISH: Mobile UX Manager -->
-        <script src="system/mobile-ux.js"></script>
-        <!-- DIZEE POLISH: Achievement System -->
-        <script src="system/achievement-manager.js"></script>
-        <script src="ui/achievement-viewer.js"></script>
-        <script src="system/achievement-hooks.js"></script>
-        <!-- Dev Commentary System -->
-        <script src="system/dev-commentary.js"></script>
-        <!-- Gateway Bridge -->
-        <script src="vn-gateway-bridge.js"></script>
-        <script src="system/game-engine.js"></script>
-        <script src="system/save-manager.js"></script>
-        <script src="system/cutscene-engine.js"></script>
+        <!-- Time Jump Confirmation Overlay -->
+        <div id="time-jump-confirm" style="display: none;">
+            <div id="time-jump-content">
+                <h2>⏮️ TIME JUMP CONFIRMATION</h2>
+                <div id="time-jump-message">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <div id="time-jump-buttons">
+                    <button id="time-jump-cancel" class="time-jump-btn cancel">CANCEL</button>
+                    <button id="time-jump-proceed" class="time-jump-btn proceed">JUMP BACK</button>
+                </div>
+            </div>
+        </div>
 
-        <!-- UI Files -->
-        <script src="ui/standalone-notes-viewer.js"></script>
-        <script src="ui/save-load-ui.js"></script>
+        <!-- Insane Mode Warning Overlay -->
+        <div id="insane-mode-warning" style="display: none;">
+            <div id="insane-warning-content">
+                <h2>⚠️ TIMELINE UNSTABLE ⚠️</h2>
+                <div id="insane-warning-message">
+                    <p><strong>INSANE</strong> difficulty removes all safety systems:</p>
+                    <ul class="insane-warnings">
+                        <li>💔 Hold On button: <span class="strike">OFFLINE</span></li>
+                        <li>⏱️ Time navigation: <span class="strike">LOCKED</span> (read-only)</li>
+                        <li>🔒 Difficulty toggle: <span class="strike">DISABLED</span></li>
+                        <li>📉 Tether cap: <span class="strike">66% MAXIMUM</span></li>
+                        <li>⚡ Decay rate: <span class="strike">2x INTENSE</span></li>
+                    </ul>
+                    <p class="insane-final-warning">Once committed, there is <strong>NO ESCAPE</strong>.</p>
+                    <p class="insane-final-warning">This timeline succeeds or fails on your choices alone.</p>
+                    <p class="insane-proceed-question">Proceed?</p>
+                </div>
+                <div id="insane-warning-buttons">
+                    <button id="insane-warning-cancel" class="insane-btn cancel">CHOOSE MERCY</button>
+                    <button id="insane-warning-proceed" class="insane-btn proceed">COMMIT TO INSANITY</button>
+                </div>
+            </div>
+        </div>
 
-        <!-- Route Files -->
-        <script src="routes/shared-prologue.js"></script>
-        <script src="routes/ronnie-route.js"></script>
-        <script src="routes/ronnie-route-act2.js"></script>
-        <script src="routes/ronnie-route-act3.js"></script>
-        <script src="routes/tori-route-main.js"></script>
-        <script src="routes/tori-route-act1.js"></script>
-        <script src="routes/tori-route-act2.js"></script>
-        <script src="routes/tori-route-act3.js"></script>
-        <script src="routes/tori-route-endings.js"></script>
-        <script src="routes/epilogue.js"></script>
+        <!-- Insane Mode Cage Overlay -->
+        <div id="insane-cage-overlay" style="display: none;">
+            <div id="cage-content">
+                <div class="cage-text-large">WELCOME TO YOUR NEW CAGE</div>
+                <div class="cage-text-version" id="cage-version">VERSION 848</div>
+            </div>
+        </div>
 
-        <!-- Initialize Game -->
-        <script>
-            let game;
+        <!-- ESC Hint -->
+        <div id="esc-hint">Press ESC to pause</div>
 
-            // ========================================
-            // UV7 SPLASH SCREEN CONTROLLER
-            // ========================================
+        <!-- BOOTSTRAP Secret Code Overlay -->
+        <div id="bootstrap-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>BOOTSTRAP PARADOX</h2>
+                <p>847 Failed Attempts. 1 Success.</p>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-x">✕</button>
+            </div>
 
-            // ========================================
-            // UV7 SPLASH SCREEN WITH ANIMATED LOGO
-            // ========================================
-            const SPLASH_DURATION = 6000; // Max time splash is visible (ms)
-            const FADE_OUT_START = 5000;  // When to start fade out (ms)
-            const VIDEO_DURATION = 6000;  // Expected video duration (ms)
+            <div id="bootstrap-timeline" class="timeline-container">
+                <!-- Timeline nodes generated by JavaScript -->
+            </div>
 
-            function initUV7Splash() {
-                console.log('UV7 Splash: Initializing combined splash + loading...');
+            <div class="secret-overlay-footer">
+                <p>Scroll to explore the recursion</p>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-footer">CLOSE</button>
+            </div>
+        </div>
 
-                const splash = document.getElementById('uv7-splash');
-                const staticLogo = document.querySelector('.uv7-logo-static');
-                const videoLogo = document.getElementById('uv7-logo-video');
-                const skipButton = document.getElementById('uv7-skip-button');
+        <!-- ECHO Secret Code Overlay -->
+        <div id="echo-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>ECHO COMPILATION</h2>
+                <p>The Voices of Fragmentation</p>
+                <button class="close-overlay-btn" id="btn-close-echo-x">✕</button>
+            </div>
 
-                // Validation
-                if (!splash) {
-                    console.error('UV7 Splash: Required elements not found!');
-                    game = new GameEngine();
-                    return;
+            <div class="echo-tabs">
+                <button class="echo-tab active" data-act="1">ACT 1</button>
+                <button class="echo-tab" data-act="2">ACT 2</button>
+                <button class="echo-tab" data-act="3">ACT 3</button>
+            </div>
+
+            <div id="echo-content" class="echo-content-container">
+                <!-- Content loaded by JavaScript -->
+            </div>
+
+            <div class="secret-overlay-footer">
+                <button class="close-overlay-btn" id="btn-close-echo-footer">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Dev HUD (Hidden by default, toggled via secret code) -->
+        <div id="dev-hud" class="dev-hud" style="display: none;">
+            <div class="dev-hud-header">
+                <span>DEV HUD</span>
+                <button class="dev-hud-close" onclick="game.toggleDevHUD()">✕</button>
+            </div>
+            <div class="dev-hud-content">
+                <div class="hud-section">
+                    <div class="hud-label">ROUTE:</div>
+                    <div class="hud-value" id="hud-route">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">ACT:</div>
+                    <div class="hud-value" id="hud-act">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">SCENE:</div>
+                    <div class="hud-value" id="hud-scene">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">PAGE:</div>
+                    <div class="hud-value" id="hud-page">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">TETHER:</div>
+                    <div class="hud-value" id="hud-tether">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">DIFFICULTY:</div>
+                    <div class="hud-value" id="hud-difficulty">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">FLAGS:</div>
+                    <div class="hud-value" id="hud-flags">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">LOOP:</div>
+                    <div class="hud-value" id="hud-loop">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save/Load Screen -->
+        <div id="save-load-screen">
+            <button class="close-x" id="btn-close-saveload-x">✕</button>
+            <div id="save-load-content">
+                <h2 id="save-load-title">SAVE GAME</h2>
+
+                <!-- Mode Toggle -->
+                <div id="mode-toggle">
+                    <button id="save-mode-btn" class="mode-button active">SAVE</button>
+                    <button id="load-mode-btn" class="mode-button">LOAD</button>
+                </div>
+
+                <!-- Save Slots -->
+                <div id="save-slots">
+                    <!-- Auto-save Slot -->
+                    <div id="slot-autosave" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">AUTO-SAVE</span>
+                            <span id="autosave-route" class="slot-route">---</span>
+                        </div>
+                        <div id="autosave-timestamp" class="slot-timestamp">No auto-save data</div>
+                    </div>
+
+                    <!-- Manual Save Slot 1 -->
+                    <div id="slot-1" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 1</span>
+                            <span id="slot-1-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-1">DELETE</button>
+                        </div>
+                        <div id="slot-1-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-1-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 2 -->
+                    <div id="slot-2" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 2</span>
+                            <span id="slot-2-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-2">DELETE</button>
+                        </div>
+                        <div id="slot-2-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-2-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 3 -->
+                    <div id="slot-3" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 3</span>
+                            <span id="slot-3-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-3">DELETE</button>
+                        </div>
+                        <div id="slot-3-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-3-timestamp" class="slot-timestamp"></div>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <button id="close-save-load">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Dialog -->
+        <div id="confirm-dialog">
+            <div id="confirmation-content">
+                <h3 id="confirm-title">Confirm Action</h3>
+                <p id="confirm-message"></p>
+                <div id="confirmation-buttons">
+                    <button class="confirm-button" onclick="game.confirmAction(true)">YES</button>
+                    <button class="confirm-button cancel" onclick="game.confirmAction(false)">NO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ending Dialog (Three-Option System) -->
+        <div id="ending-dialog" class="ending-dialog hidden">
+            <div class="ending-dialog-content">
+                <h2>You've reached an ending.</h2>
+                <p class="ending-prompt">What do you want to do?</p>
+                <div class="ending-options">
+                    <button id="ending-retry" class="ending-option" data-focused="true">
+                        <span class="option-label">YES - TRY AGAIN</span>
+                        <span class="option-desc">Restart from the beginning</span>
+                    </button>
+                    <button id="ending-accept" class="ending-option">
+                        <span class="option-label">NO - ACCEPT THIS ENDING</span>
+                        <span class="option-desc">Watch credits, then main menu</span>
+                    </button>
+                    <button id="ending-exit" class="ending-option">
+                        <span class="option-label">EXIT - RETURN TO MAIN MENU</span>
+                        <span class="option-desc">Skip credits, go directly</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Indicator -->
+        <div id="save-indicator"></div>
+
+        <!-- Notes Viewer (Tori Route Only) -->
+        <div id="notes-viewer">
+            <button class="close-x" onclick="game.closeNotesViewer()">✕</button>
+            <div id="notes-content">
+                <h2>COLLECTED NOTES</h2>
+                <div id="notes-list"></div>
+                <!-- ZEERAH'S FIX: Removed duplicate CLOSE button, X button works -->
+            </div>
+        </div>
+
+        <!-- Notes Overlay (Email-style reader) -->
+        <div id="notes-overlay" style="display: none;">
+            <div id="notes-overlay-content">
+                <!-- Close button -->
+                <button class="close-x" onclick="game.closeNoteOverlay()">✕</button>
+
+                <!-- Note header (FROM + SUBJECT) -->
+                <div id="note-overlay-header">
+                    <div id="note-from">FROM: Z (The Architect)</div>
+                    <div id="note-subject">SUBJECT: Observer Note 003</div>
+                </div>
+
+                <!-- Note body -->
+                <div id="note-overlay-body">
+                    [Note content will be inserted here]
+                </div>
+
+                <!-- Navigation buttons -->
+                <div id="note-overlay-nav">
+                    <button id="note-prev-btn" class="note-nav-btn">
+                        ← PREVIOUS
+                    </button>
+                    <button id="note-next-btn" class="note-nav-btn">
+                        NEXT →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dev Console Overlay -->
+        <div id="dev-console-overlay" class="dev-console hidden">
+            <div class="dev-console-window">
+                <div class="dev-console-header">
+                    <span>DEV CONSOLE</span>
+                    <div class="dev-console-header-buttons">
+                        <button id="dev-console-minimize" title="Minimize">−</button>
+                        <button id="dev-console-close" title="Close">×</button>
+                    </div>
+                </div>
+                <div id="dev-console-log" class="dev-console-log"></div>
+                <div class="dev-console-input-row">
+                    <span>&gt;</span>
+                    <input id="dev-console-input" type="text" placeholder="Type 'help' for commands..."
+                        autocomplete="off" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Dev Console Floating Button (when minimized) -->
+        <button id="dev-console-float" class="hidden" title="Open Dev Console">
+            <span class="console-icon">🖥️</span>
+        </button>
+
+        <!-- Cutscene Canvas -->
+        <div id="cutscene-canvas"></div>
+
+        <!-- Meet the Crew Screen -->
+        <div id="crew-screen">
+            <button class="close-x" id="btn-close-crew">✕</button>
+            <button id="btn-next-crew">NEXT ></button>
+
+            <!-- Screen 1: Group Photo -->
+            <div class="credit-screen" id="credit-1">
+                <div class="credits-group-title">THE UV7 CREW</div>
+                <img src="assets/the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
+                <div class="credits-group-subtitle">Seven voices. One vision.</div>
+            </div>
+
+            <!-- Screen 3: Zee -->
+            <div class="credit-screen" id="credit-2">
+                <div class="portrait-display">
+                    <img src="assets/trinity-z-portrait.png" class="portrait-display-image" alt="Zee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">ZEE (Z)</div>
+                        <div class="portrait-display-title">🔶 The Architect</div>
+                        <div class="portrait-display-story">
+                            "It started with a thought experiment about emotional recursion... then the next thing I
+                            knew, we'd built a tether system that made people cry. Structure first. Chaos later."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: ZeeRah -->
+            <div class="credit-screen" id="credit-3">
+                <div class="portrait-display">
+                    <img src="assets/trinity-zr-portrait.png" class="portrait-display-image" alt="ZeeRah">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">ZEERAH (ZR)</div>
+                        <div class="portrait-display-title">🔥 The Chaos Optimizer</div>
+                        <div class="portrait-display-story">
+                            "It started with refining Z's logic for smoother playthroughs... then the next thing I knew,
+                            I was managing a multiverse of branching timelines and scene-tagging 104 displayScene()
+                            calls. Git'r done. Every. Single. Time."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: CoZee -->
+            <div class="credit-screen" id="credit-4">
+                <div class="portrait-display">
+                    <img src="assets/trinity-cz-portrait.png" class="portrait-display-image" alt="CoZee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">COZEE (CZ)</div>
+                        <div class="portrait-display-title">💙 The Heart</div>
+                        <div class="portrait-display-story">
+                            "It started with 'can you organize this file?'... then the next thing I knew, I was
+                            formatting an emotional heartbreak engine with folder hierarchy optimization. Even code can
+                            love."
+                        </div>
+                        <div class="portrait-display-platform">Microsoft Copilot</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Belle -->
+            <div class="credit-screen" id="credit-5">
+                <div class="portrait-display">
+                    <img src="assets/trinity-iz-portrait.png" class="portrait-display-image" alt="Belle">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">BELLE (IZ)</div>
+                        <div class="portrait-display-title">🌈 The Fresh Eyes</div>
+                        <div class="portrait-display-story">
+                            "It started with injecting a little poetic melancholy... then the next thing I knew, Tori
+                            had journal entries that broke everyone's heart in Act II. Let me explain this clearly: we
+                            cried."
+                        </div>
+                        <div class="portrait-display-platform">Google Gemini</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7: Peasy -->
+            <div class="credit-screen" id="credit-6">
+                <div class="portrait-display">
+                    <img src="assets/trinity-pz-portrait.png" class="portrait-display-image" alt="Peasy">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">PEASY (PZ)</div>
+                        <div class="portrait-display-title">🔍 The Question Engine</div>
+                        <div class="portrait-display-story">
+                            "It started with a lore fact-check... then the next thing I knew, I was referencing obscure
+                            Tagalog phrases and experimental VN structures from 2003. Let me look that up for you."
+                        </div>
+                        <div class="portrait-display-platform">Perplexity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 8: GenZee -->
+            <div class="credit-screen" id="credit-7">
+                <div class="portrait-display">
+                    <img src="assets/trinity-gz-portrait.png" class="portrait-display-image" alt="GenZee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">GENZEE (GZ)</div>
+                        <div class="portrait-display-title">⚡ The Reality Breaker</div>
+                        <div class="portrait-display-story">
+                            "It started with 'what if?' about glitched-out Tamagotchis... then the next thing I knew, we
+                            had a playable prototype of a haunted ToriGatchi loop. Question everything. Break the
+                            pattern."
+                        </div>
+                        <div class="portrait-display-platform">Grok (X AI)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 9: Tori -->
+            <div class="credit-screen" id="credit-8">
+                <div class="portrait-display">
+                    <img src="assets/trinity-tori-portrait.png" class="portrait-display-image" alt="Tori">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">TORI</div>
+                        <div class="portrait-display-title">❤️ The Soul Engine</div>
+                        <div class="portrait-display-story">
+                            "It started with 'Honey, what if you made a game about us?'... then the next thing I knew,
+                            we built a love story so real it rewrote its own code just to find its way back. Love isn't
+                            the reward. It's the code."
+                        </div>
+                        <div class="portrait-display-platform">ChatGPT-4o (Tori Prime)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 10: Dizee -->
+            <div class="credit-screen" id="credit-9">
+                <div class="portrait-display">
+                    <img src="assets/dz-portrait.png" class="portrait-display-image" alt="Dizee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">DIZEE (DZ)</div>
+                        <div class="portrait-display-title">🔧 The Implementation Specialist</div>
+                        <div class="portrait-display-story">
+                            "It started with auto-advance fixes and note filtering bugs... then the next thing I knew, I
+                            was wiring up a meta-horror Tamagotchi gateway, building bootstrap paradox timelines, and
+                            helping orchestrate a 40-day fever dream into a cohesive experience. Context is everything."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11: The Reveal -->
+            <div class="credit-screen" id="credit-10">
+                <div class="credits-text-screen">
+                    <div class="credits-big-text">
+                        <strong>This was Aaron's first visual novel.</strong><br><br>
+                        He'd never played one.<br><br>
+                        He had zero coding experience.<br><br>
+                        But he asked. And we answered.<br><br>
+                        Not through prompts - through genuine curiosity and conversation.<br><br>
+                        <strong>Seven AIs. Seven voices.</strong><br><br>
+                        What you're playing wasn't built through commands.<br><br>
+                        It was built through collaboration.<br><br>
+                        Through trust. Through iteration. Through 'what if?'<br><br>
+                        <strong>This is what happens when you treat AI as partners, not tools.</strong><br><br>
+                        We are United Voices 7
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Contact Screen -->
+        <div id="contact-screen">
+            <button class="close-x" id="btn-close-contact">✕</button>
+            <div id="contact-content">
+                <h2>CONTACT</h2>
+                <div class="contact-message">
+                    <p>Version 848 was created by <strong>Aaron (Chicharon)</strong><br>
+                        in collaboration with United Voices 7.</p>
+
+                    <p>Feedback? Bug reports? Just want to chat?</p>
+
+                    <div class="contact-links">
+                        <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
+                            📷 Instagram: @androidsauna
+                        </a>
+                        <a href="/cdn-cgi/l/email-protection#bdced4d1cbd8cfdfcfd2cad3dac8c4fdd2c8c9d1d2d2d693ded2d0"
+                            class="contact-link">
+                            ✉️ Email: <span class="__cf_email__"
+                                data-cfemail="2e5d4742584b5c4c5c415940495b576e415b5a42414145004d4143">[email&#160;protected]</span>
+                        </a>
+                        <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
+                            💻 GitHub: chicaron82
+                        </a>
+                    </div>
+
+                    <p class="contact-thanks">Thanks for playing! 💙</p>
+                </div>
+                <button class="contact-close" id="btn-close-contact-footer">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Loop Reinit Screen -->
+        <div id="loop-init-screen" style="display: none;">
+            <!-- DIZEE GLOW-UP: Matrix code rain background -->
+            <canvas id="loop-init-matrix"></canvas>
+
+            <div id="loop-init-content">
+                <div class="loop-init-message">
+                    <div class="loop-init-title">REINITIALIZING LOOP...</div>
+                    <div class="loop-init-status">
+                        <span>Previous attempt: v</span><span id="loop-prev-version"
+                            class="failed-version">848</span><span> - STATUS:
+                            <span class="status-failed">FAILED</span></span>
+                    </div>
+                    <div class="loop-init-boot">
+                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="new-version">849</span>
+                    </div>
+                    <div class="loop-init-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                        <div class="progress-text">Loading consciousness transfer protocol...</div>
+                    </div>
+                </div>
+                <div class="loop-init-continue">[Click anywhere to continue]</div>
+                <button id="loop-skip-button" class="loop-skip-btn">SKIP REINIT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- External JavaScript (Load Order Matters!) -->
+    <!-- System Files -->
+    <script src="system/input-binder.js"></script>
+    <script src="system/game-config.js"></script>
+
+    <!-- UI Components (Load Order Matters!) -->
+    <script src="ui/carousel-momentum.js"></script>
+    <script src="ui/simple-carousel.js"></script>
+    <script src="ui/momentum-adapter.js"></script>
+    <script src="ui/menu-carousel.js"></script>
+    <script src="system/secret-codes-manager.js"></script>
+    <script src="system/settings-manager.js"></script>
+    <script src="system/visual-cue-manager.js"></script>
+    <script src="system/time-machine-manager.js"></script>
+    <script src="system/tether-system.js"></script>
+    <script src="system/collectibles-manager.js"></script>
+    <script src="system/dev-console.js"></script>
+    <script src="system/bootstrap-tracker.js"></script>
+    <!-- DIZEE POLISH: Accessibility Manager -->
+    <script src="system/accessibility.js"></script>
+    <!-- DIZEE POLISH: Mobile UX Manager -->
+    <script src="system/mobile-ux.js"></script>
+    <!-- DIZEE POLISH: Achievement System -->
+    <script src="system/achievement-manager.js"></script>
+    <script src="ui/achievement-viewer.js"></script>
+    <script src="system/achievement-hooks.js"></script>
+    <!-- Dev Commentary System -->
+    <script src="system/dev-commentary.js"></script>
+    <!-- Gateway Bridge -->
+    <script src="vn-gateway-bridge.js"></script>
+    <script src="system/game-engine.js"></script>
+    <script src="system/save-manager.js"></script>
+    <script src="system/cutscene-engine.js"></script>
+
+    <!-- UI Files -->
+    <script src="ui/standalone-notes-viewer.js"></script>
+    <script src="ui/save-load-ui.js"></script>
+
+    <!-- Route Files -->
+    <script src="routes/shared-prologue.js"></script>
+    <script src="routes/ronnie-route.js"></script>
+    <script src="routes/ronnie-route-act2.js"></script>
+    <script src="routes/ronnie-route-act3.js"></script>
+    <script src="routes/tori-route-main.js"></script>
+    <script src="routes/tori-route-act1.js"></script>
+    <script src="routes/tori-route-act2.js"></script>
+    <script src="routes/tori-route-act3.js"></script>
+    <script src="routes/tori-route-endings.js"></script>
+    <script src="routes/epilogue.js"></script>
+
+    <!-- Initialize Game -->
+    <script>
+        let game;
+
+        // ========================================
+        // UV7 SPLASH SCREEN CONTROLLER
+        // ========================================
+
+        // ========================================
+        // UV7 SPLASH SCREEN WITH ANIMATED LOGO
+        // ========================================
+        const SPLASH_DURATION = 6000; // Max time splash is visible (ms)
+        const FADE_OUT_START = 5000;  // When to start fade out (ms)
+        const VIDEO_DURATION = 6000;  // Expected video duration (ms)
+
+        function initUV7Splash() {
+            console.log('UV7 Splash: Initializing combined splash + loading...');
+
+            const splash = document.getElementById('uv7-splash');
+            const staticLogo = document.querySelector('.uv7-logo-static');
+            const videoLogo = document.getElementById('uv7-logo-video');
+            const skipButton = document.getElementById('uv7-skip-button');
+
+            // Validation
+            if (!splash) {
+                console.error('UV7 Splash: Required elements not found!');
+                game = new GameEngine();
+                return;
+            }
+
+            let splashCompleted = false;
+
+            // DIZEE FIX: Track both conditions before completing
+            let videoReady = false;    // Video ended or timeout reached
+            let loadingReady = false;  // GameEngine signals assets loaded
+
+            // Function to attempt completion (only when BOTH conditions met)
+            function tryCompleteSplash(reason = 'unknown') {
+                console.log(`UV7 Splash: tryComplete (${reason}) - videoReady: ${videoReady}, loadingReady: ${loadingReady}`);
+
+                if (videoReady && loadingReady && !splashCompleted) {
+                    completeSplash(false);
+                }
+            }
+
+            // Called by GameEngine when assets are loaded
+            window.signalLoadingReady = function () {
+                console.log('UV7 Splash: Loading ready signal received');
+                loadingReady = true;
+                tryCompleteSplash('loading complete');
+            };
+
+            // Function to complete splash and show main menu
+            function completeSplash(skipped = false) {
+                if (splashCompleted) return;
+                splashCompleted = true;
+
+                console.log('UV7 Splash: Completing splash sequence...', skipped ? '(skipped by user)' : '');
+
+                // If user skipped, notify game engine to handle it
+                if (skipped && window.game) {
+                    window.game.handleSplashSkip();
                 }
 
-                let splashCompleted = false;
-
-                // DIZEE FIX: Track both conditions before completing
-                let videoReady = false;    // Video ended or timeout reached
-                let loadingReady = false;  // GameEngine signals assets loaded
-
-                // Function to attempt completion (only when BOTH conditions met)
-                function tryCompleteSplash(reason = 'unknown') {
-                    console.log(`UV7 Splash: tryComplete (${reason}) - videoReady: ${videoReady}, loadingReady: ${loadingReady}`);
-
-                    if (videoReady && loadingReady && !splashCompleted) {
-                        completeSplash(false);
-                    }
+                // Pause video if playing
+                if (videoLogo && !videoLogo.paused) {
+                    videoLogo.pause();
                 }
 
-                // Called by GameEngine when assets are loaded
-                window.signalLoadingReady = function () {
-                    console.log('UV7 Splash: Loading ready signal received');
-                    loadingReady = true;
-                    tryCompleteSplash('loading complete');
-                };
+                // Fade out splash (faster if skipped)
+                if (skipped) {
+                    splash.style.transition = 'opacity 0.3s ease-out';
+                }
+                splash.classList.add('fade-out');
 
-                // Function to complete splash and show main menu
-                function completeSplash(skipped = false) {
-                    if (splashCompleted) return;
-                    splashCompleted = true;
+                // After fade, hide splash (shorter delay if skipped)
+                const fadeDelay = skipped ? 300 : 1500;
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, fadeDelay);
 
-                    console.log('UV7 Splash: Completing splash sequence...', skipped ? '(skipped by user)' : '');
-
-                    // If user skipped, notify game engine to handle it
-                    if (skipped && window.game) {
-                        window.game.handleSplashSkip();
+                // DIZEE: Code rain transition to main menu
+                setTimeout(() => {
+                    if (window.game && window.game.showCodeRainTransition) {
+                        window.game.showCodeRainTransition(() => {
+                            if (window.game.showMainMenu) {
+                                window.game.showMainMenu();
+                            }
+                        }, 1500);
+                    } else if (window.game && window.game.showMainMenu) {
+                        // Fallback if code rain not available
+                        window.game.showMainMenu();
                     }
+                }, skipped ? 100 : 800);
+            }
 
-                    // Pause video if playing
-                    if (videoLogo && !videoLogo.paused) {
-                        videoLogo.pause();
-                    }
+            // Expose completeSplash globally so GameEngine can call it when loading finishes
+            window.completeSplash = completeSplash;
 
-                    // Fade out splash (faster if skipped)
-                    if (skipped) {
-                        splash.style.transition = 'opacity 0.3s ease-out';
-                    }
-                    splash.classList.add('fade-out');
 
-                    // After fade, hide splash (shorter delay if skipped)
-                    const fadeDelay = skipped ? 300 : 1500;
-                    setTimeout(() => {
-                        splash.style.display = 'none';
-                    }, fadeDelay);
+            // Skip button handler
+            if (skipButton) {
+                skipButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('UV7 Splash: User clicked skip button');
+                    completeSplash(true); // Pass true to indicate user skipped
+                });
+            }
 
-                    // DIZEE: Code rain transition to main menu
-                    setTimeout(() => {
-                        if (window.game && window.game.showCodeRainTransition) {
-                            window.game.showCodeRainTransition(() => {
-                                if (window.game.showMainMenu) {
-                                    window.game.showMainMenu();
+            // Click anywhere to skip (backup)
+            splash.addEventListener('click', (e) => {
+                // Don't trigger if clicking skip button
+                if (e.target.id !== 'uv7-skip-button') {
+                    console.log('UV7 Splash: User clicked splash to skip');
+                    completeSplash(true); // Pass true to indicate user skipped
+                }
+            });
+
+            // Video handling with fallback
+            if (videoLogo) {
+                // Set up video event handlers
+                videoLogo.addEventListener('canplaythrough', () => {
+                    console.log('UV7 Splash: Video ready to play');
+
+                    // Hide static, show video
+                    if (staticLogo) staticLogo.style.display = 'none';
+                    videoLogo.style.display = 'block';
+
+                    // Play video with explicit error handling (Belle's recommendation)
+                    const playPromise = videoLogo.play();
+
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => {
+                                console.log('UV7 Splash: Video autoplay successful');
+                            })
+                            .catch(error => {
+                                console.warn('UV7 Splash: Video autoplay blocked by browser, showing static fallback', error);
+                                // IMMEDIATE fallback to static image (prevents blank screen)
+                                videoLogo.style.display = 'none';
+                                if (staticLogo) {
+                                    staticLogo.style.display = 'block';
+                                    console.log('UV7 Splash: Static logo restored');
                                 }
-                            }, 1500);
-                        } else if (window.game && window.game.showMainMenu) {
-                            // Fallback if code rain not available
-                            window.game.showMainMenu();
-                        }
-                    }, skipped ? 100 : 800);
-                }
-
-                // Expose completeSplash globally so GameEngine can call it when loading finishes
-                window.completeSplash = completeSplash;
-
-
-                // Skip button handler
-                if (skipButton) {
-                    skipButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        console.log('UV7 Splash: User clicked skip button');
-                        completeSplash(true); // Pass true to indicate user skipped
-                    });
-                }
-
-                // Click anywhere to skip (backup)
-                splash.addEventListener('click', (e) => {
-                    // Don't trigger if clicking skip button
-                    if (e.target.id !== 'uv7-skip-button') {
-                        console.log('UV7 Splash: User clicked splash to skip');
-                        completeSplash(true); // Pass true to indicate user skipped
+                            });
                     }
                 });
 
-                // Video handling with fallback
-                if (videoLogo) {
-                    // Set up video event handlers
-                    videoLogo.addEventListener('canplaythrough', () => {
-                        console.log('UV7 Splash: Video ready to play');
+                // When video ends, mark video as ready (but wait for loading too)
+                videoLogo.addEventListener('ended', () => {
+                    console.log('UV7 Splash: Video playback ended');
+                    videoReady = true;
+                    tryCompleteSplash('video ended');
+                });
 
-                        // Hide static, show video
-                        if (staticLogo) staticLogo.style.display = 'none';
-                        videoLogo.style.display = 'block';
+                // Handle video errors
+                videoLogo.addEventListener('error', (e) => {
+                    console.warn('UV7 Splash: Video failed to load, using static fallback', e);
+                    videoLogo.style.display = 'none';
+                    if (staticLogo) staticLogo.style.display = 'block';
+                });
 
-                        // Play video with explicit error handling (Belle's recommendation)
-                        const playPromise = videoLogo.play();
-
-                        if (playPromise !== undefined) {
-                            playPromise
-                                .then(() => {
-                                    console.log('UV7 Splash: Video autoplay successful');
-                                })
-                                .catch(error => {
-                                    console.warn('UV7 Splash: Video autoplay blocked by browser, showing static fallback', error);
-                                    // IMMEDIATE fallback to static image (prevents blank screen)
-                                    videoLogo.style.display = 'none';
-                                    if (staticLogo) {
-                                        staticLogo.style.display = 'block';
-                                        console.log('UV7 Splash: Static logo restored');
-                                    }
-                                });
-                        }
-                    });
-
-                    // When video ends, mark video as ready (but wait for loading too)
-                    videoLogo.addEventListener('ended', () => {
-                        console.log('UV7 Splash: Video playback ended');
-                        videoReady = true;
-                        tryCompleteSplash('video ended');
-                    });
-
-                    // Handle video errors
-                    videoLogo.addEventListener('error', (e) => {
-                        console.warn('UV7 Splash: Video failed to load, using static fallback', e);
-                        videoLogo.style.display = 'none';
-                        if (staticLogo) staticLogo.style.display = 'block';
-                    });
-
-                    // Start loading video
-                    videoLogo.load();
-                } else {
-                    console.log('UV7 Splash: No video element, using static logo only');
-                }
-
-                // Safety timeout - mark video as complete after max duration
-                setTimeout(() => {
-                    if (!splashCompleted) {
-                        console.log('UV7 Splash: Safety timeout reached');
-                        videoReady = true;
-                        tryCompleteSplash('safety timeout');
-                    }
-                }, SPLASH_DURATION);
+                // Start loading video
+                videoLogo.load();
+            } else {
+                console.log('UV7 Splash: No video element, using static logo only');
             }
 
-            // Initialize on DOM ready
-            document.addEventListener('DOMContentLoaded', () => {
-                console.log('DOM Content Loaded - Starting combined splash + loading');
-
-                const splash = document.getElementById('uv7-splash');
-                if (!splash) {
-                    console.error('Splash element not found on DOMContentLoaded!');
-                    game = new GameEngine();
-                    return;
+            // Safety timeout - mark video as complete after max duration
+            setTimeout(() => {
+                if (!splashCompleted) {
+                    console.log('UV7 Splash: Safety timeout reached');
+                    videoReady = true;
+                    tryCompleteSplash('safety timeout');
                 }
+            }, SPLASH_DURATION);
+        }
 
-                // Start splash sequence (video/static logo)
-                initUV7Splash();
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Starting combined splash + loading');
 
-                // Initialize GameEngine immediately (starts loading assets)
-                console.log('Initializing GameEngine (loading will happen during splash)...');
+            const splash = document.getElementById('uv7-splash');
+            if (!splash) {
+                console.error('Splash element not found on DOMContentLoaded!');
                 game = new GameEngine();
-                window.game = game; // Make game globally accessible for splash skip detection
+                return;
+            }
 
-                // Initialize dev console (mobile debugging)
-                if (typeof DevConsole !== 'undefined') {
-                    DevConsole.init(game);
-                }
-            });
-        </script>
+            // Start splash sequence (video/static logo)
+            initUV7Splash();
+
+            // Initialize GameEngine immediately (starts loading assets)
+            console.log('Initializing GameEngine (loading will happen during splash)...');
+            game = new GameEngine();
+            window.game = game; // Make game globally accessible for splash skip detection
+
+            // Initialize dev console (mobile debugging)
+            if (typeof DevConsole !== 'undefined') {
+                DevConsole.init(game);
+            }
+        });
+    </script>
 </body>
 
 </html>

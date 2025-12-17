@@ -1952,29 +1952,23 @@ class GameEngine {
         };
     }
 
-    scaleHapticPattern(pattern, hapticLevel) {
-        // DIZEE: Updated for new haptic intensity range
-        // 0=Off (shouldn't reach here), 1=Gentle (60%), 2=Normal (100%), 3=Amped (130%), 4=INSANE (200%)
-
-        // Off - shouldn't trigger haptics at all
-        if (hapticLevel === 0) return null;
-
-        // Normal - baseline, no scaling
-        if (hapticLevel === 2) return pattern;
+    scaleHapticPattern(pattern, comfortLevel) {
+        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
+        if (comfortLevel === 1) return pattern;
 
         // Normalize to array
         const arr = Array.isArray(pattern) ? pattern.slice() : [pattern];
 
-        if (hapticLevel === 1) {
+        if (comfortLevel === 0) {
             // Gentle: softer, shorter
             return arr.map(ms => Math.max(5, Math.round(ms * 0.6)));
         }
-        if (hapticLevel === 3) {
+        if (comfortLevel === 2) {
             // Amped: stronger, longer
             return arr.map(ms => Math.round(ms * 1.3));
         }
-        if (hapticLevel === 4) {
-            // INSANE: MUCH stronger, MUCH longer (only via Insane Mode difficulty)
+        if (comfortLevel === 3) {
+            // INSANE: MUCH stronger, MUCH longer (beyond Amped)
             return arr.map(ms => Math.round(ms * 2.0));
         }
 
@@ -1999,26 +1993,20 @@ class GameEngine {
         }
         this.lastHapticTime = now;
 
-        // Get haptic intensity level and insane mode status
-        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 2;
+        // Get comfort level and insane mode status
+        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 1;
         const insane = this.isInsaneModeActive?.() ?? false;
-
-        // DIZEE: If haptic intensity is Off (0), don't trigger haptics (unless in Insane Mode)
-        if (!insane && comfort === 0) {
-            return; // User set haptic intensity to Off
-        }
-
         const patterns = this.getHapticPatterns();
 
         // Get base pattern
         let pattern = patterns[patternName] || patternName;
 
-        // INSANE MODE: Apply 2.0x intensity (level 4)
-        // This ensures INSANE feels different even for players who use Amped (level 3) normally
+        // INSANE MODE: Apply 2.0x intensity (beyond Amped's 1.3x)
+        // This ensures INSANE feels different even for players who use Amped normally
         if (insane && channel !== 'critical') {
-            pattern = this.scaleHapticPattern(pattern, 4); // Level 4 = INSANE mode
+            pattern = this.scaleHapticPattern(pattern, 3); // Special value 3 = INSANE mode
         }
-        // DIZEE: Scale non-critical cues based on haptic intensity setting (0-3)
+        // TORI'S SCALING: Scale non-critical cues based on comfort setting
         else if (!insane && channel !== 'critical') {
             pattern = this.scaleHapticPattern(pattern, comfort);
         }
@@ -2407,43 +2395,6 @@ class GameEngine {
     // ========================================
 
     showCodeRainTransition(callback, duration = 1500) {
-        // DIZEE: Check visual intensity setting
-        const visualIntensity = this.settingsManager?.getVisualIntensity?.() ?? 2;
-
-        // Off or Reduced: Skip code rain, use simple fade
-        if (visualIntensity <= 1) {
-            console.log(`👁️ Visual intensity ${visualIntensity === 0 ? 'OFF' : 'REDUCED'} - skipping code rain`);
-
-            // Simple fade transition instead
-            const fadeOverlay = document.createElement('div');
-            fadeOverlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: #000;
-                z-index: 100000;
-                opacity: 1;
-                transition: opacity 300ms ease;
-                pointer-events: none;
-            `;
-            document.body.appendChild(fadeOverlay);
-
-            // Execute callback immediately
-            if (callback) callback();
-
-            // Fade out and remove
-            setTimeout(() => {
-                fadeOverlay.style.opacity = '0';
-                setTimeout(() => {
-                    fadeOverlay.remove();
-                }, 300);
-            }, 200);
-            return;
-        }
-
-        // Normal or Enhanced: Show code rain
         // Create or get overlay canvas
         let canvas = document.getElementById('transition-matrix');
         if (!canvas) {
@@ -2812,24 +2763,24 @@ class GameEngine {
 
                 // COMMENTARY TRIGGER
                 if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                    // Only create button if it doesn't already exist
-                    const existingBtn = document.querySelector('.commentary-hint-button');
-                    if (!existingBtn) {
-                        const commentaryBtn = document.createElement('button');
-                        commentaryBtn.className = 'commentary-hint-button';
-                        commentaryBtn.innerHTML = '🎙️ COMMENTARY';
-                        commentaryBtn.onclick = (e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            this.devCommentary.showCommentary('route_selection_dual');
-                            // Also show philosophy after a delay
-                            setTimeout(() => {
-                                this.devCommentary.showCommentary('route_selection_philosophy');
-                            }, 10000);
-                        };
+                    const routeSelect = document.getElementById('route-select');
+                    const content = routeSelect.querySelector('#route-select-content') || routeSelect;
 
-                        document.body.appendChild(commentaryBtn);
-                    }
+                    // Remove existing button if any
+                    const existingBtn = content.querySelector('.commentary-hint-button');
+                    if (existingBtn) existingBtn.remove();
+
+                    const commentaryBtn = document.createElement('button');
+                    commentaryBtn.className = 'commentary-hint-button';
+                    commentaryBtn.innerHTML = '🎙️ COMMENTARY';
+                    commentaryBtn.onclick = () => {
+                        this.devCommentary.showCommentary('route_selection_dual');
+                        // Also show philosophy after a delay
+                        setTimeout(() => {
+                            this.devCommentary.showCommentary('route_selection_philosophy');
+                        }, 10000);
+                    };
+                    content.appendChild(commentaryBtn);
                 }
             }, 100);
         }, 1000);
@@ -8693,7 +8644,7 @@ There is no v849.`
             // Priority 7: Settings menu
             const settingsMenu = document.getElementById('settings-menu');
             if (settingsMenu && settingsMenu.style.display === 'flex') {
-                this.closeSettings();
+                this.settingsManager.closeSettings();
                 return;
             }
 

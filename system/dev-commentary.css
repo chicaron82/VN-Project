@@ -120,29 +120,28 @@
     font-size: 1rem;
 }
 
-/* Commentary hint button (DIZEE: Top left to avoid blocking UI) */
+/* Commentary hint button (route select, etc) */
 .commentary-hint-button {
     position: fixed;
-    top: 1rem;
-    left: 1rem;
+    bottom: 2rem;
+    right: 2rem;
     background: rgba(0, 255, 170, 0.2);
     border: 2px solid #00ffaa;
     color: #00ffaa;
-    padding: 0.5rem 0.9rem;
-    font-size: 0.8rem;
-    border-radius: 6px;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     animation: commentary-pulse 2s ease-in-out infinite;
     z-index: 1000;
-    line-height: 1;
 }
 
 .commentary-hint-button:hover {
     background: rgba(0, 255, 170, 0.3);
     box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
-    transform: scale(1.05);
+    transform: translateY(-2px);
 }
 
 @keyframes commentary-pulse {
@@ -174,9 +173,9 @@
     }
 
     .commentary-hint-button {
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.5rem 0.8rem;
-        font-size: 0.75rem;
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.9rem;
     }
 }
