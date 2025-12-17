@@ -515,6 +515,14 @@ class SettingsManager {
         const modal = document.getElementById('intensity-preview-modal');
         const sampleBox = document.getElementById('preview-sample-box');
 
+        // DIZEE: Guard against missing elements (modal may not exist)
+        if (!modal) {
+            this.previewMode = null;
+            this.previewLevel = null;
+            this.originalLevel = null;
+            return;
+        }
+
         if (apply) {
             // Apply the selected level
             if (this.previewMode === 'visual') {
@@ -529,8 +537,8 @@ class SettingsManager {
         }
 
         // Reset and hide modal
-        sampleBox.style.display = 'block';
-        modal.style.display = 'none';
+        if (sampleBox) sampleBox.style.display = 'block';
+        if (modal) modal.style.display = 'none';
         this.previewMode = null;
         this.previewLevel = null;
         this.originalLevel = null;
