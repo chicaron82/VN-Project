@@ -13,6 +13,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
+    /* DIZEE: Prevent blocking clicks when hidden */
+}
+
+/* Enable clicks when modal is visible */
+.intensity-preview-modal[style*="display: flex"] {
+    pointer-events: auto;
 }
 
 .intensity-preview-backdrop {
