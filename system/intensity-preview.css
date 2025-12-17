@@ -9,7 +9,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 200000;
+    z-index: 10000;
+    /* DIZEE: Reduced from 200000 to not block other overlays */
     display: flex;
     align-items: center;
     justify-content: center;
