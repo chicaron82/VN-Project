@@ -2812,17 +2812,15 @@ class GameEngine {
 
                 // COMMENTARY TRIGGER
                 if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                    const dialogueBox = document.getElementById('dialogue-box');
-
                     // Remove existing button if any
-                    const existingBtn = dialogueBox?.querySelector('.commentary-hint-button');
+                    const existingBtn = document.querySelector('.commentary-hint-button');
                     if (existingBtn) existingBtn.remove();
 
                     const commentaryBtn = document.createElement('button');
                     commentaryBtn.className = 'commentary-hint-button';
                     commentaryBtn.innerHTML = '🎙️ COMMENTARY';
                     commentaryBtn.onclick = (e) => {
-                        e.stopPropagation(); // Prevent dialogue advance
+                        e.stopPropagation();
                         this.devCommentary.showCommentary('route_selection_dual');
                         // Also show philosophy after a delay
                         setTimeout(() => {
@@ -2830,9 +2828,7 @@ class GameEngine {
                         }, 10000);
                     };
 
-                    if (dialogueBox) {
-                        dialogueBox.appendChild(commentaryBtn);
-                    }
+                    document.body.appendChild(commentaryBtn);
                 }
             }, 100);
         }, 1000);

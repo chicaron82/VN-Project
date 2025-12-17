@@ -120,11 +120,11 @@
     font-size: 1rem;
 }
 
-/* Commentary hint button (DIZEE: Top right of dialogue box) */
+/* Commentary hint button (DIZEE: Top left to avoid blocking UI) */
 .commentary-hint-button {
-    position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
     background: rgba(0, 255, 170, 0.2);
     border: 2px solid #00ffaa;
     color: #00ffaa;
@@ -137,14 +137,12 @@
     animation: commentary-pulse 2s ease-in-out infinite;
     z-index: 1000;
     line-height: 1;
-    pointer-events: auto;
-    /* Prevent click from passing through to dialogue advance */
 }
 
 .commentary-hint-button:hover {
     background: rgba(0, 255, 170, 0.3);
     box-shadow: 0 0 20px rgba(0, 255, 170, 0.5);
-    transform: translateY(-2px);
+    transform: scale(1.05);
 }
 
 @keyframes commentary-pulse {
