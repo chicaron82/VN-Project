@@ -315,6 +315,7 @@
                 <!-- Tab Navigation -->
                 <div class="settings-tabs">
                     <button class="settings-tab-btn active" data-tab="general">GENERAL</button>
+                    <button class="settings-tab-btn" data-tab="sensory">SENSORY</button>
                     <button class="settings-tab-btn" data-tab="shortcuts">SHORTCUTS</button>
                     <button class="settings-tab-btn" data-tab="codes">SECRET CODES</button>
                 </div>
@@ -429,8 +430,23 @@
                                 <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- ZEE'S ADDITION: Haptic Feedback Toggle 🖤 -->
+                    <!-- SENSORY TAB (DIZEE) -->
+                    <div class="tab-panel" id="tab-sensory">
+                        <!-- Tutorial Hints Toggle -->
+                        <div class="setting-row">
+                            <label class="setting-label">TUTORIAL HINTS</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="tutorial-hints-toggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="tutorial-hints-status">ON</span>
+                            </div>
+                        </div>
+
+                        <!-- Haptic Feedback Toggle -->
                         <div class="setting-row">
                             <label for="haptic-toggle" class="setting-label-column">
                                 <span class="setting-name">HAPTIC FEEDBACK 📳</span>
@@ -445,7 +461,7 @@
                             </div>
                         </div>
 
-                        <!-- DIZEE: Comfort Mode Toggle -->
+                        <!-- Comfort Mode Toggle -->
                         <div class="setting-row">
                             <label for="comfort-mode-toggle" class="setting-label-column">
                                 <span class="setting-name">COMFORT MODE 🛡️</span>
@@ -460,7 +476,7 @@
                             </div>
                         </div>
 
-                        <!-- DIZEE POLISH: Reduce Motion Toggle -->
+                        <!-- Reduce Motion Toggle -->
                         <div class="setting-row">
                             <label for="reduce-motion-toggle" class="setting-label-column">
                                 <span class="setting-name">REDUCE MOTION ♿</span>
@@ -475,7 +491,7 @@
                             </div>
                         </div>
 
-                        <!-- TORI'S ADDITION: Comfort Intensity Slider 💚 -->
+                        <!-- Sensory Intensity Slider -->
                         <div class="setting-row">
                             <label for="comfort-intensity-slider" class="setting-label-column">
                                 <span class="setting-name">SENSORY INTENSITY 💫</span>

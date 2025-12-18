@@ -1398,42 +1398,53 @@ P.S. The barback skill strikes again.`
     }
 
     setupSwipeGestures(overlay) {
-        if (!overlay) return;
+        // DIZEE FIX: Target the content element, not the overlay wrapper
+        const content = document.getElementById('notes-overlay-content');
+        if (!content) return;
 
         let touchStartX = 0;
+        let touchStartY = 0;
         let touchEndX = 0;
+        let touchEndY = 0;
         const minSwipeDistance = 50; // Minimum distance for swipe
 
         const handleTouchStart = (e) => {
             touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
         };
 
         const handleTouchEnd = (e) => {
             touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
             handleSwipe();
         };
 
         const handleSwipe = () => {
-            const swipeDistance = touchEndX - touchStartX;
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
 
-            if (Math.abs(swipeDistance) < minSwipeDistance) return;
-
-            if (swipeDistance > 0) {
-                // Swipe right = previous note
-                this.navigateNote(-1);
-            } else {
-                // Swipe left = next note
-                this.navigateNote(1);
+            // Only swipe if horizontal movement is greater than vertical (avoid interfering with scrolling)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+                if (deltaX > 0) {
+                    // Swipe right = previous note
+                    this.navigateNote(-1);
+                } else {
+                    // Swipe left = next note
+                    this.navigateNote(1);
+                }
             }
         };
 
         // Store handlers for cleanup
         this.touchStartHandler = handleTouchStart;
         this.touchEndHandler = handleTouchEnd;
+        this.swipeTargetElement = content; // DIZEE FIX: Store target for cleanup
 
-        overlay.addEventListener('touchstart', this.touchStartHandler);
-        overlay.addEventListener('touchend', this.touchEndHandler);
+        // DIZEE FIX: Add passive flag for better mobile performance
+        content.addEventListener('touchstart', this.touchStartHandler, { passive: true });
+        content.addEventListener('touchend', this.touchEndHandler, { passive: true });
     }
+
 
     displayNoteInOverlay(noteId) {
         const note = this.allNotes[noteId];
@@ -1542,17 +1553,17 @@ P.S. The barback skill strikes again.`
         const overlay = document.getElementById('notes-overlay');
         if (overlay) {
             overlay.style.display = 'none';
-
-            // DIZEE: Remove touch handlers
-            if (this.touchStartHandler) {
-                overlay.removeEventListener('touchstart', this.touchStartHandler);
-                this.touchStartHandler = null;
-            }
-            if (this.touchEndHandler) {
-                overlay.removeEventListener('touchend', this.touchEndHandler);
-                this.touchEndHandler = null;
-            }
         }
+
+        // DIZEE FIX: Remove touch handlers from the correct element
+        if (this.swipeTargetElement && this.touchStartHandler && this.touchEndHandler) {
+            this.swipeTargetElement.removeEventListener('touchstart', this.touchStartHandler);
+            this.swipeTargetElement.removeEventListener('touchend', this.touchEndHandler);
+            this.touchStartHandler = null;
+            this.touchEndHandler = null;
+            this.swipeTargetElement = null;
+        }
+
 
         // Remove ESC key listener
         if (this.escKeyHandler) {

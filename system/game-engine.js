@@ -1601,10 +1601,32 @@ class GameEngine {
             this.notesButton.style.display = 'none';
         }
 
+        // DIZEE FIX: Hide game view and clear backgrounds when returning to main menu
+        if (this.gameView) {
+            this.gameView.style.display = 'none';
+        }
+        if (this.sceneBackground) {
+            this.sceneBackground.style.backgroundImage = '';
+        }
+        if (this.sceneBackgroundAlt) {
+            this.sceneBackgroundAlt.style.backgroundImage = '';
+        }
+
+        // DIZEE FIX: Clear sprites when returning to menu
+        if (this.spriteLeft) {
+            this.spriteLeft.style.backgroundImage = '';
+            this.spriteLeft.style.opacity = '0';
+        }
+        if (this.spriteRight) {
+            this.spriteRight.style.backgroundImage = '';
+            this.spriteRight.style.opacity = '0';
+        }
+
         // DIZEE FIX: Ensure pause menu overaly is closed when returning to main menu
         if (this.saveLoadUI) {
             this.saveLoadUI.hidePauseMenu();
         }
+
 
         // Show main menu with smooth fade-in
         this.mainMenu.style.display = 'flex';
@@ -4598,32 +4620,22 @@ class GameEngine {
             border-radius: 5px;
         `;
         closeBtn.onclick = () => {
-            // ZEE'S FIX: Fade out credits before showing menu 🖤
+            // DIZEE FIX: Fade out credits before showing menu properly
             overlay.style.transition = 'opacity 1.5s ease';
             overlay.style.opacity = '0';
 
             setTimeout(() => {
-                // Hide credits after fade
+                // Remove credits after fade
                 overlay.remove();
 
-                // Show and fade in main menu
-                this.mainMenu.style.display = 'flex';
-                this.mainMenu.style.opacity = '0';
-
-                setTimeout(() => {
-                    this.mainMenu.style.transition = 'opacity 1s ease';
-                    this.mainMenu.style.opacity = '1';
-
-                    // ZEE'S ADDITION: Restart tip rotation when returning to menu 🖤
-                    if (this.startMainMenuTipRotation) {
-                        this.startMainMenuTipRotation();
-                    }
-                }, 100);
+                // DIZEE FIX: Use showMainMenu() for proper initialization
+                // This ensures code rain and carousel cards are properly set up
+                this.showMainMenu();
             }, 1500); // Match fade-out duration
         };
         overlay.appendChild(closeBtn);
 
-        // Auto-fade after 60 seconds (matches credits animation duration)
+        // Auto-fade after 30 seconds (matches credits animation duration)
         setTimeout(() => {
             overlay.style.transition = 'opacity 2s ease-out';
             overlay.style.opacity = '0';
@@ -4631,19 +4643,8 @@ class GameEngine {
                 if (overlay.parentElement) {
                     overlay.remove();
 
-                    // ZEE'S FIX: Fade in main menu 🖤
-                    this.mainMenu.style.display = 'flex';
-                    this.mainMenu.style.opacity = '0';
-
-                    setTimeout(() => {
-                        this.mainMenu.style.transition = 'opacity 1s ease';
-                        this.mainMenu.style.opacity = '1';
-
-                        // ZEE'S ADDITION: Restart tip rotation when returning to menu 🖤
-                        if (this.startMainMenuTipRotation) {
-                            this.startMainMenuTipRotation();
-                        }
-                    }, 100);
+                    // DIZEE FIX: Use showMainMenu() for proper initialization
+                    this.showMainMenu();
                 }
             }, 2000);
         }, 30000);
@@ -4652,6 +4653,7 @@ class GameEngine {
         this.gameView.style.display = 'none';
         this.mainMenu.style.display = 'none';
     }
+
 
     showCreditsLandscapeWithPhotos(endingType, playerVersion, photos) {
         // Build dynamic title section

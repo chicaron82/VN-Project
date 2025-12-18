@@ -1346,6 +1346,12 @@ class RonnieRouteAct3 {
     }
 
     trueRoute_transfer() {
+        // DIZEE FIX: Double buzz when Tori jumps back to her body
+        // Matches the Digital Forever double buzz for vessel transfer
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('toriHop', null, 'Double buzz - Tori returns to her body');
+        }
+
         this.game.displayScene({
             character: 'Tori (voice, echoing from device)',
             dialogue: '"I feel it... the pull... I\'m—',
@@ -1358,6 +1364,7 @@ class RonnieRouteAct3 {
             delay: 4500
         }, 'trueRoute_transfer');
     }
+
 
     trueRoute_whisper() {
         this.game.displayScene({

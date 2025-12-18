@@ -932,3 +932,182 @@
         min-height: 400px;
     }
 }
+
+/* ========================================
+   TAP ZONES (DIZEE)
+   Left/right edge tap navigation
+   ======================================== */
+
+.tap-zone {
+    position: absolute;
+    top: 0;
+    bottom: 80px;
+    /* Leave room for button */
+    width: 25%;
+    z-index: 10;
+    cursor: pointer;
+    /* Debug: uncomment to see zones */
+    /* background: rgba(255, 0, 0, 0.1); */
+}
+
+.tap-zone-left {
+    left: 0;
+    border-radius: 16px 0 0 16px;
+}
+
+.tap-zone-right {
+    right: 0;
+    border-radius: 0 16px 16px 0;
+}
+
+/* Subtle tap feedback */
+.tap-zone:active {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+/* ========================================
+   TUTORIAL OVERLAY (DIZEE)
+   Animated finger hint on first use
+   ======================================== */
+
+.carousel-tutorial-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    animation: tutorialFadeIn 0.3s ease-out;
+}
+
+.carousel-tutorial-overlay.dismissing {
+    animation: tutorialFadeOut 0.3s ease-out forwards;
+}
+
+@keyframes tutorialFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tutorialFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.tutorial-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.tutorial-hand-container {
+    position: relative;
+    width: 200px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-hand {
+    font-size: 3em;
+    animation: tutorialSwipe 2s ease-in-out infinite;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+}
+
+@keyframes tutorialSwipe {
+
+    0%,
+    100% {
+        transform: translateX(-40px) rotate(-10deg);
+    }
+
+    50% {
+        transform: translateX(40px) rotate(10deg);
+    }
+}
+
+.tutorial-swipe-trail {
+    position: absolute;
+    top: 50%;
+    left: 30px;
+    right: 30px;
+    height: 4px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(0, 255, 255, 0.6),
+            rgba(0, 255, 255, 0.6),
+            transparent);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.tutorial-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.tutorial-swipe-hint {
+    font-size: 1.2em;
+    color: #0ff;
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.tutorial-tap-hint {
+    font-size: 1em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tutorial-select-hint {
+    font-size: 1.1em;
+    color: #0ff;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+.tutorial-dismiss-btn {
+    padding: 0.8rem 2rem;
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #0ff;
+    border-radius: 25px;
+    color: #0ff;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.tutorial-dismiss-btn:hover {
+    background: rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+.tutorial-dismiss-btn:active {
+    transform: scale(0.98);
+}

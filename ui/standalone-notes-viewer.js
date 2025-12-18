@@ -77,16 +77,27 @@ class StandaloneNotesViewer {
     }
 
     hasUnreadToriNotes() {
-        return Object.keys(this.readStatus).some(key =>
-            key.startsWith('note_tori_') && this.readStatus[key] === false
-        );
+        // DIZEE FIX: Tori route notes are z, cz, zr, special types
+        // Note keys are like note_z1, note_cz2, note_zr1
+        return Object.keys(this.readStatus).some(key => {
+            if (!key.startsWith('note_') || this.readStatus[key] !== false) return false;
+            const noteId = key.replace('note_', '');
+            // Tori notes: z*, cz*, zr* prefixes
+            return noteId.match(/^(z\d|cz\d|zr\d)/);
+        });
     }
 
     hasUnreadRonnieNotes() {
-        return Object.keys(this.readStatus).some(key =>
-            key.startsWith('note_ronnie_') && this.readStatus[key] === false
-        );
+        // DIZEE FIX: Ronnie route notes are gz, iz, pz, special types
+        // Note keys are like note_gz1, note_iz2, note_pz1
+        return Object.keys(this.readStatus).some(key => {
+            if (!key.startsWith('note_') || this.readStatus[key] !== false) return false;
+            const noteId = key.replace('note_', '');
+            // Ronnie notes: gz*, iz*, pz* prefixes (and special like ronnie_teaser)
+            return noteId.match(/^(gz\d|iz\d|pz\d|ronnie_|bad_|digital_|true_)/);
+        });
     }
+
 
     hasAnyUnread() {
         return this.hasUnreadFeatures() ||

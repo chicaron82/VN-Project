@@ -53,8 +53,12 @@ class SimpleCarousel {
         // Update dots
         this.updateDots();
 
+        // DIZEE: Show tutorial on first use
+        this.showTutorialIfFirstTime();
+
         console.log(`✅ Simple Carousel ready with ${this.cards.length} cards (Tinder Mode)`);
     }
+
 
     defineCards() {
         // Card definitions matching current menu buttons
@@ -293,22 +297,48 @@ class SimpleCarousel {
                 <h2 class="card-title">${card.title}</h2>
                 <p class="card-subtitle">${card.subtitle}</p>
                 <div class="card-button">${card.icon} TAP TO SELECT</div>
+                
+                <!-- DIZEE: Tap zones for left/right navigation -->
+                <div class="tap-zone tap-zone-left" data-action="prev"></div>
+                <div class="tap-zone tap-zone-right" data-action="next"></div>
             `;
 
-            // Tap to select (only on current card)
+            // DIZEE: Handle tap navigation (only on current card)
             if (stackPosition === 1) {
                 cardDiv.onclick = (e) => {
                     // Only trigger if not dragging
-                    if (!this.isDragging && !this.isAnimating) {
+                    if (this.isDragging || this.isAnimating) return;
+
+                    // Check if tapped on a tap zone
+                    const tapZone = e.target.closest('.tap-zone');
+                    if (tapZone) {
+                        e.stopPropagation();
                         if (navigator.vibrate) navigator.vibrate(10);
-                        if (card.action) card.action();
+
+                        if (tapZone.dataset.action === 'prev') {
+                            this.goToCard(this.getPrevIndex());
+                        } else if (tapZone.dataset.action === 'next') {
+                            this.goToCard(this.getNextIndex());
+                        }
+
+                        // Dismiss tutorial if shown
+                        this.dismissTutorial();
+                        return;
                     }
+
+                    // Center tap - trigger card action
+                    if (navigator.vibrate) navigator.vibrate(10);
+                    if (card.action) card.action();
+
+                    // Dismiss tutorial if shown
+                    this.dismissTutorial();
                 };
             }
         }
 
         return cardDiv;
     }
+
 
     getPrevIndex() {
         return (this.currentIndex - 1 + this.cards.length) % this.cards.length;
@@ -579,9 +609,84 @@ class SimpleCarousel {
 
     destroy() {
         if (this.carouselContainer) this.carouselContainer.remove();
+        this.dismissTutorial(); // Clean up tutorial if shown
         console.log('📱 Simple Carousel destroyed');
     }
+
+    // ========================================
+    // TUTORIAL OVERLAY (DIZEE)
+    // Shows animated finger hint on first use
+    // ========================================
+
+    showTutorialIfFirstTime() {
+        const dismissedValue = localStorage.getItem('carouselTutorialDismissed');
+        const tutorialDismissed = dismissedValue === 'true';
+
+        console.log('👆 Tutorial check:', {
+            dismissedValue,
+            tutorialDismissed,
+            willShow: !tutorialDismissed,
+            carouselContainer: !!this.carouselContainer
+        });
+
+        if (tutorialDismissed) {
+            console.log('👆 Tutorial skipped - already dismissed');
+            return;
+        }
+
+        console.log('👆 Creating tutorial overlay...');
+
+        // Create tutorial overlay
+        this.tutorialOverlay = document.createElement('div');
+        this.tutorialOverlay.className = 'carousel-tutorial-overlay';
+        this.tutorialOverlay.innerHTML = `
+            <div class="tutorial-content">
+                <div class="tutorial-hand-container">
+                    <div class="tutorial-hand">👆</div>
+                    <div class="tutorial-swipe-trail"></div>
+                </div>
+                <div class="tutorial-text">
+                    <span class="tutorial-swipe-hint">Swipe left/right to browse</span>
+                    <span class="tutorial-tap-hint">Tap edges to navigate</span>
+                    <span class="tutorial-select-hint">↑ Swipe up or tap center to select</span>
+                </div>
+                <button class="tutorial-dismiss-btn">Got it!</button>
+            </div>
+        `;
+
+        // Add click handler to dismiss
+        this.tutorialOverlay.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tutorial-dismiss-btn') ||
+                e.target.classList.contains('carousel-tutorial-overlay')) {
+                this.dismissTutorial();
+            }
+        });
+
+        // Append to carousel
+        if (this.carouselContainer) {
+            this.carouselContainer.appendChild(this.tutorialOverlay);
+        }
+
+        console.log('👆 Tutorial overlay shown');
+    }
+
+    dismissTutorial() {
+        if (this.tutorialOverlay) {
+            this.tutorialOverlay.classList.add('dismissing');
+            setTimeout(() => {
+                if (this.tutorialOverlay && this.tutorialOverlay.parentElement) {
+                    this.tutorialOverlay.remove();
+                }
+                this.tutorialOverlay = null;
+            }, 300);
+
+            // Remember dismissal
+            localStorage.setItem('carouselTutorialDismissed', 'true');
+            console.log('👆 Tutorial dismissed');
+        }
+    }
 }
+
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = SimpleCarousel;

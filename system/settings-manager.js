@@ -285,6 +285,32 @@ class SettingsManager {
             });
         });
 
+        // DIZEE: Tutorial Hints Toggle
+        const tutorialToggle = document.getElementById('tutorial-hints-toggle');
+        const tutorialStatus = document.getElementById('tutorial-hints-status');
+        if (tutorialToggle) {
+            // Check current state from localStorage
+            const hintsDisabled = localStorage.getItem('carouselTutorialDismissed') === 'true';
+            tutorialToggle.checked = !hintsDisabled;
+            if (tutorialStatus) {
+                tutorialStatus.textContent = hintsDisabled ? 'OFF' : 'ON';
+            }
+
+            tutorialToggle.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    // Enable hints - remove the dismissed flag
+                    localStorage.removeItem('carouselTutorialDismissed');
+                    if (tutorialStatus) tutorialStatus.textContent = 'ON';
+                    console.log('👆 Tutorial hints enabled - localStorage cleared');
+                } else {
+                    // Disable hints - set the dismissed flag
+                    localStorage.setItem('carouselTutorialDismissed', 'true');
+                    if (tutorialStatus) tutorialStatus.textContent = 'OFF';
+                    console.log('👆 Tutorial hints disabled - localStorage set');
+                }
+            });
+        }
+
         // Tether Difficulty Buttons
         document.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
             btn.addEventListener('click', () => {

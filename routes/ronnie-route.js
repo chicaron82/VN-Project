@@ -516,6 +516,53 @@ class RonnieRoute {
     }
 
     // ========================================
+    // TIME MACHINE SUPPORT (DIZEE)
+    // Scene navigation for backlog jumping
+    // ========================================
+
+    /**
+     * Jump to a specific scene by ID
+     * Called by game.loadSceneFromSnapshot() when Time Machine is used
+     * @param {string} sceneId - The scene method name (e.g., 'act1Scene1')
+     * @param {number} pageIndex - Optional page index within the scene
+     */
+    async goToScene(sceneId, pageIndex = 0) {
+        console.log(`⏰ RonnieRoute.goToScene: ${sceneId} (page ${pageIndex})`);
+
+        // Determine which module contains this scene
+        let targetModule = null;
+
+        // Check if scene is on this route (Act 1 / Prologue scenes)
+        if (typeof this[sceneId] === 'function') {
+            targetModule = this;
+        }
+        // Check Act 2
+        else if (this.act2 && typeof this.act2[sceneId] === 'function') {
+            targetModule = this.act2;
+        }
+        // Check Act 3
+        else if (this.act3 && typeof this.act3[sceneId] === 'function') {
+            targetModule = this.act3;
+        }
+
+        if (targetModule) {
+            console.log(`⏰ Found scene in ${targetModule.constructor.name}`);
+            targetModule[sceneId]();
+            return true;
+        }
+
+        console.warn(`⏰ Scene not found: ${sceneId}`);
+        return false;
+    }
+
+    /**
+     * Get current scene ID for Time Machine snapshots
+     */
+    getCurrentSceneId() {
+        return this.game?.currentScene?.id || null;
+    }
+
+    // ========================================
     // SAVE/LOAD SUPPORT
     // ========================================
 
