@@ -90,7 +90,9 @@
     opacity: 1;
     filter: brightness(1) drop-shadow(0 0 30px magenta);
     z-index: 2;
-    animation: tori-glitch-flicker 0.6s ease-out;
+    animation: tori-glitch-flicker 0.6s ease-out forwards;
+    /* DIZEE FIX: Disable transform transition during animation to prevent jump */
+    transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
 .tori-portrait:not(.active) {
@@ -729,7 +731,9 @@ body[data-selected-route="tori"] #route-play-button:hover {
 
     .tori-portrait.active {
         filter: brightness(1) drop-shadow(0 0 20px magenta);
-        animation: tori-glitch-flicker-landscape 0.6s ease-out;
+        animation: tori-glitch-flicker-landscape 0.6s ease-out forwards;
+        /* DIZEE FIX: Disable transform transition during animation */
+        transition: opacity 0.5s ease, filter 0.5s ease;
     }
 
     .tori-portrait.active img {
@@ -832,6 +836,7 @@ body[data-selected-route="tori"] #route-play-button:hover {
         font-size: 0.8em;
     }
 }
+
 /* ========================================
    FORCE PORTRAIT OVERRIDES
    Ensures 'Portrait Mode' setting works even on desktop screens
@@ -848,7 +853,8 @@ body[data-selected-route="tori"] #route-play-button:hover {
 .force-portrait #route-portraits-container {
     display: flex !important;
     position: relative !important;
-    height: 500px !important; /* Default portrait height */
+    height: 500px !important;
+    /* Default portrait height */
     width: 100% !important;
     justify-content: center !important;
     margin: 2rem 0 !important;
@@ -862,7 +868,7 @@ body[data-selected-route="tori"] #route-play-button:hover {
     height: 100% !important;
     max-height: none !important;
     top: 0 !important;
-    left: auto !important; 
+    left: auto !important;
     right: auto !important;
 }
 
@@ -890,4 +896,3 @@ body[data-selected-route="tori"] #route-play-button:hover {
     width: auto !important;
     transform: none !important;
 }
-
