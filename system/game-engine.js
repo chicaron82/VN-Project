@@ -57,131 +57,131 @@
  * ════════════════════════════════════════════════════════════════
  *
  * TABLE OF CONTENTS
- * (Line numbers approximate - use search to locate sections)
+ * (Line numbers updated 2025-12-17 - use search to locate sections)
  *
- * 1. INITIALIZATION & SETUP ...................... Line 130
+ * 1. INITIALIZATION & SETUP ...................... Line 307
  *    - Constructor
  *    - DOM element caching
  *    - Manager initialization (Settings, Save, Codes, Tether, etc.)
  *    - Event listener setup
  *
- * 2. ERROR BOUNDARIES & DEBUG .................... Line 285
+ * 2. ERROR BOUNDARIES & DEBUG .................... Line 498
  *    - Production error handling
  *    - Debug logging controls
  *    - State validation guards
  *
- * 3. CREDITS SYSTEM .............................. Line 840
+ * 3. CREDITS SYSTEM .............................. Line 1505
  *    - Photo pools (UV7 crew portraits)
  *    - Credits rendering (3 layouts)
  *    - Photo cycling controls
  *    - Version display
  *
- * 4. LOOP/VERSION SYSTEM ......................... Line 910
+ * 4. LOOP/VERSION SYSTEM ......................... Line 1700
  *    - Loop version tracking (848)
  *    - Version state management
- *    - Loop reinit screen (Line 1390)
+ *    - Loop reinit screen
  *
- * 5. ROTATING TIPS SYSTEM ........................ Line 1070
+ * 5. ROTATING TIPS SYSTEM ........................ Line 1900
  *    - Main menu tips
  *    - Route select tips
  *    - Tip rotation controls
  *
- * 6. HAPTIC FEEDBACK SYSTEM ...................... Line 1185
+ * 6. HAPTIC FEEDBACK SYSTEM ...................... Line 2000
  *    - Pattern library (12 patterns: light, medium, strong, etc.)
  *    - Device support detection
  *    - Settings integration
  *    - Vibration triggers
  *
- * 7. DEV HUD SYSTEM .............................. Line 1235
+ * 7. DEV HUD SYSTEM .............................. Line 2085
  *    - Real-time debug overlay
  *    - Route/Act/Scene display
  *    - Tether/Difficulty/Flags monitoring
  *    - Toggle controls
  *
- * 8. NOTES UNLOCK SYSTEM ......................... Line 1485
+ * 8. NOTES UNLOCK SYSTEM ......................... Line 2200
  *    - Note unlocking
  *    - Ronnie notes system unlock
  *
- * 9. STORY START & ROUTE SELECTION ............... Line 1510
+ * 9. STORY START & ROUTE SELECTION ............... Line 2300
  *    - Prologue playback
  *    - Route selection screen
  *    - Skip prologue system
  *    - Route start initialization
  *
- * 10. SPRITE MANAGEMENT .......................... Line 1980
+ * 10. SPRITE MANAGEMENT .......................... Line 2700
  *     - Sprite fade sequences
  *     - Character sprite display
  *     - Sprite positioning
  *     - Sprite cleanup on transitions
  *
- * 11. SCENE DISPLAY & RENDERING .................. Line 2085
+ * 11. SCENE DISPLAY & RENDERING .................. Line 3000
  *     - Display scene
  *     - Dialogue rendering
  *     - Character names
  *     - Background handling
  *     - Choice rendering
  *
- * 12. TYPEWRITER EFFECT & PAGINATION ............. Line 2590
+ * 12. TYPEWRITER EFFECT & PAGINATION ............. Line 3500
  *     - Character-by-character rendering
  *     - Mobile optimization (150 char threshold)
  *     - Text speed control
  *     - Auto-advance integration
  *
- * 13. ECHO DISPLAY (TORI ROUTE) .................. Line 2870
+ * 13. ECHO DISPLAY (TORI ROUTE) .................. Line 4000
  *     - Echo voice system
  *     - Echo animations
  *
- * 14. NOTES SYSTEM ............................... Line 2875
+ * 14. NOTES SYSTEM ............................... Line 4200
  *     - Note overlay display
  *     - Note navigation
  *
- * 15. CREDITS DISPLAY ............................ Line 2920
+ * 15. CREDITS DISPLAY ............................ Line 4500
  *     - Credits modal
  *     - Crew portraits
  *     - Version info
  *
- * 16. CONFIRMATION DIALOG SYSTEM ................. Line 3595
+ * 16. CONFIRMATION DIALOG SYSTEM ................. Line 5100
  *     - Custom dialog overlays
  *     - Confirmation callbacks
  *     - Dialog styling
  *
- * 17. CONTACT SCREEN ............................. Line 3925
+ * 17. CONTACT SCREEN ............................. Line 5300
  *     - Developer contact info
  *
- * 18. SAVE/LOAD SYSTEM METHODS ................... Line 3955
+ * 18. SAVE/LOAD SYSTEM METHODS ................... Line 5500
  *     - Save game delegation
  *     - Load game delegation
  *     - Save slot management
  *
- * 19. STANDALONE NOTES VIEWER .................... Line 4030
+ * 19. STANDALONE NOTES VIEWER .................... Line 5700
  *     - Main menu notes access
  *     - Standalone viewer launch
  *
- * 20. SETTINGS SYSTEM ............................ Line 4070
+ * 20. SETTINGS SYSTEM ............................ Line 5900
  *     - Settings menu control
  *     - Settings delegation to SettingsManager
  *
- * 21. BACKLOG SYSTEM ............................. Line 4105
+ * 21. BACKLOG SYSTEM ............................. Line 6100
  *     - History tracking
  *     - Time-travel functionality
  *     - Backlog rendering
  *
- * 22. DEV COMMANDS ............................... Line 4155
+ * 22. DEV COMMANDS ............................... Line 6500
  *     - Developer utility commands
  *     - Debug shortcuts
  *
- * 23. FULLSCREEN TOGGLE .......................... Line 4430
+ * 23. FULLSCREEN TOGGLE .......................... Line 7000
  *     - Fullscreen API handling
  *
- * 24. ESC HINT (DESKTOP) ......................... Line 4485
+ * 24. ESC HINT (DESKTOP) ......................... Line 7200
  *     - Escape key hint display
  *
- * 25. KEYBOARD CONTROLS .......................... Line 4550
+ * 25. KEYBOARD CONTROLS .......................... Line 7400
  *     - Key event handlers
  *     - Hotkey system
  *     - Navigation shortcuts
  *
- * 26. UI CONTROLS & ANIMATIONS ................... Line 5200
+ * 26. UI CONTROLS & ANIMATIONS ................... Line 8000
  *     - Button handlers
  *     - Fade effects
  *     - Overlay management
@@ -193,8 +193,8 @@
  * - Manages game loop, state transitions, and player interactions
  * - Integrates with: SaveManager, SettingsManager, TetherSystem,
  *   CollectiblesManager, SecretCodesManager, DevConsole
- * - Heavy file (~5800 lines) - use TOC for navigation
- * - Line numbers are APPROXIMATE - use search to find exact locations
+ *   - File size: 9,179 lines - use TOC for navigation
+ * - Line numbers updated Dec 17, 2025 - search by section name for exact location
  * ════════════════════════════════════════════════════════════════
  */
 

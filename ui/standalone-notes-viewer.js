@@ -11,6 +11,9 @@ class StandaloneNotesViewer {
 
         // ZEERAH: Read status tracking for notification dots
         this.readStatus = this.loadReadStatus();
+
+        // TORI'S OPTIMIZATION: Track which tabs have been rendered (lazy loading)
+        this.renderedTabs = new Set();
     }
 
     loadUnlockedNotes() {
@@ -164,17 +167,18 @@ class StandaloneNotesViewer {
                 </div>
 
                 <!-- Tab Content Containers -->
+                <!-- TORI'S OPTIMIZATION: Only render active tab initially (Tori), lazy-load others on click -->
                 <div class="notes-tab-content active" id="tab-tori">
                     ${this.renderToriNotes()}
                 </div>
                 <div class="notes-tab-content" id="tab-ronnie">
-                    ${ronnieTabUnlocked ? this.renderRonnieNotes() : this.renderLockedTab()}
+                    <!-- Lazy loaded when tab is clicked -->
                 </div>
                 <div class="notes-tab-content" id="tab-features">
-                    ${this.renderFeaturesTab()}
+                    <!-- Lazy loaded when tab is clicked -->
                 </div>
                 <div class="notes-tab-content" id="tab-codes">
-                    ${this.renderCodesTab()}
+                    <!-- Lazy loaded when tab is clicked -->
                 </div>
 
                 <div class="notes-footer">
@@ -212,6 +216,9 @@ class StandaloneNotesViewer {
 
         // Setup tab switching
         this.setupTabSwitching();
+
+        // TORI'S OPTIMIZATION: Mark Tori tab as rendered (it was rendered initially)
+        this.renderedTabs.add('tori');
 
         // Fade in
         setTimeout(() => {
@@ -251,6 +258,13 @@ class StandaloneNotesViewer {
 
                 // Show corresponding content
                 const tabName = tab.getAttribute('data-tab');
+
+                // TORI'S OPTIMIZATION: Lazy render tab if not already rendered
+                if (!this.renderedTabs.has(tabName)) {
+                    this.renderTab(tabName);
+                    this.renderedTabs.add(tabName);
+                }
+
                 const content = document.getElementById(`tab-${tabName}`);
                 if (content) {
                     content.classList.add('active');
@@ -296,6 +310,39 @@ class StandaloneNotesViewer {
             this.saveReadStatus();
             this.updateNotificationDots();
         }
+    }
+
+    // TORI'S OPTIMIZATION: Lazy render tab content on-demand
+    renderTab(tabName) {
+        const content = document.getElementById(`tab-${tabName}`);
+        if (!content) return;
+
+        let html = '';
+        const ronnieTabUnlocked = localStorage.getItem('ronnieTabUnlocked') === 'true';
+
+        switch (tabName) {
+            case 'tori':
+                html = this.renderToriNotes();
+                break;
+            case 'ronnie':
+                html = ronnieTabUnlocked ? this.renderRonnieNotes() : this.renderLockedTab();
+                break;
+            case 'features':
+                html = this.renderFeaturesTab();
+                break;
+            case 'codes':
+                html = this.renderCodesTab();
+                break;
+        }
+
+        content.innerHTML = html;
+
+        // Attach click handlers if needed for note tabs
+        if (tabName === 'tori' || tabName === 'ronnie') {
+            setTimeout(() => this.attachNoteClickHandlers(tabName), 0);
+        }
+
+        console.log(`📋 Lazy-loaded ${tabName} tab`);
     }
 
     renderNotesList() {

@@ -378,35 +378,12 @@ class TimeMachineManager {
     // DEV COMMENTARY HINT
     // ========================================
 
-    // Show optional commentary icon instead of auto-popup
+    // DIZEE FIX: Disabled - commentary button now handled in game-engine.js (inside dialogue box)
+    // This was creating a duplicate button at top-right of screen instead of in dialogue box
     showCommentaryHint(sceneId) {
-        // Check if hint button already exists
-        let hintBtn = document.getElementById('commentary-hint-backlog');
-
-        if (!hintBtn) {
-            // Create hint button
-            hintBtn = document.createElement('button');
-            hintBtn.id = 'commentary-hint-backlog';
-            hintBtn.className = 'commentary-hint-button';
-            hintBtn.innerHTML = '💬 Dev Commentary';
-            hintBtn.title = 'Click to read behind-the-scenes notes';
-
-            // Click to show commentary
-            hintBtn.addEventListener('click', () => {
-                this.game.devCommentary.showCommentary(sceneId);
-                hintBtn.remove(); // Remove after showing
-            });
-
-            document.body.appendChild(hintBtn);
-
-            // Auto-remove after 10 seconds if not clicked
-            setTimeout(() => {
-                if (hintBtn && hintBtn.parentNode) {
-                    hintBtn.style.opacity = '0';
-                    setTimeout(() => hintBtn.remove(), 300);
-                }
-            }, 10000);
-        }
+        // Disabled - button creation moved to game-engine.js startRoute() method
+        // The button is now correctly positioned inside the dialogue box
+        console.log('⏰ Commentary hint requested (handled by game-engine.js)');
     }
 
     // ========================================

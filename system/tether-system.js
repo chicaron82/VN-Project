@@ -43,27 +43,32 @@ class TetherSystem {
         // TETHER STATE
         // ========================================
 
-        this.tetherLevel = GameConfig.TETHER.INITIAL_LEVEL;
-        this.tetherDecayRate = GameConfig.TETHER.DECAY_RATE_BASE;  // Gentle passive drain
-        this.difficultyModifier = 1.0;       // Multiplier for decay rate (from settings)
-        this.tetherDecayTimer = null;        // Passive decay interval
-        this.holdOnCooldown = false;         // Hold On button cooldown state
-        this.holdOnCooldownTimer = null;     // Countdown interval for button text
-        this.hasUsedHoldOn = false;          // Track if player has used Hold On at least once
-        this.hasShownTutorialFlash = localStorage.getItem('tetherTutorialShown') === 'true'; // One-time tutorial
-        this.decayFrozen = false;            // Dev command: freeze decay for testing/accessibility
+        // Get current difficulty profile
+        const currentDifficulty = game.settingsManager?.settings?.tetherDifficulty || 'normal';
+        const profile = getDifficultyProfile(currentDifficulty);
 
-        // Configuration constants (from GameConfig)
-        this.HOLD_ON_BOOST = GameConfig.TETHER.HOLD_ON_BOOST;
-        this.HOLD_ON_COOLDOWN_MS = GameConfig.TETHER.HOLD_ON_COOLDOWN_MS;
+        this.tetherLevel = GameConfig.TETHER.INITIAL_LEVEL;
+        this.tetherDecayRate = profile.decayRates.base;  // From difficulty profile
+        this.currentDifficulty = currentDifficulty;      // Track current difficulty
+        this.tetherDecayTimer = null;                    // Passive decay interval
+        this.holdOnCooldown = false;                     // Hold On button cooldown state
+        this.holdOnCooldownTimer = null;                 // Countdown interval for button text
+        this.hasUsedHoldOn = false;                      // Track if player has used Hold On at least once
+        this.hasShownTutorialFlash = localStorage.getItem('tetherTutorialShown') === 'true'; // One-time tutorial
+        this.decayFrozen = false;                        // Dev command: freeze decay for testing/accessibility
+
+        // Configuration constants (from difficulty profile)
+        this.HOLD_ON_BOOST = profile.holdOnBoost;
+        this.HOLD_ON_COOLDOWN_MS = profile.holdOnCooldown;
         this.DECAY_INTERVAL_MS = GameConfig.TETHER.DECAY_INTERVAL_MS;
         this.CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL;
+        this.tetherCap = profile.tetherCap;              // Tether cap (100% normal, 66% INSANE)
 
         // Decay acceleration thresholds (from GameConfig)
         this.DECAY_MEDIUM_THRESHOLD = GameConfig.TETHER.THRESHOLD_MEDIUM_DECAY;
         this.DECAY_CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL_DECAY;
-        this.DECAY_MEDIUM_RATE = GameConfig.TETHER.DECAY_RATE_MEDIUM;
-        this.DECAY_CRITICAL_RATE = GameConfig.TETHER.DECAY_RATE_CRITICAL;
+        this.DECAY_MEDIUM_RATE = profile.decayRates.medium;
+        this.DECAY_CRITICAL_RATE = profile.decayRates.critical;
 
         // ========================================
         // ECHO SYSTEM STATE
@@ -133,8 +138,9 @@ class TetherSystem {
         // Store previous level for haptic trigger detection
         const previousLevel = this.tetherLevel;
 
-        // Update tether level (clamped 0-100)
-        this.tetherLevel = Math.max(0, Math.min(100, this.tetherLevel + amount));
+        // Update tether level (clamped 0 to tetherCap from difficulty profile)
+        // INSANE mode caps at 66%, others at 100%
+        this.tetherLevel = Math.max(0, Math.min(this.tetherCap, this.tetherLevel + amount));
 
         // ZEE'S ADDITION: Haptic warning when entering critical zone 🖤
         // Only trigger ONCE when crossing threshold (not every tick)
@@ -346,8 +352,7 @@ class TetherSystem {
             decayAmount = this.DECAY_CRITICAL_RATE;
         }
 
-        // Apply difficulty modifier (from settings)
-        decayAmount *= this.difficultyModifier;
+        // Decay rates already come from difficulty profile - no modifier needed
 
         // Apply decay
         this.updateTether(-decayAmount, 'passive decay');
@@ -359,10 +364,18 @@ class TetherSystem {
     }
 
     setDifficultyModifier(difficulty) {
-        // Update difficulty modifier based on settings
-        const modifiers = GameConfig.TETHER.DIFFICULTY;
-        this.difficultyModifier = modifiers[difficulty.toUpperCase()] || 1.0;
-        console.log(`Tether difficulty set to ${difficulty} (modifier: ${this.difficultyModifier})`);
+        // Update difficulty settings from profile
+        const profile = getDifficultyProfile(difficulty);
+
+        this.currentDifficulty = difficulty;
+        this.tetherDecayRate = profile.decayRates.base;
+        this.DECAY_MEDIUM_RATE = profile.decayRates.medium;
+        this.DECAY_CRITICAL_RATE = profile.decayRates.critical;
+        this.tetherCap = profile.tetherCap;
+        this.HOLD_ON_BOOST = profile.holdOnBoost;
+
+        console.log(`⚙️ Tether difficulty set to ${profile.name}`);
+        console.log(`   Decay: ${profile.decayRates.base} | Cap: ${profile.tetherCap}% | Hold On: ${profile.holdOnBoost}`);
     }
 
     triggerGlitchEffect() {

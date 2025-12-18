@@ -731,9 +731,9 @@ class SettingsManager {
         // Save the lock to localStorage
         localStorage.setItem('insaneModeLocked', 'true');
 
-        // DIZEE FIX: Hide Hold On button in Insane Mode
-        // You removed this safety. It stays gone.
-        if (this.game.holdOnButton) {
+        // Use difficulty profile for Hold On button behavior
+        const insaneProfile = getDifficultyProfile('insane');
+        if (this.game.holdOnButton && insaneProfile.holdOn.hidden) {
             this.game.holdOnButton.style.display = 'none';
         }
 
