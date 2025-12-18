@@ -229,7 +229,7 @@ const SENSORY_CUES = {
     // Narrative Moments (scale with comfort)
     toriHop: {
         channel: 'narrative',
-        basePattern: 'pulse',
+        basePattern: 'double',  // DIZEE FIX: Stronger double buzz so it's actually noticeable
         visualType: 'toriHop'
     },
     tamaPull: {
@@ -1949,10 +1949,10 @@ class GameEngine {
     getHapticPatterns() {
         return {
             // Basic intensity levels
-            // DIZEE FIX: Increased durations significantly (10ms -> 40ms) to clear motor inertia threshold
-            'light': 40,           // Quick tap (UI navigation)
-            'medium': 70,          // Standard feedback (choices, buttons)
-            'strong': 100,          // Important actions (confirmations)
+            // DIZEE FIX: Increased durations again (40ms -> 60ms) for more noticeable feedback
+            'light': 60,           // Quick tap (UI navigation)
+            'medium': 100,         // Standard feedback (choices, buttons)
+            'strong': 150,         // Important actions (confirmations)
 
             // Rhythmic patterns (EMOTIONAL LANGUAGE)
             // DIZEE: Narrative haptics = 1-second buzzes (very distinct from UI)

@@ -537,6 +537,11 @@ class CollectiblesManager {
             this.route.tetherSystem.stopDecay();
         }
 
+        // DIZEE: Haptic feedback when opening notes viewer
+        if (this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('menuSelect', this.notesButton, 'Opening notes viewer');
+        }
+
         // Show viewer
         this.notesViewer.style.display = 'block';
 
@@ -1370,6 +1375,11 @@ P.S. The barback skill strikes again.`
         this.currentNoteId = noteId;
         this.currentNoteList = allNoteIds;
 
+        // DIZEE: Haptic feedback when opening note
+        if (this.game && this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('cardSnap', null, 'Opening note');
+        }
+
         // Display the note
         this.displayNoteInOverlay(noteId);
 
@@ -1542,6 +1552,11 @@ P.S. The barback skill strikes again.`
         const newIndex = currentIndex + direction;
 
         if (newIndex >= 0 && newIndex < this.currentNoteList.length) {
+            // DIZEE: Haptic feedback when navigating notes
+            if (this.game && this.game.triggerSensoryFeedback) {
+                this.game.triggerSensoryFeedback('buttonPress', null, 'Navigating notes');
+            }
+
             const newNoteId = this.currentNoteList[newIndex];
             this.currentNoteId = newNoteId;
             this.displayNoteInOverlay(newNoteId);
