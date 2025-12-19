@@ -370,10 +370,17 @@ class VisualCueManager {
         const scale = this.getScale(this._currentChannel || 'ui');
         const duration = 0.25 * scale; // Gentle: 0.15s, Normal: 0.25s, Amped: 0.3375s
 
+        // DIZEE FIX: Don't apply scale animation directly to elements with transform positioning
+        // (like route portraits which use translateX). Apply to child img instead if present.
+        const isPositioned = target.classList.contains('route-portrait');
+        const animTarget = isPositioned ? target.querySelector('img') : target;
+
+        if (!animTarget) return;
+
         // Brief scale pop
-        target.style.animation = 'none';
+        animTarget.style.animation = 'none';
         requestAnimationFrame(() => {
-            target.style.animation = `card-snap-pop ${duration}s ease-out`;
+            animTarget.style.animation = `card-snap-pop ${duration}s ease-out`;
         });
 
         setTimeout(() => {
