@@ -171,6 +171,11 @@ class ToriAct1 {
     }
 
     scene2_confusion() {
+        // DIZEE: Enable digital sprite effects - Tori is now in the tamagotchi
+        if (this.game.setDigitalSpriteEffect) {
+            this.game.setDigitalSpriteEffect('left'); // Tori is on the left
+        }
+
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"Wait... where am I? What happened? I was just walking..."',
