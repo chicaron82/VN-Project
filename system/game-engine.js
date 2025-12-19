@@ -2312,6 +2312,14 @@ class GameEngine {
         // Store callback for when player advances
         this.loopInitCallback = callback;
 
+        // DIZEE FIX: Add skip button handler
+        if (skipButton) {
+            skipButton.onclick = () => {
+                console.log('⏩ Skip button clicked - closing loop init');
+                this.closeLoopInit();
+            };
+        }
+
         // Click anywhere to continue
         const continueHandler = (e) => {
             // Don't close if clicking the skip button (it has its own handler)
