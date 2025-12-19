@@ -572,31 +572,60 @@ class CollectiblesManager {
             notesByType[note.type].push({ id: noteId, ...note });
         });
 
+        // DIZEE FIX: Build list of ALL collected note IDs for cross-section navigation
+        // This allows swiping from GZ -> IZ -> PZ seamlessly
+        const allCollectedIds = this.getAllCollectedNoteIds();
+
         // DIZEE: Render only notes for current route
         if (this.route && this.route.name === 'tori') {
             // Tori's route observers only
-            this.renderNoteSection('Z\'s Notes', notesByType.z, 'z');
-            this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz');
-            this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr');
+            this.renderNoteSection('Z\'s Notes', notesByType.z, 'z', allCollectedIds);
+            this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz', allCollectedIds);
+            this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr', allCollectedIds);
         } else if (this.route && this.route.name === 'ronnie') {
             // Ronnie's route observers only
-            this.renderNoteSection('GZ\'s Notes', notesByType.gz, 'gz');
-            this.renderNoteSection('IZ\'s Notes', notesByType.iz, 'iz');
-            this.renderNoteSection('PZ\'s Notes', notesByType.pz, 'pz');
-            this.renderNoteSection('Ending Analysis', notesByType.special, 'special');
+            this.renderNoteSection('GZ\'s Notes', notesByType.gz, 'gz', allCollectedIds);
+            this.renderNoteSection('IZ\'s Notes', notesByType.iz, 'iz', allCollectedIds);
+            this.renderNoteSection('PZ\'s Notes', notesByType.pz, 'pz', allCollectedIds);
+            this.renderNoteSection('Ending Analysis', notesByType.special, 'special', allCollectedIds);
         } else {
             // Fallback: show all if route not detected
-            this.renderNoteSection('Z\'s Notes', notesByType.z, 'z');
-            this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz');
-            this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr');
-            this.renderNoteSection('GZ\'s Notes', notesByType.gz, 'gz');
-            this.renderNoteSection('IZ\'s Notes', notesByType.iz, 'iz');
-            this.renderNoteSection('PZ\'s Notes', notesByType.pz, 'pz');
-            this.renderNoteSection('Ending Analysis', notesByType.special, 'special');
+            this.renderNoteSection('Z\'s Notes', notesByType.z, 'z', allCollectedIds);
+            this.renderNoteSection('CZ\'s Notes', notesByType.cz, 'cz', allCollectedIds);
+            this.renderNoteSection('ZR\'s Notes', notesByType.zr, 'zr', allCollectedIds);
+            this.renderNoteSection('GZ\'s Notes', notesByType.gz, 'gz', allCollectedIds);
+            this.renderNoteSection('IZ\'s Notes', notesByType.iz, 'iz', allCollectedIds);
+            this.renderNoteSection('PZ\'s Notes', notesByType.pz, 'pz', allCollectedIds);
+            this.renderNoteSection('Ending Analysis', notesByType.special, 'special', allCollectedIds);
         }
     }
 
-    renderNoteSection(sectionTitle, notes, type) {
+    // DIZEE FIX: Helper to get ALL collected note IDs for current route
+    getAllCollectedNoteIds() {
+        const allIds = [];
+
+        // Determine which types to include based on route
+        let typesToInclude = [];
+        if (this.route && this.route.name === 'tori') {
+            typesToInclude = ['z', 'cz', 'zr'];
+        } else if (this.route && this.route.name === 'ronnie') {
+            typesToInclude = ['gz', 'iz', 'pz', 'special'];
+        } else {
+            // Fallback: all types
+            typesToInclude = ['z', 'cz', 'zr', 'gz', 'iz', 'pz', 'special'];
+        }
+
+        // Collect all note IDs in order
+        typesToInclude.forEach(type => {
+            if (this.collectedNotes[type]) {
+                allIds.push(...this.collectedNotes[type]);
+            }
+        });
+
+        return allIds;
+    }
+
+    renderNoteSection(sectionTitle, notes, type, allCollectedIds) {
         if (notes.length === 0) return;
 
         // Section header
@@ -605,10 +634,8 @@ class CollectiblesManager {
         header.textContent = sectionTitle;
         this.notesList.appendChild(header);
 
-        // Get all collected note IDs for this section for navigation
-        const collectedNoteIds = notes
-            .filter(note => this.collectedNotes[type].includes(note.id))
-            .map(note => note.id);
+        // DIZEE FIX: Use allCollectedIds passed from showNotesViewer instead of just this section
+        // This allows swipes to navigate across sections (GZ -> IZ -> PZ)
 
         // Render notes in section (EMAIL-STYLE: Headers only)
         notes.forEach(note => {
@@ -634,9 +661,9 @@ class CollectiblesManager {
                 subjectDiv.textContent = `SUBJECT: ${note.title}`;
                 noteItem.appendChild(subjectDiv);
 
-                // Click to open overlay
+                // Click to open overlay - pass ALL collected IDs for cross-section navigation
                 noteItem.addEventListener('click', () => {
-                    this.openNoteOverlay(note.id, collectedNoteIds);
+                    this.openNoteOverlay(note.id, allCollectedIds);
                 });
             } else {
                 // Locked note - show ???
@@ -1410,7 +1437,12 @@ P.S. The barback skill strikes again.`
     setupSwipeGestures(overlay) {
         // DIZEE FIX: Target the content element, not the overlay wrapper
         const content = document.getElementById('notes-overlay-content');
-        if (!content) return;
+        if (!content) {
+            console.warn('⚠️ notes-overlay-content not found for swipe setup');
+            return;
+        }
+
+        console.log('👆 Setting up swipe gestures on notes overlay');
 
         let touchStartX = 0;
         let touchStartY = 0;
@@ -1421,11 +1453,13 @@ P.S. The barback skill strikes again.`
         const handleTouchStart = (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
+            console.log(`👆 Touch start: (${touchStartX}, ${touchStartY})`);
         };
 
         const handleTouchEnd = (e) => {
             touchEndX = e.changedTouches[0].screenX;
             touchEndY = e.changedTouches[0].screenY;
+            console.log(`👆 Touch end: (${touchEndX}, ${touchEndY})`);
             handleSwipe();
         };
 
@@ -1433,15 +1467,21 @@ P.S. The barback skill strikes again.`
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
 
+            console.log(`👆 Swipe delta: X=${deltaX}, Y=${deltaY}`);
+
             // Only swipe if horizontal movement is greater than vertical (avoid interfering with scrolling)
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
                 if (deltaX > 0) {
                     // Swipe right = previous note
+                    console.log('👆 Swipe RIGHT detected - navigating to previous note');
                     this.navigateNote(-1);
                 } else {
                     // Swipe left = next note
+                    console.log('👆 Swipe LEFT detected - navigating to next note');
                     this.navigateNote(1);
                 }
+            } else {
+                console.log('👆 Swipe not recognized (too short or too vertical)');
             }
         };
 
@@ -1453,6 +1493,8 @@ P.S. The barback skill strikes again.`
         // DIZEE FIX: Add passive flag for better mobile performance
         content.addEventListener('touchstart', this.touchStartHandler, { passive: true });
         content.addEventListener('touchend', this.touchEndHandler, { passive: true });
+
+        console.log('✅ Swipe gestures set up successfully');
     }
 
 
