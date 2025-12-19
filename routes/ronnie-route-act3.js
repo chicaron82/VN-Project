@@ -437,6 +437,15 @@ class RonnieRouteAct3 {
     // ========================================
 
     act3Beat5() {
+        this.beat5_hospitalMemory();
+    }
+
+    beat5_hospitalMemory() {
+        // DIZEE: Trigger single buzz haptic for hospital memory
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('tamaPull', null, 'Hospital single buzz memory');
+        }
+
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"And then I remembered. The hospital. The single buzz."',
