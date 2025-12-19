@@ -65,7 +65,7 @@
 
 /* Ronnie Positioning (left side when active) */
 .ronnie-portrait {
-    left: 35%;
+    left: 25%;
     transform: translateX(-50%);
 }
 
@@ -85,7 +85,7 @@
 
 /* Tori Positioning (right side when active) */
 .tori-portrait {
-    right: 35%;
+    right: 25%;
     transform: translateX(50%);
 }
 
