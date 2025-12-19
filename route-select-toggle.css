@@ -670,6 +670,8 @@ body[data-selected-route="tori"] #route-play-button:hover {
         height: 100%;
         max-height: 60vh;
         /* DIZEE FIX: Taller sprites */
+        margin: 0 auto;
+        /* DIZEE FIX: Explicit centering to prevent shift when dimmed */
     }
 
     /* Tori on the right (column 3, row 2-5) */
@@ -694,6 +696,8 @@ body[data-selected-route="tori"] #route-play-button:hover {
         height: 100%;
         max-height: 60vh;
         /* DIZEE FIX: Taller sprites */
+        margin: 0 auto;
+        /* DIZEE FIX: Explicit centering to prevent shift when dimmed */
     }
 
     /* slide */
