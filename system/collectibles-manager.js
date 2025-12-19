@@ -1688,6 +1688,16 @@ P.S. The barback skill strikes again.`
         this.readNotes.add(noteId);
         this.saveReadNotes();
         this.updateUnreadCount();
+
+        // DIZEE FIX: Also update standalone viewer's readStatus format
+        // This ensures the red dot clears when notes are read in-route
+        try {
+            const readStatus = JSON.parse(localStorage.getItem('notesReadStatus') || '{}');
+            readStatus[`note_${noteId}`] = true;
+            localStorage.setItem('notesReadStatus', JSON.stringify(readStatus));
+        } catch (e) {
+            console.error('Failed to update standalone readStatus:', e);
+        }
     }
 
     animateNewMail() {
