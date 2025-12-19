@@ -3832,7 +3832,7 @@ class GameEngine {
         if (intense) {
             sprite.classList.add('glitch-intense');
         }
-        console.log(?? Digital sprite effect enabled (\, intense: \));
+        console.log(`💚 Digital sprite effect enabled (${position}, intense: ${intense})`);
     }
 
     clearDigitalSpriteEffect(position = 'right') {
@@ -3840,7 +3840,7 @@ class GameEngine {
         if (!sprite) return;
 
         sprite.classList.remove('digital-sprite', 'glitch-intense');
-        console.log(?? Digital sprite effect cleared (\));
+        console.log(`💚 Digital sprite effect cleared (${position})`);
     }
 
     restoreSprites() {
