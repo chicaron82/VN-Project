@@ -44,10 +44,11 @@
 .route-portrait {
     position: absolute;
     height: 100%;
+    /* DIZEE FIX: Removed transform from transition to prevent sprite jump on selection */
+    /* We only want opacity/filter to animate, not position */
     transition:
         opacity 0.5s ease,
-        filter 0.5s ease,
-        transform 0.5s ease;
+        filter 0.5s ease;
     cursor: pointer;
     /* DIZEE FIX: Interactive cursor */
     /* Ensure click target area is generous */
