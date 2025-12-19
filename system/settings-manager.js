@@ -563,12 +563,11 @@ class SettingsManager {
             this.game.tetherSystem.setDifficultyModifier(difficulty);
         }
 
-        // DIZEE FIX: Disabled Tori's fourth-wall break reaction for immediate resume
-        // Players can close settings and continue playing without dialogue interruption
-        // if (previousDifficulty !== difficulty && this.game.currentRoute === 'tori') {
-        //     const changeType = this.getDifficultyChangeType(previousDifficulty, difficulty);
-        //     this.game.triggerTetherReaction(changeType);
-        // }
+        // DIZEE: Re-enabled Tori's fourth-wall break reaction
+        if (previousDifficulty !== difficulty && this.game.currentRoute === 'tori') {
+            const changeType = this.getDifficultyChangeType(previousDifficulty, difficulty);
+            this.game.triggerTetherReaction(changeType);
+        }
 
         console.log('Tether difficulty set to:', difficulty);
     }

@@ -84,11 +84,11 @@ const DIFFICULTY_PROFILES = {
         name: 'Normal',
         loreTag: 'attempting',
 
-        // Decay rates (DIZEE FIX: Reduced by ~40% for more relaxed experience)
+        // Decay rates (DIZEE FIX: Adjusted to ~20% slower than original)
         decayRates: {
-            base: 0.03,     // Relaxed passive decay (was 0.05)
-            medium: 0.05,   // Gentle acceleration below 50% (was 0.08)
-            critical: 0.07  // Moderate decay below 30% (was 0.12)
+            base: 0.04,     // Standard passive decay (was 0.05, then 0.03)
+            medium: 0.065,  // Moderate acceleration below 50% (was 0.08, then 0.05)
+            critical: 0.10  // Faster decay below 30% (was 0.12, then 0.07)
         },
 
         // Tether mechanics
