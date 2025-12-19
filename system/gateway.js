@@ -51,12 +51,12 @@ class ToriGatchiGateway {
 
     showHelpPrompt() {
         const prompt = this.getPromptForUnlock(this.state.unlockCount);
-        
+
         // Create modal overlay
         const modal = document.createElement('div');
         modal.id = 'gateway-modal';
         modal.className = `gateway-modal glitch-level-${prompt.glitchLevel}`;
-        
+
         modal.innerHTML = `
             <div class="gateway-content">
                 <div class="gateway-screen">
@@ -198,7 +198,7 @@ class ToriGatchiGateway {
         const modal = document.getElementById('gateway-modal');
         if (!modal) return;
 
-        switch(level) {
+        switch (level) {
             case 0:
                 // Clean, just a flicker
                 modal.style.animation = 'flicker 0.5s ease-in-out';
@@ -236,11 +236,28 @@ class ToriGatchiGateway {
     playBuzzEffect() {
         document.body.classList.add('buzz-effect');
         setTimeout(() => document.body.classList.remove('buzz-effect'), 500);
+
+        // DIZEE FIX: Sync haptic with visual buzz (500ms total)
+        // Pattern: [buzz, pause, buzz, pause, buzz] = ~500ms
+        if (window.game && window.game.triggerSensoryFeedback) {
+            window.game.triggerSensoryFeedback('glitch', null, 'Gateway buzz effect');
+        } else if (navigator.vibrate) {
+            // Fallback: manual vibration pattern matching the 500ms animation
+            navigator.vibrate([100, 50, 100, 50, 100]);
+        }
     }
 
     playScreenTearEffect() {
         document.body.classList.add('screen-tear');
         setTimeout(() => document.body.classList.remove('screen-tear'), 300);
+
+        // DIZEE FIX: Sync haptic with visual tear (300ms)
+        if (window.game && window.game.triggerSensoryFeedback) {
+            window.game.triggerSensoryFeedback('warning', null, 'Gateway screen tear');
+        } else if (navigator.vibrate) {
+            // Fallback: strong warning pattern
+            navigator.vibrate([150, 50, 150]);
+        }
     }
 
     launchVN() {
@@ -279,7 +296,7 @@ class ToriGatchiGateway {
 
     applyCorruptionEffects() {
         const level = this.state.corruptionLevel;
-        
+
         if (level >= 1) {
             // Occasional screen flickers
             setInterval(() => {
@@ -302,7 +319,7 @@ class ToriGatchiGateway {
         if (level >= 3) {
             // Message box shows corrupted text sometimes
             const originalUpdateMessage = window.updateMessage;
-            window.updateMessage = function(msg) {
+            window.updateMessage = function (msg) {
                 if (Math.random() < 0.2) {
                     msg = corruptText(msg);
                 }
@@ -313,7 +330,7 @@ class ToriGatchiGateway {
         if (level >= 4) {
             // Heavy corruption - frequent glitches
             document.body.classList.add('game-corrupted');
-            
+
             // Add system warning
             const warning = document.createElement('div');
             warning.className = 'corruption-warning';
@@ -324,7 +341,7 @@ class ToriGatchiGateway {
         if (level >= 5) {
             // Critical - game barely functional
             document.body.classList.add('game-critical');
-            
+
             // Change title
             document.title = 'T̶o̶r̶i̶-̶G̶a̶t̶c̶h̶i̶ - HELP';
         }
