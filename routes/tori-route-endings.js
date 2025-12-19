@@ -421,6 +421,11 @@ class ToriEndings {
     }
 
     trueRoute_awakening() {
+        // DIZEE: Clear digital sprite effect - Tori is back in her body, no longer glitched
+        if (this.game.clearDigitalSpriteEffect) {
+            this.game.clearDigitalSpriteEffect('left');
+        }
+
         this.game.displayScene({
             character: 'Tori (external, whisper)',
             dialogue: '"...Ronnie?"',

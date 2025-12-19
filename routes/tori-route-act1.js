@@ -1012,6 +1012,11 @@ class ToriAct1 {
     }
 
     scene7_single_buzz() {
+        // DIZEE: Trigger single buzz haptic for hospital visit
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('tamaPull', null, 'Hospital single buzz - body connection');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'BUZZ.',

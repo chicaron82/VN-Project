@@ -950,6 +950,11 @@ class ToriAct3 {
     }
 
     beat6_buzzControl() {
+        // DIZEE: Trigger single buzz haptic for controlled buzz
+        if (this.game.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('tamaPull', null, 'Tori controls device buzz');
+        }
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'The device buzzes. Strong. Deliberate.',
