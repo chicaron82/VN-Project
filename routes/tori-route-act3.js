@@ -960,7 +960,6 @@ class ToriAct3 {
             dialogue: 'The device buzzes. Strong. Deliberate.',
             internal: '[SINGLE BUZZ. She MADE that happen. Conscious. Intentional. HER.]',
             background: 'assets/hospital.png',
-            sfx: 'single_buzz',
             next: () => this.beat6_toriTriumph(),
             delay: 2500,
             style: 'critical'
@@ -1027,7 +1026,6 @@ class ToriAct3 {
             dialogue: 'The device buzzes in rhythm. Steady. Like a heartbeat.',
             internal: '[BUZZ. BUZZ. BUZZ. Perfectly timed. Impossible to ignore. A PATTERN.]',
             background: 'assets/hospital.png',
-            sfx: 'rhythmic_buzz',
             next: () => this.beat6_ronnieNotices(),
             delay: 3500,
             style: 'critical'
