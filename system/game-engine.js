@@ -9186,3 +9186,26 @@ class RouteSelector {
         this.game.startRoute(this.selectedRoute);
     }
 }
+
+    // ========================================
+    // TORI DIGITAL SPRITE EFFECTS
+    // ========================================
+
+    setDigitalSpriteEffect(position = 'right', intense = false) {
+        const sprite = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!sprite) return;
+
+        sprite.classList.add('digital-sprite');
+        if (intense) {
+            sprite.classList.add('glitch-intense');
+        }
+        console.log(?? Digital sprite effect enabled (, intense: ));
+    }
+
+    clearDigitalSpriteEffect(position = 'right') {
+        const sprite = position === 'left' ? this.spriteLeft : this.spriteRight;
+        if (!sprite) return;
+
+        sprite.classList.remove('digital-sprite', 'glitch-intense');
+        console.log(?? Digital sprite effect cleared ());
+    }

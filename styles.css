@@ -9918,3 +9918,112 @@ button.keyboard-focus:focus,
         filter: hue-rotate(180deg);
     }
 }
+/* ========================================
+   TORI DIGITAL SPRITE EFFECTS
+   Scan lines and glitch effects for digital state
+   ======================================== */
+
+.digital-sprite {
+    position: relative;
+}
+
+/* Scan lines overlay */
+.digital-sprite::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.03) 0px,
+        rgba(0, 255, 255, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: scanlineScroll 8s linear infinite;
+}
+
+/* Glitch effect overlay */
+.digital-sprite::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(0, 255, 255, 0.1) 50%,
+        transparent 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+    animation: digitalGlitch 3s ease-in-out infinite;
+}
+
+@keyframes scanlineScroll {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(4px);
+    }
+}
+
+@keyframes digitalGlitch {
+    0%, 90%, 100% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+    92% {
+        opacity: 1;
+        transform: translateX(-2px);
+    }
+    94% {
+        opacity: 1;
+        transform: translateX(2px);
+    }
+    96% {
+        opacity: 1;
+        transform: translateX(-1px);
+    }
+    98% {
+        opacity: 0.5;
+        transform: translateX(1px);
+    }
+}
+
+/* Stronger glitch variant for intense moments */
+.digital-sprite.glitch-intense::after {
+    animation: digitalGlitchIntense 1.5s ease-in-out infinite;
+}
+
+@keyframes digitalGlitchIntense {
+    0%, 80%, 100% {
+        opacity: 0;
+        transform: translateX(0) skew(0deg);
+    }
+    82% {
+        opacity: 1;
+        transform: translateX(-4px) skew(2deg);
+        filter: hue-rotate(90deg);
+    }
+    86% {
+        opacity: 1;
+        transform: translateX(4px) skew(-2deg);
+        filter: hue-rotate(-90deg);
+    }
+    90% {
+        opacity: 0.7;
+        transform: translateX(-2px) skew(1deg);
+    }
+    94% {
+        opacity: 0.5;
+        transform: translateX(2px) skew(-1deg);
+    }
+}
