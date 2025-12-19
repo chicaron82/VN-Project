@@ -372,7 +372,8 @@ class VisualCueManager {
 
         // DIZEE FIX: Don't apply scale animation directly to elements with transform positioning
         // (like route portraits which use translateX). Apply to child img instead if present.
-        const isPositioned = target.classList.contains('route-portrait');
+        const isPositioned = target.classList.contains('ronnie-portrait') ||
+            target.classList.contains('tori-portrait');
         const animTarget = isPositioned ? target.querySelector('img') : target;
 
         if (!animTarget) return;
