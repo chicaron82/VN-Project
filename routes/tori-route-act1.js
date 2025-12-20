@@ -181,6 +181,9 @@ class ToriAct1 {
             dialogue: '"Wait... where am I? What happened? I was just walking..."',
             internal: '[She has no body. No voice. Just consciousness floating in digital darkness.]',
             background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/tori-sprite.png'
+            },
             next: () => this.scene2_calling_out(),
             delay: 3000
         }, 'scene2_confusion');
