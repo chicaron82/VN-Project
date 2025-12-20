@@ -1,0 +1,28 @@
+{
+  "name": "vn-project",
+  "version": "1.0.0",
+  "description": "A dual-perspective visual novel about love, consciousness, and the bootstrap paradox.",
+  "main": "vn-gateway-bridge.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chicaron82/VN-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chicaron82/VN-Project/issues"
+  },
+  "homepage": "https://github.com/chicaron82/VN-Project#readme",
+  "devDependencies": {
+    "vitest": "^4.0.16"
+  }
+}
