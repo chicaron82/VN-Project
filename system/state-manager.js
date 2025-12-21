@@ -635,6 +635,33 @@ class StateManager {
         return !current;
     }
 
+    /**
+     * Set multiple values at once
+     * @param {Object} pathValuePairs - Object with paths as keys and values
+     */
+    batchSet(pathValuePairs) {
+        const results = {};
+        for (const [path, value] of Object.entries(pathValuePairs)) {
+            this.set(path, value);
+            results[path] = true;
+        }
+        console.log(`📦 Batch set ${Object.keys(pathValuePairs).length} values`);
+        return results;
+    }
+
+    /**
+     * Get multiple values at once
+     * @param {Array<string>} paths - Array of paths to get
+     * @returns {Object} Object with paths as keys and values
+     */
+    batchGet(paths) {
+        const results = {};
+        for (const path of paths) {
+            results[path] = this.get(path);
+        }
+        return results;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
