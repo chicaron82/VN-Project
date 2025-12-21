@@ -313,6 +313,58 @@ class StateManager {
         return this.restoreSnapshot(this._quickSaves[name]);
     }
 
+    /**
+     * Compare two snapshots and return differences
+     * @param {Object} snapshot1 - First snapshot (older)
+     * @param {Object} snapshot2 - Second snapshot (newer) or current state if omitted
+     * @returns {Array} List of differences
+     */
+    diff(snapshot1, snapshot2 = null) {
+        const state1 = snapshot1?.state || snapshot1;
+        const state2 = snapshot2?.state || snapshot2 || this._state;
+
+        const differences = [];
+
+        const compare = (obj1, obj2, path = '') => {
+            const keys = new Set([...Object.keys(obj1 || {}), ...Object.keys(obj2 || {})]);
+
+            for (const key of keys) {
+                const fullPath = path ? `${path}.${key}` : key;
+                const val1 = obj1?.[key];
+                const val2 = obj2?.[key];
+
+                if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
+                    compare(val1, val2, fullPath);
+                } else if (val1 !== val2) {
+                    differences.push({
+                        path: fullPath,
+                        before: val1,
+                        after: val2
+                    });
+                }
+            }
+        };
+
+        compare(state1, state2);
+        return differences;
+    }
+
+    /**
+     * Print diff as a formatted table
+     * @param {Object} snapshot1 - First snapshot
+     * @param {Object} snapshot2 - Second snapshot (or current if omitted)
+     */
+    printDiff(snapshot1, snapshot2 = null) {
+        const diffs = this.diff(snapshot1, snapshot2);
+        if (diffs.length === 0) {
+            console.log('✅ No differences found');
+            return diffs;
+        }
+        console.log('📊 State Differences:');
+        console.table(diffs);
+        return diffs;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
