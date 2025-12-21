@@ -5383,10 +5383,7 @@ class GameEngine {
     }
 
     closeBacklog() {
-        const backlogScreen = document.getElementById('backlog-screen');
-        if (backlogScreen) {
-            backlogScreen.style.display = 'none';
-        }
+        this.uiController.closeBacklog();
     }
 
     // ========================================
@@ -7356,9 +7353,7 @@ INSANE mode awaits those who dare.
     }
 
     closeBootstrap() {
-        const overlay = document.getElementById('bootstrap-overlay');
-        overlay.classList.remove('visible');
-        setTimeout(() => overlay.style.display = 'none', 500);
+        this.uiController.closeBootstrap();
     }
 
     showEchoCompilation() {
