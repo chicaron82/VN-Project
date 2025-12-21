@@ -5825,6 +5825,24 @@ class GameEngine {
         return this.state.createSnapshot(name);
     }
 
+    stateWatch(path) {
+        // DEV COMMAND: Watch a path for changes
+        // Usage: game.stateWatch('tether.level')
+        return this.state.watch(path);
+    }
+
+    stateUnwatch(path) {
+        // DEV COMMAND: Stop watching a path
+        // Usage: game.stateUnwatch('tether.level')
+        this.state.unwatch(path);
+    }
+
+    stateWatchers() {
+        // DEV COMMAND: List all active watchers
+        // Usage: game.stateWatchers()
+        return this.state.listWatchers();
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
