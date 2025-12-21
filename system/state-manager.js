@@ -592,6 +592,49 @@ class StateManager {
         return bytes;
     }
 
+    /**
+     * Merge an object into state at a path
+     * @param {string} path - Target path
+     * @param {Object} obj - Object to merge
+     */
+    merge(path, obj) {
+        const existing = this.get(path) || {};
+        if (typeof existing !== 'object' || typeof obj !== 'object') {
+            console.error('❌ merge() requires objects');
+            return false;
+        }
+        const merged = { ...existing, ...obj };
+        this.set(path, merged);
+        console.log(`🔀 Merged into ${path}`);
+        return true;
+    }
+
+    /**
+     * Increment a numeric value at path
+     * @param {string} path - Path to number
+     * @param {number} [amount=1] - Amount to add
+     */
+    increment(path, amount = 1) {
+        const current = this.get(path) || 0;
+        if (typeof current !== 'number') {
+            console.error('❌ increment() requires numeric path');
+            return current;
+        }
+        const newValue = current + amount;
+        this.set(path, newValue);
+        return newValue;
+    }
+
+    /**
+     * Toggle a boolean value at path
+     * @param {string} path - Path to boolean
+     */
+    toggle(path) {
+        const current = this.get(path);
+        this.set(path, !current);
+        return !current;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
