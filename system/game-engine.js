@@ -5803,6 +5803,28 @@ class GameEngine {
         return this.state.printDiff(snapshot);
     }
 
+    stateExport() {
+        // DEV COMMAND: Export state as JSON (copies to clipboard too)
+        // Usage: game.stateExport()
+        const json = this.state.exportState();
+        this.state.copyStateToClipboard();
+        console.log('📤 State JSON:');
+        console.log(json);
+        return json;
+    }
+
+    stateImport(json) {
+        // DEV COMMAND: Import state from JSON
+        // Usage: game.stateImport('{"version":1,...}')
+        return this.state.importState(json);
+    }
+
+    stateSnapshot(name = '') {
+        // DEV COMMAND: Create a labeled snapshot
+        // Usage: game.stateSnapshot('before-boss')
+        return this.state.createSnapshot(name);
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
