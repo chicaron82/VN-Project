@@ -5013,80 +5013,11 @@ game.devCommands()
 
     // ========================================
     // TORIGATCHI EASTER EGG - THE REVERSE TRAPDOOR
+    // DIZEE: Delegated to EasterEggController
     // ========================================
 
     activateEasterEggListener() {
-        // Remove existing listener if present
-        if (this.easterEggListener) {
-            document.removeEventListener('keydown', this.easterEggListener);
-        }
-
-        // Only activate if player has completed an ending
-        if (!this.hasCompletedAnyEnding()) {
-            return;
-        }
-
-        // Reset sequence
-        this.easterEggSequence = '';
-
-        // Create and attach listener
-        this.easterEggListener = (e) => {
-            // Only track on main menu
-            if (this.mainMenu.style.display !== 'flex' && this.mainMenu.style.display !== 'block') {
-                return;
-            }
-
-            // Add key to sequence
-            this.easterEggSequence += e.key.toLowerCase();
-
-            // Check for trigger ("torigatchi")
-            if (this.easterEggSequence.includes('torigatchi')) {
-                this.showTorigatchiEasterEgg();
-                this.easterEggSequence = ''; // Reset after trigger
-            }
-
-            // Check for Konami Code (Up, Up, Down, Down, Left, Right, Left, Right, B, A)
-            // Stored as "arrowuparrowunarrowdownarrowdownarrowleftarrowrightarrowleftarrowrightarrowba"
-            // Simplified check for the end of the sequence
-            const konamiPattern = "arrowuparrowuparrowdownarrowdownarrowleftarrowrightarrowleftarrowrightarrowba";
-            if (this.easterEggSequence.includes(konamiPattern)) {
-                console.log('🎮 Konami Code detected!');
-
-                // Check if player is in INSANE mode
-                const isInsaneMode = this.gameState?.flags?.insaneModeActive;
-
-                if (isInsaneMode) {
-                    // INSANE MODE: Offer escape or tether buff
-                    this.showKonamiInsaneEscape();
-                } else {
-                    // NORMAL MODE: Show "cheat disabled" message
-                    this.achievementManager.showNotification({
-                        id: 'konami_fail',
-                        icon: '🚫',
-                        title: 'ADMIN OVERRIDE',
-                        description: 'Cheat module deleted by Administrator.',
-                        rare: true
-                    });
-
-                    // Glitch effect
-                    document.body.classList.add('glitch-effect');
-                    setTimeout(() => document.body.classList.remove('glitch-effect'), 500);
-
-                    // Play error haptic
-                    if (navigator.vibrate) navigator.vibrate([50, 50, 50, 50, 100]);
-                }
-
-                this.easterEggSequence = ''; // Reset
-            }
-
-            // Keep sequence reasonable length
-            if (this.easterEggSequence.length > 200) { // Increased buffer for Konami code
-                this.easterEggSequence = this.easterEggSequence.slice(-100);
-            }
-        };
-
-        document.addEventListener('keydown', this.easterEggListener);
-        console.log('🥚 Easter egg listener activated. Type "torigatchi" on main menu...');
+        this.easterEggController?.activateEasterEggListener();
     }
 
     // ========================================
