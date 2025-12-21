@@ -781,3 +781,131 @@ describe('StateManager Diff', () => {
         });
     });
 });
+
+// ========================================
+// EXPORT/IMPORT TESTS (Session 21)
+// ========================================
+
+describe('StateManager Export/Import', () => {
+    let state;
+
+    class StateManagerWithExport {
+        constructor() {
+            this._state = {
+                game: { loopVersion: 848 },
+                tether: { level: 100 }
+            };
+            this._history = [];
+            this._historyEnabled = true;
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        _recordHistory(path, oldValue, newValue) {
+            this._history.push({ path, oldValue, newValue });
+        }
+
+        exportState() {
+            return JSON.stringify({
+                version: 1,
+                timestamp: Date.now(),
+                state: structuredClone(this._state)
+            }, null, 2);
+        }
+
+        importState(json) {
+            try {
+                const data = JSON.parse(json);
+                if (!data.state) return false;
+                this._state = structuredClone(data.state);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithExport();
+    });
+
+    describe('exportState()', () => {
+        it('should return valid JSON string', () => {
+            const json = state.exportState();
+            const parsed = JSON.parse(json);
+
+            expect(parsed).toBeDefined();
+            expect(parsed.version).toBe(1);
+        });
+
+        it('should include timestamp', () => {
+            const before = Date.now();
+            const json = state.exportState();
+            const after = Date.now();
+            const parsed = JSON.parse(json);
+
+            expect(parsed.timestamp).toBeGreaterThanOrEqual(before);
+            expect(parsed.timestamp).toBeLessThanOrEqual(after);
+        });
+
+        it('should include current state', () => {
+            state.set('tether.level', 75);
+            const json = state.exportState();
+            const parsed = JSON.parse(json);
+
+            expect(parsed.state.tether.level).toBe(75);
+        });
+    });
+
+    describe('importState()', () => {
+        it('should restore state from JSON', () => {
+            state.set('tether.level', 50);
+            const json = state.exportState();
+
+            state.set('tether.level', 25);
+            state.importState(json);
+
+            expect(state.get('tether.level')).toBe(50);
+        });
+
+        it('should return false for invalid JSON', () => {
+            expect(state.importState('not json')).toBe(false);
+        });
+
+        it('should return false for missing state', () => {
+            expect(state.importState('{}')).toBe(false);
+        });
+
+        it('should handle round-trip export/import', () => {
+            state.set('game.loopVersion', 849);
+            state.set('tether.level', 80);
+            const json = state.exportState();
+
+            // Wipe state
+            state._state = { game: {}, tether: {} };
+
+            state.importState(json);
+
+            expect(state.get('game.loopVersion')).toBe(849);
+            expect(state.get('tether.level')).toBe(80);
+        });
+    });
+});
