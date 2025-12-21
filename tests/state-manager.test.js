@@ -1268,3 +1268,84 @@ describe('StateManager Utility Methods', () => {
         });
     });
 });
+
+// ========================================
+// SESSION 42: BATCH OPERATION TESTS! 📦
+// ========================================
+
+describe('StateManager Batch Operations', () => {
+    let state;
+
+    class StateManagerWithBatch {
+        constructor() {
+            this._state = { game: {}, tether: {} };
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        batchSet(pairs) {
+            for (const [path, value] of Object.entries(pairs)) {
+                this.set(path, value);
+            }
+            return true;
+        }
+
+        batchGet(paths) {
+            const results = {};
+            for (const path of paths) {
+                results[path] = this.get(path);
+            }
+            return results;
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithBatch();
+    });
+
+    describe('batchSet()', () => {
+        it('should set multiple values at once', () => {
+            state.batchSet({
+                'game.score': 100,
+                'tether.level': 50
+            });
+            expect(state.get('game.score')).toBe(100);
+            expect(state.get('tether.level')).toBe(50);
+        });
+    });
+
+    describe('batchGet()', () => {
+        it('should get multiple values at once', () => {
+            state.set('game.score', 200);
+            state.set('tether.level', 75);
+
+            const results = state.batchGet(['game.score', 'tether.level']);
+
+            expect(results['game.score']).toBe(200);
+            expect(results['tether.level']).toBe(75);
+        });
+
+        it('should return undefined for missing paths', () => {
+            const results = state.batchGet(['nonexistent.path']);
+            expect(results['nonexistent.path']).toBeUndefined();
+        });
+    });
+});
