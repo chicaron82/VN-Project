@@ -1105,4 +1105,67 @@ describe('StateManager Path Utilities', () => {
             expect(state.deletePath('nonexistent.path')).toBe(false);
         });
     });
+
+    describe('keys()', () => {
+        class StateManagerWithKeys {
+            constructor() {
+                this._state = {
+                    game: { loopVersion: 848, status: 'active' },
+                    tether: { level: 100 }
+                };
+            }
+
+            get(path) {
+                const keys = path.split('.');
+                let current = this._state;
+                for (const key of keys) {
+                    if (current === undefined) return undefined;
+                    current = current[key];
+                }
+                return current;
+            }
+
+            keys(prefix = '') {
+                const paths = [];
+                const traverse = (obj, currentPath) => {
+                    for (const key in obj) {
+                        const fullPath = currentPath ? `${currentPath}.${key}` : key;
+                        if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                            traverse(obj[key], fullPath);
+                        } else {
+                            paths.push(fullPath);
+                        }
+                    }
+                };
+                const startObj = prefix ? this.get(prefix) : this._state;
+                traverse(startObj, prefix);
+                return paths;
+            }
+        }
+
+        let state;
+
+        beforeEach(() => {
+            state = new StateManagerWithKeys();
+        });
+
+        it('should return all paths', () => {
+            const keys = state.keys();
+            expect(keys).toContain('game.loopVersion');
+            expect(keys).toContain('game.status');
+            expect(keys).toContain('tether.level');
+        });
+
+        it('should filter by prefix', () => {
+            const keys = state.keys('game');
+            expect(keys).toContain('game.loopVersion');
+            expect(keys).toContain('game.status');
+            expect(keys).not.toContain('tether.level');
+        });
+
+        it('should return empty array for non-existent prefix', () => {
+            const keys = state.keys('nonexistent');
+            expect(keys.length).toBe(0);
+        });
+    });
 });
