@@ -162,4 +162,77 @@ class SceneRenderer {
             game.choicesContainer.appendChild(button);
         });
     }
+
+    // ========================================
+    // TYPEWRITER EFFECT
+    // Extracted from GameEngine.typewriterText
+    // ========================================
+
+    typewriterText(element, text, callback, internalTextLength = 0, slowReveal = false) {
+        const game = this.game;
+
+        // Store slow reveal flag for getTypewriterSpeed
+        game.slowRevealActive = slowReveal;
+
+        // Check if instant mode is enabled
+        const speed = game.getTypewriterSpeed();
+        if (speed === 0) {
+            // Instant mode - show all text immediately
+            element.textContent = text;
+            game.typewriterActive = false;
+
+            // Start auto-advance timer in instant mode
+            if (game.settingsManager) {
+                game.settingsManager.startAutoAdvance(() => {
+                    if (!game.choiceMenu || game.choiceMenu.style.display === 'none') {
+                        game.advance();
+                    }
+                });
+            }
+
+            if (callback) callback();
+            return;
+        }
+
+        // Check if text needs pagination on mobile
+        const totalLength = text.length + internalTextLength;
+
+        if (game.shouldPaginateText(totalLength)) {
+            game.paginateAndDisplayText(element, text, callback);
+        } else {
+            // Original typewriter behavior for desktop/short text
+            game.typewriterActive = true;
+            game.fullDialogueText = text;
+            game.typewriterCallback = callback;
+            element.textContent = '';
+            let i = 0;
+
+            // Clear any existing interval
+            if (game.typewriterInterval) {
+                clearInterval(game.typewriterInterval);
+            }
+
+            game.typewriterInterval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(game.typewriterInterval);
+                    game.typewriterInterval = null;
+                    game.typewriterActive = false;
+
+                    // Start auto-advance timer after typewriter finishes
+                    if (game.settingsManager) {
+                        game.settingsManager.startAutoAdvance(() => {
+                            if (!game.choiceMenu || game.choiceMenu.style.display === 'none') {
+                                game.advance();
+                            }
+                        });
+                    }
+
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+    }
 }

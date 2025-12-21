@@ -3423,7 +3423,7 @@ class GameEngine {
 
             // ZEE'S ADDITION: Support slow-motion reveal 🖤
             const slowReveal = scene.slowReveal || false;
-            this.typewriterText(this.dialogueText, scene.dialogue, typewriterCallback, internalLength, slowReveal);
+            this.sceneRenderer.typewriterText(this.dialogueText, scene.dialogue, typewriterCallback, internalLength, slowReveal);
         }
 
         // ========================================
