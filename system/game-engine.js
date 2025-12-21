@@ -5749,6 +5749,18 @@ class GameEngine {
     // DEV COMMANDS
     // ========================================
 
+    showStatePanel() {
+        // DEV COMMAND: Open StateManager debug panel
+        // Usage in console: game.showStatePanel()
+        return this.state.createDebugPanel();
+    }
+
+    hideStatePanel() {
+        // DEV COMMAND: Close StateManager debug panel
+        // Usage in console: game.hideStatePanel()
+        this.state.closeDebugPanel();
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
