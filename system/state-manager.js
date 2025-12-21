@@ -556,6 +556,31 @@ class StateManager {
         return this.get(path) !== undefined;
     }
 
+    /**
+     * Get all keys/paths in state (flattened)
+     * @param {string} [prefix=''] - Path prefix
+     * @returns {Array<string>} List of all paths
+     */
+    keys(prefix = '') {
+        const paths = [];
+
+        const traverse = (obj, currentPath) => {
+            for (const key in obj) {
+                const fullPath = currentPath ? `${currentPath}.${key}` : key;
+                if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                    traverse(obj[key], fullPath);
+                } else {
+                    paths.push(fullPath);
+                }
+            }
+        };
+
+        const startObj = prefix ? this.get(prefix) : this._state;
+        traverse(startObj, prefix);
+
+        return paths;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
