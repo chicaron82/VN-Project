@@ -558,4 +558,32 @@ class UIController {
             "💡 Ronnie's route focuses on external perspective"
         ];
     }
+
+    getHapticPatterns() {
+        return {
+            // Basic intensity levels
+            // DIZEE FIX: Increased durations again (40ms -> 60ms) for more noticeable feedback
+            'light': 60,           // Quick tap (UI navigation)
+            'medium': 100,         // Standard feedback (choices, buttons)
+            'strong': 150,         // Important actions (confirmations)
+
+            // Rhythmic patterns (EMOTIONAL LANGUAGE)
+            // DIZEE: Narrative haptics = 1-second buzzes (very distinct from UI)
+            'longBuzz': 1000,                 // Single 1-second buzz (tamagotchi pull)
+            'double': [1000, 200, 1000],      // Two 1-second buzzes (vessel hop, transitions)
+            'triple': [50, 40, 50, 40, 50],   // Three taps (special unlocks)
+            'denied': [80, 50, 80, 50, 80],   // Triple DENIAL (blocked saves, locked actions, despair)
+            'pulse': [60, 40, 60, 40, 60],    // Sustained pulse (loading, waiting)
+
+            // Feedback types
+            'success': [40, 50, 80],          // Success chirp (achievement, unlock)
+            'warning': [100, 100, 100],         // Alert buzz (warning, caution)
+            'error': [150, 50, 150, 50, 150], // Error shake (failure, blocked)
+
+            // Special story moments
+            'heartbeat': [80, 150, 100, 150],  // Slow heartbeat (tension moments)
+            'glitch': [30, 30, 15, 40, 20],    // Glitchy stutter (reality breaks)
+            'echo': [40, 100, 40, 100, 40],     // Echo appearance
+        };
+    }
 }
