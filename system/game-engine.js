@@ -9054,6 +9054,38 @@ There is no v849.`
     }
 
 
+    // ========================================
+    // SOLID REFACTOR: BACKWARD-COMPATIBLE GETTERS
+    // These allow routes to still use game.skipUnlocked pattern
+    // while state is managed by StateManager
+    // ========================================
+
+    get skipUnlocked() {
+        return this.state.get('unlocks.skipUnlocked');
+    }
+
+    set skipUnlocked(value) {
+        this.state.set('unlocks.skipUnlocked', value);
+        localStorage.setItem('skipUnlocked', value.toString());
+    }
+
+    get skipPrologueUnlocked() {
+        return this.state.get('unlocks.skipPrologueUnlocked');
+    }
+
+    set skipPrologueUnlocked(value) {
+        this.state.set('unlocks.skipPrologueUnlocked', value);
+        localStorage.setItem('skipPrologueUnlocked', value.toString());
+    }
+
+    get ronnieNotesUnlocked() {
+        return this.state.get('unlocks.ronnieNotesUnlocked');
+    }
+
+    set ronnieNotesUnlocked(value) {
+        this.state.set('unlocks.ronnieNotesUnlocked', value);
+        localStorage.setItem('ronnieNotesUnlocked', value.toString());
+    }
 }
 
 // ========================================
