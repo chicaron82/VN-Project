@@ -164,10 +164,28 @@ class SettingsManager {
     }
 
     loadSettings() {
+        // DIZEE: Session 49 - First try StateManager, then localStorage
+        if (this.game && this.game.state) {
+            // Sync from StateManager if available
+            const stateSettings = this.game.state.get('settings');
+            if (stateSettings) {
+                this.settings = { ...this.settings, ...stateSettings };
+                console.log('📦 Settings loaded from StateManager');
+                return;
+            }
+        }
+
+        // Fallback to localStorage
         const saved = localStorage.getItem('gameSettings');
         if (saved) {
             try {
                 this.settings = { ...this.settings, ...JSON.parse(saved) };
+                console.log('📦 Settings loaded from localStorage');
+
+                // Sync to StateManager if available
+                if (this.game && this.game.state) {
+                    this.game.state.set('settings', this.settings);
+                }
             } catch (e) {
                 console.error('Failed to load settings:', e);
             }
@@ -175,7 +193,13 @@ class SettingsManager {
     }
 
     saveSettings() {
+        // Save to localStorage for persistence
         localStorage.setItem('gameSettings', JSON.stringify(this.settings));
+
+        // DIZEE: Session 49 - Also sync to StateManager for reactive updates
+        if (this.game && this.game.state) {
+            this.game.state.set('settings', this.settings);
+        }
     }
 
     setupUI() {
