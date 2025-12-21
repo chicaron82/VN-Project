@@ -245,6 +245,75 @@ class StateManager {
     }
 
     // ========================================
+    // STATE SNAPSHOTS (Session 13)
+    // ========================================
+
+    /**
+     * Create a snapshot of the current state
+     * Useful for debugging or manual save points
+     * @param {string} [name] - Optional name for the snapshot
+     * @returns {Object} Snapshot object with metadata
+     */
+    createSnapshot(name = '') {
+        const snapshot = {
+            name: name || `Snapshot ${Date.now()}`,
+            timestamp: Date.now(),
+            state: structuredClone(this._state)
+        };
+
+        console.log(`📸 Snapshot created: ${snapshot.name}`);
+        return snapshot;
+    }
+
+    /**
+     * Restore state from a snapshot
+     * @param {Object} snapshot - Snapshot object from createSnapshot
+     * @returns {boolean} True if restore successful
+     */
+    restoreSnapshot(snapshot) {
+        if (!snapshot || !snapshot.state) {
+            console.error('❌ Invalid snapshot');
+            return false;
+        }
+
+        // Store old state in history before restore
+        const oldState = structuredClone(this._state);
+        this._recordHistory('_fullState', oldState, snapshot.state);
+
+        // Restore the state
+        this._state = structuredClone(snapshot.state);
+        this._isDirty = true;
+
+        console.log(`📸 Snapshot restored: ${snapshot.name}`);
+        return true;
+    }
+
+    /**
+     * Quick save - create and store a named snapshot
+     * @param {string} name - Name for the quick save
+     */
+    quickSave(name = 'quicksave') {
+        const snapshot = this.createSnapshot(name);
+        this._quickSaves = this._quickSaves || {};
+        this._quickSaves[name] = snapshot;
+        console.log(`💾 Quick save: ${name}`);
+        return snapshot;
+    }
+
+    /**
+     * Quick load - restore from a named snapshot
+     * @param {string} name - Name of the quick save to restore
+     * @returns {boolean} True if restore successful
+     */
+    quickLoad(name = 'quicksave') {
+        if (!this._quickSaves || !this._quickSaves[name]) {
+            console.error(`❌ No quick save found: ${name}`);
+            return false;
+        }
+        return this.restoreSnapshot(this._quickSaves[name]);
+    }
+
+    // ========================================
     // HELPER METHODS
     // ========================================
 
