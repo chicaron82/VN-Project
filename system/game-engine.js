@@ -5863,6 +5863,24 @@ class GameEngine {
         return this.state.size();
     }
 
+    stateIncrement(path, amount = 1) {
+        // DEV COMMAND: Increment a numeric value
+        // Usage: game.stateIncrement('game.loopVersion')
+        return this.state.increment(path, amount);
+    }
+
+    stateToggle(path) {
+        // DEV COMMAND: Toggle a boolean value
+        // Usage: game.stateToggle('ui.hidden')
+        return this.state.toggle(path);
+    }
+
+    stateMerge(path, obj) {
+        // DEV COMMAND: Merge object into state
+        // Usage: game.stateMerge('settings', { volume: 50 })
+        return this.state.merge(path, obj);
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
