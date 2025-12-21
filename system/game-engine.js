@@ -5792,6 +5792,17 @@ class GameEngine {
         return history;
     }
 
+    stateDiff(saveName = 'quicksave') {
+        // DEV COMMAND: Compare current state with a quick save
+        // Usage: game.stateDiff() or game.stateDiff('mysave')
+        const snapshot = this.state._quickSaves?.[saveName];
+        if (!snapshot) {
+            console.error(`❌ No save found: ${saveName}`);
+            return null;
+        }
+        return this.state.printDiff(snapshot);
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
