@@ -1360,3 +1360,77 @@ describe('StateManager Batch Operations', () => {
         });
     });
 });
+
+// ========================================
+// SESSION 52: SETTINGSMANAGER INTEGRATION! ⚙️
+// ========================================
+
+describe('StateManager Settings Integration', () => {
+    let state;
+
+    class StateManagerWithSettings {
+        constructor() {
+            this._state = {
+                settings: {
+                    textSpeed: 'normal',
+                    autoAdvance: false,
+                    autoDelay: 2000,
+                    tetherDifficulty: 'normal',
+                    hapticEnabled: true,
+                    comfortMode: false
+                }
+            };
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return typeof current === 'object' ? structuredClone(current) : current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithSettings();
+    });
+
+    it('should store settings object', () => {
+        const settings = state.get('settings');
+        expect(settings.textSpeed).toBe('normal');
+    });
+
+    it('should update individual settings', () => {
+        state.set('settings.textSpeed', 'fast');
+        expect(state.get('settings.textSpeed')).toBe('fast');
+    });
+
+    it('should update entire settings object', () => {
+        const newSettings = { textSpeed: 'slow', autoAdvance: true };
+        state.set('settings', newSettings);
+        expect(state.get('settings.textSpeed')).toBe('slow');
+        expect(state.get('settings.autoAdvance')).toBe(true);
+    });
+
+    it('should handle hapticEnabled toggle', () => {
+        state.set('settings.hapticEnabled', false);
+        expect(state.get('settings.hapticEnabled')).toBe(false);
+    });
+
+    it('should handle comfortMode toggle', () => {
+        state.set('settings.comfortMode', true);
+        expect(state.get('settings.comfortMode')).toBe(true);
+    });
+});
