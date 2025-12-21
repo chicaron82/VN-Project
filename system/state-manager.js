@@ -63,6 +63,11 @@ class StateManager {
         // Dirty flag for persistence optimization
         this._isDirty = false;
 
+        // State history for debugging/undo (Session 11)
+        this._history = [];
+        this._maxHistorySize = 50;
+        this._historyEnabled = true;
+
         console.log('💚 StateManager initialized');
     }
 
@@ -112,6 +117,11 @@ class StateManager {
 
         // Get old value for comparison
         const oldValue = this.get(path);
+
+        // Record history before change (for undo)
+        if (this._historyEnabled && oldValue !== clonedValue) {
+            this._recordHistory(path, oldValue, clonedValue);
+        }
 
         // Set the value
         this._setByPath(this._state, path, clonedValue);
@@ -330,6 +340,72 @@ class StateManager {
         }
 
         return result;
+    }
+
+    // ========================================
+    // STATE HISTORY (Session 11)
+    // ========================================
+
+    /**
+     * Record a state change in history
+     * @private
+     */
+    _recordHistory(path, oldValue, newValue) {
+        const entry = {
+            timestamp: Date.now(),
+            path,
+            oldValue: structuredClone(oldValue),
+            newValue: structuredClone(newValue)
+        };
+
+        this._history.push(entry);
+
+        // Trim history if over max size
+        while (this._history.length > this._maxHistorySize) {
+            this._history.shift();
+        }
+    }
+
+    /**
+     * Undo the last state change
+     * @returns {Object|null} The undone entry, or null if no history
+     */
+    undo() {
+        if (this._history.length === 0) {
+            console.log('⏪ No history to undo');
+            return null;
+        }
+
+        const entry = this._history.pop();
+
+        // Temporarily disable history to avoid recording the undo itself
+        this._historyEnabled = false;
+        this.set(entry.path, entry.oldValue);
+        this._historyEnabled = true;
+
+        console.log(`⏪ Undone: ${entry.path} restored to ${JSON.stringify(entry.oldValue)}`);
+        return entry;
+    }
+
+    /**
+     * Get state change history
+     * @param {number} [count] - Number of recent entries (default: all)
+     * @returns {Array} History entries
+     */
+    getHistory(count) {
+        const history = [...this._history];
+        if (count) {
+            return history.slice(-count);
+        }
+        return history;
+    }
+
+    /**
+     * Clear state history
+     */
+    clearHistory() {
+        this._history = [];
+        console.log('🗑️ State history cleared');
     }
 
     // ========================================
