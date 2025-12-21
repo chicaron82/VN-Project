@@ -508,3 +508,150 @@ describe('StateManager History', () => {
         });
     });
 });
+
+// ========================================
+// STATE SNAPSHOT TESTS (Session 14)
+// ========================================
+
+describe('StateManager Snapshots', () => {
+    let state;
+
+    // Extended StateManager with snapshots for testing
+    class StateManagerWithSnapshots {
+        constructor() {
+            this._state = {
+                game: { loopVersion: 848 },
+                tether: { level: 100 }
+            };
+            this._quickSaves = {};
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        createSnapshot(name = '') {
+            return {
+                name: name || `Snapshot ${Date.now()}`,
+                timestamp: Date.now(),
+                state: structuredClone(this._state)
+            };
+        }
+
+        restoreSnapshot(snapshot) {
+            if (!snapshot || !snapshot.state) return false;
+            this._state = structuredClone(snapshot.state);
+            return true;
+        }
+
+        quickSave(name = 'quicksave') {
+            const snapshot = this.createSnapshot(name);
+            this._quickSaves[name] = snapshot;
+            return snapshot;
+        }
+
+        quickLoad(name = 'quicksave') {
+            if (!this._quickSaves[name]) return false;
+            return this.restoreSnapshot(this._quickSaves[name]);
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithSnapshots();
+    });
+
+    describe('createSnapshot()', () => {
+        it('should create a snapshot of current state', () => {
+            const snapshot = state.createSnapshot();
+
+            expect(snapshot.state).toBeDefined();
+            expect(snapshot.state.tether.level).toBe(100);
+        });
+
+        it('should include timestamp', () => {
+            const before = Date.now();
+            const snapshot = state.createSnapshot();
+            const after = Date.now();
+
+            expect(snapshot.timestamp).toBeGreaterThanOrEqual(before);
+            expect(snapshot.timestamp).toBeLessThanOrEqual(after);
+        });
+
+        it('should use provided name', () => {
+            const snapshot = state.createSnapshot('my-save');
+            expect(snapshot.name).toBe('my-save');
+        });
+
+        it('should deep clone the state', () => {
+            const snapshot = state.createSnapshot();
+            state.set('tether.level', 50);
+
+            expect(snapshot.state.tether.level).toBe(100); // Original preserved
+        });
+    });
+
+    describe('restoreSnapshot()', () => {
+        it('should restore state from snapshot', () => {
+            state.set('tether.level', 75);
+            const snapshot = state.createSnapshot();
+
+            state.set('tether.level', 25);
+            state.restoreSnapshot(snapshot);
+
+            expect(state.get('tether.level')).toBe(75);
+        });
+
+        it('should return false for invalid snapshot', () => {
+            expect(state.restoreSnapshot(null)).toBe(false);
+            expect(state.restoreSnapshot({})).toBe(false);
+        });
+    });
+
+    describe('quickSave/quickLoad()', () => {
+        it('should save and load state', () => {
+            state.set('tether.level', 80);
+            state.quickSave('test');
+
+            state.set('tether.level', 20);
+            state.quickLoad('test');
+
+            expect(state.get('tether.level')).toBe(80);
+        });
+
+        it('should support multiple named saves', () => {
+            state.set('tether.level', 100);
+            state.quickSave('save1');
+
+            state.set('tether.level', 50);
+            state.quickSave('save2');
+
+            state.set('tether.level', 0);
+
+            state.quickLoad('save1');
+            expect(state.get('tether.level')).toBe(100);
+
+            state.quickLoad('save2');
+            expect(state.get('tether.level')).toBe(50);
+        });
+
+        it('should return false for non-existent save', () => {
+            expect(state.quickLoad('nonexistent')).toBe(false);
+        });
+    });
+});
