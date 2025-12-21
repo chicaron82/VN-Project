@@ -313,6 +313,10 @@ class GameEngine {
         this.sceneRenderer = new SceneRenderer(this);
         console.log('🔧 SOLID: SceneRenderer initialized');
 
+        // SOLID Refactor: Initialize UI overlay management
+        this.uiController = new UIController(this);
+        console.log('🔧 SOLID: UIController initialized');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -516,7 +520,7 @@ class GameEngine {
         console.error(`❌ Game Error [${context}]:`, error);
 
         // Show user-friendly error overlay
-        this.showErrorOverlay(
+        this.uiController.showErrorOverlay(
             'Something went wrong',
             `An error occurred while ${context}.\n\nThe game will attempt to recover.\n\nIf this persists, try refreshing the page.`
         );
@@ -1229,7 +1233,7 @@ class GameEngine {
 
                 if (criticalFailed.length > 0) {
                     console.error('❌ CRITICAL ASSETS FAILED TO LOAD:', criticalFailed);
-                    this.showErrorOverlay(
+                    this.uiController.showErrorOverlay(
                         'Asset Loading Error',
                         'Some critical game assets failed to load.\n\nPlease check your internet connection and refresh the page.'
                     );
