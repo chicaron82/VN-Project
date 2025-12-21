@@ -40,15 +40,24 @@ class TetherSystem {
         this.route = route;
 
         // ========================================
-        // TETHER STATE
+        // SOLID REFACTOR: Wire to StateManager
         // ========================================
+
+        // Initialize tether state in StateManager
+        const initialLevel = GameConfig.TETHER.INITIAL_LEVEL;
+        this.game.state.set('tether.level', initialLevel);
 
         // Get current difficulty profile
         const currentDifficulty = game.settingsManager?.settings?.tetherDifficulty || 'normal';
         const profile = getDifficultyProfile(currentDifficulty);
 
-        this.tetherLevel = GameConfig.TETHER.INITIAL_LEVEL;
-        this.tetherDecayRate = profile.decayRates.base;  // From difficulty profile
+        // Store difficulty settings in StateManager
+        this.game.state.set('tether.difficulty', currentDifficulty);
+        this.game.state.set('tether.decayRate', profile.decayRates.base);
+        this.game.state.set('tether.cap', profile.tetherCap);
+
+        // Local instance variables (non-state)
+        this.tetherDecayRate = profile.decayRates.base;  // Cache for performance
         this.currentDifficulty = currentDifficulty;      // Track current difficulty
         this.tetherDecayTimer = null;                    // Passive decay interval
         this.holdOnCooldown = false;                     // Hold On button cooldown state
@@ -690,6 +699,19 @@ class TetherSystem {
         this.echoDespairText = null;
 
         console.log('✅ TetherSystem cleanup complete');
+    }
+
+    // ========================================
+    // SOLID REFACTOR: TETHER LEVEL ACCESSOR
+    // Reads/writes through StateManager for reactive updates
+    // ========================================
+
+    get tetherLevel() {
+        return this.game.state.get('tether.level');
+    }
+
+    set tetherLevel(value) {
+        this.game.state.set('tether.level', value);
     }
 }
 
