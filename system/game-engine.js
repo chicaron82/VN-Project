@@ -6169,108 +6169,27 @@ game.devCommands()
     }
 
     showSkipUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'skip-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NEW FEATURE UNLOCKED! ✨</div>
-            <div class="unlock-feature">SKIP READ TEXT</div>
-            <div class="unlock-description">
-                You've completed a timeline.<br>
-                You can now fast-forward through<br>
-                previously seen dialogue on future<br>
-                playthroughs.<br><br>
-                Press [S] or click [SKIP >>] to activate.<br><br>
-                <em>The loop remembers. You remember.</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeSkipUnlockNotification()">CONTINUE</button>
-        `;
-
-        document.body.appendChild(notification);
-
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+        this.uiController.showSkipUnlockNotification();
     }
 
     closeSkipUnlockNotification() {
-        const notification = document.getElementById('skip-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        this.uiController.closeSkipUnlockNotification();
     }
 
-    // ZEERAH'S ADDITION: Notes unlock notification (similar to skip)
     showNotesUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'notes-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NOTES NOW UNLOCKED! 📝</div>
-            <div class="unlock-feature">COLLECTIBLE NOTES SYSTEM</div>
-            <div class="unlock-description">
-                You've completed an ending.<br>
-                Hidden notes from the UV7 crew can now<br>
-                be discovered throughout both routes.<br><br>
-                Look for the 📝 icon during gameplay.<br><br>
-                <em>Some notes contain secret codes...</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeNotesUnlockNotification()">CONTINUE</button>
-        `;
-
-        document.body.appendChild(notification);
-
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+        this.uiController.showNotesUnlockNotification();
     }
 
     closeNotesUnlockNotification() {
-        const notification = document.getElementById('notes-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        this.uiController.closeNotesUnlockNotification();
     }
 
-    // DIZEE'S ADDITION: ToriGatchi unlock notification
     showUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'torigatchi-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NEW MAIN MENU OPTION UNLOCKED! 🎮</div>
-            <div class="unlock-feature">TORIGATCHI</div>
-            <div class="unlock-description">
-                You've discovered the reverse trapdoor.<br><br>
-                ToriGatchi is now permanently available<br>
-                from the main menu. No need to type the<br>
-                code again - just look for the 🎮 button.<br><br>
-                <em>The gateway remembers you.</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeToriGatchiUnlockNotification()">CONTINUE</button>
-        `;
-
-        document.body.appendChild(notification);
-
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+        this.uiController.showToriGatchiUnlockNotification();
     }
 
     closeToriGatchiUnlockNotification() {
-        const notification = document.getElementById('torigatchi-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        this.uiController.closeToriGatchiUnlockNotification();
     }
 
     toggleSkip() {
