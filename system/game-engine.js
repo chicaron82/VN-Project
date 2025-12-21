@@ -7462,9 +7462,7 @@ INSANE mode awaits those who dare.
     }
 
     closeEchoCompilation() {
-        const overlay = document.getElementById('echo-overlay');
-        overlay.classList.remove('visible');
-        setTimeout(() => overlay.style.display = 'none', 500);
+        this.uiController.closeEchoCompilation();
     }
 
     showTrueAttemptNumber() {

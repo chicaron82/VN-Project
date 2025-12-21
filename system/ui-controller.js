@@ -521,4 +521,10 @@ class UIController {
         overlay.classList.remove('visible');
         setTimeout(() => overlay.style.display = 'none', 500);
     }
+
+    closeEchoCompilation() {
+        const overlay = document.getElementById('echo-overlay');
+        overlay.classList.remove('visible');
+        setTimeout(() => overlay.style.display = 'none', 500);
+    }
 }
