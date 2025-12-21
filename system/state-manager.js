@@ -581,6 +581,17 @@ class StateManager {
         return paths;
     }
 
+    /**
+     * Get estimated size of state in bytes
+     * @returns {number} Estimated size in bytes
+     */
+    size() {
+        const json = JSON.stringify(this._state);
+        const bytes = new Blob([json]).size;
+        console.log(`📦 State size: ${bytes} bytes (${(bytes / 1024).toFixed(2)} KB)`);
+        return bytes;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
