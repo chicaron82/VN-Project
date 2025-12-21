@@ -1765,32 +1765,13 @@ class GameEngine {
         console.log('🖤 Rotating tips system initialized');
     }
 
-    // TIP POOLS
+    // TIP POOLS - delegated to UIController
     getMainMenuTips() {
-        return [
-            "💡 Hidden codes unlock secret content - read the notes carefully...",
-            "💡 Some puzzles require playing both routes to solve",
-            "💡 The version number changes based on your choices",
-            "💡 Complete any ending to unlock Skip mode",
-            "💡 Your saves carry over between sessions",
-            "🖤 \"Always. Always. Always.\" - Tori",
-            "💡 Secret codes are hidden throughout the game...",
-            "💡 The UV7 crew left messages for you in the notes",
-            "💡 Each ending reveals different aspects of the story",
-            "💡 Press [ESC] to pause at any time"
-        ];
+        return this.uiController.getMainMenuTips();
     }
 
     getRouteSelectTips() {
-        return [
-            "💡 Each route contains different pieces of the puzzle",
-            "💡 Tori's route has a tether system - watch it carefully",
-            "💡 Some notes are only found on specific routes",
-            "💡 Playing both routes reveals the full story",
-            "💡 Cross-route secrets exist - explore thoroughly",
-            "💡 Your choices determine which ending you reach",
-            "💡 Ronnie's route focuses on external perspective"
-        ];
+        return this.uiController.getRouteSelectTips();
     }
 
     // START MAIN MENU TIP ROTATION
