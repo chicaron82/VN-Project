@@ -5926,6 +5926,19 @@ class GameEngine {
         return { stats, keys, size };
     }
 
+    stateReset() {
+        // DEV COMMAND: Reset StateManager to default
+        // Usage: game.stateReset()
+        this.state.reset();
+        console.log('🔄 State reset to default');
+    }
+
+    stateClearHistory() {
+        // DEV COMMAND: Clear state history
+        // Usage: game.stateClearHistory()
+        this.state.clearHistory();
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
