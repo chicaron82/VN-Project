@@ -419,16 +419,20 @@ class GameEngine {
             sprites: { left: null, right: null } // NEW: Track sprite state for save/load
         };
 
-        // Skip system (unlocked after completing any ending)
-        this.skipUnlocked = localStorage.getItem('skipUnlocked') === 'true';
+        // Skip system - SOLID: Using StateManager for unlocks
+        // Load from localStorage into StateManager
+        const skipUnlockedValue = localStorage.getItem('skipUnlocked') === 'true';
+        this.state.set('unlocks.skipUnlocked', skipUnlockedValue);
         this.skipActive = false;
         this.readScenes = new Set(JSON.parse(localStorage.getItem('readScenes') || '[]'));
 
-        // Skip prologue system (unlocked after completing any ending)
-        this.skipPrologueUnlocked = localStorage.getItem('skipPrologueUnlocked') === 'true';
+        // Skip prologue system
+        const skipPrologueValue = localStorage.getItem('skipPrologueUnlocked') === 'true';
+        this.state.set('unlocks.skipPrologueUnlocked', skipPrologueValue);
 
-        // Ronnie notes system (unlocked after completing any Ronnie ending)
-        this.ronnieNotesUnlocked = localStorage.getItem('ronnieNotesUnlocked') === 'true';
+        // Ronnie notes system
+        const ronnieNotesValue = localStorage.getItem('ronnieNotesUnlocked') === 'true';
+        this.state.set('unlocks.ronnieNotesUnlocked', ronnieNotesValue);
 
         // DIZEE POLISH: Developer Commentary System (CHICHARON code)
         // Initialized here so it's available globally via game.devCommentary
@@ -436,7 +440,7 @@ class GameEngine {
 
         // Show skip button if unlocked
         if (this.skipButton) {
-            this.skipButton.style.display = this.skipUnlocked ? 'block' : 'none';
+            this.skipButton.style.display = this.state.get('unlocks.skipUnlocked') ? 'block' : 'none';
         }
 
         // Initialize save/load system
@@ -1368,9 +1372,9 @@ class GameEngine {
                     return;
                 }
 
-                console.log('🔑 CTRL key detected. skipUnlocked:', this.skipUnlocked, 'skipActive:', this.skipActive);
+                console.log('🔑 CTRL key detected. skipUnlocked:', this.state.get('unlocks.skipUnlocked'), 'skipActive:', this.skipActive);
 
-                if (this.skipUnlocked) {
+                if (this.state.get('unlocks.skipUnlocked')) {
                     e.preventDefault(); // Prevent browser shortcuts
                     this.skipActive = true;
                     console.log('⏩ CTRL pressed: Skip mode activated');
@@ -2204,7 +2208,7 @@ class GameEngine {
             // Show important flags
             const importantFlags = [];
             if (this.gameState.flags.insaneModeActive) importantFlags.push('INSANE');
-            if (this.gameState.flags.skipUnlocked) importantFlags.push('SKIP');
+            if (this.state.get('unlocks.skipUnlocked')) importantFlags.push('SKIP');
             if (importantFlags.length > 0) {
                 flagsDisplay += ` (${importantFlags.join(', ')})`;
             }
@@ -6331,7 +6335,7 @@ game.devCommands()
 
     unlockSkipFeature() {
         localStorage.setItem('skipUnlocked', 'true');
-        this.skipUnlocked = true;
+        this.state.set('unlocks.skipUnlocked', true);
 
         // Show unlock notification
         this.showSkipUnlockNotification();
@@ -6456,7 +6460,7 @@ game.devCommands()
     }
 
     toggleSkip() {
-        if (!this.skipUnlocked) return;
+        if (!this.state.get('unlocks.skipUnlocked')) return;
 
         this.skipActive = !this.skipActive;
 
