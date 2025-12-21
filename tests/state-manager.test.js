@@ -1169,3 +1169,96 @@ describe('StateManager Path Utilities', () => {
         });
     });
 });
+
+// ========================================
+// SESSION 37: DRAGON PUNCH COMBO TESTS! 🐉👊
+// ========================================
+
+describe('StateManager Utility Methods', () => {
+    let state;
+
+    class StateManagerWithUtils {
+        constructor() {
+            this._state = {
+                game: { score: 100 },
+                ui: { visible: true }
+            };
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current !== null && typeof current === 'object' ? structuredClone(current) : current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        merge(path, obj) {
+            const existing = this.get(path) || {};
+            const merged = { ...existing, ...obj };
+            this.set(path, merged);
+            return true;
+        }
+
+        increment(path, amount = 1) {
+            const current = this.get(path) || 0;
+            this.set(path, current + amount);
+            return current + amount;
+        }
+
+        toggle(path) {
+            const current = this.get(path);
+            this.set(path, !current);
+            return !current;
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithUtils();
+    });
+
+    describe('merge()', () => {
+        it('should merge objects', () => {
+            state.merge('game', { newProp: 'value' });
+            expect(state.get('game.newProp')).toBe('value');
+            expect(state.get('game.score')).toBe(100);
+        });
+    });
+
+    describe('increment()', () => {
+        it('should increment by 1 by default', () => {
+            const result = state.increment('game.score');
+            expect(result).toBe(101);
+        });
+
+        it('should increment by custom amount', () => {
+            const result = state.increment('game.score', 10);
+            expect(result).toBe(110);
+        });
+    });
+
+    describe('toggle()', () => {
+        it('should toggle boolean values', () => {
+            expect(state.get('ui.visible')).toBe(true);
+            state.toggle('ui.visible');
+            expect(state.get('ui.visible')).toBe(false);
+        });
+
+        it('should return new value', () => {
+            const result = state.toggle('ui.visible');
+            expect(result).toBe(false);
+        });
+    });
+});
