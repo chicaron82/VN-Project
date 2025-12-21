@@ -5849,6 +5849,14 @@ class GameEngine {
         return this.state.getStats();
     }
 
+    stateKeys(prefix = '') {
+        // DEV COMMAND: List all state paths
+        // Usage: game.stateKeys() or game.stateKeys('tether')
+        const keys = this.state.keys(prefix);
+        console.log('🔑 State keys:', keys);
+        return keys;
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
