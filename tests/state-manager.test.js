@@ -655,3 +655,129 @@ describe('StateManager Snapshots', () => {
         });
     });
 });
+
+// ========================================
+// STATE DIFF TESTS (Session 18)
+// ========================================
+
+describe('StateManager Diff', () => {
+    let state;
+
+    // StateManager with diff for testing
+    class StateManagerWithDiff {
+        constructor() {
+            this._state = {
+                game: { loopVersion: 848 },
+                tether: { level: 100 }
+            };
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        set(path, value) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        createSnapshot(name = '') {
+            return {
+                name: name || `Snapshot ${Date.now()}`,
+                timestamp: Date.now(),
+                state: structuredClone(this._state)
+            };
+        }
+
+        diff(snapshot1, snapshot2 = null) {
+            const state1 = snapshot1?.state || snapshot1;
+            const state2 = snapshot2?.state || snapshot2 || this._state;
+            const differences = [];
+
+            const compare = (obj1, obj2, path = '') => {
+                const keys = new Set([...Object.keys(obj1 || {}), ...Object.keys(obj2 || {})]);
+                for (const key of keys) {
+                    const fullPath = path ? `${path}.${key}` : key;
+                    const val1 = obj1?.[key];
+                    const val2 = obj2?.[key];
+                    if (typeof val1 === 'object' && val1 !== null && typeof val2 === 'object' && val2 !== null) {
+                        compare(val1, val2, fullPath);
+                    } else if (val1 !== val2) {
+                        differences.push({ path: fullPath, before: val1, after: val2 });
+                    }
+                }
+            };
+
+            compare(state1, state2);
+            return differences;
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithDiff();
+    });
+
+    describe('diff()', () => {
+        it('should detect changes between snapshot and current state', () => {
+            const snapshot = state.createSnapshot();
+            state.set('tether.level', 75);
+
+            const diffs = state.diff(snapshot);
+
+            expect(diffs.length).toBe(1);
+            expect(diffs[0].path).toBe('tether.level');
+            expect(diffs[0].before).toBe(100);
+            expect(diffs[0].after).toBe(75);
+        });
+
+        it('should return empty array when no changes', () => {
+            const snapshot = state.createSnapshot();
+            const diffs = state.diff(snapshot);
+
+            expect(diffs.length).toBe(0);
+        });
+
+        it('should compare two snapshots', () => {
+            const snapshot1 = state.createSnapshot();
+            state.set('tether.level', 50);
+            const snapshot2 = state.createSnapshot();
+
+            const diffs = state.diff(snapshot1, snapshot2);
+
+            expect(diffs.length).toBe(1);
+            expect(diffs[0].before).toBe(100);
+            expect(diffs[0].after).toBe(50);
+        });
+
+        it('should detect multiple changes', () => {
+            const snapshot = state.createSnapshot();
+            state.set('tether.level', 80);
+            state.set('game.loopVersion', 849);
+
+            const diffs = state.diff(snapshot);
+
+            expect(diffs.length).toBe(2);
+        });
+
+        it('should handle nested path changes', () => {
+            state._state.settings = { audio: { volume: 100 } };
+            const snapshot = state.createSnapshot();
+            state._state.settings.audio.volume = 50;
+
+            const diffs = state.diff(snapshot);
+
+            expect(diffs.some(d => d.path === 'settings.audio.volume')).toBe(true);
+        });
+    });
+});
