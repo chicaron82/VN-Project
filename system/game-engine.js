@@ -5895,6 +5895,20 @@ class GameEngine {
         return this.state.deletePath(path);
     }
 
+    stateBatchSet(pairs) {
+        // DEV COMMAND: Set multiple values at once
+        // Usage: game.stateBatchSet({ 'game.score': 100, 'tether.level': 50 })
+        return this.state.batchSet(pairs);
+    }
+
+    stateBatchGet(paths) {
+        // DEV COMMAND: Get multiple values at once
+        // Usage: game.stateBatchGet(['game.score', 'tether.level'])
+        const results = this.state.batchGet(paths);
+        console.table(results);
+        return results;
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
