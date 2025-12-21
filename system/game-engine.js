@@ -5931,19 +5931,7 @@ game.devCommands()
     // ========================================
 
     showEscHintBriefly() {
-        // Only show on desktop (not mobile)
-        if (this.isMobile) return;
-
-        const escHint = document.getElementById('esc-hint');
-        if (!escHint) return;
-
-        // Show hint
-        escHint.classList.add('visible');
-
-        // Hide after 4 seconds
-        setTimeout(() => {
-            escHint.classList.remove('visible');
-        }, 4000);
+        this.uiController.showEscHintBriefly();
     }
 
     // ========================================
