@@ -5843,6 +5843,12 @@ class GameEngine {
         return this.state.listWatchers();
     }
 
+    stateStats() {
+        // DEV COMMAND: Get StateManager statistics
+        // Usage: game.stateStats()
+        return this.state.getStats();
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
