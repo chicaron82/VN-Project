@@ -366,6 +366,70 @@ class StateManager {
     }
 
     // ========================================
+    // IMPORT/EXPORT (Session 20)
+    // ========================================
+
+    /**
+     * Export current state as JSON string
+     * Useful for bug reports or sharing state
+     * @returns {string} JSON string of current state
+     */
+    exportState() {
+        const exportData = {
+            version: 1,
+            timestamp: Date.now(),
+            state: structuredClone(this._state)
+        };
+        const json = JSON.stringify(exportData, null, 2);
+        console.log('📤 State exported to JSON');
+        return json;
+    }
+
+    /**
+     * Export state to clipboard (if in browser)
+     */
+    async copyStateToClipboard() {
+        try {
+            const json = this.exportState();
+            await navigator.clipboard.writeText(json);
+            console.log('📋 State copied to clipboard!');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to copy to clipboard:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Import state from JSON string
+     * @param {string} json - JSON string from exportState
+     * @returns {boolean} True if import successful
+     */
+    importState(json) {
+        try {
+            const importData = JSON.parse(json);
+
+            if (!importData.state) {
+                console.error('❌ Invalid import data: missing state');
+                return false;
+            }
+
+            // Store current state for potential undo
+            const oldState = structuredClone(this._state);
+            this._recordHistory('_fullState', oldState, importData.state);
+
+            this._state = structuredClone(importData.state);
+            this._isDirty = true;
+
+            console.log(`📥 State imported (from ${new Date(importData.timestamp).toLocaleString()})`);
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to import state:', error);
+            return false;
+        }
+    }
+
+    // ========================================
     // HELPER METHODS
     // ========================================
 
