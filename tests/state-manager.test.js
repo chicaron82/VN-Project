@@ -1030,3 +1030,79 @@ describe('StateManager Watch Utility', () => {
         });
     });
 });
+
+// ========================================
+// SESSION 30 MILESTONE TESTS! 🎉
+// ========================================
+
+describe('StateManager Path Utilities', () => {
+    let state;
+
+    class StateManagerWithPathUtils {
+        constructor() {
+            this._state = {
+                game: { loopVersion: 848 },
+                tether: { level: 100 }
+            };
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        deletePath(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (current[keys[i]] === undefined) return false;
+                current = current[keys[i]];
+            }
+            const lastKey = keys[keys.length - 1];
+            if (lastKey in current) {
+                delete current[lastKey];
+                return true;
+            }
+            return false;
+        }
+
+        has(path) {
+            return this.get(path) !== undefined;
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithPathUtils();
+    });
+
+    describe('has()', () => {
+        it('should return true for existing path', () => {
+            expect(state.has('tether.level')).toBe(true);
+        });
+
+        it('should return false for non-existing path', () => {
+            expect(state.has('does.not.exist')).toBe(false);
+        });
+    });
+
+    describe('deletePath()', () => {
+        it('should delete existing path', () => {
+            expect(state.has('tether.level')).toBe(true);
+            state.deletePath('tether.level');
+            expect(state.has('tether.level')).toBe(false);
+        });
+
+        it('should return true when path deleted', () => {
+            expect(state.deletePath('tether.level')).toBe(true);
+        });
+
+        it('should return false when path does not exist', () => {
+            expect(state.deletePath('nonexistent.path')).toBe(false);
+        });
+    });
+});
