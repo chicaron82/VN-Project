@@ -392,8 +392,8 @@ class GameEngine {
         // Loop/Version system for endings
         this.loopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
         this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
-        // UI visibility state (for H key toggle)
-        this.uiHidden = false;
+        // UI visibility state - now managed by StateManager
+        // this.uiHidden removed - use this.state.get('ui.hidden') instead
 
 
 
@@ -8256,7 +8256,10 @@ INSANE mode awaits those who dare.
 
     toggleUI() {
         // Toggle visibility of UI elements during gameplay
-        if (!this.uiHidden) {
+        // SOLID: Using StateManager for UI state
+        const isHidden = this.state.get('ui.hidden');
+
+        if (!isHidden) {
             // Hide UI elements
             this.dialogueBox.style.opacity = '0';
             this.dialogueBox.style.pointerEvents = 'none';
@@ -8280,7 +8283,7 @@ INSANE mode awaits those who dare.
                 notesButton.style.opacity = '0';
             }
 
-            this.uiHidden = true;
+            this.state.set('ui.hidden', true);
         } else {
             // Show UI elements
             this.dialogueBox.style.opacity = '1';
@@ -8305,7 +8308,7 @@ INSANE mode awaits those who dare.
                 notesButton.style.opacity = '1';
             }
 
-            this.uiHidden = false;
+            this.state.set('ui.hidden', false);
         }
     }
 
