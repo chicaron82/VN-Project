@@ -309,6 +309,10 @@ class GameEngine {
         this.state = new StateManager();
         console.log('🔧 SOLID: StateManager initialized');
 
+        // SOLID Refactor: Initialize scene rendering system
+        this.sceneRenderer = new SceneRenderer(this);
+        console.log('🔧 SOLID: SceneRenderer initialized');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -3386,7 +3390,7 @@ class GameEngine {
 
         // Handle sprites (show/hide based on scene data)
         if (scene.sprites) {
-            this.updateSprites(scene.sprites);
+            this.sceneRenderer.updateSprites(scene.sprites);
         }
 
         // Clear previous dialogue
@@ -3858,10 +3862,10 @@ class GameEngine {
         // Called when loading a game
         if (this.gameState.sprites) {
             if (this.gameState.sprites.left) {
-                this.updateSprites({ left: this.gameState.sprites.left });
+                this.sceneRenderer.updateSprites({ left: this.gameState.sprites.left });
             }
             if (this.gameState.sprites.right) {
-                this.updateSprites({ right: this.gameState.sprites.right });
+                this.sceneRenderer.updateSprites({ right: this.gameState.sprites.right });
             }
         }
     }
