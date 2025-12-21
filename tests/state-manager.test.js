@@ -1260,5 +1260,11 @@ describe('StateManager Utility Methods', () => {
             const result = state.toggle('ui.visible');
             expect(result).toBe(false);
         });
+
+        it('should toggle back and forth', () => {
+            state.toggle('ui.visible');
+            state.toggle('ui.visible');
+            expect(state.get('ui.visible')).toBe(true);
+        });
     });
 });
