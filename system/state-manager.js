@@ -83,7 +83,7 @@ class StateManager {
      */
     get(path) {
         const value = this._getByPath(this._state, path);
-        
+
         // Return deep clone to prevent external mutations
         // (Belle's pro-tip: prevents "ghost bugs")
         if (value !== undefined && value !== null && typeof value === 'object') {
@@ -106,8 +106,8 @@ class StateManager {
      */
     set(path, value) {
         // Deep clone to prevent external mutations
-        const clonedValue = (value !== null && typeof value === 'object') 
-            ? structuredClone(value) 
+        const clonedValue = (value !== null && typeof value === 'object')
+            ? structuredClone(value)
             : value;
 
         // Get old value for comparison
@@ -148,7 +148,7 @@ class StateManager {
         if (!this._subscribers.has(path)) {
             this._subscribers.set(path, new Set());
         }
-        
+
         this._subscribers.get(path).add(callback);
 
         console.log(`👂 Subscribed to: ${path}`);
@@ -205,7 +205,7 @@ class StateManager {
             }
 
             const loaded = JSON.parse(serialized);
-            
+
             // Deep merge with current state (preserves new properties)
             this._state = this._deepMerge(this._state, loaded);
             this._isDirty = false;
@@ -227,10 +227,10 @@ class StateManager {
     reset(key = 'vn_state') {
         // Reinitialize with fresh state
         this.constructor.call(this);
-        
+
         // Clear localStorage
         localStorage.removeItem(key);
-        
+
         console.log('🔄 State reset to defaults');
     }
 
@@ -318,7 +318,7 @@ class StateManager {
      */
     _deepMerge(target, source) {
         const result = { ...target };
-        
+
         for (const key in source) {
             if (source.hasOwnProperty(key)) {
                 if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
@@ -328,7 +328,7 @@ class StateManager {
                 }
             }
         }
-        
+
         return result;
     }
 
@@ -360,6 +360,183 @@ class StateManager {
         this._subscribers.forEach((subs, path) => {
             console.log(`  ${path}: ${subs.size} subscriber(s)`);
         });
+    }
+
+    /**
+     * Create a visual debug panel showing state in real-time
+     * Useful for development and debugging
+     * @param {Object} options - Configuration options
+     * @param {boolean} options.draggable - Allow dragging the panel
+     * @param {boolean} options.autoUpdate - Subscribe to all state changes
+     * @returns {HTMLElement} The debug panel element
+     */
+    createDebugPanel(options = { draggable: true, autoUpdate: true }) {
+        // Remove existing panel if present
+        const existing = document.getElementById('state-debug-panel');
+        if (existing) existing.remove();
+
+        // Create panel
+        const panel = document.createElement('div');
+        panel.id = 'state-debug-panel';
+        panel.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 320px;
+            max-height: 400px;
+            background: rgba(0, 0, 0, 0.85);
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            padding: 0;
+            border: 1px solid #00ff88;
+            border-radius: 8px;
+            z-index: 99999;
+            overflow: hidden;
+        `;
+
+        // Header
+        const header = document.createElement('div');
+        header.style.cssText = `
+            background: #00ff88;
+            color: black;
+            padding: 8px;
+            font-weight: bold;
+            cursor: ${options.draggable ? 'move' : 'default'};
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        `;
+        header.innerHTML = `
+            <span>🔧 StateManager Debug</span>
+            <button id="state-debug-close" style="background: none; border: none; color: black; cursor: pointer; font-size: 16px;">×</button>
+        `;
+        panel.appendChild(header);
+
+        // Content
+        const content = document.createElement('div');
+        content.id = 'state-debug-content';
+        content.style.cssText = `
+            padding: 10px;
+            max-height: 340px;
+            overflow-y: auto;
+        `;
+        panel.appendChild(content);
+
+        document.body.appendChild(panel);
+
+        // Close button
+        document.getElementById('state-debug-close').onclick = () => panel.remove();
+
+        // Make draggable
+        if (options.draggable) {
+            let isDragging = false;
+            let startX, startY, startLeft, startTop;
+
+            header.onmousedown = (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startLeft = panel.offsetLeft;
+                startTop = panel.offsetTop;
+            };
+
+            document.onmousemove = (e) => {
+                if (!isDragging) return;
+                panel.style.left = (startLeft + e.clientX - startX) + 'px';
+                panel.style.top = (startTop + e.clientY - startY) + 'px';
+                panel.style.right = 'auto';
+            };
+
+            document.onmouseup = () => { isDragging = false; };
+        }
+
+        // Initial render
+        this._updateDebugPanel(content);
+
+        // Auto-update via subscriptions
+        if (options.autoUpdate) {
+            // Subscribe to major state paths
+            const paths = ['game', 'unlocks', 'tether', 'settings', 'ui'];
+            this._debugSubscriptions = paths.map(path =>
+                this.subscribe(path, () => this._updateDebugPanel(content))
+            );
+        }
+
+        console.log('🔧 Debug panel created');
+        return panel;
+    }
+
+    /**
+     * Update debug panel content
+     * @private
+     */
+    _updateDebugPanel(container) {
+        if (!container) return;
+
+        const state = this._state;
+
+        const formatValue = (val) => {
+            if (typeof val === 'boolean') return val ? '✓' : '✗';
+            if (typeof val === 'number') return val.toFixed?.(1) ?? val;
+            if (Array.isArray(val)) return `[${val.length}]`;
+            return val;
+        };
+
+        let html = '';
+
+        // Game state
+        html += `<div style="margin-bottom: 8px;">
+            <div style="color: #ff88ff; font-weight: bold;">🎮 Game</div>
+            <div>  loopVersion: ${formatValue(state.game.loopVersion)}</div>
+            <div>  loopStatus: ${formatValue(state.game.loopStatus || state.game.paused ? 'paused' : 'active')}</div>
+        </div>`;
+
+        // Tether
+        html += `<div style="margin-bottom: 8px;">
+            <div style="color: #ff8888; font-weight: bold;">💗 Tether</div>
+            <div>  level: <span style="color: ${state.tether.level < 30 ? '#ff4444' : '#00ff88'};">${formatValue(state.tether.level)}%</span></div>
+            <div>  difficulty: ${formatValue(state.tether.difficulty)}</div>
+            <div>  cap: ${formatValue(state.tether.cap)}%</div>
+        </div>`;
+
+        // Unlocks
+        html += `<div style="margin-bottom: 8px;">
+            <div style="color: #88ff88; font-weight: bold;">🔓 Unlocks</div>
+            <div>  skipUnlocked: ${formatValue(state.unlocks.skipUnlocked)}</div>
+            <div>  skipPrologue: ${formatValue(state.unlocks.skipPrologueUnlocked)}</div>
+            <div>  ronnieNotes: ${formatValue(state.unlocks.ronnieNotesUnlocked)}</div>
+        </div>`;
+
+        // UI
+        html += `<div style="margin-bottom: 8px;">
+            <div style="color: #8888ff; font-weight: bold;">🖥️ UI</div>
+            <div>  hidden: ${formatValue(state.ui.hidden)}</div>
+        </div>`;
+
+        // Subscriptions count
+        let subCount = 0;
+        this._subscribers.forEach(subs => subCount += subs.size);
+        html += `<div style="color: #888; margin-top: 10px; border-top: 1px dashed #444; padding-top: 8px;">
+            👂 ${subCount} active subscriptions
+        </div>`;
+
+        container.innerHTML = html;
+    }
+
+    /**
+     * Remove debug panel and cleanup subscriptions
+     */
+    closeDebugPanel() {
+        const panel = document.getElementById('state-debug-panel');
+        if (panel) panel.remove();
+
+        if (this._debugSubscriptions) {
+            this._debugSubscriptions.forEach(unsub => unsub());
+            this._debugSubscriptions = null;
+        }
+
+        console.log('🔧 Debug panel closed');
     }
 }
 
