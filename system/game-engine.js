@@ -305,6 +305,10 @@ const SENSORY_CUES = {
  */
 class GameEngine {
     constructor() {
+        // SOLID Refactor: Initialize centralized state management
+        this.state = new StateManager();
+        console.log('🔧 SOLID: StateManager initialized');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
