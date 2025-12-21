@@ -452,4 +452,44 @@ class UIController {
             }, 300);
         }
     }
+
+    // ========================================
+    // UTILITY UI METHODS
+    // ========================================
+
+    showRandomLoadingTip() {
+        const tips = [
+            "💡 Tip: Press [ESC] to pause at any time",
+            "💡 Tip: Both routes contain different perspectives of the same events",
+            "💡 Tip: Complete any ending to unlock Skip mode",
+            "💡 Tip: Hold [CTRL] to temporarily fast-forward dialogue",
+            "💡 Tip: Each choice matters - there are multiple endings",
+            "💡 Tip: Try playing both Ronnie and Tori's routes for the full story",
+            "💡 Tip: The version number isn't just for show...",
+            "💡 Tip: Some notes are only found on specific routes",
+            "🖤 \"Always. Always. Always.\" - Tori",
+            "💙 This game was built through AI collaboration",
+            "💡 Tip: Android back button works throughout the game",
+            "💡 Tip: Save often - there are multiple paths to explore"
+        ];
+
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        const tipElement = document.getElementById('loading-tip');
+
+        if (tipElement) {
+            tipElement.textContent = randomTip;
+        }
+    }
+
+    updateFullscreenButton() {
+        const button = document.getElementById('fullscreen-button');
+        if (!button) return;
+
+        const isFullscreen = document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+
+        button.textContent = isFullscreen ? 'EXIT FULLSCREEN' : 'ENTER FULLSCREEN';
+    }
 }
