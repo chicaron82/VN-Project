@@ -125,4 +125,41 @@ class SceneRenderer {
         game.useAltBackground = !game.useAltBackground;
         game.currentBackground = newBackground;
     }
+
+    // ========================================
+    // CHOICE MENU
+    // Extracted from GameEngine.showChoices
+    // ========================================
+
+    showChoices(choices, onChoice) {
+        const game = this.game;
+
+        game.choicesContainer.innerHTML = '';
+        game.choiceMenu.style.display = 'block';
+
+        choices.forEach(choice => {
+            const button = document.createElement('div');
+            button.className = 'choice-option';
+            button.textContent = choice.text;
+
+            if (choice.locked || choice.disabled) {
+                button.classList.add('locked');
+
+                // Add click handler for denial feedback on locked choices
+                button.addEventListener('click', () => {
+                    if (game.triggerSensoryFeedback) {
+                        game.triggerSensoryFeedback('denied', button, 'Locked story choice');
+                    }
+                });
+            } else {
+                button.addEventListener('click', () => {
+                    game.triggerSensoryFeedback('buttonPress', button, 'Choice selected');
+                    game.choiceMenu.style.display = 'none';
+                    if (onChoice) onChoice(choice.value);
+                });
+            }
+
+            game.choicesContainer.appendChild(button);
+        });
+    }
 }

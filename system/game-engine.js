@@ -3446,7 +3446,7 @@ class GameEngine {
 
         // Handle choices
         if (scene.choices) {
-            this.showChoices(scene.choices, scene.onChoice);
+            this.sceneRenderer.showChoices(scene.choices, scene.onChoice);
         } else {
             this.choiceMenu.style.display = 'none';
         }
