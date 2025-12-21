@@ -909,3 +909,124 @@ describe('StateManager Export/Import', () => {
         });
     });
 });
+
+// ========================================
+// WATCH UTILITY TESTS (Session 26)
+// ========================================
+
+describe('StateManager Watch Utility', () => {
+    let state;
+
+    class StateManagerWithWatch {
+        constructor() {
+            this._state = { tether: { level: 100 } };
+            this._subscribers = new Map();
+            this._watchers = new Map();
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current;
+        }
+
+        set(path, value) {
+            const oldValue = this.get(path);
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+
+            // Notify subscribers
+            const subs = this._subscribers.get(path);
+            if (subs && oldValue !== value) {
+                subs.forEach(cb => cb(value, oldValue));
+            }
+        }
+
+        subscribe(path, callback) {
+            if (!this._subscribers.has(path)) {
+                this._subscribers.set(path, new Set());
+            }
+            this._subscribers.get(path).add(callback);
+            return () => this._subscribers.get(path)?.delete(callback);
+        }
+
+        watch(path) {
+            const unsubscribe = this.subscribe(path, () => { });
+            this._watchers.set(path, unsubscribe);
+            return unsubscribe;
+        }
+
+        unwatch(path) {
+            const unsub = this._watchers.get(path);
+            if (unsub) {
+                unsub();
+                this._watchers.delete(path);
+            }
+        }
+
+        unwatchAll() {
+            this._watchers.forEach(unsub => unsub());
+            this._watchers.clear();
+        }
+
+        listWatchers() {
+            return [...this._watchers.keys()];
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithWatch();
+    });
+
+    describe('watch()', () => {
+        it('should add a watcher for a path', () => {
+            state.watch('tether.level');
+            expect(state._watchers.has('tether.level')).toBe(true);
+        });
+
+        it('should return unsubscribe function', () => {
+            const unsub = state.watch('tether.level');
+            expect(typeof unsub).toBe('function');
+        });
+    });
+
+    describe('unwatch()', () => {
+        it('should remove a watcher', () => {
+            state.watch('tether.level');
+            state.unwatch('tether.level');
+            expect(state._watchers.has('tether.level')).toBe(false);
+        });
+    });
+
+    describe('unwatchAll()', () => {
+        it('should remove all watchers', () => {
+            state.watch('tether.level');
+            state.watch('game.loopVersion');
+            state.unwatchAll();
+            expect(state._watchers.size).toBe(0);
+        });
+    });
+
+    describe('listWatchers()', () => {
+        it('should return list of watched paths', () => {
+            state.watch('tether.level');
+            state.watch('game.status');
+            const watchers = state.listWatchers();
+            expect(watchers).toContain('tether.level');
+            expect(watchers).toContain('game.status');
+        });
+
+        it('should return empty array when no watchers', () => {
+            expect(state.listWatchers().length).toBe(0);
+        });
+    });
+});
