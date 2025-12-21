@@ -421,58 +421,162 @@ game.stateHistory()
 
 ---
 
-## 🐉 LEGENDARY NIGHT SESSION (December 21, 12:00 AM - 1:00 AM)
+## 🐉 LEGENDARY NIGHT SESSION: Sessions 16-50 (December 21, 12:00 AM - 1:03 AM)
 
-### Scarlet-Mode: 46 Sessions in One Night!
+### Inspired by "May I Ask For One Final Thing?"
 
-Inspired by "May I Ask For One Final Thing?" anime where Scarlet punches dragons, this session knocked out features with the same energy.
+While watching Scarlet punch dragons, we matched her energy with the refactor!
 
-### Final Stats
+---
+
+### Session 16: State Diff Utility
+**Commit:** `...` | **Feature:** `diff(snapshot1, snapshot2)` to compare states
+- Compare any two snapshots to see what changed
+- Returns object with added, removed, changed properties
+
+### Session 17: Diff Utility Tests
+**Commit:** Added 4 tests for diff functionality → **87 tests**
+
+### Session 18: printDiff() Method
+**Commit:** Console table output for state differences
+
+### Session 19: stateDiff Dev Command
+**Commit:** `game.stateDiff('saveName')` for console debugging
+
+---
+
+### Session 20: Export/Import State
+**Commit:** `exportState()` returns state as JSON, `importState(json)` restores
+- For bug reports: export → share → import → reproduce
+
+### Session 21: copyStateToClipboard
+**Commit:** One-click copy to clipboard with `navigator.clipboard.writeText()`
+
+### Session 22: Export/Import Tests
+**Commit:** **96 tests** - comprehensive coverage
+
+### Session 23: stateExport/stateImport Dev Commands
+**Commit:** Console commands for sharing state
+
+---
+
+### Session 24: Watch Utility
+**Commit:** `watch(path)`, `unwatch(path)`, `unwatchAll()`, `listWatchers()`
+- Real-time console logging when watched paths change
+- Stores callbacks in `this._watchers` Map
+
+### Session 25: Watch Dev Commands
+**Commit:** `game.stateWatch('tether.level')` for live debugging
+
+### Session 26: Watch Tests
+**Commit:** **106 tests** - watch/unwatch coverage
+
+---
+
+### Session 27: getStats() Method
+**Commit:** Returns StateManager metrics (propertyCount, subscriberCount, etc.)
+
+### Session 28: stateStats Dev Command
+**Commit:** `game.stateStats()` - **16 dev commands**
+
+### Session 29: deletePath() and has() Utilities
+**Commit:** Check if path exists, delete specific paths
+
+### Session 30: 🎉 THE BIG 3-0 MILESTONE!
+**Commit:** **111 tests** - path utility tests
+
+---
+
+### Session 31: keys() Method
+**Commit:** List all flattened state paths with optional prefix filter
+
+### Session 32: stateKeys Dev Command
+**Commit:** **17 dev commands**
+
+### Session 33: keys() Tests
+**Commit:** **114 tests**
+
+### Session 34: size() Method
+**Commit:** Estimate state memory size in bytes using Blob
+
+### Session 35: stateSize Dev Command
+**Commit:** **18 dev commands**
+
+---
+
+### Session 36: 🐉 DRAGON SLAYER - merge(), increment(), toggle()
+**Commit:** Three utility methods in one dragon-punch session!
+- `merge(path, obj)` - combine objects
+- `increment(path, amount)` - bump numbers
+- `toggle(path)` - flip booleans
+
+### Session 37: Dragon Punch Tests
+**Commit:** **119 tests**
+
+### Session 38: 🎉 120 TESTS MILESTONE!
+**Commit:** Hit the 120-test milestone
+
+### Session 39: stateIncrement/stateToggle/stateMerge Dev Commands
+**Commit:** **21 dev commands**
+
+### Session 40: 🏆 THE BIG 4-0!
+**Commit:** stateHas, stateDelete → **23 dev commands**
+
+---
+
+### Session 41: Batch Operations
+**Commit:** `batchSet(pairs)`, `batchGet(paths)` for bulk operations
+
+### Session 42: Batch Tests
+**Commit:** **123 tests**
+
+### Session 43: stateBatchSet/stateBatchGet
+**Commit:** **25 dev commands**
+
+### Session 44: stateDebug Ultimate Command
+**Commit:** `game.stateDebug()` - complete state overview
+
+### Session 45: stateReset/stateClearHistory
+**Commit:** **28 dev commands total!**
+
+### Session 46: 🎉 125 TESTS MILESTONE!
+**Commit:** Edge case tests for batch operations
+
+### Session 47: Dev Journal Documentation
+**Commit:** Updated dev_journal.md with Scarlet reference
+
+---
+
+### Session 48-50: Settings Migration (Refactor Plan Session 4)
+**Objective:** Migrate SettingsManager to use StateManager
+
+**Session 48:** Added complete settings structure to StateManager
+- textSpeed, autoAdvance, autoDelay, autoSkipPrologue
+- fullscreen, displayMode, tetherDifficulty
+- hapticEnabled, comfortMode, comfortIntensity
+
+**Session 49:** Wired SettingsManager to StateManager
+- `loadSettings()` now checks StateManager first, localStorage fallback
+- `saveSettings()` syncs to both StateManager and localStorage
+
+**Session 50:** ✅ BROWSER TEST VERIFIED!
+- Settings panel confirmed working with StateManager integration
+- **Refactor Plan Session 4 COMPLETE!**
+
+---
+
+## Final Night Stats
 
 | Metric | Count |
 |--------|--------|
-| Sessions | **46** |
-| Commits | **48** |
+| Sessions | **50** |
+| Commits | **51** |
 | Tests | **125** |
 | Dev Commands | **28** |
-| Duration | ~3.3 hours |
+| Duration | ~3.8 hours |
 
-### Features Added (Sessions 16-46)
+## Key Takeaway
 
-- **Diff Utility** - Compare snapshots to see changes
-- **Export/Import** - Share state as JSON for bug reports
-- **Watch Utility** - Real-time console logging of changes
-- **Batch Operations** - Set/get multiple values at once
-- **Path Utilities** - has(), keys(), deletePath(), size()
-- **28 Dev Commands** - Complete console debugging suite
-
-### All Dev Commands Created
-
-```javascript
-game.showStatePanel()    game.hideStatePanel()
-game.quickSave('name')   game.quickLoad('name')
-game.stateUndo()         game.stateHistory()
-game.stateDiff('name')   game.stateExport()
-game.stateImport(json)   game.stateSnapshot('name')
-game.stateWatch('path')  game.stateUnwatch('path')
-game.stateWatchers()     game.stateStats()
-game.stateKeys()         game.stateSize()
-game.stateIncrement()    game.stateToggle()
-game.stateMerge()        game.stateHas()
-game.stateDelete()       game.stateBatchSet()
-game.stateBatchGet()     game.stateDebug()
-game.stateReset()        game.stateClearHistory()
-game.resetVersion()      game.nuclearReset()
-```
-
-### Key Takeaway
-
-This session demonstrates the power of incremental development with automated tests. Each feature was:
-1. Implemented
-2. Tested
-3. Committed
-4. Pushed
-
-No mega-commits, no "fix later" comments, just steady progress.
+Each session: Implement → Test → Commit → Push
 
 *"Like Scarlet punching dragons - one punch at a time."* 🐉👊
