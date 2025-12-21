@@ -523,6 +523,39 @@ class StateManager {
         return stats;
     }
 
+    /**
+     * Delete a specific path from state
+     * @param {string} path - Path to delete
+     */
+    deletePath(path) {
+        const keys = path.split('.');
+        let current = this._state;
+
+        // Navigate to parent
+        for (let i = 0; i < keys.length - 1; i++) {
+            if (current[keys[i]] === undefined) return false;
+            current = current[keys[i]];
+        }
+
+        // Delete the key
+        const lastKey = keys[keys.length - 1];
+        if (lastKey in current) {
+            delete current[lastKey];
+            console.log(`🗑️ Deleted path: ${path}`);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check if a path exists in state
+     * @param {string} path - Path to check
+     * @returns {boolean}
+     */
+    has(path) {
+        return this.get(path) !== undefined;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
