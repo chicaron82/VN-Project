@@ -492,6 +492,37 @@ class StateManager {
         return paths;
     }
 
+    /**
+     * Get StateManager statistics
+     * @returns {Object} Stats about current state
+     */
+    getStats() {
+        const countProperties = (obj, depth = 0) => {
+            let count = 0;
+            for (const key in obj) {
+                if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                    count += countProperties(obj[key], depth + 1);
+                } else {
+                    count++;
+                }
+            }
+            return count;
+        };
+
+        const stats = {
+            propertyCount: countProperties(this._state),
+            subscriberCount: [...this._subscribers.values()].reduce((sum, set) => sum + set.size, 0),
+            watcherCount: this._watchers?.size || 0,
+            historyCount: this._history?.length || 0,
+            maxHistorySize: this._maxHistorySize || 50,
+            quickSaveCount: Object.keys(this._quickSaves || {}).length,
+            isDirty: this._isDirty
+        };
+
+        console.log('📊 StateManager Stats:', stats);
+        return stats;
+    }
+
     // ========================================
     // HELPER METHODS
     // ========================================
