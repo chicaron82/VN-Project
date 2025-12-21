@@ -389,9 +389,11 @@ class GameEngine {
             this.isMobile = window.innerWidth <= 480;
         });
 
-        // Loop/Version system for endings
-        this.loopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
-        this.loopStatus = localStorage.getItem('loopStatus') || 'attempting';
+        // Loop/Version system for endings - SOLID: Using StateManager
+        const savedLoopVersion = parseInt(localStorage.getItem('loopVersion')) || 848;
+        const savedLoopStatus = localStorage.getItem('loopStatus') || 'attempting';
+        this.state.set('game.loopVersion', savedLoopVersion);
+        this.state.set('game.loopStatus', savedLoopStatus);
         // UI visibility state - now managed by StateManager
         // this.uiHidden removed - use this.state.get('ui.hidden') instead
 
@@ -9085,6 +9087,24 @@ There is no v849.`
     set ronnieNotesUnlocked(value) {
         this.state.set('unlocks.ronnieNotesUnlocked', value);
         localStorage.setItem('ronnieNotesUnlocked', value.toString());
+    }
+
+    get loopVersion() {
+        return this.state.get('game.loopVersion');
+    }
+
+    set loopVersion(value) {
+        this.state.set('game.loopVersion', value);
+        localStorage.setItem('loopVersion', value.toString());
+    }
+
+    get loopStatus() {
+        return this.state.get('game.loopStatus');
+    }
+
+    set loopStatus(value) {
+        this.state.set('game.loopStatus', value);
+        localStorage.setItem('loopStatus', value);
     }
 }
 
