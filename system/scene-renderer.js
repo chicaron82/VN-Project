@@ -91,4 +91,38 @@ class SceneRenderer {
             }
         }
     }
+
+    // ========================================
+    // BACKGROUND MANAGEMENT
+    // Extracted from GameEngine.crossfadeBackground
+    // ========================================
+
+    crossfadeBackground(newBackground) {
+        const game = this.game;
+
+        // Skip if same background
+        if (game.currentBackground === newBackground) return;
+
+        // Fallback: if alt layer doesn't exist, just set directly
+        if (!game.sceneBackgroundAlt) {
+            game.sceneBackground.style.backgroundImage = `url(${newBackground})`;
+            game.currentBackground = newBackground;
+            return;
+        }
+
+        // Determine which layer to use
+        const incoming = game.useAltBackground ? game.sceneBackground : game.sceneBackgroundAlt;
+        const outgoing = game.useAltBackground ? game.sceneBackgroundAlt : game.sceneBackground;
+
+        // Set new background on incoming layer
+        incoming.style.backgroundImage = `url(${newBackground})`;
+
+        // Crossfade: fade in incoming, fade out outgoing
+        incoming.style.opacity = '1';
+        outgoing.style.opacity = '0';
+
+        // Toggle for next transition
+        game.useAltBackground = !game.useAltBackground;
+        game.currentBackground = newBackground;
+    }
 }

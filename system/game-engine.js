@@ -3455,7 +3455,7 @@ class GameEngine {
 
         // Handle background changes with crossfade
         if (scene.background) {
-            this.crossfadeBackground(scene.background);
+            this.sceneRenderer.crossfadeBackground(scene.background);
             // ZEE'S ADDITION: Track current background for backlog thumbnails 🖤
             this.currentBackground = scene.background;
         }
