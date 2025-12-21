@@ -135,6 +135,15 @@ class TetherSystem {
             this.holdOnButton.addEventListener('click', () => this.holdOn());
         }
 
+        // ========================================
+        // SOLID REFACTOR: REACTIVE UI SUBSCRIPTION
+        // UI auto-updates when tether.level changes in StateManager
+        // ========================================
+        this._tetherSubscription = this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
+            console.log(`🔄 Reactive: Tether ${oldLevel} → ${newLevel}`);
+            this.updateDisplay();
+        });
+
         // Initial display update
         this.updateDisplay();
     }
@@ -687,6 +696,12 @@ class TetherSystem {
                 this.holdOnButton.parentNode.replaceChild(newButton, this.holdOnButton);
             }
             this.holdOnButton = null;
+        }
+
+        // SOLID REFACTOR: Unsubscribe from StateManager
+        if (this._tetherSubscription) {
+            this._tetherSubscription();
+            this._tetherSubscription = null;
         }
 
         // Clear DOM references
