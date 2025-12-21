@@ -5909,6 +5909,23 @@ class GameEngine {
         return results;
     }
 
+    stateDebug() {
+        // DEV COMMAND: Show complete state debug overview
+        // Usage: game.stateDebug()
+        console.log('═══════════════════════════════════════');
+        console.log('🔧 STATE MANAGER DEBUG OVERVIEW');
+        console.log('═══════════════════════════════════════');
+
+        const stats = this.state.getStats();
+        const keys = this.state.keys();
+        const size = this.state.size();
+
+        console.log('📊 Keys:', keys);
+        console.log('═══════════════════════════════════════');
+
+        return { stats, keys, size };
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
