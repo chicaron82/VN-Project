@@ -1347,5 +1347,16 @@ describe('StateManager Batch Operations', () => {
             const results = state.batchGet(['nonexistent.path']);
             expect(results['nonexistent.path']).toBeUndefined();
         });
+
+        it('should handle empty array', () => {
+            const results = state.batchGet([]);
+            expect(Object.keys(results).length).toBe(0);
+        });
+    });
+
+    describe('batchSet() additional', () => {
+        it('should handle empty object', () => {
+            expect(() => state.batchSet({})).not.toThrow();
+        });
     });
 });
