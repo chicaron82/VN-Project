@@ -327,3 +327,184 @@ describe('StateManager Edge Cases', () => {
         expect(state.get('tether.level')).toBe(0);
     });
 });
+
+// ========================================
+// STATE HISTORY TESTS (Session 12)
+// ========================================
+
+describe('StateManager History', () => {
+    let state;
+
+    // Extended StateManager with history for testing
+    class StateManagerWithHistory {
+        constructor() {
+            this._state = {
+                game: { loopVersion: 848 },
+                tether: { level: 100 }
+            };
+            this._subscribers = new Map();
+            this._isDirty = false;
+            this._history = [];
+            this._maxHistorySize = 50;
+            this._historyEnabled = true;
+        }
+
+        get(path) {
+            const keys = path.split('.');
+            let current = this._state;
+            for (const key of keys) {
+                if (current === undefined) return undefined;
+                current = current[key];
+            }
+            return current !== null && typeof current === 'object' ? structuredClone(current) : current;
+        }
+
+        set(path, value) {
+            const oldValue = this.get(path);
+            if (this._historyEnabled && oldValue !== value) {
+                this._recordHistory(path, oldValue, value);
+            }
+            const keys = path.split('.');
+            let current = this._state;
+            for (let i = 0; i < keys.length - 1; i++) {
+                if (!(keys[i] in current)) current[keys[i]] = {};
+                current = current[keys[i]];
+            }
+            current[keys[keys.length - 1]] = value;
+        }
+
+        _recordHistory(path, oldValue, newValue) {
+            this._history.push({
+                timestamp: Date.now(),
+                path,
+                oldValue,
+                newValue
+            });
+            while (this._history.length > this._maxHistorySize) {
+                this._history.shift();
+            }
+        }
+
+        undo() {
+            if (this._history.length === 0) return null;
+            const entry = this._history.pop();
+            this._historyEnabled = false;
+            this.set(entry.path, entry.oldValue);
+            this._historyEnabled = true;
+            return entry;
+        }
+
+        getHistory(count) {
+            const history = [...this._history];
+            return count ? history.slice(-count) : history;
+        }
+
+        clearHistory() {
+            this._history = [];
+        }
+    }
+
+    beforeEach(() => {
+        state = new StateManagerWithHistory();
+    });
+
+    describe('undo()', () => {
+        it('should undo the last state change', () => {
+            state.set('tether.level', 80);
+            state.set('tether.level', 60);
+
+            state.undo();
+
+            expect(state.get('tether.level')).toBe(80);
+        });
+
+        it('should return null when no history', () => {
+            const result = state.undo();
+            expect(result).toBeNull();
+        });
+
+        it('should return the undone entry', () => {
+            state.set('tether.level', 75);
+            const entry = state.undo();
+
+            expect(entry.path).toBe('tether.level');
+            expect(entry.oldValue).toBe(100);
+            expect(entry.newValue).toBe(75);
+        });
+
+        it('should support multiple undos', () => {
+            state.set('tether.level', 80);
+            state.set('tether.level', 60);
+            state.set('tether.level', 40);
+
+            state.undo();
+            expect(state.get('tether.level')).toBe(60);
+
+            state.undo();
+            expect(state.get('tether.level')).toBe(80);
+
+            state.undo();
+            expect(state.get('tether.level')).toBe(100);
+        });
+    });
+
+    describe('getHistory()', () => {
+        it('should return all history entries', () => {
+            state.set('tether.level', 90);
+            state.set('tether.level', 80);
+
+            const history = state.getHistory();
+
+            expect(history.length).toBe(2);
+        });
+
+        it('should return limited entries when count provided', () => {
+            state.set('tether.level', 90);
+            state.set('tether.level', 80);
+            state.set('tether.level', 70);
+
+            const history = state.getHistory(2);
+
+            expect(history.length).toBe(2);
+            expect(history[1].newValue).toBe(70);
+        });
+
+        it('should include timestamps in entries', () => {
+            state.set('tether.level', 50);
+            const history = state.getHistory();
+
+            expect(history[0].timestamp).toBeDefined();
+            expect(typeof history[0].timestamp).toBe('number');
+        });
+    });
+
+    describe('clearHistory()', () => {
+        it('should clear all history', () => {
+            state.set('tether.level', 80);
+            state.set('tether.level', 60);
+
+            state.clearHistory();
+
+            expect(state.getHistory().length).toBe(0);
+        });
+
+        it('should make undo return null after clear', () => {
+            state.set('tether.level', 80);
+            state.clearHistory();
+
+            expect(state.undo()).toBeNull();
+        });
+    });
+
+    describe('History limits', () => {
+        it('should respect max history size', () => {
+            state._maxHistorySize = 5;
+
+            for (let i = 0; i < 10; i++) {
+                state.set('tether.level', 100 - i);
+            }
+
+            expect(state.getHistory().length).toBe(5);
+        });
+    });
+});
