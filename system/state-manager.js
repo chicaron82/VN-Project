@@ -430,6 +430,69 @@ class StateManager {
     }
 
     // ========================================
+    // WATCH UTILITY (Session 24)
+    // ========================================
+
+    /**
+     * Watch a path and log all changes (for debugging)
+     * @param {string} path - Path to watch
+     * @returns {Function} Unsubscribe function
+     */
+    watch(path) {
+        console.log(`👀 Watching: ${path}`);
+
+        const unsubscribe = this.subscribe(path, (newValue, oldValue) => {
+            const timestamp = new Date().toLocaleTimeString();
+            console.log(`📊 [${timestamp}] ${path}: ${JSON.stringify(oldValue)} → ${JSON.stringify(newValue)}`);
+        });
+
+        // Store for later cleanup
+        this._watchers = this._watchers || new Map();
+        this._watchers.set(path, unsubscribe);
+
+        return unsubscribe;
+    }
+
+    /**
+     * Stop watching a path
+     * @param {string} path - Path to unwatch
+     */
+    unwatch(path) {
+        const unsub = this._watchers?.get(path);
+        if (unsub) {
+            unsub();
+            this._watchers.delete(path);
+            console.log(`🔇 Stopped watching: ${path}`);
+        }
+    }
+
+    /**
+     * Stop all watches
+     */
+    unwatchAll() {
+        if (this._watchers) {
+            this._watchers.forEach((unsub, path) => {
+                unsub();
+                console.log(`🔇 Stopped watching: ${path}`);
+            });
+            this._watchers.clear();
+        }
+    }
+
+    /**
+     * List all active watchers
+     */
+    listWatchers() {
+        if (!this._watchers?.size) {
+            console.log('👀 No active watchers');
+            return [];
+        }
+        const paths = [...this._watchers.keys()];
+        console.log('👀 Active watchers:', paths);
+        return paths;
+    }
+
+    // ========================================
     // HELPER METHODS
     // ========================================
 
