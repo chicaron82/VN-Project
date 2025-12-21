@@ -5262,7 +5262,7 @@ class GameEngine {
 
     showMessage(title, message) {
         // Simple message (no cancel button)
-        this.showConfirmDialog(title, message, () => { }, false);
+        this.uiController.showConfirmDialog(title, message, () => { }, false);
     }
 
     showMeetTheCrew() {
