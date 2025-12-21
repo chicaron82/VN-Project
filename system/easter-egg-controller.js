@@ -382,4 +382,147 @@ class EasterEggController {
         }, 100);
         card.style.transform = 'scale(0.95)';
     }
+
+    // ========================================
+    // TORIGATCHI IFRAME OVERLAY
+    // Opens Torigatchi games within VN instead of new tab
+    // ========================================
+    openTorigatchiIframe(url) {
+        console.log('🎮 Opening Torigatchi iframe:', url);
+
+        // Create game-window sized iframe overlay
+        const iframeOverlay = document.createElement('div');
+        iframeOverlay.id = 'torigatchi-iframe-overlay';
+        iframeOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10005;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        // Create game window container
+        const gameWindow = document.createElement('div');
+        gameWindow.style.cssText = `
+            position: relative;
+            width: 85%;
+            height: 85%;
+            max-width: 1200px;
+            max-height: 800px;
+            background: #000;
+            border: 3px solid #0ff;
+            border-radius: 10px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        `;
+
+        // Create close button container (now inside game window)
+        const closeContainer = document.createElement('div');
+        closeContainer.style.cssText = `
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10006;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        `;
+
+        // Create label
+        const label = document.createElement('div');
+        label.textContent = 'ESC or X to return';
+        label.style.cssText = `
+            color: #0ff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            opacity: 0.7;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        `;
+
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'close-x';
+        closeBtn.innerHTML = '✕';
+        closeBtn.style.cssText = `
+            position: relative;
+            width: 35px;
+            height: 35px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #0ff;
+            color: #0ff;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        `;
+
+        closeBtn.addEventListener('mouseenter', () => {
+            closeBtn.style.background = 'rgba(0, 255, 255, 0.3)';
+            closeBtn.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.5)';
+        });
+
+        closeBtn.addEventListener('mouseleave', () => {
+            closeBtn.style.background = 'rgba(0, 255, 255, 0.1)';
+            closeBtn.style.boxShadow = 'none';
+        });
+
+        const closeIframe = () => {
+            iframeOverlay.style.animation = 'fadeOut 0.3s ease-out';
+            setTimeout(() => iframeOverlay.remove(), 300);
+        };
+
+        closeBtn.addEventListener('click', closeIframe);
+
+        closeContainer.appendChild(label);
+        closeContainer.appendChild(closeBtn);
+
+        // Create iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = url;
+        iframe.style.cssText = `
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+        `;
+        iframe.setAttribute('allowfullscreen', 'true');
+
+        // Assemble game window
+        gameWindow.appendChild(closeContainer);
+        gameWindow.appendChild(iframe);
+
+        // Assemble overlay
+        iframeOverlay.appendChild(gameWindow);
+        document.body.appendChild(iframeOverlay);
+
+        // ESC key to close
+        const handleEscape = (e) => {
+            if (e.key === 'Escape') {
+                closeIframe();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        };
+        document.addEventListener('keydown', handleEscape);
+
+        // Clean up listener when overlay is removed
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.removedNodes.forEach((node) => {
+                    if (node === iframeOverlay) {
+                        document.removeEventListener('keydown', handleEscape);
+                        observer.disconnect();
+                    }
+                });
+            });
+        });
+        observer.observe(document.body, { childList: true });
+    }
 }
