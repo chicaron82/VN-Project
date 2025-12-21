@@ -41,11 +41,23 @@ class StateManager {
                 frozen: false
             },
             settings: {
-                textSpeed: 'normal',
-                autoAdvance: false,
-                hapticIntensity: 'normal',
-                reduceMotion: false,
-                difficulty: 'normal'
+                // Text options
+                textSpeed: 'normal',      // slow, normal, fast, instant
+                autoAdvance: false,       // Auto-advance dialogue
+                autoDelay: 2000,          // Delay in ms before auto-advance
+                autoSkipPrologue: false,  // Auto-skip prologue when unlocked
+
+                // Display options
+                fullscreen: false,
+                displayMode: 'auto',      // auto, portrait, landscape
+
+                // Difficulty (mirrors tether.difficulty)
+                tetherDifficulty: 'normal', // relaxed, normal, intense, insane
+
+                // Accessibility
+                hapticEnabled: true,      // Haptic feedback
+                comfortMode: false,       // Disable glitch effects
+                comfortIntensity: 1       // 0=Gentle, 1=Normal, 2=Amped
             },
             collectibles: {
                 unlockedNotes: [],
