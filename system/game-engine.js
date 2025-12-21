@@ -3520,73 +3520,12 @@ class GameEngine {
 
     // ========================================
     // SPRITE MANAGEMENT
+    // SOLID: Delegated to SceneRenderer
     // ========================================
 
     updateSprites(sprites) {
-        // Handle left sprite
-        if (sprites.left !== undefined) {
-            if (sprites.left === null) {
-                // Hide left sprite
-                if (this.spriteLeft) {
-                    this.spriteLeft.style.opacity = '0';
-                    setTimeout(() => {
-                        this.spriteLeft.style.display = 'none';
-                        this.spriteLeft.style.backgroundImage = '';
-                    }, 300);
-                }
-                this.currentSprites.left = null;
-                this.gameState.sprites.left = null; // NEW: Update save state
-            } else {
-                // Show/update left sprite
-                if (this.spriteLeft) {
-                    this.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
-                    this.spriteLeft.style.display = 'block';
-                    this.spriteLeft.style.opacity = '0';  // Start hidden
-                    setTimeout(() => {
-                        this.spriteLeft.style.opacity = '1';  // Fade in
-                    }, 50);
-                }
-                this.currentSprites.left = sprites.left;
-                this.gameState.sprites.left = sprites.left; // NEW: Update save state
-            }
-        }
-
-        // Handle right sprite - check if it's the Echoes triple
-        if (sprites.right !== undefined) {
-            if (sprites.right === null) {
-                // Hide right sprite
-                if (this.spriteRight) {
-                    this.spriteRight.style.opacity = '0';
-                    setTimeout(() => {
-                        this.spriteRight.style.display = 'none';
-                        this.spriteRight.style.backgroundImage = '';
-                        this.spriteRight.classList.remove('echo-group');
-                        this.spriteRight.innerHTML = ''; // Clear any echo children
-                    }, 300);
-                }
-                this.currentSprites.right = null;
-                this.gameState.sprites.right = null; // NEW: Update save state
-            } else if (sprites.right === 'echoes' || sprites.right === 'three-echoes') {
-                // Special handling for triple Echo sprites
-                this.displayEchoGroup();
-                this.currentSprites.right = 'echoes';
-                this.gameState.sprites.right = 'echoes';
-            } else {
-                // Show/update right sprite (normal single sprite)
-                if (this.spriteRight) {
-                    this.spriteRight.classList.remove('echo-group');
-                    this.spriteRight.innerHTML = ''; // Clear any echo children
-                    this.spriteRight.style.backgroundImage = `url(${sprites.right})`;
-                    this.spriteRight.style.display = 'block';
-                    this.spriteRight.style.opacity = '0';  // Start hidden
-                    setTimeout(() => {
-                        this.spriteRight.style.opacity = '1';  // Fade in
-                    }, 50);
-                }
-                this.currentSprites.right = sprites.right;
-                this.gameState.sprites.right = sprites.right; // NEW: Update save state
-            }
-        }
+        // Delegation stub - full implementation in SceneRenderer
+        this.sceneRenderer.updateSprites(sprites);
     }
 
     displayEchoGroup() {
@@ -3898,72 +3837,8 @@ class GameEngine {
     // ========================================
 
     typewriterText(element, text, callback, internalTextLength = 0, slowReveal = false) {
-        // ZEE'S ADDITION: Store slow reveal flag for getTypewriterSpeed 🖤
-        this.slowRevealActive = slowReveal;
-
-        // Check if instant mode is enabled
-        const speed = this.getTypewriterSpeed();
-        if (speed === 0) {
-            // Instant mode - show all text immediately
-            element.textContent = text;
-            this.typewriterActive = false;
-
-            // DIZEE FIX: Start auto-advance timer in instant mode
-            if (this.settingsManager) {
-                this.settingsManager.startAutoAdvance(() => {
-                    // Auto-advance to next dialogue
-                    if (!this.choiceMenu || this.choiceMenu.style.display === 'none') {
-                        this.advance();
-                    }
-                });
-            }
-
-            if (callback) callback();
-            return;
-        }
-
-        // Check if text needs pagination on mobile
-        // Consider BOTH dialogue and internal text length
-        const totalLength = text.length + internalTextLength;
-
-        if (this.shouldPaginateText(totalLength)) {
-            this.paginateAndDisplayText(element, text, callback);
-        } else {
-            // Original typewriter behavior for desktop/short text
-            this.typewriterActive = true;
-            this.fullDialogueText = text;
-            this.typewriterCallback = callback;
-            element.textContent = '';
-            let i = 0;
-
-            // Clear any existing interval
-            if (this.typewriterInterval) {
-                clearInterval(this.typewriterInterval);
-            }
-
-            this.typewriterInterval = setInterval(() => {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                } else {
-                    clearInterval(this.typewriterInterval);
-                    this.typewriterInterval = null;
-                    this.typewriterActive = false;
-
-                    // DIZEE FIX: Start auto-advance timer after typewriter finishes
-                    if (this.settingsManager) {
-                        this.settingsManager.startAutoAdvance(() => {
-                            // Auto-advance to next dialogue
-                            if (!this.choiceMenu || this.choiceMenu.style.display === 'none') {
-                                this.advance();
-                            }
-                        });
-                    }
-
-                    if (callback) callback();
-                }
-            }, speed);
-        }
+        // Delegation stub - full implementation in SceneRenderer
+        this.sceneRenderer.typewriterText(element, text, callback, internalTextLength, slowReveal);
     }
 
     getTypewriterSpeed() {
@@ -4196,36 +4071,8 @@ class GameEngine {
     }
 
     showChoices(choices, onChoice) {
-        this.choicesContainer.innerHTML = '';
-        this.choiceMenu.style.display = 'block';
-
-        choices.forEach(choice => {
-            const button = document.createElement('div');
-            button.className = 'choice-option';
-            button.textContent = choice.text;
-
-            if (choice.locked || choice.disabled) {
-                button.classList.add('locked');
-
-                // Add click handler for denial feedback on locked choices
-                button.addEventListener('click', () => {
-                    // EMOTIONAL FEEDBACK: Gentle denial for locked choices
-                    if (this.triggerSensoryFeedback) {
-                        this.triggerSensoryFeedback('denied', button, 'Locked story choice');
-                    }
-                });
-            } else {
-                button.addEventListener('click', () => {
-                    // DIZEE: Haptic feedback for choice selection
-                    this.triggerSensoryFeedback('buttonPress', button, 'Choice selected');
-
-                    this.choiceMenu.style.display = 'none';
-                    if (onChoice) onChoice(choice.value);
-                });
-            }
-
-            this.choicesContainer.appendChild(button);
-        });
+        // Delegation stub - full implementation in SceneRenderer
+        this.sceneRenderer.showChoices(choices, onChoice);
     }
 
     // ========================================
@@ -6323,30 +6170,8 @@ game.devCommands()
     // ========================================
 
     crossfadeBackground(newBackground) {
-        // Skip if same background
-        if (this.currentBackground === newBackground) return;
-
-        // Fallback: if alt layer doesn't exist, just set directly
-        if (!this.sceneBackgroundAlt) {
-            this.sceneBackground.style.backgroundImage = `url(${newBackground})`;
-            this.currentBackground = newBackground;
-            return;
-        }
-
-        // Determine which layer to use
-        const incoming = this.useAltBackground ? this.sceneBackground : this.sceneBackgroundAlt;
-        const outgoing = this.useAltBackground ? this.sceneBackgroundAlt : this.sceneBackground;
-
-        // Set new background on incoming layer
-        incoming.style.backgroundImage = `url(${newBackground})`;
-
-        // Crossfade: fade in incoming, fade out outgoing
-        incoming.style.opacity = '1';
-        outgoing.style.opacity = '0';
-
-        // Toggle for next transition
-        this.useAltBackground = !this.useAltBackground;
-        this.currentBackground = newBackground;
+        // Delegation stub - full implementation in SceneRenderer
+        this.sceneRenderer.crossfadeBackground(newBackground);
     }
 
     // ========================================
