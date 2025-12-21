@@ -728,6 +728,19 @@ class TetherSystem {
     set tetherLevel(value) {
         this.game.state.set('tether.level', value);
     }
+
+    // Additional tether settings accessors
+    get tetherDifficulty() {
+        return this.game.state.get('tether.difficulty');
+    }
+
+    get tetherCapFromState() {
+        return this.game.state.get('tether.cap');
+    }
+
+    get tetherDecayRateFromState() {
+        return this.game.state.get('tether.decayRate');
+    }
 }
 
 // Export for use in other modules
