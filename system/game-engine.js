@@ -5761,6 +5761,37 @@ class GameEngine {
         this.state.closeDebugPanel();
     }
 
+    quickSave(name = 'quicksave') {
+        // DEV COMMAND: Quick save current state
+        // Usage in console: game.quickSave() or game.quickSave('mysave')
+        return this.state.quickSave(name);
+    }
+
+    quickLoad(name = 'quicksave') {
+        // DEV COMMAND: Quick load saved state
+        // Usage in console: game.quickLoad() or game.quickLoad('mysave')
+        return this.state.quickLoad(name);
+    }
+
+    stateUndo() {
+        // DEV COMMAND: Undo last state change
+        // Usage in console: game.stateUndo()
+        return this.state.undo();
+    }
+
+    stateHistory(count = 10) {
+        // DEV COMMAND: View state change history
+        // Usage in console: game.stateHistory() or game.stateHistory(5)
+        const history = this.state.getHistory(count);
+        console.table(history.map(h => ({
+            path: h.path,
+            old: h.oldValue,
+            new: h.newValue,
+            time: new Date(h.timestamp).toLocaleTimeString()
+        })));
+        return history;
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
