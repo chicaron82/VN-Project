@@ -5881,6 +5881,20 @@ class GameEngine {
         return this.state.merge(path, obj);
     }
 
+    stateHas(path) {
+        // DEV COMMAND: Check if path exists
+        // Usage: game.stateHas('tether.level')
+        const exists = this.state.has(path);
+        console.log(`🔍 ${path}: ${exists ? '✓ exists' : '✗ not found'}`);
+        return exists;
+    }
+
+    stateDelete(path) {
+        // DEV COMMAND: Delete a path from state
+        // Usage: game.stateDelete('temp.data')
+        return this.state.deletePath(path);
+    }
+
     resetVersion(targetVersion = 848, status = 'attempting') {
         // DEV COMMAND: Reset loop version
         // Usage in console: game.resetVersion(848)
