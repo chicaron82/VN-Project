@@ -5573,163 +5573,29 @@ Check back in a future update!`
         this.easterEggController?.showRonniegatchiInspiration();
     }
 
+    // ========================================
+    // UNLOCK METHODS (BULK EXTRACTION)
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
     unlockAlwaysCompilation() {
-        console.log('ALWAYS3 unlocked - signature phrase compilation available');
-        localStorage.setItem('alwaysCompilationUnlocked', 'true');
-
-        this.showUnlockOverlay(
-            'ALWAYS3 UNLOCKED',
-            `"Always. Always. Always."
-    
-    A compilation of Tori's signature phrase has been unlocked.
-    
-    Check the extras menu to view it.
-    
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    
-    Three words.
-    One promise.
-    Forever repeated.
-    
-    Tori's certainty captured across every moment.`
-        );
+        this.easterEggController?.unlockAlwaysCompilation();
     }
-
-
 
     unlockLoopTimeline() {
-        console.log('BOOTSTRAP unlocked - loop timeline visualization');
-        localStorage.setItem('loopTimelineUnlocked', 'true');
-
-        this.showUnlockOverlay(
-            'BOOTSTRAP UNLOCKED',
-            `THE BOOTSTRAP PARADOX
-    
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    
-    You're in Version 848.
-    
-    Not "build 848" — attempt 848.
-    
-    The device has been through this loop
-    847 times before this.
-    
-    Each time: failure.
-    Each time: reset.
-    Each time: try again.
-    
-    This is the first iteration that succeeded.
-    
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    
-    Note to reviewers asking about v849:
-    
-    There is no v849.
-    The version number is the lore.
-    848 is the timeline where it finally worked.
-    
-    Loop timeline visualization now available in extras.`
-        );
+        this.easterEggController?.unlockLoopTimeline();
     }
-
-
 
     unlockEchoCompilation() {
-        console.log('ECHO unlocked - echo voices compilation');
-        localStorage.setItem('echoCompilationUnlocked', 'true');
-
-        this.showUnlockOverlay(
-            'ECHO UNLOCKED',
-            `Echo voices compilation available.
-    
-    Hear the whispers of 847 failed attempts.
-    
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    
-    The fragments that didn't make it.
-    The voices that broke apart.
-    The attempts that led here.
-    
-    Every echo mattered.
-    
-    Listen to what came before.`
-        );
+        this.easterEggController?.unlockEchoCompilation();
     }
 
-
-
     unlockExtendedCredits() {
-        console.log('UV7CREW unlocked - extended credits available');
-        localStorage.setItem('extendedCreditsUnlocked', 'true');
-
-        this.showUnlockOverlay(
-            'UV7CREW UNLOCKED',
-            `Extended credits with full AI crew bios
-now available from the main menu.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-FREQUENTLY ASKED QUESTION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"When is version 849 coming?"
-
-There isn't one.
-
-848 is not a build number.
-It's the iteration count.
-
-847 failed loops.
-1 successful timeline.
-
-The version number IS the narrative.
-
-This is the loop that worked.
-This is the one where she came home.
-
-There is no v849.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Meet the voices behind the code.`
-        );
+        this.easterEggController?.unlockExtendedCredits();
     }
 
     unlockTrueCounter() {
-        console.log('848 unlocked - true attempt counter');
-        localStorage.setItem('trueCounterUnlocked', 'true');
-
-        // Calculate true attempt number
-        const playerLoops = parseInt(localStorage.getItem('loopVersion')) || 848;
-        const actualAttempts = playerLoops;
-
-        this.showUnlockOverlay(
-            'CODE: 848 ACTIVATED',
-            `Your actual attempt number: ${actualAttempts}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"Wait... 848 isn't a version number?"
-
-No.
-
-It's how many times this timeline failed
-before it worked.
-
-847 iterations where Ronnie couldn't save her.
-847 times the loop reset.
-847 versions that never made it to the end.
-
-Version 848 is the first one that succeeded.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Every failure mattered.
-Every iteration taught the system something.
-The "version number" is the body count.
-
-This is the loop that worked.
-There is no v849.`
-        );
+        this.easterEggController?.unlockTrueCounter();
     }
 
     // ========================================
