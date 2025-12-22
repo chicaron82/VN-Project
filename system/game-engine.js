@@ -1057,8 +1057,8 @@ class GameEngine {
             }
 
             // 2. Standalone notes viewer
-            const notesViewer = document.getElementById('standalone-notes-viewer');
-            if (notesViewer && window.getComputedStyle(notesViewer).display !== 'none') {
+            const notesViewer = this.uiController.standaloneNotesViewer;
+            if (this.uiController.isVisible(notesViewer)) {
                 e.preventDefault();
                 const closeBtn = notesViewer.querySelector('.notes-close-btn');
                 if (closeBtn) closeBtn.click();
@@ -1066,8 +1066,7 @@ class GameEngine {
             }
 
             // 3. Settings menu (from pause menu)
-            const settingsMenu = document.getElementById('settings-menu');
-            if (settingsMenu && window.getComputedStyle(settingsMenu).display !== 'none') {
+            if (this.uiController.isVisible(this.uiController.settingsMenu)) {
                 e.preventDefault();
                 this.closeSettings();
                 return;
@@ -1084,8 +1083,7 @@ class GameEngine {
             }
 
             // 5. Pause menu
-            const pauseMenu = document.getElementById('pause-menu');
-            if (pauseMenu && window.getComputedStyle(pauseMenu).display !== 'none') {
+            if (this.uiController.isVisible(this.uiController.pauseMenu)) {
                 e.preventDefault();
                 if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
                     this.saveLoadUI.hidePauseMenu();
