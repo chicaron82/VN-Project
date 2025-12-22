@@ -5564,111 +5564,13 @@ Check back in a future update!`
         }, 300);
     }
 
+    // ========================================
+    // RONNIEGATCHI INSPIRATION OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
     showRonniegatchiInspiration() {
-        // Create overlay
-        const overlay = document.createElement('div');
-        overlay.id = 'ronniegatchi-inspiration-overlay';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        `;
-
-        overlay.innerHTML = `
-            <div style="
-                max-width: 90%;
-                max-height: 90vh;
-                overflow-y: auto;
-                background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
-                border: 3px solid #0ff;
-                border-radius: 12px;
-                padding: 40px;
-                box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
-                text-align: center;
-            ">
-                <button onclick="this.closest('#ronniegatchi-inspiration-overlay').remove()" style="
-                    position: absolute;
-                    top: 20px;
-                    right: 20px;
-                    background: rgba(0, 255, 255, 0.2);
-                    border: 2px solid #0ff;
-                    color: #0ff;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    font-size: 1.5em;
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                ">✕</button>
-                
-                <h2 style="
-                    color: #0ff;
-                    font-size: 2em;
-                    margin-bottom: 20px;
-                    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-                    font-family: 'Courier New', monospace;
-                ">THE INSPIRATION</h2>
-                
-                <img src="assets/ronniegatchi-inspiration.jpg" alt="Original Tori-Gatchi pixel art" style="
-                    max-width: 100%;
-                    max-height: 50vh;
-                    border-radius: 8px;
-                    margin: 20px 0;
-                    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-                ">
-                
-                <div style="
-                    color: rgba(255, 255, 255, 0.9);
-                    font-size: 1.1em;
-                    line-height: 1.8;
-                    max-width: 600px;
-                    margin: 30px auto;
-                    text-align: left;
-                    font-family: 'Courier New', monospace;
-                ">
-                    <p style="margin-bottom: 20px;">
-                        This was the original inspiration that led me to create this game.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        A simple pixel art Tamagotchi design featuring Tori and Ronnie together, 
-                        forever preserved in digital form.
-                    </p>
-                    <p style="margin-bottom: 20px;">
-                        From this single image came the "Digital Forever" ending, the Tori-Gatchi 
-                        mini-game, and ultimately... VERSION 848.
-                    </p>
-                    <p style="
-                        color: #0ff;
-                        font-style: italic;
-                        text-align: center;
-                        margin-top: 30px;
-                    ">
-                        "Together. Digital. Forever."
-                    </p>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(overlay);
-
-        // Fade in
-        setTimeout(() => {
-            overlay.style.opacity = '1';
-        }, 50);
-
-        // Haptic feedback
-        if (this.triggerSensoryFeedback) {
-            this.triggerSensoryFeedback('unlock', null, 'The Inspiration revealed');
-        }
+        this.easterEggController?.showRonniegatchiInspiration();
     }
 
     unlockAlwaysCompilation() {
