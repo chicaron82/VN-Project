@@ -787,10 +787,11 @@ class EasterEggController {
     // Generic unlock notification for secret codes
     // ========================================
     showUnlockOverlay(title, content, type = 'code') {
-        // Create overlay container
-        const overlay = document.createElement('div');
-        overlay.className = 'unlock-overlay';
-        overlay.style.cssText = `
+        try {
+            // Create overlay container
+            const overlay = document.createElement('div');
+            overlay.className = 'unlock-overlay';
+            overlay.style.cssText = `
             position: fixed;
             top: 0;
             left: 0;
@@ -804,10 +805,10 @@ class EasterEggController {
             animation: fadeIn 0.3s ease-out;
         `;
 
-        // Create content box
-        const box = document.createElement('div');
-        box.className = 'unlock-box';
-        box.style.cssText = `
+            // Create content box
+            const box = document.createElement('div');
+            box.className = 'unlock-box';
+            box.style.cssText = `
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             border: 2px solid #0ff;
             border-radius: 10px;
@@ -822,9 +823,9 @@ class EasterEggController {
             color: #fff;
         `;
 
-        // Create title
-        const titleEl = document.createElement('div');
-        titleEl.style.cssText = `
+            // Create title
+            const titleEl = document.createElement('div');
+            titleEl.style.cssText = `
             font-size: 28px;
             font-weight: bold;
             color: #0ff;
@@ -834,23 +835,23 @@ class EasterEggController {
             letter-spacing: 3px;
             text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
         `;
-        titleEl.textContent = title;
+            titleEl.textContent = title;
 
-        // Create content area
-        const contentEl = document.createElement('div');
-        contentEl.style.cssText = `
+            // Create content area
+            const contentEl = document.createElement('div');
+            contentEl.style.cssText = `
             font-size: 16px;
             line-height: 1.8;
             margin-bottom: 30px;
             white-space: pre-wrap;
             color: #e0e0e0;
         `;
-        contentEl.textContent = content;
+            contentEl.textContent = content;
 
-        // Create close button
-        const closeBtn = document.createElement('button');
-        closeBtn.textContent = 'CONTINUE';
-        closeBtn.style.cssText = `
+            // Create close button
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = 'CONTINUE';
+            closeBtn.style.cssText = `
             display: block;
             width: 200px;
             margin: 0 auto;
@@ -867,37 +868,37 @@ class EasterEggController {
             letter-spacing: 2px;
         `;
 
-        closeBtn.onmouseover = () => {
-            closeBtn.style.background = '#0ff';
-            closeBtn.style.color = '#000';
-            closeBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
-        };
+            closeBtn.onmouseover = () => {
+                closeBtn.style.background = '#0ff';
+                closeBtn.style.color = '#000';
+                closeBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
+            };
 
-        closeBtn.onmouseout = () => {
-            closeBtn.style.background = 'transparent';
-            closeBtn.style.color = '#0ff';
-            closeBtn.style.boxShadow = 'none';
-        };
+            closeBtn.onmouseout = () => {
+                closeBtn.style.background = 'transparent';
+                closeBtn.style.color = '#0ff';
+                closeBtn.style.boxShadow = 'none';
+            };
 
-        closeBtn.onclick = () => {
-            overlay.style.animation = 'fadeOut 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(overlay);
-            }, 300);
-        };
+            closeBtn.onclick = () => {
+                overlay.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(overlay);
+                }, 300);
+            };
 
-        // Assemble
-        box.appendChild(titleEl);
-        box.appendChild(contentEl);
-        box.appendChild(closeBtn);
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
+            // Assemble
+            box.appendChild(titleEl);
+            box.appendChild(contentEl);
+            box.appendChild(closeBtn);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
 
-        // Add CSS animations if not already present
-        if (!document.getElementById('unlock-overlay-styles')) {
-            const style = document.createElement('style');
-            style.id = 'unlock-overlay-styles';
-            style.textContent = `
+            // Add CSS animations if not already present
+            if (!document.getElementById('unlock-overlay-styles')) {
+                const style = document.createElement('style');
+                style.id = 'unlock-overlay-styles';
+                style.textContent = `
                 @keyframes fadeIn {
                     from { opacity: 0; }
                     to { opacity: 1; }
@@ -927,10 +928,16 @@ class EasterEggController {
                     border-radius: 5px;
                 }
             `;
-            document.head.appendChild(style);
-        }
+                document.head.appendChild(style);
+            }
 
-        console.log(`🎉 Unlock overlay shown: ${title}`);
+            console.log(`🎉 Unlock overlay shown: ${title}`);
+        } catch (error) {
+            // Fallback: Log to console if overlay creation fails
+            console.error('❌ Failed to show unlock overlay:', error);
+            console.log(`🔓 UNLOCKED: ${title}`);
+            console.log(content);
+        }
     }
 
     // ========================================
