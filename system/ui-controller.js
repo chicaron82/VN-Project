@@ -18,6 +18,32 @@ class UIController {
     }
 
     // ========================================
+    // ELEMENT ACCESSORS
+    // Centralized DOM element access - reduces scattered getElementById calls
+    // ========================================
+
+    get settingsMenu() { return document.getElementById('settings-menu'); }
+    get saveLoadOverlay() { return document.getElementById('save-load-overlay'); }
+    get pauseMenu() { return document.getElementById('pause-menu'); }
+    get creditsModal() { return document.getElementById('credits-modal'); }
+    get backlogOverlay() { return document.getElementById('backlog-overlay'); }
+    get bootstrapOverlay() { return document.getElementById('bootstrap-overlay'); }
+    get echoOverlay() { return document.getElementById('echo-overlay'); }
+    get skipIndicator() { return document.getElementById('skip-indicator'); }
+    get standaloneNotesViewer() { return document.getElementById('standalone-notes-viewer'); }
+    get devHud() { return document.getElementById('dev-hud'); }
+
+    // Check element visibility
+    isVisible(elementOrId) {
+        const el = typeof elementOrId === 'string'
+            ? document.getElementById(elementOrId)
+            : elementOrId;
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        return style.display !== 'none' && style.visibility !== 'hidden';
+    }
+
+    // ========================================
     // ERROR OVERLAY
     // Extracted from GameEngine.showErrorOverlay
     // ========================================
