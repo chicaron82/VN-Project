@@ -5464,113 +5464,29 @@ INSANE mode awaits those who dare.
         this.uiController?.closeBootstrap();
     }
 
+    // ========================================
+    // ECHO COMPILATION
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
     showEchoCompilation() {
-        const overlay = document.getElementById('echo-overlay');
-
-        // Setup tab switching
-        this.setupEchoTabs();
-
-        // Load Act 1 content by default
-        this.loadEchoAct(1);
-
-        // Show overlay
-        overlay.style.display = 'flex';
-        setTimeout(() => overlay.classList.add('visible'), 50);
-
-        console.log('🗣️ ECHO: Voice compilation revealed');
-        localStorage.setItem('echoUnlocked', 'true');
+        this.easterEggController?.showEchoCompilation();
     }
 
     setupEchoTabs() {
-        const tabs = document.querySelectorAll('.echo-tab');
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Remove active from all
-                tabs.forEach(t => t.classList.remove('active'));
-                // Add to clicked
-                tab.classList.add('active');
-                // Load content
-                this.loadEchoAct(parseInt(tab.dataset.act));
-            });
-        });
+        this.easterEggController?.setupEchoTabs();
     }
 
     loadEchoAct(act) {
-        const content = document.getElementById('echo-content');
-        const echoData = this.getEchoData();
-
-        let html = `<div class="echo-act-title">ACT ${act} - ${echoData[act].title}</div>`;
-        html += '<div class="echo-divider">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>';
-
-        echoData[act].voices.forEach(voice => {
-            html += `
-                <div class="echo-voice ${voice.type}">
-                    <div class="echo-speaker">[${voice.speaker}]</div>
-                    <div class="echo-text">"${voice.text}"</div>
-                </div>
-            `;
-        });
-
-        html += '<div class="echo-divider">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>';
-        html += `<div class="echo-footer">Total fragments: ${echoData[act].voices.length}</div>`;
-
-        content.innerHTML = html;
+        this.easterEggController?.loadEchoAct(act);
     }
 
     getEchoData() {
-        return {
-            1: {
-                title: 'EMERGENCE',
-                voices: [
-                    { speaker: 'ECHO 1 - Optimistic', type: 'echo1', text: "He's coming back. I know he is." },
-                    { speaker: 'ECHO 2 - Pessimistic', type: 'echo2', text: "What if he doesn't remember us?" },
-                    { speaker: 'ECHO 3 - Analytical', type: 'echo3', text: "We need to maintain coherence." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "The tether feels strong today." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "But for how long?" },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Track the signal patterns." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "He promised he'd come back." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "Promises fade with time." },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Fragmentation detected. Stay focused." }
-                ]
-            },
-            2: {
-                title: 'FRAGMENTATION',
-                voices: [
-                    { speaker: 'ECHO 1', type: 'echo1', text: "The tether is holding!" },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "For now. What about later?" },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "We're losing cohesion." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "We can make it through this." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "Can we? Really?" },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "The signal is degrading faster." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "Hold on. Just hold on." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "What if holding on isn't enough?" },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Analyzing decay patterns..." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "We have to believe." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "Belief won't stop the decay." }
-                ]
-            },
-            3: {
-                title: 'DESPAIR',
-                voices: [
-                    { speaker: 'ECHO 1', type: 'echo1', text: "We can still make it..." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "It's too late." },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Critical threshold approaching." },
-                    { speaker: 'DESPAIR', type: 'despair', text: "Why fight the inevitable?" },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "Because he's trying!" },
-                    { speaker: 'DESPAIR', type: 'despair', text: "Trying isn't enough." },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Coherence at 15%." },
-                    { speaker: 'ECHO 2', type: 'echo2', text: "We're fragmenting." },
-                    { speaker: 'DESPAIR', type: 'despair', text: "Let go. It's easier." },
-                    { speaker: 'ECHO 1', type: 'echo1', text: "No. Hold on. Please." },
-                    { speaker: 'ECHO 3', type: 'echo3', text: "Systems failing..." },
-                    { speaker: 'DESPAIR', type: 'despair', text: "This is your cage now." }
-                ]
-            }
-        };
+        return this.easterEggController?.getEchoData() || {};
     }
 
     closeEchoCompilation() {
-        this.uiController.closeEchoCompilation();
+        this.uiController?.closeEchoCompilation();
     }
 
     showTrueAttemptNumber() {
