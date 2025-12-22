@@ -20,12 +20,31 @@
 class KeyboardController {
     constructor(game) {
         this.game = game;
+
+        // Destructure commonly used dependencies to reduce this.game. verbosity
+        // These are resolved lazily via getters to handle initialization order
         this.keyboardNav = {
             currentContext: 'none',
             focusedIndex: 0,
             focusableElements: []
         };
     }
+
+    // Lazy getters for commonly used managers (handles initialization order)
+    get saveManager() { return this.game.saveManager; }
+    get backlogManager() { return this.game.backlogManager; }
+    get settingsManager() { return this.game.settingsManager; }
+    get saveLoadUI() { return this.game.saveLoadUI; }
+    get standaloneNotesViewer() { return this.game.standaloneNotesViewer; }
+    get menuCarousel() { return this.game.menuCarousel; }
+
+    // Lazy getters for UI elements
+    get choiceMenu() { return this.game.choiceMenu; }
+    get choicesContainer() { return this.game.choicesContainer; }
+    get gameView() { return this.game.gameView; }
+    get pauseContent() { return this.game.pauseContent; }
+    get notesViewer() { return this.game.notesViewer; }
+    get currentRoute() { return this.game.currentRoute; }
 
     // ========================================
     // INITIALIZATION
@@ -80,40 +99,40 @@ class KeyboardController {
             }
 
             // Priority 4: Notes viewer (in-game)
-            if (this.game.notesViewer && this.game.notesViewer.style.display === 'block') {
+            if (this.notesViewer && this.notesViewer.style.display === 'block') {
                 this.game.closeNotesViewer();
                 return;
             }
 
             // Priority 5: Standalone notes viewer (main menu)
-            if (this.game.standaloneNotesViewer && this.game.standaloneNotesViewer.isOpen) {
-                this.game.standaloneNotesViewer.close();
+            if (this.standaloneNotesViewer && this.standaloneNotesViewer.isOpen) {
+                this.standaloneNotesViewer.close();
                 return;
             }
 
             // Priority 6: Backlog
             const backlogOverlay = document.getElementById('backlog-overlay');
             if (backlogOverlay && backlogOverlay.style.display === 'flex') {
-                this.game.backlogManager.close();
+                this.backlogManager.close();
                 return;
             }
 
             // Priority 7: Settings menu
             const settingsMenu = document.getElementById('settings-menu');
             if (settingsMenu && settingsMenu.style.display === 'flex') {
-                this.game.settingsManager.closeSettings();
+                this.settingsManager.closeSettings();
                 return;
             }
 
             // Priority 8: Save/Load UI
             const saveLoadOverlay = document.getElementById('save-load-overlay');
             if (saveLoadOverlay && saveLoadOverlay.style.display === 'flex') {
-                this.game.saveLoadUI.close();
+                this.saveLoadUI.close();
                 return;
             }
 
             // Priority 9: Pause menu (in-game)
-            if (this.game.pauseContent && this.game.pauseContent.style.display === 'flex') {
+            if (this.pauseContent && this.pauseContent.style.display === 'flex') {
                 this.game.closePause();
                 return;
             }
@@ -135,9 +154,9 @@ class KeyboardController {
             e.preventDefault();
 
             // Only allow quick save during active gameplay
-            if (this.game.currentRoute && this.game.gameView.style.display !== 'none') {
+            if (this.currentRoute && this.gameView.style.display !== 'none') {
                 console.log('💾 Quick Save (Ctrl+S) to slot 1');
-                this.game.saveManager.saveGame(1, true); // true = auto-save (no confirmation)
+                this.saveManager.saveGame(1, true); // true = auto-save (no confirmation)
                 this.showNotification('⚡ Quick saved to slot 1');
             }
             return;
@@ -150,10 +169,10 @@ class KeyboardController {
             e.preventDefault();
 
             // Check if save exists
-            const saveData = this.game.saveManager.getSaveData(1);
+            const saveData = this.saveManager.getSaveData(1);
             if (saveData) {
                 console.log('📂 Quick Load (Ctrl+L) from slot 1');
-                this.game.saveManager.loadGame(1);
+                this.saveManager.loadGame(1);
                 this.showNotification('⚡ Quick loaded from slot 1');
             } else {
                 this.showNotification('❌ No save in slot 1');
@@ -168,8 +187,8 @@ class KeyboardController {
             const choiceNum = parseInt(e.key);
 
             // Check if choice menu is visible
-            if (this.game.choiceMenu && this.game.choiceMenu.style.display !== 'none') {
-                const choices = this.game.choicesContainer.querySelectorAll('.choice-button:not([style*="display: none"])');
+            if (this.choiceMenu && this.choiceMenu.style.display !== 'none') {
+                const choices = this.choicesContainer.querySelectorAll('.choice-button:not([style*="display: none"])');
 
                 if (choiceNum <= choices.length) {
                     e.preventDefault();
@@ -206,8 +225,8 @@ class KeyboardController {
             const mainMenu = document.getElementById('main-menu');
             if (mainMenu && mainMenu.style.display === 'flex') {
                 // Check if menuCarousel exists and has an active card
-                if (this.game.menuCarousel && this.game.menuCarousel.getCurrentCard) {
-                    const currentCard = this.game.menuCarousel.getCurrentCard();
+                if (this.menuCarousel && this.menuCarousel.getCurrentCard) {
+                    const currentCard = this.menuCarousel.getCurrentCard();
                     if (currentCard) {
                         console.log('⏎ Enter pressed on carousel - activating current card');
                         currentCard.click();
@@ -234,9 +253,9 @@ class KeyboardController {
         // ========================================
         // CONTEXT 1: Choice Menu
         // ========================================
-        if (this.game.choiceMenu && this.game.choiceMenu.style.display !== 'none') {
+        if (this.choiceMenu && this.choiceMenu.style.display !== 'none') {
             e.preventDefault();
-            const choices = this.game.choicesContainer.querySelectorAll('.choice-button:not([style*="display: none"])');
+            const choices = this.choicesContainer.querySelectorAll('.choice-button:not([style*="display: none"])');
 
             if (choices.length === 0) return;
 
@@ -321,9 +340,9 @@ class KeyboardController {
         // ========================================
         // CONTEXT 7: Pause Menu
         // ========================================
-        if (this.game.pauseContent && this.game.pauseContent.style.display === 'flex') {
+        if (this.pauseContent && this.pauseContent.style.display === 'flex') {
             e.preventDefault();
-            const buttons = this.game.pauseContent.querySelectorAll('button:not([style*="display: none"])');
+            const buttons = this.pauseContent.querySelectorAll('button:not([style*="display: none"])');
             this.navigateButtons(buttons, key);
             return;
         }
