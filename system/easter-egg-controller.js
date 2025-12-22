@@ -932,4 +932,124 @@ class EasterEggController {
 
         console.log(`🎉 Unlock overlay shown: ${title}`);
     }
+
+    // ========================================
+    // LOOP TIMELINE (BOOTSTRAP)
+    // Shows Version 1-848 timeline visualization
+    // ========================================
+
+    showLoopTimeline() {
+        const overlay = document.getElementById('bootstrap-overlay');
+        const timeline = document.getElementById('bootstrap-timeline');
+
+        // Generate timeline nodes
+        timeline.innerHTML = this.generateTimelineNodes();
+
+        // Show overlay
+        overlay.style.display = 'flex';
+        setTimeout(() => overlay.classList.add('visible'), 50);
+
+        // Scroll to bottom (Version 848) after a delay
+        setTimeout(() => {
+            timeline.scrollTop = timeline.scrollHeight;
+        }, 500);
+
+        console.log('🔄 BOOTSTRAP: Loop Timeline revealed');
+        localStorage.setItem('bootstrapUnlocked', 'true');
+    }
+
+    generateTimelineNodes() {
+        let html = '';
+
+        // Generate 847 failed versions
+        for (let v = 1; v <= 847; v++) {
+            const reason = this.getFailureReason(v);
+            const duration = this.getAttemptDuration(v);
+            const lesson = this.getLesson(v);
+
+            html += `
+                <div class="timeline-node failed" data-version="${v}">
+                    <div class="node-header">VERSION ${String(v).padStart(3, '0')}</div>
+                    <div class="node-status">STATUS: FAILURE</div>
+                    <div class="node-details">
+                        <div>Reason: ${reason}</div>
+                        <div>Duration: ${duration}</div>
+                        <div>Lesson: ${lesson}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Add Version 848 (success)
+        html += `
+            <div class="timeline-node success" data-version="848">
+                <div class="node-header">VERSION 848</div>
+                <div class="node-status">STATUS: SUCCESS ✓</div>
+                <div class="node-details">
+                    <div class="success-text">
+                        The timeline that worked.<br>
+                        The loop that closed.<br>
+                        The Old Man never has to go back.<br><br>
+                        This is the one.<br>
+                        Always. Always. Always.
+                    </div>
+                </div>
+            </div>
+        `;
+
+        return html;
+    }
+
+    getFailureReason(version) {
+        const reasons = [
+            // Early (1-100)
+            'Tether failed immediately',
+            'Connection unstable',
+            'Memory corruption detected',
+            'Signal loss',
+            'Device malfunction',
+
+            // Mid (101-400)
+            'Echo voices emerged too early',
+            'Fragmentation accelerated',
+            'Hold On insufficient',
+            'Tether decay too fast',
+            'Merge failed',
+
+            // Late (401-847)
+            'Almost succeeded',
+            'Connection held but failed at merge',
+            'So close, try again',
+            'One more attempt needed',
+            'Pattern recognized but not executed'
+        ];
+
+        // Select reason based on version range
+        if (version <= 100) return reasons[version % 5];
+        if (version <= 400) return reasons[5 + (version % 5)];
+        return reasons[10 + (version % 5)];
+    }
+
+    getAttemptDuration(version) {
+        // Progressive improvement
+        if (version <= 100) return `${Math.floor(Math.random() * 5) + 1} minutes`;
+        if (version <= 400) return `${Math.floor(Math.random() * 20) + 10} minutes`;
+        return `${Math.floor(Math.random() * 30) + 30} minutes`;
+    }
+
+    getLesson(version) {
+        const lessons = [
+            'Need stronger tether',
+            'Connection requires stabilization',
+            'Echo voices must be managed',
+            'Time is the enemy',
+            'Hold On button critical',
+            'Merge timing is everything',
+            'Pattern must be perfect',
+            'One more try',
+            'Keep going',
+            'Almost there'
+        ];
+        return lessons[version % lessons.length];
+    }
 }
