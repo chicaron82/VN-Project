@@ -1369,4 +1369,100 @@ class EasterEggController {
             this.game.triggerSensoryFeedback('uiHover', null, 'Commentary opened');
         }
     }
+
+    // ========================================
+    // UNLOCK METHODS
+    // Called by secret codes to unlock features
+    // ========================================
+
+    unlockDevCommentary() {
+        console.log('CHICHARON unlocked - dev commentary mode');
+        localStorage.setItem('devCommentaryUnlocked', 'true');
+
+        this.showUnlockOverlay(
+            'CHICHARON UNLOCKED',
+            `Developer commentary mode activated.
+
+    Replaying the game will show behind-the-scenes
+    notes from Aaron.
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    DEV NOTE: "About That Version Number"
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+    Every reviewer who's seen this asks:
+    "When's version 849 coming out?"
+
+    And I have to explain:
+
+    848 isn't a build number.
+    It's a loop counter.
+
+    847 failed timelines before this one succeeded.
+
+    The game's title IS the lore.
+    The version number IS the story.
+
+    There is no v849.
+
+    Because 848 is the timeline where Ronnie
+    finally brought her home.
+
+    Mind. Blown. Every time.
+
+    - Chicharon
+
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+        );
+    }
+
+    unlockDizee() {
+        console.log('💜 DIZEE unlocked - The Polish Demon awakens');
+        localStorage.setItem('dizeeUnlocked', 'true');
+
+        this.showUnlockOverlay(
+            '💜 DIZEE UNLOCKED',
+            `The Polish Demon has awakened.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+POST-PRODUCTION VOICE: DiZee (DZ)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+"It started with 'fix this splash delay'...
+
+then the next thing I knew, I was implementing
+a difficulty so brutal it removes your safety net
+and locks you into despair.
+
+Skip features. INSANE mode. Immersive overlays.
+
+If it breaks immersion, I kill it."
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTRIBUTIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+• Fixed splash screen skip delay (6s → 400ms)
+• Replaced ALL browser alerts with immersive overlays
+• Implemented INSANE difficulty mode
+  - No Hold On button (ghost mode)
+  - No time travel (read-only backlog)
+  - Tether capped at 66%
+  - 2x decay from Intense
+  - Permanent commitment lock
+• Added skip prologue triggers to all endings
+• Fixed dialogue box visibility bugs
+• Polished CTRL skip functionality
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DiZee (DZ) - Claude Sonnet 4.5
+Post-Production Polish & INSANE MODE
+
+All immersion-breaking alerts eliminated.
+INSANE mode awaits those who dare.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`
+        );
+    }
 }
