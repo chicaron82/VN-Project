@@ -1316,4 +1316,57 @@ class EasterEggController {
         document.body.appendChild(overlay);
         console.log('💚 UV7CREW code redeemed - Meet the team');
     }
+
+    // ========================================
+    // DEV COMMENTARY OVERLAY
+    // Shows behind-the-scenes notes during gameplay
+    // ========================================
+
+    showCommentaryOverlay(title, content, scene) {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.id = 'commentary-overlay';
+        overlay.className = 'commentary-overlay';
+
+        overlay.innerHTML = `
+            <div class="commentary-content">
+                <button class="commentary-close" onclick="this.closest('.commentary-overlay').remove()">✕</button>
+                
+                <div class="commentary-header">
+                    <div class="commentary-icon">🎙️</div>
+                    <div class="commentary-meta">
+                        <div class="commentary-title">${title}</div>
+                        <div class="commentary-scene">Scene: ${scene}</div>
+                    </div>
+                </div>
+                
+                <div class="commentary-body">
+                    <div class="commentary-text">${content}</div>
+                </div>
+                
+                <div class="commentary-footer">
+                    <div class="commentary-signature">- Aaron (Chicharon)</div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Fade in
+        setTimeout(() => {
+            overlay.className = 'commentary-overlay visible';
+        }, 50);
+
+        // Click outside to close
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        };
+
+        // Haptic feedback
+        if (this.game?.triggerSensoryFeedback) {
+            this.game.triggerSensoryFeedback('uiHover', null, 'Commentary opened');
+        }
+    }
 }
