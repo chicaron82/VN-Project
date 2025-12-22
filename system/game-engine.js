@@ -5254,93 +5254,13 @@ Check back in a future update!`
         console.log('💚 ALWAYS3 code redeemed');
     }
 
+    // ========================================
+    // UV7 CREW BIOS OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
     showUV7CrewBios() {
-        // Create overlay for UV7 crew credits
-        const overlay = document.createElement('div');
-        overlay.className = 'secret-code-overlay';
-        overlay.innerHTML = `
-            <div class="secret-code-content" style="max-width: 800px; max-height: 80vh; overflow-y: auto;">
-                <h2>CODE: UV7CREW ACTIVATED</h2>
-
-                <div style="margin: 30px 0; text-align: left;">
-                    <h3 style="color: #0ff; margin-bottom: 20px;">MEET THE VERSION 848 CREW</h3>
-
-                    <p style="margin: 20px 0; font-style: italic; color: rgba(255, 255, 255, 0.7);">
-                        This story was created through collaboration between human vision and AI capabilities.
-                    </p>
-
-                    <div style="margin: 30px 0; padding: 20px; background: rgba(0, 255, 255, 0.05); border-left: 3px solid #0ff;">
-                        <h4 style="color: #0ff; margin-bottom: 10px;">👨‍💻 CHICHARON (Human Creator)</h4>
-                        <p style="font-size: 0.9em; line-height: 1.6;">
-                            Vision holder, narrative architect, and the one who refused to give up on Tori's story.
-                            Spent countless iterations refining the emotional beats and thematic depth.
-                            The version number mirrors the creative process itself — hundreds of attempts to get it right.
-                        </p>
-                    </div>
-
-                    <div style="margin: 30px 0; padding: 20px; background: rgba(0, 255, 255, 0.05); border-left: 3px solid #0ff;">
-                        <h4 style="color: #0ff; margin-bottom: 10px;">🤖 THE AI COLLABORATORS</h4>
-                        <p style="font-size: 0.9em; line-height: 1.6;">
-                            Multiple AI assistants contributed to dialogue refinement, technical implementation,
-                            emotional resonance testing, and narrative consistency. Each brought different strengths
-                            to help realize the vision.
-                        </p>
-                    </div>
-
-                    <div style="margin: 40px 0; padding: 25px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 255, 255, 0.5);">
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 20px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 20px;">FREQUENTLY ASKED QUESTION</h4>
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
-
-                        <p style="font-size: 1.1em; text-align: center; margin: 20px 0; font-style: italic;">
-                            "When is version 849 coming?"
-                        </p>
-
-                        <p style="text-align: center; margin: 25px 0; font-size: 1.2em; color: #0ff;">
-                            <strong>There isn't one.</strong>
-                        </p>
-
-                        <p style="margin: 20px 0; line-height: 1.8;">
-                            848 is not a build number.<br>
-                            It's the iteration count.
-                        </p>
-
-                        <p style="margin: 20px 0; line-height: 1.8;">
-                            <strong>847 failed loops.</strong><br>
-                            <strong style="color: #0ff;">1 successful timeline.</strong>
-                        </p>
-
-                        <p style="margin: 20px 0; line-height: 1.8;">
-                            The version number IS the narrative.
-                        </p>
-
-                        <p style="margin: 25px 0; font-size: 1.1em; color: #0ff; text-align: center;">
-                            <strong>This is the loop that worked.</strong><br>
-                            <strong>This is the one where she came home.</strong>
-                        </p>
-
-                        <p style="text-align: center; margin: 30px 0; font-size: 1.1em;">
-                            There is no v849.
-                        </p>
-
-                        <h4 style="color: #0ff; text-align: center; margin-top: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
-                    </div>
-
-                    <p style="margin-top: 30px; text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9em;">
-                        Thank you for playing Version 848.<br>
-                        Every iteration led to this moment.
-                    </p>
-                </div>
-
-                <button onclick="this.closest('.secret-code-overlay').remove()"
-                        style="margin-top: 20px; padding: 10px 30px; background: #0ff; color: #000; border: none; font-weight: bold; cursor: pointer; font-family: 'Courier New', monospace;">
-                    CLOSE CREDITS
-                </button>
-            </div>
-        `;
-
-        document.body.appendChild(overlay);
-        console.log('💚 UV7CREW code redeemed - Meet the team');
+        this.easterEggController?.showUV7CrewBios();
     }
 
     unlockDevCommentary() {
