@@ -1735,4 +1735,39 @@ This is the loop that worked.
 There is no v849.`
         );
     }
+
+    // ========================================
+    // UNLOCK WRAPPERS
+    // Called by secret codes to trigger easter eggs
+    // ========================================
+
+    unlockTorigatchi() {
+        console.log('TORIGATCHI unlocked - reverse trapdoor available');
+        localStorage.setItem('torigatchiUnlocked', 'true');
+
+        // Close settings menu before showing easter egg
+        if (this.game?.closeSettings) {
+            this.game.closeSettings();
+        }
+
+        // Small delay to let settings close smoothly
+        setTimeout(() => {
+            this.showTorigatchiEasterEgg();
+        }, 300);
+    }
+
+    unlockRonniegatchi() {
+        console.log('RONNIEGATCHI unlocked - the inspiration revealed');
+        localStorage.setItem('ronniegatchiUnlocked', 'true');
+
+        // Close settings menu
+        if (this.game?.closeSettings) {
+            this.game.closeSettings();
+        }
+
+        // Show the inspiration overlay
+        setTimeout(() => {
+            this.showRonniegatchiInspiration();
+        }, 300);
+    }
 }

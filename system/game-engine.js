@@ -5233,26 +5233,10 @@ game.devCommands()
 
     // ========================================
     // CODE REWARD FUNCTIONS (PLACEHOLDERS)
+    // DIZEE: Delegated to EasterEggController
     // ========================================
 
-    showAlwaysCompilation() {
-        // TODO: Show all instances of "Always. Always. Always."
-        this.showUnlockOverlay(
-            'ALWAYS3 ACTIVATED',
-            `Feature coming soon: Compilation of Tori's signature phrase
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-"Always. Always. Always."
-
-This feature will compile every instance
-of Tori's signature phrase throughout
-both routes.
-
-Check back in a future update!`
-        );
-        console.log('💚 ALWAYS3 code redeemed');
-    }
+    // showAlwaysCompilation already delegated at line 564
 
     // ========================================
     // UV7 CREW BIOS OVERLAY
@@ -5535,33 +5519,15 @@ Check back in a future update!`
 
     // ========================================
     // CODE REWARD IMPLEMENTATIONS
-    // Used by redeemSecretCode() when codes are entered
+    // DIZEE: Delegated to EasterEggController
     // ========================================
 
     unlockTorigatchi() {
-        console.log('TORIGATCHI unlocked - reverse trapdoor available');
-        localStorage.setItem('torigatchiUnlocked', 'true');
-
-        // Close settings menu before showing easter egg
-        this.closeSettings();
-
-        // Small delay to let settings close smoothly
-        setTimeout(() => {
-            this.showTorigatchiEasterEgg();
-        }, 300);
+        this.easterEggController?.unlockTorigatchi();
     }
 
     unlockRonniegatchi() {
-        console.log('RONNIEGATCHI unlocked - the inspiration revealed');
-        localStorage.setItem('ronniegatchiUnlocked', 'true');
-
-        // Close settings menu
-        this.closeSettings();
-
-        // Show the inspiration overlay
-        setTimeout(() => {
-            this.showRonniegatchiInspiration();
-        }, 300);
+        this.easterEggController?.unlockRonniegatchi();
     }
 
     // ========================================
