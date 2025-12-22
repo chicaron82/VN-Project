@@ -978,7 +978,7 @@ class GameEngine {
                     } else {
                         console.warn('⚠️ Skip button element not found!');
                     }
-                    const skipIndicator = document.getElementById('skip-indicator');
+                    const skipIndicator = this.uiController.skipIndicator;
                     if (skipIndicator) {
                         skipIndicator.style.display = 'block';
                         console.log('✅ Skip indicator shown');
@@ -1010,7 +1010,7 @@ class GameEngine {
                     // Only deactivate if it was activated via ctrl-hold (not toggle)
                     this.skipActive = false;
                     this.skipButton.classList.remove('active', 'ctrl-held');
-                    const skipIndicator = document.getElementById('skip-indicator');
+                    const skipIndicator = this.uiController.skipIndicator;
                     if (skipIndicator) {
                         skipIndicator.style.display = 'none';
                     }
@@ -1661,7 +1661,7 @@ class GameEngine {
     // ========================================
 
     toggleDevHUD() {
-        const hud = document.getElementById('dev-hud');
+        const hud = this.uiController.devHud;
         if (!hud) {
             console.warn('Dev HUD not found in DOM');
             return;
@@ -2818,7 +2818,7 @@ class GameEngine {
                 if (skipButton) {
                     skipButton.classList.remove('active');
                 }
-                const skipIndicator = document.getElementById('skip-indicator');
+                const skipIndicator = this.uiController.skipIndicator;
                 if (skipIndicator) {
                     skipIndicator.style.display = 'none';
                 }
@@ -4946,7 +4946,7 @@ game.devCommands()
         }
 
         // Update skip indicator
-        const skipIndicator = document.getElementById('skip-indicator');
+        const skipIndicator = this.uiController.skipIndicator;
         if (skipIndicator) {
             skipIndicator.style.display = this.skipActive ? 'block' : 'none';
         }
