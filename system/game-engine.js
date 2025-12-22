@@ -961,8 +961,7 @@ class GameEngine {
             if ((e.key === 'Control' || e.code === 'ControlLeft' || e.code === 'ControlRight') && !this.skipActive) {
 
                 // DIZEE FIX: Don't trigger skip on Main Menu or when paused (e.g. for screenshots)
-                const mainMenu = document.getElementById('main-menu');
-                if ((mainMenu && mainMenu.style.display !== 'none') || this.isPaused) {
+                if ((this.mainMenu && this.mainMenu.style.display !== 'none') || this.isPaused) {
                     return;
                 }
 
@@ -973,9 +972,8 @@ class GameEngine {
                     this.skipActive = true;
                     console.log('⏩ CTRL pressed: Skip mode activated');
 
-                    const skipButton = document.getElementById('skip-button');
-                    if (skipButton) {
-                        skipButton.classList.add('active', 'ctrl-held');
+                    if (this.skipButton) {
+                        this.skipButton.classList.add('active', 'ctrl-held');
                         console.log('✅ Skip button classes updated');
                     } else {
                         console.warn('⚠️ Skip button element not found!');
@@ -1008,11 +1006,10 @@ class GameEngine {
         document.addEventListener('keyup', (e) => {
             if (e.key === 'Control' || e.key === 'Meta') {
                 console.log('⏸️ CTRL released: Skip mode deactivating');
-                const skipButton = document.getElementById('skip-button');
-                if (skipButton && skipButton.classList.contains('ctrl-held')) {
+                if (this.skipButton && this.skipButton.classList.contains('ctrl-held')) {
                     // Only deactivate if it was activated via ctrl-hold (not toggle)
                     this.skipActive = false;
-                    skipButton.classList.remove('active', 'ctrl-held');
+                    this.skipButton.classList.remove('active', 'ctrl-held');
                     const skipIndicator = document.getElementById('skip-indicator');
                     if (skipIndicator) {
                         skipIndicator.style.display = 'none';
