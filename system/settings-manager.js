@@ -309,6 +309,14 @@ class SettingsManager {
             });
         });
 
+        // DIZEE: Theme Preference Buttons 🎨
+        document.querySelectorAll('.theme-pref-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.theme;
+                this.setThemePreference(mode);
+            });
+        });
+
         // DIZEE: Tutorial Hints Toggle
         const tutorialToggle = document.getElementById('tutorial-hints-toggle');
         const tutorialStatus = document.getElementById('tutorial-hints-status');
@@ -436,6 +444,12 @@ class SettingsManager {
         // Update display mode buttons
         document.querySelectorAll('.display-mode-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === this.settings.displayMode);
+        });
+
+        // DIZEE: Update theme preference buttons 🎨
+        const currentThemePref = this.getThemePreference();
+        document.querySelectorAll('.theme-pref-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === currentThemePref);
         });
 
         // Update tether difficulty buttons
@@ -634,6 +648,27 @@ class SettingsManager {
 
         // Update glitch effects immediately
         this.applyComfortMode(enabled);
+    }
+
+    // ========================================
+    // THEME PREFERENCE
+    // DIZEE: Route-specific color theme toggle 🎨
+    // ========================================
+
+    setThemePreference(mode) {
+        // Delegate to ThemeManager
+        if (typeof ThemeManager !== 'undefined') {
+            ThemeManager.setPreferenceMode(mode);
+        }
+        this.updateUI();
+        console.log(`🎨 Theme preference: ${mode.toUpperCase()}`);
+    }
+
+    getThemePreference() {
+        if (typeof ThemeManager !== 'undefined') {
+            return ThemeManager.getPreferenceMode();
+        }
+        return 'auto';
     }
 
     applyComfortMode(enabled) {
