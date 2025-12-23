@@ -349,6 +349,10 @@ class GameEngine {
         this.loopController = new LoopController(this);
         Logger.solid('LoopController');
 
+        // SOLID Refactor: Initialize scene progression system
+        this.sceneProgressionController = new SceneProgressionController(this);
+        Logger.solid('SceneProgressionController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -1256,7 +1260,7 @@ class GameEngine {
     }
 
     updateTitleScreen() {
-        this.loopController.updateTitleScreen();
+        return this.sceneProgressionController.updateTitleScreen();
     }
 
     // ========================================
@@ -1319,7 +1323,7 @@ class GameEngine {
     }
 
     stopMainMenuTipRotation() {
-        this.tipsController.stopMainMenuRotation();
+        return this.sceneProgressionController.stopMainMenuTipRotation();
     }
 
     startRouteSelectTipRotation() {
@@ -1327,7 +1331,7 @@ class GameEngine {
     }
 
     stopRouteSelectTipRotation() {
-        this.tipsController.stopRouteSelectRotation();
+        return this.sceneProgressionController.stopRouteSelectTipRotation();
     }
 
     // ========================================
@@ -1485,7 +1489,7 @@ class GameEngine {
     }
 
     incrementVersion() {
-        return this.loopController.increment();
+        return this.sceneProgressionController.incrementVersion();
     }
 
     breakLoop() {
@@ -1523,7 +1527,7 @@ class GameEngine {
     // ========================================
 
     showCodeRainTransition(callback, duration = 1500) {
-        this.effectsController?.showCodeRainTransition(callback, duration);
+        return this.sceneProgressionController.showCodeRainTransition(callback, duration);
     }
 
     startTransitionRain(canvas) {
@@ -1540,7 +1544,7 @@ class GameEngine {
     // ========================================
 
     hasCompletedAnyEnding() {
-        return localStorage.getItem('hasCompletedOnce') === 'true';
+        return this.sceneProgressionController.hasCompletedAnyEnding();
     }
 
     markEndingCompleted(endingType) {
@@ -1691,89 +1695,11 @@ class GameEngine {
     // ========================================
 
     startStory() {
-        // Check if skip prologue is unlocked AND enabled in settings
-        if (this.skipPrologueUnlocked && this.settingsManager?.settings?.autoSkipPrologue) {
-            // Auto-skip enabled - go straight to routes
-            console.log('⏭️ Auto-skip prologue enabled - jumping to route selection');
-            this.skipToRouteSelection();
-            return;
-        }
-
-        // Check if skip is unlocked (but not auto-enabled)
-        if (this.skipPrologueUnlocked) {
-            // Check if prompt has been seen before
-            const promptSeen = localStorage.getItem('skipProloguePromptSeen') === 'true';
-
-            if (!promptSeen) {
-                // First time seeing prompt - show it
-                this.showSkipProloguePrompt();
-                return;
-            } else {
-                // Prompt already seen - respect Settings toggle (defaults to OFF)
-                // Since auto-skip is OFF (we checked above), play prologue
-                console.log('⏭️ Skip prompt dismissed previously - playing prologue (toggle in Settings to auto-skip)');
-                this.startPrologueNormally();
-                return;
-            }
-        }
-
-        // Normal flow - start prologue
-        this.startPrologueNormally();
+        return this.sceneProgressionController.startStory();
     }
 
     startPrologueNormally() {
-        // Clear backlog from previous session
-        if (this.backlogManager) {
-            this.backlogManager.clearHistory();
-        }
-
-        // Cleanup Menu Carousel if active
-        if (this.menuCarousel) {
-            this.menuCarousel.destroy();
-            this.menuCarousel = null;
-        }
-
-        // Standard prologue start
-        this.gameState.currentRoute = 'prologue'; // Set current route for tracking
-        this.clearAllSprites();
-
-        // Reset game state
-        this.gameState = {
-            flags: {},
-            choices: {},
-            progress: {},
-            sprites: { left: null, right: null }
-        };
-
-        // ZEE'S ADDITION: Stop tip rotation 🖤
-        this.stopMainMenuTipRotation();
-
-        // Fade out main menu
-        this.mainMenu.style.opacity = '0';
-
-        setTimeout(() => {
-            this.mainMenu.style.display = 'none';
-            this.gameView.style.display = 'flex';
-
-            // Show Game UI Layer
-            const gameUI = document.getElementById('game-ui-layer');
-            if (gameUI) gameUI.style.display = 'block';
-
-            this.dialogueBox.style.display = 'block';
-
-            // Fade in game view
-            setTimeout(() => {
-                this.gameView.style.transition = 'opacity 1s';
-                this.gameView.style.opacity = '1';
-            }, 100);
-
-            // Clear any lingering sprites before starting prologue
-            this.clearAllSprites();
-
-            // Start shared prologue
-            const prologue = new SharedPrologue(this);
-            prologue.start();
-        }, 800);
+        return this.sceneProgressionController.startPrologueNormally();
     }
 
     // ========================================
@@ -1793,11 +1719,11 @@ class GameEngine {
     // ========================================
 
     showSkipProloguePrompt() {
-        this.routeController.showSkipProloguePrompt();
+        return this.sceneProgressionController.showSkipProloguePrompt();
     }
 
     skipToRouteSelection() {
-        this.routeController.skipToRouteSelection();
+        return this.sceneProgressionController.skipToRouteSelection();
     }
 
     unlockSkipPrologue() {
@@ -1810,33 +1736,7 @@ class GameEngine {
     // ========================================
 
     unlockRonnieNotesSystem() {
-        this.ronnieNotesUnlocked = true;
-        localStorage.setItem('ronnieNotesUnlocked', 'true');
-        localStorage.setItem('ronnieTabUnlocked', 'true');
-
-        console.log('📝 Ronnie notes system unlocked! Notes viewer now active for replays.');
-
-        // Unlock the teaser note (already defined in collectibles-manager.js)
-        // Access through currentRoute if available (during gameplay)
-        if (this.currentRoute && this.currentRoute.collectiblesManager) {
-            this.currentRoute.collectiblesManager.unlockNote('ronnie_teaser');
-        } else {
-            // DIZEE FIX: Use correct localStorage key and structure
-            // Directly add to localStorage if called outside of active route
-            const savedNotes = JSON.parse(localStorage.getItem('vn_collected_notes') || '{"z":[],"cz":[],"zr":[],"gz":[],"iz":[],"pz":[],"special":[]}');
-            if (!savedNotes.special.includes('ronnie_teaser')) {
-                savedNotes.special.push('ronnie_teaser');
-                localStorage.setItem('vn_collected_notes', JSON.stringify(savedNotes));
-                console.log('✅ Ronnie teaser note unlocked (via localStorage)');
-            }
-        }
-
-        // ZEERAH: Mark feature as unread for notification dot
-        if (this.standaloneNotesViewer) {
-            this.standaloneNotesViewer.readStatus['feature_ronnieNotes'] = false;
-            this.standaloneNotesViewer.saveReadStatus();
-            this.standaloneNotesViewer.updateNotificationDots();
-        }
+        return this.sceneProgressionController.unlockRonnieNotesSystem();
     }
 
     // ========================================
@@ -1844,177 +1744,7 @@ class GameEngine {
     // ========================================
 
     startRoute(routeName) {
-        console.log(`🚀 Starting route: ${routeName}`);
-
-        // Clear backlog from previous session/route
-        if (this.backlogManager) {
-            this.backlogManager.clearHistory();
-        }
-
-        // Cleanup Menu Carousel if active
-        if (this.menuCarousel) {
-            this.menuCarousel.destroy();
-            this.menuCarousel = null;
-        }
-
-        this.gameState.currentRoute = routeName; // Set current route for tracking
-
-        // DIZEE: Apply route-specific theme 🎨
-        if (typeof ThemeManager !== 'undefined') {
-            ThemeManager.setRoute(routeName);
-        }
-
-        // DIZEE FIX: Clear game view immediately to prevent old scene flash 💚
-        if (this.gameView) {
-            this.gameView.style.backgroundImage = 'none';
-        }
-
-        // Clear sprites before starting route (redundant safety check)
-        this.clearAllSprites();
-
-        // DIZEE FIX: Reset loop status to 'attempting' when starting new route
-        // This prevents [FINAL] from persisting after true ending -> retry -> bad ending
-        if (this.loopStatus === 'succeeded' || this.loopStatus === 'accepted') {
-            const previousStatus = this.loopStatus;
-            this.incrementVersion(); // Increment version for new attempt (also resets status to 'attempting')
-            console.log(`🔄 New attempt after ${previousStatus} - VERSION ${this.loopVersion}`);
-        }
-
-        // ZEE'S ADDITION: Stop tip rotation 🖤
-        this.stopRouteSelectTipRotation();
-
-        // ZEE'S FIX: Restore Insane Mode flags from localStorage 🖤
-        // When user commits to Insane in settings, flag is saved to localStorage
-        // But gameState gets reinitialized, so we need to restore it here
-        const insaneLocked = localStorage.getItem('insaneModeLocked') === 'true';
-        if (insaneLocked) {
-            // Restore Insane Mode flags to gameState
-            if (!this.gameState.flags) {
-                this.gameState.flags = {};
-            }
-            this.gameState.flags.insaneModeActive = true;
-            this.gameState.flags.insaneModeLocked = true;
-            console.log('💀 Insane Mode restored from localStorage');
-
-            // Trigger initial visual corruption on route start
-            if (this.triggerInsaneVisuals) {
-                this.triggerInsaneVisuals();
-            }
-
-            // ZEE'S FIX: Apply Insane Mode color scheme (cyan → red) 🖤
-            const gameContainer = document.getElementById('game-container');
-            if (gameContainer) {
-                gameContainer.classList.add('insane-mode-active');
-                console.log('🔴 Insane Mode color scheme activated');
-            }
-        }
-
-        // Fade out route select
-        const routeSelect = document.getElementById('route-select');
-        routeSelect.style.opacity = '0';
-
-        setTimeout(() => {
-            routeSelect.style.display = 'none';
-            this.gameView.style.display = 'flex';
-
-            // Show Game UI Layer
-            const gameUI = document.getElementById('game-ui-layer');
-            if (gameUI) gameUI.style.display = 'block';
-
-            // Fade in game view
-            setTimeout(() => {
-                this.gameView.style.opacity = '1';
-            }, 100);
-
-            // Show notes button for Tori's route (has collectibles)
-            if (routeName === 'tori') {
-                if (this.notesButton) {
-                    this.notesButton.style.display = 'block';
-                }
-            } else if (this.hasCompletedAnyEnding()) {
-                // Show for other routes only after completing an ending
-                if (this.notesButton) {
-                    this.notesButton.style.display = 'block';
-                }
-            }
-
-            // Show backlog button during gameplay
-            const backlogButton = document.getElementById('backlog-button');
-            if (backlogButton) {
-                backlogButton.style.display = 'block';
-            }
-
-            // DIZEE: Show dev commentary button if unlocked (inside dialogue box)
-            if (this.devCommentary && this.devCommentary.isUnlocked()) {
-                const dialogueBox = document.getElementById('dialogue-box');
-
-                // Remove existing button if any
-                const existingBtn = dialogueBox?.querySelector('.commentary-hint-button');
-                if (existingBtn) existingBtn.remove();
-
-                const commentaryBtn = document.createElement('button');
-                commentaryBtn.className = 'commentary-hint-button';
-                commentaryBtn.innerHTML = '🎙️ COMMENTARY';
-                commentaryBtn.onclick = (e) => {
-                    e.stopPropagation(); // Prevent dialogue advance
-                    this.devCommentary.showCommentary('route_selection_dual');
-                    // Also show philosophy after a delay
-                    setTimeout(() => {
-                        this.devCommentary.showCommentary('route_selection_philosophy');
-                    }, 10000);
-                };
-
-                if (dialogueBox) {
-                    dialogueBox.appendChild(commentaryBtn);
-                }
-            }
-
-            // Set route-specific dialogue frame
-            this.setDialogueFrame(routeName);
-
-            // DIZEE: Code rain transition before route starts 💚🌧️
-            this.showCodeRainTransition(() => {
-                // DIZEE FIX: Clean up previous route before starting new one
-                if (this.currentRoute) {
-                    // Call route's cleanup method (handles timers, listeners, references)
-                    if (this.currentRoute.cleanup) {
-                        this.currentRoute.cleanup();
-                    }
-                    // Hide tether UI
-                    if (this.tetherUI) {
-                        this.tetherUI.style.display = 'none';
-                    }
-                    // Clear current route reference
-                    this.currentRoute = null;
-                }
-
-                // Initialize route
-                if (routeName === 'ronnie') {
-                    this.currentRoute = new RonnieRoute(this);
-                    this.currentRoute.start(); // Call start() explicitly
-
-                    // DIZEE: Add route class for choice button theming 💚
-                    document.body.classList.add('ronnie-route');
-                    document.body.classList.remove('tori-route');
-                } else if (routeName === 'tori') {
-                    this.currentRoute = new ToriRoute(this);
-
-                    // INSANE MODE: Make Hold On button a ghost
-                    if (this.gameState.flags && this.gameState.flags.insaneModeActive) {
-                        this.makeHoldOnGhost();
-                    }
-
-                    this.currentRoute.start(); // Tori has explicit .start()
-
-                    // DIZEE: Add route class for choice button theming 💚
-                    document.body.classList.add('tori-route');
-                    document.body.classList.remove('ronnie-route');
-                }
-
-                // Show ESC hint briefly for desktop users
-                this.showEscHintBriefly();
-            }, 1500); // Code rain transition duration
-        }, 1000);
+        return this.sceneProgressionController.startRoute(routeName);
     }
 
     // ========================================
@@ -2524,26 +2254,7 @@ class GameEngine {
     }
 
     clearAllSprites() {
-        // NEW METHOD: Complete sprite cleanup
-        // Remove sprites from DOM
-        if (this.spriteLeft) {
-            this.spriteLeft.style.opacity = '0';
-            this.spriteLeft.style.display = 'none';
-            this.spriteLeft.style.backgroundImage = '';
-            this.spriteLeft.classList.remove('sprite-dim');
-        }
-        if (this.spriteRight) {
-            this.spriteRight.style.opacity = '0';
-            this.spriteRight.style.display = 'none';
-            this.spriteRight.style.backgroundImage = '';
-            this.spriteRight.classList.remove('sprite-dim');
-        }
-
-        // Clear tracking state
-        this.currentSprites = { left: null, right: null };
-        this.gameState.sprites = { left: null, right: null };
-
-        console.log('All sprites cleared');
+        return this.sceneProgressionController.clearAllSprites();
     }
 
     // ========================================
@@ -3468,20 +3179,7 @@ class GameEngine {
     }
 
     resetVersion(targetVersion = 848, status = 'attempting') {
-        // DEV COMMAND: Reset loop version
-        // Usage in console: game.resetVersion(848)
-        this.loopVersion = parseInt(targetVersion);
-        this.loopStatus = status;
-
-        localStorage.setItem('loopVersion', this.loopVersion.toString());
-        localStorage.setItem('loopStatus', this.loopStatus);
-
-        this.updateTitleScreen();
-
-        console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
-        console.log(`💡 Refresh page to see changes!`);
-
-        return this.loopVersion;
+        return this.sceneProgressionController.resetVersion(targetVersion, status);
     }
 
     nuclearReset() {
@@ -3815,7 +3513,7 @@ game.devCommands()
     // ========================================
 
     showEscHintBriefly() {
-        this.uiController.showEscHintBriefly();
+        return this.sceneProgressionController.showEscHintBriefly();
     }
 
     // ========================================
@@ -3832,29 +3530,7 @@ game.devCommands()
     // ========================================
 
     setDialogueFrame(routeName) {
-        // Remove existing route classes from all UI elements
-        this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
-        if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
-        if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
-        if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
-        if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
-
-        // Apply route-specific theming to all UI
-        if (routeName === 'ronnie') {
-            this.dialogueBox.classList.add('ronnie-route');
-            if (this.pauseButton) this.pauseButton.classList.add('ronnie-route');
-            if (this.pauseContent) this.pauseContent.classList.add('ronnie-route');
-            if (this.notesButton) this.notesButton.classList.add('ronnie-route');
-            if (this.notesViewer) this.notesViewer.classList.add('ronnie-route');
-        } else if (routeName === 'tori') {
-            this.dialogueBox.classList.add('tori-route');
-            if (this.pauseButton) this.pauseButton.classList.add('tori-route');
-            if (this.pauseContent) this.pauseContent.classList.add('tori-route');
-            if (this.notesButton) this.notesButton.classList.add('tori-route');
-            if (this.notesViewer) this.notesViewer.classList.add('tori-route');
-        }
-
-        console.log(`UI theme set: ${routeName}`);
+        return this.sceneProgressionController.setDialogueFrame(routeName);
     }
 
     clearDialogueFrame() {
@@ -4477,13 +4153,7 @@ game.devCommands()
     // ========================================
 
     makeHoldOnGhost() {
-        if (!this.holdOnButton) return;
-
-        console.log('💀 INSANE MODE: Hiding Hold On button');
-
-        // DIZEE FIX: Hide Hold On button completely in Insane Mode (Option A - cleaner UX)
-        // You removed this safety. It stays gone.
-        this.holdOnButton.style.display = 'none';
+        return this.sceneProgressionController.makeHoldOnGhost();
     }
 
     deactivateInsaneMode() {
