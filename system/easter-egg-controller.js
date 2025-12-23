@@ -1326,6 +1326,8 @@ INSANE mode awaits those who dare.
     // ========================================
 
     showRonniegatchiInspiration() {
+        const theme = ThemeManager.getTheme();
+
         // Create overlay
         const overlay = document.createElement('div');
         overlay.id = 'ronniegatchi-inspiration-overlay';
@@ -1349,20 +1351,20 @@ INSANE mode awaits those who dare.
                 max-width: 90%;
                 max-height: 90vh;
                 overflow-y: auto;
-                background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
-                border: 3px solid #0ff;
+                background: linear-gradient(135deg, rgba(${theme.primaryRgb}, 0.15) 0%, ${theme.backgroundSolid} 100%);
+                border: 3px solid ${theme.primary};
                 border-radius: 12px;
                 padding: 40px;
-                box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
+                box-shadow: 0 0 50px ${theme.glow};
                 text-align: center;
             ">
                 <button onclick="this.closest('#ronniegatchi-inspiration-overlay').remove()" style="
                     position: absolute;
                     top: 20px;
                     right: 20px;
-                    background: rgba(0, 255, 255, 0.2);
-                    border: 2px solid #0ff;
-                    color: #0ff;
+                    background: rgba(${theme.primaryRgb}, 0.2);
+                    border: 2px solid ${theme.primary};
+                    color: ${theme.primary};
                     width: 40px;
                     height: 40px;
                     border-radius: 50%;
@@ -1370,25 +1372,25 @@ INSANE mode awaits those who dare.
                     cursor: pointer;
                     transition: all 0.3s ease;
                 ">✕</button>
-                
+
                 <h2 style="
-                    color: #0ff;
+                    color: ${theme.primary};
                     font-size: 2em;
                     margin-bottom: 20px;
-                    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+                    text-shadow: 0 0 20px ${theme.glowStrong};
                     font-family: 'Courier New', monospace;
                 ">THE INSPIRATION</h2>
-                
+
                 <img src="assets/ronniegatchi-inspiration.jpg" alt="Original Tori-Gatchi pixel art" style="
                     max-width: 100%;
                     max-height: 50vh;
                     border-radius: 8px;
                     margin: 20px 0;
-                    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+                    box-shadow: 0 0 30px ${theme.glow};
                 ">
-                
+
                 <div style="
-                    color: rgba(255, 255, 255, 0.9);
+                    color: ${theme.text};
                     font-size: 1.1em;
                     line-height: 1.8;
                     max-width: 600px;
@@ -1400,15 +1402,15 @@ INSANE mode awaits those who dare.
                         This was the original inspiration that led me to create this game.
                     </p>
                     <p style="margin-bottom: 20px;">
-                        A simple pixel art Tamagotchi design featuring Tori and Ronnie together, 
+                        A simple pixel art Tamagotchi design featuring Tori and Ronnie together,
                         forever preserved in digital form.
                     </p>
                     <p style="margin-bottom: 20px;">
-                        From this single image came the "Digital Forever" ending, the Tori-Gatchi 
+                        From this single image came the "Digital Forever" ending, the Tori-Gatchi
                         mini-game, and ultimately... VERSION 848.
                     </p>
                     <p style="
-                        color: #0ff;
+                        color: ${theme.primary};
                         font-style: italic;
                         text-align: center;
                         margin-top: 30px;
