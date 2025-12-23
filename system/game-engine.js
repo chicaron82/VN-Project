@@ -333,6 +333,10 @@ class GameEngine {
         this.endingDialogController = new EndingDialogController(this);
         Logger.solid('EndingDialogController');
 
+        // SOLID Refactor: Initialize rotating tips system
+        this.tipsController = new TipsController(this);
+        Logger.solid('TipsController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -1434,96 +1438,31 @@ class GameEngine {
     // ========================================
 
     initRotatingTips() {
-        // Cache tip elements
-        this.mainMenuTipElement = document.getElementById('main-menu-tip');
-        this.routeSelectTipElement = document.getElementById('route-select-tip');
-
-        console.log('🖤 Rotating tips system initialized');
+        this.tipsController.init();
     }
 
-    // TIP POOLS - delegated to UIController
     getMainMenuTips() {
-        return this.uiController.getMainMenuTips();
+        return this.tipsController.getMainMenuTips();
     }
 
     getRouteSelectTips() {
-        return this.uiController.getRouteSelectTips();
+        return this.tipsController.getRouteSelectTips();
     }
 
-    // START MAIN MENU TIP ROTATION
     startMainMenuTipRotation() {
-        // Stop any existing rotation
-        this.stopMainMenuTipRotation();
-
-        if (!this.mainMenuTipElement) return;
-
-        const tips = this.getMainMenuTips();
-
-        // Rotate every 8 seconds
-        this.mainMenuTipInterval = setInterval(() => {
-            // Fade out current tip
-            this.mainMenuTipElement.classList.add('tip-fade-out');
-
-            setTimeout(() => {
-                // Update index (loop back to 0 after last tip)
-                this.currentMainMenuTipIndex = (this.currentMainMenuTipIndex + 1) % tips.length;
-
-                // Update text
-                this.mainMenuTipElement.textContent = tips[this.currentMainMenuTipIndex];
-
-                // Fade back in
-                this.mainMenuTipElement.classList.remove('tip-fade-out');
-            }, 800); // Match CSS transition duration
-        }, 8000);
-
-        console.log('🔄 Main menu tip rotation started');
+        this.tipsController.startMainMenuRotation();
     }
 
-    // STOP MAIN MENU TIP ROTATION
     stopMainMenuTipRotation() {
-        if (this.mainMenuTipInterval) {
-            clearInterval(this.mainMenuTipInterval);
-            this.mainMenuTipInterval = null;
-            console.log('⏸️ Main menu tip rotation stopped');
-        }
+        this.tipsController.stopMainMenuRotation();
     }
 
-    // START ROUTE SELECT TIP ROTATION
     startRouteSelectTipRotation() {
-        // Stop any existing rotation
-        this.stopRouteSelectTipRotation();
-
-        if (!this.routeSelectTipElement) return;
-
-        const tips = this.getRouteSelectTips();
-
-        // Rotate every 8 seconds
-        this.routeSelectTipInterval = setInterval(() => {
-            // Fade out current tip
-            this.routeSelectTipElement.classList.add('tip-fade-out');
-
-            setTimeout(() => {
-                // Update index (loop back to 0 after last tip)
-                this.currentRouteSelectTipIndex = (this.currentRouteSelectTipIndex + 1) % tips.length;
-
-                // Update text
-                this.routeSelectTipElement.textContent = tips[this.currentRouteSelectTipIndex];
-
-                // Fade back in
-                this.routeSelectTipElement.classList.remove('tip-fade-out');
-            }, 800); // Match CSS transition duration
-        }, 8000);
-
-        console.log('🔄 Route select tip rotation started');
+        this.tipsController.startRouteSelectRotation();
     }
 
-    // STOP ROUTE SELECT TIP ROTATION
     stopRouteSelectTipRotation() {
-        if (this.routeSelectTipInterval) {
-            clearInterval(this.routeSelectTipInterval);
-            this.routeSelectTipInterval = null;
-            console.log('⏸️ Route select tip rotation stopped');
-        }
+        this.tipsController.stopRouteSelectRotation();
     }
 
     // ========================================
