@@ -746,15 +746,15 @@
 }
 
 .route-button.ronnie:hover {
-    border-color: #4dd0e1;
-    color: #4dd0e1;
-    text-shadow: 0 0 10px #4dd0e1;
+    border-color: var(--theme-accent);
+    color: var(--theme-accent);
+    text-shadow: 0 0 10px var(--theme-accent);
 }
 
 .route-button.tori:hover {
-    border-color: #ff6b6b;
-    color: #ff6b6b;
-    text-shadow: 0 0 10px #ff6b6b;
+    border-color: var(--theme-accent);
+    color: var(--theme-accent);
+    text-shadow: 0 0 10px var(--theme-accent);
 }
 
 #back-to-menu {
