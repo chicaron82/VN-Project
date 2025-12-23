@@ -97,24 +97,18 @@ class EasterEggController {
         setTimeout(() => {
             document.body.style.animation = '';
 
-            // Create overlay
-            const overlay = document.createElement('div');
-            overlay.id = 'always3-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #000;
-                z-index: 10000;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                animation: fadeIn 1s ease-out;
-                overflow: hidden;
-            `;
+            const theme = ThemeManager.getTheme();
+
+            // Create themed overlay
+            const overlay = OverlayManager.createBase({
+                id: 'always3-overlay',
+                zIndex: 10000,
+                fadeIn: true
+            });
+            overlay.style.background = '#000';
+            overlay.style.flexDirection = 'column';
+            overlay.style.overflow = 'hidden';
+            overlay.style.animation = 'fadeIn 1s ease-out';
 
             // Create text container
             const container = document.createElement('div');
@@ -129,7 +123,7 @@ class EasterEggController {
                 overflow: hidden;
             `;
 
-            // Add lots of "Always" texts
+            // Add lots of "Always" texts (themed)
             for (let i = 0; i < 50; i++) {
                 const text = document.createElement('div');
                 text.textContent = "Always.";
@@ -137,7 +131,7 @@ class EasterEggController {
                     position: absolute;
                     font-family: 'Courier New', monospace;
                     font-weight: bold;
-                    color: ${Math.random() > 0.5 ? '#0ff' : '#ff0066'};
+                    color: ${Math.random() > 0.5 ? theme.primary : theme.error};
                     font-size: ${Math.random() * 2 + 0.5}em;
                     opacity: ${Math.random() * 0.7 + 0.1};
                     left: ${Math.random() * 100}%;
@@ -149,11 +143,11 @@ class EasterEggController {
                 container.appendChild(text);
             }
 
-            // Main center text (The quote)
+            // Main center text (themed)
             const mainText = document.createElement('div');
             mainText.innerHTML = `
-                <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px #0ff;">Always.</div>
-                <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px #ff0066;">Always.</div>
+                <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px ${theme.primary};">Always.</div>
+                <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px ${theme.error};">Always.</div>
                 <div style="font-size: 4em; font-weight: bold; text-shadow: 0 0 30px #ffffff;">ALWAYS.</div>
                 <div style="font-size: 1em; margin-top: 40px; color: #888;">(Coming Soon: The Full Compilation)</div>
                 <div style="font-size: 0.8em; margin-top: 10px; color: #555;">[Press Click to Close]</div>
@@ -167,7 +161,7 @@ class EasterEggController {
                 background: rgba(0,0,0,0.8);
                 padding: 40px;
                 border: 2px solid #fff;
-                box-shadow: 0 0 50px rgba(0,255,255,0.2);
+                box-shadow: 0 0 50px ${theme.glow};
             `;
 
             container.appendChild(mainText);
