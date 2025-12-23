@@ -575,3 +575,6 @@ class OverlayManager {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = OverlayManager;
 }
+
+// ES Module export
+export { OverlayManager };

@@ -344,3 +344,6 @@ if (typeof document !== 'undefined') {
         ThemeManager.init();
     }
 }
+
+// ES Module export
+export { ThemeManager };

@@ -747,3 +747,6 @@ class TetherSystem {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TetherSystem;
 }
+
+// ES Module export
+export { TetherSystem };

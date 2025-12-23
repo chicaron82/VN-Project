@@ -1050,3 +1050,6 @@ class StateManager {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = StateManager;
 }
+
+// ES Module export
+export { StateManager };

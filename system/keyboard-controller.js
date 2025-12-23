@@ -452,3 +452,6 @@ class KeyboardController {
         }, duration);
     }
 }
+
+// ES Module export
+export { KeyboardController };

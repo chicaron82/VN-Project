@@ -707,3 +707,6 @@ class CreditsController {
         this.addCreditsControls(overlay);
     }
 }
+
+// ES Module export
+export { CreditsController };

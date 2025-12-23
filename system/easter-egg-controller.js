@@ -1628,3 +1628,6 @@ There is no v849.`
         }, 300);
     }
 }
+
+// ES Module export
+export { EasterEggController };

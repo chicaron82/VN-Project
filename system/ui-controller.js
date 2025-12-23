@@ -303,3 +303,6 @@ The gateway remembers you.`,
         };
     }
 }
+
+// ES Module export
+export { UIController };

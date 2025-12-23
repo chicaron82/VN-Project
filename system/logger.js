@@ -206,3 +206,6 @@ if (typeof window !== 'undefined' && window.location) {
         Logger.setProductionMode();
     }
 }
+
+// ES Module export
+export { Logger };
