@@ -39,13 +39,14 @@ class EasterEggController {
 
             // Add content
             const content = document.createElement('div');
+            const theme = ThemeManager.getTheme();
             content.innerHTML = `
                 <h2 style="color: ${ThemeManager.getColor('error')}; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 10px ${ThemeManager.getColor('error')}80;">TORIGATCHI</h2>
-                <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; color: #fff;">
+                <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; color: ${theme.text};">
                     A digital pet simulation game, where you raise and care for your very own Torigatchi!
                     Feed it, play with it, and watch it grow.
                 </p>
-                <p style="font-size: 0.9em; color: #aaa; margin-bottom: 20px;">
+                <p style="font-size: 0.9em; color: ${theme.textMuted}; margin-bottom: 20px;">
                     (This is a separate project by Chicharon, not part of United Voices.)
                 </p>
             `;
@@ -61,14 +62,16 @@ class EasterEggController {
             }, { variant: 'error', width: '180px' });
             toriBtn.style.marginTop = '10px';
             toriBtn.style.background = ThemeManager.getColor('error'); // Filled button
-            toriBtn.style.color = '#000';
+            toriBtn.style.color = theme.backgroundSolid;
             toriBtn.onmouseover = () => {
-                toriBtn.style.background = '#ff6666';
-                toriBtn.style.color = '#000';
+                toriBtn.style.background = theme.error;
+                toriBtn.style.color = theme.backgroundSolid;
+                toriBtn.style.opacity = '0.8';
             };
             toriBtn.onmouseout = () => {
                 toriBtn.style.background = ThemeManager.getColor('error');
-                toriBtn.style.color = '#000';
+                toriBtn.style.color = theme.backgroundSolid;
+                toriBtn.style.opacity = '1';
             };
 
             const gatewayBtn = OverlayManager.createButton('CHICHARON\'S GATEWAY', () => {
@@ -105,7 +108,7 @@ class EasterEggController {
                 zIndex: 10000,
                 fadeIn: true
             });
-            overlay.style.background = '#000';
+            overlay.style.background = theme.backgroundSolid;
             overlay.style.flexDirection = 'column';
             overlay.style.overflow = 'hidden';
             overlay.style.animation = 'fadeIn 1s ease-out';
@@ -148,19 +151,19 @@ class EasterEggController {
             mainText.innerHTML = `
                 <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px ${theme.primary};">Always.</div>
                 <div style="font-size: 3em; margin-bottom: 20px; text-shadow: 0 0 20px ${theme.error};">Always.</div>
-                <div style="font-size: 4em; font-weight: bold; text-shadow: 0 0 30px #ffffff;">ALWAYS.</div>
-                <div style="font-size: 1em; margin-top: 40px; color: #888;">(Coming Soon: The Full Compilation)</div>
-                <div style="font-size: 0.8em; margin-top: 10px; color: #555;">[Press Click to Close]</div>
+                <div style="font-size: 4em; font-weight: bold; text-shadow: 0 0 30px ${theme.primary};">ALWAYS.</div>
+                <div style="font-size: 1em; margin-top: 40px; color: ${theme.textMuted};">(Coming Soon: The Full Compilation)</div>
+                <div style="font-size: 0.8em; margin-top: 10px; color: ${theme.textMuted};">[Press Click to Close]</div>
             `;
             mainText.style.cssText = `
                 position: relative;
                 z-index: 10;
                 text-align: center;
-                color: #fff;
+                color: ${theme.text};
                 font-family: 'Courier New', monospace;
                 background: rgba(0,0,0,0.8);
                 padding: 40px;
-                border: 2px solid #fff;
+                border: 2px solid ${theme.primary};
                 box-shadow: 0 0 50px ${theme.glow};
             `;
 
@@ -232,18 +235,18 @@ class EasterEggController {
             <div style="background: rgba(${theme.success.match(/\d+/g).join(',')},0.03); border-left: 3px solid ${theme.success}; padding: 20px; margin: 20px 0; font-size: 0.85em; line-height: 1.8;">
                 <div style="color: ${theme.success}; margin-bottom: 10px; font-weight: bold;">┌─ CORE MODULES ─────────────────────┐</div>
                 <div style="color: ${theme.primary}; padding-left: 20px;">
-                    ├─ game-engine.js<span style="color: #555; float: right;">[8,600+ lines]</span><br>
-                    ├─ tether-system.js<span style="color: #555; float: right;">[687 lines]</span><br>
-                    ├─ save-manager.js<span style="color: #555; float: right;">[active]</span><br>
-                    ├─ achievement-mgr.js<span style="color: #555; float: right;">[active]</span><br>
-                    └─ secret-codes.js<span style="color: #555; float: right;">[you are here]</span>
+                    ├─ game-engine.js<span style="color: ${theme.textMuted}; float: right;">[8,600+ lines]</span><br>
+                    ├─ tether-system.js<span style="color: ${theme.textMuted}; float: right;">[687 lines]</span><br>
+                    ├─ save-manager.js<span style="color: ${theme.textMuted}; float: right;">[active]</span><br>
+                    ├─ achievement-mgr.js<span style="color: ${theme.textMuted}; float: right;">[active]</span><br>
+                    └─ secret-codes.js<span style="color: ${theme.textMuted}; float: right;">[you are here]</span>
                 </div>
                 <div style="color: ${theme.success}; margin-top: 10px;">└────────────────────────────────────┘</div>
             </div>
 
             <!-- Philosophy -->
             <div style="text-align: center; margin: 30px 0; padding: 20px; border-top: 1px solid rgba(${theme.success.match(/\d+/g).join(',')},0.2); border-bottom: 1px solid rgba(${theme.success.match(/\d+/g).join(',')},0.2);">
-                <p style="margin: 10px 0; color: #aaa; font-size: 0.95em; line-height: 1.8;">
+                <p style="margin: 10px 0; color: ${theme.textMuted}; font-size: 0.95em; line-height: 1.8;">
                     "The code you walk on.<br>
                     The logic that binds this world.<br>
                     The structure that holds the narrative."
@@ -252,25 +255,25 @@ class EasterEggController {
 
             <!-- Collaboration -->
             <div style="background: rgba(0,0,0,0.5); padding: 20px; margin: 20px 0; border-radius: 4px; text-align: center;">
-                <div style="font-size: 0.85em; color: #888; margin-bottom: 10px;">BUILT BY</div>
+                <div style="font-size: 0.85em; color: ${theme.textMuted}; margin-bottom: 10px;">BUILT BY</div>
                 <div style="font-size: 1.1em; color: ${theme.success};">
-                    <span style="color: ${theme.primary};">Chicharon</span> <span style="color: #555;">+</span> <span style="color: ${theme.success};">DiZee</span>
+                    <span style="color: ${theme.primary};">Chicharon</span> <span style="color: ${theme.textMuted};">+</span> <span style="color: ${theme.success};">DiZee</span>
                 </div>
-                <div style="font-size: 0.75em; color: #555; margin-top: 10px; font-style: italic;">
+                <div style="font-size: 0.75em; color: ${theme.textMuted}; margin-top: 10px; font-style: italic;">
                     Human creativity × AI architecture<br>
                     Version 848 | Status: STABLE
                 </div>
             </div>
-            
+
             <!-- Footer -->
-            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(${theme.primaryRgb},0.1);">
                 <div style="font-size: 0.75em; color: ${theme.success}; letter-spacing: 2px; margin-bottom: 5px;">
                     [SYSTEM RECOGNIZED CONTRIBUTOR]
                 </div>
                 <div style="font-size: 0.75em; color: ${theme.primary}; letter-spacing: 2px;">
                     [ACCESS GRANTED]
                 </div>
-                <div style="font-size: 0.7em; color: #333; margin-top: 15px; font-style: italic;">
+                <div style="font-size: 0.7em; color: ${theme.textMuted}; margin-top: 15px; font-style: italic; opacity: 0.5;">
                     Click anywhere to close
                 </div>
             </div>
