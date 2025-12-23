@@ -17,16 +17,21 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 
 ## 📊 Progress Summary
 
-### ✅ Completed
+### ✅ Completed (Session 118 - Part 1)
 - **OverlayManager System** - 687 lines, centralized themed overlay factory
-- **UIController Refactor** - 616 → 329 lines (47% reduction)
-- **EasterEggController** - 2/20 methods refactored
+- **UIController Refactor** - 616 → 329 lines (47% reduction, -287 lines)
+- **EasterEggController** - 8 methods manually refactored + 8+ auto-themed via factory
+  - 1,710 → 1,624 lines (-86 lines)
 
-### ⚙️ In Progress
-- **EasterEggController** - ~18 more methods to refactor (1,710 lines total)
+### 📈 Impact
+- **Total Lines Removed**: ~373 lines of hardcoded styling
+- **Overlays Now Themed**: 20+ overlays across UIController and EasterEggController
+- **Tests Passing**: 263/263 ✅
+- **Commits Pushed**: 9 commits to main
 
-### ⏳ Remaining
-- Theme all remaining UI buttons and elements
+### ⏳ Remaining (Session 119+)
+- ~12 more easter egg methods to refactor
+- Theme remaining UI elements (achievement notifications, etc.)
 - Comprehensive theme switching tests
 - Write OverlayManager unit tests
 
@@ -118,9 +123,13 @@ showErrorOverlay(title, message) {
 
 ### 3. EasterEggController Refactor (IN PROGRESS)
 
-**File**: `system/easter-egg-controller.js` (1,710 lines total)
+**File**: `system/easter-egg-controller.js`
 
-#### Methods Refactored (2/20)
+**Before**: 1,710 lines
+**After**: 1,624 lines
+**Reduction**: 86 lines removed (5%)
+
+#### Methods Manually Refactored (8/20)
 
 **showTorigatchiEasterEgg()**
 ```javascript
@@ -131,17 +140,47 @@ border: 2px solid #ff4444;
 border: 2px solid ${ThemeManager.getColor('error')};
 ```
 
-**showDizeeEasterEgg()**
-```javascript
-// BEFORE: Hardcoded #00ffaa border
-border: 2px solid #00ffaa;
+**showDizeeEasterEgg()** ✅
+- DiZee architect easter egg
+- Themed borders and success colors
 
-// AFTER: Themed success color
-border: 2px solid ${theme.success};
-box-shadow: 0 0 40px ${theme.success}50;
-```
+**openTorigatchiIframe()** ✅
+- ToriGatchi game iframe overlay
+- Themed borders, close button, labels
 
-#### Remaining Methods (~18)
+**showKonamiInsaneEscape()** ✅
+- Konami Code INSANE mode escape
+- ~200 lines, fully themed
+- Success/error button variants
+
+**showTrueAttemptNumber()** ✅
+- 848 revelation overlay
+- Sacred loop counter explanation
+
+**showUV7CrewBios()** ✅
+- UV7 Crew credits overlay
+- FAQ section themed
+
+**showUnlockOverlay()** ✅ **← FACTORY METHOD**
+- Generic unlock overlay factory
+- Used 8+ times throughout code
+- Auto-themed all unlock notifications
+
+**showAlwaysCompilation()** ✅
+- Storm Dragon's "Always" easter egg
+- 50 scattered texts use theme colors
+
+#### Methods Auto-Themed via Factory (8+)
+Because `showUnlockOverlay` is a factory:
+- unlockBootstrap() ✅
+- unlockChicharon() ✅
+- unlockDizee() ✅
+- unlockAlways() ✅
+- unlockEcho() ✅
+- unlockTorigatchi() ✅
+- All secret code unlocks ✅
+
+#### Remaining Methods (~12)
 - `showAlwaysCompilation()`
 - `openTorigatchiIframe()`
 - Bootstrap overlay
