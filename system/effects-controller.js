@@ -145,7 +145,9 @@ class EffectsController {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#0ff'; // DIZEE: Cyan to match game aesthetic 💚
+            // THEME INTEGRATION: Use active theme color for code rain 💚
+            const theme = ThemeManager.getTheme();
+            ctx.fillStyle = theme.primary;
             ctx.font = `${fontSize}px monospace`;
 
             for (let i = 0; i < drops.length; i++) {
@@ -255,7 +257,9 @@ class EffectsController {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#0ff'; // CYAN - matches game aesthetic
+            // THEME INTEGRATION: Use active theme color for code rain 💚
+            const theme = ThemeManager.getTheme();
+            ctx.fillStyle = theme.primary;
             ctx.font = `${fontSize}px monospace`;
 
             for (let i = 0; i < drops.length; i++) {
