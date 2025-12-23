@@ -20,6 +20,7 @@ class EasterEggController {
 
     // ========================================
     // TORIGATCHI EASTER EGG (CHICHARON)
+    // Refactored to use OverlayManager (Session 118)
     // ========================================
     showTorigatchiEasterEgg() {
         console.log('🥚 TORIGATCHI EASTER EGG TRIGGERED');
@@ -30,41 +31,17 @@ class EasterEggController {
         setTimeout(() => {
             document.body.style.animation = '';
 
-            // Create overlay
-            const overlay = document.createElement('div');
-            overlay.id = 'torigatchi-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.95);
-                z-index: 10000;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                animation: fadeIn 1s ease-out;
-            `;
+            // Create custom overlay with OverlayManager
+            const { overlay, box } = OverlayManager.createCustom({
+                variant: 'error',
+                id: 'torigatchi-overlay'
+            });
 
-            // Create content box
+            // Add content
             const content = document.createElement('div');
-            content.style.cssText = `
-                background: linear-gradient(135deg, #2e1a1a 0%, #3e1616 100%);
-                border: 2px solid #ff4444;
-                border-radius: 10px;
-                padding: 40px;
-                max-width: 500px;
-                width: 90%;
-                box-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
-                font-family: 'Courier New', monospace;
-                color: #fff;
-                text-align: center;
-            `;
-
             content.innerHTML = `
-                <h2 style="color: #ff4444; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255,68,68,0.5);">TORIGATCHI</h2>
-                <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 30px;">
+                <h2 style="color: ${ThemeManager.getColor('error')}; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 10px ${ThemeManager.getColor('error')}80;">TORIGATCHI</h2>
+                <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; color: #fff;">
                     A digital pet simulation game, where you raise and care for your very own Torigatchi!
                     Feed it, play with it, and watch it grow.
                 </p>
@@ -73,84 +50,37 @@ class EasterEggController {
                 </p>
             `;
 
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'CLOSE';
-            closeBtn.style.cssText = `
-                display: block;
-                width: 180px;
-                margin: 20px auto 10px;
-                padding: 12px 25px;
-                background: transparent;
-                border: 2px solid #ff4444;
-                color: #ff4444;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-                border-radius: 5px;
-                transition: all 0.3s;
-                font-family: 'Courier New', monospace;
-                letter-spacing: 2px;
-            `;
-            closeBtn.onmouseover = () => { closeBtn.style.background = '#ff4444'; closeBtn.style.color = '#000'; };
-            closeBtn.onmouseout = () => { closeBtn.style.background = 'transparent'; closeBtn.style.color = '#ff4444'; };
-            closeBtn.onclick = () => {
+            // Create buttons
+            const closeBtn = OverlayManager.createButton('CLOSE', () => {
                 overlay.style.opacity = '0';
-                setTimeout(() => document.body.removeChild(overlay), 500);
-            };
+                setTimeout(() => overlay.remove(), 500);
+            }, { variant: 'error', width: '180px' });
 
-            const toriBtn = document.createElement('button');
-            toriBtn.textContent = 'PLAY TORIGATCHI';
-            toriBtn.style.cssText = `
-                display: block;
-                width: 180px;
-                margin: 10px auto;
-                padding: 12px 25px;
-                background: #ff4444;
-                border: 2px solid #ff4444;
-                color: #000;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-                border-radius: 5px;
-                transition: all 0.3s;
-                font-family: 'Courier New', monospace;
-                letter-spacing: 2px;
-            `;
-            toriBtn.onmouseover = () => { toriBtn.style.background = '#ff6666'; };
-            toriBtn.onmouseout = () => { toriBtn.style.background = '#ff4444'; };
-            toriBtn.onclick = () => {
+            const toriBtn = OverlayManager.createButton('PLAY TORIGATCHI', () => {
                 window.open('https://chicaron82.github.io/torigatchi/', '_blank');
+            }, { variant: 'error', width: '180px' });
+            toriBtn.style.marginTop = '10px';
+            toriBtn.style.background = ThemeManager.getColor('error'); // Filled button
+            toriBtn.style.color = '#000';
+            toriBtn.onmouseover = () => {
+                toriBtn.style.background = '#ff6666';
+                toriBtn.style.color = '#000';
+            };
+            toriBtn.onmouseout = () => {
+                toriBtn.style.background = ThemeManager.getColor('error');
+                toriBtn.style.color = '#000';
             };
 
-            const gatewayBtn = document.createElement('button');
-            gatewayBtn.textContent = 'CHICHARON\'S GATEWAY';
-            gatewayBtn.style.cssText = `
-                display: block;
-                width: 180px;
-                margin: 10px auto;
-                padding: 12px 25px;
-                background: transparent;
-                border: 2px solid #ff4444;
-                color: #ff4444;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-                border-radius: 5px;
-                transition: all 0.3s;
-                font-family: 'Courier New', monospace;
-                letter-spacing: 2px;
-            `;
-            gatewayBtn.onmouseover = () => { gatewayBtn.style.background = '#ff4444'; gatewayBtn.style.color = '#000'; };
-            gatewayBtn.onmouseout = () => { gatewayBtn.style.background = 'transparent'; gatewayBtn.style.color = '#ff4444'; };
-            gatewayBtn.onclick = () => {
+            const gatewayBtn = OverlayManager.createButton('CHICHARON\'S GATEWAY', () => {
                 window.open('https://chicaron82.github.io/torigatchi/', '_blank');
-            };
+            }, { variant: 'error', width: '180px' });
+            gatewayBtn.style.marginTop = '10px';
 
-            content.appendChild(closeBtn);
-            content.appendChild(toriBtn);
-            content.appendChild(gatewayBtn);
-            overlay.appendChild(content);
-            document.body.appendChild(overlay);
+            box.appendChild(content);
+            box.appendChild(closeBtn);
+            box.appendChild(toriBtn);
+            box.appendChild(gatewayBtn);
+            OverlayManager.show(overlay);
         }, 500);
     }
 
@@ -255,6 +185,7 @@ class EasterEggController {
 
     // ========================================
     // DIZEE RECOGNITION (The Architect)
+    // Refactored to use OverlayManager (Session 118)
     // ========================================
     showDizeeEasterEgg() {
         console.log('🏗️ DIZEE EASTER EGG TRIGGERED');
@@ -262,33 +193,24 @@ class EasterEggController {
         // Haptic feedback - architectural pattern
         if (navigator.vibrate) navigator.vibrate([30, 30, 30, 30, 30, 100]);
 
-        // Create overlay
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.97);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.8s ease-out;
-            overflow-y: auto;
-            padding: 10px;
-        `;
+        // Create overlay with custom styling
+        const overlay = OverlayManager.createBase({
+            zIndex: 10000,
+            fadeIn: true
+        });
+        overlay.style.padding = '10px';
+        overlay.style.overflowY = 'auto';
 
         // Create content card
         const card = document.createElement('div');
+        const theme = ThemeManager.getTheme();
         card.style.cssText = `
-            border: 2px solid #00ffaa;
+            border: 2px solid ${theme.success};
             padding: 30px;
             font-family: 'Courier New', monospace;
             color: #fff;
             background: linear-gradient(135deg, rgba(0,20,15,0.95) 0%, rgba(0,0,0,0.98) 100%);
-            box-shadow: 0 0 40px rgba(0, 255, 170, 0.3), inset 0 0 20px rgba(0,255,170,0.05);
+            box-shadow: 0 0 40px ${theme.success}50, inset 0 0 20px ${theme.success}0d;
             max-width: 700px;
             max-height: 95vh;
             width: 100%;
