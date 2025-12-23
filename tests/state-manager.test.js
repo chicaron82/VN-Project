@@ -1,10 +1,14 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { StateManager } from '../system/state-manager.js';
 
 /**
  * StateManager Unit Tests
  * 
  * Tests for the centralized state management system.
  * Verifies deep-clone safety, subscriptions, and persistence.
+ * 
+ * SESSION 122: Now imports REAL StateManager instead of mock!
+ * Tests now guard shipped code against regressions.
  */
 
 // Mock localStorage for Node environment
@@ -21,100 +25,9 @@ global.localStorage = localStorageMock;
 global.console = {
     ...console,
     log: vi.fn(),
-    error: vi.fn()
+    error: vi.fn(),
+    warn: vi.fn()
 };
-
-// Import StateManager (we'll create a simplified version for testing)
-// In real tests, we'd import from the actual file
-
-/**
- * Simplified StateManager for testing
- * (Same logic as the real one, just inline for test isolation)
- */
-class StateManager {
-    constructor() {
-        this._state = {
-            game: { loopVersion: 'v.848', paused: false },
-            tether: { level: 100, difficulty: 'normal' },
-            settings: { textSpeed: 'normal' }
-        };
-        this._subscribers = new Map();
-        this._isDirty = false;
-    }
-
-    get(path) {
-        const value = this._getByPath(this._state, path);
-        if (value !== undefined && value !== null && typeof value === 'object') {
-            return structuredClone(value);
-        }
-        return value;
-    }
-
-    set(path, value) {
-        const clonedValue = (value !== null && typeof value === 'object')
-            ? structuredClone(value)
-            : value;
-        const oldValue = this.get(path);
-        this._setByPath(this._state, path, clonedValue);
-        this._isDirty = true;
-        if (oldValue !== clonedValue) {
-            this._notifySubscribers(path, clonedValue, oldValue);
-        }
-    }
-
-    subscribe(path, callback) {
-        if (!this._subscribers.has(path)) {
-            this._subscribers.set(path, new Set());
-        }
-        this._subscribers.get(path).add(callback);
-        return () => {
-            const subs = this._subscribers.get(path);
-            if (subs) subs.delete(callback);
-        };
-    }
-
-    save(key = 'vn_state') {
-        if (!this._isDirty) return;
-        localStorage.setItem(key, JSON.stringify(this._state));
-        this._isDirty = false;
-    }
-
-    load(key = 'vn_state') {
-        const serialized = localStorage.getItem(key);
-        if (!serialized) return false;
-        this._state = JSON.parse(serialized);
-        this._isDirty = false;
-        return true;
-    }
-
-    _getByPath(obj, path) {
-        const keys = path.split('.');
-        let current = obj;
-        for (const key of keys) {
-            if (current === undefined || current === null) return undefined;
-            current = current[key];
-        }
-        return current;
-    }
-
-    _setByPath(obj, path, value) {
-        const keys = path.split('.');
-        let current = obj;
-        for (let i = 0; i < keys.length - 1; i++) {
-            const key = keys[i];
-            if (!(key in current)) current[key] = {};
-            current = current[key];
-        }
-        current[keys[keys.length - 1]] = value;
-    }
-
-    _notifySubscribers(path, newValue, oldValue) {
-        const subs = this._subscribers.get(path);
-        if (subs) {
-            subs.forEach(callback => callback(newValue, oldValue));
-        }
-    }
-}
 
 // ========================================
 // TEST SUITES
