@@ -312,24 +312,14 @@ class EasterEggController {
     openTorigatchiIframe(url) {
         console.log('🎮 Opening Torigatchi iframe:', url);
 
-        // Create game-window sized iframe overlay
-        const iframeOverlay = document.createElement('div');
-        iframeOverlay.id = 'torigatchi-iframe-overlay';
-        iframeOverlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10005;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease-out;
-        `;
+        // Create base overlay
+        const iframeOverlay = OverlayManager.createBase({
+            id: 'torigatchi-iframe-overlay',
+            zIndex: 10005
+        });
 
-        // Create game window container
+        // Create game window container (themed)
+        const theme = ThemeManager.getTheme();
         const gameWindow = document.createElement('div');
         gameWindow.style.cssText = `
             position: relative;
@@ -338,15 +328,15 @@ class EasterEggController {
             max-width: 1200px;
             max-height: 800px;
             background: #000;
-            border: 3px solid #0ff;
+            border: 3px solid ${theme.primary};
             border-radius: 10px;
-            box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 40px ${theme.glow};
             display: flex;
             flex-direction: column;
             overflow: hidden;
         `;
 
-        // Create close button container (now inside game window)
+        // Create close button container
         const closeContainer = document.createElement('div');
         closeContainer.style.cssText = `
             position: absolute;
@@ -358,18 +348,18 @@ class EasterEggController {
             align-items: center;
         `;
 
-        // Create label
+        // Create label (themed)
         const label = document.createElement('div');
         label.textContent = 'ESC or X to return';
         label.style.cssText = `
-            color: #0ff;
+            color: ${theme.primary};
             font-family: 'Courier New', monospace;
             font-size: 0.85em;
             opacity: 0.7;
-            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+            text-shadow: 0 0 5px ${theme.glow};
         `;
 
-        // Create close button
+        // Create close button (themed)
         const closeBtn = document.createElement('button');
         closeBtn.className = 'close-x';
         closeBtn.innerHTML = '✕';
@@ -377,9 +367,9 @@ class EasterEggController {
             position: relative;
             width: 35px;
             height: 35px;
-            background: rgba(0, 255, 255, 0.1);
-            border: 2px solid #0ff;
-            color: #0ff;
+            background: rgba(${theme.primaryRgb}, 0.1);
+            border: 2px solid ${theme.primary};
+            color: ${theme.primary};
             font-size: 20px;
             cursor: pointer;
             border-radius: 5px;
@@ -387,12 +377,12 @@ class EasterEggController {
         `;
 
         closeBtn.addEventListener('mouseenter', () => {
-            closeBtn.style.background = 'rgba(0, 255, 255, 0.3)';
-            closeBtn.style.boxShadow = '0 0 15px rgba(0, 255, 255, 0.5)';
+            closeBtn.style.background = `rgba(${theme.primaryRgb}, 0.3)`;
+            closeBtn.style.boxShadow = `0 0 15px ${theme.glow}`;
         });
 
         closeBtn.addEventListener('mouseleave', () => {
-            closeBtn.style.background = 'rgba(0, 255, 255, 0.1)';
+            closeBtn.style.background = `rgba(${theme.primaryRgb}, 0.1)`;
             closeBtn.style.boxShadow = 'none';
         });
 
