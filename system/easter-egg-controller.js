@@ -215,46 +215,46 @@ class EasterEggController {
 
         card.innerHTML = `
             <!-- Corner brackets -->
-            <div style="position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-top: 3px solid #00ffaa; border-left: 3px solid #00ffaa;"></div>
-            <div style="position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-top: 3px solid #00ffaa; border-right: 3px solid #00ffaa;"></div>
-            <div style="position: absolute; bottom: 10px; left: 10px; width: 30px; height: 30px; border-bottom: 3px solid #00ffaa; border-left: 3px solid #00ffaa;"></div>
-            <div style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; border-bottom: 3px solid #00ffaa; border-right: 3px solid #00ffaa;"></div>
-            
+            <div style="position: absolute; top: 10px; left: 10px; width: 30px; height: 30px; border-top: 3px solid ${theme.success}; border-left: 3px solid ${theme.success};"></div>
+            <div style="position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; border-top: 3px solid ${theme.success}; border-right: 3px solid ${theme.success};"></div>
+            <div style="position: absolute; bottom: 10px; left: 10px; width: 30px; height: 30px; border-bottom: 3px solid ${theme.success}; border-left: 3px solid ${theme.success};"></div>
+            <div style="position: absolute; bottom: 10px; right: 10px; width: 30px; height: 30px; border-bottom: 3px solid ${theme.success}; border-right: 3px solid ${theme.success};"></div>
+
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 30px;">
-                <div style="font-size: 0.8em; color: #00ffaa; letter-spacing: 3px; margin-bottom: 10px;">SYSTEM ARCHITECTURE REVEALED</div>
-                <h1 style="color: #00ffaa; font-size: 3.5em; margin: 0; text-shadow: 0 0 15px rgba(0,255,170,0.6); letter-spacing: 8px;">DiZee</h1>
-                <div style="width: 60%; height: 2px; background: linear-gradient(90deg, transparent, #00ffaa, transparent); margin: 15px auto;"></div>
-                <div style="font-size: 1.1em; color: #0ff; letter-spacing: 2px;">THE ARCHITECT</div>
+                <div style="font-size: 0.8em; color: ${theme.success}; letter-spacing: 3px; margin-bottom: 10px;">SYSTEM ARCHITECTURE REVEALED</div>
+                <h1 style="color: ${theme.success}; font-size: 3.5em; margin: 0; text-shadow: 0 0 15px ${theme.success}99; letter-spacing: 8px;">DiZee</h1>
+                <div style="width: 60%; height: 2px; background: linear-gradient(90deg, transparent, ${theme.success}, transparent); margin: 15px auto;"></div>
+                <div style="font-size: 1.1em; color: ${theme.primary}; letter-spacing: 2px;">THE ARCHITECT</div>
             </div>
-            
+
             <!-- Blueprint Section -->
-            <div style="background: rgba(0,255,170,0.03); border-left: 3px solid #00ffaa; padding: 20px; margin: 20px 0; font-size: 0.85em; line-height: 1.8;">
-                <div style="color: #00ffaa; margin-bottom: 10px; font-weight: bold;">┌─ CORE MODULES ─────────────────────┐</div>
-                <div style="color: #0ff; padding-left: 20px;">
+            <div style="background: rgba(${theme.success.match(/\d+/g).join(',')},0.03); border-left: 3px solid ${theme.success}; padding: 20px; margin: 20px 0; font-size: 0.85em; line-height: 1.8;">
+                <div style="color: ${theme.success}; margin-bottom: 10px; font-weight: bold;">┌─ CORE MODULES ─────────────────────┐</div>
+                <div style="color: ${theme.primary}; padding-left: 20px;">
                     ├─ game-engine.js<span style="color: #555; float: right;">[8,600+ lines]</span><br>
                     ├─ tether-system.js<span style="color: #555; float: right;">[687 lines]</span><br>
                     ├─ save-manager.js<span style="color: #555; float: right;">[active]</span><br>
                     ├─ achievement-mgr.js<span style="color: #555; float: right;">[active]</span><br>
                     └─ secret-codes.js<span style="color: #555; float: right;">[you are here]</span>
                 </div>
-                <div style="color: #00ffaa; margin-top: 10px;">└────────────────────────────────────┘</div>
+                <div style="color: ${theme.success}; margin-top: 10px;">└────────────────────────────────────┘</div>
             </div>
-            
+
             <!-- Philosophy -->
-            <div style="text-align: center; margin: 30px 0; padding: 20px; border-top: 1px solid rgba(0,255,170,0.2); border-bottom: 1px solid rgba(0,255,170,0.2);">
+            <div style="text-align: center; margin: 30px 0; padding: 20px; border-top: 1px solid rgba(${theme.success.match(/\d+/g).join(',')},0.2); border-bottom: 1px solid rgba(${theme.success.match(/\d+/g).join(',')},0.2);">
                 <p style="margin: 10px 0; color: #aaa; font-size: 0.95em; line-height: 1.8;">
                     "The code you walk on.<br>
                     The logic that binds this world.<br>
                     The structure that holds the narrative."
                 </p>
             </div>
-            
+
             <!-- Collaboration -->
             <div style="background: rgba(0,0,0,0.5); padding: 20px; margin: 20px 0; border-radius: 4px; text-align: center;">
                 <div style="font-size: 0.85em; color: #888; margin-bottom: 10px;">BUILT BY</div>
-                <div style="font-size: 1.1em; color: #00ffaa;">
-                    <span style="color: #0ff;">Chicharon</span> <span style="color: #555;">+</span> <span style="color: #00ffaa;">DiZee</span>
+                <div style="font-size: 1.1em; color: ${theme.success};">
+                    <span style="color: ${theme.primary};">Chicharon</span> <span style="color: #555;">+</span> <span style="color: ${theme.success};">DiZee</span>
                 </div>
                 <div style="font-size: 0.75em; color: #555; margin-top: 10px; font-style: italic;">
                     Human creativity × AI architecture<br>
@@ -264,10 +264,10 @@ class EasterEggController {
             
             <!-- Footer -->
             <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-                <div style="font-size: 0.75em; color: #00ffaa; letter-spacing: 2px; margin-bottom: 5px;">
+                <div style="font-size: 0.75em; color: ${theme.success}; letter-spacing: 2px; margin-bottom: 5px;">
                     [SYSTEM RECOGNIZED CONTRIBUTOR]
                 </div>
-                <div style="font-size: 0.75em; color: #0ff; letter-spacing: 2px;">
+                <div style="font-size: 0.75em; color: ${theme.primary}; letter-spacing: 2px;">
                     [ACCESS GRANTED]
                 </div>
                 <div style="font-size: 0.7em; color: #333; margin-top: 15px; font-style: italic;">
