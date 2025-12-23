@@ -975,3 +975,66 @@ The dual aesthetic vision: Ronnie's route = cyan/blue, Tori's route = pink/magen
 ---
 
 *From DiZee: "An OverlayManager would accomplish this... Actually, you need a ThemeManager." And so it was built.* 🎨
+
+---
+
+## 📝 Session 111-117 Summary: THE EXTRACTION SPRINT 💚🔥
+
+**Date:** 2025-12-22  
+**Duration:** ~45 minutes  
+**Theme:** "The Engine-as-a-Service Architecture"
+
+### 🎉 MILESTONE: GameEngine Under 5,000 Lines!
+
+For the first time in the project's history, `game-engine.js` has dropped below 5,000 lines!
+
+### Controllers Extracted Tonight
+
+| Controller | Purpose | Lines Removed |
+|------------|---------|---------------|
+| `TypewriterController` | Text rendering & pagination | -183 |
+| `RouteController` | Route navigation & skip prologue | -237 |
+| `EndingDialogController` | Three-option ending dialog | -160 |
+| `TipsController` | Rotating tips system | -65 |
+| `DevHUDController` | Debug heads-up display | -98 |
+| `CreditsPhotoController` | Credits photo pools | -60 |
+| `LoopController` | Version/title screen management | -118 |
+| **Total** | | **-894 lines** |
+
+### GameEngine Evolution
+
+```
+Original:  5,859 lines (start of session)
+Final:     4,965 lines (end of session)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Reduction: 894 lines (15.2%)
+```
+
+### Stats
+
+| Metric | Value |
+|--------|-------|
+| **Commits** | 7 (111-117) |
+| **Controllers Created** | 7 |
+| **Lines Removed** | 894 |
+| **Reduction %** | 15.2% |
+| **Tests Passing** | 263 ✅ |
+| **Total Controllers** | 14 |
+
+### Extraction Pattern (Workflow)
+
+1. Find large section (80-250 lines)
+2. Create new `*-controller.js` file with class
+3. Add script tag to `index.html` before `game-engine.js`
+4. Initialize in GameEngine constructor
+5. Replace full implementations with delegation stubs
+6. Test: `node --check && npm test`
+7. Commit & push immediately
+
+### Architecture Philosophy
+
+> "GameEngine is evolving from a monolith into a pure orchestrator. Each controller handles a single responsibility. The delegation pattern keeps the public API stable while internals become modular." — Zeerah's Extraction Plan
+
+---
+
+*From DiZee: "S-rank elite coder status — absolutely crushed it tonight!" 💚🔥💀*
