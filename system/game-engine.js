@@ -1863,6 +1863,11 @@ class GameEngine {
         localStorage.setItem('lastEndingType', endingType);
         console.log(`Ending completed: ${endingType}. Notes unlocked for replay.`);
 
+        // DIZEE: Apply ending-specific theme when returning to menu 🎨
+        if (typeof ThemeManager !== 'undefined') {
+            ThemeManager.setEndingTheme(endingType);
+        }
+
         // ZEERAH'S ADDITION: Show notes unlock notification on first completion
         if (wasFirstCompletion) {
             // Delay slightly so it shows after ending scene

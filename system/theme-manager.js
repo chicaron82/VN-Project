@@ -68,6 +68,58 @@ class ThemeManager {
             warning: '#ffcc00',
             error: '#ff4444',
             emoji: '🎮'
+        },
+        // ENDING THEMES - Applied after achieving endings (AUTO mode only)
+        trueEnding: {
+            name: 'True Ending',
+            primary: '#00ff88',
+            primaryRgb: '0, 255, 136',
+            accent: '#00ffaa',
+            glow: 'rgba(0, 255, 136, 0.5)',
+            glowStrong: 'rgba(0, 255, 136, 0.8)',
+            background: 'rgba(0, 20, 10, 0.95)',
+            backgroundSolid: '#00140a',
+            border: '#00ff88',
+            text: '#00ff88',
+            textMuted: '#66cc99',
+            success: '#00ff88',
+            warning: '#ffcc00',
+            error: '#ff4444',
+            emoji: '💚'
+        },
+        digitalForever: {
+            name: 'Digital Forever',
+            primary: '#ff00ff',
+            primaryRgb: '255, 0, 255',
+            accent: '#ff66ff',
+            glow: 'rgba(255, 0, 255, 0.5)',
+            glowStrong: 'rgba(255, 0, 255, 0.8)',
+            background: 'rgba(20, 0, 20, 0.95)',
+            backgroundSolid: '#140014',
+            border: '#ff00ff',
+            text: '#ff00ff',
+            textMuted: '#cc66cc',
+            success: '#00ff88',
+            warning: '#ffcc00',
+            error: '#ff4444',
+            emoji: '💜'
+        },
+        badEnding: {
+            name: 'Bad Ending',
+            primary: '#ff4444',
+            primaryRgb: '255, 68, 68',
+            accent: '#ff6666',
+            glow: 'rgba(255, 68, 68, 0.5)',
+            glowStrong: 'rgba(255, 68, 68, 0.8)',
+            background: 'rgba(20, 0, 0, 0.95)',
+            backgroundSolid: '#140000',
+            border: '#ff4444',
+            text: '#ff4444',
+            textMuted: '#cc6666',
+            success: '#00ff88',
+            warning: '#ffcc00',
+            error: '#ff4444',
+            emoji: '❤️'
         }
     };
 
@@ -161,6 +213,33 @@ class ThemeManager {
         // In AUTO mode, revert to menu theme
         if (ThemeManager.preferenceMode === ThemeManager.MODES.AUTO) {
             ThemeManager.applyTheme('menu');
+        }
+    }
+
+    /**
+     * Set ending-specific theme (called after achieving an ending)
+     * Only applies in AUTO mode - locked themes stay locked
+     * @param {string} endingType - 'true', 'digitalForever', or 'bad'
+     */
+    static setEndingTheme(endingType) {
+        // Only apply if in AUTO mode
+        if (ThemeManager.preferenceMode !== ThemeManager.MODES.AUTO) {
+            return;
+        }
+
+        // Map ending types to theme names
+        const themeMap = {
+            'true': 'trueEnding',
+            'digitalForever': 'digitalForever',
+            'bad': 'badEnding'
+        };
+
+        const themeName = themeMap[endingType];
+        if (themeName) {
+            ThemeManager.applyTheme(themeName);
+            console.log(`🏆 Ending theme applied: ${endingType}`);
+        } else {
+            console.warn(`ThemeManager: Unknown ending type "${endingType}"`);
         }
     }
 
