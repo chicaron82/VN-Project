@@ -205,7 +205,7 @@ class EasterEggController {
             border: 2px solid ${theme.success};
             padding: 30px;
             font-family: 'Courier New', monospace;
-            color: #fff;
+            color: ${theme.text};
             background: linear-gradient(135deg, rgba(0,20,15,0.95) 0%, rgba(0,0,0,0.98) 100%);
             box-shadow: 0 0 40px ${theme.success}50, inset 0 0 20px ${theme.success}0d;
             max-width: 700px;
