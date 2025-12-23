@@ -14,7 +14,12 @@
       "Bash(ls:*)",
       "Bash(find:*)",
       "Bash(/dev/null -exec wc -l {} +)",
-      "Bash(python -m http.server:*)"
+      "Bash(python -m http.server:*)",
+      "Bash(wc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm test:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
