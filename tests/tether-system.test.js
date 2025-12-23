@@ -1,10 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { StateManager } from '../system/state-manager.js';
 
 /**
  * TetherSystem Integration Tests
  * 
  * Tests for the TetherSystem's integration with StateManager.
  * Verifies reactive state management and tether mechanics.
+ * 
+ * SESSION 122: Now imports REAL StateManager instead of mock!
  */
 
 // Mock localStorage
@@ -18,7 +21,7 @@ const localStorageMock = {
 global.localStorage = localStorageMock;
 
 // Mock console
-global.console = { ...console, log: vi.fn(), error: vi.fn() };
+global.console = { ...console, log: vi.fn(), error: vi.fn(), warn: vi.fn() };
 
 // Mock GameConfig
 global.GameConfig = {
@@ -38,52 +41,6 @@ global.getDifficultyProfile = vi.fn(() => ({
     holdOnBoost: 15,
     holdOnCooldown: 30000
 }));
-
-/**
- * Simplified StateManager for testing
- */
-class StateManager {
-    constructor() {
-        this._state = {
-            tether: { level: 100, difficulty: 'normal', cap: 100, decayRate: 0.05 },
-            ui: { hidden: false }
-        };
-        this._subscribers = new Map();
-    }
-
-    get(path) {
-        const keys = path.split('.');
-        let current = this._state;
-        for (const key of keys) {
-            if (current === undefined) return undefined;
-            current = current[key];
-        }
-        return current !== null && typeof current === 'object' ? structuredClone(current) : current;
-    }
-
-    set(path, value) {
-        const keys = path.split('.');
-        let current = this._state;
-        for (let i = 0; i < keys.length - 1; i++) {
-            if (!(keys[i] in current)) current[keys[i]] = {};
-            current = current[keys[i]];
-        }
-        const oldValue = current[keys[keys.length - 1]];
-        current[keys[keys.length - 1]] = value;
-        this._notifySubscribers(path, value, oldValue);
-    }
-
-    subscribe(path, callback) {
-        if (!this._subscribers.has(path)) this._subscribers.set(path, new Set());
-        this._subscribers.get(path).add(callback);
-        return () => this._subscribers.get(path)?.delete(callback);
-    }
-
-    _notifySubscribers(path, newValue, oldValue) {
-        const subs = this._subscribers.get(path);
-        if (subs) subs.forEach(cb => cb(newValue, oldValue));
-    }
-}
 
 /**
  * Simplified TetherSystem for testing

@@ -1,10 +1,13 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { UIController } from '../system/ui-controller.js';
 
 /**
  * UIController Unit Tests
  * 
  * Tests for the extracted UIController class.
  * Validates element accessors, visibility checks, and utility methods.
+ * 
+ * SESSION 122: Now imports REAL UIController instead of mock!
  */
 
 // Mock DOM element
@@ -30,63 +33,6 @@ global.window = {
         visibility: el?.style?.visibility || 'visible'
     }))
 };
-
-/**
- * UIController class (simplified for testing)
- */
-class UIController {
-    constructor(game) {
-        this.game = game;
-    }
-
-    // Element accessors
-    get settingsMenu() { return document.getElementById('settings-menu'); }
-    get saveLoadOverlay() { return document.getElementById('save-load-overlay'); }
-    get pauseMenu() { return document.getElementById('pause-menu'); }
-    get creditsModal() { return document.getElementById('credits-modal'); }
-    get backlogOverlay() { return document.getElementById('backlog-overlay'); }
-    get bootstrapOverlay() { return document.getElementById('bootstrap-overlay'); }
-    get echoOverlay() { return document.getElementById('echo-overlay'); }
-    get skipIndicator() { return document.getElementById('skip-indicator'); }
-    get standaloneNotesViewer() { return document.getElementById('standalone-notes-viewer'); }
-    get devHud() { return document.getElementById('dev-hud'); }
-
-    // Check element visibility
-    isVisible(elementOrId) {
-        const el = typeof elementOrId === 'string'
-            ? document.getElementById(elementOrId)
-            : elementOrId;
-        if (!el) return false;
-        const style = window.getComputedStyle(el);
-        return style.display !== 'none' && style.visibility !== 'hidden';
-    }
-
-    // Tips pool
-    getMainMenuTips() {
-        return [
-            "💡 Hidden codes unlock secret content - read the notes carefully...",
-            "💡 Some puzzles require playing both routes to solve",
-            "💡 The version number changes based on your choices"
-        ];
-    }
-
-    getRouteSelectTips() {
-        return [
-            "💡 Each route contains different pieces of the puzzle",
-            "💡 Tori's route has a tether system - watch it carefully"
-        ];
-    }
-
-    getHapticPatterns() {
-        return {
-            'light': 60,
-            'medium': 100,
-            'strong': 150,
-            'double': [1000, 200, 1000],
-            'denied': [80, 50, 80, 50, 80]
-        };
-    }
-}
 
 // ========================================
 // TEST SUITES
