@@ -91,106 +91,82 @@ class UIController {
     // ========================================
 
     showSkipUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'skip-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NEW FEATURE UNLOCKED! ✨</div>
-            <div class="unlock-feature">SKIP READ TEXT</div>
-            <div class="unlock-description">
-                You've completed a timeline.<br>
-                You can now fast-forward through<br>
-                previously seen dialogue on future<br>
-                playthroughs.<br><br>
-                Press [S] or click [SKIP >>] to activate.<br><br>
-                <em>The loop remembers. You remember.</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeSkipUnlockNotification()">CONTINUE</button>
-        `;
+        const overlay = OverlayManager.createInfo(
+            'NEW FEATURE UNLOCKED! ✨',
+            `SKIP READ TEXT
 
-        document.body.appendChild(notification);
+You've completed a timeline.
+You can now fast-forward through
+previously seen dialogue on future
+playthroughs.
 
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+Press [S] or click [SKIP >>] to activate.
+
+The loop remembers. You remember.`,
+            {
+                variant: 'success',
+                buttonText: 'CONTINUE',
+                emoji: '✨',
+                id: 'skip-unlock-notification'
+            }
+        );
+        OverlayManager.show(overlay);
     }
 
     closeSkipUnlockNotification() {
-        const notification = document.getElementById('skip-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        OverlayManager.hide('skip-unlock-notification', true);
     }
 
     showNotesUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'notes-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NOTES NOW UNLOCKED! 📝</div>
-            <div class="unlock-feature">COLLECTIBLE NOTES SYSTEM</div>
-            <div class="unlock-description">
-                You've completed an ending.<br>
-                Hidden notes from the UV7 crew can now<br>
-                be discovered throughout both routes.<br><br>
-                Look for the 📝 icon during gameplay.<br><br>
-                <em>Some notes contain secret codes...</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeNotesUnlockNotification()">CONTINUE</button>
-        `;
+        const overlay = OverlayManager.createInfo(
+            'NOTES NOW UNLOCKED! 📝',
+            `COLLECTIBLE NOTES SYSTEM
 
-        document.body.appendChild(notification);
+You've completed an ending.
+Hidden notes from the UV7 crew can now
+be discovered throughout both routes.
 
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+Look for the 📝 icon during gameplay.
+
+Some notes contain secret codes...`,
+            {
+                variant: 'success',
+                buttonText: 'CONTINUE',
+                emoji: '📝',
+                id: 'notes-unlock-notification'
+            }
+        );
+        OverlayManager.show(overlay);
     }
 
     closeNotesUnlockNotification() {
-        const notification = document.getElementById('notes-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        OverlayManager.hide('notes-unlock-notification', true);
     }
 
     showToriGatchiUnlockNotification() {
-        const notification = document.createElement('div');
-        notification.id = 'torigatchi-unlock-notification';
-        notification.innerHTML = `
-            <div class="unlock-title">NEW MAIN MENU OPTION UNLOCKED! 🎮</div>
-            <div class="unlock-feature">TORIGATCHI</div>
-            <div class="unlock-description">
-                You've discovered the reverse trapdoor.<br><br>
-                ToriGatchi is now permanently available<br>
-                from the main menu. No need to type the<br>
-                code again - just look for the 🎮 button.<br><br>
-                <em>The gateway remembers you.</em>
-            </div>
-            <button class="unlock-continue" onclick="game.closeToriGatchiUnlockNotification()">CONTINUE</button>
-        `;
+        const overlay = OverlayManager.createInfo(
+            'NEW MAIN MENU OPTION UNLOCKED! 🎮',
+            `TORIGATCHI
 
-        document.body.appendChild(notification);
+You've discovered the reverse trapdoor.
 
-        // Fade in
-        setTimeout(() => {
-            notification.classList.add('visible');
-        }, 100);
+ToriGatchi is now permanently available
+from the main menu. No need to type the
+code again - just look for the 🎮 button.
+
+The gateway remembers you.`,
+            {
+                variant: 'success',
+                buttonText: 'CONTINUE',
+                emoji: '🎮',
+                id: 'torigatchi-unlock-notification'
+            }
+        );
+        OverlayManager.show(overlay);
     }
 
     closeToriGatchiUnlockNotification() {
-        const notification = document.getElementById('torigatchi-unlock-notification');
-        if (notification) {
-            notification.classList.remove('visible');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }
+        OverlayManager.hide('torigatchi-unlock-notification', true);
     }
 
     // ========================================
