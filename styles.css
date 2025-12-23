@@ -5,6 +5,27 @@
    ======================================== */
 
 /* ========================================
+   THEME VARIABLES (Set by ThemeManager.js)
+   Defaults to Ronnie/Menu theme (cyan)
+   ======================================== */
+:root {
+    /* Primary colors - overridden by ThemeManager */
+    --theme-primary: #00ffff;
+    --theme-primary-rgb: 0, 255, 255;
+    --theme-accent: #00ccff;
+    --theme-glow: rgba(0, 255, 255, 0.5);
+    --theme-glow-strong: rgba(0, 255, 255, 0.8);
+    --theme-background: rgba(0, 10, 20, 0.95);
+    --theme-background-solid: #000a14;
+    --theme-border: #00ffff;
+    --theme-text: #00ffff;
+    --theme-text-muted: #66cccc;
+    --theme-success: #00ff88;
+    --theme-warning: #ffcc00;
+    --theme-error: #ff4444;
+}
+
+/* ========================================
    UV7 SPLASH SCREEN
    ======================================== */
 
