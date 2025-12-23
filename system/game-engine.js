@@ -337,6 +337,10 @@ class GameEngine {
         this.tipsController = new TipsController(this);
         Logger.solid('TipsController');
 
+        // SOLID Refactor: Initialize developer HUD system
+        this.devHUDController = new DevHUDController(this);
+        Logger.solid('DevHUDController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -1612,109 +1616,11 @@ class GameEngine {
     // ========================================
 
     toggleDevHUD() {
-        const hud = this.uiController.devHud;
-        if (!hud) {
-            console.warn('Dev HUD not found in DOM');
-            return;
-        }
-
-        if (hud.style.display === 'none') {
-            hud.style.display = 'block';
-            this.devHUDActive = true;
-            this.updateDevHUD();
-
-            // Start update interval
-            this.devHUDInterval = setInterval(() => {
-                this.updateDevHUD();
-            }, 500); // Update every 500ms
-
-            console.log('🔧 Dev HUD enabled');
-        } else {
-            hud.style.display = 'none';
-            this.devHUDActive = false;
-
-            // Stop update interval
-            if (this.devHUDInterval) {
-                clearInterval(this.devHUDInterval);
-                this.devHUDInterval = null;
-            }
-
-            console.log('🔧 Dev HUD disabled');
-        }
+        this.devHUDController.toggle();
     }
 
     updateDevHUD() {
-        if (!this.devHUDActive) return;
-
-        // Route
-        const routeName = this.currentRoute ? this.currentRoute.constructor.name : '—';
-        document.getElementById('hud-route').textContent = routeName;
-
-        // Act (try to detect from route properties)
-        let actName = '—';
-        if (this.currentRoute) {
-            if (this.currentRoute.currentAct) {
-                actName = `Act ${this.currentRoute.currentAct}`;
-            } else if (this.currentRoute.act) {
-                actName = this.currentRoute.act;
-            }
-        }
-        document.getElementById('hud-act').textContent = actName;
-
-        // Scene
-        const sceneName = this.currentScene || '—';
-        // Truncate if too long
-        const sceneDisplay = typeof sceneName === 'string' && sceneName.length > 30
-            ? sceneName.substring(0, 27) + '...'
-            : sceneName;
-        document.getElementById('hud-scene').textContent = sceneDisplay;
-
-        // Page
-        const page = this.currentPageIndex !== undefined
-            ? `${this.currentPageIndex + 1}`
-            : '—';
-        document.getElementById('hud-page').textContent = page;
-
-        // Tether
-        let tetherDisplay = 'N/A';
-        if (this.tetherSystem && this.tetherSystem.tetherLevel !== undefined) {
-            tetherDisplay = `${Math.round(this.tetherSystem.tetherLevel)}%`;
-
-            // Color code based on level
-            const tetherEl = document.getElementById('hud-tether');
-            if (this.tetherSystem.tetherLevel <= 25) {
-                tetherEl.style.color = '#ff0066';
-            } else if (this.tetherSystem.tetherLevel <= 50) {
-                tetherEl.style.color = '#ff9900';
-            } else {
-                tetherEl.style.color = '#00ff88';
-            }
-        }
-        document.getElementById('hud-tether').textContent = tetherDisplay;
-
-        // Difficulty
-        const difficulty = this.settingsManager?.settings?.tetherDifficulty || '—';
-        document.getElementById('hud-difficulty').textContent = difficulty.toUpperCase();
-
-        // Flags (show count + some key flags)
-        let flagsDisplay = '—';
-        if (this.gameState?.flags) {
-            const flagCount = Object.keys(this.gameState.flags).length;
-            flagsDisplay = `${flagCount} set`;
-
-            // Show important flags
-            const importantFlags = [];
-            if (this.gameState.flags.insaneModeActive) importantFlags.push('INSANE');
-            if (this.state.get('unlocks.skipUnlocked')) importantFlags.push('SKIP');
-            if (importantFlags.length > 0) {
-                flagsDisplay += ` (${importantFlags.join(', ')})`;
-            }
-        }
-        document.getElementById('hud-flags').textContent = flagsDisplay;
-
-        // Loop version
-        const loopVersion = this.loopVersion || 848;
-        document.getElementById('hud-loop').textContent = loopVersion;
+        this.devHUDController.update();
     }
 
     incrementVersion() {
