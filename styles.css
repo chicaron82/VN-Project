@@ -356,14 +356,14 @@
 #main-menu h1 {
     font-size: 3em;
     margin-bottom: 20px;
-    text-shadow: 0 0 20px #0ff, 0 0 40px #000, 0 0 10px #000;
+    text-shadow: 0 0 20px var(--theme-primary), 0 0 40px #000, 0 0 10px #000;
     animation: pulse 2s infinite;
-    color: #0ff;
+    color: var(--theme-primary);
 }
 
 #main-menu .subtitle {
     font-size: 1.2em;
-    color: #0ff;
+    color: var(--theme-primary);
     margin-bottom: 50px;
     text-shadow: 0 0 10px #000, 0 0 20px #000;
 }
@@ -484,8 +484,8 @@
 
 .menu-button {
     background: rgba(0, 0, 0, 0.85);
-    color: #0ff;
-    border: 2px solid #0ff;
+    color: var(--theme-primary);
+    border: 2px solid var(--theme-primary);
     padding: 15px 40px;
     margin: 10px;
     font-size: 1.2em;
@@ -493,15 +493,15 @@
     cursor: pointer;
     transition: all 0.3s;
     min-width: 300px;
-    text-shadow: 0 0 5px #0ff;
+    text-shadow: 0 0 5px var(--theme-primary);
     backdrop-filter: blur(5px);
 }
 
 .menu-button:hover {
-    background: rgba(0, 255, 255, 0.2);
-    border-color: #0f0;
-    color: #0f0;
-    box-shadow: 0 0 20px #0ff;
+    background: rgba(var(--theme-primary-rgb), 0.2);
+    border-color: var(--theme-success);
+    color: var(--theme-success);
+    box-shadow: 0 0 20px var(--theme-primary);
     transform: scale(1.05);
 }
 
@@ -653,8 +653,8 @@
 
 #route-select-title {
     text-align: center;
-    color: #0ff;
-    text-shadow: 0 0 20px #0ff, 0 0 40px #000, 0 0 10px #000;
+    color: var(--theme-primary);
+    text-shadow: 0 0 20px var(--theme-primary), 0 0 40px #000, 0 0 10px #000;
 }
 
 #route-select-title h2 {
@@ -707,8 +707,8 @@
 
 .character-label {
     font-size: 1.8em;
-    color: #0ff;
-    text-shadow: 0 0 15px #0ff, 0 0 30px #000;
+    color: var(--theme-primary);
+    text-shadow: 0 0 15px var(--theme-primary), 0 0 30px #000;
     margin-bottom: 10px;
     font-weight: bold;
 }
@@ -725,23 +725,23 @@
 
 .route-button {
     background: rgba(0, 0, 0, 0.85);
-    color: #0ff;
-    border: 3px solid #0ff;
+    color: var(--theme-primary);
+    border: 3px solid var(--theme-primary);
     padding: 20px 50px;
     font-size: 1.3em;
     font-family: 'Courier New', monospace;
     cursor: pointer;
     transition: all 0.3s;
-    text-shadow: 0 0 10px #0ff;
+    text-shadow: 0 0 10px var(--theme-primary);
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    box-shadow: 0 0 20px var(--theme-glow);
 }
 
 .route-button:hover {
-    background: rgba(0, 255, 255, 0.3);
-    border-color: #0f0;
-    color: #0f0;
-    box-shadow: 0 0 40px #0ff;
+    background: rgba(var(--theme-primary-rgb), 0.3);
+    border-color: var(--theme-success);
+    color: var(--theme-success);
+    box-shadow: 0 0 40px var(--theme-primary);
     transform: scale(1.1) translateY(-5px);
 }
 
@@ -763,8 +763,8 @@
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
-    color: #0ff;
-    border: 2px solid #0ff;
+    color: var(--theme-primary);
+    border: 2px solid var(--theme-primary);
     padding: 12px 30px;
     font-family: 'Courier New', monospace;
     font-size: 1em;
@@ -774,8 +774,8 @@
 }
 
 #back-to-menu:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 20px #0ff;
+    background: rgba(var(--theme-primary-rgb), 0.2);
+    box-shadow: 0 0 20px var(--theme-primary);
 }
 
 @media (max-width: 768px) {
