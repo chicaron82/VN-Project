@@ -321,6 +321,10 @@ class GameEngine {
         this.effectsController = new EffectsController(this);
         Logger.solid('EffectsController');
 
+        // SOLID Refactor: Initialize text rendering system
+        this.typewriterController = new TypewriterController(this);
+        Logger.solid('TypewriterController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -3161,218 +3165,35 @@ class GameEngine {
     }
 
     getTypewriterSpeed() {
-        // ZEE'S ADDITION: Slow-motion reveal for emotional weight 🖤
-        // 5× slower than normal (150ms vs 30ms)
-        if (this.slowRevealActive) {
-            return 150;
-        }
-
-        // SKIP OVERRIDE: Use 5ms when skipping (6x faster than normal)
-        if (this.skipActive) {
-            return 5;
-        }
-
-        // Get speed from settings manager
-        if (!this.settingsManager) {
-            console.log('No settingsManager, returning default 30');
-            return 30;
-        }
-
-        const speed = this.settingsManager.settings.textSpeed;
-        const multiplier = this.settingsManager.speedMultipliers[speed];
-        const delay = 30 * multiplier;
-        const result = delay === 0 ? 0 : Math.max(1, delay);
-
-        return result;
+        return this.typewriterController.getSpeed();
     }
 
     shouldPaginateText(textLength) {
-        // Only paginate on mobile portrait
-        if (window.innerWidth > 480) return false;
-        if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
-
-        // LOWERED THRESHOLD: 150 chars instead of 200 for tighter control
-        // This ensures dialogue box never grows too tall on mobile portrait
-        return textLength > 150;
+        return this.typewriterController.shouldPaginate(textLength);
     }
 
     paginateAndDisplayText(element, text, callback) {
-        // Split text into pages that fit in mobile dialogue box
-        this.dialoguePages = this.splitTextIntoPages(text, 150);
-        this.currentDialoguePage = 0;
-        this.paginationActive = true;
-        this.typewriterCallback = callback;
-
-        // Display first page
-        this.displayDialoguePage(element);
+        this.typewriterController.paginateAndDisplay(element, text, callback);
     }
 
     splitTextIntoPages(text, charsPerPage) {
-        const pages = [];
-        let remainingText = text;
-
-        while (remainingText.length > 0) {
-            if (remainingText.length <= charsPerPage) {
-                pages.push(remainingText);
-                break;
-            }
-
-            let breakPoint = charsPerPage;
-
-            // Look for sentence end within last 50 chars
-            const sentenceEnd = remainingText.substring(0, charsPerPage).lastIndexOf('. ');
-            if (sentenceEnd > charsPerPage - 50) {
-                breakPoint = sentenceEnd + 2;
-            } else {
-                // Look for word boundary
-                const lastSpace = remainingText.substring(0, charsPerPage).lastIndexOf(' ');
-                if (lastSpace > charsPerPage - 30) {
-                    breakPoint = lastSpace + 1;
-                }
-            }
-
-            pages.push(remainingText.substring(0, breakPoint).trim());
-            remainingText = remainingText.substring(breakPoint).trim();
-        }
-
-        return pages;
+        return this.typewriterController.splitTextIntoPages(text, charsPerPage);
     }
 
     displayDialoguePage(element) {
-        const currentPage = this.dialoguePages[this.currentDialoguePage];
-        const speed = this.getTypewriterSpeed();
-
-        // Add page indicator for multi-page dialogue
-        const pageIndicator = (this.dialoguePages.length > 1)
-            ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
-            : '';
-
-        // Check if instant mode
-        if (speed === 0) {
-            // Instant mode - show all text immediately
-            element.textContent = currentPage + (this.dialoguePages.length > 1 ? pageIndicator : '');
-            this.typewriterActive = false;
-
-            // DIZEE FIX: Start auto-advance timer in instant mode too
-            if (this.settingsManager) {
-                this.settingsManager.startAutoAdvance(() => {
-                    // Auto-advance to next dialogue
-                    if (!this.choiceMenu || this.choiceMenu.style.display === 'none') {
-                        this.advance();
-                    }
-                });
-            }
-
-            return;
-        }
-
-        // Typewriter the current page
-        this.typewriterActive = true;
-        this.fullDialogueText = currentPage;
-        element.textContent = '';
-        let i = 0;
-
-        if (this.typewriterInterval) {
-            clearInterval(this.typewriterInterval);
-        }
-
-        this.typewriterInterval = setInterval(() => {
-            if (i < currentPage.length) {
-                element.textContent += currentPage.charAt(i);
-                i++;
-            } else {
-                // Add page indicator when typing finishes
-                if (this.dialoguePages.length > 1) {
-                    element.textContent += pageIndicator;
-                }
-
-                clearInterval(this.typewriterInterval);
-                this.typewriterInterval = null;
-                this.typewriterActive = false;
-
-                // ZEERAH'S FIX: Start auto-advance timer after typewriter finishes
-                if (this.settingsManager) {
-                    this.settingsManager.startAutoAdvance(() => {
-                        // Auto-advance to next dialogue
-                        if (!this.choiceMenu || this.choiceMenu.style.display === 'none') {
-                            this.advance();
-                        }
-                    });
-                }
-            }
-        }, speed);
+        this.typewriterController.displayPage(element);
     }
 
-
     showNextDialoguePage() {
-        this.currentDialoguePage++;
-
-        if (this.currentDialoguePage >= this.dialoguePages.length) {
-            // All pages shown - advance to next scene
-            this.paginationActive = false;
-            this.advance();
-        } else {
-            // Show next page
-            this.displayDialoguePage(this.dialogueText);
-
-            // TORI'S TIME MACHINE: Record snapshot for paginated dialogue 💚⏰
-            if (this.timeMachine) {
-                const position = this.getScenePosition();
-                const label = `${position.currentSceneId} (page ${this.currentDialoguePage + 1})`;
-                this.timeMachine.addCurrentState(label);
-            }
-        }
+        this.typewriterController.showNextPage();
     }
 
     skipTypewriter() {
-        if (this.typewriterInterval) {
-            clearInterval(this.typewriterInterval);
-        }
-
-        if (this.paginationActive) {
-            // Show current page fully with indicator
-            const currentPage = this.dialoguePages[this.currentDialoguePage];
-            const pageIndicator = (this.dialoguePages.length > 1)
-                ? ` [${this.currentDialoguePage + 1}/${this.dialoguePages.length}]`
-                : '';
-            this.dialogueText.textContent = currentPage + pageIndicator;
-        } else {
-            // Show full text
-            this.dialogueText.textContent = this.fullDialogueText;
-        }
-
-        this.typewriterActive = false;
-
-        // Execute callback if exists
-        if (this.typewriterCallback) {
-            this.typewriterCallback();
-            this.typewriterCallback = null;
-        }
+        this.typewriterController.skip();
     }
 
     handleDialogueClick() {
-        // DIZEE: Haptic feedback for dialogue interaction
-        this.triggerSensoryFeedback('buttonPress', null, 'Dialogue advance');
-
-        // DIZEE FIX: Cancel auto-advance timer when user manually clicks
-        if (this.settingsManager) {
-            this.settingsManager.cancelAutoAdvance();
-        }
-
-        // If pagination is active, show next page
-        if (this.paginationActive && !this.typewriterActive) {
-            this.showNextDialoguePage();
-            return;
-        }
-
-        // If typing is active, skip to full text
-        if (this.typewriterActive) {
-            this.skipTypewriter();
-        }
-        // If text is fully displayed, advance to next scene
-        else {
-            this.advance();
-        }
+        this.typewriterController.handleClick();
     }
 
     advance() {
