@@ -2404,6 +2404,11 @@ class GameEngine {
 
         this.gameState.currentRoute = routeName; // Set current route for tracking
 
+        // DIZEE: Apply route-specific theme 🎨
+        if (typeof ThemeManager !== 'undefined') {
+            ThemeManager.setRoute(routeName);
+        }
+
         // DIZEE FIX: Clear game view immediately to prevent old scene flash 💚
         if (this.gameView) {
             this.gameView.style.backgroundImage = 'none';
@@ -3920,6 +3925,11 @@ class GameEngine {
     returnToMainMenu(skipConfirmation = false) {
         // ZEE: Revert color scheme if returning from Insane Mode 🖤
         this.deactivateInsaneMode();
+
+        // DIZEE: Clear route-specific theme 🎨
+        if (typeof ThemeManager !== 'undefined') {
+            ThemeManager.clearRoute();
+        }
 
         // Clear sprites when returning to main menu
         this.clearAllSprites();
