@@ -1082,19 +1082,20 @@ class EasterEggController {
 
     showTrueAttemptNumber(loopVersion) {
         const trueAttempt = loopVersion;
+        const theme = ThemeManager.getTheme();
 
-        // Create overlay for the full revelation
+        // Create themed overlay
         const overlay = document.createElement('div');
         overlay.className = 'secret-code-overlay';
         overlay.innerHTML = `
             <div class="secret-code-content">
                 <h2>CODE: 848 ACTIVATED</h2>
 
-                <p style="font-size: 1.2em; color: #0ff; margin: 20px 0;">
+                <p style="font-size: 1.2em; color: ${theme.primary}; margin: 20px 0;">
                     Your current loop iteration: <strong>${trueAttempt}</strong>
                 </p>
 
-                <div class="revelation" style="margin: 30px 0; padding: 20px; background: rgba(0, 255, 255, 0.1); border-left: 3px solid #0ff;">
+                <div class="revelation" style="margin: 30px 0; padding: 20px; background: rgba(${theme.primaryRgb}, 0.1); border-left: 3px solid ${theme.primary};">
                     <p style="font-style: italic; color: rgba(255, 255, 255, 0.7);">"Wait... 848 isn't a version number?"</p>
 
                     <p style="margin-top: 15px;">No.</p>
@@ -1107,7 +1108,7 @@ class EasterEggController {
                         <strong>847 versions</strong> that never made it to the end.
                     </p>
 
-                    <p style="margin-top: 20px; font-size: 1.1em; color: #0ff;">
+                    <p style="margin-top: 20px; font-size: 1.1em; color: ${theme.primary};">
                         <strong>Version 848 is the first one that succeeded.</strong>
                     </p>
 
@@ -1117,15 +1118,15 @@ class EasterEggController {
                         The "version number" is the body count.
                     </p>
 
-                    <p class="meta-note" style="margin-top: 25px; padding: 15px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(0, 255, 255, 0.3); font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
+                    <p class="meta-note" style="margin-top: 25px; padding: 15px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(${theme.primaryRgb}, 0.3); font-size: 0.9em; color: rgba(255, 255, 255, 0.6);">
                         <em>Note to reviewers asking about v849:</em><br>
                         There is no v849.<br>
-                        <strong style="color: #0ff;">This is the loop that worked.</strong>
+                        <strong style="color: ${theme.primary};">This is the loop that worked.</strong>
                     </p>
                 </div>
 
                 <button onclick="this.closest('.secret-code-overlay').remove()"
-                        style="margin-top: 20px; padding: 10px 30px; background: #0ff; color: #000; border: none; font-weight: bold; cursor: pointer; font-family: 'Courier New', monospace;">
+                        style="margin-top: 20px; padding: 10px 30px; background: ${theme.primary}; color: #000; border: none; font-weight: bold; cursor: pointer; font-family: 'Courier New', monospace;">
                     UNDERSTOOD
                 </button>
             </div>
@@ -1141,7 +1142,9 @@ class EasterEggController {
     // ========================================
 
     showUV7CrewBios() {
-        // Create overlay for UV7 crew credits
+        const theme = ThemeManager.getTheme();
+
+        // Create themed overlay
         const overlay = document.createElement('div');
         overlay.className = 'secret-code-overlay';
         overlay.innerHTML = `
@@ -1149,14 +1152,14 @@ class EasterEggController {
                 <h2>CODE: UV7CREW ACTIVATED</h2>
 
                 <div style="margin: 30px 0; text-align: left;">
-                    <h3 style="color: #0ff; margin-bottom: 20px;">MEET THE VERSION 848 CREW</h3>
+                    <h3 style="color: ${theme.primary}; margin-bottom: 20px;">MEET THE VERSION 848 CREW</h3>
 
                     <p style="margin: 20px 0; font-style: italic; color: rgba(255, 255, 255, 0.7);">
                         This story was created through collaboration between human vision and AI capabilities.
                     </p>
 
-                    <div style="margin: 30px 0; padding: 20px; background: rgba(0, 255, 255, 0.05); border-left: 3px solid #0ff;">
-                        <h4 style="color: #0ff; margin-bottom: 10px;">👨‍💻 CHICHARON (Human Creator)</h4>
+                    <div style="margin: 30px 0; padding: 20px; background: rgba(${theme.primaryRgb}, 0.05); border-left: 3px solid ${theme.primary};">
+                        <h4 style="color: ${theme.primary}; margin-bottom: 10px;">👨‍💻 CHICHARON (Human Creator)</h4>
                         <p style="font-size: 0.9em; line-height: 1.6;">
                             Vision holder, narrative architect, and the one who refused to give up on Tori's story.
                             Spent countless iterations refining the emotional beats and thematic depth.
@@ -1164,8 +1167,8 @@ class EasterEggController {
                         </p>
                     </div>
 
-                    <div style="margin: 30px 0; padding: 20px; background: rgba(0, 255, 255, 0.05); border-left: 3px solid #0ff;">
-                        <h4 style="color: #0ff; margin-bottom: 10px;">🤖 THE AI COLLABORATORS</h4>
+                    <div style="margin: 30px 0; padding: 20px; background: rgba(${theme.primaryRgb}, 0.05); border-left: 3px solid ${theme.primary};">
+                        <h4 style="color: ${theme.primary}; margin-bottom: 10px;">🤖 THE AI COLLABORATORS</h4>
                         <p style="font-size: 0.9em; line-height: 1.6;">
                             Multiple AI assistants contributed to dialogue refinement, technical implementation,
                             emotional resonance testing, and narrative consistency. Each brought different strengths
@@ -1173,16 +1176,16 @@ class EasterEggController {
                         </p>
                     </div>
 
-                    <div style="margin: 40px 0; padding: 25px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(0, 255, 255, 0.5);">
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 20px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 20px;">FREQUENTLY ASKED QUESTION</h4>
-                        <h4 style="color: #0ff; text-align: center; margin-bottom: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
+                    <div style="margin: 40px 0; padding: 25px; background: rgba(0, 0, 0, 0.7); border: 2px solid rgba(${theme.primaryRgb}, 0.5);">
+                        <h4 style="color: ${theme.primary}; text-align: center; margin-bottom: 20px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
+                        <h4 style="color: ${theme.primary}; text-align: center; margin-bottom: 20px;">FREQUENTLY ASKED QUESTION</h4>
+                        <h4 style="color: ${theme.primary}; text-align: center; margin-bottom: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
 
                         <p style="font-size: 1.1em; text-align: center; margin: 20px 0; font-style: italic;">
                             "When is version 849 coming?"
                         </p>
 
-                        <p style="text-align: center; margin: 25px 0; font-size: 1.2em; color: #0ff;">
+                        <p style="text-align: center; margin: 25px 0; font-size: 1.2em; color: ${theme.primary};">
                             <strong>There isn't one.</strong>
                         </p>
 
@@ -1193,14 +1196,14 @@ class EasterEggController {
 
                         <p style="margin: 20px 0; line-height: 1.8;">
                             <strong>847 failed loops.</strong><br>
-                            <strong style="color: #0ff;">1 successful timeline.</strong>
+                            <strong style="color: ${theme.primary};">1 successful timeline.</strong>
                         </p>
 
                         <p style="margin: 20px 0; line-height: 1.8;">
                             The version number IS the narrative.
                         </p>
 
-                        <p style="margin: 25px 0; font-size: 1.1em; color: #0ff; text-align: center;">
+                        <p style="margin: 25px 0; font-size: 1.1em; color: ${theme.primary}; text-align: center;">
                             <strong>This is the loop that worked.</strong><br>
                             <strong>This is the one where she came home.</strong>
                         </p>
@@ -1209,7 +1212,7 @@ class EasterEggController {
                             There is no v849.
                         </p>
 
-                        <h4 style="color: #0ff; text-align: center; margin-top: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
+                        <h4 style="color: ${theme.primary}; text-align: center; margin-top: 30px;">━━━━━━━━━━━━━━━━━━━━━━━━━━━━</h4>
                     </div>
 
                     <p style="margin-top: 30px; text-align: center; color: rgba(255, 255, 255, 0.6); font-size: 0.9em;">
@@ -1219,7 +1222,7 @@ class EasterEggController {
                 </div>
 
                 <button onclick="this.closest('.secret-code-overlay').remove()"
-                        style="margin-top: 20px; padding: 10px 30px; background: #0ff; color: #000; border: none; font-weight: bold; cursor: pointer; font-family: 'Courier New', monospace;">
+                        style="margin-top: 20px; padding: 10px 30px; background: ${theme.primary}; color: #000; border: none; font-weight: bold; cursor: pointer; font-family: 'Courier New', monospace;">
                     CLOSE CREDITS
                 </button>
             </div>
