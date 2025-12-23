@@ -693,104 +693,46 @@ class EasterEggController {
     // ========================================
     showUnlockOverlay(title, content, type = 'code') {
         try {
-            // Create overlay container
-            const overlay = document.createElement('div');
+            // Use OverlayManager for themed unlock overlay
+            const { overlay, box } = OverlayManager.createCustom({
+                variant: 'primary',
+                maxWidth: '600px',
+                padding: '40px'
+            });
+
             overlay.className = 'unlock-overlay';
-            overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            animation: fadeIn 0.3s ease-out;
-        `;
-
-            // Create content box
-            const box = document.createElement('div');
             box.className = 'unlock-box';
-            box.style.cssText = `
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 2px solid #0ff;
-            border-radius: 10px;
-            padding: 40px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-            animation: slideIn 0.4s ease-out;
-            font-family: 'Courier New', monospace;
-            color: #fff;
-        `;
+            box.style.maxHeight = '80vh';
+            box.style.overflowY = 'auto';
+            box.style.animation = 'slideIn 0.4s ease-out';
 
-            // Create title
-            const titleEl = document.createElement('div');
-            titleEl.style.cssText = `
-            font-size: 28px;
-            font-weight: bold;
-            color: #0ff;
-            text-align: center;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        `;
-            titleEl.textContent = title;
+            // Create themed title
+            const titleEl = OverlayManager.createTitle(title, {
+                variant: 'primary',
+                fontSize: '28px'
+            });
+            titleEl.style.letterSpacing = '3px';
+            titleEl.style.marginBottom = '30px';
 
             // Create content area
-            const contentEl = document.createElement('div');
-            contentEl.style.cssText = `
-            font-size: 16px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            white-space: pre-wrap;
-            color: #e0e0e0;
-        `;
-            contentEl.textContent = content;
+            const contentEl = OverlayManager.createMessage(content, {
+                fontSize: '16px',
+                lineHeight: '1.8',
+                marginBottom: '30px',
+                preWrap: true
+            });
 
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'CONTINUE';
-            closeBtn.style.cssText = `
-            display: block;
-            width: 200px;
-            margin: 0 auto;
-            padding: 15px 30px;
-            background: transparent;
-            border: 2px solid #0ff;
-            color: #0ff;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-        `;
-
-            closeBtn.onmouseover = () => {
-                closeBtn.style.background = '#0ff';
-                closeBtn.style.color = '#000';
-                closeBtn.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.5)';
-            };
-
-            closeBtn.onmouseout = () => {
-                closeBtn.style.background = 'transparent';
-                closeBtn.style.color = '#0ff';
-                closeBtn.style.boxShadow = 'none';
-            };
-
-            closeBtn.onclick = () => {
+            // Create themed close button
+            const closeBtn = OverlayManager.createButton('CONTINUE', () => {
                 overlay.style.animation = 'fadeOut 0.3s ease-out';
-                setTimeout(() => {
-                    document.body.removeChild(overlay);
-                }, 300);
-            };
+                setTimeout(() => overlay.remove(), 300);
+            }, {
+                variant: 'primary',
+                width: '200px'
+            });
+            closeBtn.style.padding = '15px 30px';
+            closeBtn.style.fontSize = '18px';
+            closeBtn.style.letterSpacing = '2px';
 
             // Assemble
             box.appendChild(titleEl);
