@@ -329,6 +329,10 @@ class GameEngine {
         this.routeController = new RouteController(this);
         Logger.solid('RouteController');
 
+        // SOLID Refactor: Initialize ending dialog system
+        this.endingDialogController = new EndingDialogController(this);
+        Logger.solid('EndingDialogController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -3034,184 +3038,23 @@ class GameEngine {
     // ========================================
 
     showEndingDialog(endingType = null) {
-        const dialog = document.getElementById('ending-dialog');
-        if (!dialog) {
-            console.error('Ending dialog element not found');
-            return;
-        }
-
-        // Store ending type for later use
-        this.pendingEndingType = endingType;
-
-        // Show dialog
-        dialog.classList.remove('hidden');
-
-        // Setup buttons and keyboard navigation
-        this.setupEndingDialogButtons();
-        this.setupEndingDialogKeyboard();
-
-        // Focus first option
-        this.focusEndingOption(0);
-
-        console.log(`📋 Ending dialog shown (ending type: ${endingType})`);
+        this.endingDialogController.show(endingType);
     }
 
     setupEndingDialogButtons() {
-        const retryBtn = document.getElementById('ending-retry');
-        const acceptBtn = document.getElementById('ending-accept');
-        const exitBtn = document.getElementById('ending-exit');
-
-        if (!retryBtn || !acceptBtn || !exitBtn) {
-            console.error('Ending dialog buttons not found');
-            return;
-        }
-
-        // Remove existing listeners by cloning and replacing
-        const newRetryBtn = retryBtn.cloneNode(true);
-        const newAcceptBtn = acceptBtn.cloneNode(true);
-        const newExitBtn = exitBtn.cloneNode(true);
-
-        retryBtn.parentNode.replaceChild(newRetryBtn, retryBtn);
-        acceptBtn.parentNode.replaceChild(newAcceptBtn, acceptBtn);
-        exitBtn.parentNode.replaceChild(newExitBtn, exitBtn);
-
-        // YES - Try Again (immediate restart)
-        newRetryBtn.addEventListener('click', () => {
-            this.hideEndingDialog();
-            console.log('🔄 Player chose: TRY AGAIN - Restarting game...');
-
-            // DIZEE: Record attempt to bootstrap timeline
-            this.recordEndingAttempt();
-
-            // Increment attempt number for next run
-            this.bootstrapTracker.incrementAttempt();
-
-            // DIZEE FIX: Show loop init screen before retry
-            this.loopVersion++; // Increment version for next attempt
-            this.showLoopInit(() => {
-                setTimeout(() => {
-                    // DIZEE: Check auto-skip prologue setting
-                    const autoSkipPrologue = localStorage.getItem('autoSkipPrologue') === 'true';
-
-                    if (autoSkipPrologue) {
-                        // Skip prologue, go straight to route selection
-                        console.log('🔄 Retry with prologue skip enabled - going to route selection');
-                        this.showRouteSelect();
-                    } else {
-                        // Start from prologue
-                        console.log('🔄 Retry with prologue skip disabled - starting from prologue');
-                        location.reload();
-                    }
-                }, 300);
-            });
-        });
-
-        // NO - Accept This Ending (credits THEN menu)
-        newAcceptBtn.addEventListener('click', () => {
-            this.hideEndingDialog();
-            console.log('🎬 Player chose: ACCEPT ENDING - Playing credits...');
-
-            // DIZEE: Record attempt to bootstrap timeline
-            this.recordEndingAttempt();
-
-            this.showCredits(this.pendingEndingType);
-        });
-
-        // EXIT - Return to Main Menu (skip credits)
-        newExitBtn.addEventListener('click', () => {
-            this.hideEndingDialog();
-            console.log('🏠 Player chose: RETURN TO MENU - Skipping credits...');
-
-            // DIZEE: Record attempt to bootstrap timeline
-            this.recordEndingAttempt();
-
-            // DIZEE: Code rain transition before returning to menu 💚🌧️
-            this.showCodeRainTransition(() => {
-                this.returnToMainMenu(true);
-            }, 1500);
-        });
-
-        // Store references for keyboard navigation
-        this.endingDialogButtons = [newRetryBtn, newAcceptBtn, newExitBtn];
-        this.currentEndingFocus = 0;
+        this.endingDialogController.setupButtons();
     }
 
     setupEndingDialogKeyboard() {
-        // Remove existing listener if present
-        if (this.endingDialogKeyHandler) {
-            document.removeEventListener('keydown', this.endingDialogKeyHandler);
-        }
-
-        this.endingDialogKeyHandler = (e) => {
-            const dialog = document.getElementById('ending-dialog');
-            if (!dialog || dialog.classList.contains('hidden')) return;
-
-            switch (e.key) {
-                case 'ArrowUp':
-                    e.preventDefault();
-                    this.currentEndingFocus = Math.max(0, this.currentEndingFocus - 1);
-                    this.focusEndingOption(this.currentEndingFocus);
-                    break;
-
-                case 'ArrowDown':
-                    e.preventDefault();
-                    this.currentEndingFocus = Math.min(2, this.currentEndingFocus + 1);
-                    this.focusEndingOption(this.currentEndingFocus);
-                    break;
-
-                case 'Tab':
-                    e.preventDefault();
-                    this.currentEndingFocus = (this.currentEndingFocus + 1) % 3;
-                    this.focusEndingOption(this.currentEndingFocus);
-                    break;
-
-                case 'Enter':
-                    e.preventDefault();
-                    if (this.endingDialogButtons && this.endingDialogButtons[this.currentEndingFocus]) {
-                        this.endingDialogButtons[this.currentEndingFocus].click();
-                    }
-                    break;
-
-                case 'Escape':
-                    e.preventDefault();
-                    // Esc defaults to EXIT option
-                    if (this.endingDialogButtons && this.endingDialogButtons[2]) {
-                        this.endingDialogButtons[2].click();
-                    }
-                    break;
-            }
-        };
-
-        document.addEventListener('keydown', this.endingDialogKeyHandler);
+        this.endingDialogController.setupKeyboard();
     }
 
     focusEndingOption(index) {
-        if (!this.endingDialogButtons) return;
-
-        // Remove focus from all
-        this.endingDialogButtons.forEach(btn => {
-            btn.setAttribute('data-focused', 'false');
-        });
-
-        // Add focus to selected
-        if (this.endingDialogButtons[index]) {
-            this.endingDialogButtons[index].setAttribute('data-focused', 'true');
-        }
+        this.endingDialogController.focusOption(index);
     }
 
     hideEndingDialog() {
-        const dialog = document.getElementById('ending-dialog');
-        if (dialog) {
-            dialog.classList.add('hidden');
-        }
-
-        // Remove keyboard listener
-        if (this.endingDialogKeyHandler) {
-            document.removeEventListener('keydown', this.endingDialogKeyHandler);
-            this.endingDialogKeyHandler = null;
-        }
-
-        console.log('📋 Ending dialog hidden');
+        this.endingDialogController.hide();
     }
 
     // ========================================
