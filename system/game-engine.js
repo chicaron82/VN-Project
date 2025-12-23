@@ -307,19 +307,19 @@ class GameEngine {
     constructor() {
         // SOLID Refactor: Initialize centralized state management
         this.state = new StateManager();
-        console.log('🔧 SOLID: StateManager initialized');
+        Logger.solid('StateManager');
 
         // SOLID Refactor: Initialize scene rendering system
         this.sceneRenderer = new SceneRenderer(this);
-        console.log('🔧 SOLID: SceneRenderer initialized');
+        Logger.solid('SceneRenderer');
 
         // SOLID Refactor: Initialize UI overlay management
         this.uiController = new UIController(this);
-        console.log('🔧 SOLID: UIController initialized');
+        Logger.solid('UIController');
 
         // SOLID Refactor: Initialize visual effects system
         this.effectsController = new EffectsController(this);
-        console.log('🔧 SOLID: EffectsController initialized');
+        Logger.solid('EffectsController');
 
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
