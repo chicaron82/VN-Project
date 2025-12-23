@@ -481,11 +481,11 @@ class EasterEggController {
         content.style.cssText = `
             max-width: 700px;
             width: 100%;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, rgba(${theme.primaryRgb}, 0.15) 0%, ${theme.backgroundSolid} 100%);
             border: 3px solid ${theme.primary};
             border-radius: 10px;
             padding: 40px;
-            color: #fff;
+            color: ${theme.text};
             font-family: 'Courier New', monospace;
             box-shadow: 0 0 50px ${theme.glow};
             text-align: center;
@@ -498,8 +498,8 @@ class EasterEggController {
             </div>
 
             <div style="background: rgba(0,0,0,0.5); padding: 20px; border-left: 3px solid ${theme.error}; margin: 20px 0; text-align: left;">
-                <div style="font-size: 0.9em; color: #ff6699; margin-bottom: 10px;">ANALYZING GAME STATE...</div>
-                <div style="font-size: 0.85em; color: #aaa;">
+                <div style="font-size: 0.9em; color: ${theme.error}; margin-bottom: 10px;">ANALYZING GAME STATE...</div>
+                <div style="font-size: 0.85em; color: ${theme.textMuted};">
                     Current Difficulty: <span style="color: ${theme.error}; font-weight: bold;">INSANE</span><br>
                     Ghost Buttons: <span style="color: ${theme.error};">ACTIVE</span><br>
                     Tether Drain: <span style="color: ${theme.error};">EXTREME</span><br>
@@ -515,11 +515,11 @@ class EasterEggController {
                 <p style="margin: 10px 0; font-style: italic; color: ${theme.primary};">Some knowledge transcends timelines.</p>
             </div>
 
-            <div style="font-size: 1.2em; font-weight: bold; color: #fff; margin: 30px 0 20px;">
+            <div style="font-size: 1.2em; font-weight: bold; color: ${theme.text}; margin: 30px 0 20px;">
                 EMERGENCY PROTOCOL ACTIVATED
             </div>
 
-            <div style="text-align: left; margin: 20px 0; font-size: 0.9em; color: #ccc;">
+            <div style="text-align: left; margin: 20px 0; font-size: 0.9em; color: ${theme.textMuted};">
                 Would you like to:
             </div>
 
@@ -545,7 +545,7 @@ class EasterEggController {
                     padding: 20px;
                     background: linear-gradient(135deg, rgba(${theme.error.match(/\d+/g).join(',')},0.2) 0%, rgba(${theme.error.match(/\d+/g).join(',')},0.1) 100%);
                     border: 2px solid ${theme.error};
-                    color: #ff6699;
+                    color: ${theme.error};
                     font-family: 'Courier New', monospace;
                     font-size: 1em;
                     font-weight: bold;
@@ -559,7 +559,7 @@ class EasterEggController {
                 </button>
             </div>
 
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.85em; color: #888; font-style: italic;">
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(${theme.primaryRgb},0.2); font-size: 0.85em; color: ${theme.textMuted}; font-style: italic;">
                 "Sometimes the bravest choice<br>is knowing when to step back."<br><br>
                 <span style="color: ${theme.primary};">- Old Man Ronnie, Loop 623</span>
             </div>
@@ -740,6 +740,7 @@ class EasterEggController {
 
             // Add CSS animations if not already present
             if (!document.getElementById('unlock-overlay-styles')) {
+                const theme = ThemeManager.getTheme();
                 const style = document.createElement('style');
                 style.id = 'unlock-overlay-styles';
                 style.textContent = `
@@ -768,7 +769,7 @@ class EasterEggController {
                     background: rgba(0, 0, 0, 0.3);
                 }
                 .unlock-box::-webkit-scrollbar-thumb {
-                    background: #0ff;
+                    background: ${theme.primary};
                     border-radius: 5px;
                 }
             `;
