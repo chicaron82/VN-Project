@@ -470,62 +470,52 @@ class EasterEggController {
             return;
         }
 
-        // Create modal overlay
-        const overlay = document.createElement('div');
-        overlay.id = 'konami-insane-modal';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.5s ease-out;
-            overflow-y: auto;
-            padding: 20px;
-        `;
+        // Create themed overlay using OverlayManager
+        const overlay = OverlayManager.createBase({
+            id: 'konami-insane-modal',
+            zIndex: 10000
+        });
+        overlay.style.padding = '20px';
+        overlay.style.overflowY = 'auto';
 
-        // Create content container
+        // Create content container (themed)
+        const theme = ThemeManager.getTheme();
         const content = document.createElement('div');
         content.style.cssText = `
             max-width: 700px;
             width: 100%;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            border: 3px solid #0ff;
+            border: 3px solid ${theme.primary};
             border-radius: 10px;
             padding: 40px;
             color: #fff;
             font-family: 'Courier New', monospace;
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 50px ${theme.glow};
             text-align: center;
             line-height: 1.8;
         `;
 
         content.innerHTML = `
-            <div style="font-size: 2em; font-weight: bold; color: #0ff; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0,255,255,0.8);">
+            <div style="font-size: 2em; font-weight: bold; color: ${theme.primary}; margin-bottom: 20px; text-shadow: 0 0 20px ${theme.glow};">
                 🎮 KONAMI CODE DETECTED
             </div>
 
-            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-left: 3px solid #ff0066; margin: 20px 0; text-align: left;">
+            <div style="background: rgba(0,0,0,0.5); padding: 20px; border-left: 3px solid ${theme.error}; margin: 20px 0; text-align: left;">
                 <div style="font-size: 0.9em; color: #ff6699; margin-bottom: 10px;">ANALYZING GAME STATE...</div>
                 <div style="font-size: 0.85em; color: #aaa;">
-                    Current Difficulty: <span style="color: #ff0066; font-weight: bold;">INSANE</span><br>
-                    Ghost Buttons: <span style="color: #ff0066;">ACTIVE</span><br>
-                    Tether Drain: <span style="color: #ff0066;">EXTREME</span><br>
-                    Save System: <span style="color: #ff0066;">RESTRICTED</span><br>
-                    Player Status: <span style="color: #ff0066; font-weight: bold;">SUFFERING</span>
+                    Current Difficulty: <span style="color: ${theme.error}; font-weight: bold;">INSANE</span><br>
+                    Ghost Buttons: <span style="color: ${theme.error};">ACTIVE</span><br>
+                    Tether Drain: <span style="color: ${theme.error};">EXTREME</span><br>
+                    Save System: <span style="color: ${theme.error};">RESTRICTED</span><br>
+                    Player Status: <span style="color: ${theme.error}; font-weight: bold;">SUFFERING</span>
                 </div>
             </div>
 
-            <div style="border-top: 1px solid #0ff; border-bottom: 1px solid #0ff; padding: 20px; margin: 20px 0; font-size: 0.95em; color: #00ffaa;">
+            <div style="border-top: 1px solid ${theme.primary}; border-bottom: 1px solid ${theme.primary}; padding: 20px; margin: 20px 0; font-size: 0.95em; color: ${theme.success};">
                 <p style="margin: 10px 0;">The Old Man knows this code.</p>
                 <p style="margin: 10px 0;">He used it on the NES.<br>In 1986.<br>In his original timeline.</p>
                 <p style="margin: 10px 0;">847 failed loops later,<br>he still remembers.</p>
-                <p style="margin: 10px 0; font-style: italic; color: #0ff;">Some knowledge transcends timelines.</p>
+                <p style="margin: 10px 0; font-style: italic; color: ${theme.primary};">Some knowledge transcends timelines.</p>
             </div>
 
             <div style="font-size: 1.2em; font-weight: bold; color: #fff; margin: 30px 0 20px;">
@@ -539,9 +529,9 @@ class EasterEggController {
             <div style="display: flex; flex-direction: column; gap: 15px; margin: 20px 0;">
                 <button id="konami-escape-btn" style="
                     padding: 20px;
-                    background: linear-gradient(135deg, rgba(0,255,170,0.2) 0%, rgba(0,255,170,0.1) 100%);
-                    border: 2px solid #00ffaa;
-                    color: #00ffaa;
+                    background: linear-gradient(135deg, rgba(${theme.success.match(/\d+/g).join(',')},0.2) 0%, rgba(${theme.success.match(/\d+/g).join(',')},0.1) 100%);
+                    border: 2px solid ${theme.success};
+                    color: ${theme.success};
                     font-family: 'Courier New', monospace;
                     font-size: 1em;
                     font-weight: bold;
@@ -556,8 +546,8 @@ class EasterEggController {
 
                 <button id="konami-stay-btn" style="
                     padding: 20px;
-                    background: linear-gradient(135deg, rgba(255,0,102,0.2) 0%, rgba(255,0,102,0.1) 100%);
-                    border: 2px solid #ff0066;
+                    background: linear-gradient(135deg, rgba(${theme.error.match(/\d+/g).join(',')},0.2) 0%, rgba(${theme.error.match(/\d+/g).join(',')},0.1) 100%);
+                    border: 2px solid ${theme.error};
                     color: #ff6699;
                     font-family: 'Courier New', monospace;
                     font-size: 1em;
@@ -574,32 +564,35 @@ class EasterEggController {
 
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.85em; color: #888; font-style: italic;">
                 "Sometimes the bravest choice<br>is knowing when to step back."<br><br>
-                <span style="color: #0ff;">- Old Man Ronnie, Loop 623</span>
+                <span style="color: ${theme.primary};">- Old Man Ronnie, Loop 623</span>
             </div>
         `;
 
         overlay.appendChild(content);
         document.body.appendChild(overlay);
 
-        // Button hover effects
+        // Button hover effects (themed)
         const escapeBtn = document.getElementById('konami-escape-btn');
         const stayBtn = document.getElementById('konami-stay-btn');
 
+        const successRgb = theme.success.match(/\d+/g).join(',');
+        const errorRgb = theme.error.match(/\d+/g).join(',');
+
         escapeBtn.onmouseover = () => {
-            escapeBtn.style.background = 'linear-gradient(135deg, rgba(0,255,170,0.4) 0%, rgba(0,255,170,0.2) 100%)';
-            escapeBtn.style.boxShadow = '0 0 20px rgba(0,255,170,0.5)';
+            escapeBtn.style.background = `linear-gradient(135deg, rgba(${successRgb},0.4) 0%, rgba(${successRgb},0.2) 100%)`;
+            escapeBtn.style.boxShadow = `0 0 20px rgba(${successRgb},0.5)`;
         };
         escapeBtn.onmouseout = () => {
-            escapeBtn.style.background = 'linear-gradient(135deg, rgba(0,255,170,0.2) 0%, rgba(0,255,170,0.1) 100%)';
+            escapeBtn.style.background = `linear-gradient(135deg, rgba(${successRgb},0.2) 0%, rgba(${successRgb},0.1) 100%)`;
             escapeBtn.style.boxShadow = 'none';
         };
 
         stayBtn.onmouseover = () => {
-            stayBtn.style.background = 'linear-gradient(135deg, rgba(255,0,102,0.4) 0%, rgba(255,0,102,0.2) 100%)';
-            stayBtn.style.boxShadow = '0 0 20px rgba(255,0,102,0.5)';
+            stayBtn.style.background = `linear-gradient(135deg, rgba(${errorRgb},0.4) 0%, rgba(${errorRgb},0.2) 100%)`;
+            stayBtn.style.boxShadow = `0 0 20px rgba(${errorRgb},0.5)`;
         };
         stayBtn.onmouseout = () => {
-            stayBtn.style.background = 'linear-gradient(135deg, rgba(255,0,102,0.2) 0%, rgba(255,0,102,0.1) 100%)';
+            stayBtn.style.background = `linear-gradient(135deg, rgba(${errorRgb},0.2) 0%, rgba(${errorRgb},0.1) 100%)`;
             stayBtn.style.boxShadow = 'none';
         };
 
