@@ -413,30 +413,9 @@ class SecretCodesManager {
 
             // NUCLEAR RESET
             'nuke': () => {
-                // Use custom confirmation dialog instead of browser alert
-                this.game.showConfirmDialog(
-                    '💥 NUCLEAR RESET',
-                    'WARNING: This will clear ALL progress, unlocks, and settings.\n\nThis action CANNOT be undone.\n\nProceed with NUKE?',
-                    () => {
-                        // User confirmed - execute nuke
-                        console.log('💥 NUKE INITIATED');
-
-                        // Clear all localStorage
-                        localStorage.clear();
-
-                        // Show completion message
-                        this.game.showMessage(
-                            '💥 NUKE COMPLETE',
-                            'All data has been cleared.\n\nPage will reload in 3 seconds.'
-                        );
-
-                        // Auto-reload after 3 seconds
-                        setTimeout(() => {
-                            location.reload();
-                        }, 3000);
-                    }
-                );
-                return '💥 Awaiting confirmation...';
+                // Use immersive nuclear reset modal from ResetController
+                this.game.nuclearReset();
+                return '💥 Nuclear reset confirmation displayed...';
             },
 
             // HELP

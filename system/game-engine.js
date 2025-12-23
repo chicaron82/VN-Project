@@ -357,6 +357,18 @@ class GameEngine {
         this.spriteController = new SpriteController(this);
         Logger.solid('SpriteController');
 
+        // SOLID Refactor: Initialize menu management system
+        this.menuController = new MenuController(this);
+        Logger.solid('MenuController');
+
+        // SOLID Refactor: Initialize insane visuals system
+        this.insaneVisualsController = new InsaneVisualsController(this);
+        Logger.solid('InsaneVisualsController');
+
+        // SOLID Refactor: Initialize reset/cleanup system
+        this.resetController = new ResetController(this);
+        Logger.solid('ResetController');
+
         // Debug mode flag (set via localStorage or URL param ?debug=true)
         this.debugMode = localStorage.getItem('debugMode') === 'true' ||
             new URLSearchParams(window.location.search).get('debug') === 'true';
@@ -1153,114 +1165,11 @@ class GameEngine {
     // ========================================
 
     showMainMenu() {
-        // Hide UV7 splash (calls window.completeSplash if available)
-        if (window.completeSplash) {
-            window.completeSplash();
-        }
-
-        // DIZEE: Cleanup current route when returning to menu
-        if (this.currentRoute) {
-            if (this.currentRoute.cleanup) {
-                this.currentRoute.cleanup();
-            }
-            this.currentRoute = null;
-        }
-
-        // Hide route-specific UI elements
-        if (this.tetherUI) {
-            this.tetherUI.style.display = 'none';
-        }
-        if (this.notesButton) {
-            this.notesButton.style.display = 'none';
-        }
-
-        // DIZEE FIX: Hide game view and clear backgrounds when returning to main menu
-        if (this.gameView) {
-            this.gameView.style.display = 'none';
-        }
-        if (this.sceneBackground) {
-            this.sceneBackground.style.backgroundImage = '';
-        }
-        if (this.sceneBackgroundAlt) {
-            this.sceneBackgroundAlt.style.backgroundImage = '';
-        }
-
-        // DIZEE FIX: Clear sprites when returning to menu
-        if (this.spriteLeft) {
-            this.spriteLeft.style.backgroundImage = '';
-            this.spriteLeft.style.opacity = '0';
-        }
-        if (this.spriteRight) {
-            this.spriteRight.style.backgroundImage = '';
-            this.spriteRight.style.opacity = '0';
-        }
-
-        // DIZEE FIX: Ensure pause menu overaly is closed when returning to main menu
-        if (this.saveLoadUI) {
-            this.saveLoadUI.hidePauseMenu();
-        }
-
-
-        // Show main menu with smooth fade-in
-        this.mainMenu.style.display = 'flex';
-        this.mainMenu.style.opacity = '0';
-
-        // Force reflow to ensure opacity starts at 0
-        void this.mainMenu.offsetWidth;
-
-        // Fade in smoothly
-        this.mainMenu.style.transition = 'opacity 0.8s ease-in';
-        this.mainMenu.style.opacity = '1';
-
-        // Initialize menu carousel (UV7 glow-up)
-        console.log('🔍 Checking MenuCarousel availability:', typeof MenuCarousel);
-        if (!this.menuCarousel && typeof MenuCarousel !== 'undefined') {
-            console.log('🎠 Creating MenuCarousel instance...');
-            this.menuCarousel = new MenuCarousel(this);
-            this.menuCarousel.init();
-        } else if (typeof MenuCarousel === 'undefined') {
-            console.warn('⚠️ MenuCarousel class not found - is ui/menu-carousel.js loaded?');
-        } else if (this.menuCarousel) {
-            console.log('ℹ️ MenuCarousel already initialized');
-        }
-
-        // Check if ToriGatchi is unlocked and update main menu layout (fallback for old grid)
-        this.updateMainMenuLayout();
-
-        // ZEE'S ADDITION: Start tip rotation 🖤
-        this.startMainMenuTipRotation();
-
-        // COMMENTARY TRIGGER: Main Menu Loop (First time view)
-        if (this.devCommentary && this.devCommentary.isUnlocked() && !localStorage.getItem('commentaryMenuSeen')) {
-            localStorage.setItem('commentaryMenuSeen', 'true');
-
-            // Show subtle hint
-            setTimeout(() => {
-                this.devCommentary.showCommentary('main_menu_carousel');
-            }, 2000);
-        }
+        return this.menuController.showMainMenu();
     }
 
     handleSplashSkip() {
-        console.log('GameEngine: Splash skip detected');
-        this.splashSkipped = true;
-        window.splashSkippedByUser = true; // Set global flag for preload to check
-
-        // Cancel any pending proceedToMenu timeout
-        if (this.proceedToMenuTimeout) {
-            console.log('GameEngine: Canceling proceedToMenu timeout');
-            clearTimeout(this.proceedToMenuTimeout);
-            this.proceedToMenuTimeout = null;
-        }
-
-        // Cancel any pending menu show timeout
-        if (this.menuShowTimeout) {
-            console.log('GameEngine: Canceling menuShow timeout');
-            clearTimeout(this.menuShowTimeout);
-            this.menuShowTimeout = null;
-        }
-
-        // Note: index.html handles calling showMainMenu via completeSplash
+        return this.menuController.handleSplashSkip();
     }
 
     updateTitleScreen() {
@@ -1273,36 +1182,7 @@ class GameEngine {
     // ========================================
 
     updateMainMenuLayout() {
-        const torigatchiBtn = document.getElementById('torigatchi-menu-btn');
-        const contactBtn = document.getElementById('contact-menu-btn');
-        const menuGrid = document.getElementById('menu-buttons-grid');
-
-        if (!torigatchiBtn || !contactBtn || !menuGrid) {
-            console.warn('⚠️ Menu button elements not found');
-            return;
-        }
-
-        // Check if ToriGatchi is unlocked
-        const isUnlocked = localStorage.getItem('torigatchiUnlocked') === 'true';
-
-        if (isUnlocked) {
-            // Show ToriGatchi button (moves into top row as 5th button)
-            torigatchiBtn.style.display = 'inline-block';
-
-            // Contact button is already in bottom row in the HTML
-            // Just need to update grid layout via CSS class
-            menuGrid.classList.add('torigatchi-unlocked');
-
-            console.log('🎮 ToriGatchi unlocked - 2×5 menu layout active');
-        } else {
-            // Hide ToriGatchi button
-            torigatchiBtn.style.display = 'none';
-
-            // Keep default 4×2+1 layout
-            menuGrid.classList.remove('torigatchi-unlocked');
-
-            console.log('🔒 ToriGatchi locked - default menu layout');
-        }
+        return this.menuController.updateMainMenuLayout();
     }
 
     // ========================================
@@ -1311,31 +1191,31 @@ class GameEngine {
     // ========================================
 
     initRotatingTips() {
-        this.tipsController.init();
+        return this.menuController.initRotatingTips();
     }
 
     getMainMenuTips() {
-        return this.tipsController.getMainMenuTips();
+        return this.menuController.getMainMenuTips();
     }
 
     getRouteSelectTips() {
-        return this.tipsController.getRouteSelectTips();
+        return this.menuController.getRouteSelectTips();
     }
 
     startMainMenuTipRotation() {
-        this.tipsController.startMainMenuRotation();
+        return this.menuController.startMainMenuTipRotation();
     }
 
     stopMainMenuTipRotation() {
-        return this.sceneProgressionController.stopMainMenuTipRotation();
+        return this.menuController.stopMainMenuTipRotation();
     }
 
     startRouteSelectTipRotation() {
-        this.tipsController.startRouteSelectRotation();
+        return this.menuController.startRouteSelectTipRotation();
     }
 
     stopRouteSelectTipRotation() {
-        return this.sceneProgressionController.stopRouteSelectTipRotation();
+        return this.menuController.stopRouteSelectTipRotation();
     }
 
     // ========================================
@@ -2855,199 +2735,7 @@ class GameEngine {
     }
 
     nuclearReset() {
-        // DEV COMMAND: Complete reset - clears ALL progress, unlocks, settings
-        // Usage in console: game.nuclearReset()
-        // Also available as secret code: NUKE
-
-        // Create immersive warning overlay
-        const overlay = document.createElement('div');
-        overlay.className = 'nuclear-reset-overlay';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.98);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10001;
-            animation: fadeIn 0.3s ease-out;
-        `;
-
-        // Create content box
-        const box = document.createElement('div');
-        box.className = 'nuclear-reset-box';
-        box.style.cssText = `
-            background: linear-gradient(135deg, #2e1a1a 0%, #3e1616 100%);
-            border: 3px solid #ff0000;
-            border-radius: 10px;
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
-            animation: slideIn 0.4s ease-out;
-            font-family: 'Courier New', monospace;
-            color: #fff;
-        `;
-
-        // Create title
-        const titleEl = document.createElement('div');
-        titleEl.style.cssText = `
-            font-size: 28px;
-            font-weight: bold;
-            color: #ff0000;
-            text-align: center;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
-        `;
-        titleEl.textContent = '⚠️ NUCLEAR RESET ⚠️';
-
-        // Create warning message
-        const messageEl = document.createElement('div');
-        messageEl.style.cssText = `
-            font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 30px;
-            color: #e0e0e0;
-        `;
-        messageEl.innerHTML = `
-            <div style="margin-bottom: 20px; color: #ff6666; font-weight: bold; text-align: center;">
-                This will DELETE ALL:
-            </div>
-            <ul style="list-style: none; padding: 0; margin: 0 0 20px 0;">
-                <li style="margin-bottom: 10px;">💥 All unlocks (INSANE, skip prologue, notes system)</li>
-                <li style="margin-bottom: 10px;">💥 All collected notes</li>
-                <li style="margin-bottom: 10px;">💥 All secret codes discovered</li>
-                <li style="margin-bottom: 10px;">💥 All settings (difficulty, auto-advance, etc.)</li>
-                <li style="margin-bottom: 10px;">💥 Save files</li>
-                <li style="margin-bottom: 10px;">💥 Everything back to factory fresh</li>
-            </ul>
-            <div style="text-align: center; color: #ff4444; font-weight: bold; font-size: 15px; margin-top: 20px;">
-                This is PERMANENT and cannot be undone.
-            </div>
-        `;
-
-        // Create question
-        const questionEl = document.createElement('div');
-        questionEl.style.cssText = `
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 30px;
-            color: #fff;
-            font-weight: bold;
-        `;
-        questionEl.textContent = 'Continue with nuclear reset?';
-
-        // Create button container
-        const buttonContainer = document.createElement('div');
-        buttonContainer.style.cssText = `
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        `;
-
-        // Cancel button
-        const cancelBtn = document.createElement('button');
-        cancelBtn.textContent = 'CANCEL';
-        cancelBtn.style.cssText = `
-            padding: 12px 30px;
-            background: transparent;
-            border: 2px solid #00ff00;
-            color: #00ff00;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-            min-width: 140px;
-        `;
-
-        cancelBtn.onmouseover = () => {
-            cancelBtn.style.background = '#00ff00';
-            cancelBtn.style.color = '#000';
-            cancelBtn.style.boxShadow = '0 0 20px rgba(0, 255, 0, 0.5)';
-        };
-
-        cancelBtn.onmouseout = () => {
-            cancelBtn.style.background = 'transparent';
-            cancelBtn.style.color = '#00ff00';
-            cancelBtn.style.boxShadow = 'none';
-        };
-
-        cancelBtn.onclick = () => {
-            console.log('❌ Nuclear reset cancelled');
-            overlay.style.animation = 'fadeOut 0.3s ease-out';
-            setTimeout(() => {
-                document.body.removeChild(overlay);
-            }, 300);
-        };
-
-        // Confirm button
-        const confirmBtn = document.createElement('button');
-        confirmBtn.textContent = 'RESET ALL';
-        confirmBtn.style.cssText = `
-            padding: 12px 30px;
-            background: #ff0000;
-            border: 2px solid #ff0000;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            min-width: 140px;
-        `;
-
-        confirmBtn.onmouseover = () => {
-            confirmBtn.style.boxShadow = '0 0 30px rgba(255, 0, 0, 0.8)';
-            confirmBtn.style.transform = 'scale(1.05)';
-        };
-
-        confirmBtn.onmouseout = () => {
-            confirmBtn.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
-            confirmBtn.style.transform = 'scale(1)';
-        };
-
-        confirmBtn.onclick = () => {
-            console.log('💥 NUCLEAR RESET INITIATED...');
-
-            // Remove overlay
-            document.body.removeChild(overlay);
-
-            // Clear ALL localStorage
-            localStorage.clear();
-
-            console.log('💥 All localStorage cleared');
-            console.log('💥 Reloading page to factory state...');
-
-            // Reload page
-            setTimeout(() => {
-                location.reload();
-            }, 500);
-        };
-
-        // Assemble
-        buttonContainer.appendChild(cancelBtn);
-        buttonContainer.appendChild(confirmBtn);
-
-        box.appendChild(titleEl);
-        box.appendChild(messageEl);
-        box.appendChild(questionEl);
-        box.appendChild(buttonContainer);
-        overlay.appendChild(box);
-        document.body.appendChild(overlay);
-
-        console.log('⚠️ Nuclear reset confirmation dialog displayed');
-        return true;
+        return this.resetController.nuclearReset();
     }
 
     devCommands() {
@@ -3772,18 +3460,7 @@ game.devCommands()
     }
 
     deactivateInsaneMode() {
-        console.log('💚 Deactivating Insane Mode color scheme');
-
-        // Remove visual class
-        const gameContainer = document.getElementById('game-container');
-        if (gameContainer) {
-            gameContainer.classList.remove('insane-mode-active');
-        }
-
-        // Optional: Remove corruption styling
-        if (this.dialogueBox) {
-            this.dialogueBox.classList.remove('corruption-intense');
-        }
+        return this.insaneVisualsController.deactivateInsaneMode();
     }
 
     // ========================================
@@ -3791,78 +3468,11 @@ game.devCommands()
     // ========================================
 
     showInsaneCageOverlay(callback) {
-        console.log('💀 INSANE MODE: Showing cage overlay');
-
-        const overlay = document.getElementById('insane-cage-overlay');
-        const versionText = document.getElementById('cage-version');
-
-        if (!overlay) {
-            console.error('Cage overlay not found');
-            if (callback) callback();
-            return;
-        }
-
-        // Update version number dynamically
-        if (versionText) {
-            versionText.textContent = `VERSION ${this.loopVersion}`;
-        }
-
-        // Show overlay with dramatic effect
-        overlay.style.display = 'flex';
-        overlay.style.opacity = '0';
-
-        // Fade in
-        setTimeout(() => {
-            overlay.style.transition = 'opacity 0.5s ease-in';
-            overlay.style.opacity = '1';
-        }, 50);
-
-        // Hold for 3 seconds, then fade out
-        setTimeout(() => {
-            overlay.style.transition = 'opacity 0.8s ease-out';
-            overlay.style.opacity = '0';
-
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                // Execute callback after overlay disappears
-                if (callback) callback();
-            }, 800);
-        }, 3000);
+        return this.insaneVisualsController.showInsaneCageOverlay(callback);
     }
 
     triggerInsaneVisuals() {
-        console.log('💀 INSANE MODE: Triggering visual corruption effects');
-
-        // Screen shake
-        if (this.dialogueBox) {
-            this.dialogueBox.classList.add('insane-shake');
-            setTimeout(() => {
-                this.dialogueBox.classList.remove('insane-shake');
-            }, 2000);
-        }
-
-        // Sprite heavy glitch
-        const sprites = document.querySelectorAll('.sprite-container img');
-        sprites.forEach(sprite => {
-            sprite.classList.add('sprite-glitch-heavy');
-            setTimeout(() => {
-                sprite.classList.remove('sprite-glitch-heavy');
-            }, 2000);
-        });
-
-        // Dialogue box corruption
-        if (this.dialogueBox) {
-            this.dialogueBox.classList.add('corruption-intense');
-        }
-
-        // Red overlay pulse
-        const overlay = document.createElement('div');
-        overlay.className = 'insane-overlay';
-        document.body.appendChild(overlay);
-
-        setTimeout(() => {
-            overlay.remove();
-        }, 1000);
+        return this.insaneVisualsController.triggerInsaneVisuals();
     }
 
     toggleUI() {

@@ -241,6 +241,7 @@ class SceneProgressionController {
             // Show Game UI Layer
             const gameUI = document.getElementById('game-ui-layer');
             if (gameUI) gameUI.style.display = 'block';
+            this.game.dialogueBox.style.display = 'block';
 
             // Fade in game view
             setTimeout(() => {
