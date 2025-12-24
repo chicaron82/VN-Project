@@ -732,7 +732,8 @@ if (typeof window !== 'undefined') {
     window.GameConfig = GameConfig;
     window.getNoteMetadata = getNoteMetadata;
     window.isDifficultyUnlocked = isDifficultyUnlocked;
+    window.isCodeDiscoverable = isCodeDiscoverable;
 }
 
 // ES Module export
-export { GameConfig, getNoteMetadata, isDifficultyUnlocked };
+export { GameConfig, getNoteMetadata, isDifficultyUnlocked, isCodeDiscoverable };
