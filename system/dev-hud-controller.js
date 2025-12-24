@@ -144,8 +144,8 @@ class DevHUDController {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
-    window.DevHudController = DevHudController;
+    window.DevHUDController = DevHUDController;
 }
 
 // ES Module export
-export { DevHudController };
+export { DevHUDController };
