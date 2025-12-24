@@ -1048,6 +1048,20 @@ class GameEngine {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                     return;
                 }
+
+                // DIZEE FIX: Check for blocking overlays to prevent background interaction 🛑
+                const endingDialog = document.getElementById('ending-dialog');
+                if (endingDialog && !endingDialog.classList.contains('hidden')) return;
+
+                const creditsOverlay = document.getElementById('credits-overlay');
+                if (creditsOverlay) return; // Credits always block
+
+                const settingsMenu = document.getElementById('settings-menu');
+                if (settingsMenu && settingsMenu.style.display !== 'none') return;
+
+                const backlogOverlay = document.getElementById('backlog-overlay');
+                if (backlogOverlay && backlogOverlay.style.display !== 'none') return;
+
                 // Prevent default scroll behavior for spacebar
                 e.preventDefault();
                 this.handleDialogueClick();

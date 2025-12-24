@@ -231,6 +231,7 @@ class ThemeManager {
         const themeMap = {
             'true': 'trueEnding',
             'digitalForever': 'digitalForever',
+            'digital_forever': 'digitalForever', // Support snake_case from route files
             'bad': 'badEnding'
         };
 
