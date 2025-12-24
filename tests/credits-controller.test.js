@@ -1,35 +1,12 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { CreditsController } from '../system/credits-controller.js';
 
 /**
  * CreditsController Unit Tests
  * 
  * Tests for the extracted CreditsController class.
- * Validates credits display, dynamic titles, and layout modes.
+ * SESSION 122: Now imports REAL CreditsController!
  */
-
-// Mock DOM element
-const mockElement = (id) => ({
-    id,
-    style: {},
-    classList: {
-        add: vi.fn(),
-        remove: vi.fn(),
-        contains: vi.fn(() => false)
-    },
-    appendChild: vi.fn(),
-    innerHTML: '',
-    textContent: '',
-    querySelector: vi.fn(() => null),
-    querySelectorAll: vi.fn(() => [])
-});
-
-// Mock document
-global.document = {
-    getElementById: vi.fn(() => null),
-    createElement: vi.fn(() => mockElement('created')),
-    body: { appendChild: vi.fn() },
-    head: { appendChild: vi.fn() }
-};
 
 // Mock console
 global.console = { ...console, log: vi.fn(), warn: vi.fn(), error: vi.fn() };
@@ -40,109 +17,71 @@ global.window = {
     innerHeight: 1080
 };
 
-// Mock setTimeout
+// Mock localStorage
+global.localStorage = {
+    store: {},
+    getItem: vi.fn((key) => global.localStorage.store[key] || null),
+    setItem: vi.fn((key, value) => { global.localStorage.store[key] = value; }),
+    clear: vi.fn(() => { global.localStorage.store = {}; })
+};
+
+// Mock document
+global.document = {
+    getElementById: vi.fn(() => null),
+    createElement: vi.fn((tag) => ({
+        id: '',
+        className: '',
+        style: {},
+        innerHTML: '',
+        textContent: '',
+        classList: { add: vi.fn(), remove: vi.fn(), contains: vi.fn() },
+        appendChild: vi.fn(),
+        addEventListener: vi.fn(),
+        querySelector: vi.fn(() => null),
+        querySelectorAll: vi.fn(() => [])
+    })),
+    body: { appendChild: vi.fn() },
+    head: { appendChild: vi.fn() }
+};
+
+// Mock timers
 global.setTimeout = vi.fn((fn, ms) => 1);
 global.setInterval = vi.fn((fn, ms) => 1);
 global.clearInterval = vi.fn();
 
 /**
- * CreditsController class (simplified for testing)
+ * Create mock game object with required methods
  */
-class CreditsController {
-    constructor(game) {
-        this.game = game;
-        this.currentPhotoIndex = 0;
-        this.photoInterval = null;
-    }
-
-    showCredits(endingType = null) {
-        const isLandscape = window.innerWidth > window.innerHeight;
-        const playerVersion = this.game.state?.get('game.loopVersion') || 848;
-
-        // Determine photos based on ending
-        const hasPhotos = endingType === 'digital_forever' || endingType === 'tori_memory';
-
-        return {
-            endingType,
-            playerVersion,
-            isLandscape,
-            hasPhotos,
-            layoutMode: hasPhotos
-                ? (isLandscape ? 'landscape_photos' : 'portrait_photos')
-                : 'standard'
-        };
-    }
-
-    buildDynamicTitleSection(endingType, playerVersion) {
-        const titles = {
-            'digital_forever': '💚 DIGITAL FOREVER 💚',
-            'tori_memory': '🖤 TORI\'S MEMORY 🖤',
-            'bad_end_despair': '⚫ DESPAIR ⚫',
-            'bad_end_fade': '⚫ FADE ⚫',
-            'default': '✨ VERSION 848 ✨'
-        };
-
-        const title = titles[endingType] || titles['default'];
-        const subtitle = `Loop ${playerVersion} Complete`;
-
-        return { title, subtitle, endingType, playerVersion };
-    }
-
-    cycleCreditsPhotos(photoCount) {
-        if (photoCount <= 0) return null;
-
-        this.currentPhotoIndex = 0;
-        this.photoInterval = setInterval(() => {
-            this.currentPhotoIndex = (this.currentPhotoIndex + 1) % photoCount;
-        }, 3000);
-
-        return this.photoInterval;
-    }
-
-    stopPhotoCycle() {
-        if (this.photoInterval) {
-            clearInterval(this.photoInterval);
-            this.photoInterval = null;
-        }
-    }
-
-    getLayoutMode() {
-        const isLandscape = window.innerWidth > window.innerHeight;
-        return isLandscape ? 'landscape' : 'portrait';
-    }
-
-    getPhotosByEnding(endingType) {
-        const photoMap = {
-            'digital_forever': ['photo1.jpg', 'photo2.jpg', 'photo3.jpg', 'photo4.jpg', 'photo5.jpg'],
-            'tori_memory': ['memory1.jpg', 'memory2.jpg', 'memory3.jpg'],
-            'default': []
-        };
-        return photoMap[endingType] || photoMap['default'];
-    }
-}
+const createMockGame = () => ({
+    loopVersion: 855,
+    lastEndingType: null,
+    removeInternalBubble: vi.fn(),
+    selectRandomPhotos: vi.fn(() => []),
+    state: {
+        get: vi.fn((path) => {
+            if (path === 'game.loopVersion') return 855;
+            return null;
+        })
+    },
+    // DOM elements needed by showCredits
+    gameView: { style: { display: 'flex' } },
+    mainMenu: { style: { display: 'none' } }
+});
 
 // ========================================
 // TEST SUITES
 // ========================================
 
-describe('CreditsController', () => {
+describe('CreditsController (REAL IMPORT)', () => {
     let controller;
     let mockGame;
 
     beforeEach(() => {
         vi.clearAllMocks();
+        global.localStorage.store = {};
         window.innerWidth = 1920;
         window.innerHeight = 1080;
-
-        mockGame = {
-            state: {
-                get: vi.fn((path) => {
-                    if (path === 'game.loopVersion') return 855;
-                    return null;
-                })
-            }
-        };
-
+        mockGame = createMockGame();
         controller = new CreditsController(mockGame);
     });
 
@@ -155,12 +94,8 @@ describe('CreditsController', () => {
             expect(controller.game).toBe(mockGame);
         });
 
-        it('should initialize currentPhotoIndex to 0', () => {
-            expect(controller.currentPhotoIndex).toBe(0);
-        });
-
-        it('should initialize photoInterval to null', () => {
-            expect(controller.photoInterval).toBeNull();
+        it('should be an instance of CreditsController', () => {
+            expect(controller).toBeInstanceOf(CreditsController);
         });
     });
 
@@ -169,63 +104,29 @@ describe('CreditsController', () => {
     // ========================================
 
     describe('showCredits', () => {
-        it('should return credits info object', () => {
-            const result = controller.showCredits('digital_forever');
-            expect(result).toBeDefined();
-            expect(result.endingType).toBe('digital_forever');
+        it('should call removeInternalBubble when showing credits', () => {
+            controller.showCredits('true');
+            expect(mockGame.removeInternalBubble).toHaveBeenCalled();
         });
 
-        it('should get player version from state', () => {
-            const result = controller.showCredits();
-            expect(result.playerVersion).toBe(855);
+        it('should call selectRandomPhotos for the ending type', () => {
+            controller.showCredits('digitalForever');
+            expect(mockGame.selectRandomPhotos).toHaveBeenCalled();
         });
 
-        it('should detect landscape mode when width > height', () => {
-            window.innerWidth = 1920;
-            window.innerHeight = 1080;
-            const result = controller.showCredits();
-            expect(result.isLandscape).toBe(true);
+        it('should save ending type to localStorage', () => {
+            controller.showCredits('true');
+            expect(localStorage.setItem).toHaveBeenCalledWith('lastEndingType', 'true');
         });
 
-        it('should detect portrait mode when height > width', () => {
-            window.innerWidth = 768;
-            window.innerHeight = 1024;
-            const result = controller.showCredits();
-            expect(result.isLandscape).toBe(false);
+        it('should log credits start message', () => {
+            controller.showCredits('true');
+            expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Rolling credits'));
         });
 
-        it('should have photos for digital_forever ending', () => {
-            const result = controller.showCredits('digital_forever');
-            expect(result.hasPhotos).toBe(true);
-        });
-
-        it('should have photos for tori_memory ending', () => {
-            const result = controller.showCredits('tori_memory');
-            expect(result.hasPhotos).toBe(true);
-        });
-
-        it('should not have photos for bad_end_despair', () => {
-            const result = controller.showCredits('bad_end_despair');
-            expect(result.hasPhotos).toBe(false);
-        });
-
-        it('should use landscape_photos layout for landscape with photos', () => {
-            window.innerWidth = 1920;
-            window.innerHeight = 1080;
-            const result = controller.showCredits('digital_forever');
-            expect(result.layoutMode).toBe('landscape_photos');
-        });
-
-        it('should use portrait_photos layout for portrait with photos', () => {
-            window.innerWidth = 768;
-            window.innerHeight = 1024;
-            const result = controller.showCredits('digital_forever');
-            expect(result.layoutMode).toBe('portrait_photos');
-        });
-
-        it('should use standard layout without photos', () => {
-            const result = controller.showCredits('bad_end_despair');
-            expect(result.layoutMode).toBe('standard');
+        it('should log layout mode', () => {
+            controller.showCredits('true');
+            expect(console.log).toHaveBeenCalledWith(expect.stringContaining('Layout'));
         });
     });
 
@@ -234,92 +135,40 @@ describe('CreditsController', () => {
     // ========================================
 
     describe('buildDynamicTitleSection', () => {
-        it('should return title object', () => {
-            const result = controller.buildDynamicTitleSection('digital_forever', 855);
-            expect(result).toBeDefined();
-            expect(result.title).toBeDefined();
-            expect(result.subtitle).toBeDefined();
+        it('should return HTML string', () => {
+            const result = controller.buildDynamicTitleSection('true', 855);
+            expect(typeof result).toBe('string');
+            expect(result.length).toBeGreaterThan(0);
         });
 
-        it('should have correct title for digital_forever', () => {
-            const result = controller.buildDynamicTitleSection('digital_forever', 855);
-            expect(result.title).toContain('DIGITAL FOREVER');
+        it('should include version number in output', () => {
+            const result = controller.buildDynamicTitleSection('true', 999);
+            expect(result).toContain('999');
         });
 
-        it('should have correct title for tori_memory', () => {
-            const result = controller.buildDynamicTitleSection('tori_memory', 855);
-            expect(result.title).toContain('TORI');
+        it('should have success message for true ending', () => {
+            const result = controller.buildDynamicTitleSection('true', 855);
+            expect(result).toContain('succeeded');
         });
 
-        it('should have correct title for bad_end_despair', () => {
-            const result = controller.buildDynamicTitleSection('bad_end_despair', 855);
-            expect(result.title).toContain('DESPAIR');
+        it('should have acceptance message for digitalForever ending', () => {
+            const result = controller.buildDynamicTitleSection('digitalForever', 855);
+            expect(result).toContain('different path');
         });
 
-        it('should have correct title for bad_end_fade', () => {
-            const result = controller.buildDynamicTitleSection('bad_end_fade', 855);
-            expect(result.title).toContain('FADE');
+        it('should have retry message for bad ending', () => {
+            const result = controller.buildDynamicTitleSection('bad', 855);
+            expect(result).toContain('try again');
         });
 
-        it('should use default title for unknown ending', () => {
+        it('should show next version for bad ending', () => {
+            const result = controller.buildDynamicTitleSection('bad', 855);
+            expect(result).toContain('856'); // 855 + 1
+        });
+
+        it('should have default version display for unknown ending', () => {
             const result = controller.buildDynamicTitleSection('unknown', 855);
-            expect(result.title).toContain('VERSION 848');
-        });
-
-        it('should include loop version in subtitle', () => {
-            const result = controller.buildDynamicTitleSection('digital_forever', 999);
-            expect(result.subtitle).toContain('999');
-        });
-
-        it('should preserve ending type in result', () => {
-            const result = controller.buildDynamicTitleSection('tori_memory', 855);
-            expect(result.endingType).toBe('tori_memory');
-        });
-    });
-
-    // ========================================
-    // PHOTO CYCLING TESTS
-    // ========================================
-
-    describe('cycleCreditsPhotos', () => {
-        it('should return null for zero photos', () => {
-            const result = controller.cycleCreditsPhotos(0);
-            expect(result).toBeNull();
-        });
-
-        it('should reset currentPhotoIndex to 0', () => {
-            controller.currentPhotoIndex = 5;
-            controller.cycleCreditsPhotos(3);
-            expect(controller.currentPhotoIndex).toBe(0);
-        });
-
-        it('should start interval for positive photo count', () => {
-            controller.cycleCreditsPhotos(5);
-            expect(setInterval).toHaveBeenCalled();
-        });
-
-        it('should store interval ID', () => {
-            const intervalId = controller.cycleCreditsPhotos(5);
-            expect(controller.photoInterval).toBe(intervalId);
-        });
-    });
-
-    describe('stopPhotoCycle', () => {
-        it('should clear interval if active', () => {
-            controller.photoInterval = 123;
-            controller.stopPhotoCycle();
-            expect(clearInterval).toHaveBeenCalledWith(123);
-        });
-
-        it('should set photoInterval to null', () => {
-            controller.photoInterval = 123;
-            controller.stopPhotoCycle();
-            expect(controller.photoInterval).toBeNull();
-        });
-
-        it('should not throw if no interval active', () => {
-            controller.photoInterval = null;
-            expect(() => controller.stopPhotoCycle()).not.toThrow();
+            expect(result).toContain('855');
         });
     });
 
@@ -327,51 +176,79 @@ describe('CreditsController', () => {
     // LAYOUT MODE TESTS
     // ========================================
 
-    describe('getLayoutMode', () => {
-        it('should return landscape when width > height', () => {
+    describe('layout detection', () => {
+        it('should use landscape layout when width > height', () => {
             window.innerWidth = 1920;
             window.innerHeight = 1080;
-            expect(controller.getLayoutMode()).toBe('landscape');
+            mockGame.selectRandomPhotos = vi.fn(() => ['photo1.jpg']);
+
+            // Spy on the landscape method
+            const landscapeSpy = vi.spyOn(controller, 'showCreditsLandscapeWithPhotos').mockImplementation(() => { });
+
+            controller.showCredits('digitalForever');
+            expect(landscapeSpy).toHaveBeenCalled();
         });
 
-        it('should return portrait when height > width', () => {
+        it('should use portrait layout when height > width', () => {
             window.innerWidth = 768;
             window.innerHeight = 1024;
-            expect(controller.getLayoutMode()).toBe('portrait');
+            mockGame.selectRandomPhotos = vi.fn(() => ['photo1.jpg']);
+
+            // Spy on the portrait method
+            const portraitSpy = vi.spyOn(controller, 'showCreditsPortraitWithPhotos').mockImplementation(() => { });
+
+            controller.showCredits('digitalForever');
+            expect(portraitSpy).toHaveBeenCalled();
         });
 
-        it('should return portrait when equal', () => {
-            window.innerWidth = 1000;
-            window.innerHeight = 1000;
-            expect(controller.getLayoutMode()).toBe('portrait');
+        it('should use standard layout when no photos', () => {
+            mockGame.selectRandomPhotos = vi.fn(() => []);
+
+            // Spy on the standard method
+            const standardSpy = vi.spyOn(controller, 'showCreditsStandard').mockImplementation(() => { });
+
+            controller.showCredits('bad');
+            expect(standardSpy).toHaveBeenCalled();
         });
     });
 
     // ========================================
-    // PHOTO LOOKUP TESTS
+    // CYCLE PHOTOS TESTS
     // ========================================
 
-    describe('getPhotosByEnding', () => {
-        it('should return photos for digital_forever', () => {
-            const photos = controller.getPhotosByEnding('digital_forever');
-            expect(Array.isArray(photos)).toBe(true);
-            expect(photos.length).toBe(5);
+    describe('cycleCreditsPhotos', () => {
+        it('should be a function on the controller', () => {
+            expect(typeof controller.cycleCreditsPhotos).toBe('function');
+        });
+    });
+
+    // ========================================
+    // METHOD EXISTENCE TESTS
+    // ========================================
+
+    describe('API completeness', () => {
+        it('should have showCredits method', () => {
+            expect(typeof controller.showCredits).toBe('function');
         });
 
-        it('should return photos for tori_memory', () => {
-            const photos = controller.getPhotosByEnding('tori_memory');
-            expect(Array.isArray(photos)).toBe(true);
-            expect(photos.length).toBe(3);
+        it('should have buildDynamicTitleSection method', () => {
+            expect(typeof controller.buildDynamicTitleSection).toBe('function');
         });
 
-        it('should return empty array for bad endings', () => {
-            const photos = controller.getPhotosByEnding('bad_end_despair');
-            expect(photos).toEqual([]);
+        it('should have cycleCreditsPhotos method', () => {
+            expect(typeof controller.cycleCreditsPhotos).toBe('function');
         });
 
-        it('should return empty array for unknown ending', () => {
-            const photos = controller.getPhotosByEnding('unknown');
-            expect(photos).toEqual([]);
+        it('should have showCreditsLandscapeWithPhotos method', () => {
+            expect(typeof controller.showCreditsLandscapeWithPhotos).toBe('function');
+        });
+
+        it('should have showCreditsPortraitWithPhotos method', () => {
+            expect(typeof controller.showCreditsPortraitWithPhotos).toBe('function');
+        });
+
+        it('should have showCreditsStandard method', () => {
+            expect(typeof controller.showCreditsStandard).toBe('function');
         });
     });
 });
