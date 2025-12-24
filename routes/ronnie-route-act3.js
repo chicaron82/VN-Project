@@ -1561,8 +1561,8 @@ class RonnieRouteAct3 {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
-    window.RonnieAct3 = RonnieAct3;
+    window.RonnieRouteAct3 = RonnieRouteAct3;
 }
 
 // ES Module export
-export { RonnieAct3 };
+export { RonnieRouteAct3 };
