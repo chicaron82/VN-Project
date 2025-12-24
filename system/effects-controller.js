@@ -76,20 +76,15 @@ class EffectsController {
             }, 1500);
         }
 
-        // DIZEE: Show route selection after a delay
-        setTimeout(() => {
-            // Hide continue text and skip button
-            if (continueText) continueText.style.display = 'none';
-            if (skipButton) skipButton.style.display = 'none';
+        // Hide continue text and skip button immediately
+        if (continueText) continueText.style.display = 'none';
+        if (skipButton) skipButton.style.display = 'none';
 
-            // Show route selection
-            if (routeSelection) {
-                routeSelection.style.display = 'block';
-
-                // Setup route options
-                this.setupRouteSelection(currentRoute, callback);
-            }
-        }, 2000); // Show route selection after 2 seconds
+        // Show route selection immediately
+        if (routeSelection) {
+            routeSelection.style.display = 'block';
+            this.setupRouteSelection(currentRoute, callback);
+        }
 
         console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
     }
@@ -169,9 +164,13 @@ class EffectsController {
         // Close loop init
         this.closeLoopInit();
 
-        // Start the selected route directly (skip prologue)
+        // Set selected route and start directly via scene progression controller
+        this.game.selectedRoute = route;
+        this.game.currentRoute = route;
+
         setTimeout(() => {
-            this.game.startRoute(route);
+            // Start route directly without RouteSelector
+            this.game.sceneProgressionController.startRoute(route);
         }, 300);
     }
 
