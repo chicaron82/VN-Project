@@ -3629,7 +3629,13 @@ game.devCommands()
             return;
         }
 
-        // Always create a new instance to ensure fresh event listeners
+        // Only create a new instance if one doesn't exist
+        // This prevents duplicate event listeners being attached
+        if (this.routeSelector) {
+            console.log('🎮 RouteSelector already exists, reusing...');
+            return;
+        }
+
         console.log('🎮 Creating RouteSelector instance...');
         this.routeSelector = new RouteSelector(this);
     }
