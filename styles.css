@@ -10055,4 +10055,54 @@ button.keyboard-focus:focus,
         opacity: 0.5;
         transform: translateX(2px) skew(-1deg);
     }
+} 
+ 
+/* ========================================
+   UI THEME PREFERENCE BUTTONS
+   DIZEE FIX: Missing styles for theme selector
+   ======================================== */
+
+.theme-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.theme-pref-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--theme-primary);
+    border: 2px solid var(--theme-primary);
+    padding: 10px 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.theme-pref-btn:hover {
+    background: rgba(var(--theme-primary-rgb), 0.2);
+    box-shadow: 0 0 15px var(--theme-glow);
+    transform: translateY(-2px);
+}
+
+.theme-pref-btn.active {
+    background: rgba(var(--theme-primary-rgb), 0.3);
+    border-color: var(--theme-success);
+    color: var(--theme-success);
+    box-shadow: 0 0 20px var(--theme-glow);
+}
+
+@media (max-width: 768px) {
+    .theme-selector-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .theme-pref-btn {
+        font-size: 0.8em;
+        padding: 8px 12px;
+    }
 }
