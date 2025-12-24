@@ -125,9 +125,12 @@ class ThemeManager {
 
     // Theme preference modes
     static MODES = {
-        AUTO: 'auto',      // Follow current route
-        RONNIE: 'ronnie',  // Always Ronnie theme
-        TORI: 'tori'       // Always Tori theme
+        AUTO: 'auto',           // Follow current route
+        RONNIE: 'ronnie',       // Always Ronnie theme
+        TORI: 'tori',           // Always Tori theme
+        TRUE: 'true',           // Always True Ending theme
+        DIGITAL: 'digital',     // Always Digital Forever theme
+        BAD: 'bad'              // Always Bad Ending theme
     };
 
     // Current state
@@ -158,7 +161,7 @@ class ThemeManager {
 
     /**
      * Set theme preference mode
-     * @param {string} mode - 'auto', 'ronnie', or 'tori'
+     * @param {string} mode - 'auto', 'ronnie', 'tori', 'true', 'digital', or 'bad'
      */
     static setPreferenceMode(mode) {
         if (!Object.values(ThemeManager.MODES).includes(mode)) {
@@ -176,8 +179,16 @@ class ThemeManager {
                 ThemeManager.applyTheme(ThemeManager.currentRoute);
             }
         } else {
-            // Apply locked theme
-            ThemeManager.applyTheme(mode);
+            // Map mode to theme name (ending themes have different names)
+            const themeMap = {
+                'ronnie': 'ronnie',
+                'tori': 'tori',
+                'true': 'trueEnding',
+                'digital': 'digitalForever',
+                'bad': 'badEnding'
+            };
+            const themeName = themeMap[mode] || mode;
+            ThemeManager.applyTheme(themeName);
         }
 
         console.log(`🎨 Theme preference set to: ${mode.toUpperCase()}`);
