@@ -101,24 +101,14 @@ class EndingDialogController {
             // Increment attempt number for next run
             this.game.bootstrapTracker.incrementAttempt();
 
-            // DIZEE FIX: Show loop init screen before retry
-            this.game.loopVersion++; // Increment version for next attempt
-            this.game.showLoopInit(() => {
-                setTimeout(() => {
-                    // DIZEE: Check auto-skip prologue setting
-                    const autoSkipPrologue = localStorage.getItem('autoSkipPrologue') === 'true';
+            // DIZEE: Increment version and show loop init with route selection
+            this.game.loopVersion++;
 
-                    if (autoSkipPrologue) {
-                        // Skip prologue, go straight to route selection
-                        console.log('🔄 Retry with prologue skip enabled - going to route selection');
-                        this.game.showRouteSelect();
-                    } else {
-                        // Start from prologue
-                        console.log('🔄 Retry with prologue skip disabled - starting from prologue');
-                        location.reload();
-                    }
-                }, 300);
-            });
+            // Get current route from game state
+            const currentRoute = this.game.currentRoute || 'ronnie';
+
+            // Show loop init with route selection (no callback needed - route selection handles it)
+            this.game.showLoopInit(null, currentRoute);
         });
 
         // NO - Accept This Ending (credits THEN menu)

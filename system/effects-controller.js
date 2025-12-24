@@ -27,11 +27,13 @@ class EffectsController {
     // Version increment display with Matrix rain
     // ========================================
 
-    showLoopInit(callback) {
+    showLoopInit(callback, currentRoute = null) {
         const loopInitScreen = document.getElementById('loop-init-screen');
         const prevVersionEl = document.getElementById('loop-prev-version');
         const newVersionEl = document.getElementById('loop-new-version');
         const skipButton = document.getElementById('loop-skip-button');
+        const continueText = document.querySelector('.loop-init-continue');
+        const routeSelection = document.getElementById('loop-route-selection');
 
         if (!loopInitScreen) {
             console.error('Loop init screen not found');
@@ -40,9 +42,8 @@ class EffectsController {
         }
 
         // Use current version as "previous failed"
-        // And loopVersion is already incremented, so it's the "new" version
-        const prevVersion = this.game.loopVersion - 1; // The one that just failed
-        const newVersion = this.game.loopVersion; // The new attempt
+        const prevVersion = this.game.loopVersion - 1;
+        const newVersion = this.game.loopVersion;
 
         // Update text
         if (prevVersionEl) prevVersionEl.textContent = prevVersion;
@@ -62,65 +63,134 @@ class EffectsController {
         // Show screen
         loopInitScreen.style.display = 'flex';
 
-        // DIZEE GLOW-UP: Start Matrix code rain
+        // Start Matrix code rain
         this.startMatrixRain();
 
-        // DIZEE GLOW-UP: Haptic feedback - triple buzz for failure
+        // Haptic feedback
         if (this.game.triggerSensoryFeedback) {
             setTimeout(() => {
                 this.game.triggerSensoryFeedback('denied', null, 'Loop failed');
             }, 200);
-            // Single buzz for new initialization
             setTimeout(() => {
                 this.game.triggerSensoryFeedback('buttonPress', null, 'New loop initializing');
             }, 1500);
         }
 
-        // Store callback for when player advances
-        this.loopInitCallback = callback;
+        // DIZEE: Show route selection after a delay
+        setTimeout(() => {
+            // Hide continue text and skip button
+            if (continueText) continueText.style.display = 'none';
+            if (skipButton) skipButton.style.display = 'none';
 
-        // DIZEE FIX: Add skip button handler
-        if (skipButton) {
-            skipButton.onclick = () => {
-                console.log('⏩ Skip button clicked - closing loop init');
-                this.closeLoopInit();
+            // Show route selection
+            if (routeSelection) {
+                routeSelection.style.display = 'block';
+
+                // Setup route options
+                this.setupRouteSelection(currentRoute, callback);
+            }
+        }, 2000); // Show route selection after 2 seconds
+
+        console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
+    }
+
+    setupRouteSelection(currentRoute, callback) {
+        const routeOptions = document.querySelectorAll('.loop-route-option');
+        const backToMenuBtn = document.getElementById('loop-back-to-menu');
+        let focusedIndex = 0;
+
+        // Determine current route (default to ronnie if not specified)
+        const activeRoute = currentRoute || 'ronnie';
+
+        // Highlight current route and set initial focus
+        routeOptions.forEach((option, index) => {
+            const route = option.dataset.route;
+
+            if (route === activeRoute) {
+                option.classList.add('current-route');
+                focusedIndex = index;
+                option.focus();
+            } else {
+                option.classList.remove('current-route');
+            }
+
+            // Click handler
+            option.onclick = () => {
+                this.selectRoute(route, callback);
             };
-        }
 
-        // Click anywhere to continue
-        const continueHandler = (e) => {
-            // Don't close if clicking the skip button (it has its own handler)
-            if (e.target && e.target.id === 'loop-skip-button') {
-                return;
-            }
-            this.closeLoopInit();
-            loopInitScreen.removeEventListener('click', continueHandler);
-            const loopInitContent = document.getElementById('loop-init-content');
-            if (loopInitContent) {
-                loopInitContent.removeEventListener('click', continueHandler);
-            }
-        };
+            // Enter key handler
+            option.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.selectRoute(route, callback);
+                }
+            });
+        });
 
-        loopInitScreen.addEventListener('click', continueHandler);
-
-        // Also add to content div (in case pointer-events is blocking)
-        const loopInitContent = document.getElementById('loop-init-content');
-        if (loopInitContent) {
-            loopInitContent.addEventListener('click', continueHandler);
-        }
-
-        // Keyboard support (Space/Enter)
+        // Keyboard navigation
         const keyHandler = (e) => {
-            if (e.code === 'Space' || e.code === 'Enter') {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
                 e.preventDefault();
-                this.closeLoopInit();
-                document.removeEventListener('keydown', keyHandler);
+
+                // Toggle between routes
+                focusedIndex = focusedIndex === 0 ? 1 : 0;
+                routeOptions[focusedIndex].focus();
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                this.backToMenu();
             }
         };
 
         document.addEventListener('keydown', keyHandler);
 
-        console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
+        // Store handler for cleanup
+        this.routeSelectionKeyHandler = keyHandler;
+
+        // Back to menu button
+        if (backToMenuBtn) {
+            backToMenuBtn.onclick = () => {
+                this.backToMenu();
+            };
+        }
+
+        console.log(`🎮 Route selection ready. Current route: ${activeRoute}`);
+    }
+
+    selectRoute(route, callback) {
+        console.log(`🎮 Player selected route: ${route}`);
+
+        // Cleanup keyboard handler
+        if (this.routeSelectionKeyHandler) {
+            document.removeEventListener('keydown', this.routeSelectionKeyHandler);
+            this.routeSelectionKeyHandler = null;
+        }
+
+        // Close loop init
+        this.closeLoopInit();
+
+        // Start the selected route directly (skip prologue)
+        setTimeout(() => {
+            this.game.startRoute(route);
+        }, 300);
+    }
+
+    backToMenu() {
+        console.log('🏠 Player chose: Back to Menu');
+
+        // Cleanup keyboard handler
+        if (this.routeSelectionKeyHandler) {
+            document.removeEventListener('keydown', this.routeSelectionKeyHandler);
+            this.routeSelectionKeyHandler = null;
+        }
+
+        // Close loop init
+        this.closeLoopInit();
+
+        // Show main menu
+        setTimeout(() => {
+            this.game.showMainMenu();
+        }, 300);
     }
 
     // DIZEE GLOW-UP: Matrix code rain effect

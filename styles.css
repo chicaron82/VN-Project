@@ -10106,3 +10106,151 @@ button.keyboard-focus:focus,
         padding: 8px 12px;
     }
 }
+
+/* ========================================
+   LOOP INIT - ROUTE SELECTION UI
+   DIZEE: Interactive route choice on retry
+   ======================================== */
+
+.loop-route-selection {
+    margin-top: 40px;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.loop-route-prompt {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    color: var(--theme-primary);
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px var(--theme-glow);
+}
+
+.loop-route-options {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-bottom: 30px;
+}
+
+.loop-route-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 20px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    outline: none;
+}
+
+.loop-route-option:hover,
+.loop-route-option:focus {
+    border-color: var(--theme-primary);
+    box-shadow: 0 0 30px var(--theme-glow);
+    transform: translateY(-5px) scale(1.05);
+}
+
+.loop-route-option.current-route {
+    border-color: var(--theme-success);
+    box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+}
+
+.loop-route-option.current-route:hover,
+.loop-route-option.current-route:focus {
+    box-shadow: 0 0 50px rgba(0, 255, 136, 0.8);
+}
+
+.loop-route-sprite {
+    width: 150px;
+    height: auto;
+    filter: drop-shadow(0 0 15px var(--theme-glow));
+    transition: filter 0.3s ease;
+}
+
+.loop-route-option:hover .loop-route-sprite,
+.loop-route-option:focus .loop-route-sprite {
+    filter: drop-shadow(0 0 25px var(--theme-glow));
+}
+
+.loop-route-option.current-route .loop-route-sprite {
+    filter: drop-shadow(0 0 20px rgba(0, 255, 136, 0.8));
+}
+
+.loop-route-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.loop-route-name {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--theme-primary);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 10px var(--theme-glow);
+}
+
+.loop-route-action {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: var(--theme-text-muted);
+    letter-spacing: 0.1em;
+}
+
+.loop-route-action.retry-label {
+    color: var(--theme-success);
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
+
+.loop-back-to-menu {
+    display: block;
+    margin: 0 auto;
+    padding: 12px 40px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--theme-primary);
+    color: var(--theme-primary);
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.loop-back-to-menu:hover {
+    background: rgba(var(--theme-primary-rgb), 0.2);
+    box-shadow: 0 0 20px var(--theme-glow);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .loop-route-options {
+        gap: 30px;
+    }
+    
+    .loop-route-sprite {
+        width: 120px;
+    }
+    
+    .loop-route-name {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .loop-route-options {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .loop-route-sprite {
+        width: 100px;
+    }
+}

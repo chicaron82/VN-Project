@@ -1407,8 +1407,8 @@ class GameEngine {
     // Shows when player retries after failure
     // ========================================
 
-    showLoopInit(callback) {
-        this.effectsController?.showLoopInit(callback);
+    showLoopInit(callback, currentRoute) {
+        this.effectsController?.showLoopInit(callback, currentRoute);
     }
 
     startMatrixRain() {

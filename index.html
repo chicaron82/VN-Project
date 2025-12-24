@@ -1193,6 +1193,29 @@
                         <div class="progress-text">Loading consciousness transfer protocol...</div>
                     </div>
                 </div>
+
+                <!-- DIZEE: Route Selection UI -->
+                <div id="loop-route-selection" class="loop-route-selection" style="display: none;">
+                    <div class="loop-route-prompt">Choose your perspective:</div>
+                    <div class="loop-route-options">
+                        <div class="loop-route-option" data-route="ronnie" tabindex="0">
+                            <img src="assets/ronnie-sprite.png" alt="Ronnie" class="loop-route-sprite">
+                            <div class="loop-route-label">
+                                <span class="loop-route-name">RONNIE</span>
+                                <span class="loop-route-action retry-label">⟳ RETRY</span>
+                            </div>
+                        </div>
+                        <div class="loop-route-option" data-route="tori" tabindex="0">
+                            <img src="assets/tori-sprite.png" alt="Tori" class="loop-route-sprite">
+                            <div class="loop-route-label">
+                                <span class="loop-route-name">TORI</span>
+                                <span class="loop-route-action">TRY</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="loop-back-to-menu" class="loop-back-to-menu">BACK TO MENU</button>
+                </div>
+
                 <div class="loop-init-continue">[Click anywhere to continue]</div>
                 <button id="loop-skip-button" class="loop-skip-btn">SKIP REINIT</button>
             </div>
