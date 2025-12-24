@@ -345,6 +345,10 @@ class GameEngine {
         this.creditsPhotoController = new CreditsPhotoController(this);
         Logger.solid('CreditsPhotoController');
 
+        // SOLID Refactor: Initialize credits display system
+        this.creditsController = new CreditsController(this);
+        Logger.solid('CreditsController');
+
         // SOLID Refactor: Initialize loop/version system
         this.loopController = new LoopController(this);
         Logger.solid('LoopController');
