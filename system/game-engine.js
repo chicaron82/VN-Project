@@ -3861,8 +3861,7 @@ class RouteSelector {
 // Global assignment for browser
 if (typeof window !== 'undefined') {
     window.GameEngine = GameEngine;
-    window.SelectionToggle = SelectionToggle;
 }
 
 // ES Module export
-export { GameEngine, SelectionToggle };
+export { GameEngine };
