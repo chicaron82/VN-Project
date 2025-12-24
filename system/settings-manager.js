@@ -161,6 +161,9 @@ class SettingsManager {
 
         // Setup UI event listeners
         this.setupUI();
+
+        // DIZEE FIX: Update UI to reflect loaded settings
+        this.updateUI();
     }
 
     loadSettings() {
