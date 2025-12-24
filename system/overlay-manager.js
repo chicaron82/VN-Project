@@ -571,9 +571,9 @@ class OverlayManager {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = OverlayManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.OverlayManager = OverlayManager;
 }
 
 // ES Module export

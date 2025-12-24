@@ -226,6 +226,10 @@ class MomentumAdapter {
     }
 }
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = MomentumAdapter;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.MomentumAdapter = MomentumAdapter;
 }
+
+// ES Module export
+export { MomentumAdapter };

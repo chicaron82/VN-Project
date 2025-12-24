@@ -306,13 +306,14 @@ function applyDifficultyToTether(tetherSystem, difficultyId) {
     console.log(`⚙️ Applied ${profile.name} difficulty to tether system`);
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        DIFFICULTY_PROFILES,
-        getDifficultyProfile,
-        isDifficultyUnlocked,
-        getUnlockedDifficulties,
-        applyDifficultyToTether
-    };
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.DIFFICULTY_PROFILES = DIFFICULTY_PROFILES;
+    window.getDifficultyProfile = getDifficultyProfile;
+    window.isDifficultyUnlocked = isDifficultyUnlocked;
+    window.getUnlockedDifficulties = getUnlockedDifficulties;
+    window.applyDifficultyToTether = applyDifficultyToTether;
 }
+
+// ES Module export
+export { DIFFICULTY_PROFILES, getDifficultyProfile, isDifficultyUnlocked, getUnlockedDifficulties, applyDifficultyToTether };

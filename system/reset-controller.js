@@ -235,3 +235,11 @@ class ResetController {
         return true;
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ResetController = ResetController;
+}
+
+// ES Module export
+export { ResetController };

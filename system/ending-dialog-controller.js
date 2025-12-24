@@ -218,3 +218,11 @@ class EndingDialogController {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.EndingDialogController = EndingDialogController;
+}
+
+// ES Module export
+export { EndingDialogController };

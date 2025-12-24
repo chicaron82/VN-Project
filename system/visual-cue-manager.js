@@ -442,7 +442,10 @@ class VisualCueManager {
     }
 }
 
-// Export for game engine
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = VisualCueManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.VisualCueManager = VisualCueManager;
 }
+
+// ES Module export
+export { VisualCueManager };

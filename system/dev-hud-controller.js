@@ -141,3 +141,11 @@ class DevHUDController {
         return this.active;
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.DevHudController = DevHudController;
+}
+
+// ES Module export
+export { DevHudController };

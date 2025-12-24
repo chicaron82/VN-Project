@@ -93,3 +93,11 @@ class CreditsPhotoController {
         return [photo1, photo2, photo3, photo4];
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.CreditsPhotoController = CreditsPhotoController;
+}
+
+// ES Module export
+export { CreditsPhotoController };

@@ -1724,7 +1724,10 @@ P.S. The barback skill strikes again.`
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CollectiblesManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.CollectiblesManager = CollectiblesManager;
 }
+
+// ES Module export
+export { CollectiblesManager };

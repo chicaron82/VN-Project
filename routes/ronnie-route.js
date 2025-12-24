@@ -603,3 +603,11 @@ class RonnieRoute {
     }
 
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.RonnieRoute = RonnieRoute;
+}
+
+// ES Module export
+export { RonnieRoute };

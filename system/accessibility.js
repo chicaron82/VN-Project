@@ -119,6 +119,7 @@ class AccessibilityManager {
 
 // Initialize when game engine is ready
 if (typeof window !== 'undefined') {
+    window.AccessibilityManager = AccessibilityManager;
     window.addEventListener('DOMContentLoaded', () => {
         // Wait for game to be initialized
         const checkGame = setInterval(() => {
@@ -129,3 +130,6 @@ if (typeof window !== 'undefined') {
         }, 100);
     });
 }
+
+// ES Module export
+export { AccessibilityManager };

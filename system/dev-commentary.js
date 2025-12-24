@@ -138,7 +138,10 @@ class DevCommentary {
     }
 }
 
-// Export
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DevCommentary;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.DevCommentary = DevCommentary;
 }
+
+// ES Module export
+export { DevCommentary };

@@ -688,6 +688,10 @@ class SimpleCarousel {
 }
 
 
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SimpleCarousel;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SimpleCarousel = SimpleCarousel;
 }
+
+// ES Module export
+export { SimpleCarousel };

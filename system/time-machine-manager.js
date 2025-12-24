@@ -407,7 +407,10 @@ class TimeMachineManager {
     }
 }
 
-// Export for game engine
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TimeMachineManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.TimeMachineManager = TimeMachineManager;
 }
+
+// ES Module export
+export { TimeMachineManager };

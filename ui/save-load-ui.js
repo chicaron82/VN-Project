@@ -570,3 +570,11 @@ class SaveLoadUI {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SaveLoadUI = SaveLoadUI;
+}
+
+// ES Module export
+export { SaveLoadUI };

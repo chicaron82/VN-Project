@@ -36,7 +36,7 @@ class VNGatewayBridge {
         localStorage.setItem('gateway_start_condition', condition);
         localStorage.setItem('gateway_unlock_count', unlocks.toString());
 
-        switch(condition) {
+        switch (condition) {
             case 'optimal':
                 // Helped early - best chance
                 // Tori starts at 100% coherence
@@ -98,5 +98,13 @@ class VNGatewayBridge {
 
 // Initialize bridge when script loads
 window.vnBridge = new VNGatewayBridge();
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.VNGatewayBridge = VNGatewayBridge;
+}
+
+// ES Module export
+export { VNGatewayBridge };
 
 console.log('🌉 VN Gateway Bridge initialized');

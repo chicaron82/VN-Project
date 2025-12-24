@@ -536,3 +536,11 @@ class SaveManager {
         console.log('Saves unblocked');
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SaveManager = SaveManager;
+}
+
+// ES Module export
+export { SaveManager };

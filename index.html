@@ -1201,105 +1201,16 @@
         </div>
     </div>
 
-    <!-- External JavaScript (Load Order Matters!) -->
-    <!-- System Files -->
-    <script src="system/input-binder.js"></script>
-    <script src="system/game-config.js"></script>
+    <!-- ES Module Entry Point (Session 123: Full ES Module Conversion with Window Assignments) -->
+    <!-- All JavaScript files now have window.ClassName assignments for global access -->
+    <!-- Classes are available globally AND as ES module exports -->
+    <!-- Note: ES modules require HTTP server - won't work on file:// protocol -->
+    <script type="module" src="system/main.js"></script>
 
-    <!-- UI Components (Load Order Matters!) -->
-    <script src="ui/carousel-momentum.js"></script>
-    <script src="ui/simple-carousel.js"></script>
-    <script src="ui/momentum-adapter.js"></script>
-    <script src="ui/menu-carousel.js"></script>
-    <script src="system/secret-codes-manager.js"></script>
-    <!-- Difficulty Profiles (must load before settings-manager) -->
-    <script src="system/difficulty-profiles.js"></script>
-    <script src="system/settings-manager.js"></script>
-    <script src="system/visual-cue-manager.js"></script>
-    <script src="system/time-machine-manager.js"></script>
-    <script src="system/tether-system.js"></script>
-    <script src="system/collectibles-manager.js"></script>
-    <script src="system/dev-console.js"></script>
-    <script src="system/bootstrap-tracker.js"></script>
-    <!-- DIZEE POLISH: Accessibility Manager -->
-    <script src="system/accessibility.js"></script>
-    <!-- DIZEE POLISH: Mobile UX Manager -->
-    <script src="system/mobile-ux.js"></script>
-    <!-- DIZEE POLISH: Achievement System -->
-    <script src="system/achievement-manager.js"></script>
-    <script src="ui/achievement-viewer.js"></script>
-    <script src="system/achievement-hooks.js"></script>
-    <!-- Dev Commentary System -->
-    <script src="system/dev-commentary.js"></script>
-    <!-- Gateway Bridge -->
-    <script src="vn-gateway-bridge.js"></script>
-    <!-- SOLID Refactor: Centralized Logging -->
-    <script src="system/logger.js"></script>
-    <!-- SOLID Refactor: Theme Management System -->
-    <script src="system/theme-manager.js"></script>
-    <!-- Theme Integration: Overlay Manager (Session 118) -->
-    <script src="system/overlay-manager.js"></script>
-    <!-- SOLID Refactor: Centralized State Management -->
-    <script src="system/state-manager.js"></script>
-    <!-- SOLID Refactor: Scene Rendering System -->
-    <script src="system/scene-renderer.js"></script>
-    <!-- SOLID Refactor: UI Overlay Management -->
-    <script src="system/ui-controller.js"></script>
-    <!-- SOLID Refactor: Easter Egg System -->
-    <script src="system/easter-egg-controller.js"></script>
-    <!-- SOLID Refactor: Credits Display System -->
-    <script src="system/credits-controller.js"></script>
-    <!-- SOLID Refactor: Keyboard Navigation System -->
-    <script src="system/keyboard-controller.js"></script>
-    <!-- SOLID Refactor: Visual Effects System -->
-    <script src="system/effects-controller.js"></script>
-    <!-- SOLID Refactor: Text Rendering System -->
-    <script src="system/typewriter-controller.js"></script>
-    <!-- SOLID Refactor: Route Navigation System -->
-    <script src="system/route-controller.js"></script>
-    <!-- SOLID Refactor: Ending Dialog System -->
-    <script src="system/ending-dialog-controller.js"></script>
-    <!-- SOLID Refactor: Rotating Tips System -->
-    <script src="system/tips-controller.js"></script>
-    <!-- SOLID Refactor: Developer HUD System -->
-    <script src="system/dev-hud-controller.js"></script>
-    <!-- SOLID Refactor: Credits Photo System -->
-    <script src="system/credits-photo-controller.js"></script>
-    <!-- SOLID Refactor: Loop/Version System -->
-    <script src="system/loop-controller.js"></script>
-    <!-- SOLID Refactor: Scene Progression System -->
-    <script src="system/scene-progression-controller.js"></script>
-    <!-- SOLID Refactor: Sprite Management System -->
-    <script src="system/sprite-controller.js"></script>
-    <!-- SOLID Refactor: Menu & Navigation System -->
-    <script src="system/menu-controller.js"></script>
-    <!-- SOLID Refactor: Insane Mode Visual Effects -->
-    <script src="system/insane-visuals-controller.js"></script>
-    <!-- SOLID Refactor: Reset & Cleanup System -->
-    <script src="system/reset-controller.js"></script>
-    <script src="system/game-engine.js"></script>
-    <script src="system/save-manager.js"></script>
-    <script src="system/cutscene-engine.js"></script>
-
-    <!-- UI Files -->
-    <script src="ui/standalone-notes-viewer.js"></script>
-    <script src="ui/save-load-ui.js"></script>
-
-    <!-- Route Files -->
-    <script src="routes/shared-prologue.js"></script>
-    <script src="routes/ronnie-route.js"></script>
-    <script src="routes/ronnie-route-act2.js"></script>
-    <script src="routes/ronnie-route-act3.js"></script>
-    <script src="routes/tori-route-main.js"></script>
-    <script src="routes/tori-route-act1.js"></script>
-    <script src="routes/tori-route-act2.js"></script>
-    <script src="routes/tori-route-act3.js"></script>
-    <script src="routes/tori-route-endings.js"></script>
-    <script src="routes/epilogue.js"></script>
-
-    <!-- Initialize Game -->
-    <script>
+    <!-- Initialize Game (Module script to ensure runs after main.js) -->
+    <script type="module">
         let game;
+
 
         // ========================================
         // UV7 SPLASH SCREEN CONTROLLER

@@ -124,3 +124,11 @@ class InputBinder {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.InputBinder = InputBinder;
+}
+
+// ES Module export
+export { InputBinder };

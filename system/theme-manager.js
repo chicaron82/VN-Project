@@ -345,5 +345,10 @@ if (typeof document !== 'undefined') {
     }
 }
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ThemeManager = ThemeManager;
+}
+
 // ES Module export
 export { ThemeManager };

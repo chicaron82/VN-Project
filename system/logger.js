@@ -205,6 +205,8 @@ if (typeof window !== 'undefined' && window.location) {
     if (isProduction) {
         Logger.setProductionMode();
     }
+    // Global assignment for browser
+    window.Logger = Logger;
 }
 
 // ES Module export

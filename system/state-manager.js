@@ -1046,9 +1046,9 @@ class StateManager {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = StateManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.StateManager = StateManager;
 }
 
 // ES Module export

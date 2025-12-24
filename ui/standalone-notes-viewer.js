@@ -1013,3 +1013,11 @@ class StandaloneNotesViewer {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.StandaloneNotesViewer = StandaloneNotesViewer;
+}
+
+// ES Module export
+export { StandaloneNotesViewer };

@@ -1147,7 +1147,10 @@ class ToriAct3 {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ToriAct3;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ToriAct3 = ToriAct3;
 }
+
+// ES Module export
+export { ToriAct3 };

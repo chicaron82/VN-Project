@@ -111,6 +111,7 @@ class AchievementViewer {
 
 // Initialize when achievement manager is ready
 if (typeof window !== 'undefined') {
+    window.AchievementViewer = AchievementViewer;
     window.addEventListener('DOMContentLoaded', () => {
         const checkAchievementManager = setInterval(() => {
             if (window.achievementManager) {
@@ -120,3 +121,6 @@ if (typeof window !== 'undefined') {
         }, 100);
     });
 }
+
+// ES Module export
+export { AchievementViewer };

@@ -318,6 +318,7 @@ class AchievementManager {
 
 // Initialize when game is ready
 if (typeof window !== 'undefined') {
+    window.AchievementManager = AchievementManager;
     window.addEventListener('DOMContentLoaded', () => {
         const checkGame = setInterval(() => {
             if (window.game) {
@@ -328,3 +329,6 @@ if (typeof window !== 'undefined') {
         }, 100);
     });
 }
+
+// ES Module export
+export { AchievementManager };

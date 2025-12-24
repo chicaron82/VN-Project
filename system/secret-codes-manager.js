@@ -716,7 +716,10 @@ class SecretCodesManager {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SecretCodesManager;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SecretCodesManager = SecretCodesManager;
 }
+
+// ES Module export
+export { SecretCodesManager };

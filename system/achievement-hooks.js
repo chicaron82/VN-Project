@@ -119,3 +119,6 @@ function initializeAchievementHooks() {
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', initializeAchievementHooks);
 }
+
+// ES Module export
+export { initializeAchievementHooks, hookAchievementTriggers };

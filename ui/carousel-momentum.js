@@ -700,7 +700,10 @@ const carousel = new CarouselMomentum({
 
 */
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = CarouselMomentum;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.CarouselMomentum = CarouselMomentum;
 }
+
+// ES Module export
+export { CarouselMomentum };

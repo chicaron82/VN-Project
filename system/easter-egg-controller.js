@@ -1629,5 +1629,10 @@ There is no v849.`
     }
 }
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.EasterEggController = EasterEggController;
+}
+
 // ES Module export
 export { EasterEggController };

@@ -295,7 +295,10 @@ class ToriRoute {
     }
 }
 
-// Export for game engine
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ToriRoute;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ToriRoute = ToriRoute;
 }
+
+// ES Module export
+export { ToriRoute };

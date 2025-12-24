@@ -519,7 +519,10 @@ class ToriEndings {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ToriEndings;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ToriEndings = ToriEndings;
 }
+
+// ES Module export
+export { ToriEndings };

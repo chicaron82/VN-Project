@@ -285,3 +285,11 @@ class RouteController {
         return '✅ Skip Prologue unlocked! Available on next START STORY.';
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.RouteController = RouteController;
+}
+
+// ES Module export
+export { RouteController };

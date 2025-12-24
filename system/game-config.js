@@ -727,7 +727,10 @@ function isDifficultyUnlocked(requiredDifficulty, currentDifficulty) {
     return currentIndex >= requiredIndex;
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = GameConfig;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.GameConfig = GameConfig;
 }
+
+// ES Module export
+export { GameConfig };

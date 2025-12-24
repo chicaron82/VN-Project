@@ -504,7 +504,5 @@ const DevConsole = (() => {
     };
 })();
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = DevConsole;
-}
+// ES Module export
+export { DevConsole };

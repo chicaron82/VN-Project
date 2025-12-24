@@ -1287,7 +1287,10 @@ class ToriAct1 {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = ToriAct1;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ToriAct1 = ToriAct1;
 }
+
+// ES Module export
+export { ToriAct1 };

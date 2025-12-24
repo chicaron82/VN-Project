@@ -23,16 +23,16 @@ class Epilogue {
             this.oldRightSprite = 'assets/tori-sprite.png';
         }
     }
-    
+
     // ========================================
     // SHARED TRUE ENDING EPILOGUE
     // Both routes converge here after successful awakening
     // ========================================
-    
+
     start() {
         this.trueRoute_epilogue();
     }
-    
+
     trueRoute_epilogue() {
         this.game.displayScene({
             character: 'Narration',
@@ -140,7 +140,10 @@ class Epilogue {
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = Epilogue;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.Epilogue = Epilogue;
 }
+
+// ES Module export
+export { Epilogue };

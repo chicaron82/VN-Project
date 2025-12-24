@@ -291,3 +291,11 @@ class EffectsController {
         }, 500);
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.EffectsController = EffectsController;
+}
+
+// ES Module export
+export { EffectsController };

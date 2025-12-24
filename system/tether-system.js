@@ -743,9 +743,9 @@ class TetherSystem {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TetherSystem;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.TetherSystem = TetherSystem;
 }
 
 // ES Module export

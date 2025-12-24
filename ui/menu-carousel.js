@@ -104,3 +104,11 @@ class MenuCarousel {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.MenuCarousel = MenuCarousel;
+}
+
+// ES Module export
+export { MenuCarousel };

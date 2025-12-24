@@ -227,3 +227,11 @@ class MenuController {
         return this.game.sceneProgressionController.stopRouteSelectTipRotation();
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.MenuController = MenuController;
+}
+
+// ES Module export
+export { MenuController };

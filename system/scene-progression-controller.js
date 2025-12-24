@@ -525,3 +525,11 @@ class SceneProgressionController {
         this.startRoute(this.game.selectedRoute);
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SceneProgressionController = SceneProgressionController;
+}
+
+// ES Module export
+export { SceneProgressionController };

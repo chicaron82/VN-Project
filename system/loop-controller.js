@@ -159,3 +159,11 @@ class LoopController {
         console.log(`💫 Ending accepted. VERSION ${this.game.loopVersion} locked.`);
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.LoopController = LoopController;
+}
+
+// ES Module export
+export { LoopController };

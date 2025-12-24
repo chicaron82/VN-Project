@@ -1558,3 +1558,11 @@ class RonnieRouteAct3 {
         }, 'trueRoute_final');
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.RonnieAct3 = RonnieAct3;
+}
+
+// ES Module export
+export { RonnieAct3 };

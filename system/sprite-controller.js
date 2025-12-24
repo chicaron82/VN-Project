@@ -463,3 +463,11 @@ class SpriteController {
         return 'center';
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SpriteController = SpriteController;
+}
+
+// ES Module export
+export { SpriteController };

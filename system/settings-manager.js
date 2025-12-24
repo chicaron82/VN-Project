@@ -1502,7 +1502,11 @@ Forward is the only direction.
     }
 }
 
-// Export for module use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { SettingsManager, BacklogManager };
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SettingsManager = SettingsManager;
+    window.BacklogManager = BacklogManager;
 }
+
+// ES Module export
+export { SettingsManager, BacklogManager };

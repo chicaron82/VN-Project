@@ -453,5 +453,10 @@ class KeyboardController {
     }
 }
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.KeyboardController = KeyboardController;
+}
+
 // ES Module export
 export { KeyboardController };

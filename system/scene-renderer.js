@@ -236,3 +236,11 @@ class SceneRenderer {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SceneRenderer = SceneRenderer;
+}
+
+// ES Module export
+export { SceneRenderer };

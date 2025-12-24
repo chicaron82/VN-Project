@@ -162,6 +162,7 @@ class MobileUXManager {
 
 // Initialize when game engine is ready
 if (typeof window !== 'undefined') {
+    window.MobileUXManager = MobileUXManager;
     window.addEventListener('DOMContentLoaded', () => {
         const checkGame = setInterval(() => {
             if (window.game) {
@@ -171,3 +172,6 @@ if (typeof window !== 'undefined') {
         }, 100);
     });
 }
+
+// ES Module export
+export { MobileUXManager };

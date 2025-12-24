@@ -61,7 +61,7 @@ class RonnieRouteAct2 {
     act2Beat2() {
         // Unlock PerplexiZee's research data note
         this.route.collectiblesManager.unlockNote('pz1');
-        
+
         this.game.displayScene({
             character: 'Narration',
             dialogue: '"I dug deeper. Something kept her tethered - fragmented, looping. I couldn\'t pull her out... but maybe I could send something IN."',
@@ -122,7 +122,7 @@ class RonnieRouteAct2 {
     act2Beat7_theory() {
         // Unlock Belle's heartbeat/body anchor note
         this.route.collectiblesManager.unlockNote('iz2');
-        
+
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"Her body. It\'s still there. Still breathing. Still WAITING. If I could make her REMEMBER her body... make her feel the heartbeat... she might follow it back."',
@@ -140,7 +140,7 @@ class RonnieRouteAct2 {
     act2Beat8() {
         // Unlock GenZee's upload paradox warning BEFORE player makes choice
         this.route.collectiblesManager.unlockNote('gz2');
-        
+
         this.game.displayScene({
             character: 'System',
             dialogue: 'CRITICAL APPROACH DETECTED',
@@ -214,3 +214,11 @@ class RonnieRouteAct2 {
         }, 'act2Beat8_end');
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.RonnieAct2 = RonnieAct2;
+}
+
+// ES Module export
+export { RonnieAct2 };

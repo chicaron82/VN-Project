@@ -337,7 +337,10 @@ class BootstrapTracker {
     }
 }
 
-// Export for use in other modules
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = BootstrapTracker;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.BootstrapTracker = BootstrapTracker;
 }
+
+// ES Module export
+export { BootstrapTracker };

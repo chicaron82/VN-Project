@@ -304,5 +304,10 @@ The gateway remembers you.`,
     }
 }
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.UIController = UIController;
+}
+
 // ES Module export
 export { UIController };

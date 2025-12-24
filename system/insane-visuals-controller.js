@@ -141,3 +141,11 @@ class InsaneVisualsController {
         }, 1000);
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.InsaneVisualsController = InsaneVisualsController;
+}
+
+// ES Module export
+export { InsaneVisualsController };

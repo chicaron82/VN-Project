@@ -132,3 +132,11 @@ class TipsController {
         }
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.TipsController = TipsController;
+}
+
+// ES Module export
+export { TipsController };

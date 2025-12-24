@@ -708,5 +708,10 @@ class CreditsController {
     }
 }
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.CreditsController = CreditsController;
+}
+
 // ES Module export
 export { CreditsController };

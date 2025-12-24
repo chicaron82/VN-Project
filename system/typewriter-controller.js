@@ -276,3 +276,11 @@ class TypewriterController {
         return this.paginationActive;
     }
 }
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.TypewriterController = TypewriterController;
+}
+
+// ES Module export
+export { TypewriterController };

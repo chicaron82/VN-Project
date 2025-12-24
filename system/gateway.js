@@ -366,3 +366,11 @@ function corruptText(text) {
 window.addEventListener('DOMContentLoaded', () => {
     window.toriGateway = new ToriGatchiGateway();
 });
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.ToriGatchiGateway = ToriGatchiGateway;
+}
+
+// ES Module export
+export { ToriGatchiGateway };

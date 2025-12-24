@@ -287,7 +287,10 @@ class SharedPrologue {
     }
 }
 
-// Export for game engine
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = SharedPrologue;
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.SharedPrologue = SharedPrologue;
 }
+
+// ES Module export
+export { SharedPrologue };
