@@ -270,9 +270,24 @@ class CreditsController {
             }, 2000);
         }, 30000);
 
-        // Hide other UI
-        this.game.gameView.style.display = 'none';
-        this.game.mainMenu.style.display = 'none';
+        // Hide other UI - AGGRESSIVE CLEANUP 🧹
+        if (this.game.gameView) this.game.gameView.style.display = 'none';
+        if (this.game.mainMenu) this.game.mainMenu.style.display = 'none';
+
+        // Ensure ending dialog is hidden
+        const endingDialog = document.getElementById('ending-dialog');
+        if (endingDialog) {
+            endingDialog.classList.add('hidden');
+            endingDialog.style.display = 'none'; // Force hide just in case
+        }
+
+        // Clear backgrounds to prevent partial shows
+        if (this.game.sceneBackground) this.game.sceneBackground.style.backgroundImage = '';
+        if (this.game.sceneBackgroundAlt) this.game.sceneBackgroundAlt.style.backgroundImage = '';
+
+        // Clear sprites
+        if (this.game.spriteLeft) this.game.spriteLeft.style.opacity = '0';
+        if (this.game.spriteRight) this.game.spriteRight.style.opacity = '0';
     }
 
     // ========================================
