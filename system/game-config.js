@@ -730,7 +730,9 @@ function isDifficultyUnlocked(requiredDifficulty, currentDifficulty) {
 // Global assignment for browser
 if (typeof window !== 'undefined') {
     window.GameConfig = GameConfig;
+    window.getNoteMetadata = getNoteMetadata;
+    window.isDifficultyUnlocked = isDifficultyUnlocked;
 }
 
 // ES Module export
-export { GameConfig };
+export { GameConfig, getNoteMetadata, isDifficultyUnlocked };
