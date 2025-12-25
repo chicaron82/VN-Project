@@ -187,6 +187,45 @@ const GameConfig = {
     },
 
     // ========================================
+    // ASSET PATHS (ZEERAH POLISH)
+    // Centralized asset references for maintainability
+    // ========================================
+
+    ASSETS: {
+        // Backgrounds
+        backgrounds: {
+            apartment: 'assets/apartment.png',
+            hospital: 'assets/hospital.png',
+            digitalSpace: 'assets/digitalSpace.png',
+            genericBack: 'assets/genericBack.png',
+            street: 'assets/street.png'
+        },
+
+        // Character Sprites
+        sprites: {
+            ronnie: 'assets/ronnie-sprite.png',
+            tori: 'assets/tori-sprite.png',
+            oldRonnie: 'assets/old-ronnie-sprite.png',
+            threeEchoes: 'assets/threeechoessprite.png',
+            routeSelectRonnie: 'assets/route-select-ronnie.png',
+            routeSelectTori: 'assets/route-select-tori.png'
+        },
+
+        // UI Assets
+        ui: {
+            uv7Logo: 'assets/UnitedVoices7.png',
+            menuBackground: 'assets/menu-bg.png',
+            menuMobile: 'assets/menumobile.png',
+            uv7Crew: 'assets/the_UV7_crew.png'
+        }
+    },
+
+    // Helper function for easy asset access
+    getAsset(category, name) {
+        return this.ASSETS[category]?.[name] || `assets/${name}.png`;
+    },
+
+    // ========================================
     // ASSET PRELOADING
     // ========================================
 
@@ -225,11 +264,23 @@ const GameConfig = {
     },
 
     // ========================================
-    // DEBUG CONFIGURATION
+    // DEBUG CONFIGURATION (ZEERAH POLISH)
+    // Granular control for console logging
     // ========================================
 
     DEBUG: {
-        ENABLED: false,                 // Set true for console logs
+        enabled: false,  // Set TRUE for development, FALSE for production
+
+        // Granular control (all check DEBUG.enabled first)
+        logSceneChanges: true,
+        logStateChanges: true,
+        logTetherUpdates: true,
+        logSaveLoad: true,
+        logSensoryFeedback: false,  // Very noisy
+        logEasterEggs: true,
+
+        // Legacy flags (kept for backward compatibility)
+        ENABLED: false,
         LOG_TETHER_CHANGES: true,
         LOG_ROUTE_POINTS: true,
         LOG_SCENE_TRANSITIONS: false,
