@@ -1281,6 +1281,32 @@
                 tryCompleteSplash('loading complete');
             };
 
+            // DIZEE POLISH: Rotate loading tips
+            const loadingTipEl = document.getElementById('loading-tip');
+            if (loadingTipEl && window.GameConfig && GameConfig.LOADING_TIPS) {
+                let tipIndex = 0;
+                const tips = GameConfig.LOADING_TIPS;
+
+                // Set initial tip
+                loadingTipEl.textContent = tips[0];
+
+                // Rotate tips every 3 seconds
+                const tipInterval = setInterval(() => {
+                    if (splashCompleted) {
+                        clearInterval(tipInterval);
+                        return;
+                    }
+
+                    tipIndex = (tipIndex + 1) % tips.length;
+                    loadingTipEl.style.opacity = '0';
+
+                    setTimeout(() => {
+                        loadingTipEl.textContent = tips[tipIndex];
+                        loadingTipEl.style.opacity = '1';
+                    }, 200);
+                }, 3000);
+            }
+
             // Function to complete splash and show main menu
             function completeSplash(skipped = false) {
                 if (splashCompleted) return;

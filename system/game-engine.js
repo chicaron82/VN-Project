@@ -349,6 +349,10 @@ class GameEngine {
         this.creditsController = new CreditsController(this);
         Logger.solid('CreditsController');
 
+        // DIZEE POLISH: Initialize global error handler
+        this.errorHandler = new ErrorHandler(this);
+        Logger.solid('ErrorHandler');
+
         // SOLID Refactor: Initialize loop/version system
         this.loopController = new LoopController(this);
         Logger.solid('LoopController');
