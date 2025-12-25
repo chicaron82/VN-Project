@@ -197,10 +197,10 @@ const GameConfig = {
     ASSETS: {
         // Backgrounds
         backgrounds: {
-            apartment: 'assets/apartment.png',
-            hospital: 'assets/hospital.png',
-            digitalSpace: 'assets/digitalSpace.png',
-            genericBack: 'assets/genericBack.png',
+            apartment: 'assets/apartment.webp',
+            hospital: 'assets/hospital.webp',
+            digitalSpace: 'assets/digitalSpace.webp',
+            genericBack: 'assets/genericBack.webp',
             street: 'assets/street.png'
         },
 
@@ -216,10 +216,10 @@ const GameConfig = {
 
         // UI Assets
         ui: {
-            uv7Logo: 'assets/UnitedVoices7.png',
+            uv7Logo: 'assets/UnitedVoices7.webp',
             menuBackground: 'assets/menu-bg.png',
             menuMobile: 'assets/menumobile.webp',
-            uv7Crew: 'assets/the_UV7_crew.png'
+            uv7Crew: 'assets/the_UV7_crew.webp'
         }
     },
 
@@ -261,7 +261,7 @@ const GameConfig = {
         IMAGES: [
             'menudesktop.png',
             'menumobile.webp',
-            'desktopVersion.png'
+            'desktopVersion.webp'
         ],
 
         // Images that exist but don't need preloading (load on-demand)

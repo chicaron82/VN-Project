@@ -767,8 +767,8 @@ class GameEngine {
             critical: [
                 'assets/menudesktop.png',
                 'assets/menumobile.webp',
-                'assets/desktopVersion.png',
-                'assets/UnitedVoices7.png'
+                'assets/desktopVersion.webp',
+                'assets/UnitedVoices7.webp'
             ],
 
             // PRIORITY 2: Core gameplay assets (load second)
