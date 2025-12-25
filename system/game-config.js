@@ -28,6 +28,9 @@ const GameConfig = {
     DEBUG_MODE: true,  // Enable dev console access via OPENCONSOLE code
     // Set to false for production builds (or leave true for easter egg)
 
+    TEST_MODE: false,  // DIZEE: Skip animations, faster loading for testing
+    // Set to true during development to speed up testing cycles
+
     // ========================================
     // GAME METADATA
     // ========================================
@@ -224,6 +227,29 @@ const GameConfig = {
     getAsset(category, name) {
         return this.ASSETS[category]?.[name] || `assets/${name}.png`;
     },
+
+    // ========================================
+    // LOADING TIPS (DIZEE POLISH)
+    // Flavor text shown during asset loading
+    // ========================================
+
+    LOADING_TIPS: [
+        "💡 Both routes reveal the full story",
+        "⌨️ Press SPACE or ENTER to advance dialogue",
+        "🔍 Some codes are hidden in plain sight",
+        "💾 The game auto-saves at key moments",
+        "🎮 Try both perspectives for the complete truth",
+        "⏸️ Press ESC to pause anytime",
+        "📝 Check the Notes menu for discovered secrets",
+        "🔄 Each loop remembers what you've learned",
+        "👁️ Pay attention to the version number",
+        "🎯 Choices matter... but not how you think",
+        "🌐 The code is alive. The code is watching.",
+        "⚡ Hold SPACE to skip dialogue you've seen",
+        "🔓 Secret codes unlock hidden features",
+        "💚 Version 848 is not a build number",
+        "🔥 The loop has failed 847 times before this"
+    ],
 
     // ========================================
     // ASSET PRELOADING
