@@ -218,7 +218,7 @@ const GameConfig = {
         ui: {
             uv7Logo: 'assets/UnitedVoices7.png',
             menuBackground: 'assets/menu-bg.png',
-            menuMobile: 'assets/menumobile.png',
+            menuMobile: 'assets/menumobile.webp',
             uv7Crew: 'assets/the_UV7_crew.png'
         }
     },
@@ -260,7 +260,7 @@ const GameConfig = {
         // Credits/route images load on-demand for faster startup
         IMAGES: [
             'menudesktop.png',
-            'menumobile.png',
+            'menumobile.webp',
             'desktopVersion.png'
         ],
 

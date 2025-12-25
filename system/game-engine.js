@@ -762,7 +762,7 @@ class GameEngine {
             // PRIORITY 1: Critical menu assets (load first)
             critical: [
                 'assets/menudesktop.png',
-                'assets/menumobile.png',
+                'assets/menumobile.webp',
                 'assets/desktopVersion.png',
                 'assets/UnitedVoices7.png'
             ],
