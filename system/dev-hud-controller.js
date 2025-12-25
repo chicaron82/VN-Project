@@ -131,6 +131,73 @@ class DevHUDController {
         // Loop version
         const loopVersion = this.game.loopVersion || 848;
         document.getElementById('hud-loop').textContent = loopVersion;
+        // Loop Version
+        const version = this.game.loopVersion || '—';
+        document.getElementById('hud-version').textContent = `v${version}`;
+
+        // DIZEE POLISH: Performance Metrics
+        this.updatePerformanceMetrics();
+    }
+
+    // ========================================
+    // PERFORMANCE METRICS (DIZEE POLISH)
+    // ========================================
+
+    updatePerformanceMetrics() {
+        // Load time (if available)
+        if (this.game.loadTime) {
+            const loadTimeEl = document.getElementById('hud-load-time');
+            if (loadTimeEl) {
+                loadTimeEl.textContent = `${(this.game.loadTime / 1000).toFixed(2)}s`;
+            }
+        }
+
+        // Asset count (if available)
+        if (this.game.assetsLoaded !== undefined) {
+            const assetsEl = document.getElementById('hud-assets');
+            if (assetsEl) {
+                assetsEl.textContent = this.game.assetsLoaded;
+            }
+        }
+
+        // Memory usage (if available)
+        if (performance.memory) {
+            const memoryEl = document.getElementById('hud-memory');
+            if (memoryEl) {
+                const usedMB = (performance.memory.usedJSHeapSize / 1048576).toFixed(1);
+                memoryEl.textContent = `${usedMB} MB`;
+            }
+        }
+
+        // FPS (simple calculation)
+        if (!this.lastFrameTime) {
+            this.lastFrameTime = performance.now();
+            this.frameCount = 0;
+        } else {
+            this.frameCount++;
+            const now = performance.now();
+            const elapsed = now - this.lastFrameTime;
+
+            if (elapsed >= 1000) { // Update FPS every second
+                const fps = Math.round((this.frameCount * 1000) / elapsed);
+                const fpsEl = document.getElementById('hud-fps');
+                if (fpsEl) {
+                    fpsEl.textContent = fps;
+
+                    // Color code FPS
+                    if (fps >= 55) {
+                        fpsEl.style.color = '#00ff88'; // Green
+                    } else if (fps >= 30) {
+                        fpsEl.style.color = '#ffcc00'; // Yellow
+                    } else {
+                        fpsEl.style.color = '#ff4444'; // Red
+                    }
+                }
+
+                this.lastFrameTime = now;
+                this.frameCount = 0;
+            }
+        }
     }
 
     // ========================================
