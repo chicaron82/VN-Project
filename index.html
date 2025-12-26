@@ -82,7 +82,19 @@
         </div>
         <div class="status-section">
             <span id="status-progress" class="status-item">🖤 0/42</span>
-            <span id="status-tether" class="status-item">💚 100%</span>
+            <!-- Tether Meter (Tori Route Only) - Lightning Bolt with Fill -->
+            <div class="status-item" id="status-tether" style="display: none;">
+                <div class="tether-lightning">
+                    <span class="tether-icon">⚡</span>
+                    <div class="tether-fill"></div>
+                </div>
+                <span id="status-tether-value">100%</span>
+            </div>
+            <!-- Mail Icon with Badge (Unread Notes) -->
+            <div class="status-item" id="status-mail" style="display: none;">
+                <span class="mail-icon">📧</span>
+                <span class="unread-badge">0</span>
+            </div>
         </div>
         <!-- Loading state (hidden by default) -->
         <div id="status-loading">
@@ -143,6 +155,19 @@
                     <span class="status-detail-label">Tether Level:</span>
                     <span class="status-detail-value" id="shade-tether-value">100%</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Note Preview (Email-Style) -->
+        <div class="shade-section" id="notes-preview-section" style="display: none;">
+            <div class="shade-section-title">Unread Notes</div>
+            <div class="note-preview-card" id="note-preview-btn">
+                <span class="note-icon">📝</span>
+                <div class="note-preview-content">
+                    <div class="note-title">Note Title</div>
+                    <div class="note-snippet">Preview text...</div>
+                </div>
+                <span class="note-arrow">→</span>
             </div>
         </div>
 
@@ -207,6 +232,19 @@
                     <span class="status-detail-label">Tether Level:</span>
                     <span class="status-detail-value" id="sidebar-tether-value">100%</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Note Preview (Email-Style) -->
+        <div class="shade-section" id="sidebar-notes-preview-section" style="display: none;">
+            <div class="shade-section-title">Unread Notes</div>
+            <div class="note-preview-card" id="sidebar-note-preview-btn">
+                <span class="note-icon">📝</span>
+                <div class="note-preview-content">
+                    <div class="note-title">Note Title</div>
+                    <div class="note-snippet">Preview text...</div>
+                </div>
+                <span class="note-arrow">→</span>
             </div>
         </div>
     </div>
@@ -415,9 +453,6 @@
             <div id="choice-menu">
                 <div id="choices-container"></div>
             </div>
-
-            <!-- Pause Menu Button -->
-            <button id="pause-button" aria-label="Open pause menu"></button>
 
             <!-- Skip Button (Unlocked after completing any ending) -->
             <button id="skip-button" style="display: none;" title="Skip read text [S]"
