@@ -295,6 +295,12 @@ class CollectiblesManager {
         // Add to collected
         this.collectedNotes[note.type].push(noteId);
 
+        // Sync to StateManager for tutorial triggers
+        if (this.game && this.game.state) {
+            const allNotes = Object.values(this.collectedNotes).flat();
+            this.game.state.set('collectibles.unlockedNotes', allNotes);
+        }
+
         // DIZEE POLISH: Store timestamp when note was collected
         if (!this.noteTimestamps) {
             this.noteTimestamps = {};
