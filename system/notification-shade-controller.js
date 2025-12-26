@@ -27,10 +27,14 @@ class NotificationShadeController {
         this.isSidebarOpen = false;
         this.idleTimer = null;
         this.idleDelay = 3000; // 3 seconds
+        this.screenshotMode = false; // Hide UI for screenshots
 
         // Touch gesture tracking
         this.touchStartY = 0;
         this.touchStartX = 0;
+
+        // Load persistent state
+        this.loadPersistentState();
 
         // Initialize
         this.initializeElements();
@@ -651,6 +655,12 @@ class NotificationShadeController {
                     this.returnToMenu();
                 }
                 break;
+            case 'h':
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                    e.preventDefault();
+                    this.toggleScreenshotMode();
+                }
+                break;
         }
     }
 
@@ -717,6 +727,131 @@ class NotificationShadeController {
         this.pulseLoopNumber();
         if (this.statusBar.classList.contains('ronnie-route')) {
             this.glitchLoopNumber();
+        }
+    }
+
+    // ========================================
+    // PHASE 5: ADDITIONAL FEATURES
+    // ========================================
+
+    // Screenshot Mode - Hide all UI
+    toggleScreenshotMode() {
+        this.screenshotMode = !this.screenshotMode;
+
+        if (this.screenshotMode) {
+            // Hide all UI elements
+            if (this.statusBar) this.statusBar.style.display = 'none';
+            if (this.sidebar) this.sidebar.style.display = 'none';
+            if (this.sidebarToggle) this.sidebarToggle.style.display = 'none';
+            if (this.shade) this.shade.style.display = 'none';
+            console.log('📸 Screenshot mode: ON');
+        } else {
+            // Restore UI elements
+            if (this.statusBar) this.statusBar.style.display = '';
+            if (this.sidebar) this.sidebar.style.display = '';
+            if (this.sidebarToggle) this.sidebarToggle.style.display = '';
+            if (this.shade) this.shade.style.display = '';
+            console.log('📸 Screenshot mode: OFF');
+        }
+
+        // Save state
+        this.savePersistentState();
+    }
+
+    // Loading State Integration
+    showLoadingInStatusBar(message = 'Loading...', progress = 0) {
+        if (!this.statusBar) return;
+
+        this.statusBar.classList.add('loading');
+
+        const loadingSpan = this.statusLoading?.querySelector('span');
+        if (loadingSpan) {
+            loadingSpan.textContent = message;
+        }
+
+        const loadingFill = this.statusLoading?.querySelector('.loading-fill');
+        if (loadingFill) {
+            loadingFill.style.width = `${progress}%`;
+        }
+    }
+
+    hideLoadingInStatusBar() {
+        if (!this.statusBar) return;
+        this.statusBar.classList.remove('loading');
+        this.updateStatusBar();
+    }
+
+    // Persistent State (localStorage)
+    loadPersistentState() {
+        try {
+            const saved = localStorage.getItem('notificationShadeState');
+            if (saved) {
+                const state = JSON.parse(saved);
+                this.screenshotMode = state.screenshotMode || false;
+                this.idleDelay = state.idleDelay || 3000;
+                console.log('💾 Loaded notification shade state');
+            }
+        } catch (error) {
+            console.warn('Failed to load notification shade state:', error);
+        }
+    }
+
+    savePersistentState() {
+        try {
+            const state = {
+                screenshotMode: this.screenshotMode,
+                idleDelay: this.idleDelay,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('notificationShadeState', JSON.stringify(state));
+            console.log('💾 Saved notification shade state');
+        } catch (error) {
+            console.warn('Failed to save notification shade state:', error);
+        }
+    }
+
+    // Emergency Fallback - Show hamburger menu if system fails
+    showEmergencyFallback() {
+        // Create emergency menu button if it doesn't exist
+        let emergencyBtn = document.getElementById('emergency-menu-btn');
+
+        if (!emergencyBtn) {
+            emergencyBtn = document.createElement('button');
+            emergencyBtn.id = 'emergency-menu-btn';
+            emergencyBtn.innerHTML = '☰';
+            emergencyBtn.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                width: 50px;
+                height: 50px;
+                background: rgba(255, 0, 0, 0.8);
+                border: 2px solid #fff;
+                border-radius: 50%;
+                color: #fff;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            emergencyBtn.addEventListener('click', () => {
+                if (this.game.settingsManager) {
+                    this.game.settingsManager.showSettingsMenu();
+                }
+            });
+            document.body.appendChild(emergencyBtn);
+        }
+
+        emergencyBtn.style.display = 'flex';
+        console.warn('🚨 Emergency fallback menu activated');
+    }
+
+    hideEmergencyFallback() {
+        const emergencyBtn = document.getElementById('emergency-menu-btn');
+        if (emergencyBtn) {
+            emergencyBtn.style.display = 'none';
         }
     }
 }
