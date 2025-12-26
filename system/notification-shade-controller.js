@@ -674,12 +674,6 @@ class NotificationShadeController {
                     this.returnToMenu();
                 }
                 break;
-            case 'h':
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
-                    e.preventDefault();
-                    this.toggleScreenshotMode();
-                }
-                break;
         }
     }
 

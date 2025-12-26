@@ -3557,6 +3557,11 @@ game.devCommands()
 
             this.state.set('ui.hidden', false);
         }
+
+        // DIZEE POLISH: Also toggle notification shade system
+        if (this.notificationShade) {
+            this.notificationShade.toggleScreenshotMode();
+        }
     }
 
 
