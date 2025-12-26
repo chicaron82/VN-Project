@@ -418,14 +418,15 @@
 
         <!-- Game UI Layer (Moved out of game-view to avoid filter affects) -->
         <div id="game-ui-layer" style="display: none;">
-            <!-- Tether UI (Tori Route Only) -->
+            <!-- Tether UI (Tori Route Only) - Meter only, button moved outside -->
             <div id="tether-ui" style="display: none;">
                 <div id="tether-meter">
                     <div id="tether-fill"></div>
                     <div id="tether-text">100%</div>
                 </div>
-                <button id="hold-on-button">HOLD ON</button>
             </div>
+            <!-- Hold On Button (Tori Route Only) - Outside tether-ui to stay visible -->
+            <button id="hold-on-button" style="display: none;">HOLD ON</button>
 
             <!-- Echo Display (Tori Route Only) -->
             <div id="echo-display" style="display: none;">
