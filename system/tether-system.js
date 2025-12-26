@@ -152,6 +152,22 @@ class TetherSystem {
     // TETHER MANAGEMENT
     // ========================================
 
+    /**
+     * Update tether level by specified amount
+     * Clamps to 0-100 (or 0-66 in insane mode)
+     * Triggers haptic feedback when entering critical zone
+     * 
+     * @param {number} amount - Amount to add/subtract from tether
+     * @param {string} [reason=''] - Reason for update (for logging)
+     * @returns {number} New tether level
+     * 
+     * @example
+     * // Boost tether by 10%
+     * tetherSystem.updateTether(10, 'Hold On button');
+     * 
+     * // Apply decay
+     * tetherSystem.updateTether(-0.05, 'passive decay');
+     */
     updateTether(amount, reason = '') {
         // Store previous level for haptic trigger detection
         const previousLevel = this.tetherLevel;
@@ -230,6 +246,15 @@ class TetherSystem {
     // PASSIVE DECAY SYSTEM
     // ========================================
 
+    /**
+     * Start passive tether decay
+     * Begins interval timer that applies decay every second
+     * Safe to call multiple times (won't create duplicates)
+     * 
+     * @example
+     * // Resume decay after pause
+     * tetherSystem.startDecay();
+     */
     startDecay() {
         // Start passive tether decay timer
         if (this.tetherDecayTimer) {
@@ -244,6 +269,15 @@ class TetherSystem {
         console.log('Tether decay started');
     }
 
+    /**
+     * Stop passive tether decay
+     * Clears decay interval and cooldown timers
+     * Called when game pauses or player opens menus
+     * 
+     * @example
+     * // Pause decay when opening notification shade
+     * tetherSystem.stopDecay();
+     */
     stopDecay() {
         if (this.tetherDecayTimer) {
             clearInterval(this.tetherDecayTimer);
@@ -447,6 +481,15 @@ class TetherSystem {
     // HOLD ON BUTTON (MANUAL BOOST)
     // ========================================
 
+    /**
+     * Player manually boosts tether connection
+     * Applies +10% boost with 30 second cooldown
+     * Triggers haptic feedback and visual updates
+     * 
+     * @example
+     * // Called when Hold On button clicked
+     * tetherSystem.holdOn();
+     */
     holdOn() {
         // Player manually tries to maintain tether connection
 
