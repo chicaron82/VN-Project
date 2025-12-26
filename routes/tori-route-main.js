@@ -44,9 +44,11 @@ class ToriRoute {
         if (this.game.tetherUI) {
             this.game.tetherUI.style.display = 'block';
         }
-        if (this.game.notesButton) {
-            this.game.notesButton.style.display = 'block';
+        // Show Hold On button (moved outside tether-ui)
+        if (this.game.holdOnButton) {
+            this.game.holdOnButton.style.display = 'block';
         }
+        // notesButton removed - shade/sidebar handles notes now
 
         // Initialize tether system
         this.tetherSystem.init();
@@ -55,6 +57,11 @@ class ToriRoute {
         // Initialize collectibles system
         this.collectiblesManager.init();
         this.collectiblesManager.defineToriNotes();
+
+        // DIZEE: Sync status bar with localStorage notes
+        if (this.game.notificationShade) {
+            this.game.notificationShade.updateStatusBar();
+        }
 
         // Start Act 1
         this.act1.start();
