@@ -261,7 +261,7 @@ class SaveManager {
                 this.game.holdOnButton.style.display = 'block';
             }
             // echoDisplay removed - now using three-echoes-sprite.png
-            this.game.notesButton.style.display = 'block';
+            // notesButton removed - shade/sidebar handles notes now
             this.game.currentRoute = new ToriRoute(this.game);
             this.game.setDialogueFrame('tori');
         }

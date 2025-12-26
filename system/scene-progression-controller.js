@@ -248,17 +248,8 @@ class SceneProgressionController {
                 this.game.gameView.style.opacity = '1';
             }, 100);
 
-            // Show notes button for Tori's route (has collectibles)
-            if (routeName === 'tori') {
-                if (this.game.notesButton) {
-                    this.game.notesButton.style.display = 'block';
-                }
-            } else if (this.hasCompletedAnyEnding()) {
-                // Show for other routes only after completing an ending
-                if (this.game.notesButton) {
-                    this.game.notesButton.style.display = 'block';
-                }
-            }
+            // Notes button removed - shade/sidebar handles notes now
+            // (Kept for reference in case we need to restore)
 
             // Show backlog button during gameplay
             const backlogButton = document.getElementById('backlog-button');

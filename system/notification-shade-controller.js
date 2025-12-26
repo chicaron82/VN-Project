@@ -258,15 +258,17 @@ class NotificationShadeController {
     }
 
     getNotesCollected() {
-        if (!this.game.collectiblesManager) return 0;
-        // Use route-specific count
-        return this.game.collectiblesManager.getCollectedCountForCurrentRoute() || 0;
+        // Use route's collectibles manager
+        const cm = this.game.currentRoute?.collectiblesManager;
+        if (!cm) return 0;
+        return cm.getCollectedCountForCurrentRoute() || 0;
     }
 
     getTotalNotes() {
-        if (!this.game.collectiblesManager) return 42;
-        // Use route-specific total
-        return this.game.collectiblesManager.getTotalCountForCurrentRoute() || 42;
+        // Use route's collectibles manager
+        const cm = this.game.currentRoute?.collectiblesManager;
+        if (!cm) return 16; // Default for Tori route
+        return cm.getTotalCountForCurrentRoute() || 16;
     }
 
     getTetherLevel() {
