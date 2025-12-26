@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="system/achievement-manager.css">
     <!-- Dev Commentary System -->
     <link rel="stylesheet" href="system/dev-commentary.css">
+    <!-- DIZEE POLISH: Notification Shade System -->
+    <link rel="stylesheet" href="system/notification-shade.css">
     <!-- ZEERAH FIX: Unified grid-based route select (replaces sprites + toggle CSS) -->
     <link rel="stylesheet" href="route-select-unified.css">
     <link rel="stylesheet" href="visual-cues.css">
@@ -69,6 +71,28 @@
 </head>
 
 <body>
+    <!-- ========================================
+         STATUS BAR (Notification Shade System)
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="status-bar">
+        <div class="status-section">
+            <span id="status-loop" class="status-item">Loop 848</span>
+            <span id="status-route" class="status-item">Menu</span>
+        </div>
+        <div class="status-section">
+            <span id="status-progress" class="status-item">🖤 0/42</span>
+            <span id="status-tether" class="status-item">💚 100%</span>
+        </div>
+        <!-- Loading state (hidden by default) -->
+        <div id="status-loading">
+            <span>Loading...</span>
+            <div class="loading-bar">
+                <div class="loading-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
         <div class="uv7-container">

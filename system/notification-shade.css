@@ -1,0 +1,294 @@
+/* ========================================
+   NOTIFICATION SHADE SYSTEM
+   Mobile-first notification shade with status bar
+   DIZEE + ZEERAH + GENZEE COLLABORATION
+   ======================================== */
+
+/* ========================================
+   STATUS BAR (Always Visible)
+   ======================================== */
+
+#status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 9999;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    transition: opacity 0.3s ease;
+}
+
+/* Auto-hide on idle */
+#status-bar.idle {
+    opacity: 0.5;
+}
+
+/* Status bar sections */
+.status-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Loop version with pulse animation */
+#status-loop {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+#status-loop.pulse {
+    animation: loop-pulse 0.6s ease-out;
+}
+
+@keyframes loop-pulse {
+    0% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+
+    100% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+}
+
+/* Route indicator */
+#status-route {
+    color: #ffffff;
+}
+
+/* Progress indicator (notes) */
+#status-progress {
+    color: #00ff88;
+}
+
+/* Tether indicator (Tori route only) */
+#status-tether {
+    color: #00ff88;
+    display: none;
+    /* Hidden by default, shown on Tori route */
+}
+
+#status-tether.visible {
+    display: flex;
+}
+
+/* Tether critical state */
+#status-tether.critical {
+    color: #ff4444;
+    animation: tether-pulse 1s ease-in-out infinite;
+}
+
+@keyframes tether-pulse {
+
+    0%,
+    100% {
+        text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(255, 68, 68, 1), 0 0 30px rgba(255, 68, 68, 0.8);
+    }
+}
+
+/* ========================================
+   ROUTE-SPECIFIC THEMING
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue */
+#status-bar.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.3);
+}
+
+#status-bar.ronnie-route #status-loop {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+/* Glitch effect on loop number (Ronnie) */
+#status-bar.ronnie-route #status-loop.glitch {
+    animation: ronnie-glitch 0.3s ease-out;
+}
+
+@keyframes ronnie-glitch {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-2px);
+        color: #ff00ff;
+    }
+
+    40% {
+        transform: translateX(2px);
+        color: #00ff00;
+    }
+
+    60% {
+        transform: translateX(-1px);
+        color: #ffff00;
+    }
+
+    80% {
+        transform: translateX(1px);
+        color: #00ffff;
+    }
+
+    100% {
+        transform: translateX(0);
+        color: #00ffff;
+    }
+}
+
+/* Tori Route - Green */
+#status-bar.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.3);
+}
+
+#status-bar.tori-route #status-loop {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
+
+#status-bar.tori-route #status-progress {
+    color: #00ffff;
+}
+
+/* Heartbeat pulse on tether (Tori) */
+#status-bar.tori-route #status-tether.heartbeat {
+    animation: tether-heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes tether-heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+
+    10% {
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.9);
+    }
+
+    20% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+
+    30% {
+        transform: scale(1.08);
+        text-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+    }
+
+    40% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+#status-bar.loading {
+    justify-content: center;
+}
+
+#status-loading {
+    display: none;
+    align-items: center;
+    gap: 10px;
+}
+
+#status-bar.loading #status-loading {
+    display: flex;
+}
+
+#status-bar.loading .status-section {
+    display: none;
+}
+
+.loading-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    #status-bar {
+        font-size: 12px;
+        padding: 0 10px;
+        height: 36px;
+    }
+
+    .status-section {
+        gap: 10px;
+    }
+
+    .status-item {
+        gap: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    #status-bar {
+        font-size: 11px;
+        padding: 0 8px;
+    }
+
+    .status-section {
+        gap: 8px;
+    }
+
+    /* Hide route name on very small screens */
+    #status-route {
+        display: none;
+    }
+}
+
+/* ========================================
+   NOTIFICATION SHADE (Mobile)
+   Coming in Phase 2
+   ======================================== */
+
+/* ========================================
+   SIDEBAR (Desktop)
+   Coming in Phase 3
+   ======================================== */

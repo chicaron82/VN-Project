@@ -353,6 +353,10 @@ class GameEngine {
         this.errorHandler = new ErrorHandler(this);
         Logger.solid('ErrorHandler');
 
+        // DIZEE POLISH: Initialize notification shade system
+        this.notificationShade = new NotificationShadeController(this);
+        Logger.solid('NotificationShadeController');
+
         // SOLID Refactor: Initialize loop/version system
         this.loopController = new LoopController(this);
         Logger.solid('LoopController');
