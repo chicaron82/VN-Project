@@ -288,8 +288,15 @@ class NotificationShadeController {
     }
 
     getTetherLevel() {
-        if (!this.game.tetherSystem) return 100;
-        return this.game.tetherSystem.tetherLevel || 100;
+        // Get from StateManager (reactive source of truth)
+        if (this.game.state) {
+            return this.game.state.get('tether.level') || 100;
+        }
+        // Fallback
+        if (this.game.tetherSystem) {
+            return this.game.tetherSystem.tetherLevel || 100;
+        }
+        return 100;
     }
 
     // ========================================
