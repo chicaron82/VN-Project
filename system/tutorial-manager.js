@@ -120,12 +120,26 @@ export class TutorialManager {
                 route: 'tori',
                 trigger: () => {
                     const tetherLevel = this.game.state.get('tether.level') || 100;
+                    const completed = this._isCompleted('tori_hold_on');
+                    const hasUsed = this._hasUsedHoldOn();
+                    const enabled = this._isEnabled();
+
+                    // Debug logging
+                    if (tetherLevel <= 98 && !completed) {
+                        console.log('📚 Hold On check:', {
+                            tetherLevel,
+                            completed,
+                            hasUsed,
+                            enabled,
+                            shouldTrigger: tetherLevel <= 98 && !completed && !hasUsed && enabled
+                        });
+                    }
 
                     // Trigger when tether drops to 98% (triggers faster on normal difficulty)
                     return tetherLevel <= 98 &&
-                        !this._isCompleted('tori_hold_on') &&
-                        !this._hasUsedHoldOn() &&
-                        this._isEnabled();
+                        !completed &&
+                        !hasUsed &&
+                        enabled;
                 },
                 skipIf: () => this._hasUsedHoldOn(),
                 content: {
