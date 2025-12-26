@@ -67,6 +67,7 @@ class NotificationShadeController {
         this.shadeNotes = document.getElementById('shade-notes');
         this.shadeTetherItem = document.getElementById('shade-tether-item');
         this.shadeTetherValue = document.getElementById('shade-tether-value');
+        this.shadeSettings = document.getElementById('shade-settings');
 
         if (!this.statusBar) {
             console.error('Status bar element not found!');
@@ -99,6 +100,7 @@ class NotificationShadeController {
         if (this.shadeLoad) this.shadeLoad.addEventListener('click', () => this.quickLoad());
         if (this.shadeFullscreen) this.shadeFullscreen.addEventListener('click', () => this.toggleFullscreen());
         if (this.shadeExit) this.shadeExit.addEventListener('click', () => this.returnToMenu());
+        if (this.shadeSettings) this.shadeSettings.addEventListener('click', () => this.openSettings());
 
         console.log('✅ Event listeners setup');
     }
@@ -466,6 +468,19 @@ class NotificationShadeController {
         if (confirm('Return to main menu? Unsaved progress will be lost.')) {
             this.game.showMainMenu();
             console.log('🚪 Returned to menu');
+        }
+    }
+
+    openSettings() {
+        // Close shade first
+        this.hideShade();
+
+        // Open settings menu
+        if (this.game.settingsManager && this.game.settingsManager.showSettingsMenu) {
+            this.game.settingsManager.showSettingsMenu();
+            console.log('⚙️ Settings opened');
+        } else {
+            console.warn('Settings manager not available');
         }
     }
 

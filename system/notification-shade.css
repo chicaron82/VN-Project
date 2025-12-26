@@ -467,6 +467,36 @@
     }
 }
 
+/* Settings button (bottom right) */
+.shade-settings-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 24px;
+    color: #00ffff;
+}
+
+.shade-settings-btn:hover,
+.shade-settings-btn:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.1) rotate(45deg);
+}
+
+.shade-settings-btn:active {
+    transform: scale(0.95) rotate(45deg);
+}
+
 /* ========================================
    SIDEBAR (Desktop)
    Coming in Phase 3
