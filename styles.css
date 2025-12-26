@@ -10055,8 +10055,8 @@ button.keyboard-focus:focus,
         opacity: 0.5;
         transform: translateX(2px) skew(-1deg);
     }
-} 
- 
+}
+
 /* ========================================
    UI THEME PREFERENCE BUTTONS
    DIZEE FIX: Missing styles for theme selector
@@ -10100,7 +10100,7 @@ button.keyboard-focus:focus,
     .theme-selector-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .theme-pref-btn {
         font-size: 0.8em;
         padding: 8px 12px;
@@ -10234,11 +10234,11 @@ button.keyboard-focus:focus,
     .loop-route-options {
         gap: 30px;
     }
-    
+
     .loop-route-sprite {
         width: 120px;
     }
-    
+
     .loop-route-name {
         font-size: 1.1em;
     }
@@ -10249,7 +10249,7 @@ button.keyboard-focus:focus,
         flex-direction: column;
         gap: 20px;
     }
-    
+
     .loop-route-sprite {
         width: 100px;
     }

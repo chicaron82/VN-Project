@@ -152,7 +152,7 @@ class NotificationShadeController {
         // Update loop version - v.848 is the canonical "source" version
         // The shade shows the actual attempt count
         if (this.statusLoop) {
-            this.statusLoop.textContent = 'Loop v.848';
+            this.statusLoop.textContent = 'v.848';
         }
 
         // Update route
