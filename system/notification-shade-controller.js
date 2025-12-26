@@ -350,6 +350,11 @@ class NotificationShadeController {
             this.game.isPaused = true;
         }
 
+        // Pause tether decay (Tori route)
+        if (this.game.tetherSystem && this.game.tetherSystem.stopDecay) {
+            this.game.tetherSystem.stopDecay();
+        }
+
         // Prevent status bar auto-hide
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
@@ -377,6 +382,11 @@ class NotificationShadeController {
         // Resume game
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = false;
+        }
+
+        // Resume tether decay (Tori route)
+        if (this.game.tetherSystem && this.game.tetherSystem.startDecay) {
+            this.game.tetherSystem.startDecay();
         }
 
         // Reset idle timer
