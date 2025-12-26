@@ -519,7 +519,16 @@
     border-right: 2px solid rgba(0, 255, 255, 0.3);
     box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
     display: none;
-    /* Hidden on mobile */
+    /* Hidden on mobile and during splash */
+    opacity: 0;
+    /* Hidden during splash */
+    pointer-events: none;
+}
+
+/* Show sidebar after splash */
+#sidebar.visible {
+    opacity: 1;
+    pointer-events: all;
 }
 
 /* Expanded state */
@@ -540,7 +549,7 @@
     border-left: none;
     border-radius: 0 10px 10px 0;
     display: none;
-    /* Hidden on mobile */
+    /* Hidden on mobile and during splash */
     align-items: center;
     justify-content: center;
     cursor: pointer;
@@ -548,6 +557,15 @@
     z-index: 9999;
     font-size: 20px;
     color: #00ffff;
+    opacity: 0;
+    /* Hidden during splash */
+    pointer-events: none;
+}
+
+/* Show toggle after splash */
+.sidebar-toggle.visible {
+    opacity: 1;
+    pointer-events: all;
 }
 
 .sidebar-toggle:hover,
@@ -561,10 +579,12 @@
     transform: translateY(-50%) scale(0.95);
 }
 
-/* Hide toggle when sidebar is expanded */
+/* Keep toggle visible when sidebar is expanded (for closing) */
 #sidebar.expanded~.sidebar-toggle {
-    opacity: 0;
-    pointer-events: none;
+    /* Remove opacity: 0 - keep it visible */
+    left: 300px;
+    /* Move it to the edge of the sidebar */
+    transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), all 0.2s ease;
 }
 
 /* Sidebar uses same content styles as shade */

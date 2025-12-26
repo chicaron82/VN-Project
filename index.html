@@ -1491,6 +1491,16 @@
                         statusBar.classList.add('visible');
                     }
 
+                    // Show sidebar and toggle (desktop only)
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarToggle = document.getElementById('sidebar-toggle');
+                    if (sidebar) {
+                        sidebar.classList.add('visible');
+                    }
+                    if (sidebarToggle) {
+                        sidebarToggle.classList.add('visible');
+                    }
+
                     if (window.game && window.game.showCodeRainTransition) {
                         window.game.showCodeRainTransition(() => {
                             if (window.game.showMainMenu) {
