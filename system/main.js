@@ -43,6 +43,7 @@ import './achievement-hooks.js';
 
 // Dev tools
 import './dev-commentary.js';
+import './error-handler.js';  // DIZEE POLISH: Global error handling
 
 // Effects and visual controllers
 import './effects-controller.js';
