@@ -45,12 +45,28 @@ class NotificationShadeController {
     // ========================================
 
     initializeElements() {
+        // Status bar elements
         this.statusBar = document.getElementById('status-bar');
         this.statusLoop = document.getElementById('status-loop');
         this.statusRoute = document.getElementById('status-route');
         this.statusProgress = document.getElementById('status-progress');
         this.statusTether = document.getElementById('status-tether');
         this.statusLoading = document.getElementById('status-loading');
+
+        // Notification shade elements
+        this.shade = document.getElementById('notification-shade');
+        this.backdrop = document.getElementById('shade-backdrop');
+        this.shadeSave = document.getElementById('shade-save');
+        this.shadeLoad = document.getElementById('shade-load');
+        this.shadeFullscreen = document.getElementById('shade-fullscreen');
+        this.shadeExit = document.getElementById('shade-exit');
+
+        // Shade status elements
+        this.shadeRoute = document.getElementById('shade-route');
+        this.shadeLoop = document.getElementById('shade-loop');
+        this.shadeNotes = document.getElementById('shade-notes');
+        this.shadeTetherItem = document.getElementById('shade-tether-item');
+        this.shadeTetherValue = document.getElementById('shade-tether-value');
 
         if (!this.statusBar) {
             console.error('Status bar element not found!');
@@ -67,6 +83,22 @@ class NotificationShadeController {
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
+
+        // Swipe gesture detection
+        document.addEventListener('touchstart', (e) => this.handleTouchStart(e));
+        document.addEventListener('touchmove', (e) => this.handleTouchMove(e));
+        document.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+
+        // Backdrop click to close
+        if (this.backdrop) {
+            this.backdrop.addEventListener('click', () => this.hideShade());
+        }
+
+        // Quick action buttons
+        if (this.shadeSave) this.shadeSave.addEventListener('click', () => this.quickSave());
+        if (this.shadeLoad) this.shadeLoad.addEventListener('click', () => this.quickLoad());
+        if (this.shadeFullscreen) this.shadeFullscreen.addEventListener('click', () => this.toggleFullscreen());
+        if (this.shadeExit) this.shadeExit.addEventListener('click', () => this.returnToMenu());
 
         console.log('✅ Event listeners setup');
     }
@@ -187,6 +219,133 @@ class NotificationShadeController {
     }
 
     // ========================================
+    // NOTIFICATION SHADE CONTROL
+    // ========================================
+
+    showShade() {
+        if (this.isShadeOpen) return;
+
+        this.isShadeOpen = true;
+
+        // Update shade content
+        this.updateShadeContent();
+
+        // Show shade and backdrop
+        if (this.shade) {
+            this.shade.classList.add('open');
+        }
+        if (this.backdrop) {
+            this.backdrop.classList.add('visible');
+        }
+
+        // Pause game
+        if (this.game.isPaused !== undefined) {
+            this.game.isPaused = true;
+        }
+
+        // Prevent status bar auto-hide
+        if (this.statusBar) {
+            this.statusBar.classList.remove('idle');
+        }
+
+        console.log('📱 Notification shade opened');
+    }
+
+    hideShade() {
+        if (!this.isShadeOpen) return;
+
+        this.isShadeOpen = false;
+
+        // Hide shade and backdrop
+        if (this.shade) {
+            this.shade.classList.remove('open');
+        }
+        if (this.backdrop) {
+            this.backdrop.classList.remove('visible');
+        }
+
+        // Resume game
+        if (this.game.isPaused !== undefined) {
+            this.game.isPaused = false;
+        }
+
+        // Reset idle timer
+        this.resetIdleTimer();
+
+        console.log('📱 Notification shade closed');
+    }
+
+    toggleShade() {
+        if (this.isShadeOpen) {
+            this.hideShade();
+        } else {
+            this.showShade();
+        }
+    }
+
+    updateShadeContent() {
+        // Update route
+        if (this.shadeRoute) {
+            this.shadeRoute.textContent = this.getRouteName();
+        }
+
+        // Update loop
+        if (this.shadeLoop) {
+            this.shadeLoop.textContent = this.game.loopVersion || 848;
+        }
+
+        // Update notes
+        if (this.shadeNotes) {
+            const collected = this.getNotesCollected();
+            const total = this.getTotalNotes();
+            this.shadeNotes.textContent = `${collected}/${total}`;
+        }
+
+        // Update tether (Tori route only)
+        if (this.shadeTetherItem && this.shadeTetherValue) {
+            if (this.isToriRoute()) {
+                this.shadeTetherItem.style.display = 'flex';
+                this.shadeTetherValue.textContent = `${Math.round(this.getTetherLevel())}%`;
+            } else {
+                this.shadeTetherItem.style.display = 'none';
+            }
+        }
+    }
+
+    // ========================================
+    // SWIPE GESTURE DETECTION
+    // ========================================
+
+    handleTouchStart(e) {
+        this.touchStartY = e.touches[0].clientY;
+        this.touchStartX = e.touches[0].clientX;
+    }
+
+    handleTouchMove(e) {
+        if (!this.touchStartY) return;
+
+        const touchY = e.touches[0].clientY;
+        const deltaY = touchY - this.touchStartY;
+
+        // Swipe down from top 50px to open shade
+        if (this.touchStartY < 50 && deltaY > 50 && !this.isShadeOpen) {
+            e.preventDefault();
+            this.showShade();
+        }
+
+        // Swipe up on shade to close
+        if (this.isShadeOpen && deltaY < -50) {
+            e.preventDefault();
+            this.hideShade();
+        }
+    }
+
+    handleTouchEnd(e) {
+        this.touchStartY = 0;
+        this.touchStartX = 0;
+    }
+
+    // ========================================
     // ANIMATIONS
     // ========================================
 
@@ -241,7 +400,12 @@ class NotificationShadeController {
 
         switch (e.key.toLowerCase()) {
             case 'escape':
-                // Toggle shade/sidebar (Phase 2/3)
+                // Toggle shade/sidebar
+                if (this.isShadeOpen) {
+                    this.hideShade();
+                } else {
+                    this.showShade();
+                }
                 break;
             case 's':
                 if (e.ctrlKey || e.metaKey) {

@@ -294,6 +294,179 @@
    Coming in Phase 2
    ======================================== */
 
+#notification-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 9998;
+    padding: 50px 20px 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Shade open state */
+#notification-shade.open {
+    transform: translateY(0);
+}
+
+/* Shade sections */
+.shade-section {
+    margin-bottom: 25px;
+}
+
+.shade-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+/* Quick Actions Grid */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.quick-action-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.quick-action-btn:hover,
+.quick-action-btn:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.quick-action-btn:active {
+    transform: scale(0.95);
+}
+
+.quick-action-icon {
+    font-size: 24px;
+}
+
+/* Status Details */
+.status-details {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.status-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.status-detail-item:last-child {
+    border-bottom: none;
+}
+
+.status-detail-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-detail-value {
+    color: #00ffff;
+    font-weight: 600;
+}
+
+/* Backdrop */
+#shade-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9997;
+}
+
+#shade-backdrop.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Swipe indicator (subtle hint) */
+.swipe-indicator {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .quick-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .quick-action-btn {
+        padding: 12px 8px;
+        font-size: 10px;
+    }
+
+    .quick-action-icon {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    #notification-shade {
+        padding: 45px 15px 15px;
+    }
+
+    .quick-actions {
+        gap: 8px;
+    }
+
+    .quick-action-btn {
+        padding: 10px 6px;
+        font-size: 9px;
+    }
+}
+
 /* ========================================
    SIDEBAR (Desktop)
    Coming in Phase 3

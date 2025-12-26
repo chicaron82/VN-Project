@@ -93,6 +93,63 @@
         </div>
     </div>
 
+    <!-- ========================================
+         NOTIFICATION SHADE (Mobile)
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="notification-shade">
+        <div class="swipe-indicator"></div>
+
+        <!-- Quick Actions -->
+        <div class="shade-section">
+            <div class="shade-section-title">Quick Actions</div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="shade-save">
+                    <span class="quick-action-icon">💾</span>
+                    <span>Save</span>
+                </button>
+                <button class="quick-action-btn" id="shade-load">
+                    <span class="quick-action-icon">📂</span>
+                    <span>Load</span>
+                </button>
+                <button class="quick-action-btn" id="shade-fullscreen">
+                    <span class="quick-action-icon">⛶</span>
+                    <span>Full</span>
+                </button>
+                <button class="quick-action-btn" id="shade-exit">
+                    <span class="quick-action-icon">🚪</span>
+                    <span>Exit</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Details -->
+        <div class="shade-section">
+            <div class="shade-section-title">Current Status</div>
+            <div class="status-details">
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Route:</span>
+                    <span class="status-detail-value" id="shade-route">Menu</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Loop Version:</span>
+                    <span class="status-detail-value" id="shade-loop">848</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Notes Collected:</span>
+                    <span class="status-detail-value" id="shade-notes">0/42</span>
+                </div>
+                <div class="status-detail-item" id="shade-tether-item" style="display: none;">
+                    <span class="status-detail-label">Tether Level:</span>
+                    <span class="status-detail-value" id="shade-tether-value">100%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backdrop for dimming -->
+    <div id="shade-backdrop"></div>
+
     <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
         <div class="uv7-container">
