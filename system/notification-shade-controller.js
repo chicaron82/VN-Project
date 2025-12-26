@@ -228,12 +228,16 @@ class NotificationShadeController {
 
                 // Update percentage text
                 if (this.statusTetherValue) {
-                    this.statusTetherValue.textContent = `${Math.round(tetherLevel)}%`;
+                    const newText = `${Math.round(tetherLevel)}%`;
+                    console.log(`📝 Setting tether text: "${this.statusTetherValue.textContent}" → "${newText}"`);
+                    this.statusTetherValue.textContent = newText;
                 }
 
                 // Update lightning bolt fill height
                 if (this.tetherFill) {
-                    this.tetherFill.style.height = `${tetherLevel}%`;
+                    const newHeight = `${tetherLevel}%`;
+                    console.log(`📏 Setting fill height: "${this.tetherFill.style.height}" → "${newHeight}"`);
+                    this.tetherFill.style.height = newHeight;
                 }
 
                 // Apply state classes
