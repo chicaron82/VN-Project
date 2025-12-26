@@ -310,8 +310,8 @@ export class NotificationShadeController {
                 // Update lightning bolt fill height
                 if (this.tetherFill) {
                     const newHeight = `${tetherLevel}%`;
-                    console.log(`📏 Setting fill height: "${this.tetherFill.style.height}" → "${newHeight}"`);
-                    this.tetherFill.style.height = newHeight;
+                    console.log(`📏 Setting fill height: "${(this.tetherFill as HTMLElement).style.height}" → "${newHeight}"`);
+                    (this.tetherFill as HTMLElement).style.height = newHeight;
                 }
 
                 // Apply state classes
@@ -743,16 +743,16 @@ export class NotificationShadeController {
         if (this.statusLoop) {
             this.statusLoop.classList.add('pulse');
             setTimeout(() => {
-                this.statusLoop.classList.remove('pulse');
+                this.statusLoop!.classList.remove('pulse');
             }, 600);
         }
     }
 
     glitchLoopNumber() {
-        if (this.statusLoop && this.statusBar.classList.contains('ronnie-route')) {
+        if (this.statusLoop && this.statusBar!.classList.contains('ronnie-route')) {
             this.statusLoop.classList.add('glitch');
             setTimeout(() => {
-                this.statusLoop.classList.remove('glitch');
+                this.statusLoop!.classList.remove('glitch');
             }, 300);
         }
     }
@@ -768,13 +768,13 @@ export class NotificationShadeController {
 
         const loadingFill = document.querySelector('.loading-fill');
         if (loadingFill) {
-            loadingFill.style.width = `${progress}%`;
+            (loadingFill as HTMLElement).style.width = `${progress}%`;
         }
     }
 
     hideLoadingState() {
         if (!this.statusBar) return;
-        this.statusBar.classList.remove('loading');
+        this.statusBar!.classList.remove('loading');
         this.updateStatusBar();
     }
 
@@ -784,7 +784,8 @@ export class NotificationShadeController {
 
     handleKeyboardShortcut(e: KeyboardEvent) {
         // Don't trigger if typing in input
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        const target = e.target as HTMLElement;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
             return;
         }
 
@@ -900,7 +901,7 @@ export class NotificationShadeController {
 
     onLoopIncrement() {
         this.pulseLoopNumber();
-        if (this.statusBar.classList.contains('ronnie-route')) {
+        if (this.statusBar?.classList.contains('ronnie-route')) {
             this.glitchLoopNumber();
         }
     }
@@ -946,7 +947,7 @@ export class NotificationShadeController {
 
         const loadingFill = this.statusLoading?.querySelector('.loading-fill');
         if (loadingFill) {
-            loadingFill.style.width = `${progress}%`;
+            (loadingFill as HTMLElement).style.width = `${progress}%`;
         }
     }
 
@@ -1041,13 +1042,13 @@ export class NotificationShadeController {
 
         if (unreadCount > 0) {
             this.statusMail.classList.add('visible');
-            this.unreadBadge.textContent = unreadCount;
+            this.unreadBadge!.textContent = String(unreadCount);
         } else {
             this.statusMail.classList.remove('visible');
         }
     }
 
-    addUnreadNote(noteData) {
+    addUnreadNote(noteData: any) {
         // Add to unread notes if not already there
         const exists = this.unreadNotes.find(n => n.id === noteData.id);
         if (!exists) {
@@ -1093,12 +1094,12 @@ export class NotificationShadeController {
         }
     }
 
-    generateSnippet(content) {
+    generateSnippet(content: string): string {
         if (!content) return 'No preview available';
 
         // Remove HTML tags and get first 2 lines
         const plainText = content.replace(/<[^>]*>/g, '');
-        const lines = plainText.split('\n').filter(line => line.trim());
+        const lines = plainText.split('\n').filter((line: string) => line.trim());
         const snippet = lines.slice(0, 2).join(' ');
 
         // Truncate if too long
@@ -1110,10 +1111,10 @@ export class NotificationShadeController {
         if (this.notePreviewBtn) {
             const newBtn = this.notePreviewBtn.cloneNode(true);
             this.notePreviewBtn.replaceWith(newBtn);
-            this.notePreviewBtn = newBtn;
+            this.notePreviewBtn = newBtn as HTMLElement;
 
             // Click handler
-            this.notePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+            this.notePreviewBtn!.addEventListener('click', () => this.openNotesViewer());
 
             // Swipe gesture (mobile)
             this.setupSwipeGesture(this.notePreviewBtn);
@@ -1122,28 +1123,28 @@ export class NotificationShadeController {
         if (this.sidebarNotePreviewBtn) {
             const newBtn = this.sidebarNotePreviewBtn.cloneNode(true);
             this.sidebarNotePreviewBtn.replaceWith(newBtn);
-            this.sidebarNotePreviewBtn = newBtn;
+            this.sidebarNotePreviewBtn = newBtn as HTMLElement;
 
             // Click handler
-            this.sidebarNotePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+            this.sidebarNotePreviewBtn!.addEventListener('click', () => this.openNotesViewer());
 
             // Swipe gesture (mobile)
             this.setupSwipeGesture(this.sidebarNotePreviewBtn);
         }
     }
 
-    setupSwipeGesture(element) {
+    setupSwipeGesture(element: HTMLElement) {
         let startX = 0;
         let currentX = 0;
         let isSwiping = false;
 
-        element.addEventListener('touchstart', (e) => {
+        element.addEventListener('touchstart', (e: TouchEvent) => {
             startX = e.touches[0].clientX;
             isSwiping = true;
             element.classList.add('swiping');
         }, { passive: true });
 
-        element.addEventListener('touchmove', (e) => {
+        element.addEventListener('touchmove', (e: TouchEvent) => {
             if (!isSwiping) return;
             currentX = e.touches[0].clientX;
             const deltaX = currentX - startX;
@@ -1241,7 +1242,14 @@ export class NotificationShadeController {
      *   onConfirm: () => game.showMainMenu()
      * });
      */
-    showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }) {
+    showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }: {
+        title: string;
+        message: string;
+        confirmText?: string;
+        cancelText?: string;
+        onConfirm: () => void;
+        onCancel?: () => void;
+    }) {
         // Create overlay
         const overlay = document.createElement('div');
         overlay.className = 'confirmation-overlay';
@@ -1264,14 +1272,14 @@ export class NotificationShadeController {
         const cancelBtn = overlay.querySelector('.confirmation-cancel');
 
         // Handle confirm
-        confirmBtn.addEventListener('click', () => {
+        confirmBtn!.addEventListener('click', () => {
             if (onConfirm) onConfirm();
             overlay.remove();
             this.triggerHaptic('medium');
         });
 
         // Handle cancel
-        cancelBtn.addEventListener('click', () => {
+        cancelBtn!.addEventListener('click', () => {
             if (onCancel) onCancel();
             overlay.remove();
             this.triggerHaptic('light');
