@@ -361,7 +361,10 @@ export class TutorialManager {
      * Create animated hand gesture pointing at element
      */
     createHandGesture(targetElement, content) {
-        if (!targetElement) return null;
+        if (!targetElement) {
+            console.warn('Tutorial: Target element not found for', content.highlight);
+            return null;
+        }
 
         const rect = targetElement.getBoundingClientRect();
 
@@ -370,12 +373,15 @@ export class TutorialManager {
         hand.className = 'tutorial-hand';
         hand.textContent = '👆'; // Pointing hand emoji
 
-        // Position hand above and slightly to the right of target
-        const handX = rect.left + rect.width / 2 - 24; // Center horizontally, offset for emoji size
-        const handY = rect.top - 60; // Above the element
+        // Position hand above and centered on target
+        // Hand emoji is ~48px, so offset by half
+        const handX = rect.left + (rect.width / 2) - 24;
+        const handY = rect.top - 70; // Above the element
 
         hand.style.left = `${handX}px`;
         hand.style.top = `${handY}px`;
+
+        console.log('Tutorial hand positioned at:', { x: handX, y: handY, rect });
 
         // Create tooltip if text provided
         let tooltip = null;
@@ -384,9 +390,13 @@ export class TutorialManager {
             tooltip.className = 'tutorial-tooltip';
             tooltip.textContent = content.text;
 
-            // Position tooltip above hand
-            tooltip.style.left = `${handX - 50}px`; // Offset to center
-            tooltip.style.top = `${handY - 50}px`;
+            // Position tooltip above hand, centered
+            const tooltipX = rect.left + (rect.width / 2);
+            const tooltipY = handY - 60;
+
+            tooltip.style.left = `${tooltipX}px`;
+            tooltip.style.top = `${tooltipY}px`;
+            tooltip.style.transform = 'translateX(-50%)'; // Center horizontally
         }
 
         return { element: hand, tooltip };
