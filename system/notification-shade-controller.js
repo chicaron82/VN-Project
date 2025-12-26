@@ -45,6 +45,14 @@ class NotificationShadeController {
         this.setupEventListeners();
         this.updateStatusBar();
 
+        // DIZEE: Subscribe to tether level changes for reactive lightning bolt updates
+        if (this.game.state) {
+            this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
+                console.log(`⚡ Shade: Tether subscription ${oldLevel} → ${newLevel}`);
+                this.updateStatusBar();
+            });
+        }
+
         console.log('✅ NotificationShadeController initialized');
     }
 
