@@ -155,6 +155,67 @@
     <!-- Backdrop for dimming -->
     <div id="shade-backdrop"></div>
 
+    <!-- ========================================
+         SIDEBAR (Desktop)
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="sidebar">
+        <!-- Quick Actions -->
+        <div class="shade-section">
+            <div class="shade-section-title">Quick Actions</div>
+            <div class="quick-actions">
+                <button class="quick-action-btn" id="sidebar-save">
+                    <span class="quick-action-icon">💾</span>
+                    <span>Save</span>
+                </button>
+                <button class="quick-action-btn" id="sidebar-load">
+                    <span class="quick-action-icon">📂</span>
+                    <span>Load</span>
+                </button>
+                <button class="quick-action-btn" id="sidebar-fullscreen">
+                    <span class="quick-action-icon">⛶</span>
+                    <span>Full</span>
+                </button>
+                <button class="quick-action-btn" id="sidebar-exit">
+                    <span class="quick-action-icon">🚪</span>
+                    <span>Exit</span>
+                </button>
+                <button class="quick-action-btn" id="sidebar-settings">
+                    <span class="quick-action-icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Status Details -->
+        <div class="shade-section">
+            <div class="shade-section-title">Current Status</div>
+            <div class="status-details">
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Route:</span>
+                    <span class="status-detail-value" id="sidebar-route">Menu</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Loop Version:</span>
+                    <span class="status-detail-value" id="sidebar-loop">848</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Notes Collected:</span>
+                    <span class="status-detail-value" id="sidebar-notes">0/42</span>
+                </div>
+                <div class="status-detail-item" id="sidebar-tether-item" style="display: none;">
+                    <span class="status-detail-label">Tether Level:</span>
+                    <span class="status-detail-value" id="sidebar-tether-value">100%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebar-toggle" title="Menu">
+        <span>☰</span>
+    </button>
+
     <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
         <div class="uv7-container">

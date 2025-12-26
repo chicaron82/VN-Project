@@ -69,6 +69,22 @@ class NotificationShadeController {
         this.shadeTetherValue = document.getElementById('shade-tether-value');
         this.shadeSettings = document.getElementById('shade-settings');
 
+        // Sidebar elements (desktop)
+        this.sidebar = document.getElementById('sidebar');
+        this.sidebarToggle = document.getElementById('sidebar-toggle');
+        this.sidebarSave = document.getElementById('sidebar-save');
+        this.sidebarLoad = document.getElementById('sidebar-load');
+        this.sidebarFullscreen = document.getElementById('sidebar-fullscreen');
+        this.sidebarExit = document.getElementById('sidebar-exit');
+        this.sidebarSettings = document.getElementById('sidebar-settings');
+
+        // Sidebar status elements
+        this.sidebarRoute = document.getElementById('sidebar-route');
+        this.sidebarLoop = document.getElementById('sidebar-loop');
+        this.sidebarNotes = document.getElementById('sidebar-notes');
+        this.sidebarTetherItem = document.getElementById('sidebar-tether-item');
+        this.sidebarTetherValue = document.getElementById('sidebar-tether-value');
+
         if (!this.statusBar) {
             console.error('Status bar element not found!');
             return;
@@ -101,6 +117,27 @@ class NotificationShadeController {
         if (this.shadeFullscreen) this.shadeFullscreen.addEventListener('click', () => this.toggleFullscreen());
         if (this.shadeExit) this.shadeExit.addEventListener('click', () => this.returnToMenu());
         if (this.shadeSettings) this.shadeSettings.addEventListener('click', () => this.openSettings());
+
+        // Sidebar toggle and buttons
+        if (this.sidebarToggle) {
+            this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+        }
+        if (this.sidebarSave) this.sidebarSave.addEventListener('click', () => this.quickSave());
+        if (this.sidebarLoad) this.sidebarLoad.addEventListener('click', () => this.quickLoad());
+        if (this.sidebarFullscreen) this.sidebarFullscreen.addEventListener('click', () => this.toggleFullscreen());
+        if (this.sidebarExit) this.sidebarExit.addEventListener('click', () => this.returnToMenu());
+        if (this.sidebarSettings) this.sidebarSettings.addEventListener('click', () => this.openSettings());
+
+        // Click outside sidebar to close
+        if (this.backdrop) {
+            this.backdrop.addEventListener('click', () => {
+                if (this.isSidebarOpen) {
+                    this.toggleSidebar();
+                } else {
+                    this.hideShade();
+                }
+            });
+        }
 
         console.log('✅ Event listeners setup');
     }
@@ -354,6 +391,100 @@ class NotificationShadeController {
     }
 
     // ========================================
+    // SIDEBAR CONTROL (Desktop)
+    // ========================================
+
+    toggleSidebar() {
+        if (this.isSidebarOpen) {
+            this.hideSidebar();
+        } else {
+            this.showSidebar();
+        }
+    }
+
+    showSidebar() {
+        if (this.isSidebarOpen) return;
+
+        this.isSidebarOpen = true;
+
+        // Update sidebar content
+        this.updateSidebarContent();
+
+        // Show sidebar and backdrop
+        if (this.sidebar) {
+            this.sidebar.classList.add('expanded');
+        }
+        if (this.backdrop) {
+            this.backdrop.classList.add('visible');
+        }
+
+        // Pause game
+        if (this.game.isPaused !== undefined) {
+            this.game.isPaused = true;
+        }
+
+        // Prevent status bar auto-hide
+        if (this.statusBar) {
+            this.statusBar.classList.remove('idle');
+        }
+
+        console.log('💻 Sidebar opened');
+    }
+
+    hideSidebar() {
+        if (!this.isSidebarOpen) return;
+
+        this.isSidebarOpen = false;
+
+        // Hide sidebar and backdrop
+        if (this.sidebar) {
+            this.sidebar.classList.remove('expanded');
+        }
+        if (this.backdrop) {
+            this.backdrop.classList.remove('visible');
+        }
+
+        // Resume game
+        if (this.game.isPaused !== undefined) {
+            this.game.isPaused = false;
+        }
+
+        // Reset idle timer
+        this.resetIdleTimer();
+
+        console.log('💻 Sidebar closed');
+    }
+
+    updateSidebarContent() {
+        // Update route
+        if (this.sidebarRoute) {
+            this.sidebarRoute.textContent = this.getRouteName();
+        }
+
+        // Update loop
+        if (this.sidebarLoop) {
+            this.sidebarLoop.textContent = this.game.loopVersion || 848;
+        }
+
+        // Update notes
+        if (this.sidebarNotes) {
+            const collected = this.getNotesCollected();
+            const total = this.getTotalNotes();
+            this.sidebarNotes.textContent = `${collected}/${total}`;
+        }
+
+        // Update tether (Tori route only)
+        if (this.sidebarTetherItem && this.sidebarTetherValue) {
+            if (this.isToriRoute()) {
+                this.sidebarTetherItem.style.display = 'flex';
+                this.sidebarTetherValue.textContent = `${Math.round(this.getTetherLevel())}%`;
+            } else {
+                this.sidebarTetherItem.style.display = 'none';
+            }
+        }
+    }
+
+    // ========================================
     // ANIMATIONS
     // ========================================
 
@@ -408,11 +539,19 @@ class NotificationShadeController {
 
         switch (e.key.toLowerCase()) {
             case 'escape':
-                // Toggle shade/sidebar
-                if (this.isShadeOpen) {
+                // Toggle sidebar (desktop) or shade (mobile)
+                if (this.isSidebarOpen) {
+                    this.hideSidebar();
+                } else if (this.isShadeOpen) {
                     this.hideShade();
                 } else {
-                    this.showShade();
+                    // Check if we're on desktop (sidebar visible) or mobile (shade visible)
+                    const isDesktop = window.innerWidth >= 769;
+                    if (isDesktop) {
+                        this.showSidebar();
+                    } else {
+                        this.showShade();
+                    }
                 }
                 break;
             case 's':
