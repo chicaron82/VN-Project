@@ -10,7 +10,10 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "type-check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -24,8 +27,10 @@
   },
   "homepage": "https://github.com/chicaron82/VN-Project#readme",
   "devDependencies": {
+    "@types/node": "^25.0.3",
     "@vitest/ui": "^4.0.16",
     "jsdom": "^27.4.0",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   }
 }
