@@ -28,6 +28,7 @@ export class StateManager {
     private _historyEnabled: boolean;
     private _quickSaves?: Record<string, StateSnapshot>;
     private _watchers?: Map<string, () => void>;
+    private _debugSubscriptions?: Array<() => void> | null;
 
     constructor() {
         // Central state store
@@ -182,7 +183,7 @@ export class StateManager {
             this._subscribers.set(path, new Set());
         }
 
-        this._subscribers.get(path).add(callback);
+        this._subscribers.get(path)!.add(callback);
 
         console.log(`👂 Subscribed to: ${path}`);
 
@@ -340,7 +341,7 @@ export class StateManager {
      * @param {Object} snapshot - Snapshot object from createSnapshot
      * @returns {boolean} True if restore successful
      */
-    restoreSnapshot(snapshot) {
+    restoreSnapshot(snapshot: StateSnapshot | null): boolean {
         if (!snapshot || !snapshot.state) {
             console.error('❌ Invalid snapshot');
             return false;
@@ -389,13 +390,13 @@ export class StateManager {
      * @param {Object} snapshot2 - Second snapshot (newer) or current state if omitted
      * @returns {Array} List of differences
      */
-    diff(snapshot1, snapshot2 = null) {
+    diff(snapshot1: any, snapshot2: any = null): Array<{ path: string; before: any; after: any }> {
         const state1 = snapshot1?.state || snapshot1;
         const state2 = snapshot2?.state || snapshot2 || this._state;
 
-        const differences = [];
+        const differences: Array<{ path: string; before: any; after: any }> = [];
 
-        const compare = (obj1, obj2, path = '') => {
+        const compare = (obj1: any, obj2: any, path = '') => {
             const keys = new Set([...Object.keys(obj1 || {}), ...Object.keys(obj2 || {})]);
 
             for (const key of keys) {
@@ -424,7 +425,7 @@ export class StateManager {
      * @param {Object} snapshot1 - First snapshot
      * @param {Object} snapshot2 - Second snapshot (or current if omitted)
      */
-    printDiff(snapshot1, snapshot2 = null) {
+    printDiff(snapshot1: any, snapshot2: any = null) {
         const diffs = this.diff(snapshot1, snapshot2);
         if (diffs.length === 0) {
             console.log('✅ No differences found');
@@ -475,7 +476,7 @@ export class StateManager {
      * @param {string} json - JSON string from exportState
      * @returns {boolean} True if import successful
      */
-    importState(json) {
+    importState(json: string): boolean {
         try {
             const importData = JSON.parse(json);
 
@@ -508,7 +509,7 @@ export class StateManager {
      * @param {string} path - Path to watch
      * @returns {Function} Unsubscribe function
      */
-    watch(path) {
+    watch(path: string): () => void {
         console.log(`👀 Watching: ${path}`);
 
         const unsubscribe = this.subscribe(path, (newValue, oldValue) => {
@@ -527,11 +528,11 @@ export class StateManager {
      * Stop watching a path
      * @param {string} path - Path to unwatch
      */
-    unwatch(path) {
+    unwatch(path: string): void {
         const unsub = this._watchers?.get(path);
         if (unsub) {
             unsub();
-            this._watchers.delete(path);
+            this._watchers!.delete(path);
             console.log(`🔇 Stopped watching: ${path}`);
         }
     }
@@ -566,8 +567,8 @@ export class StateManager {
      * Get StateManager statistics
      * @returns {Object} Stats about current state
      */
-    getStats() {
-        const countProperties = (obj, depth = 0) => {
+    getStats(): Record<string, any> {
+        const countProperties = (obj: any, depth = 0): number => {
             let count = 0;
             for (const key in obj) {
                 if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
@@ -597,9 +598,9 @@ export class StateManager {
      * Delete a specific path from state
      * @param {string} path - Path to delete
      */
-    deletePath(path) {
+    deletePath(path: string): boolean {
         const keys = path.split('.');
-        let current = this._state;
+        let current: any = this._state;
 
         // Navigate to parent
         for (let i = 0; i < keys.length - 1; i++) {
@@ -622,7 +623,7 @@ export class StateManager {
      * @param {string} path - Path to check
      * @returns {boolean}
      */
-    has(path) {
+    has(path: string): boolean {
         return this.get(path) !== undefined;
     }
 
@@ -631,10 +632,10 @@ export class StateManager {
      * @param {string} [prefix=''] - Path prefix
      * @returns {Array<string>} List of all paths
      */
-    keys(prefix = '') {
-        const paths = [];
+    keys(prefix = ''): string[] {
+        const paths: string[] = [];
 
-        const traverse = (obj, currentPath) => {
+        const traverse = (obj: any, currentPath: string) => {
             for (const key in obj) {
                 const fullPath = currentPath ? `${currentPath}.${key}` : key;
                 if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
@@ -667,7 +668,7 @@ export class StateManager {
      * @param {string} path - Target path
      * @param {Object} obj - Object to merge
      */
-    merge(path, obj) {
+    merge(path: string, obj: Record<string, any>): boolean {
         const existing = this.get(path) || {};
         if (typeof existing !== 'object' || typeof obj !== 'object') {
             console.error('❌ merge() requires objects');
@@ -684,7 +685,7 @@ export class StateManager {
      * @param {string} path - Path to number
      * @param {number} [amount=1] - Amount to add
      */
-    increment(path, amount = 1) {
+    increment(path: string, amount = 1): number {
         const current = this.get(path) || 0;
         if (typeof current !== 'number') {
             console.error('❌ increment() requires numeric path');
@@ -699,7 +700,7 @@ export class StateManager {
      * Toggle a boolean value at path
      * @param {string} path - Path to boolean
      */
-    toggle(path) {
+    toggle(path: string): boolean {
         const current = this.get(path);
         this.set(path, !current);
         return !current;
@@ -709,8 +710,8 @@ export class StateManager {
      * Set multiple values at once
      * @param {Object} pathValuePairs - Object with paths as keys and values
      */
-    batchSet(pathValuePairs) {
-        const results = {};
+    batchSet(pathValuePairs: Record<string, any>): Record<string, boolean> {
+        const results: Record<string, boolean> = {};
         for (const [path, value] of Object.entries(pathValuePairs)) {
             this.set(path, value);
             results[path] = true;
@@ -724,8 +725,8 @@ export class StateManager {
      * @param {Array<string>} paths - Array of paths to get
      * @returns {Object} Object with paths as keys and values
      */
-    batchGet(paths) {
-        const results = {};
+    batchGet(paths: string[]): Record<string, any> {
+        const results: Record<string, any> = {};
         for (const path of paths) {
             results[path] = this.get(path);
         }
@@ -740,7 +741,7 @@ export class StateManager {
      * Get value by dot-notation path
      * @private
      */
-    _getByPath(obj, path) {
+    _getByPath(obj: any, path: string): any {
         const keys = path.split('.');
         let current = obj;
 
@@ -759,7 +760,7 @@ export class StateManager {
      * Creates intermediate objects if needed
      * @private
      */
-    _setByPath(obj, path, value) {
+    _setByPath(obj: any, path: string, value: any): void {
         const keys = path.split('.');
         let current = obj;
 
@@ -779,7 +780,7 @@ export class StateManager {
      * Also notifies parent path subscribers
      * @private
      */
-    _notifySubscribers(path, newValue, oldValue) {
+    _notifySubscribers(path: string, newValue: any, oldValue: any): void {
         // Notify exact path subscribers
         const subs = this._subscribers.get(path);
         if (subs) {
@@ -814,7 +815,7 @@ export class StateManager {
      * Deep merge two objects
      * @private
      */
-    _deepMerge(target, source) {
+    _deepMerge(target: any, source: any): any {
         const result = { ...target };
 
         for (const key in source) {
@@ -838,7 +839,7 @@ export class StateManager {
      * Record a state change in history
      * @private
      */
-    _recordHistory(path, oldValue, newValue) {
+    _recordHistory(path: string, oldValue: any, newValue: any): void {
         const entry = {
             timestamp: Date.now(),
             path,
@@ -868,11 +869,11 @@ export class StateManager {
 
         // Temporarily disable history to avoid recording the undo itself
         this._historyEnabled = false;
-        this.set(entry.path, entry.oldValue);
+        this.set(entry!.path, entry!.oldValue);
         this._historyEnabled = true;
 
-        console.log(`⏪ Undone: ${entry.path} restored to ${JSON.stringify(entry.oldValue)}`);
-        return entry;
+        console.log(`⏪ Undone: ${entry!.path} restored to ${JSON.stringify(entry!.oldValue)}`);
+        return entry!;
     }
 
     /**
@@ -880,7 +881,7 @@ export class StateManager {
      * @param {number} [count] - Number of recent entries (default: all)
      * @returns {Array} History entries
      */
-    getHistory(count) {
+    getHistory(count?: number): HistoryEntry[] {
         const history = [...this._history];
         if (count) {
             return history.slice(-count);
@@ -990,12 +991,12 @@ export class StateManager {
         document.body.appendChild(panel);
 
         // Close button
-        document.getElementById('state-debug-close').onclick = () => panel.remove();
+        document.getElementById('state-debug-close')!.onclick = () => panel.remove();
 
         // Make draggable
         if (options.draggable) {
             let isDragging = false;
-            let startX, startY, startLeft, startTop;
+            let startX: number = 0, startY: number = 0, startLeft: number = 0, startTop: number = 0;
 
             header.onmousedown = (e) => {
                 isDragging = true;
@@ -1035,12 +1036,12 @@ export class StateManager {
      * Update debug panel content
      * @private
      */
-    _updateDebugPanel(container) {
+    _updateDebugPanel(container: HTMLElement | null): void {
         if (!container) return;
 
         const state = this._state;
 
-        const formatValue = (val) => {
+        const formatValue = (val: any): string | number | boolean => {
             if (typeof val === 'boolean') return val ? '✓' : '✗';
             if (typeof val === 'number') return val.toFixed?.(1) ?? val;
             if (Array.isArray(val)) return `[${val.length}]`;
@@ -1053,7 +1054,7 @@ export class StateManager {
         html += `<div style="margin-bottom: 8px;">
             <div style="color: #ff88ff; font-weight: bold;">🎮 Game</div>
             <div>  loopVersion: ${formatValue(state.game.loopVersion)}</div>
-            <div>  loopStatus: ${formatValue(state.game.loopStatus || state.game.paused ? 'paused' : 'active')}</div>
+            <div>  loopStatus: ${formatValue(state.game.paused ? 'paused' : 'active')}</div>
         </div>`;
 
         // Tether
@@ -1096,7 +1097,7 @@ export class StateManager {
         if (panel) panel.remove();
 
         if (this._debugSubscriptions) {
-            this._debugSubscriptions.forEach(unsub => unsub());
+            this._debugSubscriptions.forEach((unsub: () => void) => unsub());
             this._debugSubscriptions = null;
         }
 
