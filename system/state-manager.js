@@ -247,8 +247,55 @@ class StateManager {
      * @param {string} [key='vn_state'] - Storage key
      */
     reset(key = 'vn_state') {
-        // Reinitialize with fresh state
-        this.constructor.call(this);
+        // Reinitialize state to defaults
+        this._state = {
+            game: {
+                loopVersion: 'v.848',
+                currentRoute: null,
+                currentScene: null,
+                paused: false
+            },
+            unlocks: {
+                skipUnlocked: false,
+                skipPrologueUnlocked: false,
+                ronnieNotesUnlocked: false,
+                insaneModeUnlocked: false
+            },
+            tether: {
+                level: 100,
+                difficulty: 'normal',
+                decayRate: 0.05,
+                cap: 100,
+                frozen: false
+            },
+            settings: {
+                textSpeed: 'normal',
+                autoAdvance: false,
+                autoDelay: 2000,
+                autoSkipPrologue: false,
+                fullscreen: false,
+                displayMode: 'auto',
+                tetherDifficulty: 'normal',
+                hapticEnabled: true,
+                comfortMode: false,
+                comfortIntensity: 1
+            },
+            collectibles: {
+                unlockedNotes: [],
+                readScenes: []
+            },
+            ui: {
+                hidden: false,
+                menuOpen: null
+            }
+        };
+
+        // Clear subscribers
+        this._subscribers.clear();
+
+        // Reset flags
+        this._isDirty = false;
+        this._history = [];
 
         // Clear localStorage
         localStorage.removeItem(key);
