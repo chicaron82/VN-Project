@@ -218,6 +218,11 @@ class TetherSystem {
         if (this.tetherText) {
             this.tetherText.textContent = Math.floor(this.tetherLevel) + '%';
         }
+
+        // DIZEE: Also update notification shade status bar
+        if (this.game.notificationShade) {
+            this.game.notificationShade.updateStatusBar();
+        }
     }
 
     // ========================================
