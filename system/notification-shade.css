@@ -498,6 +498,186 @@
 }
 
 /* ========================================
+   ROUTE-SPECIFIC THEMING (Shade & Sidebar)
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue */
+#notification-shade.ronnie-route,
+#sidebar.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.4);
+    border-right-color: rgba(0, 255, 255, 0.4);
+}
+
+#notification-shade.ronnie-route .shade-section-title,
+#sidebar.ronnie-route .shade-section-title {
+    color: rgba(0, 255, 255, 0.8);
+}
+
+#notification-shade.ronnie-route .quick-action-btn,
+#sidebar.ronnie-route .quick-action-btn {
+    border-color: rgba(0, 255, 255, 0.4);
+}
+
+#notification-shade.ronnie-route .quick-action-btn:hover,
+#sidebar.ronnie-route .quick-action-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+#notification-shade.ronnie-route .status-details,
+#sidebar.ronnie-route .status-details {
+    border-color: rgba(0, 255, 255, 0.3);
+}
+
+#notification-shade.ronnie-route .status-detail-value,
+#sidebar.ronnie-route .status-detail-value {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Tori Route - Green */
+#notification-shade.tori-route,
+#sidebar.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.4);
+    border-right-color: rgba(0, 255, 136, 0.4);
+}
+
+#notification-shade.tori-route .shade-section-title,
+#sidebar.tori-route .shade-section-title {
+    color: rgba(0, 255, 136, 0.8);
+}
+
+#notification-shade.tori-route .quick-action-btn,
+#sidebar.tori-route .quick-action-btn {
+    border-color: rgba(0, 255, 136, 0.4);
+}
+
+#notification-shade.tori-route .quick-action-btn:hover,
+#sidebar.tori-route .quick-action-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+#notification-shade.tori-route .status-details,
+#sidebar.tori-route .status-details {
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+#notification-shade.tori-route .status-detail-value,
+#sidebar.tori-route .status-detail-value {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+
+/* Tether critical state (Tori only) */
+#notification-shade.tori-route .status-detail-value.critical,
+#sidebar.tori-route .status-detail-value.critical {
+    color: #ff4444;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    animation: tether-pulse-value 1s ease-in-out infinite;
+}
+
+@keyframes tether-pulse-value {
+
+    0%,
+    100% {
+        text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(255, 68, 68, 1);
+    }
+}
+
+/* ========================================
+   MICRO-ANIMATIONS
+   ======================================== */
+
+/* Quick action button spring effect */
+.quick-action-btn {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.quick-action-btn:active {
+    transform: scale(0.9);
+    transition: all 0.1s ease;
+}
+
+/* Settings button rotation */
+.shade-settings-btn,
+#sidebar .quick-action-btn:has(.quick-action-icon:contains("⚙️")) {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Shade/Sidebar slide-in animation */
+#notification-shade.open {
+    animation: shade-slide-in 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes shade-slide-in {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#sidebar.expanded {
+    animation: sidebar-slide-in 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes sidebar-slide-in {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Status detail items fade in */
+.status-detail-item {
+    animation: fade-in-up 0.3s ease-out backwards;
+}
+
+.status-detail-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.status-detail-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.status-detail-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.status-detail-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
    SIDEBAR (Desktop)
    ======================================== */
 

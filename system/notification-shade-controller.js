@@ -269,6 +269,9 @@ class NotificationShadeController {
         // Update shade content
         this.updateShadeContent();
 
+        // Apply route theming
+        this.applyRouteTheming(this.shade);
+
         // Show shade and backdrop
         if (this.shade) {
             this.shade.classList.add('open');
@@ -286,6 +289,9 @@ class NotificationShadeController {
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
         }
+
+        // Haptic feedback
+        this.triggerHaptic('medium');
 
         console.log('📱 Notification shade opened');
     }
@@ -310,6 +316,9 @@ class NotificationShadeController {
 
         // Reset idle timer
         this.resetIdleTimer();
+
+        // Haptic feedback
+        this.triggerHaptic('light');
 
         console.log('📱 Notification shade closed');
     }
@@ -344,7 +353,15 @@ class NotificationShadeController {
         if (this.shadeTetherItem && this.shadeTetherValue) {
             if (this.isToriRoute()) {
                 this.shadeTetherItem.style.display = 'flex';
-                this.shadeTetherValue.textContent = `${Math.round(this.getTetherLevel())}%`;
+                const tetherLevel = this.getTetherLevel();
+                this.shadeTetherValue.textContent = `${Math.round(tetherLevel)}%`;
+
+                // Critical state styling
+                if (tetherLevel < 20) {
+                    this.shadeTetherValue.classList.add('critical');
+                } else {
+                    this.shadeTetherValue.classList.remove('critical');
+                }
             } else {
                 this.shadeTetherItem.style.display = 'none';
             }
@@ -410,6 +427,9 @@ class NotificationShadeController {
         // Update sidebar content
         this.updateSidebarContent();
 
+        // Apply route theming
+        this.applyRouteTheming(this.sidebar);
+
         // Show sidebar and backdrop
         if (this.sidebar) {
             this.sidebar.classList.add('expanded');
@@ -427,6 +447,9 @@ class NotificationShadeController {
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
         }
+
+        // Haptic feedback
+        this.triggerHaptic('medium');
 
         console.log('💻 Sidebar opened');
     }
@@ -451,6 +474,9 @@ class NotificationShadeController {
 
         // Reset idle timer
         this.resetIdleTimer();
+
+        // Haptic feedback
+        this.triggerHaptic('light');
 
         console.log('💻 Sidebar closed');
     }
@@ -477,10 +503,37 @@ class NotificationShadeController {
         if (this.sidebarTetherItem && this.sidebarTetherValue) {
             if (this.isToriRoute()) {
                 this.sidebarTetherItem.style.display = 'flex';
-                this.sidebarTetherValue.textContent = `${Math.round(this.getTetherLevel())}%`;
+                const tetherLevel = this.getTetherLevel();
+                this.sidebarTetherValue.textContent = `${Math.round(tetherLevel)}%`;
+
+                // Critical state styling
+                if (tetherLevel < 20) {
+                    this.sidebarTetherValue.classList.add('critical');
+                } else {
+                    this.sidebarTetherValue.classList.remove('critical');
+                }
             } else {
                 this.sidebarTetherItem.style.display = 'none';
             }
+        }
+    }
+
+    // ========================================
+    // ROUTE THEMING
+    // ========================================
+
+    applyRouteTheming(element) {
+        if (!element) return;
+
+        // Remove existing route classes
+        element.classList.remove('ronnie-route', 'tori-route');
+
+        // Apply current route class
+        const routeName = this.getRouteName();
+        if (routeName.includes('Ronnie')) {
+            element.classList.add('ronnie-route');
+        } else if (routeName.includes('Tori')) {
+            element.classList.add('tori-route');
         }
     }
 
@@ -586,6 +639,7 @@ class NotificationShadeController {
     // ========================================
 
     quickSave() {
+        this.triggerHaptic('success');
         if (this.game.saveManager) {
             this.game.saveManager.saveGame(1, false, 'Quick Save');
             console.log('💾 Quick save');
@@ -593,6 +647,7 @@ class NotificationShadeController {
     }
 
     quickLoad() {
+        this.triggerHaptic('medium');
         if (this.game.saveLoadUI) {
             this.game.saveLoadUI.showSaveLoadScreen('load');
             console.log('📂 Load menu opened');
@@ -600,6 +655,7 @@ class NotificationShadeController {
     }
 
     toggleFullscreen() {
+        this.triggerHaptic('medium');
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen();
             console.log('⛶ Fullscreen enabled');
