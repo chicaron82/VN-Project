@@ -52,7 +52,42 @@ export class TutorialManager {
             });
         }
 
+        // Subscribe to state changes to auto-check tutorials
+        this._setupAutoTriggers();
+
         console.log('📚 Tutorial state loaded');
+    }
+
+    /**
+     * Setup automatic tutorial triggers via state subscriptions
+     */
+    _setupAutoTriggers() {
+        // Watch tether level for Hold On tutorial
+        this.game.state.subscribe('tether.level', () => {
+            this.checkTriggers();
+        });
+
+        // Watch notes for first note tutorial
+        this.game.state.subscribe('collectibles.unlockedNotes', () => {
+            console.log('📚 Notes changed, checking tutorials');
+            this.checkTriggers();
+        });
+
+        // Watch unlocks for Ronnie tutorials
+        this.game.state.subscribe('unlocks', () => {
+            this.checkTriggers();
+        });
+
+        // Check immediately on init (catches notes collected during route setup)
+        setTimeout(() => {
+            console.log('📚 Initial tutorial check');
+            this.checkTriggers();
+        }, 500);
+
+        // Periodic check for dialogue-based tutorials (every 2 seconds)
+        this._periodicCheck = setInterval(() => {
+            this.checkTriggers();
+        }, 2000);
     }
 
     /**
@@ -86,16 +121,8 @@ export class TutorialManager {
                 trigger: () => {
                     const tetherLevel = this.game.state.get('tether.level') || 100;
 
-                    // Track when tether first drops to 85%
-                    if (tetherLevel <= 85 && !this.tetherAt85Time) {
-                        this.tetherAt85Time = Date.now();
-                    }
-
-                    // Trigger after 5 seconds at 85% or below
-                    const timeSince85 = this.tetherAt85Time ? Date.now() - this.tetherAt85Time : 0;
-
-                    return tetherLevel <= 85 &&
-                        timeSince85 > 5000 &&
+                    // Trigger when tether drops to 95% (more responsive)
+                    return tetherLevel <= 95 &&
                         !this._isCompleted('tori_hold_on') &&
                         !this._hasUsedHoldOn() &&
                         this._isEnabled();
@@ -114,13 +141,20 @@ export class TutorialManager {
                 route: 'tori',
                 trigger: () => {
                     const notes = this.game.state.get('collectibles.unlockedNotes') || [];
-                    return notes.length > 0 &&
+                    const hasNotes = notes.length > 0;
+
+                    // Debug log
+                    if (hasNotes && !this._isCompleted('tori_first_note')) {
+                        console.log('📚 Note tutorial should trigger - notes:', notes.length);
+                    }
+
+                    return hasNotes &&
                         !this._isCompleted('tori_first_note') &&
                         this._isEnabled();
                 },
                 content: {
                     title: 'Memory Fragments',
-                    text: 'Tori\'s fragmented memories appear as notes. They reveal pieces of her consciousness.',
+                    text: 'Tori\'s fragmented memories appear as notes. Check the mail icon to read them.',
                     highlight: '.mail-icon',
                     pauseGame: true
                 }
