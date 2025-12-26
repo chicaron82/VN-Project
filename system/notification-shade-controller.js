@@ -538,6 +538,26 @@ class NotificationShadeController {
     }
 
     // ========================================
+    // HAPTIC FEEDBACK
+    // ========================================
+
+    triggerHaptic(type = 'light') {
+        // Check if Vibration API is supported
+        if (!navigator.vibrate) return;
+
+        // Haptic patterns
+        const patterns = {
+            light: 10,      // Quick tap
+            medium: 20,     // Button press
+            heavy: [30, 10, 30], // Double pulse
+            success: [10, 50, 10], // Success pattern
+        };
+
+        const pattern = patterns[type] || patterns.light;
+        navigator.vibrate(pattern);
+    }
+
+    // ========================================
     // ANIMATIONS
     // ========================================
 
