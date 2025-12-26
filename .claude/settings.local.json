@@ -19,7 +19,10 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(npm test:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(dir C:UserssilveDownloadsGitHubVN-Project)",
+      "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -Directory | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -File | Select-Object Name\")"
     ],
     "deny": [],
     "ask": []
