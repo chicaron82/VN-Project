@@ -33,6 +33,10 @@ class NotificationShadeController {
         this.touchStartY = 0;
         this.touchStartX = 0;
 
+        // Email-style notes tracking
+        this.unreadNotes = [];
+        this.currentNotePreview = null;
+
         // Load persistent state
         this.loadPersistentState();
 
@@ -88,6 +92,28 @@ class NotificationShadeController {
         this.sidebarNotes = document.getElementById('sidebar-notes');
         this.sidebarTetherItem = document.getElementById('sidebar-tether-item');
         this.sidebarTetherValue = document.getElementById('sidebar-tether-value');
+
+        // New elements - Tether lightning bolt
+        this.tetherLightning = document.querySelector('.tether-lightning');
+        this.tetherFill = document.querySelector('.tether-fill');
+        this.statusTetherValue = document.getElementById('status-tether-value');
+
+        // New elements - Mail icon with badge
+        this.statusMail = document.getElementById('status-mail');
+        this.mailIcon = document.querySelector('.mail-icon');
+        this.unreadBadge = document.querySelector('.unread-badge');
+
+        // New elements - Note preview (shade)
+        this.notesPreviewSection = document.getElementById('notes-preview-section');
+        this.notePreviewBtn = document.getElementById('note-preview-btn');
+        this.noteTitle = this.notePreviewBtn?.querySelector('.note-title');
+        this.noteSnippet = this.notePreviewBtn?.querySelector('.note-snippet');
+
+        // New elements - Note preview (sidebar)
+        this.sidebarNotesPreviewSection = document.getElementById('sidebar-notes-preview-section');
+        this.sidebarNotePreviewBtn = document.getElementById('sidebar-note-preview-btn');
+        this.sidebarNoteTitle = this.sidebarNotePreviewBtn?.querySelector('.note-title');
+        this.sidebarNoteSnippet = this.sidebarNotePreviewBtn?.querySelector('.note-snippet');
 
         if (!this.statusBar) {
             console.error('Status bar element not found!');
@@ -180,30 +206,38 @@ class NotificationShadeController {
             this.statusProgress.textContent = `🖤 ${notesCollected}/${totalNotes}`;
         }
 
-        // Update tether (Tori route only)
+        // Update tether (Tori route only) - Lightning bolt with fill
         if (this.statusTether) {
             if (this.isToriRoute()) {
                 const tetherLevel = this.getTetherLevel();
-                this.statusTether.textContent = `💚 ${Math.round(tetherLevel)}%`;
+
+                // Show tether meter
                 this.statusTether.classList.add('visible');
 
-                // Critical state
-                if (tetherLevel < 20) {
-                    this.statusTether.classList.add('critical');
-                } else {
-                    this.statusTether.classList.remove('critical');
+                // Update percentage text
+                if (this.statusTetherValue) {
+                    this.statusTetherValue.textContent = `${Math.round(tetherLevel)}%`;
                 }
 
-                // Heartbeat animation
-                if (tetherLevel > 80 || tetherLevel < 30) {
-                    this.statusTether.classList.add('heartbeat');
-                } else {
-                    this.statusTether.classList.remove('heartbeat');
+                // Update lightning bolt fill height
+                if (this.tetherFill) {
+                    this.tetherFill.style.height = `${tetherLevel}%`;
+                }
+
+                // Apply state classes
+                this.statusTether.classList.remove('warning', 'critical');
+                if (tetherLevel < 20) {
+                    this.statusTether.classList.add('critical');
+                } else if (tetherLevel < 50) {
+                    this.statusTether.classList.add('warning');
                 }
             } else {
                 this.statusTether.classList.remove('visible');
             }
         }
+
+        // Update mail icon (unread notes)
+        this.updateMailIcon();
     }
 
     // ========================================
@@ -866,6 +900,173 @@ class NotificationShadeController {
         if (emergencyBtn) {
             emergencyBtn.style.display = 'none';
         }
+    }
+
+    // ========================================
+    // EMAIL-STYLE NOTES SYSTEM
+    // ========================================
+
+    updateMailIcon() {
+        if (!this.statusMail || !this.unreadBadge) return;
+
+        const unreadCount = this.unreadNotes.length;
+
+        if (unreadCount > 0) {
+            this.statusMail.classList.add('visible');
+            this.unreadBadge.textContent = unreadCount;
+        } else {
+            this.statusMail.classList.remove('visible');
+        }
+    }
+
+    addUnreadNote(noteData) {
+        // Add to unread notes if not already there
+        const exists = this.unreadNotes.find(n => n.id === noteData.id);
+        if (!exists) {
+            this.unreadNotes.push(noteData);
+            this.updateMailIcon();
+            this.updateNotePreview();
+        }
+    }
+
+    markNoteAsRead(noteId) {
+        this.unreadNotes = this.unreadNotes.filter(n => n.id !== noteId);
+        this.updateMailIcon();
+        this.updateNotePreview();
+    }
+
+    updateNotePreview() {
+        // Get most recent unread note
+        const latestNote = this.unreadNotes[this.unreadNotes.length - 1];
+
+        if (latestNote) {
+            this.currentNotePreview = latestNote;
+
+            // Update shade preview
+            if (this.notesPreviewSection) {
+                this.notesPreviewSection.style.display = 'block';
+                if (this.noteTitle) this.noteTitle.textContent = latestNote.title || 'Untitled Note';
+                if (this.noteSnippet) this.noteSnippet.textContent = this.generateSnippet(latestNote.content);
+            }
+
+            // Update sidebar preview
+            if (this.sidebarNotesPreviewSection) {
+                this.sidebarNotesPreviewSection.style.display = 'block';
+                if (this.sidebarNoteTitle) this.sidebarNoteTitle.textContent = latestNote.title || 'Untitled Note';
+                if (this.sidebarNoteSnippet) this.sidebarNoteSnippet.textContent = this.generateSnippet(latestNote.content);
+            }
+
+            // Setup click handlers
+            this.setupNotePreviewHandlers();
+        } else {
+            // Hide previews if no unread notes
+            if (this.notesPreviewSection) this.notesPreviewSection.style.display = 'none';
+            if (this.sidebarNotesPreviewSection) this.sidebarNotesPreviewSection.style.display = 'none';
+        }
+    }
+
+    generateSnippet(content) {
+        if (!content) return 'No preview available';
+
+        // Remove HTML tags and get first 2 lines
+        const plainText = content.replace(/<[^>]*>/g, '');
+        const lines = plainText.split('\n').filter(line => line.trim());
+        const snippet = lines.slice(0, 2).join(' ');
+
+        // Truncate if too long
+        return snippet.length > 100 ? snippet.substring(0, 97) + '...' : snippet;
+    }
+
+    setupNotePreviewHandlers() {
+        // Remove old listeners
+        if (this.notePreviewBtn) {
+            const newBtn = this.notePreviewBtn.cloneNode(true);
+            this.notePreviewBtn.replaceWith(newBtn);
+            this.notePreviewBtn = newBtn;
+
+            // Click handler
+            this.notePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+
+            // Swipe gesture (mobile)
+            this.setupSwipeGesture(this.notePreviewBtn);
+        }
+
+        if (this.sidebarNotePreviewBtn) {
+            const newBtn = this.sidebarNotePreviewBtn.cloneNode(true);
+            this.sidebarNotePreviewBtn.replaceWith(newBtn);
+            this.sidebarNotePreviewBtn = newBtn;
+
+            // Click handler
+            this.sidebarNotePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+
+            // Swipe gesture (mobile)
+            this.setupSwipeGesture(this.sidebarNotePreviewBtn);
+        }
+    }
+
+    setupSwipeGesture(element) {
+        let startX = 0;
+        let currentX = 0;
+        let isSwiping = false;
+
+        element.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isSwiping = true;
+            element.classList.add('swiping');
+        }, { passive: true });
+
+        element.addEventListener('touchmove', (e) => {
+            if (!isSwiping) return;
+            currentX = e.touches[0].clientX;
+            const deltaX = currentX - startX;
+
+            // Visual feedback
+            if (Math.abs(deltaX) > 50) {
+                element.classList.add(deltaX > 0 ? 'swipe-right' : 'swipe-left');
+            }
+        }, { passive: true });
+
+        element.addEventListener('touchend', () => {
+            if (!isSwiping) return;
+
+            const deltaX = currentX - startX;
+
+            // Mark as read if swiped far enough
+            if (Math.abs(deltaX) > 100 && this.currentNotePreview) {
+                this.triggerHaptic('medium');
+                this.markNoteAsRead(this.currentNotePreview.id);
+            }
+
+            // Reset
+            element.classList.remove('swiping', 'swipe-left', 'swipe-right');
+            isSwiping = false;
+            startX = 0;
+            currentX = 0;
+        }, { passive: true });
+    }
+
+    openNotesViewer() {
+        // Close shade/sidebar
+        this.hideShade();
+        this.hideSidebar();
+
+        // Open notes viewer
+        if (this.game.notesViewer && this.game.notesViewer.show) {
+            this.game.notesViewer.show();
+            this.triggerHaptic('medium');
+        } else {
+            console.warn('Notes viewer not available');
+        }
+    }
+
+    // Public API for game to add notes
+    onNoteCollected(noteData) {
+        this.addUnreadNote({
+            id: noteData.id || Date.now(),
+            title: noteData.title || 'New Note',
+            content: noteData.content || '',
+            timestamp: Date.now()
+        });
     }
 }
 
