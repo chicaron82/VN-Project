@@ -210,15 +210,35 @@ export class TutorialManager {
 
         // Get current route
         const currentRoute = this.game.currentRoute?.constructor?.name?.toLowerCase();
-        if (!currentRoute) return;
+
+        // Debug logging
+        const notes = this.game.state.get('collectibles.unlockedNotes') || [];
+        const tetherLevel = this.game.state.get('tether.level') || 100;
+
+        console.log('📚 Tutorial check:', {
+            route: currentRoute,
+            dialogueCount: this.dialogueCount,
+            notes: notes.length,
+            tether: Math.floor(tetherLevel),
+            completed: this.game.state.get('tutorial.completed')
+        });
+
+        if (!currentRoute) {
+            console.log('📚 No route active yet');
+            return;
+        }
 
         // Check each stage
         for (const [stageId, stage] of Object.entries(this.stages)) {
             // Skip if wrong route
-            if (stage.route && !currentRoute.includes(stage.route)) continue;
+            if (stage.route && !currentRoute.includes(stage.route)) {
+                continue;
+            }
 
             // Skip if already completed
-            if (this._isCompleted(stageId)) continue;
+            if (this._isCompleted(stageId)) {
+                continue;
+            }
 
             // Check skip condition
             if (stage.skipIf && stage.skipIf()) {
@@ -228,6 +248,7 @@ export class TutorialManager {
 
             // Check trigger
             if (stage.trigger && stage.trigger()) {
+                console.log(`📚 ✅ Tutorial trigger matched: ${stageId}`);
                 this.showStage(stageId);
                 break; // Only show one at a time
             }
