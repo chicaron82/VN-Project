@@ -259,12 +259,14 @@ class NotificationShadeController {
 
     getNotesCollected() {
         if (!this.game.collectiblesManager) return 0;
-        return this.game.collectiblesManager.getCollectedCount() || 0;
+        // Use route-specific count
+        return this.game.collectiblesManager.getCollectedCountForCurrentRoute() || 0;
     }
 
     getTotalNotes() {
         if (!this.game.collectiblesManager) return 42;
-        return this.game.collectiblesManager.getTotalCount() || 42;
+        // Use route-specific total
+        return this.game.collectiblesManager.getTotalCountForCurrentRoute() || 42;
     }
 
     getTetherLevel() {
