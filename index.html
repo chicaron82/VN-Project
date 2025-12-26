@@ -1362,6 +1362,12 @@
 
                 // DIZEE: Code rain transition to main menu
                 setTimeout(() => {
+                    // Show status bar after splash completes
+                    const statusBar = document.getElementById('status-bar');
+                    if (statusBar) {
+                        statusBar.classList.add('visible');
+                    }
+
                     if (window.game && window.game.showCodeRainTransition) {
                         window.game.showCodeRainTransition(() => {
                             if (window.game.showMainMenu) {

@@ -17,7 +17,8 @@
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    display: flex;
+    display: none;
+    /* Hidden until splash completes */
     justify-content: space-between;
     align-items: center;
     padding: 0 15px;
@@ -27,6 +28,11 @@
     color: #00ffff;
     border-bottom: 1px solid rgba(0, 255, 255, 0.2);
     transition: opacity 0.3s ease;
+}
+
+/* Show status bar after splash */
+#status-bar.visible {
+    display: flex;
 }
 
 /* Auto-hide on idle */
