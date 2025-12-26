@@ -220,6 +220,7 @@ class TetherSystem {
         }
 
         // DIZEE: Also update notification shade status bar
+        console.log(`⚡ Tether: game.notificationShade exists = ${!!this.game.notificationShade}`);
         if (this.game.notificationShade) {
             this.game.notificationShade.updateStatusBar();
         }
