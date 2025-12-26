@@ -223,8 +223,8 @@ class NotificationShadeController {
                 const tetherLevel = this.getTetherLevel();
                 console.log(`🔋 Tether level: ${tetherLevel}%, statusTetherValue exists=${!!this.statusTetherValue}, tetherFill exists=${!!this.tetherFill}`);
 
-                // Show tether meter
-                this.statusTether.classList.add('visible');
+                // Show tether meter (use style.display to override inline style)
+                this.statusTether.style.display = 'flex';
 
                 // Update percentage text
                 if (this.statusTetherValue) {
@@ -244,7 +244,7 @@ class NotificationShadeController {
                     this.statusTether.classList.add('warning');
                 }
             } else {
-                this.statusTether.classList.remove('visible');
+                this.statusTether.style.display = 'none';
             }
         }
 
