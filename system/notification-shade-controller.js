@@ -208,8 +208,12 @@ class NotificationShadeController {
 
         // Update tether (Tori route only) - Lightning bolt with fill
         if (this.statusTether) {
-            if (this.isToriRoute()) {
+            const isTori = this.isToriRoute();
+            console.log(`🔋 Tether update: isToriRoute=${isTori}, statusTether exists=${!!this.statusTether}`);
+
+            if (isTori) {
                 const tetherLevel = this.getTetherLevel();
+                console.log(`🔋 Tether level: ${tetherLevel}%, statusTetherValue exists=${!!this.statusTetherValue}, tetherFill exists=${!!this.tetherFill}`);
 
                 // Show tether meter
                 this.statusTether.classList.add('visible');
