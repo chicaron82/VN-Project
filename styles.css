@@ -2167,7 +2167,8 @@
     top: 20px;
     left: 20px;
     width: 400px;
-    display: none;
+    display: none !important;
+    /* DIZEE: Permanently hidden - replaced by status bar lightning bolt */
     z-index: 100;
 }
 
