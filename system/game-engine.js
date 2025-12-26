@@ -48,6 +48,30 @@
 // - Chicharon (Aaron)
 //   Built with the UV7 crew
 //   💚🔥💀
+
+/**
+ * GameEngine - Core game loop and scene management
+ * 
+ * Version 848: The timeline iteration that finally succeeded
+ * 
+ * Responsibilities:
+ * - Scene progression and dialogue rendering
+ * - Character sprite management
+ * - Route management (Tori/Ronnie)
+ * - Save/load system integration
+ * - Input handling and auto-advance
+ * - UI state management
+ * - Integration with all game systems (StateManager, TetherSystem, etc.)
+ * 
+ * Key Systems:
+ * - StateManager: Reactive state with subscriptions
+ * - TetherSystem: Tori route tether decay (Tori route only)
+ * - CollectiblesManager: Notes collection per route
+ * - NotificationShadeController: Mobile/desktop UI
+ * - LoopController: Meta-narrative loop tracking
+ * 
+ * @class GameEngine
+ */
 // ========================================
 
 /**
