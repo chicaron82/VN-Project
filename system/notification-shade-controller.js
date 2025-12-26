@@ -387,22 +387,35 @@ class NotificationShadeController {
         const touchY = e.touches[0].clientY;
         const deltaY = touchY - this.touchStartY;
 
-        // Swipe down from top 50px to open shade
-        if (this.touchStartY < 50 && deltaY > 50 && !this.isShadeOpen) {
+        // Check if we're on desktop (sidebar) or mobile (shade)
+        const isDesktop = window.innerWidth >= 769;
+
+        // Swipe down from top 50px (including status bar)
+        if (this.touchStartY < 50 && deltaY > 50) {
             // Only preventDefault if we're in the valid swipe zone
             if (e.cancelable) {
                 e.preventDefault();
             }
-            this.showShade();
+
+            // Open sidebar on desktop, shade on mobile
+            if (isDesktop && !this.isSidebarOpen) {
+                this.showSidebar();
+            } else if (!isDesktop && !this.isShadeOpen) {
+                this.showShade();
+            }
         }
 
-        // Swipe up on shade to close
-        if (this.isShadeOpen && deltaY < -50) {
-            // Only preventDefault if we're in the valid swipe zone
+        // Swipe up to close (works for both)
+        if (deltaY < -50) {
             if (e.cancelable) {
                 e.preventDefault();
             }
-            this.hideShade();
+
+            if (this.isShadeOpen) {
+                this.hideShade();
+            } else if (this.isSidebarOpen) {
+                this.hideSidebar();
+            }
         }
     }
 
@@ -558,7 +571,13 @@ class NotificationShadeController {
         };
 
         const pattern = patterns[type] || patterns.light;
-        navigator.vibrate(pattern);
+
+        // Try to vibrate, but don't throw if blocked by browser
+        try {
+            navigator.vibrate(pattern);
+        } catch (error) {
+            // Silently fail - vibration blocked until user interaction
+        }
     }
 
     // ========================================
