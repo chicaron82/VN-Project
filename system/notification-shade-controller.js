@@ -1,7 +1,7 @@
 // ========================================
 // NOTIFICATION SHADE CONTROLLER
 // Mobile-first notification shade system
-// DIZEE + ZEERAH + GENZEE COLLABORATION
+// DIZEE + ZEE + GENZEE COLLABORATION
 // ========================================
 
 /**
