@@ -1350,6 +1350,12 @@ P.S. The barback skill strikes again.`
                     }
                 });
                 console.log('Notes loaded from localStorage');
+
+                // Trigger tutorial check for notes loaded from localStorage
+                // (since they don't trigger state subscriptions)
+                if (this.game.checkTutorials) {
+                    setTimeout(() => this.game.checkTutorials(), 100);
+                }
             }
 
             // DIZEE POLISH: Load timestamps
