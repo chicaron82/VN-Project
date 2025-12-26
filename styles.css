@@ -2284,8 +2284,16 @@
     font-weight: bold;
     letter-spacing: 0.15em;
     cursor: pointer;
-    width: 100%;
-    position: relative;
+    width: 180px;
+    /* Fixed width instead of 100% since it's outside tether-ui now */
+    position: fixed;
+    /* Fixed position for visibility */
+    left: 20px;
+    /* Position below where tether-ui was */
+    top: 70px;
+    /* Adjust based on status bar height */
+    z-index: 200;
+    /* Above other content */
     overflow: hidden;
     transition: all 0.3s ease;
     text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);

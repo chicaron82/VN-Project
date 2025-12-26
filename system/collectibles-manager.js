@@ -332,6 +332,20 @@ class CollectiblesManager {
         // Update display count
         this.updateNotesCount();
 
+        // DIZEE: Also update notification shade status bar
+        if (this.game.notificationShade) {
+            this.game.notificationShade.updateStatusBar();
+            // Also add to unread notes for email-style notification
+            const noteData = this.allNotes[noteId];
+            if (noteData) {
+                this.game.notificationShade.onNoteCollected({
+                    id: noteId,
+                    title: noteData.title,
+                    content: noteData.content
+                });
+            }
+        }
+
         // DIZEE: Update unread badge and animate
         this.updateUnreadCount();
         this.animateNewMail();
