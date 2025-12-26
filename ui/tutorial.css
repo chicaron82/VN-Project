@@ -1,0 +1,118 @@
+/* ========================================
+   TUTORIAL OVERLAY STYLES
+   ======================================== */
+
+.tutorial-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.tutorial-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.tutorial-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+}
+
+.tutorial-card {
+    position: relative;
+    width: min(480px, 90vw);
+    padding: 24px;
+    background: rgba(20, 20, 25, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.tutorial-overlay.visible .tutorial-card {
+    transform: scale(1);
+}
+
+.tutorial-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.tutorial-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 20px 0;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.tutorial-button {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    background: rgba(100, 180, 255, 0.2);
+    border: 1px solid rgba(100, 180, 255, 0.4);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tutorial-button:hover {
+    background: rgba(100, 180, 255, 0.3);
+    border-color: rgba(100, 180, 255, 0.6);
+    transform: translateY(-1px);
+}
+
+.tutorial-button:active {
+    transform: translateY(0);
+}
+
+/* Spotlight effect for highlighted elements */
+.tutorial-spotlight {
+    position: relative;
+    z-index: 10001 !important;
+    box-shadow: 0 0 0 4px rgba(100, 180, 255, 0.5),
+        0 0 20px rgba(100, 180, 255, 0.3) !important;
+    animation: tutorial-pulse 2s ease-in-out infinite;
+}
+
+@keyframes tutorial-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 4px rgba(100, 180, 255, 0.5),
+            0 0 20px rgba(100, 180, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(100, 180, 255, 0.7),
+            0 0 30px rgba(100, 180, 255, 0.5);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+    .tutorial-card {
+        padding: 20px;
+    }
+
+    .tutorial-title {
+        font-size: 20px;
+    }
+
+    .tutorial-text {
+        font-size: 15px;
+    }
+}

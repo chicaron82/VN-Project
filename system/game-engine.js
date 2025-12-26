@@ -379,6 +379,10 @@ class GameEngine {
 
         // DIZEE POLISH: Initialize notification shade system
         this.notificationShade = new NotificationShadeController(this);
+
+        // Tutorial onboarding system
+        this.tutorialManager = new TutorialManager(this);
+        this.tutorialManager.init();
         Logger.solid('NotificationShadeController');
 
         // SOLID Refactor: Initialize loop/version system
