@@ -58,3 +58,35 @@ export interface HistoryEntry {
     oldValue: any;
     newValue: any;
 }
+
+// Tether System types
+export interface DifficultyProfile {
+    name: string;
+    decayRates: {
+        base: number;
+        medium: number;
+        critical: number;
+    };
+    tetherCap: number;
+    holdOnBoost: number;
+    holdOnCooldown: number;
+}
+
+export interface EchoState {
+    name: string;
+    mood: string;
+    color: string;
+    active: boolean;
+}
+
+export interface TetherSaveState {
+    tetherLevel: number;
+    echoes: Record<string, EchoState>;
+    holdOnCooldown: boolean;
+}
+
+export interface EchoDialogue {
+    echo1?: string;
+    echo2?: string;
+    despair?: string;
+}
