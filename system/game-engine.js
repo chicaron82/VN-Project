@@ -2591,6 +2591,28 @@ class GameEngine {
     }
 
     // ========================================
+    // TUTORIAL SYSTEM HELPERS
+    // ========================================
+
+    /**
+     * Check tutorial triggers (call from routes/scenes)
+     */
+    checkTutorials() {
+        if (this.tutorialManager) {
+            this.tutorialManager.checkTriggers();
+        }
+    }
+
+    /**
+     * Track dialogue advancement for tutorial triggers
+     */
+    trackDialogue() {
+        if (this.tutorialManager) {
+            this.tutorialManager.incrementDialogueCount();
+        }
+    }
+
+    // ========================================
     // DEV COMMANDS
     // ========================================
 
