@@ -790,10 +790,17 @@ class NotificationShadeController {
     }
 
     returnToMenu() {
-        if (confirm('Return to main menu? Unsaved progress will be lost.')) {
-            this.game.showMainMenu();
-            console.log('🚪 Returned to menu');
-        }
+        // Use overlay confirmation instead of browser alert
+        this.showConfirmation({
+            title: 'Return to Main Menu?',
+            message: 'Unsaved progress will be lost.',
+            confirmText: 'Return to Menu',
+            cancelText: 'Stay Here',
+            onConfirm: () => {
+                this.game.showMainMenu();
+                console.log('🚪 Returned to menu');
+            }
+        });
     }
 
     openSettings() {
@@ -1113,6 +1120,61 @@ class NotificationShadeController {
             title: noteData.title || 'New Note',
             content: noteData.content || '',
             timestamp: Date.now()
+        });
+    }
+
+    // ========================================
+    // CONFIRMATION OVERLAY
+    // ========================================
+
+    showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }) {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'confirmation-overlay';
+        overlay.innerHTML = `
+            <div class="confirmation-dialog">
+                <h2 class="confirmation-title">${title}</h2>
+                <p class="confirmation-message">${message}</p>
+                <div class="confirmation-buttons">
+                    <button class="confirmation-cancel">${cancelText}</button>
+                    <button class="confirmation-confirm">${confirmText}</button>
+                </div>
+            </div>
+        `;
+
+        // Add to DOM
+        document.body.appendChild(overlay);
+
+        // Get buttons
+        const confirmBtn = overlay.querySelector('.confirmation-confirm');
+        const cancelBtn = overlay.querySelector('.confirmation-cancel');
+
+        // Handle confirm
+        confirmBtn.addEventListener('click', () => {
+            if (onConfirm) onConfirm();
+            overlay.remove();
+            this.triggerHaptic('medium');
+        });
+
+        // Handle cancel
+        cancelBtn.addEventListener('click', () => {
+            if (onCancel) onCancel();
+            overlay.remove();
+            this.triggerHaptic('light');
+        });
+
+        // Handle backdrop click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                if (onCancel) onCancel();
+                overlay.remove();
+                this.triggerHaptic('light');
+            }
+        });
+
+        // Show overlay with animation
+        requestAnimationFrame(() => {
+            overlay.classList.add('visible');
         });
     }
 }
