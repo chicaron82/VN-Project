@@ -120,26 +120,11 @@ export class TutorialManager {
                 route: 'tori',
                 trigger: () => {
                     const tetherLevel = this.game.state.get('tether.level') || 100;
-                    const completed = this._isCompleted('tori_hold_on');
-                    const hasUsed = this._hasUsedHoldOn();
-                    const enabled = this._isEnabled();
 
-                    // Debug logging
-                    if (tetherLevel <= 98 && !completed) {
-                        console.log('📚 Hold On check:', {
-                            tetherLevel,
-                            completed,
-                            hasUsed,
-                            enabled,
-                            shouldTrigger: tetherLevel <= 98 && !completed && !hasUsed && enabled
-                        });
-                    }
-
-                    // Trigger when tether drops to 98% (triggers faster on normal difficulty)
                     return tetherLevel <= 98 &&
-                        !completed &&
-                        !hasUsed &&
-                        enabled;
+                        !this._isCompleted('tori_hold_on') &&
+                        !this._hasUsedHoldOn() &&
+                        this._isEnabled();
                 },
                 skipIf: () => this._hasUsedHoldOn(),
                 content: {
@@ -221,22 +206,7 @@ export class TutorialManager {
         // Get current route
         const currentRoute = this.game.currentRoute?.constructor?.name?.toLowerCase();
 
-        // Debug logging
-        const notes = this.game.state.get('collectibles.unlockedNotes') || [];
-        const tetherLevel = this.game.state.get('tether.level') || 100;
-
-        console.log('📚 Tutorial check:', {
-            route: currentRoute,
-            dialogueCount: this.dialogueCount,
-            notes: notes.length,
-            tether: Math.floor(tetherLevel),
-            completed: this.game.state.get('tutorial.completed')
-        });
-
-        if (!currentRoute) {
-            console.log('📚 No route active yet');
-            return;
-        }
+        if (!currentRoute) return;
 
         // Check each stage
         for (const [stageId, stage] of Object.entries(this.stages)) {
@@ -258,7 +228,6 @@ export class TutorialManager {
 
             // Check trigger
             if (stage.trigger && stage.trigger()) {
-                console.log(`📚 ✅ Tutorial trigger matched: ${stageId}`);
                 this.showStage(stageId);
                 break; // Only show one at a time
             }
@@ -318,6 +287,138 @@ export class TutorialManager {
      */
     _isEnabled() {
         return this.game.state.get('tutorial.enabled') !== false;
+    }
+
+    /**
+     * Show a tutorial stage with animated hand gesture
+     */
+    showStage(stageId) {
+        const stage = this.stages[stageId];
+        if (!stage) return;
+
+        console.log(`📚 Showing tutorial: ${stageId}`);
+
+        // Pause game if needed
+        if (stage.content.pauseGame && this.game.pauseGame) {
+            this.game.pauseGame();
+        }
+
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'tutorial-overlay';
+        overlay.dataset.tutorialId = stageId;
+
+        // Create backdrop
+        const backdrop = document.createElement('div');
+        backdrop.className = 'tutorial-backdrop';
+        overlay.appendChild(backdrop);
+
+        // Find target element for spotlight/hand position
+        const targetElement = stage.content.highlight ?
+            document.querySelector(stage.content.highlight) : null;
+
+        // Add spotlight to target
+        if (targetElement) {
+            targetElement.classList.add('tutorial-spotlight');
+        }
+
+        // Create animated hand gesture
+        const hand = this.createHandGesture(targetElement, stage.content);
+        if (hand) {
+            overlay.appendChild(hand.element);
+            if (hand.tooltip) {
+                overlay.appendChild(hand.tooltip);
+            }
+        }
+
+        // Add dismiss hint
+        const dismissHint = document.createElement('div');
+        dismissHint.className = 'tutorial-dismiss-hint';
+        dismissHint.textContent = 'Tap anywhere to continue';
+        overlay.appendChild(dismissHint);
+
+        // Add to DOM
+        document.body.appendChild(overlay);
+        this.activeOverlay = overlay;
+
+        // Auto-dismiss on click or after timeout
+        const dismiss = () => {
+            this.dismissTutorial(stageId, targetElement);
+        };
+
+        backdrop.addEventListener('click', dismiss, { once: true });
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(dismiss, 5000);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            this.activeOverlay?.classList.add('visible');
+        });
+    }
+
+    /**
+     * Create animated hand gesture pointing at element
+     */
+    createHandGesture(targetElement, content) {
+        if (!targetElement) return null;
+
+        const rect = targetElement.getBoundingClientRect();
+
+        // Create hand element
+        const hand = document.createElement('div');
+        hand.className = 'tutorial-hand';
+        hand.textContent = '👆'; // Pointing hand emoji
+
+        // Position hand above and slightly to the right of target
+        const handX = rect.left + rect.width / 2 - 24; // Center horizontally, offset for emoji size
+        const handY = rect.top - 60; // Above the element
+
+        hand.style.left = `${handX}px`;
+        hand.style.top = `${handY}px`;
+
+        // Create tooltip if text provided
+        let tooltip = null;
+        if (content.text) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'tutorial-tooltip';
+            tooltip.textContent = content.text;
+
+            // Position tooltip above hand
+            tooltip.style.left = `${handX - 50}px`; // Offset to center
+            tooltip.style.top = `${handY - 50}px`;
+        }
+
+        return { element: hand, tooltip };
+    }
+
+    /**
+     * Dismiss tutorial and clean up
+     */
+    dismissTutorial(stageId, targetElement) {
+        if (!this.activeOverlay) return;
+
+        // Remove spotlight
+        if (targetElement) {
+            targetElement.classList.remove('tutorial-spotlight');
+        }
+
+        // Fade out
+        this.activeOverlay.classList.remove('visible');
+
+        // Remove from DOM after animation
+        setTimeout(() => {
+            this.activeOverlay?.remove();
+            this.activeOverlay = null;
+
+            // Resume game
+            if (this.game.resumeGame) {
+                this.game.resumeGame();
+            }
+
+            // Mark as complete
+            this.markComplete(stageId);
+        }, 300);
     }
 
     /**
