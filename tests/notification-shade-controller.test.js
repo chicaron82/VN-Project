@@ -22,6 +22,7 @@ describe('NotificationShadeController', () => {
         mockGame = {
             currentRoute: {
                 name: 'tori',
+                constructor: { name: 'ToriRoute' }, // Fix: getRouteName checks constructor.name
                 collectiblesManager: {
                     getCollectedCountForCurrentRoute: vi.fn(() => 3),
                     getTotalCountForCurrentRoute: vi.fn(() => 16)
@@ -60,6 +61,7 @@ describe('NotificationShadeController', () => {
 
         it('should hide tether for non-Tori routes', () => {
             mockGame.currentRoute.name = 'ronnie';
+            mockGame.currentRoute.constructor.name = 'RonnieRoute'; // Fix: Update constructor too
             controller.updateStatusBar();
             const tetherEl = document.getElementById('status-tether');
             expect(tetherEl.style.display).toBe('none');
