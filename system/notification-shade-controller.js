@@ -84,10 +84,10 @@ class NotificationShadeController {
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
 
-        // Swipe gesture detection
-        document.addEventListener('touchstart', (e) => this.handleTouchStart(e));
-        document.addEventListener('touchmove', (e) => this.handleTouchMove(e));
-        document.addEventListener('touchend', (e) => this.handleTouchEnd(e));
+        // Swipe gesture detection (passive: false to allow preventDefault)
+        document.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
+        document.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
+        document.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
 
         // Backdrop click to close
         if (this.backdrop) {
