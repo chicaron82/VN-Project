@@ -100,15 +100,14 @@ export class StateManager {
     // ========================================
 
     /**
-     * Get a value from state by path
-     * Returns a deep clone to prevent external mutations
+     * Get a value from state using dot notation path
      * 
-     * @param {string} path - Dot-notation path (e.g., 'game.loopVersion')
-     * @returns {*} Deep cloned value at path
+     * @param path - Dot-notation path to the value (e.g., 'tether.level', 'game.loopVersion')
+     * @returns The value at the specified path, or undefined if not found
      * 
      * @example
-     * const version = stateManager.get('game.loopVersion');
-     * const tether = stateManager.get('tether.level');
+     * const tetherLevel = state.get('tether.level'); // 100
+     * const route = state.get('game.currentRoute'); // null
      */
     get<T = any>(path: string): T | undefined {
         const value = this._getByPath(this._state, path);
@@ -122,16 +121,17 @@ export class StateManager {
     }
 
     /**
-     * Set a value in state by path
-     * Deep clones the value to prevent external mutations
-     * Notifies all subscribers watching this path
+     * Set a value in state using dot notation path
      * 
-     * @param {string} path - Dot-notation path (e.g., 'tether.level')
-     * @param {*} value - Value to set (will be deep cloned)
+     * Deep clones the value to prevent accidental mutations.
+     * Notifies all subscribers listening to this path or parent paths.
+     * 
+     * @param path - Dot-notation path to set (e.g., 'tether.level')
+     * @param value - Value to set (will be deep cloned)
      * 
      * @example
-     * stateManager.set('tether.level', 85);
-     * stateManager.set('settings.textSpeed', 'fast');
+     * state.set('tether.level', 75);
+     * state.set('game.currentRoute', 'tori');
      */
     set<T = any>(path: string, value: T): void {
         // Deep clone to prevent external mutations
@@ -163,20 +163,19 @@ export class StateManager {
 
     /**
      * Subscribe to state changes at a specific path
-     * Callback is invoked whenever the value at path changes
      * 
-     * @param {string} path - Dot-notation path to watch
-     * @param {Function} callback - Function(newValue, oldValue) to call on change
-     * @returns {Function} Unsubscribe function
+     * Callback will be invoked whenever the value at this path changes.
+     * Returns an unsubscribe function to clean up the subscription.
+     * 
+     * @param path - Dot-notation path to watch (e.g., 'tether.level')
+     * @param callback - Function called with (newValue, oldValue) when state changes
+     * @returns Unsubscribe function to remove this subscription
      * 
      * @example
-     * const unsubscribe = stateManager.subscribe('tether.level', (newLevel, oldLevel) => {
-     *     console.log(`Tether changed from ${oldLevel} to ${newLevel}`);
-     *     updateTetherUI(newLevel);
+     * const unsubscribe = state.subscribe('tether.level', (newVal, oldVal) => {
+     *   console.log(`Tether: ${oldVal} → ${newVal}`);
      * });
-     * 
-     * // Later, to stop listening:
-     * unsubscribe();
+     * // Later: unsubscribe();
      */
     subscribe<T = any>(path: string, callback: SubscriberCallback<T>): () => void {
         if (!this._subscribers.has(path)) {
