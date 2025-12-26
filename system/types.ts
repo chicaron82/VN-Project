@@ -90,3 +90,25 @@ export interface EchoDialogue {
     echo2?: string;
     despair?: string;
 }
+
+// Collectibles Manager types
+export type NoteCategory = 'z' | 'cz' | 'zr' | 'gz' | 'iz' | 'pz' | 'special';
+
+export interface Note {
+    id?: string;
+    type: NoteCategory;
+    title: string;
+    content: string;
+    category?: NoteCategory;
+    from?: string;
+    timestamp?: string;
+    isSecret?: boolean;
+    requiresCode?: string;
+    unlockMessage?: string;
+}
+
+export interface ViewerState {
+    currentFilter: 'all' | 'story' | 'codes';
+    unreadNotes: Set<string>;
+    isOpen: boolean;
+}
