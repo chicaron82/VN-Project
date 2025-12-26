@@ -490,6 +490,15 @@ class CollectiblesManager {
         this.notesCount.textContent = `${collected}/${total}`;
     }
 
+    /**
+     * Get count of collected notes for the current route only
+     * 
+     * @returns {number} Number of notes collected on current route
+     * 
+     * @example
+     * // On Tori route with 3 notes collected
+     * manager.getCollectedCountForCurrentRoute(); // Returns 3 (z + cz + zr notes)
+     */
     getCollectedCountForCurrentRoute() {
         // Count only notes for the current route
         if (!this.route || !this.route.name) {
@@ -512,6 +521,18 @@ class CollectiblesManager {
         return this.getCollectedCount(); // Fallback
     }
 
+    /**
+     * Get total number of available notes for the current route
+     * 
+     * @returns {number} Total notes available on current route
+     * 
+     * @example
+     * // On Tori route
+     * manager.getTotalCountForCurrentRoute(); // Returns 16 (all z, cz, zr notes)
+     * 
+     * // On Ronnie route  
+     * manager.getTotalCountForCurrentRoute(); // Returns 26 (all gz, iz, pz, special notes)
+     */
     getTotalCountForCurrentRoute() {
         // Count only available notes for the current route
         if (!this.route || !this.route.name) {
@@ -543,6 +564,14 @@ class CollectiblesManager {
         console.log('🔔 NEW NOTE UNLOCKED! (Button pulsing)');
     }
 
+    /**
+     * Display the notes viewer UI with all collected notes
+     * Pauses tether decay while viewing
+     * 
+     * @example
+     * // Open notes viewer from notification shade
+     * collectiblesManager.showNotesViewer();
+     */
     showNotesViewer() {
         if (!this.notesViewer || !this.notesList) return;
 
