@@ -41,7 +41,44 @@ All static UI interactions are decoupled from HTML.
 
 ---
 
-## 3. Data Flow
+## 3. State Management (StateManager)
+
+### Centralized State
+The `StateManager` class (`system/state-manager.ts`) provides:
+- **Single source of truth** for all game state
+- **Deep-clone safety** to prevent accidental mutations
+- **Reactive subscriptions** for automatic UI updates
+- **Persistence** via localStorage
+
+### Usage Pattern
+```javascript
+// Get value (deep cloned for safety)
+const level = stateManager.get('tether.level');
+
+// Set value (notifies subscribers)
+stateManager.set('tether.level', 85);
+
+// Subscribe to changes
+const unsub = stateManager.subscribe('tether.level', (newVal, oldVal) => {
+    updateTetherUI(newVal);
+});
+```
+
+### State Shape
+```typescript
+interface GameState {
+    game: { loopVersion, currentRoute, currentScene, paused };
+    unlocks: { skipUnlocked, skipPrologueUnlocked, ronnieNotesUnlocked, insaneModeUnlocked };
+    tether: { level, difficulty, decayRate, cap, frozen };
+    settings: { textSpeed, autoAdvance, tetherDifficulty, hapticEnabled, comfortMode };
+    collectibles: { unlockedNotes, readScenes };
+    ui: { hidden, menuOpen };
+}
+```
+
+---
+
+## 4. Data Flow
 
 ### Save Management
 -   **Slots**: Auto-save + 3 Manual Slots.
@@ -54,7 +91,67 @@ All static UI interactions are decoupled from HTML.
 
 ---
 
-## 4. Key Systems
--   **TetherSystem**: Visual/Haptic feedback mechanic for the "Tori" route.
--   **CutsceneEngine**: specialized renderer for frame-by-frame animations (HTML5 Canvas).
--   **Dev Console**: Runtime debugging tool (`~` key) for inspecting state on mobile.
+## 5. Key Systems
+
+| System | File | Purpose |
+|--------|------|---------|
+| TetherSystem | `tether-system.js` | Visual/Haptic feedback for Tori route |
+| CollectiblesManager | `collectibles-manager.js` | Notes, achievements, unlockables |
+| NotificationShadeController | `notification-shade-controller.js` | Mobile-first UI overlay |
+| CutsceneEngine | `cutscene-engine.js` | Frame-by-frame animations |
+| Dev Console | `dev-console.js` | Runtime debugging (`~` key) |
+
+---
+
+## 6. TypeScript Migration
+
+### Status
+- **StateManager**: Fully typed (`system/state-manager.ts`)
+- **Types**: Defined in `system/types.ts`
+
+### Commands
+```bash
+npm run type-check    # Validate TypeScript
+npm run build         # Compile TS → JS
+npm run build:watch   # Watch mode
+```
+
+---
+
+## 7. Testing
+
+### Framework
+- **Vitest** with jsdom environment
+- **Configuration**: `vitest.config.js`
+- **Setup**: `tests/setup.js` (localStorage mock)
+
+### Commands
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:ui       # Visual test UI
+```
+
+### Test Coverage
+- StateManager: 23 tests ✓
+- CollectiblesManager: 11 tests ✓
+- GameEngine: 24 tests ✓
+- UIController: 31 tests ✓
+
+---
+
+## 8. Project Structure
+
+```
+VN-Project/
+├── system/           # Core engine (55 files)
+│   ├── game-engine.js
+│   ├── state-manager.ts
+│   ├── types.ts
+│   └── ...
+├── routes/           # Story definitions
+├── tests/            # Unit tests
+├── docs/             # Documentation
+├── ui/               # UI components
+└── .agent/workflows/ # AI workflow docs
+```
