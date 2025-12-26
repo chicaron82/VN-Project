@@ -184,6 +184,15 @@ class NotificationShadeController {
     // STATUS BAR UPDATES
     // ========================================
 
+    /**
+     * Update the status bar with current game state
+     * Updates route, notes count, tether level, and mail icon
+     * Called reactively when state changes
+     * 
+     * @example
+     * // Manually refresh status bar
+     * notificationShade.updateStatusBar();
+     */
     updateStatusBar() {
         if (!this.statusBar) return;
 
@@ -1114,6 +1123,23 @@ class NotificationShadeController {
         }
     }
 
+    /**
+     * Public API for game to notify about collected notes
+     * Adds note to unread list and updates UI
+     * 
+     * @param {Object} noteData - Note information
+     * @param {string} noteData.id - Unique note ID
+     * @param {string} noteData.title - Note title
+     * @param {string} noteData.content - Note content
+     * 
+     * @example
+     * // Called when player collects a note
+     * notificationShade.onNoteCollected({
+     *   id: 'z1',
+     *   title: 'Strange Message',
+     *   content: 'Something feels off...'
+     * });
+     */
     // Public API for game to add notes
     onNoteCollected(noteData) {
         this.addUnreadNote({
@@ -1128,6 +1154,28 @@ class NotificationShadeController {
     // CONFIRMATION OVERLAY
     // ========================================
 
+    /**
+     * Show a custom confirmation dialog overlay
+     * Replaces browser confirm() with styled modal
+     * 
+     * @param {Object} options - Dialog configuration
+     * @param {string} options.title - Dialog title
+     * @param {string} options.message - Dialog message
+     * @param {string} [options.confirmText='Confirm'] - Confirm button text
+     * @param {string} [options.cancelText='Cancel'] - Cancel button text
+     * @param {Function} [options.onConfirm] - Callback when confirmed
+     * @param {Function} [options.onCancel] - Callback when cancelled
+     * 
+     * @example
+     * // Confirm return to main menu
+     * notificationShade.showConfirmation({
+     *   title: 'Return to Main Menu?',
+     *   message: 'Unsaved progress will be lost.',
+     *   confirmText: 'Return',
+     *   cancelText: 'Stay',
+     *   onConfirm: () => game.showMainMenu()
+     * });
+     */
     showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }) {
         // Create overlay
         const overlay = document.createElement('div');
