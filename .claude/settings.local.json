@@ -22,7 +22,9 @@
       "Bash(git push:*)",
       "Bash(dir C:UserssilveDownloadsGitHubVN-Project)",
       "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -Directory | Select-Object Name\")",
-      "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -File | Select-Object Name\")"
+      "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -File | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-Content ''tests\\\\tether-system.test.js'' -Head 50\")",
+      "Bash(powershell -Command:*)"
     ],
     "deny": [],
     "ask": []
