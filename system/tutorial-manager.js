@@ -140,13 +140,9 @@ export class TutorialManager {
                 id: 'tori_first_note',
                 route: 'tori',
                 trigger: () => {
+                    // Check state directly (not cached) to catch notes added during route init
                     const notes = this.game.state.get('collectibles.unlockedNotes') || [];
                     const hasNotes = notes.length > 0;
-
-                    // Debug log
-                    if (hasNotes && !this._isCompleted('tori_first_note')) {
-                        console.log('📚 Note tutorial should trigger - notes:', notes.length);
-                    }
 
                     return hasNotes &&
                         !this._isCompleted('tori_first_note') &&
