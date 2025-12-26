@@ -105,6 +105,11 @@ class LoopController {
 
                 console.log('📍 Main menu updated: DEFAULT state (v848)');
             }
+
+            // Update notification shade status bar
+            if (this.game.notificationShade) {
+                this.game.notificationShade.update();
+            }
         } else {
             // Elements not found - log warning but don't crash
             if (!subtitle) console.warn('⚠️ .subtitle element not found in DOM');
