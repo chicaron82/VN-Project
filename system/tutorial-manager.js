@@ -121,8 +121,8 @@ export class TutorialManager {
                 trigger: () => {
                     const tetherLevel = this.game.state.get('tether.level') || 100;
 
-                    // Trigger when tether drops to 95% (more responsive)
-                    return tetherLevel <= 95 &&
+                    // Trigger when tether drops to 98% (triggers faster on normal difficulty)
+                    return tetherLevel <= 98 &&
                         !this._isCompleted('tori_hold_on') &&
                         !this._hasUsedHoldOn() &&
                         this._isEnabled();
