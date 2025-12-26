@@ -331,13 +331,19 @@ class NotificationShadeController {
 
         // Swipe down from top 50px to open shade
         if (this.touchStartY < 50 && deltaY > 50 && !this.isShadeOpen) {
-            e.preventDefault();
+            // Only preventDefault if we're in the valid swipe zone
+            if (e.cancelable) {
+                e.preventDefault();
+            }
             this.showShade();
         }
 
         // Swipe up on shade to close
         if (this.isShadeOpen && deltaY < -50) {
-            e.preventDefault();
+            // Only preventDefault if we're in the valid swipe zone
+            if (e.cancelable) {
+                e.preventDefault();
+            }
             this.hideShade();
         }
     }
