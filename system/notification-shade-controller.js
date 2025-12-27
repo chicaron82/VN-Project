@@ -1130,16 +1130,23 @@ class NotificationShadeController {
     }
 
     openNotesViewer() {
+        console.log('📧 Opening notes viewer...');
+
         // Close shade/sidebar
         this.hideShade();
         this.hideSidebar();
 
-        // Open standalone notes viewer
-        if (this.game.standaloneNotesViewer) {
-            this.game.standaloneNotesViewer.open();
+        // Open notes viewer via collectibles manager (route-specific)
+        const cm = this.game.currentRoute?.collectiblesManager;
+        console.log('📧 Current route:', this.game.currentRoute?.name);
+        console.log('📧 Collectibles manager:', cm);
+        console.log('📧 Has showNotesViewer:', cm?.showNotesViewer);
+
+        if (cm && cm.showNotesViewer) {
+            cm.showNotesViewer();
             this.triggerHaptic('medium');
         } else {
-            console.warn('Standalone notes viewer not available');
+            console.warn('Notes viewer not available (no collectibles manager on current route)');
         }
     }
 
