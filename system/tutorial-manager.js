@@ -296,10 +296,44 @@ export class TutorialManager {
         const stage = this.stages[stageId];
         if (!stage) return;
 
-        // Wait for elements to be positioned (mail icon needs time)
+        // Retry showing tutorial until element is positioned (max 3 attempts)
+        this._showStageWithRetry(stageId, stage, 0);
+    }
+
+    /**
+     * Show tutorial with retry logic for element positioning
+     */
+    _showStageWithRetry(stageId, stage, attempt) {
+        const maxAttempts = 3;
+        const delays = [100, 300, 600]; // Exponential backoff
+
         setTimeout(() => {
-            this._showStageNow(stageId, stage);
-        }, 300);
+            // Try to get target element
+            const targetElement = stage.content.highlight ?
+                document.querySelector(stage.content.highlight) : null;
+
+            // Check if element is positioned
+            if (targetElement) {
+                const rect = targetElement.getBoundingClientRect();
+                const isPositioned = !(rect.left === 0 && rect.top === 0 && rect.width === 0);
+
+                if (isPositioned) {
+                    // Element is ready, show tutorial
+                    this._showStageNow(stageId, stage);
+                    return;
+                }
+            }
+
+            // Element not ready, retry if attempts remaining
+            if (attempt < maxAttempts - 1) {
+                console.log(`Tutorial: Retrying (${attempt + 1}/${maxAttempts}) for`, stage.content.highlight);
+                this._showStageWithRetry(stageId, stage, attempt + 1);
+            } else {
+                console.warn(`Tutorial: Gave up after ${maxAttempts} attempts for`, stage.content.highlight);
+                // Mark as complete so it doesn't keep trying
+                this.markComplete(stageId);
+            }
+        }, delays[attempt] || 600);
     }
 
     /**
