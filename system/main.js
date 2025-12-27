@@ -57,6 +57,7 @@ import './tips-controller.js';
 import './dev-hud-controller.js';
 import './notification-shade-controller.js';  // DIZEE POLISH: Notification shade system
 import './tutorial-manager.js';  // Tutorial onboarding system
+import './loading-overlay.js';   // Cinematic progress overlay system
 import './credits-photo-controller.js';
 import './loop-controller.js';
 import './scene-progression-controller.js';

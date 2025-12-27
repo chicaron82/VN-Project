@@ -578,6 +578,9 @@ class GameEngine {
         // Initialize cutscene engine
         this.cutsceneEngine = new CutsceneEngine(this);
 
+        // DIZEE: Initialize Loading Overlay for cinematic progress sequences
+        this.loadingOverlay = new LoadingOverlay(this);
+
         // DIZEE: Initialize bootstrap timeline tracker 🖤
         this.bootstrapTracker = new BootstrapTracker(this);
 
