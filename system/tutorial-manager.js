@@ -185,3 +185,7 @@ export class TutorialManager {
         this.game.state.set('tutorial.enabled', enabled);
     }
 }
+
+// Expose to window for GameEngine
+window.TutorialManager = TutorialManager;
+
