@@ -1029,20 +1029,23 @@ class RonnieRouteAct3 {
 
     badRoute_finalThought() {
         // Unlock teaser note (first note player gets)
-        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        // REMOVED: Teaser note overlay no longer needed
+        // this.route.collectiblesManager.unlockNote('ronnie_teaser');
 
         // Show notes button now (it was hidden during first playthrough)
-        if (this.game.notesButton) {
-            this.game.notesButton.style.display = 'block';
-        }
+        // REMOVED: Notes are now accessed via notification shade
+        // if (this.game.notesButton) {
+        //     this.game.notesButton.style.display = 'block';
+        // }
 
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('bad');
 
         // UNLOCK SKIP FEATURE (first ending completion)
-        if (!this.game.skipUnlocked) {
-            this.game.unlockSkipFeature();
-        }
+        // REMOVED: Skip unlock notification no longer needed
+        // if (!this.game.skipUnlocked) {
+        //     this.game.unlockSkipFeature();
+        // }
 
         // Get the current version number for display
         const currentVersion = this.game.loopVersion;
@@ -1243,20 +1246,23 @@ class RonnieRouteAct3 {
 
     digitalForever_choice() {
         // Unlock teaser note (first note player gets)
-        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        // REMOVED: Teaser note overlay no longer needed
+        // this.route.collectiblesManager.unlockNote('ronnie_teaser');
 
         // Show notes button now (it was hidden during first playthrough)
-        if (this.game.notesButton) {
-            this.game.notesButton.style.display = 'block';
-        }
+        // REMOVED: Notes are now accessed via notification shade
+        // if (this.game.notesButton) {
+        //     this.game.notesButton.style.display = 'block';
+        // }
 
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('digital_forever');
 
         // UNLOCK SKIP FEATURE (first ending completion)
-        if (!this.game.skipUnlocked) {
-            this.game.unlockSkipFeature();
-        }
+        // REMOVED: Skip unlock notification no longer needed
+        // if (!this.game.skipUnlocked) {
+        //     this.game.unlockSkipFeature();
+        // }
 
         this.game.displayScene({
             character: 'System',
@@ -1500,20 +1506,23 @@ class RonnieRouteAct3 {
 
     trueRoute_final() {
         // Unlock teaser note (first note player gets)
-        this.route.collectiblesManager.unlockNote('ronnie_teaser');
+        // REMOVED: Teaser note overlay no longer needed
+        // this.route.collectiblesManager.unlockNote('ronnie_teaser');
 
         // Show notes button now (it was hidden during first playthrough)
-        if (this.game.notesButton) {
-            this.game.notesButton.style.display = 'block';
-        }
+        // REMOVED: Notes are now accessed via notification shade
+        // if (this.game.notesButton) {
+        //     this.game.notesButton.style.display = 'block';
+        // }
 
         // Mark ending completed - unlocks notes for replay
         this.game.markEndingCompleted('true');
 
         // UNLOCK SKIP FEATURE (first ending completion)
-        if (!this.game.skipUnlocked) {
-            this.game.unlockSkipFeature();
-        }
+        // REMOVED: Skip unlock notification no longer needed
+        // if (!this.game.skipUnlocked) {
+        //     this.game.unlockSkipFeature();
+        // }
 
         // Get player's version number for their success message
         const playerVersion = this.game.loopVersion;
