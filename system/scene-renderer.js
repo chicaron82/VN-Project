@@ -205,8 +205,9 @@ class SceneRenderer {
             // Original typewriter behavior for desktop/short text
             if (game.typewriterController) {
                 game.typewriterController.typewriterActive = true;
+                game.typewriterController.fullDialogueText = text; // For skip() to show full text
             }
-            game.fullDialogueText = text;
+            game.fullDialogueText = text; // Legacy support
             game.typewriterCallback = callback;
             element.textContent = '';
             let i = 0;
