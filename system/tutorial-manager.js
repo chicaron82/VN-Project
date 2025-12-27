@@ -150,7 +150,7 @@ export class TutorialManager {
                 content: {
                     title: 'Memory Fragments',
                     text: 'Tori\'s fragmented memories appear as notes. Check the mail icon to read them.',
-                    highlight: '.mail-icon',
+                    highlight: '#status-mail',
                     pauseGame: true
                 }
             },
