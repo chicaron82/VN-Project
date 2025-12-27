@@ -973,10 +973,22 @@ class NotificationShadeController {
         if (!this.statusMail || !this.unreadBadge) return;
 
         const unreadCount = this.unreadNotes.length;
+        const wasHidden = !this.statusMail.classList.contains('visible');
 
         if (unreadCount > 0) {
             this.statusMail.classList.add('visible');
             this.unreadBadge.textContent = unreadCount;
+
+            // Trigger tutorial when mail icon first shown
+            if (wasHidden && this.game?.tutorialManager) {
+                // Small delay to ensure element is rendered
+                setTimeout(() => {
+                    this.game.tutorialManager.showHandGesture('tori_first_note', this.statusMail, {
+                        text: 'Check your notes!',
+                        autoHide: 4000
+                    });
+                }, 100);
+            }
         } else {
             this.statusMail.classList.remove('visible');
         }

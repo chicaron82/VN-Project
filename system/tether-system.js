@@ -187,6 +187,17 @@ class TetherSystem {
         // Update display
         this.updateDisplay();
 
+        // Trigger Hold On tutorial when tether first drops below 95%
+        if (this.tetherLevel <= 95 && previousLevel > 95) {
+            const holdOnBtn = document.querySelector('.hold-on-button');
+            if (holdOnBtn && this.game?.tutorialManager) {
+                this.game.tutorialManager.showHandGesture('tori_hold_on', holdOnBtn, {
+                    text: 'Hold On to restore connection!',
+                    autoHide: 4000
+                });
+            }
+        }
+
         // Check for tether death
         if (this.tetherLevel <= 0) {
             this.stopDecay();
