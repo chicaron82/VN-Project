@@ -189,13 +189,9 @@ class TetherSystem {
 
         // Trigger Hold On tutorial when tether first drops below 95%
         if (this.tetherLevel <= 95 && previousLevel > 95) {
-            console.log('👆 Hold On tutorial trigger: tetherLevel =', this.tetherLevel, 'previousLevel =', previousLevel);
             const holdOnBtn = document.querySelector('#hold-on-button');
-            console.log('👆 Hold On button:', holdOnBtn);
-            console.log('👆 Tutorial manager:', this.game?.tutorialManager);
 
             if (holdOnBtn && this.game?.tutorialManager) {
-                console.log('👆 Calling showHandGesture for Hold On tutorial...');
                 this.game.tutorialManager.showHandGesture('tori_hold_on', holdOnBtn, {
                     text: 'Hold On to restore connection!',
                     autoHide: 4000

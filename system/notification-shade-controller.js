@@ -1135,17 +1135,12 @@ class NotificationShadeController {
     }
 
     openNotesViewer() {
-        console.log('📧 Opening notes viewer...');
-
         // Close shade/sidebar
         this.hideShade();
         this.hideSidebar();
 
         // Open notes viewer via collectibles manager (route-specific)
         const cm = this.game.currentRoute?.collectiblesManager;
-        console.log('📧 Current route:', this.game.currentRoute?.name);
-        console.log('📧 Collectibles manager:', cm);
-        console.log('📧 Has showNotesViewer:', cm?.showNotesViewer);
 
         if (cm && cm.showNotesViewer) {
             cm.showNotesViewer();
