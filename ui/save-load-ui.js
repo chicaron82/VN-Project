@@ -228,16 +228,12 @@ class SaveLoadUI {
             return;
         }
 
-        // Normal flow: Return to pause menu ONLY if opened from pause menu
-        if (this.game.gameView.style.display === 'flex' && this.openedFromPauseMenu) {
-            this.openedFromPauseMenu = false; // Reset flag
-            this.showPauseMenu();
-        }
-        // Return to main menu if it was hidden
-        else if (this.game.mainMenu.style.opacity === '0' || this.game.mainMenu.style.display === 'none') {
+        // If came from main menu, restore it
+        if (this.game.mainMenu.style.opacity === '0' || this.game.mainMenu.style.display === 'none') {
             this.game.mainMenu.style.display = 'flex';
             this.game.mainMenu.style.opacity = '1';
         }
+        // Otherwise (mid-game), just close - notification shade replaces pause menu
     }
 
     updateSaveLoadTitle(mode) {
