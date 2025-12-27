@@ -2305,8 +2305,8 @@ class GameEngine {
         this.saveLoadUI.hidePauseMenu();
     }
 
-    showSaveLoadScreen(mode) {
-        this.saveLoadUI.showSaveLoadScreen(mode);
+    showSaveLoadScreen(mode, fromPauseMenu = false) {
+        this.saveLoadUI.showSaveLoadScreen(mode, fromPauseMenu);
     }
 
     closeSaveLoadScreen() {

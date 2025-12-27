@@ -54,8 +54,8 @@ class InputBinder {
         this.bindClick('btn-pause-resume', () => this.game.resumeGame());
         this.bindClick('btn-pause-settings', () => this.game.showSettings());
         this.bindClick('fullscreen-button', () => this.game.toggleFullscreen());
-        this.bindClick('btn-pause-save', () => this.game.showSaveLoadScreen('save'));
-        this.bindClick('btn-pause-load', () => this.game.showSaveLoadScreen('load'));
+        this.bindClick('btn-pause-save', () => this.game.showSaveLoadScreen('save', true));
+        this.bindClick('btn-pause-load', () => this.game.showSaveLoadScreen('load', true));
         this.bindClick('btn-pause-main-menu', () => this.game.returnToMainMenu());
     }
 

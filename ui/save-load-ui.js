@@ -10,6 +10,7 @@ class SaveLoadUI {
         this.currentMode = 'save'; // 'save' or 'load'
         this.confirmCallback = null;
         this.returningToMainMenu = false; // Flag for save -> main menu flow
+        this.openedFromPauseMenu = false; // Track if opened from pause menu
 
         this.initElements();
         this.setupKeyboardControls();
@@ -182,8 +183,9 @@ class SaveLoadUI {
     // SAVE/LOAD SCREEN
     // ========================================
 
-    showSaveLoadScreen(mode = 'save') {
+    showSaveLoadScreen(mode = 'save', fromPauseMenu = false) {
         this.currentMode = mode;
+        this.openedFromPauseMenu = fromPauseMenu; // Track source
         this.updateSaveLoadTitle(mode);
         this.updateModeButtons(mode);
         this.refreshSaveSlots();
@@ -226,8 +228,9 @@ class SaveLoadUI {
             return;
         }
 
-        // Normal flow: Return to pause menu if game is active
-        if (this.game.gameView.style.display === 'flex') {
+        // Normal flow: Return to pause menu ONLY if opened from pause menu
+        if (this.game.gameView.style.display === 'flex' && this.openedFromPauseMenu) {
+            this.openedFromPauseMenu = false; // Reset flag
             this.showPauseMenu();
         }
         // Return to main menu if it was hidden
