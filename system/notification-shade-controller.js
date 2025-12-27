@@ -783,6 +783,8 @@ class NotificationShadeController {
 
     quickSave() {
         this.triggerHaptic('success');
+        this.hideSidebar();
+        this.hideShade();
         if (this.game.saveManager) {
             this.game.saveManager.saveGame(1, false, 'Quick Save');
             console.log('💾 Quick save');
@@ -791,6 +793,8 @@ class NotificationShadeController {
 
     quickLoad() {
         this.triggerHaptic('medium');
+        this.hideSidebar();
+        this.hideShade();
         if (this.game.saveLoadUI) {
             this.game.saveLoadUI.showSaveLoadScreen('load');
             console.log('📂 Load menu opened');
@@ -799,6 +803,8 @@ class NotificationShadeController {
 
     toggleFullscreen() {
         this.triggerHaptic('medium');
+        this.hideSidebar();
+        this.hideShade();
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen();
             console.log('⛶ Fullscreen enabled');
@@ -809,6 +815,8 @@ class NotificationShadeController {
     }
 
     returnToMenu() {
+        this.hideSidebar();
+        this.hideShade();
         // Use overlay confirmation instead of browser alert
         this.showConfirmation({
             title: 'Return to Main Menu?',
@@ -823,15 +831,14 @@ class NotificationShadeController {
     }
 
     openSettings() {
-        // Close shade first
+        this.hideSidebar();
         this.hideShade();
-
-        // Open settings menu
-        if (this.game.settingsManager && this.game.settingsManager.showSettingsMenu) {
-            this.game.settingsManager.showSettingsMenu();
+        // Use GameEngine's showSettings method
+        if (this.game.showSettings) {
+            this.game.showSettings();
             console.log('⚙️ Settings opened');
         } else {
-            console.warn('Settings manager not available');
+            console.warn('Settings not available');
         }
     }
 
