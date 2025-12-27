@@ -320,57 +320,62 @@ class SettingsManager {
             });
         });
 
-        // DIZEE: Tutorial Hints Toggle
+        // Unified Tutorials Toggle (Carousel + Hand Gestures)
         const tutorialToggle = document.getElementById('tutorial-hints-toggle');
         const tutorialStatus = document.getElementById('tutorial-hints-status');
         if (tutorialToggle) {
-            // Check current state from localStorage
-            const hintsDisabled = localStorage.getItem('carouselTutorialDismissed') === 'true';
-            tutorialToggle.checked = !hintsDisabled;
+            // Check current state from both systems
+            const carouselDisabled = localStorage.getItem('carouselTutorialDismissed') === 'true';
+            const handGesturesEnabled = this.game.tutorialManager ? this.game.tutorialManager.isEnabled() : true;
+
+            // If either is disabled, show as OFF
+            const tutorialsEnabled = !carouselDisabled && handGesturesEnabled;
+            tutorialToggle.checked = tutorialsEnabled;
             if (tutorialStatus) {
-                tutorialStatus.textContent = hintsDisabled ? 'OFF' : 'ON';
+                tutorialStatus.textContent = tutorialsEnabled ? 'ON' : 'OFF';
             }
 
             tutorialToggle.addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    // Enable hints - remove the dismissed flag
+                const enabled = e.target.checked;
+
+                // Update carousel tutorials
+                if (enabled) {
                     localStorage.removeItem('carouselTutorialDismissed');
-                    if (tutorialStatus) tutorialStatus.textContent = 'ON';
-                    console.log('👆 Tutorial hints enabled - localStorage cleared');
                 } else {
-                    // Disable hints - set the dismissed flag
                     localStorage.setItem('carouselTutorialDismissed', 'true');
-                    if (tutorialStatus) tutorialStatus.textContent = 'OFF';
-                    console.log('👆 Tutorial hints disabled - localStorage set');
                 }
-            });
-        }
 
-        // Hand Gesture Tutorials Toggle
-        const handTutorialToggle = document.getElementById('hand-tutorial-toggle');
-        const handTutorialStatus = document.getElementById('hand-tutorial-status');
-        if (handTutorialToggle && this.game.tutorialManager) {
-            // Set initial state from tutorial manager
-            handTutorialToggle.checked = this.game.tutorialManager.isEnabled();
-            if (handTutorialStatus) {
-                handTutorialStatus.textContent = this.game.tutorialManager.isEnabled() ? 'ON' : 'OFF';
-            }
-
-            handTutorialToggle.addEventListener('change', (e) => {
-                this.game.tutorialManager.setEnabled(e.target.checked);
-                if (handTutorialStatus) {
-                    handTutorialStatus.textContent = e.target.checked ? 'ON' : 'OFF';
+                // Update hand gesture tutorials
+                if (this.game.tutorialManager) {
+                    this.game.tutorialManager.setEnabled(enabled);
                 }
-                console.log('👆 Hand gesture tutorials:', e.target.checked ? 'ENABLED' : 'DISABLED');
+
+                if (tutorialStatus) {
+                    tutorialStatus.textContent = enabled ? 'ON' : 'OFF';
+                }
+                console.log('👆 All tutorials:', enabled ? 'ENABLED' : 'DISABLED');
             });
         }
 
         // Reset Tutorials Button
         const resetTutorialsBtn = document.getElementById('reset-tutorials-btn');
-        if (resetTutorialsBtn && this.game.tutorialManager) {
+        if (resetTutorialsBtn) {
             resetTutorialsBtn.addEventListener('click', () => {
-                this.game.tutorialManager.resetTutorials();
-                console.log('👆 Tutorials reset - will show again');
+                // Reset carousel tutorials
+                localStorage.removeItem('carouselTutorialDismissed');
+
+                // Reset hand gesture tutorials
+                if (this.game.tutorialManager) {
+                    this.game.tutorialManager.resetTutorials();
+                }
+
+                // Re-enable the toggle
+                if (tutorialToggle) {
+                    tutorialToggle.checked = true;
+                    if (tutorialStatus) tutorialStatus.textContent = 'ON';
+                }
+
+                console.log('👆 All tutorials reset - will show again');
 
                 // Show confirmation feedback
                 const originalText = resetTutorialsBtn.textContent;
