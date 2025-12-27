@@ -529,6 +529,9 @@ class NotificationShadeController {
         // Update sidebar content
         this.updateSidebarContent();
 
+        // Update note preview (sets up click handlers)
+        this.updateNotePreview();
+
         // Apply route theming
         this.applyRouteTheming(this.sidebar);
 
@@ -546,8 +549,9 @@ class NotificationShadeController {
         }
 
         // Pause tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.stopDecay) {
-            this.game.tetherSystem.stopDecay();
+        const tetherSystem = this.game.currentRoute?.tetherSystem;
+        if (tetherSystem && tetherSystem.stopDecay) {
+            tetherSystem.stopDecay();
         }
 
         // Prevent status bar auto-hide
@@ -580,8 +584,9 @@ class NotificationShadeController {
         }
 
         // Resume tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.startDecay) {
-            this.game.tetherSystem.startDecay();
+        const tetherSystem = this.game.currentRoute?.tetherSystem;
+        if (tetherSystem && tetherSystem.startDecay) {
+            tetherSystem.startDecay();
         }
 
         // Reset idle timer
