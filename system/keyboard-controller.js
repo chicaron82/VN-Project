@@ -235,14 +235,6 @@ class KeyboardController {
 
                 e.preventDefault();
 
-                // Debug: Check typewriter state
-                console.log('🔍 Typewriter state:', {
-                    hasController: !!this.game.typewriterController,
-                    isActive: this.game.typewriterController?.isActive(),
-                    typewriterActive: this.game.typewriterController?.typewriterActive,
-                    isPaginating: this.game.typewriterController?.isPaginating(),
-                    paginationActive: this.game.typewriterController?.paginationActive
-                });
 
                 // If typewriter is active, complete the typing first
                 if (this.game.typewriterController && this.game.typewriterController.isActive()) {
