@@ -296,10 +296,10 @@ export class TutorialManager {
         const stage = this.stages[stageId];
         if (!stage) return;
 
-        // Wait a bit for elements to be positioned (especially for mail icon)
+        // Wait for elements to be positioned (mail icon needs time)
         setTimeout(() => {
             this._showStageNow(stageId, stage);
-        }, 100);
+        }, 300);
     }
 
     /**
@@ -373,6 +373,12 @@ export class TutorialManager {
     createHandGesture(targetElement, content) {
         if (!targetElement) {
             console.warn('Tutorial: Target element not found for', content.highlight);
+            return null;
+        }
+
+        // Check if element is actually visible/rendered
+        if (!targetElement.offsetParent) {
+            console.warn('Tutorial: Target element not visible (no offsetParent)', content.highlight);
             return null;
         }
 
