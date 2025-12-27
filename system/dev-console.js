@@ -195,6 +195,7 @@ const DevConsole = (() => {
                     appendLog('  tm                - Alias for timemachine', 'system');
                     appendLog('  jump [id]         - Jump to snapshot by ID', 'system');
                     appendLog('  sensory           - Show last 20 sensory events', 'system');
+                    appendLog('  overlay           - Test loading overlay', 'system');
                     appendLog('  clear             - Clear console log', 'system');
                     appendLog('  reload            - Hard refresh page', 'system');
                     appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
@@ -480,6 +481,34 @@ const DevConsole = (() => {
 
                     appendLog('', 'system');
                     appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    break;
+
+                case 'overlay':
+                    if (!game?.loadingOverlay) {
+                        appendLog('Error: Loading overlay not initialized', 'error');
+                        break;
+                    }
+
+                    appendLog('🚀 Testing loading overlay...', 'system');
+                    close(); // Close console to show overlay
+
+                    setTimeout(async () => {
+                        const result = await game.loadingOverlay.playUploadSequence({
+                            title: 'Uploading Tori…',
+                            subtitle: 'Testing cinematic overlay',
+                            durationMs: 4000,
+                            skippable: true,
+                            glitchAt: 73,
+                            statusLines: [
+                                'Preparing package…',
+                                'Establishing connection…',
+                                'Uploading…',
+                                'Verifying integrity…',
+                                'Complete.'
+                            ]
+                        });
+                        console.log('Overlay result:', result);
+                    }, 300);
                     break;
 
                 default:
