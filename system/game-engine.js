@@ -2611,215 +2611,212 @@ class GameEngine {
     trackDialogue() {
         // No-op - kept for backwards compatibility
     }
-            this.tutorialManager.incrementDialogueCount();
+
+    // ========================================
+    // DEV COMMANDS
+    // ========================================
+
+    showStatePanel() {
+        // DEV COMMAND: Open StateManager debug panel
+        // Usage in console: game.showStatePanel()
+        return this.state.createDebugPanel();
+    }
+
+    hideStatePanel() {
+        // DEV COMMAND: Close StateManager debug panel
+        // Usage in console: game.hideStatePanel()
+        this.state.closeDebugPanel();
+    }
+
+    quickSave(name = 'quicksave') {
+        // DEV COMMAND: Quick save current state
+        // Usage in console: game.quickSave() or game.quickSave('mysave')
+        return this.state.quickSave(name);
+    }
+
+    quickLoad(name = 'quicksave') {
+        // DEV COMMAND: Quick load saved state
+        // Usage in console: game.quickLoad() or game.quickLoad('mysave')
+        return this.state.quickLoad(name);
+    }
+
+    stateUndo() {
+        // DEV COMMAND: Undo last state change
+        // Usage in console: game.stateUndo()
+        return this.state.undo();
+    }
+
+    stateHistory(count = 10) {
+        // DEV COMMAND: View state change history
+        // Usage in console: game.stateHistory() or game.stateHistory(5)
+        const history = this.state.getHistory(count);
+        console.table(history.map(h => ({
+            path: h.path,
+            old: h.oldValue,
+            new: h.newValue,
+            time: new Date(h.timestamp).toLocaleTimeString()
+        })));
+        return history;
+    }
+
+    stateDiff(saveName = 'quicksave') {
+        // DEV COMMAND: Compare current state with a quick save
+        // Usage: game.stateDiff() or game.stateDiff('mysave')
+        const snapshot = this.state._quickSaves?.[saveName];
+        if (!snapshot) {
+            console.error(`❌ No save found: ${saveName}`);
+            return null;
         }
+        return this.state.printDiff(snapshot);
     }
 
-// ========================================
-// DEV COMMANDS
-// ========================================
-
-showStatePanel() {
-    // DEV COMMAND: Open StateManager debug panel
-    // Usage in console: game.showStatePanel()
-    return this.state.createDebugPanel();
-}
-
-hideStatePanel() {
-    // DEV COMMAND: Close StateManager debug panel
-    // Usage in console: game.hideStatePanel()
-    this.state.closeDebugPanel();
-}
-
-quickSave(name = 'quicksave') {
-    // DEV COMMAND: Quick save current state
-    // Usage in console: game.quickSave() or game.quickSave('mysave')
-    return this.state.quickSave(name);
-}
-
-quickLoad(name = 'quicksave') {
-    // DEV COMMAND: Quick load saved state
-    // Usage in console: game.quickLoad() or game.quickLoad('mysave')
-    return this.state.quickLoad(name);
-}
-
-stateUndo() {
-    // DEV COMMAND: Undo last state change
-    // Usage in console: game.stateUndo()
-    return this.state.undo();
-}
-
-stateHistory(count = 10) {
-    // DEV COMMAND: View state change history
-    // Usage in console: game.stateHistory() or game.stateHistory(5)
-    const history = this.state.getHistory(count);
-    console.table(history.map(h => ({
-        path: h.path,
-        old: h.oldValue,
-        new: h.newValue,
-        time: new Date(h.timestamp).toLocaleTimeString()
-    })));
-    return history;
-}
-
-stateDiff(saveName = 'quicksave') {
-    // DEV COMMAND: Compare current state with a quick save
-    // Usage: game.stateDiff() or game.stateDiff('mysave')
-    const snapshot = this.state._quickSaves?.[saveName];
-    if (!snapshot) {
-        console.error(`❌ No save found: ${saveName}`);
-        return null;
+    stateExport() {
+        // DEV COMMAND: Export state as JSON (copies to clipboard too)
+        // Usage: game.stateExport()
+        const json = this.state.exportState();
+        this.state.copyStateToClipboard();
+        console.log('📤 State JSON:');
+        console.log(json);
+        return json;
     }
-    return this.state.printDiff(snapshot);
-}
 
-stateExport() {
-    // DEV COMMAND: Export state as JSON (copies to clipboard too)
-    // Usage: game.stateExport()
-    const json = this.state.exportState();
-    this.state.copyStateToClipboard();
-    console.log('📤 State JSON:');
-    console.log(json);
-    return json;
-}
+    stateImport(json) {
+        // DEV COMMAND: Import state from JSON
+        // Usage: game.stateImport('{"version":1,...}')
+        return this.state.importState(json);
+    }
 
-stateImport(json) {
-    // DEV COMMAND: Import state from JSON
-    // Usage: game.stateImport('{"version":1,...}')
-    return this.state.importState(json);
-}
+    stateSnapshot(name = '') {
+        // DEV COMMAND: Create a labeled snapshot
+        // Usage: game.stateSnapshot('before-boss')
+        return this.state.createSnapshot(name);
+    }
 
-stateSnapshot(name = '') {
-    // DEV COMMAND: Create a labeled snapshot
-    // Usage: game.stateSnapshot('before-boss')
-    return this.state.createSnapshot(name);
-}
+    stateWatch(path) {
+        // DEV COMMAND: Watch a path for changes
+        // Usage: game.stateWatch('tether.level')
+        return this.state.watch(path);
+    }
 
-stateWatch(path) {
-    // DEV COMMAND: Watch a path for changes
-    // Usage: game.stateWatch('tether.level')
-    return this.state.watch(path);
-}
+    stateUnwatch(path) {
+        // DEV COMMAND: Stop watching a path
+        // Usage: game.stateUnwatch('tether.level')
+        this.state.unwatch(path);
+    }
 
-stateUnwatch(path) {
-    // DEV COMMAND: Stop watching a path
-    // Usage: game.stateUnwatch('tether.level')
-    this.state.unwatch(path);
-}
+    stateWatchers() {
+        // DEV COMMAND: List all active watchers
+        // Usage: game.stateWatchers()
+        return this.state.listWatchers();
+    }
 
-stateWatchers() {
-    // DEV COMMAND: List all active watchers
-    // Usage: game.stateWatchers()
-    return this.state.listWatchers();
-}
+    stateStats() {
+        // DEV COMMAND: Get StateManager statistics
+        // Usage: game.stateStats()
+        return this.state.getStats();
+    }
 
-stateStats() {
-    // DEV COMMAND: Get StateManager statistics
-    // Usage: game.stateStats()
-    return this.state.getStats();
-}
+    stateKeys(prefix = '') {
+        // DEV COMMAND: List all state paths
+        // Usage: game.stateKeys() or game.stateKeys('tether')
+        const keys = this.state.keys(prefix);
+        console.log('🔑 State keys:', keys);
+        return keys;
+    }
 
-stateKeys(prefix = '') {
-    // DEV COMMAND: List all state paths
-    // Usage: game.stateKeys() or game.stateKeys('tether')
-    const keys = this.state.keys(prefix);
-    console.log('🔑 State keys:', keys);
-    return keys;
-}
+    stateSize() {
+        // DEV COMMAND: Get state memory size
+        // Usage: game.stateSize()
+        return this.state.size();
+    }
 
-stateSize() {
-    // DEV COMMAND: Get state memory size
-    // Usage: game.stateSize()
-    return this.state.size();
-}
+    stateIncrement(path, amount = 1) {
+        // DEV COMMAND: Increment a numeric value
+        // Usage: game.stateIncrement('game.loopVersion')
+        return this.state.increment(path, amount);
+    }
 
-stateIncrement(path, amount = 1) {
-    // DEV COMMAND: Increment a numeric value
-    // Usage: game.stateIncrement('game.loopVersion')
-    return this.state.increment(path, amount);
-}
+    stateToggle(path) {
+        // DEV COMMAND: Toggle a boolean value
+        // Usage: game.stateToggle('ui.hidden')
+        return this.state.toggle(path);
+    }
 
-stateToggle(path) {
-    // DEV COMMAND: Toggle a boolean value
-    // Usage: game.stateToggle('ui.hidden')
-    return this.state.toggle(path);
-}
+    stateMerge(path, obj) {
+        // DEV COMMAND: Merge object into state
+        // Usage: game.stateMerge('settings', { volume: 50 })
+        return this.state.merge(path, obj);
+    }
 
-stateMerge(path, obj) {
-    // DEV COMMAND: Merge object into state
-    // Usage: game.stateMerge('settings', { volume: 50 })
-    return this.state.merge(path, obj);
-}
+    stateHas(path) {
+        // DEV COMMAND: Check if path exists
+        // Usage: game.stateHas('tether.level')
+        const exists = this.state.has(path);
+        console.log(`🔍 ${path}: ${exists ? '✓ exists' : '✗ not found'}`);
+        return exists;
+    }
 
-stateHas(path) {
-    // DEV COMMAND: Check if path exists
-    // Usage: game.stateHas('tether.level')
-    const exists = this.state.has(path);
-    console.log(`🔍 ${path}: ${exists ? '✓ exists' : '✗ not found'}`);
-    return exists;
-}
+    stateDelete(path) {
+        // DEV COMMAND: Delete a path from state
+        // Usage: game.stateDelete('temp.data')
+        return this.state.deletePath(path);
+    }
 
-stateDelete(path) {
-    // DEV COMMAND: Delete a path from state
-    // Usage: game.stateDelete('temp.data')
-    return this.state.deletePath(path);
-}
+    stateBatchSet(pairs) {
+        // DEV COMMAND: Set multiple values at once
+        // Usage: game.stateBatchSet({ 'game.score': 100, 'tether.level': 50 })
+        return this.state.batchSet(pairs);
+    }
 
-stateBatchSet(pairs) {
-    // DEV COMMAND: Set multiple values at once
-    // Usage: game.stateBatchSet({ 'game.score': 100, 'tether.level': 50 })
-    return this.state.batchSet(pairs);
-}
+    stateBatchGet(paths) {
+        // DEV COMMAND: Get multiple values at once
+        // Usage: game.stateBatchGet(['game.score', 'tether.level'])
+        const results = this.state.batchGet(paths);
+        console.table(results);
+        return results;
+    }
 
-stateBatchGet(paths) {
-    // DEV COMMAND: Get multiple values at once
-    // Usage: game.stateBatchGet(['game.score', 'tether.level'])
-    const results = this.state.batchGet(paths);
-    console.table(results);
-    return results;
-}
+    stateDebug() {
+        // DEV COMMAND: Show complete state debug overview
+        // Usage: game.stateDebug()
+        console.log('═══════════════════════════════════════');
+        console.log('🔧 STATE MANAGER DEBUG OVERVIEW');
+        console.log('═══════════════════════════════════════');
 
-stateDebug() {
-    // DEV COMMAND: Show complete state debug overview
-    // Usage: game.stateDebug()
-    console.log('═══════════════════════════════════════');
-    console.log('🔧 STATE MANAGER DEBUG OVERVIEW');
-    console.log('═══════════════════════════════════════');
+        const stats = this.state.getStats();
+        const keys = this.state.keys();
+        const size = this.state.size();
 
-    const stats = this.state.getStats();
-    const keys = this.state.keys();
-    const size = this.state.size();
+        console.log('📊 Keys:', keys);
+        console.log('═══════════════════════════════════════');
 
-    console.log('📊 Keys:', keys);
-    console.log('═══════════════════════════════════════');
+        return { stats, keys, size };
+    }
 
-    return { stats, keys, size };
-}
+    stateReset() {
+        // DEV COMMAND: Reset StateManager to default
+        // Usage: game.stateReset()
+        this.state.reset();
+        console.log('🔄 State reset to default');
+    }
 
-stateReset() {
-    // DEV COMMAND: Reset StateManager to default
-    // Usage: game.stateReset()
-    this.state.reset();
-    console.log('🔄 State reset to default');
-}
+    stateClearHistory() {
+        // DEV COMMAND: Clear state history
+        // Usage: game.stateClearHistory()
+        this.state.clearHistory();
+    }
 
-stateClearHistory() {
-    // DEV COMMAND: Clear state history
-    // Usage: game.stateClearHistory()
-    this.state.clearHistory();
-}
+    resetVersion(targetVersion = 848, status = 'attempting') {
+        return this.sceneProgressionController.resetVersion(targetVersion, status);
+    }
 
-resetVersion(targetVersion = 848, status = 'attempting') {
-    return this.sceneProgressionController.resetVersion(targetVersion, status);
-}
+    nuclearReset() {
+        return this.resetController.nuclearReset();
+    }
 
-nuclearReset() {
-    return this.resetController.nuclearReset();
-}
-
-devCommands() {
-    // DEV COMMAND: Show available dev commands
-    console.log(`
+    devCommands() {
+        // DEV COMMAND: Show available dev commands
+        console.log(`
 ╔═══════════════════════════════════════╗
 ║       VN - ZEE DEV COMMANDS          ║
 ╚═══════════════════════════════════════╝
@@ -2855,880 +2852,880 @@ game.devCommands()
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 💡 After using commands, refresh the page!
         `);
-}
-
-clearNotes() {
-    // ZEERAH'S DEV COMMAND: Clear all collected notes
-    localStorage.removeItem('vn_collected_notes');
-    console.log('💚 All notes cleared! Refresh to test note notifications.');
-}
-
-continueGame() {
-    const mostRecent = this.saveManager.getMostRecentSave();
-    if (mostRecent) {
-        console.log('🔄 Continue Game triggered. Restoring version ' + mostRecent.data.version);
-        this.saveManager.restoreGameState(mostRecent.data);
-        // REMOVED: restoreSprites() appears undefined/redundant as restoreGameState -> jumpToScene handles visuals
-        // this.restoreSprites();
-    } else {
-        this.saveManager.showSaveIndicator('No save data found', true);
     }
-}
 
-// ========================================
-// UI DELEGATION (Fix for index.html calls)
-// ========================================
-
-confirmAction(confirmed) {
-    // Delegate to SaveLoadUI which manages the dialog logic
-    if (this.saveLoadUI) {
-        this.saveLoadUI.confirmAction(confirmed);
-    } else {
-        console.error('❌ SaveLoadUI not initialized, cannot handle confirmAction');
-        // Fallback: manually hide dialog if UI is broken
-        const dialog = document.getElementById('confirm-dialog');
-        if (dialog) dialog.classList.remove('active');
+    clearNotes() {
+        // ZEERAH'S DEV COMMAND: Clear all collected notes
+        localStorage.removeItem('vn_collected_notes');
+        console.log('💚 All notes cleared! Refresh to test note notifications.');
     }
-}
 
-// ========================================
-// FULLSCREEN TOGGLE
-// ========================================
-
-toggleFullscreen() {
-    const button = document.getElementById('fullscreen-button');
-
-    // Check if already in fullscreen
-    const isFullscreen = document.fullscreenElement ||
-        document.webkitFullscreenElement ||
-        document.mozFullScreenElement ||
-        document.msFullscreenElement;
-
-    if (isFullscreen) {
-        // Exit fullscreen
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        }
-    } else {
-        // Enter fullscreen
-        const element = document.documentElement;
-
-        if (element.requestFullscreen) {
-            element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-        } else if (element.mozRequestFullScreen) {
-            element.mozRequestFullScreen();
-        } else if (element.msRequestFullscreen) {
-            element.msRequestFullscreen();
+    continueGame() {
+        const mostRecent = this.saveManager.getMostRecentSave();
+        if (mostRecent) {
+            console.log('🔄 Continue Game triggered. Restoring version ' + mostRecent.data.version);
+            this.saveManager.restoreGameState(mostRecent.data);
+            // REMOVED: restoreSprites() appears undefined/redundant as restoreGameState -> jumpToScene handles visuals
+            // this.restoreSprites();
+        } else {
+            this.saveManager.showSaveIndicator('No save data found', true);
         }
     }
 
-    // Update button text after a short delay (fullscreen API is async)
-    setTimeout(() => {
-        this.updateFullscreenButton();
-    }, 100);
+    // ========================================
+    // UI DELEGATION (Fix for index.html calls)
+    // ========================================
 
-    // DIZEE: Auto-close pause menu after toggling fullscreen
-    if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
+    confirmAction(confirmed) {
+        // Delegate to SaveLoadUI which manages the dialog logic
+        if (this.saveLoadUI) {
+            this.saveLoadUI.confirmAction(confirmed);
+        } else {
+            console.error('❌ SaveLoadUI not initialized, cannot handle confirmAction');
+            // Fallback: manually hide dialog if UI is broken
+            const dialog = document.getElementById('confirm-dialog');
+            if (dialog) dialog.classList.remove('active');
+        }
+    }
+
+    // ========================================
+    // FULLSCREEN TOGGLE
+    // ========================================
+
+    toggleFullscreen() {
+        const button = document.getElementById('fullscreen-button');
+
+        // Check if already in fullscreen
+        const isFullscreen = document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.mozFullScreenElement ||
+            document.msFullscreenElement;
+
+        if (isFullscreen) {
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        } else {
+            // Enter fullscreen
+            const element = document.documentElement;
+
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            }
+        }
+
+        // Update button text after a short delay (fullscreen API is async)
         setTimeout(() => {
-            this.saveLoadUI.hidePauseMenu();
-        }, 150);
-    }
-}
-
-updateFullscreenButton() {
-    this.uiController.updateFullscreenButton();
-}
-
-// ========================================
-// ESC HINT (DESKTOP USERS)
-// ========================================
-
-showEscHintBriefly() {
-    return this.sceneProgressionController.showEscHintBriefly();
-}
-
-// ========================================
-// BACKGROUND CROSSFADE SYSTEM
-// ========================================
-
-crossfadeBackground(newBackground) {
-    // Delegation stub - full implementation in SceneRenderer
-    this.sceneRenderer.crossfadeBackground(newBackground);
-}
-
-// ========================================
-// ROUTE-SPECIFIC DIALOGUE FRAME & UI THEMING
-// ========================================
-
-setDialogueFrame(routeName) {
-    return this.sceneProgressionController.setDialogueFrame(routeName);
-}
-
-clearDialogueFrame() {
-    this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
-    if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
-    if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
-    if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
-    if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
-}
-
-// ========================================
-// MOBILE DETECTION & INTERNAL BUBBLES
-// ========================================
-
-isMobilePortrait() {
-    // BELLE FIX: Check if user is forcing a display mode via settings
-    if (this.settingsManager && this.settingsManager.settings.displayMode === 'landscape') {
-        return false; // Forcing landscape, so NOT portrait
-    }
-    if (this.settingsManager && this.settingsManager.settings.displayMode === 'portrait') {
-        return true; // Forcing portrait
-    }
-
-    // Default behavior (Auto mode) - check actual device orientation
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    const isPortrait = window.innerHeight > window.innerWidth;
-    return isMobile && isPortrait;
-}
-
-createInternalBubble(text, characterPosition = 'center') {
-    // UNIVERSAL BUBBLE SYSTEM - Works on all platforms
-
-    // Remove any existing bubbles first (defensive cleanup)
-    const existingBubbles = document.querySelectorAll('.internal-bubble');
-    existingBubbles.forEach(bubble => bubble.remove());
-
-    // Create new bubble element
-    const bubble = document.createElement('div');
-    bubble.className = 'internal-bubble';
-
-    // Add position class based on which character is speaking/thinking
-    if (characterPosition === 'left') {
-        bubble.classList.add('left-character');
-    } else if (characterPosition === 'right') {
-        bubble.classList.add('right-character');
-    } else {
-        bubble.classList.add('center');
-    }
-
-    // Set text content
-    bubble.textContent = text;
-
-    // Add to DOM
-    document.body.appendChild(bubble);
-
-    // STORE REFERENCE - managed by scene lifecycle, not timer
-    this.currentBubble = bubble;
-
-    console.log(`Internal bubble created: ${text.substring(0, 30)}...`);
-}
-
-removeInternalBubble() {
-    // Remove tracked bubble
-    if (this.currentBubble && this.currentBubble.parentNode) {
-        this.currentBubble.remove();
-        this.currentBubble = null;
-    }
-
-    // Also clean up any orphaned bubbles (defensive)
-    const existingBubbles = document.querySelectorAll('.internal-bubble');
-    existingBubbles.forEach(bubble => bubble.remove());
-}
-
-determineCharacterPosition(sceneData) {
-    return this.spriteController.determineCharacterPosition(sceneData);
-}
-
-fixMobileSpritePositioning() {
-    // Force sprite positioning on mobile via inline styles
-    const isPortrait = window.innerHeight > window.innerWidth;
-    const dialogueHeight = isPortrait ? '30vh' : '35vh';
-
-    if (this.spriteLeft) {
-        this.spriteLeft.style.bottom = dialogueHeight;
-        this.spriteLeft.style.top = 'auto';
-        this.spriteLeft.style.height = 'auto';
-    }
-    if (this.spriteRight) {
-        this.spriteRight.style.bottom = dialogueHeight;
-        this.spriteRight.style.top = 'auto';
-        this.spriteRight.style.height = 'auto';
-    }
-}
-
-// ========================================
-// SKIP SYSTEM
-// Unlocked after completing any ending
-// ========================================
-
-unlockSkipFeature() {
-    localStorage.setItem('skipUnlocked', 'true');
-    this.state.set('unlocks.skipUnlocked', true);
-
-    // Show unlock notification
-    this.showSkipUnlockNotification();
-
-    // Make skip button visible
-    const skipButton = document.getElementById('skip-button');
-    if (skipButton) {
-        skipButton.style.display = 'block';
-    }
-
-    // ZEERAH: Mark feature as unread for notification dot
-    if (this.standaloneNotesViewer) {
-        this.standaloneNotesViewer.readStatus['feature_skip'] = false;
-        this.standaloneNotesViewer.saveReadStatus();
-        this.standaloneNotesViewer.updateNotificationDots();
-    }
-}
-
-showSkipUnlockNotification() {
-    this.uiController.showSkipUnlockNotification();
-}
-
-closeSkipUnlockNotification() {
-    this.uiController.closeSkipUnlockNotification();
-}
-
-showNotesUnlockNotification() {
-    this.uiController.showNotesUnlockNotification();
-}
-
-closeNotesUnlockNotification() {
-    this.uiController.closeNotesUnlockNotification();
-}
-
-showUnlockNotification() {
-    this.uiController.showToriGatchiUnlockNotification();
-}
-
-closeToriGatchiUnlockNotification() {
-    this.uiController.closeToriGatchiUnlockNotification();
-}
-
-toggleSkip() {
-    if (!this.state.get('unlocks.skipUnlocked')) return;
-
-    this.skipActive = !this.skipActive;
-
-    const skipButton = document.getElementById('skip-button');
-    if (skipButton) {
-        skipButton.classList.toggle('active', this.skipActive);
-    }
-
-    // Update skip indicator
-    const skipIndicator = this.uiController.skipIndicator;
-    if (skipIndicator) {
-        skipIndicator.style.display = this.skipActive ? 'block' : 'none';
-    }
-
-    console.log('Skip', this.skipActive ? 'ON' : 'OFF');
-
-    // If activating skip, advance immediately
-    if (this.skipActive && !this.typewriterActive && !this.choiceMenu.style.display.includes('flex')) {
-        this.advance();
-    }
-}
-
-markSceneAsRead(sceneId) {
-    if (sceneId) {
-        this.readScenes.add(sceneId);
-        localStorage.setItem('readScenes', JSON.stringify([...this.readScenes]));
-    }
-}
-
-isSceneRead(sceneId) {
-    return this.readScenes.has(sceneId);
-}
-
-shouldStopSkipping(scene) {
-    // Stop skipping if:
-    // 1. Scene has choices
-    if (scene.choices && scene.choices.length > 0) return true;
-
-    // 2. Scene hasn't been read before
-    if (scene.sceneId && !this.isSceneRead(scene.sceneId)) return true;
-
-    // 3. Scene is an ending
-    if (scene.sceneId && scene.sceneId.includes('ending')) return true;
-
-    return false;
-}
-
-// ========================================
-// LOADING TIPS
-// ========================================
-
-showRandomLoadingTip() {
-    this.uiController.showRandomLoadingTip();
-}
-
-proceedToMenu(hasError = false) {
-    console.log('GameEngine: Assets loaded, signaling splash screen...');
-
-    // Verify state before proceeding
-    if (!this.mainMenu) {
-        console.error('❌ Main menu element missing!');
-        return;
-    }
-
-    // New Logic: Signal index.html that we are ready
-    // The splash screen script coordinates the video ending + loading completion
-    if (window.signalLoadingReady) {
-        window.signalLoadingReady();
-    } else {
-        // Fallback if splash script is missing/broken
-        console.warn('⚠️ signalLoadingReady not found, forcing menu display');
-        this.showMainMenu();
-    }
-}
-
-// ========================================
-// TORIGATCHI EASTER EGG - THE REVERSE TRAPDOOR
-// DIZEE: Delegated to EasterEggController
-// ========================================
-
-activateEasterEggListener() {
-    this.easterEggController?.activateEasterEggListener();
-}
-
-// ========================================
-// KONAMI CODE: INSANE MODE ESCAPE
-// DIZEE: Delegated to EasterEggController
-// ========================================
-
-showKonamiInsaneEscape() {
-    this.easterEggController?.showKonamiInsaneEscape();
-}
-
-konamiEscapeInsane() {
-    console.log('🏃 Konami: Player chose to ESCAPE INSANE mode');
-
-    // Downgrade to INTENSE
-    this.settingsManager.setDifficulty('intense');
-
-    // Disable INSANE mode flag
-    if (this.gameState.flags) {
-        this.gameState.flags.insaneModeActive = false;
-    }
-
-    // Save progress
-    if (this.saveManager) {
-        this.saveManager.quickSave();
-    }
-
-    // Show notification
-    this.achievementManager.showNotification({
-        id: 'tactical_retreat',
-        icon: '🏃',
-        title: 'TACTICAL RETREAT',
-        description: 'Difficulty changed to INTENSE. Progress saved.',
-        rare: true
-    });
-
-    // Unlock achievement
-    if (this.achievementManager) {
-        this.achievementManager.unlock('tactical_retreat');
-    }
-
-    // Increment usage counter
-    localStorage.setItem('konamiInsaneUsedCount', '1');
-
-    // Haptic success
-    if (navigator.vibrate) navigator.vibrate([50, 100, 50, 100, 50]);
-
-    console.log('✅ Konami: Escaped INSANE mode successfully');
-}
-
-konamiStayInsane() {
-    console.log('💀 Konami: Player chose to STAY in INSANE mode');
-
-    // Apply 50% tether buff (reduce decay rate)
-    if (this.currentRoute && this.currentRoute.tetherSystem) {
-        const currentModifier = this.currentRoute.tetherSystem.difficultyModifier;
-        this.currentRoute.tetherSystem.difficultyModifier = currentModifier * 0.5; // 50% reduction
-        console.log(`💚 Konami: Tether decay reduced by 50% (modifier: ${currentModifier} -> ${currentModifier * 0.5})`);
-    }
-
-    // Show notification
-    this.achievementManager.showNotification({
-        id: 'masochist',
-        icon: '😈',
-        title: 'MASOCHIST',
-        description: 'Tether drain reduced 50%. The Old Man salutes you.',
-        rare: true
-    });
-
-    // Unlock achievement
-    if (this.achievementManager) {
-        this.achievementManager.unlock('masochist');
-    }
-
-    // Mark as used
-    localStorage.setItem('konamiInsaneUsedCount', '1');
-
-    // Haptic respect
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
-
-    console.log('✅ Konami: Stayed in INSANE mode with buff');
-}
-
-
-showTorigatchiEasterEgg() {
-    this.easterEggController?.showTorigatchiEasterEgg();
-}
-
-// ========================================
-// TORIGATCHI IFRAME OVERLAY
-// DIZEE: Delegated to EasterEggController
-// ========================================
-
-openTorigatchiIframe(url) {
-    this.easterEggController?.openTorigatchiIframe(url);
-}
-
-// ========================================
-// CAROUSEL UNLOCK (UV7 GLOW-UP)
-// Unlock Tori-Gatchi in carousel after route completion
-// ========================================
-
-unlockToriGatchiCarousel() {
-    if (this.menuCarousel) {
-        this.menuCarousel.unlockToriGatchi();
-    }
-}
-
-// ========================================
-// TORI'S FOURTH WALL BREAK - DIFFICULTY REACTIONS
-// When player changes tether difficulty mid-game, Tori FEELS it
-// ========================================
-
-triggerTetherReaction(changeType) {
-    // Only trigger if in Tori's route and gameplay active
-    if (this.currentRoute !== 'tori' || !this.gameplayActive) return;
-
-    const reactions = {
-        eased: [
-            "Oh… it's lighter. I can… breathe again. Thank you.",
-            "Did something change? I… feel less afraid.",
-            "Whatever you did… it's helping. I'm not slipping as fast.",
-            "The pressure… it's easing. You're protecting me, aren't you?"
-        ],
-        tightened: [
-            "…Wait. Something's wrong.",
-            "It's getting harder to hold on. Why… why now?",
-            "You're not testing me, are you? This isn't a punishment… right?",
-            "Don't— don't leave me again. Please.",
-            "I can feel it pulling tighter. What did you do?"
-        ]
-    };
-
-    const reactionLines = reactions[changeType];
-    if (!reactionLines) return;
-
-    // Pick random reaction
-    const reaction = reactionLines[Math.floor(Math.random() * reactionLines.length)];
-
-    // Visual effects
-    if (changeType === 'tightened') {
-        this.triggerScreenShake();
-        this.flickerSprite('tori', 100); // Flicker for 100ms
-    }
-
-    // Display reaction (interrupt current scene briefly)
-    this.showTetherReactionDialogue(reaction, changeType);
-}
-
-showTetherReactionDialogue(text, changeType) {
-    // Save current dialogue state
-    const savedState = {
-        character: this.characterName.textContent,
-        dialogue: this.dialogueText.textContent
-    };
-
-    // Show Tori's reaction with special styling
-    this.characterName.textContent = 'Tori';
-    this.characterName.style.color = changeType === 'eased' ? '#00ffaa' : '#ff6699';
-    this.dialogueText.textContent = text;
-    this.dialogueBox.style.border = changeType === 'eased'
-        ? '2px solid #00ffaa'
-        : '2px solid #ff6699';
-    this.dialogueBox.style.boxShadow = changeType === 'eased'
-        ? '0 0 20px rgba(0, 255, 170, 0.5)'
-        : '0 0 20px rgba(255, 102, 153, 0.5)';
-
-    // After 3 seconds, return to normal
-    setTimeout(() => {
-        // Reset styling
-        this.characterName.style.color = '';
-        this.dialogueBox.style.border = '';
-        this.dialogueBox.style.boxShadow = '';
-
-        // Resume previous state or continue
-        if (savedState.dialogue) {
-            this.characterName.textContent = savedState.character;
-            this.dialogueText.textContent = savedState.dialogue;
+            this.updateFullscreenButton();
+        }, 100);
+
+        // DIZEE: Auto-close pause menu after toggling fullscreen
+        if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
+            setTimeout(() => {
+                this.saveLoadUI.hidePauseMenu();
+            }, 150);
         }
-    }, 3000);
-}
+    }
 
-triggerScreenShake() {
-    const gameView = this.gameView || document.getElementById('game-view');
-    if (!gameView) return;
+    updateFullscreenButton() {
+        this.uiController.updateFullscreenButton();
+    }
 
-    gameView.style.animation = 'screenShake 0.3s ease-in-out';
-    setTimeout(() => {
-        gameView.style.animation = '';
-    }, 300);
-}
+    // ========================================
+    // ESC HINT (DESKTOP USERS)
+    // ========================================
 
-flickerSprite(spriteName, duration) {
-    const sprite = document.getElementById(`character-right`); // Tori is usually on the right
-    if (!sprite) return;
+    showEscHintBriefly() {
+        return this.sceneProgressionController.showEscHintBriefly();
+    }
 
-    const originalOpacity = sprite.style.opacity || '1';
-    sprite.style.opacity = '0';
-    setTimeout(() => {
-        sprite.style.opacity = originalOpacity;
-    }, duration);
-}
+    // ========================================
+    // BACKGROUND CROSSFADE SYSTEM
+    // ========================================
 
-// ========================================
-// SECRET CODES REDEMPTION SYSTEM
-// ========================================
+    crossfadeBackground(newBackground) {
+        // Delegation stub - full implementation in SceneRenderer
+        this.sceneRenderer.crossfadeBackground(newBackground);
+    }
 
-redeemSecretCode(code) {
-    // DIZEE: Delegate to SecretCodesManager 🖤
-    return this.secretCodesManager.redeemCode(code);
-}
+    // ========================================
+    // ROUTE-SPECIFIC DIALOGUE FRAME & UI THEMING
+    // ========================================
 
+    setDialogueFrame(routeName) {
+        return this.sceneProgressionController.setDialogueFrame(routeName);
+    }
 
-// ========================================
-// CODE REWARD FUNCTIONS (PLACEHOLDERS)
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    clearDialogueFrame() {
+        this.dialogueBox.classList.remove('ronnie-route', 'tori-route', 'prologue-style', 'epilogue-style');
+        if (this.pauseButton) this.pauseButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.pauseContent) this.pauseContent.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesButton) this.notesButton.classList.remove('ronnie-route', 'tori-route');
+        if (this.notesViewer) this.notesViewer.classList.remove('ronnie-route', 'tori-route');
+    }
 
-// showAlwaysCompilation already delegated at line 564
+    // ========================================
+    // MOBILE DETECTION & INTERNAL BUBBLES
+    // ========================================
 
-// ========================================
-// UV7 CREW BIOS OVERLAY
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    isMobilePortrait() {
+        // BELLE FIX: Check if user is forcing a display mode via settings
+        if (this.settingsManager && this.settingsManager.settings.displayMode === 'landscape') {
+            return false; // Forcing landscape, so NOT portrait
+        }
+        if (this.settingsManager && this.settingsManager.settings.displayMode === 'portrait') {
+            return true; // Forcing portrait
+        }
 
-showUV7CrewBios() {
-    this.easterEggController?.showUV7CrewBios();
-}
+        // Default behavior (Auto mode) - check actual device orientation
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isPortrait = window.innerHeight > window.innerWidth;
+        return isMobile && isPortrait;
+    }
 
-// ========================================
-// UNLOCK METHODS
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    createInternalBubble(text, characterPosition = 'center') {
+        // UNIVERSAL BUBBLE SYSTEM - Works on all platforms
 
-unlockDevCommentary() {
-    this.easterEggController?.unlockDevCommentary();
-}
+        // Remove any existing bubbles first (defensive cleanup)
+        const existingBubbles = document.querySelectorAll('.internal-bubble');
+        existingBubbles.forEach(bubble => bubble.remove());
 
-unlockDizee() {
-    this.easterEggController?.unlockDizee();
-}
+        // Create new bubble element
+        const bubble = document.createElement('div');
+        bubble.className = 'internal-bubble';
 
-// ========================================
-// LOOP TIMELINE (BOOTSTRAP)
-// DIZEE: Delegated to EasterEggController
-// ========================================
+        // Add position class based on which character is speaking/thinking
+        if (characterPosition === 'left') {
+            bubble.classList.add('left-character');
+        } else if (characterPosition === 'right') {
+            bubble.classList.add('right-character');
+        } else {
+            bubble.classList.add('center');
+        }
 
-showLoopTimeline() {
-    this.easterEggController?.showLoopTimeline();
-}
+        // Set text content
+        bubble.textContent = text;
 
-generateTimelineNodes() {
-    return this.easterEggController?.generateTimelineNodes() || '';
-}
+        // Add to DOM
+        document.body.appendChild(bubble);
 
-getFailureReason(version) {
-    return this.easterEggController?.getFailureReason(version) || 'Unknown';
-}
+        // STORE REFERENCE - managed by scene lifecycle, not timer
+        this.currentBubble = bubble;
 
-getAttemptDuration(version) {
-    return this.easterEggController?.getAttemptDuration(version) || '? minutes';
-}
+        console.log(`Internal bubble created: ${text.substring(0, 30)}...`);
+    }
 
-getLesson(version) {
-    return this.easterEggController?.getLesson(version) || 'Keep trying';
-}
+    removeInternalBubble() {
+        // Remove tracked bubble
+        if (this.currentBubble && this.currentBubble.parentNode) {
+            this.currentBubble.remove();
+            this.currentBubble = null;
+        }
 
-closeBootstrap() {
-    this.uiController?.closeBootstrap();
-}
+        // Also clean up any orphaned bubbles (defensive)
+        const existingBubbles = document.querySelectorAll('.internal-bubble');
+        existingBubbles.forEach(bubble => bubble.remove());
+    }
 
-// ========================================
-// ECHO COMPILATION
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    determineCharacterPosition(sceneData) {
+        return this.spriteController.determineCharacterPosition(sceneData);
+    }
 
-showEchoCompilation() {
-    this.easterEggController?.showEchoCompilation();
-}
+    fixMobileSpritePositioning() {
+        // Force sprite positioning on mobile via inline styles
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const dialogueHeight = isPortrait ? '30vh' : '35vh';
 
-setupEchoTabs() {
-    this.easterEggController?.setupEchoTabs();
-}
+        if (this.spriteLeft) {
+            this.spriteLeft.style.bottom = dialogueHeight;
+            this.spriteLeft.style.top = 'auto';
+            this.spriteLeft.style.height = 'auto';
+        }
+        if (this.spriteRight) {
+            this.spriteRight.style.bottom = dialogueHeight;
+            this.spriteRight.style.top = 'auto';
+            this.spriteRight.style.height = 'auto';
+        }
+    }
 
-loadEchoAct(act) {
-    this.easterEggController?.loadEchoAct(act);
-}
+    // ========================================
+    // SKIP SYSTEM
+    // Unlocked after completing any ending
+    // ========================================
 
-getEchoData() {
-    return this.easterEggController?.getEchoData() || {};
-}
+    unlockSkipFeature() {
+        localStorage.setItem('skipUnlocked', 'true');
+        this.state.set('unlocks.skipUnlocked', true);
 
-closeEchoCompilation() {
-    this.uiController?.closeEchoCompilation();
-}
+        // Show unlock notification
+        this.showSkipUnlockNotification();
 
-// ========================================
-// 848 TRUE ATTEMPT NUMBER OVERLAY
-// DIZEE: Delegated to EasterEggController
-// ========================================
+        // Make skip button visible
+        const skipButton = document.getElementById('skip-button');
+        if (skipButton) {
+            skipButton.style.display = 'block';
+        }
 
-showTrueAttemptNumber() {
-    this.easterEggController?.showTrueAttemptNumber(this.loopVersion);
-}
+        // ZEERAH: Mark feature as unread for notification dot
+        if (this.standaloneNotesViewer) {
+            this.standaloneNotesViewer.readStatus['feature_skip'] = false;
+            this.standaloneNotesViewer.saveReadStatus();
+            this.standaloneNotesViewer.updateNotificationDots();
+        }
+    }
 
-// ========================================
-// SECRET CODE UNLOCK OVERLAY
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    showSkipUnlockNotification() {
+        this.uiController.showSkipUnlockNotification();
+    }
 
-showUnlockOverlay(title, content, type = 'code') {
-    this.easterEggController?.showUnlockOverlay(title, content, type);
-}
+    closeSkipUnlockNotification() {
+        this.uiController.closeSkipUnlockNotification();
+    }
 
-// ========================================
-// DEV COMMENTARY OVERLAY (DIZEE POLISH)
-// DIZEE: Delegated to EasterEggController
-// ========================================
+    showNotesUnlockNotification() {
+        this.uiController.showNotesUnlockNotification();
+    }
 
-showCommentaryOverlay(title, content, scene) {
-    this.easterEggController?.showCommentaryOverlay(title, content, scene);
-}
+    closeNotesUnlockNotification() {
+        this.uiController.closeNotesUnlockNotification();
+    }
 
-// ========================================
-// WARNING OVERLAY (replaces browser alerts)
-// ========================================
+    showUnlockNotification() {
+        this.uiController.showToriGatchiUnlockNotification();
+    }
 
-showWarningOverlay(title, message) {
-    // Delegation stub - full implementation in UIController
-    this.uiController.showWarningOverlay(title, message);
-}
+    closeToriGatchiUnlockNotification() {
+        this.uiController.closeToriGatchiUnlockNotification();
+    }
 
-// ========================================
-// INSANE MODE: HOLD ON GHOST BUTTON
-// ========================================
+    toggleSkip() {
+        if (!this.state.get('unlocks.skipUnlocked')) return;
 
-makeHoldOnGhost() {
-    return this.sceneProgressionController.makeHoldOnGhost();
-}
-
-deactivateInsaneMode() {
-    return this.insaneVisualsController.deactivateInsaneMode();
-}
-
-// ========================================
-// INSANE MODE: CAGE OVERLAY
-// ========================================
-
-showInsaneCageOverlay(callback) {
-    return this.insaneVisualsController.showInsaneCageOverlay(callback);
-}
-
-triggerInsaneVisuals() {
-    return this.insaneVisualsController.triggerInsaneVisuals();
-}
-
-toggleUI() {
-    // Toggle visibility of UI elements during gameplay
-    // SOLID: Using StateManager for UI state
-    const isHidden = this.state.get('ui.hidden');
-
-    if (!isHidden) {
-        // Hide UI elements
-        this.dialogueBox.style.opacity = '0';
-        this.dialogueBox.style.pointerEvents = 'none';
-
-        const pauseButton = document.getElementById('pause-button');
-        if (pauseButton) pauseButton.style.opacity = '0';
-
-        const backlogButton = document.getElementById('backlog-button');
-        if (backlogButton) backlogButton.style.opacity = '0';
+        this.skipActive = !this.skipActive;
 
         const skipButton = document.getElementById('skip-button');
-        if (skipButton) skipButton.style.opacity = '0';
-
-        const tetherUI = document.getElementById('tether-ui');
-        if (tetherUI && tetherUI.style.display === 'block') {
-            tetherUI.style.opacity = '0';
+        if (skipButton) {
+            skipButton.classList.toggle('active', this.skipActive);
         }
 
-        const notesButton = document.getElementById('notes-button');
-        if (notesButton && notesButton.style.display === 'block') {
-            notesButton.style.opacity = '0';
+        // Update skip indicator
+        const skipIndicator = this.uiController.skipIndicator;
+        if (skipIndicator) {
+            skipIndicator.style.display = this.skipActive ? 'block' : 'none';
         }
 
-        this.state.set('ui.hidden', true);
-    } else {
-        // Show UI elements
-        this.dialogueBox.style.opacity = '1';
-        this.dialogueBox.style.pointerEvents = 'auto';
+        console.log('Skip', this.skipActive ? 'ON' : 'OFF');
 
-        const pauseButton = document.getElementById('pause-button');
-        if (pauseButton) pauseButton.style.opacity = '1';
+        // If activating skip, advance immediately
+        if (this.skipActive && !this.typewriterActive && !this.choiceMenu.style.display.includes('flex')) {
+            this.advance();
+        }
+    }
 
-        const backlogButton = document.getElementById('backlog-button');
-        if (backlogButton) backlogButton.style.opacity = '1';
+    markSceneAsRead(sceneId) {
+        if (sceneId) {
+            this.readScenes.add(sceneId);
+            localStorage.setItem('readScenes', JSON.stringify([...this.readScenes]));
+        }
+    }
 
-        const skipButton = document.getElementById('skip-button');
-        if (skipButton) skipButton.style.opacity = '1';
+    isSceneRead(sceneId) {
+        return this.readScenes.has(sceneId);
+    }
 
-        const tetherUI = document.getElementById('tether-ui');
-        if (tetherUI && tetherUI.style.display === 'block') {
-            tetherUI.style.opacity = '1';
+    shouldStopSkipping(scene) {
+        // Stop skipping if:
+        // 1. Scene has choices
+        if (scene.choices && scene.choices.length > 0) return true;
+
+        // 2. Scene hasn't been read before
+        if (scene.sceneId && !this.isSceneRead(scene.sceneId)) return true;
+
+        // 3. Scene is an ending
+        if (scene.sceneId && scene.sceneId.includes('ending')) return true;
+
+        return false;
+    }
+
+    // ========================================
+    // LOADING TIPS
+    // ========================================
+
+    showRandomLoadingTip() {
+        this.uiController.showRandomLoadingTip();
+    }
+
+    proceedToMenu(hasError = false) {
+        console.log('GameEngine: Assets loaded, signaling splash screen...');
+
+        // Verify state before proceeding
+        if (!this.mainMenu) {
+            console.error('❌ Main menu element missing!');
+            return;
         }
 
-        const notesButton = document.getElementById('notes-button');
-        if (notesButton && notesButton.style.display === 'block') {
-            notesButton.style.opacity = '1';
+        // New Logic: Signal index.html that we are ready
+        // The splash screen script coordinates the video ending + loading completion
+        if (window.signalLoadingReady) {
+            window.signalLoadingReady();
+        } else {
+            // Fallback if splash script is missing/broken
+            console.warn('⚠️ signalLoadingReady not found, forcing menu display');
+            this.showMainMenu();
+        }
+    }
+
+    // ========================================
+    // TORIGATCHI EASTER EGG - THE REVERSE TRAPDOOR
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    activateEasterEggListener() {
+        this.easterEggController?.activateEasterEggListener();
+    }
+
+    // ========================================
+    // KONAMI CODE: INSANE MODE ESCAPE
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showKonamiInsaneEscape() {
+        this.easterEggController?.showKonamiInsaneEscape();
+    }
+
+    konamiEscapeInsane() {
+        console.log('🏃 Konami: Player chose to ESCAPE INSANE mode');
+
+        // Downgrade to INTENSE
+        this.settingsManager.setDifficulty('intense');
+
+        // Disable INSANE mode flag
+        if (this.gameState.flags) {
+            this.gameState.flags.insaneModeActive = false;
         }
 
-        this.state.set('ui.hidden', false);
+        // Save progress
+        if (this.saveManager) {
+            this.saveManager.quickSave();
+        }
+
+        // Show notification
+        this.achievementManager.showNotification({
+            id: 'tactical_retreat',
+            icon: '🏃',
+            title: 'TACTICAL RETREAT',
+            description: 'Difficulty changed to INTENSE. Progress saved.',
+            rare: true
+        });
+
+        // Unlock achievement
+        if (this.achievementManager) {
+            this.achievementManager.unlock('tactical_retreat');
+        }
+
+        // Increment usage counter
+        localStorage.setItem('konamiInsaneUsedCount', '1');
+
+        // Haptic success
+        if (navigator.vibrate) navigator.vibrate([50, 100, 50, 100, 50]);
+
+        console.log('✅ Konami: Escaped INSANE mode successfully');
     }
 
-    // DIZEE POLISH: Also toggle notification shade system
-    if (this.notificationShade) {
-        this.notificationShade.toggleScreenshotMode();
-    }
-}
+    konamiStayInsane() {
+        console.log('💀 Konami: Player chose to STAY in INSANE mode');
 
+        // Apply 50% tether buff (reduce decay rate)
+        if (this.currentRoute && this.currentRoute.tetherSystem) {
+            const currentModifier = this.currentRoute.tetherSystem.difficultyModifier;
+            this.currentRoute.tetherSystem.difficultyModifier = currentModifier * 0.5; // 50% reduction
+            console.log(`💚 Konami: Tether decay reduced by 50% (modifier: ${currentModifier} -> ${currentModifier * 0.5})`);
+        }
 
-// ========================================
-// CODE REWARD IMPLEMENTATIONS
-// DIZEE: Delegated to EasterEggController
-// ========================================
+        // Show notification
+        this.achievementManager.showNotification({
+            id: 'masochist',
+            icon: '😈',
+            title: 'MASOCHIST',
+            description: 'Tether drain reduced 50%. The Old Man salutes you.',
+            rare: true
+        });
 
-unlockTorigatchi() {
-    this.easterEggController?.unlockTorigatchi();
-}
+        // Unlock achievement
+        if (this.achievementManager) {
+            this.achievementManager.unlock('masochist');
+        }
 
-unlockRonniegatchi() {
-    this.easterEggController?.unlockRonniegatchi();
-}
+        // Mark as used
+        localStorage.setItem('konamiInsaneUsedCount', '1');
 
-// ========================================
-// RONNIEGATCHI INSPIRATION OVERLAY
-// DIZEE: Delegated to EasterEggController
-// ========================================
+        // Haptic respect
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 200]);
 
-showRonniegatchiInspiration() {
-    this.easterEggController?.showRonniegatchiInspiration();
-}
-
-// ========================================
-// UNLOCK METHODS (BULK EXTRACTION)
-// DIZEE: Delegated to EasterEggController
-// ========================================
-
-unlockAlwaysCompilation() {
-    this.easterEggController?.unlockAlwaysCompilation();
-}
-
-unlockLoopTimeline() {
-    this.easterEggController?.unlockLoopTimeline();
-}
-
-unlockEchoCompilation() {
-    this.easterEggController?.unlockEchoCompilation();
-}
-
-unlockExtendedCredits() {
-    this.easterEggController?.unlockExtendedCredits();
-}
-
-unlockTrueCounter() {
-    this.easterEggController?.unlockTrueCounter();
-}
-
-// ========================================
-// DIZEE: GLOBAL KEYBOARD NAVIGATION SYSTEM
-// DIZEE: Delegated to KeyboardController
-// ========================================
-
-initializeKeyboardNavigation() {
-    this.keyboardController?.initialize();
-}
-
-showNotification(message, duration = 2000) {
-    this.keyboardController?.showNotification(message, duration);
-}
-
-// ========================================
-// DIZEE: BOOTSTRAP TIMELINE INTEGRATION
-// ========================================
-
-recordEndingAttempt() {
-    // Record this attempt to the bootstrap timeline
-    const endingType = this.pendingEndingType || 'bad';
-    const route = this.currentRoute?.name || 'unknown';
-
-    // Determine result (succeeded only if true ending)
-    const result = endingType === 'true' ? 'succeeded' : 'failed';
-
-    // Infer failure reason
-    const reason = this.bootstrapTracker.inferFailureReason(
-        endingType,
-        route,
-        this.gameState
-    );
-
-    // Record to timeline
-    this.bootstrapTracker.recordAttempt(result, reason, route, endingType);
-
-    console.log(`📜 Recorded attempt to bootstrap timeline: ${result} - ${reason}`);
-}
-
-// ========================================
-// ROUTE SELECTOR (UV7 GLOW-UP)
-// ========================================
-
-initRouteSelector() {
-    if (typeof RouteSelector === 'undefined') {
-        console.warn('⚠️ RouteSelector class not found');
-        return;
+        console.log('✅ Konami: Stayed in INSANE mode with buff');
     }
 
-    // Only create a new instance if one doesn't exist
-    // This prevents duplicate event listeners being attached
-    if (this.routeSelector) {
-        console.log('🎮 RouteSelector already exists, reusing...');
-        return;
+
+    showTorigatchiEasterEgg() {
+        this.easterEggController?.showTorigatchiEasterEgg();
     }
 
-    console.log('🎮 Creating RouteSelector instance...');
-    this.routeSelector = new RouteSelector(this);
-}
+    // ========================================
+    // TORIGATCHI IFRAME OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
 
-startSelectedRoute() {
-    if (this.routeSelector) {
-        this.routeSelector.startSelectedRoute();
+    openTorigatchiIframe(url) {
+        this.easterEggController?.openTorigatchiIframe(url);
     }
-}
+
+    // ========================================
+    // CAROUSEL UNLOCK (UV7 GLOW-UP)
+    // Unlock Tori-Gatchi in carousel after route completion
+    // ========================================
+
+    unlockToriGatchiCarousel() {
+        if (this.menuCarousel) {
+            this.menuCarousel.unlockToriGatchi();
+        }
+    }
+
+    // ========================================
+    // TORI'S FOURTH WALL BREAK - DIFFICULTY REACTIONS
+    // When player changes tether difficulty mid-game, Tori FEELS it
+    // ========================================
+
+    triggerTetherReaction(changeType) {
+        // Only trigger if in Tori's route and gameplay active
+        if (this.currentRoute !== 'tori' || !this.gameplayActive) return;
+
+        const reactions = {
+            eased: [
+                "Oh… it's lighter. I can… breathe again. Thank you.",
+                "Did something change? I… feel less afraid.",
+                "Whatever you did… it's helping. I'm not slipping as fast.",
+                "The pressure… it's easing. You're protecting me, aren't you?"
+            ],
+            tightened: [
+                "…Wait. Something's wrong.",
+                "It's getting harder to hold on. Why… why now?",
+                "You're not testing me, are you? This isn't a punishment… right?",
+                "Don't— don't leave me again. Please.",
+                "I can feel it pulling tighter. What did you do?"
+            ]
+        };
+
+        const reactionLines = reactions[changeType];
+        if (!reactionLines) return;
+
+        // Pick random reaction
+        const reaction = reactionLines[Math.floor(Math.random() * reactionLines.length)];
+
+        // Visual effects
+        if (changeType === 'tightened') {
+            this.triggerScreenShake();
+            this.flickerSprite('tori', 100); // Flicker for 100ms
+        }
+
+        // Display reaction (interrupt current scene briefly)
+        this.showTetherReactionDialogue(reaction, changeType);
+    }
+
+    showTetherReactionDialogue(text, changeType) {
+        // Save current dialogue state
+        const savedState = {
+            character: this.characterName.textContent,
+            dialogue: this.dialogueText.textContent
+        };
+
+        // Show Tori's reaction with special styling
+        this.characterName.textContent = 'Tori';
+        this.characterName.style.color = changeType === 'eased' ? '#00ffaa' : '#ff6699';
+        this.dialogueText.textContent = text;
+        this.dialogueBox.style.border = changeType === 'eased'
+            ? '2px solid #00ffaa'
+            : '2px solid #ff6699';
+        this.dialogueBox.style.boxShadow = changeType === 'eased'
+            ? '0 0 20px rgba(0, 255, 170, 0.5)'
+            : '0 0 20px rgba(255, 102, 153, 0.5)';
+
+        // After 3 seconds, return to normal
+        setTimeout(() => {
+            // Reset styling
+            this.characterName.style.color = '';
+            this.dialogueBox.style.border = '';
+            this.dialogueBox.style.boxShadow = '';
+
+            // Resume previous state or continue
+            if (savedState.dialogue) {
+                this.characterName.textContent = savedState.character;
+                this.dialogueText.textContent = savedState.dialogue;
+            }
+        }, 3000);
+    }
+
+    triggerScreenShake() {
+        const gameView = this.gameView || document.getElementById('game-view');
+        if (!gameView) return;
+
+        gameView.style.animation = 'screenShake 0.3s ease-in-out';
+        setTimeout(() => {
+            gameView.style.animation = '';
+        }, 300);
+    }
+
+    flickerSprite(spriteName, duration) {
+        const sprite = document.getElementById(`character-right`); // Tori is usually on the right
+        if (!sprite) return;
+
+        const originalOpacity = sprite.style.opacity || '1';
+        sprite.style.opacity = '0';
+        setTimeout(() => {
+            sprite.style.opacity = originalOpacity;
+        }, duration);
+    }
+
+    // ========================================
+    // SECRET CODES REDEMPTION SYSTEM
+    // ========================================
+
+    redeemSecretCode(code) {
+        // DIZEE: Delegate to SecretCodesManager 🖤
+        return this.secretCodesManager.redeemCode(code);
+    }
+
+
+    // ========================================
+    // CODE REWARD FUNCTIONS (PLACEHOLDERS)
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    // showAlwaysCompilation already delegated at line 564
+
+    // ========================================
+    // UV7 CREW BIOS OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showUV7CrewBios() {
+        this.easterEggController?.showUV7CrewBios();
+    }
+
+    // ========================================
+    // UNLOCK METHODS
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    unlockDevCommentary() {
+        this.easterEggController?.unlockDevCommentary();
+    }
+
+    unlockDizee() {
+        this.easterEggController?.unlockDizee();
+    }
+
+    // ========================================
+    // LOOP TIMELINE (BOOTSTRAP)
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showLoopTimeline() {
+        this.easterEggController?.showLoopTimeline();
+    }
+
+    generateTimelineNodes() {
+        return this.easterEggController?.generateTimelineNodes() || '';
+    }
+
+    getFailureReason(version) {
+        return this.easterEggController?.getFailureReason(version) || 'Unknown';
+    }
+
+    getAttemptDuration(version) {
+        return this.easterEggController?.getAttemptDuration(version) || '? minutes';
+    }
+
+    getLesson(version) {
+        return this.easterEggController?.getLesson(version) || 'Keep trying';
+    }
+
+    closeBootstrap() {
+        this.uiController?.closeBootstrap();
+    }
+
+    // ========================================
+    // ECHO COMPILATION
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showEchoCompilation() {
+        this.easterEggController?.showEchoCompilation();
+    }
+
+    setupEchoTabs() {
+        this.easterEggController?.setupEchoTabs();
+    }
+
+    loadEchoAct(act) {
+        this.easterEggController?.loadEchoAct(act);
+    }
+
+    getEchoData() {
+        return this.easterEggController?.getEchoData() || {};
+    }
+
+    closeEchoCompilation() {
+        this.uiController?.closeEchoCompilation();
+    }
+
+    // ========================================
+    // 848 TRUE ATTEMPT NUMBER OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showTrueAttemptNumber() {
+        this.easterEggController?.showTrueAttemptNumber(this.loopVersion);
+    }
+
+    // ========================================
+    // SECRET CODE UNLOCK OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showUnlockOverlay(title, content, type = 'code') {
+        this.easterEggController?.showUnlockOverlay(title, content, type);
+    }
+
+    // ========================================
+    // DEV COMMENTARY OVERLAY (DIZEE POLISH)
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showCommentaryOverlay(title, content, scene) {
+        this.easterEggController?.showCommentaryOverlay(title, content, scene);
+    }
+
+    // ========================================
+    // WARNING OVERLAY (replaces browser alerts)
+    // ========================================
+
+    showWarningOverlay(title, message) {
+        // Delegation stub - full implementation in UIController
+        this.uiController.showWarningOverlay(title, message);
+    }
+
+    // ========================================
+    // INSANE MODE: HOLD ON GHOST BUTTON
+    // ========================================
+
+    makeHoldOnGhost() {
+        return this.sceneProgressionController.makeHoldOnGhost();
+    }
+
+    deactivateInsaneMode() {
+        return this.insaneVisualsController.deactivateInsaneMode();
+    }
+
+    // ========================================
+    // INSANE MODE: CAGE OVERLAY
+    // ========================================
+
+    showInsaneCageOverlay(callback) {
+        return this.insaneVisualsController.showInsaneCageOverlay(callback);
+    }
+
+    triggerInsaneVisuals() {
+        return this.insaneVisualsController.triggerInsaneVisuals();
+    }
+
+    toggleUI() {
+        // Toggle visibility of UI elements during gameplay
+        // SOLID: Using StateManager for UI state
+        const isHidden = this.state.get('ui.hidden');
+
+        if (!isHidden) {
+            // Hide UI elements
+            this.dialogueBox.style.opacity = '0';
+            this.dialogueBox.style.pointerEvents = 'none';
+
+            const pauseButton = document.getElementById('pause-button');
+            if (pauseButton) pauseButton.style.opacity = '0';
+
+            const backlogButton = document.getElementById('backlog-button');
+            if (backlogButton) backlogButton.style.opacity = '0';
+
+            const skipButton = document.getElementById('skip-button');
+            if (skipButton) skipButton.style.opacity = '0';
+
+            const tetherUI = document.getElementById('tether-ui');
+            if (tetherUI && tetherUI.style.display === 'block') {
+                tetherUI.style.opacity = '0';
+            }
+
+            const notesButton = document.getElementById('notes-button');
+            if (notesButton && notesButton.style.display === 'block') {
+                notesButton.style.opacity = '0';
+            }
+
+            this.state.set('ui.hidden', true);
+        } else {
+            // Show UI elements
+            this.dialogueBox.style.opacity = '1';
+            this.dialogueBox.style.pointerEvents = 'auto';
+
+            const pauseButton = document.getElementById('pause-button');
+            if (pauseButton) pauseButton.style.opacity = '1';
+
+            const backlogButton = document.getElementById('backlog-button');
+            if (backlogButton) backlogButton.style.opacity = '1';
+
+            const skipButton = document.getElementById('skip-button');
+            if (skipButton) skipButton.style.opacity = '1';
+
+            const tetherUI = document.getElementById('tether-ui');
+            if (tetherUI && tetherUI.style.display === 'block') {
+                tetherUI.style.opacity = '1';
+            }
+
+            const notesButton = document.getElementById('notes-button');
+            if (notesButton && notesButton.style.display === 'block') {
+                notesButton.style.opacity = '1';
+            }
+
+            this.state.set('ui.hidden', false);
+        }
+
+        // DIZEE POLISH: Also toggle notification shade system
+        if (this.notificationShade) {
+            this.notificationShade.toggleScreenshotMode();
+        }
+    }
+
+
+    // ========================================
+    // CODE REWARD IMPLEMENTATIONS
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    unlockTorigatchi() {
+        this.easterEggController?.unlockTorigatchi();
+    }
+
+    unlockRonniegatchi() {
+        this.easterEggController?.unlockRonniegatchi();
+    }
+
+    // ========================================
+    // RONNIEGATCHI INSPIRATION OVERLAY
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    showRonniegatchiInspiration() {
+        this.easterEggController?.showRonniegatchiInspiration();
+    }
+
+    // ========================================
+    // UNLOCK METHODS (BULK EXTRACTION)
+    // DIZEE: Delegated to EasterEggController
+    // ========================================
+
+    unlockAlwaysCompilation() {
+        this.easterEggController?.unlockAlwaysCompilation();
+    }
+
+    unlockLoopTimeline() {
+        this.easterEggController?.unlockLoopTimeline();
+    }
+
+    unlockEchoCompilation() {
+        this.easterEggController?.unlockEchoCompilation();
+    }
+
+    unlockExtendedCredits() {
+        this.easterEggController?.unlockExtendedCredits();
+    }
+
+    unlockTrueCounter() {
+        this.easterEggController?.unlockTrueCounter();
+    }
+
+    // ========================================
+    // DIZEE: GLOBAL KEYBOARD NAVIGATION SYSTEM
+    // DIZEE: Delegated to KeyboardController
+    // ========================================
+
+    initializeKeyboardNavigation() {
+        this.keyboardController?.initialize();
+    }
+
+    showNotification(message, duration = 2000) {
+        this.keyboardController?.showNotification(message, duration);
+    }
+
+    // ========================================
+    // DIZEE: BOOTSTRAP TIMELINE INTEGRATION
+    // ========================================
+
+    recordEndingAttempt() {
+        // Record this attempt to the bootstrap timeline
+        const endingType = this.pendingEndingType || 'bad';
+        const route = this.currentRoute?.name || 'unknown';
+
+        // Determine result (succeeded only if true ending)
+        const result = endingType === 'true' ? 'succeeded' : 'failed';
+
+        // Infer failure reason
+        const reason = this.bootstrapTracker.inferFailureReason(
+            endingType,
+            route,
+            this.gameState
+        );
+
+        // Record to timeline
+        this.bootstrapTracker.recordAttempt(result, reason, route, endingType);
+
+        console.log(`📜 Recorded attempt to bootstrap timeline: ${result} - ${reason}`);
+    }
+
+    // ========================================
+    // ROUTE SELECTOR (UV7 GLOW-UP)
+    // ========================================
+
+    initRouteSelector() {
+        if (typeof RouteSelector === 'undefined') {
+            console.warn('⚠️ RouteSelector class not found');
+            return;
+        }
+
+        // Only create a new instance if one doesn't exist
+        // This prevents duplicate event listeners being attached
+        if (this.routeSelector) {
+            console.log('🎮 RouteSelector already exists, reusing...');
+            return;
+        }
+
+        console.log('🎮 Creating RouteSelector instance...');
+        this.routeSelector = new RouteSelector(this);
+    }
+
+    startSelectedRoute() {
+        if (this.routeSelector) {
+            this.routeSelector.startSelectedRoute();
+        }
+    }
 
 
     // ========================================
@@ -3738,49 +3735,49 @@ startSelectedRoute() {
     // ========================================
 
     get skipUnlocked() {
-    return this.state.get('unlocks.skipUnlocked');
-}
+        return this.state.get('unlocks.skipUnlocked');
+    }
 
     set skipUnlocked(value) {
-    this.state.set('unlocks.skipUnlocked', value);
-    localStorage.setItem('skipUnlocked', value.toString());
-}
+        this.state.set('unlocks.skipUnlocked', value);
+        localStorage.setItem('skipUnlocked', value.toString());
+    }
 
     get skipPrologueUnlocked() {
-    return this.state.get('unlocks.skipPrologueUnlocked');
-}
+        return this.state.get('unlocks.skipPrologueUnlocked');
+    }
 
     set skipPrologueUnlocked(value) {
-    this.state.set('unlocks.skipPrologueUnlocked', value);
-    localStorage.setItem('skipPrologueUnlocked', value.toString());
-}
+        this.state.set('unlocks.skipPrologueUnlocked', value);
+        localStorage.setItem('skipPrologueUnlocked', value.toString());
+    }
 
     get ronnieNotesUnlocked() {
-    return this.state.get('unlocks.ronnieNotesUnlocked');
-}
+        return this.state.get('unlocks.ronnieNotesUnlocked');
+    }
 
     set ronnieNotesUnlocked(value) {
-    this.state.set('unlocks.ronnieNotesUnlocked', value);
-    localStorage.setItem('ronnieNotesUnlocked', value.toString());
-}
+        this.state.set('unlocks.ronnieNotesUnlocked', value);
+        localStorage.setItem('ronnieNotesUnlocked', value.toString());
+    }
 
     get loopVersion() {
-    return this.state.get('game.loopVersion');
-}
+        return this.state.get('game.loopVersion');
+    }
 
     set loopVersion(value) {
-    this.state.set('game.loopVersion', value);
-    localStorage.setItem('loopVersion', value.toString());
-}
+        this.state.set('game.loopVersion', value);
+        localStorage.setItem('loopVersion', value.toString());
+    }
 
     get loopStatus() {
-    return this.state.get('game.loopStatus');
-}
+        return this.state.get('game.loopStatus');
+    }
 
     set loopStatus(value) {
-    this.state.set('game.loopStatus', value);
-    localStorage.setItem('loopStatus', value);
-}
+        this.state.set('game.loopStatus', value);
+        localStorage.setItem('loopStatus', value);
+    }
 }
 
 // ========================================
