@@ -346,6 +346,44 @@ class SettingsManager {
             });
         }
 
+        // Hand Gesture Tutorials Toggle
+        const handTutorialToggle = document.getElementById('hand-tutorial-toggle');
+        const handTutorialStatus = document.getElementById('hand-tutorial-status');
+        if (handTutorialToggle && this.game.tutorialManager) {
+            // Set initial state from tutorial manager
+            handTutorialToggle.checked = this.game.tutorialManager.isEnabled();
+            if (handTutorialStatus) {
+                handTutorialStatus.textContent = this.game.tutorialManager.isEnabled() ? 'ON' : 'OFF';
+            }
+
+            handTutorialToggle.addEventListener('change', (e) => {
+                this.game.tutorialManager.setEnabled(e.target.checked);
+                if (handTutorialStatus) {
+                    handTutorialStatus.textContent = e.target.checked ? 'ON' : 'OFF';
+                }
+                console.log('👆 Hand gesture tutorials:', e.target.checked ? 'ENABLED' : 'DISABLED');
+            });
+        }
+
+        // Reset Tutorials Button
+        const resetTutorialsBtn = document.getElementById('reset-tutorials-btn');
+        if (resetTutorialsBtn && this.game.tutorialManager) {
+            resetTutorialsBtn.addEventListener('click', () => {
+                this.game.tutorialManager.resetTutorials();
+                console.log('👆 Tutorials reset - will show again');
+
+                // Show confirmation feedback
+                const originalText = resetTutorialsBtn.textContent;
+                resetTutorialsBtn.textContent = '✓ Reset!';
+                resetTutorialsBtn.disabled = true;
+
+                setTimeout(() => {
+                    resetTutorialsBtn.textContent = originalText;
+                    resetTutorialsBtn.disabled = false;
+                }, 1500);
+            });
+        }
+
         // Tether Difficulty Buttons
         document.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
             btn.addEventListener('click', () => {
