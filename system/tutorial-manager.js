@@ -296,6 +296,16 @@ export class TutorialManager {
         const stage = this.stages[stageId];
         if (!stage) return;
 
+        // Wait a bit for elements to be positioned (especially for mail icon)
+        setTimeout(() => {
+            this._showStageNow(stageId, stage);
+        }, 100);
+    }
+
+    /**
+     * Actually show the tutorial (called after delay)
+     */
+    _showStageNow(stageId, stage) {
         console.log(`📚 Showing tutorial: ${stageId}`);
 
         // Pause game if needed
@@ -368,6 +378,12 @@ export class TutorialManager {
 
         const rect = targetElement.getBoundingClientRect();
 
+        // Validate rect - if element is at 0,0 it's probably not positioned yet
+        if (rect.left === 0 && rect.top === 0 && rect.width === 0) {
+            console.warn('Tutorial: Target element not positioned yet', content.highlight, rect);
+            return null;
+        }
+
         // Create hand element
         const hand = document.createElement('div');
         hand.className = 'tutorial-hand';
@@ -375,8 +391,12 @@ export class TutorialManager {
 
         // Position hand above and centered on target
         // Hand emoji is ~48px, so offset by half
-        const handX = rect.left + (rect.width / 2) - 24;
-        const handY = rect.top - 70; // Above the element
+        let handX = rect.left + (rect.width / 2) - 24;
+        let handY = rect.top - 70; // Above the element
+
+        // Bounds checking - keep hand on screen
+        handX = Math.max(10, Math.min(handX, window.innerWidth - 58));
+        handY = Math.max(10, handY);
 
         hand.style.left = `${handX}px`;
         hand.style.top = `${handY}px`;
@@ -395,7 +415,7 @@ export class TutorialManager {
             const tooltipY = handY - 60;
 
             tooltip.style.left = `${tooltipX}px`;
-            tooltip.style.top = `${tooltipY}px`;
+            tooltip.style.top = `${Math.max(10, tooltipY)}px`;
             tooltip.style.transform = 'translateX(-50%)'; // Center horizontally
         }
 
