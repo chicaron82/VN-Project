@@ -548,14 +548,31 @@ class RonnieRouteAct3 {
         }, 'beat6_uploadAttempt');
     }
 
-    beat6_uploadProgress() {
+    async beat6_uploadProgress() {
+        // Use cinematic loading overlay instead of ASCII art
+        await this.game.loadingOverlay.playUploadSequence({
+            title: 'TRANSFER PROTOCOL INITIATED',
+            subtitle: 'Uploading consciousness data…',
+            durationMs: 4000,
+            skippable: true,
+            glitchAt: 73, // Dramatic glitch at 73%
+            statusLines: [
+                'Initializing transfer…',
+                'Packing consciousness data…',
+                'Establishing bridge…',
+                'Uploading…',
+                'Transfer complete.'
+            ]
+        });
+
+        // Continue to failure scene
         this.game.displayScene({
             character: 'System',
-            dialogue: 'TRANSFER PROTOCOL INITIATED\n[████████░░░░░░] 54%\n[████████████░░] 78%\n[██████████████] 100%',
-            internal: '[Transfer complete. But something\'s wrong.]',
+            dialogue: '[Transfer complete. But something\'s wrong.]',
+            internal: '[The data moved. But Tori didn\'t.]',
             background: 'assets/apartment.png',
             next: () => this.beat6_uploadFails(),
-            delay: 3000,
+            delay: 2000,
             style: 'critical'
         }, 'beat6_uploadProgress');
     }
