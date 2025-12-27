@@ -376,9 +376,18 @@ export class TutorialManager {
             return null;
         }
 
-        // Check if element is actually visible/rendered
-        if (!targetElement.offsetParent) {
-            console.warn('Tutorial: Target element not visible (no offsetParent)', content.highlight);
+        // Check if element is actually visible using computed style
+        const style = window.getComputedStyle(targetElement);
+        const isVisible = style.display !== 'none' &&
+            style.visibility !== 'hidden' &&
+            style.opacity !== '0';
+
+        if (!isVisible) {
+            console.warn('Tutorial: Target element not visible', content.highlight, {
+                display: style.display,
+                visibility: style.visibility,
+                opacity: style.opacity
+            });
             return null;
         }
 
