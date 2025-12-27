@@ -167,30 +167,32 @@ class SettingsManager {
     }
 
     loadSettings() {
-        // DIZEE: Session 49 - First try StateManager, then localStorage
-        if (this.game && this.game.state) {
-            // Sync from StateManager if available
-            const stateSettings = this.game.state.get('settings');
-            if (stateSettings) {
-                this.settings = { ...this.settings, ...stateSettings };
-                console.log('📦 Settings loaded from StateManager');
-                return;
-            }
-        }
+        // DIZEE FIX: Prioritize localStorage for persistence
+        // StateManager likely has defaults on init, so we shouldn't prefer it over saved data
 
-        // Fallback to localStorage
+        // 1. Try localStorage first
         const saved = localStorage.getItem('gameSettings');
         if (saved) {
             try {
                 this.settings = { ...this.settings, ...JSON.parse(saved) };
                 console.log('📦 Settings loaded from localStorage');
 
-                // Sync to StateManager if available
+                // Sync to StateManager if available (overwriting defaults)
                 if (this.game && this.game.state) {
                     this.game.state.set('settings', this.settings);
                 }
+                return;
             } catch (e) {
                 console.error('Failed to load settings:', e);
+            }
+        }
+
+        // 2. Fallback to StateManager if no localStorage found
+        if (this.game && this.game.state) {
+            const stateSettings = this.game.state.get('settings');
+            if (stateSettings) {
+                this.settings = { ...this.settings, ...stateSettings };
+                console.log('📦 Settings synced from StateManager defaults');
             }
         }
     }
