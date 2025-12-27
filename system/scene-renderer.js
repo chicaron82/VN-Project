@@ -203,30 +203,34 @@ class SceneRenderer {
             game.paginateAndDisplayText(element, text, callback);
         } else {
             // Original typewriter behavior for desktop/short text
-            if (game.typewriterController) {
-                game.typewriterController.typewriterActive = true;
-                game.typewriterController.fullDialogueText = text; // For skip() to show full text
+            // Use typewriterController as SINGLE SOURCE OF TRUTH
+            const tc = game.typewriterController;
+            if (!tc) {
+                // Fallback if controller not ready
+                element.textContent = text;
+                if (callback) callback();
+                return;
             }
-            game.fullDialogueText = text; // Legacy support
-            game.typewriterCallback = callback;
+
+            tc.typewriterActive = true;
+            tc.fullDialogueText = text;
+            tc.typewriterCallback = callback;
             element.textContent = '';
             let i = 0;
 
             // Clear any existing interval
-            if (game.typewriterInterval) {
-                clearInterval(game.typewriterInterval);
+            if (tc.typewriterInterval) {
+                clearInterval(tc.typewriterInterval);
             }
 
-            game.typewriterInterval = setInterval(() => {
+            tc.typewriterInterval = setInterval(() => {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
                     i++;
                 } else {
-                    clearInterval(game.typewriterInterval);
-                    game.typewriterInterval = null;
-                    if (game.typewriterController) {
-                        game.typewriterController.typewriterActive = false;
-                    }
+                    clearInterval(tc.typewriterInterval);
+                    tc.typewriterInterval = null;
+                    tc.typewriterActive = false;
 
                     // Start auto-advance timer after typewriter finishes
                     if (game.settingsManager) {

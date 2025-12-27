@@ -210,15 +210,12 @@ class TypewriterController {
     // ========================================
 
     skip() {
-        // Clear typewriter interval from BOTH locations (controller and game)
+        // Clear typewriter interval (now exclusively on controller)
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
             this.typewriterInterval = null;
         }
-        if (this.game.typewriterInterval) {
-            clearInterval(this.game.typewriterInterval);
-            this.game.typewriterInterval = null;
-        }
+
 
         if (this.paginationActive) {
             // Show current page fully with indicator
