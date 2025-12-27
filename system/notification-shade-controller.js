@@ -156,6 +156,11 @@ class NotificationShadeController {
         if (this.shadeExit) this.shadeExit.addEventListener('click', () => this.returnToMenu());
         if (this.shadeSettings) this.shadeSettings.addEventListener('click', () => this.openSettings());
 
+        // Mail icon click to open notes viewer
+        if (this.statusMail) {
+            this.statusMail.addEventListener('click', () => this.openNotesViewer());
+        }
+
         // Sidebar toggle and buttons
         if (this.sidebarToggle) {
             this.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
