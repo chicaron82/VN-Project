@@ -34,6 +34,8 @@ class EffectsController {
         const skipButton = document.getElementById('loop-skip-button');
         const continueText = document.querySelector('.loop-init-continue');
         const routeSelection = document.getElementById('loop-route-selection');
+        const progressFill = document.getElementById('loop-progress-fill');
+        const progressText = document.getElementById('loop-progress-text');
 
         if (!loopInitScreen) {
             console.error('Loop init screen not found');
@@ -48,6 +50,16 @@ class EffectsController {
         // Update text
         if (prevVersionEl) prevVersionEl.textContent = prevVersion;
         if (newVersionEl) newVersionEl.textContent = newVersion;
+
+        // Reset progress bar
+        if (progressFill) {
+            progressFill.style.width = '0%';
+            progressFill.classList.remove('awaiting', 'complete');
+        }
+        if (progressText) {
+            progressText.textContent = 'Loading consciousness transfer protocol...';
+            progressText.classList.remove('awaiting', 'complete');
+        }
 
         // Check if player has seen this before
         const loopInitSeen = localStorage.getItem('loopInitSeen') === 'true';
@@ -80,13 +92,52 @@ class EffectsController {
         if (continueText) continueText.style.display = 'none';
         if (skipButton) skipButton.style.display = 'none';
 
-        // Show route selection immediately
-        if (routeSelection) {
-            routeSelection.style.display = 'block';
-            this.setupRouteSelection(currentRoute, callback);
-        }
+        // Animate progress bar to 90%, then wait for user
+        this.animateProgressBar(progressFill, progressText, () => {
+            // Show route selection when progress reaches 90%
+            if (routeSelection) {
+                routeSelection.style.display = 'block';
+                this.setupRouteSelection(currentRoute, callback);
+            }
+        });
 
         console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
+    }
+
+    /**
+     * Animate progress bar to 90% then pause for user confirmation
+     */
+    animateProgressBar(progressFill, progressText, onComplete) {
+        if (!progressFill) {
+            onComplete();
+            return;
+        }
+
+        const duration = 2000; // 2 seconds to reach 90%
+        const targetPercent = 90;
+        const startTime = performance.now();
+
+        const animate = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const currentPercent = Math.floor(progress * targetPercent);
+
+            progressFill.style.width = `${currentPercent}%`;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // Reached 90% - switch to awaiting state
+                progressFill.classList.add('awaiting');
+                if (progressText) {
+                    progressText.textContent = 'Awaiting user confirmation...';
+                    progressText.classList.add('awaiting');
+                }
+                onComplete();
+            }
+        };
+
+        requestAnimationFrame(animate);
     }
 
     setupRouteSelection(currentRoute, callback) {
@@ -161,17 +212,36 @@ class EffectsController {
             this.routeSelectionKeyHandler = null;
         }
 
-        // Close loop init
-        this.closeLoopInit();
+        // Complete the progress bar animation
+        const progressFill = document.getElementById('loop-progress-fill');
+        const progressText = document.getElementById('loop-progress-text');
 
-        // Set selected route and start directly via scene progression controller
-        this.game.selectedRoute = route;
-        this.game.currentRoute = route;
+        if (progressFill) {
+            progressFill.classList.remove('awaiting');
+            progressFill.style.width = '100%';
+            progressFill.classList.add('complete');
+        }
 
+        if (progressText) {
+            progressText.textContent = 'Protocol initialized. Transferring...';
+            progressText.classList.remove('awaiting');
+            progressText.classList.add('complete');
+        }
+
+        // Wait for completion animation before closing
         setTimeout(() => {
-            // Start route directly without RouteSelector
-            this.game.sceneProgressionController.startRoute(route);
-        }, 300);
+            // Close loop init
+            this.closeLoopInit();
+
+            // Set selected route and start directly via scene progression controller
+            this.game.selectedRoute = route;
+            this.game.currentRoute = route;
+
+            setTimeout(() => {
+                // Start route directly without RouteSelector
+                this.game.sceneProgressionController.startRoute(route);
+            }, 300);
+        }, 800);
     }
 
     backToMenu() {

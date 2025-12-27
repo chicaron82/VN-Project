@@ -10263,3 +10263,149 @@ button.keyboard-focus:focus,
         width: 100px;
     }
 }
+
+/* ========================================
+   LOOP ROUTE SELECTION - LANDSCAPE LAYOUT
+   Sprites on sides, content in center (like route select)
+   ======================================== */
+
+.loop-route-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Side sprites - hidden in portrait */
+.loop-route-side {
+    display: none;
+}
+
+.loop-route-side-sprite {
+    height: 70vh;
+    max-height: 500px;
+    width: auto;
+    filter: drop-shadow(0 0 20px var(--theme-glow));
+    transition: all 0.3s ease;
+}
+
+.loop-route-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.loop-route-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* Portrait - hide side sprites, show card sprites */
+.loop-route-sprite-portrait {
+    display: block;
+}
+
+/* Landscape layout */
+@media (orientation: landscape) and (min-width: 768px) {
+    .loop-route-layout {
+        justify-content: space-between;
+        padding: 0 40px;
+    }
+
+    /* Show side sprites in landscape */
+    .loop-route-side {
+        display: flex;
+        align-items: flex-end;
+        flex: 0 0 auto;
+    }
+
+    .loop-route-left {
+        justify-content: flex-start;
+    }
+
+    .loop-route-right {
+        justify-content: flex-end;
+    }
+
+    /* Hide card sprites in landscape - use side sprites instead */
+    .loop-route-sprite-portrait {
+        display: none;
+    }
+
+    /* Expand center content */
+    .loop-route-center {
+        flex: 1;
+        max-width: 500px;
+    }
+
+    /* Route option cards - more compact in landscape */
+    .loop-route-option {
+        padding: 20px 40px;
+        min-width: 180px;
+    }
+
+    .loop-route-name {
+        font-size: 1.4em;
+    }
+
+    /* Highlight side sprites on hover */
+    .loop-route-option[data-route="ronnie"]:hover~.loop-route-left .loop-route-side-sprite,
+    .loop-route-option[data-route="ronnie"]:focus~.loop-route-left .loop-route-side-sprite {
+        filter: drop-shadow(0 0 40px var(--theme-success));
+        transform: scale(1.05);
+    }
+
+    .loop-route-side-sprite {
+        height: 60vh;
+        max-height: 400px;
+    }
+}
+
+/* Extra wide screens */
+@media (orientation: landscape) and (min-width: 1200px) {
+    .loop-route-side-sprite {
+        height: 70vh;
+        max-height: 500px;
+    }
+
+    .loop-route-layout {
+        padding: 0 80px;
+    }
+}
+
+/* Progress bar awaiting state */
+.loop-init-progress .progress-fill.awaiting {
+    width: 90% !important;
+    animation: progressPulse 1.5s ease-in-out infinite;
+}
+
+.loop-init-progress .progress-text.awaiting {
+    color: var(--theme-success);
+    text-shadow: 0 0 10px var(--theme-glow);
+}
+
+@keyframes progressPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Progress complete state */
+.loop-init-progress .progress-fill.complete {
+    width: 100% !important;
+    transition: width 0.5s ease-out;
+}
+
+.loop-init-progress .progress-text.complete {
+    color: var(--theme-success);
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+}

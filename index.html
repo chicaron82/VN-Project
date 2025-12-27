@@ -1383,32 +1383,54 @@
                     </div>
                     <div class="loop-init-progress">
                         <div class="progress-bar">
-                            <div class="progress-fill"></div>
+                            <div class="progress-fill" id="loop-progress-fill"></div>
                         </div>
-                        <div class="progress-text">Loading consciousness transfer protocol...</div>
+                        <div class="progress-text" id="loop-progress-text">Loading consciousness transfer protocol...
+                        </div>
                     </div>
                 </div>
 
-                <!-- DIZEE: Route Selection UI -->
+                <!-- DIZEE: Route Selection UI - Landscape optimized -->
                 <div id="loop-route-selection" class="loop-route-selection" style="display: none;">
                     <div class="loop-route-prompt">Choose your perspective:</div>
-                    <div class="loop-route-container">
-                        <div class="loop-route-option" data-route="ronnie" tabindex="0">
-                            <img src="assets/route-select-ronnie.webp" alt="Ronnie" class="loop-route-sprite">
-                            <div class="loop-route-label">
-                                <span class="loop-route-name">RONNIE</span>
-                                <span class="loop-route-action retry-label">⟳ RETRY</span>
-                            </div>
+
+                    <!-- Landscape layout wrapper -->
+                    <div class="loop-route-layout">
+                        <!-- Left sprite (Ronnie) -->
+                        <div class="loop-route-side loop-route-left">
+                            <img src="assets/route-select-ronnie.webp" alt="Ronnie" class="loop-route-side-sprite"
+                                id="loop-sprite-ronnie">
                         </div>
-                        <div class="loop-route-option" data-route="tori" tabindex="0">
-                            <img src="assets/route-select-tori.png" alt="Tori" class="loop-route-sprite">
-                            <div class="loop-route-label">
-                                <span class="loop-route-name">TORI</span>
-                                <span class="loop-route-action">TRY</span>
+
+                        <!-- Center content -->
+                        <div class="loop-route-center">
+                            <div class="loop-route-container">
+                                <div class="loop-route-option" data-route="ronnie" tabindex="0">
+                                    <img src="assets/route-select-ronnie.webp" alt="Ronnie"
+                                        class="loop-route-sprite loop-route-sprite-portrait">
+                                    <div class="loop-route-label">
+                                        <span class="loop-route-name">RONNIE</span>
+                                        <span class="loop-route-action retry-label">⟳ RETRY</span>
+                                    </div>
+                                </div>
+                                <div class="loop-route-option" data-route="tori" tabindex="0">
+                                    <img src="assets/route-select-tori.png" alt="Tori"
+                                        class="loop-route-sprite loop-route-sprite-portrait">
+                                    <div class="loop-route-label">
+                                        <span class="loop-route-name">TORI</span>
+                                        <span class="loop-route-action">TRY</span>
+                                    </div>
+                                </div>
                             </div>
+                            <button id="loop-back-to-menu" class="loop-back-to-menu">BACK TO MENU</button>
+                        </div>
+
+                        <!-- Right sprite (Tori) -->
+                        <div class="loop-route-side loop-route-right">
+                            <img src="assets/route-select-tori.png" alt="Tori" class="loop-route-side-sprite"
+                                id="loop-sprite-tori">
                         </div>
                     </div>
-                    <button id="loop-back-to-menu" class="loop-back-to-menu">BACK TO MENU</button>
                 </div>
 
                 <div class="loop-init-continue">[Click anywhere to continue]</div>
