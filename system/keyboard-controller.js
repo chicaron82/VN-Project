@@ -233,27 +233,40 @@ class KeyboardController {
                 (!saveLoadOverlay || saveLoadOverlay.style.display !== 'flex') &&
                 (!backlogOverlay || backlogOverlay.style.display !== 'flex')) {
 
+
                 e.preventDefault();
 
+                // Debounce: Prevent double-firing from rapid keypresses
+                if (this.game._dialogueAdvanceLock) {
+                    console.log('⌨️ Spacebar/Enter: Debounced (too fast)');
+                    return;
+                }
 
                 // If typewriter is active, complete the typing first
                 if (this.game.typewriterController && this.game.typewriterController.isActive()) {
                     console.log('⌨️ Spacebar/Enter: Completing typing');
+                    this.game._dialogueAdvanceLock = true;
                     this.game.typewriterController.skip();
+                    // Unlock after short delay to prevent immediate advance
+                    setTimeout(() => { this.game._dialogueAdvanceLock = false; }, 100);
                     return;
                 }
 
                 // If pagination is active, show next page
                 if (this.game.typewriterController && this.game.typewriterController.isPaginating()) {
                     console.log('⌨️ Spacebar/Enter: Next page');
+                    this.game._dialogueAdvanceLock = true; // Lock to prevent double advance
                     this.game.typewriterController.showNextPage();
+                    setTimeout(() => { this.game._dialogueAdvanceLock = false; }, 100); // Unlock after short delay
                     return;
                 }
 
                 // Otherwise, advance dialogue
                 console.log('⌨️ Spacebar/Enter: Advancing dialogue');
                 if (this.game.typewriterController) {
+                    this.game._dialogueAdvanceLock = true; // Lock to prevent double advance
                     this.game.typewriterController.handleClick();
+                    setTimeout(() => { this.game._dialogueAdvanceLock = false; }, 100); // Unlock after short delay
                 }
                 return;
 
