@@ -228,12 +228,17 @@ class SaveLoadUI {
             return;
         }
 
-        // If came from main menu, restore it
-        if (this.game.mainMenu.style.opacity === '0' || this.game.mainMenu.style.display === 'none') {
+        // If game is active (mid-game), just close - notification shade replaces pause menu
+        if (this.game.gameView && this.game.gameView.style.display === 'flex') {
+            // Do nothing - just close save/load, game view stays visible
+            return;
+        }
+
+        // If we were at main menu (opened load from main menu), restore it
+        if (this.game.mainMenu) {
             this.game.mainMenu.style.display = 'flex';
             this.game.mainMenu.style.opacity = '1';
         }
-        // Otherwise (mid-game), just close - notification shade replaces pause menu
     }
 
     updateSaveLoadTitle(mode) {
