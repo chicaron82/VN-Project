@@ -977,6 +977,7 @@ class NotificationShadeController {
 
         if (unreadCount > 0) {
             this.statusMail.classList.add('visible');
+            this.statusMail.style.display = 'flex'; // Override inline style="display:none"
             this.unreadBadge.textContent = unreadCount;
 
             // Trigger tutorial when mail icon first shown
@@ -993,6 +994,7 @@ class NotificationShadeController {
             }
         } else {
             this.statusMail.classList.remove('visible');
+            this.statusMail.style.display = 'none';
         }
     }
 
