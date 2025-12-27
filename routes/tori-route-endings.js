@@ -379,7 +379,22 @@ class ToriEndings {
         }, 'trueRoute');
     }
 
-    trueRoute_transfer() {
+    async trueRoute_transfer() {
+        // Cinematic overlay for the soul transfer - Tori's perspective
+        await this.game.loadingOverlay.playUploadSequence({
+            title: 'RETURNING HOME',
+            subtitle: 'Following the heartbeat…',
+            durationMs: 5000,
+            skippable: true,
+            statusLines: [
+                'Releasing vessel…',
+                'Dissolving digital form…',
+                'Following the warmth…',
+                'Anchoring to body…',
+                'Welcome home.'
+            ]
+        });
+
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I feel it... the pull... I\'m going home..."',

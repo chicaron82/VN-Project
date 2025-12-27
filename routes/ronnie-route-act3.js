@@ -1150,14 +1150,30 @@ class RonnieRouteAct3 {
         }, 'digitalForever_doubleBuzz');
     }
 
-    digitalForever_transfer() {
+    async digitalForever_transfer() {
+        // Dramatic overlay for the unauthorized dual-soul transfer
+        await this.game.loadingOverlay.playUploadSequence({
+            title: '⚠️ UNAUTHORIZED TRANSFER',
+            subtitle: 'Two souls detected in single vessel…',
+            durationMs: 4000,
+            skippable: true,
+            glitchAt: 45, // Early glitch - something's wrong
+            statusLines: [
+                '⚠️ Consciousness detected…',
+                '⚠️ Secondary soul binding…',
+                '⚠️ VESSEL OVERLOAD…',
+                '⚠️ CRITICAL ERROR…',
+                '⚠️ TRANSFER COMPLETE'
+            ]
+        });
+
         this.game.displayScene({
             character: 'System',
             dialogue: '⚠️ UNAUTHORIZED CONSCIOUSNESS TRANSFER\n⚠️ TWO SOULS DETECTED\n⚠️ VESSEL OVERLOAD',
             internal: '[His body collapses in the hallway. Nurses rush to him. But he\'s already gone.]',
             background: 'assets/hospital.png',
             next: () => this.digitalForever_merge(),
-            delay: 4000,
+            delay: 3000,
             style: 'critical'
         }, 'digitalForever_transfer');
     }
@@ -1372,12 +1388,27 @@ class RonnieRouteAct3 {
         }, 'trueRoute_anchor');
     }
 
-    trueRoute_transfer() {
+    async trueRoute_transfer() {
         // DIZEE FIX: Double buzz when Tori jumps back to her body
         // Matches the Digital Forever double buzz for vessel transfer
         if (this.game.triggerSensoryFeedback) {
             this.game.triggerSensoryFeedback('toriHop', null, 'Double buzz - Tori returns to her body');
         }
+
+        // Cinematic overlay for the soul transfer
+        await this.game.loadingOverlay.playUploadSequence({
+            title: 'SOUL TRANSFER INITIATED',
+            subtitle: 'Following the heartbeat home…',
+            durationMs: 5000,
+            skippable: true,
+            statusLines: [
+                'Releasing digital form…',
+                'Bridging consciousness…',
+                'Following the anchor…',
+                'Reconnecting to body…',
+                'Transfer complete.'
+            ]
+        });
 
         this.game.displayScene({
             character: 'Tori (voice, echoing from device)',
