@@ -304,21 +304,24 @@ export class TutorialManager {
      * Show tutorial with retry logic for element positioning
      */
     _showStageWithRetry(stageId, stage, attempt) {
-        const maxAttempts = 3;
-        const delays = [100, 300, 600]; // Exponential backoff
+        const maxAttempts = 5;
+        const delays = [200, 400, 600, 800, 1000]; // More attempts, longer delays
 
         setTimeout(() => {
             // Try to get target element
             const targetElement = stage.content.highlight ?
                 document.querySelector(stage.content.highlight) : null;
 
-            // Check if element is positioned
+            // Check if element is positioned AND visible
             if (targetElement) {
                 const rect = targetElement.getBoundingClientRect();
-                const isPositioned = !(rect.left === 0 && rect.top === 0 && rect.width === 0);
+                const isPositioned = rect.width > 0 && rect.height > 0;
+                const isVisible = targetElement.classList.contains('visible') ||
+                    window.getComputedStyle(targetElement).display !== 'none';
 
-                if (isPositioned) {
+                if (isPositioned && isVisible) {
                     // Element is ready, show tutorial
+                    console.log(`Tutorial: Element ready after ${attempt + 1} attempts for`, stage.content.highlight);
                     this._showStageNow(stageId, stage);
                     return;
                 }
@@ -333,7 +336,7 @@ export class TutorialManager {
                 // Mark as complete so it doesn't keep trying
                 this.markComplete(stageId);
             }
-        }, delays[attempt] || 600);
+        }, delays[attempt] || 1000);
     }
 
     /**
