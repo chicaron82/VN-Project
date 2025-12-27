@@ -791,7 +791,9 @@ class GameEngine {
         this.imageCache = new Map();
 
         // Smooth progress animation settings
-        this.minLoadingAnimationTime = 2000; // Minimum 2 seconds for satisfying progress bar
+        // SYNC WITH VIDEO: Match splash video duration (6 seconds)
+        // This ensures loading simulation finishes when video ends
+        this.minLoadingAnimationTime = 5500; // Slightly less than 6s video to complete together
 
         // Preload images with priority system
         const imagesToPreload = {
