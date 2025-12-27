@@ -117,8 +117,20 @@ export class TutorialManager {
             const tooltip = document.createElement('div');
             tooltip.className = 'tutorial-tooltip';
             tooltip.textContent = options.text;
-            tooltip.style.left = `${rect.left + (rect.width / 2)}px`;
-            tooltip.style.top = `${Math.max(10, handY - 50)}px`;
+
+            // Position tooltip above hand, centered
+            let tooltipX = rect.left + (rect.width / 2);
+            const tooltipY = Math.max(10, handY - 50);
+
+            // Bounds checking - keep tooltip on screen
+            // Estimate tooltip width (rough approximation)
+            const estimatedWidth = options.text.length * 8;
+            const minX = estimatedWidth / 2 + 10;
+            const maxX = window.innerWidth - (estimatedWidth / 2) - 10;
+            tooltipX = Math.max(minX, Math.min(tooltipX, maxX));
+
+            tooltip.style.left = `${tooltipX}px`;
+            tooltip.style.top = `${tooltipY}px`;
             tooltip.style.transform = 'translateX(-50%)';
             overlay.appendChild(tooltip);
         }

@@ -987,7 +987,7 @@ class NotificationShadeController {
                     setTimeout(() => {
                         this.game.tutorialManager.showHandGesture('tori_first_note', this.statusMail, {
                             text: 'Check your notes!',
-                            autoHide: 4000
+                            autoHide: 6000
                         });
                     }, 200);
                 });
