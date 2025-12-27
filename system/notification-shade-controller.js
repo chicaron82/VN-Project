@@ -982,14 +982,14 @@ class NotificationShadeController {
 
             // Trigger tutorial when mail icon first shown
             if (wasHidden && this.game?.tutorialManager) {
-                // Wait for next paint cycle + additional delay for rendering
+                // Wait for code rain transition to finish (~1.5s) before showing tutorial
                 requestAnimationFrame(() => {
                     setTimeout(() => {
                         this.game.tutorialManager.showHandGesture('tori_first_note', this.statusMail, {
                             text: 'Check your notes!',
-                            autoHide: 6000
+                            autoHide: 4000
                         });
-                    }, 200);
+                    }, 1500);
                 });
             }
         } else {
