@@ -61,6 +61,13 @@ class SaveManager {
         }
 
         const saveData = this.createSaveData(customLabel);
+
+        // Guard: createSaveData returns null if no active route
+        if (!saveData) {
+            this.showSaveIndicator('Cannot save outside of a route', true);
+            return false;
+        }
+
         const key = isAutoSave ? this.autoSaveKey : this.savePrefix + slotNumber;
 
         try {
@@ -84,6 +91,12 @@ class SaveManager {
 
     createSaveData(customLabel = null) {
         const route = this.game.currentRoute;
+
+        // Guard: Can't save without an active route
+        if (!route) {
+            console.warn('💾 Cannot create save data: No active route');
+            return null;
+        }
 
         const saveData = {
             // LIVING VERSION NUMBER - captures current loop iteration
