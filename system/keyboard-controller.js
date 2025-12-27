@@ -236,20 +236,16 @@ class KeyboardController {
                 e.preventDefault();
 
                 // If typewriter is active, complete the typing first
-                if (this.game.typewriterActive || (this.game.typewriterController && this.game.typewriterController.isActive())) {
+                if (this.game.typewriterController && this.game.typewriterController.isActive()) {
                     console.log('⌨️ Spacebar/Enter: Completing typing');
-                    if (this.game.typewriterController) {
-                        this.game.typewriterController.skip();
-                    }
+                    this.game.typewriterController.skip();
                     return;
                 }
 
                 // If pagination is active, show next page
-                if (this.game.paginationActive || (this.game.typewriterController && this.game.typewriterController.isPaginating())) {
+                if (this.game.typewriterController && this.game.typewriterController.isPaginating()) {
                     console.log('⌨️ Spacebar/Enter: Next page');
-                    if (this.game.typewriterController) {
-                        this.game.typewriterController.showNextPage();
-                    }
+                    this.game.typewriterController.showNextPage();
                     return;
                 }
 

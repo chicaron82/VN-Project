@@ -179,7 +179,9 @@ class SceneRenderer {
         if (speed === 0) {
             // Instant mode - show all text immediately
             element.textContent = text;
-            game.typewriterActive = false;
+            if (game.typewriterController) {
+                game.typewriterController.typewriterActive = false;
+            }
 
             // Start auto-advance timer in instant mode
             if (game.settingsManager) {
@@ -201,7 +203,9 @@ class SceneRenderer {
             game.paginateAndDisplayText(element, text, callback);
         } else {
             // Original typewriter behavior for desktop/short text
-            game.typewriterActive = true;
+            if (game.typewriterController) {
+                game.typewriterController.typewriterActive = true;
+            }
             game.fullDialogueText = text;
             game.typewriterCallback = callback;
             element.textContent = '';
@@ -219,7 +223,9 @@ class SceneRenderer {
                 } else {
                     clearInterval(game.typewriterInterval);
                     game.typewriterInterval = null;
-                    game.typewriterActive = false;
+                    if (game.typewriterController) {
+                        game.typewriterController.typewriterActive = false;
+                    }
 
                     // Start auto-advance timer after typewriter finishes
                     if (game.settingsManager) {
