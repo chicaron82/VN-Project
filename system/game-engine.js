@@ -581,6 +581,13 @@ class GameEngine {
         // DIZEE: Initialize Loading Overlay for cinematic progress sequences
         this.loadingOverlay = new LoadingOverlay(this);
 
+        // PAUSE MANAGER: Central pause coordination with reason stack
+        // All systems that need to pause the game should use this instead of setting flags directly
+        this.pauseManager = new PauseManager();
+
+        // Subscribe LoadingOverlay to automatically request/release pause
+        // (The overlay itself will also call this, but this ensures it's wired)
+
         // DIZEE: Initialize bootstrap timeline tracker 🖤
         this.bootstrapTracker = new BootstrapTracker(this);
 

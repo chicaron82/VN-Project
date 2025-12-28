@@ -196,6 +196,7 @@ const DevConsole = (() => {
                     appendLog('  jump [id]         - Jump to snapshot by ID', 'system');
                     appendLog('  sensory           - Show last 20 sensory events', 'system');
                     appendLog('  overlay           - Test loading overlay', 'system');
+                    appendLog('  pause [action]    - Pause debug (status/test/clear)', 'system');
                     appendLog('  clear             - Clear console log', 'system');
                     appendLog('  reload            - Hard refresh page', 'system');
                     appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
@@ -509,6 +510,51 @@ const DevConsole = (() => {
                         });
                         console.log('Overlay result:', result);
                     }, 300);
+                    break;
+
+                case 'pause':
+                    if (!game?.pauseManager) {
+                        appendLog('Error: PauseManager not initialized', 'error');
+                        break;
+                    }
+
+                    const pauseAction = args[0]?.toLowerCase();
+                    const pm = game.pauseManager;
+
+                    if (!pauseAction || pauseAction === 'status') {
+                        // Show pause status
+                        appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                        appendLog(`Paused: ${pm.isPaused ? 'YES ⏸️' : 'NO ▶️'}`, pm.isPaused ? 'warn' : 'success');
+                        appendLog(`Active reasons: ${pm.activeReasons.length === 0 ? 'none' : pm.activeReasons.join(', ')}`, 'system');
+                        appendLog(`Listeners: ${pm.listeners.length}`, 'system');
+                        appendLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'system');
+                    } else if (pauseAction === 'test') {
+                        // Test pause/release cycle
+                        appendLog('Testing pause cycle...', 'system');
+                        pm.request('devConsoleTest');
+                        appendLog(`✓ Requested pause: devConsoleTest (isPaused: ${pm.isPaused})`, 'success');
+                        setTimeout(() => {
+                            pm.release('devConsoleTest');
+                            appendLog(`✓ Released pause: devConsoleTest (isPaused: ${pm.isPaused})`, 'success');
+                        }, 2000);
+                    } else if (pauseAction === 'clear') {
+                        // Force release all
+                        const reasons = pm.activeReasons;
+                        pm.releaseAll();
+                        appendLog(`✓ Cleared all pause reasons: ${reasons.join(', ') || 'none'}`, 'success');
+                    } else if (pauseAction === 'add') {
+                        // Add a test reason
+                        const reason = args[1] || 'testReason';
+                        pm.request(reason);
+                        appendLog(`✓ Added pause reason: ${reason}`, 'success');
+                    } else if (pauseAction === 'remove') {
+                        // Remove a reason
+                        const reason = args[1] || 'testReason';
+                        pm.release(reason);
+                        appendLog(`✓ Removed pause reason: ${reason}`, 'success');
+                    } else {
+                        appendLog('Usage: pause [status|test|clear|add reason|remove reason]', 'system');
+                    }
                     break;
 
                 default:

@@ -10,6 +10,9 @@
 // SYSTEM MODULES
 // ========================================
 
+// Pause management (foundation for all modal/overlay systems)
+import './pause-manager.js';
+
 // Core utilities (no dependencies)
 import './input-binder.js';
 import './game-config.js';

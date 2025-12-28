@@ -50,7 +50,12 @@ class LoadingOverlay {
     } = {}) {
         this._skipped = false;
 
-        // Pause game systems
+        // Request pause via PauseManager (centralized coordination)
+        if (this.game.pauseManager) {
+            this.game.pauseManager.request('loadingOverlay');
+        }
+
+        // Also stop tether decay specifically (belt and suspenders)
         if (this.game.currentRoute?.tetherSystem) {
             this.game.currentRoute.tetherSystem.stopDecay();
         }
@@ -123,31 +128,35 @@ class LoadingOverlay {
     /**
      * Close the overlay and resolve the promise
      */
-    close({ reason = "closed" } = {}) {
-        if (this._raf) cancelAnimationFrame(this._raf);
+    if(this._raf) cancelAnimationFrame(this._raf);
         this._raf = null;
 
-        // Resume game systems
-        if (this.game.currentRoute?.tetherSystem) {
-            this.game.currentRoute.tetherSystem.startDecay();
-        }
+// Release pause via PauseManager
+if (this.game.pauseManager) {
+    this.game.pauseManager.release('loadingOverlay');
+}
 
-        this._unmount();
+// Also resume tether decay specifically
+if (this.game.currentRoute?.tetherSystem) {
+    this.game.currentRoute.tetherSystem.startDecay();
+}
 
-        if (this._resolve) {
-            const r = this._resolve;
-            this._resolve = null;
-            r({ reason });
-        }
+this._unmount();
+
+if (this._resolve) {
+    const r = this._resolve;
+    this._resolve = null;
+    r({ reason });
+}
     }
 
-    /**
-     * Mount the overlay DOM
-     */
-    _mount({ title, subtitle, skippable }) {
-        this.el = document.createElement("div");
-        this.el.className = "loading-overlay";
-        this.el.innerHTML = `
+/**
+ * Mount the overlay DOM
+ */
+_mount({ title, subtitle, skippable }) {
+    this.el = document.createElement("div");
+    this.el.className = "loading-overlay";
+    this.el.innerHTML = `
             <div class="loading-card" role="dialog" aria-modal="true" aria-label="Progress">
                 <div class="loading-icon">⬆</div>
                 <div class="loading-title">${title}</div>
@@ -163,101 +172,101 @@ class LoadingOverlay {
             </div>
         `;
 
-        this.root.appendChild(this.el);
-        this._cacheRefs();
+    this.root.appendChild(this.el);
+    this._cacheRefs();
 
-        // Trigger animation
-        requestAnimationFrame(() => {
-            if (this.el) this.el.classList.add("is-active");
-        });
+    // Trigger animation
+    requestAnimationFrame(() => {
+        if (this.el) this.el.classList.add("is-active");
+    });
+}
+
+/**
+ * Cache DOM references
+ */
+_cacheRefs() {
+    this._bar = this.el.querySelector(".loading-bar");
+    this._status = this.el.querySelector(".loading-status");
+    this._skipBtn = this.el.querySelector(".loading-skip");
+    this._percentEl = this.el.querySelector(".loading-percent");
+    this._glitched = false;
+}
+
+/**
+ * Update progress bar
+ */
+_setProgress(percent) {
+    if (!this._bar) return;
+    this._bar.style.width = `${percent}%`;
+    if (this._percentEl) {
+        this._percentEl.textContent = `${percent}%`;
+    }
+}
+
+/**
+ * Update status text
+ */
+_setStatus(text) {
+    if (this._status) this._status.textContent = text;
+}
+
+/**
+ * Trigger glitch effect
+ */
+_triggerGlitch() {
+    if (!this.el) return;
+    const card = this.el.querySelector('.loading-card');
+    if (card) {
+        card.classList.add('glitch');
+        setTimeout(() => card.classList.remove('glitch'), 300);
+    }
+}
+
+/**
+ * Bind skip handlers
+ */
+_bindSkip() {
+    // Skip button click
+    if (this._skipBtn) {
+        this._skipBtn.addEventListener("click", () => this.skip(), { once: true });
     }
 
-    /**
-     * Cache DOM references
-     */
-    _cacheRefs() {
-        this._bar = this.el.querySelector(".loading-bar");
-        this._status = this.el.querySelector(".loading-status");
-        this._skipBtn = this.el.querySelector(".loading-skip");
-        this._percentEl = this.el.querySelector(".loading-percent");
-        this._glitched = false;
-    }
-
-    /**
-     * Update progress bar
-     */
-    _setProgress(percent) {
-        if (!this._bar) return;
-        this._bar.style.width = `${percent}%`;
-        if (this._percentEl) {
-            this._percentEl.textContent = `${percent}%`;
+    // Keyboard (Escape / Space / Enter)
+    this._onKey = (e) => {
+        if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
+            e.preventDefault();
+            this.skip();
         }
+    };
+    window.addEventListener("keydown", this._onKey);
+
+    // Tap anywhere on overlay (not card)
+    this.el.addEventListener("click", (e) => {
+        if (e.target === this.el) this.skip();
+    }, { once: true });
+}
+
+/**
+ * Unmount and cleanup
+ */
+_unmount() {
+    if (this._onKey) {
+        window.removeEventListener("keydown", this._onKey);
+        this._onKey = null;
     }
 
-    /**
-     * Update status text
-     */
-    _setStatus(text) {
-        if (this._status) this._status.textContent = text;
-    }
+    if (!this.el) return;
 
-    /**
-     * Trigger glitch effect
-     */
-    _triggerGlitch() {
-        if (!this.el) return;
-        const card = this.el.querySelector('.loading-card');
-        if (card) {
-            card.classList.add('glitch');
-            setTimeout(() => card.classList.remove('glitch'), 300);
+    this.el.classList.remove("is-active");
+
+    // Delay removal for fade out
+    setTimeout(() => {
+        if (this.el) {
+            this.el.remove();
+            this.el = null;
         }
-    }
-
-    /**
-     * Bind skip handlers
-     */
-    _bindSkip() {
-        // Skip button click
-        if (this._skipBtn) {
-            this._skipBtn.addEventListener("click", () => this.skip(), { once: true });
-        }
-
-        // Keyboard (Escape / Space / Enter)
-        this._onKey = (e) => {
-            if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
-                e.preventDefault();
-                this.skip();
-            }
-        };
-        window.addEventListener("keydown", this._onKey);
-
-        // Tap anywhere on overlay (not card)
-        this.el.addEventListener("click", (e) => {
-            if (e.target === this.el) this.skip();
-        }, { once: true });
-    }
-
-    /**
-     * Unmount and cleanup
-     */
-    _unmount() {
-        if (this._onKey) {
-            window.removeEventListener("keydown", this._onKey);
-            this._onKey = null;
-        }
-
-        if (!this.el) return;
-
-        this.el.classList.remove("is-active");
-
-        // Delay removal for fade out
-        setTimeout(() => {
-            if (this.el) {
-                this.el.remove();
-                this.el = null;
-            }
-        }, 200);
-    }
+    }, 200);
+}
 }
 
 // Global assignment for browser
