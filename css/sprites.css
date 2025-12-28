@@ -1,0 +1,206 @@
+﻿/* ========================================
+   CHARACTER SPRITE SYSTEM
+   ======================================== */
+
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    /* Desktop default - sits at bottom */
+    width: 350px;
+    height: 600px;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    display: none;
+    z-index: 40;
+    pointer-events: none;
+}
+
+#character-left {
+    left: 5%;
+}
+
+#character-right {
+    right: 5%;
+}
+
+.character-sprite.sprite-dim {
+    opacity: 0.35 !important;
+    /* Override animation opacity */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Sprite enter animation - starts at opacity 0, ends at 1 */
+@keyframes spriteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.character-sprite.sprite-enter {
+    animation: spriteEnter 0.5s ease-out forwards;
+}
+
+/* If sprite has BOTH sprite-enter and sprite-dim, dim wins */
+/* If sprite has BOTH sprite-enter and sprite-dim, animate to dim opacity */
+.character-sprite.sprite-enter.sprite-dim {
+    animation: spriteEnterDim 0.5s ease-out forwards;
+}
+
+@keyframes spriteEnterDim {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spriteExit {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.character-sprite.sprite-exit {
+    animation: spriteExit 0.5s ease-out forwards;
+}
+
+/* ========================================
+   ECHO SPRITES - TRIPLE POSITIONING
+   Three separate sprites for individual highlighting
+   ======================================== */
+
+/* Container for all three Echoes */
+#character-right.echo-group {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 5px;
+    /* Tighter spacing - they're together in this */
+    width: 500px !important;
+    height: 600px !important;
+}
+
+/* Individual echo sprites within the group */
+.echo-sprite {
+    width: 150px;
+    height: 600px;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.8s ease;
+    /* Smooth growth */
+    opacity: 1;
+    transform-origin: bottom center;
+    /* Grow from feet up */
+}
+
+/* Dim echo when not speaking */
+.echo-sprite.sprite-dim {
+    opacity: 0.35;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Individual echo sprites */
+#echo-1-sprite {
+    order: 1;
+}
+
+#echo-2-sprite {
+    order: 2;
+}
+
+#despair-sprite {
+    order: 3;
+}
+
+@media (max-width: 768px) {
+    .character-sprite {
+        width: 230px;
+        height: 380px;
+    }
+
+    #character-left {
+        left: 2%;
+    }
+
+    #character-right {
+        right: 2%;
+    }
+
+    /* Echo group sizing for tablet */
+    #character-right.echo-group {
+        width: 400px !important;
+        height: 400px !important;
+        gap: 8px;
+    }
+
+    .echo-sprite {
+        width: 120px;
+        height: 400px;
+    }
+}
+
+/* ========================================
+   MOBILE PORTRAIT - ECHO STACKING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: portrait) {
+
+    /* Echo group - stacked vertically and centered */
+    #character-right.echo-group {
+        flex-direction: row;
+        /* Keep horizontal but tighter */
+        width: 90% !important;
+        max-width: 350px !important;
+        height: 350px !important;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+        bottom: 28vh !important;
+        gap: 5px;
+    }
+
+    .echo-sprite {
+        width: 110px;
+        height: 350px;
+    }
+}
+
+/* ========================================
+   MOBILE LANDSCAPE - ECHO SIZING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: landscape) {
+    #character-right.echo-group {
+        width: 350px !important;
+        height: 300px !important;
+        gap: 5px;
+        bottom: 35vh !important;
+    }
+
+    .echo-sprite {
+        width: 110px;
+        height: 300px;
+    }
+}
+

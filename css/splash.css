@@ -1,0 +1,234 @@
+﻿/* ========================================
+   UV7 SPLASH SCREEN
+   ======================================== */
+
+#uv7-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* DIZEE FIX: Use 100% instead of 100vw to avoid scrollbar width issues */
+    height: 100%;
+    /* DIZEE FIX: Use 100% instead of 100vh for consistency */
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    animation: splashFadeIn 1.5s ease-in-out forwards;
+}
+
+#uv7-splash.fade-out {
+    animation: splashFadeOut 1.5s ease-in-out forwards;
+}
+
+.uv7-container {
+    text-align: center;
+    transform: scale(0.9);
+    animation: splashScaleIn 1.5s ease-out 0.5s forwards;
+}
+
+.powered-by-text {
+    font-size: 1.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    color: #a8a08c;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-family: Arial, sans-serif;
+    opacity: 0.8;
+}
+
+.uv7-logo-static {
+    width: 400px;
+    height: auto;
+    max-width: 80vw;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uv7-logo-video {
+    width: 400px;
+    height: auto;
+    max-width: 80vw;
+    margin-bottom: 40px;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.uv7-skip-btn {
+    position: fixed;
+    /* DIZEE FIX: Changed from absolute to fixed for consistent viewport positioning */
+    top: 40px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(220, 210, 180, 0.5);
+    color: #dcd2b4;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    /* DIZEE FIX: Only transition visual properties, not position/transform */
+    transition: background 0.2s ease, border-color 0.2s ease;
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
+    z-index: 10001;
+    /* Ensure it stays on top */
+}
+
+.uv7-skip-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(220, 210, 180, 0.8);
+    /* DIZEE FIX: Removed transform - was causing button to jump on click */
+}
+
+.skip-arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.uv7-skip-btn:hover .skip-arrow {
+    transform: translateX(5px);
+}
+
+.uv7-skip-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+    /* DIZEE FIX: Brighten on click instead of moving */
+}
+
+/* DIZEE FIX: Prevent focus state from changing skip button position */
+.uv7-skip-btn:focus {
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent jumping */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+
+@keyframes splashFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes splashFadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes splashScaleIn {
+    from {
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 768px) {
+    .powered-by-text {
+        font-size: 1.2rem;
+    }
+
+    .uv7-logo-static,
+    .uv7-logo-video {
+        width: 280px;
+    }
+
+    .uv7-skip-btn {
+        top: 20px;
+        /* ZEERAH'S FIX: Top instead of bottom */
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape-specific adjustments for UV7 splash */
+@media (max-height: 600px) and (orientation: landscape) {
+    .powered-by-text {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .uv7-logo-static,
+    .uv7-logo-video {
+        width: 200px;
+        margin-bottom: 20px;
+    }
+
+    #loading-bar-container {
+        width: 300px;
+        margin: 15px auto 10px;
+        height: 6px;
+    }
+
+    #loading-tip {
+        font-size: 0.8rem;
+        max-width: 400px;
+        padding: 0 15px;
+        line-height: 1.3;
+    }
+
+    .uv7-skip-btn {
+        top: 15px;
+        /* ZEERAH'S FIX: Top instead of bottom */
+        right: 15px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Loading elements inside UV7 splash */
+#loading-bar-container {
+    width: 400px;
+    max-width: 80vw;
+    height: 8px;
+    background: rgba(220, 210, 180, 0.1);
+    /* ZEERAH'S FIX: Cream background */
+    border: 1px solid rgba(220, 210, 180, 0.3);
+    /* Cream border */
+    border-radius: 4px;
+    margin: 30px auto 20px;
+    overflow: hidden;
+}
+
+#loading-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);
+    /* ZEERAH'S FIX: Cream/gold gradient */
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(220, 210, 180, 0.5);
+    /* Cream glow */
+}
+
+#loading-tip {
+    color: rgba(220, 210, 180, 0.8);
+    font-size: 0.95rem;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+

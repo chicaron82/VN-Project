@@ -1,0 +1,689 @@
+﻿/* ========================================
+   ENDING DIALOG (THREE-OPTION SYSTEM)
+   ======================================== */
+
+.ending-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.ending-dialog.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.ending-dialog-content {
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 100%);
+    padding: 3rem 2.5rem;
+    border-radius: 12px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 30px rgba(0, 255, 255, 0.05);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    animation: endingDialogAppear 0.5s ease-out;
+}
+
+@keyframes endingDialogAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.ending-dialog-content h2 {
+    color: #00ffff;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.ending-prompt {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.ending-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ending-option {
+    background: rgba(26, 26, 46, 0.8);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ending-option:hover,
+.ending-option[data-focused="true"] {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #00ffff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: translateX(8px);
+}
+
+.ending-option[data-focused="true"] {
+    border-width: 3px;
+}
+
+.option-label {
+    color: #00ffff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.option-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Keyboard hint */
+.ending-dialog-content::after {
+    content: "Use â†‘â†“ arrows, Tab, or click to choose â€¢ Enter or click to confirm â€¢ Esc to cancel";
+    display: block;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .ending-dialog-content {
+        padding: 2rem 1.5rem;
+        max-width: 95%;
+    }
+
+    .ending-dialog-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .ending-prompt {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .ending-option {
+        padding: 1rem;
+    }
+
+    .option-label {
+        font-size: 1rem;
+    }
+
+    .option-desc {
+        font-size: 0.85rem;
+    }
+
+    .ending-dialog-content::after {
+        font-size: 0.7rem;
+    }
+}
+
+/* Landscape mode adjustments (compact vertical spacing) */
+@media (max-height: 600px) and (orientation: landscape) {
+    .ending-dialog-content {
+        padding: 1.5rem 2rem;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .ending-dialog-content h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .ending-prompt {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+    .ending-options {
+        gap: 0.5rem;
+    }
+
+    .ending-option {
+        padding: 0.8rem 1rem;
+    }
+
+    .option-label {
+        font-size: 1rem;
+    }
+
+    .option-desc {
+        font-size: 0.75rem;
+    }
+
+    .ending-dialog-content::after {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        font-size: 0.65rem;
+    }
+}
+
+/* Very short landscape screens */
+@media (max-height: 500px) and (orientation: landscape) {
+    .ending-dialog-content {
+        padding: 1rem 1.5rem;
+    }
+
+    .ending-dialog-content h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.3rem;
+    }
+
+    .ending-prompt {
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .ending-options {
+        gap: 0.4rem;
+    }
+
+    .ending-option {
+        padding: 0.6rem 0.8rem;
+    }
+
+    .option-label {
+        font-size: 0.9rem;
+    }
+
+    .option-desc {
+        font-size: 0.7rem;
+    }
+
+    .ending-dialog-content::after {
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+        font-size: 0.6rem;
+    }
+}
+
+/* ========================================
+   MEET THE CREW SCREEN
+   ======================================== */
+
+#crew-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    z-index: 9500;
+    overflow: hidden;
+}
+
+#crew-screen.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.credit-screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 60px 60px 140px 60px;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.credit-screen.active {
+    display: flex;
+    opacity: 1;
+}
+
+.credit-screen.fade-out {
+    opacity: 0;
+}
+
+#btn-next-crew {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 15px 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    z-index: 9600;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+#btn-next-crew:hover {
+    background: rgba(0, 255, 255, 0.4);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.credits-logo {
+    width: 350px;
+    max-width: 70%;
+    filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    margin-bottom: 40px;
+}
+
+.credits-powered-by {
+    font-size: 2rem;
+    color: #a8a08c;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.credits-group-photo {
+    width: 600px;
+    max-width: 80%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 15px;
+    border: 4px solid #00ffff;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.4);
+    margin-bottom: 40px;
+}
+
+.credits-group-title {
+    font-size: 3.5rem;
+    color: #00ffff;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 30px;
+}
+
+.credits-group-subtitle {
+    font-size: 1.8rem;
+    color: #a8a08c;
+    letter-spacing: 0.2em;
+}
+
+.portrait-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    max-width: 1400px;
+}
+
+.portrait-display-image {
+    width: 400px;
+    height: auto;
+    border-radius: 15px;
+    border: 3px solid #00ffff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.portrait-display-content {
+    flex: 1;
+    max-width: 700px;
+}
+
+.portrait-display-name {
+    font-size: 3.5rem;
+    color: #00ffff;
+    font-weight: 700;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.portrait-display-title {
+    font-size: 2rem;
+    color: #a8a08c;
+    margin-bottom: 30px;
+    font-style: italic;
+}
+
+.portrait-display-story {
+    font-size: 1.4rem;
+    color: #ddd;
+    line-height: 1.8;
+    font-style: italic;
+}
+
+.portrait-display-platform {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 25px;
+}
+
+/* DIZEE: Landscape mode - flip layout (text left, image right) ðŸ–¤ */
+@media (orientation: landscape) and (min-width: 768px) {
+    .portrait-display {
+        flex-direction: row-reverse !important;
+        /* Image on right, content on left */
+    }
+}
+
+.credits-text-screen {
+    max-width: 1000px;
+    text-align: center;
+    margin: auto 0;
+}
+
+.credits-big-title {
+    font-size: 4rem;
+    color: #00ffff;
+    font-weight: 700;
+    text-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+    margin-bottom: 40px;
+    letter-spacing: 0.15em;
+}
+
+.credits-big-text {
+    font-size: 1.8rem;
+    color: #ddd;
+    line-height: 2;
+    margin-bottom: 20px;
+}
+
+.credits-big-text strong {
+    color: #00ffff;
+}
+
+.credits-final-message {
+    font-size: 4.5rem;
+    color: #00ffff;
+    font-weight: 700;
+    text-shadow: 0 0 40px rgba(0, 255, 255, 0.7);
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+}
+
+/* ========================================
+   CONTACT SCREEN
+   ======================================== */
+
+/* Universal Close X Button */
+.close-x {
+    position: absolute;
+    /* DIZEE FIX: Changed from fixed to absolute - anchors to parent modal, not viewport */
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 0, 0, 0.2);
+    border: 2px solid #ff0000;
+    border-radius: 50%;
+    color: #ff0000;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10010;
+    /* DIZEE FIX: Higher than all overlays (10003 was highest) */
+    /* DIZEE FIX: Only transition background and box-shadow, NOT transform */
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+}
+
+.close-x:hover {
+    background: rgba(255, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    /* DIZEE FIX: Removed transform scale - was causing position jumps */
+}
+
+.close-x:active {
+    background: rgba(255, 0, 0, 0.6);
+    /* DIZEE FIX: Use background change instead of transform */
+}
+
+/* ZEERAH FIX: Prevent focus state from changing close button position */
+.close-x:focus {
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent global button:focus override */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+
+#contact-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+    z-index: 9500;
+    align-items: center;
+    justify-content: center;
+}
+
+#contact-content {
+    background: rgba(10, 10, 30, 0.95);
+    border: 2px solid #00ffff;
+    border-radius: 10px;
+    padding: 50px;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+    /* ZEE'S FIX: Enable scrolling for overflow content ðŸ–¤ */
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+}
+
+/* ZEE'S FIX: Custom scrollbar styling ðŸ–¤ */
+#contact-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#contact-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+#contact-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+#contact-content h2 {
+    color: #00ffff;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+}
+
+.contact-message {
+    color: #aaa;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.contact-message p {
+    margin-bottom: 20px;
+}
+
+.contact-message strong {
+    color: #00ffff;
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.contact-link {
+    display: block;
+    padding: 15px 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #00ffff;
+    border-radius: 5px;
+    color: #00ffff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.contact-link:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.contact-thanks {
+    color: #00ffff;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.contact-close {
+    background: rgba(0, 255, 255, 0.2);
+    border: 2px solid #00ffff;
+    color: #00ffff;
+    padding: 15px 60px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+}
+
+.contact-close:hover {
+    background: rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    transform: scale(1.05);
+}
+
+/* ZEE'S FIX: Landscape mode contact overlay adjustments ðŸ–¤ */
+@media (max-width: 768px) and (orientation: landscape) {
+    #contact-content {
+        padding: 1.5em;
+        font-size: 0.9em;
+        max-height: 85vh;
+    }
+
+    #contact-content h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+
+    .contact-message {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .contact-link {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+
+    .contact-close {
+        padding: 10px 40px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .portrait-display {
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .portrait-display-image {
+        width: 350px;
+    }
+}
+
+@media (min-width: 769px) and (max-height: 900px) {
+    .credit-screen {
+        padding: 40px 60px 120px 60px;
+    }
+
+    .credits-big-text {
+        font-size: 1.5rem;
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 768px) {
+    .credits-big-title {
+        font-size: 2.5rem;
+    }
+
+    .credits-big-text {
+        font-size: 1.3rem;
+    }
+
+    .portrait-display-name {
+        font-size: 2.5rem;
+    }
+
+    .portrait-display-title {
+        font-size: 1.5rem;
+    }
+
+    .portrait-display-story {
+        font-size: 1.2rem;
+    }
+
+    .portrait-display-image {
+        width: 280px;
+    }
+
+    .credits-final-message {
+        font-size: 3rem;
+    }
+}
+
