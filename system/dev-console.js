@@ -579,5 +579,10 @@ const DevConsole = (() => {
     };
 })();
 
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    window.DevConsole = DevConsole;
+}
+
 // ES Module export
 export { DevConsole };
