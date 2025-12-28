@@ -49,6 +49,7 @@ import './dev-suite.js';
 import './auto-save-manager.js';
 import './error-boundary.js';
 import './accessibility-manager.js';
+import './swipe-handler.js';
 import './bootstrap-tracker.js';
 import './accessibility.js';
 import './mobile-ux.js';

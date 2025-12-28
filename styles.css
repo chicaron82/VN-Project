@@ -66,6 +66,8 @@
 /* Error boundary modal */
 @import 'css/accessibility.css';
 /* Accessibility features (WCAG 2.1 AA) */
+@import 'css/mobile-polish.css';
+/* Mobile optimizations */
 
 /* Also import the unified route select */
 @import 'route-select-unified.css';

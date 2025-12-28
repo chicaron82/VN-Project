@@ -1,0 +1,127 @@
+/* ========================================
+   MOBILE POLISH
+   ======================================== */
+
+/* Prevent pull-to-refresh */
+body {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection during swipes */
+.game-container {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Allow text selection in specific areas */
+.dialogue-text,
+.choice-text {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    user-select: text;
+}
+
+/* Smooth scrolling on mobile */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* iOS safe area support */
+@supports (padding: max(0px)) {
+    body {
+        padding-left: max(0px, env(safe-area-inset-left));
+        padding-right: max(0px, env(safe-area-inset-right));
+        padding-bottom: max(0px, env(safe-area-inset-bottom));
+    }
+}
+
+/* Android back button indicator */
+.back-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.back-hint.show {
+    opacity: 1;
+}
+
+/* Swipe indicator (optional visual feedback) */
+.swipe-indicator {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 1000;
+}
+
+.swipe-indicator.left {
+    left: 20px;
+}
+
+.swipe-indicator.right {
+    right: 20px;
+}
+
+.swipe-indicator.show {
+    opacity: 0.5;
+}
+
+/* Mobile-specific button sizes */
+@media (max-width: 768px) {
+
+    button,
+    .choice-btn,
+    .menu-item {
+        min-height: 48px;
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+
+    /* Larger tap targets for mobile */
+    .icon-btn {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* Landscape mobile optimizations */
+@media (max-width: 896px) and (orientation: landscape) {
+    .dialogue-box {
+        max-height: 40vh;
+    }
+
+    .choices-container {
+        max-height: 35vh;
+        overflow-y: auto;
+    }
+}
+
+/* Prevent zoom on input focus (iOS) */
+input,
+select,
+textarea {
+    font-size: 16px !important;
+}
+
+/* Smooth momentum scrolling */
+.scrollable {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+}

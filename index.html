@@ -1714,6 +1714,12 @@
                 game.accessibilityManager.loadTextSizePreference();
                 console.log('♿ Accessibility Manager ready (screen reader + high contrast)');
             }
+
+            // Initialize Swipe Handler (mobile gestures)
+            if (typeof SwipeHandler !== 'undefined') {
+                game.swipeHandler = new SwipeHandler(game);
+                console.log('👆 Swipe Handler ready (swipe to advance)');
+            }
         });
     </script>
 </body>
