@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    EMAIL-STYLE NOTES OVERLAY
    ======================================== */
 
@@ -405,7 +405,7 @@
    ======================================== */
 
 #dialogue-box.ronnie-route {
-    background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+    background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
         rgba(8, 14, 20, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -414,7 +414,7 @@
 }
 
 #dialogue-box.tori-route {
-    background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+    background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
         rgba(12, 15, 30, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -465,7 +465,7 @@
 
 /* Prologue - "Pre-connection" mysterious shimmer */
 #dialogue-box.prologue-style {
-    background: url('assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+    background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
         rgba(25, 15, 40, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -490,7 +490,7 @@
 
 /* Epilogue - "Resolution" warm golden glow */
 #dialogue-box.epilogue-style {
-    background: url('assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+    background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
         rgba(40, 30, 15, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -588,7 +588,7 @@
     /* DIZEE: Higher than skip button (100) to prevent overlap */
 }
 
-/* DIZEE: Ending-style choice buttons - vertical stack, gradients, premium feel ðŸ’š */
+/* DIZEE: Ending-style choice buttons - vertical stack, gradients, premium feel 💚 */
 #choices-container {
     display: flex;
     flex-direction: column;
@@ -848,7 +848,7 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.95);
     z-index: 10001 !important;
-    /* ZEE'S FIX: Higher than pause menu (10000) ðŸ–¤ */
+    /* ZEE'S FIX: Higher than pause menu (10000) 🖤 */
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    MOBILE RESPONSIVE - BELLE'S FIX
    Revised: Nov 22, 2024
    Fixed: Dialogue box overlapping sprites
@@ -95,7 +95,7 @@
 
     /* Keep custom dialogue frames on mobile - just constrain positioning */
     #dialogue-box.ronnie-route {
-        background: url('assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+        background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
             rgba(8, 14, 20, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -104,7 +104,7 @@
     }
 
     #dialogue-box.tori-route {
-        background: url('assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+        background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
             rgba(12, 15, 30, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -445,7 +445,7 @@
 /* ========================================
 /* ==========================================
    FORCE ORIENTATION (LAYOUT OVERRIDE)
-   ZEE'S FIX: Actually switch layouts instead of rotating ðŸ–¤
+   ZEE'S FIX: Actually switch layouts instead of rotating 🖤
    ========================================== */
 
 /* Force landscape layout (wider dialogue, landscape sprite positioning) */
@@ -496,5 +496,5 @@
 
 /* ZEE'S NOTE: This approach overrides layout rules with !important
    instead of rotating the visual. Device orientation doesn't change,
-   but CSS layout responds as if it did. ðŸ–¤ */
+   but CSS layout responds as if it did. 🖤 */
 

@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    MAIN MENU
    ======================================== */
 
@@ -60,7 +60,7 @@
 
 /* ========================================
    VERSION COUNTER FOOTER
-   ZEE'S ADDITION: Dynamic text that updates based on loop status ðŸ–¤
+   ZEE'S ADDITION: Dynamic text that updates based on loop status 🖤
    ======================================== */
 
 .menu-footer {
@@ -104,7 +104,7 @@
 
 /* ========================================
    ROTATING TIPS - MAIN MENU & ROUTE SELECT
-   ZEE'S ADDITION: Ambient discovery system ðŸ–¤
+   ZEE'S ADDITION: Ambient discovery system 🖤
    ======================================== */
 
 /* Main Menu Rotating Tip */
@@ -197,7 +197,7 @@
 
 @media (max-width: 768px) {
     #main-menu-bg {
-        content: url('assets/menumobile.png');
+        content: url('../assets/menumobile.png');
     }
 
     #main-menu h1 {

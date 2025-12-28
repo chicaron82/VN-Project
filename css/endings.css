@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    ENDING DIALOG (THREE-OPTION SYSTEM)
    ======================================== */
 
@@ -109,7 +109,7 @@
 
 /* Keyboard hint */
 .ending-dialog-content::after {
-    content: "Use â†‘â†“ arrows, Tab, or click to choose â€¢ Enter or click to confirm â€¢ Esc to cancel";
+    content: "Use ↑↓ arrows, Tab, or click to choose • Enter or click to confirm • Esc to cancel";
     display: block;
     margin-top: 2rem;
     padding-top: 1.5rem;
@@ -395,7 +395,7 @@
     margin-top: 25px;
 }
 
-/* DIZEE: Landscape mode - flip layout (text left, image right) ðŸ–¤ */
+/* DIZEE: Landscape mode - flip layout (text left, image right) 🖤 */
 @media (orientation: landscape) and (min-width: 768px) {
     .portrait-display {
         flex-direction: row-reverse !important;
@@ -510,14 +510,14 @@
     width: 90%;
     text-align: center;
     box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
-    /* ZEE'S FIX: Enable scrolling for overflow content ðŸ–¤ */
+    /* ZEE'S FIX: Enable scrolling for overflow content 🖤 */
     max-height: 90vh;
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
 }
 
-/* ZEE'S FIX: Custom scrollbar styling ðŸ–¤ */
+/* ZEE'S FIX: Custom scrollbar styling 🖤 */
 #contact-content::-webkit-scrollbar {
     width: 8px;
 }
@@ -606,7 +606,7 @@
     transform: scale(1.05);
 }
 
-/* ZEE'S FIX: Landscape mode contact overlay adjustments ðŸ–¤ */
+/* ZEE'S FIX: Landscape mode contact overlay adjustments 🖤 */
 @media (max-width: 768px) and (orientation: landscape) {
     #contact-content {
         padding: 1.5em;

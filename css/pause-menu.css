@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    PAUSE MENU
    ======================================== */
 
@@ -93,7 +93,7 @@
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: url('assets/pause-button.png') center/100% 100% no-repeat;
+    background: url('../assets/pause-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 8px 20px;
@@ -109,7 +109,7 @@
 
 /* Ronnie Route - Terminal Ground pause UI */
 #pause-button.ronnie-route {
-    background: url('assets/pause-button-ronnie.png') center/contain no-repeat;
+    background: url('../assets/pause-button-ronnie.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
         0 0 30px rgba(0, 200, 100, 0.1);
 }
@@ -134,7 +134,7 @@
 
 /* Tori Route - Fractured Glass pause UI */
 #pause-button.tori-route {
-    background: url('assets/pause-button-tori.png') center/contain no-repeat;
+    background: url('../assets/pause-button-tori.png') center/contain no-repeat;
     box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
         0 0 25px rgba(255, 50, 100, 0.1);
     animation: pauseButtonGlitch 8s ease-in-out infinite;

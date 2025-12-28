@@ -1,4 +1,4 @@
-﻿/* ========================================
+/* ========================================
    DIALOGUE BACKLOG
    ======================================== */
 
@@ -78,7 +78,7 @@
 
 /* ========================================
    BACKLOG THUMBNAILS
-   ZEE'S ADDITION: Visual scene reference ðŸ–¤
+   ZEE'S ADDITION: Visual scene reference 🖤
    ======================================== */
 
 .backlog-entry {
@@ -129,7 +129,7 @@
     font-size: 0.85em;
 }
 
-/* ZEE'S ADDITION: Hover effects ðŸ–¤ */
+/* ZEE'S ADDITION: Hover effects 🖤 */
 .backlog-entry:hover .backlog-thumbnail {
     opacity: 1;
     border-color: rgba(0, 255, 255, 0.6);
@@ -211,7 +211,7 @@
         padding: 20px;
     }
 
-    /* ZEE'S ADDITION: Mobile backlog thumbnail adjustments ðŸ–¤ */
+    /* ZEE'S ADDITION: Mobile backlog thumbnail adjustments 🖤 */
     .backlog-thumbnail {
         width: 60px;
         height: 45px;
@@ -230,7 +230,7 @@
        Having size rules here at 768px was conflicting with orientation-specific rules. */
 }
 
-/* ZEE'S ADDITION: Portrait mode - even smaller thumbnails ðŸ–¤ */
+/* ZEE'S ADDITION: Portrait mode - even smaller thumbnails 🖤 */
 @media (max-width: 768px) and (orientation: portrait) {
     .backlog-thumbnail {
         width: 50px;
