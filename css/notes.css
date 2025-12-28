@@ -1239,3 +1239,62 @@
 .codes-hint p:first-child {
     color: #00ffaa;
 }
+
+
+.notes-footer {
+    padding: 20px 25px;
+    border-top: 2px solid rgba(0, 255, 255, 0.3);
+    text-align: center;
+}
+
+.notes-footer .back-btn {
+    background: transparent;
+    border: 2px solid #0ff;
+    color: #0ff;
+    padding: 12px 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.notes-footer .back-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .standalone-notes-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .notes-header {
+        padding: 20px;
+    }
+
+    .notes-header h2 {
+        font-size: 1.4em;
+    }
+
+    .notes-list-container {
+        padding: 15px;
+    }
+
+    .note-entry {
+        padding: 12px;
+    }
+
+    .note-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
