@@ -1720,6 +1720,12 @@
                 game.swipeHandler = new SwipeHandler(game);
                 console.log('👆 Swipe Handler ready (swipe to advance)');
             }
+
+            // Initialize Analytics (privacy-respecting, local-only)
+            if (typeof Analytics !== 'undefined') {
+                game.analytics = new Analytics(game);
+                console.log('📊 Analytics ready (local tracking only)');
+            }
         });
     </script>
 </body>
