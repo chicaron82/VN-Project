@@ -46,6 +46,7 @@ import './tether-system.js';
 import './collectibles-manager.js';
 import './dev-console.js';
 import './dev-suite.js';
+import './auto-save-manager.js';
 import './bootstrap-tracker.js';
 import './accessibility.js';
 import './mobile-ux.js';

@@ -60,6 +60,8 @@
 /* Dev HUD, dev console */
 @import 'css/dev-suite.css';
 /* Dev Suite v2.0 - Full debugging interface */
+@import 'css/auto-save.css';
+/* Auto-save indicator */
 
 /* Also import the unified route select */
 @import 'route-select-unified.css';

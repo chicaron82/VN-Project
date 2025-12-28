@@ -1695,6 +1695,12 @@
                 game.devSuite = new DevSuite(game);
                 console.log('🛠️ Dev Suite v2.0 ready (type OPENCONSOLE to open)');
             }
+
+            // Initialize Auto-Save Manager (enhanced auto-save system)
+            if (typeof AutoSaveManager !== 'undefined') {
+                game.autoSaveManager = new AutoSaveManager(game);
+                console.log('⏱️ Auto-Save Manager ready (5 min intervals + smart triggers)');
+            }
         });
     </script>
 </body>
