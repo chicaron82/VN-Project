@@ -62,21 +62,21 @@
     gap: 2rem;
     width: 100%;
     max-width: 1000px;
-    height: 400px;
-    /* DIZEE FIX: Reduced to prevent feet covering text */
+    height: 320px;
+    /* DIZEE FIX: Further reduced */
     align-items: end;
     justify-items: center;
 }
 
-/* DIZEE FIX: Balance sprite heights */
+/* DIZEE FIX: Balance sprite heights - more aggressive reduction */
 .ronnie-portrait img {
-    max-height: 95%;
-    /* Ronnie slightly smaller */
+    max-height: 100%;
+    /* Ronnie can use full height */
 }
 
 .tori-portrait img {
-    max-height: 85%;
-    /* Tori reduced to prevent feet overlap */
+    max-height: 75%;
+    /* Tori significantly reduced - she's taller in the image */
 }
 
 /* ========================================
@@ -439,17 +439,18 @@
     }
 
     #route-portraits-container {
-        height: 300px;
-        /* DIZEE FIX: Reduced height */
+        height: 250px;
+        /* DIZEE FIX: Even smaller on mobile */
         gap: 1rem;
     }
 
     .ronnie-portrait img {
-        max-height: 90%;
+        max-height: 100%;
     }
 
     .tori-portrait img {
-        max-height: 80%;
+        max-height: 70%;
+        /* Even more aggressive on mobile */
     }
 
     .toggle-track {

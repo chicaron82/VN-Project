@@ -10361,51 +10361,83 @@ button.keyboard-focus:focus,
         display: none;
     }
 
-    /* Expand center content */
+    /* Expand center content - COMPACT for landscape */
     .loop-route-center {
         flex: 1;
-        max-width: 500px;
+        max-width: 400px;
+        gap: 10px;
+        /* Tighter gap */
     }
 
     /* Route option cards - more compact in landscape */
     .loop-route-option {
-        padding: 20px 40px;
-        min-width: 180px;
+        padding: 10px 30px;
+        /* Reduced padding */
+        min-width: 150px;
     }
 
     .loop-route-name {
-        font-size: 1.4em;
+        font-size: 1.2em;
     }
 
-    /* Highlight side sprites on hover */
-    .loop-route-option[data-route="ronnie"]:hover~.loop-route-left .loop-route-side-sprite,
-    .loop-route-option[data-route="ronnie"]:focus~.loop-route-left .loop-route-side-sprite {
-        filter: drop-shadow(0 0 40px var(--theme-success));
-        transform: scale(1.05);
+    .loop-route-label {
+        margin-top: 5px;
+        gap: 2px;
     }
 
-    /* DIZEE FIX: Reduce landscape sprite heights to prevent cutoff */
+    /* DIZEE FIX: Much smaller sprites to fit without scrollbar */
     .loop-route-side-sprite {
-        height: 45vh;
-        max-height: 280px;
+        height: 35vh;
+        max-height: 200px;
     }
 
     /* Balance heights for different sprites */
     #loop-sprite-ronnie {
-        height: 48vh;
-        max-height: 300px;
+        height: 38vh;
+        max-height: 220px;
     }
 
     #loop-sprite-tori {
-        height: 45vh;
-        max-height: 280px;
+        height: 35vh;
+        max-height: 200px;
     }
 
-    /* Ensure content doesn't overflow */
-    #loop-init-content {
-        max-height: 100vh;
-        overflow-y: auto;
-        padding-top: 10px;
+    /* Compact the top message section */
+    .loop-init-message {
+        margin-top: 0;
+        padding-top: 5px;
+    }
+
+    .loop-init-title {
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+
+    .loop-init-status {
+        font-size: 0.8em;
+    }
+
+    .loop-init-boot {
+        font-size: 0.95em;
+    }
+
+    .loop-init-progress {
+        margin: 10px 0;
+    }
+
+    .loop-route-selection {
+        margin-top: 10px;
+    }
+
+    .loop-route-prompt {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+
+    .loop-back-to-menu {
+        padding: 8px 25px;
+        font-size: 0.85em;
+        margin-top: 5px;
     }
 }
 
