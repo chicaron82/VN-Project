@@ -64,6 +64,7 @@ class DevSuite {
         this.setupKeyboardShortcuts();
         this.setupResizableDivider();
         this.startFPSMonitor();
+        this.interceptConsole();
 
         // Initialize sub-systems
         this.logger = new DevLogger(this);
@@ -72,6 +73,52 @@ class DevSuite {
         this.breakpoints = new BreakpointSystem(this);
 
         console.log('🛠️ Dev Suite v2.0 initialized');
+    }
+
+    // ========================================
+    // CONSOLE INTERCEPTION
+    // ========================================
+
+    interceptConsole() {
+        // Save original console methods
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        const safeStringify = (obj) => {
+            try {
+                return JSON.stringify(obj, null, 2);
+            } catch (e) {
+                return String(obj);
+            }
+        };
+
+        // Override console.log
+        console.log = (...args) => {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
+            ).join(' ');
+            this.consoleLogEntry(message, 'log');
+            originalLog.apply(console, args);
+        };
+
+        // Override console.warn
+        console.warn = (...args) => {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
+            ).join(' ');
+            this.consoleLogEntry('⚠️ ' + message, 'warn');
+            originalWarn.apply(console, args);
+        };
+
+        // Override console.error
+        console.error = (...args) => {
+            const message = args.map(arg =>
+                typeof arg === 'object' ? safeStringify(arg) : String(arg)
+            ).join(' ');
+            this.consoleLogEntry('❌ ' + message, 'error');
+            originalError.apply(console, args);
+        };
     }
 
     // ========================================

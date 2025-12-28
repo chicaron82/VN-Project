@@ -239,6 +239,14 @@
     word-break: break-word;
 }
 
+.console-entry.log {
+    color: #fff;
+}
+
+.console-entry.warn {
+    color: #facc15;
+}
+
 .console-entry.user {
     color: #0ff;
 }
