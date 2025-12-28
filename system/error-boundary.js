@@ -337,7 +337,11 @@ ${this.errors.slice(-5).map(e => `- ${e.error.message}`).join('\n')}
     }
 
     testError() {
-        throw new Error('Test error from Error Boundary');
+        // Use setTimeout to throw async error that will be caught by global handler
+        setTimeout(() => {
+            throw new Error('Test error from Error Boundary');
+        }, 0);
+        console.log('⚠️ Test error will be thrown asynchronously...');
     }
 }
 
