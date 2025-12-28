@@ -58,6 +58,8 @@
 /* Mobile responsive, landscape */
 @import 'css/dev-tools.css';
 /* Dev HUD, dev console */
+@import 'css/dev-suite.css';
+/* Dev Suite v2.0 - Full debugging interface */
 
 /* Also import the unified route select */
 @import 'route-select-unified.css';

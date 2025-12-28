@@ -269,19 +269,30 @@ class SecretCodesManager {
 
     tryDevCommand(code) {
         const commands = {
-            // DEV CONSOLE ACCESS
+            // DEV SUITE ACCESS (v2.0)
             'openconsole': () => {
-                if (GameConfig.DEBUG_MODE && typeof DevConsole !== 'undefined') {
-                    DevConsole.open();
-                    return '🖥️ DEV: Console opened (mobile debugging mode)';
+                if (GameConfig.DEBUG_MODE) {
+                    // Try DevSuite first, fall back to DevConsole
+                    if (typeof DevSuite !== 'undefined' && this.game.devSuite) {
+                        this.game.devSuite.open();
+                        return '🛠️ DEV SUITE v2.0 opened';
+                    } else if (typeof DevConsole !== 'undefined') {
+                        DevConsole.open();
+                        return '🖥️ DEV: Console opened (legacy mode)';
+                    }
                 }
                 return null; // Silently fail if debug mode is off
             },
 
             'hideconsole': () => {
-                if (GameConfig.DEBUG_MODE && typeof DevConsole !== 'undefined') {
-                    DevConsole.close();
-                    return '🖥️ DEV: Console closed and hidden';
+                if (GameConfig.DEBUG_MODE) {
+                    if (typeof DevSuite !== 'undefined' && this.game.devSuite) {
+                        this.game.devSuite.close();
+                        return '🛠️ DEV SUITE closed';
+                    } else if (typeof DevConsole !== 'undefined') {
+                        DevConsole.close();
+                        return '🖥️ DEV: Console closed';
+                    }
                 }
                 return null; // Silently fail if debug mode is off
             },

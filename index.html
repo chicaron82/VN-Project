@@ -1689,6 +1689,12 @@
             if (typeof DevConsole !== 'undefined') {
                 DevConsole.init(game);
             }
+
+            // Initialize Dev Suite v2.0 (full debugging interface)
+            if (typeof DevSuite !== 'undefined') {
+                game.devSuite = new DevSuite(game);
+                console.log('🛠️ Dev Suite v2.0 ready (type OPENCONSOLE to open)');
+            }
         });
     </script>
 </body>
