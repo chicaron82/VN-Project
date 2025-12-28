@@ -71,6 +71,11 @@ export class TutorialManager {
         this.shownTutorials.add(tutorialId);
         this._saveCompleted(tutorialId);
 
+        // Request pause via PauseManager
+        if (this.game.pauseManager) {
+            this.game.pauseManager.request('tutorial');
+        }
+
         // Create the overlay
         this._createOverlay(targetElement, options);
 
@@ -155,6 +160,11 @@ export class TutorialManager {
      */
     dismiss() {
         if (!this.activeOverlay) return;
+
+        // Release pause via PauseManager
+        if (this.game.pauseManager) {
+            this.game.pauseManager.release('tutorial');
+        }
 
         // Remove spotlight
         if (this._targetElement) {
