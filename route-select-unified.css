@@ -32,6 +32,8 @@
 #route-select-title {
     grid-column: 1 / 4;
     grid-row: 1;
+    padding-top: 25px;
+    /* DIZEE FIX: Clear status bar */
 }
 
 #route-select-title h2 {
@@ -60,9 +62,21 @@
     gap: 2rem;
     width: 100%;
     max-width: 1000px;
-    height: 500px;
+    height: 400px;
+    /* DIZEE FIX: Reduced to prevent feet covering text */
     align-items: end;
     justify-items: center;
+}
+
+/* DIZEE FIX: Balance sprite heights */
+.ronnie-portrait img {
+    max-height: 95%;
+    /* Ronnie slightly smaller */
+}
+
+.tori-portrait img {
+    max-height: 85%;
+    /* Tori reduced to prevent feet overlap */
 }
 
 /* ========================================
@@ -425,8 +439,17 @@
     }
 
     #route-portraits-container {
-        height: 350px;
+        height: 300px;
+        /* DIZEE FIX: Reduced height */
         gap: 1rem;
+    }
+
+    .ronnie-portrait img {
+        max-height: 90%;
+    }
+
+    .tori-portrait img {
+        max-height: 80%;
     }
 
     .toggle-track {

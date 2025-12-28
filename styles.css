@@ -10173,10 +10173,20 @@ button.keyboard-focus:focus,
 }
 
 .loop-route-sprite {
-    width: 150px;
-    height: auto;
+    height: 200px;
+    width: auto;
     filter: drop-shadow(0 0 15px var(--theme-glow));
     transition: filter 0.3s ease;
+}
+
+/* DIZEE FIX: Balance sprite heights - Ronnie smaller, Tori taller */
+.loop-route-option[data-route="ronnie"] .loop-route-sprite {
+    height: 220px;
+    /* Ronnie needs to be taller to match Tori visually */
+}
+
+.loop-route-option[data-route="tori"] .loop-route-sprite {
+    height: 200px;
 }
 
 .loop-route-option:hover .loop-route-sprite,
@@ -10245,7 +10255,15 @@ button.keyboard-focus:focus,
     }
 
     .loop-route-sprite {
-        width: 120px;
+        height: 160px;
+    }
+
+    .loop-route-option[data-route="ronnie"] .loop-route-sprite {
+        height: 180px;
+    }
+
+    .loop-route-option[data-route="tori"] .loop-route-sprite {
+        height: 160px;
     }
 
     .loop-route-name {
@@ -10260,7 +10278,15 @@ button.keyboard-focus:focus,
     }
 
     .loop-route-sprite {
-        width: 100px;
+        height: 130px;
+    }
+
+    .loop-route-option[data-route="ronnie"] .loop-route-sprite {
+        height: 145px;
+    }
+
+    .loop-route-option[data-route="tori"] .loop-route-sprite {
+        height: 130px;
     }
 }
 
@@ -10358,9 +10384,28 @@ button.keyboard-focus:focus,
         transform: scale(1.05);
     }
 
+    /* DIZEE FIX: Reduce landscape sprite heights to prevent cutoff */
     .loop-route-side-sprite {
-        height: 60vh;
-        max-height: 400px;
+        height: 45vh;
+        max-height: 280px;
+    }
+
+    /* Balance heights for different sprites */
+    #loop-sprite-ronnie {
+        height: 48vh;
+        max-height: 300px;
+    }
+
+    #loop-sprite-tori {
+        height: 45vh;
+        max-height: 280px;
+    }
+
+    /* Ensure content doesn't overflow */
+    #loop-init-content {
+        max-height: 100vh;
+        overflow-y: auto;
+        padding-top: 10px;
     }
 }
 
