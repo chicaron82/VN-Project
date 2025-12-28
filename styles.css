@@ -64,6 +64,8 @@
 /* Auto-save indicator */
 @import 'css/error-modal.css';
 /* Error boundary modal */
+@import 'css/accessibility.css';
+/* Accessibility features (WCAG 2.1 AA) */
 
 /* Also import the unified route select */
 @import 'route-select-unified.css';

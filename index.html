@@ -1707,6 +1707,13 @@
                 game.errorBoundary = new ErrorBoundary(game);
                 console.log('🛡️ Error Boundary ready (catching all errors)');
             }
+
+            // Initialize Accessibility Manager (WCAG 2.1 AA compliance)
+            if (typeof AccessibilityManager !== 'undefined') {
+                game.accessibilityManager = new AccessibilityManager(game);
+                game.accessibilityManager.loadTextSizePreference();
+                console.log('♿ Accessibility Manager ready (screen reader + high contrast)');
+            }
         });
     </script>
 </body>
