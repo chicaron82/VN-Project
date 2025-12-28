@@ -160,16 +160,15 @@ body.high-contrast *:focus {
    TOUCH TARGETS (Mobile Accessibility)
    ======================================== */
 
-/* Ensure minimum 44x44px touch targets */
-button,
-a,
+/* Ensure minimum 44x44px touch targets for game buttons only */
+/* Note: Don't apply to all buttons/links to avoid breaking nav dots */
 .choice-btn,
-.menu-item {
+.menu-btn,
+.save-slot,
+.pause-menu button,
+.settings-menu button {
     min-width: 44px;
     min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /* ========================================
