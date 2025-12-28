@@ -81,144 +81,137 @@
  * ════════════════════════════════════════════════════════════════
  *
  * TABLE OF CONTENTS
- * (Line numbers updated 2025-12-17 - use search to locate sections)
+ * (Line numbers updated 2025-12-28 - use search to locate sections)
  *
- * 1. INITIALIZATION & SETUP ...................... Line 307
- *    - Constructor
- *    - DOM element caching
- *    - Manager initialization (Settings, Save, Codes, Tether, etc.)
- *    - Event listener setup
+ * 1. SENSORY CUES METADATA ....................... Line 230
+ *    - Haptic + visual feedback configuration
+ *    - UI, narrative, and critical feedback patterns
  *
- * 2. ERROR BOUNDARIES & DEBUG .................... Line 498
- *    - Production error handling
- *    - Debug logging controls
- *    - State validation guards
+ * 2. TUTORIAL SYSTEM ............................. Line 383
+ *    - Onboarding gesture tutorials
+ *    - Tutorial state management
  *
- * 3. CREDITS SYSTEM .............................. Line 1505
- *    - Photo pools (UV7 crew portraits)
- *    - Credits rendering (3 layouts)
- *    - Photo cycling controls
- *    - Version display
+ * 3. SKIP SYSTEM ................................. Line 524
+ *    - Skip mode (CTRL/S)
+ *    - Skip prologue system
+ *    - Ronnie notes system unlock
  *
- * 4. LOOP/VERSION SYSTEM ......................... Line 1700
- *    - Loop version tracking (848)
- *    - Version state management
- *    - Loop reinit screen
+ * 4. TORIGATCHI UNLOCK SYSTEM .................... Line 1225
+ *    - Main menu ToriGatchi button unlock
+ *    - Easter egg integration
  *
- * 5. ROTATING TIPS SYSTEM ........................ Line 1900
+ * 5. ROTATING TIPS SYSTEM ........................ Line 1234
  *    - Main menu tips
  *    - Route select tips
  *    - Tip rotation controls
  *
- * 6. HAPTIC FEEDBACK SYSTEM ...................... Line 2000
- *    - Pattern library (12 patterns: light, medium, strong, etc.)
+ * 6. HAPTIC FEEDBACK SYSTEM ...................... Line 1267
+ *    - Pattern library (12 patterns)
  *    - Device support detection
- *    - Settings integration
- *    - Vibration triggers
+ *    - Sensory intensity scaling
  *
- * 7. DEV HUD SYSTEM .............................. Line 2085
+ * 7. UNIFIED SENSORY FEEDBACK .................... Line 1370
+ *    - Metadata-driven haptic + visual cues
+ *    - Channel-based intensity scaling
+ *
+ * 8. DEV HUD SYSTEM .............................. Line 1408
  *    - Real-time debug overlay
  *    - Route/Act/Scene display
  *    - Tether/Difficulty/Flags monitoring
- *    - Toggle controls
  *
- * 8. NOTES UNLOCK SYSTEM ......................... Line 2200
+ * 9. NOTES UNLOCK SYSTEM ......................... Line 1471
  *    - Note unlocking
- *    - Ronnie notes system unlock
+ *    - Ronnie notes tab unlock
  *
- * 9. STORY START & ROUTE SELECTION ............... Line 2300
- *    - Prologue playback
- *    - Route selection screen
- *    - Skip prologue system
- *    - Route start initialization
+ * 10. SKIP PROLOGUE SYSTEM ....................... Line 1647
+ *     - Skip prologue toggle
+ *     - First-time vs replay handling
  *
- * 10. SPRITE MANAGEMENT .......................... Line 2700
- *     - Sprite fade sequences
- *     - Character sprite display
- *     - Sprite positioning
- *     - Sprite cleanup on transitions
- *
- * 11. SCENE DISPLAY & RENDERING .................. Line 3000
+ * 11. SCENE DISPLAY & RENDERING .................. Line 1692
  *     - Display scene
  *     - Dialogue rendering
  *     - Character names
  *     - Background handling
  *     - Choice rendering
  *
- * 12. TYPEWRITER EFFECT & PAGINATION ............. Line 3500
- *     - Character-by-character rendering
- *     - Mobile optimization (150 char threshold)
- *     - Text speed control
- *     - Auto-advance integration
+ * 12. SPRITE MANAGEMENT .......................... Line 1855
+ *     - Sprite fade sequences
+ *     - Character sprite display
+ *     - Sprite positioning
+ *     - Sprite cleanup on transitions
  *
- * 13. ECHO DISPLAY (TORI ROUTE) .................. Line 4000
- *     - Echo voice system
+ * 13. ECHO DISPLAY (TORI ROUTE) .................. Line 1973
+ *     - Echo voice system (three-echoes-sprite.png)
  *     - Echo animations
  *
- * 14. NOTES SYSTEM ............................... Line 4200
+ * 14. NOTES SYSTEM ............................... Line 1979
  *     - Note overlay display
  *     - Note navigation
  *
- * 15. CREDITS DISPLAY ............................ Line 4500
- *     - Credits modal
- *     - Crew portraits
- *     - Version info
- *
- * 16. CONFIRMATION DIALOG SYSTEM ................. Line 5100
+ * 15. CONFIRMATION DIALOG SYSTEM ................. Line 2080
  *     - Custom dialog overlays
  *     - Confirmation callbacks
- *     - Dialog styling
  *
- * 17. CONTACT SCREEN ............................. Line 5300
+ * 16. CONTACT SCREEN ............................. Line 2160
  *     - Developer contact info
  *
- * 18. SAVE/LOAD SYSTEM METHODS ................... Line 5500
+ * 17. SAVE/LOAD SYSTEM METHODS ................... Line 2220
  *     - Save game delegation
  *     - Load game delegation
  *     - Save slot management
  *
- * 19. STANDALONE NOTES VIEWER .................... Line 5700
+ * 18. STANDALONE NOTES VIEWER .................... Line 2310
  *     - Main menu notes access
  *     - Standalone viewer launch
  *
- * 20. SETTINGS SYSTEM ............................ Line 5900
+ * 19. SETTINGS SYSTEM ............................ Line 2340
  *     - Settings menu control
  *     - Settings delegation to SettingsManager
  *
- * 21. BACKLOG SYSTEM ............................. Line 6100
+ * 20. BACKLOG SYSTEM ............................. Line 2400
  *     - History tracking
  *     - Time-travel functionality
  *     - Backlog rendering
  *
- * 22. DEV COMMANDS ............................... Line 6500
- *     - Developer utility commands
- *     - Debug shortcuts
+ * 21. PAUSE MENU ................................. Line 2650
+ *     - Pause menu display
+ *     - Resume/settings/main menu
  *
- * 23. FULLSCREEN TOGGLE .......................... Line 7000
- *     - Fullscreen API handling
+ * 22. ROUTE SELECTION ............................ Line 2730
+ *     - Route selection screen
+ *     - Route start initialization
  *
- * 24. ESC HINT (DESKTOP) ......................... Line 7200
- *     - Escape key hint display
+ * 23. STORY START (PROLOGUE) ..................... Line 2940
+ *     - Prologue playback
+ *     - Skip prologue handling
  *
- * 25. KEYBOARD CONTROLS .......................... Line 7400
- *     - Key event handlers
- *     - Hotkey system
- *     - Navigation shortcuts
- *
- * 26. UI CONTROLS & ANIMATIONS ................... Line 8000
+ * 24. MAIN MENU .................................. Line 3100
+ *     - Main menu display
  *     - Button handlers
- *     - Fade effects
- *     - Overlay management
- *     - UI toggles
+ *     - Menu navigation
+ *
+ * 25. CREDITS SYSTEM ............................. Line 3300
+ *     - Credits rendering (3 layouts)
+ *     - Photo pools (UV7 crew portraits)
+ *     - Photo cycling controls
+ *
+ * 26. LOOP REINIT SCREEN ......................... Line 3550
+ *     - Loop version tracking (848)
+ *     - Retry screen with route selection
+ *
+ * 27. CONSTRUCTOR & INITIALIZATION ............... Line 3780
+ *     - DOM element caching
+ *     - Manager initialization (PauseManager, Settings, Save, etc.)
+ *     - Event listener setup
  *
  * ════════════════════════════════════════════════════════════════
  * NOTES:
  * - This is the main orchestrator - coordinates all subsystems
  * - Manages game loop, state transitions, and player interactions
- * - Integrates with: SaveManager, SettingsManager, TetherSystem,
- *   CollectiblesManager, SecretCodesManager, DevConsole
- *   - File size: 9,179 lines - use TOC for navigation
- * - Line numbers updated Dec 17, 2025 - search by section name for exact location
+ * - Integrates with: PauseManager, SaveManager, SettingsManager,
+ *   TetherSystem, CollectiblesManager, SecretCodesManager, DevConsole
+ * - File size: 3,946 lines - use TOC for navigation
+ * - Line numbers updated Dec 28, 2025 - search by section name for exact location
  * ════════════════════════════════════════════════════════════════
  */
 
