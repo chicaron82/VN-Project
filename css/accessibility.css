@@ -203,16 +203,5 @@ a,
    RESPONSIVE TEXT
    ======================================== */
 
-@media (max-width: 768px) {
-
-    /* Increase base font size on mobile */
-    body {
-        font-size: calc(16px * var(--text-size-multiplier));
-    }
-}
-
-@media (min-width: 769px) {
-    body {
-        font-size: calc(18px * var(--text-size-multiplier));
-    }
-}
+/* Text size multiplier is applied directly to game content elements only */
+/* Body font-size remains fixed to prevent layout issues */
