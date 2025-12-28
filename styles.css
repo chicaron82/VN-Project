@@ -62,6 +62,8 @@
 /* Dev Suite v2.0 - Full debugging interface */
 @import 'css/auto-save.css';
 /* Auto-save indicator */
+@import 'css/error-modal.css';
+/* Error boundary modal */
 
 /* Also import the unified route select */
 @import 'route-select-unified.css';

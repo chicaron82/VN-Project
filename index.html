@@ -1701,6 +1701,12 @@
                 game.autoSaveManager = new AutoSaveManager(game);
                 console.log('⏱️ Auto-Save Manager ready (5 min intervals + smart triggers)');
             }
+
+            // Initialize Error Boundary (global error handler)
+            if (typeof ErrorBoundary !== 'undefined') {
+                game.errorBoundary = new ErrorBoundary(game);
+                console.log('🛡️ Error Boundary ready (catching all errors)');
+            }
         });
     </script>
 </body>
