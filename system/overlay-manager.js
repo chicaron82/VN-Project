@@ -569,6 +569,181 @@ class OverlayManager {
     static isVisible(id) {
         return document.getElementById(id) !== null;
     }
+
+    // ========================================
+    // PROGRESS OVERLAY METHODS
+    // Integration with LoadingOverlay for cinematic sequences
+    // ========================================
+
+    /**
+     * Create a themed progress bar overlay (DOM only, not animated)
+     * For animated sequences, use runProgressSequence() instead
+     * @param {string} title - Progress title
+     * @param {Object} options - Configuration options
+     * @returns {Object} { overlay, box, bar, status, close }
+     */
+    static createProgress(title, options = {}) {
+        const {
+            subtitle = 'Please wait...',
+            variant = 'primary',
+            showSkip = true,
+            maxWidth = '500px'
+        } = options;
+
+        const { overlay, box } = OverlayManager.createCustom({
+            variant,
+            maxWidth,
+            padding: '30px'
+        });
+
+        const theme = ThemeManager.getTheme();
+
+        // Title
+        const titleEl = OverlayManager.createTitle(title, { variant, fontSize: '20px' });
+        titleEl.style.marginBottom = '10px';
+        box.appendChild(titleEl);
+
+        // Subtitle
+        const subtitleEl = document.createElement('div');
+        subtitleEl.style.cssText = 'font-size: 14px; color: #aaa; margin-bottom: 20px;';
+        subtitleEl.textContent = subtitle;
+        box.appendChild(subtitleEl);
+
+        // Progress bar container
+        const barWrap = document.createElement('div');
+        barWrap.style.cssText = `
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        `;
+
+        // Progress bar fill
+        const barFill = document.createElement('div');
+        barFill.className = 'progress-bar-fill';
+        barFill.style.cssText = `
+            height: 100%;
+            width: 0%;
+            background: ${theme.primary};
+            border-radius: 5px;
+            transition: width 0.1s linear;
+        `;
+        barWrap.appendChild(barFill);
+        box.appendChild(barWrap);
+
+        // Status text
+        const statusEl = document.createElement('div');
+        statusEl.className = 'progress-status';
+        statusEl.style.cssText = 'font-size: 13px; color: #ccc; margin-bottom: 15px;';
+        statusEl.textContent = 'Starting...';
+        box.appendChild(statusEl);
+
+        // Skip button (optional)
+        let skipBtn = null;
+        if (showSkip) {
+            skipBtn = OverlayManager.createButton('Skip ▶', null, { variant, width: '120px' });
+            skipBtn.style.fontSize = '12px';
+            skipBtn.style.padding = '8px 16px';
+            box.appendChild(skipBtn);
+        }
+
+        // Close function
+        const close = () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 300);
+        };
+
+        return {
+            overlay,
+            box,
+            bar: barFill,
+            status: statusEl,
+            skip: skipBtn,
+            close,
+            setProgress: (percent) => {
+                barFill.style.width = `${percent}%`;
+            },
+            setStatus: (text) => {
+                statusEl.textContent = text;
+            }
+        };
+    }
+
+    /**
+     * Run an animated progress sequence (Promise-based)
+     * Uses game.loadingOverlay if available, otherwise creates a new one
+     * 
+     * @param {Object} game - Game instance with pauseManager and loadingOverlay
+     * @param {Object} options - Progress options (see LoadingOverlay)
+     * @returns {Promise<{reason: string}>}
+     */
+    static async runProgressSequence(game, options = {}) {
+        // If game has LoadingOverlay, use it (already integrated with PauseManager)
+        if (game?.loadingOverlay) {
+            return game.loadingOverlay.playUploadSequence(options);
+        }
+
+        // Fallback: Create a simple progress overlay
+        const {
+            title = 'Processing...',
+            subtitle = 'Please wait',
+            durationMs = 2000,
+            skippable = true,
+            statusLines = ['Starting...', 'Processing...', 'Completing...', 'Done.']
+        } = options;
+
+        // Request pause if PauseManager available
+        if (game?.pauseManager) {
+            game.pauseManager.request('progressOverlay');
+        }
+
+        const progress = OverlayManager.createProgress(title, { subtitle, showSkip: skippable });
+        OverlayManager.show(progress.overlay);
+
+        return new Promise((resolve) => {
+            const start = performance.now();
+            let skipped = false;
+
+            // Skip handler
+            if (progress.skip) {
+                progress.skip.onclick = () => {
+                    skipped = true;
+                    cleanup('skipped');
+                };
+            }
+
+            const cleanup = (reason) => {
+                if (game?.pauseManager) {
+                    game.pauseManager.release('progressOverlay');
+                }
+                progress.close();
+                resolve({ reason });
+            };
+
+            // Animation loop
+            const tick = (now) => {
+                if (skipped) return;
+
+                const t = Math.min(1, (now - start) / durationMs);
+                const percent = Math.floor(t * 100);
+
+                progress.setProgress(percent);
+
+                const idx = Math.min(statusLines.length - 1, Math.floor(t * statusLines.length));
+                progress.setStatus(statusLines[idx]);
+
+                if (t >= 1) {
+                    cleanup('complete');
+                    return;
+                }
+
+                requestAnimationFrame(tick);
+            };
+
+            requestAnimationFrame(tick);
+        });
+    }
 }
 
 // Global assignment for browser
