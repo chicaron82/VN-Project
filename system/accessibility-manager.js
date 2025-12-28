@@ -35,6 +35,7 @@ class AccessibilityManager {
         this.setupARIALabels();
         this.detectUserPreferences();
         this.setupKeyboardNav();
+        this.loadTextSizePreference();
         console.log('♿ Accessibility Manager initialized');
     }
 
