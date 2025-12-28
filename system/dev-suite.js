@@ -240,6 +240,27 @@ class DevSuite {
     }
 
     // ========================================
+    // SCREENSHOT
+    // ========================================
+
+    async captureScreenshot() {
+        if (!this.screenshotTool) {
+            // Lazy load screenshot tool
+            const { ScreenshotTool } = await import('./screenshot-tool.js');
+            this.screenshotTool = new ScreenshotTool(this);
+        }
+
+        // Show options
+        const action = confirm('Download screenshot?\n\nOK = Download\nCancel = Copy to clipboard');
+
+        if (action) {
+            await this.screenshotTool.download();
+        } else {
+            await this.screenshotTool.copyToClipboard();
+        }
+    }
+
+    // ========================================
     // OPEN / CLOSE / MINIMIZE
     // ========================================
 
@@ -1016,8 +1037,14 @@ class DevSuite {
         shortcuts.forEach(s => this.consoleLogEntry('  ' + s, 'system'));
     }
 
-    hotReload() {
-        this.consoleLogEntry('🔄 Hot reload not implemented (would require dynamic imports)', 'system');
+    async hotReload() {
+        if (!this.hotReloadSystem) {
+            // Lazy load hot reload system
+            const { HotReloadSystem } = await import('./hot-reload-system.js');
+            this.hotReloadSystem = new HotReloadSystem(this);
+        }
+
+        this.hotReloadSystem.showReloadMenu();
     }
 
     copyLogs() {
@@ -1157,6 +1184,43 @@ class DevPresets {
 
     saveToStorage() {
         localStorage.setItem('devPresets', JSON.stringify(this.presets));
+    }
+
+    // Export/Import for sharing
+    exportPresets() {
+        const json = JSON.stringify(this.presets, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `v848-dev-presets-${Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+        this.suite.consoleLogEntry('📤 Presets exported', 'success');
+    }
+
+    importPresets() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.json';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const imported = JSON.parse(event.target.result);
+                    this.presets = [...this.presets, ...imported];
+                    this.saveToStorage();
+                    this.suite.consoleLogEntry(`📥 Imported ${imported.length} presets`, 'success');
+                } catch (error) {
+                    this.suite.consoleLogEntry('❌ Import failed: Invalid file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        };
+        input.click();
     }
 }
 
