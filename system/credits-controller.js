@@ -411,7 +411,7 @@ class CreditsController {
 
             <div style="margin-top: 5em; font-size: 1em; color: #fff;">
                 <div style="margin-bottom: 1em;">Made Possible By</div>
-                <img src="assets/UnitedVoices7.png" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
+                <img src="assets/UnitedVoices7.webp" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
             </div>
 
             <div style="margin-top: 3em; font-size: 1em; color: #fff;">
@@ -570,7 +570,7 @@ class CreditsController {
 
             <div style="margin-top: 5em; font-size: 1em; color: #fff;">
                 <div style="margin-bottom: 1em;">Made Possible By</div>
-                <img src="assets/UnitedVoices7.png" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
+                <img src="assets/UnitedVoices7.webp" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
             </div>
 
             <div style="margin-top: 3em; font-size: 1em; color: #fff;">
@@ -688,7 +688,7 @@ class CreditsController {
 
             <div style="margin-top: 5em; font-size: 1em; color: #fff;">
                 <div style="margin-bottom: 1em;">Made Possible By</div>
-                <img src="assets/UnitedVoices7.png" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
+                <img src="assets/UnitedVoices7.webp" style="max-width: 300px; width: 80%; opacity: 0.9;" alt="United Voices 7">
             </div>
 
             <div style="margin-top: 3em; font-size: 1em; color: #fff;">
