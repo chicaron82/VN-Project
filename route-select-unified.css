@@ -1,28 +1,28 @@
 /* ========================================
-   ROUTE SELECT - UNIFIED GRID SYSTEM
-   ZEERAH FIX: Rebuilt from scratch to eliminate
-   positioning conflicts between left/right percentages
-   and translateX transforms.
+   ROUTE SELECT - REBUILT V2
+   Clean implementation with character-specific 
+   pixel heights instead of percentages.
    
-   Characters now live in fixed grid cells.
-   Selection changes ONLY visual appearance.
-   💚🔥💀
+   Key principle: Ronnie and Tori have different
+   aspect ratios - use explicit heights, not %.
    ======================================== */
 
 /* ========================================
-   MAIN CONTAINER - ALWAYS GRID
+   MAIN CONTAINER - FLEXBOX FOR PORTRAIT
    ======================================== */
 
 #route-select-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: auto auto 1fr auto auto auto;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-items: center;
+    justify-content: flex-start;
     min-height: 100vh;
     padding: 2rem;
+    padding-top: 40px;
+    /* Clear status bar */
+    gap: 1rem;
     text-align: center;
+    box-sizing: border-box;
 }
 
 /* ========================================
@@ -30,164 +30,21 @@
    ======================================== */
 
 #route-select-title {
-    grid-column: 1 / 4;
-    grid-row: 1;
-    padding-top: 25px;
-    /* DIZEE FIX: Clear status bar */
+    width: 100%;
+    margin-bottom: 0.5rem;
 }
 
 #route-select-title h2 {
-    font-size: 2.5em;
-    margin-bottom: 0.5rem;
+    font-size: 2em;
+    margin-bottom: 0.3rem;
     color: cyan;
     text-shadow: 0 0 10px cyan;
 }
 
 #route-select-title p {
-    font-size: 1.2em;
+    font-size: 1em;
     color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 1rem;
-}
-
-/* ========================================
-   PORTRAIT CONTAINER - GRID LAYOUT
-   ZEERAH FIX: No more absolute positioning!
-   ======================================== */
-
-#route-portraits-container {
-    grid-column: 1 / 4;
-    grid-row: 3;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    width: 100%;
-    max-width: 1000px;
-    height: 320px;
-    /* DIZEE FIX: Further reduced */
-    align-items: end;
-    justify-items: center;
-}
-
-/* DIZEE FIX: Balance sprite heights - more aggressive reduction */
-.ronnie-portrait img {
-    max-height: 100%;
-    /* Ronnie can use full height */
-}
-
-.tori-portrait img {
-    max-height: 75%;
-    /* Tori significantly reduced - she's taller in the image */
-}
-
-/* ========================================
-   PORTRAIT ITEMS - FIXED IN GRID CELLS
-   ZEERAH FIX: No left/right/transform positioning!
-   Each portrait lives in its grid cell, period.
-   ======================================== */
-
-.route-portrait {
-    /* ZEERAH FIX: NO position: absolute */
-    /* ZEERAH FIX: NO left/right percentages */
-    /* ZEERAH FIX: NO transform: translateX */
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    height: 100%;
-    width: 100%;
-    cursor: pointer;
-
-    /* Only these properties animate - NEVER position */
-    transition:
-        opacity 0.4s ease,
-        filter 0.4s ease;
-}
-
-.route-portrait img {
-    height: 100%;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    object-position: bottom center;
-}
-
-/* ========================================
-   RONNIE PORTRAIT - LEFT GRID CELL
-   ZEERAH FIX: Position is implicit from grid
-   ======================================== */
-
-.ronnie-portrait {
-    /* Lives in grid column 1 automatically */
-    justify-self: center;
-}
-
-.ronnie-portrait.active {
-    opacity: 1;
-    filter: brightness(1) drop-shadow(0 0 30px cyan);
-    z-index: 2;
-}
-
-.ronnie-portrait:not(.active) {
-    opacity: 0.4;
-    filter: brightness(0.6) blur(2px);
-    z-index: 1;
-}
-
-/* ========================================
-   TORI PORTRAIT - RIGHT GRID CELL
-   ZEERAH FIX: Position is implicit from grid
-   ======================================== */
-
-.tori-portrait {
-    /* Lives in grid column 2 automatically */
-    justify-self: center;
-}
-
-.tori-portrait.active {
-    opacity: 1;
-    filter: brightness(1) drop-shadow(0 0 30px magenta);
-    z-index: 2;
-}
-
-.tori-portrait:not(.active) {
-    opacity: 0.4;
-    filter: brightness(0.6) blur(2px);
-    z-index: 1;
-}
-
-/* ========================================
-   TORI GLITCH EFFECT - ONLY ON IMG
-   ZEERAH FIX: Animation on img, not container
-   This prevents container position from shifting
-   ======================================== */
-
-.tori-portrait.active img {
-    animation: tori-sprite-glitch 0.5s ease-out;
-}
-
-@keyframes tori-sprite-glitch {
-    0% {
-        filter: contrast(1) brightness(1);
-    }
-
-    5% {
-        filter: contrast(1.3) brightness(1.2) hue-rotate(5deg);
-    }
-
-    10% {
-        filter: contrast(1.1) brightness(0.9) hue-rotate(-5deg);
-    }
-
-    15% {
-        filter: contrast(1.4) brightness(1.1);
-    }
-
-    20% {
-        filter: contrast(1) brightness(1);
-    }
-
-    100% {
-        filter: contrast(1.15) brightness(1.05);
-    }
+    margin-bottom: 0;
 }
 
 /* ========================================
@@ -195,10 +52,9 @@
    ======================================== */
 
 #route-toggle {
-    grid-column: 2;
-    grid-row: 2;
     display: flex;
     justify-content: center;
+    margin-bottom: 0.5rem;
 }
 
 .toggle-track {
@@ -208,13 +64,13 @@
     border: 2px solid cyan;
     border-radius: 50px;
     padding: 0.3rem;
-    width: 300px;
+    width: 280px;
 }
 
 .toggle-option {
     flex: 1;
     text-align: center;
-    padding: 0.8rem;
+    padding: 0.7rem;
     font-weight: 700;
     cursor: pointer;
     z-index: 2;
@@ -250,16 +106,127 @@
 }
 
 /* ========================================
+   PORTRAIT CONTAINER - FLEXBOX
+   ======================================== */
+
+#route-portraits-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+    /* FIXED HEIGHT - no percentage games */
+    height: 280px;
+}
+
+/* ========================================
+   PORTRAIT ITEMS - EXPLICIT HEIGHTS
+   ======================================== */
+
+.route-portrait {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
+    flex: 1;
+    cursor: pointer;
+    transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* RONNIE - shorter/stockier aspect ratio */
+.ronnie-portrait {
+    justify-self: center;
+}
+
+.ronnie-portrait img {
+    height: 260px;
+    /* FIXED PIXEL HEIGHT */
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+}
+
+/* TORI - taller/narrower aspect ratio */
+.tori-portrait {
+    justify-self: center;
+}
+
+.tori-portrait img {
+    height: 240px;
+    /* FIXED PIXEL HEIGHT - slightly less than Ronnie */
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+}
+
+/* Active/Inactive states */
+.ronnie-portrait.active {
+    opacity: 1;
+    filter: brightness(1) drop-shadow(0 0 30px cyan);
+    z-index: 2;
+}
+
+.ronnie-portrait:not(.active) {
+    opacity: 0.4;
+    filter: brightness(0.6) blur(2px);
+    z-index: 1;
+}
+
+.tori-portrait.active {
+    opacity: 1;
+    filter: brightness(1) drop-shadow(0 0 30px magenta);
+    z-index: 2;
+}
+
+.tori-portrait:not(.active) {
+    opacity: 0.4;
+    filter: brightness(0.6) blur(2px);
+    z-index: 1;
+}
+
+/* Tori glitch effect */
+.tori-portrait.active img {
+    animation: tori-sprite-glitch 0.5s ease-out;
+}
+
+@keyframes tori-sprite-glitch {
+    0% {
+        filter: contrast(1) brightness(1);
+    }
+
+    5% {
+        filter: contrast(1.3) brightness(1.2) hue-rotate(5deg);
+    }
+
+    10% {
+        filter: contrast(1.1) brightness(0.9) hue-rotate(-5deg);
+    }
+
+    15% {
+        filter: contrast(1.4) brightness(1.1);
+    }
+
+    20% {
+        filter: contrast(1) brightness(1);
+    }
+
+    100% {
+        filter: contrast(1.15) brightness(1.05);
+    }
+}
+
+/* ========================================
    ROUTE INFO DISPLAY
    ======================================== */
 
 #route-info-display {
-    grid-column: 1 / 4;
-    grid-row: 4;
     position: relative;
-    min-height: 120px;
+    min-height: 100px;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
 }
 
 .route-info {
@@ -279,8 +246,8 @@
 }
 
 .route-info h3 {
-    font-size: 2em;
-    margin-bottom: 0.5rem;
+    font-size: 1.8em;
+    margin-bottom: 0.3rem;
     color: cyan;
     text-shadow: 0 0 10px cyan;
 }
@@ -291,9 +258,9 @@
 }
 
 .route-description {
-    font-size: 1.1em;
+    font-size: 1em;
     color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
+    line-height: 1.4;
 }
 
 /* ========================================
@@ -301,12 +268,12 @@
    ======================================== */
 
 .route-difficulty-preview {
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
     border-top: 1px solid rgba(255, 0, 255, 0.3);
-    font-size: 0.95em;
+    font-size: 0.9em;
     color: rgba(255, 255, 255, 0.7);
-    line-height: 1.8;
+    line-height: 1.6;
 }
 
 #difficulty-display {
@@ -359,13 +326,11 @@
    ======================================== */
 
 #route-play-button {
-    grid-column: 1 / 4;
-    grid-row: 5;
     background: transparent;
     border: 3px solid cyan;
     color: cyan;
-    padding: 1rem 3rem;
-    font-size: 1.2em;
+    padding: 0.9rem 2.5rem;
+    font-size: 1.1em;
     font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
@@ -392,12 +357,10 @@
    ======================================== */
 
 #back-to-menu {
-    grid-column: 1 / 4;
-    grid-row: 6;
     background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.3);
     color: rgba(255, 255, 255, 0.7);
-    padding: 0.8rem 2rem;
+    padding: 0.7rem 2rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -412,101 +375,80 @@
    ======================================== */
 
 .route-select-hint {
-    grid-column: 1 / 4;
-    grid-row: 7;
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: rgba(255, 255, 255, 0.5);
     font-style: italic;
+    margin-top: auto;
+    padding-bottom: 1rem;
 }
 
 /* ========================================
-   MOBILE RESPONSIVE - PORTRAIT
-   ZEERAH FIX: Same grid logic, just smaller
+   MOBILE PORTRAIT - SMALLER SCREENS
    ======================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     #route-select-content {
         padding: 1rem;
-        gap: 0.5rem;
+        padding-top: 35px;
+        gap: 0.8rem;
     }
 
     #route-select-title h2 {
-        font-size: 1.8em;
+        font-size: 1.6em;
     }
 
     #route-select-title p {
-        font-size: 1em;
-    }
-
-    #route-portraits-container {
-        height: 250px;
-        /* DIZEE FIX: Even smaller on mobile */
-        gap: 1rem;
-    }
-
-    .ronnie-portrait img {
-        max-height: 100%;
-    }
-
-    .tori-portrait img {
-        max-height: 70%;
-        /* Even more aggressive on mobile */
-    }
-
-    .toggle-track {
-        width: 250px;
-    }
-
-    .toggle-option {
         font-size: 0.9em;
-        padding: 0.6rem;
-    }
-
-    .route-info h3 {
-        font-size: 1.5em;
-    }
-
-    .route-description {
-        font-size: 1em;
-    }
-
-    #route-play-button {
-        padding: 0.8rem 2rem;
-        font-size: 1em;
-    }
-}
-
-@media (max-width: 480px) {
-    #route-portraits-container {
-        height: 280px;
-        gap: 0.5rem;
     }
 
     .toggle-track {
-        width: 200px;
+        width: 220px;
     }
 
     .toggle-option {
-        font-size: 0.8em;
+        font-size: 0.85em;
         padding: 0.5rem;
     }
 
+    #route-portraits-container {
+        height: 220px;
+    }
+
+    .ronnie-portrait img {
+        height: 200px;
+    }
+
+    .tori-portrait img {
+        height: 185px;
+    }
+
     .route-info h3 {
-        font-size: 1.3em;
+        font-size: 1.4em;
+    }
+
+    .route-description {
+        font-size: 0.9em;
+    }
+
+    #route-play-button {
+        padding: 0.7rem 2rem;
+        font-size: 1em;
     }
 }
 
 /* ========================================
-   LANDSCAPE MODE
-   ZEERAH FIX: Adjust grid for wide screens
+   LANDSCAPE MODE - SPRITES ON SIDES
    ======================================== */
 
 @media (max-height: 600px) and (orientation: landscape) {
     #route-select-content {
+        display: grid;
         grid-template-columns: 1fr 2fr 1fr;
         grid-template-rows: auto auto auto auto auto;
-        padding: 1rem;
-        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        padding-top: 30px;
+        gap: 0.3rem;
+        min-height: 100vh;
     }
 
     #route-select-title {
@@ -515,16 +457,15 @@
     }
 
     #route-select-title h2 {
-        font-size: 1.5em;
-        margin-bottom: 0.3rem;
+        font-size: 1.4em;
+        margin-bottom: 0.2rem;
     }
 
     #route-select-title p {
-        font-size: 0.9em;
-        margin-bottom: 0.3rem;
+        font-size: 0.85em;
     }
 
-    /* Portraits split to sides in landscape */
+    /* Portraits split to sides */
     #route-portraits-container {
         display: contents;
     }
@@ -532,53 +473,72 @@
     .ronnie-portrait {
         grid-column: 1;
         grid-row: 2 / 6;
-        height: 100%;
-        max-height: 55vh;
+        height: auto;
+        max-height: 50vh;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .ronnie-portrait img {
+        height: 45vh;
+        max-height: 280px;
     }
 
     .tori-portrait {
         grid-column: 3;
         grid-row: 2 / 6;
-        height: 100%;
-        max-height: 55vh;
+        height: auto;
+        max-height: 50vh;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .tori-portrait img {
+        height: 42vh;
+        max-height: 260px;
     }
 
     #route-toggle {
         grid-column: 2;
         grid-row: 2;
-        margin: 0.3rem 0;
+        margin: 0.2rem 0;
     }
 
     .toggle-track {
-        width: 220px;
+        width: 200px;
+    }
+
+    .toggle-option {
+        padding: 0.5rem;
+        font-size: 0.85em;
     }
 
     #route-info-display {
         grid-column: 2;
         grid-row: 3;
-        min-height: 80px;
-        margin: 0.3rem 0;
+        min-height: 70px;
     }
 
     .route-info h3 {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
 
     .route-description {
-        font-size: 0.9em;
+        font-size: 0.85em;
     }
 
     #route-play-button {
         grid-column: 2;
         grid-row: 4;
-        padding: 0.6rem 1.5rem;
-        font-size: 0.95em;
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9em;
     }
 
     #back-to-menu {
         grid-column: 2;
         grid-row: 5;
-        padding: 0.5rem 1.5rem;
+        padding: 0.4rem 1.2rem;
+        font-size: 0.85em;
     }
 
     .route-select-hint {
@@ -592,15 +552,13 @@
    ======================================== */
 
 .force-portrait #route-select-content {
-    grid-template-columns: 1fr 2fr 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 .force-portrait #route-portraits-container {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-column: 1 / 4 !important;
-    grid-row: 3 !important;
-    height: 400px !important;
+    display: flex !important;
+    height: 280px !important;
 }
 
 .force-portrait .ronnie-portrait,
