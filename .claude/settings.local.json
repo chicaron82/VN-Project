@@ -24,7 +24,10 @@
       "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -Directory | Select-Object Name\")",
       "Bash(powershell -Command \"Get-ChildItem ''C:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project'' -File | Select-Object Name\")",
       "Bash(powershell -Command \"Get-Content ''tests\\\\tether-system.test.js'' -Head 50\")",
-      "Bash(powershell -Command:*)"
+      "Bash(powershell -Command:*)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []
