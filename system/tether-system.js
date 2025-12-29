@@ -150,7 +150,7 @@ class TetherSystem {
         // SOLID REFACTOR: REACTIVE UI SUBSCRIPTION
         // UI auto-updates when tether.level changes in StateManager
         // ========================================
-        /** @param {number} newLevel @param {number} oldLevel */
+        // @ts-ignore - Callback parameters are typed by StateManager
         this._tetherSubscription = this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
             console.log(`🔄 Reactive: Tether ${oldLevel} → ${newLevel}`);
             this.updateDisplay();
