@@ -8,7 +8,9 @@
     "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
-    "vitest": "^1.0.0",
-    "@vitest/ui": "^1.0.0"
+    "@vitest/ui": "^1.6.1",
+    "jsdom": "^27.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^1.6.1"
   }
 }

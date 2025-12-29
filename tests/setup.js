@@ -25,8 +25,3 @@ global.console = {
     warn: () => { }, // Suppress warnings in tests
     error: console.error // Keep errors visible
 };
-
-// Reset localStorage before each test
-beforeEach(() => {
-    localStorage.clear();
-});
