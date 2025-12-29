@@ -87,7 +87,7 @@ class SaveManager {
     // SAVE FUNCTIONS
     // ========================================
 
-    saveGame(slotNumber, isAutoSave = false, customLabel = null) {
+    saveGame(slotNumber: number | null, isAutoSave = false, customLabel: string | null = null): boolean {
         // Check if saves are blocked (Despair sabotage)
         if (this.savesBlocked) {
             console.log('Save blocked by Despair Echo');
@@ -132,7 +132,7 @@ class SaveManager {
         }
     }
 
-    createSaveData(customLabel = null) {
+    createSaveData(customLabel: string | null = null): any {
         const route = this.game.currentRoute;
 
         // Guard: Can't save without an active route
@@ -182,7 +182,7 @@ class SaveManager {
     // DIZEE: Revolutionary replayability system
     // ========================================
 
-    saveNoteDiscovery(slotNumber, isAutoSave = false) {
+    saveNoteDiscovery(slotNumber: number | null, isAutoSave = false): void {
         if (!this.game.collectiblesManager) return;
 
         const discoveryData = {
@@ -202,7 +202,7 @@ class SaveManager {
         }
     }
 
-    loadNoteDiscovery(slotNumber, isAutoSave = false) {
+    loadNoteDiscovery(slotNumber: number | null, isAutoSave = false): any {
         const key = isAutoSave ? 'noteDiscovery_auto' : `noteDiscovery_slot${slotNumber}`;
         const saved = localStorage.getItem(key);
 
@@ -220,7 +220,7 @@ class SaveManager {
     // LOAD FUNCTIONS
     // ========================================
 
-    loadGame(slotNumber, isAutoSave = false) {
+    loadGame(slotNumber: number | null, isAutoSave = false): any {
         const key = isAutoSave ? this.autoSaveKey : this.savePrefix + slotNumber;
 
         try {
@@ -245,7 +245,7 @@ class SaveManager {
         }
     }
 
-    validateSaveData(saveData) {
+    validateSaveData(saveData: any): boolean {
         // LIVING VERSION SYSTEM:
         // Accept any version >= 848 (the start of the loop)
         // The save file is the source of truth for the current iteration
@@ -259,7 +259,7 @@ class SaveManager {
             && saveData.timestamp;
     }
 
-    restoreGameState(saveData) {
+    restoreGameState(saveData: any): void {
         console.log('Restoring game state:', saveData);
 
         // CRITICAL: Adopt the save file's version and status
@@ -379,7 +379,7 @@ class SaveManager {
         this.showSaveIndicator('Game Loaded');
     }
 
-    jumpToScene(route, sceneId) {
+    jumpToScene(route: any, sceneId: string): void {
         console.log(`Attempting to jump to scene: ${sceneId}`);
 
         let sceneFunction = null;
@@ -422,7 +422,7 @@ class SaveManager {
     }
 
     // Legacy fallback for routes without restoreState method
-    restoreRouteDataLegacy(routeData) {
+    restoreRouteDataLegacy(routeData: any): void {
         const route = this.game.currentRoute;
 
         if (!route || !routeData) return;
@@ -458,7 +458,7 @@ class SaveManager {
         }
     }
 
-    restoreCollectedNotes(route, noteIds) {
+    restoreCollectedNotes(route: any, noteIds: string[]): void {
         if (!route.collectedNotes || !Array.isArray(noteIds)) return;
 
         noteIds.forEach(noteId => {
@@ -484,7 +484,7 @@ class SaveManager {
     // SAVE SLOT MANAGEMENT
     // ========================================
 
-    getSaveSlotInfo(slotNumber) {
+    getSaveSlotInfo(slotNumber: number): any {
         const saveData = this.loadGame(slotNumber);
         if (!saveData) {
             return {
@@ -504,7 +504,7 @@ class SaveManager {
         };
     }
 
-    formatSaveSlotDisplay(saveData) {
+    formatSaveSlotDisplay(saveData: any): string {
         const route = saveData.routeName === 'ronnie' ? 'Ronnie Route' : 'Tori Route';
         const date = new Date(saveData.timestamp);
         const dateStr = date.toLocaleDateString();
@@ -513,7 +513,7 @@ class SaveManager {
         return `${route} - ${dateStr} ${timeStr}`;
     }
 
-    deleteSave(slotNumber) {
+    deleteSave(slotNumber: number): void {
         const key = this.savePrefix + slotNumber;
         localStorage.removeItem(key);
         console.log(`Deleted save slot ${slotNumber}`);
@@ -563,7 +563,7 @@ class SaveManager {
     // UI HELPERS
     // ========================================
 
-    showSaveIndicator(message, isError = false) {
+    showSaveIndicator(message: string, isError = false): void {
         // Create or get save indicator element
         let indicator = document.getElementById('save-indicator');
         if (!indicator) {
