@@ -59,6 +59,7 @@
  * @property {SettingsState} settings - Settings state
  * @property {CollectiblesState} collectibles - Collectibles state
  * @property {UIState} ui - UI state
+ * @property {*} [key] - Allow dynamic property access
  */
 
 /**
@@ -261,7 +262,8 @@ class StateManager {
             this._subscribers.set(path, new Set());
         }
 
-        this._subscribers.get(path).add(callback);
+        const subs = this._subscribers.get(path);
+        if (subs) subs.add(callback);
 
         console.log(`👂 Subscribed to: ${path}`);
 
@@ -416,7 +418,7 @@ class StateManager {
 
     /**
      * Restore state from a snapshot
-     * @param {Object} snapshot - Snapshot object from createSnapshot
+     * @param {Snapshot} snapshot - Snapshot object from createSnapshot
      * @returns {boolean} True if restore successful
      */
     restoreSnapshot(snapshot) {
@@ -430,6 +432,7 @@ class StateManager {
         this._recordHistory('_fullState', oldState, snapshot.state);
 
         // Restore the state
+        // @ts-ignore - snapshot.state is validated above
         this._state = structuredClone(snapshot.state);
         this._isDirty = true;
 
@@ -469,7 +472,9 @@ class StateManager {
      * @returns {StateDiff[]} List of differences
      */
     diff(snapshot1, snapshot2 = null) {
+        // @ts-ignore - handling both State and Snapshot types
         const state1 = snapshot1?.state || snapshot1;
+        // @ts-ignore - handling both State and Snapshot types
         const state2 = snapshot2?.state || snapshot2 || this._state;
 
         /** @type {StateDiff[]} */
@@ -687,9 +692,11 @@ class StateManager {
     /**
      * Delete a specific path from state
      * @param {string} path - Path to delete
+     * @returns {boolean}
      */
     deletePath(path) {
         const keys = path.split('.');
+        /** @type {any} */
         let current = this._state;
 
         // Navigate to parent
@@ -804,8 +811,10 @@ class StateManager {
     /**
      * Set multiple values at once
      * @param {Object} pathValuePairs - Object with paths as keys and values
+     * @returns {Object<string, boolean>}
      */
     batchSet(pathValuePairs) {
+        /** @type {Object<string, boolean>} */
         const results = {};
         for (const [path, value] of Object.entries(pathValuePairs)) {
             this.set(path, value);
@@ -817,10 +826,11 @@ class StateManager {
 
     /**
      * Get multiple values at once
-     * @param {Array<string>} paths - Array of paths to get
-     * @returns {Object} Object with paths as keys and values
+     * @param {string[]} paths - Array of paths to get
+     * @returns {Object<string, any>} Object with paths as keys and values
      */
     batchGet(paths) {
+        /** @type {Object<string, any>} */
         const results = {};
         for (const path of paths) {
             results[path] = this.get(path);
@@ -976,6 +986,10 @@ class StateManager {
         }
 
         const entry = this._history.pop();
+        if (!entry) {
+            console.log('⏪ No entry to undo');
+            return null;
+        }
 
         // Temporarily disable history to avoid recording the undo itself
         this._historyEnabled = false;
@@ -989,7 +1003,7 @@ class StateManager {
     /**
      * Get state change history
      * @param {number} [count] - Number of recent entries (default: all)
-     * @returns {Array} History entries
+     * @returns {Array<{path: string, oldValue: any, newValue: any, timestamp: number}>} History entries
      */
     getHistory(count) {
         const history = [...this._history];
@@ -1101,7 +1115,10 @@ class StateManager {
         document.body.appendChild(panel);
 
         // Close button
-        document.getElementById('state-debug-close').onclick = () => panel.remove();
+        const closeBtn = document.getElementById('state-debug-close');
+        if (closeBtn) {
+            closeBtn.onclick = () => panel.remove();
+        }
 
         // Make draggable
         if (options.draggable) {
@@ -1181,30 +1198,31 @@ class StateManager {
         // Game state
         html += `<div style="margin-bottom: 8px;">
             <div style="color: #ff88ff; font-weight: bold;">🎮 Game</div>
-            <div>  loopVersion: ${formatValue(state.game.loopVersion)}</div>
-            <div>  loopStatus: ${formatValue(state.game.loopStatus || state.game.paused ? 'paused' : 'active')}</div>
+            <div>  loopVersion: ${_formatValue(state.game.loopVersion)}</div>
+            <div>  currentRoute: ${_formatValue(state.game.currentRoute)}</div>
+            <div>  paused: ${_formatValue(state.game.paused)}</div>
         </div>`;
 
         // Tether
         html += `<div style="margin-bottom: 8px;">
             <div style="color: #ff8888; font-weight: bold;">💗 Tether</div>
-            <div>  level: <span style="color: ${state.tether.level < 30 ? '#ff4444' : '#00ff88'};">${formatValue(state.tether.level)}%</span></div>
-            <div>  difficulty: ${formatValue(state.tether.difficulty)}</div>
-            <div>  cap: ${formatValue(state.tether.cap)}%</div>
+            <div>  level: <span style="color: ${state.tether.level < 30 ? '#ff4444' : '#00ff88'};">${_formatValue(state.tether.level)}%</span></div>
+            <div>  difficulty: ${_formatValue(state.tether.difficulty)}</div>
+            <div>  cap: ${_formatValue(state.tether.cap)}%</div>
         </div>`;
 
         // Unlocks
         html += `<div style="margin-bottom: 8px;">
             <div style="color: #88ff88; font-weight: bold;">🔓 Unlocks</div>
-            <div>  skipUnlocked: ${formatValue(state.unlocks.skipUnlocked)}</div>
-            <div>  skipPrologue: ${formatValue(state.unlocks.skipPrologueUnlocked)}</div>
-            <div>  ronnieNotes: ${formatValue(state.unlocks.ronnieNotesUnlocked)}</div>
+            <div>  skipUnlocked: ${_formatValue(state.unlocks.skipUnlocked)}</div>
+            <div>  skipPrologue: ${_formatValue(state.unlocks.skipPrologueUnlocked)}</div>
+            <div>  ronnieNotes: ${_formatValue(state.unlocks.ronnieNotesUnlocked)}</div>
         </div>`;
 
         // UI
         html += `<div style="margin-bottom: 8px;">
             <div style="color: #8888ff; font-weight: bold;">🖥️ UI</div>
-            <div>  hidden: ${formatValue(state.ui.hidden)}</div>
+            <div>  hidden: ${_formatValue(state.ui.hidden)}</div>
         </div>`;
 
         // Subscriptions count
@@ -1235,6 +1253,7 @@ class StateManager {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
+    // @ts-ignore - Assigning to window object
     window.StateManager = StateManager;
 }
 
