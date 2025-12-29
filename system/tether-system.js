@@ -1,3 +1,4 @@
+// @ts-check
 // ========================================
 // TETHER SYSTEM MODULE
 // Manages Tori's consciousness tether mechanics and Echo Toris
@@ -35,6 +36,10 @@
  * @class TetherSystem
  */
 class TetherSystem {
+    /**
+     * @param {any} game - Game engine instance
+     * @param {any} route - Current route instance
+     */
     constructor(game, route) {
         this.game = game;
         this.route = route;
@@ -44,11 +49,13 @@ class TetherSystem {
         // ========================================
 
         // Initialize tether state in StateManager
+        // @ts-ignore - GameConfig is defined in game-config.js
         const initialLevel = GameConfig.TETHER.INITIAL_LEVEL;
         this.game.state.set('tether.level', initialLevel);
 
         // Get current difficulty profile
         const currentDifficulty = game.settingsManager?.settings?.tetherDifficulty || 'normal';
+        // @ts-ignore - getDifficultyProfile is defined in difficulty-config.js
         const profile = getDifficultyProfile(currentDifficulty);
 
         // Store difficulty settings in StateManager
@@ -69,12 +76,16 @@ class TetherSystem {
         // Configuration constants (from difficulty profile)
         this.HOLD_ON_BOOST = profile.holdOnBoost;
         this.HOLD_ON_COOLDOWN_MS = profile.holdOnCooldown;
+        // @ts-ignore - GameConfig external
         this.DECAY_INTERVAL_MS = GameConfig.TETHER.DECAY_INTERVAL_MS;
+        // @ts-ignore - GameConfig external
         this.CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL;
         this.tetherCap = profile.tetherCap;              // Tether cap (100% normal, 66% INSANE)
 
         // Decay acceleration thresholds (from GameConfig)
+        // @ts-ignore - GameConfig external
         this.DECAY_MEDIUM_THRESHOLD = GameConfig.TETHER.THRESHOLD_MEDIUM_DECAY;
+        // @ts-ignore - GameConfig external
         this.DECAY_CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL_DECAY;
         this.DECAY_MEDIUM_RATE = profile.decayRates.medium;
         this.DECAY_CRITICAL_RATE = profile.decayRates.critical;
@@ -139,6 +150,7 @@ class TetherSystem {
         // SOLID REFACTOR: REACTIVE UI SUBSCRIPTION
         // UI auto-updates when tether.level changes in StateManager
         // ========================================
+        /** @param {number} newLevel @param {number} oldLevel */
         this._tetherSubscription = this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
             console.log(`🔄 Reactive: Tether ${oldLevel} → ${newLevel}`);
             this.updateDisplay();
@@ -322,6 +334,9 @@ class TetherSystem {
         console.log('💚 DEV: Tether decay resumed');
     }
 
+    /**
+     * @param {number} value
+     */
     setTether(value) {
         // Manually set tether level (dev command)
         this.tetherLevel = Math.max(0, Math.min(100, value));
@@ -335,6 +350,10 @@ class TetherSystem {
         }
     }
 
+    /**
+     * @param {number} targetLevel
+     * @param {boolean} [animated=false]
+     */
     setTetherLevel(targetLevel, animated = false) {
         // Set tether to specific level (used by Insane Mode cage scene)
         targetLevel = Math.max(0, Math.min(100, targetLevel));
@@ -433,8 +452,12 @@ class TetherSystem {
         }
     }
 
+    /**
+     * @param {string} difficulty
+     */
     setDifficultyModifier(difficulty) {
         // Update difficulty settings from profile
+        // @ts-ignore - getDifficultyProfile external
         const profile = getDifficultyProfile(difficulty);
 
         this.currentDifficulty = difficulty;
@@ -573,6 +596,9 @@ class TetherSystem {
     // ECHO SYSTEM
     // ========================================
 
+    /**
+     * @param {any} echoDialogue
+     */
     showEchoes(echoDialogue) {
         // Display echo commentary alongside main dialogue
         // Creates the "voices in her head" effect
@@ -615,6 +641,10 @@ class TetherSystem {
         this.echoes.despair.active = false;
     }
 
+    /**
+     * @param {'echo1'|'echo2'|'despair'} echoId
+     * @param {string} mood
+     */
     updateEchoMood(echoId, mood) {
         // Update the mood state of a specific echo
         if (this.echoes[echoId]) {
@@ -657,6 +687,7 @@ class TetherSystem {
                 { text: '[BEGIN NEXT ATTEMPT]', value: 'retry' },
                 { text: '[ABANDON TIMELINE]', value: 'menu' }
             ],
+            /** @param {string} choice */
             onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Increment version for next attempt
@@ -711,6 +742,9 @@ class TetherSystem {
         };
     }
 
+    /**
+     * @param {any} state
+     */
     restoreState(state) {
         // Restore from saved state
         this.tetherLevel = state.tetherLevel || 100;
@@ -806,6 +840,7 @@ class TetherSystem {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
+    // @ts-ignore - Assigning to window object
     window.TetherSystem = TetherSystem;
 }
 
