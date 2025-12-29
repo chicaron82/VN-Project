@@ -95,7 +95,7 @@ class TypewriterController {
     // PAGINATION SYSTEM
     // ========================================
 
-    shouldPaginate(textLength) {
+    shouldPaginate(textLength: number): boolean {
         // Only paginate on mobile portrait
         if (window.innerWidth > 480) return false;
         if (window.innerHeight < window.innerWidth) return false; // Landscape - no pagination
@@ -105,7 +105,7 @@ class TypewriterController {
         return textLength > 150;
     }
 
-    paginateAndDisplay(element, text, callback) {
+    paginateAndDisplay(element: HTMLElement, text: string, callback: (() => void) | null): void {
         // Split text into pages that fit in mobile dialogue box
         this.dialoguePages = this.splitTextIntoPages(text, 150);
         this.currentDialoguePage = 0;
@@ -116,7 +116,7 @@ class TypewriterController {
         this.displayPage(element);
     }
 
-    splitTextIntoPages(text, charsPerPage) {
+    splitTextIntoPages(text: string, charsPerPage: number): string[] {
         const pages = [];
         let remainingText = text;
 
@@ -147,7 +147,7 @@ class TypewriterController {
         return pages;
     }
 
-    displayPage(element) {
+    displayPage(element: HTMLElement): void {
         const currentPage = this.dialoguePages[this.currentDialoguePage];
         const speed = this.getSpeed();
 
@@ -195,7 +195,7 @@ class TypewriterController {
                     element.textContent += pageIndicator;
                 }
 
-                clearInterval(this.typewriterInterval);
+                clearInterval(this.typewriterInterval!);
                 this.typewriterInterval = null;
                 this.typewriterActive = false;
 
