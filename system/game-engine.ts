@@ -634,6 +634,10 @@ class GameEngine {
         // @ts-ignore
         this.notificationShade = new NotificationShadeController(this);
 
+        // DIZEE POLISH: Initialize grab handle repositioner (desktop sidebar toggle)
+        // @ts-ignore
+        this.grabHandleRepositioner = new GrabHandleRepositioner(this);
+
         // Tutorial onboarding system
         // @ts-ignore
         this.tutorialManager = new TutorialManager(this);
