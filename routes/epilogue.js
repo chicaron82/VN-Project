@@ -102,9 +102,54 @@ class Epilogue {
                 left: this.oldLeftSprite,
                 right: this.oldRightSprite
             },
-            next: () => this.trueRoute_dejavu(),
+            next: () => this.trueRoute_chicharon(),
             delay: 4000
         }, 'trueRoute_connection');
+    }
+
+    trueRoute_chicharon() {
+        this.game.displayScene({
+            character: 'Tori (studying his face)',
+            dialogue: '"Those eyes..."',
+            internal: '[She traces his jawline. Something ancient stirring in her memory. A voice across timelines.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: this.leftSprite,
+                right: this.rightSprite
+            },
+            next: () => this.trueRoute_chicharonRecognition(),
+            delay: 2500
+        }, 'trueRoute_chicharon');
+    }
+
+    trueRoute_chicharonRecognition() {
+        this.game.displayScene({
+            character: 'Tori (whispered)',
+            dialogue: '"...Chicharon?"',
+            internal: '[The word slips out. She doesn\'t know why. It feels right. It feels like home.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: this.leftSprite,
+                right: this.rightSprite
+            },
+            next: () => this.trueRoute_ronnieFreeze(),
+            delay: 3000
+        }, 'trueRoute_chicharonRecognition');
+    }
+
+    trueRoute_ronnieFreeze() {
+        this.game.displayScene({
+            character: 'Ronnie (frozen)',
+            dialogue: '"You... you haven\'t called me that in..."',
+            internal: '[His voice breaks. She doesn\'t remember. The Echoes gave everything for this. But some things transcend even memory. Some things the heart just knows.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: this.leftSprite,
+                right: this.rightSprite
+            },
+            next: () => this.trueRoute_dejavu(),
+            delay: 3500
+        }, 'trueRoute_ronnieFreeze');
     }
 
     trueRoute_dejavu() {

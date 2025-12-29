@@ -206,8 +206,36 @@ class SharedPrologue {
                 left: 'assets/ronnie-sprite.png',
                 right: 'assets/tori-sprite.png'
             },
-            next: () => this.scene2_toriDinner()
+            next: () => this.scene2_chicharonTease()
         }, 'scene2_toriRebuttal');
+    }
+
+    scene2_chicharonTease() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: 'You\'re impossible.',
+            internal: '[He shakes his head, but there\'s warmth in his eyes.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png',
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.scene2_chicharonMoment()
+        }, 'scene2_chicharonTease');
+    }
+
+    scene2_chicharonMoment() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: 'And you love me anyway, Chicharon.',
+            internal: '[She boops his nose playfully. Their nickname - the one she uses when it\'s just them. Home.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                left: 'assets/ronnie-sprite.png',
+                right: 'assets/tori-sprite.png'
+            },
+            next: () => this.scene2_toriDinner()
+        }, 'scene2_chicharonMoment');
     }
 
     scene2_toriDinner() {
