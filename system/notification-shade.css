@@ -907,7 +907,7 @@
     /* Hidden on mobile and during splash */
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    cursor: grab;
     transition: all 0.2s ease;
     z-index: 9999;
     font-size: 20px;
@@ -915,6 +915,37 @@
     opacity: 0;
     /* Hidden during splash */
     pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+/* Dragging state */
+.sidebar-toggle.dragging {
+    cursor: grabbing;
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-50%) scale(1.1);
+    width: 50px;
+}
+
+/* Crossing threshold (horizontal drag to flip sides) */
+.sidebar-toggle.crossing-threshold {
+    background: rgba(0, 255, 0, 0.3);
+    border-color: rgba(0, 255, 0, 0.8);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    opacity: 0.8;
+    animation: pulse-crossing 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-crossing {
+    0%, 100% {
+        transform: translateY(-50%) scale(1.1);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.15);
+    }
 }
 
 /* Show toggle after splash */
@@ -939,7 +970,24 @@
     /* Remove opacity: 0 - keep it visible */
     left: 300px;
     /* Move it to the edge of the sidebar */
-    transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), all 0.2s ease;
+    transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), all 0.2s ease;
+}
+
+/* Right-side sidebar (when flipped) */
+#sidebar.right-side {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+}
+
+#sidebar.right-side.expanded {
+    transform: translateX(0);
+}
+
+/* Toggle position when sidebar is on right and expanded */
+#sidebar.right-side.expanded~.sidebar-toggle {
+    left: auto;
+    right: 300px;
 }
 
 /* Sidebar uses same content styles as shade */
