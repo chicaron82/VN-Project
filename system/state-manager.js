@@ -1,3 +1,87 @@
+// @ts-check
+
+/**
+ * @typedef {Object} GameState
+ * @property {string} loopVersion - Current loop version (e.g., 'v.848')
+ * @property {string|null} currentRoute - Active route name ('ronnie' | 'tori' | null)
+ * @property {string|null} currentScene - Current scene ID
+ * @property {boolean} paused - Whether game is paused
+ */
+
+/**
+ * @typedef {Object} UnlocksState
+ * @property {boolean} skipUnlocked - Can skip dialogue
+ * @property {boolean} skipPrologueUnlocked - Can skip prologue
+ * @property {boolean} ronnieNotesUnlocked - Ronnie notes unlocked
+ * @property {boolean} insaneModeUnlocked - Insane difficulty unlocked
+ */
+
+/**
+ * @typedef {Object} TetherState
+ * @property {number} level - Current tether level (0-100)
+ * @property {string} difficulty - Difficulty setting ('relaxed' | 'normal' | 'intense' | 'insane')
+ * @property {number} decayRate - Decay rate per tick
+ * @property {number} cap - Maximum tether level
+ * @property {boolean} frozen - Whether tether decay is frozen
+ */
+
+/**
+ * @typedef {Object} SettingsState
+ * @property {string} textSpeed - Text speed ('slow' | 'normal' | 'fast' | 'instant')
+ * @property {boolean} autoAdvance - Auto-advance dialogue
+ * @property {number} autoDelay - Delay before auto-advance (ms)
+ * @property {boolean} autoSkipPrologue - Auto-skip prologue when unlocked
+ * @property {boolean} fullscreen - Fullscreen mode
+ * @property {string} displayMode - Display mode ('auto' | 'portrait' | 'landscape')
+ * @property {string} tetherDifficulty - Tether difficulty setting
+ * @property {boolean} hapticEnabled - Haptic feedback enabled
+ * @property {boolean} comfortMode - Disable glitch effects
+ * @property {number} comfortIntensity - Comfort intensity (0-2)
+ */
+
+/**
+ * @typedef {Object} CollectiblesState
+ * @property {string[]} unlockedNotes - Array of unlocked note IDs
+ * @property {string[]} readScenes - Array of read scene IDs
+ */
+
+/**
+ * @typedef {Object} UIState
+ * @property {boolean} hidden - Whether UI is hidden
+ * @property {string|null} menuOpen - Currently open menu name
+ */
+
+/**
+ * @typedef {Object} State
+ * @property {GameState} game - Game state
+ * @property {UnlocksState} unlocks - Unlock state
+ * @property {TetherState} tether - Tether system state
+ * @property {SettingsState} settings - Settings state
+ * @property {CollectiblesState} collectibles - Collectibles state
+ * @property {UIState} ui - UI state
+ */
+
+/**
+ * @typedef {Object} Snapshot
+ * @property {string} name - Snapshot name
+ * @property {number} timestamp - Creation timestamp
+ * @property {State} state - State snapshot
+ */
+
+/**
+ * @typedef {Object} StateDiff
+ * @property {string} path - Path that changed
+ * @property {*} before - Value before change
+ * @property {*} after - Value after change
+ */
+
+/**
+ * @callback StateChangeCallback
+ * @param {*} newValue - New value at path
+ * @param {*} oldValue - Previous value at path
+ * @returns {void}
+ */
+
 /**
  * StateManager - Centralized State Management System
  * 
@@ -154,7 +238,7 @@ class StateManager {
      * Callback is invoked whenever the value at path changes
      * 
      * @param {string} path - Dot-notation path to watch
-     * @param {Function} callback - Function(newValue, oldValue) to call on change
+     * @param {StateChangeCallback} callback - Function(newValue, oldValue) to call on change
      * @returns {Function} Unsubscribe function
      * 
      * @example
