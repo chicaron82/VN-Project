@@ -17,6 +17,7 @@
  * @property {NoteType} type - Note type/category
  * @property {string} title - Note title (email subject)
  * @property {string} content - Full note content
+ * @property {string} [id] - Optional note ID (set when retrieved)
  */
 
 /**
@@ -36,6 +37,7 @@
  * @property {string[]} iz - IZ's notes (Ronnie route)
  * @property {string[]} pz - PZ's notes (Ronnie route)
  * @property {string[]} special - Special notes (endings, dev notes)
+ * @property {string[]} [key] - Allow dynamic property access
  */
 
 // ========================================
@@ -460,6 +462,7 @@ class CollectiblesManager {
     getCollectedCount(type = null) {
         // Get count of collected notes
         if (type) {
+            // @ts-ignore - type is a valid key
             return this.collectedNotes[type].length;
         } else {
             // Total across all types
@@ -718,6 +721,7 @@ class CollectiblesManager {
 
         Object.keys(this.allNotes).forEach(noteId => {
             const note = this.allNotes[noteId];
+            // @ts-ignore - note.type is a valid key
             notesByType[note.type].push({ id: noteId, ...note });
         });
 
@@ -767,7 +771,9 @@ class CollectiblesManager {
 
         // Collect all note IDs in order
         typesToInclude.forEach(type => {
+            // @ts-ignore - type is a valid key
             if (this.collectedNotes[type]) {
+                // @ts-ignore - type is a valid key
                 allIds.push(...this.collectedNotes[type]);
             }
         });
@@ -788,7 +794,7 @@ class CollectiblesManager {
         const header = document.createElement('h3');
         header.className = 'notes-section-header';
         header.textContent = sectionTitle;
-        this.notesList.appendChild(header);
+        if (this.notesList) this.notesList.appendChild(header);
 
         // DIZEE FIX: Use allCollectedIds passed from showNotesViewer instead of just this section
         // This allows swipes to navigate across sections (GZ -> IZ -> PZ)
@@ -834,7 +840,7 @@ class CollectiblesManager {
                 noteItem.appendChild(lockedSubject);
             }
 
-            this.notesList.appendChild(noteItem);
+            if (this.notesList) this.notesList.appendChild(noteItem);
         });
     }
 
@@ -1460,6 +1466,7 @@ P.S. The barback skill strikes again.`
                 // Merge with current collected (don't overwrite)
                 Object.keys(parsed).forEach(type => {
                     if (parsed[type] && Array.isArray(parsed[type])) {
+                        // @ts-ignore - dynamic type access
                         this.collectedNotes[type] = [...new Set([...this.collectedNotes[type], ...parsed[type]])];
                     }
                 });
@@ -1480,6 +1487,10 @@ P.S. The barback skill strikes again.`
     }
 
     // DIZEE POLISH: Format timestamp as relative time
+    /**
+     * @param {number} timestamp
+     * @returns {string}
+     */
     getRelativeTime(timestamp) {
         if (!timestamp) return '';
 
@@ -1594,7 +1605,7 @@ P.S. The barback skill strikes again.`
         this.updateNavigationButtons();
 
         // DIZEE: Add swipe gesture detection for mobile
-        this.setupSwipeGestures(overlay);
+        if (overlay) this.setupSwipeGestures(overlay);
 
         // ESC key to close
         /** @param {KeyboardEvent} e */
@@ -1675,6 +1686,9 @@ P.S. The barback skill strikes again.`
     }
 
 
+    /**
+     * @param {string} noteId
+     */
     displayNoteInOverlay(noteId) {
         const note = this.allNotes[noteId];
 
@@ -1707,10 +1721,11 @@ P.S. The barback skill strikes again.`
                 <div class="note-code-footer code-detected">
                     <div class="code-divider">— — — — —</div>
                     <div class="signal-header">🔓 ENCRYPTED SIGNAL DETECTED 🔓</div>
-                    <div class="signal-code">${dropData.code.toUpperCase()}</div>
+            <div class="signal-code">${dropData.code ? dropData.code.toUpperCase() : 'UNKNOWN'}</div>
                     <div class="signal-hint">Code automatically added to discovered codes list</div>
                 </div>
             `;
+            // @ts-ignore - getNoteMetadata is defined in note-metadata.js
         } else if (dropData && dropData.hasCode === false && getNoteMetadata(noteId) && getNoteMetadata(noteId).pool && getNoteMetadata(noteId).pool.length > 0) {
             // NO CODE THIS TIME - Show hint about RNG
             const timesViewed = this.seenNotes[noteId] || 1;
@@ -1745,21 +1760,21 @@ P.S. The barback skill strikes again.`
         const nextBtn = document.getElementById('note-next-btn');
 
         if (!this.currentNoteList || this.currentNoteList.length === 0) {
-            if (prevBtn) prevBtn.disabled = true;
-            if (nextBtn) nextBtn.disabled = true;
+            if (prevBtn) /** @type {HTMLButtonElement} */(prevBtn).disabled = true;
+            if (nextBtn) /** @type {HTMLButtonElement} */(nextBtn).disabled = true;
             return;
         }
 
-        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId || '');
 
         // Enable/disable based on position
         if (prevBtn) {
-            prevBtn.disabled = currentIndex <= 0;
+            /** @type {HTMLButtonElement} */(prevBtn).disabled = currentIndex <= 0;
             prevBtn.onclick = () => this.navigateNote(-1);
         }
 
         if (nextBtn) {
-            nextBtn.disabled = currentIndex >= this.currentNoteList.length - 1;
+            /** @type {HTMLButtonElement} */(nextBtn).disabled = currentIndex >= this.currentNoteList.length - 1;
             nextBtn.onclick = () => this.navigateNote(1);
         }
     }
@@ -1770,7 +1785,7 @@ P.S. The barback skill strikes again.`
     navigateNote(direction) {
         if (!this.currentNoteList) return;
 
-        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId);
+        const currentIndex = this.currentNoteList.indexOf(this.currentNoteId || '');
         const newIndex = currentIndex + direction;
 
         if (newIndex >= 0 && newIndex < this.currentNoteList.length) {
@@ -1855,8 +1870,8 @@ P.S. The barback skill strikes again.`
         if (!badge) return;
 
         if (this.unreadCount > 0) {
-            badge.textContent = this.unreadCount;
-            badge.setAttribute('data-count', this.unreadCount);
+            badge.textContent = String(this.unreadCount);
+            badge.setAttribute('data-count', String(this.unreadCount));
             badge.style.display = 'block';
         } else {
             badge.setAttribute('data-count', '0');
