@@ -1,3 +1,43 @@
+// @ts-check
+
+/**
+ * @typedef {'z'|'cz'|'zr'|'gz'|'iz'|'pz'|'special'} NoteType
+ * Note types for different routes and characters
+ * - z: Z (The Architect) - Tori route
+ * - cz: CZ (The Heart) - Tori route  
+ * - zr: ZR (Chaos Optimizer) - Tori route
+ * - gz: GZ (Reality Breaker) - Ronnie route
+ * - iz: IZ (Fresh Eyes) - Ronnie route
+ * - pz: PZ (Question Engine) - Ronnie route
+ * - special: Ending notes, dev notes, teasers
+ */
+
+/**
+ * @typedef {Object} NoteData
+ * @property {NoteType} type - Note type/category
+ * @property {string} title - Note title (email subject)
+ * @property {string} content - Full note content
+ */
+
+/**
+ * @typedef {Object} NoteDrop
+ * @property {boolean} hasCode - Whether a code dropped
+ * @property {string|null} code - The dropped code (if any)
+ * @property {number} [timestamp] - When the code dropped
+ * @property {boolean} [wasGuaranteed] - Whether this was a guaranteed drop
+ */
+
+/**
+ * @typedef {Object} CollectedNotes
+ * @property {string[]} z - Z's notes (Tori route)
+ * @property {string[]} cz - CZ's notes (Tori route)
+ * @property {string[]} zr - ZR's notes (Tori route)
+ * @property {string[]} gz - GZ's notes (Ronnie route)
+ * @property {string[]} iz - IZ's notes (Ronnie route)
+ * @property {string[]} pz - PZ's notes (Ronnie route)
+ * @property {string[]} special - Special notes (endings, dev notes)
+ */
+
 // ========================================
 // COLLECTIBLES MANAGER MODULE
 // Manages Notes/Z collectibles system
@@ -259,6 +299,17 @@ class CollectiblesManager {
     // COLLECTIBLE MANAGEMENT
     // ========================================
 
+    /**
+     * Unlock a note and make it available to the player
+     * Handles difficulty gating, route suppression, and notifications
+     * 
+     * @param {string} noteId - ID of the note to unlock
+     * @returns {void}
+     * 
+     * @example
+     * // Unlock a note during gameplay
+     * collectiblesManager.unlockNote('z1');
+     */
     unlockNote(noteId) {
         // Find note type
         const note = this.allNotes[noteId];
@@ -371,6 +422,17 @@ class CollectiblesManager {
         }
     }
 
+    /**
+     * Check if a note has been unlocked
+     * 
+     * @param {string} noteId - ID of the note to check
+     * @returns {boolean} True if note is unlocked
+     * 
+     * @example
+     * if (collectiblesManager.isNoteUnlocked('z1')) {
+     *     // Show note in viewer
+     * }
+     */
     isNoteUnlocked(noteId) {
         const note = this.allNotes[noteId];
         if (!note) return false;
@@ -402,6 +464,19 @@ class CollectiblesManager {
     // DIZEE: Revolutionary replayability system
     // ========================================
 
+    /**
+     * Process note discovery for RNG code drops
+     * Implements pity system (guaranteed drop after 3 views)
+     * 
+     * @param {string} noteId - ID of the note being viewed
+     * @returns {NoteDrop|null} Drop result with code info
+     * 
+     * @example
+     * const drop = collectiblesManager.processNoteDrop('z5');
+     * if (drop && drop.hasCode) {
+     *     console.log(`Code dropped: ${drop.code}`);
+     * }
+     */
     processNoteDrop(noteId) {
         const noteMeta = getNoteMetadata(noteId);
         if (!noteMeta) return null;
@@ -475,6 +550,13 @@ class CollectiblesManager {
         }
     }
 
+    /**
+     * Discover a secret code
+     * Delegates to SecretCodesManager
+     * 
+     * @param {string} code - The code to discover
+     * @returns {void}
+     */
     discoverCode(code) {
         // Delegate to secret codes manager
         if (this.game.secretCodesManager) {
