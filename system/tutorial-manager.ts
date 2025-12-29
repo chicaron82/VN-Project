@@ -65,7 +65,7 @@ export class TutorialManager {
     /**
      * Check if a tutorial has already been shown
      */
-    hasShown(tutorialId) {
+    hasShown(tutorialId: string): boolean {
         return this.shownTutorials.has(tutorialId);
     }
 
@@ -217,7 +217,7 @@ export class TutorialManager {
     /**
      * Save completed tutorial to state
      */
-    _saveCompleted(tutorialId) {
+    _saveCompleted(tutorialId: string): void {
         const completed = this.game.state.get('tutorial.completed') || {};
         completed[tutorialId] = true;
         this.game.state.set('tutorial.completed', completed);
@@ -235,7 +235,7 @@ export class TutorialManager {
     /**
      * Enable/disable tutorials
      */
-    setEnabled(enabled) {
+    setEnabled(enabled: boolean): void {
         this.game.state.set('tutorial.enabled', enabled);
     }
 }
