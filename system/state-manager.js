@@ -104,6 +104,7 @@
 class StateManager {
     constructor() {
         // Central state store
+        /** @type {State} */
         this._state = {
             game: {
                 loopVersion: 'v.848',
@@ -154,14 +155,19 @@ class StateManager {
         };
 
         // Subscribers map: path -> Set of callbacks
+        /** @type {Map<string, Set<StateChangeCallback>>} */
         this._subscribers = new Map();
 
         // Dirty flag for persistence optimization
+        /** @type {boolean} */
         this._isDirty = false;
 
         // State history for debugging/undo (Session 11)
+        /** @type {Array<{path: string, oldValue: any, newValue: any, timestamp: number}>} */
         this._history = [];
+        /** @type {number} */
         this._maxHistorySize = 50;
+        /** @type {boolean} */
         this._historyEnabled = true;
 
         console.log('💚 StateManager initialized');
@@ -458,16 +464,22 @@ class StateManager {
 
     /**
      * Compare two snapshots and return differences
-     * @param {Object} snapshot1 - First snapshot (older)
-     * @param {Object} snapshot2 - Second snapshot (newer) or current state if omitted
-     * @returns {Array} List of differences
+     * @param {Snapshot|State|null} snapshot1 - First snapshot (older)
+     * @param {Snapshot|State|null} [snapshot2=null] - Second snapshot (newer) or current state if omitted
+     * @returns {StateDiff[]} List of differences
      */
     diff(snapshot1, snapshot2 = null) {
         const state1 = snapshot1?.state || snapshot1;
         const state2 = snapshot2?.state || snapshot2 || this._state;
 
+        /** @type {StateDiff[]} */
         const differences = [];
 
+        /**
+         * @param {any} obj1
+         * @param {any} obj2
+         * @param {string} path
+         */
         const compare = (obj1, obj2, path = '') => {
             const keys = new Set([...Object.keys(obj1 || {}), ...Object.keys(obj2 || {})]);
 
@@ -494,8 +506,9 @@ class StateManager {
 
     /**
      * Print diff as a formatted table
-     * @param {Object} snapshot1 - First snapshot
-     * @param {Object} snapshot2 - Second snapshot (or current if omitted)
+     * @param {Snapshot|State} snapshot1 - First snapshot
+     * @param {Snapshot|State|null} [snapshot2=null] - Second snapshot (or current if omitted)
+     * @returns {StateDiff[]}
      */
     printDiff(snapshot1, snapshot2 = null) {
         const diffs = this.diff(snapshot1, snapshot2);
@@ -614,7 +627,7 @@ class StateManager {
      */
     unwatchAll() {
         if (this._watchers) {
-            this._watchers.forEach((unsub, path) => {
+            this._watchers.forEach((/** @type {Function} */ unsub, /** @type {string} */ path) => {
                 unsub();
                 console.log(`🔇 Stopped watching: ${path}`);
             });
@@ -640,6 +653,11 @@ class StateManager {
      * @returns {Object} Stats about current state
      */
     getStats() {
+        /**
+         * @param {any} obj
+         * @param {number} depth
+         * @returns {number}
+         */
         const countProperties = (obj, depth = 0) => {
             let count = 0;
             for (const key in obj) {
@@ -702,11 +720,16 @@ class StateManager {
     /**
      * Get all keys/paths in state (flattened)
      * @param {string} [prefix=''] - Path prefix
-     * @returns {Array<string>} List of all paths
+     * @returns {string[]} List of all paths
      */
     keys(prefix = '') {
+        /** @type {string[]} */
         const paths = [];
 
+        /**
+         * @param {any} obj
+         * @param {string} currentPath
+         */
         const traverse = (obj, currentPath) => {
             for (const key in obj) {
                 const fullPath = currentPath ? `${currentPath}.${key}` : key;
@@ -812,6 +835,9 @@ class StateManager {
     /**
      * Get value by dot-notation path
      * @private
+     * @param {any} obj
+     * @param {string} path
+     * @returns {any}
      */
     _getByPath(obj, path) {
         const keys = path.split('.');
@@ -831,6 +857,9 @@ class StateManager {
      * Set value by dot-notation path
      * Creates intermediate objects if needed
      * @private
+     * @param {any} obj
+     * @param {string} path
+     * @param {any} value
      */
     _setByPath(obj, path, value) {
         const keys = path.split('.');
@@ -851,6 +880,9 @@ class StateManager {
      * Notify all subscribers watching a path
      * Also notifies parent path subscribers
      * @private
+     * @param {string} path
+     * @param {any} newValue
+     * @param {any} oldValue
      */
     _notifySubscribers(path, newValue, oldValue) {
         // Notify exact path subscribers
@@ -886,6 +918,9 @@ class StateManager {
     /**
      * Deep merge two objects
      * @private
+     * @param {any} target
+     * @param {any} source
+     * @returns {any}
      */
     _deepMerge(target, source) {
         const result = { ...target };
@@ -910,6 +945,9 @@ class StateManager {
     /**
      * Record a state change in history
      * @private
+     * @param {string} path
+     * @param {any} oldValue
+     * @param {any} newValue
      */
     _recordHistory(path, oldValue, newValue) {
         const entry = {
@@ -1068,7 +1106,14 @@ class StateManager {
         // Make draggable
         if (options.draggable) {
             let isDragging = false;
-            let startX, startY, startLeft, startTop;
+            /** @type {number} */
+            let startX = 0;
+            /** @type {number} */
+            let startY = 0;
+            /** @type {number} */
+            let startLeft = 0;
+            /** @type {number} */
+            let startTop = 0;
 
             header.onmousedown = (e) => {
                 isDragging = true;
@@ -1108,12 +1153,23 @@ class StateManager {
      * Update debug panel content
      * @private
      */
+    /**
+     * Update debug panel content
+     * @private
+     * @param {HTMLElement} container
+     */
     _updateDebugPanel(container) {
         if (!container) return;
 
         const state = this._state;
 
-        const formatValue = (val) => {
+        /**
+         * Format value for display
+         * @private
+         * @param {any} val
+         * @returns {string}
+         */
+        const _formatValue = (val) => {
             if (typeof val === 'boolean') return val ? '✓' : '✗';
             if (typeof val === 'number') return val.toFixed?.(1) ?? val;
             if (Array.isArray(val)) return `[${val.length}]`;
