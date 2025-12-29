@@ -1,3 +1,4 @@
+// @ts-check
 // ========================================
 // NOTIFICATION SHADE CONTROLLER
 // Mobile-first notification shade system
@@ -21,6 +22,9 @@
  * @class NotificationShadeController
  */
 class NotificationShadeController {
+    /**
+     * @param {any} game - Game engine instance
+     */
     constructor(game) {
         this.game = game;
         this.isShadeOpen = false;
@@ -34,7 +38,9 @@ class NotificationShadeController {
         this.touchStartX = 0;
 
         // Email-style notes tracking
+        /** @type {{id: string, title: string, content: string}[]} */
         this.unreadNotes = [];
+        /** @type {{id: string, title: string, content: string}|null} */
         this.currentNotePreview = null;
 
         // Load persistent state
@@ -47,6 +53,7 @@ class NotificationShadeController {
 
         // DIZEE: Subscribe to tether level changes for reactive lightning bolt updates
         if (this.game.state) {
+            // @ts-ignore - Callback parameters typed by StateManager
             this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
                 console.log(`⚡ Shade: Tether subscription ${oldLevel} → ${newLevel}`);
                 this.updateStatusBar();
@@ -113,12 +120,14 @@ class NotificationShadeController {
 
         // New elements - Note preview (shade)
         this.notesPreviewSection = document.getElementById('notes-preview-section');
+        /** @type {HTMLElement|null} */
         this.notePreviewBtn = document.getElementById('note-preview-btn');
         this.noteTitle = this.notePreviewBtn?.querySelector('.note-title');
         this.noteSnippet = this.notePreviewBtn?.querySelector('.note-snippet');
 
         // New elements - Note preview (sidebar)
         this.sidebarNotesPreviewSection = document.getElementById('sidebar-notes-preview-section');
+        /** @type {HTMLElement|null} */
         this.sidebarNotePreviewBtn = document.getElementById('sidebar-note-preview-btn');
         this.sidebarNoteTitle = this.sidebarNotePreviewBtn?.querySelector('.note-title');
         this.sidebarNoteSnippet = this.sidebarNotePreviewBtn?.querySelector('.note-snippet');
@@ -250,8 +259,8 @@ class NotificationShadeController {
                 // Update lightning bolt fill height
                 if (this.tetherFill) {
                     const newHeight = `${tetherLevel}%`;
-                    console.log(`📏 Setting fill height: "${this.tetherFill.style.height}" → "${newHeight}"`);
-                    this.tetherFill.style.height = newHeight;
+                    console.log(`📏 Setting fill height: "${/** @type {HTMLElement} */(this.tetherFill).style.height}" → "${newHeight}"`);
+                    /** @type {HTMLElement} */(this.tetherFill).style.height = newHeight;
                 }
 
                 // Apply state classes
@@ -349,7 +358,9 @@ class NotificationShadeController {
         this.updateShadeContent();
 
         // Apply route theming
-        this.applyRouteTheming(this.shade);
+        if (this.shade) {
+            this.applyRouteTheming(this.shade);
+        }
 
         // Show shade and backdrop
         if (this.shade) {
@@ -461,11 +472,17 @@ class NotificationShadeController {
     // SWIPE GESTURE DETECTION
     // ========================================
 
+    /**
+     * @param {TouchEvent} e
+     */
     handleTouchStart(e) {
         this.touchStartY = e.touches[0].clientY;
         this.touchStartX = e.touches[0].clientX;
     }
 
+    /**
+     * @param {TouchEvent} e
+     */
     handleTouchMove(e) {
         if (!this.touchStartY) return;
 
@@ -504,6 +521,9 @@ class NotificationShadeController {
         }
     }
 
+    /**
+     * @param {TouchEvent} e
+     */
     handleTouchEnd(e) {
         this.touchStartY = 0;
         this.touchStartX = 0;
@@ -533,7 +553,9 @@ class NotificationShadeController {
         this.updateNotePreview();
 
         // Apply route theming
-        this.applyRouteTheming(this.sidebar);
+        if (this.sidebar) {
+            this.applyRouteTheming(this.sidebar);
+        }
 
         // Show sidebar and backdrop
         if (this.sidebar) {
@@ -639,6 +661,9 @@ class NotificationShadeController {
     // ROUTE THEMING
     // ========================================
 
+    /**
+     * @param {HTMLElement|null} element
+     */
     applyRouteTheming(element) {
         if (!element) return;
 
@@ -670,6 +695,7 @@ class NotificationShadeController {
             success: [10, 50, 10], // Success pattern
         };
 
+        // @ts-ignore - Dynamic key access
         const pattern = patterns[type] || patterns.light;
 
         // Try to vibrate, but don't throw if blocked by browser
@@ -688,16 +714,16 @@ class NotificationShadeController {
         if (this.statusLoop) {
             this.statusLoop.classList.add('pulse');
             setTimeout(() => {
-                this.statusLoop.classList.remove('pulse');
+                this.statusLoop?.classList.remove('pulse');
             }, 600);
         }
     }
 
     glitchLoopNumber() {
-        if (this.statusLoop && this.statusBar.classList.contains('ronnie-route')) {
+        if (this.statusLoop && this.statusBar?.classList.contains('ronnie-route')) {
             this.statusLoop.classList.add('glitch');
             setTimeout(() => {
-                this.statusLoop.classList.remove('glitch');
+                this.statusLoop?.classList.remove('glitch');
             }, 300);
         }
     }
@@ -713,7 +739,7 @@ class NotificationShadeController {
 
         const loadingFill = document.querySelector('.loading-fill');
         if (loadingFill) {
-            loadingFill.style.width = `${progress}%`;
+            /** @type {HTMLElement} */(loadingFill).style.width = `${progress}%`;
         }
     }
 
@@ -727,9 +753,13 @@ class NotificationShadeController {
     // KEYBOARD SHORTCUTS
     // ========================================
 
+    /**
+     * @param {KeyboardEvent} e
+     */
     handleKeyboardShortcut(e) {
         // Don't trigger if typing in input
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+        const target = /** @type {HTMLElement} */(e.target);
+        if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
             return;
         }
 
@@ -852,7 +882,7 @@ class NotificationShadeController {
 
     onLoopIncrement() {
         this.pulseLoopNumber();
-        if (this.statusBar.classList.contains('ronnie-route')) {
+        if (this.statusBar?.classList.contains('ronnie-route')) {
             this.glitchLoopNumber();
         }
     }
@@ -898,7 +928,7 @@ class NotificationShadeController {
 
         const loadingFill = this.statusLoading?.querySelector('.loading-fill');
         if (loadingFill) {
-            loadingFill.style.width = `${progress}%`;
+            /** @type {HTMLElement} */(loadingFill).style.width = `${progress}%`;
         }
     }
 
@@ -995,7 +1025,7 @@ class NotificationShadeController {
         if (unreadCount > 0) {
             this.statusMail.classList.add('visible');
             this.statusMail.style.display = 'flex'; // Override inline style="display:none"
-            this.unreadBadge.textContent = unreadCount;
+            this.unreadBadge.textContent = String(unreadCount);
 
             // Trigger tutorial when mail icon first shown
             if (wasHidden && this.game?.tutorialManager) {
@@ -1015,6 +1045,9 @@ class NotificationShadeController {
         }
     }
 
+    /**
+     * @param {{id: string, title: string, content: string}} noteData
+     */
     addUnreadNote(noteData) {
         // Add to unread notes if not already there
         const exists = this.unreadNotes.find(n => n.id === noteData.id);
@@ -1025,6 +1058,9 @@ class NotificationShadeController {
         }
     }
 
+    /**
+     * @param {string} noteId
+     */
     markNoteAsRead(noteId) {
         this.unreadNotes = this.unreadNotes.filter(n => n.id !== noteId);
         this.updateMailIcon();
@@ -1061,12 +1097,16 @@ class NotificationShadeController {
         }
     }
 
+    /**
+     * @param {string} content
+     * @returns {string}
+     */
     generateSnippet(content) {
         if (!content) return 'No preview available';
 
         // Remove HTML tags and get first 2 lines
         const plainText = content.replace(/<[^>]*>/g, '');
-        const lines = plainText.split('\n').filter(line => line.trim());
+        const lines = plainText.split('\n').filter(/** @param {string} line */ line => line.trim());
         const snippet = lines.slice(0, 2).join(' ');
 
         // Truncate if too long
@@ -1076,42 +1116,45 @@ class NotificationShadeController {
     setupNotePreviewHandlers() {
         // Remove old listeners
         if (this.notePreviewBtn) {
-            const newBtn = this.notePreviewBtn.cloneNode(true);
+            const newBtn = /** @type {HTMLElement} */(this.notePreviewBtn.cloneNode(true));
             this.notePreviewBtn.replaceWith(newBtn);
             this.notePreviewBtn = newBtn;
 
             // Click handler
-            this.notePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+            this.notePreviewBtn?.addEventListener('click', () => this.openNotesViewer());
 
             // Swipe gesture (mobile)
             this.setupSwipeGesture(this.notePreviewBtn);
         }
 
         if (this.sidebarNotePreviewBtn) {
-            const newBtn = this.sidebarNotePreviewBtn.cloneNode(true);
+            const newBtn = /** @type {HTMLElement} */(this.sidebarNotePreviewBtn.cloneNode(true));
             this.sidebarNotePreviewBtn.replaceWith(newBtn);
             this.sidebarNotePreviewBtn = newBtn;
 
             // Click handler
-            this.sidebarNotePreviewBtn.addEventListener('click', () => this.openNotesViewer());
+            this.sidebarNotePreviewBtn?.addEventListener('click', () => this.openNotesViewer());
 
             // Swipe gesture (mobile)
             this.setupSwipeGesture(this.sidebarNotePreviewBtn);
         }
     }
 
+    /**
+     * @param {HTMLElement} element
+     */
     setupSwipeGesture(element) {
         let startX = 0;
         let currentX = 0;
         let isSwiping = false;
 
-        element.addEventListener('touchstart', (e) => {
+        element.addEventListener('touchstart', (/** @type {TouchEvent} */ e) => {
             startX = e.touches[0].clientX;
             isSwiping = true;
             element.classList.add('swiping');
         }, { passive: true });
 
-        element.addEventListener('touchmove', (e) => {
+        element.addEventListener('touchmove', (/** @type {TouchEvent} */ e) => {
             if (!isSwiping) return;
             currentX = e.touches[0].clientX;
             const deltaX = currentX - startX;
@@ -1177,10 +1220,9 @@ class NotificationShadeController {
     // Public API for game to add notes
     onNoteCollected(noteData) {
         this.addUnreadNote({
-            id: noteData.id || Date.now(),
+            id: String(noteData.id || Date.now()),
             title: noteData.title || 'New Note',
-            content: noteData.content || '',
-            timestamp: Date.now()
+            content: noteData.content || ''
         });
     }
 
@@ -1233,18 +1275,22 @@ class NotificationShadeController {
         const cancelBtn = overlay.querySelector('.confirmation-cancel');
 
         // Handle confirm
-        confirmBtn.addEventListener('click', () => {
-            if (onConfirm) onConfirm();
-            overlay.remove();
-            this.triggerHaptic('medium');
-        });
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', () => {
+                if (onConfirm) onConfirm();
+                overlay.remove();
+                this.triggerHaptic('medium');
+            });
+        }
 
         // Handle cancel
-        cancelBtn.addEventListener('click', () => {
-            if (onCancel) onCancel();
-            overlay.remove();
-            this.triggerHaptic('light');
-        });
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                if (onCancel) onCancel();
+                overlay.remove();
+                this.triggerHaptic('light');
+            });
+        }
 
         // Handle backdrop click
         overlay.addEventListener('click', (e) => {
@@ -1264,6 +1310,7 @@ class NotificationShadeController {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
+    // @ts-ignore - Assigning to window object
     window.NotificationShadeController = NotificationShadeController;
 }
 

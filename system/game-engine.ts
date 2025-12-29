@@ -1,10 +1,83 @@
-// @ts-check
 // ========================================
 // GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management
 // WITH SPRITE MANAGEMENT + PAGINATION SYSTEM + MOBILE BUBBLES
 // UPDATED: Sprite cleanup on transitions + save/load sprite state
 // ========================================
+
+// TypeScript imports
+import type { SubscriberCallback } from './types';
+
+// ========================================
+// EXTERNAL CLASS DECLARATIONS
+// These classes are loaded via script tags in index.html
+// We declare them here so TypeScript knows they exist
+// Using [key: string]: any for methods not yet typed
+// ========================================
+declare class StateManager {
+    get(path: string): any;
+    set(path: string, value: any): void;
+    subscribe(path: string, callback: SubscriberCallback): () => void;
+    [key: string]: any;
+}
+declare class SceneRenderer { constructor(game: GameEngine);[key: string]: any; }
+declare class UIController {
+    constructor(game: GameEngine);
+    skipIndicator: HTMLElement | null;
+    standaloneNotesViewer: HTMLElement | null;
+    settingsMenu: HTMLElement | null;
+    pauseMenu: HTMLElement | null;
+    [key: string]: any;
+}
+declare class EffectsController { constructor(game: GameEngine);[key: string]: any; }
+declare class TypewriterController { constructor(game: GameEngine); skip(): void; handleClick(): void;[key: string]: any; }
+declare class RouteController { constructor(game: GameEngine);[key: string]: any; }
+declare class EndingDialogController { constructor(game: GameEngine);[key: string]: any; }
+declare class TipsController { constructor(game: GameEngine);[key: string]: any; }
+declare class DevHUDController { constructor(game: GameEngine); toggle(): void; update(): void;[key: string]: any; }
+declare class CreditsPhotoController { constructor(game: GameEngine); getPools(): any; selectRandom(endingType: string): any;[key: string]: any; }
+declare class CreditsController { constructor(game: GameEngine);[key: string]: any; }
+declare class ErrorHandler { constructor(game: GameEngine);[key: string]: any; }
+declare class NotificationShadeController { constructor(game: GameEngine);[key: string]: any; }
+declare class TutorialManager { constructor(game: GameEngine); init(): void;[key: string]: any; }
+declare class LoopController { constructor(game: GameEngine); break(): void; accept(): void;[key: string]: any; }
+declare class SceneProgressionController { constructor(game: GameEngine); setDialogueFrame(routeName: string): void; updateTitleScreen(): void; incrementVersion(): void;[key: string]: any; }
+declare class SpriteController { constructor(game: GameEngine);[key: string]: any; }
+declare class MenuController { constructor(game: GameEngine); showMainMenu(): void; handleSplashSkip(): void; updateMainMenuLayout(): void; initRotatingTips(): void; getMainMenuTips(): string[]; getRouteSelectTips(): string[]; startMainMenuTipRotation(): void; stopMainMenuTipRotation(): void; startRouteSelectTipRotation(): void; stopRouteSelectTipRotation(): void;[key: string]: any; }
+declare class InsaneVisualsController { constructor(game: GameEngine); deactivateInsaneMode(): void; triggerInsaneVisuals(): void; showInsaneCageOverlay(callback: Function): void;[key: string]: any; }
+declare class ResetController { constructor(game: GameEngine);[key: string]: any; }
+declare class DevCommentary { constructor(game: GameEngine);[key: string]: any; }
+declare class SaveManager { constructor(game: GameEngine);[key: string]: any; }
+declare class SettingsManager { constructor(game: GameEngine); updateCodesUI(): void; getHapticEnabled(): boolean; getComfortIntensity(): number; cancelAutoAdvance(): void; getDifficulty?(): string;[key: string]: any; }
+declare class VisualCueManager { constructor(game: GameEngine); trigger(visualType: string, target: any, options: { channel: string }): void;[key: string]: any; }
+declare class SecretCodesManager { constructor(game: GameEngine);[key: string]: any; }
+declare class BacklogManager { constructor(game: GameEngine);[key: string]: any; }
+declare class TimeMachineManager { constructor(game: GameEngine, options: { maxEntries: number; pruneStrategy: string });[key: string]: any; }
+declare class StandaloneNotesViewer { constructor(game: GameEngine);[key: string]: any; }
+declare class SaveLoadUI { constructor(game: GameEngine); showPauseMenu?(): void; hidePauseMenu?(): void;[key: string]: any; }
+declare class CutsceneEngine { constructor(game: GameEngine);[key: string]: any; }
+declare class LoadingOverlay { constructor(game: GameEngine);[key: string]: any; }
+declare class PauseManager { constructor();[key: string]: any; }
+declare class BootstrapTracker { constructor(game: GameEngine);[key: string]: any; }
+declare class EasterEggController { constructor(game: GameEngine); showAlwaysCompilation(): void; showDizeeEasterEgg(): void; openTorigatchiIframe(url: string): void;[key: string]: any; }
+declare class KeyboardController { constructor(game: GameEngine);[key: string]: any; }
+declare class InputBinder { constructor(game: GameEngine); bindAll(): void;[key: string]: any; }
+declare const Logger: { solid(name: string): void;[key: string]: any; };
+declare class AchievementManager { constructor(game: GameEngine);[key: string]: any; }
+
+
+// ========================================
+// SENSORY CUES TYPE
+// ========================================
+export interface SensoryCue {
+    channel: 'ui' | 'narrative' | 'critical';
+    basePattern: string;
+    visualType: string | null;
+}
+
+// NOTE: RouteSelector class is implemented at the bottom of this file
+// No declaration needed here
+
 
 // ========================================
 // VERSION NUMBER - READ BEFORE MODIFYING
@@ -322,6 +395,168 @@ const SENSORY_CUES = {
  * @class GameEngine
  */
 class GameEngine {
+    // ========================================
+    // CLASS MEMBER DECLARATIONS (TypeScript)
+    // ========================================
+
+    // Core Controllers
+    state!: StateManager;
+    sceneRenderer!: SceneRenderer;
+    uiController!: UIController;
+    effectsController!: EffectsController;
+    typewriterController!: TypewriterController;
+    routeController!: RouteController;
+    endingDialogController!: EndingDialogController;
+    tipsController!: TipsController;
+    devHUDController!: DevHUDController;
+    creditsPhotoController!: CreditsPhotoController;
+    creditsController!: CreditsController;
+    errorHandler!: ErrorHandler;
+    notificationShade!: NotificationShadeController;
+    tutorialManager!: TutorialManager;
+    loopController!: LoopController;
+    sceneProgressionController!: SceneProgressionController;
+    spriteController!: SpriteController;
+    menuController!: MenuController;
+    insaneVisualsController!: InsaneVisualsController;
+    resetController!: ResetController;
+    devCommentary!: DevCommentary;
+    saveManager!: SaveManager;
+    settingsManager!: SettingsManager;
+    visualCueManager!: VisualCueManager;
+    secretCodesManager!: SecretCodesManager;
+    backlogManager!: BacklogManager;
+    timeMachine!: TimeMachineManager;
+    standaloneNotesViewer!: StandaloneNotesViewer;
+    saveLoadUI!: SaveLoadUI;
+    cutsceneEngine!: CutsceneEngine;
+    loadingOverlay!: LoadingOverlay;
+    pauseManager!: PauseManager;
+    bootstrapTracker!: BootstrapTracker;
+    easterEggController!: EasterEggController;
+    keyboardController!: KeyboardController;
+    inputBinder!: InputBinder;
+
+    // Debug
+    debugMode: boolean = false;
+
+    // DOM Elements
+    loading: HTMLElement | null = null;
+    loadingBar: HTMLElement | null = null;
+    mainMenu: HTMLElement | null = null;
+    gameView: HTMLElement | null = null;
+    dialogueBox: HTMLElement | null = null;
+    characterName: HTMLElement | null = null;
+    dialogueText: HTMLElement | null = null;
+    internalThought: HTMLElement | null = null;
+    sceneBackground: HTMLElement | null = null;
+    sceneBackgroundAlt: HTMLElement | null = null;
+    choiceMenu: HTMLElement | null = null;
+    choicesContainer: HTMLElement | null = null;
+    tetherUI: HTMLElement | null = null;
+    tetherFill: HTMLElement | null = null;
+    tetherText: HTMLElement | null = null;
+    holdOnButton: HTMLElement | null = null;
+    notesButton: HTMLElement | null = null;
+    notesCount: HTMLElement | null = null;
+    notesViewer: HTMLElement | null = null;
+    notesList: HTMLElement | null = null;
+    pauseButton: HTMLElement | null = null;
+    pauseContent: HTMLElement | null = null;
+    skipButton: HTMLElement | null = null;
+    spriteLeft: HTMLElement | null = null;
+    spriteRight: HTMLElement | null = null;
+
+    // Background state
+    useAltBackground: boolean = false;
+    currentBackground: string | null = null;
+
+    // Sprite state
+    currentSprites: { left: string | null; right: string | null } = { left: null, right: null };
+
+    // Menu/Route
+    menuCarousel: any = null;
+    routeSelector: RouteSelector | null = null;
+
+    // Game State
+    currentRoute: any = null;
+    currentScene: any = null;
+    typewriterActive: boolean = false;
+    typewriterInterval: ReturnType<typeof setInterval> | null = null;
+    typewriterCallback: (() => void) | null = null;
+    fullDialogueText: string = '';
+
+    // Pagination
+    dialoguePages: string[] = [];
+    currentDialoguePage: number = 0;
+    paginationActive: boolean = false;
+
+    // Bubble tracking
+    currentBubble: HTMLElement | null = null;
+
+    // Mobile detection
+    isMobile: boolean = false;
+
+    // Easter egg
+    easterEggSequence: string = '';
+    easterEggListener: ((e: KeyboardEvent) => void) | null = null;
+
+    // Dialogue history
+    dialogueHistory: any[] = [];
+    maxHistoryLength: number = 100;
+
+    // Sensory system
+    lastHapticTime: number = 0;
+    hapticCooldownMs: number = 80;
+    sensoryLog: any[] = [];
+    maxSensoryLog: number = 20;
+
+    // Game state object
+    gameState: {
+        flags: Record<string, any>;
+        choices: Record<string, any>;
+        progress: Record<string, any>;
+        sprites: { left: string | null; right: string | null };
+    } = {
+            flags: {},
+            choices: {},
+            progress: {},
+            sprites: { left: null, right: null }
+        };
+
+    // Skip system
+    skipActive: boolean = false;
+    readScenes: Set<string> = new Set();
+
+    // Tips system
+    mainMenuTipElement: HTMLElement | null = null;
+    routeSelectTipElement: HTMLElement | null = null;
+    mainMenuTipInterval: ReturnType<typeof setInterval> | null = null;
+    routeSelectTipInterval: ReturnType<typeof setInterval> | null = null;
+    currentMainMenuTipIndex: number = 0;
+    currentRouteSelectTipIndex: number = 0;
+
+    // Haptic support
+    hapticSupported: boolean = false;
+
+    // Loading timing
+    splashStartTime: number = 0;
+    minSplashDuration: number = 6000;
+    minLoadingAnimationTime: number = 5500;
+
+    // Image cache
+    imageCache: Map<string, HTMLImageElement> = new Map();
+
+    // Crew screen
+    currentCrewIndex: number = 0;
+    totalCrewScreens: number = 10;
+
+    // Ending state
+    pendingEndingType: string | null = null;
+
+    // Achievement system
+    achievementManager: AchievementManager | null = null;
+
     constructor() {
         // SOLID Refactor: Initialize centralized state management
         // @ts-ignore - External classes loaded via script tags
@@ -681,7 +916,7 @@ class GameEngine {
      * @param {Error|any} error
      * @param {string} context
      */
-    handleGameError(error, context = 'Unknown') {
+    handleGameError(error: any, context: string = 'Unknown') {
         console.error(`❌ Game Error [${context}]:`, error);
 
         // Show user-friendly error overlay
@@ -709,7 +944,7 @@ class GameEngine {
      * @param {string} title
      * @param {string} message
      */
-    showErrorOverlay(title, message) {
+    showErrorOverlay(title: string, message: string) {
         // Delegation stub - full implementation in UIController
         this.uiController.showErrorOverlay(title, message);
     }
@@ -741,7 +976,7 @@ class GameEngine {
      * @param {string} context
      * @param {any} fallback
      */
-    safeExecute(fn, context, fallback = null) {
+    safeExecute(fn: Function, context: string, fallback: any = null) {
         try {
             return fn();
         } catch (error) {
@@ -757,7 +992,7 @@ class GameEngine {
     /**
      * @param {...any} args
      */
-    debug(...args) {
+    debug(...args: any[]) {
         if (this.debugMode) {
             console.log('🐛 [DEBUG]', ...args);
         }
@@ -766,7 +1001,7 @@ class GameEngine {
     /**
      * @param {...any} args
      */
-    debugWarn(...args) {
+    debugWarn(...args: any[]) {
         if (this.debugMode) {
             console.warn('⚠️ [DEBUG]', ...args);
         }
@@ -775,7 +1010,7 @@ class GameEngine {
     /**
      * @param {...any} args
      */
-    debugError(...args) {
+    debugError(...args: any[]) {
         if (this.debugMode) {
             console.error('❌ [DEBUG]', ...args);
         }
@@ -811,7 +1046,7 @@ class GameEngine {
      * @param {string} key
      * @param {any} defaultValue
      */
-    getStateFlag(key, defaultValue = false) {
+    getStateFlag(key: string, defaultValue: any = false) {
         this.validateGameState();
         // @ts-ignore - Dynamic key access
         return this.gameState.flags[key] ?? defaultValue;
@@ -821,7 +1056,7 @@ class GameEngine {
      * @param {string} key
      * @param {any} value
      */
-    setStateFlag(key, value) {
+    setStateFlag(key: string, value: any) {
         this.validateGameState();
         // @ts-ignore - Dynamic key access
         this.gameState.flags[key] = value;
@@ -831,7 +1066,7 @@ class GameEngine {
      * @param {string} key
      * @param {any} defaultValue
      */
-    getStateChoice(key, defaultValue = null) {
+    getStateChoice(key: string, defaultValue: any = null) {
         this.validateGameState();
         // @ts-ignore - Dynamic key access
         return this.gameState.choices[key] ?? defaultValue;
@@ -841,7 +1076,7 @@ class GameEngine {
      * @param {string} key
      * @param {any} value
      */
-    setStateChoice(key, value) {
+    setStateChoice(key: string, value: any) {
         this.validateGameState();
         // @ts-ignore - Dynamic key access
         this.gameState.choices[key] = value;
@@ -852,7 +1087,7 @@ class GameEngine {
      * @param {string} key
      * @param {any} defaultValue
      */
-    safeLocalStorageGet(key, defaultValue = null) {
+    safeLocalStorageGet(key: string, defaultValue: any = null) {
         try {
             const value = localStorage.getItem(key);
             return value !== null ? value : defaultValue;
@@ -866,7 +1101,7 @@ class GameEngine {
      * @param {string} key
      * @param {string} value
      */
-    safeLocalStorageSet(key, value) {
+    safeLocalStorageSet(key: string, value: string) {
         try {
             localStorage.setItem(key, value);
             return true;
@@ -881,7 +1116,7 @@ class GameEngine {
      * @param {string} jsonString
      * @param {any} [defaultValue=null]
      */
-    safeJSONParse(jsonString, defaultValue = null) {
+    safeJSONParse(jsonString: string, defaultValue: any = null) {
         try {
             return JSON.parse(jsonString);
         } catch (/** @type {any} */ error) {
@@ -948,7 +1183,7 @@ class GameEngine {
         let imagesLoaded = 0;
         const totalImages = allImages.length;
         /** @type {string[]} */
-        const failedImages = [];
+        const failedImages: string[] = [];
         const loadStartTime = Date.now();
 
         // Enhanced preload function with caching and retry logic
@@ -956,7 +1191,7 @@ class GameEngine {
          * @param {string} src
          * @param {number} [retryCount=0]
          */
-        const preloadImage = (src, retryCount = 0) => {
+        const preloadImage = (src: string, retryCount: number = 0) => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
 
@@ -1006,7 +1241,7 @@ class GameEngine {
         /**
          * @param {string[]} group
          */
-        const loadPriorityGroup = async (group) => {
+        const loadPriorityGroup = async (group: string[]) => {
             return Promise.all(group.map(src => preloadImage(src)));
         };
 
@@ -1164,7 +1399,7 @@ class GameEngine {
             // [H] KEY: Toggle UI visibility (for screenshots)
             if (e.code === 'KeyH' && !e.ctrlKey && !e.metaKey) {
                 // Don't trigger if typing in input fields
-                const target = /** @type {HTMLElement} */(e.target);
+                const target = e.target as HTMLElement;
                 if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
                     return;
                 }
@@ -1176,7 +1411,7 @@ class GameEngine {
             // [S] KEY: Toggle skip on/off
             if (e.code === 'KeyS' && !e.ctrlKey && !e.metaKey) {
                 // Don't trigger if typing in input fields
-                const target = /** @type {HTMLElement} */(e.target);
+                const target = e.target as HTMLElement;
                 if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
                     return;
                 }
@@ -1275,7 +1510,7 @@ class GameEngine {
             if (noteDetail && window.getComputedStyle(noteDetail).display !== 'none') {
                 e.preventDefault();
                 const closeBtn = noteDetail.querySelector('.note-close-btn');
-                /** @type {HTMLElement} */(closeBtn)?.click();
+                (closeBtn as HTMLElement)?.click();
                 return;
             }
 
@@ -1283,8 +1518,8 @@ class GameEngine {
             const notesViewer = this.uiController.standaloneNotesViewer;
             if (this.uiController.isVisible(notesViewer)) {
                 e.preventDefault();
-                const closeBtn = notesViewer.querySelector('.notes-close-btn');
-                /** @type {HTMLElement} */(closeBtn)?.click();
+                const closeBtn = notesViewer?.querySelector('.notes-close-btn');
+                (closeBtn as HTMLElement)?.click();
                 return;
             }
 
@@ -1333,7 +1568,7 @@ class GameEngine {
     /**
      * @param {string} endingType
      */
-    selectRandomPhotos(endingType) {
+    selectRandomPhotos(endingType: string) {
         return this.creditsPhotoController.selectRandom(endingType);
     }
 
@@ -1414,7 +1649,7 @@ class GameEngine {
      * @param {number|number[]} pattern
      * @param {number} comfortLevel
      */
-    scaleHapticPattern(pattern, comfortLevel) {
+    scaleHapticPattern(pattern: number | number[], comfortLevel: number) {
         // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
         if (comfortLevel === 1) return pattern;
 
@@ -1444,7 +1679,7 @@ class GameEngine {
      * @param {string} [options.channel='ui']
      * @param {boolean} [options.force=false]
      */
-    triggerHaptic(patternName, description = '', { channel = 'ui', force = false } = {}) {
+    triggerHaptic(patternName: string, description: string = '', { channel = 'ui', force = false } = {}) {
         // Check if user has enabled haptics in settings
         if (!this.settingsManager || !this.settingsManager.getHapticEnabled()) {
             return; // User disabled or settings not ready
@@ -1492,7 +1727,7 @@ class GameEngine {
      * @param {any} pattern
      * @param {string} description
      */
-    logSensory(cueType, channel, pattern, description) {
+    logSensory(cueType: string, channel: string, pattern: any, description: string) {
         if (!this.debugMode) return;
 
         this.sensoryLog.push({
@@ -1518,7 +1753,7 @@ class GameEngine {
     /**
      * @param {string} cueType
      */
-    triggerSensoryFeedback(cueType, target = null, description = '') {
+    triggerSensoryFeedback(cueType: string, target: any = null, description: string = '') {
         // Look up cue metadata
         // @ts-ignore - SENSORY_CUES dynamic lookup
         const meta = SENSORY_CUES[cueType];
@@ -1586,7 +1821,7 @@ class GameEngine {
      * @param {Function} callback
      * @param {any} currentRoute
      */
-    showLoopInit(callback, currentRoute) {
+    showLoopInit(callback: Function, currentRoute: any) {
         this.effectsController?.showLoopInit(callback, currentRoute);
     }
 
@@ -1611,14 +1846,14 @@ class GameEngine {
      * @param {Function} callback
      * @param {number} [duration=1500]
      */
-    showCodeRainTransition(callback, duration = 1500) {
+    showCodeRainTransition(callback: Function, duration: number = 1500) {
         return this.sceneProgressionController.showCodeRainTransition(callback, duration);
     }
 
     /**
      * @param {HTMLCanvasElement} canvas
      */
-    startTransitionRain(canvas) {
+    startTransitionRain(canvas: any) {
         this.effectsController?.startTransitionRain(canvas);
     }
 
@@ -1638,7 +1873,7 @@ class GameEngine {
     /**
      * @param {string} endingType
      */
-    markEndingCompleted(endingType) {
+    markEndingCompleted(endingType: string) {
         const wasFirstCompletion = !this.hasCompletedAnyEnding();
 
         localStorage.setItem('hasCompletedOnce', 'true');
@@ -1689,7 +1924,7 @@ class GameEngine {
     /**
      * @param {any} entry
      */
-    async loadSceneFromSnapshot(entry) {
+    async loadSceneFromSnapshot(entry: any) {
         if (!entry.routeId) {
             console.warn('⏰ Cannot load snapshot: missing routeId');
             return;
@@ -1741,7 +1976,7 @@ class GameEngine {
     /**
      * @param {any} flags
      */
-    applySerializableFlags(flags) {
+    applySerializableFlags(flags: any) {
         this.gameState.flags = { ...flags };
     }
 
@@ -1762,7 +1997,7 @@ class GameEngine {
     /**
      * @param {string} bgKey
      */
-    setBackgroundByKey(bgKey) {
+    setBackgroundByKey(bgKey: string) {
         if (!bgKey) return;
         this.currentBackground = bgKey;
         // Apply to DOM
@@ -1776,7 +2011,7 @@ class GameEngine {
     /**
      * @param {{left?: string, right?: string}} spriteKey
      */
-    setSpriteByKey(spriteKey) {
+    setSpriteByKey(spriteKey: { left?: string, right?: string }) {
         if (!spriteKey) return;
 
         if (spriteKey.left) {
@@ -1850,7 +2085,7 @@ class GameEngine {
     /**
      * @param {string} routeName
      */
-    startRoute(routeName) {
+    startRoute(routeName: string) {
         return this.sceneProgressionController.startRoute(routeName);
     }
 
@@ -1864,14 +2099,14 @@ class GameEngine {
      * @param {string} sprite2
      * @param {number} [duration=4000]
      */
-    fadeSpritesSequence(position, sprite1, sprite2, duration = 4000) {
+    fadeSpritesSequence(position: string, sprite1: string, sprite2: string, duration: number = 4000) {
         return this.spriteController.fadeSpritesSequence(position, sprite1, sprite2, duration);
     }
 
     /**
      * @param {Function} callback
      */
-    triggerEchoMerge(callback) {
+    triggerEchoMerge(callback: Function) {
         return this.spriteController.triggerEchoMerge(callback);
     }
 
@@ -1883,7 +2118,7 @@ class GameEngine {
      * @param {any} scene
      * @param {string} sceneId
      */
-    displayScene(scene, sceneId) {
+    displayScene(scene: any, sceneId: string) {
         this.currentScene = scene;
 
         // Reset pagination state at start of every scene
@@ -2058,7 +2293,7 @@ class GameEngine {
     /**
      * @param {any} sprites
      */
-    updateSprites(sprites) {
+    updateSprites(sprites: any) {
         // Delegation stub - full implementation in SceneRenderer
         this.sceneRenderer.updateSprites(sprites);
     }
@@ -2070,14 +2305,14 @@ class GameEngine {
     /**
      * @param {string} stage
      */
-    setEchoGrowthStage(stage) {
+    setEchoGrowthStage(stage: string) {
         return this.spriteController.setEchoGrowthStage(stage);
     }
 
     /**
      * @param {string} speaker
      */
-    setActiveSpeaker(speaker) {
+    setActiveSpeaker(speaker: string) {
         return this.spriteController.setActiveSpeaker(speaker);
     }
 
@@ -2128,7 +2363,7 @@ class GameEngine {
      * @param {number} [internalTextLength=0]
      * @param {boolean} [slowReveal=false]
      */
-    typewriterText(element, text, callback, internalTextLength = 0, slowReveal = false) {
+    typewriterText(element: HTMLElement, text: string, callback: Function, internalTextLength: number = 0, slowReveal: boolean = false) {
         // Delegation stub - full implementation in SceneRenderer
         this.sceneRenderer.typewriterText(element, text, callback, internalTextLength, slowReveal);
     }
@@ -2140,7 +2375,7 @@ class GameEngine {
     /**
      * @param {number} textLength
      */
-    shouldPaginateText(textLength) {
+    shouldPaginateText(textLength: number) {
         return this.typewriterController.shouldPaginate(textLength);
     }
 
@@ -2149,7 +2384,7 @@ class GameEngine {
      * @param {string} text
      * @param {Function} callback
      */
-    paginateAndDisplayText(element, text, callback) {
+    paginateAndDisplayText(element: HTMLElement, text: string, callback: Function) {
         this.typewriterController.paginateAndDisplay(element, text, callback);
     }
 
@@ -2157,14 +2392,14 @@ class GameEngine {
      * @param {string} text
      * @param {number} charsPerPage
      */
-    splitTextIntoPages(text, charsPerPage) {
+    splitTextIntoPages(text: string, charsPerPage: number) {
         return this.typewriterController.splitTextIntoPages(text, charsPerPage);
     }
 
     /**
      * @param {HTMLElement} element
      */
-    displayDialoguePage(element) {
+    displayDialoguePage(element: HTMLElement) {
         this.typewriterController.displayPage(element);
     }
 
@@ -2198,7 +2433,7 @@ class GameEngine {
      * @param {any[]} choices
      * @param {Function} onChoice
      */
-    showChoices(choices, onChoice) {
+    showChoices(choices: any[], onChoice: Function) {
         // Delegation stub - full implementation in SceneRenderer
         this.sceneRenderer.showChoices(choices, onChoice);
     }
@@ -2273,7 +2508,7 @@ class GameEngine {
     /**
      * @param {number} index
      */
-    focusEndingOption(index) {
+    focusEndingOption(index: number) {
         this.endingDialogController.focusOption(index);
     }
 
@@ -2296,14 +2531,14 @@ class GameEngine {
      * @param {string} endingType
      * @param {string} playerVersion
      */
-    buildDynamicTitleSection(endingType, playerVersion) {
+    buildDynamicTitleSection(endingType: string, playerVersion: string) {
         return this.creditsController?.buildDynamicTitleSection(endingType, playerVersion);
     }
 
     /**
      * @param {number} photoCount
      */
-    cycleCreditsPhotos(photoCount) {
+    cycleCreditsPhotos(photoCount: number) {
         this.creditsController?.cycleCreditsPhotos(photoCount);
     }
 
@@ -2314,7 +2549,7 @@ class GameEngine {
     /**
      * @param {HTMLElement} overlay
      */
-    addCreditsControls(overlay) {
+    addCreditsControls(overlay: HTMLElement) {
         this.creditsController?.addCreditsControls(overlay);
     }
 
@@ -2323,7 +2558,7 @@ class GameEngine {
      * @param {string} playerVersion
      * @param {string[]} photos
      */
-    showCreditsLandscapeWithPhotos(endingType, playerVersion, photos) {
+    showCreditsLandscapeWithPhotos(endingType: string, playerVersion: string, photos: string[]) {
         this.creditsController?.showCreditsLandscapeWithPhotos(endingType, playerVersion, photos);
     }
 
@@ -2332,7 +2567,7 @@ class GameEngine {
      * @param {string} playerVersion
      * @param {string[]} photos
      */
-    showCreditsPortraitWithPhotos(endingType, playerVersion, photos) {
+    showCreditsPortraitWithPhotos(endingType: string, playerVersion: string, photos: string[]) {
         this.creditsController?.showCreditsPortraitWithPhotos(endingType, playerVersion, photos);
     }
 
@@ -2340,7 +2575,7 @@ class GameEngine {
      * @param {string} endingType
      * @param {string} playerVersion
      */
-    showCreditsStandard(endingType, playerVersion) {
+    showCreditsStandard(endingType: string, playerVersion: string) {
         this.creditsController?.showCreditsStandard(endingType, playerVersion);
     }
 
@@ -2355,7 +2590,7 @@ class GameEngine {
      * @param {Function} onConfirm
      * @param {boolean} [showCancel=true]
      */
-    showConfirmDialog(title, message, onConfirm, showCancel = true) {
+    showConfirmDialog(title: string, message: string, onConfirm: Function, showCancel: boolean = true) {
         // Delegation stub - full implementation in UIController
         this.uiController.showConfirmDialog(title, message, onConfirm, showCancel);
     }
@@ -2364,7 +2599,7 @@ class GameEngine {
      * @param {string} title
      * @param {string} message
      */
-    showMessage(title, message) {
+    showMessage(title: string, message: string) {
         // Simple message (no cancel button)
         this.uiController.showConfirmDialog(title, message, () => { }, false);
     }
@@ -2394,11 +2629,11 @@ class GameEngine {
     /**
      * @param {number} index
      */
-    displayCrewScreen(index) {
+    displayCrewScreen(index: number) {
         // Hide all crew screens
         const allScreens = document.querySelectorAll('.credit-screen');
         allScreens.forEach(screen => {
-            /** @type {HTMLElement} */(screen).style.display = 'none';
+            (screen as HTMLElement).style.display = 'none';
             screen.classList.remove('active');
         });
 
@@ -2606,13 +2841,13 @@ class GameEngine {
     // ========================================
 
     resumeGame() {
-        this.saveLoadUI.hidePauseMenu();
+        this.saveLoadUI?.hidePauseMenu?.();
     }
 
     /**
      * @param {string} mode
      */
-    showSaveLoadScreen(mode, fromPauseMenu = false) {
+    showSaveLoadScreen(mode: string, fromPauseMenu: boolean = false) {
         this.saveLoadUI.showSaveLoadScreen(mode, fromPauseMenu);
     }
 
@@ -2623,21 +2858,21 @@ class GameEngine {
     /**
      * @param {string} mode
      */
-    setSaveLoadMode(mode) {
+    setSaveLoadMode(mode: string) {
         this.saveLoadUI.setSaveLoadMode(mode);
     }
 
     /**
      * @param {string} slotId
      */
-    handleSaveSlotClick(slotId) {
+    handleSaveSlotClick(slotId: string) {
         this.saveLoadUI.handleSaveSlotClick(slotId);
     }
 
     /**
      * @param {number} slotNumber
      */
-    deleteSaveSlot(slotNumber) {
+    deleteSaveSlot(slotNumber: number) {
         this.saveLoadUI.deleteSaveSlot(slotNumber);
     }
 
@@ -2734,25 +2969,25 @@ class GameEngine {
         // Update based on ending type
         if (lastEnding === 'digital_forever') {
             titleElement.textContent = 'VERSION 848';
-            /** @type {HTMLElement} */(titleElement).style.color = '#ff00ff'; // Purple/magenta for Digital Forever
+            (titleElement as HTMLElement).style.color = '#ff00ff'; // Purple/magenta for Digital Forever
             subtitleElement.textContent = 'Together Forever... Digitally';
-            /** @type {HTMLElement} */(subtitleElement).style.color = '#ff00ff';
+            (subtitleElement as HTMLElement).style.color = '#ff00ff';
         } else if (lastEnding === 'true_ending') {
             titleElement.textContent = 'VERSION 848';
-            /** @type {HTMLElement} */(titleElement).style.color = '#00ff88'; // Green for True Ending
+            (titleElement as HTMLElement).style.color = '#00ff88'; // Green for True Ending
             subtitleElement.textContent = 'She\'s Home. The Loop is Broken.';
-            /** @type {HTMLElement} */(subtitleElement).style.color = '#00ff88';
+            (subtitleElement as HTMLElement).style.color = '#00ff88';
         } else if (lastEnding === 'bad_ending') {
             titleElement.textContent = 'VERSION 849';
-            /** @type {HTMLElement} */(titleElement).style.color = '#ff0066'; // Red for Bad Ending
+            (titleElement as HTMLElement).style.color = '#ff0066'; // Red for Bad Ending
             subtitleElement.textContent = 'Try Again. She Deserves Another Chance.';
-            /** @type {HTMLElement} */(subtitleElement).style.color = '#ff0066';
+            (subtitleElement as HTMLElement).style.color = '#ff0066';
         } else {
             // Default state
             titleElement.textContent = 'VERSION 848';
-            /** @type {HTMLElement} */(titleElement).style.color = '#0ff'; // Cyan default
+            (titleElement as HTMLElement).style.color = '#0ff'; // Cyan default
             subtitleElement.textContent = 'My Wife Is in a Coma... and in the Code';
-            /** @type {HTMLElement} */(subtitleElement).style.color = '#fff';
+            (subtitleElement as HTMLElement).style.color = '#fff';
         }
     }
 
@@ -2850,7 +3085,7 @@ class GameEngine {
     /**
      * @param {any} entry
      */
-    addToDialogueHistory(entry) {
+    addToDialogueHistory(entry: any) {
         // Legacy array (keep for compatibility)
         this.dialogueHistory.push(entry);
 
@@ -2957,7 +3192,7 @@ class GameEngine {
         // DEV COMMAND: View state change history
         // Usage in console: game.stateHistory() or game.stateHistory(5)
         const history = this.state.getHistory(count);
-        console.table(history.map((/** @type {any} */ h) => ({
+        console.table(history.map((h: any) => ({
             path: h.path,
             old: h.oldValue,
             new: h.newValue,
@@ -2990,7 +3225,7 @@ class GameEngine {
     /**
      * @param {string} json
      */
-    stateImport(json) {
+    stateImport(json: string) {
         // DEV COMMAND: Import state from JSON
         // Usage: game.stateImport('{"version":1,...}')
         return this.state.importState(json);
@@ -3005,7 +3240,7 @@ class GameEngine {
     /**
      * @param {string} path
      */
-    stateWatch(path) {
+    stateWatch(path: string) {
         // DEV COMMAND: Watch a path for changes
         // Usage: game.stateWatch('tether.level')
         return this.state.watch(path);
@@ -3014,7 +3249,7 @@ class GameEngine {
     /**
      * @param {string} path
      */
-    stateUnwatch(path) {
+    stateUnwatch(path: string) {
         // DEV COMMAND: Stop watching a path
         // Usage: game.stateUnwatch('tether.level')
         this.state.unwatch(path);
@@ -3050,7 +3285,7 @@ class GameEngine {
      * @param {string} path
      * @param {number} [amount=1]
      */
-    stateIncrement(path, amount = 1) {
+    stateIncrement(path: string, amount: number = 1) {
         // DEV COMMAND: Increment a numeric value
         // Usage: game.stateIncrement('game.loopVersion')
         return this.state.increment(path, amount);
@@ -3059,7 +3294,7 @@ class GameEngine {
     /**
      * @param {string} path
      */
-    stateToggle(path) {
+    stateToggle(path: string) {
         // DEV COMMAND: Toggle a boolean value
         // Usage: game.stateToggle('ui.hidden')
         return this.state.toggle(path);
@@ -3069,7 +3304,7 @@ class GameEngine {
      * @param {string} path
      * @param {any} obj
      */
-    stateMerge(path, obj) {
+    stateMerge(path: string, obj: any) {
         // DEV COMMAND: Merge object into state
         // Usage: game.stateMerge('settings', { volume: 50 })
         return this.state.merge(path, obj);
@@ -3078,7 +3313,7 @@ class GameEngine {
     /**
      * @param {string} path
      */
-    stateHas(path) {
+    stateHas(path: string) {
         // DEV COMMAND: Check if path exists
         // Usage: game.stateHas('tether.level')
         const exists = this.state.has(path);
@@ -3089,7 +3324,7 @@ class GameEngine {
     /**
      * @param {string} path
      */
-    stateDelete(path) {
+    stateDelete(path: string) {
         // DEV COMMAND: Delete a path from state
         // Usage: game.stateDelete('temp.data')
         return this.state.deletePath(path);
@@ -3098,7 +3333,7 @@ class GameEngine {
     /**
      * @param {Object} pairs
      */
-    stateBatchSet(pairs) {
+    stateBatchSet(pairs: Record<string, any>) {
         // DEV COMMAND: Set multiple values at once
         // Usage: game.stateBatchSet({ 'game.score': 100, 'tether.level': 50 })
         return this.state.batchSet(pairs);
@@ -3107,7 +3342,7 @@ class GameEngine {
     /**
      * @param {string[]} paths
      */
-    stateBatchGet(paths) {
+    stateBatchGet(paths: string[]) {
         // DEV COMMAND: Get multiple values at once
         // Usage: game.stateBatchGet(['game.score', 'tether.level'])
         const results = this.state.batchGet(paths);
@@ -3218,7 +3453,7 @@ game.devCommands()
     /**
      * @param {boolean} confirmed
      */
-    confirmAction(confirmed) {
+    confirmAction(confirmed: boolean) {
         // Delegate to SaveLoadUI which manages the dialog logic
         if (this.saveLoadUI) {
             this.saveLoadUI.confirmAction(confirmed);
@@ -3293,7 +3528,7 @@ game.devCommands()
         // DIZEE: Auto-close pause menu after toggling fullscreen
         if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
             setTimeout(() => {
-                this.saveLoadUI.hidePauseMenu();
+                this.saveLoadUI?.hidePauseMenu?.();
             }, 150);
         }
     }
@@ -3317,7 +3552,7 @@ game.devCommands()
     /**
      * @param {string} newBackground
      */
-    crossfadeBackground(newBackground) {
+    crossfadeBackground(newBackground: string) {
         // Delegation stub - full implementation in SceneRenderer
         this.sceneRenderer.crossfadeBackground(newBackground);
     }
@@ -3329,7 +3564,7 @@ game.devCommands()
     /**
      * @param {string} routeName
      */
-    setDialogueFrame(routeName) {
+    setDialogueFrame(routeName: string) {
         return this.sceneProgressionController.setDialogueFrame(routeName);
     }
 
@@ -3364,7 +3599,7 @@ game.devCommands()
      * @param {string} text
      * @param {string} [characterPosition='center']
      */
-    createInternalBubble(text, characterPosition = 'center') {
+    createInternalBubble(text: string, characterPosition: string = 'center') {
         // UNIVERSAL BUBBLE SYSTEM - Works on all platforms
 
         // Remove any existing bubbles first (defensive cleanup)
@@ -3411,7 +3646,7 @@ game.devCommands()
     /**
      * @param {any} sceneData
      */
-    determineCharacterPosition(sceneData) {
+    determineCharacterPosition(sceneData: any) {
         return this.spriteController.determineCharacterPosition(sceneData);
     }
 
@@ -3516,24 +3751,24 @@ game.devCommands()
     /**
      * @param {string} sceneId
      */
-    markSceneAsRead(sceneId) {
+    markSceneAsRead(sceneId: string) {
         if (sceneId) {
             this.readScenes.add(sceneId);
-            localStorage.setItem('readScenes', JSON.stringify([...this.readScenes]));
+            localStorage.setItem('readScenes', JSON.stringify(Array.from(this.readScenes)));
         }
     }
 
     /**
      * @param {string} sceneId
      */
-    isSceneRead(sceneId) {
+    isSceneRead(sceneId: string) {
         return this.readScenes.has(sceneId);
     }
 
     /**
      * @param {any} scene
      */
-    shouldStopSkipping(scene) {
+    shouldStopSkipping(scene: any) {
         // Stop skipping if:
         // 1. Scene has choices
         if (scene.choices && scene.choices.length > 0) return true;
@@ -3684,7 +3919,7 @@ game.devCommands()
     /**
      * @param {string} url
      */
-    openTorigatchiIframe(url) {
+    openTorigatchiIframe(url: string) {
         this.easterEggController?.openTorigatchiIframe(url);
     }
 
@@ -3707,7 +3942,7 @@ game.devCommands()
     /**
      * @param {'eased'|'tightened'} changeType
      */
-    triggerTetherReaction(changeType) {
+    triggerTetherReaction(changeType: 'eased' | 'tightened') {
         // Only trigger if in Tori's route and gameplay active
         // @ts-ignore - gameplayActive is a dynamic property
         if (this.currentRoute !== 'tori' || !this.gameplayActive) return;
@@ -3748,7 +3983,7 @@ game.devCommands()
      * @param {string} text
      * @param {'eased'|'tightened'} changeType
      */
-    showTetherReactionDialogue(text, changeType) {
+    showTetherReactionDialogue(text: string, changeType: 'eased' | 'tightened') {
         // Save current dialogue state
         const savedState = {
             character: this.characterName?.textContent,
@@ -3805,7 +4040,7 @@ game.devCommands()
      * @param {string} spriteName
      * @param {number} duration
      */
-    flickerSprite(spriteName, duration) {
+    flickerSprite(spriteName: string, duration: number) {
         void spriteName; // Unused, logic relies on hardcoded ID for now
         const sprite = document.getElementById(`character-right`); // Tori is usually on the right
         if (!sprite) return;
@@ -3824,7 +4059,7 @@ game.devCommands()
     /**
      * @param {string} code
      */
-    redeemSecretCode(code) {
+    redeemSecretCode(code: string) {
         // DIZEE: Delegate to SecretCodesManager 🖤
         return this.secretCodesManager.redeemCode(code);
     }
@@ -3875,21 +4110,21 @@ game.devCommands()
     /**
      * @param {number} version
      */
-    getFailureReason(version) {
+    getFailureReason(version: number) {
         return this.easterEggController?.getFailureReason(version) || 'Unknown';
     }
 
     /**
      * @param {number} version
      */
-    getAttemptDuration(version) {
+    getAttemptDuration(version: number) {
         return this.easterEggController?.getAttemptDuration(version) || '? minutes';
     }
 
     /**
      * @param {number} version
      */
-    getLesson(version) {
+    getLesson(version: number) {
         return this.easterEggController?.getLesson(version) || 'Keep trying';
     }
 
@@ -3913,7 +4148,7 @@ game.devCommands()
     /**
      * @param {string} act
      */
-    loadEchoAct(act) {
+    loadEchoAct(act: string) {
         this.easterEggController?.loadEchoAct(act);
     }
 
@@ -3944,7 +4179,7 @@ game.devCommands()
      * @param {string} content
      * @param {string} [type='code']
      */
-    showUnlockOverlay(title, content, type = 'code') {
+    showUnlockOverlay(title: string, content: string, type: string = 'code') {
         this.easterEggController?.showUnlockOverlay(title, content, type);
     }
 
@@ -3958,7 +4193,7 @@ game.devCommands()
      * @param {string} content
      * @param {any} scene
      */
-    showCommentaryOverlay(title, content, scene) {
+    showCommentaryOverlay(title: string, content: string, scene: any) {
         this.easterEggController?.showCommentaryOverlay(title, content, scene);
     }
 
@@ -3970,7 +4205,7 @@ game.devCommands()
      * @param {string} title
      * @param {string} message
      */
-    showWarningOverlay(title, message) {
+    showWarningOverlay(title: string, message: string) {
         // Delegation stub - full implementation in UIController
         this.uiController.showWarningOverlay(title, message);
     }
@@ -3994,7 +4229,7 @@ game.devCommands()
     /**
      * @param {Function} callback
      */
-    showInsaneCageOverlay(callback) {
+    showInsaneCageOverlay(callback: Function) {
         // @ts-ignore
         return this.insaneVisualsController.showInsaneCageOverlay(callback);
     }
@@ -4131,7 +4366,7 @@ game.devCommands()
      * @param {string} message
      * @param {number} [duration=2000]
      */
-    showNotification(message, duration = 2000) {
+    showNotification(message: string, duration: number = 2000) {
         this.keyboardController?.showNotification(message, duration);
     }
 
@@ -4246,14 +4481,25 @@ game.devCommands()
 // ========================================
 
 class RouteSelector {
-    /**
-     * @param {any} game
-     */
-    constructor(game) {
+    // TypeScript member declarations
+    game: GameEngine;
+    selectedRoute: string = 'ronnie';
+    ronniePortrait: Element | null = null;
+    toriPortrait: Element | null = null;
+    toggleTrack: Element | null = null;
+    toggleOptions: NodeListOf<Element> | null = null;
+    ronnieInfo: Element | null = null;
+    toriInfo: Element | null = null;
+    playButton: HTMLElement | null = null;
+    routeName: HTMLElement | null = null;
+    difficultyDisplay: HTMLElement | null = null;
+
+    constructor(game: GameEngine) {
         this.game = game;
         this.selectedRoute = 'ronnie'; // Default
         this.init();
     }
+
 
     init() {
         console.log('🎮 Initializing RouteSelector...');
@@ -4278,7 +4524,7 @@ class RouteSelector {
         // Add event listeners
         this.toggleOptions.forEach(option => {
             option.addEventListener('click', () => {
-                const route = /** @type {HTMLElement} */(option).dataset.route;
+                const route = (option as HTMLElement).dataset.route;
                 this.selectRoute(route);
             });
         });
@@ -4327,7 +4573,7 @@ class RouteSelector {
 
             // Add cursor pointer via JS to ensure it applies (redundant with CSS)
             // Add cursor pointer via JS to ensure it applies (redundant with CSS)
-            /** @type {HTMLElement} */(portrait).style.cursor = 'pointer';
+            (portrait as HTMLElement).style.cursor = 'pointer';
         });
 
         // Set initial state
@@ -4354,7 +4600,7 @@ class RouteSelector {
     /**
      * @param {string|undefined} route
      */
-    selectRoute(route) {
+    selectRoute(route: string | undefined) {
         if (this.selectedRoute === route) {
             console.log(`ℹ️ Already on ${route} route`);
             return; // Already selected
