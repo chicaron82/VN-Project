@@ -1,3 +1,7 @@
+/// <reference lib="es2015" />
+/// <reference lib="es2016" />
+/// <reference lib="dom" />
+
 // ========================================
 // GAME ENGINE - Version 848 (COMPLETE)
 // Main game logic and scene management

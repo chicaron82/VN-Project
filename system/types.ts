@@ -1,3 +1,5 @@
+/// <reference lib="es2015" />
+
 // Type definitions for game state
 export interface GameState {
     game: {
