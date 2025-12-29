@@ -298,8 +298,8 @@ class SettingsManager {
         // Text Speed Buttons
         document.querySelectorAll<HTMLButtonElement>('.speed-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const speed = btn.dataset.speed;
-                this.setTextSpeed(speed);
+                const speed = btn.dataset.speed as 'slow' | 'normal' | 'fast' | 'instant';
+                if (speed) this.setTextSpeed(speed);
             });
         });
 
@@ -396,8 +396,8 @@ class SettingsManager {
         // Display Mode Buttons
         document.querySelectorAll<HTMLButtonElement>('.display-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const mode = btn.dataset.mode;
-                this.setDisplayMode(mode);
+                const mode = btn.dataset.mode as 'auto' | 'portrait' | 'landscape';
+                if (mode) this.setDisplayMode(mode);
             });
         });
 
@@ -685,14 +685,14 @@ class SettingsManager {
         }
     }
 
-    setTextSpeed(speed) {
+    setTextSpeed(speed: 'slow' | 'normal' | 'fast' | 'instant') {
         this.settings.textSpeed = speed;
         this.saveSettings();
         this.updateUI();
         console.log('Text speed set to:', speed);
     }
 
-    setAutoAdvance(enabled) {
+    setAutoAdvance(enabled: boolean) {
         this.settings.autoAdvance = enabled;
         this.saveSettings();
         this.updateUI();
@@ -706,13 +706,13 @@ class SettingsManager {
         console.log('Auto-advance:', enabled ? 'ON' : 'OFF');
     }
 
-    setAutoDelay(delay) {
+    setAutoDelay(delay: number) {
         this.settings.autoDelay = delay;
         this.saveSettings();
         this.updateUI();
     }
 
-    setAutoSkipPrologue(enabled) {
+    setAutoSkipPrologue(enabled: boolean) {
         this.settings.autoSkipPrologue = enabled;
         this.saveSettings();
 
@@ -725,7 +725,7 @@ class SettingsManager {
         console.log('Auto-Skip Prologue:', enabled ? 'ENABLED' : 'DISABLED');
     }
 
-    setTetherDifficulty(difficulty) {
+    setTetherDifficulty(difficulty: string) {
         const previousDifficulty = this.settings.tetherDifficulty || 'normal';
         this.settings.tetherDifficulty = difficulty;
         this.saveSettings();
@@ -754,7 +754,7 @@ class SettingsManager {
         return this.settings.hapticEnabled;
     }
 
-    setHapticEnabled(enabled) {
+    setHapticEnabled(enabled: boolean) {
         this.settings.hapticEnabled = enabled;
         this.saveSettings();
         this.updateUI();
@@ -775,7 +775,7 @@ class SettingsManager {
         return this.settings.comfortMode;
     }
 
-    setComfortMode(enabled) {
+    setComfortMode(enabled: boolean) {
         this.settings.comfortMode = enabled;
         this.saveSettings();
         this.updateUI();
@@ -790,7 +790,7 @@ class SettingsManager {
     // DIZEE: Route-specific color theme toggle 🎨
     // ========================================
 
-    setThemePreference(mode) {
+    setThemePreference(mode: string) {
         // Delegate to ThemeManager
         if (typeof ThemeManager !== 'undefined') {
             ThemeManager.setPreferenceMode(mode);
@@ -806,7 +806,7 @@ class SettingsManager {
         return 'auto';
     }
 
-    applyComfortMode(enabled) {
+    applyComfortMode(enabled: boolean) {
         // Set body data attribute for visual cue system
         document.body.setAttribute('data-comfort-mode', enabled ? 'true' : 'false');
 
@@ -833,7 +833,7 @@ class SettingsManager {
         return this.settings.comfortIntensity ?? 1;
     }
 
-    setComfortIntensity(level) {
+    setComfortIntensity(level: number) {
         const clamped = Math.max(0, Math.min(2, Number(level) || 0));
         this.settings.comfortIntensity = clamped;
         this.saveSettings();
@@ -861,7 +861,7 @@ class SettingsManager {
             const previewElement = document.getElementById('comfort-intensity-slider');
 
             // Different haptic patterns for each level
-            const patterns = {
+            const patterns: Record<number, string> = {
                 0: 'gentle',        // Gentle: soft single tap
                 1: 'buttonPress',   // Normal: standard button press
                 2: 'success'        // Amped: stronger double tap
@@ -871,7 +871,7 @@ class SettingsManager {
         }
     }
 
-    previewIntensityEffect(level, element) {
+    previewIntensityEffect(level: number, element: HTMLElement) {
         // Remove any existing animation
         element.style.animation = 'none';
 
@@ -917,21 +917,23 @@ class SettingsManager {
         const proceedBtn = document.getElementById('insane-warning-proceed');
 
         // Remove old listeners
-        const newCancelBtn = cancelBtn.cloneNode(true);
-        const newProceedBtn = proceedBtn.cloneNode(true);
-        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-        proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
+        if (cancelBtn && cancelBtn.parentNode && proceedBtn && proceedBtn.parentNode) {
+            const newCancelBtn = cancelBtn.cloneNode(true) as HTMLElement;
+            const newProceedBtn = proceedBtn.cloneNode(true) as HTMLElement;
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
 
-        // Add new listeners
-        newCancelBtn.addEventListener('click', () => {
-            overlay.style.display = 'none';
-            console.log('💚 Insane mode cancelled - chose mercy');
-        });
+            // Add new listeners
+            newCancelBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+                console.log('💚 Insane mode cancelled - chose mercy');
+            });
 
-        newProceedBtn.addEventListener('click', () => {
-            overlay.style.display = 'none';
-            this.commitToInsaneMode();
-        });
+            newProceedBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+                this.commitToInsaneMode();
+            });
+        }
     }
 
     commitToInsaneMode() {
@@ -989,8 +991,8 @@ class SettingsManager {
         }, 500);
     }
 
-    getDifficultyChangeType(oldDiff, newDiff) {
-        const difficultyLevels = { relaxed: 0, normal: 1, intense: 2 };
+    getDifficultyChangeType(oldDiff: string, newDiff: string): string {
+        const difficultyLevels: Record<string, number> = { relaxed: 0, normal: 1, intense: 2 };
         const oldLevel = difficultyLevels[oldDiff] || 1;
         const newLevel = difficultyLevels[newDiff] || 1;
 
@@ -1006,7 +1008,7 @@ class SettingsManager {
         return baseDelay * multiplier;
     }
 
-    startAutoAdvance(callback) {
+    startAutoAdvance(callback: () => void) {
         // Start auto-advance timer if enabled
         if (!this.settings.autoAdvance) {
             console.log('🔧 Auto-advance: disabled in settings');
@@ -1059,7 +1061,7 @@ class SettingsManager {
         console.log('Settings reset to default');
     }
 
-    setDisplayMode(mode) {
+    setDisplayMode(mode: 'auto' | 'portrait' | 'landscape') {
         this.settings.displayMode = mode;
         this.saveSettings();
         this.updateUI();
@@ -1067,7 +1069,7 @@ class SettingsManager {
         console.log('Display mode set to:', mode);
     }
 
-    applyDisplayMode(mode) {
+    applyDisplayMode(mode: string) {
         const gameContainer = document.getElementById('game-container');
 
         // Safety check: DOM might not be ready yet during initialization
@@ -1127,7 +1129,7 @@ class SettingsManager {
         this.updateCodesUI();
     }
 
-    showCodeResult(result) {
+    showCodeResult(result: { success: boolean; message: string }) {
         const messageDiv = document.getElementById('code-result-message');
         if (!messageDiv) return;
 
@@ -1150,7 +1152,7 @@ class SettingsManager {
     // DIZEE: Delegated to SecretCodesManager 🖤
     // ========================================
 
-    submitSecretCode(code) {
+    submitSecretCode(code: string) {
         // Delegate to SecretCodesManager
         return this.game.secretCodesManager.submitCode(code);
     }
@@ -1167,11 +1169,11 @@ class SettingsManager {
         return this.game.secretCodesManager.getCodeCount();
     }
 
-    hasDiscoveredCode(code) {
+    hasDiscoveredCode(code: string) {
         return this.game.secretCodesManager.hasDiscoveredCode(code);
     }
 
-    discoverCode(code) {
+    discoverCode(code: string) {
         return this.game.secretCodesManager.discoverCode(code);
     }
 }
@@ -1235,10 +1237,10 @@ class BacklogManager {
         }
     }
 
-    captureGameState() {
+    captureGameState(): BacklogGameState {
         // Capture essential game state (not save data like unlocks)
         // Safe array handling for currentSprites
-        let spritesArray = [];
+        let spritesArray: any[] = [];
         if (this.game.currentSprites) {
             try {
                 spritesArray = Array.isArray(this.game.currentSprites)
@@ -1262,7 +1264,7 @@ class BacklogManager {
         };
     }
 
-    isEntryJumpable(character, sceneId) {
+    isEntryJumpable(character: string, sceneId: string | null): boolean {
         // Unjumpable narrators (glitched/system moments)
         const lockedNarrators = ['System', 'ERROR', 'Despair', '???', 'STATIC', 'CORRUPTION'];
         if (lockedNarrators.includes(character)) {
@@ -1391,7 +1393,7 @@ class BacklogManager {
     // ZEERAH: TIME TRAVEL MECHANICS
     // ========================================
 
-    jumpToEntry(index) {
+    jumpToEntry(index: number) {
         const entry = this.history[index];
 
         if (!entry) {
@@ -1415,7 +1417,7 @@ class BacklogManager {
         this.showTimeJumpConfirmation(entry, index);
     }
 
-    showTimeJumpConfirmation(entry, index) {
+    showTimeJumpConfirmation(entry: BacklogEntry, _index: number) {
         // ========================================
         // INSANE MODE: TIME MACHINE DISABLED
         // ========================================
@@ -1452,20 +1454,22 @@ class BacklogManager {
         const proceedBtn = document.getElementById('time-jump-proceed');
 
         // Remove old listeners
-        const newCancelBtn = cancelBtn.cloneNode(true);
-        const newProceedBtn = proceedBtn.cloneNode(true);
-        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-        proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
+        if (cancelBtn && cancelBtn.parentNode && proceedBtn && proceedBtn.parentNode) {
+            const newCancelBtn = cancelBtn.cloneNode(true) as HTMLElement;
+            const newProceedBtn = proceedBtn.cloneNode(true) as HTMLElement;
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
 
-        // Add new listeners
-        newCancelBtn.addEventListener('click', () => {
-            overlay.style.display = 'none';
-        });
+            // Add new listeners
+            newCancelBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+            });
 
-        newProceedBtn.addEventListener('click', () => {
-            overlay.style.display = 'none';
-            this.executeTimeJump(entry);
-        });
+            newProceedBtn.addEventListener('click', () => {
+                overlay.style.display = 'none';
+                this.executeTimeJump(entry);
+            });
+        }
     }
 
     showInsaneBacklogMessage() {
@@ -1491,7 +1495,7 @@ Forward is the only direction.
         }
     }
 
-    executeTimeJump(entry) {
+    executeTimeJump(entry: BacklogEntry) {
         console.log('💚 Time traveling to:', entry.sceneId, 'page', entry.pageIndex);
 
         // Restore game state
@@ -1521,7 +1525,7 @@ Forward is the only direction.
         }
     }
 
-    jumpToScene(sceneId, pageIndex) {
+    jumpToScene(sceneId: string | any, pageIndex: number) {
         // DIZEE FIX: Handle if sceneId is an object instead of string (defensive fallback)
         let sceneIdString = sceneId;
         if (typeof sceneId === 'object' && sceneId !== null) {
@@ -1538,12 +1542,14 @@ Forward is the only direction.
 
         // Find and execute the scene function (like save-manager.js does)
         const route = this.game.currentRoute;
-        let sceneFunction = null;
-        let context = route;
+        if (!route) return;
+
+        let sceneFunction: any = null;
+        let context: any = route;
 
         // Search for the scene function in the route hierarchy
         // @ts-ignore - Route has dynamic act/endings properties
-        if (route[sceneIdString]) {
+        if ((route as any)[sceneIdString]) {
             sceneFunction = route[sceneIdString];
             context = route;
             // @ts-ignore - Route has dynamic act properties
@@ -1575,7 +1581,7 @@ Forward is the only direction.
         }
     }
 
-    restoreGameState(entry) {
+    restoreGameState(entry: BacklogEntry) {
         // Restore scene/route/page position
         this.game.currentScene = entry.sceneId;
         this.game.currentRoute = entry.routeName;
@@ -1616,7 +1622,7 @@ Forward is the only direction.
         });
     }
 
-    showJumpError(entry) {
+    showJumpError(entry: BacklogEntry | 'insane') {
         // INSANE MODE: Special error message
         if (entry === 'insane') {
             this.game.showWarningOverlay(
