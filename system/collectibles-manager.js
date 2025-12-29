@@ -186,6 +186,10 @@
  * @class CollectiblesManager
  */
 class CollectiblesManager {
+    /**
+     * @param {any} game - Game engine instance
+     * @param {any} route - Current route instance
+     */
     constructor(game, route) {
         this.game = game;
         this.route = route;
@@ -195,6 +199,7 @@ class CollectiblesManager {
         // ========================================
 
         // Track collected items by type
+        /** @type {CollectedNotes} */
         this.collectedNotes = {
             z: [],          // Z's notes (Tori route - architect)
             cz: [],         // CZ's notes (Tori route - heart)
@@ -206,9 +211,11 @@ class CollectiblesManager {
         };
 
         // DIZEE POLISH: Track when notes were collected
+        /** @type {Object<string, number>} */
         this.noteTimestamps = {}; // { noteId: timestamp }
 
         // All available notes (defined per route)
+        /** @type {Object<string, NoteData>} */
         this.allNotes = {};
 
         // ZEERAH'S FIX: Pre-load note definitions on construction
@@ -218,18 +225,26 @@ class CollectiblesManager {
 
         // DIZEE: Unread tracking for inbox badge
         this.unreadCount = 0;
+        /** @type {Set<string>} */
         this.readNotes = new Set();
         this.loadReadNotes();
 
         // DIZEE: Note discovery tracking (RNG + pity system)
+        /** @type {Object<string, number>} */
         this.seenNotes = {};           // { noteId: timesViewed }
+        /** @type {Object<string, NoteDrop>} */
         this.noteCodeDrops = {};       // { noteId: { hasCode, code, timestamp } }
 
         // DOM references
+        /** @type {HTMLElement|null} */
         this.notesButton = null;
+        /** @type {HTMLElement|null} */
         this.notesCount = null;
+        /** @type {HTMLElement|null} */
         this.notesViewer = null;
+        /** @type {HTMLElement|null} */
         this.notesList = null;
+        /** @type {HTMLElement|null} */
         this.closeNotesButton = null;
     }
 
@@ -319,9 +334,11 @@ class CollectiblesManager {
         }
 
         // DIZEE: Check difficulty gate
+        // @ts-ignore - getNoteMetadata is defined in note-metadata.js
         const noteMeta = getNoteMetadata(noteId);
         if (noteMeta && noteMeta.difficulty) {
             const currentDifficulty = this.game.settingsManager.settings.tetherDifficulty;
+            // @ts-ignore - isDifficultyUnlocked is defined in note-metadata.js
             if (!isDifficultyUnlocked(noteMeta.difficulty, currentDifficulty)) {
                 console.log(`Note ${noteId} blocked - requires ${noteMeta.difficulty} difficulty (current: ${currentDifficulty})`);
                 return; // Block unlock
@@ -478,6 +495,7 @@ class CollectiblesManager {
      * }
      */
     processNoteDrop(noteId) {
+        // @ts-ignore - getNoteMetadata is defined in note-metadata.js
         const noteMeta = getNoteMetadata(noteId);
         if (!noteMeta) return null;
 
@@ -733,6 +751,7 @@ class CollectiblesManager {
 
     // DIZEE FIX: Helper to get ALL collected note IDs for current route
     getAllCollectedNoteIds() {
+        /** @type {string[]} */
         const allIds = [];
 
         // Determine which types to include based on route
@@ -756,6 +775,12 @@ class CollectiblesManager {
         return allIds;
     }
 
+    /**
+     * @param {string} sectionTitle
+     * @param {any[]} notes
+     * @param {NoteType} type
+     * @param {string[]} allCollectedIds
+     */
     renderNoteSection(sectionTitle, notes, type, allCollectedIds) {
         if (notes.length === 0) return;
 
@@ -827,6 +852,7 @@ class CollectiblesManager {
         // This keeps notification dots in sync between in-route and standalone viewers
         if (!this.game.standaloneNotesViewer) {
             // Create standalone viewer if it doesn't exist yet (edge case)
+            // @ts-ignore - StandaloneNotesViewer is defined in standalone-notes-viewer.js
             this.game.standaloneNotesViewer = new StandaloneNotesViewer(this.game);
         }
 
@@ -1479,6 +1505,9 @@ P.S. The barback skill strikes again.`
         };
     }
 
+    /**
+     * @param {any} state
+     */
     restoreState(state) {
         this.collectedNotes = state.collectedNotes || {
             z: [],
@@ -1518,6 +1547,10 @@ P.S. The barback skill strikes again.`
     // Same functionality as standalone viewer
     // ========================================
 
+    /**
+     * @param {NoteType} noteType
+     * @returns {string}
+     */
     getSenderName(noteType) {
         const senders = {
             z: 'Z (The Architect)',
@@ -1531,6 +1564,10 @@ P.S. The barback skill strikes again.`
         return senders[noteType] || 'Unknown Observer';
     }
 
+    /**
+     * @param {string} noteId
+     * @param {string[]} allNoteIds
+     */
     openNoteOverlay(noteId, allNoteIds) {
         // Store current note context for navigation
         this.currentNoteId = noteId;
@@ -1560,6 +1597,7 @@ P.S. The barback skill strikes again.`
         this.setupSwipeGestures(overlay);
 
         // ESC key to close
+        /** @param {KeyboardEvent} e */
         this.escKeyHandler = (e) => {
             if (e.key === 'Escape') {
                 this.closeNoteOverlay();
@@ -1568,6 +1606,9 @@ P.S. The barback skill strikes again.`
         document.addEventListener('keydown', this.escKeyHandler);
     }
 
+    /**
+     * @param {HTMLElement} overlay
+     */
     setupSwipeGestures(overlay) {
         // DIZEE FIX: Target the content element, not the overlay wrapper
         const content = document.getElementById('notes-overlay-content');
@@ -1584,12 +1625,14 @@ P.S. The barback skill strikes again.`
         let touchEndY = 0;
         const minSwipeDistance = 50; // Minimum distance for swipe
 
+        /** @param {TouchEvent} e */
         const handleTouchStart = (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
             console.log(`👆 Touch start: (${touchStartX}, ${touchStartY})`);
         };
 
+        /** @param {TouchEvent} e */
         const handleTouchEnd = (e) => {
             touchEndX = e.changedTouches[0].screenX;
             touchEndY = e.changedTouches[0].screenY;
@@ -1721,6 +1764,9 @@ P.S. The barback skill strikes again.`
         }
     }
 
+    /**
+     * @param {number} direction
+     */
     navigateNote(direction) {
         if (!this.currentNoteList) return;
 
@@ -1818,6 +1864,9 @@ P.S. The barback skill strikes again.`
         }
     }
 
+    /**
+     * @param {string} noteId
+     */
     markNoteAsRead(noteId) {
         this.readNotes.add(noteId);
         this.saveReadNotes();
@@ -1860,6 +1909,7 @@ P.S. The barback skill strikes again.`
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
+    // @ts-ignore - Assigning to window object
     window.CollectiblesManager = CollectiblesManager;
 }
 
