@@ -1,14 +1,92 @@
+// @ts-check
 // ========================================
 // TETHER SYSTEM MODULE
 // Manages Tori's consciousness tether mechanics and Echo Toris
 // Extracted from tori-route-main.js for modularity
 // ========================================
 
-import type { DifficultyProfile, EchoState, TetherSaveState, EchoDialogue } from './types';
+// ========================================
+// TYPESCRIPT DECLARATIONS
+// ========================================
+/// <reference lib="es2015" />
 
-// Global dependencies (from JavaScript modules)
-declare const GameConfig: any;
-declare function getDifficultyProfile(difficulty: string): DifficultyProfile;
+/** GameConfig external */
+declare const GameConfig: {
+    TETHER: {
+        INITIAL_LEVEL: number;
+        DECAY_INTERVAL_MS: number;
+        THRESHOLD_CRITICAL: number;
+        THRESHOLD_MEDIUM_DECAY: number;
+        THRESHOLD_CRITICAL_DECAY: number;
+    };
+    [key: string]: any;
+};
+
+/** getDifficultyProfile external */
+declare function getDifficultyProfile(difficulty: string): {
+    name: string;
+    decayRates: { base: number; medium: number; critical: number };
+    tetherCap: number;
+    holdOnBoost: number;
+    holdOnCooldown: number;
+    holdOn: { hidden: boolean };
+    [key: string]: any;
+};
+
+/** GameEngine reference */
+declare class GameEngine {
+    state: {
+        get(key: string): any;
+        set(key: string, value: any): void;
+        subscribe(key: string, callback: (newVal: any, oldVal: any) => void): () => void;
+    };
+    settingsManager: any;
+    tetherUI: HTMLElement | null;
+    tetherFill: HTMLElement | null;
+    tetherText: HTMLElement | null;
+    holdOnButton: HTMLButtonElement | null;
+    echoDisplay: HTMLElement | null;
+    echo1Text: HTMLElement | null;
+    echo2Text: HTMLElement | null;
+    echoDespairText: HTMLElement | null;
+    notificationShade: any;
+    gameState: any;
+    gameView: HTMLElement;
+    dialogueBox: HTMLElement;
+    loopVersion: number;
+    triggerSensoryFeedback: (type: string, element: any, message?: string) => void;
+    triggerInsaneVisuals: () => void;
+    displayScene: (scene: any, id?: string) => void;
+    incrementVersion: () => void;
+    showLoopInit: (callback: () => void) => void;
+    returnToMainMenu: () => void;
+    tutorialManager: any;
+    [key: string]: any;
+}
+
+/** Route reference */
+interface Route {
+    addRoutePoints: (type: string, points: number) => void;
+    tetherDeath: () => void;
+    act1: { start: () => void };
+    [key: string]: any;
+}
+
+/** Echo state interface */
+interface EchoState {
+    name: string;
+    mood: string;
+    color: string;
+    active: boolean;
+}
+
+/** Echoes collection interface */
+interface EchoesCollection {
+    echo1: EchoState;
+    echo2: EchoState;
+    despair: EchoState;
+    [key: string]: EchoState;
+}
 
 /**
  * TetherSystem
@@ -40,48 +118,42 @@ declare function getDifficultyProfile(difficulty: string): DifficultyProfile;
  *
  * @class TetherSystem
  */
-export class TetherSystem {
-    private game: any;
-    private route: any;
+class TetherSystem {
+    game: GameEngine;
+    route: Route;
+    tetherDecayRate: number;
+    currentDifficulty: string;
+    tetherDecayTimer: ReturnType<typeof setInterval> | null;
+    holdOnCooldown: boolean;
+    holdOnCooldownTimer: ReturnType<typeof setInterval> | null;
+    hasUsedHoldOn: boolean;
+    hasShownTutorialFlash: boolean;
+    decayFrozen: boolean;
+    HOLD_ON_BOOST: number;
+    HOLD_ON_COOLDOWN_MS: number;
+    DECAY_INTERVAL_MS: number;
+    CRITICAL_THRESHOLD: number;
+    tetherCap: number;
+    DECAY_MEDIUM_THRESHOLD: number;
+    DECAY_CRITICAL_THRESHOLD: number;
+    DECAY_MEDIUM_RATE: number;
+    DECAY_CRITICAL_RATE: number;
+    echoes: EchoesCollection;
+    tetherUI: HTMLElement | null;
+    tetherFill: HTMLElement | null;
+    tetherText: HTMLElement | null;
+    holdOnButton: HTMLButtonElement | null;
+    echoDisplay: HTMLElement | null;
+    echo1Text: HTMLElement | null;
+    echo2Text: HTMLElement | null;
+    echoDespairText: HTMLElement | null;
+    _tetherSubscription: (() => void) | null;
 
-    // Instance variables (non-state)
-    private tetherDecayRate: number;
-    private currentDifficulty: string;
-    private tetherDecayTimer: NodeJS.Timeout | null;
-    private holdOnCooldown: boolean;
-    private holdOnCooldownTimer: NodeJS.Timeout | null;
-    private hasUsedHoldOn: boolean;
-    private hasShownTutorialFlash: boolean;
-    private decayFrozen: boolean;
-
-    // Configuration constants
-    private HOLD_ON_BOOST: number;
-    private HOLD_ON_COOLDOWN_MS: number;
-    private DECAY_INTERVAL_MS: number;
-    private CRITICAL_THRESHOLD: number;
-    private tetherCap: number;
-    private DECAY_MEDIUM_THRESHOLD: number;
-    private DECAY_CRITICAL_THRESHOLD: number;
-    private DECAY_MEDIUM_RATE: number;
-    private DECAY_CRITICAL_RATE: number;
-
-    // Echo system state
-    private echoes: Record<string, EchoState>;
-
-    // DOM element references
-    private tetherUI: HTMLElement | null;
-    private tetherFill: HTMLElement | null;
-    private tetherText: HTMLElement | null;
-    private holdOnButton: HTMLButtonElement | null;
-    private echoDisplay: HTMLElement | null;
-    private echo1Text: HTMLElement | null;
-    private echo2Text: HTMLElement | null;
-    private echoDespairText: HTMLElement | null;
-
-    // StateManager subscription
-    private _tetherSubscription?: (() => void) | null;
-
-    constructor(game: any, route: any) {
+    /**
+     * @param {any} game - Game engine instance
+     * @param {any} route - Current route instance
+     */
+    constructor(game: GameEngine, route: Route) {
         this.game = game;
         this.route = route;
 
@@ -90,11 +162,14 @@ export class TetherSystem {
         // ========================================
 
         // Initialize tether state in StateManager
+        // @ts-ignore - GameConfig is defined in game-config.js
         const initialLevel = GameConfig.TETHER.INITIAL_LEVEL;
         this.game.state.set('tether.level', initialLevel);
+        this.tetherLevel = initialLevel;
 
         // Get current difficulty profile
         const currentDifficulty = game.settingsManager?.settings?.tetherDifficulty || 'normal';
+        // @ts-ignore - getDifficultyProfile is defined in difficulty-config.js
         const profile = getDifficultyProfile(currentDifficulty);
 
         // Store difficulty settings in StateManager
@@ -115,12 +190,16 @@ export class TetherSystem {
         // Configuration constants (from difficulty profile)
         this.HOLD_ON_BOOST = profile.holdOnBoost;
         this.HOLD_ON_COOLDOWN_MS = profile.holdOnCooldown;
+        // @ts-ignore - GameConfig external
         this.DECAY_INTERVAL_MS = GameConfig.TETHER.DECAY_INTERVAL_MS;
+        // @ts-ignore - GameConfig external
         this.CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL;
         this.tetherCap = profile.tetherCap;              // Tether cap (100% normal, 66% INSANE)
 
         // Decay acceleration thresholds (from GameConfig)
+        // @ts-ignore - GameConfig external
         this.DECAY_MEDIUM_THRESHOLD = GameConfig.TETHER.THRESHOLD_MEDIUM_DECAY;
+        // @ts-ignore - GameConfig external
         this.DECAY_CRITICAL_THRESHOLD = GameConfig.TETHER.THRESHOLD_CRITICAL_DECAY;
         this.DECAY_MEDIUM_RATE = profile.decayRates.medium;
         this.DECAY_CRITICAL_RATE = profile.decayRates.critical;
@@ -159,6 +238,7 @@ export class TetherSystem {
         this.echo1Text = null;
         this.echo2Text = null;
         this.echoDespairText = null;
+        this._tetherSubscription = null;
     }
 
     // ========================================
@@ -185,7 +265,8 @@ export class TetherSystem {
         // SOLID REFACTOR: REACTIVE UI SUBSCRIPTION
         // UI auto-updates when tether.level changes in StateManager
         // ========================================
-        this._tetherSubscription = this.game.state.subscribe('tether.level', (newLevel: number, oldLevel: number) => {
+        // @ts-ignore - Callback parameters are typed by StateManager
+        this._tetherSubscription = this.game.state.subscribe('tether.level', (newLevel, oldLevel) => {
             console.log(`🔄 Reactive: Tether ${oldLevel} → ${newLevel}`);
             this.updateDisplay();
         });
@@ -214,7 +295,7 @@ export class TetherSystem {
      * // Apply decay
      * tetherSystem.updateTether(-0.05, 'passive decay');
      */
-    updateTether(amount: number, reason = ''): number {
+    updateTether(amount, reason = '') {
         // Store previous level for haptic trigger detection
         const previousLevel = this.tetherLevel;
 
@@ -233,6 +314,18 @@ export class TetherSystem {
         // Update display
         this.updateDisplay();
 
+        // Trigger Hold On tutorial when tether first drops below 95%
+        if (this.tetherLevel <= 95 && previousLevel > 95) {
+            const holdOnBtn = document.querySelector('#hold-on-button');
+
+            if (holdOnBtn && this.game?.tutorialManager) {
+                this.game.tutorialManager.showHandGesture('tori_hold_on', holdOnBtn, {
+                    text: 'Hold On to restore connection!',
+                    autoHide: 4000
+                });
+            }
+        }
+
         // Check for tether death
         if (this.tetherLevel <= 0) {
             this.stopDecay();
@@ -247,7 +340,7 @@ export class TetherSystem {
         return this.tetherLevel;
     }
 
-    updateDisplay(): void {
+    updateDisplay() {
         // Update visual tether bar
         if (this.tetherFill) {
             this.tetherFill.style.width = this.tetherLevel + '%';
@@ -301,7 +394,7 @@ export class TetherSystem {
      * // Resume decay after pause
      * tetherSystem.startDecay();
      */
-    startDecay(): void {
+    startDecay() {
         // Start passive tether decay timer
         if (this.tetherDecayTimer) {
             // Already running, don't start duplicate
@@ -324,7 +417,7 @@ export class TetherSystem {
      * // Pause decay when opening notification shade
      * tetherSystem.stopDecay();
      */
-    stopDecay(): void {
+    stopDecay() {
         if (this.tetherDecayTimer) {
             clearInterval(this.tetherDecayTimer);
             this.tetherDecayTimer = null;
@@ -344,19 +437,22 @@ export class TetherSystem {
     // DEV/ACCESSIBILITY COMMANDS
     // ========================================
 
-    freezeDecay(): void {
+    freezeDecay() {
         // Stop decay without clearing the timer (can be resumed)
         this.decayFrozen = true;
         console.log('💚 DEV: Tether decay frozen');
     }
 
-    resumeDecay(): void {
+    resumeDecay() {
         // Resume decay
         this.decayFrozen = false;
         console.log('💚 DEV: Tether decay resumed');
     }
 
-    setTether(value: number): void {
+    /**
+     * @param {number} value
+     */
+    setTether(value) {
         // Manually set tether level (dev command)
         this.tetherLevel = Math.max(0, Math.min(100, value));
         this.updateDisplay();
@@ -369,7 +465,11 @@ export class TetherSystem {
         }
     }
 
-    setTetherLevel(targetLevel: number, animated = false): void {
+    /**
+     * @param {number} targetLevel
+     * @param {boolean} [animated=false]
+     */
+    setTetherLevel(targetLevel, animated = false) {
         // Set tether to specific level (used by Insane Mode cage scene)
         targetLevel = Math.max(0, Math.min(100, targetLevel));
 
@@ -421,7 +521,7 @@ export class TetherSystem {
         }, stepDuration);
     }
 
-    applyDecay(): void {
+    applyDecay() {
         // Check if decay is frozen (dev command)
         if (this.decayFrozen) {
             return;
@@ -467,8 +567,12 @@ export class TetherSystem {
         }
     }
 
-    setDifficultyModifier(difficulty: string): void {
+    /**
+     * @param {string} difficulty
+     */
+    setDifficultyModifier(difficulty) {
         // Update difficulty settings from profile
+        // @ts-ignore - getDifficultyProfile external
         const profile = getDifficultyProfile(difficulty);
 
         this.currentDifficulty = difficulty;
@@ -482,7 +586,7 @@ export class TetherSystem {
         console.log(`   Decay: ${profile.decayRates.base} | Cap: ${profile.tetherCap}% | Hold On: ${profile.holdOnBoost}`);
     }
 
-    triggerGlitchEffect(): void {
+    triggerGlitchEffect() {
         // Visual glitch when tether is critically low
         // Enhanced in Insane Mode for more intense corruption
 
@@ -536,7 +640,7 @@ export class TetherSystem {
      * // Called when Hold On button clicked
      * tetherSystem.holdOn();
      */
-    holdOn(): void {
+    holdOn() {
         // Player manually tries to maintain tether connection
 
         // Check if button is on cooldown
@@ -595,7 +699,7 @@ export class TetherSystem {
         }
     }
 
-    flashHoldOnButton(): void {
+    flashHoldOnButton() {
         // One-time tutorial flash to draw attention to Hold On button
         if (this.holdOnButton && !this.holdOnCooldown) {
             this.holdOnButton.classList.add('tutorial-flash');
@@ -607,7 +711,10 @@ export class TetherSystem {
     // ECHO SYSTEM
     // ========================================
 
-    showEchoes(echoDialogue: EchoDialogue): void {
+    /**
+     * @param {any} echoDialogue
+     */
+    showEchoes(echoDialogue) {
         // Display echo commentary alongside main dialogue
         // Creates the "voices in her head" effect
 
@@ -638,7 +745,7 @@ export class TetherSystem {
         }
     }
 
-    hideEchoes(): void {
+    hideEchoes() {
         if (this.echoDisplay) {
             this.echoDisplay.style.display = 'none';
         }
@@ -649,7 +756,11 @@ export class TetherSystem {
         this.echoes.despair.active = false;
     }
 
-    updateEchoMood(echoId: string, mood: string): void {
+    /**
+     * @param {'echo1'|'echo2'|'despair'} echoId
+     * @param {string} mood
+     */
+    updateEchoMood(echoId, mood) {
         // Update the mood state of a specific echo
         if (this.echoes[echoId]) {
             this.echoes[echoId].mood = mood;
@@ -661,7 +772,7 @@ export class TetherSystem {
     // TETHER DEATH HANDLER
     // ========================================
 
-    onTetherDeath(): void {
+    onTetherDeath() {
         // Callback when tether reaches 0%
         // Delegate to route's custom handler if it exists
 
@@ -691,7 +802,8 @@ export class TetherSystem {
                 { text: '[BEGIN NEXT ATTEMPT]', value: 'retry' },
                 { text: '[ABANDON TIMELINE]', value: 'menu' }
             ],
-            onChoice: (choice: string) => {
+            /** @param {string} choice */
+            onChoice: (choice) => {
                 if (choice === 'retry') {
                     // Increment version for next attempt
                     this.game.incrementVersion();
@@ -717,7 +829,7 @@ export class TetherSystem {
     // STATE MANAGEMENT
     // ========================================
 
-    reset(): void {
+    reset() {
         // Reset tether to full
         this.tetherLevel = 100;
         this.updateDisplay();
@@ -736,7 +848,7 @@ export class TetherSystem {
         console.log('Tether system reset');
     }
 
-    getState(): TetherSaveState {
+    getState() {
         // Return current state for save system
         return {
             tetherLevel: this.tetherLevel,
@@ -745,7 +857,10 @@ export class TetherSystem {
         };
     }
 
-    restoreState(state: TetherSaveState): void {
+    /**
+     * @param {any} state
+     */
+    restoreState(state) {
         // Restore from saved state
         this.tetherLevel = state.tetherLevel || 100;
         this.echoes = state.echoes || this.echoes;
@@ -767,7 +882,7 @@ export class TetherSystem {
     // CLEANUP (Memory Management)
     // ========================================
 
-    cleanup(): void {
+    cleanup() {
         console.log('🧹 TetherSystem cleanup initiated');
 
         // Clear all timers
@@ -840,5 +955,9 @@ export class TetherSystem {
 
 // Global assignment for browser
 if (typeof window !== 'undefined') {
-    (window as any).TetherSystem = TetherSystem;
+    // @ts-ignore - Assigning to window object
+    window.TetherSystem = TetherSystem;
 }
+
+// ES Module export
+export { TetherSystem };
