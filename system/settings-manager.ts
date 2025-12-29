@@ -324,7 +324,7 @@ class SettingsManager {
         // Auto-Skip Prologue Toggle
         const autoSkipPrologueToggle = document.getElementById('auto-skip-prologue-toggle') as HTMLInputElement | null;
         const autoSkipPrologueStatus = document.getElementById('auto-skip-prologue-status');
-        const autoSkipPrologueContainer = document.getElementById('auto-skip-prologue-container');
+        // const autoSkipPrologueContainer = document.getElementById('auto-skip-prologue-container'); // Unused
 
         if (autoSkipPrologueToggle && autoSkipPrologueStatus) {
             // Check if unlocked
@@ -405,7 +405,7 @@ class SettingsManager {
         document.querySelectorAll<HTMLButtonElement>('.theme-pref-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const mode = btn.dataset.theme;
-                this.setThemePreference(mode);
+                if (mode) this.setThemePreference(mode);
             });
         });
 
@@ -528,7 +528,7 @@ class SettingsManager {
                         );
                         return;
                     }
-                    this.setTetherDifficulty(difficulty);
+                    if (difficulty) this.setTetherDifficulty(difficulty);
                 }
             });
         });
@@ -1525,7 +1525,7 @@ Forward is the only direction.
         }
     }
 
-    jumpToScene(sceneId: string | any, pageIndex: number) {
+    jumpToScene(sceneId: string | any, _pageIndex: number) {
         // DIZEE FIX: Handle if sceneId is an object instead of string (defensive fallback)
         let sceneIdString = sceneId;
         if (typeof sceneId === 'object' && sceneId !== null) {
@@ -1584,7 +1584,7 @@ Forward is the only direction.
     restoreGameState(entry: BacklogEntry) {
         // Restore scene/route/page position
         this.game.currentScene = entry.sceneId;
-        this.game.currentRoute = entry.routeName;
+        this.game.currentRoute = entry.routeName ?? null;
         this.game.currentPageIndex = entry.pageIndex;
 
         if (!entry.gameState) return;
