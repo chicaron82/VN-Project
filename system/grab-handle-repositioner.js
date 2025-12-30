@@ -469,7 +469,9 @@ class GrabHandleRepositioner {
             // Update sidebar slide direction
             this.sidebar.style.left = 'auto';
             this.sidebar.style.right = '0';
-            this.sidebar.style.transform = 'translateX(100%)';
+            // DON'T set transform inline - let CSS classes handle it
+            // Inline styles override classes, breaking .expanded state
+            this.sidebar.style.transform = ''; // Clear any inline transform
 
             // When expanded on right
             this.sidebar.classList.add('right-side');
@@ -485,7 +487,8 @@ class GrabHandleRepositioner {
             // Update sidebar slide direction
             this.sidebar.style.left = '0';
             this.sidebar.style.right = 'auto';
-            this.sidebar.style.transform = 'translateX(-100%)';
+            // DON'T set transform inline - let CSS classes handle it
+            this.sidebar.style.transform = ''; // Clear any inline transform
 
             // When expanded on left
             this.sidebar.classList.remove('right-side');
