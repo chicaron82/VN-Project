@@ -57,6 +57,11 @@ class RonnieRoute {
             }
         }
 
+        // DIZEE: Sync status bar with Ronnie's notes (matches Tori route pattern)
+        if (this.game.notificationShade) {
+            this.game.notificationShade.updateStatusBar();
+        }
+
         // Unlock GenZee's version number note at route start
         this.collectiblesManager.unlockNote('gz1');
 
