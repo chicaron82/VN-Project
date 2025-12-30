@@ -344,8 +344,9 @@ class GrabHandleRepositioner {
             let newTop = this.startTop + deltaPercent;
 
             // Apply pixel-based constraints (convert to percent for storage)
+            // Account for handle height since we position by CENTER
             const handleHeight = this.grabHandle.offsetHeight || 60;
-            const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
+            const minPercent = ((this.minPixelsFromTop + (handleHeight / 2)) / viewportHeight) * 100;
             const maxPercent = ((viewportHeight - this.minPixelsFromBottom - (handleHeight / 2)) / viewportHeight) * 100;
 
             newTop = Math.max(minPercent, Math.min(maxPercent, newTop));
@@ -390,8 +391,8 @@ class GrabHandleRepositioner {
         const viewportHeight = window.innerHeight;
         const handleHeight = this.grabHandle.offsetHeight || 60; // Get actual height or default to 60px
 
-        const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
-        // Account for handle height - the handle's CENTER is at currentTop%, so subtract half the handle height
+        // Account for handle height on BOTH constraints since we position by CENTER
+        const minPercent = ((this.minPixelsFromTop + (handleHeight / 2)) / viewportHeight) * 100;
         const maxPercent = ((viewportHeight - this.minPixelsFromBottom - (handleHeight / 2)) / viewportHeight) * 100;
 
         this.currentTop = Math.max(minPercent, Math.min(maxPercent, this.currentTop || 50));
