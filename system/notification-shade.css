@@ -887,8 +887,13 @@
     pointer-events: all;
 }
 
-/* Expanded state */
-#sidebar.expanded {
+/* Collapsed state for left side (default) - slide off to left */
+#sidebar:not(.right-side):not(.expanded) {
+    transform: translateX(-100%);
+}
+
+/* Expanded state for left side - slide in from left */
+#sidebar:not(.right-side).expanded {
     transform: translateX(0);
 }
 
@@ -978,9 +983,17 @@
 #sidebar.right-side {
     left: auto;
     right: 0;
+    border-right: none;
+    border-left: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Collapsed state for right side - slide off to right */
+#sidebar.right-side:not(.expanded) {
     transform: translateX(100%);
 }
 
+/* Expanded state for right side - slide in from right */
 #sidebar.right-side.expanded {
     transform: translateX(0);
 }
