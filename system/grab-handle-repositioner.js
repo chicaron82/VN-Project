@@ -46,13 +46,18 @@ class GrabHandleRepositioner {
 
         // Drag state
         this.isDragging = false;
+        this.wasDragging = false;
         this.startY = 0;
         this.startX = 0;
         this.startTop = 0;
+        this.latestClientY = 0;
+        this.latestClientX = 0;
+        this.rafPending = false;
 
         // Double-tap detection
         this.lastTapTime = 0;
         this.doubleTapDelay = 300; // ms
+        this.isDoubleTapping = false;
 
         // Constraints (prevent overlapping with status bar or bottom edge)
         this.minPercent = 10; // 10% from top
@@ -87,12 +92,13 @@ class GrabHandleRepositioner {
         document.addEventListener('mousemove', (e) => this.handleDragMove(e));
         document.addEventListener('mouseup', (e) => this.handleDragEnd(e));
 
-        // Prevent default click when dragging
+        // Prevent default click when dragging or double-tapping
         this.grabHandle.addEventListener('click', (e) => {
-            if (this.wasDragging) {
+            if (this.wasDragging || this.isDoubleTapping) {
                 e.stopPropagation();
                 e.preventDefault();
                 this.wasDragging = false;
+                this.isDoubleTapping = false;
             }
         }, true); // Capture phase
     }
@@ -115,14 +121,23 @@ class GrabHandleRepositioner {
         const now = Date.now();
         const timeSinceLastTap = now - this.lastTapTime;
 
-        if (timeSinceLastTap < this.doubleTapDelay) {
+        if (timeSinceLastTap < this.doubleTapDelay && this.lastTapTime > 0) {
             // Double-tap detected! Flip sides
             this.flipSide();
             this.lastTapTime = 0; // Reset
+            this.isDoubleTapping = true; // Prevent click event
+
+            // Clear any pending drag timeout
+            if (this.dragStartTimeout) {
+                clearTimeout(this.dragStartTimeout);
+                this.dragStartTimeout = null;
+            }
+
             return;
         }
 
         this.lastTapTime = now;
+        this.isDoubleTapping = false;
 
         // Store start position
         this.startY = clientY;
@@ -171,9 +186,31 @@ class GrabHandleRepositioner {
         const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
         const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
 
-        // Calculate deltas
-        const deltaY = clientY - this.startY;
-        const deltaX = clientX - this.startX;
+        // Store the latest position for RAF
+        this.latestClientY = clientY;
+        this.latestClientX = clientX;
+
+        // Prevent scrolling on mobile
+        if (e instanceof TouchEvent && e.cancelable) {
+            e.preventDefault();
+        }
+
+        // Use requestAnimationFrame for smooth updates
+        if (!this.rafPending) {
+            this.rafPending = true;
+            requestAnimationFrame(() => {
+                this.updateDragPosition();
+                this.rafPending = false;
+            });
+        }
+    }
+
+    updateDragPosition() {
+        if (!this.grabHandle || !this.isDragging) return;
+
+        // Calculate deltas using latest position
+        const deltaY = this.latestClientY - this.startY;
+        const deltaX = this.latestClientX - this.startX;
 
         const viewportHeight = window.innerHeight;
         const viewportWidth = window.innerWidth;
@@ -205,14 +242,9 @@ class GrabHandleRepositioner {
             // Apply constraints
             newTop = Math.max(this.minPercent, Math.min(this.maxPercent, newTop));
 
-            // Update position
+            // Update position using transform for better performance
             this.currentTop = newTop;
             this.grabHandle.style.top = `${newTop}%`;
-        }
-
-        // Prevent scrolling on mobile
-        if (e instanceof TouchEvent && e.cancelable) {
-            e.preventDefault();
         }
     }
 
