@@ -611,6 +611,11 @@ class NotificationShadeController {
         // Haptic feedback
         this.triggerHaptic('medium');
 
+        // Update grab handle position to move with sidebar
+        if (this.game.grabHandleRepositioner) {
+            this.game.grabHandleRepositioner.updateTogglePositionForExpandedSidebar();
+        }
+
         console.log('💻 Sidebar opened');
     }
 
@@ -643,6 +648,11 @@ class NotificationShadeController {
 
         // Haptic feedback
         this.triggerHaptic('light');
+
+        // Reset grab handle position when sidebar closes
+        if (this.game.grabHandleRepositioner) {
+            this.game.grabHandleRepositioner.applyPosition();
+        }
 
         console.log('💻 Sidebar closed');
     }
