@@ -882,6 +882,7 @@
 
 /* Show sidebar after splash */
 #sidebar.visible {
+    display: block;
     opacity: 1;
     pointer-events: all;
 }

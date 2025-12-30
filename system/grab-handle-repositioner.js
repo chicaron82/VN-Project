@@ -93,6 +93,8 @@ class GrabHandleRepositioner {
         this.pendingDragStart = false;
         /** @type {boolean} */
         this.horizontalFlipPending = false;
+        /** @type {boolean} */
+        this.usingTouch = false; // Track if touch events are being used
 
         // Constraints - use pixels for precise control
         // Status bar is 40px, add 10px buffer = 50px minimum from top
@@ -131,14 +133,30 @@ class GrabHandleRepositioner {
         if (!this.grabHandle) return;
 
         // Touch events (mobile)
-        this.grabHandle.addEventListener('touchstart', (e) => this.handleDragStart(e), { passive: false });
+        this.grabHandle.addEventListener('touchstart', (e) => {
+            this.usingTouch = true;
+            this.handleDragStart(e);
+        }, { passive: false });
         document.addEventListener('touchmove', (e) => this.handleDragMove(e), { passive: false });
-        document.addEventListener('touchend', (e) => this.handleDragEnd(e));
+        document.addEventListener('touchend', (e) => {
+            this.handleDragEnd(e);
+            // Reset touch flag after a delay (prevents mouse events from immediately following)
+            setTimeout(() => { this.usingTouch = false; }, 500);
+        });
 
-        // Mouse events (desktop)
-        this.grabHandle.addEventListener('mousedown', (e) => this.handleDragStart(e));
-        document.addEventListener('mousemove', (e) => this.handleDragMove(e));
-        document.addEventListener('mouseup', (e) => this.handleDragEnd(e));
+        // Mouse events (desktop) - skip if touch was just used
+        this.grabHandle.addEventListener('mousedown', (e) => {
+            if (this.usingTouch) return; // Ignore mouse events if touch was just used
+            this.handleDragStart(e);
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (this.usingTouch) return;
+            this.handleDragMove(e);
+        });
+        document.addEventListener('mouseup', (e) => {
+            if (this.usingTouch) return;
+            this.handleDragEnd(e);
+        });
 
         // Prevent default click when dragging or double-tapping
         // Use capture phase to intercept before notification-shade-controller
@@ -326,8 +344,9 @@ class GrabHandleRepositioner {
             let newTop = this.startTop + deltaPercent;
 
             // Apply pixel-based constraints (convert to percent for storage)
+            const handleHeight = this.grabHandle.offsetHeight || 60;
             const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
-            const maxPercent = ((viewportHeight - this.minPixelsFromBottom) / viewportHeight) * 100;
+            const maxPercent = ((viewportHeight - this.minPixelsFromBottom - (handleHeight / 2)) / viewportHeight) * 100;
 
             newTop = Math.max(minPercent, Math.min(maxPercent, newTop));
 
@@ -369,11 +388,16 @@ class GrabHandleRepositioner {
 
         // Enforce pixel-based constraints on drop
         const viewportHeight = window.innerHeight;
+        const handleHeight = this.grabHandle.offsetHeight || 60; // Get actual height or default to 60px
+
         const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
-        const maxPercent = ((viewportHeight - this.minPixelsFromBottom) / viewportHeight) * 100;
+        // Account for handle height - the handle's CENTER is at currentTop%, so subtract half the handle height
+        const maxPercent = ((viewportHeight - this.minPixelsFromBottom - (handleHeight / 2)) / viewportHeight) * 100;
 
         this.currentTop = Math.max(minPercent, Math.min(maxPercent, this.currentTop || 50));
         this.grabHandle.style.top = `${this.currentTop}%`;
+
+        console.log(`🔒 Constraints enforced: ${minPercent.toFixed(1)}% - ${maxPercent.toFixed(1)}%, final: ${this.currentTop.toFixed(1)}%`);
 
         // Visual feedback
         this.grabHandle.classList.remove('dragging', 'crossing-threshold');

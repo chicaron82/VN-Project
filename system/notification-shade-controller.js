@@ -297,20 +297,20 @@ class NotificationShadeController {
     }
 
     getNotesCollected() {
-        // Use route's collectibles manager
-        const cm = this.game.currentRoute?.collectiblesManager;
+        // FIX: CollectiblesManager is on game, not game.currentRoute
+        const cm = this.game.collectiblesManager;
         if (!cm) {
-            console.log('📊 Status bar: No collectibles manager found');
+            console.log('📊 Status bar: No collectibles manager found on game');
             return 0;
         }
-        const count = cm.getCollectedCountForCurrentRoute();
+        const count = cm.getCollectedCountForCurrentRoute ? cm.getCollectedCountForCurrentRoute() : 0;
         console.log(`📊 Status bar notes collected: ${count}`);
         return count || 0;
     }
 
     getTotalNotes() {
-        // Use route's collectibles manager
-        const cm = this.game.currentRoute?.collectiblesManager;
+        // FIX: CollectiblesManager is on game, not game.currentRoute
+        const cm = this.game.collectiblesManager;
         if (!cm) {
             // No collectibles manager - check route class name for default
             const routeName = this.game.currentRoute?.constructor?.name || '';
@@ -321,7 +321,7 @@ class NotificationShadeController {
             console.log('📊 Status bar: No CM, default 16 (Tori)');
             return 16; // Default for Tori route
         }
-        const total = cm.getTotalCountForCurrentRoute();
+        const total = cm.getTotalCountForCurrentRoute ? cm.getTotalCountForCurrentRoute() : 16;
         console.log(`📊 Status bar total notes: ${total}`);
         // Return appropriate default if method returns 0 or undefined
         if (!total || total === 0) {
