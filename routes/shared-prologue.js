@@ -241,7 +241,7 @@ class SharedPrologue {
     scene2_toriDinner() {
         this.game.displayScene({
             character: 'Tori',
-            dialogue: 'Love you! I\'ll get dinner started',
+            dialogue: 'I\'ll get dinner started. Love you!',
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
             background: 'assets/apartment.png',
             sprites: {
