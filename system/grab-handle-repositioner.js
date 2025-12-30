@@ -189,8 +189,11 @@ class GrabHandleRepositioner {
         const now = Date.now();
         const timeSinceLastTap = now - this.lastTapTime;
 
+        console.log(`🖱️ Tap detected: timeSince=${timeSinceLastTap}ms, lastTapTime=${this.lastTapTime}, threshold=${this.doubleTapDelay}ms`);
+
         if (timeSinceLastTap < this.doubleTapDelay && this.lastTapTime > 0) {
             // Double-tap detected! Flip sides
+            console.log('✅ DOUBLE-TAP DETECTED - Flipping sides');
             this.flipSide();
             this.lastTapTime = 0; // Reset
             this.isDoubleTapping = true; // Prevent click event
@@ -205,6 +208,7 @@ class GrabHandleRepositioner {
             return;
         }
 
+        console.log('⏱️ First tap or too slow - waiting for potential second tap');
         this.lastTapTime = now;
         this.isDoubleTapping = false;
         this.pendingTap = true;
