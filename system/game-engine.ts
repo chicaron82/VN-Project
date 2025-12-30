@@ -127,29 +127,6 @@ export interface SensoryCue {
 //   Built with the UV7 crew
 //   💚🔥💀
 
-/**
- * GameEngine - Core game loop and scene management
- * 
- * Version 848: The timeline iteration that finally succeeded
- * 
- * Responsibilities:
- * - Scene progression and dialogue rendering
- * - Character sprite management
- * - Route management (Tori/Ronnie)
- * - Save/load system integration
- * - Input handling and auto-advance
- * - UI state management
- * - Integration with all game systems (StateManager, TetherSystem, etc.)
- * 
- * Key Systems:
- * - StateManager: Reactive state with subscriptions
- * - TetherSystem: Tori route tether decay (Tori route only)
- * - CollectiblesManager: Notes collection per route
- * - NotificationShadeController: Mobile/desktop UI
- * - LoopController: Meta-narrative loop tracking
- * 
- * @class GameEngine
- */
 // ========================================
 
 /**
@@ -377,23 +354,29 @@ const SENSORY_CUES = {
 };
 
 /**
- * GameEngine
+ * GameEngine - Core game loop and scene management
  *
+ * Version 848: The timeline iteration that finally succeeded
  * Main game controller handling global flow, scene stack, and manager coordination.
  * Entry point called from index.html on DOMContentLoaded.
  *
  * Responsibilities:
- * - Route loading and switching
- * - Scene transitions and display
- * - Typewriter effect and pagination
- * - Manager wiring (settings, save, codes, tether, collectibles)
- * - Input handling (keyboard shortcuts, click advancing)
+ * - Scene progression and dialogue rendering
+ * - Character sprite management
+ * - Route management (Tori/Ronnie)
+ * - Save/load system integration
+ * - Input handling (keyboard shortcuts, click advancing, auto-advance)
  * - UI state management (menus, overlays, notifications)
+ * - Integration with all game systems (StateManager, TetherSystem, etc.)
  *
  * Key Systems:
+ * - StateManager: Reactive state with subscriptions
+ * - TetherSystem: Tori route tether decay (Tori route only)
+ * - CollectiblesManager: Notes collection per route
+ * - NotificationShadeController: Mobile/desktop UI
+ * - LoopController: Meta-narrative loop tracking
  * - Typewriter: Character-by-character text display with speed control
  * - Scene Stack: Manages dialogue flow and choices
- * - Auto-Advance: Optional automatic progression
  * - Backlog: Time machine system for jumping to past moments
  *
  * @class GameEngine
