@@ -58,10 +58,14 @@ class GrabHandleRepositioner {
         this.lastTapTime = 0;
         this.doubleTapDelay = 300; // ms
         this.isDoubleTapping = false;
+        this.pendingTap = false; // Track if we're waiting to see if this is a double-tap
+        this.tapTimeout = null; // Timer for single-tap confirmation
 
-        // Constraints (prevent overlapping with status bar or bottom edge)
-        this.minPercent = 10; // 10% from top
-        this.maxPercent = 90; // 90% from top (leave room at bottom)
+        // Constraints - use pixels for precise control
+        // Status bar is 40px, add 10px buffer = 50px minimum from top
+        // Backlog button area needs ~80px reserved at bottom
+        this.minPixelsFromTop = 50; // Below status bar
+        this.minPixelsFromBottom = 80; // Reserve space for backlog button
 
         // Horizontal flip threshold (% of screen width)
         this.flipThreshold = 50;
@@ -93,13 +97,27 @@ class GrabHandleRepositioner {
         document.addEventListener('mouseup', (e) => this.handleDragEnd(e));
 
         // Prevent default click when dragging or double-tapping
+        // Use capture phase to intercept before notification-shade-controller
         this.grabHandle.addEventListener('click', (e) => {
-            if (this.wasDragging || this.isDoubleTapping) {
-                e.stopPropagation();
-                e.preventDefault();
+            // Always stop propagation - we handle all click behavior ourselves
+            // This prevents notification-shade-controller from toggling sidebar on every tap
+            e.stopPropagation();
+            e.preventDefault();
+
+            // If we were dragging, just reset and don't do anything
+            if (this.wasDragging) {
                 this.wasDragging = false;
-                this.isDoubleTapping = false;
+                return;
             }
+
+            // If double-tap was detected (already handled in handleDragStart)
+            if (this.isDoubleTapping) {
+                this.isDoubleTapping = false;
+                return;
+            }
+
+            // Single tap - toggle sidebar after confirming it's not a double-tap
+            // This is already handled by the tap timeout in handleDragStart
         }, true); // Capture phase
     }
 
@@ -117,6 +135,12 @@ class GrabHandleRepositioner {
         const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
         const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
 
+        // Clear any pending tap timeout
+        if (this.tapTimeout) {
+            clearTimeout(this.tapTimeout);
+            this.tapTimeout = null;
+        }
+
         // Double-tap detection
         const now = Date.now();
         const timeSinceLastTap = now - this.lastTapTime;
@@ -126,6 +150,7 @@ class GrabHandleRepositioner {
             this.flipSide();
             this.lastTapTime = 0; // Reset
             this.isDoubleTapping = true; // Prevent click event
+            this.pendingTap = false;
 
             // Clear any pending drag timeout
             if (this.dragStartTimeout) {
@@ -138,6 +163,7 @@ class GrabHandleRepositioner {
 
         this.lastTapTime = now;
         this.isDoubleTapping = false;
+        this.pendingTap = true;
 
         // Store start position
         this.startY = clientY;
@@ -146,6 +172,7 @@ class GrabHandleRepositioner {
         // Only start drag if held for 300ms (prevents accidental drags when clicking)
         this.dragStartTimeout = setTimeout(() => {
             this.isDragging = true;
+            this.pendingTap = false; // No longer a tap, it's a drag
 
             // Get current position
             const rect = this.grabHandle.getBoundingClientRect();
@@ -162,6 +189,15 @@ class GrabHandleRepositioner {
             // Prevent text selection
             e.preventDefault();
         }, 300);
+
+        // Set up single-tap timeout - if no second tap within doubleTapDelay, toggle sidebar
+        this.tapTimeout = setTimeout(() => {
+            // Only toggle if we didn't start dragging and it wasn't a double-tap
+            if (this.pendingTap && !this.isDragging && !this.isDoubleTapping) {
+                this.toggleSidebar();
+                this.pendingTap = false;
+            }
+        }, this.doubleTapDelay + 50); // Slightly longer than double-tap window
 
         // Store for cleanup
         this.pendingDragStart = true;
@@ -239,8 +275,11 @@ class GrabHandleRepositioner {
             // Calculate new position
             let newTop = this.startTop + deltaPercent;
 
-            // Apply constraints
-            newTop = Math.max(this.minPercent, Math.min(this.maxPercent, newTop));
+            // Apply pixel-based constraints (convert to percent for storage)
+            const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
+            const maxPercent = ((viewportHeight - this.minPixelsFromBottom) / viewportHeight) * 100;
+
+            newTop = Math.max(minPercent, Math.min(maxPercent, newTop));
 
             // Update position using transform for better performance
             this.currentTop = newTop;
@@ -264,6 +303,13 @@ class GrabHandleRepositioner {
         if (!this.grabHandle) return;
 
         this.isDragging = false;
+        this.pendingTap = false; // Clear pending tap since we were dragging
+
+        // Clear tap timeout when drag ends (prevents toggle after drag)
+        if (this.tapTimeout) {
+            clearTimeout(this.tapTimeout);
+            this.tapTimeout = null;
+        }
 
         // Check if we need to flip sides (horizontal drag)
         if (this.horizontalFlipPending) {
@@ -271,8 +317,12 @@ class GrabHandleRepositioner {
             this.horizontalFlipPending = false;
         }
 
-        // Enforce constraints on drop (in case position drifted)
-        this.currentTop = Math.max(this.minPercent, Math.min(this.maxPercent, this.currentTop));
+        // Enforce pixel-based constraints on drop
+        const viewportHeight = window.innerHeight;
+        const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
+        const maxPercent = ((viewportHeight - this.minPixelsFromBottom) / viewportHeight) * 100;
+
+        this.currentTop = Math.max(minPercent, Math.min(maxPercent, this.currentTop));
         this.grabHandle.style.top = `${this.currentTop}%`;
 
         // Visual feedback
@@ -292,6 +342,17 @@ class GrabHandleRepositioner {
         }, 100);
 
         console.log(`📍 Grab handle: ${this.currentSide} side, ${Math.round(this.currentTop)}% from top`);
+    }
+
+    // ========================================
+    // SIDEBAR TOGGLE
+    // ========================================
+
+    toggleSidebar() {
+        // Find notification shade controller to toggle sidebar
+        if (window.game && window.game.notificationShade) {
+            window.game.notificationShade.toggleSidebar();
+        }
     }
 
     // ========================================

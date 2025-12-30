@@ -559,7 +559,8 @@ class NotificationShadeController {
 
         // Show sidebar and backdrop
         if (this.sidebar) {
-            this.sidebar.classList.add('expanded');
+            this.sidebar.classList.add('visible'); // Enable opacity/pointer-events
+            this.sidebar.classList.add('expanded'); // Slide in
         }
         if (this.backdrop) {
             this.backdrop.classList.add('visible');
