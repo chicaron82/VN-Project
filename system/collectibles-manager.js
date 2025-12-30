@@ -425,14 +425,10 @@ class CollectiblesManager {
         // DIZEE: Update unread badge and animate
         this.updateUnreadCount();
 
-        // DIZEE: Trigger phone-style note arrival notification
-        if (this.game && this.game.noteArrivalController) {
+        // DIZEE: Trigger status bar notification for new note
+        if (this.game && this.game.statusNotification) {
             const sender = this.getSenderName(note.type);
-            this.game.noteArrivalController.showArrival({
-                from: sender,
-                subject: note.title,
-                id: noteId
-            });
+            this.game.statusNotification.showNote(sender, note.title);
         }
 
         this.animateNewMail();

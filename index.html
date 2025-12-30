@@ -86,6 +86,14 @@
             <span id="status-loop" class="status-item"></span>
             <span id="status-route" class="status-item">Menu</span>
         </div>
+        <!-- Status Bar Notification Area (Center) -->
+        <div id="status-notification" role="status" aria-live="polite" aria-atomic="true">
+            <span class="status-notif-icon">💾</span>
+            <span class="status-notif-text">Game saved</span>
+            <div class="status-notif-progress">
+                <div class="status-notif-progress-fill"></div>
+            </div>
+        </div>
         <div class="status-section">
             <span id="status-progress" class="status-item">🖤 0/42</span>
             <!-- Tether Meter (Tori Route Only) - Lightning Bolt with Fill -->
@@ -1736,10 +1744,10 @@
                 console.log('📊 Analytics ready (local tracking only)');
             }
 
-            // Initialize Note Arrival Controller (phone-style note notifications)
-            if (typeof NoteArrivalController !== 'undefined') {
-                game.noteArrivalController = new NoteArrivalController(game);
-                console.log('📬 Note Arrival Controller ready');
+            // Initialize Status Notification Controller (unified status bar notifications)
+            if (typeof StatusNotificationController !== 'undefined') {
+                game.statusNotification = new StatusNotificationController(game);
+                console.log('📢 Status Notification Controller ready');
             }
         });
     </script>
