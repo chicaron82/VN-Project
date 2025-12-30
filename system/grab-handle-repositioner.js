@@ -215,6 +215,8 @@ class GrabHandleRepositioner {
 
         // Only start drag if held for 300ms (prevents accidental drags when clicking)
         this.dragStartTimeout = setTimeout(() => {
+            if (!this.grabHandle) return; // Guard for TypeScript
+
             this.isDragging = true;
             this.pendingTap = false; // No longer a tap, it's a drag
 
