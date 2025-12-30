@@ -47,10 +47,10 @@ class GrabHandleRepositioner {
         /** @type {HTMLElement|null} */
         this.sidebar = document.getElementById('sidebar');
 
-        if (!this.grabHandle) {
-            console.warn('Grab handle not found, repositioner disabled');
-            return;
-        }
+        // ========================================
+        // INITIALIZE ALL PROPERTIES BEFORE EARLY RETURN
+        // (Prevents TypeScript "possibly undefined" errors)
+        // ========================================
 
         // Position state
         /** @type {Side} */
@@ -89,6 +89,10 @@ class GrabHandleRepositioner {
         this.tapTimeout = null; // Timer for single-tap confirmation
         /** @type {ReturnType<typeof setTimeout>|null} */
         this.dragStartTimeout = null; // Timer for drag start
+        /** @type {boolean} */
+        this.pendingDragStart = false;
+        /** @type {boolean} */
+        this.horizontalFlipPending = false;
 
         // Constraints - use pixels for precise control
         // Status bar is 40px, add 10px buffer = 50px minimum from top
@@ -101,6 +105,14 @@ class GrabHandleRepositioner {
         // Horizontal flip threshold (% of screen width)
         /** @type {number} */
         this.flipThreshold = 50;
+
+        // ========================================
+        // EARLY RETURN IF NO GRAB HANDLE
+        // ========================================
+        if (!this.grabHandle) {
+            console.warn('Grab handle not found, repositioner disabled');
+            return;
+        }
 
         // Load saved position
         this.loadPosition();
