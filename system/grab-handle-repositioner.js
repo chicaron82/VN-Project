@@ -5,6 +5,16 @@
 // DIZEE Implementation - TRIPLE-THREAT EDITION
 // ========================================
 
+// TypeScript declarations for external dependencies
+/** @typedef {'left' | 'right'} Side */
+
+/**
+ * @typedef {Object} WindowWithGame
+ * @property {Object} [game]
+ * @property {Object} [game.notificationShade]
+ * @property {Function} [game.notificationShade.toggleSidebar]
+ */
+
 /**
  * GrabHandleRepositioner
  *
@@ -32,7 +42,9 @@ class GrabHandleRepositioner {
      */
     constructor(game) {
         this.game = game;
+        /** @type {HTMLElement|null} */
         this.grabHandle = document.getElementById('sidebar-toggle');
+        /** @type {HTMLElement|null} */
         this.sidebar = document.getElementById('sidebar');
 
         if (!this.grabHandle) {
@@ -41,7 +53,9 @@ class GrabHandleRepositioner {
         }
 
         // Position state
+        /** @type {Side} */
         this.currentSide = 'left'; // 'left' or 'right'
+        /** @type {number} */
         this.currentTop = 50; // Default: 50% (center)
 
         // Drag state
@@ -59,15 +73,21 @@ class GrabHandleRepositioner {
         this.doubleTapDelay = 300; // ms
         this.isDoubleTapping = false;
         this.pendingTap = false; // Track if we're waiting to see if this is a double-tap
+        /** @type {ReturnType<typeof setTimeout>|null} */
         this.tapTimeout = null; // Timer for single-tap confirmation
+        /** @type {ReturnType<typeof setTimeout>|null} */
+        this.dragStartTimeout = null; // Timer for drag start
 
         // Constraints - use pixels for precise control
         // Status bar is 40px, add 10px buffer = 50px minimum from top
         // Backlog button area needs ~80px reserved at bottom
+        /** @type {number} */
         this.minPixelsFromTop = 50; // Below status bar
+        /** @type {number} */
         this.minPixelsFromBottom = 80; // Reserve space for backlog button
 
         // Horizontal flip threshold (% of screen width)
+        /** @type {number} */
         this.flipThreshold = 50;
 
         // Load saved position
@@ -197,7 +217,7 @@ class GrabHandleRepositioner {
                 this.toggleSidebar();
                 this.pendingTap = false;
             }
-        }, this.doubleTapDelay + 50); // Slightly longer than double-tap window
+        }, (this.doubleTapDelay || 300) + 50); // Slightly longer than double-tap window
 
         // Store for cleanup
         this.pendingDragStart = true;
@@ -288,9 +308,9 @@ class GrabHandleRepositioner {
     }
 
     /**
-     * @param {MouseEvent | TouchEvent} e
+     * @param {MouseEvent | TouchEvent} _e
      */
-    handleDragEnd(e) {
+    handleDragEnd(_e) {
         // Clear timeout if drag didn't start
         if (this.dragStartTimeout) {
             clearTimeout(this.dragStartTimeout);
@@ -322,7 +342,7 @@ class GrabHandleRepositioner {
         const minPercent = (this.minPixelsFromTop / viewportHeight) * 100;
         const maxPercent = ((viewportHeight - this.minPixelsFromBottom) / viewportHeight) * 100;
 
-        this.currentTop = Math.max(minPercent, Math.min(maxPercent, this.currentTop));
+        this.currentTop = Math.max(minPercent, Math.min(maxPercent, this.currentTop || 50));
         this.grabHandle.style.top = `${this.currentTop}%`;
 
         // Visual feedback
@@ -350,8 +370,10 @@ class GrabHandleRepositioner {
 
     toggleSidebar() {
         // Find notification shade controller to toggle sidebar
-        if (window.game && window.game.notificationShade) {
-            window.game.notificationShade.toggleSidebar();
+        /** @type {any} */
+        const win = window;
+        if (win.game && win.game.notificationShade) {
+            win.game.notificationShade.toggleSidebar();
         }
     }
 
@@ -451,7 +473,7 @@ class GrabHandleRepositioner {
                 this.currentTop = position.topPercent || 50;
                 this.currentSide = position.side || 'left';
                 this.applyPosition();
-                console.log(`💾 Loaded grab handle: ${this.currentSide} side, ${Math.round(this.currentTop)}%`);
+                console.log(`💾 Loaded grab handle: ${this.currentSide} side, ${Math.round(this.currentTop || 50)}%`);
             } else {
                 // Default position (left, 50% - center)
                 this.applyPosition();
@@ -486,7 +508,7 @@ class GrabHandleRepositioner {
         this.grabHandle.style.top = `${this.currentTop}%`;
 
         // Apply side
-        this.setSide(this.currentSide);
+        this.setSide(this.currentSide || 'left');
     }
 
     // ========================================
@@ -535,7 +557,7 @@ class GrabHandleRepositioner {
      * @returns {'left' | 'right'}
      */
     getSide() {
-        return this.currentSide;
+        return this.currentSide || 'left';
     }
 }
 
