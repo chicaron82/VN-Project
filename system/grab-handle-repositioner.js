@@ -59,19 +59,31 @@ class GrabHandleRepositioner {
         this.currentTop = 50; // Default: 50% (center)
 
         // Drag state
+        /** @type {boolean} */
         this.isDragging = false;
+        /** @type {boolean} */
         this.wasDragging = false;
+        /** @type {number} */
         this.startY = 0;
+        /** @type {number} */
         this.startX = 0;
+        /** @type {number} */
         this.startTop = 0;
+        /** @type {number} */
         this.latestClientY = 0;
+        /** @type {number} */
         this.latestClientX = 0;
+        /** @type {boolean} */
         this.rafPending = false;
 
         // Double-tap detection
+        /** @type {number} */
         this.lastTapTime = 0;
+        /** @type {number} */
         this.doubleTapDelay = 300; // ms
+        /** @type {boolean} */
         this.isDoubleTapping = false;
+        /** @type {boolean} */
         this.pendingTap = false; // Track if we're waiting to see if this is a double-tap
         /** @type {ReturnType<typeof setTimeout>|null} */
         this.tapTimeout = null; // Timer for single-tap confirmation
