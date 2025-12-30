@@ -295,7 +295,7 @@ class TetherSystem {
      * // Apply decay
      * tetherSystem.updateTether(-0.05, 'passive decay');
      */
-    updateTether(amount, reason = '') {
+    updateTether(amount: number, reason: string = '') {
         // Store previous level for haptic trigger detection
         const previousLevel = this.tetherLevel;
 
@@ -452,7 +452,7 @@ class TetherSystem {
     /**
      * @param {number} value
      */
-    setTether(value) {
+    setTether(value: number) {
         // Manually set tether level (dev command)
         this.tetherLevel = Math.max(0, Math.min(100, value));
         this.updateDisplay();
@@ -469,7 +469,7 @@ class TetherSystem {
      * @param {number} targetLevel
      * @param {boolean} [animated=false]
      */
-    setTetherLevel(targetLevel, animated = false) {
+    setTetherLevel(targetLevel: number, animated: boolean = false) {
         // Set tether to specific level (used by Insane Mode cage scene)
         targetLevel = Math.max(0, Math.min(100, targetLevel));
 
@@ -570,7 +570,7 @@ class TetherSystem {
     /**
      * @param {string} difficulty
      */
-    setDifficultyModifier(difficulty) {
+    setDifficultyModifier(difficulty: string) {
         // Update difficulty settings from profile
         // @ts-ignore - getDifficultyProfile external
         const profile = getDifficultyProfile(difficulty);
@@ -714,7 +714,7 @@ class TetherSystem {
     /**
      * @param {any} echoDialogue
      */
-    showEchoes(echoDialogue) {
+    showEchoes(echoDialogue: any) {
         // Display echo commentary alongside main dialogue
         // Creates the "voices in her head" effect
 
@@ -760,7 +760,7 @@ class TetherSystem {
      * @param {'echo1'|'echo2'|'despair'} echoId
      * @param {string} mood
      */
-    updateEchoMood(echoId, mood) {
+    updateEchoMood(echoId: 'echo1' | 'echo2' | 'despair', mood: string) {
         // Update the mood state of a specific echo
         if (this.echoes[echoId]) {
             this.echoes[echoId].mood = mood;
@@ -803,7 +803,7 @@ class TetherSystem {
                 { text: '[ABANDON TIMELINE]', value: 'menu' }
             ],
             /** @param {string} choice */
-            onChoice: (choice) => {
+            onChoice: (choice: string) => {
                 if (choice === 'retry') {
                     // Increment version for next attempt
                     this.game.incrementVersion();
@@ -860,7 +860,7 @@ class TetherSystem {
     /**
      * @param {any} state
      */
-    restoreState(state) {
+    restoreState(state: any) {
         // Restore from saved state
         this.tetherLevel = state.tetherLevel || 100;
         this.echoes = state.echoes || this.echoes;
