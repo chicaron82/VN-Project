@@ -1002,6 +1002,22 @@
     margin-bottom: 25px;
 }
 
+/* Landscape mobile/tablet - show sidebar */
+@media (min-width: 568px) and (orientation: landscape) {
+    #sidebar {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    /* Hide mobile shade in landscape */
+    #notification-shade {
+        display: none !important;
+    }
+}
+
 /* Desktop breakpoint - show sidebar, hide shade */
 @media (min-width: 769px) {
     #sidebar {

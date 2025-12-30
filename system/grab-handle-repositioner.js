@@ -239,6 +239,10 @@ class GrabHandleRepositioner {
             this.horizontalFlipPending = false;
         }
 
+        // Enforce constraints on drop (in case position drifted)
+        this.currentTop = Math.max(this.minPercent, Math.min(this.maxPercent, this.currentTop));
+        this.grabHandle.style.top = `${this.currentTop}%`;
+
         // Visual feedback
         this.grabHandle.classList.remove('dragging', 'crossing-threshold');
         this.grabHandle.style.transition = ''; // Re-enable smooth transitions
