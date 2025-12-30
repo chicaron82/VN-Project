@@ -297,10 +297,11 @@ class NotificationShadeController {
     }
 
     getNotesCollected() {
-        // FIX: CollectiblesManager is on game, not game.currentRoute
-        const cm = this.game.collectiblesManager;
+        // Check route-specific collectibles manager first (Ronnie has his own)
+        // Then fall back to global one (Tori route)
+        const cm = this.game.currentRoute?.collectiblesManager || this.game.collectiblesManager;
         if (!cm) {
-            console.log('📊 Status bar: No collectibles manager found on game');
+            console.log('📊 Status bar: No collectibles manager found');
             return 0;
         }
         const count = cm.getCollectedCountForCurrentRoute ? cm.getCollectedCountForCurrentRoute() : 0;
@@ -309,8 +310,9 @@ class NotificationShadeController {
     }
 
     getTotalNotes() {
-        // FIX: CollectiblesManager is on game, not game.currentRoute
-        const cm = this.game.collectiblesManager;
+        // Check route-specific collectibles manager first (Ronnie has his own)
+        // Then fall back to global one (Tori route)
+        const cm = this.game.currentRoute?.collectiblesManager || this.game.collectiblesManager;
         if (!cm) {
             // No collectibles manager - check route class name for default
             const routeName = this.game.currentRoute?.constructor?.name || '';
