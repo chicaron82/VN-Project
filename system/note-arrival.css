@@ -1,0 +1,225 @@
+/* ========================================
+   NOTE ARRIVAL NOTIFICATION
+   Phone-style "message received" animation
+   DIZEE Implementation
+   ======================================== */
+
+/* Container - fixed to top-right, below status bar */
+#note-arrival-notification {
+    position: fixed;
+    top: 50px; /* Below status bar */
+    right: -350px; /* Start off-screen */
+    width: 320px;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-right: none;
+    border-radius: 12px 0 0 12px;
+    padding: 15px 20px;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.1);
+    transition: right 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Slide in state */
+#note-arrival-notification.visible {
+    right: 0;
+}
+
+/* Hover effect - subtle glow */
+#note-arrival-notification:hover {
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 30px rgba(0, 255, 255, 0.3);
+}
+
+/* Icon */
+.note-arrival-icon {
+    font-size: 28px;
+    flex-shrink: 0;
+    animation: note-icon-bounce 0.5s ease-out;
+}
+
+@keyframes note-icon-bounce {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Content */
+.note-arrival-content {
+    flex: 1;
+    min-width: 0;
+    font-family: 'Courier New', monospace;
+}
+
+.note-arrival-from {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.note-arrival-subject {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00ffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Progress bar (shows time remaining) */
+.note-arrival-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 0 0 0 12px;
+    overflow: hidden;
+}
+
+.note-arrival-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+    width: 100%;
+    transform-origin: right;
+}
+
+.note-arrival-progress-fill.animating {
+    animation: progress-shrink 2s linear forwards;
+}
+
+@keyframes progress-shrink {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
+}
+
+/* ========================================
+   ROUTE-SPECIFIC THEMING
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue (default) */
+#note-arrival-notification.ronnie-route {
+    border-color: rgba(0, 255, 255, 0.4);
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+#note-arrival-notification.ronnie-route .note-arrival-subject {
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#note-arrival-notification.ronnie-route .note-arrival-progress-fill {
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+}
+
+/* Tori Route - Green */
+#note-arrival-notification.tori-route {
+    border-color: rgba(0, 255, 136, 0.4);
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+#note-arrival-notification.tori-route .note-arrival-subject {
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+#note-arrival-notification.tori-route .note-arrival-progress-fill {
+    background: linear-gradient(90deg, #00ff88, #00ffff);
+}
+
+/* ========================================
+   SENDER-SPECIFIC STYLING
+   ======================================== */
+
+/* Unknown sender - glitchy */
+#note-arrival-notification.sender-unknown .note-arrival-icon {
+    animation: note-icon-bounce 0.5s ease-out, glitch-icon 3s infinite;
+}
+
+@keyframes glitch-icon {
+    0%, 90%, 100% { transform: translate(0, 0); }
+    92% { transform: translate(-2px, 1px); }
+    94% { transform: translate(2px, -1px); }
+    96% { transform: translate(-1px, -1px); }
+    98% { transform: translate(1px, 1px); }
+}
+
+#note-arrival-notification.sender-unknown .note-arrival-from {
+    color: #ff4444;
+}
+
+/* Despair sender - red/ominous */
+#note-arrival-notification.sender-despair {
+    border-color: rgba(255, 0, 102, 0.4);
+    box-shadow: -5px 5px 30px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(255, 0, 102, 0.2);
+}
+
+#note-arrival-notification.sender-despair .note-arrival-subject {
+    color: #ff0066;
+    text-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
+}
+
+#note-arrival-notification.sender-despair .note-arrival-from {
+    color: #ff0066;
+}
+
+#note-arrival-notification.sender-despair .note-arrival-progress-fill {
+    background: linear-gradient(90deg, #ff0066, #ff4444);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 480px) {
+    #note-arrival-notification {
+        width: 280px;
+        right: -300px;
+        padding: 12px 15px;
+        top: 45px;
+    }
+
+    .note-arrival-icon {
+        font-size: 24px;
+    }
+
+    .note-arrival-subject {
+        font-size: 13px;
+    }
+
+    .note-arrival-from {
+        font-size: 10px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    #note-arrival-notification {
+        transition: none;
+    }
+
+    .note-arrival-icon {
+        animation: none;
+    }
+
+    .note-arrival-progress-fill {
+        animation: none;
+    }
+}

@@ -74,6 +74,7 @@ import './ending-dialog-controller.js';
 import './tips-controller.js';
 import './dev-hud-controller.js';
 import './notification-shade-controller.js';
+import './note-arrival-controller.js';
 import './grab-handle-repositioner.js';
 import './tutorial-manager.js';
 import './loading-overlay.js';

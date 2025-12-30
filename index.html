@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="system/dev-commentary.css">
     <!-- DIZEE POLISH: Notification Shade System -->
     <link rel="stylesheet" href="system/notification-shade.css">
+    <!-- DIZEE: Note Arrival Notification System -->
+    <link rel="stylesheet" href="system/note-arrival.css">
     <!-- Tutorial Onboarding System -->
     <link rel="stylesheet" href="ui/tutorial.css">
     <!-- Loading Overlay System -->
@@ -257,6 +259,18 @@
     <button class="sidebar-toggle" id="sidebar-toggle" title="Menu">
         <span>☰</span>
     </button>
+
+    <!-- Note Arrival Notification (Phone-style slide-in) -->
+    <div id="note-arrival-notification">
+        <span class="note-arrival-icon">✉️</span>
+        <div class="note-arrival-content">
+            <div class="note-arrival-from">from Z</div>
+            <div class="note-arrival-subject">New Note</div>
+        </div>
+        <div class="note-arrival-progress">
+            <div class="note-arrival-progress-fill"></div>
+        </div>
+    </div>
 
     <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
@@ -1724,6 +1738,12 @@
             if (typeof Analytics !== 'undefined') {
                 game.analytics = new Analytics(game);
                 console.log('📊 Analytics ready (local tracking only)');
+            }
+
+            // Initialize Note Arrival Controller (phone-style note notifications)
+            if (typeof NoteArrivalController !== 'undefined') {
+                game.noteArrivalController = new NoteArrivalController(game);
+                console.log('📬 Note Arrival Controller ready');
             }
         });
     </script>
