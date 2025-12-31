@@ -31,8 +31,6 @@ class EffectsController {
         const loopInitScreen = document.getElementById('loop-init-screen');
         const prevVersionEl = document.getElementById('loop-prev-version');
         const newVersionEl = document.getElementById('loop-new-version');
-        const skipButton = document.getElementById('loop-skip-button');
-        const continueText = document.querySelector('.loop-init-continue');
         const routeSelection = document.getElementById('loop-route-selection');
         const progressFill = document.getElementById('loop-progress-fill');
         const progressText = document.getElementById('loop-progress-text');
@@ -51,26 +49,15 @@ class EffectsController {
         if (prevVersionEl) prevVersionEl.textContent = prevVersion;
         if (newVersionEl) newVersionEl.textContent = newVersion;
 
-        // Reset progress bar
+        // Set progress bar to "awaiting" state (skip loading animation)
         if (progressFill) {
-            progressFill.style.width = '0%';
-            progressFill.classList.remove('awaiting', 'complete');
+            progressFill.style.width = '90%';
+            progressFill.classList.add('awaiting');
         }
         if (progressText) {
-            progressText.textContent = 'Loading consciousness transfer protocol...';
-            progressText.classList.remove('awaiting', 'complete');
+            progressText.textContent = 'Awaiting user confirmation...';
+            progressText.classList.add('awaiting');
         }
-
-        // Check if player has seen this before
-        const loopInitSeen = localStorage.getItem('loopInitSeen') === 'true';
-
-        // Show skip button only if seen before
-        if (skipButton) {
-            skipButton.style.display = loopInitSeen ? 'inline-block' : 'none';
-        }
-
-        // Mark as seen for future runs
-        localStorage.setItem('loopInitSeen', 'true');
 
         // Show screen
         loopInitScreen.style.display = 'flex';
@@ -80,26 +67,14 @@ class EffectsController {
 
         // Haptic feedback
         if (this.game.triggerSensoryFeedback) {
-            setTimeout(() => {
-                this.game.triggerSensoryFeedback('denied', null, 'Loop failed');
-            }, 200);
-            setTimeout(() => {
-                this.game.triggerSensoryFeedback('buttonPress', null, 'New loop initializing');
-            }, 1500);
+            this.game.triggerSensoryFeedback('denied', null, 'Loop failed');
         }
 
-        // Hide continue text and skip button immediately
-        if (continueText) continueText.style.display = 'none';
-        if (skipButton) skipButton.style.display = 'none';
-
-        // Animate progress bar to 90%, then wait for user
-        this.animateProgressBar(progressFill, progressText, () => {
-            // Show route selection when progress reaches 90%
-            if (routeSelection) {
-                routeSelection.style.display = 'block';
-                this.setupRouteSelection(currentRoute, callback);
-            }
-        });
+        // Show route selection immediately (skip loading animation)
+        if (routeSelection) {
+            routeSelection.style.display = 'block';
+            this.setupRouteSelection(currentRoute, callback);
+        }
 
         console.log(`Loop init screen shown: v${prevVersion} → v${newVersion}`);
     }
