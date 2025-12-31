@@ -19,6 +19,48 @@ class SceneRenderer {
     }
 
     // ========================================
+    // MOBILE FULL-BODY SPRITE SUPPORT
+    // Swaps torso sprites → full-body on mobile landscape
+    // ========================================
+
+    /**
+     * Check if device is in mobile landscape mode
+     * @returns {boolean}
+     */
+    isMobileLandscape() {
+        return window.matchMedia('(max-height: 600px) and (orientation: landscape)').matches;
+    }
+
+    /**
+     * Swap torso sprite path to full-body version for mobile
+     * @param {string} path - Original sprite path
+     * @returns {string} - Swapped path (or original if no swap)
+     */
+    getSpritePathForOrientation(path) {
+        // Only swap on mobile landscape
+        if (!this.isMobileLandscape()) return path;
+
+        // Mapping: torso sprite → full-body sprite
+        const swapMap = {
+            'tori-sprite': 'full-sprite-tori',
+            'ronnie-sprite': 'full-sprite-ronnie',
+            'old-ronnie-sprite': 'full-sprite-oldRonnie',
+            'echo-1-sprite': 'full-sprite-echo1',
+            'echo-2-sprite': 'full-sprite-echo2',
+            'despair-sprite': 'full-sprite-despair'
+        };
+
+        for (const [torso, fullBody] of Object.entries(swapMap)) {
+            if (path.includes(torso)) {
+                const newPath = path.replace(torso, fullBody);
+                console.log(`🎭 Swapping sprite: ${torso} → ${fullBody}`);
+                return newPath;
+            }
+        }
+        return path; // No swap found
+    }
+
+    // ========================================
     // SPRITE MANAGEMENT
     // Extracted from GameEngine.updateSprites
     // ========================================
@@ -41,8 +83,9 @@ class SceneRenderer {
                 game.gameState.sprites.left = null;
             } else {
                 // Show/update left sprite
+                const leftPath = this.getSpritePathForOrientation(sprites.left);
                 if (game.spriteLeft) {
-                    game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
+                    game.spriteLeft.style.backgroundImage = `url(${leftPath})`;
                     game.spriteLeft.style.display = 'block';
                     game.spriteLeft.style.opacity = '0';
                     setTimeout(() => {
@@ -76,10 +119,11 @@ class SceneRenderer {
                 game.gameState.sprites.right = 'echoes';
             } else {
                 // Show/update right sprite (normal single sprite)
+                const rightPath = this.getSpritePathForOrientation(sprites.right);
                 if (game.spriteRight) {
                     game.spriteRight.classList.remove('echo-group');
                     game.spriteRight.innerHTML = '';
-                    game.spriteRight.style.backgroundImage = `url(${sprites.right})`;
+                    game.spriteRight.style.backgroundImage = `url(${rightPath})`;
                     game.spriteRight.style.display = 'block';
                     game.spriteRight.style.opacity = '0';
                     setTimeout(() => {
