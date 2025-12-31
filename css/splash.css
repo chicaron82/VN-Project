@@ -51,32 +51,74 @@
     margin-right: auto;
 }
 
-/* Wipe reveal container for UV7 logo */
-.uv7-logo-reveal {
+/* UV7 Logo Wrapper - holds fixed size */
+.uv7-logo-wrap {
+    position: relative;
     width: 400px;
     max-width: 80vw;
     margin: 0 auto 40px;
-    overflow: hidden;
-    /* Start hidden, expands with loading progress */
+}
+
+/* Wipe reveal container - width controlled by JS */
+.uv7-logo-reveal {
     width: 0%;
-    transition: none;
-    /* JS-controlled for accuracy */
+    overflow: hidden;
+    position: relative;
+    transition: width 0.15s ease-out;
 }
 
 .uv7-logo-video {
     width: 400px;
+    max-width: 80vw;
     height: auto;
+    display: block;
     filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
-    display: none;
-    /* Shown when video loads */
+}
+
+/* Shimmer edge effect during loading */
+.uv7-logo-reveal::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(220, 210, 180, 0.9) 50%,
+            transparent 100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.uv7-logo-wrap.loading .uv7-logo-reveal::after {
+    opacity: 1;
+    animation: shimmerPulse 1.2s ease-in-out infinite;
+}
+
+.uv7-logo-wrap.ready .uv7-logo-reveal::after {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+@keyframes shimmerPulse {
+
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Animation gating - only glow when ready */
-.uv7-logo-reveal:not(.ready) .uv7-logo-video {
+.uv7-logo-wrap:not(.ready) .uv7-logo-video {
     animation: none !important;
 }
 
-.uv7-logo-reveal.ready .uv7-logo-video {
+.uv7-logo-wrap.ready .uv7-logo-video {
     animation: uv7Glow 2.2s ease-in-out infinite;
 }
 

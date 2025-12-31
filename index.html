@@ -288,11 +288,12 @@
             <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
 
             <!-- UV7 Logo - Animated Video (wipe reveal during loading) -->
-            <div class="uv7-logo-reveal" id="uv7-logo-reveal">
-                <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline
-                    style="display: none;">
-                    <source src="UnitedVoices7.mp4" type="video/mp4">
-                </video>
+            <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
+                <div class="uv7-logo-reveal" id="uv7-logo-reveal">
+                    <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
+                        <source src="UnitedVoices7.mp4" type="video/mp4">
+                    </video>
+                </div>
             </div>
 
             <!-- Loading Bar (below logo) -->
@@ -1510,33 +1511,14 @@
                 }
             }
 
-            // Called by GameEngine when assets are loaded
+            // Called by GameEngine when assets are loaded (backup signal)
             window.signalLoadingReady = function () {
-                console.log('UV7 Splash: Loading ready signal received - triggering 100% reveal');
-                loadingReady = true;
-
-                // Jump to 100% immediately
-                if (loadingInterval) clearInterval(loadingInterval);
-                updateLoadingProgress(100);
-
-                // Play video animation + start glow
-                if (videoLogo && revealContainer) {
-                    revealContainer.classList.add('ready'); // Enable glow animation
-
-                    const playPromise = videoLogo.play();
-                    if (playPromise !== undefined) {
-                        playPromise
-                            .then(() => {
-                                console.log('UV7 Splash: Video animation playing');
-                            })
-                            .catch(error => {
-                                console.warn('UV7 Splash: Video autoplay blocked, keeping frozen frame', error);
-                                // Keep the frozen frame visible, just add glow
-                            });
-                    }
+                console.log('UV7 Splash: GameEngine loading ready signal received');
+                // This is a backup - AssetLoader handles primary progress
+                // If assets already complete, just ensure we complete splash
+                if (!loadingReady) {
+                    markLoadingComplete();
                 }
-
-                tryCompleteSplash('loading complete');
             };
 
             // DIZEE POLISH: Rotate loading tips
@@ -1647,17 +1629,30 @@
                 }
             });
 
-            // === FREEZE-FRAME WIPE REVEAL FOR VIDEO LOGO ===
+            // === HONEST ASSET LOADING PROGRESS ===
             const revealContainer = document.getElementById('uv7-logo-reveal');
+            const wrapContainer = document.getElementById('uv7-logo-wrap');
             const loadingBar = document.getElementById('loading-bar');
             let currentProgress = 0;
-            let loadingInterval = null;
+            let splashStartTime = performance.now();
 
-            // Simulated progressive loading (until GameEngine signals ready)
+            // Constants from Zeerah's spec
+            const MINIMUM_SPLASH_MS = 2000;  // Branding minimum
+            const MAXIMUM_SPLASH_MS = 8000;  // Safety cap
+
+            // Critical assets to preload
+            const criticalAssets = [
+                'assets/desktopVersion.png',
+                'assets/menubg.png',
+                'assets/menumobile.png',
+                'assets/route-select-ronnie.webp',
+                'assets/route-select-tori.webp'
+            ];
+
+            // Update progress UI (reveal + loading bar)
             function updateLoadingProgress(percent) {
                 currentProgress = Math.min(100, Math.max(0, percent));
 
-                // Update both reveal and loading bar
                 if (revealContainer) {
                     revealContainer.style.width = currentProgress + '%';
                 }
@@ -1666,29 +1661,85 @@
                 }
             }
 
-            // Start progressive reveal simulation
-            function startProgressiveReveal() {
-                let progress = 0;
-                const duration = 4000; // 4 seconds to reach ~90%
-                const fps = 30;
-                const increment = (90 / (duration / (1000 / fps)));
+            // Mark loading complete with minimum time enforcement
+            function markLoadingComplete() {
+                const elapsed = performance.now() - splashStartTime;
+                const remaining = Math.max(0, MINIMUM_SPLASH_MS - elapsed);
 
-                loadingInterval = setInterval(() => {
-                    if (loadingReady) {
-                        // GameEngine signaled ready, jump to 100%
-                        clearInterval(loadingInterval);
+                if (remaining > 0) {
+                    // Animate to 100% over remaining time
+                    const startProgress = currentProgress;
+                    const startTime = performance.now();
+
+                    function animateToComplete() {
+                        const t = Math.min(1, (performance.now() - startTime) / remaining);
+                        const eased = t * t * (3 - 2 * t); // Smoothstep
+                        updateLoadingProgress(startProgress + (100 - startProgress) * eased);
+
+                        if (t < 1) {
+                            requestAnimationFrame(animateToComplete);
+                        } else {
+                            finalizeLoading();
+                        }
+                    }
+                    requestAnimationFrame(animateToComplete);
+                } else {
+                    updateLoadingProgress(100);
+                    finalizeLoading();
+                }
+            }
+
+            // Finalize loading - swap classes, play video
+            function finalizeLoading() {
+                console.log('UV7 Splash: Loading finalized at 100%');
+
+                // Swap .loading → .ready
+                if (wrapContainer) {
+                    wrapContainer.classList.remove('loading');
+                    wrapContainer.classList.add('ready');
+                }
+
+                // Play video animation
+                if (videoLogo) {
+                    const playPromise = videoLogo.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => console.log('UV7 Splash: Video animation playing'))
+                            .catch(err => console.warn('UV7 Splash: Video autoplay blocked', err));
+                    }
+                }
+
+                loadingReady = true;
+                tryCompleteSplash('asset loading complete');
+            }
+
+            // Start real asset loading
+            function startRealAssetLoading() {
+                if (typeof AssetLoader === 'undefined') {
+                    console.warn('UV7 Splash: AssetLoader not found, using safety fallback');
+                    // Fallback: animate to 100% over minimum time
+                    setTimeout(() => {
                         updateLoadingProgress(100);
-                        return;
-                    }
+                        finalizeLoading();
+                    }, MINIMUM_SPLASH_MS);
+                    return;
+                }
 
-                    progress += increment;
-                    if (progress >= 90) {
-                        // Slow down at 90%, wait for GameEngine
-                        clearInterval(loadingInterval);
-                        progress = 90;
-                    }
-                    updateLoadingProgress(progress);
-                }, 1000 / fps);
+                const loader = new AssetLoader();
+
+                loader.on('assetprogress', (e) => {
+                    updateLoadingProgress(e.detail.percent);
+                });
+
+                loader.on('assetcomplete', (e) => {
+                    console.log(`UV7 Splash: Assets complete (${e.detail.loaded}/${e.detail.total}, ${e.detail.failed} failed)`);
+                    markLoadingComplete();
+                });
+
+                loader.preload(criticalAssets).catch(err => {
+                    console.error('UV7 Splash: Asset preload error', err);
+                    markLoadingComplete(); // Still complete on error
+                });
             }
 
             // Video handling with freeze-frame reveal
@@ -1703,8 +1754,8 @@
                     if (staticLogo) staticLogo.style.display = 'none';
                     videoLogo.style.display = 'block';
 
-                    // Start progressive reveal
-                    startProgressiveReveal();
+                    // Start real asset loading
+                    startRealAssetLoading();
                 });
 
                 // When video ends, mark video as ready (but wait for loading too)
@@ -1719,16 +1770,15 @@
                     console.warn('UV7 Splash: Video failed to load, using static fallback', e);
                     videoLogo.style.display = 'none';
                     if (staticLogo) staticLogo.style.display = 'block';
-                    if (loadingInterval) clearInterval(loadingInterval);
-                    // Fallback to just loading bar animation
-                    startProgressiveReveal();
+                    // Fallback: start asset loading anyway
+                    startRealAssetLoading();
                 });
 
                 // Start loading video
                 videoLogo.load();
             } else {
                 console.log('UV7 Splash: No video element, using static logo only');
-                startProgressiveReveal();
+                startRealAssetLoading();
             }
 
             // Safety timeout - mark video as complete after max duration
