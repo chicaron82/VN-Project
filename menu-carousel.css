@@ -354,6 +354,8 @@
     transition: all 0.3s ease;
     position: relative;
     padding: 0;
+    flex-shrink: 0;
+    aspect-ratio: 1;
 }
 
 .carousel-dot:hover {

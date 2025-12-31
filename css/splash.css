@@ -79,26 +79,31 @@
 .uv7-logo-reveal::after {
     content: '';
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 3px;
-    height: 100%;
+    top: 50%;
+    right: -2px;
+    width: 4px;
+    height: 60%;
+    transform: translateY(-50%);
     background: linear-gradient(to bottom,
             transparent 0%,
-            rgba(220, 210, 180, 0.9) 50%,
+            rgba(220, 210, 180, 0.6) 30%,
+            rgba(255, 245, 220, 0.9) 50%,
+            rgba(220, 210, 180, 0.6) 70%,
             transparent 100%);
+    border-radius: 2px;
     opacity: 0;
     pointer-events: none;
+    box-shadow: 0 0 8px rgba(220, 210, 180, 0.5);
 }
 
 .uv7-logo-wrap.loading .uv7-logo-reveal::after {
     opacity: 1;
-    animation: shimmerPulse 1.2s ease-in-out infinite;
+    animation: shimmerPulse 1.5s ease-in-out infinite;
 }
 
 .uv7-logo-wrap.ready .uv7-logo-reveal::after {
     opacity: 0;
-    transition: opacity 0.3s ease-out;
+    transition: opacity 0.4s ease-out;
 }
 
 @keyframes shimmerPulse {
