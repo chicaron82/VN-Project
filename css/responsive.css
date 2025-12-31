@@ -242,12 +242,13 @@
     .character-sprite {
         bottom: 0 !important;
         top: auto !important;
-        width: 200px !important;
+        width: auto !important;
         height: 92vh !important;
         max-height: 92vh !important;
         min-height: unset !important;
         background-position: bottom center !important;
-        background-size: contain !important;
+        background-size: auto 100% !important;
+        /* Fill full height */
     }
 
     #character-left,
