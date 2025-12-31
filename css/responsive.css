@@ -211,6 +211,10 @@
 
 /* Landscape mobile */
 @media (max-width: 1023px) and (orientation: landscape) {
+    /* FULL-BODY SPRITES: Grounded at viewport bottom
+       Feet extend behind semi-transparent dialogue box
+       For screenshot mode: full standing sprite visible */
+
     #dialogue-box {
         height: 35vh !important;
         max-height: 35vh !important;
@@ -219,26 +223,49 @@
         right: 5%;
         width: 90%;
         transform: translateX(0);
+        /* Semi-transparent so sprite feet show through */
+        background-color: rgba(10, 15, 25, 0.85) !important;
     }
 
-    /* Sprites sit on dialogue (35vh from floor) */
+    /* Route-specific dialogue frames with transparency */
+    #dialogue-box.ronnie-route {
+        background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+            rgba(8, 14, 20, 0.85) !important;
+    }
+
+    #dialogue-box.tori-route {
+        background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+            rgba(12, 15, 30, 0.85) !important;
+    }
+
+    /* Sprites grounded at viewport bottom - feet behind dialogue */
     .character-sprite {
-        bottom: 35vh !important;
+        bottom: 0 !important;
         top: auto !important;
-        width: 150px !important;
-        height: auto !important;
-        min-height: 250px !important;
-        max-height: 65vh !important;
+        width: 200px !important;
+        height: 85vh !important;
+        max-height: 85vh !important;
+        min-height: unset !important;
+        background-position: bottom center !important;
+        background-size: contain !important;
     }
 
     #character-left,
     #character-right {
-        bottom: 35vh !important;
+        bottom: 0 !important;
         top: auto !important;
-        width: 150px !important;
-        height: auto !important;
-        min-height: 250px !important;
-        max-height: 65vh !important;
+        width: 200px !important;
+        height: 85vh !important;
+        max-height: 85vh !important;
+        min-height: unset !important;
+    }
+
+    #character-left {
+        left: 2% !important;
+    }
+
+    #character-right {
+        right: 2% !important;
     }
 
     #internal-thought {
@@ -497,4 +524,3 @@
 /* ZEE'S NOTE: This approach overrides layout rules with !important
    instead of rotating the visual. Device orientation doesn't change,
    but CSS layout responds as if it did. 🖤 */
-
