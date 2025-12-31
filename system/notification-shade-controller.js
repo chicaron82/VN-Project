@@ -1226,14 +1226,12 @@ class NotificationShadeController {
         this.hideShade();
         this.hideSidebar();
 
-        // Open notes viewer via collectibles manager (route-specific)
-        const cm = this.game.currentRoute?.collectiblesManager;
-
-        if (cm && cm.showNotesViewer) {
-            cm.showNotesViewer();
+        // Open standalone notes viewer
+        if (this.game && typeof this.game.openStandaloneNotes === 'function') {
+            this.game.openStandaloneNotes();
             this.triggerHaptic('medium');
         } else {
-            console.warn('Notes viewer not available (no collectibles manager on current route)');
+            console.warn('Notes viewer not available (game.openStandaloneNotes not found)');
         }
     }
 

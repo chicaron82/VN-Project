@@ -228,6 +228,8 @@
     font-size: 13px;
     color: rgba(255, 255, 255, 0.9);
 
+    display: none;
+    /* Hidden by default */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
@@ -235,6 +237,7 @@
 }
 
 #status-notification.visible {
+    display: flex;
     opacity: 1;
     pointer-events: all;
 }
