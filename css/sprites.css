@@ -4,7 +4,8 @@
 
 .character-sprite {
     position: absolute;
-    bottom: 0;
+    bottom: 80px;
+    /* Above dialogue box safe zone */
     /* Desktop default - sits at bottom */
     width: 350px;
     height: 600px;
@@ -203,4 +204,3 @@
         height: 300px;
     }
 }
-
