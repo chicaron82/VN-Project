@@ -51,15 +51,45 @@
     margin-right: auto;
 }
 
+/* Wipe reveal container for UV7 logo */
+.uv7-logo-reveal {
+    width: 400px;
+    max-width: 80vw;
+    margin: 0 auto 40px;
+    overflow: hidden;
+    /* Start hidden, expands with loading progress */
+    width: 0%;
+    transition: none;
+    /* JS-controlled for accuracy */
+}
+
 .uv7-logo-video {
     width: 400px;
     height: auto;
-    max-width: 80vw;
-    margin-bottom: 40px;
     filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
     display: none;
-    margin-left: auto;
-    margin-right: auto;
+    /* Shown when video loads */
+}
+
+/* Animation gating - only glow when ready */
+.uv7-logo-reveal:not(.ready) .uv7-logo-video {
+    animation: none !important;
+}
+
+.uv7-logo-reveal.ready .uv7-logo-video {
+    animation: uv7Glow 2.2s ease-in-out infinite;
+}
+
+@keyframes uv7Glow {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3)) brightness(1);
+    }
+
+    50% {
+        filter: drop-shadow(0 0 50px rgba(220, 210, 180, 0.6)) brightness(1.15);
+    }
 }
 
 .uv7-skip-btn {
@@ -231,4 +261,3 @@
     line-height: 1.5;
     opacity: 0.9;
 }
-
