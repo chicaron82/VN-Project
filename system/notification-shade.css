@@ -690,7 +690,8 @@ body.screenshot-mode #dialogue-box {
 }
 
 .quick-actions-page {
-    min-width: 100%;
+    min-width: 50%; /* 50% of track = 100% of container */
+    flex-shrink: 0;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
@@ -905,6 +906,17 @@ body.screenshot-mode #dialogue-box {
     .quick-action-icon {
         font-size: 20px;
     }
+
+    /* Ensure new carousel pages maintain 4 columns */
+    .quick-actions-page {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .expanded-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -919,6 +931,17 @@ body.screenshot-mode #dialogue-box {
     .quick-action-btn {
         padding: 10px 6px;
         font-size: 9px;
+    }
+
+    /* Ensure new carousel pages maintain 4 columns */
+    .quick-actions-page {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .expanded-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
     }
 }
 
