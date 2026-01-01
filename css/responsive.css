@@ -62,8 +62,8 @@
 
         height: 50vh !important;
         /* Sprite container height - room for full body above dialogue */
-        width: auto !important;
-        /* Let width scale proportionally */
+        width: 35vw !important;
+        /* Explicit width for proper display */
         max-width: 45vw !important;
         /* Prevent sprites from being too wide on narrow screens */
 
