@@ -7,5 +7,7 @@
 			"path": "../GitHub/VN-Project"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "VN-Project"
+	}
 }
