@@ -62,9 +62,9 @@
 
         height: 65vh !important;
         /* Sprite container height - maximizes vertical space */
-        width: 35vw !important;
-        /* Explicit width for proper display */
-        max-width: 45vw !important;
+        width: 45vw !important;
+        /* Wider for better sprite visibility */
+        max-width: 50vw !important;
         /* Prevent sprites from being too wide on narrow screens */
 
         background-position: bottom center !important;
