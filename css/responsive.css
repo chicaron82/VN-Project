@@ -255,7 +255,7 @@
     #character-right {
         bottom: 0 !important;
         top: auto !important;
-        width: 200px !important;
+        width: auto !important;
         height: 92vh !important;
         max-height: 92vh !important;
         min-height: unset !important;
