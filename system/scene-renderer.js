@@ -25,10 +25,11 @@ class SceneRenderer {
 
     /**
      * Check if device is in mobile landscape mode
+     * Must match CSS media query in responsive.css exactly
      * @returns {boolean}
      */
     isMobileLandscape() {
-        return window.matchMedia('(max-height: 600px) and (orientation: landscape)').matches;
+        return window.matchMedia('(max-width: 1023px) and (orientation: landscape)').matches;
     }
 
     /**
