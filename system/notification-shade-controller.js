@@ -292,10 +292,14 @@ class NotificationShadeController {
     // ========================================
 
     getRouteName() {
-        // Check for special screens first (by DOM visibility)
+        // Check for route select screen (by actual visibility, not just DOM)
         const routeSelect = document.getElementById('route-select');
-        if (routeSelect && routeSelect.style.display !== 'none' && routeSelect.style.opacity !== '0') {
-            return 'Route Select';
+        if (routeSelect) {
+            const computed = window.getComputedStyle(routeSelect);
+            const isVisible = computed.display !== 'none' && parseFloat(computed.opacity) > 0;
+            if (isVisible) {
+                return 'Route Select';
+            }
         }
 
         // No active route = Menu
