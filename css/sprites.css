@@ -1,16 +1,21 @@
 /* ========================================
    CHARACTER SPRITE SYSTEM
+   Now uses full-body sprites everywhere
+   Desktop: Shows torso (top portion)
+   Mobile: Shows full body grounded
    ======================================== */
 
 .character-sprite {
     position: absolute;
     bottom: 80px;
     /* Above dialogue box safe zone */
-    /* Desktop default - sits at bottom */
     width: 350px;
-    height: 600px;
-    background-size: contain;
-    background-position: bottom center;
+    height: 500px;
+    /* Crops to show torso portion of full-body sprite */
+    background-size: auto 180%;
+    /* Scale up so torso fills the container */
+    background-position: top center;
+    /* Show top (torso) of sprite */
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;

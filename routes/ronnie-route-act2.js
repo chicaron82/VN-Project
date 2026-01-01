@@ -20,7 +20,7 @@ class RonnieRouteAct2 {
             internal: '[Visual: Ronnie at his desk. Multiple browser tabs open showing chat logs. Text highlighted - identical phrases from different days.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat1_discovery(),
             delay: 4000
@@ -34,8 +34,8 @@ class RonnieRouteAct2 {
             internal: '[Visual: Tori-gatchi interface. Her sprite is normal, smiling.]',
             background: 'assets/digitalSpace.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.act2Beat1_confusion(),
             delay: 3000
@@ -49,8 +49,8 @@ class RonnieRouteAct2 {
             internal: '[Ronnie (internal): "That was WEEKS ago."]',
             background: 'assets/digitalSpace.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.act2Beat2(),
             delay: 3500
@@ -68,7 +68,7 @@ class RonnieRouteAct2 {
             internal: '[Visual: Ronnie surrounded by open journals, code snippets, diagrams of consciousness transfer theories. The Tamagotchi glows faintly beside his keyboard.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat2_code(),
             delay: 5000
@@ -82,7 +82,7 @@ class RonnieRouteAct2 {
             internal: '[Code appears on screen: \'digital_ronnie_construct.js\' - loops, memory structures, decision trees.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat3(),
             delay: 4500
@@ -97,7 +97,7 @@ class RonnieRouteAct2 {
             internal: '[Visual: Montage of Ronnie coding frantically, testing, failing. Days blur into weeks. The Tamagotchi screen flickers with each attempt.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat7(),
             delay: 6000
@@ -112,7 +112,7 @@ class RonnieRouteAct2 {
             internal: '[Visual: Eureka moment. He looks at the Tamagotchi, then at a photo of Tori in the hospital bed.]\n[The connection clicks.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat7_theory(),
             delay: 4000
@@ -129,7 +129,7 @@ class RonnieRouteAct2 {
             internal: '[Visual: Diagram appears - consciousness tether connecting digital space to physical body. The Tamagotchi as the bridge.]',
             background: 'assets/digitalSpace.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp'
             },
             next: () => this.act2Beat8(),
             delay: 5000
@@ -169,8 +169,8 @@ class RonnieRouteAct2 {
             dialogue = '"If you can\'t come back... I\'ll come TO you. We\'ll expand the space. Make it real enough for both of us."\n[Upload bar UI: 32% → 56% → 100%]\n"There! You\'re safe now—"\n\n[Tori (weak, glitching): "...Ronnie... I\'m still stuck. You can\'t... upload a soul."]';
             this.game.gameState.flags.bad_route_tilt = (this.game.gameState.flags.bad_route_tilt || 0) + 2;
             sprites = {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             };
             nextScene = () => this.act2Beat8_end();
         } else if (choice === 'anchor') {
@@ -178,8 +178,8 @@ class RonnieRouteAct2 {
             dialogue = '"Your body\'s calling you back. That\'s where you belong."\n\n[Tori (softening): "...Home. I feel it..."]';
             this.game.gameState.flags.true_route_tilt = (this.game.gameState.flags.true_route_tilt || 0) + 2;
             sprites = {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             };
             nextScene = () => this.act2Beat8_end();
         } else if (choice === 'silent') {
@@ -187,8 +187,8 @@ class RonnieRouteAct2 {
             dialogue = '[Ronnie says nothing. Holds her hand to his cheek.]\n\n[Tori (whispers): "...Even without words... you still anchor me."]';
             this.game.gameState.flags.digital_forever_tilt = (this.game.gameState.flags.digital_forever_tilt || 0) + 2;
             sprites = {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             };
             nextScene = () => this.act2Beat8_end();
         }

@@ -26,7 +26,7 @@ class SharedPrologue {
             internal: '[Sunny street, midday. Cafes line the background. Tori walks with coffee in hand, distracted by her Tamagotchi.]',
             background: 'assets/genericBack.png',
             sprites: {
-                right: 'assets/tori-sprite.png'
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene1_bump()
         }, 'scene1_streetBump');
@@ -68,8 +68,8 @@ class SharedPrologue {
             internal: '[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi.]',
             background: 'assets/genericBack.png',
             sprites: {
-                left: 'assets/old-ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/old-full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene1_end()
         }, 'scene1_oldMan');
@@ -96,8 +96,8 @@ class SharedPrologue {
             internal: '[Tori enters her home. Ronnie is at his laptop, deep in dev mode.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_ronnieGreeting()
         }, 'scene2_arrival');
@@ -109,8 +109,8 @@ class SharedPrologue {
             dialogue: 'Hey honey! How was your day?',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_home()
         }, 'scene2_ronnieGreeting');
@@ -122,8 +122,8 @@ class SharedPrologue {
             dialogue: 'Pretty good! Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\'s already half-drained. I dropped it earlier, but... I don\'t think that\'s the problem',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_ronnieResponse()
         }, 'scene2_home');
@@ -135,8 +135,8 @@ class SharedPrologue {
             dialogue: 'Ya sure I can look at it. Why do you call it that anyway?',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_toriExplains()
         }, 'scene2_ronnieResponse');
@@ -149,8 +149,8 @@ class SharedPrologue {
             internal: '[She hands him the French Vanilla.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_ronnieTeases()
         }, 'scene2_toriExplains');
@@ -162,8 +162,8 @@ class SharedPrologue {
             dialogue: 'You\'re such a dork, honey',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_hoodieBanter()
         }, 'scene2_ronnieTeases');
@@ -176,8 +176,8 @@ class SharedPrologue {
             internal: '[She tugs playfully at his sleeve.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_ronnieDefends()
         }, 'scene2_hoodieBanter');
@@ -189,8 +189,8 @@ class SharedPrologue {
             dialogue: 'Well, SOMEONE keeps stealing my BGA hoodie, so this is my replacement.',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_toriRebuttal()
         }, 'scene2_ronnieDefends');
@@ -203,8 +203,8 @@ class SharedPrologue {
             internal: '[She grins mischievously.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_chicharonTease()
         }, 'scene2_toriRebuttal');
@@ -217,8 +217,8 @@ class SharedPrologue {
             internal: '[He shakes his head, but there\'s warmth in his eyes.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_chicharonMoment()
         }, 'scene2_chicharonTease');
@@ -231,8 +231,8 @@ class SharedPrologue {
             internal: '[She boops his nose playfully. Their nickname - the one she uses when it\'s just them. Home.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_toriDinner()
         }, 'scene2_chicharonMoment');
@@ -245,8 +245,8 @@ class SharedPrologue {
             internal: '[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_kitchen()
         }, 'scene2_toriDinner');
@@ -258,8 +258,8 @@ class SharedPrologue {
             dialogue: 'She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
-                right: 'assets/tori-sprite.png'
+                left: 'assets/full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene2_warning()
         }, 'scene2_kitchen');
@@ -272,7 +272,7 @@ class SharedPrologue {
             internal: '[He notices her about to trip over his shoe.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/ronnie-sprite.png',
+                left: 'assets/full-sprite-ronnie.webp',
             },
             next: () => this.scene3_fall()
         }, 'scene2_warning');
@@ -298,7 +298,7 @@ class SharedPrologue {
         }, 'scene3_vision');
 
         // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
-        this.game.fadeSpritesSequence('left', 'assets/ronnie-sprite.png', 'assets/old-ronnie-sprite.png', 4000);
+        this.game.fadeSpritesSequence('left', 'assets/full-sprite-ronnie.webp', 'assets/old-full-sprite-ronnie.webp', 4000);
     }
 
     // ========================================

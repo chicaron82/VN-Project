@@ -11,16 +11,16 @@ class Epilogue {
 
         // Set sprite positions based on which route we came from
         if (fromRoute === 'tori') {
-            this.leftSprite = 'assets/tori-sprite.png';
-            this.rightSprite = 'assets/ronnie-sprite.png';
-            this.oldLeftSprite = 'assets/tori-sprite.png';
-            this.oldRightSprite = 'assets/old-ronnie-sprite.png';
+            this.leftSprite = 'assets/full-sprite-tori.webp';
+            this.rightSprite = 'assets/full-sprite-ronnie.webp';
+            this.oldLeftSprite = 'assets/full-sprite-tori.webp';
+            this.oldRightSprite = 'assets/old-full-sprite-ronnie.webp';
         } else {
             // Default: Ronnie's route (Ronnie left, Tori right)
-            this.leftSprite = 'assets/ronnie-sprite.png';
-            this.rightSprite = 'assets/tori-sprite.png';
-            this.oldLeftSprite = 'assets/old-ronnie-sprite.png';
-            this.oldRightSprite = 'assets/tori-sprite.png';
+            this.leftSprite = 'assets/full-sprite-ronnie.webp';
+            this.rightSprite = 'assets/full-sprite-tori.webp';
+            this.oldLeftSprite = 'assets/old-full-sprite-ronnie.webp';
+            this.oldRightSprite = 'assets/full-sprite-tori.webp';
         }
     }
 

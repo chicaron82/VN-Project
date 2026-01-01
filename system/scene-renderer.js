@@ -23,48 +23,8 @@ class SceneRenderer {
     // Swaps torso sprites → full-body on mobile landscape
     // ========================================
 
-    /**
-     * Check if device is in mobile landscape mode
-     * Must match CSS media query in responsive.css exactly
-     * @returns {boolean}
-     */
-    isMobileLandscape() {
-        const mq = window.matchMedia('(max-width: 1023px) and (orientation: landscape)');
-        console.log(`📱 isMobileLandscape check: width=${window.innerWidth}, height=${window.innerHeight}, orientation=${window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'}, result=${mq.matches}`);
-        return mq.matches;
-    }
-
-    /**
-     * Swap torso sprite path to full-body version for mobile
-     * @param {string} path - Original sprite path
-     * @returns {string} - Swapped path (or original if no swap)
-     */
-    getSpritePathForOrientation(path) {
-        // Only swap on mobile landscape
-        const shouldSwap = this.isMobileLandscape();
-        console.log(`🎭 getSpritePathForOrientation called with: ${path}, shouldSwap: ${shouldSwap}`);
-
-        if (!shouldSwap) return path;
-
-        // Mapping: torso sprite → full-body sprite
-        const swapMap = {
-            'tori-sprite': 'full-sprite-tori',
-            'ronnie-sprite': 'full-sprite-ronnie',
-            'old-ronnie-sprite': 'full-sprite-oldRonnie',
-            'echo-1-sprite': 'full-sprite-echo1',
-            'echo-2-sprite': 'full-sprite-echo2',
-            'despair-sprite': 'full-sprite-despair'
-        };
-
-        for (const [torso, fullBody] of Object.entries(swapMap)) {
-            if (path.includes(torso)) {
-                const newPath = path.replace(torso, fullBody);
-                console.log(`🎭 Swapping sprite: ${torso} → ${fullBody}`);
-                return newPath;
-            }
-        }
-        return path; // No swap found
-    }
+    // NOTE: Sprite path swapping removed - routes now use full-body sprites directly
+    // CSS handles responsive display (desktop shows torso, mobile shows full body)
 
     // ========================================
     // SPRITE MANAGEMENT
@@ -88,10 +48,9 @@ class SceneRenderer {
                 game.currentSprites.left = null;
                 game.gameState.sprites.left = null;
             } else {
-                // Show/update left sprite
-                const leftPath = this.getSpritePathForOrientation(sprites.left);
+                // Show/update left sprite (routes now use full-body sprite paths)
                 if (game.spriteLeft) {
-                    game.spriteLeft.style.backgroundImage = `url(${leftPath})`;
+                    game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
                     game.spriteLeft.style.display = 'block';
                     game.spriteLeft.style.opacity = '0';
                     setTimeout(() => {
@@ -124,12 +83,11 @@ class SceneRenderer {
                 game.currentSprites.right = 'echoes';
                 game.gameState.sprites.right = 'echoes';
             } else {
-                // Show/update right sprite (normal single sprite)
-                const rightPath = this.getSpritePathForOrientation(sprites.right);
+                // Show/update right sprite (routes now use full-body sprite paths)
                 if (game.spriteRight) {
                     game.spriteRight.classList.remove('echo-group');
                     game.spriteRight.innerHTML = '';
-                    game.spriteRight.style.backgroundImage = `url(${rightPath})`;
+                    game.spriteRight.style.backgroundImage = `url(${sprites.right})`;
                     game.spriteRight.style.display = 'block';
                     game.spriteRight.style.opacity = '0';
                     setTimeout(() => {
