@@ -242,20 +242,20 @@
     .character-sprite {
         bottom: 0 !important;
         top: auto !important;
-        width: auto !important;
+        /* Width based on sprite aspect ratio (~1:2.5) at 92vh height */
+        width: 35vh !important;
         height: 92vh !important;
         max-height: 92vh !important;
         min-height: unset !important;
         background-position: bottom center !important;
-        background-size: auto 100% !important;
-        /* Fill full height */
+        background-size: contain !important;
     }
 
     #character-left,
     #character-right {
         bottom: 0 !important;
         top: auto !important;
-        width: auto !important;
+        width: 35vh !important;
         height: 92vh !important;
         max-height: 92vh !important;
         min-height: unset !important;
