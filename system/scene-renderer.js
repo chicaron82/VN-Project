@@ -29,7 +29,9 @@ class SceneRenderer {
      * @returns {boolean}
      */
     isMobileLandscape() {
-        return window.matchMedia('(max-width: 1023px) and (orientation: landscape)').matches;
+        const mq = window.matchMedia('(max-width: 1023px) and (orientation: landscape)');
+        console.log(`📱 isMobileLandscape check: width=${window.innerWidth}, height=${window.innerHeight}, orientation=${window.innerWidth > window.innerHeight ? 'landscape' : 'portrait'}, result=${mq.matches}`);
+        return mq.matches;
     }
 
     /**
@@ -39,7 +41,10 @@ class SceneRenderer {
      */
     getSpritePathForOrientation(path) {
         // Only swap on mobile landscape
-        if (!this.isMobileLandscape()) return path;
+        const shouldSwap = this.isMobileLandscape();
+        console.log(`🎭 getSpritePathForOrientation called with: ${path}, shouldSwap: ${shouldSwap}`);
+
+        if (!shouldSwap) return path;
 
         // Mapping: torso sprite → full-body sprite
         const swapMap = {
