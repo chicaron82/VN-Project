@@ -230,11 +230,18 @@ class NotificationShadeController {
             }
         }
 
-        // Update progress (notes collected)
+        // Update progress (notes collected) - only show in routes, not menu/prologue
         if (this.statusProgress) {
-            const notesCollected = this.getNotesCollected();
-            const totalNotes = this.getTotalNotes();
-            this.statusProgress.textContent = `🖤 ${notesCollected}/${totalNotes}`;
+            const routeName = this.getRouteName();
+            if (routeName === 'Menu' || routeName === 'Prologue') {
+                // Hide notes counter on menu and prologue
+                this.statusProgress.style.display = 'none';
+            } else {
+                this.statusProgress.style.display = 'inline';
+                const notesCollected = this.getNotesCollected();
+                const totalNotes = this.getTotalNotes();
+                this.statusProgress.textContent = `🖤 ${notesCollected}/${totalNotes}`;
+            }
         }
 
         // Update tether (Tori route only) - Lightning bolt with fill
@@ -286,6 +293,8 @@ class NotificationShadeController {
     getRouteName() {
         if (!this.game.currentRoute) return 'Menu';
         const routeClass = this.game.currentRoute.constructor.name;
+        // Check for SharedPrologue first
+        if (routeClass.includes('SharedPrologue') || routeClass.includes('Prologue')) return 'Prologue';
         if (routeClass.includes('Ronnie')) return 'Ronnie Route';
         if (routeClass.includes('Tori')) return 'Tori Route';
         return 'Route';
