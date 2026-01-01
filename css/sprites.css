@@ -209,3 +209,36 @@
         height: 300px;
     }
 }
+
+/* ========================================
+   SCREENSHOT MODE PLATFORM
+   ZEE'S SPEC: Keep dialogue box visible as platform
+   for sprite grounding, but hide all text elements
+   Triggered by H key (toggleUI)
+   ======================================== */
+
+/* When UI is hidden, keep dialogue box as platform */
+body.ui-hidden #dialogue-box {
+    display: block !important;
+    opacity: 0.35 !important;
+    /* Make platform more subtle - it's visual grounding, not UI */
+    background: rgba(15, 15, 45, 0.4) !important;
+    /* Lighter background - less prominent */
+    pointer-events: none !important;
+    /* Ensure it doesn't interfere with interactions */
+    border-top: 1px solid rgba(100, 255, 218, 0.2) !important;
+    /* Subtle cyan accent line - marks platform edge */
+}
+
+/* Hide all text elements in screenshot mode */
+body.ui-hidden .dialogue-text,
+body.ui-hidden #dialogue-text,
+body.ui-hidden .character-name,
+body.ui-hidden #character-name,
+body.ui-hidden .continue-indicator,
+body.ui-hidden #continue-indicator,
+body.ui-hidden .dialogue-choice,
+body.ui-hidden .choice-button {
+    display: none !important;
+    /* Hide text, keep the box as stage platform */
+}

@@ -3992,16 +3992,15 @@ game.devCommands()
 
     toggleUI() {
         // Toggle visibility of UI elements during gameplay
+        // ZEE'S SPEC: Keep dialogue box as platform, hide only text and buttons
         // SOLID: Using StateManager for UI state
         const isHidden = this.state.get('ui.hidden');
 
         if (!isHidden) {
-            // Hide UI elements
-            if (this.dialogueBox) {
-                this.dialogueBox.style.opacity = '0';
-                this.dialogueBox.style.pointerEvents = 'none';
-            }
+            // SCREENSHOT MODE: Hide UI but keep dialogue box as platform
+            document.body.classList.add('ui-hidden');
 
+            // Hide buttons (dialogue box handled by CSS via ui-hidden class)
             const pauseButton = document.getElementById('pause-button');
             if (pauseButton) pauseButton.style.opacity = '0';
 
@@ -4022,11 +4021,15 @@ game.devCommands()
             }
 
             this.state.set('ui.hidden', true);
+            console.log('📸 Screenshot mode ON - dialogue platform visible');
         } else {
-            // Show UI elements
+            // NORMAL MODE: Show all UI elements
+            document.body.classList.remove('ui-hidden');
+
+            // Restore dialogue box (remove inline overrides)
             if (this.dialogueBox) {
-                this.dialogueBox.style.opacity = '1';
-                this.dialogueBox.style.pointerEvents = 'auto';
+                this.dialogueBox.style.opacity = '';
+                this.dialogueBox.style.pointerEvents = '';
             }
 
             const pauseButton = document.getElementById('pause-button');
@@ -4049,6 +4052,7 @@ game.devCommands()
             }
 
             this.state.set('ui.hidden', false);
+            console.log('📸 Screenshot mode OFF - full UI restored');
         }
 
         // DIZEE POLISH: Also toggle notification shade system

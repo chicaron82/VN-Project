@@ -51,20 +51,27 @@
         pointer-events: none;
     }
 
-    /* SPRITES - Sit exactly on top of dialogue box (30vh from floor) */
+    /* FULL-BODY SPRITES - Stand ON dialogue box as platform
+       ZEE'S PORTRAIT SPEC: Sprites grounded on dialogue box top edge
+       50vh sprite height + 30vh dialogue = 80vh total, leaving 20vh for status bar */
     .character-sprite {
         position: absolute !important;
         bottom: 30vh !important;
-        /* Sits on dialogue top edge */
+        /* Aligned to dialogue box top - sprites stand on it */
         top: auto !important;
-        /* Don't anchor to top */
-        width: 180px !important;
-        /* Explicit width so it doesn't collapse */
-        height: auto !important;
-        min-height: 300px !important;
-        /* Ensure they have actual height */
-        max-height: 70vh !important;
-        /* Can't exceed space above dialogue */
+
+        height: 50vh !important;
+        /* Sprite container height - room for full body above dialogue */
+        width: auto !important;
+        /* Let width scale proportionally */
+        max-width: 45vw !important;
+        /* Prevent sprites from being too wide on narrow screens */
+
+        background-position: bottom center !important;
+        /* Ensure feet are aligned to platform edge */
+        background-size: contain !important;
+        /* Scale sprite to fit container proportionally */
+
         z-index: 40 !important;
     }
 
@@ -72,20 +79,12 @@
         left: 5% !important;
         right: auto !important;
         transform: none !important;
-        bottom: 30vh !important;
-        top: auto !important;
-        width: 180px !important;
     }
 
     #character-right {
         right: 5% !important;
         left: auto !important;
         transform: none !important;
-        bottom: 30vh !important;
-        top: auto !important;
-        width: 180px !important;
-        height: auto !important;
-        max-height: 70vh !important;
     }
 
     /* DIALOGUE BOX - FIXED HEIGHT, overlays bottom 30vh */
