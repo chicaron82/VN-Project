@@ -243,9 +243,9 @@
         bottom: 0 !important;
         top: auto !important;
         /* Wider container for full-body sprites */
-        width: 45vh !important;
-        height: 95vh !important;
-        max-height: 95vh !important;
+        width: 200px !important;
+        height: 85vh !important;
+        max-height: 85vh !important;
         min-height: unset !important;
         background-position: bottom center !important;
         background-size: contain !important;
@@ -256,18 +256,18 @@
     #character-right {
         bottom: 0 !important;
         top: auto !important;
-        width: 45vh !important;
-        height: 95vh !important;
-        max-height: 95vh !important;
+        width: 200px !important;
+        height: 85vh !important;
+        max-height: 85vh !important;
         min-height: unset !important;
     }
 
     #character-left {
-        left: 0 !important;
+        left: 2% !important;
     }
 
     #character-right {
-        right: 0 !important;
+        right: 2% !important;
     }
 
     #internal-thought {
