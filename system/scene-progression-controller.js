@@ -108,7 +108,13 @@ class SceneProgressionController {
 
             // Start shared prologue
             const prologue = new SharedPrologue(this.game);
+            this.game.currentRoute = prologue; // Set for status bar tracking
             prologue.start();
+
+            // Update status bar to show "Prologue"
+            if (this.game.notificationShade) {
+                this.game.notificationShade.updateStatusBar();
+            }
         }, 800);
     }
 

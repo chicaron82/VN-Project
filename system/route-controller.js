@@ -54,6 +54,11 @@ class RouteController {
 
                 // ZEE'S ADDITION: Start tip rotation 🖤
                 this.game.startRouteSelectTipRotation();
+
+                // Update status bar to show "Route Select"
+                if (this.game.notificationShade) {
+                    this.game.notificationShade.updateStatusBar();
+                }
             }, 100);
         }, 1000);
     }
