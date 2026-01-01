@@ -629,7 +629,165 @@
     font-family: 'Courier New', monospace;
 }
 
-/* Quick Actions Grid */
+/* ========================================
+   SCREENSHOT MODE
+   Hide UI for clean screenshots
+   ======================================== */
+
+body.screenshot-mode #status-bar,
+body.screenshot-mode #notification-shade,
+body.screenshot-mode #sidebar,
+body.screenshot-mode .sidebar-toggle,
+body.screenshot-mode #shade-backdrop {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.screenshot-mode #dialogue-box {
+    opacity: 0.5;
+}
+
+/* ========================================
+   EXPANDABLE QUICK ACTIONS
+   Three-state system: Collapsed → Quick → Expanded
+   ======================================== */
+
+/* Quick Actions Container */
+.quick-actions-container {
+    position: relative;
+}
+
+.shade-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.expand-hint {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 2px;
+    animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+}
+
+/* Paged Carousel (Quick State) */
+.quick-actions-carousel {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.quick-actions-track {
+    display: flex;
+    transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    width: 200%; /* 2 pages */
+}
+
+.quick-actions-page {
+    min-width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Page Dots */
+.quick-actions-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.quick-actions-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+.quick-actions-dots .dot.active {
+    background: #00ffff;
+    width: 20px;
+    border-radius: 4px;
+}
+
+/* Expanded Grid (Full State) */
+.quick-actions-expanded {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.quick-actions-expanded.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.expanded-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.edit-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #00ffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.expanded-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.expanded-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.group-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(0, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.expanded-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Legacy grid class (kept for compatibility) */
 .quick-actions {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

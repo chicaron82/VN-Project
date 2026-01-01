@@ -60,6 +60,14 @@ class NotificationShadeController {
             });
         }
 
+        // Initialize Expandable Quick Actions (MICHELIN EDITION)
+        // @ts-ignore - ExpandableQuickActions loaded via script tag
+        if (typeof window.ExpandableQuickActions !== 'undefined') {
+            this.quickActions = new window.ExpandableQuickActions(this);
+        } else {
+            console.warn('ExpandableQuickActions not loaded');
+        }
+
         console.log('✅ NotificationShadeController initialized');
     }
 
