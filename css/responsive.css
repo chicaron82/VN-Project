@@ -53,15 +53,15 @@
 
     /* FULL-BODY SPRITES - Stand ON dialogue box as platform
        ZEE'S PORTRAIT SPEC: Sprites grounded on dialogue box top edge
-       50vh sprite height + 30vh dialogue = 80vh total, leaving 20vh for status bar */
+       65vh sprite height + 30vh dialogue = 95vh total, leaving 5vh for status bar */
     .character-sprite {
         position: absolute !important;
         bottom: 30vh !important;
         /* Aligned to dialogue box top - sprites stand on it */
         top: auto !important;
 
-        height: 50vh !important;
-        /* Sprite container height - room for full body above dialogue */
+        height: 65vh !important;
+        /* Sprite container height - maximizes vertical space */
         width: 35vw !important;
         /* Explicit width for proper display */
         max-width: 45vw !important;
