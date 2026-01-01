@@ -12,7 +12,7 @@
     width: 350px;
     height: 500px;
     /* Crops to show torso portion of full-body sprite */
-    background-size: auto 180%;
+    background-size: contain;
     /* Scale up so torso fills the container */
     background-position: top center;
     /* Show top (torso) of sprite */

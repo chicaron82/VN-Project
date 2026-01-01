@@ -68,7 +68,7 @@ class SharedPrologue {
             internal: '[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi.]',
             background: 'assets/genericBack.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp',
+                left: 'assets/full-sprite-oldRonnie.webp',
                 right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.scene1_end()
@@ -298,7 +298,7 @@ class SharedPrologue {
         }, 'scene3_vision');
 
         // Trigger fade sequence: Ronnie -> Old Ronnie -> Ronnie -> Fade out
-        this.game.fadeSpritesSequence('left', 'assets/full-sprite-ronnie.webp', 'assets/old-full-sprite-ronnie.webp', 4000);
+        this.game.fadeSpritesSequence('left', 'assets/full-sprite-ronnie.webp', 'assets/full-sprite-oldRonnie.webp', 4000);
     }
 
     // ========================================

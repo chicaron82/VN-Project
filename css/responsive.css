@@ -4,6 +4,32 @@
    Fixed: Dialogue box overlapping sprites
    ======================================== */
 
+/* ================================================
+   DESKTOP - Large screens (≥1280px)
+   Shows torso portion of full-body sprites
+   ================================================ */
+@media (min-width: 1280px) {
+    .character-sprite {
+        /* Positioning - sits just above dialogue box */
+        bottom: 0;
+        width: 350px;
+        height: 500px;
+
+        /* Show torso (top portion) of full-body sprite */
+        background-size: auto 180%;
+        background-position: top center;
+        background-repeat: no-repeat;
+    }
+
+    #character-left {
+        left: 5%;
+    }
+
+    #character-right {
+        right: 5%;
+    }
+}
+
 @media (max-width: 1023px) and (orientation: portrait) {
     #game-view {
         display: flex;
@@ -209,8 +235,8 @@
     }
 }
 
-/* Landscape mobile */
-@media (max-width: 1023px) and (orientation: landscape) {
+/* Landscape mobile/tablet - covers up to typical laptop widths */
+@media (max-width: 1279px) and (orientation: landscape) {
     /* FULL-BODY SPRITES: Grounded at viewport bottom
        Feet extend behind semi-transparent dialogue box
        For screenshot mode: full standing sprite visible */
@@ -238,36 +264,41 @@
             rgba(12, 15, 30, 0.85) !important;
     }
 
-    /* Sprites grounded at viewport bottom - feet behind dialogue */
+    /* ================================================
+       FULL-BODY SPRITES - MOBILE LANDSCAPE
+       Adjust these values to tweak sprite appearance:
+       ================================================ */
     .character-sprite {
+        /* POSITIONING */
         bottom: 0 !important;
+        /* Grounded at screen bottom */
         top: auto !important;
-        /* Wider container for full-body sprites */
-        width: 200px !important;
-        height: 85vh !important;
-        max-height: 85vh !important;
+
+        /* SIZE - Adjust these to change sprite size */
+        width: 60vh !important;
+        /* Width (based on viewport height) */
+        height: 95vh !important;
+        /* Height (95% of screen) */
+        max-height: 95vh !important;
         min-height: unset !important;
+
+        /* DISPLAY */
         background-position: bottom center !important;
+        /* Show from feet up */
         background-size: contain !important;
+        /* Fit entire sprite */
         background-repeat: no-repeat !important;
     }
 
-    #character-left,
-    #character-right {
-        bottom: 0 !important;
-        top: auto !important;
-        width: 200px !important;
-        height: 85vh !important;
-        max-height: 85vh !important;
-        min-height: unset !important;
-    }
-
+    /* LEFT/RIGHT POSITIONING ONLY - no size values here */
     #character-left {
-        left: 2% !important;
+        left: 0 !important;
+        /* Distance from left edge */
     }
 
     #character-right {
-        right: 2% !important;
+        right: 0 !important;
+        /* Distance from right edge */
     }
 
     #internal-thought {
