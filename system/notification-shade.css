@@ -1907,3 +1907,40 @@ body.screenshot-mode #dialogue-box {
 .sidebar-status {
     margin-top: 8px;
 }
+
+/* ========================================
+   UV7 CARRIER-STYLE FOOTER
+   iOS-inspired branding at bottom of shade
+   ======================================== */
+
+.shade-carrier-footer {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 8px 16px;
+    pointer-events: none;
+}
+
+.carrier-logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(100, 255, 218, 0.7);
+    letter-spacing: 1px;
+    margin-right: 6px;
+}
+
+.carrier-name {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+}
+
+/* Sidebar variant - position at bottom of sidebar */
+.sidebar-carrier {
+    position: relative;
+    margin-top: auto;
+    padding-top: 20px;
+}
