@@ -20,7 +20,7 @@
 }
 
 /* Hide status notification during splash screen */
-#uv7-splash ~ #status-notification,
+#uv7-splash~#status-notification,
 body:has(#uv7-splash:not(.fade-out)) #status-notification {
     display: none !important;
 }
@@ -74,8 +74,8 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
 }
 
 .uv7-logo-video {
-    width: 400px;
-    max-width: 80vw;
+    width: 100%;
+    /* Fill container proportionally - prevents reveal overshoot */
     height: auto;
     display: block;
     filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
