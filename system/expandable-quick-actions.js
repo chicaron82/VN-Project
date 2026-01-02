@@ -124,7 +124,7 @@ class ExpandableQuickActions {
     }
 
     // ========================================
-    // SWIPE HANDLING
+    // SWIPE HANDLING - SMOOTH MOMENTUM SYSTEM
     // ========================================
 
     /**
@@ -135,21 +135,52 @@ class ExpandableQuickActions {
         this.swipeStartX = touch.clientX;
         this.swipeStartY = touch.clientY;
         this.swipeStartTime = Date.now();
+        this.isDragging = false;
+        this.lastMoveX = touch.clientX;
+        this.lastMoveTime = Date.now();
+
+        // Disable CSS transition during drag for responsive feel
+        if (this.track) {
+            this.track.style.transition = 'none';
+        }
     }
 
     /**
      * @param {TouchEvent} e
      */
     handleSwipeMove(e) {
-        // Only prevent default if we're swiping horizontally (page switch)
-        // Let vertical swipes through for shade expansion/collapse
         const touch = e.touches[0];
-        const deltaX = Math.abs(touch.clientX - this.swipeStartX);
+        const deltaX = touch.clientX - this.swipeStartX;
         const deltaY = Math.abs(touch.clientY - this.swipeStartY);
 
-        if (deltaX > deltaY && deltaX > 10) {
-            // Horizontal swipe - prevent default to avoid scroll
+        // Only track horizontal if it's the dominant direction
+        if (Math.abs(deltaX) > deltaY && Math.abs(deltaX) > 10) {
             e.preventDefault();
+            this.isDragging = true;
+
+            // Track velocity
+            this.lastMoveX = touch.clientX;
+            this.lastMoveTime = Date.now();
+
+            // Live drag tracking - translate with finger
+            if (this.track) {
+                const containerWidth = this.track.parentElement?.offsetWidth || window.innerWidth;
+                const pageWidth = containerWidth; // Each page is 100% of carousel viewport
+                const baseOffset = -this.currentPage * pageWidth;
+
+                // Add rubber-band resistance at edges
+                let adjustedDelta = deltaX;
+                const atStart = this.currentPage === 0 && deltaX > 0;
+                const atEnd = this.currentPage >= this.totalPages - 1 && deltaX < 0;
+
+                if (atStart || atEnd) {
+                    // Rubber-band effect - reduce movement by 70%
+                    adjustedDelta = deltaX * 0.3;
+                }
+
+                // Apply live transform (using pixels for smooth tracking)
+                this.track.style.transform = `translateX(${baseOffset + adjustedDelta}px)`;
+            }
         }
     }
 
@@ -162,25 +193,54 @@ class ExpandableQuickActions {
         const deltaY = touch.clientY - this.swipeStartY;
         const deltaTime = Date.now() - this.swipeStartTime;
 
+        // Re-enable CSS transition for snap animation
+        if (this.track) {
+            this.track.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+        }
+
         // Determine primary direction
         const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
 
-        if (isHorizontal && Math.abs(deltaX) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
-            // Horizontal swipe - page switch
-            if (deltaX < 0 && this.currentPage < this.totalPages - 1) {
+        if (this.isDragging && isHorizontal) {
+            // Calculate velocity (pixels per ms)
+            const velocity = deltaX / Math.max(deltaTime, 1);
+
+            // Decide page based on position + velocity
+            const containerWidth = this.track?.parentElement?.offsetWidth || window.innerWidth;
+            const threshold = containerWidth * 0.25; // 25% of container = page change
+            const velocityThreshold = 0.3; // px/ms - fast flick triggers page change
+
+            if (deltaX < -threshold || velocity < -velocityThreshold) {
                 // Swipe left - next page
-                this.nextPage();
-            } else if (deltaX > 0 && this.currentPage > 0) {
+                if (this.currentPage < this.totalPages - 1) {
+                    this.nextPage();
+                } else {
+                    this.snapToPage(this.currentPage); // Bounce back
+                }
+            } else if (deltaX > threshold || velocity > velocityThreshold) {
                 // Swipe right - previous page
-                this.previousPage();
+                if (this.currentPage > 0) {
+                    this.previousPage();
+                } else {
+                    this.snapToPage(this.currentPage); // Bounce back
+                }
+            } else {
+                // Didn't cross threshold - snap back to current page
+                this.snapToPage(this.currentPage);
             }
-        } else if (!isHorizontal && Math.abs(deltaY) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
-            // Vertical swipe - check for expansion
+
+            this.isDragging = false;
+            return;
+        }
+
+        // Check for vertical swipe (expansion)
+        if (!isHorizontal && Math.abs(deltaY) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
             if (deltaY > 0) {
-                // Swipe down
                 this.handleVerticalSwipe(deltaY, deltaTime);
             }
         }
+
+        this.isDragging = false;
     }
 
     /**
@@ -209,14 +269,14 @@ class ExpandableQuickActions {
     }
 
     // ========================================
-    // PAGE NAVIGATION
+    // PAGE NAVIGATION - SMOOTH TRANSITIONS
     // ========================================
 
     nextPage() {
         if (this.currentPage >= this.totalPages - 1) return;
 
         this.currentPage++;
-        this.updatePagePosition();
+        this.snapToPage(this.currentPage);
         this.triggerHaptic('light');
 
         console.log(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
@@ -226,27 +286,35 @@ class ExpandableQuickActions {
         if (this.currentPage <= 0) return;
 
         this.currentPage--;
-        this.updatePagePosition();
+        this.snapToPage(this.currentPage);
         this.triggerHaptic('light');
 
         console.log(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
     }
 
-    updatePagePosition() {
+    /**
+     * Snap to a specific page with smooth animation
+     * @param {number} page
+     */
+    snapToPage(page) {
         if (!this.track) return;
 
-        // Translate track to show current page
-        // Each page is 50% of track width, so translate by 50% per page
-        const offset = -this.currentPage * 50;
+        // Use percentage for final position (responsive)
+        const offset = -page * 50; // Each page is 50% of track width (2 pages = 200% track)
         this.track.style.transform = `translateX(${offset}%)`;
 
         // Update dots
         this.dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === this.currentPage);
+            dot.classList.toggle('active', index === page);
         });
 
         // Save state
         this.saveState();
+    }
+
+    updatePagePosition() {
+        // Legacy method - now just calls snapToPage
+        this.snapToPage(this.currentPage);
     }
 
     // ========================================
