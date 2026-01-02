@@ -41,7 +41,8 @@ class ExpandableQuickActions {
         this.swipeStartY = 0;
         this.swipeStartTime = 0;
         this.lastSwipeTime = 0;
-        this.swipeThreshold = 50; // pixels
+        this.swipeThreshold = 30; // pixels (lowered for better responsiveness)
+        this.swipeTimeLimit = 500; // ms (increased for easier swipes)
         this.doubleSwipeWindow = 500; // ms
 
         // Drag-to-reorder state
@@ -164,7 +165,7 @@ class ExpandableQuickActions {
         // Determine primary direction
         const isHorizontal = Math.abs(deltaX) > Math.abs(deltaY);
 
-        if (isHorizontal && Math.abs(deltaX) > this.swipeThreshold && deltaTime < 300) {
+        if (isHorizontal && Math.abs(deltaX) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
             // Horizontal swipe - page switch
             if (deltaX < 0 && this.currentPage < this.totalPages - 1) {
                 // Swipe left - next page
@@ -173,9 +174,12 @@ class ExpandableQuickActions {
                 // Swipe right - previous page
                 this.previousPage();
             }
-        } else if (!isHorizontal && deltaY > this.swipeThreshold) {
-            // Vertical swipe down - check for double-swipe
-            this.handleVerticalSwipe(deltaY, deltaTime);
+        } else if (!isHorizontal && Math.abs(deltaY) > this.swipeThreshold && deltaTime < this.swipeTimeLimit) {
+            // Vertical swipe - check for expansion
+            if (deltaY > 0) {
+                // Swipe down
+                this.handleVerticalSwipe(deltaY, deltaTime);
+            }
         }
     }
 
@@ -187,23 +191,21 @@ class ExpandableQuickActions {
         const now = Date.now();
         const timeSinceLastSwipe = now - this.lastSwipeTime;
 
-        // Double-swipe detection
-        if (timeSinceLastSwipe < this.doubleSwipeWindow && !this.isExpanded) {
-            // Double swipe down - jump straight to expanded
-            console.log('⚡ Double-swipe detected - jumping to expanded view');
-            this.expand();
-            this.triggerHaptic('heavy');
-            this.lastSwipeTime = 0; // Reset
-        } else {
-            // Single swipe - handled by shade controller (open/close)
-            this.lastSwipeTime = now;
-
-            // If shade is already open and we swipe down again, expand
-            if (this.shade.isShadeOpen && !this.isExpanded && deltaY > this.swipeThreshold * 2) {
-                console.log('📱 Second swipe - expanding quick actions');
-                this.expand();
-            }
+        // If already expanded, ignore (let shade controller handle collapse)
+        if (this.isExpanded) {
+            return;
         }
+
+        // If shade is open and we're in collapsed quick actions, expand
+        if (this.shade.isShadeOpen) {
+            console.log('📱 Vertical swipe - expanding quick actions');
+            this.expand();
+            this.lastSwipeTime = now;
+            return;
+        }
+
+        // Track swipe timing for double-swipe shortcut
+        this.lastSwipeTime = now;
     }
 
     // ========================================

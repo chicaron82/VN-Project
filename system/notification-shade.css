@@ -685,8 +685,9 @@ body.screenshot-mode #dialogue-box {
 
 .quick-actions-track {
     display: flex;
-    transition: transform 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
     width: 200%; /* 2 pages */
+    will-change: transform; /* GPU acceleration */
 }
 
 .quick-actions-page {
@@ -723,7 +724,8 @@ body.screenshot-mode #dialogue-box {
 .quick-actions-expanded {
     opacity: 0;
     transform: translateY(-10px);
-    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: opacity, transform; /* GPU acceleration */
 }
 
 .quick-actions-expanded.visible {
