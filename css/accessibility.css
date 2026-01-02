@@ -119,6 +119,12 @@ textarea:focus {
     outline-offset: 2px;
 }
 
+/* Exception: Navigation dots shouldn't get focus outline */
+.quick-actions-dots .dot:focus,
+.quick-actions-dots .dot:focus-visible {
+    outline: none;
+}
+
 /* High contrast focus */
 body.high-contrast *:focus {
     outline: 4px solid #00ffff;
@@ -169,6 +175,12 @@ body.high-contrast *:focus {
 .settings-menu button {
     min-width: 44px;
     min-height: 44px;
+}
+
+/* Explicitly prevent touch target sizing on nav dots */
+.quick-actions-dots .dot {
+    min-width: unset !important;
+    min-height: unset !important;
 }
 
 /* ========================================
