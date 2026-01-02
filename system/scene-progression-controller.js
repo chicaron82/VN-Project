@@ -172,6 +172,11 @@ class SceneProgressionController {
     startRoute(routeName) {
         console.log(`🚀 Starting route: ${routeName}`);
 
+        // Enable status notifications now that gameplay is starting
+        if (this.game.statusNotification) {
+            this.game.statusNotification.enable();
+        }
+
         // Clear backlog from previous session/route
         if (this.game.backlogManager) {
             this.game.backlogManager.clearHistory();

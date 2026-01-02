@@ -22,6 +22,7 @@ class StatusNotificationController {
         this.currentTimeout = null;
         this.currentType = null;
         this.currentPriority = 'normal';
+        this.isEnabled = false; // Disabled until game actually starts
 
         // Priority weights (higher = more important)
         this.priorities = {
@@ -34,7 +35,25 @@ class StatusNotificationController {
         // Setup click handler
         this.setupClickHandler();
 
-        console.log('📢 StatusNotificationController initialized');
+        console.log('📢 StatusNotificationController initialized (disabled until game starts)');
+    }
+
+    /**
+     * Enable notifications (called when gameplay actually starts)
+     */
+    enable() {
+        this.isEnabled = true;
+        console.log('📢 Notifications enabled');
+    }
+
+    /**
+     * Disable notifications (e.g., during loading, main menu)
+     */
+    disable() {
+        this.isEnabled = false;
+        this.hide(true); // Force hide any showing notification
+        this.queue = []; // Clear queue
+        console.log('📢 Notifications disabled');
     }
 
     setupClickHandler() {
@@ -66,6 +85,12 @@ class StatusNotificationController {
      * @param {boolean} [options.interactive=false] - Show hover state for clickable messages
      */
     show({ type = 'info', icon = 'ℹ️', message, duration = 2000, pulse = false, priority = 'normal', interactive = false }) {
+        // Don't show notifications if disabled (during init/loading/menu)
+        if (!this.isEnabled) {
+            console.log(`📢 Notification blocked (disabled): ${message}`);
+            return;
+        }
+
         // Handle priority interruption
         if (this.isShowing) {
             const currentWeight = this.priorities[this.currentPriority] || 50;
