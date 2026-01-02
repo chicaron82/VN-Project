@@ -94,7 +94,7 @@ class ExpandableQuickActions {
             const btn = e.target.closest('.quick-action-btn');
             if (!btn) return;
 
-            const action = btn.id.replace('shade-', '') || btn.dataset.action;
+            const action = btn.dataset.action || btn.id.replace('shade-', '');
             this.handleAction(action);
         });
     }
@@ -338,12 +338,37 @@ class ExpandableQuickActions {
         if (this.shade.screenshotMode) {
             // Hide UI elements
             document.body.classList.add('screenshot-mode');
-            console.log('📸 Screenshot mode enabled - tap again to capture or tap anywhere to exit');
+            console.log('📸 Screenshot mode enabled - tap anywhere to exit');
+
+            // Add global click listener to exit screenshot mode
+            this.screenshotExitHandler = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.exitScreenshotMode();
+            };
+
+            // Use setTimeout to prevent this click from immediately triggering the exit
+            setTimeout(() => {
+                document.addEventListener('click', this.screenshotExitHandler, { once: true, capture: true });
+                document.addEventListener('touchend', this.screenshotExitHandler, { once: true, capture: true });
+            }, 100);
         } else {
-            // Show UI elements
-            document.body.classList.remove('screenshot-mode');
-            console.log('📸 Screenshot mode disabled');
+            this.exitScreenshotMode();
         }
+    }
+
+    exitScreenshotMode() {
+        // Remove global listeners if they exist
+        if (this.screenshotExitHandler) {
+            document.removeEventListener('click', this.screenshotExitHandler, { capture: true });
+            document.removeEventListener('touchend', this.screenshotExitHandler, { capture: true });
+            this.screenshotExitHandler = null;
+        }
+
+        // Show UI elements
+        this.shade.screenshotMode = false;
+        document.body.classList.remove('screenshot-mode');
+        console.log('📸 Screenshot mode disabled');
     }
 
     showHelp() {

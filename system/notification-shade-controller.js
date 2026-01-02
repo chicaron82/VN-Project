@@ -465,6 +465,11 @@ class NotificationShadeController {
             this.backdrop.classList.remove('visible');
         }
 
+        // Reset quick actions to collapsed state
+        if (this.quickActions) {
+            this.quickActions.collapse();
+        }
+
         // Resume game
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = false;
