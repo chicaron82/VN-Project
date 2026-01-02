@@ -68,6 +68,9 @@ class NotificationShadeController {
             console.warn('ExpandableQuickActions not loaded');
         }
 
+        // Initialize sidebar depth layer swipe (iOS-style)
+        this.initSidebarLayerSwipe();
+
         console.log('✅ NotificationShadeController initialized');
     }
 
@@ -1380,6 +1383,197 @@ class NotificationShadeController {
         requestAnimationFrame(() => {
             overlay.classList.add('visible');
         });
+    }
+
+    // ========================================
+    // SIDEBAR DEPTH LAYER SWIPE HANDLING
+    // iOS-STYLE REVEAL ANIMATION
+    // ========================================
+
+    /**
+     * Initialize sidebar layer swipe handling
+     * Called after sidebar elements are ready
+     */
+    initSidebarLayerSwipe() {
+        this.sidebarLayers = document.querySelector('.sidebar-layers');
+        this.primaryLayer = document.querySelector('.primary-layer');
+        this.secondaryLayer = document.querySelector('.secondary-layer');
+
+        if (!this.sidebarLayers || !this.primaryLayer) {
+            console.warn('⚠️ Sidebar layers not found');
+            return;
+        }
+
+        // Layer swipe state
+        this.layerSwipeStartX = 0;
+        this.layerSwipeStartTime = 0;
+        this.isLayerDragging = false;
+        this.isToolsRevealed = false;
+
+        // Add touch listeners to primary layer
+        this.primaryLayer.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        this.primaryLayer.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        this.primaryLayer.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
+
+        // Add touch listeners to secondary layer (for swipe back)
+        this.secondaryLayer?.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        this.secondaryLayer?.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        this.secondaryLayer?.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
+
+        // Action button click delegation for layers
+        this.sidebarLayers.addEventListener('click', (e) => {
+            const btn = e.target.closest('.quick-action-btn');
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            if (action) {
+                this.handleLayerAction(action);
+            }
+        });
+
+        console.log('✅ Sidebar layer swipe initialized');
+    }
+
+    /**
+     * @param {TouchEvent} e
+     */
+    handleLayerSwipeStart(e) {
+        const touch = e.touches[0];
+        this.layerSwipeStartX = touch.clientX;
+        this.layerSwipeStartTime = Date.now();
+        this.isLayerDragging = true;
+
+        // Add dragging class (disables CSS transitions)
+        this.sidebarLayers?.classList.add('dragging');
+    }
+
+    /**
+     * @param {TouchEvent} e
+     */
+    handleLayerSwipeMove(e) {
+        if (!this.isLayerDragging) return;
+
+        const touch = e.touches[0];
+        const deltaX = touch.clientX - this.layerSwipeStartX;
+
+        // Prevent vertical scroll
+        e.preventDefault();
+
+        // Live drag tracking
+        if (this.primaryLayer) {
+            const layerWidth = this.primaryLayer.offsetWidth || 200;
+
+            if (this.isToolsRevealed) {
+                // Currently showing tools - drag to hide
+                // Clamp between 0 (tools fully visible) and 85% (tools hidden)
+                const percent = Math.max(0, Math.min(85, 85 + (deltaX / layerWidth) * 85));
+                this.primaryLayer.style.transform = `translateX(${percent}%)`;
+            } else {
+                // Currently showing core - drag to reveal tools
+                // Clamp between 0 (core in place) and 85% (tools revealed)
+                const percent = Math.max(0, Math.min(85, (deltaX / layerWidth) * 85));
+                this.primaryLayer.style.transform = `translateX(${percent}%)`;
+            }
+        }
+    }
+
+    /**
+     * @param {TouchEvent} e
+     */
+    handleLayerSwipeEnd(e) {
+        if (!this.isLayerDragging) return;
+
+        this.isLayerDragging = false;
+        this.sidebarLayers?.classList.remove('dragging');
+
+        // Reset inline transform - let CSS classes take over
+        if (this.primaryLayer) {
+            this.primaryLayer.style.transform = '';
+        }
+
+        const touch = e.changedTouches[0];
+        const deltaX = touch.clientX - this.layerSwipeStartX;
+        const deltaTime = Date.now() - this.layerSwipeStartTime;
+        const velocity = deltaX / Math.max(deltaTime, 1);
+
+        const threshold = 50; // pixels
+        const velocityThreshold = 0.3; // px/ms
+
+        if (this.isToolsRevealed) {
+            // Currently showing tools - check if swiping back
+            if (deltaX < -threshold || velocity < -velocityThreshold) {
+                this.hideToolsLayer();
+            }
+        } else {
+            // Currently showing core - check if revealing tools
+            if (deltaX > threshold || velocity > velocityThreshold) {
+                this.revealToolsLayer();
+            }
+        }
+    }
+
+    /**
+     * Reveal the tools layer (slide primary to right)
+     */
+    revealToolsLayer() {
+        if (!this.sidebarLayers) return;
+
+        this.sidebarLayers.classList.add('tools-revealed');
+        this.isToolsRevealed = true;
+        this.triggerHaptic('medium');
+
+        console.log('🔧 Tools layer revealed');
+    }
+
+    /**
+     * Hide the tools layer (slide primary back)
+     */
+    hideToolsLayer() {
+        if (!this.sidebarLayers) return;
+
+        this.sidebarLayers.classList.remove('tools-revealed');
+        this.isToolsRevealed = false;
+        this.triggerHaptic('light');
+
+        console.log('⚡ Core layer restored');
+    }
+
+    /**
+     * Handle action button clicks from layers
+     * @param {string} action
+     */
+    handleLayerAction(action) {
+        console.log(`🎯 Layer action: ${action}`);
+
+        switch (action) {
+            case 'save':
+                this.quickSave();
+                break;
+            case 'load':
+                this.quickLoad();
+                break;
+            case 'fullscreen':
+                this.toggleFullscreen();
+                break;
+            case 'exit':
+                this.returnToMenu();
+                break;
+            case 'screenshot':
+                this.game.toggleUI?.();
+                this.hideSidebar();
+                break;
+            case 'notes':
+                this.openNotesViewer();
+                break;
+            case 'settings':
+                this.openSettings();
+                break;
+            case 'help':
+                this.quickActions?.showHelp?.();
+                break;
+            default:
+                console.warn(`Unknown layer action: ${action}`);
+        }
     }
 }
 

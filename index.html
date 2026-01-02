@@ -285,39 +285,69 @@
     <div id="shade-backdrop"></div>
 
     <!-- ========================================
-         SIDEBAR (Desktop)
+         SIDEBAR (Desktop/Landscape)
+         iOS-STYLE DEPTH LAYERS
          DIZEE + ZEERAH + GENZEE
          ======================================== -->
     <div id="sidebar">
-        <!-- Quick Actions -->
-        <div class="shade-section">
-            <div class="shade-section-title">Quick Actions</div>
-            <div class="quick-actions">
-                <button class="quick-action-btn" id="sidebar-save">
-                    <span class="quick-action-icon">💾</span>
-                    <span>Save</span>
-                </button>
-                <button class="quick-action-btn" id="sidebar-load">
-                    <span class="quick-action-icon">📂</span>
-                    <span>Load</span>
-                </button>
-                <button class="quick-action-btn" id="sidebar-fullscreen">
-                    <span class="quick-action-icon">⛶</span>
-                    <span>Full</span>
-                </button>
-                <button class="quick-action-btn" id="sidebar-exit">
-                    <span class="quick-action-icon">🚪</span>
-                    <span>Exit</span>
-                </button>
-                <button class="quick-action-btn" id="sidebar-settings">
-                    <span class="quick-action-icon">⚙️</span>
-                    <span>Settings</span>
-                </button>
+        <!-- Layer Container - enables depth swipe -->
+        <div class="sidebar-layers">
+
+            <!-- SECONDARY LAYER (Behind - Tools) -->
+            <div class="sidebar-layer secondary-layer" data-layer="tools">
+                <div class="layer-header">
+                    <span class="layer-title">🔧 Tools</span>
+                    <span class="layer-hint">← swipe back</span>
+                </div>
+                <div class="layer-actions">
+                    <button class="quick-action-btn" data-action="screenshot">
+                        <span class="quick-action-icon">📸</span>
+                        <span>Screenshot</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="notes">
+                        <span class="quick-action-icon">📝</span>
+                        <span>Notes</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="settings">
+                        <span class="quick-action-icon">⚙️</span>
+                        <span>Settings</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="help">
+                        <span class="quick-action-icon">❓</span>
+                        <span>Help</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRIMARY LAYER (Front - Core Actions) -->
+            <div class="sidebar-layer primary-layer" data-layer="core">
+                <div class="layer-header">
+                    <span class="layer-title">⚡ Core</span>
+                    <span class="layer-hint">swipe for tools →</span>
+                </div>
+                <div class="layer-actions">
+                    <button class="quick-action-btn" id="sidebar-save" data-action="save">
+                        <span class="quick-action-icon">💾</span>
+                        <span>Save</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-load" data-action="load">
+                        <span class="quick-action-icon">📂</span>
+                        <span>Load</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-fullscreen" data-action="fullscreen">
+                        <span class="quick-action-icon">⛶</span>
+                        <span>Fullscreen</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-exit" data-action="exit">
+                        <span class="quick-action-icon">🚪</span>
+                        <span>Exit</span>
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Status Details -->
-        <div class="shade-section">
+        <!-- Status Details (always visible below layers) -->
+        <div class="shade-section sidebar-status">
             <div class="shade-section-title">Current Status</div>
             <div class="status-details">
                 <div class="status-detail-item">
