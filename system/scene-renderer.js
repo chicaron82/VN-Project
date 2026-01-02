@@ -163,6 +163,14 @@ class SceneRenderer {
                 button.addEventListener('click', () => {
                     game.triggerSensoryFeedback('buttonPress', button, 'Choice selected');
                     game.choiceMenu.style.display = 'none';
+
+                    // Record choice for echo memory (Belle's meta-awareness)
+                    if (game.echoMemory) {
+                        const choiceId = game.gameState?.currentScene || 'unknown';
+                        const optionIndex = choices.indexOf(choice);
+                        game.echoMemory.recordChoice(choiceId, optionIndex);
+                    }
+
                     if (onChoice) onChoice(choice.value);
                 });
             }

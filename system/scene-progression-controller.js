@@ -177,6 +177,11 @@ class SceneProgressionController {
             this.game.statusNotification.enable();
         }
 
+        // Record loop for echo memory (Belle's meta-awareness)
+        if (this.game.echoMemory) {
+            this.game.echoMemory.recordLoop(routeName);
+        }
+
         // Clear backlog from previous session/route
         if (this.game.backlogManager) {
             this.game.backlogManager.clearHistory();

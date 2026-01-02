@@ -153,6 +153,11 @@ class StandaloneNotesViewer {
     }
 
     show() {
+        // Record notes viewer open for echo memory (Gentle echo trigger)
+        if (this.game.echoMemory) {
+            this.game.echoMemory.recordNotesViewerOpen();
+        }
+
         // Create viewer overlay
         const viewer = document.createElement('div');
         viewer.id = 'standalone-notes-viewer';

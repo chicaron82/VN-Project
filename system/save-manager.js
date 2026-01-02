@@ -77,6 +77,11 @@ class SaveManager {
             // DIZEE: Save note discovery data
             this.saveNoteDiscovery(slotNumber, isAutoSave);
 
+            // Record save for echo memory (Belle's meta-awareness)
+            if (this.game.echoMemory) {
+                this.game.echoMemory.recordSave();
+            }
+
             // Show save indicator
             const labelText = customLabel ? ` - "${customLabel}"` : '';
             this.showSaveIndicator(isAutoSave ? 'Auto-saved' : `Saved to Slot ${slotNumber}${labelText}`);
@@ -193,6 +198,11 @@ class SaveManager {
             if (!this.validateSaveData(saveData)) {
                 console.error('Invalid save data');
                 return null;
+            }
+
+            // Record load for echo memory (save scumming detection)
+            if (this.game.echoMemory) {
+                this.game.echoMemory.recordLoad();
             }
 
             return saveData;

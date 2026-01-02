@@ -663,6 +663,12 @@ class TetherSystem {
 
         console.log('💀 Tether death triggered');
 
+        // Record tether death for echo memory
+        if (this.game.echoMemory) {
+            const sceneId = this.game.gameState?.currentScene || 'unknown';
+            this.game.echoMemory.recordDeath(sceneId, 'tether');
+        }
+
         // Check if route has custom death handler
         if (this.route && typeof this.route.tetherDeath === 'function') {
             console.log('→ Delegating to route tetherDeath handler');

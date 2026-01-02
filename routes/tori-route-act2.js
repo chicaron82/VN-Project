@@ -61,6 +61,13 @@ class ToriAct2 {
             onChoice: (playerChoice) => {
                 // Store what player WANTED to say
                 this.playerIntendedChoice = playerChoice;
+
+                // Echo Memory: Despair's hijack comment (Belle's meta-awareness)
+                if (this.game.echoMemory && playerChoice !== 'tiger_tail') {
+                    // Only trigger if player tried to choose something else
+                    this.game.echoMemory.triggerEchoComment('despair', 'despairHijack', 'beat1_iceCream');
+                }
+
                 // But Despair forces Tiger Tail
                 this.beat1_despairOverride();
             },
