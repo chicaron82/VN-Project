@@ -211,7 +211,8 @@ class ExpandableQuickActions {
         if (!this.track) return;
 
         // Translate track to show current page
-        const offset = -this.currentPage * 100;
+        // Each page is 50% of track width, so translate by 50% per page
+        const offset = -this.currentPage * 50;
         this.track.style.transform = `translateX(${offset}%)`;
 
         // Update dots
