@@ -408,7 +408,12 @@ class ExpandableQuickActions {
             groupDiv.className = 'expanded-group';
             groupDiv.dataset.category = category;
 
-            const label = category === 'core' ? 'Default ⭐' : 'Tools';
+            // Update labels to clarify star meaning
+            let label = category === 'core' ? 'Core Actions' : 'Tools';
+            if (this.isEditMode) {
+                label += ' (⭐ = Show in Carousel)';
+            }
+
             groupDiv.innerHTML = `
                 <div class="group-label">${label}</div>
                 <div class="expanded-actions"></div>
@@ -604,24 +609,18 @@ class ExpandableQuickActions {
         const index = this.customLayout.favorites.indexOf(actionId);
 
         if (index !== -1) {
-            // Remove from favorites
-            if (this.customLayout.favorites.length > 4) {
-                this.customLayout.favorites.splice(index, 1);
-                console.log(`⭐ Removed favorite: ${actionId}`);
-                this.triggerHaptic('light');
-            } else {
-                // Can't go below 4 favorites (minimum for 1 page)
-                console.warn('⚠️ Must have at least 4 favorites');
-                return;
-            }
+            // Remove from carousel
+            this.customLayout.favorites.splice(index, 1);
+            console.log(`☆ Removed from carousel: ${actionId} (${this.customLayout.favorites.length} in carousel)`);
+            this.triggerHaptic('light');
         } else {
-            // Add to favorites (max 8)
+            // Add to carousel (max 8 for 2 pages)
             if (this.customLayout.favorites.length < 8) {
                 this.customLayout.favorites.push(actionId);
-                console.log(`⭐ Added favorite: ${actionId}`);
+                console.log(`⭐ Added to carousel: ${actionId} (${this.customLayout.favorites.length} in carousel)`);
                 this.triggerHaptic('medium');
             } else {
-                console.warn('⚠️ Maximum 8 favorites reached');
+                console.warn('⚠️ Maximum 8 carousel actions (2 pages of 4)');
                 return;
             }
         }
