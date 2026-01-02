@@ -34,6 +34,7 @@ class ExpandableQuickActions {
         this.currentPage = 0;
         this.isExpanded = false;
         this.totalPages = 2;
+        this.isEditMode = false;
 
         // Swipe detection
         this.swipeStartX = 0;
@@ -42,6 +43,23 @@ class ExpandableQuickActions {
         this.lastSwipeTime = 0;
         this.swipeThreshold = 50; // pixels
         this.doubleSwipeWindow = 500; // ms
+
+        // Drag-to-reorder state
+        this.draggedElement = null;
+        this.dragStartIndex = -1;
+        this.dragOverIndex = -1;
+
+        // Define all available actions
+        this.availableActions = [
+            { id: 'save', icon: '💾', label: 'Save', category: 'core' },
+            { id: 'load', icon: '📂', label: 'Load', category: 'core' },
+            { id: 'fullscreen', icon: '⛶', label: 'Full', category: 'core' },
+            { id: 'exit', icon: '🚪', label: 'Exit', category: 'core' },
+            { id: 'screenshot', icon: '📸', label: 'Shot', category: 'tools' },
+            { id: 'notes', icon: '📝', label: 'Notes', category: 'tools' },
+            { id: 'settings', icon: '⚙️', label: 'Set', category: 'tools' },
+            { id: 'help', icon: '❓', label: 'Help', category: 'tools' }
+        ];
 
         // Elements
         this.initializeElements();
@@ -91,6 +109,11 @@ class ExpandableQuickActions {
     setupActionDelegation() {
         // Delegate all quick-action-btn clicks to appropriate handlers
         this.container?.addEventListener('click', (e) => {
+            // Don't handle action clicks in edit mode (unless it's a star button)
+            if (this.isEditMode && !e.target.closest('.star-btn')) {
+                return;
+            }
+
             const btn = e.target.closest('.quick-action-btn');
             if (!btn) return;
 
@@ -279,16 +302,354 @@ class ExpandableQuickActions {
     }
 
     // ========================================
-    // EDIT MODE (Phase 2 - Placeholder)
+    // EDIT MODE (Phase 2)
     // ========================================
 
     toggleEditMode() {
-        console.log('✏️ Edit mode - Coming in Phase 2!');
-        // TODO: Phase 2 implementation
-        // - Add drag handles
-        // - Enable reordering
-        // - Star favorites
-        // - Save custom layout
+        this.isEditMode = !this.isEditMode;
+
+        if (this.isEditMode) {
+            this.enterEditMode();
+        } else {
+            this.exitEditMode();
+        }
+    }
+
+    enterEditMode() {
+        console.log('✏️ Edit mode enabled');
+
+        // Ensure we're in expanded view
+        if (!this.isExpanded) {
+            this.expand();
+        }
+
+        // Add edit-mode class to container
+        this.expandedView?.classList.add('edit-mode');
+
+        // Re-render expanded view with edit controls
+        this.renderExpandedView();
+
+        // Update edit button
+        if (this.editBtn) {
+            this.editBtn.textContent = '✓';
+            this.editBtn.classList.add('active');
+        }
+
+        // Add escape key listener
+        this.editModeEscapeHandler = (e) => {
+            if (e.key === 'Escape') {
+                this.exitEditMode();
+            }
+        };
+        document.addEventListener('keydown', this.editModeEscapeHandler);
+
+        this.triggerHaptic('medium');
+    }
+
+    exitEditMode() {
+        console.log('✏️ Edit mode disabled');
+
+        this.isEditMode = false;
+
+        // Remove edit-mode class
+        this.expandedView?.classList.remove('edit-mode');
+
+        // Re-render expanded view without edit controls
+        this.renderExpandedView();
+
+        // Update edit button
+        if (this.editBtn) {
+            this.editBtn.textContent = '✏️';
+            this.editBtn.classList.remove('active');
+        }
+
+        // Remove escape listener
+        if (this.editModeEscapeHandler) {
+            document.removeEventListener('keydown', this.editModeEscapeHandler);
+            this.editModeEscapeHandler = null;
+        }
+
+        // Save changes
+        this.saveState();
+
+        // Rebuild carousel pages with new layout
+        this.rebuildCarousel();
+
+        this.triggerHaptic('light');
+    }
+
+    // ========================================
+    // DYNAMIC RENDERING
+    // ========================================
+
+    renderExpandedView() {
+        const expandedGrid = this.expandedView?.querySelector('.expanded-grid');
+        if (!expandedGrid) return;
+
+        // Get actions in custom order
+        const orderedActions = this.customLayout.actionOrder
+            .map(id => this.availableActions.find(a => a.id === id))
+            .filter(a => a && !this.customLayout.hidden.includes(a.id));
+
+        // Clear current content
+        expandedGrid.innerHTML = '';
+
+        // Group actions by category
+        const groups = {
+            core: orderedActions.filter(a => a.category === 'core'),
+            tools: orderedActions.filter(a => a.category === 'tools')
+        };
+
+        // Render each group
+        Object.entries(groups).forEach(([category, actions]) => {
+            if (actions.length === 0) return;
+
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'expanded-group';
+            groupDiv.dataset.category = category;
+
+            const label = category === 'core' ? 'Default ⭐' : 'Tools';
+            groupDiv.innerHTML = `
+                <div class="group-label">${label}</div>
+                <div class="expanded-actions"></div>
+            `;
+
+            const actionsContainer = groupDiv.querySelector('.expanded-actions');
+
+            actions.forEach((action, index) => {
+                const btn = this.createActionButton(action, index);
+                actionsContainer.appendChild(btn);
+            });
+
+            expandedGrid.appendChild(groupDiv);
+        });
+
+        // Add reset button in edit mode
+        if (this.isEditMode) {
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'reset-defaults-btn';
+            resetBtn.textContent = '↺ Reset to Defaults';
+            resetBtn.addEventListener('click', () => this.resetToDefaults());
+            expandedGrid.appendChild(resetBtn);
+        }
+    }
+
+    createActionButton(action, index) {
+        const btn = document.createElement('button');
+        btn.className = 'quick-action-btn';
+        btn.dataset.action = action.id;
+        btn.dataset.index = index;
+
+        const isFavorite = this.customLayout.favorites.includes(action.id);
+
+        if (this.isEditMode) {
+            // Edit mode: add controls
+            btn.classList.add('editable');
+            btn.draggable = true;
+
+            btn.innerHTML = `
+                <div class="drag-handle">⋮⋮</div>
+                <span class="quick-action-icon">${action.icon}</span>
+                <span>${action.label}</span>
+                <button class="star-btn ${isFavorite ? 'active' : ''}" data-action-id="${action.id}">
+                    ${isFavorite ? '⭐' : '☆'}
+                </button>
+            `;
+
+            // Star button handler
+            const starBtn = btn.querySelector('.star-btn');
+            starBtn?.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleFavorite(action.id);
+            });
+
+            // Drag handlers
+            btn.addEventListener('dragstart', (e) => this.handleDragStart(e, action.id, index));
+            btn.addEventListener('dragover', (e) => this.handleDragOver(e));
+            btn.addEventListener('drop', (e) => this.handleDrop(e, index));
+            btn.addEventListener('dragend', (e) => this.handleDragEnd(e));
+
+        } else {
+            // Normal mode: just the action
+            btn.innerHTML = `
+                <span class="quick-action-icon">${action.icon}</span>
+                <span>${action.label}</span>
+            `;
+        }
+
+        return btn;
+    }
+
+    rebuildCarousel() {
+        // Get favorite actions in order
+        const favoriteActions = this.customLayout.favorites
+            .map(id => this.availableActions.find(a => a.id === id))
+            .filter(a => a);
+
+        // Split into pages of 4
+        const page1Actions = favoriteActions.slice(0, 4);
+        const page2Actions = favoriteActions.slice(4, 8);
+
+        // Update page 1
+        const page1 = this.track?.querySelector('[data-page="0"]');
+        if (page1) {
+            page1.innerHTML = page1Actions.map(a => `
+                <button class="quick-action-btn" data-action="${a.id}">
+                    <span class="quick-action-icon">${a.icon}</span>
+                    <span>${a.label}</span>
+                </button>
+            `).join('');
+        }
+
+        // Update page 2
+        const page2 = this.track?.querySelector('[data-page="1"]');
+        if (page2) {
+            page2.innerHTML = page2Actions.map(a => `
+                <button class="quick-action-btn" data-action="${a.id}">
+                    <span class="quick-action-icon">${a.icon}</span>
+                    <span>${a.label}</span>
+                </button>
+            `).join('');
+        }
+
+        console.log('🔄 Carousel rebuilt with custom layout');
+    }
+
+    // ========================================
+    // DRAG-TO-REORDER HANDLERS
+    // ========================================
+
+    handleDragStart(e, actionId, index) {
+        this.draggedElement = e.target;
+        this.dragStartIndex = index;
+        this.draggedActionId = actionId;
+
+        e.target.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/html', e.target.innerHTML);
+
+        this.triggerHaptic('light');
+    }
+
+    handleDragOver(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+
+        e.dataTransfer.dropEffect = 'move';
+
+        const target = e.target.closest('.quick-action-btn');
+        if (!target || target === this.draggedElement) return;
+
+        // Visual feedback
+        target.classList.add('drag-over');
+
+        return false;
+    }
+
+    handleDrop(e, targetIndex) {
+        if (e.stopPropagation) {
+            e.stopPropagation();
+        }
+
+        const target = e.target.closest('.quick-action-btn');
+        if (!target || !this.draggedActionId) return false;
+
+        // Remove drag-over class
+        target.classList.remove('drag-over');
+
+        // Get target action ID
+        const targetActionId = target.dataset.action;
+        if (!targetActionId) return false;
+
+        // Reorder in customLayout
+        const fromIndex = this.customLayout.actionOrder.indexOf(this.draggedActionId);
+        const toIndex = this.customLayout.actionOrder.indexOf(targetActionId);
+
+        if (fromIndex !== -1 && toIndex !== -1) {
+            // Remove from old position
+            const [movedAction] = this.customLayout.actionOrder.splice(fromIndex, 1);
+            // Insert at new position
+            this.customLayout.actionOrder.splice(toIndex, 0, movedAction);
+
+            console.log(`🔄 Reordered: ${this.draggedActionId} → position ${toIndex}`);
+
+            // Re-render
+            this.renderExpandedView();
+
+            this.triggerHaptic('medium');
+        }
+
+        return false;
+    }
+
+    handleDragEnd(e) {
+        e.target.classList.remove('dragging');
+
+        // Remove drag-over from all elements
+        document.querySelectorAll('.drag-over').forEach(el => {
+            el.classList.remove('drag-over');
+        });
+
+        this.draggedElement = null;
+        this.dragStartIndex = -1;
+        this.draggedActionId = null;
+    }
+
+    // ========================================
+    // FAVORITES & CUSTOMIZATION
+    // ========================================
+
+    toggleFavorite(actionId) {
+        const index = this.customLayout.favorites.indexOf(actionId);
+
+        if (index !== -1) {
+            // Remove from favorites
+            if (this.customLayout.favorites.length > 4) {
+                this.customLayout.favorites.splice(index, 1);
+                console.log(`⭐ Removed favorite: ${actionId}`);
+                this.triggerHaptic('light');
+            } else {
+                // Can't go below 4 favorites (minimum for 1 page)
+                console.warn('⚠️ Must have at least 4 favorites');
+                return;
+            }
+        } else {
+            // Add to favorites (max 8)
+            if (this.customLayout.favorites.length < 8) {
+                this.customLayout.favorites.push(actionId);
+                console.log(`⭐ Added favorite: ${actionId}`);
+                this.triggerHaptic('medium');
+            } else {
+                console.warn('⚠️ Maximum 8 favorites reached');
+                return;
+            }
+        }
+
+        // Re-render to update star buttons
+        this.renderExpandedView();
+    }
+
+    resetToDefaults() {
+        // Confirm first
+        if (!confirm('Reset all quick actions to defaults?')) {
+            return;
+        }
+
+        // Reset layout
+        this.customLayout = {
+            actionOrder: this.availableActions.map(a => a.id),
+            favorites: this.availableActions.slice(0, 8).map(a => a.id),
+            hidden: []
+        };
+
+        // Save and re-render
+        this.saveState();
+        this.renderExpandedView();
+        this.rebuildCarousel();
+
+        console.log('↺ Reset to defaults');
+        this.triggerHaptic('heavy');
     }
 
     // ========================================
@@ -388,11 +749,37 @@ class ExpandableQuickActions {
             if (saved) {
                 const state = JSON.parse(saved);
                 this.currentPage = state.currentPage || 0;
+
+                // Load custom layout if exists
+                if (state.customLayout) {
+                    this.customLayout = state.customLayout;
+                } else {
+                    // Default layout: all actions in order, first 8 are favorites
+                    this.customLayout = {
+                        actionOrder: this.availableActions.map(a => a.id),
+                        favorites: this.availableActions.slice(0, 8).map(a => a.id),
+                        hidden: []
+                    };
+                }
+
                 this.updatePagePosition();
                 console.log(`💾 Loaded state: Page ${this.currentPage + 1}`);
+            } else {
+                // Initialize default layout
+                this.customLayout = {
+                    actionOrder: this.availableActions.map(a => a.id),
+                    favorites: this.availableActions.slice(0, 8).map(a => a.id),
+                    hidden: []
+                };
             }
         } catch (error) {
             console.warn('Failed to load quick actions state:', error);
+            // Fallback to default
+            this.customLayout = {
+                actionOrder: this.availableActions.map(a => a.id),
+                favorites: this.availableActions.slice(0, 8).map(a => a.id),
+                hidden: []
+            };
         }
     }
 
@@ -400,6 +787,7 @@ class ExpandableQuickActions {
         try {
             const state = {
                 currentPage: this.currentPage,
+                customLayout: this.customLayout,
                 timestamp: Date.now()
             };
             localStorage.setItem('quickActionsState', JSON.stringify(state));

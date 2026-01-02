@@ -829,6 +829,105 @@ body.screenshot-mode #dialogue-box {
     font-size: 24px;
 }
 
+/* ========================================
+   EDIT MODE STYLES
+   ======================================== */
+
+/* Edit button active state */
+.edit-btn.active {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+/* Editable action buttons */
+.quick-action-btn.editable {
+    position: relative;
+    cursor: move;
+    padding: 12px 10px;
+}
+
+.quick-action-btn.editable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Drag handle */
+.drag-handle {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 14px;
+    color: rgba(0, 255, 255, 0.4);
+    cursor: move;
+    user-select: none;
+}
+
+/* Star button */
+.star-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+}
+
+.star-btn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.star-btn.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+}
+
+/* Dragging states */
+.quick-action-btn.dragging {
+    opacity: 0.4;
+    transform: scale(0.95);
+}
+
+.quick-action-btn.drag-over {
+    border-color: rgba(255, 215, 0, 0.8);
+    background: rgba(255, 215, 0, 0.1);
+    transform: scale(1.05);
+}
+
+/* Reset button */
+.reset-defaults-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: rgba(255, 100, 100, 0.1);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 10px;
+    color: #ff6464;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-defaults-btn:hover {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: rgba(255, 100, 100, 0.6);
+    transform: scale(1.02);
+}
+
+/* Edit mode container adjustments */
+.quick-actions-expanded.edit-mode .expanded-header {
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
 /* Status Details */
 .status-details {
     background: rgba(0, 0, 0, 0.3);
