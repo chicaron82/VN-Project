@@ -1974,6 +1974,12 @@
                 game.statusNotification = new StatusNotificationController(game);
                 console.log('📢 Status Notification Controller ready');
             }
+
+            // Initialize Echo Memory System (Belle's meta-awareness feature)
+            if (typeof EchoMemorySystem !== 'undefined') {
+                game.echoMemory = new EchoMemorySystem(game);
+                console.log('👁️ Echo Memory System ready');
+            }
         });
     </script>
 </body>

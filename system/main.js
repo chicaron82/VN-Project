@@ -77,6 +77,7 @@ import './dev-hud-controller.js';
 import './notification-shade-controller.js';
 import './expandable-quick-actions.js';
 import './status-notification-controller.js';
+import './echo-memory-system.js';
 import './grab-handle-repositioner.js';
 import './tutorial-manager.js';
 import './loading-overlay.js';
