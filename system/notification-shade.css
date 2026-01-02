@@ -930,6 +930,200 @@ body.screenshot-mode #dialogue-box {
     margin-bottom: 20px;
 }
 
+/* ========================================
+   HELP OVERLAY
+   ======================================== */
+
+.quick-actions-help-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.quick-actions-help-overlay.visible {
+    opacity: 1;
+}
+
+.quick-actions-help-overlay.closing {
+    opacity: 0;
+}
+
+.help-content {
+    background: rgba(20, 20, 30, 0.95);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: helpSlideIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@keyframes helpSlideIn {
+    from {
+        transform: translateY(-20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.help-header h3 {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.help-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.help-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.help-body {
+    padding: 20px;
+}
+
+.help-section {
+    margin-bottom: 25px;
+}
+
+.help-section:last-child {
+    margin-bottom: 0;
+}
+
+.help-title {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #00ffff;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.help-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-item:last-child {
+    border-bottom: none;
+}
+
+.help-gesture {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(0, 255, 255, 0.8);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.help-desc {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.help-footer {
+    padding: 15px 20px 20px;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+}
+
+.help-got-it-btn {
+    background: rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 12px 30px;
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+
+.help-got-it-btn:hover {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.02);
+}
+
+.help-got-it-btn:active {
+    transform: scale(0.98);
+}
+
+/* Mobile responsiveness for help */
+@media (max-width: 480px) {
+    .help-content {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    .help-header h3 {
+        font-size: 16px;
+    }
+
+    .help-gesture {
+        min-width: 100px;
+        font-size: 11px;
+    }
+
+    .help-desc {
+        font-size: 11px;
+    }
+}
+
 /* Status Details */
 .status-details {
     background: rgba(0, 0, 0, 0.3);

@@ -734,10 +734,89 @@ class ExpandableQuickActions {
     }
 
     showHelp() {
-        console.log('❓ Help - Quick Actions Guide:');
-        console.log('  Swipe left/right: Switch action pages');
-        console.log('  Swipe down twice: Expand to see all actions');
-        console.log('  Screenshot: Toggles UI hide mode for clean captures');
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'quick-actions-help-overlay';
+        overlay.innerHTML = `
+            <div class="help-content">
+                <div class="help-header">
+                    <h3>❓ Quick Actions Guide</h3>
+                    <button class="help-close-btn">✕</button>
+                </div>
+                <div class="help-body">
+                    <div class="help-section">
+                        <div class="help-title">🔄 Navigation</div>
+                        <div class="help-item">
+                            <span class="help-gesture">Swipe Down</span>
+                            <span class="help-desc">Open quick actions carousel</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">Swipe Down Again</span>
+                            <span class="help-desc">Expand to see all actions</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">Swipe Left/Right</span>
+                            <span class="help-desc">Switch between action pages</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">Swipe Up</span>
+                            <span class="help-desc">Close notification shade</span>
+                        </div>
+                    </div>
+
+                    <div class="help-section">
+                        <div class="help-title">✏️ Customization</div>
+                        <div class="help-item">
+                            <span class="help-gesture">Edit Button</span>
+                            <span class="help-desc">Toggle edit mode (in expanded view)</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">Drag ⋮⋮</span>
+                            <span class="help-desc">Reorder actions (edit mode)</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">Tap ⭐</span>
+                            <span class="help-desc">Add/remove from carousel (edit mode)</span>
+                        </div>
+                        <div class="help-item">
+                            <span class="help-gesture">ESC Key</span>
+                            <span class="help-desc">Exit edit mode</span>
+                        </div>
+                    </div>
+
+                    <div class="help-section">
+                        <div class="help-title">📸 Screenshot Mode</div>
+                        <div class="help-item">
+                            <span class="help-desc">Hides all UI for clean captures. Tap anywhere to exit.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="help-footer">
+                    <button class="help-got-it-btn">Got it!</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Close handlers
+        const closeHelp = () => {
+            overlay.classList.add('closing');
+            setTimeout(() => overlay.remove(), 200);
+        };
+
+        overlay.querySelector('.help-close-btn').addEventListener('click', closeHelp);
+        overlay.querySelector('.help-got-it-btn').addEventListener('click', closeHelp);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closeHelp();
+        });
+
+        // Animate in
+        requestAnimationFrame(() => {
+            overlay.classList.add('visible');
+        });
+
+        this.triggerHaptic('medium');
     }
 
     // ========================================
