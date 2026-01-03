@@ -251,16 +251,47 @@ class ExpandableQuickActions {
         const now = Date.now();
         const timeSinceLastSwipe = now - this.lastSwipeTime;
 
+        // Calculate velocity for better responsiveness
+        const velocity = deltaY / Math.max(deltaTime, 1);
+        const velocityThreshold = 0.3; // px/ms - fast flick = easier trigger
+
         // If already expanded, ignore (let shade controller handle collapse)
         if (this.isExpanded) {
             return;
         }
 
-        // If shade is open and we're in collapsed quick actions, expand
+        // If shade is open and we detect a down swipe, expand
+        // Use EITHER threshold OR velocity for better responsiveness
         if (this.shade.isShadeOpen) {
-            console.log('📱 Vertical swipe - expanding quick actions');
-            this.expand();
-            this.lastSwipeTime = now;
+            const meetsThreshold = deltaY > 20; // Lowered from 30
+            const meetsVelocity = velocity > velocityThreshold;
+
+            if (meetsThreshold || meetsVelocity) {
+                console.log('📱 Vertical swipe - expanding quick actions', {
+                    deltaY,
+                    velocity: velocity.toFixed(2),
+                    method: meetsVelocity ? 'velocity' : 'threshold'
+                });
+                this.expand();
+                this.lastSwipeTime = now;
+                this.triggerHaptic('medium');
+                return;
+            }
+        }
+
+        // Double-swipe shortcut: Two quick down swipes = expand from anywhere
+        if (timeSinceLastSwipe < this.doubleSwipeWindow && timeSinceLastSwipe > 50) {
+            console.log('📱 Double-swipe detected - quick expand!');
+            // First ensure shade is open
+            if (!this.shade.isShadeOpen) {
+                this.shade.openShade();
+            }
+            // Then expand after brief delay
+            setTimeout(() => {
+                this.expand();
+                this.triggerHaptic('heavy');
+            }, 150);
+            this.lastSwipeTime = 0; // Reset to prevent triple-tap issues
             return;
         }
 
