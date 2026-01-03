@@ -8,6 +8,7 @@
 		}
 	],
 	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "VN-Project"
+		"liveServer.settings.multiRootWorkspaceName": "VN-Project",
+		"liveServer.settings.port": 5501
 	}
 }
