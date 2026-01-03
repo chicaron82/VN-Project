@@ -16,34 +16,51 @@ Developed in collaboration with AI partners (UV7 Crew).
 
 ## 🏗️ Architecture
 
-### Entry Point
-`index.html` → Loads core systems and instantiates `GameEngine`
+**~76,000 lines** across 119+ files featuring production-grade polish, accessibility, and meta-narrative systems.
 
-### Core Systems (`/system`)
+### Entry Point
+`index.html` → Loads core systems via ES modules → Instantiates `GameEngine`
+
+### Core Systems (`/system` - 62 files)
 - **game-engine.js** (8,900+ lines) - Main game loop, scene stack, typewriter, manager wiring
-- **game-config.js** - Constants, difficulty settings, tether parameters
-- **settings-manager.js** - User preferences, backlog (time machine), difficulty
+- **state-manager.ts** - Centralized state with reactive subscriptions (TypeScript)
 - **save-manager.js** - LocalStorage persistence, 3 manual slots + auto-save
 - **tether-system.js** - Connection decay, Hold On mechanic, death triggers
-- **secret-codes-manager.js** - Dev commands, lore codes, discovery tracking
-- **collectibles-manager.js** - Email inbox, notes system with timestamps
-- **achievement-manager.js** - Achievement tracking and notifications
+- **echo-memory-system.js** (533 lines) - **Meta-awareness** - Echoes remember you across loops
+- **scene-progression-controller.js** - Route orchestration, prologue→route flow
+- **notification-shade-controller.js** - iOS-style pull-down shade with quick actions
+- **status-notification-controller.js** - Status bar messages (auto-save, echo comments)
+- **expandable-quick-actions.js** - Momentum-based swipeable action carousel
+- **achievement-manager.js** - 12 achievements with haptic notifications
+- **collectibles-manager.js** - Email inbox, notes with timestamps
+- **secret-codes-manager.js** - 12+ codes, dev commands, lore unlocks
 - **dev-commentary.js** - Director's cut commentary system
-- **accessibility.js** - Reduce motion, keyboard navigation
-- **mobile-ux.js** - Touch gestures, double-tap fullscreen, scroll indicators
+- **accessibility-manager.js** - WCAG compliance, screen readers
+- **mobile-ux.js** - Touch gestures, double-tap fullscreen, haptics
+- **time-machine-manager.js** - Backlog with full state restoration
+- **... (47 more system files)**
 
-### Routes (`/routes`)
-- **tori-route-*.js** - Tori's perspective (fragmented consciousness, inside the code)
-- **ronnie-route-*.js** - Ronnie's perspective (fighting to restore connection)
+### Routes (`/routes` - 10 files, ~7.4K lines)
+- **shared-prologue.js** - Opening sequence, route selection
+- **tori-route-*.js** (4 files) - Tori's perspective (fragmented consciousness, inside the code)
+- **ronnie-route-*.js** (3 files) - Ronnie's perspective (fighting to restore connection)
+- **epilogue.js** - Post-credits, ToriGatchi unlock
 
-### UI (`/ui`)
-- **save-load-ui.js** - Save/load interface with mobile optimization
-- **standalone-notes-viewer.js** - Inbox viewer (works outside main game)
-- **achievement-viewer.js** - Achievement gallery and progress tracking
+### UI Components (`/ui` - 7 files, ~3.5K lines)
 - **menu-carousel.js** - Hybrid carousel system (portrait/landscape adaptive)
 - **simple-carousel.js** - Mobile-optimized card swiper
 - **momentum-adapter.js** - Desktop momentum-based carousel
-- **carousel-momentum.js** - Physics engine for carousel
+- **carousel-momentum.js** - Physics engine for 60fps smooth scrolling
+- **save-load-ui.js** - Save/load interface with mobile optimization
+- **standalone-notes-viewer.js** - Inbox viewer (works outside main game)
+- **achievement-viewer.js** - Achievement gallery and progress tracking
+
+### Styles (`/css` - 40 files, ~19.6K lines)
+- **accessibility.css** - WCAG compliance, focus indicators
+- **mobile-polish.css** - Touch targets, responsive design
+- **notification-shade.css** - Pull-down shade styling
+- **status-notifications.css** - Status bar messages
+- **... (36 more CSS files)**
 
 ---
 
@@ -68,14 +85,26 @@ Two complete perspectives with distinct mechanics:
 
 ### Innovative Systems
 
+#### Echo Memory System (Belle's Meta-Awareness)
+The three echoes (Hope, Gentle, Despair) gradually become aware of you across loops:
+- **Persistent Tracking**: Remembers your behavior even after browser close
+- **Escalating Awareness**: 0 (dormant) → 4 (fourth wall breaking with glitch text)
+- **Echo Personalities**:
+  - **Hope** 💫: Notices your persistence and comebacks
+  - **Gentle** 🌙: Watches your hesitation, save scumming, note hunting
+  - **Despair** 🖤: Mocks failures and hijacks your choices
+- **Contextual Comments**: Appears in status bar based on your actions
+- **Achievement**: "Remembered" unlocks when all three echoes notice you
+
 #### Time Machine Backlog
 Click past dialogue to jump back to that moment. Full state restoration including tether level, flags, and scene context.
 
 #### Achievement System
-- 11 achievements tracking player progress
+- **12 achievements** tracking player progress
 - Unlock notifications with haptic feedback
 - Persistent tracking across playthroughs
-- Achievements: Speed Runner, Archivist, Time Traveler, Heartbreaker, True Ending, Completionist, Pet Parent, Insane, Explorer, Tactical Retreat, Masochist
+- **New**: "Remembered" achievement for triggering all three echoes
+- Full list: Speed Runner, Archivist, Time Traveler, Heartbreaker, True Ending, Completionist, Pet Parent, Insane, Explorer, Tactical Retreat, Masochist, Remembered
 
 #### Developer Commentary
 Unlock with secret code `chicharon` to access:
@@ -143,12 +172,17 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 Narrative conceit. In-universe, this is attempt #848 to save Tori. The Old Man (future Ronnie) has been through 847 loops, each teaching him how to succeed. This version **works**.
 
 ### Tech Stack
-- **Vanilla JS** - No frameworks, no build step (except optional minification)
+- **Vanilla JavaScript** - ES6 modules, no frameworks
+- **TypeScript** - Gradual migration (state-manager.ts)
 - **LocalStorage** - All persistence client-side
+- **Vitest** - 89+ unit tests with jsdom
 - **Mobile-First** - Responsive design, touch optimized, haptic feedback
-- **Modular Architecture** - Clean separation: routes, systems, UI
-- **8,900+ lines** of game-engine.js alone
-- **Production Build:** PowerShell script for minification and deployment
+- **Modular Architecture** - 119+ files, clean separation
+- **~76,000 lines total**:
+  - JavaScript: 54,078 lines (62 system + 10 routes + 7 UI)
+  - CSS: 19,564 lines (40 files)
+  - HTML: 2,351 lines
+- **Production Build:** PowerShell script for minification
 
 ### Design Philosophy
 - **Player Agency:** Meaningful choices with consequences
@@ -344,6 +378,7 @@ Feel free to explore the code and learn from the architecture.
 9. **Explorer** 🔍 - View 100+ dialogue entries in backlog
 10. **Tactical Retreat** 🏃 - Use Konami Code to escape INSANE mode
 11. **Masochist** 😈 - Stay in INSANE mode after finding the exit
+12. **Remembered** 👁️ - All three echoes have noticed you (NEW)
 
 ---
 
