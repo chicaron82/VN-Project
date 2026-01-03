@@ -202,6 +202,30 @@ class NotificationShadeController {
             });
         }
 
+        // ORIENTATION CHANGE: Close sidebar when rotating to portrait
+        // Sidebar is landscape-only, shade is portrait-only
+        this.orientationMediaQuery = window.matchMedia('(orientation: portrait)');
+        this.handleOrientationChange = (e) => {
+            if (e.matches && this.isSidebarOpen) {
+                // Rotated to portrait while sidebar is open
+                console.log('📱 Orientation changed to portrait - closing sidebar');
+                this.hideSidebar();
+
+                // Optionally open the shade instead
+                // setTimeout(() => this.showShade(), 150);
+            }
+        };
+        this.orientationMediaQuery.addEventListener('change', this.handleOrientationChange);
+
+        // Also handle resize for desktop testing
+        window.addEventListener('resize', () => {
+            const isPortrait = window.innerHeight > window.innerWidth;
+            if (isPortrait && this.isSidebarOpen) {
+                console.log('📱 Window resized to portrait - closing sidebar');
+                this.hideSidebar();
+            }
+        });
+
         console.log('✅ Event listeners setup');
     }
 
