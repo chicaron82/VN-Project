@@ -106,8 +106,8 @@ class SwipeHandler {
     onSwipeRight() {
         console.log('👉 Swipe right detected');
 
-        // Check if we can advance
-        if (this.game.pauseManager?.isPaused()) {
+        // Check if we can advance (isPaused is a getter property, not a method)
+        if (this.game.pauseManager?.isPaused) {
             return; // Don't advance while paused
         }
 

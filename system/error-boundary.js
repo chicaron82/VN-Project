@@ -121,7 +121,7 @@ class ErrorBoundary {
                 currentRoute: this.game.currentRoute?.name,
                 routePoints: this.game.currentRoute?.routePoints,
                 tetherLevel: this.game.currentRoute?.tetherSystem?.tetherLevel,
-                isPaused: this.game.pauseManager?.isPaused()
+                isPaused: this.game.pauseManager?.isPaused  // isPaused is a getter, not a method
             };
         } catch {
             return null;
