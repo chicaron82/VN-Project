@@ -58,7 +58,7 @@ class ToriAct2 {
             // Show notification that this is a fixed point
             if (this.game.statusNotification) {
                 this.game.statusNotification.show({
-                    type: 'warning',
+                    type: 'fixed-point',
                     icon: '🔒',
                     message: 'Fixed Event - Cannot alter',
                     duration: 2000,
@@ -81,6 +81,33 @@ class ToriAct2 {
             return;
         }
 
+        // ========================================
+        // RANDOMIZED HIJACK CHOICES
+        // Different options each playthrough to prevent pattern recognition
+        // ========================================
+        const HIJACK_CHOICE_POOL = [
+            { text: 'Thank him (That\'s sweet!)', value: 'thanks', isCorrect: true },
+            { text: 'Be playful (You remembered!)', value: 'playful', isCorrect: true },
+            { text: 'Smile and take it', value: 'smile', isCorrect: true },
+            { text: 'Ask why he remembered', value: 'why', isCorrect: true },
+            { text: 'Ask for Tiger Tail instead', value: 'tiger_tail', isCorrect: false },
+            { text: 'Say nothing (just smile)', value: 'silent', isCorrect: false },
+        ];
+
+        // Pick 2 correct + 1 wrong (Tiger Tail is always the forced outcome)
+        const correctChoices = HIJACK_CHOICE_POOL.filter(c => c.isCorrect);
+        const wrongChoices = HIJACK_CHOICE_POOL.filter(c => !c.isCorrect);
+
+        // Shuffle and pick
+        const shuffledCorrect = correctChoices.sort(() => Math.random() - 0.5).slice(0, 2);
+        const randomWrong = wrongChoices[Math.floor(Math.random() * wrongChoices.length)];
+
+        // Combine and shuffle final choices
+        const finalChoices = [...shuffledCorrect, randomWrong].sort(() => Math.random() - 0.5);
+
+        // Track attempt count for "Almost" effect
+        const hijackAttempts = this.game.echoMemory?.memory?.wrongChoiceRepeats?.['beat1_iceCream'] || 0;
+
         // Normal flow - show the choice (first playthrough or fresh retry)
         this.game.displayScene({
             character: 'Ronnie (sprite)',
@@ -91,27 +118,85 @@ class ToriAct2 {
                 right: 'assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
-            choices: [
-                { text: 'Thank him (That\'s sweet!)', value: 'thanks' },
-                { text: 'Be playful (You remembered!)', value: 'playful' },
-                { text: 'Ask for Tiger Tail instead', value: 'tiger_tail' }
-            ],
+            choices: finalChoices.map(c => ({ text: c.text, value: c.value })),
             onChoice: (playerChoice) => {
                 // Store what player WANTED to say
                 this.playerIntendedChoice = playerChoice;
 
+                // Find if player chose correct option
+                const chosenOption = finalChoices.find(c => c.value === playerChoice);
+                const choseCorrect = chosenOption?.isCorrect || false;
+
+                // Track choice in Echo Memory
+                if (this.game.echoMemory) {
+                    this.game.echoMemory.recordChoice('beat1_iceCream', finalChoices.findIndex(c => c.value === playerChoice));
+                }
+
+                // THE "ALMOST" TEASE: On 5+ attempts with correct choice
+                if (hijackAttempts >= 4 && choseCorrect) {
+                    // Show they almost had it - green flash then glitch
+                    this.showAlmostTease(() => {
+                        this.game.echoMemory?.triggerEchoComment('despair', 'despairHijack', 'beat1_iceCream');
+                        this.beat1_despairOverride();
+                    });
+                    return;
+                }
+
                 // Echo Memory: Despair's hijack comment (Belle's meta-awareness)
-                if (this.game.echoMemory && playerChoice !== 'tiger_tail') {
-                    // Only trigger if player tried to choose something else
+                if (this.game.echoMemory && choseCorrect) {
+                    // Only trigger if player tried to choose a correct option
                     this.game.echoMemory.triggerEchoComment('despair', 'despairHijack', 'beat1_iceCream');
                 }
 
-                // But Despair forces Tiger Tail
+                // But Despair forces her outcome anyway
                 this.beat1_despairOverride();
             },
             delay: 3000
         }, 'beat1_iceCream');
     }
+
+    // ========================================
+    // THE "ALMOST" TEASE EFFECT
+    // Shows player they picked correctly... then rips it away
+    // ========================================
+    showAlmostTease(callback) {
+        // Brief "success" notification that gets overridden
+        if (this.game.statusNotification) {
+            this.game.statusNotification.show({
+                type: 'save', // Green styling
+                icon: '✓',
+                message: 'Correct choice!',
+                duration: 400,
+                priority: 'high'
+            });
+        }
+
+        // After 400ms - GLITCH and override
+        setTimeout(() => {
+            // Screen glitch effect
+            if (this.game.triggerSensoryFeedback) {
+                this.game.triggerSensoryFeedback('criticalGlitch');
+            }
+
+            // Despair's override message
+            if (this.game.statusNotification) {
+                this.game.statusNotification.show({
+                    type: 'echo',
+                    icon: '🖤',
+                    message: 'So close. But I decide.',
+                    duration: 2500,
+                    priority: 'critical',
+                    pulse: true
+                });
+            }
+
+            console.log('💀 "Almost" tease triggered - correct choice overridden');
+
+            // Continue after dramatic pause
+            setTimeout(callback, 800);
+        }, 400);
+    }
+
 
     beat1_despairOverride() {
         // First: Show what player INTENDED to choose (if not Tiger Tail)
@@ -151,10 +236,28 @@ class ToriAct2 {
     }
 
     beat1_toriRealization() {
-        // Tori realizes she didn't say what she meant
+        // ESCALATING TORI REACTIONS
+        // Shows increasing awareness of Despair's control across loops
+        const hijackAttempts = this.game.echoMemory?.memory?.wrongChoiceRepeats?.['beat1_iceCream'] || 0;
+
+        const toriReactions = [
+            { character: 'Tori (internal, confused)', dialogue: '"What? No—that\'s not what I meant to say! I hate Tiger Tail!"' },
+            { character: 'Tori (internal, alarmed)', dialogue: '"Why did I say that? I didn\'t mean— those weren\'t my words!"' },
+            { character: 'Tori (internal, fighting)', dialogue: '"No, wait, that\'s not— [voice cuts off] ...she won\'t let me..."' },
+            { character: 'Tori (internal, breaking)', dialogue: '"She\'s in my head. I can feel her. I can\'t fight her."' },
+        ];
+
+        const reactionIndex = Math.min(hijackAttempts, toriReactions.length - 1);
+        const reaction = toriReactions[reactionIndex];
+
+        // Trigger conflicting echoes on 3+ attempts
+        if (hijackAttempts >= 3 && this.game.echoMemory) {
+            this.game.echoMemory.triggerConflictingEchoes();
+        }
+
         this.game.displayScene({
-            character: 'Tori (internal, confused)',
-            dialogue: '"What? No—that\'s not what I meant to say! I hate Tiger Tail!"',
+            character: reaction.character,
+            dialogue: reaction.dialogue,
             background: 'assets/digitalSpace.png',
             sprites: {
                 left: 'assets/full-sprite-tori.webp',
@@ -162,7 +265,8 @@ class ToriAct2 {
                 highlight: 'left'
             },
             next: () => this.beat1_confusion(),
-            delay: 3000
+            delay: 3000,
+            style: hijackAttempts >= 2 ? 'critical' : undefined
         }, 'beat1_toriRealization');
     }
 

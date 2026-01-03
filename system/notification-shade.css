@@ -308,6 +308,28 @@
     color: #ff00ff;
 }
 
+/* ECHO MEMORY SYSTEM - Mystical purple for echo comments */
+#status-notification.type-echo {
+    color: #bf00ff;
+    background: linear-gradient(135deg,
+            rgba(100, 50, 150, 0.9),
+            rgba(50, 0, 100, 0.85));
+    border-left: 3px solid #bf00ff;
+    box-shadow: 0 0 20px rgba(191, 0, 255, 0.3),
+        inset 0 0 30px rgba(191, 0, 255, 0.1);
+    text-shadow: 0 0 8px rgba(191, 0, 255, 0.5);
+}
+
+/* FIXED POINT IN TIME - Locked/warning events */
+#status-notification.type-fixed-point {
+    color: #ff6b6b;
+    background: linear-gradient(135deg,
+            rgba(150, 50, 50, 0.9),
+            rgba(100, 20, 20, 0.85));
+    border-left: 3px solid #ff4444;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
 /* Pulse animation for important messages */
 @keyframes status-pulse {
 
