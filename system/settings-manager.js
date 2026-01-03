@@ -1173,9 +1173,11 @@ class BacklogManager {
             return true; // Default to jumpable if sceneId is invalid
         }
 
-        // Unjumpable scene IDs (critical narrative events)
+        // Unjumpable scene IDs (critical narrative events / fixed points in time)
         const lockedScenes = [
             'despair_hijack',
+            'beat1_iceCream',        // FIXED POINT: Despair's ice cream hijack
+            'beat1_despairOverride', // FIXED POINT: Despair forces Tiger Tail
             'echo_merge_sequence',
             'final_integration',
             'loop_failure',
@@ -1392,6 +1394,13 @@ Forward is the only direction.
 
     executeTimeJump(entry) {
         console.log('💚 Time traveling to:', entry.sceneId, 'page', entry.pageIndex);
+
+        // FIXED POINT LOOPHOLE FIX: Set flag so fixed points know this is a backlog jump
+        // They can then auto-skip their choices instead of allowing retry
+        if (!this.game.gameState.flags) {
+            this.game.gameState.flags = {};
+        }
+        this.game.gameState.flags.isBacklogJump = true;
 
         // Restore game state
         this.restoreGameState(entry);

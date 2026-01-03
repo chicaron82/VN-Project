@@ -44,6 +44,44 @@ class ToriAct2 {
     }
 
     beat1_iceCream() {
+        // ========================================
+        // FIXED POINT IN TIME - Despair's Hijack
+        // If player reached this via backlog jump (not fresh retry),
+        // auto-skip the choice - they can't change what happened
+        // ========================================
+        const isBacklogReplay = this.game.gameState?.flags?.isBacklogJump;
+
+        if (isBacklogReplay) {
+            // Clear the flag (consumed)
+            this.game.gameState.flags.isBacklogJump = false;
+
+            // Show notification that this is a fixed point
+            if (this.game.statusNotification) {
+                this.game.statusNotification.show({
+                    type: 'warning',
+                    icon: '🔒',
+                    message: 'Fixed Event - Cannot alter',
+                    duration: 2000,
+                    priority: 'high'
+                });
+            }
+
+            // Echo Memory: Despair mocks them for trying
+            if (this.game.echoMemory) {
+                setTimeout(() => {
+                    this.game.echoMemory.triggerEchoComment('despair', 'despairHijack', 'beat1_iceCream');
+                }, 500);
+            }
+
+            console.log('🔒 Fixed point detected - auto-skipping to hijacked outcome');
+
+            // Skip directly to the hijacked response (no choice shown)
+            this.playerIntendedChoice = 'fixed_point_bypass';
+            this.beat1_despairOverride();
+            return;
+        }
+
+        // Normal flow - show the choice (first playthrough or fresh retry)
         this.game.displayScene({
             character: 'Ronnie (sprite)',
             dialogue: '"I coded in your favorite. Chocolate chip ice cream."',
