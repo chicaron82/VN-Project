@@ -62,7 +62,9 @@ class NotificationShadeController {
 
         // Initialize Expandable Quick Actions (MICHELIN EDITION)
         // @ts-ignore - ExpandableQuickActions loaded via script tag
+        // @ts-ignore - ExpandableQuickActions loaded dynamically via script tag
         if (typeof window.ExpandableQuickActions !== 'undefined') {
+            // @ts-ignore
             this.quickActions = new window.ExpandableQuickActions(this);
         } else {
             console.warn('ExpandableQuickActions not loaded');
@@ -205,6 +207,7 @@ class NotificationShadeController {
         // ORIENTATION CHANGE: Close sidebar when rotating to portrait
         // Sidebar is landscape-only, shade is portrait-only
         this.orientationMediaQuery = window.matchMedia('(orientation: portrait)');
+        /** @param {MediaQueryListEvent} e */
         this.handleOrientationChange = (e) => {
             if (e.matches && this.isSidebarOpen) {
                 // Rotated to portrait while sidebar is open
@@ -1419,8 +1422,11 @@ class NotificationShadeController {
      * Called after sidebar elements are ready
      */
     initSidebarLayerSwipe() {
+        /** @type {HTMLElement|null} */
         this.sidebarLayers = document.querySelector('.sidebar-layers');
+        /** @type {HTMLElement|null} */
         this.primaryLayer = document.querySelector('.primary-layer');
+        /** @type {HTMLElement|null} */
         this.secondaryLayer = document.querySelector('.secondary-layer');
 
         if (!this.sidebarLayers || !this.primaryLayer) {
@@ -1435,18 +1441,25 @@ class NotificationShadeController {
         this.isToolsRevealed = false;
 
         // Add touch listeners to primary layer
+        // @ts-ignore - TouchEvent parameter
         this.primaryLayer.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        // @ts-ignore - TouchEvent parameter
         this.primaryLayer.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        // @ts-ignore - TouchEvent parameter
         this.primaryLayer.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
 
         // Add touch listeners to secondary layer (for swipe back)
+        // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
 
         // Action button click delegation for layers
         this.sidebarLayers.addEventListener('click', (e) => {
-            const btn = e.target.closest('.quick-action-btn');
+            // @ts-ignore - e.target exists and has closest method
+            const btn = e.target?.closest('.quick-action-btn');
             if (!btn) return;
 
             const action = btn.dataset.action;
