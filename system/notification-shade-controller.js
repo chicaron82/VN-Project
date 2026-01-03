@@ -1491,6 +1491,7 @@ class NotificationShadeController {
         if (!this.isLayerDragging) return;
 
         const touch = e.touches[0];
+        if (!touch) return;
         const deltaX = touch.clientX - this.layerSwipeStartX;
 
         // Prevent vertical scroll
@@ -1529,6 +1530,7 @@ class NotificationShadeController {
         }
 
         const touch = e.changedTouches[0];
+        if (!touch) return;
         const deltaX = touch.clientX - this.layerSwipeStartX;
         const deltaTime = Date.now() - this.layerSwipeStartTime;
         const velocity = deltaX / Math.max(deltaTime, 1);
