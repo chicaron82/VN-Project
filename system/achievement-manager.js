@@ -96,6 +96,14 @@ class AchievementManager {
                 icon: '😈',
                 unlocked: false,
                 unlockedAt: null
+            },
+            remembered: {
+                id: 'remembered',
+                name: 'Remembered',
+                description: 'All three echoes have noticed you',
+                icon: '👁️',
+                unlocked: false,
+                unlockedAt: null
             }
         };
 
