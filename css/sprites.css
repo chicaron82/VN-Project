@@ -356,3 +356,96 @@ body.ui-hidden .choice-button {
     display: none !important;
     /* Hide text, keep the box as stage platform */
 }
+
+/* ========================================
+   SCREENSHOT MODE - STATUS BAR OVERRIDE
+   Keep status bar visible to show context
+   Route, loop, and Screenshot Mode indicator
+   ======================================== */
+
+/* Keep status bar visible and slightly transparent */
+body.ui-hidden #status-bar {
+    display: flex !important;
+    opacity: 0.75 !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.15) !important;
+    pointer-events: none !important;
+}
+
+/* Hide some status bar elements in screenshot mode */
+body.ui-hidden #status-mail,
+body.ui-hidden #status-progress {
+    display: none !important;
+}
+
+/* ========================================
+   SCREENSHOT MODE WATERMARK
+   UV7 branding with animated fade-in
+   ======================================== */
+
+/* Watermark container - bottom right corner */
+body.ui-hidden::after {
+    content: '';
+    position: fixed;
+    bottom: 32vh;
+    /* Above dialogue box (30vh) */
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    background: url('../assets/UnitedVoices7.png') no-repeat center;
+    background-size: contain;
+    opacity: 0;
+    animation: watermarkFadeIn 1s ease-out 0.3s forwards;
+    pointer-events: none;
+    z-index: 9998;
+    filter: drop-shadow(0 2px 8px rgba(0, 255, 255, 0.3));
+}
+
+@keyframes watermarkFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+}
+
+/* Version text below logo */
+body.ui-hidden::before {
+    content: 'VERSION 848';
+    position: fixed;
+    bottom: calc(32vh - 10px);
+    /* Just below logo */
+    right: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: watermarkFadeIn 1s ease-out 0.5s forwards;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Mobile adjustments for watermark */
+@media (max-width: 768px) {
+    body.ui-hidden::after {
+        width: 80px;
+        height: 80px;
+        right: 15px;
+        bottom: 32vh;
+    }
+
+    body.ui-hidden::before {
+        font-size: 9px;
+        right: 15px;
+        bottom: calc(32vh - 8px);
+    }
+}
