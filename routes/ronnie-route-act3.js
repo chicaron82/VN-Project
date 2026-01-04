@@ -9,138 +9,15 @@ class RonnieRouteAct3 {
     }
 
     // ========================================
-    // ACT 3 - CRISIS & ENDINGS
+    // ACT 3 - MEMORY FRACTURE & ENDINGS
     // ========================================
+    // NOTE: Honeymoon fakeout moved to Act 2 Beat 4.7 for proper pacing
+    // Act 3 now starts with memory corruption aftermath
 
     startAct3() {
-        // Beat 1: Honeymoon Loop (False Calm)
-        this.game.displayScene({
-            character: 'Ronnie (narration)',
-            dialogue: '"I woke up and she was... there. Whole. Smiling. Like nothing had happened."',
-            internal: '[Visual: Pixel park. Cherry blossoms falling in slow loops. Dreamy chiptune music - slightly too perfect.]',
-            background: 'assets/digitalSpace.png',
-            sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp'
-            },
-            next: () => this.act3Beat1_greeting(),
-            delay: 4000
-        }, 'startAct3');
-    }
-
-    act3Beat1_greeting() {
-        this.game.displayScene({
-            character: 'Tori',
-            dialogue: '"Baby, you\'re staring again."',
-            background: 'assets/digitalSpace.png',
-            sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp'
-            },
-            next: () => this.act3Beat1_response(),
-            delay: 2500
-        }, 'act3Beat1_greeting');
-    }
-
-    act3Beat1_response() {
-        this.game.displayScene({
-            character: 'Ronnie',
-            dialogue: '"I just... you\'re okay. You\'re really okay."',
-            background: 'assets/digitalSpace.png',
-            sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp'
-            },
-            next: () => this.act3Beat1_smile(),
-            delay: 2500
-        }, 'act3Beat1_response');
-    }
-
-    act3Beat1_smile() {
-        this.game.displayScene({
-            character: 'Tori (bright)',
-            dialogue: '"Of course I am! What, you worried I\'d disappear or something?"',
-            internal: '[She laughs. It sounds... hollow. Just slightly.]',
-            background: 'assets/digitalSpace.png',
-            sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp'
-            },
-            next: () => this.act3Beat1_choice(),
-            delay: 3000
-        }, 'act3Beat1_smile');
-    }
-
-    act3Beat1_choice() {
-        this.game.displayScene({
-            character: 'Ronnie (internal)',
-            dialogue: 'Something is off.',
-            background: 'assets/digitalSpace.png',
-            sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp'
-            },
-            choices: [
-                { text: '"Want some ice cream? Mint chocolate chip?"', value: 'test' },
-                { text: '"Something\'s wrong. This isn\'t real."', value: 'confront' }
-            ],
-            onChoice: (choice) => this.act3Beat1_outcome(choice)
-        }, 'act3Beat1_choice');
-    }
-
-    act3Beat1_outcome(choice) {
-        if (choice === 'test') {
-            this.game.displayScene({
-                character: 'Tori (cheerful)',
-                dialogue: '"Oh yes! I LOVE mint chocolate chip!"',
-                internal: '[Ronnie freezes. Wrong answer. Dead wrong.]',
-                background: 'assets/digitalSpace.png',
-                sprites: {
-                    left: 'assets/full-sprite-ronnie.webp',
-                    right: 'assets/full-sprite-tori.webp'
-                },
-                next: () => {
-                    this.game.displayScene({
-                        character: 'Ronnie (carefully)',
-                        dialogue: '"I remember. You hate that flavor. You said it tastes like \'candy corn\'s evil twin.\'"',
-                        background: 'assets/digitalSpace.png',
-                        sprites: {
-                            left: 'assets/full-sprite-ronnie.webp',
-                            right: 'assets/full-sprite-tori.webp'
-                        },
-                        next: () => {
-                            this.game.displayScene({
-                                character: 'Tori (confused, then recovering)',
-                                dialogue: '"Oh. Right. Yeah. Chocolate chip. I meant chocolate chip."\n[She laughs, but it sounds slightly off-pitch.]\n"Sorry, I\'m... scattered today. Brain fog."',
-                                internal: '[Ronnie (narration): "Fuzzy. Wrong word. Wrong memory. Wrong flavor. Something was very, very wrong."]',
-                                background: 'assets/digitalSpace.png',
-                                sprites: {
-                                    left: 'assets/full-sprite-ronnie.webp',
-                                    right: 'assets/full-sprite-tori.webp'
-                                },
-                                next: () => this.act3Beat2(),
-                                delay: 5000
-                            }, 'act3Beat1_outcome_test_reveal');
-                        },
-                        delay: 3500
-                    }, 'act3Beat1_outcome_test_correct');
-                },
-                delay: 3000
-            }, 'act3Beat1_outcome_test');
-        } else if (choice === 'confront') {
-            this.game.displayScene({
-                character: 'Ronnie',
-                dialogue: '"Something\'s wrong here. You\'re not remembering right. The hospital. The alarms. You were glitching apart and now you\'re just... perfect?"',
-                internal: '[Tori\'s sprite freezes. Eyes wide. Then flickers violently - 3 seconds of blank stare. Snaps back. Voice colder.]',
-                background: 'assets/digitalSpace.png',
-                sprites: {
-                    left: 'assets/full-sprite-ronnie.webp',
-                    right: 'assets/full-sprite-tori.webp'
-                },
-                next: () => this.act3Beat2(),
-                delay: 5000
-            }, 'act3Beat1_outcome_confront');
-        }
+        // Start directly with memory fracture
+        // The false calm has already happened in Act 2
+        this.act3Beat2();
     }
 
     // ========================================
@@ -912,7 +789,7 @@ class RonnieRouteAct3 {
             internal: '[TV in background. Old Ronnie\'s hand pauses. He looks up.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_chance(),
             delay: 3500
@@ -926,7 +803,7 @@ class RonnieRouteAct3 {
             internal: '[Visual: He picks up the modified Tamagotchi. Screen glows faintly.]\n[Fade to black.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_beforeBump(),
             delay: 4000
@@ -940,7 +817,7 @@ class RonnieRouteAct3 {
             internal: '[Visual: Street corner, same location as Scene 1. An older man with silver hair stands in shadow, BGA hoodie prominent. He holds a worn Tamagotchi device - labeled "Ronnie-gatchi v1.0"]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_preparation(),
             delay: 3500
@@ -954,7 +831,7 @@ class RonnieRouteAct3 {
             internal: '[He looks at the device, then around the corner where young Tori will appear]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_giveHerTools(),
             delay: 3000
@@ -968,7 +845,7 @@ class RonnieRouteAct3 {
             internal: '[He takes a breath, steps around the corner]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_loopBegins(),
             delay: 3000
@@ -993,7 +870,7 @@ class RonnieRouteAct3 {
             internal: '[Visual: Sunny street. Old Ronnie\'s perspective. Young Tori walks by, distracted by her Tamagotchi.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_bump(),
             delay: 6000
@@ -1007,7 +884,7 @@ class RonnieRouteAct3 {
             internal: '[He steps forward. She bumps into him. Both Tamagotchis fall. She picks up his modified toy. It buzzes in her hand.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp',
+                left: 'assets/full-sprite-oldRonnie.webp',
                 right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.badRoute_apology(),
@@ -1021,7 +898,7 @@ class RonnieRouteAct3 {
             dialogue: '"Oh my gosh, I\'m so sorry—I wasn\'t paying attention!"',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp',
+                left: 'assets/full-sprite-oldRonnie.webp',
                 right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.badRoute_warning(),
@@ -1036,7 +913,7 @@ class RonnieRouteAct3 {
             internal: '[He picks up her original device. Clutches it. Walks away.]\n[Visual: Camera follows him. He glances back once - sees young Ronnie waiting at home for her.]',
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp',
+                left: 'assets/full-sprite-oldRonnie.webp',
                 right: 'assets/full-sprite-tori.webp'
             },
             next: () => this.badRoute_finalThought(),
@@ -1073,7 +950,7 @@ class RonnieRouteAct3 {
             internal: `[Fade to white.]\n\n**BAD ENDING: THE LOOP BEGINS AGAIN**\n"Love trapped in glass."\n\n[System restarting... Version ${currentVersion}]`,
             background: 'assets/apartment.png',
             sprites: {
-                left: 'assets/old-full-sprite-ronnie.webp'
+                left: 'assets/full-sprite-oldRonnie.webp'
             },
             next: () => this.badRoute_retry(),
             delay: 6000

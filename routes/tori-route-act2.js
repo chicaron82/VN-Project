@@ -407,7 +407,7 @@ class ToriAct2 {
                 right: 'assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
-            next: () => this.beat2(),
+            next: () => this.beat1_5_glitching(),
             delay: 3000
         }, 'beat1_truth');
     }
@@ -422,7 +422,7 @@ class ToriAct2 {
                 right: 'assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
-            next: () => this.beat2(),
+            next: () => this.beat1_5_glitching(),
             delay: 3000
         }, 'beat1_downplay');
     }
@@ -437,9 +437,263 @@ class ToriAct2 {
                 right: 'assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
-            next: () => this.beat2(),
+            next: () => this.beat1_5_glitching(),
             delay: 3000
         }, 'beat1_panic');
+    }
+
+    // ========================================
+    // ========================================
+    // BEAT 1.5: THE UPLOAD ATTEMPT & REVELATION
+    // Tori's POV of Ronnie's failed cloud upload
+    // "You can't upload a soul"
+    // ========================================
+
+    beat1_5_glitching() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"Something\'s wrong. I\'m... fragmenting. The code can\'t hold me..."',
+            internal: '[Visual: Her sprite flickering. Data corruption spreading.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp'
+            },
+            next: () => this.beat1_5_ronnieTyping(),
+            delay: 3500
+        }, 'beat1_5_glitching');
+    }
+
+    beat1_5_ronnieTyping() {
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: 'Through the laptop screen. Ronnie typing frantically.',
+            internal: '[Visual: Code scrolling. Upload dialogs. Progress bars.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_upload(),
+            delay: 3000
+        }, 'beat1_5_ronnieTyping');
+    }
+
+    beat1_5_upload() {
+        this.game.displayScene({
+            character: 'Ronnie (desperate)',
+            dialogue: '"She\'s trapped in the laptop. Limited processing. If I upload to the cloud... more resources... she\'ll stabilize!"',
+            internal: '[Visual: Upload progress bar. 32%... 85%... 100%]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_stillGlitching(),
+            delay: 4500
+        }, 'beat1_5_upload');
+    }
+
+    beat1_5_stillGlitching() {
+        this.game.displayScene({
+            character: 'Tori (glitching)',
+            dialogue: '"Ronnie... I\'m... still here. Still stuck. It didn\'t... work..."',
+            internal: '[Visual: Nothing changed. Still fragmenting. Still breaking apart.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_confusion(),
+            delay: 4000
+        }, 'beat1_5_stillGlitching');
+    }
+
+    beat1_5_confusion() {
+        this.game.displayScene({
+            character: 'Ronnie (confused)',
+            dialogue: '"But... you contacted me through the laptop game. I thought you were IN the laptop!"',
+            internal: '[Visual: His face. Confusion. Frustration. He doesn\'t understand.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_realization(),
+            delay: 3500
+        }, 'beat1_5_confusion');
+    }
+
+    beat1_5_realization() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"He thinks I\'m IN the laptop. That\'s why the upload didn\'t work. He doesn\'t know..."',
+            internal: '[Visual: Understanding dawns. She needs to tell him.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp'
+            },
+            next: () => this.beat1_5_revelation(),
+            delay: 3500
+        }, 'beat1_5_realization');
+    }
+
+    beat1_5_revelation() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"I\'m not IN the game, Ronnie."',
+            internal: '[Visual: Her voice cutting through. Clear. Focused.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp',
+                highlight: 'left'
+            },
+            next: () => this.beat1_5_soulLine(),
+            delay: 3000
+        }, 'beat1_5_revelation');
+    }
+
+    beat1_5_soulLine() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"You can\'t upload a soul. I\'m in the Tamagotchi."',
+            internal: '[Visual: Silence. The weight of it. The truth spoken.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp',
+                highlight: 'left'
+            },
+            next: () => this.beat1_5_explainJumping(),
+            delay: 5000,
+            style: 'critical'
+        }, 'beat1_5_soulLine');
+    }
+
+    beat1_5_explainJumping() {
+        this.game.displayScene({
+            character: 'Tori',
+            dialogue: '"I\'ve been JUMPING to the laptop so I could talk to you. The Tamagotchi has to be touching whatever I jump to."',
+            internal: '[Visual: His expression. Understanding starting to form.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp',
+                highlight: 'left'
+            },
+            next: () => this.beat1_5_question(),
+            delay: 4500
+        }, 'beat1_5_explainJumping');
+    }
+
+    beat1_5_question() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"So how do we get you to wake up? How do you get back to your body?"',
+            internal: '[Visual: Both of them. The question hanging.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_buzzing(),
+            delay: 3500
+        }, 'beat1_5_question');
+    }
+
+    beat1_5_buzzing() {
+        // HAPTIC: Realization pulse
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('medium', 'The buzzing - Tori POV');
+        }
+
+        this.game.displayScene({
+            character: 'Ronnie (realizing)',
+            dialogue: '"Wait... the buzzing. The Tamagotchi has been buzzing. And ONLY when I visit you at the hospital!"',
+            internal: '[Visual: His eyes widen. The pattern clicks.]',
+            background: 'assets/hospital.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_toriConfirms(),
+            delay: 4500
+        }, 'beat1_5_buzzing');
+    }
+
+    beat1_5_toriConfirms() {
+        this.game.displayScene({
+            character: 'Tori (softly)',
+            dialogue: '"I\'ve been feeling it too. The pull. Every time you visit... my body is calling me home."',
+            internal: '[Visual: Memory flashes. The warmth. The pull. The connection.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp',
+                highlight: 'left'
+            },
+            next: () => this.beat1_5_solution(),
+            delay: 4000
+        }, 'beat1_5_toriConfirms');
+    }
+
+    beat1_5_solution() {
+        this.game.displayScene({
+            character: 'Ronnie',
+            dialogue: '"Then that\'s it. The Tamagotchi needs to be touching your body. Physical contact. That\'s how you jump back!"',
+            internal: '[Visual: Both of them. The solution found. Hope surges.]',
+            background: 'assets/digitalSpace.png',
+            sprites: {
+                left: 'assets/full-sprite-tori.webp',
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_phoneRing(),
+            delay: 5000
+        }, 'beat1_5_solution');
+    }
+
+    beat1_5_phoneRing() {
+        // HAPTIC: Phone vibration - urgent
+        if (this.game.triggerHaptic) {
+            this.game.triggerHaptic('heavy', 'Phone call - crisis (Tori POV)', { force: true });
+        }
+
+        this.game.displayScene({
+            character: 'Narration',
+            dialogue: '[RING RING RING]',
+            internal: '[Visual: Ronnie\'s phone. Hospital calling. His face drains of color.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_hospitalCall(),
+            delay: 3000
+        }, 'beat1_5_phoneRing');
+    }
+
+    beat1_5_hospitalCall() {
+        this.game.displayScene({
+            character: 'Nurse (phone)',
+            dialogue: '"Mr. Santos? This is St. Mercy. Your wife\'s vitals are dropping. You need to come now."',
+            internal: '[Visual: Panic. Fear. Time running out.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat1_5_race(),
+            delay: 4000,
+            style: 'critical'
+        }, 'beat1_5_hospitalCall');
+    }
+
+    beat1_5_race() {
+        this.game.displayScene({
+            character: 'Tori (internal)',
+            dialogue: '"We know how to save me. But we\'re running out of time."',
+            internal: '[Visual: Ronnie grabs the Tamagotchi. Runs for the door. The race begins.]',
+            background: 'assets/apartment.png',
+            sprites: {
+                right: 'assets/full-sprite-ronnie.webp'
+            },
+            next: () => this.beat2(),
+            delay: 4000
+        }, 'beat1_5_race');
     }
 
     // ========================================
