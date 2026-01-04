@@ -56,7 +56,10 @@ class OverlayManager {
         if (id) overlay.id = id;
         overlay.className = className;
 
-        const theme = ThemeManager.getTheme();
+        // Safe theme access with fallback
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', glow: 'rgba(0,255,136,0.3)' };
 
         overlay.style.cssText = `
             position: fixed;
@@ -95,7 +98,10 @@ class OverlayManager {
         const box = document.createElement('div');
         box.className = className;
 
-        const theme = ThemeManager.getTheme();
+        // Safe theme access with fallback
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', error: '#ff4444', warning: '#ffcc00', success: '#00ff88', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e', background: '#16213e' };
 
         // Get colors based on variant
         let borderColor, glowColor, bgGradient;
@@ -157,7 +163,10 @@ class OverlayManager {
         const titleEl = document.createElement('div');
         titleEl.className = className;
 
-        const theme = ThemeManager.getTheme();
+        // Safe theme access with fallback
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', error: '#ff4444', warning: '#ffcc00', success: '#00ff88', glow: 'rgba(0,255,136,0.3)' };
 
         let color;
         switch (variant) {
@@ -242,7 +251,10 @@ class OverlayManager {
         button.className = className;
         button.textContent = text;
 
-        const theme = ThemeManager.getTheme();
+        // Safe theme access with fallback
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', error: '#ff4444', warning: '#ffcc00', success: '#00ff88', glow: 'rgba(0,255,136,0.3)' };
 
         let color, hoverBg;
         switch (variant) {
@@ -601,7 +613,10 @@ class OverlayManager {
             padding: '30px'
         });
 
-        const theme = ThemeManager.getTheme();
+        // Safe theme access with fallback
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', error: '#ff4444', warning: '#ffcc00', success: '#00ff88', glow: 'rgba(0,255,136,0.3)' };
 
         // Title
         const titleEl = OverlayManager.createTitle(title, { variant, fontSize: '20px' });

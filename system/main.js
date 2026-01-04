@@ -88,6 +88,7 @@ import './sprite-controller.js';
 import './menu-controller.js';
 import './insane-visuals-controller.js';
 import './reset-controller.js';
+import './haptic-controller.js';
 import './gateway.js';
 
 // Core engine (must load after controllers)

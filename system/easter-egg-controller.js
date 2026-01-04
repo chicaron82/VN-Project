@@ -39,7 +39,9 @@ class EasterEggController {
 
             // Add content
             const content = document.createElement('div');
-            const theme = ThemeManager.getTheme();
+            const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+                ? ThemeManager.getTheme()
+                : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
             content.innerHTML = `
                 <h2 style="color: ${ThemeManager.getColor('error')}; font-size: 2em; margin-bottom: 20px; text-shadow: 0 0 10px ${ThemeManager.getColor('error')}80;">TORIGATCHI</h2>
                 <p style="font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; color: ${theme.text};">
@@ -100,7 +102,9 @@ class EasterEggController {
         setTimeout(() => {
             document.body.style.animation = '';
 
-            const theme = ThemeManager.getTheme();
+            const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+                ? ThemeManager.getTheme()
+                : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
 
             // Create themed overlay
             const overlay = OverlayManager.createBase({
@@ -200,7 +204,9 @@ class EasterEggController {
 
         // Create content card
         const card = document.createElement('div');
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
         card.style.cssText = `
             border: 2px solid ${theme.success};
             padding: 30px;
@@ -316,7 +322,9 @@ class EasterEggController {
         });
 
         // Create game window container (themed)
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
         const gameWindow = document.createElement('div');
         gameWindow.style.cssText = `
             position: relative;
@@ -459,7 +467,9 @@ class EasterEggController {
         overlay.setAttribute('role', 'dialog');
         overlay.setAttribute('aria-label', 'Konami Code Entry');
 
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
         const content = document.createElement('div');
         content.className = 'konami-content';
         content.style.cssText = `
@@ -871,7 +881,9 @@ class EasterEggController {
         overlay.style.overflowY = 'auto';
 
         // Create content container (themed)
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
         const content = document.createElement('div');
         content.style.cssText = `
             max-width: 700px;
@@ -1135,7 +1147,9 @@ class EasterEggController {
 
             // Add CSS animations if not already present
             if (!document.getElementById('unlock-overlay-styles')) {
-                const theme = ThemeManager.getTheme();
+                const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+                    ? ThemeManager.getTheme()
+                    : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
                 const style = document.createElement('style');
                 style.id = 'unlock-overlay-styles';
                 style.textContent = `
@@ -1417,7 +1431,9 @@ class EasterEggController {
 
     showTrueAttemptNumber(loopVersion) {
         const trueAttempt = loopVersion;
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
 
         // Create themed overlay
         const overlay = document.createElement('div');
@@ -1477,7 +1493,9 @@ class EasterEggController {
     // ========================================
 
     showUV7CrewBios() {
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
 
         // Create themed overlay
         const overlay = document.createElement('div');
@@ -1722,7 +1740,9 @@ INSANE mode awaits those who dare.
     // ========================================
 
     showRonniegatchiInspiration() {
-        const theme = ThemeManager.getTheme();
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', primaryRgb: '0,255,136', text: '#fff', textMuted: '#888', glow: 'rgba(0,255,136,0.3)', backgroundSolid: '#1a1a2e' };
 
         // Create overlay
         const overlay = document.createElement('div');

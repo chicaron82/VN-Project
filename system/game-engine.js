@@ -636,6 +636,10 @@ class GameEngine {
         // @ts-ignore
         this.keyboardController = new KeyboardController(this);
 
+        // SOLID: Initialize Haptic Controller (extracted from GameEngine)
+        // @ts-ignore
+        this.hapticController = new HapticController(this);
+
         // ZEE'S ADDITION: Rotating tips system 🖤
         this.mainMenuTipElement = null;
         this.routeSelectTipElement = null;
@@ -1402,26 +1406,8 @@ class GameEngine {
      * @param {number} comfortLevel
      */
     scaleHapticPattern(pattern, comfortLevel) {
-        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
-        if (comfortLevel === 1) return pattern;
-
-        // Normalize to array
-        const arr = Array.isArray(pattern) ? pattern.slice() : [pattern];
-
-        if (comfortLevel === 0) {
-            // Gentle: softer, shorter
-            return arr.map(ms => Math.max(5, Math.round(ms * 0.6)));
-        }
-        if (comfortLevel === 2) {
-            // Amped: stronger, longer
-            return arr.map(ms => Math.round(ms * 1.3));
-        }
-        if (comfortLevel === 3) {
-            // INSANE: MUCH stronger, MUCH longer (beyond Amped)
-            return arr.map(ms => Math.round(ms * 2.0));
-        }
-
-        return pattern;
+        // Delegation stub - full implementation in HapticController
+        return this.hapticController?.scaleHapticPattern(pattern, comfortLevel) ?? pattern;
     }
 
     /**
@@ -1431,46 +1417,9 @@ class GameEngine {
      * @param {string} [options.channel='ui']
      * @param {boolean} [options.force=false]
      */
-    triggerHaptic(patternName, description = '', { channel = 'ui', force = false } = {}) {
-        // Check if user has enabled haptics in settings
-        if (!this.settingsManager || !this.settingsManager.getHapticEnabled()) {
-            return; // User disabled or settings not ready
-        }
-
-        // Check if device supports vibration API
-        if (!navigator.vibrate) {
-            return;
-        }
-
-        // TORI'S DEBOUNCE: Anti-spam for rapid clicks 💚
-        const now = performance.now();
-        if (!force && (now - this.lastHapticTime) < this.hapticCooldownMs) {
-            if (this.debugMode) console.log(`🚫 Haptic debounced: ${patternName}`);
-            return;
-        }
-        this.lastHapticTime = now;
-
-        // Get haptic pattern from centralized UIController patterns
-        const patterns = this.getHapticPatterns();
-        let pattern = patterns[patternName];
-        if (!pattern) {
-            if (this.debugMode) console.warn(`⚠️ Unknown haptic pattern: ${patternName}`);
-            return;
-        }
-
-        // Scale pattern based on comfort level
-        const comfort = this.settingsManager?.getComfortIntensity?.() ?? 1;
-        pattern = this.scaleHapticPattern(pattern, comfort);
-
-        // Trigger the vibration
-        navigator.vibrate(pattern);
-
-        // Log the sensory event
-        this.logSensory(patternName, channel, pattern, description);
-
-        if (this.debugMode) {
-            console.log(`📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}] - ${description}`, pattern);
-        }
+    triggerHaptic(patternName, description = '', options = {}) {
+        // Delegation stub - full implementation in HapticController
+        this.hapticController?.triggerHaptic(patternName, description, options);
     }
 
     /**
@@ -1480,21 +1429,8 @@ class GameEngine {
      * @param {string} description
      */
     logSensory(cueType, channel, pattern, description) {
-        if (!this.debugMode) return;
-
-        this.sensoryLog.push({
-            cueType,
-            channel,
-            pattern,
-            description,
-            comfort: this.settingsManager?.getComfortIntensity?.() ?? 1,
-            time: new Date().toLocaleTimeString()
-        });
-
-        // Keep only last N entries
-        if (this.sensoryLog.length > this.maxSensoryLog) {
-            this.sensoryLog.shift();
-        }
+        // Delegation stub - full implementation in HapticController
+        this.hapticController?.logSensory(cueType, channel, pattern, description);
     }
 
     // ========================================
@@ -1506,37 +1442,8 @@ class GameEngine {
      * @param {string} cueType
      */
     triggerSensoryFeedback(cueType, target = null, description = '') {
-        // Look up cue metadata
-        // @ts-ignore - SENSORY_CUES dynamic lookup
-        const meta = SENSORY_CUES[cueType];
-        if (!meta) {
-            if (this.debugMode) {
-                console.warn(`⚠️ Unknown sensory cue: ${cueType}`);
-            }
-            return;
-        }
-
-        const { channel, basePattern, visualType } = meta;
-
-        // 1) Trigger visual cue (if defined)
-        if (this.visualCueManager && visualType) {
-            this.visualCueManager.trigger(visualType, target, { channel });
-        }
-
-        // 2) Trigger haptic with channel info
-        // DIZEE FIX: Critical channel haptics bypass cooldown (narrative beats must always fire)
-        if (this.triggerHaptic && basePattern) {
-            const forceTrigger = channel === 'critical' || channel === 'narrative';
-            this.triggerHaptic(
-                basePattern,
-                description || `Sensory cue: ${cueType}`,
-                { channel, force: forceTrigger }
-            );
-        }
-
-        if (this.debugMode) {
-            console.log(`🎯 Sensory feedback: ${cueType} [channel=${channel}] visual=${visualType || 'none'} haptic=${basePattern || 'none'}`);
-        }
+        // Delegation stub - full implementation in HapticController
+        this.hapticController?.triggerSensoryFeedback(cueType, target, description);
     }
 
     // ========================================
