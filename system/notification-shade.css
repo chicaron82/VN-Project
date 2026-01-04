@@ -308,6 +308,35 @@
     color: #ff00ff;
 }
 
+/* Screenshot mode indicator - bougie cyan glow */
+body.ui-hidden #status-notification {
+    color: #00ffff !important;
+    text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    pointer-events: none !important;
+}
+
+body.ui-hidden #status-notification .status-notif-icon {
+    animation: screenshotPulse 2s ease-in-out infinite;
+}
+
+@keyframes screenshotPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px rgba(0, 255, 255, 0.6));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(0, 255, 255, 1));
+    }
+}
+
+/* Hide progress bar in screenshot mode */
+body.ui-hidden #status-notification .status-notif-progress {
+    display: none;
+}
+
 /* ECHO MEMORY SYSTEM - Mystical purple for echo comments */
 #status-notification.type-echo {
     color: #bf00ff;

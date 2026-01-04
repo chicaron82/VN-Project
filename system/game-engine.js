@@ -3747,8 +3747,18 @@ game.devCommands()
                 notesButton.style.opacity = '0';
             }
 
+            // Show "Screenshot Mode" indicator in status bar center
+            const statusNotification = document.getElementById('status-notification');
+            if (statusNotification) {
+                const icon = statusNotification.querySelector('.status-notif-icon');
+                const text = statusNotification.querySelector('.status-notif-text');
+                if (icon) icon.textContent = '📸';
+                if (text) text.textContent = 'Screenshot Mode';
+                statusNotification.classList.add('visible');
+            }
+
             this.state.set('ui.hidden', true);
-            console.log('📸 Screenshot mode ON - dialogue platform visible');
+            console.log('📸 Screenshot mode ON - dialogue platform visible, status bar showing context');
         } else {
             // NORMAL MODE: Show all UI elements
             document.body.classList.remove('ui-hidden');
@@ -3776,6 +3786,12 @@ game.devCommands()
             const notesButton = document.getElementById('notes-button');
             if (notesButton && notesButton.style.display === 'block') {
                 notesButton.style.opacity = '1';
+            }
+
+            // Hide "Screenshot Mode" indicator
+            const statusNotification = document.getElementById('status-notification');
+            if (statusNotification) {
+                statusNotification.classList.remove('visible');
             }
 
             this.state.set('ui.hidden', false);
