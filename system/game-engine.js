@@ -3587,7 +3587,7 @@ game.devCommands()
         console.log('🏃 Konami: Player chose to ESCAPE INSANE mode');
 
         // Downgrade to INTENSE
-        this.settingsManager.setDifficulty('intense');
+        this.settingsManager.setTetherDifficulty('intense');
 
         // Disable INSANE mode flag
         if (this.gameState.flags) {

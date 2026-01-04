@@ -486,6 +486,18 @@ class SecretCodesManager {
 
     trySecretCode(code) {
         const codes = {
+            'konami': {
+                name: 'Konami Code Controller',
+                description: 'Enter the legendary code. Some knowledge transcends timelines.',
+                reward: () => {
+                    // Show interactive controller overlay instead of direct execution
+                    if (this.game.easterEggController) {
+                        this.game.easterEggController.showKonamiControllerOverlay();
+                    } else {
+                        console.error('EasterEggController not available');
+                    }
+                }
+            },
             'torigatchi': {
                 name: 'The Reverse Door',
                 description: 'Two versions of Tori. Choose your peace.',
@@ -621,6 +633,7 @@ class SecretCodesManager {
 
         // All discoverable codes (NOT dev commands) with descriptions
         const allCodes = [
+            { code: 'konami', name: 'Konami Code', icon: '🎮', description: 'Enter the legendary code. Some knowledge transcends timelines.' },
             { code: 'torigatchi', name: 'The Reverse Door', icon: '🚪', description: 'Two versions of Tori. Choose your peace.' },
             { code: 'always3', name: 'Storm Dragon Signature', icon: '💚', description: '"Always. Always. Always." - Every time it appears.' },
             { code: 'uv7crew', name: 'Director\'s Cut', icon: '🎬', description: 'Extended crew statements. Behind the chaos.' },
