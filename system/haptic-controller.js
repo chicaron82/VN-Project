@@ -28,6 +28,7 @@ class HapticController {
         this.hapticCooldownMs = 50;
 
         // Debug logging
+        /** @type {Array<{cueType: string, channel: string, pattern: any, description: string, comfort: number, time: string}>} */
         this.sensoryLog = [];
         this.maxSensoryLog = 100;
 
@@ -40,11 +41,13 @@ class HapticController {
 
     /**
      * Get haptic patterns from GameConfig or fallback
-     * @returns {Object} Pattern library
+     * @returns {{[key: string]: number|number[]}} Pattern library
      */
     getHapticPatterns() {
         // Try GameConfig first
+        // @ts-ignore - GameConfig is a global
         if (typeof GameConfig !== 'undefined' && GameConfig.HAPTICS) {
+            // @ts-ignore
             return GameConfig.HAPTICS;
         }
 
@@ -166,7 +169,9 @@ class HapticController {
      */
     triggerSensoryFeedback(cueType, target = null, description = '') {
         // Get cue metadata from GameConfig
+        // @ts-ignore - GameConfig is a global
         const sensoryCues = typeof GameConfig !== 'undefined' ? GameConfig.SENSORY_CUES : null;
+        /** @type {{channel: string, basePattern: string, visualType: string|null}|undefined} */
         const meta = sensoryCues?.[cueType];
         if (!meta) {
             if (this.game?.debugMode) {
@@ -228,7 +233,7 @@ class HapticController {
 
     /**
      * Get sensory log for dev HUD
-     * @returns {Array}
+     * @returns {Array<{cueType: string, channel: string, pattern: any, description: string, comfort: number, time: string}>}
      */
     getSensoryLog() {
         return this.sensoryLog;
