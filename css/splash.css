@@ -63,6 +63,8 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
     width: 400px;
     max-width: 80vw;
     margin: 0 auto 40px;
+    /* Match logo aspect ratio to prevent revealing extra space */
+    overflow: hidden;
 }
 
 /* Wipe reveal container - width controlled by JS */
@@ -71,17 +73,31 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
     overflow: hidden;
     position: relative;
     transition: width 0.15s ease-out;
+    /* Constrain height to match video dimensions */
+    display: flex;
+    align-items: center;
+
+    /* BOUGIE: CSS custom properties for dynamic shimmer (updated by JS) */
+    --shimmer-speed: 1.5s;
+    --shimmer-r: 180;
+    --shimmer-g: 200;
+    --shimmer-b: 220;
 }
 
+/* FIXED: Video maintains full size for clean wipe reveal */
 .uv7-logo-video {
-    width: 100%;
-    /* Fill container proportionally - prevents reveal overshoot */
+    width: 400px;
+    max-width: 80vw;
     height: auto;
     display: block;
     filter: drop-shadow(0 0 30px rgba(220, 210, 180, 0.3));
+    /* Video stays full size - container crops it during reveal */
+    position: relative;
+    left: 0;
 }
 
 /* Shimmer edge effect during loading */
+
 .uv7-logo-reveal::after {
     content: '';
     position: absolute;
@@ -90,21 +106,22 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
     width: 4px;
     height: 60%;
     transform: translateY(-50%);
+    /* BOUGIE: Color shifts from cool blue (0%) to warm gold (100%) via CSS variables */
     background: linear-gradient(to bottom,
             transparent 0%,
-            rgba(220, 210, 180, 0.6) 30%,
-            rgba(255, 245, 220, 0.9) 50%,
-            rgba(220, 210, 180, 0.6) 70%,
+            rgba(var(--shimmer-r), var(--shimmer-g), var(--shimmer-b), 0.6) 30%,
+            rgba(calc(var(--shimmer-r) + 35), calc(var(--shimmer-g) + 35), calc(var(--shimmer-b) + 35), 0.9) 50%,
+            rgba(var(--shimmer-r), var(--shimmer-g), var(--shimmer-b), 0.6) 70%,
             transparent 100%);
     border-radius: 2px;
     opacity: 0;
     pointer-events: none;
-    box-shadow: 0 0 8px rgba(220, 210, 180, 0.5);
+    box-shadow: 0 0 8px rgba(var(--shimmer-r), var(--shimmer-g), var(--shimmer-b), 0.5);
 }
 
 .uv7-logo-wrap.loading .uv7-logo-reveal::after {
     opacity: 1;
-    animation: shimmerPulse 1.5s ease-in-out infinite;
+    animation: shimmerPulse var(--shimmer-speed) ease-in-out infinite;
 }
 
 .uv7-logo-wrap.ready .uv7-logo-reveal::after {
@@ -230,9 +247,14 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
         font-size: 1.2rem;
     }
 
+    .uv7-logo-wrap {
+        width: 280px;
+    }
+
     .uv7-logo-static,
     .uv7-logo-video {
         width: 280px;
+        max-width: 80vw;
     }
 
     .uv7-skip-btn {
@@ -251,9 +273,14 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
         margin-bottom: 15px;
     }
 
+    .uv7-logo-wrap {
+        width: 200px;
+    }
+
     .uv7-logo-static,
     .uv7-logo-video {
         width: 200px;
+        max-width: 80vw;
         margin-bottom: 20px;
     }
 
@@ -279,38 +306,15 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
     }
 }
 
-/* Loading elements inside UV7 splash */
+/* Loading elements inside UV7 splash - HIDDEN (logo wipe is now the progress indicator) */
 #loading-bar-container {
-    width: 400px;
-    max-width: 80vw;
-    height: 8px;
-    background: rgba(220, 210, 180, 0.1);
-    /* ZEERAH'S FIX: Cream background */
-    border: 1px solid rgba(220, 210, 180, 0.3);
-    /* Cream border */
-    border-radius: 4px;
-    margin: 30px auto 20px;
-    overflow: hidden;
+    display: none;
 }
 
 #loading-bar {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, #dcd2b4, #f4e4c1);
-    /* ZEERAH'S FIX: Cream/gold gradient */
-    transition: width 0.3s ease;
-    box-shadow: 0 0 10px rgba(220, 210, 180, 0.5);
-    /* Cream glow */
+    display: none;
 }
 
 #loading-tip {
-    color: rgba(220, 210, 180, 0.8);
-    font-size: 0.95rem;
-    font-family: 'Courier New', monospace;
-    text-align: center;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 0 20px;
-    line-height: 1.5;
-    opacity: 0.9;
+    display: none;
 }

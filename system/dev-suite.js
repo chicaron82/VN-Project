@@ -631,9 +631,20 @@ class DevSuite {
         for (let actNum = 1; actNum <= 4; actNum++) {
             const act = route[`act${actNum}`];
             if (act) {
-                const actScenes = Object.keys(act)
-                    .filter(k => typeof act[k] === 'function' && !k.startsWith('_'))
+                // DIZEE FIX: Class methods are not enumerable, so Object.keys() fails.
+                // We must inspect the prototype to find scene methods.
+                const prototype = Object.getPrototypeOf(act);
+                const methodNames = Object.getOwnPropertyNames(prototype);
+
+                const actScenes = methodNames
+                    .filter(k => {
+                        // Filter out constructor, internal methods (_), and non-functions
+                        return k !== 'constructor' &&
+                            !k.startsWith('_') &&
+                            typeof act[k] === 'function';
+                    })
                     .map(k => ({ act: actNum, scene: k }));
+
                 scenes.push(...actScenes);
             }
         }

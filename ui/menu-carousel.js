@@ -23,9 +23,7 @@ class MenuCarousel {
         // Initial setup
         this.setupHybridMode();
 
-        // 🛡️ Ensure legacy buttons are hidden
-        const legacyGrid = document.getElementById('menu-buttons-grid');
-        if (legacyGrid) legacyGrid.style.display = 'none';
+
 
         // Listen for resize to switch modes
         this.resizeListener = () => this.handleResize();

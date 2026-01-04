@@ -45,7 +45,7 @@ import './visual-cue-manager.js';
 import './time-machine-manager.js';
 import './tether-system.js';
 import './collectibles-manager.js';
-import './dev-console.js';
+
 import './dev-suite.js';
 import './auto-save-manager.js';
 import './error-boundary.js';

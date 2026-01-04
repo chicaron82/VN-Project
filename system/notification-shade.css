@@ -1610,7 +1610,7 @@ body.screenshot-mode #dialogue-box {
 /* Keep toggle visible when sidebar is expanded (for closing) */
 #sidebar.expanded~.sidebar-toggle {
     /* Remove opacity: 0 - keep it visible */
-    left: 300px;
+    left: 292px;
     /* Move it to the edge of the sidebar */
     transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), all 0.2s ease;
 }
@@ -1637,7 +1637,7 @@ body.screenshot-mode #dialogue-box {
 /* Toggle position when sidebar is on right and expanded */
 #sidebar.right-side.expanded~.sidebar-toggle {
     left: auto;
-    right: 300px;
+    right: 292px;
 }
 
 /* Sidebar uses same content styles as shade */

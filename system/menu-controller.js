@@ -155,41 +155,10 @@ class MenuController {
     // DIZEE'S ADDITION: Unlocks after first secret code use 🔧
     // ========================================
 
-    /**
-     * Update main menu layout based on ToriGatchi unlock status
-     * Switches between 4×2+1 layout (locked) and 2×5 layout (unlocked)
-     */
     updateMainMenuLayout() {
-        const torigatchiBtn = document.getElementById('torigatchi-menu-btn');
-        const contactBtn = document.getElementById('contact-menu-btn');
-        const menuGrid = document.getElementById('menu-buttons-grid');
-
-        if (!torigatchiBtn || !contactBtn || !menuGrid) {
-            console.warn('⚠️ Menu button elements not found');
-            return;
-        }
-
-        // Check if ToriGatchi is unlocked
-        const isUnlocked = localStorage.getItem('torigatchiUnlocked') === 'true';
-
-        if (isUnlocked) {
-            // Show ToriGatchi button (moves into top row as 5th button)
-            torigatchiBtn.style.display = 'inline-block';
-
-            // Contact button is already in bottom row in the HTML
-            // Just need to update grid layout via CSS class
-            menuGrid.classList.add('torigatchi-unlocked');
-
-            console.log('🎮 ToriGatchi unlocked - 2×5 menu layout active');
-        } else {
-            // Hide ToriGatchi button
-            torigatchiBtn.style.display = 'none';
-
-            // Keep default 4×2+1 layout
-            menuGrid.classList.remove('torigatchi-unlocked');
-
-            console.log('🔒 ToriGatchi locked - default menu layout');
-        }
+        // LEGACY: Replaced by MenuCarousel (Hybrid System)
+        // This method is kept as a stub to prevent errors if called externally
+        console.log('🎮 Menu layout handled by MenuCarousel (Legacy grid removed)');
     }
 
     // ========================================

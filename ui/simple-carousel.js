@@ -165,8 +165,7 @@ class SimpleCarousel {
         if (!mainMenuContent) return;
 
         // 🛡️ Hide legacy button grid explicitly
-        const buttonGrid = document.getElementById('menu-buttons-grid');
-        if (buttonGrid) buttonGrid.style.display = 'none';
+
 
         // Remove existing carousel if any
         const existingCarousel = document.getElementById('menu-carousel');

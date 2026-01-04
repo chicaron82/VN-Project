@@ -23,7 +23,7 @@
 }
 
 #character-left {
-    left: 5%;
+    left: 0%;
 }
 
 #character-right {
@@ -140,7 +140,7 @@
     width: 338px !important;
     height: 506px !important;
     /* 2:3 aspect ratio - 75% of Despair (shoulder height) */
-    left: 35% !important;
+    left: 30% !important;
     right: auto !important;
     z-index: 42;
 }
@@ -237,7 +237,7 @@
     #echo-1-sprite {
         width: 227px !important;
         height: 340px !important;
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
         left: auto !important;
         right: 60% !important;
@@ -246,7 +246,7 @@
     #echo-2-sprite {
         width: 227px !important;
         height: 340px !important;
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
         left: auto !important;
         right: 30% !important;
@@ -255,7 +255,7 @@
     #despair-sprite {
         width: 227px !important;
         height: 340px !important;
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
         left: auto !important;
         right: -10% !important;
@@ -278,14 +278,14 @@
         width: 210px !important;
         height: 315px !important;
         /* Fixed px for landscape mobile */
-        left: 5% !important;
+        left: 25% !important;
     }
 
     #echo-2-sprite {
         width: 210px !important;
         height: 315px !important;
         /* Fixed px for landscape mobile */
-        left: 35% !important;
+        left: 45% !important;
     }
 
     #despair-sprite {
@@ -418,7 +418,7 @@
         width: 170px !important;
         height: 255px !important;
         /* 75% of Despair height - shoulder height */
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
     }
 
@@ -433,7 +433,7 @@
     .echo-growth-act1 #despair-sprite {
         width: 227px !important;
         height: 340px !important;
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         right: -10% !important;
         /* Stand on dialogue box (30vh tall) */
     }
@@ -443,7 +443,7 @@
         width: 199px !important;
         height: 298px !important;
         /* 87.5% of Despair - growing taller */
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
     }
 
@@ -458,7 +458,7 @@
     .echo-growth-act2 #despair-sprite {
         width: 227px !important;
         height: 340px !important;
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         right: -10% !important;
         /* Stand on dialogue box (30vh tall) */
     }
@@ -469,7 +469,7 @@
         width: 227px !important;
         height: 340px !important;
         /* All equal - balance achieved */
-        bottom: 30vh !important;
+        bottom: 28vh !important;
         /* Stand on dialogue box (30vh tall) */
     }
 

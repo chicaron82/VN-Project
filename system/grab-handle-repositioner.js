@@ -509,12 +509,15 @@ class GrabHandleRepositioner {
         const isExpanded = this.sidebar.classList.contains('expanded');
 
         if (isExpanded) {
+            // DIZEE FIX: Use dynamic width to account for scrollbars/device variance
+            const sidebarWidth = this.sidebar.offsetWidth;
+
             if (this.currentSide === 'right') {
                 // Move toggle to left edge of sidebar when expanded on right
-                this.grabHandle.style.right = '300px';
+                this.grabHandle.style.right = `${sidebarWidth}px`;
             } else {
                 // Move toggle to right edge of sidebar when expanded on left
-                this.grabHandle.style.left = '300px';
+                this.grabHandle.style.left = `${sidebarWidth}px`;
             }
         }
     }

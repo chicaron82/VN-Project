@@ -487,8 +487,8 @@
    RESPONSIVE BREAKPOINTS
    ======================================== */
 
-/* Tablet (768px - 1024px) */
-@media (max-width: 1024px) {
+/* Tablet (768px - 1023px) */
+@media (max-width: 1023px) {
     .carousel-card {
         min-width: 380px;
         max-width: 380px;
@@ -592,7 +592,7 @@
 }
 
 /* Landscape Mode - Compact to fit all elements */
-@media (max-height: 720px) and (orientation: landscape) {
+@media (max-height: 1080px) and (orientation: landscape) {
     .menu-carousel.momentum-mode {
         /* Apply specific grid only to momentum mode */
         margin: 0.3rem auto;
