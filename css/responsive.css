@@ -263,6 +263,16 @@
             rgba(12, 15, 30, 0.85) !important;
     }
 
+    #dialogue-box.prologue-style {
+        background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+            rgba(25, 15, 40, 0.85) !important;
+    }
+
+    #dialogue-box.epilogue-style {
+        background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+            rgba(40, 30, 15, 0.85) !important;
+    }
+
     /* ================================================
        FULL-BODY SPRITES - MOBILE LANDSCAPE
        Adjust these values to tweak sprite appearance:

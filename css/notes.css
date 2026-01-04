@@ -513,6 +513,26 @@
     }
 }
 
+/* ========================================
+   LANDSCAPE MODE - SEMI-TRANSPARENT DIALOGUE BOXES
+   Show full-body sprites with feet visible through dialogue box
+   Matches Ronnie's route transparency on all routes
+   ======================================== */
+
+@media (max-width: 1279px) and (orientation: landscape) {
+    /* Prologue - Semi-transparent purple */
+    #dialogue-box.prologue-style {
+        background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+            rgba(25, 15, 40, 0.85) !important;
+    }
+
+    /* Epilogue - Semi-transparent golden */
+    #dialogue-box.epilogue-style {
+        background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+            rgba(40, 30, 15, 0.85) !important;
+    }
+}
+
 #character-name {
     color: #0ff;
     font-size: 1.3em;
