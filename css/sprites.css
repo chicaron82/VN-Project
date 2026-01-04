@@ -449,3 +449,35 @@ body.ui-hidden::before {
         bottom: calc(32vh - 8px);
     }
 }
+
+/* ========================================
+   MOBILE TAP-TO-EXIT HINT
+   Show subtle tap indicator on mobile
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Add tap hint below status bar on mobile */
+    body.ui-hidden #status-notification::after {
+        content: '(Tap anywhere to exit)';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(0, 255, 255, 0.6);
+        text-shadow: 0 0 6px rgba(0, 255, 255, 0.4);
+        white-space: nowrap;
+        animation: tapHintPulse 2s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes tapHintPulse {
+        0%, 100% {
+            opacity: 0.6;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+}

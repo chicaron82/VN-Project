@@ -3802,6 +3802,23 @@ game.devCommands()
         if (this.notificationShade) {
             this.notificationShade.toggleScreenshotMode();
         }
+
+        // MOBILE: Add/remove tap-to-exit listener for screenshot mode
+        if (!isHidden) {
+            // Entering screenshot mode - add tap listener
+            this.screenshotTapHandler = () => {
+                if (this.state.get('ui.hidden')) {
+                    this.toggleUI();
+                }
+            };
+            document.body.addEventListener('touchstart', this.screenshotTapHandler);
+        } else {
+            // Exiting screenshot mode - remove tap listener
+            if (this.screenshotTapHandler) {
+                document.body.removeEventListener('touchstart', this.screenshotTapHandler);
+                this.screenshotTapHandler = null;
+            }
+        }
     }
 
 
