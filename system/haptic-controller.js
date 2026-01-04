@@ -165,9 +165,9 @@ class HapticController {
      * @param {string} [description=''] - Debug description
      */
     triggerSensoryFeedback(cueType, target = null, description = '') {
-        // Get cue metadata (SENSORY_CUES is global from game-engine.js for now)
-        // @ts-ignore
-        const meta = typeof SENSORY_CUES !== 'undefined' ? SENSORY_CUES[cueType] : null;
+        // Get cue metadata from GameConfig
+        const sensoryCues = typeof GameConfig !== 'undefined' ? GameConfig.SENSORY_CUES : null;
+        const meta = sensoryCues?.[cueType];
         if (!meta) {
             if (this.game?.debugMode) {
                 console.warn(`⚠️ Unknown sensory cue: ${cueType}`);

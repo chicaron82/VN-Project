@@ -454,6 +454,32 @@ const GameConfig = {
     },
 
     // ========================================
+    // SENSORY CUES METADATA (TORI'S ARCHITECTURE) 💚
+    // Central configuration for all haptic + visual feedback
+    // ========================================
+    SENSORY_CUES: {
+        // UI Interactions (scale with comfort)
+        buttonPress: { channel: 'ui', basePattern: 'light', visualType: 'buttonPress' },
+        menuSelect: { channel: 'ui', basePattern: 'light', visualType: 'menuSelect' },
+        cardSnap: { channel: 'ui', basePattern: 'medium', visualType: 'cardSnap' },
+        uiSuccess: { channel: 'ui', basePattern: 'success', visualType: null },
+
+        // Narrative Moments (scale with comfort)
+        toriHop: { channel: 'narrative', basePattern: 'double', visualType: 'toriHop' },
+        tamaPull: { channel: 'narrative', basePattern: 'longBuzz', visualType: 'tamaPull' },
+        tamaEmergency: { channel: 'narrative', basePattern: 'warning', visualType: 'tamaEmergency' },
+        timelineGlitch: { channel: 'narrative', basePattern: 'glitch', visualType: 'timelineGlitch' },
+        codeRipple: { channel: 'narrative', basePattern: 'double', visualType: 'codeRipple' },
+        tetherWarning: { channel: 'narrative', basePattern: 'warning', visualType: null },
+        echoCall: { channel: 'narrative', basePattern: 'echo', visualType: null },
+
+        // Critical Feedback (NEVER scales - full intensity always)
+        denied: { channel: 'critical', basePattern: 'denied', visualType: 'denied' },
+        harshDenial: { channel: 'critical', basePattern: 'error', visualType: 'harshDenial' },
+        despairPulse: { channel: 'critical', basePattern: 'heartbeat', visualType: null }
+    },
+
+    // ========================================
     // SECRET CODES
     // ========================================
     CODES: {
