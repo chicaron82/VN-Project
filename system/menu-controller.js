@@ -77,6 +77,10 @@ class MenuController {
         // DIZEE FIX: Ensure pause menu overaly is closed when returning to main menu
         if (this.game.saveLoadUI) {
             this.game.saveLoadUI.hidePauseMenu();
+            // Safety: Ensure confirm dialog is also closed
+            if (this.game.saveLoadUI.closeConfirmDialog) {
+                this.game.saveLoadUI.closeConfirmDialog();
+            }
         }
 
 

@@ -499,14 +499,24 @@ class SaveLoadUI {
     }
 
     confirmAction(confirmed) {
+        // CLOSE DIALOG FIRST: Prevents it from getting stuck if callback errors
+        this.closeConfirmDialog();
+
         if (confirmed && this.confirmCallback) {
             // YES button clicked - execute confirm callback
-            this.confirmCallback();
+            try {
+                this.confirmCallback();
+            } catch (e) {
+                console.error('Error in confirm callback:', e);
+            }
         } else if (!confirmed && this.cancelCallback) {
             // NO button clicked - execute cancel callback
-            this.cancelCallback();
+            try {
+                this.cancelCallback();
+            } catch (e) {
+                console.error('Error in cancel callback:', e);
+            }
         }
-        this.closeConfirmDialog();
     }
 
     // ========================================
