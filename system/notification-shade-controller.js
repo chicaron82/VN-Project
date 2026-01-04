@@ -1420,6 +1420,7 @@ class NotificationShadeController {
     /**
      * Initialize sidebar layer swipe handling
      * Called after sidebar elements are ready
+     * ENHANCED: Now includes mouse drag and click toggle for desktop
      */
     initSidebarLayerSwipe() {
         /** @type {HTMLElement|null} */
@@ -1440,7 +1441,9 @@ class NotificationShadeController {
         this.isLayerDragging = false;
         this.isToolsRevealed = false;
 
-        // Add touch listeners to primary layer
+        // ========================================
+        // TOUCH SUPPORT (mobile)
+        // ========================================
         // @ts-ignore - TouchEvent parameter
         this.primaryLayer.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
         // @ts-ignore - TouchEvent parameter
@@ -1448,13 +1451,34 @@ class NotificationShadeController {
         // @ts-ignore - TouchEvent parameter
         this.primaryLayer.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
 
-        // Add touch listeners to secondary layer (for swipe back)
         // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
         // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
         // @ts-ignore - TouchEvent parameter
         this.secondaryLayer?.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
+
+        // ========================================
+        // MOUSE DRAG SUPPORT (desktop)
+        // ========================================
+        this.primaryLayer.addEventListener('mousedown', (e) => this.handleLayerMouseDown(e));
+        this.secondaryLayer?.addEventListener('mousedown', (e) => this.handleLayerMouseDown(e));
+
+        // Mouse move/up on document for smooth tracking
+        document.addEventListener('mousemove', (e) => this.handleLayerMouseMove(e));
+        document.addEventListener('mouseup', (e) => this.handleLayerMouseUp(e));
+
+        // ========================================
+        // CLICK TOGGLE (desktop - click hint text)
+        // ========================================
+        const layerHints = this.sidebarLayers.querySelectorAll('.layer-hint');
+        layerHints.forEach(hint => {
+            /** @type {HTMLElement} */(hint).style.cursor = 'pointer';
+            hint.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleToolsLayer();
+            });
+        });
 
         // Action button click delegation for layers
         this.sidebarLayers.addEventListener('click', (e) => {
@@ -1468,7 +1492,94 @@ class NotificationShadeController {
             }
         });
 
-        console.log('✅ Sidebar layer swipe initialized');
+        console.log('✅ Sidebar layer swipe initialized (touch + mouse + click toggle)');
+    }
+
+    // ========================================
+    // MOUSE DRAG HANDLERS
+    // ========================================
+
+    /**
+     * @param {MouseEvent} e
+     */
+    handleLayerMouseDown(e) {
+        // Only left click
+        if (e.button !== 0) return;
+
+        // Don't drag if clicking a button
+        // @ts-ignore
+        if (e.target?.closest('button')) return;
+
+        this.layerSwipeStartX = e.clientX;
+        this.layerSwipeStartTime = Date.now();
+        this.isLayerDragging = true;
+        this.sidebarLayers?.classList.add('dragging');
+
+        // Prevent text selection during drag
+        e.preventDefault();
+    }
+
+    /**
+     * @param {MouseEvent} e
+     */
+    handleLayerMouseMove(e) {
+        if (!this.isLayerDragging || !this.primaryLayer) return;
+
+        const deltaX = e.clientX - (this.layerSwipeStartX || 0);
+        const layerWidth = this.primaryLayer.offsetWidth || 200;
+
+        if (this.isToolsRevealed) {
+            // Currently showing tools - drag to hide
+            const percent = Math.max(0, Math.min(85, 85 + (deltaX / layerWidth) * 85));
+            this.primaryLayer.style.transform = `translateX(${percent}%)`;
+        } else {
+            // Currently showing core - drag to reveal tools
+            const percent = Math.max(0, Math.min(85, (deltaX / layerWidth) * 85));
+            this.primaryLayer.style.transform = `translateX(${percent}%)`;
+        }
+    }
+
+    /**
+     * @param {MouseEvent} e
+     */
+    handleLayerMouseUp(e) {
+        if (!this.isLayerDragging) return;
+
+        this.isLayerDragging = false;
+        this.sidebarLayers?.classList.remove('dragging');
+
+        // Reset inline transform - let CSS classes take over
+        if (this.primaryLayer) {
+            this.primaryLayer.style.transform = '';
+        }
+
+        const deltaX = e.clientX - (this.layerSwipeStartX || 0);
+        const deltaTime = Date.now() - (this.layerSwipeStartTime || 0);
+        const velocity = deltaX / Math.max(deltaTime, 1);
+
+        const threshold = 50;
+        const velocityThreshold = 0.3;
+
+        if (this.isToolsRevealed) {
+            if (deltaX < -threshold || velocity < -velocityThreshold) {
+                this.hideToolsLayer();
+            }
+        } else {
+            if (deltaX > threshold || velocity > velocityThreshold) {
+                this.revealToolsLayer();
+            }
+        }
+    }
+
+    /**
+     * Toggle between Core and Tools layers (for click)
+     */
+    toggleToolsLayer() {
+        if (this.isToolsRevealed) {
+            this.hideToolsLayer();
+        } else {
+            this.revealToolsLayer();
+        }
     }
 
     /**
