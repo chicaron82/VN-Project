@@ -88,34 +88,34 @@
 }
 
 /* ========================================
-   ECHO SPRITES - GROUNDED POSITIONING
-   Three sprites grounded at bottom like Tori
-   Despair same height, Echo 1 & 2 shorter
+   ECHO SPRITES - STAGGERED POSITIONING
+   Three sprites grounded at bottom, staggered across right side
+   Despair at reference height, Echo 1 & 2 at shoulder height
    ======================================== */
 
-/* Container for all three Echoes */
+/* Container for all three Echoes - spans right portion of screen */
 #character-right.echo-group {
-    display: flex;
-    align-items: flex-end;
-    /* Ground all at bottom */
-    justify-content: flex-end;
-    gap: -80px;
-    /* Large overlap - they stand together */
-    width: 450px !important;
+    display: block !important;
+    position: absolute !important;
+    width: 70% !important;
+    /* Span right 70% of screen for staggering */
     height: 100% !important;
     bottom: 0 !important;
-    right: 5% !important;
+    right: 0 !important;
+    left: auto !important;
+    background: none !important;
 }
 
-/* Individual echo sprites */
+/* Individual echo sprites - absolutely positioned for staggering */
 .echo-sprite {
-    width: 200px;
+    position: absolute !important;
+    bottom: 0 !important;
     background-size: contain;
     background-position: bottom center;
     /* Grounded at feet */
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease;
+    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease, width 0.8s ease;
     opacity: 1;
 }
 
@@ -125,22 +125,59 @@
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
 }
 
-/* Echo 1 & 2: Shorter than Despair (~70%) */
-#echo-1-sprite,
-#echo-2-sprite {
-    height: 60vh;
-    /* ~70% of Despair */
-    order: 1;
+/* Echo 1: Leftmost, shoulder height of Despair (~75%) */
+#echo-1-sprite {
+    width: 338px !important;
+    height: 506px !important;
+    /* 2:3 aspect ratio - 75% of Despair (shoulder height) */
+    left: 5% !important;
+    right: auto !important;
+    z-index: 41;
 }
 
+/* Echo 2: Middle position, shoulder height */
 #echo-2-sprite {
-    order: 2;
+    width: 338px !important;
+    height: 506px !important;
+    /* 2:3 aspect ratio - 75% of Despair (shoulder height) */
+    left: 35% !important;
+    right: auto !important;
+    z-index: 42;
 }
 
-/* Despair: Full height - tall like Tori */
+/* Despair: Rightmost, reference height (what Echo 1&2 used to be) */
 #despair-sprite {
-    height: 85vh;
-    order: 3;
+    width: 450px !important;
+    height: 675px !important;
+    /* 2:3 aspect ratio - reference height for the group */
+    right: -8% !important;
+    left: auto !important;
+    z-index: 43;
+}
+
+/* Large desktop - use fixed px for best quality */
+@media (min-width: 1400px) and (min-height: 900px) {
+
+    #echo-1-sprite {
+        width: 450px !important;
+        height: 675px !important;
+        /* 2:3 aspect ratio - 75% of Despair (shoulder height) */
+        left: 5% !important;
+    }
+
+    #echo-2-sprite {
+        width: 450px !important;
+        height: 675px !important;
+        /* 2:3 aspect ratio - 75% of Despair (shoulder height) */
+        left: 35% !important;
+    }
+
+    #despair-sprite {
+        width: 600px !important;
+        height: 900px !important;
+        /* 2:3 aspect ratio - desktop reference size */
+        right: -8% !important;
+    }
 }
 
 @media (max-width: 768px) {
@@ -157,73 +194,105 @@
         right: 2%;
     }
 
-    /* Echo group - tablet */
+    /* Echo group - tablet staggered */
     #character-right.echo-group {
-        width: 400px !important;
-        bottom: 0 !important;
-        gap: -70px;
+        width: 80% !important;
+        right: 0 !important;
     }
 
-    #echo-1-sprite,
+    #echo-1-sprite {
+        width: 30vh !important;
+        height: 45vh !important;
+        /* 2:3 aspect ratio - 75% of Despair */
+        left: 5% !important;
+    }
+
     #echo-2-sprite {
-        width: 180px;
-        height: 55vh;
-        /* ~70% */
+        width: 30vh !important;
+        height: 45vh !important;
+        /* 2:3 aspect ratio - 75% of Despair */
+        left: 35% !important;
     }
 
     #despair-sprite {
-        width: 180px;
-        height: 80vh;
+        width: 280px !important;
+        height: 80vh !important;
+        /* Match main character sprite height */
+        right: -8% !important;
     }
 }
 
 /* ========================================
-   MOBILE PORTRAIT - ECHO STACKING
+   MOBILE PORTRAIT - ECHO STAGGERED
    ======================================== */
 
 @media (max-width: 1023px) and (orientation: portrait) {
 
-    /* Echo group - portrait */
+    /* Echo group - portrait staggered */
     #character-right.echo-group {
-        width: 380px !important;
-        bottom: 0 !important;
-        gap: -65px;
+        width: 90% !important;
+        right: 0 !important;
     }
 
-    #echo-1-sprite,
+    #echo-1-sprite {
+        width: 227px !important;
+        height: 340px !important;
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+        left: auto !important;
+        right: 60% !important;
+    }
+
     #echo-2-sprite {
-        width: 160px;
-        height: 45vh;
-        /* ~70% */
+        width: 227px !important;
+        height: 340px !important;
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+        left: auto !important;
+        right: 30% !important;
     }
 
     #despair-sprite {
-        width: 160px;
-        height: 65vh;
+        width: 227px !important;
+        height: 340px !important;
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+        left: auto !important;
+        right: -10% !important;
     }
 }
 
 /* ========================================
-   MOBILE LANDSCAPE - ECHO SIZING
+   MOBILE LANDSCAPE - ECHO STAGGERED
    ======================================== */
 
 @media (max-width: 1023px) and (orientation: landscape) {
+
+    /* Echo group - landscape staggered */
     #character-right.echo-group {
-        width: 350px !important;
-        bottom: 0 !important;
-        gap: -60px;
+        width: 75% !important;
+        right: 0 !important;
     }
 
-    #echo-1-sprite,
+    #echo-1-sprite {
+        width: 210px !important;
+        height: 315px !important;
+        /* Fixed px for landscape mobile */
+        left: 5% !important;
+    }
+
     #echo-2-sprite {
-        width: 150px;
-        height: 55vh;
-        /* ~70% */
+        width: 210px !important;
+        height: 315px !important;
+        /* Fixed px for landscape mobile */
+        left: 35% !important;
     }
 
     #despair-sprite {
-        width: 150px;
-        height: 80vh;
+        width: 280px !important;
+        height: 420px !important;
+        /* Fixed px for landscape mobile */
+        right: -8% !important;
     }
 }
 
@@ -233,37 +302,190 @@
    Height-based instead of scale for proper grounding
    ======================================== */
 
-/* Act 1: Echo 1 and Echo 2 at hobbit height */
+/* Act 1: Echo 1 and Echo 2 at shoulder height, Despair dominant */
 .echo-growth-act1 #echo-1-sprite,
 .echo-growth-act1 #echo-2-sprite {
-    height: 60vh;
-    /* ~70% of Despair */
+    width: 338px !important;
+    height: 506px !important;
+    /* ~75% of Despair - shoulder height */
 }
 
 .echo-growth-act1 #despair-sprite {
-    height: 85vh;
-    /* Full height - dominates */
+    width: 450px !important;
+    height: 675px !important;
+    /* Reference height - dominates */
 }
 
-/* Act 2: Echo 1 and Echo 2 growing */
+/* Act 2: Echo 1 and Echo 2 growing taller */
 .echo-growth-act2 #echo-1-sprite,
 .echo-growth-act2 #echo-2-sprite {
-    height: 72vh;
-    /* ~85% - rising */
+    width: 394px !important;
+    height: 591px !important;
+    /* ~87.5% - rising to nearly equal */
 }
 
 .echo-growth-act2 #despair-sprite {
-    height: 85vh;
-    /* Still full height */
+    width: 450px !important;
+    height: 675px !important;
+    /* Still reference height */
 }
 
-/* Act 3: All equal */
+/* Act 3: All equal - balance achieved */
 .echo-growth-act3 #echo-1-sprite,
 .echo-growth-act3 #echo-2-sprite,
 .echo-growth-act3 #despair-sprite {
-    height: 85vh;
+    width: 450px !important;
+    height: 675px !important;
     /* All equal - balance achieved */
 }
+
+/* Large desktop growth stages - use fixed px */
+@media (min-width: 1400px) and (min-height: 900px) {
+
+    .echo-growth-act1 #echo-1-sprite,
+    .echo-growth-act1 #echo-2-sprite {
+        width: 450px !important;
+        height: 675px !important;
+    }
+
+    .echo-growth-act1 #despair-sprite {
+        width: 600px !important;
+        height: 900px !important;
+    }
+
+    .echo-growth-act2 #echo-1-sprite,
+    .echo-growth-act2 #echo-2-sprite {
+        width: 525px !important;
+        height: 787px !important;
+    }
+
+    .echo-growth-act2 #despair-sprite {
+        width: 600px !important;
+        height: 900px !important;
+    }
+
+    .echo-growth-act3 #echo-1-sprite,
+    .echo-growth-act3 #echo-2-sprite,
+    .echo-growth-act3 #despair-sprite {
+        width: 600px !important;
+        height: 900px !important;
+    }
+}
+
+/* Mobile landscape growth stages - override desktop px with mobile-friendly sizes */
+@media (max-width: 1023px) and (orientation: landscape) {
+
+    .echo-growth-act1 #echo-1-sprite,
+    .echo-growth-act1 #echo-2-sprite {
+        width: 210px !important;
+        height: 315px !important;
+        /* Mobile landscape - smaller Echoes */
+    }
+
+    .echo-growth-act1 #despair-sprite {
+        width: 280px !important;
+        height: 420px !important;
+        /* Mobile landscape - fits viewport */
+    }
+
+    .echo-growth-act2 #echo-1-sprite,
+    .echo-growth-act2 #echo-2-sprite {
+        width: 210px !important;
+        height: 315px !important;
+        /* Mobile landscape - Echoes growing */
+    }
+
+    .echo-growth-act2 #despair-sprite {
+        width: 280px !important;
+        height: 420px !important;
+        /* Mobile landscape - still fits */
+    }
+
+    .echo-growth-act3 #echo-1-sprite,
+    .echo-growth-act3 #echo-2-sprite,
+    .echo-growth-act3 #despair-sprite {
+        width: 280px !important;
+        height: 420px !important;
+        /* Mobile landscape - all equal */
+    }
+}
+
+/* Mobile portrait growth stages - override desktop px with mobile-friendly sizes */
+@media (max-width: 1023px) and (orientation: portrait) {
+
+    .echo-growth-act1 #echo-1-sprite,
+    .echo-growth-act1 #echo-2-sprite {
+        width: 170px !important;
+        height: 255px !important;
+        /* 75% of Despair height - shoulder height */
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+    }
+
+    .echo-growth-act1 #echo-1-sprite {
+        right: 60% !important;
+    }
+
+    .echo-growth-act1 #echo-2-sprite {
+        right: 30% !important;
+    }
+
+    .echo-growth-act1 #despair-sprite {
+        width: 227px !important;
+        height: 340px !important;
+        bottom: 30vh !important;
+        right: -10% !important;
+        /* Stand on dialogue box (30vh tall) */
+    }
+
+    .echo-growth-act2 #echo-1-sprite,
+    .echo-growth-act2 #echo-2-sprite {
+        width: 199px !important;
+        height: 298px !important;
+        /* 87.5% of Despair - growing taller */
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+    }
+
+    .echo-growth-act2 #echo-1-sprite {
+        right: 60% !important;
+    }
+
+    .echo-growth-act2 #echo-2-sprite {
+        right: 30% !important;
+    }
+
+    .echo-growth-act2 #despair-sprite {
+        width: 227px !important;
+        height: 340px !important;
+        bottom: 30vh !important;
+        right: -10% !important;
+        /* Stand on dialogue box (30vh tall) */
+    }
+
+    .echo-growth-act3 #echo-1-sprite,
+    .echo-growth-act3 #echo-2-sprite,
+    .echo-growth-act3 #despair-sprite {
+        width: 227px !important;
+        height: 340px !important;
+        /* All equal - balance achieved */
+        bottom: 30vh !important;
+        /* Stand on dialogue box (30vh tall) */
+    }
+
+    .echo-growth-act3 #echo-1-sprite {
+        right: 60% !important;
+    }
+
+    .echo-growth-act3 #echo-2-sprite {
+        right: 30% !important;
+    }
+
+    .echo-growth-act3 #despair-sprite {
+        right: -10% !important;
+    }
+}
+
 
 /* ========================================
    SCREENSHOT MODE PLATFORM
