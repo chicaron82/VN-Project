@@ -325,17 +325,17 @@ class SpriteController {
         const echo1 = document.createElement('div');
         echo1.id = 'echo-1-sprite';
         echo1.className = 'echo-sprite';
-        echo1.style.backgroundImage = "url('assets/echo-1-sprite.png')";
+        echo1.style.backgroundImage = "url('assets/full-sprite-echo1.webp')";
 
         const echo2 = document.createElement('div');
         echo2.id = 'echo-2-sprite';
         echo2.className = 'echo-sprite';
-        echo2.style.backgroundImage = "url('assets/echo-2-sprite.png')";
+        echo2.style.backgroundImage = "url('assets/full-sprite-echo2.webp')";
 
         const despair = document.createElement('div');
         despair.id = 'despair-sprite';
         despair.className = 'echo-sprite';
-        despair.style.backgroundImage = "url('assets/despair-sprite.png')";
+        despair.style.backgroundImage = "url('assets/full-sprite-despair.webp')";
 
         // Add to container
         this.game.spriteRight.appendChild(echo1);

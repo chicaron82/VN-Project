@@ -14,12 +14,12 @@ class Epilogue {
             this.leftSprite = 'assets/full-sprite-tori.webp';
             this.rightSprite = 'assets/full-sprite-ronnie.webp';
             this.oldLeftSprite = 'assets/full-sprite-tori.webp';
-            this.oldRightSprite = 'assets/old-full-sprite-ronnie.webp';
+            this.oldRightSprite = 'assets/full-sprite-oldRonnie.webp';
         } else {
             // Default: Ronnie's route (Ronnie left, Tori right)
             this.leftSprite = 'assets/full-sprite-ronnie.webp';
             this.rightSprite = 'assets/full-sprite-tori.webp';
-            this.oldLeftSprite = 'assets/old-full-sprite-ronnie.webp';
+            this.oldLeftSprite = 'assets/full-sprite-oldRonnie.webp';
             this.oldRightSprite = 'assets/full-sprite-tori.webp';
         }
     }

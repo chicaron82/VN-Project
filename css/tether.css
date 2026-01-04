@@ -116,7 +116,7 @@
     /* Fixed position for visibility */
     left: 20px;
     /* Position below where tether-ui was */
-    top: 70px;
+    top: 40px;
     /* Adjust based on status bar height */
     z-index: 200;
     /* Above other content */
@@ -480,4 +480,3 @@
 .despair-note .note-title {
     color: #ff6b6b;
 }
-

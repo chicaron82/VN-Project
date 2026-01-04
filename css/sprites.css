@@ -1,21 +1,19 @@
 /* ========================================
    CHARACTER SPRITE SYSTEM
-   Now uses full-body sprites everywhere
-   Desktop: Shows torso (top portion)
-   Mobile: Shows full body grounded
+   Full-body sprites grounded at bottom
+   Dialogue box covers lower portion
    ======================================== */
 
 .character-sprite {
     position: absolute;
-    bottom: 80px;
-    /* Above dialogue box safe zone */
+    bottom: 0;
+    /* Grounded at bottom */
     width: 350px;
-    height: 500px;
-    /* Crops to show torso portion of full-body sprite */
+    height: 600px;
+    /* Tall enough for full body */
     background-size: contain;
-    /* Scale up so torso fills the container */
-    background-position: top center;
-    /* Show top (torso) of sprite */
+    background-position: bottom center;
+    /* Show from feet up */
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
     transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
@@ -90,34 +88,35 @@
 }
 
 /* ========================================
-   ECHO SPRITES - TRIPLE POSITIONING
-   Three separate sprites for individual highlighting
+   ECHO SPRITES - GROUNDED POSITIONING
+   Three sprites grounded at bottom like Tori
+   Despair same height, Echo 1 & 2 shorter
    ======================================== */
 
 /* Container for all three Echoes */
 #character-right.echo-group {
     display: flex;
     align-items: flex-end;
-    justify-content: center;
-    gap: 5px;
-    /* Tighter spacing - they're together in this */
-    width: 500px !important;
-    height: 600px !important;
+    /* Ground all at bottom */
+    justify-content: flex-end;
+    gap: -80px;
+    /* Large overlap - they stand together */
+    width: 450px !important;
+    height: 100% !important;
+    bottom: 0 !important;
+    right: 5% !important;
 }
 
-/* Individual echo sprites within the group */
+/* Individual echo sprites */
 .echo-sprite {
-    width: 150px;
-    height: 600px;
+    width: 200px;
     background-size: contain;
     background-position: bottom center;
+    /* Grounded at feet */
     background-repeat: no-repeat;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.8s ease;
-    /* Smooth growth */
+    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease;
     opacity: 1;
-    transform-origin: bottom center;
-    /* Grow from feet up */
 }
 
 /* Dim echo when not speaking */
@@ -126,8 +125,11 @@
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
 }
 
-/* Individual echo sprites */
-#echo-1-sprite {
+/* Echo 1 & 2: Shorter than Despair (~70%) */
+#echo-1-sprite,
+#echo-2-sprite {
+    height: 60vh;
+    /* ~70% of Despair */
     order: 1;
 }
 
@@ -135,14 +137,16 @@
     order: 2;
 }
 
+/* Despair: Full height - tall like Tori */
 #despair-sprite {
+    height: 85vh;
     order: 3;
 }
 
 @media (max-width: 768px) {
     .character-sprite {
-        width: 230px;
-        height: 380px;
+        width: 280px;
+        height: 80vh;
     }
 
     #character-left {
@@ -153,16 +157,23 @@
         right: 2%;
     }
 
-    /* Echo group sizing for tablet */
+    /* Echo group - tablet */
     #character-right.echo-group {
         width: 400px !important;
-        height: 400px !important;
-        gap: 8px;
+        bottom: 0 !important;
+        gap: -70px;
     }
 
-    .echo-sprite {
-        width: 120px;
-        height: 400px;
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 180px;
+        height: 55vh;
+        /* ~70% */
+    }
+
+    #despair-sprite {
+        width: 180px;
+        height: 80vh;
     }
 }
 
@@ -172,23 +183,23 @@
 
 @media (max-width: 1023px) and (orientation: portrait) {
 
-    /* Echo group - stacked vertically and centered */
+    /* Echo group - portrait */
     #character-right.echo-group {
-        flex-direction: row;
-        /* Keep horizontal but tighter */
-        width: 90% !important;
-        max-width: 350px !important;
-        height: 350px !important;
-        left: 50% !important;
-        right: auto !important;
-        transform: translateX(-50%) !important;
-        bottom: 28vh !important;
-        gap: 5px;
+        width: 380px !important;
+        bottom: 0 !important;
+        gap: -65px;
     }
 
-    .echo-sprite {
-        width: 110px;
-        height: 350px;
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 160px;
+        height: 45vh;
+        /* ~70% */
+    }
+
+    #despair-sprite {
+        width: 160px;
+        height: 65vh;
     }
 }
 
@@ -199,15 +210,59 @@
 @media (max-width: 1023px) and (orientation: landscape) {
     #character-right.echo-group {
         width: 350px !important;
-        height: 300px !important;
-        gap: 5px;
-        bottom: 35vh !important;
+        bottom: 0 !important;
+        gap: -60px;
     }
 
-    .echo-sprite {
-        width: 110px;
-        height: 300px;
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 150px;
+        height: 55vh;
+        /* ~70% */
     }
+
+    #despair-sprite {
+        width: 150px;
+        height: 80vh;
+    }
+}
+
+/* ========================================
+   ECHO GROWTH - VISUAL STORYTELLING
+   Echoes grow taller as hope increases
+   Height-based instead of scale for proper grounding
+   ======================================== */
+
+/* Act 1: Echo 1 and Echo 2 at hobbit height */
+.echo-growth-act1 #echo-1-sprite,
+.echo-growth-act1 #echo-2-sprite {
+    height: 60vh;
+    /* ~70% of Despair */
+}
+
+.echo-growth-act1 #despair-sprite {
+    height: 85vh;
+    /* Full height - dominates */
+}
+
+/* Act 2: Echo 1 and Echo 2 growing */
+.echo-growth-act2 #echo-1-sprite,
+.echo-growth-act2 #echo-2-sprite {
+    height: 72vh;
+    /* ~85% - rising */
+}
+
+.echo-growth-act2 #despair-sprite {
+    height: 85vh;
+    /* Still full height */
+}
+
+/* Act 3: All equal */
+.echo-growth-act3 #echo-1-sprite,
+.echo-growth-act3 #echo-2-sprite,
+.echo-growth-act3 #despair-sprite {
+    height: 85vh;
+    /* All equal - balance achieved */
 }
 
 /* ========================================

@@ -129,7 +129,7 @@ class ToriAct1 {
             background: 'assets/genericBack.png',
             sprites: {
                 left: 'assets/full-sprite-tori.webp',
-                right: 'assets/old-full-sprite-ronnie.webp',
+                right: 'assets/full-sprite-oldRonnie.webp',
                 highlight: 'left'
             },
             next: () => this.scene1_walking_home(),

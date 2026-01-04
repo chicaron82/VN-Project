@@ -13,27 +13,16 @@
  * @class SceneRenderer
  */
 
-// ========================================
-// TYPESCRIPT DECLARATIONS
-// ========================================
-
-/** GameEngine reference */
+// TypeScript declarations
 declare class GameEngine {
     [key: string]: any;
 }
 
-/** Choice interface */
 interface Choice {
     text: string;
     value: any;
     locked?: boolean;
     disabled?: boolean;
-}
-
-/** Sprites interface */
-interface SpriteUpdate {
-    left?: string | null;
-    right?: string | null;
 }
 
 class SceneRenderer {
@@ -45,11 +34,19 @@ class SceneRenderer {
     }
 
     // ========================================
+    // MOBILE FULL-BODY SPRITE SUPPORT
+    // Swaps torso sprites → full-body on mobile landscape
+    // ========================================
+
+    // NOTE: Sprite path swapping removed - routes now use full-body sprites directly
+    // CSS handles responsive display (desktop shows torso, mobile shows full body)
+
+    // ========================================
     // SPRITE MANAGEMENT
     // Extracted from GameEngine.updateSprites
     // ========================================
 
-    updateSprites(sprites) {
+    updateSprites(sprites: { left?: string | null; right?: string | null }) {
         const game = this.game;
 
         // Handle left sprite
@@ -66,7 +63,7 @@ class SceneRenderer {
                 game.currentSprites.left = null;
                 game.gameState.sprites.left = null;
             } else {
-                // Show/update left sprite
+                // Show/update left sprite (routes now use full-body sprite paths)
                 if (game.spriteLeft) {
                     game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;
                     game.spriteLeft.style.display = 'block';
@@ -101,7 +98,7 @@ class SceneRenderer {
                 game.currentSprites.right = 'echoes';
                 game.gameState.sprites.right = 'echoes';
             } else {
-                // Show/update right sprite (normal single sprite)
+                // Show/update right sprite (routes now use full-body sprite paths)
                 if (game.spriteRight) {
                     game.spriteRight.classList.remove('echo-group');
                     game.spriteRight.innerHTML = '';
@@ -123,7 +120,7 @@ class SceneRenderer {
     // Extracted from GameEngine.crossfadeBackground
     // ========================================
 
-    crossfadeBackground(newBackground) {
+    crossfadeBackground(newBackground: string) {
         const game = this.game;
 
         // Skip if same background
@@ -157,13 +154,13 @@ class SceneRenderer {
     // Extracted from GameEngine.showChoices
     // ========================================
 
-    showChoices(choices, onChoice) {
+    showChoices(choices: Choice[], onChoice?: (value: any) => void) {
         const game = this.game;
 
         game.choicesContainer.innerHTML = '';
         game.choiceMenu.style.display = 'block';
 
-        choices.forEach(choice => {
+        choices.forEach((choice: Choice) => {
             const button = document.createElement('div');
             button.className = 'choice-option';
             button.textContent = choice.text;
@@ -181,6 +178,14 @@ class SceneRenderer {
                 button.addEventListener('click', () => {
                     game.triggerSensoryFeedback('buttonPress', button, 'Choice selected');
                     game.choiceMenu.style.display = 'none';
+
+                    // Record choice for echo memory (Belle's meta-awareness)
+                    if (game.echoMemory) {
+                        const choiceId = game.gameState?.currentScene || 'unknown';
+                        const optionIndex = choices.indexOf(choice);
+                        game.echoMemory.recordChoice(choiceId, optionIndex);
+                    }
+
                     if (onChoice) onChoice(choice.value);
                 });
             }
@@ -194,7 +199,7 @@ class SceneRenderer {
     // Extracted from GameEngine.typewriterText
     // ========================================
 
-    typewriterText(element, text, callback, internalTextLength = 0, slowReveal = false) {
+    typewriterText(element: HTMLElement, text: string, callback?: () => void, internalTextLength = 0, slowReveal = false) {
         const game = this.game;
 
         // Store slow reveal flag for getTypewriterSpeed

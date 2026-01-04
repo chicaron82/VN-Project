@@ -20,6 +20,22 @@
  * 
  * @class NotificationShadeController
  */
+
+interface NoteData {
+    id: string;
+    title: string;
+    content: string;
+}
+
+interface ConfirmationOptions {
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+}
+
 export class NotificationShadeController {
     private game: any;
     private isShadeOpen = false;
@@ -28,9 +44,16 @@ export class NotificationShadeController {
     private idleDelay = 3000;
     private screenshotMode = false;
     private touchStartY = 0;
-    private touchStartX = 0;
-    private unreadNotes: any[] = [];
-    private currentNotePreview: any = null;
+    private _touchStartX = 0; // Reserved for future horizontal swipe detection
+    private unreadNotes: NoteData[] = [];
+    private currentNotePreview: NoteData | null = null;
+
+    // Expandable quick actions
+    private quickActions: any = null;
+
+    // Orientation change handling
+    private orientationMediaQuery: MediaQueryList | null = null;
+    private handleOrientationChange: ((e: MediaQueryListEvent) => void) | null = null;
 
     // DOM - Status bar
     private statusBar: HTMLElement | null = null;
@@ -71,9 +94,9 @@ export class NotificationShadeController {
 
     // DOM - Tether & Mail
     private tetherFill: Element | null = null;
-    private tetherLightning: Element | null = null;
+    private _tetherLightning: Element | null = null; // Reserved for lightning bolt animations
     private statusMail: HTMLElement | null = null;
-    private mailIcon: Element | null = null;
+    private _mailIcon: Element | null = null; // Reserved for mail icon animations
     private unreadBadge: Element | null = null;
 
     // DOM - Note preview
@@ -86,13 +109,24 @@ export class NotificationShadeController {
     private sidebarNoteTitle: Element | null = null;
     private sidebarNoteSnippet: Element | null = null;
 
+    // DOM - Sidebar layers (iOS-style depth)
+    private sidebarLayers: HTMLElement | null = null;
+    private primaryLayer: HTMLElement | null = null;
+    private secondaryLayer: HTMLElement | null = null;
+
+    // Layer swipe state
+    private layerSwipeStartX = 0;
+    private layerSwipeStartTime = 0;
+    private isLayerDragging = false;
+    private isToolsRevealed = false;
+
     constructor(game: any) {
         this.game = game;
         this.isShadeOpen = false;
         this.isSidebarOpen = false;
         this.idleTimer = null;
-        this.idleDelay = 3000; // 3 seconds
-        this.screenshotMode = false; // Hide UI for screenshots
+        this.idleDelay = 3000;
+        this.screenshotMode = false;
 
         // Touch gesture tracking
         this.touchStartY = 0;
@@ -110,13 +144,23 @@ export class NotificationShadeController {
         this.setupEventListeners();
         this.updateStatusBar();
 
-        // DIZEE: Subscribe to tether level changes for reactive lightning bolt updates
+        // Subscribe to tether level changes for reactive lightning bolt updates
         if (this.game.state) {
             this.game.state.subscribe('tether.level', (newLevel: number, oldLevel: number) => {
                 console.log(`⚡ Shade: Tether subscription ${oldLevel} → ${newLevel}`);
                 this.updateStatusBar();
             });
         }
+
+        // Initialize Expandable Quick Actions (MICHELIN EDITION)
+        if (typeof (window as any).ExpandableQuickActions !== 'undefined') {
+            this.quickActions = new (window as any).ExpandableQuickActions(this);
+        } else {
+            console.warn('ExpandableQuickActions not loaded');
+        }
+
+        // Initialize sidebar depth layer swipe (iOS-style)
+        this.initSidebarLayerSwipe();
 
         console.log('✅ NotificationShadeController initialized');
     }
@@ -166,23 +210,23 @@ export class NotificationShadeController {
         this.sidebarTetherItem = document.getElementById('sidebar-tether-item');
         this.sidebarTetherValue = document.getElementById('sidebar-tether-value');
 
-        // New elements - Tether lightning bolt
-        this.tetherLightning = document.querySelector('.tether-lightning');
+        // Tether lightning bolt
+        this._tetherLightning = document.querySelector('.tether-lightning');
         this.tetherFill = document.querySelector('.tether-fill');
         this.statusTetherValue = document.getElementById('status-tether-value');
 
-        // New elements - Mail icon with badge
+        // Mail icon with badge
         this.statusMail = document.getElementById('status-mail');
-        this.mailIcon = document.querySelector('.mail-icon');
+        this._mailIcon = document.querySelector('.mail-icon');
         this.unreadBadge = document.querySelector('.unread-badge');
 
-        // New elements - Note preview (shade)
+        // Note preview (shade)
         this.notesPreviewSection = document.getElementById('notes-preview-section');
         this.notePreviewBtn = document.getElementById('note-preview-btn');
         this.noteTitle = this.notePreviewBtn?.querySelector('.note-title') || null;
         this.noteSnippet = this.notePreviewBtn?.querySelector('.note-snippet') || null;
 
-        // New elements - Note preview (sidebar)
+        // Note preview (sidebar)
         this.sidebarNotesPreviewSection = document.getElementById('sidebar-notes-preview-section');
         this.sidebarNotePreviewBtn = document.getElementById('sidebar-note-preview-btn');
         this.sidebarNoteTitle = this.sidebarNotePreviewBtn?.querySelector('.note-title') || null;
@@ -204,7 +248,7 @@ export class NotificationShadeController {
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
 
-        // Swipe gesture detection (passive: false to allow preventDefault)
+        // Swipe gesture detection
         document.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false });
         document.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
         document.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false });
@@ -220,6 +264,11 @@ export class NotificationShadeController {
         if (this.shadeFullscreen) this.shadeFullscreen.addEventListener('click', () => this.toggleFullscreen());
         if (this.shadeExit) this.shadeExit.addEventListener('click', () => this.returnToMenu());
         if (this.shadeSettings) this.shadeSettings.addEventListener('click', () => this.openSettings());
+
+        // Mail icon click to open notes viewer
+        if (this.statusMail) {
+            this.statusMail.addEventListener('click', () => this.openNotesViewer());
+        }
 
         // Sidebar toggle and buttons
         if (this.sidebarToggle) {
@@ -242,6 +291,25 @@ export class NotificationShadeController {
             });
         }
 
+        // Orientation change: Close sidebar when rotating to portrait
+        this.orientationMediaQuery = window.matchMedia('(orientation: portrait)');
+        this.handleOrientationChange = (e: MediaQueryListEvent) => {
+            if (e.matches && this.isSidebarOpen) {
+                console.log('📱 Orientation changed to portrait - closing sidebar');
+                this.hideSidebar();
+            }
+        };
+        this.orientationMediaQuery.addEventListener('change', this.handleOrientationChange);
+
+        // Also handle resize for desktop testing
+        window.addEventListener('resize', () => {
+            const isPortrait = window.innerHeight > window.innerWidth;
+            if (isPortrait && this.isSidebarOpen) {
+                console.log('📱 Window resized to portrait - closing sidebar');
+                this.hideSidebar();
+            }
+        });
+
         console.log('✅ Event listeners setup');
     }
 
@@ -249,20 +317,10 @@ export class NotificationShadeController {
     // STATUS BAR UPDATES
     // ========================================
 
-    /**
-     * Update the status bar with current game state
-     * Updates route, notes count, tether level, and mail icon
-     * Called reactively when state changes
-     * 
-     * @example
-     * // Manually refresh status bar
-     * notificationShade.updateStatusBar();
-     */
     updateStatusBar() {
         if (!this.statusBar) return;
 
-        // Update loop version - v.848 is the canonical "source" version
-        // The shade shows the actual attempt count
+        // Update loop version
         if (this.statusLoop) {
             this.statusLoop.textContent = 'v.848';
         }
@@ -281,40 +339,39 @@ export class NotificationShadeController {
             }
         }
 
-        // Update progress (notes collected)
+        // Update progress (notes collected) - only show in routes
         if (this.statusProgress) {
-            const notesCollected = this.getNotesCollected();
-            const totalNotes = this.getTotalNotes();
-            this.statusProgress.textContent = `🖤 ${notesCollected}/${totalNotes}`;
+            const routeName = this.getRouteName();
+            const hideCounter = ['Menu', 'Prologue', 'Route Select', 'Epilogue'].includes(routeName);
+            if (hideCounter) {
+                this.statusProgress.style.display = 'none';
+            } else {
+                this.statusProgress.style.display = 'inline';
+                const notesCollected = this.getNotesCollected();
+                const totalNotes = this.getTotalNotes();
+                this.statusProgress.textContent = `🖤 ${notesCollected}/${totalNotes}`;
+            }
         }
 
-        // Update tether (Tori route only) - Lightning bolt with fill
+        // Update tether (Tori route only)
         if (this.statusTether) {
             const isTori = this.isToriRoute();
-            console.log(`🔋 Tether update: isToriRoute=${isTori}, statusTether exists=${!!this.statusTether}`);
+            console.log(`🔋 Tether update: isToriRoute=${isTori}`);
 
             if (isTori) {
                 const tetherLevel = this.getTetherLevel();
-                console.log(`🔋 Tether level: ${tetherLevel}%, statusTetherValue exists=${!!this.statusTetherValue}, tetherFill exists=${!!this.tetherFill}`);
+                console.log(`🔋 Tether level: ${tetherLevel}%`);
 
-                // Show tether meter (use style.display to override inline style)
                 this.statusTether.style.display = 'flex';
 
-                // Update percentage text
                 if (this.statusTetherValue) {
-                    const newText = `${Math.round(tetherLevel)}%`;
-                    console.log(`📝 Setting tether text: "${this.statusTetherValue.textContent}" → "${newText}"`);
-                    this.statusTetherValue.textContent = newText;
+                    this.statusTetherValue.textContent = `${Math.round(tetherLevel)}%`;
                 }
 
-                // Update lightning bolt fill height
                 if (this.tetherFill) {
-                    const newHeight = `${tetherLevel}%`;
-                    console.log(`📏 Setting fill height: "${(this.tetherFill as HTMLElement).style.height}" → "${newHeight}"`);
-                    (this.tetherFill as HTMLElement).style.height = newHeight;
+                    (this.tetherFill as HTMLElement).style.height = `${tetherLevel}%`;
                 }
 
-                // Apply state classes
                 this.statusTether.classList.remove('warning', 'critical');
                 if (tetherLevel < 20) {
                     this.statusTether.classList.add('critical');
@@ -326,7 +383,6 @@ export class NotificationShadeController {
             }
         }
 
-        // Update mail icon (unread notes)
         this.updateMailIcon();
     }
 
@@ -334,39 +390,60 @@ export class NotificationShadeController {
     // HELPER METHODS
     // ========================================
 
-    getRouteName() {
+    getRouteName(): string {
+        // Check for route select screen
+        const routeSelect = document.getElementById('route-select');
+        if (routeSelect) {
+            const computed = window.getComputedStyle(routeSelect);
+            const isVisible = computed.display !== 'none' && parseFloat(computed.opacity) > 0;
+            if (isVisible) {
+                return 'Route Select';
+            }
+        }
+
         if (!this.game.currentRoute) return 'Menu';
+
         const routeClass = this.game.currentRoute.constructor.name;
+
+        if (routeClass.includes('SharedPrologue') || routeClass === 'Prologue') return 'Prologue';
+        if (routeClass.includes('Epilogue')) return 'Epilogue';
         if (routeClass.includes('Ronnie')) return 'Ronnie Route';
         if (routeClass.includes('Tori')) return 'Tori Route';
+
         return 'Route';
     }
 
-    isToriRoute() {
+    isToriRoute(): boolean {
         if (!this.game.currentRoute) return false;
         return this.game.currentRoute.constructor.name.includes('Tori');
     }
 
-    getNotesCollected() {
-        // Use route's collectibles manager
-        const cm = this.game.currentRoute?.collectiblesManager;
+    getNotesCollected(): number {
+        const cm = this.game.currentRoute?.collectiblesManager || this.game.collectiblesManager;
         if (!cm) return 0;
-        return cm.getCollectedCountForCurrentRoute() || 0;
+        return cm.getCollectedCountForCurrentRoute?.() || 0;
     }
 
-    getTotalNotes() {
-        // Use route's collectibles manager
-        const cm = this.game.currentRoute?.collectiblesManager;
-        if (!cm) return 16; // Default for Tori route
-        return cm.getTotalCountForCurrentRoute() || 16;
+    getTotalNotes(): number {
+        const cm = this.game.currentRoute?.collectiblesManager || this.game.collectiblesManager;
+        if (!cm) {
+            const routeName = this.game.currentRoute?.constructor?.name || '';
+            if (routeName.includes('Ronnie')) return 13;
+            return 16;
+        }
+        const total = cm.getTotalCountForCurrentRoute?.() || 16;
+        if (!total || total === 0) {
+            const routeName = this.game.currentRoute?.name || '';
+            if (routeName === 'ronnie') return 13;
+            return 16;
+        }
+        return total;
     }
 
-    getTetherLevel() {
-        // Get from StateManager (reactive source of truth)
+    getTetherLevel(): number {
         if (this.game.state) {
             return this.game.state.get('tether.level') || 100;
         }
-        // Fallback
         if (this.game.tetherSystem) {
             return this.game.tetherSystem.tetherLevel || 100;
         }
@@ -378,17 +455,14 @@ export class NotificationShadeController {
     // ========================================
 
     resetIdleTimer() {
-        // Clear existing timer
         if (this.idleTimer) {
             clearTimeout(this.idleTimer);
         }
 
-        // Remove idle class
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
         }
 
-        // Set new timer
         this.idleTimer = setTimeout(() => {
             if (this.statusBar && !this.isShadeOpen && !this.isSidebarOpen) {
                 this.statusBar.classList.add('idle');
@@ -404,39 +478,29 @@ export class NotificationShadeController {
         if (this.isShadeOpen) return;
 
         this.isShadeOpen = true;
-
-        // Update shade content
         this.updateShadeContent();
 
-        // Apply route theming
-        this.applyRouteTheming(this.shade);
-
-        // Show shade and backdrop
         if (this.shade) {
+            this.applyRouteTheming(this.shade);
             this.shade.classList.add('open');
         }
         if (this.backdrop) {
             this.backdrop.classList.add('visible');
         }
 
-        // Pause game
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = true;
         }
 
-        // Pause tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.stopDecay) {
+        if (this.game.tetherSystem?.stopDecay) {
             this.game.tetherSystem.stopDecay();
         }
 
-        // Prevent status bar auto-hide
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
         }
 
-        // Haptic feedback
         this.triggerHaptic('medium');
-
         console.log('📱 Notification shade opened');
     }
 
@@ -445,7 +509,6 @@ export class NotificationShadeController {
 
         this.isShadeOpen = false;
 
-        // Hide shade and backdrop
         if (this.shade) {
             this.shade.classList.remove('open');
         }
@@ -453,22 +516,20 @@ export class NotificationShadeController {
             this.backdrop.classList.remove('visible');
         }
 
-        // Resume game
+        if (this.quickActions) {
+            this.quickActions.collapse();
+        }
+
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = false;
         }
 
-        // Resume tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.startDecay) {
+        if (this.game.tetherSystem?.startDecay) {
             this.game.tetherSystem.startDecay();
         }
 
-        // Reset idle timer
         this.resetIdleTimer();
-
-        // Haptic feedback
         this.triggerHaptic('light');
-
         console.log('📱 Notification shade closed');
     }
 
@@ -481,31 +542,26 @@ export class NotificationShadeController {
     }
 
     updateShadeContent() {
-        // Update route
         if (this.shadeRoute) {
             this.shadeRoute.textContent = this.getRouteName();
         }
 
-        // Update loop
         if (this.shadeLoop) {
-            this.shadeLoop.textContent = this.game.loopVersion || 848;
+            this.shadeLoop.textContent = this.game.loopVersion || '848';
         }
 
-        // Update notes
         if (this.shadeNotes) {
             const collected = this.getNotesCollected();
             const total = this.getTotalNotes();
             this.shadeNotes.textContent = `${collected}/${total}`;
         }
 
-        // Update tether (Tori route only)
         if (this.shadeTetherItem && this.shadeTetherValue) {
             if (this.isToriRoute()) {
                 this.shadeTetherItem.style.display = 'flex';
                 const tetherLevel = this.getTetherLevel();
                 this.shadeTetherValue.textContent = `${Math.round(tetherLevel)}%`;
 
-                // Critical state styling
                 if (tetherLevel < 20) {
                     this.shadeTetherValue.classList.add('critical');
                 } else {
@@ -531,18 +587,11 @@ export class NotificationShadeController {
 
         const touchY = e.touches[0].clientY;
         const deltaY = touchY - this.touchStartY;
-
-        // Check if we're on desktop (sidebar) or mobile (shade)
         const isDesktop = window.innerWidth >= 769;
 
-        // Swipe down from top 50px (including status bar)
         if (this.touchStartY < 50 && deltaY > 50) {
-            // Only preventDefault if we're in the valid swipe zone
-            if (e.cancelable) {
-                e.preventDefault();
-            }
+            if (e.cancelable) e.preventDefault();
 
-            // Open sidebar on desktop, shade on mobile
             if (isDesktop && !this.isSidebarOpen) {
                 this.showSidebar();
             } else if (!isDesktop && !this.isShadeOpen) {
@@ -550,11 +599,8 @@ export class NotificationShadeController {
             }
         }
 
-        // Swipe up to close (works for both)
         if (deltaY < -50) {
-            if (e.cancelable) {
-                e.preventDefault();
-            }
+            if (e.cancelable) e.preventDefault();
 
             if (this.isShadeOpen) {
                 this.hideShade();
@@ -585,38 +631,36 @@ export class NotificationShadeController {
         if (this.isSidebarOpen) return;
 
         this.isSidebarOpen = true;
-
-        // Update sidebar content
         this.updateSidebarContent();
+        this.updateNotePreview();
 
-        // Apply route theming
-        this.applyRouteTheming(this.sidebar);
-
-        // Show sidebar and backdrop
         if (this.sidebar) {
+            this.applyRouteTheming(this.sidebar);
+            this.sidebar.classList.add('visible');
             this.sidebar.classList.add('expanded');
         }
         if (this.backdrop) {
             this.backdrop.classList.add('visible');
         }
 
-        // Pause game
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = true;
         }
 
-        // Pause tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.stopDecay) {
-            this.game.tetherSystem.stopDecay();
+        const tetherSystem = this.game.currentRoute?.tetherSystem;
+        if (tetherSystem?.stopDecay) {
+            tetherSystem.stopDecay();
         }
 
-        // Prevent status bar auto-hide
         if (this.statusBar) {
             this.statusBar.classList.remove('idle');
         }
 
-        // Haptic feedback
         this.triggerHaptic('medium');
+
+        if (this.game.grabHandleRepositioner) {
+            this.game.grabHandleRepositioner.updateTogglePositionForExpandedSidebar();
+        }
 
         console.log('💻 Sidebar opened');
     }
@@ -626,7 +670,6 @@ export class NotificationShadeController {
 
         this.isSidebarOpen = false;
 
-        // Hide sidebar and backdrop
         if (this.sidebar) {
             this.sidebar.classList.remove('expanded');
         }
@@ -634,51 +677,46 @@ export class NotificationShadeController {
             this.backdrop.classList.remove('visible');
         }
 
-        // Resume game
         if (this.game.isPaused !== undefined) {
             this.game.isPaused = false;
         }
 
-        // Resume tether decay (Tori route)
-        if (this.game.tetherSystem && this.game.tetherSystem.startDecay) {
-            this.game.tetherSystem.startDecay();
+        const tetherSystem = this.game.currentRoute?.tetherSystem;
+        if (tetherSystem?.startDecay) {
+            tetherSystem.startDecay();
         }
 
-        // Reset idle timer
         this.resetIdleTimer();
-
-        // Haptic feedback
         this.triggerHaptic('light');
+
+        if (this.game.grabHandleRepositioner) {
+            this.game.grabHandleRepositioner.applyPosition();
+        }
 
         console.log('💻 Sidebar closed');
     }
 
     updateSidebarContent() {
-        // Update route
         if (this.sidebarRoute) {
             this.sidebarRoute.textContent = this.getRouteName();
         }
 
-        // Update loop
         if (this.sidebarLoop) {
-            this.sidebarLoop.textContent = this.game.loopVersion || 848;
+            this.sidebarLoop.textContent = this.game.loopVersion || '848';
         }
 
-        // Update notes
         if (this.sidebarNotes) {
             const collected = this.getNotesCollected();
             const total = this.getTotalNotes();
             this.sidebarNotes.textContent = `${collected}/${total}`;
         }
 
-        // Update tether (Tori route only)
         if (this.sidebarTetherItem && this.sidebarTetherValue) {
             if (this.isToriRoute()) {
                 this.sidebarTetherItem.style.display = 'flex';
                 const tetherLevel = this.getTetherLevel();
                 this.sidebarTetherValue.textContent = `${Math.round(tetherLevel)}%`;
 
-                // Critical state styling
                 if (tetherLevel < 20) {
                     this.sidebarTetherValue.classList.add('critical');
                 } else {
@@ -697,10 +735,8 @@ export class NotificationShadeController {
     applyRouteTheming(element: HTMLElement | null) {
         if (!element) return;
 
-        // Remove existing route classes
         element.classList.remove('ronnie-route', 'tori-route');
 
-        // Apply current route class
         const routeName = this.getRouteName();
         if (routeName.includes('Ronnie')) {
             element.classList.add('ronnie-route');
@@ -714,24 +750,21 @@ export class NotificationShadeController {
     // ========================================
 
     triggerHaptic(type = 'light') {
-        // Check if Vibration API is supported
         if (!navigator.vibrate) return;
 
-        // Haptic patterns
-        const patterns = {
-            light: 10,      // Quick tap
-            medium: 20,     // Button press
-            heavy: [30, 10, 30], // Double pulse
-            success: [10, 50, 10], // Success pattern
+        const patterns: { [key: string]: number | number[] } = {
+            light: 10,
+            medium: 20,
+            heavy: [30, 10, 30],
+            success: [10, 50, 10],
         };
 
-        const pattern = (patterns as any)[type] || patterns.light;
+        const pattern = patterns[type] || patterns.light;
 
-        // Try to vibrate, but don't throw if blocked by browser
         try {
             navigator.vibrate(pattern);
         } catch (error) {
-            // Silently fail - vibration blocked until user interaction
+            // Silently fail
         }
     }
 
@@ -743,16 +776,16 @@ export class NotificationShadeController {
         if (this.statusLoop) {
             this.statusLoop.classList.add('pulse');
             setTimeout(() => {
-                this.statusLoop!.classList.remove('pulse');
+                this.statusLoop?.classList.remove('pulse');
             }, 600);
         }
     }
 
     glitchLoopNumber() {
-        if (this.statusLoop && this.statusBar!.classList.contains('ronnie-route')) {
+        if (this.statusLoop && this.statusBar?.classList.contains('ronnie-route')) {
             this.statusLoop.classList.add('glitch');
             setTimeout(() => {
-                this.statusLoop!.classList.remove('glitch');
+                this.statusLoop?.classList.remove('glitch');
             }, 300);
         }
     }
@@ -774,7 +807,7 @@ export class NotificationShadeController {
 
     hideLoadingState() {
         if (!this.statusBar) return;
-        this.statusBar!.classList.remove('loading');
+        this.statusBar.classList.remove('loading');
         this.updateStatusBar();
     }
 
@@ -783,21 +816,18 @@ export class NotificationShadeController {
     // ========================================
 
     handleKeyboardShortcut(e: KeyboardEvent) {
-        // Don't trigger if typing in input
         const target = e.target as HTMLElement;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
+        if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
             return;
         }
 
         switch (e.key.toLowerCase()) {
             case 'escape':
-                // Toggle sidebar (desktop) or shade (mobile)
                 if (this.isSidebarOpen) {
                     this.hideSidebar();
                 } else if (this.isShadeOpen) {
                     this.hideShade();
                 } else {
-                    // Check if we're on desktop (sidebar visible) or mobile (shade visible)
                     const isDesktop = window.innerWidth >= 769;
                     if (isDesktop) {
                         this.showSidebar();
@@ -839,6 +869,8 @@ export class NotificationShadeController {
 
     quickSave() {
         this.triggerHaptic('success');
+        this.hideSidebar();
+        this.hideShade();
         if (this.game.saveManager) {
             this.game.saveManager.saveGame(1, false, 'Quick Save');
             console.log('💾 Quick save');
@@ -847,6 +879,8 @@ export class NotificationShadeController {
 
     quickLoad() {
         this.triggerHaptic('medium');
+        this.hideSidebar();
+        this.hideShade();
         if (this.game.saveLoadUI) {
             this.game.saveLoadUI.showSaveLoadScreen('load');
             console.log('📂 Load menu opened');
@@ -855,6 +889,8 @@ export class NotificationShadeController {
 
     toggleFullscreen() {
         this.triggerHaptic('medium');
+        this.hideSidebar();
+        this.hideShade();
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen();
             console.log('⛶ Fullscreen enabled');
@@ -865,7 +901,8 @@ export class NotificationShadeController {
     }
 
     returnToMenu() {
-        // Use overlay confirmation instead of browser alert
+        this.hideSidebar();
+        this.hideShade();
         this.showConfirmation({
             title: 'Return to Main Menu?',
             message: 'Unsaved progress will be lost.',
@@ -879,15 +916,13 @@ export class NotificationShadeController {
     }
 
     openSettings() {
-        // Close shade first
+        this.hideSidebar();
         this.hideShade();
-
-        // Open settings menu
-        if (this.game.settingsManager && this.game.settingsManager.showSettingsMenu) {
-            this.game.settingsManager.showSettingsMenu();
+        if (this.game.showSettings) {
+            this.game.showSettings();
             console.log('⚙️ Settings opened');
         } else {
-            console.warn('Settings manager not available');
+            console.warn('Settings not available');
         }
     }
 
@@ -910,19 +945,16 @@ export class NotificationShadeController {
     // PHASE 5: ADDITIONAL FEATURES
     // ========================================
 
-    // Screenshot Mode - Hide all UI
     toggleScreenshotMode() {
         this.screenshotMode = !this.screenshotMode;
 
         if (this.screenshotMode) {
-            // Hide all UI elements
             if (this.statusBar) this.statusBar.style.display = 'none';
             if (this.sidebar) this.sidebar.style.display = 'none';
             if (this.sidebarToggle) this.sidebarToggle.style.display = 'none';
             if (this.shade) this.shade.style.display = 'none';
             console.log('📸 Screenshot mode: ON');
         } else {
-            // Restore UI elements
             if (this.statusBar) this.statusBar.style.display = '';
             if (this.sidebar) this.sidebar.style.display = '';
             if (this.sidebarToggle) this.sidebarToggle.style.display = '';
@@ -930,11 +962,9 @@ export class NotificationShadeController {
             console.log('📸 Screenshot mode: OFF');
         }
 
-        // Save state
         this.savePersistentState();
     }
 
-    // Loading State Integration
     showLoadingInStatusBar(message = 'Loading...', progress = 0) {
         if (!this.statusBar) return;
 
@@ -957,7 +987,6 @@ export class NotificationShadeController {
         this.updateStatusBar();
     }
 
-    // Persistent State (localStorage)
     loadPersistentState() {
         try {
             const saved = localStorage.getItem('notificationShadeState');
@@ -986,9 +1015,7 @@ export class NotificationShadeController {
         }
     }
 
-    // Emergency Fallback - Show hamburger menu if system fails
     showEmergencyFallback() {
-        // Create emergency menu button if it doesn't exist
         let emergencyBtn = document.getElementById('emergency-menu-btn');
 
         if (!emergencyBtn) {
@@ -1039,17 +1066,30 @@ export class NotificationShadeController {
         if (!this.statusMail || !this.unreadBadge) return;
 
         const unreadCount = this.unreadNotes.length;
+        const wasHidden = !this.statusMail.classList.contains('visible');
 
         if (unreadCount > 0) {
             this.statusMail.classList.add('visible');
-            this.unreadBadge!.textContent = String(unreadCount);
+            this.statusMail.style.display = 'flex';
+            this.unreadBadge.textContent = String(unreadCount);
+
+            if (wasHidden && this.game?.tutorialManager) {
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.game.tutorialManager.showHandGesture('tori_first_note', this.statusMail, {
+                            text: 'Check your notes!',
+                            autoHide: 4000
+                        });
+                    }, 1500);
+                });
+            }
         } else {
             this.statusMail.classList.remove('visible');
+            this.statusMail.style.display = 'none';
         }
     }
 
-    addUnreadNote(noteData: any) {
-        // Add to unread notes if not already there
+    addUnreadNote(noteData: NoteData) {
         const exists = this.unreadNotes.find(n => n.id === noteData.id);
         if (!exists) {
             this.unreadNotes.push(noteData);
@@ -1065,30 +1105,25 @@ export class NotificationShadeController {
     }
 
     updateNotePreview() {
-        // Get most recent unread note
         const latestNote = this.unreadNotes[this.unreadNotes.length - 1];
 
         if (latestNote) {
             this.currentNotePreview = latestNote;
 
-            // Update shade preview
             if (this.notesPreviewSection) {
                 this.notesPreviewSection.style.display = 'block';
                 if (this.noteTitle) this.noteTitle.textContent = latestNote.title || 'Untitled Note';
                 if (this.noteSnippet) this.noteSnippet.textContent = this.generateSnippet(latestNote.content);
             }
 
-            // Update sidebar preview
             if (this.sidebarNotesPreviewSection) {
                 this.sidebarNotesPreviewSection.style.display = 'block';
                 if (this.sidebarNoteTitle) this.sidebarNoteTitle.textContent = latestNote.title || 'Untitled Note';
                 if (this.sidebarNoteSnippet) this.sidebarNoteSnippet.textContent = this.generateSnippet(latestNote.content);
             }
 
-            // Setup click handlers
             this.setupNotePreviewHandlers();
         } else {
-            // Hide previews if no unread notes
             if (this.notesPreviewSection) this.notesPreviewSection.style.display = 'none';
             if (this.sidebarNotesPreviewSection) this.sidebarNotesPreviewSection.style.display = 'none';
         }
@@ -1097,38 +1132,29 @@ export class NotificationShadeController {
     generateSnippet(content: string): string {
         if (!content) return 'No preview available';
 
-        // Remove HTML tags and get first 2 lines
         const plainText = content.replace(/<[^>]*>/g, '');
         const lines = plainText.split('\n').filter((line: string) => line.trim());
         const snippet = lines.slice(0, 2).join(' ');
 
-        // Truncate if too long
         return snippet.length > 100 ? snippet.substring(0, 97) + '...' : snippet;
     }
 
     setupNotePreviewHandlers() {
-        // Remove old listeners
         if (this.notePreviewBtn) {
-            const newBtn = this.notePreviewBtn.cloneNode(true);
+            const newBtn = this.notePreviewBtn.cloneNode(true) as HTMLElement;
             this.notePreviewBtn.replaceWith(newBtn);
-            this.notePreviewBtn = newBtn as HTMLElement;
+            this.notePreviewBtn = newBtn;
 
-            // Click handler
-            this.notePreviewBtn!.addEventListener('click', () => this.openNotesViewer());
-
-            // Swipe gesture (mobile)
+            this.notePreviewBtn.addEventListener('click', () => this.openNotesViewer());
             this.setupSwipeGesture(this.notePreviewBtn);
         }
 
         if (this.sidebarNotePreviewBtn) {
-            const newBtn = this.sidebarNotePreviewBtn.cloneNode(true);
+            const newBtn = this.sidebarNotePreviewBtn.cloneNode(true) as HTMLElement;
             this.sidebarNotePreviewBtn.replaceWith(newBtn);
-            this.sidebarNotePreviewBtn = newBtn as HTMLElement;
+            this.sidebarNotePreviewBtn = newBtn;
 
-            // Click handler
-            this.sidebarNotePreviewBtn!.addEventListener('click', () => this.openNotesViewer());
-
-            // Swipe gesture (mobile)
+            this.sidebarNotePreviewBtn.addEventListener('click', () => this.openNotesViewer());
             this.setupSwipeGesture(this.sidebarNotePreviewBtn);
         }
     }
@@ -1149,7 +1175,6 @@ export class NotificationShadeController {
             currentX = e.touches[0].clientX;
             const deltaX = currentX - startX;
 
-            // Visual feedback
             if (Math.abs(deltaX) > 50) {
                 element.classList.add(deltaX > 0 ? 'swipe-right' : 'swipe-left');
             }
@@ -1160,13 +1185,11 @@ export class NotificationShadeController {
 
             const deltaX = currentX - startX;
 
-            // Mark as read if swiped far enough
             if (Math.abs(deltaX) > 100 && this.currentNotePreview) {
                 this.triggerHaptic('medium');
                 this.markNoteAsRead(this.currentNotePreview.id);
             }
 
-            // Reset
             element.classList.remove('swiping', 'swipe-left', 'swipe-right');
             isSwiping = false;
             startX = 0;
@@ -1175,44 +1198,22 @@ export class NotificationShadeController {
     }
 
     openNotesViewer() {
-        // Close shade/sidebar
         this.hideShade();
         this.hideSidebar();
 
-        // Open notes viewer via collectibles manager (route-specific)
-        const cm = this.game.currentRoute?.collectiblesManager;
-        if (cm && cm.showNotesViewer) {
-            cm.showNotesViewer();
+        if (this.game && typeof this.game.openStandaloneNotes === 'function') {
+            this.game.openStandaloneNotes();
             this.triggerHaptic('medium');
         } else {
-            console.warn('Notes viewer not available (no collectibles manager on current route)');
+            console.warn('Notes viewer not available (game.openStandaloneNotes not found)');
         }
     }
 
-    /**
-     * Public API for game to notify about collected notes
-     * Adds note to unread list and updates UI
-     * 
-     * @param {Object} noteData - Note information
-     * @param {string} noteData.id - Unique note ID
-     * @param {string} noteData.title - Note title
-     * @param {string} noteData.content - Note content
-     * 
-     * @example
-     * // Called when player collects a note
-     * notificationShade.onNoteCollected({
-     *   id: 'z1',
-     *   title: 'Strange Message',
-     *   content: 'Something feels off...'
-     * });
-     */
-    // Public API for game to add notes
     onNoteCollected(noteData: any) {
         this.addUnreadNote({
-            id: noteData.id || Date.now(),
+            id: String(noteData.id || Date.now()),
             title: noteData.title || 'New Note',
-            content: noteData.content || '',
-            timestamp: Date.now()
+            content: noteData.content || ''
         });
     }
 
@@ -1220,37 +1221,7 @@ export class NotificationShadeController {
     // CONFIRMATION OVERLAY
     // ========================================
 
-    /**
-     * Show a custom confirmation dialog overlay
-     * Replaces browser confirm() with styled modal
-     * 
-     * @param {Object} options - Dialog configuration
-     * @param {string} options.title - Dialog title
-     * @param {string} options.message - Dialog message
-     * @param {string} [options.confirmText='Confirm'] - Confirm button text
-     * @param {string} [options.cancelText='Cancel'] - Cancel button text
-     * @param {Function} [options.onConfirm] - Callback when confirmed
-     * @param {Function} [options.onCancel] - Callback when cancelled
-     * 
-     * @example
-     * // Confirm return to main menu
-     * notificationShade.showConfirmation({
-     *   title: 'Return to Main Menu?',
-     *   message: 'Unsaved progress will be lost.',
-     *   confirmText: 'Return',
-     *   cancelText: 'Stay',
-     *   onConfirm: () => game.showMainMenu()
-     * });
-     */
-    showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }: {
-        title: string;
-        message: string;
-        confirmText?: string;
-        cancelText?: string;
-        onConfirm: () => void;
-        onCancel?: () => void;
-    }) {
-        // Create overlay
+    showConfirmation({ title, message, confirmText = 'Confirm', cancelText = 'Cancel', onConfirm, onCancel }: ConfirmationOptions) {
         const overlay = document.createElement('div');
         overlay.className = 'confirmation-overlay';
         overlay.innerHTML = `
@@ -1264,28 +1235,27 @@ export class NotificationShadeController {
             </div>
         `;
 
-        // Add to DOM
         document.body.appendChild(overlay);
 
-        // Get buttons
         const confirmBtn = overlay.querySelector('.confirmation-confirm');
         const cancelBtn = overlay.querySelector('.confirmation-cancel');
 
-        // Handle confirm
-        confirmBtn!.addEventListener('click', () => {
-            if (onConfirm) onConfirm();
-            overlay.remove();
-            this.triggerHaptic('medium');
-        });
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', () => {
+                if (onConfirm) onConfirm();
+                overlay.remove();
+                this.triggerHaptic('medium');
+            });
+        }
 
-        // Handle cancel
-        cancelBtn!.addEventListener('click', () => {
-            if (onCancel) onCancel();
-            overlay.remove();
-            this.triggerHaptic('light');
-        });
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                if (onCancel) onCancel();
+                overlay.remove();
+                this.triggerHaptic('light');
+            });
+        }
 
-        // Handle backdrop click
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
                 if (onCancel) onCancel();
@@ -1294,9 +1264,169 @@ export class NotificationShadeController {
             }
         });
 
-        // Show overlay with animation
         requestAnimationFrame(() => {
             overlay.classList.add('visible');
         });
     }
+
+    // ========================================
+    // SIDEBAR DEPTH LAYER SWIPE HANDLING
+    // iOS-STYLE REVEAL ANIMATION
+    // ========================================
+
+    initSidebarLayerSwipe() {
+        this.sidebarLayers = document.querySelector('.sidebar-layers');
+        this.primaryLayer = document.querySelector('.primary-layer');
+        this.secondaryLayer = document.querySelector('.secondary-layer');
+
+        if (!this.sidebarLayers || !this.primaryLayer) {
+            console.warn('⚠️ Sidebar layers not found');
+            return;
+        }
+
+        this.layerSwipeStartX = 0;
+        this.layerSwipeStartTime = 0;
+        this.isLayerDragging = false;
+        this.isToolsRevealed = false;
+
+        this.primaryLayer.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        this.primaryLayer.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        this.primaryLayer.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
+
+        this.secondaryLayer?.addEventListener('touchstart', (e) => this.handleLayerSwipeStart(e), { passive: false });
+        this.secondaryLayer?.addEventListener('touchmove', (e) => this.handleLayerSwipeMove(e), { passive: false });
+        this.secondaryLayer?.addEventListener('touchend', (e) => this.handleLayerSwipeEnd(e), { passive: false });
+
+        this.sidebarLayers.addEventListener('click', (e) => {
+            const btn = (e.target as HTMLElement)?.closest('.quick-action-btn') as HTMLElement;
+            if (!btn) return;
+
+            const action = btn.dataset.action;
+            if (action) {
+                this.handleLayerAction(action);
+            }
+        });
+
+        console.log('✅ Sidebar layer swipe initialized');
+    }
+
+    handleLayerSwipeStart(e: TouchEvent) {
+        const touch = e.touches[0];
+        this.layerSwipeStartX = touch.clientX;
+        this.layerSwipeStartTime = Date.now();
+        this.isLayerDragging = true;
+
+        this.sidebarLayers?.classList.add('dragging');
+    }
+
+    handleLayerSwipeMove(e: TouchEvent) {
+        if (!this.isLayerDragging) return;
+
+        const touch = e.touches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - (this.layerSwipeStartX || 0);
+
+        e.preventDefault();
+
+        if (this.primaryLayer) {
+            const layerWidth = this.primaryLayer.offsetWidth || 200;
+
+            if (this.isToolsRevealed) {
+                const percent = Math.max(0, Math.min(85, 85 + (deltaX / layerWidth) * 85));
+                this.primaryLayer.style.transform = `translateX(${percent}%)`;
+            } else {
+                const percent = Math.max(0, Math.min(85, (deltaX / layerWidth) * 85));
+                this.primaryLayer.style.transform = `translateX(${percent}%)`;
+            }
+        }
+    }
+
+    handleLayerSwipeEnd(e: TouchEvent) {
+        if (!this.isLayerDragging) return;
+
+        this.isLayerDragging = false;
+        this.sidebarLayers?.classList.remove('dragging');
+
+        if (this.primaryLayer) {
+            this.primaryLayer.style.transform = '';
+        }
+
+        const touch = e.changedTouches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - (this.layerSwipeStartX || 0);
+        const deltaTime = Date.now() - (this.layerSwipeStartTime || 0);
+        const velocity = deltaX / Math.max(deltaTime, 1);
+
+        const threshold = 50;
+        const velocityThreshold = 0.3;
+
+        if (this.isToolsRevealed) {
+            if (deltaX < -threshold || velocity < -velocityThreshold) {
+                this.hideToolsLayer();
+            }
+        } else {
+            if (deltaX > threshold || velocity > velocityThreshold) {
+                this.revealToolsLayer();
+            }
+        }
+    }
+
+    revealToolsLayer() {
+        if (!this.sidebarLayers) return;
+
+        this.sidebarLayers.classList.add('tools-revealed');
+        this.isToolsRevealed = true;
+        this.triggerHaptic('medium');
+
+        console.log('🔧 Tools layer revealed');
+    }
+
+    hideToolsLayer() {
+        if (!this.sidebarLayers) return;
+
+        this.sidebarLayers.classList.remove('tools-revealed');
+        this.isToolsRevealed = false;
+        this.triggerHaptic('light');
+
+        console.log('⚡ Core layer restored');
+    }
+
+    handleLayerAction(action: string) {
+        console.log(`🎯 Layer action: ${action}`);
+
+        switch (action) {
+            case 'save':
+                this.quickSave();
+                break;
+            case 'load':
+                this.quickLoad();
+                break;
+            case 'fullscreen':
+                this.toggleFullscreen();
+                break;
+            case 'exit':
+                this.returnToMenu();
+                break;
+            case 'screenshot':
+                this.game.toggleUI?.();
+                this.hideSidebar();
+                break;
+            case 'notes':
+                this.openNotesViewer();
+                break;
+            case 'settings':
+                this.openSettings();
+                break;
+            case 'help':
+                this.quickActions?.showHelp?.();
+                break;
+            default:
+                console.warn(`Unknown layer action: ${action}`);
+        }
+    }
+}
+
+// Global assignment for browser
+if (typeof window !== 'undefined') {
+    (window as any).NotificationShadeController = NotificationShadeController;
 }
