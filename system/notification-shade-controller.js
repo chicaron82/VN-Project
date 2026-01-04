@@ -618,9 +618,9 @@ class NotificationShadeController {
     }
 
     /**
-     * @param {TouchEvent} e
+     * @param {TouchEvent} _e
      */
-    handleTouchEnd(e) {
+    handleTouchEnd(_e) {
         this.touchStartY = 0;
         this.touchStartX = 0;
     }
