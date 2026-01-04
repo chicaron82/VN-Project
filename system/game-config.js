@@ -440,9 +440,17 @@ const GameConfig = {
         MAX_BACKLOG_ENTRIES: 100,
         MAX_SAVE_SLOTS: 3,
         AUTO_SAVE_SLOT: 'auto',
-        UNREAD_BADGE_Z_INDEX: 100,
         DEV_HUD_UPDATE_INTERVAL: 500,  // ms
-        NOTIFICATION_DURATION: 3000     // ms
+        NOTIFICATION_DURATION: 3000,   // ms
+
+        // Z-Index layering system
+        Z_INDEX: {
+            UNREAD_BADGE: 100,
+            OVERLAY_BASE: 10000,
+            OVERLAY_HIGH: 10001,
+            OVERLAY_CONFIRM: 10003,
+            OVERLAY_CRITICAL: 99999
+        }
     },
 
     // ========================================

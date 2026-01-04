@@ -443,10 +443,16 @@ class EasterEggController {
     showKonamiControllerOverlay() {
         console.log('🎮 Konami Controller: Opening interactive overlay');
 
-        // Create themed overlay
+        // Use GameConfig z-index if available
+        const zIndex = typeof GameConfig !== 'undefined'
+            ? GameConfig.UI_CONSTANTS?.Z_INDEX?.OVERLAY_HIGH || 10001
+            : 10001;
+
+        // Create themed overlay with CSS class hooks
         const overlay = OverlayManager.createBase({
             id: 'konami-controller-overlay',
-            zIndex: 10001
+            className: 'themed-overlay konami-overlay',
+            zIndex
         });
         overlay.style.padding = '20px';
         overlay.style.overflowY = 'auto';
@@ -455,6 +461,7 @@ class EasterEggController {
 
         const theme = ThemeManager.getTheme();
         const content = document.createElement('div');
+        content.className = 'konami-content';
         content.style.cssText = `
             max-width: 600px;
             width: 100%;

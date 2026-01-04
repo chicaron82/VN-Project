@@ -39,10 +39,15 @@ class OverlayManager {
      * @returns {HTMLElement} Overlay container
      */
     static createBase(options = {}) {
+        // Use GameConfig z-index if available, fallback to 10000
+        const defaultZIndex = typeof GameConfig !== 'undefined'
+            ? GameConfig.UI_CONSTANTS?.Z_INDEX?.OVERLAY_BASE || 10000
+            : 10000;
+
         const {
             id = null,
             className = 'themed-overlay',
-            zIndex = 10000,
+            zIndex = defaultZIndex,
             fadeIn = true,
             onClick = null
         } = options;
@@ -348,7 +353,7 @@ class OverlayManager {
         const overlay = OverlayManager.createBase({
             id,
             className: 'error-overlay',
-            zIndex: 99999
+            zIndex: typeof GameConfig !== 'undefined' ? GameConfig.UI_CONSTANTS?.Z_INDEX?.OVERLAY_CRITICAL || 99999 : 99999
         });
 
         const box = OverlayManager.createBox({ variant: 'error' });
@@ -429,7 +434,7 @@ class OverlayManager {
         const overlay = OverlayManager.createBase({
             id,
             className: 'confirm-overlay',
-            zIndex: 10003
+            zIndex: typeof GameConfig !== 'undefined' ? GameConfig.UI_CONSTANTS?.Z_INDEX?.OVERLAY_CONFIRM || 10003 : 10003
         });
 
         const box = OverlayManager.createBox({ variant: 'primary' });
