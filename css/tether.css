@@ -189,6 +189,12 @@
     }
 }
 
+/* Hide HOLD ON button in screenshot mode and insane mode */
+body.ui-hidden #hold-on-button,
+body.insane-mode #hold-on-button {
+    display: none !important;
+}
+
 /* ========================================
    NOTES BUTTON - Digital Frame Style
    ======================================== */
