@@ -102,6 +102,10 @@ class BougieBootSequence {
         // Complete
         await this.showBootComplete();
 
+        // DIZEE: Let it sit for a moment before transitioning to main menu
+        // Allow the "VERSION XXX ONLINE" message to register
+        await this.delay(2000);
+
         this.cleanup();
     }
 
