@@ -2035,44 +2035,8 @@ class GameEngine {
     // ========================================
 
     showNotes() {
-        if (!this.currentRoute || !this.currentRoute.collectedNotes) return;
-
-        if (this.notesViewer) this.notesViewer.style.display = 'block';
-        if (this.notesList) this.notesList.innerHTML = '';
-
-        const allNotes = this.currentRoute.allNotes;
-        const collected = this.currentRoute.collectedNotes;
-
-        Object.keys(allNotes).forEach(noteId => {
-            const note = allNotes[noteId];
-            const isCollected = collected[note.type].includes(noteId);
-
-            const noteItem = document.createElement('div');
-            noteItem.className = `note-item ${note.type}-note`;
-            if (!isCollected) noteItem.classList.add('note-locked');
-
-            const title = document.createElement('div');
-            title.className = 'note-title';
-            /** @type {string} */
-            const noteTitle = note.title;
-            title.textContent = isCollected ? noteTitle : '???';
-            noteItem.appendChild(title);
-
-            if (isCollected) {
-                const content = document.createElement('div');
-                content.className = 'note-content';
-                content.textContent = note.content;
-                noteItem.appendChild(content);
-
-                noteItem.addEventListener('click', () => {
-                    noteItem.classList.toggle('expanded');
-                });
-            }
-
-            if (this.notesList) {
-                this.notesList.appendChild(noteItem);
-            }
-        });
+        // Delegation stub - full implementation in CollectiblesManager
+        this.collectiblesManager?.showNotesViewer();
     }
 
     // ========================================
