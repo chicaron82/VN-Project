@@ -25,6 +25,7 @@ class TypewriterController {
         // Typewriter state
         this.typewriterActive = false;
         this.typewriterInterval = null;
+        this.typewriterAnimationFrame = null; // Track requestAnimationFrame ID
         this.typewriterCallback = null;
         this.fullDialogueText = '';
 
@@ -148,41 +149,61 @@ class TypewriterController {
             return;
         }
 
-        // Typewriter the current page
+        // Typewriter the current page using requestAnimationFrame for smoother performance
         this.typewriterActive = true;
         this.fullDialogueText = currentPage;
         element.textContent = '';
         let i = 0;
+        let lastFrameTime = performance.now();
 
+        // Clear any existing interval (fallback)
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
+            this.typewriterInterval = null;
         }
 
-        this.typewriterInterval = setInterval(() => {
-            if (i < currentPage.length) {
-                element.textContent += currentPage.charAt(i);
-                i++;
-            } else {
-                // Add page indicator when typing finishes
-                if (this.dialoguePages.length > 1) {
-                    element.textContent += pageIndicator;
+        // Use requestAnimationFrame for smoother rendering
+        const typeNextChar = (currentTime) => {
+            const elapsed = currentTime - lastFrameTime;
+
+            // Only type next character if enough time has passed
+            if (elapsed >= speed) {
+                if (i < currentPage.length) {
+                    element.textContent += currentPage.charAt(i);
+                    i++;
+                    lastFrameTime = currentTime;
                 }
 
-                clearInterval(this.typewriterInterval);
-                this.typewriterInterval = null;
-                this.typewriterActive = false;
+                // Check if typing is complete
+                if (i >= currentPage.length) {
+                    // Add page indicator when typing finishes
+                    if (this.dialoguePages.length > 1) {
+                        element.textContent += pageIndicator;
+                    }
 
-                // ZEERAH'S FIX: Start auto-advance timer after typewriter finishes
-                if (this.game.settingsManager) {
-                    this.game.settingsManager.startAutoAdvance(() => {
-                        // Auto-advance to next dialogue
-                        if (!this.game.choiceMenu || this.game.choiceMenu.style.display === 'none') {
-                            this.game.advance();
-                        }
-                    });
+                    this.typewriterActive = false;
+
+                    // ZEERAH'S FIX: Start auto-advance timer after typewriter finishes
+                    if (this.game.settingsManager) {
+                        this.game.settingsManager.startAutoAdvance(() => {
+                            // Auto-advance to next dialogue
+                            if (!this.game.choiceMenu || this.game.choiceMenu.style.display === 'none') {
+                                this.game.advance();
+                            }
+                        });
+                    }
+                    return; // Stop animation
                 }
             }
-        }, speed);
+
+            // Continue animation
+            if (this.typewriterActive) {
+                this.typewriterAnimationFrame = requestAnimationFrame(typeNextChar);
+            }
+        };
+
+        // Start the animation
+        this.typewriterAnimationFrame = requestAnimationFrame(typeNextChar);
     }
 
     showNextPage() {
@@ -210,10 +231,16 @@ class TypewriterController {
     // ========================================
 
     skip() {
-        // Clear typewriter interval (now exclusively on controller)
+        // Clear typewriter interval (fallback for old code)
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
             this.typewriterInterval = null;
+        }
+
+        // Cancel animation frame
+        if (this.typewriterAnimationFrame) {
+            cancelAnimationFrame(this.typewriterAnimationFrame);
+            this.typewriterAnimationFrame = null;
         }
 
 
@@ -284,14 +311,20 @@ class TypewriterController {
     // ========================================
 
     /**
-     * Clean up intervals and prevent memory leaks
+     * Clean up intervals and animation frames to prevent memory leaks
      * Call this when destroying the controller or transitioning scenes
      */
     destroy() {
-        // Clear typewriter interval
+        // Clear typewriter interval (fallback)
         if (this.typewriterInterval) {
             clearInterval(this.typewriterInterval);
             this.typewriterInterval = null;
+        }
+
+        // Cancel animation frame
+        if (this.typewriterAnimationFrame) {
+            cancelAnimationFrame(this.typewriterAnimationFrame);
+            this.typewriterAnimationFrame = null;
         }
 
         // Reset state
