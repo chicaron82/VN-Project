@@ -92,6 +92,7 @@ import './haptic-controller.js';
 import './directors-cut-controller.js';
 import './crew-controller.js';
 import './fullscreen-controller.js';
+import './screenshot-controller.js';
 import './gateway.js';
 
 // Core engine (must load after controllers)

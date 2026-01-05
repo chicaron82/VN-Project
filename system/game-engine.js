@@ -571,6 +571,10 @@ class GameEngine {
         // @ts-ignore
         this.fullscreenController = new FullscreenController(this);
 
+        // SOLID: Initialize Screenshot Controller (extracted from GameEngine)
+        // @ts-ignore
+        this.screenshotController = new ScreenshotController(this);
+
         // ZEE'S ADDITION: Rotating tips system 🖤
         this.mainMenuTipElement = null;
         this.routeSelectTipElement = null;
@@ -3566,107 +3570,8 @@ game.devCommands()
     }
 
     toggleUI() {
-        // Toggle visibility of UI elements during gameplay
-        // ZEE'S SPEC: Keep dialogue box as platform, hide only text and buttons
-        // SOLID: Using StateManager for UI state
-        const isHidden = this.state.get('ui.hidden');
-
-        if (!isHidden) {
-            // SCREENSHOT MODE: Hide UI but keep dialogue box as platform
-            document.body.classList.add('ui-hidden');
-
-            // Hide buttons (dialogue box handled by CSS via ui-hidden class)
-            const pauseButton = document.getElementById('pause-button');
-            if (pauseButton) pauseButton.style.opacity = '0';
-
-            const backlogButton = document.getElementById('backlog-button');
-            if (backlogButton) backlogButton.style.opacity = '0';
-
-            const skipButton = document.getElementById('skip-button');
-            if (skipButton) skipButton.style.opacity = '0';
-
-            const tetherUI = document.getElementById('tether-ui');
-            if (tetherUI && tetherUI.style.display === 'block') {
-                tetherUI.style.opacity = '0';
-            }
-
-            const notesButton = document.getElementById('notes-button');
-            if (notesButton && notesButton.style.display === 'block') {
-                notesButton.style.opacity = '0';
-            }
-
-            // Show "Screenshot Mode" indicator in status bar center
-            const statusNotification = document.getElementById('status-notification');
-            if (statusNotification) {
-                const icon = statusNotification.querySelector('.status-notif-icon');
-                const text = statusNotification.querySelector('.status-notif-text');
-                if (icon) icon.textContent = '📸';
-                if (text) text.textContent = 'Screenshot Mode';
-                statusNotification.classList.add('visible');
-            }
-
-            this.state.set('ui.hidden', true);
-            console.log('📸 Screenshot mode ON - dialogue platform visible, status bar showing context');
-        } else {
-            // NORMAL MODE: Show all UI elements
-            document.body.classList.remove('ui-hidden');
-
-            // Restore dialogue box (remove inline overrides)
-            if (this.dialogueBox) {
-                this.dialogueBox.style.opacity = '';
-                this.dialogueBox.style.pointerEvents = '';
-            }
-
-            const pauseButton = document.getElementById('pause-button');
-            if (pauseButton) pauseButton.style.opacity = '1';
-
-            const backlogButton = document.getElementById('backlog-button');
-            if (backlogButton) backlogButton.style.opacity = '1';
-
-            const skipButton = document.getElementById('skip-button');
-            if (skipButton) skipButton.style.opacity = '1';
-
-            const tetherUI = document.getElementById('tether-ui');
-            if (tetherUI && tetherUI.style.display === 'block') {
-                tetherUI.style.opacity = '1';
-            }
-
-            const notesButton = document.getElementById('notes-button');
-            if (notesButton && notesButton.style.display === 'block') {
-                notesButton.style.opacity = '1';
-            }
-
-            // Hide "Screenshot Mode" indicator
-            const statusNotification = document.getElementById('status-notification');
-            if (statusNotification) {
-                statusNotification.classList.remove('visible');
-            }
-
-            this.state.set('ui.hidden', false);
-            console.log('📸 Screenshot mode OFF - full UI restored');
-        }
-
-        // DIZEE POLISH: Also toggle notification shade system
-        if (this.notificationShade) {
-            this.notificationShade.toggleScreenshotMode();
-        }
-
-        // MOBILE: Add/remove tap-to-exit listener for screenshot mode
-        if (!isHidden) {
-            // Entering screenshot mode - add tap listener
-            this.screenshotTapHandler = () => {
-                if (this.state.get('ui.hidden')) {
-                    this.toggleUI();
-                }
-            };
-            document.body.addEventListener('touchstart', this.screenshotTapHandler);
-        } else {
-            // Exiting screenshot mode - remove tap listener
-            if (this.screenshotTapHandler) {
-                document.body.removeEventListener('touchstart', this.screenshotTapHandler);
-                this.screenshotTapHandler = null;
-            }
-        }
+        // Delegation stub - full implementation in ScreenshotController
+        this.screenshotController?.toggle();
     }
 
 
