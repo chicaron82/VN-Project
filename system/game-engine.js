@@ -689,8 +689,60 @@ class GameEngine {
             localStorage.setItem(key, value);
             return true;
         } catch (error) {
-            console.error(`Failed to write localStorage key "${key}":`, error);
+            // Handle quota exceeded error
+            if (error.name === 'QuotaExceededError') {
+                console.error(`❌ localStorage quota exceeded while saving "${key}"`);
+                this.handleStorageQuotaExceeded(key);
+            } else {
+                console.error(`Failed to write localStorage key "${key}":`, error);
+            }
             this.handleGameError(error, `saving to localStorage (${key})`);
+            return false;
+        }
+    }
+
+    /**
+     * Handle localStorage quota exceeded by clearing old data
+     * @param {string} attemptedKey - The key that failed to save
+     */
+    handleStorageQuotaExceeded(attemptedKey) {
+        console.warn('⚠️ localStorage quota exceeded - attempting cleanup...');
+
+        // Show user-friendly notification
+        if (this.uiController) {
+            this.uiController.showErrorOverlay(
+                'Storage Limit Reached',
+                'Your browser storage is full. Clearing old data to make room...\n\nYour current progress will be saved.'
+            );
+        }
+
+        try {
+            // Clear non-essential data first
+            const nonEssentialKeys = [
+                'gameErrors',           // Error logs
+                'sensoryLog',          // Debug logs
+                'readScenes',          // Can be regenerated
+                'dialogueHistory'      // Can be regenerated
+            ];
+
+            let clearedSpace = false;
+            for (const key of nonEssentialKeys) {
+                if (localStorage.getItem(key)) {
+                    localStorage.removeItem(key);
+                    console.log(`🗑️ Cleared ${key}`);
+                    clearedSpace = true;
+                }
+            }
+
+            if (clearedSpace) {
+                console.log('✅ Storage cleanup complete - retrying save...');
+                return true;
+            } else {
+                console.warn('⚠️ No non-essential data to clear');
+                return false;
+            }
+        } catch (error) {
+            console.error('Failed to clear storage:', error);
             return false;
         }
     }
@@ -709,6 +761,11 @@ class GameEngine {
     }
 
     init() {
+        // Performance tracking
+        if (typeof PerformanceMonitor !== 'undefined') {
+            PerformanceMonitor.mark('game-init-start');
+        }
+
         // Track splash start time for minimum display duration
         this.splashStartTime = Date.now();
         this.minSplashDuration = GameConfig.TIMING.MIN_SPLASH_DURATION_MS;
@@ -820,28 +877,44 @@ class GameEngine {
             });
         };
 
-        // Load images in priority order
+        // Load images in priority order with parallel loading
         /**
          * @param {string[]} group
+         * @param {string} groupName
          */
-        const loadPriorityGroup = async (group) => {
-            return Promise.all(group.map(src => preloadImage(src)));
+        const loadPriorityGroup = async (group, groupName) => {
+            if (typeof PerformanceMonitor !== 'undefined') {
+                PerformanceMonitor.mark(`${groupName}-start`);
+            }
+
+            // Load all images in this group in parallel
+            const results = await Promise.all(group.map(src => preloadImage(src)));
+
+            if (typeof PerformanceMonitor !== 'undefined') {
+                PerformanceMonitor.mark(`${groupName}-end`);
+                PerformanceMonitor.measure(`Load ${groupName}`, `${groupName}-start`, `${groupName}-end`);
+            }
+
+            return results;
         };
 
-        // Sequential priority loading
+        // Sequential priority loading with performance tracking
         (async () => {
             try {
-                // Load critical assets first
-                await loadPriorityGroup(imagesToPreload.critical);
+                if (typeof PerformanceMonitor !== 'undefined') {
+                    PerformanceMonitor.mark('asset-loading-start');
+                }
+
+                // Load critical assets first (parallel within group)
+                await loadPriorityGroup(imagesToPreload.critical, 'critical-assets');
                 console.log('📦 Critical assets loaded');
 
-                // Load gameplay assets second
-                await loadPriorityGroup(imagesToPreload.gameplay);
-                console.log('📦 Gameplay assets loaded');
-
-                // Load route-specific assets last
-                await loadPriorityGroup(imagesToPreload.routes);
-                console.log('📦 Route assets loaded');
+                // Load gameplay + route assets in parallel (both groups at once)
+                await Promise.all([
+                    loadPriorityGroup(imagesToPreload.gameplay, 'gameplay-assets'),
+                    loadPriorityGroup(imagesToPreload.routes, 'route-assets')
+                ]);
+                console.log('📦 Gameplay & route assets loaded');
 
                 // All loading complete
                 const actualLoadTime = Date.now() - loadStartTime;

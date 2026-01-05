@@ -26,6 +26,7 @@ import { PauseManager } from './pause-manager.js';
 import './input-binder.js';
 import './game-config.js';
 import './logger.js';
+import './performance-monitor.js'; // Performance tracking utility
 import './asset-loader.js'; // UV7 Splash real asset loading
 
 // Difficulty and settings

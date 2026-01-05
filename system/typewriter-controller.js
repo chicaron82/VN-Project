@@ -278,6 +278,29 @@ class TypewriterController {
     isPaginating() {
         return this.paginationActive;
     }
+
+    // ========================================
+    // CLEANUP
+    // ========================================
+
+    /**
+     * Clean up intervals and prevent memory leaks
+     * Call this when destroying the controller or transitioning scenes
+     */
+    destroy() {
+        // Clear typewriter interval
+        if (this.typewriterInterval) {
+            clearInterval(this.typewriterInterval);
+            this.typewriterInterval = null;
+        }
+
+        // Reset state
+        this.typewriterActive = false;
+        this.typewriterCallback = null;
+        this.paginationActive = false;
+        this.dialoguePages = [];
+        this.currentDialoguePage = 0;
+    }
 }
 
 // Global assignment for browser
