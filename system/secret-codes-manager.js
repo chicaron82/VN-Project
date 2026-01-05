@@ -417,9 +417,19 @@ class SecretCodesManager {
             'disableinsane': () => {
                 if (this.game.gameState.flags) {
                     this.game.gameState.flags.insaneModeActive = false;
+                    this.game.gameState.flags.insaneModeLocked = false;
                 }
                 localStorage.removeItem('insaneModeUnlocked');
-                return '💚 DEV: INSANE MODE DISABLED! (Back to normal difficulty)';
+
+                // Remove visual corruption effects
+                if (this.game.gameView) {
+                    this.game.gameView.classList.remove('insane-mode-active');
+                }
+
+                // Remove body class if present
+                document.body.classList.remove('insane-mode');
+
+                return '💚 DEV: INSANE MODE DISABLED! Visual effects cleared.';
             },
 
             // NUCLEAR RESET
