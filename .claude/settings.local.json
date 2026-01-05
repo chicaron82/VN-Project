@@ -27,7 +27,8 @@
       "Bash(powershell -Command:*)",
       "Bash(npm install:*)",
       "Bash(cat:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": [],
     "ask": []
