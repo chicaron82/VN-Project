@@ -2044,7 +2044,7 @@ class GameEngine {
 
     showNotes() {
         // Delegation stub - full implementation in CollectiblesManager
-        this.collectiblesManager?.showNotesViewer();
+        this.currentRoute?.collectiblesManager?.showNotesViewer();
     }
 
     // ========================================
