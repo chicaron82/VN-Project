@@ -567,6 +567,10 @@ class GameEngine {
         // @ts-ignore
         this.crewController = new CrewController(this);
 
+        // SOLID: Initialize Fullscreen Controller (extracted from GameEngine)
+        // @ts-ignore
+        this.fullscreenController = new FullscreenController(this);
+
         // ZEE'S ADDITION: Rotating tips system 🖤
         this.mainMenuTipElement = null;
         this.routeSelectTipElement = null;
@@ -2851,71 +2855,13 @@ game.devCommands()
     // ========================================
 
     toggleFullscreen() {
-        const button = document.getElementById('fullscreen-button');
-        void button; // Silence unused warning
-
-        // Check if already in fullscreen
-        const isFullscreen = document.fullscreenElement ||
-            // @ts-ignore - Vendor prefix for Safari
-            document.webkitFullscreenElement ||
-            // @ts-ignore - Vendor prefix for Firefox
-            document.mozFullScreenElement ||
-            // @ts-ignore - Vendor prefix for IE/Edge
-            document.msFullscreenElement;
-
-        if (isFullscreen) {
-            // Exit fullscreen
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-                // @ts-ignore - Vendor prefix for Safari
-            } else if (document.webkitExitFullscreen) {
-                // @ts-ignore - Vendor prefix for Safari
-                document.webkitExitFullscreen();
-                // @ts-ignore - Vendor prefix for Firefox
-            } else if (document.mozCancelFullScreen) {
-                // @ts-ignore - Vendor prefix for Firefox
-                document.mozCancelFullScreen();
-                // @ts-ignore - Vendor prefix for IE/Edge
-            } else if (document.msExitFullscreen) {
-                // @ts-ignore - Vendor prefix for IE/Edge
-                document.msExitFullscreen();
-            }
-        } else {
-            // Enter fullscreen
-            const element = document.documentElement;
-
-            if (element.requestFullscreen) {
-                element.requestFullscreen();
-                // @ts-ignore - Vendor prefix for Safari
-            } else if (element.webkitRequestFullscreen) {
-                // @ts-ignore - Vendor prefix for Safari
-                element.webkitRequestFullscreen();
-                // @ts-ignore - Vendor prefix for Firefox
-            } else if (element.mozRequestFullScreen) {
-                // @ts-ignore - Vendor prefix for Firefox
-                element.mozRequestFullScreen();
-                // @ts-ignore - Vendor prefix for IE/Edge
-            } else if (element.msRequestFullscreen) {
-                // @ts-ignore - Vendor prefix for IE/Edge
-                element.msRequestFullscreen();
-            }
-        }
-
-        // Update button text after a short delay (fullscreen API is async)
-        setTimeout(() => {
-            this.updateFullscreenButton();
-        }, 100);
-
-        // DIZEE: Auto-close pause menu after toggling fullscreen
-        if (this.saveLoadUI && this.saveLoadUI.hidePauseMenu) {
-            setTimeout(() => {
-                this.saveLoadUI.hidePauseMenu();
-            }, 150);
-        }
+        // Delegation stub - full implementation in FullscreenController
+        this.fullscreenController?.toggle();
     }
 
     updateFullscreenButton() {
-        this.uiController.updateFullscreenButton();
+        // Delegation stub - full implementation in FullscreenController
+        this.fullscreenController?.updateButton();
     }
 
     // ========================================
