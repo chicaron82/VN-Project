@@ -1700,12 +1700,23 @@
             // Expose completeSplash globally so GameEngine can call it when loading finishes
             window.completeSplash = completeSplash;
 
+            // Boot sequence instance (set when initialized)
+            let bootSequenceInstance = null;
+            window.setBootSequence = (instance) => {
+                bootSequenceInstance = instance;
+            };
 
             // Skip button handler
             if (skipButton) {
                 skipButton.addEventListener('click', (e) => {
                     e.stopPropagation();
                     console.log('UV7 Splash: User clicked skip button');
+
+                    // Skip boot sequence if active
+                    if (bootSequenceInstance) {
+                        bootSequenceInstance.skip();
+                    }
+
                     completeSplash(true); // Pass true to indicate user skipped
                 });
             }
@@ -1715,6 +1726,12 @@
                 // Don't trigger if clicking skip button
                 if (e.target.id !== 'uv7-skip-button') {
                     console.log('UV7 Splash: User clicked splash to skip');
+
+                    // Skip boot sequence if active
+                    if (bootSequenceInstance) {
+                        bootSequenceInstance.skip();
+                    }
+
                     completeSplash(true); // Pass true to indicate user skipped
                 }
             });
@@ -1823,46 +1840,55 @@
                 tryCompleteSplash('asset loading complete');
             }
 
-            // Start real asset loading
+            // Start real asset loading with BOUGIE boot sequence
             function startRealAssetLoading() {
+                // Initialize boot sequence terminal
+                const bootTerminal = document.getElementById('boot-terminal');
+                let bootSequence = null;
+
+                if (typeof BougieBootSequence !== 'undefined' && bootTerminal) {
+                    // Create boot sequence with logo reveal callback
+                    bootSequence = new BougieBootSequence(bootTerminal, updateLoadingProgress);
+                    window.setBootSequence(bootSequence); // Make accessible to skip button
+                    console.log('UV7 Splash: Boot sequence initialized');
+                }
+
                 if (typeof AssetLoader === 'undefined') {
                     console.warn('UV7 Splash: AssetLoader not found, using safety fallback');
-                    // Fallback: animate to 100% over minimum time
-                    setTimeout(() => {
-                        updateLoadingProgress(100);
-                        finalizeLoading();
-                    }, MINIMUM_SPLASH_MS);
+
+                    // Start boot sequence or fallback
+                    if (bootSequence) {
+                        bootSequence.start().then(() => {
+                            finalizeLoading();
+                        });
+                    } else {
+                        // Fallback: animate to 100% over minimum time
+                        setTimeout(() => {
+                            updateLoadingProgress(100);
+                            finalizeLoading();
+                        }, MINIMUM_SPLASH_MS);
+                    }
                     return;
                 }
 
                 const loader = new AssetLoader();
                 let realProgress = 0;
-                let simulatedProgress = 0;
                 let assetsComplete = false;
-                let simulationStartTime = performance.now();
 
-                // Simulate smooth progress over minimum time (for fast connections)
-                function simulateProgress() {
-                    if (assetsComplete) return;
-
-                    const elapsed = performance.now() - simulationStartTime;
-                    const targetProgress = Math.min(95, (elapsed / MINIMUM_SPLASH_MS) * 95); // Cap at 95% until real assets finish
-
-                    // Use the HIGHER of real or simulated progress (ensures smooth reveal even on fast wifi)
-                    simulatedProgress = Math.max(realProgress, targetProgress);
-                    updateLoadingProgress(simulatedProgress);
-
-                    if (elapsed < MINIMUM_SPLASH_MS) {
-                        requestAnimationFrame(simulateProgress);
-                    }
+                // Start boot sequence immediately (controls logo reveal)
+                if (bootSequence) {
+                    bootSequence.start().then(() => {
+                        console.log('UV7 Splash: Boot sequence complete');
+                        // Boot sequence finished, wait for assets if needed
+                        if (assetsComplete) {
+                            markLoadingComplete();
+                        }
+                    });
                 }
-
-                // Start simulation immediately
-                requestAnimationFrame(simulateProgress);
 
                 loader.on('assetprogress', (e) => {
                     realProgress = e.detail.percent;
-                    // Don't update directly - let simulation handle it for smooth reveal
+                    // Boot sequence controls progress, assets load in background
                 });
 
                 loader.on('assetcomplete', (e) => {
