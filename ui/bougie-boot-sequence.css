@@ -1,9 +1,43 @@
 /* ========================================
    BOUGIE BOOT SEQUENCE
    Terminal-style loading with matrix effects
+   Integrated with UV7 splash screen
    ======================================== */
 
-/* Container */
+/* Boot Terminal - Embedded in splash screen below logo */
+.boot-terminal {
+    width: 600px;
+    max-width: 90vw;
+    margin: 30px auto 0;
+    padding: 20px;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    /* Custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+}
+
+.boot-terminal::-webkit-scrollbar {
+    width: 6px;
+}
+
+.boot-terminal::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.boot-terminal::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+/* Standalone container (kept for backward compatibility) */
 .boot-sequence-container {
     position: fixed;
     top: 0;
@@ -17,7 +51,6 @@
     padding: 40px;
     overflow-y: auto;
     z-index: 10001;
-    /* Above splash */
 }
 
 /* Code Matrix Background */

@@ -47,40 +47,51 @@ const SYSTEM_FILES = {
 
 /**
  * BougieBootSequence - Terminal-style loading with all the bells and whistles
+ * Synced with logo reveal progress
  */
 class BougieBootSequence {
-    constructor(containerElement, gameEngine) {
+    constructor(containerElement, logoRevealCallback) {
         this.container = containerElement;
-        this.game = gameEngine;
+        this.logoRevealCallback = logoRevealCallback || (() => {});
         this.currentLine = null;
         this.isSkipping = false;
         this.skipHandler = null;
+        this.currentProgress = 0;
     }
 
     /**
      * Start the boot sequence
-     * Everything is already loaded - this is pure aesthetics
+     * Syncs progress with logo reveal: 0% → 100%
      */
     async start() {
         this.setupSkipListener();
         this.showHeader();
 
-        await this.loadCategory('CORE SYSTEMS', SYSTEM_FILES.core, 40);
-        await this.loadCategory('TETHER FRAMEWORK', SYSTEM_FILES.tether, 50);
-        await this.loadCategory('ROUTE HANDLERS', SYSTEM_FILES.routes, 35);
-        await this.loadCategory('UI CONTROLLERS', SYSTEM_FILES.ui, 30);
-        await this.loadCategory('SPECIAL SYSTEMS', SYSTEM_FILES.special, 45);
+        // Each category advances logo reveal proportionally
+        await this.loadCategory('CORE SYSTEMS', SYSTEM_FILES.core, 40, 0, 25);
+        await this.loadCategory('TETHER FRAMEWORK', SYSTEM_FILES.tether, 50, 25, 50);
+        await this.loadCategory('ROUTE HANDLERS', SYSTEM_FILES.routes, 35, 50, 75);
+        await this.loadCategory('UI CONTROLLERS', SYSTEM_FILES.ui, 30, 75, 90);
+        await this.loadCategory('SPECIAL SYSTEMS', SYSTEM_FILES.special, 45, 90, 98);
 
-        // Easter eggs
-        await this.showEasterEggs();
+        // Easter eggs (final 2%)
+        await this.showEasterEggs(98, 100);
 
-        // Final stats
+        // Final stats (logo fully revealed, video playing)
         await this.showBootStats();
 
         // Complete
         await this.showBootComplete();
 
         this.cleanup();
+    }
+
+    /**
+     * Update logo reveal progress
+     */
+    updateProgress(percent) {
+        this.currentProgress = percent;
+        this.logoRevealCallback(percent);
     }
 
     /**
@@ -98,10 +109,12 @@ class BougieBootSequence {
 
     /**
      * Load a category of files
+     * progressStart/progressEnd: Logo reveal percentage range for this category
      */
-    async loadCategory(categoryName, files, baseSpeed = 40) {
+    async loadCategory(categoryName, files, baseSpeed = 40, progressStart = 0, progressEnd = 100) {
         if (this.isSkipping) {
             this.showCategoryInstant(categoryName, files);
+            this.updateProgress(progressEnd);
             return;
         }
 
@@ -113,15 +126,24 @@ class BougieBootSequence {
 
         await this.delay(200);
 
-        // Load each file
-        for (const file of files) {
-            // Skip conditional files if not unlocked
-            if (file.conditional) {
-                if (file.conditional === 'torigatchi' && !localStorage.getItem('torigatchiUnlocked')) continue;
-                if (file.conditional === 'insane' && !this.game?.gameState?.flags?.insaneModeLocked) continue;
-            }
+        // Calculate progress increment per file
+        const validFiles = files.filter(file => {
+            if (!file.conditional) return true;
+            if (file.conditional === 'torigatchi') return localStorage.getItem('torigatchiUnlocked');
+            if (file.conditional === 'insane') return this.game?.gameState?.flags?.insaneModeLocked;
+            return false;
+        });
 
+        const progressPerFile = (progressEnd - progressStart) / validFiles.length;
+
+        // Load each file
+        for (let i = 0; i < validFiles.length; i++) {
+            const file = validFiles[i];
             await this.loadFile(file, baseSpeed);
+
+            // Update progress after each file
+            const newProgress = progressStart + (progressPerFile * (i + 1));
+            this.updateProgress(newProgress);
 
             // Handle special behaviors
             if (file.pause && !this.isSkipping) {
@@ -232,15 +254,25 @@ class BougieBootSequence {
     /**
      * Show easter eggs
      */
-    async showEasterEggs() {
-        for (const file of SYSTEM_FILES.easterEggs) {
-            // Skip conditional files
-            if (file.conditional) {
-                if (file.conditional === 'torigatchi' && !localStorage.getItem('torigatchiUnlocked')) continue;
-                if (file.conditional === 'insane' && !this.game?.gameState?.flags?.insaneModeLocked) continue;
-            }
+    async showEasterEggs(progressStart = 98, progressEnd = 100) {
+        const validEggs = SYSTEM_FILES.easterEggs.filter(file => {
+            if (!file.conditional) return true;
+            if (file.conditional === 'torigatchi') return localStorage.getItem('torigatchiUnlocked');
+            if (file.conditional === 'insane') return this.game?.gameState?.flags?.insaneModeLocked;
+            return false;
+        });
 
-            await this.loadFile(file, 30);
+        if (validEggs.length === 0) {
+            this.updateProgress(progressEnd);
+            return;
+        }
+
+        const progressPerEgg = (progressEnd - progressStart) / validEggs.length;
+
+        for (let i = 0; i < validEggs.length; i++) {
+            await this.loadFile(validEggs[i], 30);
+            const newProgress = progressStart + (progressPerEgg * (i + 1));
+            this.updateProgress(newProgress);
         }
     }
 
@@ -328,43 +360,27 @@ class BougieBootSequence {
     }
 
     /**
-     * Setup skip listener (SPACE key)
+     * Setup skip listener (handled by splash screen skip button)
      */
     setupSkipListener() {
-        this.skipHandler = (e) => {
-            if (e.code === 'Space' && !this.isSkipping) {
-                e.preventDefault();
-                this.skip();
-            }
-        };
-        document.addEventListener('keydown', this.skipHandler);
-
-        // Show skip hint
-        const skipHint = document.createElement('div');
-        skipHint.className = 'boot-skip-hint';
-        skipHint.textContent = 'Press SPACE to skip';
-        this.container.appendChild(skipHint);
+        // Skip is handled externally by splash screen
+        // Expose skip method for external trigger
+        this.skipHandler = null;
     }
 
     /**
-     * Skip to end
+     * Skip to end (called externally)
      */
     skip() {
         this.isSkipping = true;
-        const skipHint = this.container.querySelector('.boot-skip-hint');
-        if (skipHint) {
-            skipHint.textContent = 'Skipping initialization...';
-            skipHint.style.color = '#ffaa00';
-        }
+        this.updateProgress(100);
     }
 
     /**
      * Cleanup listeners
      */
     cleanup() {
-        if (this.skipHandler) {
-            document.removeEventListener('keydown', this.skipHandler);
-        }
+        // No cleanup needed - skip handled externally
     }
 
     /**
