@@ -18,6 +18,40 @@ The `GameEngine` class (`system/game-engine.js`) is the central orchestrator. It
 - **Sub-systems**: Instantiates and coordinates all managers (state, save, tether, collectibles, etc.)
 - **Delegation**: Delegates specialized concerns to focused controllers (haptics, fullscreen, screenshot mode, etc.)
 
+#### GameEngine Table of Contents
+
+The game engine is organized into 27 major sections (search by section name in `system/game-engine.js`):
+
+1. **SENSORY CUES METADATA** - Haptic + visual feedback configuration, UI/narrative/critical patterns
+2. **TUTORIAL SYSTEM** - Onboarding gesture tutorials, tutorial state management
+3. **SKIP SYSTEM** - Skip mode (CTRL/S), skip prologue system, Ronnie notes unlock
+4. **TORIGATCHI UNLOCK SYSTEM** - Main menu ToriGatchi button unlock, easter egg integration
+5. **ROTATING TIPS SYSTEM** - Main menu tips, route select tips, tip rotation controls
+6. **HAPTIC FEEDBACK SYSTEM** - Pattern library (12 patterns), device support detection, sensory intensity scaling
+7. **UNIFIED SENSORY FEEDBACK** - Metadata-driven haptic + visual cues, channel-based intensity scaling
+8. **DEV HUD SYSTEM** - Real-time debug overlay, route/act/scene display, tether/difficulty/flags monitoring
+9. **NOTES UNLOCK SYSTEM** - Note unlocking, Ronnie notes tab unlock
+10. **SKIP PROLOGUE SYSTEM** - Skip prologue toggle, first-time vs replay handling
+11. **SCENE DISPLAY & RENDERING** - Display scene, dialogue rendering, character names, background handling, choice rendering
+12. **SPRITE MANAGEMENT** - Sprite fade sequences, character sprite display, sprite positioning, sprite cleanup on transitions
+13. **ECHO DISPLAY (TORI ROUTE)** - Echo voice system (three-echoes-sprite.png), echo animations
+14. **NOTES SYSTEM** - Note overlay display, note navigation
+15. **CONFIRMATION DIALOG SYSTEM** - Custom dialog overlays, confirmation callbacks
+16. **CONTACT SCREEN** - Developer contact info
+17. **SAVE/LOAD SYSTEM METHODS** - Save game delegation, load game delegation, save slot management
+18. **STANDALONE NOTES VIEWER** - Main menu notes access, standalone viewer launch
+19. **SETTINGS SYSTEM** - Settings menu control, settings delegation to SettingsManager
+20. **BACKLOG SYSTEM** - History tracking, time-travel functionality, backlog rendering
+21. **PAUSE MENU** - Pause menu display, resume/settings/main menu
+22. **ROUTE SELECTION** - Route selection screen, route start initialization
+23. **STORY START (PROLOGUE)** - Prologue playback, skip prologue handling
+24. **MAIN MENU** - Main menu display, button handlers, menu navigation
+25. **CREDITS SYSTEM** - Credits rendering (3 layouts), photo pools (UV7 crew portraits), photo cycling controls
+26. **LOOP REINIT SCREEN** - Loop version tracking (848), retry screen with route selection
+27. **CONSTRUCTOR & INITIALIZATION** - DOM element caching, manager initialization (PauseManager, Settings, Save, etc.), event listener setup
+
+**Note**: Line numbers change frequently. Use Ctrl+F to search for section names in all caps (e.g., `SENSORY CUES METADATA`, `TUTORIAL SYSTEM`, etc.)
+
 ### Scene Progression Controller
 
 Extracted from GameEngine, the `SceneProgressionController` orchestrates:

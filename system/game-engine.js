@@ -59,128 +59,21 @@
  * ════════════════════════════════════════════════════════════════
  *
  * TABLE OF CONTENTS
- * (Line numbers updated 2025-12-28 - use search to locate sections)
+ * For detailed system breakdown and architecture overview, see:
+ * → ARCHITECTURE.md - GameEngine Table of Contents section
  *
- * 1. SENSORY CUES METADATA ....................... Line 230
- *    - Haptic + visual feedback configuration
- *    - UI, narrative, and critical feedback patterns
+ * This file contains 27 major systems. To navigate:
+ * - Use Ctrl+F to search for section headers (all caps)
+ * - Example: "SENSORY CUES METADATA", "TUTORIAL SYSTEM", "SKIP SYSTEM"
+ * - Line numbers change frequently, so search by name instead
  *
- * 2. TUTORIAL SYSTEM ............................. Line 383
- *    - Onboarding gesture tutorials
- *    - Tutorial state management
- *
- * 3. SKIP SYSTEM ................................. Line 524
- *    - Skip mode (CTRL/S)
- *    - Skip prologue system
- *    - Ronnie notes system unlock
- *
- * 4. TORIGATCHI UNLOCK SYSTEM .................... Line 1225
- *    - Main menu ToriGatchi button unlock
- *    - Easter egg integration
- *
- * 5. ROTATING TIPS SYSTEM ........................ Line 1234
- *    - Main menu tips
- *    - Route select tips
- *    - Tip rotation controls
- *
- * 6. HAPTIC FEEDBACK SYSTEM ...................... Line 1267
- *    - Pattern library (12 patterns)
- *    - Device support detection
- *    - Sensory intensity scaling
- *
- * 7. UNIFIED SENSORY FEEDBACK .................... Line 1370
- *    - Metadata-driven haptic + visual cues
- *    - Channel-based intensity scaling
- *
- * 8. DEV HUD SYSTEM .............................. Line 1408
- *    - Real-time debug overlay
- *    - Route/Act/Scene display
- *    - Tether/Difficulty/Flags monitoring
- *
- * 9. NOTES UNLOCK SYSTEM ......................... Line 1471
- *    - Note unlocking
- *    - Ronnie notes tab unlock
- *
- * 10. SKIP PROLOGUE SYSTEM ....................... Line 1647
- *     - Skip prologue toggle
- *     - First-time vs replay handling
- *
- * 11. SCENE DISPLAY & RENDERING .................. Line 1692
- *     - Display scene
- *     - Dialogue rendering
- *     - Character names
- *     - Background handling
- *     - Choice rendering
- *
- * 12. SPRITE MANAGEMENT .......................... Line 1855
- *     - Sprite fade sequences
- *     - Character sprite display
- *     - Sprite positioning
- *     - Sprite cleanup on transitions
- *
- * 13. ECHO DISPLAY (TORI ROUTE) .................. Line 1973
- *     - Echo voice system (three-echoes-sprite.png)
- *     - Echo animations
- *
- * 14. NOTES SYSTEM ............................... Line 1979
- *     - Note overlay display
- *     - Note navigation
- *
- * 15. CONFIRMATION DIALOG SYSTEM ................. Line 2080
- *     - Custom dialog overlays
- *     - Confirmation callbacks
- *
- * 16. CONTACT SCREEN ............................. Line 2160
- *     - Developer contact info
- *
- * 17. SAVE/LOAD SYSTEM METHODS ................... Line 2220
- *     - Save game delegation
- *     - Load game delegation
- *     - Save slot management
- *
- * 18. STANDALONE NOTES VIEWER .................... Line 2310
- *     - Main menu notes access
- *     - Standalone viewer launch
- *
- * 19. SETTINGS SYSTEM ............................ Line 2340
- *     - Settings menu control
- *     - Settings delegation to SettingsManager
- *
- * 20. BACKLOG SYSTEM ............................. Line 2400
- *     - History tracking
- *     - Time-travel functionality
- *     - Backlog rendering
- *
- * 21. PAUSE MENU ................................. Line 2650
- *     - Pause menu display
- *     - Resume/settings/main menu
- *
- * 22. ROUTE SELECTION ............................ Line 2730
- *     - Route selection screen
- *     - Route start initialization
- *
- * 23. STORY START (PROLOGUE) ..................... Line 2940
- *     - Prologue playback
- *     - Skip prologue handling
- *
- * 24. MAIN MENU .................................. Line 3100
- *     - Main menu display
- *     - Button handlers
- *     - Menu navigation
- *
- * 25. CREDITS SYSTEM ............................. Line 3300
- *     - Credits rendering (3 layouts)
- *     - Photo pools (UV7 crew portraits)
- *     - Photo cycling controls
- *
- * 26. LOOP REINIT SCREEN ......................... Line 3550
- *     - Loop version tracking (848)
- *     - Retry screen with route selection
- *
- * 27. CONSTRUCTOR & INITIALIZATION ............... Line 3780
- *     - DOM element caching
- *     - Manager initialization (PauseManager, Settings, Save, etc.)
- *     - Event listener setup
+ * Quick Reference:
+ * - Sensory/Haptics: SENSORY CUES, HAPTIC FEEDBACK, UNIFIED SENSORY FEEDBACK
+ * - Player Systems: TUTORIAL SYSTEM, SKIP SYSTEM, NOTES UNLOCK
+ * - UI Systems: DEV HUD, PAUSE MENU, SETTINGS SYSTEM, BACKLOG SYSTEM
+ * - Scene Flow: SCENE DISPLAY & RENDERING, SPRITE MANAGEMENT, ECHO DISPLAY
+ * - Menus: MAIN MENU, ROUTE SELECTION, CREDITS SYSTEM
+ * - State: SAVE/LOAD SYSTEM, CONSTRUCTOR & INITIALIZATION
  *
  * ════════════════════════════════════════════════════════════════
  * NOTES:
@@ -188,8 +81,7 @@
  * - Manages game loop, state transitions, and player interactions
  * - Integrates with: PauseManager, SaveManager, SettingsManager,
  *   TetherSystem, CollectiblesManager, SecretCodesManager, DevConsole
- * - File size: 3,946 lines - use TOC for navigation
- * - Line numbers updated Dec 28, 2025 - search by section name for exact location
+ * - Current size: ~8,900 lines (being refactored via extraction pattern)
  * ════════════════════════════════════════════════════════════════
  */
 
