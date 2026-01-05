@@ -160,7 +160,18 @@ const GameConfig = {
         DELAY_EXTRA_LONG: 5000,
 
         // Credits
-        CREDIT_SCREEN_FADE_MS: 100
+        CREDIT_SCREEN_FADE_MS: 100,
+
+        // Haptic feedback
+        HAPTIC_COOLDOWN_MS: 80,         // Anti-spam cooldown for haptics
+
+        // Loading/Splash
+        MIN_SPLASH_DURATION_MS: 6000,   // Match splash video length
+        MIN_LOADING_ANIMATION_MS: 5500, // Slightly less than video for sync
+
+        // History/Logs
+        MAX_DIALOGUE_HISTORY: 100,      // Keep last 100 dialogue entries
+        MAX_SENSORY_LOG: 20             // Keep last 20 sensory events for debugging
     },
 
     // ========================================

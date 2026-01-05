@@ -339,14 +339,14 @@ class GameEngine {
         // Dialogue history for backlog
         /** @type {any[]} */
         this.dialogueHistory = [];
-        this.maxHistoryLength = 100; // Keep last 100 dialogue entries
+        this.maxHistoryLength = GameConfig.TIMING.MAX_DIALOGUE_HISTORY;
 
         // TORI'S SENSORY SYSTEM: Debounce + Debug Logger 💚
         this.lastHapticTime = 0;
-        this.hapticCooldownMs = 80;  // Anti-spam cooldown
+        this.hapticCooldownMs = GameConfig.TIMING.HAPTIC_COOLDOWN_MS;
         /** @type {any[]} */
         this.sensoryLog = [];
-        this.maxSensoryLog = 20;     // Keep last 20 sensory events for debugging
+        this.maxSensoryLog = GameConfig.TIMING.MAX_SENSORY_LOG;
 
         // Game state for tracking choices, flags, and progress
         this.gameState = {
@@ -711,7 +711,7 @@ class GameEngine {
     init() {
         // Track splash start time for minimum display duration
         this.splashStartTime = Date.now();
-        this.minSplashDuration = 6000; // 6 seconds minimum (matches video length)
+        this.minSplashDuration = GameConfig.TIMING.MIN_SPLASH_DURATION_MS;
 
         // ZEE'S ADDITION: Initialize rotating tips system 🖤
         this.initRotatingTips();
@@ -725,7 +725,7 @@ class GameEngine {
         // Smooth progress animation settings
         // SYNC WITH VIDEO: Match splash video duration (6 seconds)
         // This ensures loading simulation finishes when video ends
-        this.minLoadingAnimationTime = 5500; // Slightly less than 6s video to complete together
+        this.minLoadingAnimationTime = GameConfig.TIMING.MIN_LOADING_ANIMATION_MS;
 
         // Preload images with priority system
         const imagesToPreload = {
