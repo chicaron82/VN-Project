@@ -414,7 +414,7 @@ class SettingsManager {
                     if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
                         // EMOTIONAL FEEDBACK: Harsh denial for insane mode lockout
                         if (this.game.triggerSensoryFeedback) {
-                            this.game.triggerSensoryFeedback('harshDenial', difficultyOption, 'Insane mode locked - no escape');
+                            this.game.triggerSensoryFeedback('harshDenial', btn, 'Insane mode locked - no escape');
                         }
 
                         this.game.showWarningOverlay(
@@ -432,7 +432,7 @@ class SettingsManager {
                     if (this.game.gameState && this.game.gameState.flags && this.game.gameState.flags.insaneModeLocked) {
                         // EMOTIONAL FEEDBACK: Harsh denial for difficulty change attempt
                         if (this.game.triggerSensoryFeedback) {
-                            this.game.triggerSensoryFeedback('harshDenial', difficultyOption, 'Insane mode locked - cannot change');
+                            this.game.triggerSensoryFeedback('harshDenial', btn, 'Insane mode locked - cannot change');
                         }
 
                         this.game.showWarningOverlay(
