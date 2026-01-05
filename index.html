@@ -403,18 +403,21 @@
     <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
     <div id="uv7-splash">
         <div class="uv7-container">
-            <!-- "Powered by" text above logo -->
-            <div class="powered-by-text">Powered by</div>
+            <!-- Logo Section (grouped for landscape layout) -->
+            <div class="uv7-logo-section">
+                <!-- "Powered by" text above logo -->
+                <div class="powered-by-text">Powered by</div>
 
-            <!-- UV7 Logo - Static Fallback (visible by default) -->
-            <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+                <!-- UV7 Logo - Static Fallback (visible by default) -->
+                <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
 
-            <!-- UV7 Logo - Animated Video (wipe reveal during loading) -->
-            <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
-                <div class="uv7-logo-reveal" id="uv7-logo-reveal">
-                    <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
-                        <source src="UnitedVoices7.mp4" type="video/mp4">
-                    </video>
+                <!-- UV7 Logo - Animated Video (wipe reveal during loading) -->
+                <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
+                    <div class="uv7-logo-reveal" id="uv7-logo-reveal">
+                        <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
+                            <source src="UnitedVoices7.mp4" type="video/mp4">
+                        </video>
+                    </div>
                 </div>
             </div>
 
@@ -441,7 +444,7 @@
                 <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
 
                 <!-- ZEE'S ADDITION: Dynamic version counter footer 🖤 -->
-                <div class="menu-footer">[Version 848 - 847 previous failures]</div>
+                <div class="menu-footer" id="menu-footer">[Version 848 - 847 previous failures]</div>
 
                 <!-- ZEE'S ADDITION: Rotating tips 🖤 -->
                 <div class="menu-rotating-tip" id="main-menu-tip">
@@ -1546,6 +1549,9 @@
         </div>
     </div>
 
+    <!-- Boot Stats Calculator (dynamic stats from bootstrap tracker) -->
+    <script src="ui/boot-stats-calculator.js"></script>
+
     <!-- Bougie Boot Sequence -->
     <script src="ui/bougie-boot-sequence.js"></script>
 
@@ -1702,8 +1708,10 @@
 
             // Boot sequence instance (set when initialized)
             let bootSequenceInstance = null;
+            window.bootSequenceInstance = null; // Global reference for game linking
             window.setBootSequence = (instance) => {
                 bootSequenceInstance = instance;
+                window.bootSequenceInstance = instance; // Store globally
             };
 
             // Skip button handler
@@ -1973,6 +1981,12 @@
             console.log('Initializing GameEngine (loading will happen during splash)...');
             game = new GameEngine();
             window.game = game; // Make game globally accessible for splash skip detection
+
+            // DIZEE: Pass game reference to boot sequence for dynamic stats
+            if (window.bootSequenceInstance) {
+                window.bootSequenceInstance.game = game;
+                console.log('📊 Boot sequence linked to game engine for dynamic stats');
+            }
 
             // Initialize dev console (mobile debugging)
 

@@ -113,6 +113,12 @@ class MenuController {
         // ZEE'S ADDITION: Start tip rotation 🖤
         this.startMainMenuTipRotation();
 
+        // DIZEE: Update dynamic version footer
+        // @ts-ignore - updateMenuFooter defined in boot-stats-calculator.js
+        if (typeof window.updateMenuFooter === 'function') {
+            window.updateMenuFooter(this.game);
+        }
+
         // COMMENTARY TRIGGER: Main Menu Loop (First time view)
         if (this.game.devCommentary && this.game.devCommentary.isUnlocked() && !localStorage.getItem('commentaryMenuSeen')) {
             localStorage.setItem('commentaryMenuSeen', 'true');

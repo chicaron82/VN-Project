@@ -9,32 +9,132 @@
     width: 600px;
     max-width: 90vw;
     margin: 30px auto 0;
-    padding: 20px;
-    background: rgba(10, 10, 15, 0.8);
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    border-radius: 8px;
     color: #00ffff;
     font-family: 'Courier New', monospace;
-    font-size: 12px;
-    max-height: 300px;
-    overflow-y: auto;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
-    /* Custom scrollbar */
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+    font-size: 13px;
 }
 
-.boot-terminal::-webkit-scrollbar {
-    width: 6px;
+/* ========================================
+   LANDSCAPE LAYOUT: Side-by-side logo + boot sequence
+   Logo on left, boot terminal on right
+   Only applies to landscape orientation on wider screens
+   ======================================== */
+@media (orientation: landscape) and (min-width: 700px) and (min-height: 400px) {
+    /* Container becomes horizontal flex layout */
+    .uv7-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 80px;
+        padding: 0 60px;
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Logo section (left side) - groups logo + powered by text */
+    .uv7-logo-section {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Powered by text - reduced margin since we have horizontal space */
+    .powered-by-text {
+        margin-bottom: 20px;
+    }
+
+    /* Logo wrapper - maintains aspect ratio */
+    .uv7-logo-wrap {
+        margin-bottom: 0;
+        /* Remove bottom margin in landscape */
+    }
+
+    /* Static logo fallback */
+    .uv7-logo-static {
+        margin-bottom: 0;
+    }
+
+    /* Boot terminal moves to right side */
+    .boot-terminal {
+        flex: 1;
+        width: auto;
+        max-width: 600px;
+        min-width: 450px;
+        margin: 0;
+        /* Align to top of its flex area for cleaner look */
+        align-self: flex-start;
+        margin-top: 40px;
+    }
 }
 
-.boot-terminal::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
+/* Smaller landscape screens - tighter spacing */
+@media (orientation: landscape) and (min-width: 700px) and (max-width: 899px) {
+    .uv7-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 40px;
+        padding: 0 30px;
+    }
+
+    .uv7-logo-section {
+        flex: 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .powered-by-text {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .uv7-logo-wrap,
+    .uv7-logo-static,
+    .uv7-logo-video {
+        width: 250px;
+        max-width: 250px;
+    }
+
+    .uv7-logo-wrap {
+        margin-bottom: 0;
+    }
+
+    .uv7-logo-static {
+        margin-bottom: 0;
+    }
+
+    .boot-terminal {
+        flex: 1;
+        width: auto;
+        max-width: 450px;
+        min-width: 350px;
+        margin: 0;
+        font-size: 12px;
+        align-self: flex-start;
+        margin-top: 30px;
+    }
+
+    /* Smaller boot lines container for tighter screens */
+    .boot-lines-container {
+        min-height: 75px;
+        max-height: 75px;
+    }
 }
 
-.boot-terminal::-webkit-scrollbar-thumb {
-    background: rgba(0, 255, 255, 0.3);
-    border-radius: 3px;
+/* Lines container - fixed height for 3 lines to prevent bouncing */
+.boot-lines-container {
+    min-height: 90px; /* Space for 3 lines */
+    max-height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
 }
 
 /* Standalone container (kept for backward compatibility) */
@@ -98,6 +198,11 @@
     animation: bootTitlePulse 2s ease-in-out infinite;
 }
 
+/* DIZEE: Glitch effect for version number (temporal instability) */
+.boot-title-glitch {
+    animation: bootTitlePulse 2s ease-in-out infinite, bootTitleGlitch 5s ease-in-out infinite;
+}
+
 @keyframes bootTitlePulse {
 
     0%,
@@ -107,6 +212,33 @@
 
     50% {
         text-shadow: 0 0 20px rgba(0, 255, 255, 1);
+    }
+}
+
+@keyframes bootTitleGlitch {
+    0%, 90%, 100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    92% {
+        transform: translateX(-2px);
+        opacity: 0.8;
+    }
+
+    94% {
+        transform: translateX(2px);
+        opacity: 0.9;
+    }
+
+    96% {
+        transform: translateX(-1px);
+        opacity: 0.85;
+    }
+
+    98% {
+        transform: translateX(1px);
+        opacity: 0.95;
     }
 }
 
@@ -125,6 +257,13 @@
     margin-bottom: 10px;
     text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
     animation: categoryFadeIn 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
+}
+
+/* Fade out old category headers */
+.boot-category.fading-out {
+    opacity: 0;
+    pointer-events: none;
 }
 
 @keyframes categoryFadeIn {
@@ -147,6 +286,7 @@
     margin: 5px 0;
     font-size: 13px;
     animation: fileFadeIn 0.2s ease-out;
+    transition: opacity 0.3s ease-out;
 }
 
 @keyframes fileFadeIn {
@@ -159,6 +299,12 @@
         opacity: 1;
         transform: translateX(0);
     }
+}
+
+/* Fade out old lines */
+.boot-file.fading-out {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .boot-file-arrow {
@@ -209,6 +355,7 @@
     font-size: 12px;
     opacity: 0.8;
     animation: retryBlink 0.5s;
+    transition: opacity 0.3s ease-out;
 }
 
 @keyframes retryBlink {
@@ -223,75 +370,74 @@
     }
 }
 
-/* Boot Stats */
-.boot-stats {
-    margin-top: 30px;
-    padding: 20px;
-    background: rgba(0, 255, 255, 0.05);
-    border: 1px solid rgba(0, 255, 255, 0.2);
-    border-left: 4px solid #00ffff;
-    animation: statsFadeIn 0.5s ease-out;
+/* Final Status Display - replaces terminal when boot complete */
+.boot-final-status {
+    text-align: center;
 }
 
-@keyframes statsFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.boot-final-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    backdrop-filter: blur(10px);
 }
 
 .boot-stat {
-    margin: 8px 0;
-    font-size: 14px;
+    font-size: 13px;
     color: #ffffff;
+    letter-spacing: 0.5px;
 }
 
 .stat-value {
     color: #00ffff;
     font-weight: bold;
+    animation: statShimmer 3s ease-in-out infinite;
+}
+
+/* DIZEE: Subtle shimmer on stat values to draw attention */
+@keyframes statShimmer {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
+    }
+
+    50% {
+        text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
 }
 
 .stat-success {
     color: #00ff88;
 }
 
-/* Boot Complete */
-.boot-complete {
-    margin-top: 40px;
-    text-align: center;
-    animation: completeFadeIn 0.8s ease-out;
-}
-
-@keyframes completeFadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+.boot-complete-divider {
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent,
+        rgba(0, 255, 255, 0.5),
+        transparent);
+    margin: 12px 0;
 }
 
 .boot-complete-text {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: bold;
     color: #00ff88;
     text-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
-    letter-spacing: 6px;
-    margin-bottom: 10px;
+    letter-spacing: 4px;
+    margin-top: 8px;
 }
 
 .boot-complete-subtitle {
-    font-size: 14px;
+    font-size: 12px;
     color: #00ffff;
     opacity: 0.9;
+    letter-spacing: 1px;
 }
 
 /* Skip Hint */
