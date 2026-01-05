@@ -563,6 +563,10 @@ class GameEngine {
         // @ts-ignore
         this.directorsCutController = new DirectorsCutController(this);
 
+        // SOLID: Initialize Crew Controller (extracted from GameEngine)
+        // @ts-ignore
+        this.crewController = new CrewController(this);
+
         // ZEE'S ADDITION: Rotating tips system 🖤
         this.mainMenuTipElement = null;
         this.routeSelectTipElement = null;
@@ -2187,92 +2191,26 @@ class GameEngine {
     }
 
     showMeetTheCrew() {
-        const crewScreen = document.getElementById('crew-screen');
-        if (!crewScreen) {
-            console.error('Crew screen element not found');
-            return;
-        }
-
-        // Initialize crew screen state
-        this.currentCrewIndex = 1; // DIZEE: Start at 1 (removed UV7 logo screen)
-        this.totalCrewScreens = 10; // 1-9 inclusive (9 total screens)
-
-        // Hide all other UI
-        if (this.gameView) this.gameView.style.display = 'none';
-        if (this.mainMenu) this.mainMenu.style.display = 'none';
-
-        // Show crew screen
-        crewScreen.style.display = 'flex';
-
-        // Show first crew screen (credit-1: group photo)
-        this.displayCrewScreen(1);
+        // Delegation stub - full implementation in CrewController
+        this.crewController?.show();
     }
 
     /**
      * @param {number} index
      */
     displayCrewScreen(index) {
-        // Hide all crew screens
-        const allScreens = document.querySelectorAll('.credit-screen');
-        allScreens.forEach(screen => {
-            /** @type {HTMLElement} */(screen).style.display = 'none';
-            screen.classList.remove('active');
-        });
-
-        // Show current screen with fade-in
-        const currentScreen = document.getElementById(`credit-${index}`);
-        if (currentScreen) {
-            currentScreen.style.display = 'flex';
-            // Trigger fade-in animation
-            setTimeout(() => {
-                currentScreen.classList.add('active');
-            }, 50);
-        }
-
-        // Update next button text (change to "BACK TO MENU" on last screen)
-        const nextButton = document.getElementById('next-crew');
-        if (nextButton) {
-            if (this.totalCrewScreens && index >= this.totalCrewScreens - 1) {
-                nextButton.textContent = 'BACK TO MENU';
-                nextButton.style.display = 'block';
-            } else {
-                nextButton.textContent = 'NEXT >';
-                nextButton.style.display = 'block';
-            }
-        }
+        // Delegation stub - full implementation in CrewController
+        this.crewController?.displayScreen(index);
     }
 
     nextCrew() {
-        if (this.currentCrewIndex !== undefined) {
-            this.currentCrewIndex++;
-        }
-
-        // Check for undefined to prevent accidental early exit
-        if (this.currentCrewIndex !== undefined && this.totalCrewScreens !== undefined && this.currentCrewIndex >= this.totalCrewScreens) {
-            // Crew screens finished - return to main menu
-            this.closeCrew();
-        } else {
-            // Show next crew screen
-            if (this.currentCrewIndex !== undefined) {
-                this.displayCrewScreen(this.currentCrewIndex);
-            }
-        }
+        // Delegation stub - full implementation in CrewController
+        this.crewController?.next();
     }
 
     closeCrew() {
-        const crewScreen = document.getElementById('crew-screen');
-        if (crewScreen) {
-            crewScreen.style.display = 'none';
-        }
-
-        // Return to main menu
-        if (this.mainMenu) {
-            this.mainMenu.style.display = 'flex';
-            this.mainMenu.style.opacity = '1';
-        }
-
-        // Reset crew state
-        this.currentCrewIndex = 0;
+        // Delegation stub - full implementation in CrewController
+        this.crewController?.close();
     }
 
     showDirectorsCut() {
