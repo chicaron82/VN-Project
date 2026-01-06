@@ -423,7 +423,9 @@ class BougieBootSequence {
             this.game.hapticController.trigger('heavy');
         }
 
-        await this.delay(1000);
+        // DIZEE: Give players time to read bootstrap stats (memory, timelines, paradox)
+        // Especially important for seeing paradox status evolution across playthroughs
+        await this.delay(3000);
     }
 
     /**
