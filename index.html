@@ -1563,6 +1563,9 @@
 
     <!-- Initialize Game (Module script to ensure runs after main.js) -->
     <script type="module">
+        // Import GameEngine to ensure it's loaded before use
+        import { GameEngine } from './system/game-engine.js';
+        
         let game;
 
 
