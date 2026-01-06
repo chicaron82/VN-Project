@@ -1846,8 +1846,13 @@
                     }
                 }
 
-                loadingReady = true;
-                tryCompleteSplash('asset loading complete');
+                // DIZEE: Delay marking loading ready to allow boot stats display time
+                // Boot sequence shows stats for 3s + completion message with 2s delay
+                // Add extra buffer to ensure stats are fully visible before fade-out
+                setTimeout(() => {
+                    loadingReady = true;
+                    tryCompleteSplash('asset loading complete');
+                }, 5500); // 5.5s to give full time for stats (3s) + completion (2s) + buffer (0.5s)
             }
 
             // Start real asset loading with BOUGIE boot sequence
