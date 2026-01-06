@@ -108,7 +108,12 @@ class SaveManager {
                 // Always release mutex
                 this.saveInProgress = false;
             }
+        } catch (error) {
+            console.error('Unexpected error in saveGame:', error);
+            this.saveInProgress = false;
+            return false;
         }
+    }
 
     createSaveData(customLabel = null) {
             const route = this.game.currentRoute;
