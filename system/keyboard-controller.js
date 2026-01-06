@@ -216,6 +216,60 @@ class KeyboardController {
         }
 
         // ========================================
+        // Z: "HOLD ON" / Skip (Zeerah's shortcut!)
+        // ========================================
+        if (e.key === 'z' || e.key === 'Z') {
+            // Only during active gameplay with dialogue
+            const mainMenu = document.getElementById('main-menu');
+            const settingsMenu = document.getElementById('settings-menu');
+            const saveLoadOverlay = document.getElementById('save-load-overlay');
+            const backlogOverlay = document.getElementById('backlog-overlay');
+
+            if (this.gameView && this.gameView.style.display !== 'none' &&
+                (!mainMenu || mainMenu.style.display === 'none') &&
+                (!settingsMenu || settingsMenu.style.display !== 'flex') &&
+                (!saveLoadOverlay || saveLoadOverlay.style.display !== 'flex') &&
+                (!backlogOverlay || backlogOverlay.style.display !== 'flex')) {
+
+                e.preventDefault();
+                console.log('⏭️ Z pressed - triggering "HOLD ON" skip');
+
+                // Trigger the hold-on button if it exists and is visible
+                const holdOnButton = document.getElementById('hold-on-btn');
+                if (holdOnButton && holdOnButton.style.display !== 'none') {
+                    holdOnButton.click();
+                }
+            }
+            return;
+        }
+
+        // ========================================
+        // N: Open/Close Notes
+        // ========================================
+        if (e.key === 'n' || e.key === 'N') {
+            // Only if not in input fields (already checked above)
+            e.preventDefault();
+            console.log('📝 N pressed - toggling notes');
+
+            // Check if standalone notes viewer is open
+            const standaloneNotes = document.getElementById('standalone-notes-overlay');
+            if (standaloneNotes && standaloneNotes.style.display === 'flex') {
+                // Close standalone notes
+                if (this.standaloneNotesViewer && this.standaloneNotesViewer.close) {
+                    this.standaloneNotesViewer.close();
+                }
+            } else {
+                // Open notes (use standalone viewer if available, otherwise in-game)
+                if (this.game.openStandaloneNotes) {
+                    this.game.openStandaloneNotes();
+                } else if (this.notesViewer && this.notesViewer.style.display === 'none') {
+                    this.notesViewer.style.display = 'block';
+                }
+            }
+            return;
+        }
+
+        // ========================================
         // SPACEBAR / ENTER: Dialogue Advancement
         // Complete typing first, then advance
         // ========================================
