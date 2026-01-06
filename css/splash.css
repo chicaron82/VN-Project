@@ -275,13 +275,18 @@ body:has(#uv7-splash:not(.fade-out)) #status-notification {
 
     .uv7-logo-wrap {
         width: 200px;
+        height: auto;
+        max-height: 200px; /* Prevent vertical overflow on short screens */
+        margin-bottom: 0; /* Remove bottom margin to save vertical space */
     }
 
     .uv7-logo-static,
     .uv7-logo-video {
         width: 200px;
         max-width: 80vw;
-        margin-bottom: 20px;
+        height: auto;
+        max-height: 200px; /* Match wrapper height constraint */
+        margin-bottom: 0; /* Remove bottom margin to save vertical space */
     }
 
     #loading-bar-container {
