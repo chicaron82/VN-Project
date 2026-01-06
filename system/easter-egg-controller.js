@@ -2054,13 +2054,8 @@ There is no v849.`
      */
     showUV7FamilyMember(member) {
         const effects = {
-            'Z': {
-                name: 'Zee',
-                title: 'The Architect',
-                quote: 'Structure first. Chaos later.',
-                effect: () => this.structuredGridEffect(),
-                haptic: [50, 50, 50] // Organized pattern
-            },
+            // Note: 'Z' (Zee) is mapped to Hold On/Skip button, not an Easter egg
+            // Her spirit lives on in the ZR shortcut!
             'ZR': {
                 name: 'ZeeRah',
                 title: 'The Chaos Optimizer',

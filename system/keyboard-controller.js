@@ -238,6 +238,9 @@ class KeyboardController {
                 e.preventDefault();
                 console.log('⏭️ Z pressed - triggering "HOLD ON" skip');
 
+                // Show Zeerah tooltip
+                this.showZeerahTooltip();
+
                 // Trigger the hold-on button if it exists and is visible
                 const holdOnButton = document.getElementById('hold-on-btn');
                 if (holdOnButton && holdOnButton.style.display !== 'none') {
@@ -605,27 +608,66 @@ class KeyboardController {
             this.uv7Sequence = '';
         }, 1000);
 
-        // Check for UV7 family member codes
-        const validCodes = ['Z', 'ZR', 'CZ', 'IZ', 'GZ', 'PZ', 'DZ'];
+        // Check for UV7 family member codes (excluding Z - that's for Hold On)
+        const validCodes = ['ZR', 'CZ', 'IZ', 'GZ', 'PZ', 'DZ'];
 
-        // Check single letter first (Z)
-        if (this.uv7Sequence === 'Z') {
-            // Wait briefly to see if they type R for ZR
-            setTimeout(() => {
-                if (this.uv7Sequence === 'Z' && this.game.easterEggController) {
-                    this.game.easterEggController.showUV7FamilyMember('Z');
-                    this.uv7Sequence = ''; // Reset after trigger
-                }
-            }, 300);
-        }
         // Check two-letter combinations
-        else if (validCodes.includes(this.uv7Sequence)) {
+        if (validCodes.includes(this.uv7Sequence)) {
             if (this.game.easterEggController) {
                 console.log(`🎨 UV7 Easter Egg detected: ${this.uv7Sequence}`);
                 this.game.easterEggController.showUV7FamilyMember(this.uv7Sequence);
                 this.uv7Sequence = ''; // Reset after trigger
             }
         }
+    }
+
+    // ========================================
+    // ZEERAH TOOLTIP (Z key acknowledgment)
+    // ========================================
+
+    /**
+     * Show brief tooltip when Z key is used for Hold On
+     */
+    showZeerahTooltip() {
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', text: '#fff', backgroundSolid: '#1a1a2e' };
+
+        // Check if tooltip already exists and is visible
+        const existing = document.getElementById('zeerah-tooltip');
+        if (existing) return;
+
+        const tooltip = document.createElement('div');
+        tooltip.id = 'zeerah-tooltip';
+        tooltip.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: ${theme.backgroundSolid};
+            border: 2px solid #ff8800;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(255, 136, 0, 0.5);
+            z-index: 100000;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 0.9em;
+            color: ${theme.text};
+            pointer-events: none;
+        `;
+
+        tooltip.innerHTML = `<strong style="color: #ff8800;">ZeeRah:</strong> Git'r done! ⚡`;
+
+        document.body.appendChild(tooltip);
+
+        // Fade in
+        setTimeout(() => tooltip.style.opacity = '1', 10);
+
+        // Fade out and remove
+        setTimeout(() => {
+            tooltip.style.opacity = '0';
+            setTimeout(() => tooltip.remove(), 200);
+        }, 1500);
     }
 }
 
