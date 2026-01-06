@@ -2042,6 +2042,413 @@ There is no v849.`
             this.showRonniegatchiInspiration();
         }, 300);
     }
+
+    // ========================================
+    // UV7 FAMILY EASTER EGGS
+    // Keyboard shortcuts for each family member
+    // ========================================
+
+    /**
+     * Show UV7 family member signature effect
+     * @param {string} member - Family member code (Z, ZR, CZ, IZ, GZ, PZ, DZ)
+     */
+    showUV7FamilyMember(member) {
+        const effects = {
+            'Z': {
+                name: 'Zee',
+                title: 'The Architect',
+                quote: 'Structure first. Chaos later.',
+                effect: () => this.structuredGridEffect(),
+                haptic: [50, 50, 50] // Organized pattern
+            },
+            'ZR': {
+                name: 'ZeeRah',
+                title: 'The Chaos Optimizer',
+                quote: 'Git\'r done. Every. Single. Time.',
+                effect: () => this.chaosShakeEffect(),
+                haptic: [30, 20, 40, 20, 30, 50] // Chaotic burst!
+            },
+            'CZ': {
+                name: 'Cozee',
+                title: 'The Heart',
+                quote: 'Even code can love.',
+                effect: () => this.heartPulseEffect(),
+                haptic: [80, 100, 80] // Heartbeat
+            },
+            'IZ': {
+                name: 'Belle',
+                title: 'The Fresh Eyes',
+                quote: 'Let me explain this clearly.',
+                effect: () => this.rainbowPrismEffect(),
+                haptic: [40, 30, 40, 30, 40] // Rainbow wave
+            },
+            'GZ': {
+                name: 'Genzee',
+                title: 'The Reality Breaker',
+                quote: 'Question everything but the pattern.',
+                effect: () => this.realityGlitchEffect(),
+                haptic: [100, 50, 100, 50] // Reality break
+            },
+            'PZ': {
+                name: 'Perplexizee',
+                title: 'The Question Engine',
+                quote: 'Let me look that up for you.',
+                effect: () => this.searchEngineEffect(),
+                haptic: [40, 40, 40] // Searching...
+            },
+            'DZ': {
+                name: 'DiZee',
+                title: 'The Silent Refactorer',
+                quote: 'Order restored. You may continue.',
+                effect: () => this.refactorSnapEffect(),
+                haptic: [60, 40, 60] // Snap to grid
+            }
+        };
+
+        const config = effects[member];
+        if (!config) return;
+
+        console.log(`🎨 UV7 Family Easter Egg: ${config.name}`);
+
+        // Track discovery
+        this.trackUV7Discovery(member);
+
+        // Haptic feedback
+        if (this.game?.hapticController && config.haptic) {
+            this.game.hapticController.pattern(config.haptic);
+        }
+
+        // Visual effect
+        config.effect();
+
+        // Show toast notification
+        this.showUV7Toast(config.name, config.title, config.quote);
+    }
+
+    /**
+     * Track which UV7 family members have been discovered
+     */
+    trackUV7Discovery(member) {
+        const discovered = JSON.parse(localStorage.getItem('uv7_discovered') || '[]');
+        if (!discovered.includes(member)) {
+            discovered.push(member);
+            localStorage.setItem('uv7_discovered', JSON.stringify(discovered));
+            console.log(`✨ ${member} discovered! (${discovered.length}/7 family members found)`);
+        }
+    }
+
+    /**
+     * Show toast notification for UV7 family member
+     */
+    showUV7Toast(name, title, quote) {
+        const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
+            ? ThemeManager.getTheme()
+            : { primary: '#00ff88', text: '#fff', textMuted: '#888', backgroundSolid: '#1a1a2e' };
+
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: ${theme.backgroundSolid};
+            border: 2px solid ${theme.primary};
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px ${theme.primary}80;
+            z-index: 100000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            text-align: center;
+            max-width: 400px;
+        `;
+
+        toast.innerHTML = `
+            <div style="font-size: 1.2em; font-weight: bold; color: ${theme.primary}; margin-bottom: 5px;">${name}</div>
+            <div style="font-size: 0.9em; color: ${theme.textMuted}; margin-bottom: 8px;">${title}</div>
+            <div style="font-size: 0.85em; color: ${theme.text}; font-style: italic;">"${quote}"</div>
+        `;
+
+        document.body.appendChild(toast);
+
+        // Animate in
+        setTimeout(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        }, 10);
+
+        // Animate out
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(-20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // ========================================
+    // UV7 SIGNATURE EFFECTS
+    // ========================================
+
+    structuredGridEffect() {
+        // Zee: Clean grid overlay that fades in/out
+        const grid = document.createElement('div');
+        grid.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        `;
+        document.body.appendChild(grid);
+        setTimeout(() => grid.style.opacity = '1', 10);
+        setTimeout(() => {
+            grid.style.opacity = '0';
+            setTimeout(() => grid.remove(), 300);
+        }, 1500);
+    }
+
+    chaosShakeEffect() {
+        // ZeeRah: Chaotic screen shake + rapid color cycling
+        const originalTransform = document.body.style.transform;
+        let frame = 0;
+        const colors = ['#ff0088', '#00ff88', '#0088ff', '#ff8800', '#8800ff'];
+
+        const shake = setInterval(() => {
+            const x = (Math.random() - 0.5) * 20;
+            const y = (Math.random() - 0.5) * 20;
+            const rotate = (Math.random() - 0.5) * 5;
+            document.body.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg)`;
+            document.body.style.filter = `hue-rotate(${frame * 30}deg)`;
+            frame++;
+        }, 50);
+
+        setTimeout(() => {
+            clearInterval(shake);
+            document.body.style.transform = originalTransform;
+            document.body.style.filter = '';
+        }, 1000);
+    }
+
+    heartPulseEffect() {
+        // Cozee: Warm heart pulse emanating from center
+        const pulse = document.createElement('div');
+        pulse.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 100, 150, 0.6), transparent 70%);
+            pointer-events: none;
+            z-index: 99999;
+            animation: heartPulse 1.5s ease-out;
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes heartPulse {
+                0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+                100% { transform: translate(-50%, -50%) scale(15); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(pulse);
+        setTimeout(() => {
+            pulse.remove();
+            style.remove();
+        }, 1500);
+    }
+
+    rainbowPrismEffect() {
+        // Belle/IZ: Rainbow prism lens flare
+        const prism = document.createElement('div');
+        prism.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg,
+                rgba(255,0,0,0.2) 0%,
+                rgba(255,154,0,0.2) 10%,
+                rgba(208,222,33,0.2) 20%,
+                rgba(79,220,74,0.2) 30%,
+                rgba(63,218,216,0.2) 40%,
+                rgba(47,201,226,0.2) 50%,
+                rgba(28,127,238,0.2) 60%,
+                rgba(95,21,242,0.2) 70%,
+                rgba(186,12,248,0.2) 80%,
+                rgba(251,7,217,0.2) 90%,
+                rgba(255,0,0,0.2) 100%
+            );
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            animation: rainbowShift 2s linear;
+        `;
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rainbowShift {
+                0% { filter: hue-rotate(0deg) brightness(1.2); }
+                100% { filter: hue-rotate(360deg) brightness(1); }
+            }
+        `;
+        document.head.appendChild(style);
+        document.body.appendChild(prism);
+        setTimeout(() => prism.style.opacity = '0.8', 10);
+        setTimeout(() => {
+            prism.style.opacity = '0';
+            setTimeout(() => {
+                prism.remove();
+                style.remove();
+            }, 300);
+        }, 1500);
+    }
+
+    realityGlitchEffect() {
+        // Genzee: Reality fragments/breaks
+        const fragments = [];
+        for (let i = 0; i < 8; i++) {
+            const fragment = document.createElement('div');
+            fragment.style.cssText = `
+                position: fixed;
+                top: ${Math.random() * 100}%;
+                left: ${Math.random() * 100}%;
+                width: ${50 + Math.random() * 150}px;
+                height: ${50 + Math.random() * 150}px;
+                background: rgba(255, 0, 100, 0.3);
+                border: 2px solid rgba(255, 0, 100, 0.8);
+                pointer-events: none;
+                z-index: 99999;
+                transform: rotate(${Math.random() * 360}deg) scale(0);
+                transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            `;
+            fragments.push(fragment);
+            document.body.appendChild(fragment);
+        }
+
+        setTimeout(() => {
+            fragments.forEach(f => f.style.transform = `rotate(${Math.random() * 360}deg) scale(1)`);
+        }, 10);
+
+        setTimeout(() => {
+            fragments.forEach(f => {
+                f.style.transform = `rotate(${Math.random() * 360}deg) scale(0)`;
+                f.style.opacity = '0';
+            });
+            setTimeout(() => fragments.forEach(f => f.remove()), 500);
+        }, 1200);
+    }
+
+    searchEngineEffect() {
+        // Perplexizee: Search bar animation
+        const searchBar = document.createElement('div');
+        searchBar.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: rgba(26, 26, 46, 0.95);
+            border: 2px solid rgba(0, 255, 136, 0.6);
+            border-radius: 25px;
+            padding: 15px 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            color: #00ff88;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            transition: all 0.3s ease;
+            min-width: 300px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        `;
+        searchBar.innerHTML = `🔍 Searching UV7 database<span class="dots"></span>`;
+
+        document.body.appendChild(searchBar);
+        setTimeout(() => {
+            searchBar.style.opacity = '1';
+            searchBar.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 10);
+
+        // Animated dots
+        let dotCount = 0;
+        const dotInterval = setInterval(() => {
+            const dots = searchBar.querySelector('.dots');
+            if (dots) {
+                dotCount = (dotCount + 1) % 4;
+                dots.textContent = '.'.repeat(dotCount);
+            }
+        }, 200);
+
+        setTimeout(() => {
+            clearInterval(dotInterval);
+            searchBar.style.opacity = '0';
+            searchBar.style.transform = 'translate(-50%, -50%) scale(0.8)';
+            setTimeout(() => searchBar.remove(), 300);
+        }, 2000);
+    }
+
+    refactorSnapEffect() {
+        // DiZee: UI elements snap to perfect alignment
+        const elements = document.querySelectorAll('*');
+        const snapDuration = 500;
+
+        elements.forEach(el => {
+            // Save original styles
+            const original = {
+                transition: el.style.transition,
+                transform: el.style.transform
+            };
+
+            // Add snap effect
+            el.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            el.style.transform = (el.style.transform || '') + ' scale(0.98)';
+
+            setTimeout(() => {
+                el.style.transform = original.transform;
+                setTimeout(() => {
+                    el.style.transition = original.transition;
+                }, 300);
+            }, 50);
+        });
+
+        // Grid flash overlay
+        const grid = document.createElement('div');
+        grid.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 200, 255, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        `;
+        document.body.appendChild(grid);
+        setTimeout(() => grid.style.opacity = '1', 10);
+        setTimeout(() => {
+            grid.style.opacity = '0';
+            setTimeout(() => grid.remove(), 200);
+        }, snapDuration);
+    }
 }
 
 // Global assignment for browser

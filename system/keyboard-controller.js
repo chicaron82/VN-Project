@@ -28,6 +28,10 @@ class KeyboardController {
             focusedIndex: 0,
             focusableElements: []
         };
+
+        // UV7 Family Easter Egg sequence detector
+        this.uv7Sequence = '';
+        this.uv7SequenceTimeout = null;
     }
 
     // Lazy getters for commonly used managers (handles initialization order)
@@ -354,6 +358,12 @@ class KeyboardController {
                 focused.click();
             }
         }
+
+        // ========================================
+        // UV7 FAMILY EASTER EGGS
+        // Detect two-letter sequences: Z, ZR, CZ, IZ, GZ, PZ, DZ
+        // ========================================
+        this.detectUV7Sequence(e);
     }
 
     // ========================================
@@ -563,6 +573,59 @@ class KeyboardController {
         setTimeout(() => {
             notification.classList.remove('visible');
         }, duration);
+    }
+
+    // ========================================
+    // UV7 FAMILY EASTER EGG DETECTOR
+    // ========================================
+
+    /**
+     * Detect UV7 family member initial sequences
+     * Tracks last 2 keypresses to catch combinations like ZR, CZ, etc.
+     */
+    detectUV7Sequence(e) {
+        // Only track letter keys
+        if (e.key.length !== 1 || !e.key.match(/[a-zA-Z]/)) {
+            return;
+        }
+
+        // Add to sequence (uppercase for consistency)
+        this.uv7Sequence += e.key.toUpperCase();
+
+        // Keep only last 2 characters
+        if (this.uv7Sequence.length > 2) {
+            this.uv7Sequence = this.uv7Sequence.slice(-2);
+        }
+
+        // Clear sequence after 1 second of no typing
+        if (this.uv7SequenceTimeout) {
+            clearTimeout(this.uv7SequenceTimeout);
+        }
+        this.uv7SequenceTimeout = setTimeout(() => {
+            this.uv7Sequence = '';
+        }, 1000);
+
+        // Check for UV7 family member codes
+        const validCodes = ['Z', 'ZR', 'CZ', 'IZ', 'GZ', 'PZ', 'DZ'];
+
+        // Check single letter first (Z)
+        if (this.uv7Sequence === 'Z') {
+            // Wait briefly to see if they type R for ZR
+            setTimeout(() => {
+                if (this.uv7Sequence === 'Z' && this.game.easterEggController) {
+                    this.game.easterEggController.showUV7FamilyMember('Z');
+                    this.uv7Sequence = ''; // Reset after trigger
+                }
+            }, 300);
+        }
+        // Check two-letter combinations
+        else if (validCodes.includes(this.uv7Sequence)) {
+            if (this.game.easterEggController) {
+                console.log(`🎨 UV7 Easter Egg detected: ${this.uv7Sequence}`);
+                this.game.easterEggController.showUV7FamilyMember(this.uv7Sequence);
+                this.uv7Sequence = ''; // Reset after trigger
+            }
+        }
     }
 }
 
