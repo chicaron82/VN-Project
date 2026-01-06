@@ -347,7 +347,27 @@ class CarouselMomentum {
         } else if (e.key === 'ArrowRight') {
             e.preventDefault();
             this.moveToCard(this.currentIndex + 1);
+        } else if (e.key === 'Enter') {
+            e.preventDefault();
+            // Trigger click on the currently centered card
+            const centeredCard = this.getCurrentCenteredCard();
+            if (centeredCard && !centeredCard.classList.contains('locked')) {
+                centeredCard.click();
+            }
         }
+    }
+
+    /**
+     * Get the currently centered card element
+     * @returns {HTMLElement|null}
+     */
+    getCurrentCenteredCard() {
+        if (!this.cards || this.cards.length === 0) return null;
+
+        // The centered card is in the middle clone set (totalCards to 2*totalCards)
+        // at position currentIndex
+        const centeredIndex = this.totalCards + this.currentIndex;
+        return this.cards[centeredIndex] || null;
     }
 
     // ========================================
