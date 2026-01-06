@@ -13,6 +13,9 @@ describe('CollectiblesManager', () => {
         // Reset mocks
         vi.clearAllMocks();
 
+        // Clear localStorage to prevent state pollution
+        localStorage.clear();
+
         // Mock game object
         mockGame = {
             state: {

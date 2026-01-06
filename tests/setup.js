@@ -18,6 +18,19 @@ global.localStorage = {
     }
 };
 
+// Mock window.matchMedia for orientation queries
+global.window = global.window || {};
+global.window.matchMedia = vi.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
+}));
+
 // Mock console methods to reduce noise in tests
 global.console = {
     ...console,

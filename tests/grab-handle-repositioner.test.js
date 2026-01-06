@@ -139,14 +139,30 @@ describe('GrabHandleRepositioner', () => {
     });
 
     describe('Position Constraints', () => {
-        it('should enforce minimum position (10%)', () => {
-            repositioner.currentTop = 5;
-            expect(repositioner.minPercent).toBe(10);
+        it('should enforce minimum position (clamped to safe zone)', () => {
+            repositioner.currentTop = 1; // Extremely high
+            repositioner.isDragging = true; // Must be dragging for constraints to apply
+            mockGrabHandle.offsetHeight = 80; // Mock handle height
+
+            repositioner.handleDragEnd({});
+
+            // At 800px height, 50px min + 40px half-handle = 90px
+            // (90 / 800) * 100 = 11.25%
+            expect(repositioner.currentTop).toBeGreaterThan(10);
+            expect(repositioner.currentTop).toBeLessThan(15);
         });
 
-        it('should enforce maximum position (90%)', () => {
-            repositioner.currentTop = 95;
-            expect(repositioner.maxPercent).toBe(90);
+        it('should enforce maximum position (clamped to safe zone)', () => {
+            repositioner.currentTop = 99; // Extremely low
+            repositioner.isDragging = true; // Must be dragging for constraints to apply
+            mockGrabHandle.offsetHeight = 80; // Mock handle height
+
+            repositioner.handleDragEnd({});
+
+            // At 800px height, 800 - 80px min - 40px half-handle = 680px
+            // (680 / 800) * 100 = 85%
+            expect(repositioner.currentTop).toBeLessThan(90);
+            expect(repositioner.currentTop).toBeGreaterThan(80);
         });
     });
 
@@ -185,7 +201,8 @@ describe('GrabHandleRepositioner', () => {
             repositioner.setSide('right');
 
             expect(mockSidebar.style.right).toBe('0');
-            expect(mockSidebar.style.transform).toBe('translateX(100%)');
+            // Transform is cleared to let CSS classes handle it
+            expect(mockSidebar.style.transform).toBe('');
         });
 
         it('should add right-side class to sidebar', () => {

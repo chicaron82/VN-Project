@@ -1159,7 +1159,12 @@ class NotificationShadeController {
         // Add to unread notes if not already there
         const exists = this.unreadNotes.find(n => n.id === noteData.id);
         if (!exists) {
-            this.unreadNotes.push(noteData);
+            // Add timestamp to note
+            const noteWithTimestamp = {
+                ...noteData,
+                timestamp: Date.now()
+            };
+            this.unreadNotes.push(noteWithTimestamp);
             this.updateMailIcon();
             this.updateNotePreview();
         }

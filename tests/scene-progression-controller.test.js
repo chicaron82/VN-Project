@@ -13,25 +13,8 @@
 // ========================================
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { SceneProgressionController } from '../system/scene-progression-controller.js';
 
-// ========================================
-// LOAD REAL CONTROLLER - NOT A MOCK!
-// ========================================
-// Load the actual SceneProgressionController file from disk
-// This ensures we're testing REAL production code
-const controllerPath = join(process.cwd(), 'system', 'scene-progression-controller.js');
-const controllerCode = readFileSync(controllerPath, 'utf-8');
-
-// Execute the code to define the class in our test environment
-// Wrap in an IIFE to capture the class and assign to global
-global.SceneProgressionController = eval(`
-    (function() {
-        ${controllerCode}
-        return SceneProgressionController;
-    })()
-`);
 
 // Mock localStorage and document for browser-based code
 global.localStorage = {
