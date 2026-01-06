@@ -220,7 +220,7 @@ class KeyboardController {
         }
 
         // ========================================
-        // Z: "HOLD ON" / Skip (Zeerah's shortcut!)
+        // Z: "HOLD ON" / Skip (Zee's shortcut!)
         // ========================================
         if (e.key === 'z' || e.key === 'Z') {
             // Only during active gameplay with dialogue
@@ -238,8 +238,8 @@ class KeyboardController {
                 e.preventDefault();
                 console.log('⏭️ Z pressed - triggering "HOLD ON" skip');
 
-                // Show Zeerah tooltip
-                this.showZeerahTooltip();
+                // Show Zee tooltip
+                this.showZeeTooltip();
 
                 // Trigger the hold-on button if it exists and is visible
                 const holdOnButton = document.getElementById('hold-on-btn');
@@ -622,32 +622,32 @@ class KeyboardController {
     }
 
     // ========================================
-    // ZEERAH TOOLTIP (Z key acknowledgment)
+    // ZEE TOOLTIP (Z key acknowledgment)
     // ========================================
 
     /**
      * Show brief tooltip when Z key is used for Hold On
      */
-    showZeerahTooltip() {
+    showZeeTooltip() {
         const theme = typeof ThemeManager !== 'undefined' && ThemeManager.getTheme
             ? ThemeManager.getTheme()
             : { primary: '#00ff88', text: '#fff', backgroundSolid: '#1a1a2e' };
 
         // Check if tooltip already exists and is visible
-        const existing = document.getElementById('zeerah-tooltip');
+        const existing = document.getElementById('zee-tooltip');
         if (existing) return;
 
         const tooltip = document.createElement('div');
-        tooltip.id = 'zeerah-tooltip';
+        tooltip.id = 'zee-tooltip';
         tooltip.style.cssText = `
             position: fixed;
             bottom: 100px;
             right: 30px;
             background: ${theme.backgroundSolid};
-            border: 2px solid #ff8800;
+            border: 2px solid #00ffff;
             padding: 10px 15px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(255, 136, 0, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
             z-index: 100000;
             opacity: 0;
             transition: opacity 0.2s ease;
@@ -656,7 +656,7 @@ class KeyboardController {
             pointer-events: none;
         `;
 
-        tooltip.innerHTML = `<strong style="color: #ff8800;">ZeeRah:</strong> Git'r done! ⚡`;
+        tooltip.innerHTML = `<strong style="color: #00ffff;">Zee:</strong> Hold on. ⏸️`;
 
         document.body.appendChild(tooltip);
 
