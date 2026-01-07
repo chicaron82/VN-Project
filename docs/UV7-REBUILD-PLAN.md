@@ -32,11 +32,12 @@ Both versions remain playable and comparable.
 |----------|--------------|--------------|
 | Language | JavaScript + JSDoc | TypeScript (strict) |
 | Build | None (raw files) | Vite |
-| State | Object mutations | Zustand or custom reactive |
+| State | Object mutations | Zustand (recommended) |
 | Events | Mixed (DOM/callbacks) | Unified EventBus |
 | Testing | Vitest (partial) | Vitest (comprehensive) |
-| Styles | CSS files | CSS Modules or Tailwind |
+| Styles | CSS files | CSS Modules (keeps UV7 aesthetic) |
 | Types | @ts-check comments | Native TypeScript |
+| **Content** | **JS functions** | **JSON + JSON Schema validation** ⭐ |
 
 ---
 
@@ -80,23 +81,24 @@ src/
 │       └── NotificationShade.ts
 │
 ├── content/
-│   ├── schemas/                # Type definitions for content
-│   │   ├── Scene.ts
+│   ├── schemas/                # Type definitions + JSON Schema
+│   │   ├── Scene.ts            # TypeScript types
+│   │   ├── scene.schema.json   # JSON Schema for validation
 │   │   ├── Character.ts
 │   │   └── Route.ts
 │   ├── routes/
 │   │   ├── ronnie/
-│   │   │   ├── act1.ts
-│   │   │   ├── act2.ts
-│   │   │   └── act3.ts
+│   │   │   ├── act1.json       # ⭐ Pure data (editable by non-devs)
+│   │   │   ├── act2.json
+│   │   │   └── act3.json
 │   │   └── tori/
-│   │       ├── act1.ts
-│   │       ├── act2.ts
-│   │       └── act3.ts
+│   │       ├── act1.json
+│   │       ├── act2.json
+│   │       └── act3.json
 │   └── data/
-│       ├── characters.ts
-│       ├── backgrounds.ts
-│       └── secrets.ts
+│       ├── characters.json     # Character definitions
+│       ├── backgrounds.json    # Background assets
+│       └── secrets.json        # Secret codes
 │
 ├── features/
 │   ├── BootstrapTracker.ts     # Timeline/attempt tracking
@@ -146,15 +148,16 @@ src/
 
 ---
 
-### Phase 2: Core Systems (Weekend 2)
+### Phase 2: Core Systems + Micro-Migration (Weekend 2)
 
-**Goal**: Game engine + essential systems
+**Goal**: Game engine + essential systems + **VALIDATE SCHEMA EARLY**
 
 **Session 3 (Saturday - 3 hours)**
 
 - [ ] GameEngine orchestrator class
-- [ ] Scene type definitions
-- [ ] Basic scene loading
+- [ ] Scene type definitions (TypeScript interfaces)
+- [ ] JSON Schema for scene validation
+- [ ] Basic scene loading with validation
 - [ ] Integration with StateManager
 - [ ] Tests for GameEngine
 
@@ -163,6 +166,11 @@ src/
 - [ ] SaveSystem with validation
 - [ ] SettingsSystem with defaults
 - [ ] AssetLoader with progress events
+- [ ] **MICRO-MIGRATION**: Convert 1 V1 scene to JSON format
+  - Include: 1 choice branch
+  - Include: 1 note unlock
+  - Include: 1 save/load roundtrip test
+  - **GOAL**: Validate schema assumptions before Phase 5
 - [ ] Tests for all systems
 
 **Deliverables**:
@@ -171,6 +179,7 @@ src/
 - Save/load working
 - Settings persisting
 - Asset preloading with events
+- **Proof that schema works with real V1 content** ⭐
 
 ---
 
@@ -229,30 +238,35 @@ src/
 
 ---
 
-### Phase 5: Content Migration (Weekend 5)
+### Phase 5: Iterative Content Migration (Weekend 5)
 
-**Goal**: All route content converted
+**Goal**: Complete content conversion using validated schema
+
+**Context**: Schema already validated in Phase 2 micro-migration ✅
 
 **Session 9 (Saturday - 3 hours)**
 
-- [ ] Scene schema finalized
-- [ ] Content migration tooling
-- [ ] Ronnie Act 1 converted
-- [ ] Ronnie Act 2 converted
+- [ ] Refine migration tooling based on Phase 2 learnings
+- [ ] Ronnie Act 1 → JSON (with automated script)
+- [ ] Ronnie Act 2 → JSON (with automated script)
+- [ ] Manual cleanup of edge cases
+- [ ] Verify all branches playable
 
 **Session 10 (Sunday - 3 hours)**
 
-- [ ] Ronnie Act 3 converted
-- [ ] Tori Act 1-3 converted
-- [ ] All endings verified
-- [ ] All branches tested
+- [ ] Ronnie Act 3 → JSON (with automated script)
+- [ ] Tori Act 1-3 → JSON (batch conversion)
+- [ ] All endings verification
+- [ ] Content validation tests
+- [ ] Compare V1 vs V2 playthrough side-by-side
 
 **Deliverables**:
 
-- All content migrated
-- Type-safe scene data
-- All paths playable
+- All content migrated to JSON
+- Type-safe scene data with runtime validation
+- All paths playable and verified
 - Automated content tests
+- **Migration completed without surprises** (thanks to Phase 2 validation) ⭐
 
 ---
 
@@ -481,6 +495,13 @@ describe('TetherController', () => {
 - [ ] Migration guide complete
 - [ ] Comparison with V1 complete
 
+### Developer Experience (Tori's Metrics) ⭐
+
+- [ ] New dev can add a scene in <10 minutes using docs only
+- [ ] New feature requires touching ≤3 modules
+- [ ] Schema validation gives actionable error messages
+- [ ] No "god objects" - clear separation of concerns
+
 ---
 
 ## Risk Mitigation
@@ -579,6 +600,63 @@ When you're ready for Weekend 1:
 1. Create the `uv7-v2` branch
 2. Start Session 1 with Vite setup
 3. Let's build this thing properly! 🚀
+
+---
+
+## Tori's Critical Feedback (Added January 2026)
+
+### What She Got Right About Our Risks
+
+**1. Phase 5 (Content Migration) is Underestimated**
+
+> "Even with tooling, content conversion is where you'll bleed time because you'll discover edge cases in your scene format."
+
+**Her Fix**: Do a **micro-migration at end of Weekend 2 or 3**
+- Migrate 1 complete scene + 1 choice + 1 note unlock + 1 save/load roundtrip
+- Forces schema to become real before building 30 modules on assumptions
+- Catches the edge cases EARLY when it's cheap to fix
+
+**2. JSON vs TypeScript for Scenes - Critical Fork Decision**
+
+Tori recommends: **JSON for scene content**
+
+```
+✅ GOOD: content/routes/ronnie/act1.json  (pure data)
+❌ AVOID: content/routes/ronnie/act1.ts   (logic creeps in)
+```
+
+**Why**:
+- Keeps logic OUT of content (huge maintainability win)
+- Easy to validate with JSON Schema
+- Future-proof for visual editors/localization
+- "If you go TS for scenes, you'll accidentally slip logic into content"
+
+**3. Schema Validation Must Be Non-Optional**
+
+Every scene load validates (dev mode):
+- Errors are actionable: `scene id, field path, expected vs got`
+- This is the #1 reason V2 will feel "human-friendly"
+
+**4. Don't Overbuild These**
+
+- **Component library**: Keep it tiny (Button/Modal/Carousel/ProgressBar only)
+- **80% coverage**: Focus tests on what bites:
+  - save/load + migrations
+  - secret codes parsing/dispatch
+  - scene routing/conditions
+  - tether/bootstrap thresholds
+
+**5. Missing Success Metric - Add This**
+
+Dev-experience proof:
+- ✅ "New dev can add a scene in <10 minutes using docs only"
+- ✅ "New feature requires touching ≤3 modules"
+
+**6. The Big Strategic Shift**
+
+> "Treat Phase 5 as 'iterative migration,' not 'one weekend conversion.'"
+
+Spread content migration across phases instead of batching it all at the end.
 
 ---
 
