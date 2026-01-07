@@ -5,6 +5,7 @@
 **Goal**: Rebuild VERSION 848 with clean architecture while maintaining feature parity with the original.
 
 **Purpose**:
+
 - Showcase before/after of AI-assisted development
 - Demonstrate best practices for VN development
 - Create a reference implementation for future projects
@@ -53,7 +54,6 @@ src/
 │   ├── SaveSystem.ts           # Save/load with validation
 │   ├── SettingsSystem.ts       # User preferences
 │   ├── AssetLoader.ts          # Preloading with progress
-│   ├── AudioSystem.ts          # Music/SFX management
 │   └── HapticSystem.ts         # Vibration feedback
 │
 ├── controllers/
@@ -117,9 +117,11 @@ src/
 ## Phase Breakdown
 
 ### Phase 1: Foundation (Weekend 1)
+
 **Goal**: Project setup + core architecture
 
 **Session 1 (Saturday AM - 2-3 hours)**
+
 - [ ] Create `uv7-v2` branch
 - [ ] Initialize Vite + TypeScript project
 - [ ] Configure strict TypeScript
@@ -128,6 +130,7 @@ src/
 - [ ] Write ARCHITECTURE.md
 
 **Session 2 (Saturday PM - 2-3 hours)**
+
 - [ ] Implement EventBus with types
 - [ ] Implement StateManager (reactive)
 - [ ] Write tests for EventBus
@@ -135,6 +138,7 @@ src/
 - [ ] Document patterns in README
 
 **Deliverables**:
+
 - Working TypeScript project
 - EventBus with full test coverage
 - StateManager with subscriptions
@@ -143,9 +147,11 @@ src/
 ---
 
 ### Phase 2: Core Systems (Weekend 2)
+
 **Goal**: Game engine + essential systems
 
 **Session 3 (Saturday - 3 hours)**
+
 - [ ] GameEngine orchestrator class
 - [ ] Scene type definitions
 - [ ] Basic scene loading
@@ -153,12 +159,14 @@ src/
 - [ ] Tests for GameEngine
 
 **Session 4 (Sunday - 3 hours)**
+
 - [ ] SaveSystem with validation
 - [ ] SettingsSystem with defaults
 - [ ] AssetLoader with progress events
 - [ ] Tests for all systems
 
 **Deliverables**:
+
 - Functional game engine
 - Save/load working
 - Settings persisting
@@ -167,21 +175,25 @@ src/
 ---
 
 ### Phase 3: Controllers (Weekend 3)
+
 **Goal**: All game controllers
 
 **Session 5 (Saturday - 3 hours)**
+
 - [ ] MenuController (main menu logic)
 - [ ] RouteController (navigation)
 - [ ] DialogController (text + choices)
 - [ ] Tests for controllers
 
 **Session 6 (Sunday - 3 hours)**
+
 - [ ] EffectsController (glitch, fade, etc)
 - [ ] TetherController (decay, actions)
 - [ ] HapticSystem integration
 - [ ] Tests for effects + tether
 
 **Deliverables**:
+
 - All controllers functional
 - Tether system working
 - Effects system working
@@ -190,15 +202,18 @@ src/
 ---
 
 ### Phase 4: UI Layer (Weekend 4)
+
 **Goal**: All screens and components
 
 **Session 7 (Saturday - 3 hours)**
+
 - [ ] SplashScreen + boot sequence
 - [ ] MainMenu with carousel
 - [ ] Component library (Button, Modal, etc)
 - [ ] CSS architecture
 
 **Session 8 (Sunday - 3 hours)**
+
 - [ ] GameView (dialog, sprites, BG)
 - [ ] PauseMenu overlay
 - [ ] SaveLoadUI
@@ -206,6 +221,7 @@ src/
 - [ ] Responsive design
 
 **Deliverables**:
+
 - Complete UI layer
 - All screens functional
 - Responsive on mobile/desktop
@@ -214,21 +230,25 @@ src/
 ---
 
 ### Phase 5: Content Migration (Weekend 5)
+
 **Goal**: All route content converted
 
 **Session 9 (Saturday - 3 hours)**
+
 - [ ] Scene schema finalized
 - [ ] Content migration tooling
 - [ ] Ronnie Act 1 converted
 - [ ] Ronnie Act 2 converted
 
 **Session 10 (Sunday - 3 hours)**
+
 - [ ] Ronnie Act 3 converted
 - [ ] Tori Act 1-3 converted
 - [ ] All endings verified
 - [ ] All branches tested
 
 **Deliverables**:
+
 - All content migrated
 - Type-safe scene data
 - All paths playable
@@ -237,15 +257,18 @@ src/
 ---
 
 ### Phase 6: Features + Polish (Weekend 6)
+
 **Goal**: Feature parity + documentation
 
 **Session 11 (Saturday - 3 hours)**
+
 - [ ] BootstrapTracker (timeline system)
 - [ ] SecretCodes system
 - [ ] DevCommentary
 - [ ] Achievements
 
 **Session 12 (Sunday - 3 hours)**
+
 - [ ] Accessibility features
 - [ ] Performance optimization
 - [ ] Final documentation
@@ -253,6 +276,7 @@ src/
 - [ ] LESSONS_LEARNED.md
 
 **Deliverables**:
+
 - 100% feature parity with V1
 - Full documentation
 - Performance benchmarks
@@ -263,6 +287,7 @@ src/
 ## Type Definitions (Examples)
 
 ### Scene Schema
+
 ```typescript
 interface Scene {
   id: string;
@@ -297,6 +322,7 @@ interface Choice {
 ```
 
 ### State Shape
+
 ```typescript
 interface GameState {
   // Core
@@ -322,6 +348,7 @@ interface GameState {
 ```
 
 ### Event Types
+
 ```typescript
 type GameEvents = {
   'scene:load': { sceneId: string };
@@ -340,23 +367,27 @@ type GameEvents = {
 ## Testing Strategy
 
 ### Unit Tests
+
 - Every system has isolated unit tests
 - Mock dependencies
 - Test edge cases
 - Aim for 80%+ coverage
 
 ### Integration Tests
+
 - Scene loading + state changes
 - Save/load round-trip
 - Route navigation
 - Tether interactions
 
 ### E2E Tests (Optional)
+
 - Playwright for full playthroughs
 - Screenshot comparisons
 - Performance monitoring
 
 ### Test Examples
+
 ```typescript
 describe('TetherController', () => {
   it('should decay tether over time', async () => {
@@ -384,30 +415,35 @@ describe('TetherController', () => {
 ## Documentation Deliverables
 
 ### 1. ARCHITECTURE.md
+
 - System overview
 - Data flow diagrams
 - Design decisions
 - Pattern explanations
 
 ### 2. MIGRATION_GUIDE.md
+
 - How to convert V1 content to V2
 - Schema mappings
 - Common pitfalls
 - Automated tools
 
 ### 3. LESSONS_LEARNED.md
+
 - What changed from V1
 - Why each change was made
 - Performance improvements
 - Developer experience wins
 
 ### 4. COMPARISON.md
+
 - Side-by-side code examples
 - Bundle size comparison
 - Load time benchmarks
 - Test coverage comparison
 
 ### 5. CONTRIBUTING.md
+
 - How to add new scenes
 - How to create new systems
 - Code style guide
@@ -418,24 +454,28 @@ describe('TetherController', () => {
 ## Success Metrics
 
 ### Code Quality
+
 - [ ] 0 TypeScript errors (strict mode)
 - [ ] 80%+ test coverage
 - [ ] All ESLint rules passing
 - [ ] No `any` types (except necessary)
 
 ### Performance
+
 - [ ] Initial load < 2 seconds
 - [ ] Scene transitions < 100ms
 - [ ] Memory usage < 100MB
 - [ ] 60fps animations
 
 ### Feature Parity
+
 - [ ] All 6 acts playable
 - [ ] All endings reachable
 - [ ] All secret codes working
 - [ ] All UI features functional
 
 ### Documentation
+
 - [ ] Architecture documented
 - [ ] All public APIs documented
 - [ ] Migration guide complete
@@ -446,15 +486,19 @@ describe('TetherController', () => {
 ## Risk Mitigation
 
 ### Risk: Scope Creep
+
 **Mitigation**: Strict feature parity only. No new features during rebuild.
 
 ### Risk: Lost Motivation
+
 **Mitigation**: Keep V1 playable. Can stop at any phase with working code.
 
 ### Risk: Content Migration Errors
+
 **Mitigation**: Automated migration scripts. Visual diff testing.
 
 ### Risk: Missing Edge Cases
+
 **Mitigation**: Port V1 tests. Manual playthrough of all routes.
 
 ---
@@ -462,6 +506,7 @@ describe('TetherController', () => {
 ## Getting Started
 
 ### Prerequisites
+
 ```bash
 # Required
 node >= 18
@@ -472,6 +517,7 @@ VS Code with TypeScript extension
 ```
 
 ### First Steps
+
 ```bash
 # Create branch
 git checkout -b uv7-v2
@@ -506,7 +552,7 @@ npm run dev
 
 ## The Flex Points
 
-### For Your Dev Friends:
+### For Your Dev Friends
 
 1. **"We built a complete VN in 40 days with AI"**
    - Show V1 with all its organic growth
@@ -529,11 +575,59 @@ npm run dev
 ## Ready to Start?
 
 When you're ready for Weekend 1:
+
 1. Create the `uv7-v2` branch
 2. Start Session 1 with Vite setup
 3. Let's build this thing properly! 🚀
 
 ---
 
+## Suggested Improvements (Added by Antigravity)
+
+### 1. Content Migration Tooling
+
+Phase 5 may be underestimated. Consider building a migration script in Phase 1:
+
+- Parse V1 route files automatically
+- Auto-generate TypeScript boilerplate
+- Manual cleanup only for edge cases
+
+### 2. JSON for Scene Content
+
+Consider `.json` files for scene data instead of `.ts`:
+
+```
+content/routes/ronnie/act1.json  <- Pure data (editable by non-devs)
+content/schemas/Scene.ts         <- Type definitions
+```
+
+Enables future visual editor and easier localization.
+
+### 3. Use Zustand for State
+
+Recommend Zustand over custom StateManager:
+
+- ~1KB bundle size
+- Great DevTools integration
+- Handles subscriptions elegantly
+- No need to reinvent the wheel
+
+### 4. CSS Modules over Tailwind
+
+Version 848's aesthetic is unique and handcrafted. CSS Modules give isolation without fighting the existing design language.
+
+### 5. Priority Ranking (If Cutting Scope)
+
+1. ✅ EventBus + StateManager (non-negotiable)
+2. ✅ TypeScript + Vite (non-negotiable)
+3. ✅ Scene schema + content separation
+4. ✅ SaveSystem + TetherController
+5. 🟡 Full UI component library (could simplify)
+6. 🟡 E2E tests (nice to have)
+7. 🟡 DevCommentary port (low priority)
+
+---
+
 *Document created: January 2026*
 *UV7 Crew: Dizee, Zee, Tori, ZeeRah, Ronnie, Kai, Echo*
+*Reviewed by: Antigravity (AI Assistant)*

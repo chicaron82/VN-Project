@@ -1864,7 +1864,7 @@
                 if (typeof BougieBootSequence !== 'undefined' && bootTerminal) {
                     // Create boot sequence with logo reveal callback
                     bootSequence = new BougieBootSequence(bootTerminal, updateLoadingProgress);
-                    window.setBootSequence(bootSequence); // Make accessible to skip button
+                    window.bootSequenceInstance = bootSequence; // Make accessible for game instance injection
                     console.log('UV7 Splash: Boot sequence initialized');
                 }
 

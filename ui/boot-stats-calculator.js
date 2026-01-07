@@ -6,8 +6,26 @@
 // ========================================
 
 /**
+ * @typedef {Object} AttemptRecord
+ * @property {string} endingType - Type of ending ('true', 'bad', 'corrupted', etc.)
+ * @property {string} result - Result status ('succeeded', 'failed', 'abandoned')
+ */
+
+/**
+ * @typedef {Object} Timeline
+ * @property {number} currentAttempt - Current attempt number
+ * @property {AttemptRecord[]} attempts - Array of attempt records
+ */
+
+/**
+ * @typedef {Object} BootstrapTracker
+ * @property {Timeline} timeline - Timeline data
+ * @property {function(): number} getCurrentAttempt - Get current attempt number
+ */
+
+/**
  * Calculates dynamic boot stats based on player's actual progression
- * @param {Object} bootstrapTracker - Bootstrap tracker instance
+ * @param {BootstrapTracker} bootstrapTracker - Bootstrap tracker instance
  * @returns {{memory: string, timelines: string, paradox: string, paradoxColor: string}}
  */
 function calculateBootStats(bootstrapTracker) {
@@ -47,7 +65,7 @@ function calculateBootStats(bootstrapTracker) {
 /**
  * Calculate timeline statistics from attempts
  * Preserves canonical 847 failed attempts as baseline
- * @param {Array<Object>} attempts - Array of attempt records
+ * @param {AttemptRecord[]} attempts - Array of attempt records
  * @returns {{failures: number, successes: number, abandons: number, totalEndings: number}}
  */
 function calculateTimelineStats(attempts) {
@@ -85,7 +103,7 @@ function calculateTimelineStats(attempts) {
  * Calculate paradox status based on player progression
  * @param {number} currentAttempt - Current attempt number
  * @param {{failures: number, successes: number, abandons: number, totalEndings: number}} stats - Timeline stats
- * @param {Array<Object>} attempts - Array of attempt records
+ * @param {AttemptRecord[]} attempts - Array of attempt records
  * @returns {{status: string, color: string}}
  */
 function calculateParadoxStatus(currentAttempt, stats, attempts) {
@@ -161,7 +179,7 @@ function calculateParadoxStatus(currentAttempt, stats, attempts) {
 /**
  * Get dynamic boot stats for display in boot sequence
  * Safe wrapper that handles missing tracker gracefully
- * @param {Object} [game] - Game engine instance
+ * @param {{bootstrapTracker?: BootstrapTracker}} [game] - Game engine instance
  * @returns {{memory: string, timelines: string, paradox: string, paradoxColor: string}}
  */
 function getDynamicBootStats(game) {
@@ -183,8 +201,8 @@ function getDynamicBootStats(game) {
 }
 
 /**
- * Update main menu version footer with dynamic stats
- * @param {Object} [game] - Game engine instance
+ * Update main menu footer with dynamic stats
+ * @param {{bootstrapTracker?: BootstrapTracker}} [game] - Game engine instance
  */
 function updateMenuFooter(game) {
     const footerEl = document.getElementById('menu-footer');
@@ -203,7 +221,8 @@ function updateMenuFooter(game) {
         const attempts = timeline.attempts || [];
 
         // Count player attempts (exclude corrupted)
-        const playerAttempts = attempts.filter(a => a.endingType !== 'corrupted');
+        /** @type {AttemptRecord[]} */
+        const playerAttempts = attempts.filter(/** @param {AttemptRecord} a */ a => a.endingType !== 'corrupted');
         const totalPlayerAttempts = currentAttempt - 848; // How many times player has played
 
         // Calculate failures (847 baseline + player failures)
