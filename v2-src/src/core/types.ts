@@ -257,3 +257,13 @@ export type DeepPartial<T> = {
 export type RequireAtLeastOne<T, Keys extends keyof T = keyof T> =
   Pick<T, Exclude<keyof T, Keys>> &
   { [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>> }[Keys];
+
+// =============================================================================
+// SYSTEM TYPES
+// =============================================================================
+
+export interface GameSystem {
+  name: string;
+  init?(): Promise<void> | void;
+  destroy?(): void;
+}

@@ -12,3 +12,7 @@ export { EventBus, eventBus } from './EventBus.ts';
 
 // StateManager
 export { StateManager, stateManager } from './StateManager.ts';
+
+// GameEngine
+export { GameEngine, gameEngine } from './GameEngine.ts';
+export type { SceneLoader, GameEngineConfig } from './GameEngine.ts';

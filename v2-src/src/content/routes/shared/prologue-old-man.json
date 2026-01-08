@@ -1,0 +1,36 @@
+{
+  "$schema": "../../schemas/scene.schema.json",
+  "id": "prologue-old-man",
+  "background": "assets/genericBack.png",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi."
+    },
+    {
+      "speaker": "ronnie",
+      "text": "No problem. Hang on to that. It may save your life someday."
+    },
+    {
+      "speaker": "tori",
+      "text": "...What a strange thing to say."
+    },
+    {
+      "speaker": "narrator",
+      "text": "She stands there a moment, then pockets the Tamagotchi and heads home."
+    }
+  ],
+  "next": "prologue-home-arrival"
+}
