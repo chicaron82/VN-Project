@@ -174,9 +174,30 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 | Branching | Inline `if` statements | Conditional `next` objects | Declarative, testable |
 | Validation | None (runtime errors) | Schema validation at load | Catch errors early |
 
+#### Ronnie Route ✅
+- `src/content/routes/ronnie/act1.ts` - Hospital anchor, discovery, first contact
+- `src/content/routes/ronnie/act2.ts` - Loop mechanics, upload attempt, body anchor discovery
+- `src/content/routes/ronnie/act3.ts` - Crisis, mad dash, all three endings
+- `src/content/routes/ronnie/index.ts` - Route loader with metadata
+
+#### Tori Route ✅
+- `src/content/routes/tori/act1.ts` - Street bump, void awakening, laptop hop, first words
+- `src/content/routes/tori/act2.ts` - Despair's attack, tether tutorial (partial)
+- `src/content/routes/tori/act3.ts` - Memory fragmentation, body anchor, all three endings
+- `src/content/routes/tori/index.ts` - Route loader with metadata
+
+**V1 vs V2 Route Structure:**
+
+| Aspect | V1 | V2 | Why |
+|--------|----|----|-----|
+| Scene definition | JS class methods | TypeScript Scene[] arrays | Type safety, easier testing |
+| Scene transitions | Function callbacks (`next: () => this.nextScene()`) | String IDs (`next: 'scene-id'`) | Decoupled, serializable |
+| Choices | Inline `onChoice` handlers | Declarative `choices` array with `next` IDs | Testable, previewable |
+| Effects | Imperative `triggerSensoryFeedback()` | Declarative `effects` array | Data-driven, consistent |
+| Route points | Mutable class state | `counters` in scene definitions | Tracked in state, saveable |
+
 **Still to migrate:**
-- [ ] Route content (Ronnie acts, Tori acts)
-- [ ] Endings data
+- [ ] Endings data (epilogue, credits)
 - [ ] Secret codes
 - [ ] Achievements
 
@@ -410,12 +431,12 @@ v2-src/
 
 ## Next Steps
 
-1. **Route content migration** - Ronnie Acts 1-3, Tori Acts 1-3
-2. **Endings data** - All ending scenes and conditions
-3. **Bootstrap tracker** - Timeline/attempt tracking system
-4. **Secret codes** - Cheat code system
-5. **Achievements** - Achievement definitions and unlock logic
+1. **Endings data** - Epilogue scenes, credits sequence
+2. **Bootstrap tracker** - Timeline/attempt tracking system
+3. **Secret codes** - Cheat code system
+4. **Achievements** - Achievement definitions and unlock logic
+5. **Scene runner integration** - Wire scenes to actual game flow
 
 ---
 
-*Last updated: Session 7 (Phase 5 - Prologue Migration Complete)*
+*Last updated: Session 8 (Phase 5 - Route Content Migration Complete)*

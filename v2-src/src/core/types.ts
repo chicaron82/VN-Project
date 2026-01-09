@@ -45,10 +45,23 @@ export interface SpriteConfig {
   flip?: boolean;
 }
 
+export type SpeakerVariant =
+  | 'internal'
+  | 'narration'
+  | 'whispers'
+  | 'shouting'
+  | 'through device'
+  | 'through game'
+  | 'distorted'
+  | 'glitching'
+  | 'phone';
+
 export interface DialogEntry {
-  speaker: CharacterId | 'narrator';
+  speaker: CharacterId | 'narrator' | 'system';
   text: string;
   emotion?: Emotion;
+  variant?: SpeakerVariant;
+  internal?: string; // Stage directions / visual descriptions
   sound?: SoundId;
 }
 
@@ -86,12 +99,17 @@ export type EffectType =
   | 'static'
   | 'vhs'
   | 'redpulse'
-  | 'tetherdrain';
+  | 'tetherdrain'
+  | 'haptic';
+
+export type HapticType = 'light' | 'medium' | 'heavy' | 'double' | 'emergency';
 
 export interface Effect {
   type: EffectType;
   duration?: number;
   intensity?: 'low' | 'medium' | 'high';
+  hapticType?: HapticType;
+  reason?: string; // For debugging/logging
 }
 
 export interface ConditionalNext {
@@ -101,6 +119,8 @@ export interface ConditionalNext {
   }>;
   default: string;
 }
+
+export type SceneStyle = 'normal' | 'critical' | 'dramatic' | 'quiet';
 
 export interface Scene {
   id: string;
@@ -120,6 +140,10 @@ export interface Scene {
 
   unlockNote?: string;
   unlockAchievement?: string;
+
+  // Display options
+  style?: SceneStyle;
+  autoAdvanceDelay?: number; // ms before auto-advancing (if auto-advance enabled)
 }
 
 // =============================================================================
