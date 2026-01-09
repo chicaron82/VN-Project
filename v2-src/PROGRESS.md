@@ -6,10 +6,11 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 
 ## Current Status
 
-**Phase**: 6 - Scene Runner Integration (COMPLETE)
+**Phase**: 7 - App Integration (COMPLETE)
 **Tests**: 232 passing
 **TypeScript**: Strict mode, zero errors
 **Content Migrated**: Routes (6 acts), Endings, Secrets, Achievements
+**App Flow**: Boot → Menu → Play → Pause/Resume → Save/Load
 
 ---
 
@@ -272,6 +273,43 @@ idle → entering → dialog → choosing → transitioning → complete
 
 ---
 
+### Phase 7: App Integration ✅
+
+**What we built:**
+- Full game flow orchestration in `App.ts`
+- SceneRunner wired to RouteController
+- GameView callbacks for backgrounds, sprites, music
+- Continue game from most recent save
+- Load game from specific slots
+
+**Key integrations:**
+- `App.initializeSystems()` → initializes all systems in dependency order
+- `App.startNewGame()` → resets state, creates GameView, wires SceneRunner callbacks, loads prologue
+- `App.continueGame()` → loads most recent save, resumes from saved scene
+- `routeController.setSceneRunner()` → connects scene execution to route navigation
+- `routeController.setSceneCallbacks()` → connects scene events to UI updates
+
+**Game Flow:**
+```
+Start → Splash → MainMenu → [New Game | Continue]
+                               ↓           ↓
+                           Reset State   Load Save
+                               ↓           ↓
+                           Load Scene ←────┘
+                               ↓
+                    SceneRunner executes
+                               ↓
+                    GameView updates UI
+                               ↓
+                    [Dialog | Choices | Auto-advance]
+                               ↓
+                    Next Scene → ...
+```
+
+**Phase 7 Complete!**
+
+---
+
 ## Gotchas We Caught
 
 ### The Phantom Characters Incident 👻
@@ -512,11 +550,6 @@ v2-src/
 
 ## Next Steps
 
-**Phase 7: App Integration & Main Flow**
-1. **App.ts orchestration** - Wire all systems together
-2. **Game loop** - Start → Boot → Menu → Play → End flow
-3. **UI callbacks** - Connect SceneRunner to actual DOM updates
-
 **Phase 8: Easter Eggs & Special Systems**
 1. **EasterEggController** - Konami code, ToriGatchi, etc.
 2. **BootstrapTracker** - Timeline visualization
@@ -529,4 +562,4 @@ v2-src/
 
 ---
 
-*Last updated: Session 10 (Phase 6 Complete - Scene Runner Integration)*
+*Last updated: Session 10 (Phase 7 Complete - App Integration)*

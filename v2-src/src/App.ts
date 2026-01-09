@@ -14,6 +14,7 @@ import { dialogController } from './controllers/DialogController.ts';
 import { routeController } from './controllers/RouteController.ts';
 import { effectsController } from './controllers/EffectsController.ts';
 import { menuController } from './controllers/MenuController.ts';
+import { sceneRunner } from './controllers/SceneRunner.ts';
 import { SplashScreen } from './ui/views/SplashScreen.ts';
 import { GameView } from './ui/views/GameView.ts';
 import { MenuView } from './ui/views/MenuView.ts';
@@ -91,8 +92,9 @@ export class App {
       assetLoader,
       tetherController,
       dialogController,
-      routeController,
       effectsController,
+      sceneRunner,
+      routeController,
       menuController,
     ];
 
@@ -101,6 +103,9 @@ export class App {
       console.log(`[UV7] Initializing ${system.name}...`);
       await system.init?.();
     }
+
+    // Wire RouteController to SceneRunner (after both are initialized)
+    routeController.setSceneRunner(sceneRunner);
 
     console.log('[UV7] All systems initialized');
   }
@@ -132,12 +137,14 @@ export class App {
   }
 
   private registerMenus(): void {
+    const hasSaves = saveSystem.getMostRecentSlot() !== null;
+
     menuController.registerMenu({
       id: 'main',
       title: 'UV7',
       items: [
         { id: 'new-game', label: 'New Game', action: () => this.startNewGame() },
-        { id: 'continue', label: 'Continue', action: () => this.continueGame(), disabled: true }, // TODO: Check for saves
+        { id: 'continue', label: 'Continue', action: () => this.continueGame(), disabled: !hasSaves },
         { id: 'settings', label: 'Settings', submenu: 'settings' },
         { id: 'credits', label: 'Credits', action: () => this.showCredits() },
       ],
@@ -227,19 +234,98 @@ export class App {
     // Create game view
     this.gameView = new GameView({
       container: this.container,
-      onAdvance: () => dialogController.advance(),
+      onAdvance: () => routeController.advance(),
       onChoice: (_choice, index) => dialogController.selectChoice(index),
     });
     this.gameView.mount(this.container);
+
+    // Wire scene callbacks to GameView
+    this.setupSceneCallbacks();
 
     // Start prologue
     await routeController.loadScene('prologue-scene1');
   }
 
+  private setupSceneCallbacks(): void {
+    if (!this.gameView) return;
+
+    const gameView = this.gameView;
+
+    routeController.setSceneCallbacks({
+      onBackground: (bg) => {
+        if (bg) {
+          gameView.setBackground(`/assets/backgrounds/${bg}.jpg`);
+        } else {
+          gameView.clearBackground();
+        }
+      },
+
+      onSprites: (sprites) => {
+        gameView.clearCharacters();
+        if (sprites) {
+          for (const sprite of sprites) {
+            gameView.showCharacter(sprite.character, sprite.emotion, sprite.position);
+          }
+        }
+      },
+
+      onMusic: (music) => {
+        // TODO: Wire to audio system when implemented
+        console.log('[UV7] Music:', music);
+      },
+
+      onComplete: (_scene) => {
+        // Scene finished, waiting for input or auto-advance
+      },
+
+      onTransition: (_nextSceneId) => {
+        // Handled by RouteController internally
+      },
+    });
+  }
+
   private async continueGame(): Promise<void> {
     console.log('[UV7] Continue game...');
-    // TODO: Show load menu or load most recent
-    menuController.open('load');
+
+    // Try to load the most recent save
+    const mostRecent = saveSystem.getMostRecentSlot();
+    if (!mostRecent) {
+      console.warn('[UV7] No saves found');
+      return;
+    }
+
+    await this.loadGame(mostRecent.id);
+  }
+
+  private async loadGame(slot: number): Promise<void> {
+    console.log(`[UV7] Loading save from slot ${slot}...`);
+
+    const success = saveSystem.load(slot);
+    if (!success) {
+      console.error(`[UV7] Failed to load save from slot ${slot}`);
+      eventBus.emit('ui:notification', {
+        message: 'Failed to load save',
+        type: 'error',
+      });
+      return;
+    }
+
+    menuController.closeAll();
+    this.setState('playing');
+
+    // Create game view if needed
+    if (!this.gameView) {
+      this.gameView = new GameView({
+        container: this.container,
+        onAdvance: () => routeController.advance(),
+        onChoice: (_choice, index) => dialogController.selectChoice(index),
+      });
+      this.gameView.mount(this.container);
+      this.setupSceneCallbacks();
+    }
+
+    // Resume from saved state
+    await routeController.resumeFromState();
   }
 
   private showCredits(): void {
