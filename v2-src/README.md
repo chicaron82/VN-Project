@@ -4,22 +4,21 @@ A complete rewrite of the UV7 visual novel engine with TypeScript, proper archit
 
 ## Current Status
 
-**Phase 7 Complete** - App Integration
+**Phase 8 Complete** - Easter Eggs & Special Systems
 
 | Area | Status | Notes |
 |------|--------|-------|
 | Core (EventBus, StateManager) | Done | Typed, tested, with history/undo |
 | Controllers (Dialog, Tether, Route, Scene, Effects, Menu) | Done | All tested |
 | UI Layer (Components, Views) | Done | GameView, SplashScreen, Menus |
-| Content (Prologue, Routes, Endings) | Done | Schema-validated |
+| Content (Prologue, Routes, Endings) | Done | Schema-validated, JSON format |
 | App Flow (Boot -> Menu -> Play) | Done | Save/load working |
-| Easter Eggs | Not started | Phase 8 |
+| Easter Eggs | Done | Konami, codes, dev commands |
 | Polish & E2E | Not started | Phase 9 |
 
 ## What's Intentionally Not Built Yet
 
 - **Audio system** - Music/SFX playback (wiring exists, implementation pending)
-- **Easter eggs** - Konami code, ToriGatchi, secret codes
 - **Credits screen** - End-game credits sequence
 - **Game over screen** - Tether depletion handling
 - **E2E tests** - Full playthrough automation
@@ -51,7 +50,8 @@ src/
 │   ├── DialogController # Typewriter, choices
 │   ├── TetherController # Decay, thresholds
 │   ├── EffectsController # Screen shake, flash, etc.
-│   └── MenuController # Menu state machine
+│   ├── MenuController # Menu state machine
+│   └── EasterEggController # Konami, codes, dev commands
 │
 ├── systems/        # Infrastructure
 │   ├── SaveSystem  # LocalStorage save/load
@@ -121,9 +121,9 @@ npm run build
 
 ## Tests
 
-232 tests across:
+256 tests across:
 - `core/` - EventBus, StateManager
-- `controllers/` - All 6 controllers
+- `controllers/` - All 7 controllers (including EasterEggController)
 - `ui/` - Components and views
 - `content/` - Scene validation
 
