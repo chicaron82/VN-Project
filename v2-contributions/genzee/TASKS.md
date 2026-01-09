@@ -5,15 +5,18 @@
 ## Phase 1 Tasks
 
 ### Task 1: Edge Case Test Scenarios
+
 **Priority**: Medium
 **Status**: Pending
 
 Document edge cases that need testing across all systems.
 
 **Deliverables**:
+
 - `docs/EDGE-CASES.md` - Comprehensive edge case list
 
 **Systems to Analyze**:
+
 1. **Save/Load** - What breaks saves? Corrupted data? Version mismatches?
 2. **Scene Navigation** - Invalid scene IDs? Circular references? Missing scenes?
 3. **Tether System** - Below 0? Above 100? Decay during pause?
@@ -22,6 +25,7 @@ Document edge cases that need testing across all systems.
 6. **Secret Codes** - Invalid codes? Codes during wrong state?
 
 **Format**:
+
 ```
 ## System: [Name]
 ### Edge Case: [Description]
@@ -30,18 +34,38 @@ Document edge cases that need testing across all systems.
 - **Risk**: What could go wrong
 ```
 
+**V1 Reference Files**:
+
+- `system/save-manager.js` - Save/load logic
+- `system/tether-system.js` - Tether logic
+- `system/bootstrap-tracker.js` - Timeline tracking
+- `tests/integration/critical-flows.test.js` - Existing edge case tests
+
+**Files to Provide to GenZee**:
+
+```
+v2-contributions/genzee/v1-reference/
+  ├── save-manager.js
+  ├── tether-system.js
+  ├── bootstrap-tracker.js
+  └── critical-flows.test.js
+```
+
 ---
 
 ### Task 2: Break Testing Plan
+
 **Priority**: Medium
 **Status**: Pending
 
 Create a plan for intentionally breaking V2 during development.
 
 **Deliverables**:
+
 - `docs/BREAK-TESTING.md` - How to stress test V2
 
 **Include**:
+
 - Rapid state changes
 - Memory stress tests
 - Invalid input handling

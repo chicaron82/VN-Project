@@ -28,7 +28,11 @@
       "Bash(npm install:*)",
       "Bash(cat:*)",
       "Bash(git pull:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run test:run:*)",
+      "Bash(npm run typecheck:*)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []

@@ -5,15 +5,18 @@
 ## Phase 1 Tasks
 
 ### Task 1: Zustand Research
+
 **Priority**: High
 **Status**: Pending
 
 Research Zustand for state management in V2.
 
 **Deliverables**:
+
 - `research/zustand-guide.md` - How to use Zustand for UV7
 
 **Questions to Answer**:
+
 1. How to structure our game state with Zustand?
 2. How to persist state to localStorage?
 3. How to subscribe to specific state slices?
@@ -22,22 +25,39 @@ Research Zustand for state management in V2.
 6. DevTools integration - how to set up?
 
 **Include**:
+
 - Code examples tailored to UV7's needs
 - Comparison with V1's approach
 - Gotchas and pitfalls to avoid
 
+**V1 Reference Files**:
+
+- `system/state-manager.js` - Current state management approach
+- `package.json` - Current dependencies
+
+**Files to Provide to PerplexiZee**:
+
+```
+v2-contributions/perplexizee/v1-reference/
+  ├── state-manager.js
+  └── package.json
+```
+
 ---
 
 ### Task 2: Vite + TypeScript Setup Guide
+
 **Priority**: High
 **Status**: Pending
 
 Research and document the optimal Vite + TypeScript setup.
 
 **Deliverables**:
+
 - `research/vite-setup.md` - Step-by-step setup guide
 
 **Questions to Answer**:
+
 1. What's the best Vite template for our use case?
 2. How to configure strict TypeScript?
 3. How to set up path aliases (@/core, @/ui, etc.)?
@@ -48,21 +68,25 @@ Research and document the optimal Vite + TypeScript setup.
 ---
 
 ### Task 3: JSON Schema Validation Research
+
 **Priority**: Medium
 **Status**: Pending
 
 Research runtime JSON Schema validation options.
 
 **Deliverables**:
+
 - `research/json-validation.md` - Validation library comparison
 
 **Libraries to Compare**:
+
 - Ajv
 - Zod
 - Yup
 - io-ts
 
 **Criteria**:
+
 - Bundle size
 - TypeScript integration
 - Error message quality

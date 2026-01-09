@@ -5,15 +5,18 @@
 ## Phase 1 Tasks
 
 ### Task 1: EventBus Tests
+
 **Priority**: High
 **Status**: Pending
 
 Write comprehensive tests for the EventBus system.
 
 **Deliverables**:
+
 - `tests/EventBus.test.ts` - Full test coverage for EventBus
 
 **Test Cases Needed**:
+
 - Subscribe to event
 - Unsubscribe from event
 - Emit event with data
@@ -23,22 +26,39 @@ Write comprehensive tests for the EventBus system.
 - Memory cleanup on unsubscribe
 
 **Requirements**:
+
 - Use Vitest
 - Aim for edge cases (that's your specialty!)
 - Make them chaos-proof
 
+**V1 Reference Files**:
+
+- `tests/state-manager.test.js` - Existing test patterns
+- `system/state-manager.js` - Current implementation to understand
+
+**Files to Provide to ZeeRah**:
+
+```
+v2-contributions/zeerah/v1-reference/
+  ├── state-manager.test.js
+  └── state-manager.js
+```
+
 ---
 
 ### Task 2: StateManager Tests
+
 **Priority**: High
 **Status**: Pending
 
 Write comprehensive tests for the StateManager/Store.
 
 **Deliverables**:
+
 - `tests/StateManager.test.ts` - Full test coverage
 
 **Test Cases Needed**:
+
 - Get initial state
 - Update state
 - Subscribe to state changes

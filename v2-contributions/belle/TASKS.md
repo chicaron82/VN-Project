@@ -5,15 +5,18 @@
 ## Phase 1 Tasks
 
 ### Task 1: ARCHITECTURE.md
+
 **Priority**: High
 **Status**: Pending
 
 Write the architecture documentation for V2.
 
 **Deliverables**:
+
 - `docs/ARCHITECTURE.md` - System overview and design decisions
 
 **Sections Needed**:
+
 1. **Overview** - What is UV7 V2?
 2. **Folder Structure** - Explain each folder's purpose
 3. **Core Systems** - EventBus, StateManager, GameEngine
@@ -22,22 +25,39 @@ Write the architecture documentation for V2.
 6. **Patterns Used** - Observer, pub/sub, etc.
 
 **Requirements**:
+
 - Clear enough for a new dev to understand
 - Include diagrams if helpful (ASCII or mermaid)
 - Reference the rebuild plan for context
 
+**V1 Reference Files**:
+
+- `docs/ARCHITECTURE.md` - Current V1 architecture
+- `docs/UV7-REBUILD-PLAN.md` - Rebuild plan with V2 goals
+
+**Files to Provide to Belle**:
+
+```
+v2-contributions/belle/v1-reference/
+  ├── ARCHITECTURE.md
+  └── UV7-REBUILD-PLAN.md
+```
+
 ---
 
 ### Task 2: CONTRIBUTING.md
+
 **Priority**: Medium
 **Status**: Pending
 
 Write the contribution guide for V2.
 
 **Deliverables**:
+
 - `docs/CONTRIBUTING.md` - How to contribute to V2
 
 **Sections Needed**:
+
 1. **Adding a New Scene** - Step by step
 2. **Adding a New System** - Where it goes, how to wire it
 3. **Code Style** - TypeScript conventions

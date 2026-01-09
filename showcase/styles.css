@@ -1,0 +1,346 @@
+/* ==========================================================================
+   UV7: THE EVOLUTION - Showcase Styles
+   Designed by Antigravity
+   ========================================================================== */
+
+/* --- CORE VARIABLES --- */
+:root {
+    /* CHAOS PALETTE (V1) */
+    --chaos-bg: #050505;
+    --chaos-text: #00ff41;
+    --chaos-accent: #ff00ff;
+    --chaos-font: 'Courier New', monospace;
+
+    /* ORDER PALETTE (V2) */
+    --order-bg: #f8f9fa;
+    --order-text: #2c3e50;
+    --order-accent: #3498db;
+    --order-font: 'Inter', system-ui, -apple-system, sans-serif;
+
+    --transition-speed: 0.1s;
+}
+
+/* --- RESET & BASE --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body,
+html {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    /* No horizontal scroll */
+    overflow-y: auto;
+    /* Allow vertical scroll */
+    font-size: 16px;
+}
+
+
+/* --- MAIN CONTAINER --- */
+.split-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    background: var(--chaos-bg);
+
+    /* Grid Stacking for Height Sync */
+    display: grid;
+    grid-template-areas: "stack";
+}
+
+/* --- LAYERS --- */
+/* The V1/Chaos layer is the base background */
+.layer-chaos {
+    grid-area: stack;
+    width: 100%;
+    /* min-height handled by grid stretch */
+    background: var(--chaos-bg);
+    color: var(--chaos-text);
+    font-family: var(--chaos-font);
+    z-index: 1;
+
+    /* Flex Column with gap for fixed alignment */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem 0;
+    /* Expanded padding */
+    gap: 2rem;
+    /* Strict spacing between elements */
+
+    /* Glitchy texture overlay */
+    background-image: linear-gradient(0deg, transparent 24%, rgba(0, 255, 65, .03) 25%, rgba(0, 255, 65, .03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 65, .03) 75%, rgba(0, 255, 65, .03) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 65, .03) 25%, rgba(0, 255, 65, .03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 65, .03) 75%, rgba(0, 255, 65, .03) 76%, transparent 77%, transparent);
+    background-size: 50px 50px;
+}
+
+/* The V2/Order layer sits on top and is clipped */
+.layer-order {
+    grid-area: stack;
+    width: 100%;
+    /* min-height handled by grid stretch */
+    background: var(--order-bg);
+    color: var(--order-text);
+    font-family: var(--order-font);
+    z-index: 2;
+
+    /* Flex Column with gap for fixed alignment */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6rem 0;
+    /* Expanded padding */
+    gap: 2rem;
+    /* Strict spacing between elements */
+
+    /* Elegant grid overlay */
+    background-image: radial-gradient(var(--order-accent) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.98;
+
+    /* This will be dynamic via JS */
+    /* Starting path - changes via JS immediately usually */
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* --- CONTENT CENTERING & TYPOGRAPHY --- */
+.content-wrapper {
+    position: relative;
+    text-align: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    /* Safe vertical centering */
+
+    /* Pass flex behavior down */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+h1 {
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    /* Responsive scaling */
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+    /* Removed margin in favor of gap */
+    line-height: 1.1;
+    /* Consistent line height */
+
+    /* Force height alignment */
+    height: 3em;
+    /* Fixed height for title block (2-3 lines) */
+    display: flex;
+    align-items: center;
+    /* Center text vertically */
+    justify-content: center;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 2rem;
+    letter-spacing: 2px;
+}
+
+p {
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.6;
+    max-width: 650px;
+    /* Slightly wider */
+    margin: 0;
+    /* Removed margin in favor of gap */
+
+    /* Force height alignment for description block */
+    height: 6em;
+    /* Fixed height for description block (3-4 lines) */
+    display: flex;
+    align-items: flex-start;
+    /* Align top */
+    justify-content: center;
+}
+
+/* --- CHAOS SPECIFIC STYLES --- */
+.layer-chaos h1 {
+    text-shadow: 2px 2px var(--chaos-accent), -2px -2px blue;
+    animation: glitch-text 2s infinite linear alternate-reverse;
+}
+
+.layer-chaos .btn {
+    border: 2px solid var(--chaos-text);
+    color: var(--chaos-text);
+    box-shadow: 0 0 10px var(--chaos-text);
+}
+
+.layer-chaos .btn:hover {
+    background: var(--chaos-text);
+    color: #000;
+}
+
+.chaos-code-bg {
+    position: absolute;
+    font-size: 12px;
+    opacity: 0.2;
+    pointer-events: none;
+    white-space: pre;
+    top: 10px;
+    left: 10px;
+}
+
+@keyframes glitch-text {
+    0% {
+        transform: translate(0)
+    }
+
+    20% {
+        transform: translate(-2px, 2px)
+    }
+
+    40% {
+        transform: translate(-2px, -2px)
+    }
+
+    60% {
+        transform: translate(2px, 2px)
+    }
+
+    80% {
+        transform: translate(2px, -2px)
+    }
+
+    100% {
+        transform: translate(0)
+    }
+}
+
+/* --- ORDER SPECIFIC STYLES --- */
+.layer-order h1 {
+    background: -webkit-linear-gradient(45deg, var(--order-text), var(--order-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -2px;
+}
+
+.layer-order .btn {
+    background: var(--order-text);
+    color: #fff;
+    border: 2px solid var(--order-text);
+}
+
+.layer-order .btn:hover {
+    background: transparent;
+    color: var(--order-text);
+}
+
+.order-diagram-bg {
+    position: absolute;
+    opacity: 0.1;
+    pointer-events: none;
+    right: 50px;
+    bottom: 50px;
+    width: 300px;
+    height: 300px;
+    border: 1px solid var(--order-text);
+    border-radius: 50%;
+}
+
+/* --- SHARED BUTTONS --- */
+.btn {
+    display: inline-block;
+    padding: 15px 40px;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0;
+    /* Reset margin, using gap */
+}
+
+/* --- SLIDER HANDLER --- */
+.slider-handle {
+    position: fixed;
+    /* Stay on screen even when scrolling */
+    top: 0;
+    height: 100vh;
+    left: 50%;
+    /* JS will update this */
+    width: 4px;
+    background: #fff;
+    z-index: 10;
+    pointer-events: none;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+.slider-knob {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #000;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    cursor: ew-resize;
+    pointer-events: auto;
+}
+
+/* --- INFO CARDS (For "How it's made") --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin: 0;
+    /* Reset margin, using gap */
+    text-align: left;
+    width: 100%;
+    /* Ensure full width in flex container */
+}
+
+.card {
+    padding: 2rem;
+    height: 100%;
+    /* Fill grid cell */
+    display: flex;
+    flex-direction: column;
+}
+
+.card h3 {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card p {
+    font-size: 1rem;
+    margin: 0;
+    min-height: 0;
+    /* Override the global p min-height for cards */
+    max-width: none;
+    line-height: 1.4;
+    display: block;
+    /* Override flex */
+}
+
+/* Match card heights visually */
+.layer-chaos .card {
+    border: 1px solid var(--chaos-text);
+    background: rgba(0, 20, 0, 0.7);
+}
+
+.layer-order .card {
+    border: 1px solid #ddd;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}

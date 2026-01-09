@@ -339,13 +339,16 @@ class GameEngine {
         // Dialogue history for backlog
         /** @type {any[]} */
         this.dialogueHistory = [];
+        // @ts-ignore - GameConfig loaded via main.js
         this.maxHistoryLength = GameConfig.TIMING.MAX_DIALOGUE_HISTORY;
 
         // TORI'S SENSORY SYSTEM: Debounce + Debug Logger 💚
         this.lastHapticTime = 0;
+        // @ts-ignore - GameConfig loaded via main.js
         this.hapticCooldownMs = GameConfig.TIMING.HAPTIC_COOLDOWN_MS;
         /** @type {any[]} */
         this.sensoryLog = [];
+        // @ts-ignore - GameConfig loaded via main.js
         this.maxSensoryLog = GameConfig.TIMING.MAX_SENSORY_LOG;
 
         // Game state for tracking choices, flags, and progress
@@ -690,6 +693,7 @@ class GameEngine {
             return true;
         } catch (error) {
             // Handle quota exceeded error
+            // @ts-ignore - error is DOMException
             if (error.name === 'QuotaExceededError') {
                 console.error(`❌ localStorage quota exceeded while saving "${key}"`);
                 this.handleStorageQuotaExceeded(key);
@@ -703,9 +707,9 @@ class GameEngine {
 
     /**
      * Handle localStorage quota exceeded by clearing old data
-     * @param {string} attemptedKey - The key that failed to save
+     * @param {string} _attemptedKey - The key that failed to save (unused but kept for API consistency)
      */
-    handleStorageQuotaExceeded(attemptedKey) {
+    handleStorageQuotaExceeded(_attemptedKey) {
         console.warn('⚠️ localStorage quota exceeded - attempting cleanup...');
 
         // Show user-friendly notification
@@ -768,6 +772,7 @@ class GameEngine {
 
         // Track splash start time for minimum display duration
         this.splashStartTime = Date.now();
+        // @ts-ignore - GameConfig loaded via main.js
         this.minSplashDuration = GameConfig.TIMING.MIN_SPLASH_DURATION_MS;
 
         // ZEE'S ADDITION: Initialize rotating tips system 🖤
@@ -782,6 +787,7 @@ class GameEngine {
         // Smooth progress animation settings
         // SYNC WITH VIDEO: Match splash video duration (6 seconds)
         // This ensures loading simulation finishes when video ends
+        // @ts-ignore - GameConfig loaded via main.js
         this.minLoadingAnimationTime = GameConfig.TIMING.MIN_LOADING_ANIMATION_MS;
 
         // Preload images with priority system
