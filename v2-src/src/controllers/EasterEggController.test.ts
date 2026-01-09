@@ -2,7 +2,7 @@
  * EasterEggController Tests
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { EasterEggController } from './EasterEggController.ts';
 import { EventBus } from '../core/EventBus.ts';
 import { StateManager } from '../core/StateManager.ts';

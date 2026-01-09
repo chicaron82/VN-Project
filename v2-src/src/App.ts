@@ -9,6 +9,7 @@ import { stateManager } from './core/StateManager.ts';
 import { settingsSystem } from './systems/SettingsSystem.ts';
 import { saveSystem } from './systems/SaveSystem.ts';
 import { assetLoader } from './systems/AssetLoader.ts';
+import { audioSystem } from './systems/AudioSystem.ts';
 import { tetherController } from './controllers/TetherController.ts';
 import { dialogController } from './controllers/DialogController.ts';
 import { routeController } from './controllers/RouteController.ts';
@@ -19,6 +20,8 @@ import { easterEggController } from './controllers/EasterEggController.ts';
 import { SplashScreen } from './ui/views/SplashScreen.ts';
 import { GameView } from './ui/views/GameView.ts';
 import { MenuView } from './ui/views/MenuView.ts';
+import { GameOverView } from './ui/views/GameOverView.ts';
+import { CreditsView } from './ui/views/CreditsView.ts';
 import type { GameSystem } from './core/index.ts';
 
 export type AppState = 'loading' | 'splash' | 'menu' | 'playing' | 'paused';
@@ -37,6 +40,8 @@ export class App {
   private splashScreen: SplashScreen | null = null;
   private menuView: MenuView | null = null;
   private gameView: GameView | null = null;
+  private gameOverView: GameOverView | null = null;
+  private creditsView: CreditsView | null = null;
 
   constructor(config: AppConfig) {
     this.container = config.container;
@@ -73,6 +78,8 @@ export class App {
     this.splashScreen?.destroy();
     this.menuView?.destroy();
     this.gameView?.destroy();
+    this.gameOverView?.destroy();
+    this.creditsView?.destroy();
 
     for (const system of this.systems) {
       system.destroy?.();
@@ -91,6 +98,7 @@ export class App {
       settingsSystem,
       saveSystem,
       assetLoader,
+      audioSystem,
       tetherController,
       dialogController,
       effectsController,
@@ -134,8 +142,49 @@ export class App {
     // Tether empty -> game over
     eventBus.on('tether:empty', () => {
       console.log('[UV7] Tether depleted - game over');
-      // TODO: Show game over screen
+      this.showGameOver();
     });
+  }
+
+  private showGameOver(): void {
+    this.setState('paused');
+
+    if (!this.gameOverView) {
+      this.gameOverView = new GameOverView({
+        container: this.container,
+        onLoadSave: () => this.loadMostRecentSave(),
+        onRestart: () => this.restartGame(),
+        onReturnToMenu: () => this.quitToMenu(),
+      });
+      this.gameOverView.mount(this.container);
+    }
+
+    // Set attempt number from state
+    const playthrough = stateManager.get('playthrough');
+    this.gameOverView.setAttemptNumber(playthrough);
+    this.gameOverView.show();
+  }
+
+  private async loadMostRecentSave(): Promise<void> {
+    const mostRecent = saveSystem.getMostRecentSlot();
+    if (!mostRecent) {
+      eventBus.emit('ui:notification', { message: 'No saves found', type: 'warning' });
+      return;
+    }
+
+    this.gameOverView?.hide();
+    await this.loadGame(mostRecent.id);
+  }
+
+  private async restartGame(): Promise<void> {
+    this.gameOverView?.hide();
+    this.gameOverView?.destroy();
+    this.gameOverView = null;
+
+    this.gameView?.destroy();
+    this.gameView = null;
+
+    await this.startNewGame();
   }
 
   private registerMenus(): void {
@@ -272,8 +321,11 @@ export class App {
       },
 
       onMusic: (music) => {
-        // TODO: Wire to audio system when implemented
-        console.log('[UV7] Music:', music);
+        if (music) {
+          audioSystem.playMusic(music);
+        } else {
+          audioSystem.stopMusic();
+        }
       },
 
       onComplete: (_scene) => {
@@ -332,7 +384,23 @@ export class App {
 
   private showCredits(): void {
     console.log('[UV7] Show credits...');
-    // TODO: Implement credits screen
+
+    menuController.closeAll();
+
+    if (!this.creditsView) {
+      this.creditsView = new CreditsView({
+        container: this.container,
+        onComplete: () => this.onCreditsComplete(),
+      });
+      this.creditsView.mount(this.container);
+    }
+
+    this.creditsView.start();
+  }
+
+  private onCreditsComplete(): void {
+    this.creditsView?.stop();
+    this.showMainMenu();
   }
 
   private quitToMenu(): void {

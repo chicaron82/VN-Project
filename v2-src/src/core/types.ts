@@ -301,6 +301,11 @@ export type GameEvents = {
   'dev:console:close': undefined;
   'dev:hud:toggle': undefined;
   'dev:confirm': { action: string; message: string };
+
+  // Audio events
+  'audio:music:play': { trackId: string };
+  'audio:music:stop': undefined;
+  'audio:sfx:play': { soundId: string };
 };
 
 // Helper type for event handlers
