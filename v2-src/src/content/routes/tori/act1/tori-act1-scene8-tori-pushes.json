@@ -1,0 +1,26 @@
+{
+  "id": "tori-act1-scene8-tori-pushes",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through game",
+      "text": "\"It's me! Tori! I'm in the device! I've been trying to reach you!\"",
+      "internal": "[Fighting to maintain the connection. Forcing words through the dialogue system.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene8-proof"
+}

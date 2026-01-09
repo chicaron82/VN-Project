@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene4-back-in-void",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"NO! Bring it back! I need to see! PLEASE!\"",
+      "internal": "[Darkness again. The void of the device. She's back. And she just watched herself fall.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene5-echoes-shock"
+}

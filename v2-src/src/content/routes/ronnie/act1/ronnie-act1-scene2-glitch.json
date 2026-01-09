@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act1-scene2-glitch",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"I don't know how long I can hold on like this. Something feels... wrong. Like my world is cracking at the edges.\"",
+      "internal": "[Regardless of choice, she leans closer to the \"screen.\"]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act1-scene2-glitch-narration"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act2-beat5-confusion",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "emotion": "surprised",
+      "text": "\"But... you contacted me through the laptop game. I thought you were IN the laptop!\"",
+      "internal": "[Visual: Ronnie staring at screen, frustrated, confused.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act2-beat6"
+}

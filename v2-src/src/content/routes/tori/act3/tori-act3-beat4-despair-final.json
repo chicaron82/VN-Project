@@ -1,0 +1,25 @@
+{
+  "id": "tori-act3-beat4-despair-final",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"...I'm scared. If you leave... we'll be alone again. Forever.\"",
+      "internal": "[Despair's mask cracking. Not anger anymore. Just fear. Loneliness.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act3-beat4-tori-promise"
+}

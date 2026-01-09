@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act2-beat4-5-hijack",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Tiger Tail.\"",
+      "internal": "[Ronnie freezes. Wait. What?]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 2000,
+  "next": "ronnie-act2-beat4-5-pause"
+}

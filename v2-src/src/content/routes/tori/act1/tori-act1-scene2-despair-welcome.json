@@ -1,0 +1,26 @@
+{
+  "id": "tori-act1-scene2-despair-welcome",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"Welcome to your new cage. You're trapped. Just like we were. Just like you always will be.\"",
+      "internal": "[Visual: Despair—the most worn down, the most bitter. She's given up entirely.]"
+    }
+  ],
+  "unlockNote": "z7",
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene2-tori-refuses"
+}

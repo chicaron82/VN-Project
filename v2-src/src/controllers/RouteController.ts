@@ -177,8 +177,24 @@ export class RouteController implements GameSystem {
       // Validate scene
       const validation = validateScene(scene);
       if (!validation.valid) {
-        const errors = validation.errors.map((e) => `${e.path}: ${e.message}`).join(', ');
-        throw new Error(`Invalid scene "${sceneId}": ${errors}`);
+        // Emit detailed error event for dev overlay
+        const errorPayload: {
+          sceneId: string;
+          route?: string;
+          act?: number;
+          errors: Array<{ path: string; message: string }>;
+        } = {
+          sceneId,
+          act,
+          errors: validation.errors,
+        };
+        if (route) {
+          errorPayload.route = route;
+        }
+        this.eventBus.emit('scene:validation:error', errorPayload);
+
+        const errorSummary = validation.errors.map((e) => `${e.path}: ${e.message}`).join(', ');
+        throw new Error(`Invalid scene "${sceneId}": ${errorSummary}`);
       }
 
       // Update state
@@ -340,12 +356,17 @@ export class RouteController implements GameSystem {
     }
 
     // Determine path based on scene ID pattern
+    // - Shared prologue: prologue-scene1 → shared/prologue-scene1.json
+    // - Route scenes: ronnie-act1-scene1 → ronnie/act1/ronnie-act1-scene1.json
     let path: string;
-    if (sceneId.startsWith('prologue-')) {
+    if (sceneId.startsWith('prologue-') && !sceneId.includes('-prologue-')) {
+      // Shared prologue scenes (not route-specific like ronnie-prologue-4)
       path = `${this.contentBasePath}/shared/${sceneId}.json`;
     } else if (route) {
+      // Route-specific scenes (including route-prologue scenes)
       path = `${this.contentBasePath}/${route}/act${act}/${sceneId}.json`;
     } else {
+      // Fallback to shared
       path = `${this.contentBasePath}/shared/${sceneId}.json`;
     }
 

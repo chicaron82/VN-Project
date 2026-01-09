@@ -6,6 +6,7 @@
 
 import { App } from './App.ts';
 import { eventBus, stateManager } from './core/index.ts';
+import { devErrorOverlay } from './ui/components/DevErrorOverlay.ts';
 import './styles/main.css';
 
 // Wait for DOM ready
@@ -32,11 +33,15 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log(`[UV7] ${event}`, payload);
     });
 
+    // Mount dev error overlay for scene validation errors
+    devErrorOverlay.mount(document.body);
+
     // Make state accessible in console for debugging
     (window as unknown as { uv7: unknown }).uv7 = {
       app,
       eventBus,
       stateManager,
+      devErrorOverlay,
       getState: () => stateManager.getState(),
       getHistory: () => eventBus.getHistory(),
     };

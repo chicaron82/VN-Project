@@ -1,0 +1,28 @@
+{
+  "id": "tori-act3-beat5",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"I feel it! My body! It's RIGHT THERE! The pull is so strong!\"",
+      "internal": "[The warmth. The magnetic sensation. Stronger than ever.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "heavy",
+      "reason": "Body proximity"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act3-beat5-ronnie-voice"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "ronnie-ending-bad-time-skip",
+  "background": "apartment",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "Years later...",
+      "internal": "[Visual: Dimly lit workshop. Older Ronnie, silver hair, faded BGA hoodie. Soldering iron in hand.]\n[Workbench: Tori's original Tamagotchi, disassembled. Modified circuitry. Notes everywhere.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-ending-bad-news"
+}

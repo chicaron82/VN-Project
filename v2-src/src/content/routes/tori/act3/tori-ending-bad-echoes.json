@@ -1,0 +1,14 @@
+{
+  "id": "tori-ending-bad-echoes",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"Welcome to forever, 848.\"",
+      "internal": "[Despair's voice. Hollow. No satisfaction. Just shared grief.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-ending-bad-final"
+}

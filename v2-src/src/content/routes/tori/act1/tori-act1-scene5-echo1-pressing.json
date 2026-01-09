@@ -1,0 +1,25 @@
+{
+  "id": "tori-act1-scene5-echo1-pressing",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "echo1",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "echo1",
+      "text": "\"Where WERE you?! You weren't here! We've been in this cage for... for YEARS. No one has ever left!\"",
+      "internal": "[Desperation in her voice. If Tori left... maybe escape is possible?]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene5-despair-denial"
+}

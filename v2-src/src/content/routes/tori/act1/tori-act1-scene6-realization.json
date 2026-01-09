@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene6-realization",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Wait... the device is TOUCHING the laptop. Just like during the accident!\"",
+      "internal": "[The pattern. Physical contact. That was the difference.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene6-attempt-now"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "tori-act1-scene5-despair-denial",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "angry",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"It was a FLUKE. A glitch. It won't happen again. You're still trapped. We're ALL still trapped.\"",
+      "internal": "[But her voice wavers. She's not as certain as she pretends.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene5-tori-defiant"
+}

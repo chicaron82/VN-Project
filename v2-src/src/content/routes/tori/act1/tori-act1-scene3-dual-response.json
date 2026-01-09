@@ -1,0 +1,20 @@
+{
+  "id": "tori-act1-scene3-dual-response",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who's even cuter!\"",
+      "internal": "[Digital Tori (internal, horrified): \"Wait... I'm saying this. But SHE'S saying this. We're both... the same words...\"]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene3-sync-horror"
+}

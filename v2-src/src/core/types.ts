@@ -219,6 +219,12 @@ export type GameEvents = {
   'scene:ready': { sceneId: string };
   'scene:waiting': { sceneId: string };
   'scene:complete': { sceneId: string };
+  'scene:validation:error': {
+    sceneId: string;
+    route?: string;
+    act?: number;
+    errors: Array<{ path: string; message: string }>;
+  };
 
   // Dialog events
   'dialog:start': { entries: DialogEntry[] };

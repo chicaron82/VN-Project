@@ -1,0 +1,25 @@
+{
+  "id": "tori-act3-beat4-echoes-support",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "echo1",
+      "emotion": "determined",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "echo1",
+      "text": "\"Hold on. Just hold on. He's almost there. We can feel the body getting closer.\"",
+      "internal": "[The Echoes gathered around her. Supporting. Hoping.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act3-beat4-despair-final"
+}

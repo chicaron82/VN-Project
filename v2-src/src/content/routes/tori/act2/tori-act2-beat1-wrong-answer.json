@@ -1,0 +1,27 @@
+{
+  "id": "tori-act2-beat1-wrong-answer",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through game",
+      "text": "\"Tiger Tail.\"",
+      "internal": "[That's not right. She HATES Tiger Tail. Despair is speaking through her.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 2000,
+  "next": "tori-act2-beat1-ronnie-notices"
+}

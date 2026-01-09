@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act3-mad-dash-start",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "THE MAD DASH BEGINS.",
+      "internal": "[Visual: Ronnie bursts through apartment door. Tamagotchi clutched tight. Sprinting down stairs.]"
+    }
+  ],
+  "autoAdvanceDelay": 2000,
+  "next": "ronnie-act3-mad-dash-streets"
+}

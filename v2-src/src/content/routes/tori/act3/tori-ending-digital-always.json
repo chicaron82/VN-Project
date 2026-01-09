@@ -1,0 +1,25 @@
+{
+  "id": "tori-ending-digital-always",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"What I promised. Always.\"",
+      "internal": "[He takes her hand. Their sprites sync perfectly.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-ending-digital-together"
+}

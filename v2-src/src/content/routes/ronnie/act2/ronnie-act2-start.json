@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act2-start",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "internal",
+      "text": "\"Something is wrong. The conversations loop. She says the same things. Asks the same questions.\"",
+      "internal": "[Visual: Ronnie at his desk. Multiple browser tabs open showing chat logs. Text highlighted - identical phrases from different days.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-beat1-discovery"
+}

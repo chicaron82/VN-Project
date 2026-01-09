@@ -1,0 +1,24 @@
+{
+  "id": "ronnie-act1-scene2-choice2-investigate",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"It's like... my battery's running out. Fading piece by piece. If it goes... I go too.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act1-scene2-end"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "tori-act1-scene8-ronnie-confusion",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"What the... I didn't code that. What's happening?\"",
+      "internal": "[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene8-tori-pushes"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "ronnie-act2-beat5",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"She's glitching. Fragments appearing in the laptop game. The code isn't holding her...\"",
+      "internal": "[Visual: Ronnie at his desk. ToriGatchi game open on laptop. Tori's sprite flickering, corrupted.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "medium",
+      "duration": 500
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-beat5-theory"
+}

@@ -1,0 +1,27 @@
+{
+  "id": "tori-act1-scene8-first-words",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through game",
+      "text": "\"Baby? Is that you?\"",
+      "internal": "[Visual: Her words appearing in the dialogue box. Text she didn't code. SHE'S SPEAKING.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene8-ronnie-confusion"
+}

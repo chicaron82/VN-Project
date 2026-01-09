@@ -1,0 +1,32 @@
+{
+  "id": "ronnie-act2-beat4-7-glitch-start",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "[Her sprite flickers. Just for a second. Ronnie freezes.]",
+      "internal": "[Visual: A single pixel corruption. Then another. Then more.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "low",
+      "duration": 200
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-act2-beat5"
+}

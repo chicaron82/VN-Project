@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act1-scene1-sprite-loads",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "A sprite appears. Pixelated but alive.",
+      "internal": "[The Tori-gatchi interface boots up. Her digital form materializes on screen.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-act1-scene1-glitch"
+}

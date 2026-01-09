@@ -1,0 +1,28 @@
+{
+  "id": "ronnie-act2-beat6-crisis",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "[RING RING RING]\n\n[Ronnie's phone. Hospital calling.]",
+      "internal": "[Visual: Phone screen - \"ST. MERCY HOSPITAL\" displayed.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "heavy",
+      "reason": "Phone call - crisis"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act2-beat6-call"
+}

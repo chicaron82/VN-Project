@@ -1,0 +1,28 @@
+{
+  "id": "ronnie-ending-true-transfer",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through device",
+      "text": "\"I feel it... the pull... I'm—",
+      "internal": "[Visual: Tamagotchi screen. Tori's sprite begins to dissolve - not glitch, but fade like mist.]\n[Visual: Her real hand twitches.]\n[Monitor stabilizes slightly. Beeping slows from erratic to rhythmic.]\n[Her eyes move beneath closed lids.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "double",
+      "reason": "Double buzz - Tori returns to her body"
+    }
+  ],
+  "autoAdvanceDelay": 4500,
+  "next": "ronnie-ending-true-whisper"
+}

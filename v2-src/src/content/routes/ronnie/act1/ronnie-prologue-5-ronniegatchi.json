@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-prologue-5-ronniegatchi",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Found your Ronnie-Gatchi near my computer. Been working on something to pass the time...\"",
+      "internal": "[He reaches into his pocket, pulls out the Tamagotchi. The screen glows faintly in the dim hospital lighting.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-prologue-5-buzz"
+}

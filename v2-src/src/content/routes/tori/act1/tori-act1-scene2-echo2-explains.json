@@ -1,0 +1,25 @@
+{
+  "id": "tori-act1-scene2-echo2-explains",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "echo2",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "echo2",
+      "text": "\"We're you. Previous loops. Different attempts. 847 failures.\"",
+      "internal": "[Visual: The weight of their existence. Failed iterations.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene2-despair-welcome"
+}

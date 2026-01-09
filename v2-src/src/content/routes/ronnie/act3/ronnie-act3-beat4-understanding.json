@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act3-beat4-understanding",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "sad",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"The buzzes. The battery drain. That's me. I'm killing the device just by existing in it.\""
+    }
+  ],
+  "unlockNote": "gz3",
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act3-beat4-confirms"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act1-scene2-choice1-honest",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "sad",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "sad",
+      "text": "\"...Me too. I was scared you'd wake up and decide I was just a dream.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act1-scene2-glitch"
+}

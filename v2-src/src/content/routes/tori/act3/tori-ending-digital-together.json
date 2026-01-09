@@ -1,0 +1,25 @@
+{
+  "id": "tori-ending-digital-together",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"You beautiful idiot. We're both trapped now.\"",
+      "internal": "[But she's smiling. They're together. That's what matters.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-ending-digital-build"
+}

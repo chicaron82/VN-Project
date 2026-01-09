@@ -1,0 +1,33 @@
+{
+  "id": "tori-act3-beat2-despair-attacks",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "angry",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"NO! You can't leave! If you escape, what does that make US? 847 failures who never tried hard enough?!\"",
+      "internal": "[Despair lashes out. Not just despair anymore - jealousy. Fear of being left behind.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "shake",
+      "intensity": "medium",
+      "duration": 400
+    }
+  ],
+  "tetherImpact": -10,
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act3-beat2-echoes-defend"
+}

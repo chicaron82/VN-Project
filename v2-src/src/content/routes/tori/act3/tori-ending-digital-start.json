@@ -1,0 +1,28 @@
+{
+  "id": "tori-ending-digital-start",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Wait... something's happening. Another consciousness entering the device?\"",
+      "internal": "[A new presence. Familiar. Impossible.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "double",
+      "reason": "Ronnie entering the device"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-ending-digital-ronnie-arrives"
+}

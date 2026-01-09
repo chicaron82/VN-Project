@@ -1,0 +1,35 @@
+{
+  "id": "tori-act3-beat3-feeling-it",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "hurt",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"I can FEEL it. My body. It's failing. Both of me are dying at the same time!\"",
+      "internal": "[The connection to her body - she can sense its distress.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "high",
+      "duration": 500
+    },
+    {
+      "type": "haptic",
+      "hapticType": "emergency",
+      "reason": "Body crisis"
+    }
+  ],
+  "style": "critical",
+  "tetherImpact": -15,
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act3-beat3-battery-warning"
+}

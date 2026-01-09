@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-ending-true-terrible",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "smirk",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "smirk",
+      "text": "\"You look terrible.\""
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-ending-true-months"
+}

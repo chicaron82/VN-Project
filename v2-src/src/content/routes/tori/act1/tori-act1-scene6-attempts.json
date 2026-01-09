@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene6-attempts",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Come on... PUSH. Like before. I need to get to the laptop again!\"",
+      "internal": "[She concentrates. Pushes. Nothing happens. The void remains.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene6-failure"
+}

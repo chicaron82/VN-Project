@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act3-beat7-decision",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Hold on. HOLD ON. I'm coming!\"",
+      "internal": "[He grabs his keys. The Tamagotchi. Sprints for the door.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-act3-mad-dash-start"
+}

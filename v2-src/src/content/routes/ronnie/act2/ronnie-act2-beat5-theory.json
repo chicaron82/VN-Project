@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act2-beat5-theory",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"That's it. She's trapped in the LAPTOP. Limited processing power. If I upload the game to the cloud... more resources... she'll stabilize!\"",
+      "internal": "[Visual: Ronnie frantically typing. Upload progress bar appears.]"
+    }
+  ],
+  "autoAdvanceDelay": 4500,
+  "next": "ronnie-act2-beat5-upload"
+}

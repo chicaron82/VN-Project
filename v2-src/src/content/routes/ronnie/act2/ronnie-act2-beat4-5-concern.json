@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act2-beat4-5-concern",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "emotion": "worried",
+      "text": "\"Tori... are you okay? That wasn't like you.\"",
+      "internal": "[Something is very wrong. She's fragmenting worse than he thought.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act2-beat4-5-deflect"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "tori-act1-scene4-accidental-hop",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "She pushes. Not with body, but with consciousness. Every ounce of will focused on one thing: SEE.",
+      "internal": "[And then... something gives.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene4-double-buzz"
+}

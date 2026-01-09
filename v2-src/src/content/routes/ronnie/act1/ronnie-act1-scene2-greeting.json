@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act1-scene2-greeting",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Good morning, sleepyhead. ...Or did you even sleep at all?\"",
+      "internal": "[Sprite flickers — she appears again, clearer than before. Her smile is tired but real.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act1-scene2-choice1"
+}

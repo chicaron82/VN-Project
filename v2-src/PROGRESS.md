@@ -562,4 +562,17 @@ v2-src/
 
 ---
 
-*Last updated: Session 10 (Phase 7 Complete - App Integration)*
+*Last updated: Session 10 (Phase 7 Complete + Tori Feedback Polish)*
+
+---
+
+## Recent Improvements (Tori Feedback)
+
+Based on code review feedback:
+
+1. **README.md** - Added with status, slice criteria, and architecture overview
+2. **Dev Error Overlay** - Scene validation errors now show as actionable overlay with route/scene/field details
+3. **JSON Content Migration** - All 282 route scenes converted from TypeScript to JSON
+   - Canonical format is now JSON (engine consumes JSON)
+   - TypeScript files kept temporarily for type-checking during migration
+   - Script: `scripts/convert-scenes-to-json.ts`

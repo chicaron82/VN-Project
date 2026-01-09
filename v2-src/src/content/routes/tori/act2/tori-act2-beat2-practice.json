@@ -1,0 +1,22 @@
+{
+  "id": "tori-act2-beat2-practice",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Hold on. Right. I can do that. I have something to hold on to.\"",
+      "internal": "[She thinks of Ronnie. Of home. The tether glows brighter.]"
+    }
+  ],
+  "tetherImpact": 10,
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act2-continue"
+}

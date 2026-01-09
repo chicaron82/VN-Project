@@ -1,0 +1,25 @@
+{
+  "id": "tori-act3-beat1-despair-gloats",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "smirk",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "despair",
+      "text": "\"I told you. Trapped. Just like us. When the battery dies, you die. We all die. Again.\"",
+      "internal": "[Despair's bitter satisfaction. She was right all along.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act3-beat1-tori-refuses"
+}

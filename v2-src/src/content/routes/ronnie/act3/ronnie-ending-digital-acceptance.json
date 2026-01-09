@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-ending-digital-acceptance",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"You idiot. Beautiful idiot.\"",
+      "internal": "[She takes his hand. Their sprites sync perfectly.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-ending-digital-world"
+}

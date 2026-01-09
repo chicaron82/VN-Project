@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene3-screaming",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"RONNIE! RONNIE, I'M IN HERE! THAT'S NOT ME! CAN YOU HEAR ME?!\"",
+      "internal": "[She screams into the void. Nothing happens. The conversation continues outside.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene3-echoes-explain"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act3-beat3",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "Then the messages started appearing.",
+      "internal": "[Visual: Text overlays bleeding through the game world. Red warnings.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-act3-beat3-first-message"
+}

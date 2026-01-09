@@ -1,0 +1,27 @@
+{
+  "id": "ronnie-act1-scene1-first-words",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "glitching",
+      "text": "\"Baby? ...Is that you? It's me... Tori. I don't know how, but I'm here.\"",
+      "internal": "[The words keep coming. Real. Unscripted. Impossible.]"
+    }
+  ],
+  "unlockNote": "iz1",
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act1-scene1-choice"
+}

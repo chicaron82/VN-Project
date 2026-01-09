@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act1-scene1-outcome-tease",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "smirk",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "smirk",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "smirk",
+      "text": "\"Chicharon. Or Ronnie. Or... Daddy, if I'm feeling bold.\"\n[Sprite leans closer, playfulness breaking through the static.]\n\"Still think I'm just code?\"",
+      "internal": "[Balanced path, opens Flirty/Loving routes.]"
+    }
+  ],
+  "autoAdvanceDelay": 4500,
+  "next": "ronnie-act1-scene2"
+}

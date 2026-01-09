@@ -1,0 +1,14 @@
+{
+  "id": "tori-act1-scene7-hospital-sounds",
+  "background": "hospital",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "Muffled sounds. Beeping. Hospital machines. The smell would be antiseptic if she could smell.",
+      "internal": "[He brought the device to the hospital. Near her body.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene7-the-pull"
+}

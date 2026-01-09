@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene5-tori-distraught",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"I... I saw it. I saw her—ME—fall. There was blood. Ronnie was screaming. I watched myself...\"",
+      "internal": "[She's in shock. The horror of witnessing her own accident.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act1-scene5-echo1-pressing"
+}

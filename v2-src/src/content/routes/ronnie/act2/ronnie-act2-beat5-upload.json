@@ -1,0 +1,28 @@
+{
+  "id": "ronnie-act2-beat5-upload",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "system",
+      "text": "UPLOADING TORIGATCHI TO CLOUD\nTransferring consciousness data...\n\n[████████████████░░░░] 85%",
+      "internal": "[Upload sequence with dramatic pause at 85%]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "high",
+      "duration": 300
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-beat5-still-there"
+}

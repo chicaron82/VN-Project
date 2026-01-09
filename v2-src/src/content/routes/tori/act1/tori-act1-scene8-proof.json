@@ -1,0 +1,26 @@
+{
+  "id": "tori-act1-scene8-proof",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through game",
+      "text": "\"I saw it happen. Through your laptop camera. I tripped on your shoe. There was blood. You called 911.\"",
+      "internal": "[Details only she would know. Proof. Evidence. It's really her.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act1-scene8-ronnie-believes"
+}

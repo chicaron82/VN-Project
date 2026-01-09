@@ -1,0 +1,24 @@
+{
+  "id": "ronnie-ending-true-home",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"You're here now. You're real. You're home.\""
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-ending-true-toast"
+}

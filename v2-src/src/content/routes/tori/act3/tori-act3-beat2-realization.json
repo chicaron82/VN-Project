@@ -1,0 +1,23 @@
+{
+  "id": "tori-act3-beat2-realization",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Double buzz = vessel transfer. Single buzz = body calling. If the device touches my body... I can jump HOME!\"",
+      "internal": "[The revelation. The escape route. It was there all along.]"
+    }
+  ],
+  "unlockNote": "pz2",
+  "style": "critical",
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act3-beat2-despair-attacks"
+}

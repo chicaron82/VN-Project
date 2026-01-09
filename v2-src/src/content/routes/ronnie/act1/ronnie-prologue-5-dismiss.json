@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-prologue-5-dismiss",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Weird... must be the battery acting up.\"",
+      "internal": "[He pockets his phone, dismisses it completely. Looks back at Tori's still form in the hospital bed.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-prologue-5-name"
+}

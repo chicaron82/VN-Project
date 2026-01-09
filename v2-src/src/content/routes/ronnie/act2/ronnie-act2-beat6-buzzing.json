@@ -1,0 +1,27 @@
+{
+  "id": "ronnie-act2-beat6-buzzing",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Wait... the buzzing. The Tamagotchi has been buzzing. And ONLY when I visit you at the hospital!\"",
+      "internal": "[Visual: Flashback glimpses of the two hospital visits. The buzz. The pull.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "medium",
+      "reason": "Realization - the buzzing"
+    }
+  ],
+  "autoAdvanceDelay": 4500,
+  "next": "ronnie-act2-beat6-confirm"
+}

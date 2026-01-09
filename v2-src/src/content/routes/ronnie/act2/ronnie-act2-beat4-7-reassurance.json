@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act2-beat4-7-reassurance",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"I just needed rest. I'm okay now. Promise.\"",
+      "internal": "[Ronnie wants to believe it. She looks stable. Maybe... maybe it worked itself out?]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act2-beat4-7-glitch-start"
+}

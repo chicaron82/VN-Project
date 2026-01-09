@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-ending-digital-start",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Tori... if I can't get to you... then I'm coming TO you.\"",
+      "internal": "[He stops running. Holds the Tamagotchi close. Opens the connection.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-ending-digital-connect"
+}

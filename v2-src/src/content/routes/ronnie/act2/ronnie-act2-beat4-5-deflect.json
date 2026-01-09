@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act2-beat4-5-deflect",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"I'm fine. Just tired. Can we... talk later?\"",
+      "internal": "[Her sprite fades from the screen. Connection drops. Ronnie stares at the empty game window.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act2-beat4-7-honeymoon"
+}

@@ -1,0 +1,28 @@
+{
+  "id": "tori-act3-start",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Something's wrong. I can feel pieces of myself... slipping away.\"",
+      "internal": "[Visual: Her sprite flickering. Pixels dissolving at the edges.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "low",
+      "duration": 300
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act3-beat1-forgetting"
+}

@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-ending-bad-too-late",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "hurt",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "The monitor flatlines.",
+      "internal": "[A single, sustained tone. The Tamagotchi screen goes dark. Both gone. Simultaneously.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-ending-bad-nurse-words"
+}

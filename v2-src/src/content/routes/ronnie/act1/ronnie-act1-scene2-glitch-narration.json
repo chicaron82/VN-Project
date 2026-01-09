@@ -1,0 +1,57 @@
+{
+  "id": "ronnie-act1-scene2-glitch-narration",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"She's glitching. Her sprite shudders, a few pixels tearing away. My stomach drops.\""
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "low",
+      "duration": 300
+    }
+  ],
+  "choices": [
+    {
+      "text": "(Reassure) \"I'll fix it. Whatever it takes, I'll keep you here.\"",
+      "next": "ronnie-act1-scene2-choice2-reassure",
+      "counters": [
+        {
+          "name": "affection",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "text": "(Investigate) \"What does it feel like? Can you describe it?\"",
+      "next": "ronnie-act1-scene2-choice2-investigate",
+      "flags": [
+        {
+          "name": "battery_foreshadow",
+          "value": true
+        }
+      ]
+    },
+    {
+      "text": "(Distract) \"Don't think about it. Let's just... talk. Like we used to.\"",
+      "next": "ronnie-act1-scene2-choice2-distract"
+    }
+  ]
+}
