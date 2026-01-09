@@ -4,7 +4,7 @@ A complete rewrite of the UV7 visual novel engine with TypeScript, proper archit
 
 ## Current Status
 
-**Phase 8 Complete** - Easter Eggs & Special Systems
+**Phase 9 In Progress** - Polish & E2E
 
 | Area | Status | Notes |
 |------|--------|-------|
@@ -14,13 +14,13 @@ A complete rewrite of the UV7 visual novel engine with TypeScript, proper archit
 | Content (Prologue, Routes, Endings) | Done | Schema-validated, JSON format |
 | App Flow (Boot -> Menu -> Play) | Done | Save/load working |
 | Easter Eggs | Done | Konami, codes, dev commands |
-| Polish & E2E | Not started | Phase 9 |
+| Audio System | Done | Music crossfade, SFX pooling |
+| Game Over Screen | Done | Tether depletion handler |
+| Credits Screen | Done | Rolling credits with skip |
+| E2E Tests | Pending | Full playthrough automation |
 
 ## What's Intentionally Not Built Yet
 
-- **Audio system** - Music/SFX playback (wiring exists, implementation pending)
-- **Credits screen** - End-game credits sequence
-- **Game over screen** - Tether depletion handling
 - **E2E tests** - Full playthrough automation
 
 ## Definition of "Vertical Slice Complete"
