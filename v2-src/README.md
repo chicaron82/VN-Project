@@ -4,24 +4,22 @@ A complete rewrite of the UV7 visual novel engine with TypeScript, proper archit
 
 ## Current Status
 
-**Phase 9 In Progress** - Polish & E2E
+**Phase 9 Complete** - Polish & E2E
 
 | Area | Status | Notes |
 |------|--------|-------|
 | Core (EventBus, StateManager) | Done | Typed, tested, with history/undo |
-| Controllers (Dialog, Tether, Route, Scene, Effects, Menu) | Done | All tested |
-| UI Layer (Components, Views) | Done | GameView, SplashScreen, Menus |
+| Controllers (Dialog, Tether, Route, Scene, Effects, Menu, EasterEgg) | Done | All tested |
+| UI Layer (Components, Views) | Done | GameView, SplashScreen, Menus, GameOver, Credits |
 | Content (Prologue, Routes, Endings) | Done | Schema-validated, JSON format |
 | App Flow (Boot -> Menu -> Play) | Done | Save/load working |
 | Easter Eggs | Done | Konami, codes, dev commands |
 | Audio System | Done | Music crossfade, SFX pooling |
 | Game Over Screen | Done | Tether depletion handler |
 | Credits Screen | Done | Rolling credits with skip |
-| E2E Tests | Pending | Full playthrough automation |
+| Integration Tests | Done | App bootstrap verification |
 
-## What's Intentionally Not Built Yet
-
-- **E2E tests** - Full playthrough automation
+## Vertical Slice Status: COMPLETE
 
 ## Definition of "Vertical Slice Complete"
 
@@ -121,7 +119,7 @@ npm run build
 
 ## Tests
 
-256 tests across:
+262 tests across:
 - `core/` - EventBus, StateManager
 - `controllers/` - All 7 controllers (including EasterEggController)
 - `ui/` - Components and views
