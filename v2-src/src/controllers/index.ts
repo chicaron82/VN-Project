@@ -15,3 +15,6 @@ export type { RouteControllerConfig } from './RouteController.ts';
 
 export { EffectsController, effectsController } from './EffectsController.ts';
 export type { EffectsControllerConfig } from './EffectsController.ts';
+
+export { MenuController, menuController } from './MenuController.ts';
+export type { MenuControllerConfig, MenuConfig, MenuItem, MenuId } from './MenuController.ts';

@@ -9,7 +9,7 @@
 // CHARACTER TYPES
 // =============================================================================
 
-export type CharacterId = 'ronnie' | 'tori' | 'kai' | 'echo' | 'player';
+export type CharacterId = 'ronnie' | 'tori' | 'oldRonnie' | 'echo1' | 'echo2' | 'despair';
 
 export type Emotion =
   | 'neutral'
@@ -237,6 +237,13 @@ export type GameEvents = {
   // UI events
   'ui:menu:open': { menuId: string };
   'ui:menu:close': { menuId: string };
+  'ui:menu:focus': { menuId: string; itemId: string; index: number };
+  'ui:menu:select': { menuId: string; itemId: string };
+  'ui:modal:open': { modalId: string };
+  'ui:modal:close': { modalId: string };
+  'ui:splash:start': undefined;
+  'ui:splash:progress': { percent: number };
+  'ui:splash:complete': undefined;
   'ui:notification': { message: string; type: 'info' | 'warning' | 'error' };
 };
 

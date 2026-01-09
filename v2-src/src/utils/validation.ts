@@ -9,7 +9,7 @@
 import type { Scene } from '../core/types.ts';
 
 // Valid values for enums
-const VALID_CHARACTERS = ['ronnie', 'tori', 'kai', 'echo', 'player'] as const;
+const VALID_CHARACTERS = ['ronnie', 'tori', 'oldRonnie', 'echo1', 'echo2', 'despair'] as const;
 const VALID_EMOTIONS = ['neutral', 'happy', 'sad', 'angry', 'surprised', 'worried', 'smirk', 'blush', 'hurt', 'determined'] as const;
 const VALID_POSITIONS = ['left', 'center', 'right'] as const;
 const VALID_EFFECTS = ['glitch', 'fade', 'shake', 'flash', 'static', 'vhs', 'redpulse', 'tetherdrain'] as const;

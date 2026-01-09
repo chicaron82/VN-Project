@@ -4,7 +4,7 @@
   "background": "assets/genericBack.png",
   "sprites": [
     {
-      "character": "ronnie",
+      "character": "oldRonnie",
       "emotion": "neutral",
       "position": "left"
     },
@@ -20,7 +20,7 @@
       "text": "She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi."
     },
     {
-      "speaker": "ronnie",
+      "speaker": "oldRonnie",
       "text": "No problem. Hang on to that. It may save your life someday."
     },
     {
