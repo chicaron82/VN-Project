@@ -31,36 +31,48 @@ export interface EffectsControllerConfig {
 const EFFECT_CLASSES: Record<EffectType, string> = {
   glitch: 'effect-glitch',
   fade: 'effect-fade',
+  fadeIn: 'effect-fade-in',
+  fadeOut: 'effect-fade-out',
   shake: 'effect-shake',
   flash: 'effect-flash',
+  screenFlash: 'effect-screen-flash',
   static: 'effect-static',
   vhs: 'effect-vhs',
   redpulse: 'effect-redpulse',
   tetherdrain: 'effect-tetherdrain',
+  haptic: 'effect-haptic',
 };
 
 // Default durations in ms
 const DEFAULT_DURATIONS: Record<EffectType, number> = {
   glitch: 500,
   fade: 1000,
+  fadeIn: 500,
+  fadeOut: 500,
   shake: 300,
   flash: 200,
+  screenFlash: 150,
   static: 800,
   vhs: 600,
   redpulse: 400,
   tetherdrain: 1500,
+  haptic: 100,
 };
 
 // Haptic patterns per effect
 const HAPTIC_PATTERNS: Record<EffectType, number[]> = {
   glitch: [50, 30, 50, 30, 100],
   fade: [100],
+  fadeIn: [50],
+  fadeOut: [50],
   shake: [30, 20, 30, 20, 30],
   flash: [20],
+  screenFlash: [30],
   static: [10, 10, 10, 10, 10, 10, 10],
   vhs: [40, 20, 40],
   redpulse: [100, 50, 100],
   tetherdrain: [200, 100, 200, 100, 300],
+  haptic: [100],
 };
 
 export class EffectsController implements GameSystem {

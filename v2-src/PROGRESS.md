@@ -6,9 +6,10 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 
 ## Current Status
 
-**Phase**: 5 - Content Migration (In Progress)
+**Phase**: 5 - Content Migration (COMPLETE)
 **Tests**: 212 passing
 **TypeScript**: Strict mode, zero errors
+**Content Migrated**: Routes (6 acts), Endings, Secrets, Achievements
 
 ---
 
@@ -196,10 +197,45 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 | Effects | Imperative `triggerSensoryFeedback()` | Declarative `effects` array | Data-driven, consistent |
 | Route points | Mutable class state | `counters` in scene definitions | Tracked in state, saveable |
 
-**Still to migrate:**
-- [ ] Endings data (epilogue, credits)
-- [ ] Secret codes
-- [ ] Achievements
+#### Endings Data ✅
+- `src/content/endings/epilogue.ts` - Shared True Ending epilogue ("Six Months Later")
+- `src/content/endings/credits.ts` - Credits sequence, photo pools, timing
+- `src/content/endings/ending-dialog.ts` - Post-ending options (Try Again/Accept/Exit)
+- `src/content/endings/index.ts` - Complete export
+
+**V1 vs V2:**
+
+| Aspect | V1 | V2 | Why |
+|--------|----|----|-----|
+| Epilogue | JS class with route callbacks | Scene[] generator from config | Reusable for both routes |
+| Credits | DOM creation in controller | Data + metadata separation | UI logic decoupled |
+| Photo pools | Object in `credits-photo-controller.js` | Typed `PhotoPools` with helpers | Type-safe, testable selection |
+
+#### Secret Codes ✅
+- `src/content/secrets/codes.ts` - Secret codes + dev commands
+- `src/content/secrets/index.ts` - Complete export
+
+**V1 vs V2:**
+
+| Aspect | V1 | V2 | Why |
+|--------|----|----|-----|
+| Code definitions | Object with inline reward functions | Typed `SecretCode[]` with metadata | UI-ready, categorized |
+| Dev commands | Same object as codes | Separate `DEV_COMMANDS` array | Clear separation of concerns |
+| Invalid responses | Array in manager class | Exported constant + helper | Reusable, testable |
+
+#### Achievements ✅
+- `src/content/achievements/achievements.ts` - Achievement definitions + conditions
+- `src/content/achievements/index.ts` - Complete export
+
+**V1 vs V2:**
+
+| Aspect | V1 | V2 | Why |
+|--------|----|----|-----|
+| Definitions | Object with inline unlock state | Typed `Achievement[]` + separate state | Data/state separation |
+| Conditions | Methods on manager class | Declarative `AchievementCondition[]` | Testable, pure functions |
+| Categories | None | `AchievementCategory` type | Filterable in UI |
+
+**Phase 5 Complete!**
 
 ---
 
@@ -410,9 +446,20 @@ v2-src/
 │   │   ├── boot/
 │   │   │   ├── BootContent.ts   # Boot sequence data
 │   │   │   └── BootStatsCalculator.ts
-│   │   └── routes/
-│   │       └── shared/
-│   │           └── prologue.ts  # Scene definitions
+│   │   ├── characters/
+│   │   │   └── CharacterData.ts # Character definitions
+│   │   ├── routes/
+│   │   │   ├── shared/          # Prologue scenes (JSON)
+│   │   │   ├── ronnie/          # Acts 1-3, all endings
+│   │   │   └── tori/            # Acts 1-3, all endings
+│   │   ├── endings/
+│   │   │   ├── epilogue.ts      # True Ending epilogue
+│   │   │   ├── credits.ts       # Credits sequence data
+│   │   │   └── ending-dialog.ts # Post-ending options
+│   │   ├── secrets/
+│   │   │   └── codes.ts         # Secret codes + dev commands
+│   │   └── achievements/
+│   │       └── achievements.ts  # Achievement definitions
 │   │
 │   ├── styles/
 │   │   └── main.css             # Design system
@@ -431,12 +478,23 @@ v2-src/
 
 ## Next Steps
 
-1. **Endings data** - Epilogue scenes, credits sequence
-2. **Bootstrap tracker** - Timeline/attempt tracking system
-3. **Secret codes** - Cheat code system
-4. **Achievements** - Achievement definitions and unlock logic
-5. **Scene runner integration** - Wire scenes to actual game flow
+**Phase 6: Scene Runner Integration**
+1. **SceneRunner** - Execute scenes from loaded content
+2. **RouteController integration** - Wire routes to scene runner
+3. **Choice handling** - Connect choices to state changes
+4. **Effects integration** - Trigger effects from scene data
+5. **Save/Load integration** - Persist scene position and counters
+
+**Phase 7: Easter Eggs & Special Systems**
+1. **EasterEggController** - Konami code, ToriGatchi, etc.
+2. **BootstrapTracker** - Timeline visualization
+3. **SecretCodesManager** - Code redemption UI
+
+**Phase 8: Polish & Testing**
+1. **E2E testing** - Full playthrough tests
+2. **Performance profiling** - Memory, rendering
+3. **Accessibility audit** - Screen reader, keyboard nav
 
 ---
 
-*Last updated: Session 8 (Phase 5 - Route Content Migration Complete)*
+*Last updated: Session 9 (Phase 5 Complete - All Content Migrated)*

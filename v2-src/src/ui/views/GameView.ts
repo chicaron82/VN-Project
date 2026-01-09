@@ -306,8 +306,8 @@ export class GameView extends Component {
     }
   }
 
-  private formatSpeakerName(speaker: CharacterId | 'narrator'): string {
-    const names: Record<CharacterId | 'narrator', string> = {
+  private formatSpeakerName(speaker: CharacterId | 'narrator' | 'system'): string {
+    const names: Record<CharacterId | 'narrator' | 'system', string> = {
       ronnie: 'Ronnie',
       tori: 'Tori',
       oldRonnie: 'Old Man',
@@ -315,6 +315,7 @@ export class GameView extends Component {
       echo2: 'Gentle',
       despair: 'Despair',
       narrator: '',
+      system: 'SYSTEM',
     };
     return names[speaker] ?? speaker;
   }

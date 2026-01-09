@@ -94,8 +94,11 @@ export interface Choice {
 export type EffectType =
   | 'glitch'
   | 'fade'
+  | 'fadeIn'
+  | 'fadeOut'
   | 'shake'
   | 'flash'
+  | 'screenFlash'
   | 'static'
   | 'vhs'
   | 'redpulse'
@@ -152,6 +155,7 @@ export interface Scene {
 
 export type RouteId = 'ronnie' | 'tori';
 export type ActNumber = 1 | 2 | 3;
+export type EndingId = 'true' | 'bad' | 'digital_forever';
 
 export interface EndingRecord {
   routeId: RouteId;
