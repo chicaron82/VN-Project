@@ -15,6 +15,7 @@ import { routeController } from './controllers/RouteController.ts';
 import { effectsController } from './controllers/EffectsController.ts';
 import { menuController } from './controllers/MenuController.ts';
 import { sceneRunner } from './controllers/SceneRunner.ts';
+import { easterEggController } from './controllers/EasterEggController.ts';
 import { SplashScreen } from './ui/views/SplashScreen.ts';
 import { GameView } from './ui/views/GameView.ts';
 import { MenuView } from './ui/views/MenuView.ts';
@@ -96,6 +97,7 @@ export class App {
       sceneRunner,
       routeController,
       menuController,
+      easterEggController,
     ];
 
     // Initialize each system

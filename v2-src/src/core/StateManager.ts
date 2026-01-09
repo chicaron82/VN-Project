@@ -45,6 +45,7 @@ const DEFAULT_STATE: GameState = {
 
   notesUnlocked: [],
   achievementsUnlocked: [],
+  discoveredCodes: [],
 };
 
 export class StateManager {
@@ -207,6 +208,22 @@ export class StateManager {
       ]);
       this.eventBus.emit('achievement:unlock', { id: achievementId });
     }
+  }
+
+  /**
+   * Discover a secret code
+   */
+  discoverCode(codeId: string): void {
+    if (!this.state.discoveredCodes.includes(codeId)) {
+      this.set('discoveredCodes', [...this.state.discoveredCodes, codeId]);
+    }
+  }
+
+  /**
+   * Check if a code has been discovered
+   */
+  hasDiscoveredCode(codeId: string): boolean {
+    return this.state.discoveredCodes.includes(codeId);
   }
 
   // =========================================================================
@@ -389,6 +406,7 @@ export class StateManager {
       notesUnlocked: partial.notesUnlocked ?? [...base.notesUnlocked],
       achievementsUnlocked:
         partial.achievementsUnlocked ?? [...base.achievementsUnlocked],
+      discoveredCodes: partial.discoveredCodes ?? [...base.discoveredCodes],
     } as GameState;
   }
 }

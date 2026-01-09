@@ -195,6 +195,7 @@ export interface GameState {
   // UI state
   notesUnlocked: string[];
   achievementsUnlocked: string[];
+  discoveredCodes: string[];
 }
 
 export interface Settings {
@@ -280,7 +281,26 @@ export type GameEvents = {
   'ui:splash:start': undefined;
   'ui:splash:progress': { percent: number };
   'ui:splash:complete': undefined;
-  'ui:notification': { message: string; type: 'info' | 'warning' | 'error' };
+  'ui:notification': { message: string; type: 'info' | 'warning' | 'error' | 'success' };
+
+  // Code/Easter egg events
+  'code:input:open': undefined;
+  'code:input:close': undefined;
+  'code:activated': { code: { id: string; name: string }; isNew: boolean };
+  'code:invalid': { code: string; message: string };
+  'easter_egg:trigger': { codeId: string };
+  'overlay:show': { type: string };
+  'content:unlock': { contentId: string };
+  'action:execute': { actionId: string };
+  'toggle:changed': { toggleId: string; active: boolean };
+  'menu:codes:open': undefined;
+
+  // Dev events
+  'dev:command': { command: { id: string; description: string } };
+  'dev:console:open': undefined;
+  'dev:console:close': undefined;
+  'dev:hud:toggle': undefined;
+  'dev:confirm': { action: string; message: string };
 };
 
 // Helper type for event handlers
