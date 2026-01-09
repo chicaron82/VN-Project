@@ -18,3 +18,6 @@ export type { EffectsControllerConfig } from './EffectsController.ts';
 
 export { MenuController, menuController } from './MenuController.ts';
 export type { MenuControllerConfig, MenuConfig, MenuItem, MenuId } from './MenuController.ts';
+
+export { SceneRunner, sceneRunner } from './SceneRunner.ts';
+export type { SceneRunnerConfig, SceneCallbacks, ScenePhase } from './SceneRunner.ts';

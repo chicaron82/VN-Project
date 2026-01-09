@@ -15,12 +15,15 @@ import { EventBus, eventBus } from '../core/EventBus.ts';
 import { StateManager, stateManager } from '../core/StateManager.ts';
 import { AssetLoader, assetLoader } from '../systems/AssetLoader.ts';
 import { validateScene } from '../utils/validation.ts';
+import type { SceneRunner, SceneCallbacks } from './SceneRunner.ts';
 
 export interface RouteControllerConfig {
   eventBus?: EventBus;
   stateManager?: StateManager;
   assetLoader?: AssetLoader;
   contentBasePath?: string;
+  /** Scene execution callbacks (background, music, sprites, etc.) */
+  sceneCallbacks?: SceneCallbacks;
 }
 
 export class RouteController implements GameSystem {
@@ -30,16 +33,36 @@ export class RouteController implements GameSystem {
   private stateManager: StateManager;
   private assetLoader: AssetLoader;
   private contentBasePath: string;
+  private sceneCallbacks: SceneCallbacks;
 
   private currentScene: Scene | null = null;
   private sceneCache = new Map<string, Scene>();
   private navigationHistory: string[] = [];
+
+  /** Scene runner reference (set via setSceneRunner) */
+  private sceneRunner: SceneRunner | null = null;
 
   constructor(config: RouteControllerConfig = {}) {
     this.eventBus = config.eventBus ?? eventBus;
     this.stateManager = config.stateManager ?? stateManager;
     this.assetLoader = config.assetLoader ?? assetLoader;
     this.contentBasePath = config.contentBasePath ?? '/content/routes';
+    this.sceneCallbacks = config.sceneCallbacks ?? {};
+  }
+
+  /**
+   * Set the scene runner for executing scenes.
+   * Must be called after construction to avoid circular dependency.
+   */
+  setSceneRunner(runner: SceneRunner): void {
+    this.sceneRunner = runner;
+  }
+
+  /**
+   * Update scene callbacks (typically set by UI layer)
+   */
+  setSceneCallbacks(callbacks: SceneCallbacks): void {
+    this.sceneCallbacks = { ...this.sceneCallbacks, ...callbacks };
   }
 
   // =========================================================================
@@ -59,6 +82,24 @@ export class RouteController implements GameSystem {
   // =========================================================================
   // ROUTE CONTROL
   // =========================================================================
+
+  /**
+   * Resume from saved state.
+   * Loads the scene stored in StateManager without modifying state.
+   */
+  async resumeFromState(): Promise<void> {
+    const sceneId = this.stateManager.get('currentScene');
+    const route = this.stateManager.get('currentRoute');
+
+    if (!sceneId) {
+      console.warn('Cannot resume: no current scene in state');
+      return;
+    }
+
+    // Load the scene (this will also run it if sceneRunner is set)
+    await this.loadScene(sceneId);
+    this.eventBus.emit('route:resume', { routeId: route, sceneId });
+  }
 
   /**
    * Start a new route
@@ -146,10 +187,24 @@ export class RouteController implements GameSystem {
       this.stateManager.markSceneVisited(sceneId);
       this.navigationHistory.push(sceneId);
 
-      // Apply scene effects
+      // Apply scene state effects (flags, counters, notes, achievements)
       this.applySceneEffects(scene);
 
-      this.eventBus.emit('scene:ready', { sceneId });
+      // Execute scene through SceneRunner if available
+      if (this.sceneRunner) {
+        await this.sceneRunner.run(scene, {
+          ...this.sceneCallbacks,
+          onTransition: (nextSceneId) => {
+            void this.loadScene(nextSceneId);
+          },
+          onComplete: (completedScene) => {
+            this.eventBus.emit('scene:waiting', { sceneId: completedScene.id });
+          },
+        });
+      } else {
+        // Fallback: just emit ready event (legacy/testing mode)
+        this.eventBus.emit('scene:ready', { sceneId });
+      }
 
       return scene;
     } catch (error) {
@@ -243,6 +298,30 @@ export class RouteController implements GameSystem {
    */
   canGoBack(): boolean {
     return this.navigationHistory.length > 1;
+  }
+
+  /**
+   * Advance the current scene (player clicked/tapped).
+   * Delegates to SceneRunner if available.
+   */
+  advance(): void {
+    if (this.sceneRunner) {
+      this.sceneRunner.advance();
+    }
+  }
+
+  /**
+   * Check if scene is waiting for player input
+   */
+  isWaitingForInput(): boolean {
+    return this.sceneRunner?.isWaitingForInput() ?? false;
+  }
+
+  /**
+   * Get current scene phase
+   */
+  getPhase(): string {
+    return this.sceneRunner?.getPhase() ?? 'idle';
   }
 
   // =========================================================================

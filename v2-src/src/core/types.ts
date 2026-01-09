@@ -217,6 +217,7 @@ export type GameEvents = {
   // Scene events
   'scene:load': { sceneId: string };
   'scene:ready': { sceneId: string };
+  'scene:waiting': { sceneId: string };
   'scene:complete': { sceneId: string };
 
   // Dialog events
@@ -247,6 +248,7 @@ export type GameEvents = {
 
   // Route events
   'route:start': { routeId: RouteId };
+  'route:resume': { routeId: RouteId | null; sceneId: string };
   'route:act:change': { routeId: RouteId; act: ActNumber };
   'route:complete': { routeId: RouteId; endingId: string };
 

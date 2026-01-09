@@ -6,8 +6,8 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 
 ## Current Status
 
-**Phase**: 5 - Content Migration (COMPLETE)
-**Tests**: 212 passing
+**Phase**: 6 - Scene Runner Integration (COMPLETE)
+**Tests**: 232 passing
 **TypeScript**: Strict mode, zero errors
 **Content Migrated**: Routes (6 acts), Endings, Secrets, Achievements
 
@@ -239,6 +239,39 @@ Tracking the rebuild from V1 to V2. What's done, what's different, and why.
 
 ---
 
+### Phase 6: Scene Runner Integration ✅
+
+**What we built:**
+- `SceneRunner` - Orchestrates scene execution, coordinating all controllers
+- RouteController ↔ SceneRunner integration
+- Choice handling with state effects (flags, counters, tether costs)
+- Effects integration from scene data
+- Save/load scene position support
+
+**V1 vs V2:**
+
+| Aspect | V1 | V2 | Why |
+|--------|----|----|-----|
+| Scene execution | Imperative game engine methods | `SceneRunner` orchestrator with phases | Testable, predictable flow |
+| Phase management | Implicit state | Explicit `ScenePhase` state machine | Debuggable, queryable |
+| Scene transitions | Callback chains | Event-driven with `onTransition` callbacks | Decoupled, resumable |
+| Choice application | Inline handlers | Declarative effects in `applyChoiceEffects()` | Consistent, tested |
+
+**Key files:**
+- `src/controllers/SceneRunner.ts` - 20 tests
+- `src/controllers/RouteController.ts` - Updated with SceneRunner integration
+
+**SceneRunner Phases:**
+```
+idle → entering → dialog → choosing → transitioning → complete
+                    ↓
+              (auto-advance)
+```
+
+**Phase 6 Complete!**
+
+---
+
 ## Gotchas We Caught
 
 ### The Phantom Characters Incident 👻
@@ -429,7 +462,8 @@ v2-src/
 │   │   ├── DialogController.ts  # Text display
 │   │   ├── TetherController.ts  # Decay system
 │   │   ├── RouteController.ts   # Scene loading
-│   │   └── EffectsController.ts # Visual effects
+│   │   ├── EffectsController.ts # Visual effects
+│   │   └── SceneRunner.ts       # Scene orchestrator
 │   │
 │   ├── ui/
 │   │   ├── components/
@@ -478,23 +512,21 @@ v2-src/
 
 ## Next Steps
 
-**Phase 6: Scene Runner Integration**
-1. **SceneRunner** - Execute scenes from loaded content
-2. **RouteController integration** - Wire routes to scene runner
-3. **Choice handling** - Connect choices to state changes
-4. **Effects integration** - Trigger effects from scene data
-5. **Save/Load integration** - Persist scene position and counters
+**Phase 7: App Integration & Main Flow**
+1. **App.ts orchestration** - Wire all systems together
+2. **Game loop** - Start → Boot → Menu → Play → End flow
+3. **UI callbacks** - Connect SceneRunner to actual DOM updates
 
-**Phase 7: Easter Eggs & Special Systems**
+**Phase 8: Easter Eggs & Special Systems**
 1. **EasterEggController** - Konami code, ToriGatchi, etc.
 2. **BootstrapTracker** - Timeline visualization
 3. **SecretCodesManager** - Code redemption UI
 
-**Phase 8: Polish & Testing**
+**Phase 9: Polish & Testing**
 1. **E2E testing** - Full playthrough tests
 2. **Performance profiling** - Memory, rendering
 3. **Accessibility audit** - Screen reader, keyboard nav
 
 ---
 
-*Last updated: Session 9 (Phase 5 Complete - All Content Migrated)*
+*Last updated: Session 10 (Phase 6 Complete - Scene Runner Integration)*
