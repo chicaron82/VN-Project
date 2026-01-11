@@ -71,9 +71,9 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    /* Center content vertically */
-    padding: 2rem;
+    justify-content: flex-start;
+    /* Changed to prevent top clipping */
+    padding: 5vh 2rem 2rem 2rem;
     gap: 1.5rem;
 
     /* Glitchy texture overlay */
@@ -97,9 +97,9 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    /* Center content vertically */
-    padding: 2rem;
+    justify-content: flex-start;
+    /* Changed to prevent top clipping */
+    padding: 5vh 2rem 2rem 2rem;
     gap: 1.5rem;
 
     /* Elegant grid overlay */
@@ -880,6 +880,7 @@ section h2 {
     transition: width 0.1s ease-out;
     box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
 }
+
 /* --- EVOLUTION & ROADMAP SECTIONS --- */
 .evolution-section {
     background: #fff;
@@ -891,7 +892,9 @@ section h2 {
     color: #fff;
 }
 
-.roadmap-section h2 { color: #fff; }
+.roadmap-section h2 {
+    color: #fff;
+}
 
 .comparison-grid {
     display: grid;
@@ -910,19 +913,21 @@ section h2 {
 }
 
 .col-chaos h3 {
-    color: #444; /* Darker for readability on white */
+    color: #444;
+    /* Darker for readability on white */
     border-color: #00ff41;
     font-family: 'Courier New', monospace;
 }
 
 .col-order h3 {
-    color: #3498db; /* Order blue */
+    color: #3498db;
+    /* Order blue */
     border-color: #3498db;
     font-family: 'Inter', sans-serif;
 }
 
 .comparison-item {
-    background: rgba(0,0,0,0.03);
+    background: rgba(0, 0, 0, 0.03);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border-radius: 8px;
@@ -939,7 +944,7 @@ section h2 {
 .col-order .comparison-item {
     border-left-color: #3498db;
     background: #f8f9fa;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .comparison-item h4 {
@@ -983,7 +988,7 @@ section h2 {
     .comparison-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .comparison-item {
         margin-bottom: 2rem;
     }
@@ -1004,10 +1009,16 @@ section h2 {
 
 /* --- PROJECT LOGO --- */
 .project-logo {
-    max-width: 300px;
-    width: 60%;
+    max-width: 200px;
+    /* Reduced max-width */
+    max-height: 15vh;
+    /* Restrict height based on viewport */
+    width: auto;
+    /* Allow width to adjust */
     margin-bottom: 1rem;
     display: block;
+    object-fit: contain;
+    /* Ensure image isn't stretched */
 }
 
 .layer-chaos .project-logo {
@@ -1017,7 +1028,7 @@ section h2 {
 }
 
 .layer-order .project-logo {
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
     transition: transform 0.3s ease;
 }
 
@@ -1026,9 +1037,28 @@ section h2 {
 }
 
 @keyframes glitch-logo {
-    0% { transform: translate(0); filter: hue-rotate(50deg); }
-    95% { transform: translate(0); filter: hue-rotate(50deg); }
-    96% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); }
-    97% { transform: translate(2px, -2px); filter: hue-rotate(0deg); }
-    100% { transform: translate(0); filter: hue-rotate(50deg); }
+    0% {
+        transform: translate(0);
+        filter: hue-rotate(50deg);
+    }
+
+    95% {
+        transform: translate(0);
+        filter: hue-rotate(50deg);
+    }
+
+    96% {
+        transform: translate(-2px, 2px);
+        filter: hue-rotate(90deg);
+    }
+
+    97% {
+        transform: translate(2px, -2px);
+        filter: hue-rotate(0deg);
+    }
+
+    100% {
+        transform: translate(0);
+        filter: hue-rotate(50deg);
+    }
 }
