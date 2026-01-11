@@ -1,4 +1,3 @@
-import { GameEvents } from './EventBus';
 import { GameConfig } from './GameConfig';
 
 /**

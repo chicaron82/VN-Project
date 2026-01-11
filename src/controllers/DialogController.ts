@@ -80,7 +80,7 @@ export class DialogController {
     }
 
     private startTypingPage(pageIndex: number) {
-        this.state.fullText = this.pages[pageIndex];
+        this.state.fullText = this.pages[pageIndex] ?? '';
         this.state.currentText = '';
         this.state.isTyping = true;
         this.state.isComplete = false;

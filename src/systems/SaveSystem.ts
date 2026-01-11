@@ -38,7 +38,7 @@ export class SaveSystem {
      */
     async saveGame(slotId: number, summary: string = ''): Promise<boolean> {
         try {
-            const currentState = this.stateManager.getAll() as GameState;
+            const currentState = this.stateManager.getAll() as unknown as GameState;
 
             const metadata: SaveMetadata = {
                 slotId,

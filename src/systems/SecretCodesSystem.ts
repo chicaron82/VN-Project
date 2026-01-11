@@ -161,9 +161,11 @@ export class SecretCodesSystem {
      * Get list of discovered codes for UI Settings display
      */
     public getDiscoveredCodes(): Array<{ code: string } & CodeDefinition> {
-        return Array.from(this.discoveredCodes).map(code => ({
-            code,
-            ...this.codes[code]
-        }));
+        return Array.from(this.discoveredCodes)
+            .filter(code => this.codes[code] !== undefined)
+            .map(code => ({
+                code,
+                ...this.codes[code]!
+            }));
     }
 }

@@ -87,7 +87,7 @@ export class RetryScreen {
         // Re-bind events after render
         this.container.querySelector('#retry-btn')?.addEventListener('click', () => {
             this.eventBus.emit('ui:click', {});
-            this.eventBus.emit('ui:retry_choice', { choice: 'restart_route', route: this.currentRoute });
+            this.eventBus.emit('ui:retry_choice', { choice: 'restart_route', route: this.currentRoute as 'ronnie' | 'tori' });
             this.hide();
         });
 

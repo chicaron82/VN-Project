@@ -3,11 +3,11 @@ import { EventBus } from '@core/EventBus';
 import { Achievement } from '@systems/AchievementSystem';
 
 export class ToastNotification {
-    private eventBus: EventBus;
     private container: HTMLElement;
 
-    constructor(eventBus: EventBus) {
-        this.eventBus = eventBus;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    constructor(_eventBus: EventBus) {
+        // _eventBus reserved for future event-driven toasts
         this.container = this.createContainer();
 
         // In a real implementation, we'd listen for a specific event carrying the achievement data.

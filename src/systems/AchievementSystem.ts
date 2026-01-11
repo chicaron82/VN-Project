@@ -13,13 +13,13 @@ export interface Achievement {
 
 export class AchievementSystem {
     private eventBus: EventBus;
-    private stateManager: StateManager;
     private achievements: Record<string, Achievement>;
     private readonly STORAGE_KEY = 'uv7_achievements';
 
-    constructor(eventBus: EventBus, stateManager: StateManager) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    constructor(eventBus: EventBus, _stateManager: StateManager) {
         this.eventBus = eventBus;
-        this.stateManager = stateManager;
+        // _stateManager reserved for future state-based achievements
         this.achievements = this.initializeAchievements();
         this.loadAchievements();
 

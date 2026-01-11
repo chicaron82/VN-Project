@@ -3,6 +3,7 @@ import path from 'path'
 
 export default defineConfig({
   root: '.',
+  base: './', // Relative paths for GitHub Pages
   publicDir: 'assets',
   resolve: {
     alias: {

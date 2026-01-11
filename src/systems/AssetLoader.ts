@@ -44,7 +44,7 @@ export class AssetLoader {
      */
     getRandomTip(): string {
         const tips = GameConfig.LOADING_TIPS;
-        return tips[Math.floor(Math.random() * tips.length)];
+        return tips[Math.floor(Math.random() * tips.length)] ?? 'Loading...';
     }
 
     /**

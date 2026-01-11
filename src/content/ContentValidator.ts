@@ -1,5 +1,3 @@
-import { GameConfig } from '@core/GameConfig';
-
 /**
  * ContentValidator
  * 

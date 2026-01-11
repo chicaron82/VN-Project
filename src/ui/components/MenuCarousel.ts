@@ -128,8 +128,10 @@ export class MenuCarousel {
 
     select() {
         const item = this.items[this.currentIndex];
+        if (!item) return;
+
         if (!item.locked) {
-            this.eventBus.emit(item.action as any, {}); // Emit the items action
+            this.eventBus.emit(item.action as keyof import('@core/EventBus').GameEvents, {} as any);
             this.eventBus.emit('ui:confirm', {});
         } else {
             this.eventBus.emit('ui:denied', {});

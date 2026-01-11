@@ -57,7 +57,7 @@ export class HapticSystem {
             scaled = mutablePattern;
         }
 
-        return Array.isArray(pattern) ? scaled : scaled[0];
+        return Array.isArray(pattern) ? scaled : (scaled[0] ?? 50);
     }
 
     /**

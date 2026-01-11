@@ -164,12 +164,12 @@ export class RouteController {
             console.log('💔 Bad Ending reached. Initializing Loop Reset...');
 
             // Increment Loop Version
-            const currentVer = this.stateManager.get<number>('game.loopVersion') || 848;
+            const currentVer = this.stateManager.get<number>('game.loopVersion') ?? 848;
             const newVer = currentVer + 1;
             this.stateManager.set('game.loopVersion', newVer);
 
             // Get current route to prepopulate selection
-            const currentRoute = this.stateManager.get<string>('currentRoute') || 'ronnie';
+            const currentRoute = this.stateManager.get<string>('currentRoute') ?? 'ronnie';
 
             // Trigger UI: Loop Init / Retry Screen
             this.eventBus.emit('ui:show_retry_screen', {

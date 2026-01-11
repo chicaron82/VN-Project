@@ -38,22 +38,23 @@ export class StateManager {
   /**
    * Get a value from state by path
    * Returns a deep clone to prevent external mutations
-   * 
+   *
    * @param path - Dot-notation path (e.g., 'game.currentScene')
    * @returns Deep cloned value at path, or undefined if not found
-   * 
+   *
    * @example
    * const sceneId = stateManager.get('game.currentScene');
+   * const typed = stateManager.get<number>('game.loopVersion');
    */
-  get(path: string): unknown {
+  get<T = unknown>(path: string): T | undefined {
     const value = this.getByPath(this.state, path);
 
     // Return deep clone to prevent external mutations
     if (value !== undefined && value !== null && typeof value === 'object') {
-      return this.deepClone(value);
+      return this.deepClone(value) as T;
     }
 
-    return value;
+    return value as T | undefined;
   }
 
   /**
