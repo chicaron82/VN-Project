@@ -15,6 +15,44 @@
 
 ---
 
+## Core Design Constraints ⚠️
+
+### No Audio - Intentional Design Decision
+
+**Version 848 is intentionally audio-free.** This is a deliberate design choice, not an oversight.
+
+**Why No Audio:**
+- Music licensing is expensive
+- Audio files are heavy (2-5MB+ even compressed)
+- Permission prompts interrupt the experience
+- Players may have headphones or need silent play
+
+**The Alternative: Haptic + Visual Cues System**
+
+Instead of audio, Version 848 uses a **unified sensory feedback system** combining:
+- **Haptic feedback** (vibration patterns on mobile)
+- **Visual cues** (chromatic aberration, glitch effects, screen pulses)
+- **Sensory metadata** (centralized config pairing haptics + visuals)
+
+**This is not optional polish - it's the PRIMARY feedback mechanism.**
+
+The haptic + visual cue system replaces audio cues entirely:
+- Emotional moments → Haptic patterns + visual effects
+- UI interactions → Light haptics + visual feedback
+- Critical events → Strong haptics + chromatic/glitch effects
+- Narrative beats → Channeled haptics (narrative/critical/ui) + matching visuals
+
+**For V2 Rebuild:**
+- **DO NOT** add audio support
+- **DO NOT** suggest audio as an enhancement
+- **DO PRESERVE** the haptic + visual cue system as the primary feedback
+- **DO MAINTAIN** the sensory metadata system
+- **DO ENSURE** all V1 haptic patterns and visual effects are preserved
+
+See: `docs/DESIGN_DECISION_NO_AUDIO.md` for full rationale.
+
+---
+
 ## Branch Strategy
 
 ```
@@ -306,7 +344,8 @@ src/
 interface Scene {
   id: string;
   background?: BackgroundId;
-  music?: MusicId;
+  // NOTE: No music field - Version 848 is intentionally audio-free
+  // Feedback is provided via haptic + visual cues instead
 
   sprites?: SpriteConfig[];
   dialog?: DialogEntry[];
@@ -323,7 +362,8 @@ interface DialogEntry {
   speaker: CharacterId | 'narrator';
   text: string;
   emotion?: Emotion;
-  voice?: VoiceClip;
+  // NOTE: No voice field - Version 848 is intentionally audio-free
+  // Feedback is provided via haptic + visual cues instead
 }
 
 interface Choice {
@@ -521,6 +561,187 @@ describe('TetherController', () => {
 ### Risk: Missing Edge Cases
 
 **Mitigation**: Port V1 tests. Manual playthrough of all routes.
+
+### Risk: Losing Polish & Personality ⚠️
+
+**The Critical Concern**: A "clean" rebuild could make systems functional but lose the magic - the animations, the feel, the attention to detail that makes V1 special.
+
+**Mitigation**: **Polish Preservation Checklist** (see below). Every system must preserve:
+- Visual polish (animations, effects, transitions)
+- Haptic feedback patterns and timing
+- Sensory metadata system (haptic + visual pairing)
+- Physics-based interactions (carousel momentum, friction)
+- Comfort intensity scaling (Gentle/Normal/Amped/INSANE)
+- All animation timings and easing curves
+
+---
+
+## Polish Preservation Checklist ⭐
+
+**CRITICAL**: These are the details that make V1 special. Every system must preserve these elements, not just be "functionally equivalent."
+
+### Visual Effects & Animations ⭐ **PRIMARY FEEDBACK MECHANISM**
+
+**CRITICAL**: Visual cues work with haptics to replace audio. They're not just pretty - they're how the game communicates emotion and feedback.
+
+- [ ] **Chromatic Aberration Effects** (`visual-cues.css`)
+  - `toriHop`: Double flicker with chromatic split overlay
+  - `tamaPull`: Inward squeeze with ripple effect
+  - `timelineGlitch`: Screen glitch animations
+  - All animations respect comfort intensity scaling
+  - **These effects replace audio cues - preserve timing and intensity**
+
+- [ ] **Matrix Rain Transitions** (`effects-controller.js`)
+  - Loop init screen code rain animation
+  - Scene transition effects
+  - Version increment display with Matrix aesthetic
+
+- [ ] **Sprite Animations** (`sprites.css`)
+  - Fade in/out sequences
+  - Sprite positioning and transitions
+  - Highlight states for active speakers
+
+- [ ] **UI Animations** (`overlays.css`, `menu.css`)
+  - Fade in/out transitions (0.3s ease-out)
+  - Shake animations for errors
+  - Smooth overlay transitions
+
+### Haptic Feedback System ⭐ **PRIMARY FEEDBACK MECHANISM**
+
+**CRITICAL**: This system replaces audio entirely. It's not optional polish - it's how the game communicates with players.
+
+- [ ] **Haptic Pattern Library** (12+ patterns from `game-config.js`)
+  - Basic: `light`, `medium`, `strong`
+  - Complex: `double`, `triple`, `pulse`, `success`, `warning`, `error`
+  - Story-specific: `glitch`, `echo`, `heartbeat`, `denied`
+  - All patterns preserved with exact timing values
+  - **These patterns replace audio cues - preserve all of them**
+
+- [ ] **Comfort Intensity Scaling** (`haptic-controller.js`)
+  - Gentle (60%): Softer, shorter patterns
+  - Normal (100%): Baseline
+  - Amped (130%): Stronger, longer patterns
+  - INSANE (200%): Maximum intensity boost
+  - Critical channel NEVER scales (always full intensity)
+  - **Scaling must match V1 exactly - this affects player experience**
+
+- [ ] **Sensory Metadata System** (`game-config.js` SENSORY_CUES) ⭐
+  - Unified haptic + visual cue pairing
+  - Channel-based intensity (ui/narrative/critical)
+  - Metadata-driven feedback (no hardcoded triggers)
+  - **This is the core architecture - every feedback uses this system**
+  - All SENSORY_CUES metadata must be preserved exactly
+
+### Physics-Based Interactions
+
+- [ ] **Carousel Momentum System** (`carousel-momentum.js`)
+  - Friction-based deceleration (0.975 friction value)
+  - Velocity caps (300px/s)
+  - Snap thresholds (0.2 multiplier)
+  - Infinite scroll with 3x clone buffer
+  - "Price Is Right wheel" feel preserved
+
+- [ ] **Gesture Interactions** (`simple-carousel.js`, `expandable-quick-actions.js`)
+  - Tinder-style card swipes with rotation
+  - Momentum-based exit timing (200-400ms dynamic)
+  - Elastic spring-back animations
+  - Velocity-based animations (fast = instant, slow = graceful)
+
+### Notification & UI Systems
+
+- [ ] **Notification Shade** (`notification-shade-controller.js`)
+  - iOS-style pull-down shade
+  - Frosted glass effect (backdrop-filter: blur)
+  - Smooth spring animations
+  - Quick actions carousel
+  - Full-body sprite peeks
+
+- [ ] **Status Notifications** (`status-notification-controller.js`)
+  - Priority queue system
+  - Auto-save, skip mode, echo comments
+  - Haptic feedback integration
+  - Fade in/out transitions
+
+- [ ] **Time Machine Backlog** (`time-machine-manager.js`)
+  - Full state restoration (tether, flags, scene context)
+  - Smart pruning algorithm
+  - Narrative blocking (lock/burn snapshots)
+  - Click-to-jump functionality
+
+### Meta-Narrative Systems
+
+- [ ] **Echo Memory System** (`echo-memory-system.js`)
+  - Persistent tracking across browser sessions
+  - Escalating awareness (0-4 levels)
+  - Three echo personalities (Hope, Gentle, Despair)
+  - Contextual comments in status bar
+  - Achievement integration
+
+- [ ] **Bootstrap Paradox Tracker** (`bootstrap-tracker.js`)
+  - Loop version tracking (848)
+  - Timeline visualization
+  - Failed attempt records
+  - Meta-narrative integration
+
+### Accessibility & Comfort
+
+- [ ] **Comfort Mode** (`settings-manager.js`)
+  - Reduce motion support
+  - Comfort intensity slider (Gentle/Normal/Amped)
+  - Visual cue scaling
+  - Haptic pattern scaling
+  - Respects `prefers-reduced-motion`
+
+- [ ] **Keyboard Navigation**
+  - Full keyboard support (Tab, Arrow, Enter)
+  - Hierarchical ESC (close in order)
+  - Quick shortcuts (Ctrl+S, Ctrl+L)
+  - Focus indicators
+
+- [ ] **Mobile UX**
+  - Touch-optimized targets (Fitts's Law)
+  - Haptic feedback (vibration patterns)
+  - Swipe gestures
+  - Double-tap fullscreen
+  - Responsive design (flow-based positioning)
+
+### Visual Design Details
+
+- [ ] **Color Scheme & Branding**
+  - UV7 cyan glow (#00ff88)
+  - Error red (#ff0066)
+  - Monospace fonts (Courier New)
+  - Cyberpunk aesthetic preserved
+
+- [ ] **Typography & Spacing**
+  - Dialogue box styling
+  - Character name styling
+  - Internal thought bubbles
+  - Scroll indicators (↓)
+
+- [ ] **Responsive Breakpoints**
+  - Mobile-first approach
+  - Portrait/landscape adaptations
+  - Desktop mobile emulator mode
+  - Force-portrait class system
+
+### Testing & Validation
+
+- [ ] **Side-by-Side Comparison**
+  - Playthrough V1 and V2 simultaneously
+  - Compare animations frame-by-frame
+  - Verify haptic patterns match exactly
+  - Test all routes and endings
+  - Verify all secret codes work
+
+- [ ] **Polish Metrics**
+  - Animation timings match V1 (±5ms tolerance)
+  - Haptic patterns identical
+  - Visual effects render correctly
+  - Physics feel matches V1
+  - No "bland" or "generic" feeling
+
+**Remember**: The goal isn't just "it works" - it's "it feels the same, but the code is cleaner." A human dev shouldn't nitpick because V2 should feel just as polished and personality-rich as V1.
 
 ---
 

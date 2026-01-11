@@ -1,0 +1,68 @@
+/* ========================================
+   ACCESSIBILITY STYLES
+   High Contrast, Font Sizing, Reduced Motion
+   ======================================== */
+
+/* High Contrast Mode */
+body.high-contrast {
+    --color-bg: #000 !important;
+    --color-text: #fff !important;
+    --color-text-dim: #ccc !important;
+    --color-ronnie: #0ff !important;
+    --color-tori: #f0f !important;
+    --color-bg-overlay: rgba(0, 0, 0, 1) !important;
+    /* No transparency */
+
+    /* Increase borders for visibility */
+    --border-width: 2px;
+}
+
+body.high-contrast .dialog-box {
+    border: 2px solid #fff !important;
+    background: #000 !important;
+}
+
+body.high-contrast .choice-btn {
+    border: 2px solid #fff !important;
+    background: #000 !important;
+    color: #fff !important;
+}
+
+body.high-contrast .choice-btn:hover {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+/* Font Sizing */
+body.font-normal {
+    font-size: 16px;
+}
+
+body.font-large {
+    font-size: 20px;
+}
+
+body.font-xl {
+    font-size: 24px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    body {
+        --animation-speed: 0s;
+    }
+
+    * {
+        animation-duration: 0.01s !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01s !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+body.reduced-motion * {
+    animation-duration: 0.01s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01s !important;
+    scroll-behavior: auto !important;
+}

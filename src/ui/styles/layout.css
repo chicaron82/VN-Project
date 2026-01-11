@@ -1,0 +1,86 @@
+@import './variables.css';
+
+.game-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* Viewport: Where sprites and backgrounds live */
+.game-viewport {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.5s ease;
+}
+
+/* Status Bar: Top overlay */
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: var(--z-ui-base);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8), transparent);
+    height: 60px;
+}
+
+/* TextBox: Bottom overlay */
+.dialog-box {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    min-height: 150px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--color-ronnie);
+    border-radius: 10px;
+    padding: 20px;
+    z-index: var(--z-dialog);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+.name-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--color-ronnie);
+    text-transform: uppercase;
+}
+
+.dialog-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+/* Tether Overlay (if needed separately) */
+.tether-overlay {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 200px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.tether-fill {
+    height: 100%;
+    background: var(--grad-tether-healthy);
+    width: 100%;
+    transition: width 0.3s linear;
+}

@@ -1,0 +1,178 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Scene",
+    "type": "object",
+    "required": [
+        "id"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique identifier for the scene"
+        },
+        "background": {
+            "type": "string",
+            "description": "Background asset ID from GameConfig"
+        },
+        "sprites": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "variant": {
+                        "type": "string"
+                    },
+                    "position": {
+                        "enum": [
+                            "left",
+                            "center",
+                            "right"
+                        ]
+                    },
+                    "classes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "dialog": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "speaker",
+                    "text"
+                ],
+                "properties": {
+                    "speaker": {
+                        "type": "string"
+                    },
+                    "text": {
+                        "type": "string"
+                    },
+                    "emotion": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "choices": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "text",
+                    "next"
+                ],
+                "properties": {
+                    "text": {
+                        "type": "string"
+                    },
+                    "next": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "condition": {
+                        "type": "string"
+                    },
+                    "tetherCost": {
+                        "type": "number"
+                    },
+                    "flags": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "flag",
+                                "value"
+                            ],
+                            "properties": {
+                                "flag": {
+                                    "type": "string"
+                                },
+                                "value": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "tetherImpact": {
+            "type": "number",
+            "description": "Amount to change tether level on entry"
+        },
+        "effects": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "type"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "duration": {
+                        "type": "number"
+                    },
+                    "timing": {
+                        "enum": [
+                            "start",
+                            "end"
+                        ]
+                    }
+                }
+            }
+        },
+        "next": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "object",
+                    "required": [
+                        "default",
+                        "conditions"
+                    ],
+                    "properties": {
+                        "default": {
+                            "type": "string"
+                        },
+                        "conditions": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "required": [
+                                    "if",
+                                    "then"
+                                ],
+                                "properties": {
+                                    "if": {
+                                        "type": "string"
+                                    },
+                                    "then": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

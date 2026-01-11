@@ -1,0 +1,527 @@
+{
+    "scenes": [
+        {
+            "id": "badRouteEnding",
+            "type": "dialog",
+            "character": "Ronnie (desperate)",
+            "text": "\"You don't understand! She's IN the device! Her consciousness! I need to—\"",
+            "nextSceneId": "badRoute_tooLate",
+            "internal": "[The nurses exchange glances. Confused. Concerned. One reaches for his arm.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_tooLate",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "The monitor flatlines.",
+            "nextSceneId": "badRoute_nurseWords",
+            "internal": "[A single, sustained tone. The Tamagotchi screen goes dark. Both gone. Simultaneously.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_nurseWords",
+            "type": "dialog",
+            "character": "Nurse (soft)",
+            "text": "\"I'm sorry. We did everything we could.\"",
+            "nextSceneId": "badRoute_staring",
+            "internal": "[He was 15 seconds too late. Just 15 seconds.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_staring",
+            "type": "dialog",
+            "character": "Ronnie (narration)",
+            "text": "\"She was gone. And I'd been too late.\"",
+            "nextSceneId": "badRoute_timeSkip",
+            "internal": "[Ronnie doesn't respond. Staring at the Tamagotchi in his hand.]\\n[Fade to black.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_timeSkip",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Years later...",
+            "nextSceneId": "badRoute_news",
+            "internal": "[Visual: Dimly lit workshop. Older Ronnie, silver hair, faded BGA hoodie. Soldering iron in hand.]\\n[Workbench: Tori's original Tamagotchi, disassembled. Modified circuitry. Notes everywhere.]",
+            "background": "assets/apartment.png"
+        },
+        {
+            "id": "badRoute_news",
+            "type": "dialog",
+            "character": "News Anchor (voice)",
+            "text": "\"—breakthrough in temporal displacement technology announced today—\"",
+            "nextSceneId": "badRoute_chance",
+            "internal": "[TV in background. Old Ronnie's hand pauses. He looks up.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_chance",
+            "type": "dialog",
+            "character": "Old Ronnie (quiet, determined)",
+            "text": "\"...There's still a chance.\"",
+            "nextSceneId": "badRoute_beforeBump",
+            "internal": "[Visual: He picks up the modified Tamagotchi. Screen glows faintly.]\\n[Fade to black.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_beforeBump",
+            "type": "dialog",
+            "character": "Narration",
+            "nextSceneId": "badRoute_preparation",
+            "internal": "[Visual: Street corner, same location as Scene 1. An older man with silver hair stands in shadow, BGA hoodie prominent. He holds a worn Tamagotchi device - labeled \"Ronnie-gatchi v1.0\"]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_preparation",
+            "type": "dialog",
+            "character": "Old Ronnie",
+            "text": "\"One more time. This has to work.\"",
+            "nextSceneId": "badRoute_giveHerTools",
+            "internal": "[He looks at the device, then around the corner where young Tori will appear]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_giveHerTools",
+            "type": "dialog",
+            "character": "Old Ronnie",
+            "text": "\"Give her the tools. Give myself the tools I never had.\"",
+            "nextSceneId": "badRoute_loopBegins",
+            "internal": "[He takes a breath, steps around the corner]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_loopBegins",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "You've seen this before... haven't you?",
+            "nextSceneId": "badRoute_retryLoop",
+            "internal": "[The bump scene from the prologue begins to play. But this time, you recognize the old man in the BGA hoodie.]",
+            "background": "assets/apartment.png"
+        },
+        {
+            "id": "badRoute_retryLoop",
+            "type": "dialog",
+            "character": "Old Ronnie (narration)",
+            "text": "\"I spent years refining it. Perfecting the bridge. When they finally cracked time travel... I knew what I had to do. One chance. One moment. To give us both a second try.\"",
+            "nextSceneId": "badRoute_bump",
+            "internal": "[Visual: Sunny street. Old Ronnie's perspective. Young Tori walks by, distracted by her Tamagotchi.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_bump",
+            "type": "dialog",
+            "character": "Old Ronnie (narration)",
+            "text": "\"I'm sorry I couldn't save you the first time. But maybe... maybe I can save us both.\"",
+            "nextSceneId": "badRoute_apology",
+            "internal": "[He steps forward. She bumps into him. Both Tamagotchis fall. She picks up his modified toy. It buzzes in her hand.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "badRoute_apology",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"Oh my gosh, I'm so sorry—I wasn't paying attention!\"",
+            "nextSceneId": "badRoute_warning",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "badRoute_warning",
+            "type": "dialog",
+            "character": "Old Ronnie (gentle, voice soft)",
+            "text": "\"No problem. Hang on to that. It may save your life someday.\"",
+            "nextSceneId": "badRoute_finalThought",
+            "internal": "[He picks up her original device. Clutches it. Walks away.]\\n[Visual: Camera follows him. He glances back once - sees young Ronnie waiting at home for her.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "badRoute_finalThought",
+            "type": "dialog",
+            "character": "Old Ronnie (narration)",
+            "text": "\"Don't make the same mistakes I did. Get there in time.\"",
+            "nextSceneId": "badRoute_retry",
+            "internal": "`[Fade",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "badRoute_retry",
+            "type": "dialog",
+            "character": "System",
+            "text": "Restarting...",
+            "nextSceneId": null,
+            "internal": "[Game Reset]",
+            "background": "assets/apartment.png"
+        },
+        {
+            "id": "digitalForeverEnding",
+            "type": "dialog",
+            "character": "Ronnie (desperate)",
+            "text": "\"Tori... if I can't get to you... then I'm coming TO you.\"",
+            "nextSceneId": "digitalForever_connect",
+            "internal": "[He stops running. Holds the Tamagotchi close. Opens the connection.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "digitalForever_connect",
+            "type": "dialog",
+            "character": "Tori (through device, weak)",
+            "text": "\"Ronnie... don't... you can't—\"",
+            "nextSceneId": "digitalForever_doubleBuzz",
+            "internal": "[He presses his forehead to the screen. Eyes closed. Reaching through the code.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "digitalForever_doubleBuzz",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "BUZZ. BUZZ.",
+            "nextSceneId": "digitalForever_transfer",
+            "internal": "[Two pulses. Synchronized. The device PULLS.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "digitalForever_transfer",
+            "type": "dialog",
+            "character": "System",
+            "text": "TRANSFER PROTOCOL INITIATED... Digital Merge...",
+            "nextSceneId": "digitalForever_merge",
+            "internal": "[Transfer complete.]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "digitalForever_merge",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Digital space. White void. Two sprites materialize.",
+            "nextSceneId": "digitalForever_together",
+            "internal": "[Ronnie's form solidifies beside Tori's. Both digital. Both together.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_together",
+            "type": "dialog",
+            "character": "Tori (shocked)",
+            "text": "\"Ronnie... what did you DO?\"",
+            "nextSceneId": "digitalForever_ronnieSmile",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_ronnieSmile",
+            "type": "dialog",
+            "character": "Ronnie (sprite, smiling)",
+            "text": "\"What I promised. Always.\"",
+            "nextSceneId": "digitalForever_acceptance",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_acceptance",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"You idiot. Beautiful idiot.\"",
+            "nextSceneId": "digitalForever_world",
+            "internal": "[She takes his hand. Their sprites sync perfectly.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_world",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "They build their world together. Pixel parks. Digital sunsets. Eternally young. Eternally together.",
+            "nextSceneId": "digitalForever_static",
+            "internal": "[Visual: Their apartment, recreated in code. Perfect. Frozen. Safe.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_static",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "No sickness. No death. No separation.",
+            "nextSceneId": "digitalForever_hospital",
+            "internal": "[But also: No growth. No change. No real touch. Just eternal digital stasis.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "digitalForever_hospital",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "[CUT TO: Hospital room. Two bodies on beds. Monitors humming. No one wakes.]",
+            "nextSceneId": "digitalForever_choice",
+            "internal": "[Outside the window, years pass. Seasons change. The world moves on without them.]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "digitalForever_choice",
+            "type": "dialog",
+            "character": "System",
+            "text": "**DIGITAL FOREVER ENDING**\\n\"Together, eternally still.\"",
+            "nextSceneId": "digitalForever_retry",
+            "internal": "[Is this love? Or is it fear of loss?\\nIs safety worth stagnation?\\nYou chose connection over growth.]\\n\\n[They remain, forever digital, forever young, forever together...]\\n[...forever frozen.]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "digitalForever_retry",
+            "type": "dialog",
+            "character": "System",
+            "text": "Restarting...",
+            "nextSceneId": null,
+            "internal": "[Game Reset]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "trueRouteEnding",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "HE PUSHES THROUGH.",
+            "nextSceneId": "trueRoute_burst",
+            "internal": "[Nurses try to stop him. He doesn't hear them. Doesn't see them. Only her.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_burst",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "He BURSTS through the door.",
+            "nextSceneId": "trueRoute_move",
+            "internal": "[Her body convulsing. Alarms blaring. Medical staff scrambling. Monitor showing erratic heartbeat.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_move",
+            "type": "dialog",
+            "character": "Ronnie (shouting over alarms)",
+            "text": "\"Move!\"",
+            "nextSceneId": "trueRoute_anchor",
+            "internal": "[He reaches her bedside. Places the Tamagotchi in her palm. Closes her fingers around it with his own hand covering hers.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_anchor",
+            "type": "dialog",
+            "character": "Ronnie (steady, voice anchoring)",
+            "text": "\"Come home. Follow the heartbeat.\"",
+            "nextSceneId": "trueRoute_transfer",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_transfer",
+            "type": "dialog",
+            "character": "System",
+            "text": "TRANSFER PROTOCOL INITIATED... Downloading consciousness data... [Transfer complete.]",
+            "nextSceneId": "trueRoute_whisper",
+            "internal": "[Download sequence playing...]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "trueRoute_whisper",
+            "type": "dialog",
+            "character": "Ronnie (whispering, tears streaming)",
+            "text": "\"That's it. That's it, baby. Follow me back.\"",
+            "nextSceneId": "trueRoute_awakening",
+            "internal": "[Visual: Tamagotchi screen goes completely white. Then dark. Silent.]\\n[Beat of silence.]\\n[Her eyes flutter open.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_awakening",
+            "type": "dialog",
+            "character": "Tori (hoarse, confused)",
+            "text": "\"...Ronnie?\"",
+            "nextSceneId": "trueRoute_always",
+            "internal": "[He breaks. Collapses forward, forehead against her hand.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_always",
+            "type": "dialog",
+            "character": "Ronnie (voice shaking)",
+            "text": "\"Always. Always. Always.\"",
+            "nextSceneId": "trueRoute_terrible",
+            "internal": "[She lifts her free hand shakily. Touches his hair. Strokes it.]\\n[They cry together. No words. Just breathing.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_terrible",
+            "type": "dialog",
+            "character": "Tori (weak smile)",
+            "text": "\"You look terrible.\"",
+            "nextSceneId": "trueRoute_months",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_months",
+            "type": "dialog",
+            "character": "Ronnie (laughing through tears)",
+            "text": "\"You've been asleep for months.\"",
+            "nextSceneId": "trueRoute_scared",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_scared",
+            "type": "dialog",
+            "character": "Tori (soft)",
+            "text": "\"I was so scared. I couldn't find you. And then I could. But I couldn't touch you.\"",
+            "nextSceneId": "trueRoute_home",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_home",
+            "type": "dialog",
+            "character": "Ronnie (squeezing her hand)",
+            "text": "\"You're here now. You're real. You're home.\"",
+            "nextSceneId": "trueRoute_toast",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_toast",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"So... you up for some burnt toast?\"",
+            "nextSceneId": "trueRoute_pasta",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_pasta",
+            "type": "dialog",
+            "character": "Ronnie (laughing, crying)",
+            "text": "\"Only if I get to oversalt the pasta.\"",
+            "nextSceneId": "trueRoute_final",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "trueRoute_final",
+            "type": "dialog",
+            "character": "Ronnie (narration)",
+            "text": "\"For once, love wasn't trapped in glass. It came home.\"",
+            "nextSceneId": null,
+            "internal": "[Visual: Fade to white. Credits roll.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        }
+    ]
+}

@@ -1,0 +1,903 @@
+{
+    "scenes": [
+        {
+            "id": "beat1",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Digital park scene. Pixelated cherry blossoms. Tori and Ronnie\\'s sprites walking together.",
+            "nextSceneId": "beat1_iceCream",
+            "internal": "[Visual: First \"date\" in the digital space. Ronnie coded a scene for them.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_iceCream",
+            "type": "dialog",
+            "character": "Ronnie (sprite)",
+            "text": "\"I coded in your favorite. Chocolate chip ice cream.\"",
+            "nextSceneId": "beat1_despairOverride",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "beat1_despairOverride",
+            "type": "dialog",
+            "character": "Narration",
+            "nextSceneId": "beat1_hijackedResponse",
+            "internal": "[She opens her mouth to respond... but the words that come out aren\\'t hers.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_hijackedResponse",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"Wait... Tiger Tail. I want Tiger Tail.\"",
+            "nextSceneId": "beat1_toriRealization",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_toriRealization",
+            "type": "dialog",
+            "character": "reaction.character",
+            "text": "reaction.dialogue",
+            "nextSceneId": "beat1_confusion",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_confusion",
+            "type": "dialog",
+            "character": "Ronnie (sprite, concerned)",
+            "text": "\"Tiger Tail? But... you always said you hated that flavor.\"",
+            "nextSceneId": "beat1_echoesReact",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "beat1_echoesReact",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"Oh no...\"\\nEcho 2: \"Not yet. Please not yet.\"\\nDespair: \"There it is. Memory corruption. Your mind\\'s breaking down.\"",
+            "nextSceneId": "beat1_systemTakeover",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat1_systemTakeover",
+            "type": "dialog",
+            "character": "Tori (sprite, voice not hers)",
+            "text": "\"Tiger Tail sounds perfect!\"",
+            "nextSceneId": "beat1_toriHorror",
+            "internal": "[Her sprite spoke. But she didn\\'t say that. The SYSTEM did.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_toriHorror",
+            "type": "dialog",
+            "character": "Tori (internal, panicking)",
+            "text": "\"That wasn\\'t me! I didn\\'t say that!\"",
+            "nextSceneId": "beat1_freeze",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_freeze",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Her sprite freezes mid-laugh. System dialogue box flickers. Then she\\'s back. Ronnie looks concerned.",
+            "nextSceneId": "beat1_ronnieNotice",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_ronnieNotice",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Tori? Not againâ€”\"",
+            "nextSceneId": "beat1_choice",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "beat1_choice",
+            "type": "dialog",
+            "character": "Tori (typing frantically)",
+            "text": "\"I blacked out. What just happened?\"",
+            "nextSceneId": null,
+            "choices": [
+                {
+                    "text": "[Tell him the truth: memory corruption]",
+                    "value": "truth",
+                    "nextSceneId": "beat1_truth"
+                },
+                {
+                    "text": "[Downplay it: just a glitch]",
+                    "value": "downplay",
+                    "nextSceneId": "beat1_downplay"
+                },
+                {
+                    "text": "[Panic: I'm breaking apart]",
+                    "value": "panic",
+                    "nextSceneId": "beat1_panic"
+                }
+            ],
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_truth",
+            "type": "dialog",
+            "character": "Tori (typing)",
+            "text": "\"My memories are corrupting. The system took over my voice. I\\'m scared.\"",
+            "nextSceneId": "beat1_5_glitching",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_downplay",
+            "type": "dialog",
+            "character": "Tori (typing)",
+            "text": "\"Just a glitch. I\\'m fine. Keep going.\"",
+            "nextSceneId": "beat1_5_glitching",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_panic",
+            "type": "dialog",
+            "character": "Tori (typing)",
+            "text": "\"I\\'m breaking apart. I can feel it. I\\'m losing pieces of myself.\"",
+            "nextSceneId": "beat1_5_glitching",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_5_glitching",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"Something\\'s wrong. I\\'m... fragmenting. The code can\\'t hold me...\"",
+            "nextSceneId": "beat1_5_ronnieTyping",
+            "internal": "[Visual: Her sprite flickering. Data corruption spreading.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat1_5_ronnieTyping",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Through the laptop screen. Ronnie typing frantically.",
+            "nextSceneId": "beat1_5_upload",
+            "internal": "[Visual: Code scrolling. Upload dialogs. Progress bars.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_upload",
+            "type": "dialog",
+            "character": "Ronnie (desperate)",
+            "text": "\"She\\'s trapped in the laptop. Limited processing. If I upload to the cloud... more resources... she\\'ll stabilize!\"",
+            "nextSceneId": "beat1_5_stillGlitching",
+            "internal": "[Visual: Upload progress bar. 32%... 85%... 100%]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_stillGlitching",
+            "type": "dialog",
+            "character": "Tori (glitching)",
+            "text": "\"Ronnie... I\\'m... still here. Still stuck. It didn\\'t... work...\"",
+            "nextSceneId": "beat1_5_confusion",
+            "internal": "[Visual: Nothing changed. Still fragmenting. Still breaking apart.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_confusion",
+            "type": "dialog",
+            "character": "Ronnie (confused)",
+            "text": "\"But... you contacted me through the laptop game. I thought you were IN the laptop!\"",
+            "nextSceneId": "beat1_5_realization",
+            "internal": "[Visual: His face. Confusion. Frustration. He doesn\\'t understand.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_realization",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"He thinks I\\'m IN the laptop. That\\'s why the upload didn\\'t work. He doesn\\'t know...\"",
+            "nextSceneId": "beat1_5_revelation",
+            "internal": "[Visual: Understanding dawns. She needs to tell him.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat1_5_revelation",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"I\\'m not IN the game, Ronnie.\"",
+            "nextSceneId": "beat1_5_soulLine",
+            "internal": "[Visual: Her voice cutting through. Clear. Focused.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_5_soulLine",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"You can\\'t upload a soul. I\\'m in the Tamagotchi.\"",
+            "nextSceneId": "beat1_5_explainJumping",
+            "internal": "[Visual: Silence. The weight of it. The truth spoken.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_5_explainJumping",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"I\\'ve been JUMPING to the laptop so I could talk to you. The Tamagotchi has to be touching whatever I jump to.\"",
+            "nextSceneId": "beat1_5_question",
+            "internal": "[Visual: His expression. Understanding starting to form.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_5_question",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"So how do we get you to wake up? How do you get back to your body?\"",
+            "nextSceneId": "beat1_5_buzzing",
+            "internal": "[Visual: Both of them. The question hanging.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_buzzing",
+            "type": "dialog",
+            "character": "Ronnie (realizing)",
+            "text": "\"Wait... the buzzing. The Tamagotchi has been buzzing. And ONLY when I visit you at the hospital!\"",
+            "nextSceneId": "beat1_5_toriConfirms",
+            "internal": "[Visual: His eyes widen. The pattern clicks.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_toriConfirms",
+            "type": "dialog",
+            "character": "Tori (softly)",
+            "text": "\"I\\'ve been feeling it too. The pull. Every time you visit... my body is calling me home.\"",
+            "nextSceneId": "beat1_5_solution",
+            "internal": "[Visual: Memory flashes. The warmth. The pull. The connection.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat1_5_solution",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Then that\\'s it. The Tamagotchi needs to be touching your body. Physical contact. That\\'s how you jump back!\"",
+            "nextSceneId": "beat1_5_phoneRing",
+            "internal": "[Visual: Both of them. The solution found. Hope surges.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_phoneRing",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "[RING RING RING]",
+            "nextSceneId": "beat1_5_hospitalCall",
+            "internal": "[Visual: Ronnie\\'s phone. Hospital calling. His face drains of color.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_hospitalCall",
+            "type": "dialog",
+            "character": "Nurse (phone)",
+            "text": "\"Mr. Santos? This is St. Mercy. Your wife\\'s vitals are dropping. You need to come now.\"",
+            "nextSceneId": "beat1_5_race",
+            "internal": "[Visual: Panic. Fear. Time running out.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat1_5_race",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"We know how to save me. But we\\'re running out of time.\"",
+            "nextSceneId": "beat2",
+            "internal": "[Visual: Ronnie grabs the Tamagotchi. Runs for the door. The race begins.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat2",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Hospital room. Ronnie places the Tamagotchi on her bedside table.",
+            "nextSceneId": "beat2_warmth",
+            "internal": "[Visual: Through device screen - her body on the bed. Monitors beeping.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat2_warmth",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"That feeling again... warmth. The pull toward my body.\"",
+            "nextSceneId": "beat2_buzz",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat2_buzz",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "The Tamagotchi buzzes. Synced with her heartbeat monitor.",
+            "nextSceneId": "beat2_ronnieNotice",
+            "internal": "[Same rhythm. Same pulse.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat2_ronnieNotice",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Weird. Battery must be dying.\"",
+            "nextSceneId": "beat2_echoesKnow",
+            "internal": "[He dismisses it. Doesn\\'t see the pattern yet.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat2_echoesKnow",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"He felt it too. The buzz.\"\\nEcho 2: \"But he doesn\\'t understand what it means.\"\\nDespair: \"He never understood. Not until it was too late.\"",
+            "nextSceneId": "beat3",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat3",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Back in the digital space. A simple maze game Ronnie coded. \"Think fast\" gameplay.",
+            "nextSceneId": "beat3_maze",
+            "internal": "[Visual: Sprite-Tori navigating a pixelated maze. Cute and casual.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat3_maze",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Left or right?\"",
+            "nextSceneId": "beat3_confusion",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "beat3_confusion",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"Wait... which way did we come from? I can\\'t remember...\"",
+            "nextSceneId": "beat3_systemTakeover",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat3_systemTakeover",
+            "type": "dialog",
+            "character": "Tori (sprite, automatic)",
+            "text": "\"Left!\"",
+            "nextSceneId": "beat3_wrongTurn",
+            "internal": "[She didn\\'t choose that. The SYSTEM did. Again.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat3_wrongTurn",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Dead end. Ronnie backtracks. But Tori is frozen, staring at the wall.",
+            "nextSceneId": "beat3_toriInternal",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat3_toriInternal",
+            "type": "dialog",
+            "character": "Tori (internal, panicking)",
+            "text": "\"I\\'m not controlling my sprite anymore. I\\'m just... watching.\"",
+            "nextSceneId": "beat3_echoesRespond",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat3_echoesRespond",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"It\\'s getting worse.\"\\nEcho 2: \"The system\\'s taking over.\"\\nDespair: \"You\\'re becoming a passenger in your own existence.\"",
+            "nextSceneId": "beat4",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat4",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Hospital room again. Ronnie adjusts her blankets. The Tamagotchi is on the table.",
+            "nextSceneId": "beat4_feeling",
+            "internal": "[Visual: Her body. Still. Breathing. The device nearby.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_feeling",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"There it is again. That pull. That warmth. It\\'s coming from my body.\"",
+            "nextSceneId": "beat4_understanding",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_understanding",
+            "type": "dialog",
+            "character": "Tori (internal, realization)",
+            "text": "\"Wait... when I\\'m near my body, I feel more... real. More present. The corruption slows.\"",
+            "nextSceneId": "beat4_choice",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_choice",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"This feeling... do I tell him? Or keep searching for proof?\"",
+            "nextSceneId": null,
+            "choices": [
+                {
+                    "text": "[Tell Ronnie about the body connection]",
+                    "value": "tell",
+                    "nextSceneId": "beat4_tell"
+                },
+                {
+                    "text": "[Wait - need more proof first]",
+                    "value": "wait",
+                    "nextSceneId": "beat4_wait"
+                }
+            ],
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_tell",
+            "type": "dialog",
+            "character": "Tori (typing urgently)",
+            "text": "\"Ronnie - when you visit my body, I feel more stable. I think there\\'s a connection.\"",
+            "nextSceneId": "beat4_ronnieResponse",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_wait",
+            "type": "dialog",
+            "character": "Tori (typing)",
+            "text": "\"The maze was glitchy. System acting weird again.\"",
+            "nextSceneId": "beat4_ronnieResponse",
+            "internal": "[She hides the truth. Needs more proof.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat4_ronnieResponse",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"I\\'ll keep coming. Every day. I promise.\"",
+            "nextSceneId": "beat5",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Digital space. A memory fragment loads. Their first date. Coffee shop.",
+            "nextSceneId": "beat5_memoryStart",
+            "internal": "[Visual: Warm lighting. Cozy scene. But the edges are glitching.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5_memoryStart",
+            "type": "dialog",
+            "character": "Ronnie (sprite, in memory)",
+            "text": "\"I can\\'t believe you ordered decaf.\"",
+            "nextSceneId": "beat5_toriBlank",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "beat5_toriBlank",
+            "type": "dialog",
+            "character": "Tori (internal, horrified)",
+            "text": "\"I... I don\\'t remember this. I don\\'t remember what I said next.\"",
+            "nextSceneId": "beat5_systemFills",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat5_systemFills",
+            "type": "dialog",
+            "character": "Tori (sprite, voice not hers)",
+            "text": "\"[MEMORY CORRUPTED - APPROXIMATION: \"You know I hate caffeine.\"]\"",
+            "nextSceneId": "beat5_horror",
+            "internal": "[The system filled in the blank. With a guess. Her memory is gone.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat5_horror",
+            "type": "dialog",
+            "character": "Tori (internal, breaking)",
+            "text": "\"That\\'s not what I said. I don\\'t know what I said. But that wasn\\'t it.\"",
+            "nextSceneId": "beat5_echoesReact",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "beat5_echoesReact",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"She\\'s losing herself.\"\\nEcho 2: \"Piece by piece.\"\\nDespair: \"Soon there won\\'t be enough left to save.\"",
+            "nextSceneId": "beat6",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat6",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Hospital room. Ronnie holds her hand. The Tamagotchi buzzes loudly.",
+            "nextSceneId": "beat6_connection",
+            "internal": "[Visual: Physical contact. The buzz intensifies. Synced perfectly.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_connection",
+            "type": "dialog",
+            "character": "Tori (internal, CLARITY)",
+            "text": "\"OH. Oh my god. It\\'s the BODY. My body is the anchor. The bridge. The connection.\"",
+            "nextSceneId": "beat6_realization",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_realization",
+            "type": "dialog",
+            "character": "Tori (internal, urgent)",
+            "text": "\"That\\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!\"",
+            "nextSceneId": "beat6_echoesReact",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_echoesReact",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 2: \"She figured it out...\"\\nEcho 1: \"Faster than we did.\"\\nDespair: \"And it won\\'t matter. The body is dying. The bridge is burning.\"",
+            "nextSceneId": "beat7",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat7",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Alarms. Monitors screaming. The digital space shakes.",
+            "nextSceneId": "beat7_tether",
+            "internal": "[Visual: Everything glitching violently. Tori fragmenting. Tether dropping rapidly.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_tether",
+            "type": "dialog",
+            "character": "System",
+            "text": "[COHERENCE DROPPING: -15%]",
+            "nextSceneId": "beat7_tori",
+            "internal": "[The crisis is draining her. Hold on!]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_tori",
+            "type": "dialog",
+            "character": "Tori (internal, pained)",
+            "text": "\"It\\'s too dark... I can\\'t hold on...\"",
+            "nextSceneId": "beat7_despairAttempt",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_despairAttempt",
+            "type": "dialog",
+            "character": "Despair Echo (DOMINANT - forcing)",
+            "text": "\"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\\'s kinder than watching him fail. YOU HAVE NO CHOICE.\"",
+            "nextSceneId": "beat7_choiceLocked",
+            "internal": "[Despair is overwhelming. She\\'s taking control. The fight option feels... blocked.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "beat7_choiceLocked",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"Do I fight Despair... wait, I can\\'t... she\\'s too strong...\"",
+            "nextSceneId": null,
+            "choices": [
+                {
+                    "text": "[Fight: \"No. I trust him.\"] (LOCKED - Tether too low)",
+                    "value": "locked",
+                    "nextSceneId": "beat7_accept"
+                },
+                {
+                    "text": "[Accept: \"Maybe she's right...\"]",
+                    "value": "accept",
+                    "nextSceneId": "beat7_accept"
+                },
+                {
+                    "text": "[Silent: Just hold on.]",
+                    "value": "silent",
+                    "nextSceneId": "beat7_silent"
+                }
+            ],
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_choice",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"Do I fight Despair... or let her win?\"",
+            "nextSceneId": null,
+            "choices": [
+                {
+                    "text": "[Fight: \"No. I trust him.\"]",
+                    "value": "fight",
+                    "nextSceneId": "beat7_fight"
+                },
+                {
+                    "text": "[Accept: \"Maybe she's right...\"]",
+                    "value": "accept",
+                    "nextSceneId": "beat7_accept"
+                },
+                {
+                    "text": "[Silent: Just hold on.]",
+                    "value": "silent",
+                    "nextSceneId": "beat7_silent"
+                }
+            ],
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_fight",
+            "type": "dialog",
+            "character": "Tori (internal, defiant)",
+            "text": "\"No. I trust him. He\\'ll find the way.\"",
+            "nextSceneId": "beat7_echoesReact",
+            "internal": "[COHERENCE BOOST: +10%]\\n[She fought back! Despair recoils.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_accept",
+            "type": "dialog",
+            "character": "Tori (internal, broken)",
+            "text": "\"Maybe she\\'s right... maybe I should just let go...\"",
+            "nextSceneId": "beat7_echoesReact",
+            "internal": "[COHERENCE DROP: -10%]\\n[Despair grins. Victory.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_silent",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"...\"",
+            "nextSceneId": "beat7_echoesReact",
+            "internal": "[Just holding on. Just surviving. Tether holds steady.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat7_echoesReact",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Despair: \"Good. Good. Now you understand.\"\\nEcho 1: (fading) \"No...\"\\nEcho 2: (barely there) \"Please...\"",
+            "nextSceneId": null,
+            "internal": "[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        }
+    ]
+}

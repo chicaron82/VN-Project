@@ -1,0 +1,242 @@
+{
+    "scenes": [
+        {
+            "id": "scene1_streetBump",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "I wasn\\'t looking where I was going...",
+            "nextSceneId": "scene1_bump",
+            "internal": "[Sunny street, midday. Cafes line the background. Tori walks with coffee in hand, distracted by her Tamagotchi.]",
+            "background": "assets/genericBack.png",
+            "sprites": {
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene1_bump",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "Oh my gosh, I\\'m so sorry..I wasn\\'t paying attention!",
+            "nextSceneId": "scene1_pickup",
+            "internal": "[She bumps into an older man. Both their Tamagotchis tumble to the ground. Hers scuffs, his looks worn, modified.]"
+        },
+        {
+            "id": "scene1_pickup",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "...Weird. Mine has never done that before.",
+            "nextSceneId": "scene1_oldMan",
+            "internal": "[She bends down, picks up his Tamagotchi by mistake. The toy buzzes in her hand.]"
+        },
+        {
+            "id": "scene1_oldMan",
+            "type": "dialog",
+            "character": "Old Man",
+            "text": "No problem. Hang on to that. It may save your life someday.",
+            "nextSceneId": "scene1_end",
+            "internal": "[She glances up but never clearly sees his face. Just a glimpse of a faded BGA hoodie. He walks away, clutching her original Tamagotchi.]",
+            "background": "assets/genericBack.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene1_end",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "...What a strange thing to say.",
+            "nextSceneId": "scene2_arrival",
+            "internal": "[She stands there a moment, then pockets the Tamagotchi and heads home.]"
+        },
+        {
+            "id": "scene2_arrival",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "Hey babe, I\\'m home!",
+            "nextSceneId": "scene2_ronnieGreeting",
+            "internal": "[Tori enters her home. Ronnie is at his laptop, deep in dev mode.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_ronnieGreeting",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "Hey honey! How was your day?",
+            "nextSceneId": "scene2_home",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_home",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "Pretty good! Hey, can you take a look at my Ronnie-gatchi? I just changed the battery and it\\'s already half-drained. I dropped it earlier, but... I don\\'t think that\\'s the problem",
+            "nextSceneId": "scene2_ronnieResponse",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_ronnieResponse",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "Ya sure I can look at it. Why do you call it that anyway?",
+            "nextSceneId": "scene2_toriExplains",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_toriExplains",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "Oh you know because this thing is sooo cute. And what better way to name it than after my man - who\\'s even cuter!",
+            "nextSceneId": "scene2_ronnieTeases",
+            "internal": "[She hands him the French Vanilla.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_ronnieTeases",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "You\\'re such a dork, honey",
+            "nextSceneId": "scene2_hoodieBanter",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_hoodieBanter",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "Says the guy wearing the TLC hoodie. Again.",
+            "nextSceneId": "scene2_ronnieDefends",
+            "internal": "[She tugs playfully at his sleeve.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_ronnieDefends",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "Well, SOMEONE keeps stealing my BGA hoodie, so this is my replacement.",
+            "nextSceneId": "scene2_toriRebuttal",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_toriRebuttal",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "You wear the TLC one anyway! So the BGA one is fair game. Besides, it looks better on me.",
+            "nextSceneId": "scene2_chicharonTease",
+            "internal": "[She grins mischievously.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_chicharonTease",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "You\\'re impossible.",
+            "nextSceneId": "scene2_chicharonMoment",
+            "internal": "[He shakes his head, but there\\'s warmth in his eyes.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_chicharonMoment",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "And you love me anyway, Chicharon.",
+            "nextSceneId": "scene2_toriDinner",
+            "internal": "[She boops his nose playfully. Their nickname - the one she uses when it\\'s just them. Home.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_toriDinner",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "I\\'ll get dinner started. Love you!",
+            "nextSceneId": "scene2_kitchen",
+            "internal": "[She smiles, sets the buzzing Tamagotchi on his laptop (resting against the keyboard). Leans in, gives him a quick kiss.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_kitchen",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor.",
+            "nextSceneId": "scene2_warning",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "scene2_warning",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "Babe, watch ou..!",
+            "nextSceneId": "scene3_fall",
+            "internal": "[He notices her about to trip over his shoe.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "scene3_fall",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "One step too late... She trips. Stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late. The Tamagotchi, resting on the laptop, lights faintly. The screen flickers, code scrolling.",
+            "nextSceneId": "scene3_vision"
+        },
+        {
+            "id": "scene3_vision",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie. Her hand reaches weakly for him before everything goes dark.",
+            "nextSceneId": "prologueComplete"
+        }
+    ]
+}

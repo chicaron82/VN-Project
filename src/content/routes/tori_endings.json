@@ -1,0 +1,264 @@
+{
+    "scenes": [
+        {
+            "id": "endings_criticalChoice",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Everything shatters. Tori is fracturing. The Echoes watch. This is the moment.",
+            "nextSceneId": null,
+            "choices": [
+                {
+                    "text": "[Accept the upload - stay digital]",
+                    "value": "upload",
+                    "nextSceneId": "badRoute"
+                },
+                {
+                    "text": "[Follow the heartbeat home]",
+                    "value": "heartbeat",
+                    "nextSceneId": "trueRoute"
+                },
+                {
+                    "text": "[Hold onto Ronnie - whatever it takes]",
+                    "value": "hold",
+                    "nextSceneId": "digitalForever"
+                }
+            ],
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "badRoute",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Upload fails. Tori fragments. Becomes another Echo in the void.",
+            "nextSceneId": "badRoute_loop",
+            "internal": "[Visual: Digital space. Four voices now. Echo 1, Echo 2, Despair... and Tori.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "badRoute_loop",
+            "type": "dialog",
+            "character": "New Echo (Tori)",
+            "text": "\"He\\'ll try again. He always tries again.\"",
+            "nextSceneId": null,
+            "internal": "[The loop resets. Version 849. Another Tori wakes in the void...]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "digitalForever",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Both crash. Both transfer. Digital space. Two souls. Forever.",
+            "nextSceneId": "digitalForever_together",
+            "internal": "[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "digitalForever_together",
+            "type": "dialog",
+            "character": "Tori (digital)",
+            "text": "\"We\\'re together. Isn\\'t this what we wanted?\"",
+            "nextSceneId": "digitalForever_ronnie",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "digitalForever_ronnie",
+            "type": "dialog",
+            "character": "Ronnie (digital)",
+            "text": "\"Forever. No pain. No time. Just us.\"",
+            "nextSceneId": "digitalForever_toriNotices",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "digitalForever_toriNotices",
+            "type": "dialog",
+            "character": "Tori (digital)",
+            "text": "\"You\\'re still wearing the TLC hoodie. Even here.\"",
+            "nextSceneId": "digitalForever_tlcReveal",
+            "internal": "[She smiles softly, touching the digital fabric.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "digitalForever_tlcReveal",
+            "type": "dialog",
+            "character": "Tori (digital)",
+            "text": "\"\\'TLC\\' - Tender Loving Care. That\\'s my Ronnie.\"",
+            "nextSceneId": "digitalForever_ronnieCorrects",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "left"
+            }
+        },
+        {
+            "id": "digitalForever_ronnieCorrects",
+            "type": "dialog",
+            "character": "Ronnie (digital)",
+            "text": "\"Oh that\\'s not what that stands for.\"",
+            "nextSceneId": "digitalForever_actualMeaning",
+            "internal": "[He grins.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "digitalForever_actualMeaning",
+            "type": "dialog",
+            "character": "Ronnie (digital)",
+            "text": "\"Tori Loves Chicharon.\"",
+            "nextSceneId": "digitalForever_echoesAppear",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp",
+                "highlight": "right"
+            }
+        },
+        {
+            "id": "digitalForever_echoesAppear",
+            "type": "dialog",
+            "character": "Echo 1",
+            "text": "\"Oh that\\'s YOUR Ronnie, huh?\"",
+            "nextSceneId": "digitalForever_echo2",
+            "internal": "[The Echoes materialize, grinning.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "digitalForever_echo2",
+            "type": "dialog",
+            "character": "Echo 2",
+            "text": "\"Girl, he\\'s cute!\"",
+            "nextSceneId": "digitalForever_despairTeases",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "digitalForever_despairTeases",
+            "type": "dialog",
+            "character": "Despair",
+            "text": "\"Tori Loves Chicharon?! OMG adorable.\"",
+            "nextSceneId": "digitalForever_echoes",
+            "internal": "[Even Despair can\\'t help but smile.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "digitalForever_echoes",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"They made it...\"\\nEcho 2: \"Together at least.\"\\nDespair: \"...It\\'s beautiful. And hollow. But beautiful.\"",
+            "nextSceneId": null,
+            "internal": "[Fade to white. Digital Forever - Love preserved in code.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-tori.webp",
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "The heartbeat calls. The bridge holds. Transfer begins.",
+            "nextSceneId": "trueRoute_transfer",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "trueRoute_transfer",
+            "type": "dialog",
+            "character": "Tori (internal)",
+            "text": "\"I feel it... the pull... I'm going home...\"",
+            "nextSceneId": "trueRoute_echoes",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "trueRoute_echoes",
+            "type": "dialog",
+            "character": "Echoes",
+            "text": "Echo 1: \"Go. Go!\"\\nEcho 2: \"You did it. You actually did it.\"\\nDespair: \"...Tell him... tell him we\\'re proud.\"",
+            "nextSceneId": "trueRoute_merge",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "trueRoute_merge",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Three become one.",
+            "nextSceneId": "trueRoute_awakening",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "echoes"
+            }
+        },
+        {
+            "id": "trueRoute_awakening",
+            "type": "dialog",
+            "character": "Tori (external, whisper)",
+            "text": "\"...Ronnie?\"",
+            "nextSceneId": "trueRoute_ronnie",
+            "internal": "[Visual: Hospital room. Her eyes flutter open. Real eyes. Real body. Real breath.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_ronnie",
+            "type": "dialog",
+            "character": "Ronnie (crying, laughing)",
+            "text": "\"Tori! Oh god, Tori!\"",
+            "nextSceneId": "trueRoute_always",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "trueRoute_always",
+            "type": "dialog",
+            "character": "Tori (weak smile)",
+            "text": "\"Always. Always. Always.\"",
+            "nextSceneId": null,
+            "internal": "[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "right": "assets/full-sprite-ronnie.webp"
+            }
+        }
+    ]
+}

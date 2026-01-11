@@ -1,0 +1,34 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { GameLayout } from './GameLayout';
+import { EventBus } from '@core/EventBus';
+
+describe('GameLayout', () => {
+    let eventBus: EventBus;
+
+    beforeEach(() => {
+        // Setup generic DOM
+        document.body.innerHTML = '<div id="app"></div>';
+        eventBus = new EventBus();
+    });
+
+    afterEach(() => {
+        document.body.innerHTML = '';
+    });
+
+    it('should mount layout to the requested container', () => {
+        new GameLayout('app', eventBus);
+
+        expect(document.querySelector('.game-layout')).toBeTruthy();
+        expect(document.querySelector('.game-viewport')).toBeTruthy();
+        expect(document.querySelector('.dialog-box')).toBeTruthy();
+    });
+
+    it('should update tether display width', () => {
+        const layout = new GameLayout('app', eventBus);
+
+        layout.updateTether(50);
+        const fill = document.getElementById('tether-fill');
+
+        expect(fill?.style.width).toBe('50%');
+    });
+});

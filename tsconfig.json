@@ -22,11 +22,33 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "baseUrl": ".",
+        "paths": {
+            "@core/*": [
+                "./src/core/*"
+            ],
+            "@systems/*": [
+                "./src/systems/*"
+            ],
+            "@controllers/*": [
+                "./src/controllers/*"
+            ],
+            "@ui/*": [
+                "./src/ui/*"
+            ],
+            "@content/*": [
+                "./src/content/*"
+            ],
+            "@utils/*": [
+                "./src/utils/*"
+            ]
+        }
     },
     "include": [
         "system/**/*",
-        "routes/**/*"
+        "routes/**/*",
+        "src/**/*"
     ],
     "exclude": [
         "node_modules",

@@ -1,0 +1,520 @@
+{
+    "scenes": [
+        {
+            "id": "act3Beat2",
+            "type": "dialog",
+            "character": "Ronnie (narration)",
+            "text": "\"Over the next few days, it got worse. She\\'d forget things. Small things at first.\"",
+            "nextSceneId": "beat2_forgetting",
+            "internal": "[Visual: Digital apartment. Tori cooking breakfast - movements glitchy, repeating.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat2_forgetting",
+            "type": "dialog",
+            "character": "Tori (confused)",
+            "text": "\"Baby, what\\'s our anniversary date again?\"",
+            "nextSceneId": "beat2_ronnieAnswer",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat2_ronnieAnswer",
+            "type": "dialog",
+            "character": "Ronnie (careful)",
+            "text": "\"June 12th. We\\'ve celebrated it four times.\"",
+            "nextSceneId": "beat2_toriRealization",
+            "internal": "[She knows this. She KNOWS this. Why is she asking?]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat2_toriRealization",
+            "type": "dialog",
+            "character": "Tori (panicking)",
+            "text": "\"I knew that. I KNEW that. Why couldn\\'t I... Ronnie, what\\'s happening to me?\"",
+            "nextSceneId": "beat2_promise",
+            "internal": "[Her sprite flickers. Eyes wide with fear.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat2_promise",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"It\\'s okay. We\\'ll figure it out. I promise.\"",
+            "nextSceneId": "act3Beat3",
+            "internal": "[Ronnie (internal): \"But I had no idea how. The code was stable. What was causing this?\"]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "act3Beat3",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Then the messages started appearing.",
+            "nextSceneId": "beat3_firstMessage",
+            "internal": "[Visual: Text overlays bleeding through the game world. Red warnings.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat3_firstMessage",
+            "type": "dialog",
+            "character": "System Message",
+            "text": "⚠️ WARNING: MEMORY CORRUPTION DETECTED\\n⚠️ VESSEL INSTABILITY: 67%\\n⚠️ RECOMMEND IMMEDIATE DIAGNOSTICS",
+            "nextSceneId": "beat3_toriSees",
+            "internal": "[The text appears over Tori\\'s sprite. She can see it too.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat3_toriSees",
+            "type": "dialog",
+            "character": "Tori (reading)",
+            "text": "\"Ronnie... I can see that. The warnings. Vessel instability? What vessel?\"",
+            "nextSceneId": "beat3_ronnieHesitates",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat3_ronnieHesitates",
+            "type": "dialog",
+            "character": "Ronnie (deflecting)",
+            "text": "\"Just... system diagnostics. Nothing to worry about.\"",
+            "nextSceneId": "beat3_moreWarnings",
+            "internal": "[Ronnie (internal): \"I couldn\\'t tell her. Not yet. Not while she was already scared.\"]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat3_moreWarnings",
+            "type": "dialog",
+            "character": "System Message",
+            "text": "⚠️ CRITICAL: BATTERY DEPLETION ACCELERATING\\n⚠️ CONSCIOUSNESS ANCHOR: UNSTABLE\\n⚠️ ESTIMATED TIME TO FAILURE: 72 HOURS",
+            "nextSceneId": "beat3_toriDemands",
+            "internal": "[More messages. Faster now. Tori\\'s sprite glitches harder with each one.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat3_toriDemands",
+            "type": "dialog",
+            "character": "Tori (firm)",
+            "text": "\"Ronnie. TELL ME. What\\'s happening? What\\'s the vessel? What\\'s failing?\"",
+            "nextSceneId": "act3Beat4",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "act3Beat4",
+            "type": "dialog",
+            "character": "Ronnie (breaking)",
+            "text": "\"The Tori-Gatchi. You\\'re... inside it. You messaged me in the game I made. I don\\'t think my computer can handle your consciousness.\"",
+            "nextSceneId": "beat4_toriProcessing",
+            "internal": "[Ronnie finally admits it. The truth he\\'d been hiding.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_toriProcessing",
+            "type": "dialog",
+            "character": "Tori (slowly)",
+            "text": "\"I\\'m... in the Tamagotchi. Not the game. The device itself.\"",
+            "nextSceneId": "beat4_understanding",
+            "internal": "[Her sprite stutters. Reality reshaping around the revelation.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_understanding",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"The buzzes. The battery drain. That\\'s me. I\\'m killing the device just by existing in it.\"",
+            "nextSceneId": "beat4_ronnieConfirms",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_ronnieConfirms",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Yes. And when it dies... I don\\'t know what happens to you. If you just... stop. Or if it\\'s worse.\"",
+            "nextSceneId": "beat4_glitch",
+            "internal": "[The weight of it. The timer counting down.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_glitch",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "GLITCH.",
+            "nextSceneId": "beat4_toriScreaming",
+            "internal": "[Tori\\'s sprite fractures. Screen tears. Visual corruption spreads.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_toriScreaming",
+            "type": "dialog",
+            "character": "Tori (distorted)",
+            "text": "\"I can feel it. The edges. I\\'m coming apart. Ronnie, I\\'m SCARED—\"",
+            "nextSceneId": "beat4_ronnieGrabs",
+            "internal": "[Her voice fragments mid-word. Sprite dissolving at the edges.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat4_ronnieGrabs",
+            "type": "dialog",
+            "character": "Ronnie (desperate)",
+            "text": "\"Hold on! Just—stay with me! I\\'ll fix this!\"",
+            "nextSceneId": "beat5_hospitalMemory",
+            "internal": "[He grabs the device. Holds it close. Like proximity could keep her together.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5_hospitalMemory",
+            "type": "dialog",
+            "character": "Ronnie (narration)",
+            "text": "\"And then I remembered. The hospital. The single buzz.\"",
+            "nextSceneId": "beat5_realization",
+            "internal": "[Flashback: Device near Tori\\'s body. One buzz. Different from the vessel transfers.]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "beat5_realization",
+            "type": "dialog",
+            "character": "Ronnie (excited)",
+            "text": "\"The body. Tori, your BODY. It\\'s still there. Still alive. That buzz—you were reaching for it!\"",
+            "nextSceneId": "beat5_toriHope",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5_toriHope",
+            "type": "dialog",
+            "character": "Tori (through game)",
+            "text": "\"I felt something. Warmth. A pull. Different from the laptop.\"",
+            "nextSceneId": "beat5_theory",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat5_theory",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"If I bring the device close enough... if you can jump vessels... maybe you can jump HOME.\"",
+            "nextSceneId": "beat5_toriUncertain",
+            "internal": "[The mad theory. Desperate. Beautiful. Terrifying.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5_toriUncertain",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"But what if I can\\'t? What if I just... dissolve? What if jumping destroys me?\"",
+            "nextSceneId": "beat5_ronniePromise",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat5_ronniePromise",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Then we find another way. Upload you somewhere safer. Or... I don\\'t know. But we\\'re running out of time.\"",
+            "nextSceneId": "beat5_timer",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat5_timer",
+            "type": "dialog",
+            "character": "System Message",
+            "text": "⚠️ CRITICAL BATTERY: 8% REMAINING\\n⚠️ ESTIMATED TIME: 12 HOURS\\n⚠️ DECISION REQUIRED",
+            "nextSceneId": "beat6_uploadAttempt",
+            "internal": "[The clock is ticking. He needs to act NOW.]",
+            "background": "assets/digitalSpace.png"
+        },
+        {
+            "id": "beat6_uploadAttempt",
+            "type": "dialog",
+            "character": "Ronnie (frantic)",
+            "text": "\"If the device can\\'t hold you... I\\'ll upload you somewhere bigger. The laptop. The cloud. ANYWHERE with more space!\"",
+            "nextSceneId": "beat6_uploadProgress",
+            "internal": "[He frantically opens his laptop. Connection protocols. Upload sequence initiating.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_uploadProgress",
+            "type": "dialog",
+            "character": "System",
+            "text": "TRANSFER PROTOCOL INITIATED... Uploading consciousness data... [Transfer complete. But something\\'s wrong.]",
+            "nextSceneId": "beat6_uploadFails",
+            "internal": "[The data moved. But Tori didn\\'t.]",
+            "background": "assets/apartment.png"
+        },
+        {
+            "id": "beat6_uploadFails",
+            "type": "dialog",
+            "character": "Tori (through device, weak)",
+            "text": "\"Ronnie... I\\'m still here. Still in the Tamagotchi. It didn\\'t work.\"",
+            "nextSceneId": "beat6_realization",
+            "internal": "[The upload failed. She can\\'t be moved like data. She\\'s consciousness, not code.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_realization",
+            "type": "dialog",
+            "character": "Ronnie (realization)",
+            "text": "\"You can\\'t be uploaded. You\\'re not DATA. You\\'re a SOUL. And souls need... bodies.\"",
+            "nextSceneId": "beat6_bodyAnchor",
+            "internal": "[The pieces click. The single buzz at the hospital. Her body reaching for her.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat6_bodyAnchor",
+            "type": "dialog",
+            "character": "Tori (urgent)",
+            "text": "\"My body. Ronnie, my BODY is still at the hospital. I felt it pull me when you were near!\"",
+            "nextSceneId": "beat6_plan",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat6_plan",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Then that\\'s the anchor. Device to hand. Heartbeat to heartbeat. You can jump BACK.\"",
+            "nextSceneId": "beat7_phoneCall",
+            "internal": "[Hope. Desperate. Dangerous. But possible.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat7_phoneCall",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "His phone SCREAMS.",
+            "nextSceneId": "beat7_nurseVoice",
+            "internal": "[Incoming call: City General Hospital. ICU. URGENT.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat7_nurseVoice",
+            "type": "dialog",
+            "character": "Nurse (phone, urgent)",
+            "text": "\"Mr. Ronnie? It\\'s City General. Tori\\'s vitals just crashed. Heart rate erratic. Blood pressure dropping. You need to get here NOW.\"",
+            "nextSceneId": "beat7_tamagotchiBuzz",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat7_tamagotchiBuzz",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "The Tamagotchi BUZZES VIOLENTLY in his hand.",
+            "nextSceneId": "beat7_toriScreaming",
+            "internal": "[Screen flashing red. Battery: 3%. She\\'s dying. Both versions of her. Simultaneously.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "beat7_toriScreaming",
+            "type": "dialog",
+            "character": "Tori (distorted, panicking)",
+            "text": "\"RONNIE! I can feel it! Both of me! I\\'m FRACTURING—\"",
+            "nextSceneId": "beat7_decision",
+            "internal": "[Her voice cuts out. Static. The connection fraying.]",
+            "background": "assets/digitalSpace.png",
+            "sprites": {
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "beat7_decision",
+            "type": "dialog",
+            "character": "Ronnie (voice breaking)",
+            "text": "\"Hold on. HOLD ON. I\\'m coming!\"",
+            "nextSceneId": "madDash_start",
+            "internal": "[He grabs his keys. The Tamagotchi. Sprints for the door.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "madDash_start",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "THE MAD DASH BEGINS.",
+            "nextSceneId": "madDash_streets",
+            "internal": "[Visual: Ronnie bursts through apartment door. Tamagotchi clutched tight. Sprinting down stairs.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "madDash_streets",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "City streets blur past. Red lights ignored. Horns blaring. He doesn\\'t stop.",
+            "nextSceneId": "madDash_hospitalArrival",
+            "internal": "[Tamagotchi screen: Battery 2%. Tori\\'s sprite flickering. Fading.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "madDash_hospitalArrival",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "HOSPITAL. ICU FLOOR. ALARMS SCREAMING.",
+            "nextSceneId": "madDash_corridors",
+            "internal": "[Visual: Ronnie bursts through lobby. Elevator too slow. Takes stairs. Three at a time.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "madDash_corridors",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "Corridor. Room 302. Medical staff swarming. Crash cart.",
+            "nextSceneId": "madDash_monitor",
+            "internal": "[He can see her room. Door ahead. Nurses blocking the way.]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            }
+        },
+        {
+            "id": "madDash_monitor",
+            "type": "dialog",
+            "character": "System Message",
+            "text": "⚠️ BATTERY: 1%\\n⚠️ PATIENT VITALS: CRITICAL\\n⚠️ ESTIMATED TIME TO FLATLINE: 60 SECONDS",
+            "nextSceneId": "act3CriticalChoice",
+            "internal": "[Both timers converging. Body dying. Device dying. One minute.]",
+            "background": "assets/hospital.png"
+        },
+        {
+            "id": "act3CriticalChoice",
+            "type": "dialog",
+            "character": "Ronnie (internal)",
+            "text": "One minute. One choice. Everything depends on this.",
+            "nextSceneId": null,
+            "internal": "[What do you do?]",
+            "background": "assets/hospital.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp"
+            },
+            "choices": [
+                {
+                    "text": "[Push through - GET TO HER NOW]",
+                    "value": "push_through",
+                    "nextSceneId": "trueRouteEnding"
+                },
+                {
+                    "text": "[Stop and explain to medical staff]",
+                    "value": "explain",
+                    "nextSceneId": "badRouteEnding"
+                },
+                {
+                    "text": "[Connect to her digitally one last time]",
+                    "value": "connect",
+                    "nextSceneId": "digitalForeverEnding"
+                }
+            ]
+        }
+    ]
+}

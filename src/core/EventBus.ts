@@ -1,0 +1,208 @@
+/**
+ * EventBus - Centralized Event System
+ * 
+ * Type-safe pub/sub event system for decoupled communication.
+ * Provides event history for debugging and type safety for all events.
+ */
+
+/**
+ * Game event type definitions
+ * Extend this type as new events are added
+ */
+export type GameEvents = {
+  'scene:load': { sceneId: string };
+  'scene:complete': { sceneId: string };
+  'dialog:show': { entry: { character: string; text: string } };
+  'choice:selected': { choiceId: string; text: string };
+  'tether:change': { level: number; delta: number };
+  'tether:critical': { level: number };
+  'save:complete': { slot: number };
+  'achievement:unlock': { id: string };
+  'visual:cue': { type: string | null; channel: string };
+  'loading:start': { total: number };
+  'loading:progress': { current: number; total: number; file: string };
+  'loading:complete': { total: number };
+  'tether:boost': { amount: number };
+  'tether:death': {};
+  'ui:screen_change': { screen: string };
+  'game:reset_view': {};
+  'effect:code_rain': { duration: number };
+  'effect:glitch': { intensity: number };
+  'effect:shake': { intensity: string };
+  'effect:flash': { color: string; duration: number };
+  'dialog:complete': {};
+  'dialog:advance': {};
+  'ui:show_route_select': {};
+  'ui:show_skip_prompt': {};
+  'ui:click': {};
+  'ui:confirm': {};
+  'ui:denied': {};
+  'ui:pause_toggle': {};
+  'ui:main_menu': {};
+  'ui:start_game': { route: 'ronnie' | 'tori' };
+  'ui:route_select': {};
+  'ui:load_menu': {};
+  'ui:settings': {};
+  'ui:credits': {};
+  'ui:show_retry_screen': { currentRoute: string; loopVersion: number };
+  'ui:retry_choice': { choice: 'restart_route' | 'change_perspective'; route?: 'ronnie' | 'tori' };
+  'ui:code_submit': { code: string };
+};
+
+export type EventName = keyof GameEvents;
+export type EventCallback<T extends EventName> = (data: GameEvents[T]) => void;
+
+/**
+ * Event history entry for debugging
+ */
+interface EventHistoryEntry<T extends EventName = EventName> {
+  event: T;
+  data: GameEvents[T];
+  timestamp: number;
+}
+
+/**
+ * EventBus - Centralized event system
+ * 
+ * Features:
+ * - Type-safe event names and payloads
+ * - Pub/sub pattern
+ * - Event history for debugging
+ * - Unsubscribe support
+ */
+export class EventBus {
+  private subscribers: Map<EventName, Set<EventCallback<EventName>>>;
+  private history: EventHistoryEntry[];
+  private maxHistorySize: number;
+  private historyEnabled: boolean;
+
+  constructor(maxHistorySize = 100, historyEnabled = true) {
+    this.subscribers = new Map();
+    this.history = [];
+    this.maxHistorySize = maxHistorySize;
+    this.historyEnabled = historyEnabled;
+  }
+
+  /**
+   * Subscribe to an event
+   * 
+   * @param event - Event name
+   * @param callback - Callback function
+   * @returns Unsubscribe function
+   * 
+   * @example
+   * const unsubscribe = eventBus.on('scene:load', (data) => {
+   *   console.log(`Scene loaded: ${data.sceneId}`);
+   * });
+   * 
+   * // Later:
+   * unsubscribe();
+   */
+  on<T extends EventName>(
+    event: T,
+    callback: EventCallback<T>
+  ): () => void {
+    if (!this.subscribers.has(event)) {
+      this.subscribers.set(event, new Set());
+    }
+
+    const callbacks = this.subscribers.get(event)!;
+    callbacks.add(callback as EventCallback<EventName>);
+
+    // Return unsubscribe function
+    return () => {
+      const callbacks = this.subscribers.get(event);
+      if (callbacks) {
+        callbacks.delete(callback as EventCallback<EventName>);
+      }
+    };
+  }
+
+  /**
+   * Emit an event
+   * 
+   * @param event - Event name
+   * @param data - Event data (must match event type)
+   * 
+   * @example
+   * eventBus.emit('scene:load', { sceneId: 'scene1_coffee' });
+   */
+  emit<T extends EventName>(event: T, data: GameEvents[T]): void {
+    // Record in history
+    if (this.historyEnabled) {
+      this.history.push({
+        event,
+        data,
+        timestamp: Date.now(),
+      });
+
+      // Trim history if too large
+      if (this.history.length > this.maxHistorySize) {
+        this.history.shift();
+      }
+    }
+
+    // Notify subscribers
+    const callbacks = this.subscribers.get(event);
+    if (callbacks) {
+      callbacks.forEach((callback) => {
+        try {
+          callback(data);
+        } catch (error) {
+          console.error(`Error in event callback for ${event}:`, error);
+        }
+      });
+    }
+  }
+
+  /**
+   * Unsubscribe from an event (alternative to using returned function)
+   * 
+   * @param event - Event name
+   * @param callback - Callback to remove
+   */
+  off<T extends EventName>(event: T, callback: EventCallback<T>): void {
+    const callbacks = this.subscribers.get(event);
+    if (callbacks) {
+      callbacks.delete(callback as EventCallback<EventName>);
+    }
+  }
+
+  /**
+   * Remove all subscribers for an event (or all events if no event specified)
+   * 
+   * @param event - Optional event name. If not provided, clears all subscribers
+   */
+  clear(event?: EventName): void {
+    if (event) {
+      this.subscribers.delete(event);
+    } else {
+      this.subscribers.clear();
+    }
+  }
+
+  /**
+   * Get event history
+   * 
+   * @returns Array of event history entries
+   */
+  getHistory(): ReadonlyArray<EventHistoryEntry> {
+    return [...this.history];
+  }
+
+  /**
+   * Clear event history
+   */
+  clearHistory(): void {
+    this.history = [];
+  }
+
+  /**
+   * Enable/disable event history
+   * 
+   * @param enabled - Whether to enable history
+   */
+  setHistoryEnabled(enabled: boolean): void {
+    this.historyEnabled = enabled;
+  }
+}

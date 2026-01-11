@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
+    "build": "tsc --project tsconfig.v2.json && vite build",
+    "preview": "vite preview",
     "test": "vitest",
+    "test:v2": "vitest --config vite.config.ts",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:coverage:v2": "vitest --config vite.config.ts --coverage"
   },
   "devDependencies": {
+    "@types/node": "^25.0.6",
+    "@vitest/coverage-v8": "^1.6.1",
     "@vitest/ui": "^1.6.1",
     "jsdom": "^27.4.0",
     "typescript": "^5.9.3",
+    "vite": "^7.3.1",
     "vitest": "^1.6.1"
   }
 }
