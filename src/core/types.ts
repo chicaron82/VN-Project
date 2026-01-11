@@ -51,8 +51,8 @@ export interface Scene {
 }
 
 export interface SpriteConfig {
-    id: CharacterId;
-    variant?: string;
+    id: string; // Character identifier (flexible for JSON content)
+    variant?: string; // Full path to sprite image
     position?: 'left' | 'center' | 'right';
     classes?: string[]; // CSS classes for animations
 }

@@ -9,12 +9,23 @@ import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
 import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
+import { ContentLoader } from '@systems/ContentLoader';
+import { DialogController } from '@controllers/DialogController';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
 import { PauseScreen } from '@ui/screens/PauseScreen';
 import { GameLayout } from '@ui/components/GameLayout';
 import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
 import '@ui/styles/main.css';
+
+// Import route JSON files (Vite handles these as static imports)
+import prologueData from '@content/routes/prologue.json';
+import ronnieAct1Data from '@content/routes/ronnie_act1.json';
+import ronnieAct2Data from '@content/routes/ronnie_act2.json';
+import ronnieAct3Data from '@content/routes/ronnie_act3.json';
+import toriAct1Data from '@content/routes/tori_act1.json';
+import toriAct2Data from '@content/routes/tori_act2.json';
+import toriAct3Data from '@content/routes/tori_act3.json';
 
 // ============================================
 // Core Systems
@@ -33,6 +44,8 @@ const settingsSystem = new SettingsSystem(stateManager);
 settingsSystem.init();
 
 const gameEngine = new GameEngine(eventBus, stateManager);
+const contentLoader = new ContentLoader(gameEngine);
+const dialogController = new DialogController(settingsSystem, eventBus);
 
 // ============================================
 // App State
@@ -397,6 +410,7 @@ function startGame(route: 'ronnie' | 'tori') {
 
     stateManager.set('currentRoute', route);
     stateManager.set('tetherLevel', 100);
+    stateManager.set('history', []);
 
     // Create game layout
     gameLayout = new GameLayout('app', eventBus);
@@ -408,52 +422,116 @@ function startGame(route: 'ronnie' | 'tori') {
             gameLayout.viewport,
             eventBus
         );
+
+        // Set up dialog controller to update UI
+        dialogController.onTextUpdate((text) => {
+            if (gameLayout) {
+                gameLayout.dialogText.textContent = text;
+            }
+        });
+
+        // Click on viewport advances dialog
+        gameLayout.viewport.addEventListener('click', () => {
+            dialogController.handleClick();
+        });
     }
 
-    // Show initial dialog
-    showDialog(route === 'ronnie' ? 'RONNIE' : 'TORI', getOpeningLine(route));
-
-    // Set up gameplay
+    // Set up gameplay screen
     currentScreen = {
         unmount: () => {
             const root = document.getElementById('app');
             if (root) root.innerHTML = '';
             gameLayout = null;
+            dialogController.destroy();
         }
     };
+
+    // Load first scene based on route
+    // For now, both routes start with prologue
+    const firstSceneId = 'scene1_streetBump'; // First scene in prologue.json
+    gameEngine.loadScene(firstSceneId);
 
     console.log(`[UV7 V2] Starting game: ${route} route`);
 }
 
-function getOpeningLine(route: 'ronnie' | 'tori'): string {
-    if (route === 'ronnie') {
-        return "Day 847. She's still not waking up. The doctors say the same thing every time - 'We're monitoring her condition.' But I know there's something else going on. Something in the code...";
-    } else {
-        return "Where am I? The last thing I remember was... pain. Then nothing. Now this void. These numbers streaming past. And his voice, somewhere far away, calling my name...";
+function updateBackground(path: string | undefined) {
+    if (!gameLayout || !path) return;
+    gameLayout.viewport.style.backgroundImage = `url(${path})`;
+    gameLayout.viewport.style.backgroundSize = 'cover';
+    gameLayout.viewport.style.backgroundPosition = 'center';
+}
+
+function updateSprites(sprites: Array<{ position?: string; variant?: string }> | undefined) {
+    if (!gameLayout) return;
+
+    // Clear existing sprites
+    const existingSprites = gameLayout.viewport.querySelectorAll('.character-sprite');
+    existingSprites.forEach(s => s.remove());
+
+    if (!sprites) return;
+
+    for (const sprite of sprites) {
+        const img = document.createElement('img');
+        img.className = 'character-sprite';
+        img.src = sprite.variant || ''; // variant holds full path
+        img.style.cssText = `
+            position: absolute;
+            bottom: 0;
+            height: 80%;
+            max-width: 40%;
+            object-fit: contain;
+            ${sprite.position === 'left' ? 'left: 5%;' : ''}
+            ${sprite.position === 'right' ? 'right: 5%;' : ''}
+            ${sprite.position === 'center' ? 'left: 50%; transform: translateX(-50%);' : ''}
+        `;
+        gameLayout.viewport.appendChild(img);
     }
 }
 
-function showDialog(speaker: string, text: string) {
+function showChoices(choices: Array<{ text: string; next: string | null }>) {
     if (!gameLayout) return;
 
-    gameLayout.dialogName.textContent = speaker;
-    gameLayout.dialogName.style.color = speaker === 'RONNIE' ? '#0ff' : '#f0f';
+    // Create choice container
+    const choiceContainer = document.createElement('div');
+    choiceContainer.id = 'choice-container';
+    choiceContainer.style.cssText = `
+        position: absolute;
+        bottom: 20%;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        z-index: 100;
+    `;
 
-    // Typewriter effect
-    gameLayout.dialogText.textContent = '';
-    let i = 0;
-    const speed = settingsSystem.get('textSpeed') || 30;
+    choices.forEach((choice, index) => {
+        const btn = document.createElement('button');
+        btn.textContent = choice.text;
+        btn.style.cssText = `
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #0ff;
+            color: #0ff;
+            padding: 1rem 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        `;
+        btn.addEventListener('mouseenter', () => {
+            btn.style.background = 'rgba(0, 255, 255, 0.2)';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.background = 'rgba(0, 0, 0, 0.8)';
+        });
+        btn.addEventListener('click', () => {
+            choiceContainer.remove();
+            gameEngine.selectChoice(index);
+        });
+        choiceContainer.appendChild(btn);
+    });
 
-    const typeInterval = setInterval(() => {
-        if (i < text.length) {
-            gameLayout!.dialogText.textContent += text[i];
-            i++;
-        } else {
-            clearInterval(typeInterval);
-            // Show continue indicator
-            gameLayout!.dialogText.innerHTML += '<span style="opacity: 0.5; margin-left: 1rem;">▼</span>';
-        }
-    }, speed);
+    gameLayout.viewport.appendChild(choiceContainer);
 }
 
 function togglePause() {
@@ -489,6 +567,60 @@ function setupEventHandlers() {
 
     eventBus.on('ui:pause_toggle', togglePause);
 
+    // Scene loading - update UI with scene data
+    eventBus.on('scene:load', ({ sceneId }) => {
+        const scene = gameEngine.getCurrentScene();
+        if (!scene || !gameLayout) return;
+
+        // Update character name
+        const speaker = scene.character || 'Narration';
+        gameLayout.dialogName.textContent = speaker;
+
+        // Color based on character
+        if (speaker.toLowerCase().includes('ronnie')) {
+            gameLayout.dialogName.style.color = '#0ff';
+        } else if (speaker.toLowerCase().includes('tori')) {
+            gameLayout.dialogName.style.color = '#f0f';
+        } else {
+            gameLayout.dialogName.style.color = '#fff';
+        }
+
+        // Update background if specified
+        if (scene.background) {
+            updateBackground(scene.background);
+        }
+
+        // Update sprites if specified
+        if (scene.sprites) {
+            updateSprites(scene.sprites);
+        }
+
+        console.log(`[UV7 V2] Scene loaded: ${sceneId}`);
+    });
+
+    // Dialog display - use DialogController for typewriter
+    eventBus.on('dialog:show', ({ entry }) => {
+        if (!gameLayout) return;
+        dialogController.show(entry.text);
+    });
+
+    // Dialog complete - check for choices
+    eventBus.on('dialog:complete', () => {
+        const scene = gameEngine.getCurrentScene();
+        if (scene?.choices && scene.choices.length > 0) {
+            showChoices(scene.choices);
+        }
+    });
+
+    // Scene complete - handle end of route
+    eventBus.on('scene:complete', ({ sceneId }) => {
+        console.log(`[UV7 V2] Route ended at: ${sceneId}`);
+        // For now, return to main menu after a delay
+        setTimeout(() => {
+            showMainMenu();
+        }, 2000);
+    });
+
     // Tether changes
     eventBus.on('tether:change', (data) => {
         if (gameLayout) {
@@ -500,6 +632,10 @@ function setupEventHandlers() {
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && gameLayout) {
             togglePause();
+        }
+        // Space/Enter to advance dialog
+        if ((e.key === ' ' || e.key === 'Enter') && gameLayout && !isPaused) {
+            dialogController.handleClick();
         }
     });
 
@@ -527,6 +663,17 @@ async function init() {
     // Initialize game engine
     await gameEngine.init();
 
+    // Load all route content
+    console.log('[UV7 V2] Loading route content...');
+    contentLoader.parseAndRegister(prologueData as { scenes: any[] });
+    contentLoader.parseAndRegister(ronnieAct1Data as { scenes: any[] });
+    contentLoader.parseAndRegister(ronnieAct2Data as { scenes: any[] });
+    contentLoader.parseAndRegister(ronnieAct3Data as { scenes: any[] });
+    contentLoader.parseAndRegister(toriAct1Data as { scenes: any[] });
+    contentLoader.parseAndRegister(toriAct2Data as { scenes: any[] });
+    contentLoader.parseAndRegister(toriAct3Data as { scenes: any[] });
+    console.log('[UV7 V2] Route content loaded');
+
     // Set up event handlers
     setupEventHandlers();
 
@@ -543,6 +690,8 @@ async function init() {
             stateManager,
             gameEngine,
             settingsSystem,
+            contentLoader,
+            dialogController,
             version: 'V2-beta',
             // Debug helpers
             showRoute: showRouteSelect,

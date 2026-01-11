@@ -64,6 +64,22 @@ export class ContentLoader {
         }
 
         data.scenes.forEach(sceneData => {
+            // Convert JSON sprites format { left: "path", right: "path" }
+            // to SpriteConfig[] format
+            let sprites: Scene['sprites'] = undefined;
+            if (sceneData.sprites && typeof sceneData.sprites === 'object') {
+                sprites = [];
+                for (const [position, path] of Object.entries(sceneData.sprites)) {
+                    if (path && (position === 'left' || position === 'right' || position === 'center')) {
+                        sprites.push({
+                            id: this.extractSpriteId(path as string),
+                            position: position as 'left' | 'center' | 'right',
+                            variant: path as string // Store full path in variant for now
+                        });
+                    }
+                }
+            }
+
             // Validate match with Scene interface
             const scene: Scene = {
                 id: sceneData.id,
@@ -72,18 +88,32 @@ export class ContentLoader {
                 text: sceneData.text,
                 internal: sceneData.internal,
                 background: sceneData.background,
-                sprites: sceneData.sprites,
+                sprites,
+                // Map nextSceneId to next
+                next: sceneData.nextSceneId || sceneData.next,
                 choices: sceneData.choices?.map((c: any) => ({
                     text: c.text,
-                    next: c.nextSceneId,
-                    condition: c.validation, // Mapping validation to condition
+                    next: c.nextSceneId || c.next,
+                    condition: c.validation || c.condition,
                     tetherCost: c.tetherCost,
                     flags: c.flags
                 })),
                 flags: sceneData.flags,
+                tetherImpact: sceneData.tetherImpact,
+                effects: sceneData.effects,
             };
 
             this.engine.registerScene(scene);
         });
+    }
+
+    /**
+     * Extract sprite ID from path (e.g., "assets/full-sprite-tori.webp" -> "tori")
+     */
+    private extractSpriteId(path: string): string {
+        const filename = path.split('/').pop() ?? '';
+        // Match patterns like "full-sprite-tori.webp" or "ronnie-sprite.png"
+        const match = filename.match(/(?:full-sprite-|sprite-)?([\w-]+)\.(png|webp)/);
+        return match?.[1] ?? 'unknown';
     }
 }

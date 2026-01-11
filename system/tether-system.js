@@ -120,10 +120,7 @@ class TetherSystem {
         this.tetherFill = null;
         this.tetherText = null;
         this.holdOnButton = null;
-        this.echoDisplay = null;
-        this.echo1Text = null;
-        this.echo2Text = null;
-        this.echoDespairText = null;
+        // Echo display removed - now using three-echoes-sprite.png instead
     }
 
     // ========================================
@@ -136,10 +133,7 @@ class TetherSystem {
         this.tetherFill = this.game.tetherFill;
         this.tetherText = this.game.tetherText;
         this.holdOnButton = this.game.holdOnButton;
-        this.echoDisplay = this.game.echoDisplay;
-        this.echo1Text = this.game.echo1Text;
-        this.echo2Text = this.game.echo2Text;
-        this.echoDespairText = this.game.echoDespairText;
+        // Echo display removed - now using three-echoes-sprite.png instead
 
         // Set up Hold On button listener
         if (this.holdOnButton) {
@@ -600,41 +594,15 @@ class TetherSystem {
      * @param {any} echoDialogue
      */
     showEchoes(echoDialogue) {
-        // Display echo commentary alongside main dialogue
-        // Creates the "voices in her head" effect
-
-        if (!this.echoDisplay) return;
-
-        // Clear previous echoes
-        if (this.echo1Text) this.echo1Text.textContent = '';
-        if (this.echo2Text) this.echo2Text.textContent = '';
-        if (this.echoDespairText) this.echoDespairText.textContent = '';
-
-        // Show echo display container
-        this.echoDisplay.style.display = 'block';
-
-        // Set echo content if provided
-        if (echoDialogue.echo1 && this.echo1Text) {
-            this.echo1Text.textContent = 'Echo 1: ' + echoDialogue.echo1;
-            this.echoes.echo1.active = true;
-        }
-
-        if (echoDialogue.echo2 && this.echo2Text) {
-            this.echo2Text.textContent = 'Echo 2: ' + echoDialogue.echo2;
-            this.echoes.echo2.active = true;
-        }
-
-        if (echoDialogue.despair && this.echoDespairText) {
-            this.echoDespairText.textContent = 'Despair: ' + echoDialogue.despair;
-            this.echoes.despair.active = true;
-        }
+        // Echo display removed - now using three-echoes-sprite.png instead
+        // This method kept for API compatibility but echoes are shown via sprite controller
+        if (echoDialogue.echo1) this.echoes.echo1.active = true;
+        if (echoDialogue.echo2) this.echoes.echo2.active = true;
+        if (echoDialogue.despair) this.echoes.despair.active = true;
     }
 
     hideEchoes() {
-        if (this.echoDisplay) {
-            this.echoDisplay.style.display = 'none';
-        }
-
+        // Echo display removed - now using three-echoes-sprite.png instead
         // Mark all echoes as inactive
         this.echoes.echo1.active = false;
         this.echoes.echo2.active = false;
@@ -809,10 +777,7 @@ class TetherSystem {
         this.tetherUI = null;
         this.tetherFill = null;
         this.tetherText = null;
-        this.echoDisplay = null;
-        this.echo1Text = null;
-        this.echo2Text = null;
-        this.echoDespairText = null;
+        // Echo display removed - now using three-echoes-sprite.png instead
 
         console.log('✅ TetherSystem cleanup complete');
     }
