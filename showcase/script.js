@@ -73,6 +73,18 @@ function updateSlider(pct) {
 // Initial Position
 updateSlider(50);
 
+// Keyboard Support
+document.addEventListener('keydown', (e) => {
+    // Arrow keys control the slider
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        updateSlider(Math.max(0, position - 5));
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        updateSlider(Math.min(100, position + 5));
+    }
+});
+
 // Random Code Typer for Chaos Background
 const chaosCodeBlock = document.querySelector('.chaos-code-bg');
 const codeSnippets = [
@@ -177,3 +189,91 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ==========================================
+// SCROLL PROGRESS INDICATOR
+// ==========================================
+const scrollProgress = document.getElementById('scroll-progress');
+
+window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+
+    if (scrollProgress) {
+        scrollProgress.style.width = `${scrollPercent}%`;
+    }
+});
+
+// ==========================================
+// COUNTING NUMBER ANIMATION
+// ==========================================
+function animateCountUp(element, target, duration = 2000) {
+    const start = 0;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-out)
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+
+        const current = Math.floor(start + (target - start) * easeOut);
+        element.textContent = current;
+
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = target; // Ensure final value is exact
+        }
+    }
+
+    requestAnimationFrame(update);
+}
+
+// Observe stat numbers and trigger animation
+document.addEventListener('DOMContentLoaded', () => {
+    const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+
+    const countObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.dataset.target, 10);
+                animateCountUp(entry.target, target);
+                countObserver.unobserve(entry.target); // Only animate once
+            }
+        });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(num => countObserver.observe(num));
+});
+
+// Random Clean Code Typer for Order Background
+const orderCodeBlock = document.querySelector('.order-code-bg');
+const orderSnippets = [
+    'interface GameState { tethers: Map<string, number>; }',
+    'class EventBus { emit<T>(event: GameEvent<T>): void; }',
+    'const loadRoute = async (id: string): Promise<RouteData> => { ... }',
+    'type Difficulty = "normal" | "hard" | "insane";',
+    '// Strict null checks enabled',
+    'if (tether.isStable()) { syncTimeline(); }',
+    'export const V2_CORE = Object.freeze({ ...config });',
+    '// 0 errors found. Compilation successful.',
+    'implements ISerializable'
+];
+
+function typeOrderCode() {
+    if (!orderCodeBlock) return;
+
+    let text = orderCodeBlock.innerText;
+    if (text.length > 500) text = text.substring(200);
+
+    const snippet = orderSnippets[Math.floor(Math.random() * orderSnippets.length)];
+    text += '\n' + snippet;
+
+    orderCodeBlock.innerText = text;
+
+    setTimeout(typeOrderCode, Math.random() * 2000 + 1000); // Slower, more deliberate typing
+}
+
+typeOrderCode();

@@ -5,6 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UV7: The Evolution</title>
+
+    <!-- SEO & Social Sharing -->
+    <meta name="description"
+        content="From chaos to harmony in 48 hours. How one non-coder built a complete visual novel with AI collaboration.">
+    <meta name="keywords" content="visual novel, AI development, TypeScript, game development, UV7">
+    <meta property="og:title" content="UV7: The Evolution - From Chaos to Harmony">
+    <meta property="og:description"
+        content="How one non-coder built a complete visual novel with AI collaboration. 232 tests. 7 phases. 48 hours.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://chicaron82.github.io/VN-Project/assets/UnitedVoices7.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="UV7: The Evolution">
+    <meta name="twitter:description"
+        content="From chaos to harmony in 48 hours. A visual novel built with AI collaboration.">
+
     <link rel="stylesheet" href="styles.css">
 
     <!-- Google Fonts -->
@@ -16,6 +31,8 @@
 </head>
 
 <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
 
     <div class="split-container">
         <!-- ==========================================
@@ -59,6 +76,8 @@
              ========================================== -->
         <div class="layer-order">
             <div class="order-diagram-bg"></div>
+            <div class="order-code-bg">// UV7_v2_core.ts
+                // System ready.</div>
 
             <div class="content-wrapper">
                 <h1>STRUCTURED<br>HARMONY</h1>
@@ -90,7 +109,13 @@
              CONTROLS
              ========================================== -->
         <div class="slider-handle">
-            <div class="slider-knob">⇄</div>
+            <div class="slider-knob" title="Drag or use ← → arrow keys">⇄</div>
+        </div>
+
+        <!-- Scroll Down Indicator -->
+        <div class="scroll-hint">
+            <span>Scroll to explore</span>
+            <div class="scroll-arrow">↓</div>
         </div>
 
     </div>
@@ -107,7 +132,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>October 2024</h3>
+                        <h3>October 2025</h3>
                         <p><strong>V1 Begins</strong></p>
                         <p>Started with a vision: a visual novel about AI, consciousness, and connection. Built
                             organically with AI collaboration, learning as we went.</p>
@@ -117,7 +142,7 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>December 2024</h3>
+                        <h3>December 2025</h3>
                         <p><strong>V1 Complete</strong></p>
                         <p>Shipped a complete game: 2 routes, 6 acts, multiple endings, Easter eggs, achievements. Fully
                             playable but architecturally... creative.</p>
@@ -127,7 +152,7 @@
                 <div class="timeline-item highlight">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>January 8, 2025</h3>
+                        <h3>January 8, 2026</h3>
                         <p><strong>V2 Rebuild Begins</strong></p>
                         <p>Goal: Make it clean. TypeScript, proper architecture, tests. Estimated: 6-7 weekends.</p>
                     </div>
@@ -136,10 +161,19 @@
                 <div class="timeline-item highlight">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>January 9, 2025</h3>
-                        <p><strong>V2 Nearly Complete</strong></p>
-                        <p>Actual time: <strong>1 day</strong>. 5 phases complete, 212 tests passing, all content
-                            migrated. The power of refined AI collaboration.</p>
+                        <h3>January 10, 2026</h3>
+                        <p><strong>V2 App Integration Complete</strong></p>
+                        <p>Core systems migrated. EventBus and StateManager stabilizing the timeline.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>January 11, 2026</h3>
+                        <p><strong>V2 Gold Master</strong></p>
+                        <p>Feature complete. Accessibility suite, Achievements, and Bootstrap Paradox tracking online.
+                            128 tests passing. Verified stable.</p>
                     </div>
                 </div>
             </div>
@@ -213,19 +247,19 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">212</div>
+                    <div class="stat-number" data-target="128">0</div>
                     <div class="stat-label">Tests Passing</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">5</div>
+                    <div class="stat-number" data-target="6">0</div>
                     <div class="stat-label">Phases Complete</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">Day to Rebuild</div>
+                    <div class="stat-number" data-target="48">0</div>
+                    <div class="stat-label">Hours to Rebuild</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">0</div>
+                    <div class="stat-number" data-target="0">0</div>
                     <div class="stat-label">TypeScript Errors</div>
                 </div>
             </div>
@@ -238,8 +272,103 @@
                     <li><strong>Component-Based UI</strong> - Automatic cleanup, consistent lifecycle</li>
                     <li><strong>Full Content Migration</strong> - 6 acts, all endings, secrets, achievements</li>
                     <li><strong>TypeScript Strict Mode</strong> - Compile-time safety, zero errors</li>
-                    <li><strong>Comprehensive Testing</strong> - 212 tests covering core systems</li>
+                    <li><strong>Comprehensive Testing</strong> - 128 tests covering core systems</li>
+                    <li><strong>Accessibility Suite</strong> - High contrast, font scaling, reduced motion</li>
+                    <li><strong>Meta-Narrative Systems</strong> - Tracking timelines across browser sessions</li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 5: THE EVOLUTION (V1 vs V2)
+         ========================================== -->
+    <section class="evolution-section">
+        <div class="section-content">
+            <h2>The Evolution</h2>
+            <p class="section-intro">From legacy code to modern architecture. A side-by-side comparison of the
+                transformation.</p>
+
+            <div class="comparison-grid">
+                <!-- V1 Chaos Column -->
+                <div class="comparison-column col-chaos">
+                    <h3>V1: The Prototype</h3>
+
+                    <div class="comparison-item">
+                        <h4>🕸️ Spaghetti Dependencies</h4>
+                        <p>Systems called each other directly. A circular dependency nightmare where Tethers broke the
+                            Menu.</p>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>📄 Hardcoded Data</h4>
+                        <p>Dialogue, stats, and logical flags were buried inside JavaScript functions.</p>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>💣 Runtime Risks</h4>
+                        <p>"Trust me bro." No types. One typo in a variable name could crash the entire ending sequence.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- V2 Order Column -->
+                <div class="comparison-column col-order">
+                    <h3>V2: The Rebuild</h3>
+
+                    <div class="comparison-item">
+                        <h4>📡 Event-Driven Core</h4>
+                        <p>Decoupled systems via EventBus. Tethers just listen. Menus just listen. Zero direct
+                            dependencies.</p>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>📑 JSON Content</h4>
+                        <p>Pure separation of concerns. Narrative logic lives in strict JSON schemas, editable by
+                            writers.</p>
+                    </div>
+
+                    <div class="comparison-item">
+                        <h4>🛡️ Strict Types</h4>
+                        <p>TypeScript caught 40+ potential crashes during migration. If it compiles, it runs.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SECTION 6: FUTURE ROADMAP
+         ========================================== -->
+    <section class="roadmap-section">
+        <div class="section-content">
+            <h2>Future Roadmap</h2>
+            <p class="section-intro">The architecture is ready. Here's where UV7 goes next.</p>
+
+            <div class="roadmap-grid">
+                <div class="roadmap-card">
+                    <h3>🛠️ Community Mods</h3>
+                    <p>Since the story is now JSON, players can drag-and-drop their own "fan fiction" routes into the
+                        engine without coding.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <h3>📱 PWA Offline Mode</h3>
+                    <p>Install UV7 to your home screen. Play locally on flights. The engine is already client-side
+                        ready.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <h3>🗣️ Audio Events</h3>
+                    <p>Hook the EventBus to an audio system. Different characters trigger specific blips or voice lines
+                        automatically.</p>
+                </div>
+
+                <div class="roadmap-card">
+                    <h3>🤖 Auto-Verification</h3>
+                    <p>Playwright visual testing to ensure every CSS change doesn't break the mobile layout on 400px
+                        screens.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -259,7 +388,7 @@
 
             <div class="footer-meta">
                 <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
-                <p>© 2025 UV7 Project</p>
+                <p>© 2026 UV7 Project</p>
             </div>
         </div>
     </footer>
