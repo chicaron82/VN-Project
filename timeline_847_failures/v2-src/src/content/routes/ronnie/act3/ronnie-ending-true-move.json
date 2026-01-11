@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-ending-true-move",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "shouting",
+      "text": "\"Move!\"",
+      "internal": "[He reaches her bedside. Places the Tamagotchi in her palm. Closes her fingers around it with his own hand covering hers.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-ending-true-anchor"
+}

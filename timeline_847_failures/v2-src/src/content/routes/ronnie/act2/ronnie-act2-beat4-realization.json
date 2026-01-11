@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act2-beat4-realization",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "internal",
+      "text": "\"Wait... it's NOT my phone.\"",
+      "internal": "[He reaches into his other pocket.]\n[The Tamagotchi. Tori mentioned something about low battery...]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act2-beat4-dismiss"
+}

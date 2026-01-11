@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene2-calling-out",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"HELLO?! Can anyone hear me?! RONNIE?!\"",
+      "internal": "[The words echo only inside her own mind. No sound escapes into the void.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene2-echoes-whispers"
+}

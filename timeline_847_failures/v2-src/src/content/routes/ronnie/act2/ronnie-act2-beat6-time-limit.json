@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act2-beat6-time-limit",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "internal",
+      "text": "\"We know how to save her. But we're running out of time.\"",
+      "internal": "[Visual: Ronnie grabs the Tamagotchi. Runs for the door.]\n[The race begins.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-end"
+}

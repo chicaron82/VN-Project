@@ -1,0 +1,25 @@
+{
+  "id": "tori-act3-beat2",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "echo2",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "echo2",
+      "text": "\"We felt it too. Near the body. A pull. Warmth. But we never... we thought it was just phantom signals.\"",
+      "internal": "[Echo 2 admits their failure. They never pursued it.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act3-beat2-realization"
+}

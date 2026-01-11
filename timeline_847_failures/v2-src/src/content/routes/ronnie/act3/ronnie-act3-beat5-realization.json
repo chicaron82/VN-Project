@@ -1,0 +1,19 @@
+{
+  "id": "ronnie-act3-beat5-realization",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"The body. Tori, your BODY. It's still there. Still alive. That buzz—you were reaching for it!\""
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act3-beat5-tori-hope"
+}

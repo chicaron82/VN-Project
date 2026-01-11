@@ -1,0 +1,76 @@
+{
+  "id": "ronnie-act1-scene1-choice",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "internal",
+      "text": "\"...What the hell? This isn't coded...\""
+    }
+  ],
+  "choices": [
+    {
+      "text": "(Tender) \"Of course it's you. I'd know you anywhere.\"",
+      "next": "ronnie-act1-scene1-outcome-tender",
+      "counters": [
+        {
+          "name": "affection",
+          "operation": "add",
+          "value": 1
+        }
+      ],
+      "flags": [
+        {
+          "name": "act1_first_choice_tender",
+          "value": true
+        }
+      ]
+    },
+    {
+      "text": "(Skeptical) \"No... this isn't possible. You're just code.\"",
+      "next": "ronnie-act1-scene1-outcome-skeptical",
+      "counters": [
+        {
+          "name": "suspicion",
+          "operation": "add",
+          "value": 1
+        }
+      ],
+      "flags": [
+        {
+          "name": "act1_first_choice_skeptical",
+          "value": true
+        }
+      ]
+    },
+    {
+      "text": "(Tease) \"If you're really Tori, prove it. What's my nickname?\"",
+      "next": "ronnie-act1-scene1-outcome-tease",
+      "counters": [
+        {
+          "name": "flirty",
+          "operation": "add",
+          "value": 1
+        }
+      ],
+      "flags": [
+        {
+          "name": "act1_first_choice_tease",
+          "value": true
+        }
+      ]
+    }
+  ]
+}

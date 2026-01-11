@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-ending-true-start",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "HE PUSHES THROUGH.",
+      "internal": "[Nurses try to stop him. He doesn't hear them. Doesn't see them. Only her.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-ending-true-burst"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene2-tori-refuses",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Cage?! No. I don't accept that. There has to be a way out!\"",
+      "internal": "[Even in confusion and fear, she refuses the narrative. This is different already.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene2-hearing-begins"
+}

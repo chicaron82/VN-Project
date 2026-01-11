@@ -1,0 +1,38 @@
+{
+  "id": "ronnie-act3-beat4-glitch",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "GLITCH.",
+      "internal": "[Tori's sprite fractures. Screen tears. Visual corruption spreads.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "high",
+      "duration": 500
+    },
+    {
+      "type": "shake",
+      "intensity": "medium",
+      "duration": 300
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 1500,
+  "next": "ronnie-act3-beat4-screaming"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-ending-true-toast",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "happy",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "smirk",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "smirk",
+      "text": "\"So... you up for some burnt toast?\""
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-ending-true-pasta"
+}

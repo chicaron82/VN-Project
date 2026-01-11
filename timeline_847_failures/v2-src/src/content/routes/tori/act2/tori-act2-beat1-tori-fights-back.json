@@ -1,0 +1,27 @@
+{
+  "id": "tori-act2-beat1-tori-fights-back",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "angry",
+      "position": "left"
+    },
+    {
+      "character": "despair",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"GET OUT! That's not ME speaking!\"",
+      "internal": "[She pushes back. Fighting for control. The tether strains.]"
+    }
+  ],
+  "tetherImpact": -5,
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act2-beat1-correction"
+}

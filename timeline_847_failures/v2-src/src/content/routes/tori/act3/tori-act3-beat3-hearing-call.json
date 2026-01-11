@@ -1,0 +1,22 @@
+{
+  "id": "tori-act3-beat3-hearing-call",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "variant": "through device",
+      "text": "\"...vitals crashed... heart rate erratic... get here NOW...\"",
+      "internal": "[Fragments of the call. Her body is dying.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act3-beat3-feeling-it"
+}

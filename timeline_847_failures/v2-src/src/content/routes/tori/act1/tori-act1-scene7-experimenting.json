@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene7-experimenting",
+  "background": "hospital",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"It's different from the laptop feeling. What if I push toward it...?\"",
+      "internal": "[She concentrates. Reaches toward the sensation. Pushes.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene7-single-buzz"
+}

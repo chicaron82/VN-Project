@@ -1,0 +1,22 @@
+{
+  "id": "tori-act1-scene4-double-buzz",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "BUZZ. BUZZ.",
+      "internal": "[But she doesn't notice. Too desperate. Too focused.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "double",
+      "reason": "Accidental laptop transfer"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 1500,
+  "next": "tori-act1-scene4-whoosh"
+}

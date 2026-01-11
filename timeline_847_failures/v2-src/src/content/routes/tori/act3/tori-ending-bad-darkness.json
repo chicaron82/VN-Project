@@ -1,0 +1,15 @@
+{
+  "id": "tori-ending-bad-darkness",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"No... NO! I was right there! I could feel my body! RONNIE!\"",
+      "internal": "[But there's nothing. No warmth. No pull. Just void.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-ending-bad-echoes"
+}

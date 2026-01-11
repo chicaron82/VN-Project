@@ -1,0 +1,24 @@
+{
+  "id": "ronnie-ending-bad-apology",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "oldRonnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Oh my gosh, I'm so sorry—I wasn't paying attention!\""
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-ending-bad-warning"
+}

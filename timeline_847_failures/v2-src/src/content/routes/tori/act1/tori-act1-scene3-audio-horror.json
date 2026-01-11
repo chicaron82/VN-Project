@@ -1,0 +1,21 @@
+{
+  "id": "tori-act1-scene3-audio-horror",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "variant": "through device",
+      "text": "\"Hey babe, got your French Vanilla.\"",
+      "internal": "[That's... her voice. But she's not speaking. Her body is moving without her.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene3-screaming"
+}

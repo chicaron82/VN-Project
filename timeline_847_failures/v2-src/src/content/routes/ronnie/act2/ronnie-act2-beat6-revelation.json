@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act2-beat6-revelation",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"You can't upload a soul. I'm in the Tamagotchi.\"",
+      "internal": "[Visual: Silence. The weight of it hits him.]\n[The TAMAGOTCHI. Not the laptop. Not the game. The device itself.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 5000,
+  "next": "ronnie-act2-beat6-jumping"
+}

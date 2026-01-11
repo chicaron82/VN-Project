@@ -1,0 +1,41 @@
+{
+  "id": "tori-act1-scene6-attempt-now",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Okay. The device is touching the laptop. I think... I think I can do this. But what if I mess up? What if it goes wrong?\"",
+      "internal": "[She hesitates at the edge. The jump that could change everything.]"
+    }
+  ],
+  "choices": [
+    {
+      "text": "Trust yourself. You can do this.",
+      "next": "tori-act1-scene6-choice-confident",
+      "counters": [
+        {
+          "name": "affection",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "text": "Take your time. No rush.",
+      "next": "tori-act1-scene6-choice-cautious"
+    },
+    {
+      "text": "Just go for it!",
+      "next": "tori-act1-scene6-choice-bold",
+      "counters": [
+        {
+          "name": "flirty",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

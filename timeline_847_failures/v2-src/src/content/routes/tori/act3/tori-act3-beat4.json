@@ -1,0 +1,28 @@
+{
+  "id": "tori-act3-beat4",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"He's running. I can feel the movement. The jolts. He's coming for me.\"",
+      "internal": "[Through the device, she senses Ronnie's desperate sprint.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "shake",
+      "intensity": "low",
+      "duration": 1000
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act3-beat4-echoes-support"
+}

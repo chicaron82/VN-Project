@@ -1,0 +1,58 @@
+{
+  "id": "ronnie-act1-scene2-choice1",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"She knows me. Just like always. My chest aches. God, I've missed this.\""
+    }
+  ],
+  "choices": [
+    {
+      "text": "(Playful) \"I slept great... dreaming of you.\"",
+      "next": "ronnie-act1-scene2-choice1-playful",
+      "counters": [
+        {
+          "name": "flirty",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "text": "(Honest) \"Not a wink. I was afraid you'd vanish.\"",
+      "next": "ronnie-act1-scene2-choice1-honest",
+      "counters": [
+        {
+          "name": "affection",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "text": "(Defensive) \"This is just stress. Lack of sleep. I'm imagining this.\"",
+      "next": "ronnie-act1-scene2-choice1-defensive",
+      "counters": [
+        {
+          "name": "suspicion",
+          "operation": "add",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

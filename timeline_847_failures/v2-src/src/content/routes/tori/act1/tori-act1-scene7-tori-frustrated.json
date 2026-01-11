@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene7-tori-frustrated",
+  "background": "hospital",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"No! That was ME! Not the battery! But... why did it feel different?\"",
+      "internal": "[The mystery. Single buzz near body. Double buzz for vessel transfer. What's the connection?]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene7-tori-determined"
+}

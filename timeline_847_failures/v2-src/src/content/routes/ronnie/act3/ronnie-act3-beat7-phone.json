@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act3-beat7-phone",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "His phone SCREAMS.",
+      "internal": "[Incoming call: City General Hospital. ICU. URGENT.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 2000,
+  "next": "ronnie-act3-beat7-nurse"
+}

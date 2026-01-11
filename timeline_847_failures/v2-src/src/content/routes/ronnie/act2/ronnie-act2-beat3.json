@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act2-beat3",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "sad",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"I visit her. Every day. Same routine. Check vitals. Hold her hand. Tell her about progress.\"",
+      "internal": "[Visual: Hospital room. Tori unconscious, monitors beeping. Ronnie sits beside her bed.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-beat3-buzz"
+}

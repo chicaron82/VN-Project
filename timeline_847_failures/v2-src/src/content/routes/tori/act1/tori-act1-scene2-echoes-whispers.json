@@ -1,0 +1,25 @@
+{
+  "id": "tori-act1-scene2-echoes-whispers",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "echo1",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "Echo 1: \"...another one...\"\nEcho 2: \"...it's starting again...\"\nDespair: \"...fresh meat...\"",
+      "internal": "[Visual: Voices from nowhere. Other consciousnesses in this space.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene2-who-there"
+}

@@ -1,0 +1,32 @@
+{
+  "id": "ronnie-act1-scene2-end",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"She's here. My Tori. In the code, in the pixels. And she's slipping away. Somehow... I have to save her.\"",
+      "internal": "[Scene fades to black.]\n[Act 1 → Act 2 transition: \"Digital Bonding\" begins.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "fade",
+      "duration": 1500
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-start"
+}

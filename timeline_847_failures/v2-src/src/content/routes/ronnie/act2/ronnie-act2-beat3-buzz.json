@@ -1,0 +1,27 @@
+{
+  "id": "ronnie-act2-beat3-buzz",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "surprised",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "[BUZZ]\n\n[Ronnie startles. Something vibrated in his pocket.]",
+      "internal": "[Visual: Ronnie's hand instinctively reaches for his phone.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "haptic",
+      "hapticType": "light",
+      "reason": "First buzz - mystery begins"
+    }
+  ],
+  "autoAdvanceDelay": 2000,
+  "next": "ronnie-act2-beat3-phone"
+}

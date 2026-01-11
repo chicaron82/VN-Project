@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act2-beat6-question",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"So how do we get you to wake up? How do you get back to your body?\"",
+      "internal": "[Visual: Tori's expression shifts. Realization.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act2-beat6-buzzing"
+}

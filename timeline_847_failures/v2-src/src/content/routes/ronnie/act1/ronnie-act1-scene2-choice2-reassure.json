@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act1-scene2-choice2-reassure",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "happy",
+      "text": "\"That's my Ronnie. Always charging in like a knight. Please... don't give up on me.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act1-scene2-end"
+}

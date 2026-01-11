@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-ending-bad-warning",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "oldRonnie",
+      "emotion": "sad",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "oldRonnie",
+      "text": "\"No problem. Hang on to that. It may save your life someday.\"",
+      "internal": "[He picks up her original device. Clutches it. Walks away.]\n[Visual: Camera follows him. He glances back once - sees young Ronnie waiting at home for her.]"
+    }
+  ],
+  "autoAdvanceDelay": 5000,
+  "next": "ronnie-ending-bad-final"
+}

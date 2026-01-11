@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-ending-bad-nurse-words",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "hurt",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "\"I'm sorry. We did everything we could.\"",
+      "internal": "[He was 15 seconds too late. Just 15 seconds.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-ending-bad-staring"
+}

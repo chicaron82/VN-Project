@@ -1,0 +1,21 @@
+{
+  "id": "tori-act1-scene6-failure",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Why won't it WORK?! I did it before! What's different?!\"",
+      "internal": "[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act1-scene6-device-on-laptop"
+}

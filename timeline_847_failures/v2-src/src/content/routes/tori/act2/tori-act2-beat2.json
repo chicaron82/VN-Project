@@ -1,0 +1,25 @@
+{
+  "id": "tori-act2-beat2",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "echo2",
+      "emotion": "neutral",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "echo2",
+      "text": "\"The tether. It's your connection to Ronnie. To hope. When it's strong, you can fight Despair. When it weakens...\"",
+      "internal": "[Visual: A glowing thread connecting Tori to something outside the device.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "tori-act2-beat2-hold-on"
+}

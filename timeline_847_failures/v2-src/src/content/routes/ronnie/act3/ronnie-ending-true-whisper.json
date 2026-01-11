@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-ending-true-whisper",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "sad",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "whispers",
+      "text": "\"That's it. That's it, baby. Follow me back.\"",
+      "internal": "[Visual: Tamagotchi screen goes completely white. Then dark. Silent.]\n[Beat of silence.]\n[Her eyes flutter open.]"
+    }
+  ],
+  "autoAdvanceDelay": 5000,
+  "next": "ronnie-ending-true-awakening"
+}

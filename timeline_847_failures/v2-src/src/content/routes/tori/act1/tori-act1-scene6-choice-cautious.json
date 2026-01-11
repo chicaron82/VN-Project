@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene6-choice-cautious",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"Okay. Slow. Careful. Feel for the connection like last time...\"",
+      "internal": "[Measured approach. Testing the edges before the leap.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "tori-act1-scene6-push"
+}

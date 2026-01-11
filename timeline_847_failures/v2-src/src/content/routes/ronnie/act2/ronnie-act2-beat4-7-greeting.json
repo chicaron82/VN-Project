@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act2-beat4-7-greeting",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Hey baby. Sorry about earlier. I'm feeling better now.\"",
+      "internal": "[She's... whole. No glitches. No stuttering. Perfect.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act2-beat4-7-relief"
+}

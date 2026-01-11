@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act3-beat7-nurse",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "variant": "phone",
+      "text": "\"Mr. Ronnie? It's City General. Tori's vitals just crashed. Heart rate erratic. Blood pressure dropping. You need to get here NOW.\""
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act3-beat7-tamagotchi-buzz"
+}

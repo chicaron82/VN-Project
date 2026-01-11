@@ -1,0 +1,37 @@
+{
+  "id": "ronnie-ending-bad-final",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "oldRonnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "oldRonnie",
+      "variant": "narration",
+      "text": "\"Don't make the same mistakes I did. Get there in time.\"",
+      "internal": "[Fade to white.]\n\n**BAD ENDING: THE LOOP BEGINS AGAIN**\n\"Love trapped in glass.\"\n\n[System restarting...]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "fade",
+      "intensity": "high",
+      "duration": 2000
+    }
+  ],
+  "flags": [
+    {
+      "name": "ending_bad_complete",
+      "value": true
+    },
+    {
+      "name": "skip_prologue_unlocked",
+      "value": true
+    }
+  ],
+  "next": "ending-menu"
+}

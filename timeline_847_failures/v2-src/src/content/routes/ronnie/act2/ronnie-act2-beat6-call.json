@@ -1,0 +1,22 @@
+{
+  "id": "ronnie-act2-beat6-call",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "variant": "phone",
+      "text": "\"Mr. Santos? This is St. Mercy. Your wife's vitals are dropping. You need to come now.\"",
+      "internal": "[Visual: Ronnie's face drains of color.]"
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-act2-beat6-time-limit"
+}

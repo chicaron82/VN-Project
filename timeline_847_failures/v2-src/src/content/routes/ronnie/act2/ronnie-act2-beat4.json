@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-act2-beat4",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "\"Second visit. Same routine.\"",
+      "internal": "[Visual: Hospital room again. Days later. Ronnie sits beside Tori, phone in hand, scrolling absently.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act2-beat4-buzz"
+}

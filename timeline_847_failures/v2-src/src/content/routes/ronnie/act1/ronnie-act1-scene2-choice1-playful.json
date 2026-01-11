@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act1-scene2-choice1-playful",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "smirk",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "smirk",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "smirk",
+      "text": "\"Mmhmm. Smooth talker. You're lucky I'm stuck in here, or I'd throw a pillow at you.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act1-scene2-glitch"
+}

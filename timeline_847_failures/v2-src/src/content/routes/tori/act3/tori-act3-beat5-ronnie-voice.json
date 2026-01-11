@@ -1,0 +1,21 @@
+{
+  "id": "tori-act3-beat5-ronnie-voice",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "happy",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "through device",
+      "text": "\"Come home. Follow the heartbeat.\"",
+      "internal": "[His voice. Clear now. Not muffled. Close.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "tori-act3-beat5-the-jump"
+}

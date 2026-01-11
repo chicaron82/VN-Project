@@ -1,0 +1,24 @@
+{
+  "id": "ronnie-act1-scene2-choice2-distract",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"Classic you. Changing the subject. Fine. But you owe me a real talk later.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act1-scene2-end"
+}

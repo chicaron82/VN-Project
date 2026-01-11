@@ -1,0 +1,21 @@
+{
+  "id": "tori-act3-beat1-tori-refuses",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"No. There has to be a way. The single buzz at the hospital... my body was calling me. I felt it!\"",
+      "internal": "[She refuses to give up. The mystery of the single buzz resurfaces.]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "tori-act3-beat2"
+}

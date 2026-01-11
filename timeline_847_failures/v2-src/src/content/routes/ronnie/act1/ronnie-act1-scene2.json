@@ -1,0 +1,21 @@
+{
+  "id": "ronnie-act1-scene2",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "variant": "narration",
+      "text": "\"I barely slept. Every time I closed my eyes, I heard her voice again. Tori. My wife. Talking to me from inside a game I built. It should be impossible. But when I open my eyes...\"",
+      "internal": "[Visual: Morning light filters into Ronnie's messy room. His laptop screen glows softly — Tori-gatchi is still running.]"
+    }
+  ],
+  "autoAdvanceDelay": 5000,
+  "next": "ronnie-act1-scene2-greeting"
+}

@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act2-beat1-confusion",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "surprised",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "emotion": "surprised",
+      "text": "\"Yesterday? Baby, we talked about the hospital. Your visit. You showed me the game...\"",
+      "internal": "[Ronnie (internal): \"That was WEEKS ago.\"]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act2-beat2"
+}

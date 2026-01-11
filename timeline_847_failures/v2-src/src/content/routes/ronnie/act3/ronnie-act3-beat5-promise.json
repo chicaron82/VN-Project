@@ -1,0 +1,19 @@
+{
+  "id": "ronnie-act3-beat5-promise",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"Then we find another way. Upload you somewhere safer. Or... I don't know. But we're running out of time.\""
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act3-beat5-timer"
+}

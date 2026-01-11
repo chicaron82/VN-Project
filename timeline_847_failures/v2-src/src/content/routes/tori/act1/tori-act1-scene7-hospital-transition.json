@@ -1,0 +1,14 @@
+{
+  "id": "tori-act1-scene7-hospital-transition",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "One day, Ronnie leaves the laptop. Takes only the device. She's back in the darkness.",
+      "internal": "[Snap. The connection breaks. She's in the device again. Where is he going?]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene7-hospital-sounds"
+}

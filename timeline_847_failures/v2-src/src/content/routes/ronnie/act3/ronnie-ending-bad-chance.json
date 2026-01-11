@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-ending-bad-chance",
+  "background": "apartment",
+  "sprites": [
+    {
+      "character": "oldRonnie",
+      "emotion": "determined",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "oldRonnie",
+      "text": "\"...There's still a chance.\"",
+      "internal": "[Visual: He picks up the modified Tamagotchi. Screen glows faintly.]\n[Fade to black.]"
+    }
+  ],
+  "autoAdvanceDelay": 4000,
+  "next": "ronnie-ending-bad-before-bump"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "ronnie-ending-digital-transfer",
+  "background": "hospital",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "system",
+      "text": "⚠️ UNAUTHORIZED CONSCIOUSNESS TRANSFER\n⚠️ TWO SOULS DETECTED\n⚠️ VESSEL OVERLOAD",
+      "internal": "[His body collapses in the hallway. Nurses rush to him. But he's already gone.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "high",
+      "duration": 600
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-ending-digital-merge"
+}

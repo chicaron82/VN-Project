@@ -1,0 +1,70 @@
+{
+  "$schema": "../../schemas/scene.schema.json",
+  "id": "prologue-the-fall",
+  "background": "assets/apartment.png",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "She turns, walking backwards playfully toward the kitchen, not noticing his shoe on the floor."
+    },
+    {
+      "speaker": "ronnie",
+      "text": "Babe, watch ou..!"
+    },
+    {
+      "speaker": "narrator",
+      "text": "He notices her about to trip over his shoe."
+    },
+    {
+      "speaker": "narrator",
+      "text": "One step too late... She trips. Stumbles. Crashes to the floor. Ronnie lunges to catch her but is too late."
+    },
+    {
+      "speaker": "narrator",
+      "text": "The Tamagotchi, resting on the laptop, lights faintly. The screen flickers, code scrolling."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Tori fades in and out of consciousness. In one flicker, she briefly sees the older man instead of Ronnie--lined face, weary, BGA hoodie. Then back to young Ronnie."
+    },
+    {
+      "speaker": "narrator",
+      "text": "Her hand reaches weakly for him before everything goes dark."
+    }
+  ],
+  "effects": [
+    {
+      "type": "shake",
+      "duration": 500,
+      "intensity": "medium"
+    },
+    {
+      "type": "glitch",
+      "duration": 300,
+      "intensity": "high"
+    },
+    {
+      "type": "fade",
+      "duration": 2000,
+      "intensity": "high"
+    }
+  ],
+  "flags": [
+    {
+      "name": "witnessed_the_fall",
+      "value": true
+    },
+    {
+      "name": "prologue_complete",
+      "value": true
+    }
+  ],
+  "next": "route-select"
+}

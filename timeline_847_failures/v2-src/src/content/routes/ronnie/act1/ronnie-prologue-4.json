@@ -1,0 +1,20 @@
+{
+  "id": "ronnie-prologue-4",
+  "background": "hospital",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "sad",
+      "position": "left"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "\"She didn't wake up. Days passed. Then weeks. I sat by her side, waiting for a laugh, a smile, anything.\"",
+      "internal": "[Visual: Hospital room. Monitors beeping faintly. Tori unconscious in bed, bandaged, IV drip. Ronnie sits beside her, eyes hollow. The Tamagotchi rests on the bedside table, faint light pulsing.]"
+    }
+  ],
+  "autoAdvanceDelay": 4500,
+  "next": "ronnie-prologue-4-toy"
+}

@@ -1,0 +1,33 @@
+{
+  "id": "ronnie-act3-beat3-more-warnings",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "worried",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "worried",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "system",
+      "text": "⚠️ CRITICAL: BATTERY DEPLETION ACCELERATING\n⚠️ CONSCIOUSNESS ANCHOR: UNSTABLE\n⚠️ ESTIMATED TIME TO FAILURE: 72 HOURS",
+      "internal": "[More messages. Faster now. Tori's sprite glitches harder with each one.]"
+    }
+  ],
+  "effects": [
+    {
+      "type": "glitch",
+      "intensity": "medium",
+      "duration": 400
+    }
+  ],
+  "style": "critical",
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act3-beat3-tori-demands"
+}

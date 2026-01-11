@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene6-choice-confident",
+  "background": "digitalSpace",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"You're right. I DID this once. I can do it again. Trust myself.\"",
+      "internal": "[Steadying breath. Confidence building. She believes in herself.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "tori-act1-scene6-push"
+}

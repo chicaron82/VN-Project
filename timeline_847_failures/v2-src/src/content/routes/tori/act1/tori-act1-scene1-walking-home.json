@@ -1,0 +1,15 @@
+{
+  "id": "tori-act1-scene1-walking-home",
+  "background": "genericBack",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "internal",
+      "text": "\"That was... weird. I should get home. Feel off.\"",
+      "internal": "[She walks, but everything feels distant. Muted. Like she's moving through water. Something is very wrong.]"
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "tori-act1-scene2-void-awakening"
+}

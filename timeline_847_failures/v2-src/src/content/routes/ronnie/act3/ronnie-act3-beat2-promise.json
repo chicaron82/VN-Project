@@ -1,0 +1,25 @@
+{
+  "id": "ronnie-act3-beat2-promise",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "determined",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "ronnie",
+      "text": "\"It's okay. We'll figure it out. I promise.\"",
+      "internal": "[Ronnie (internal): \"But I had no idea how. The code was stable. What was causing this?\"]"
+    }
+  ],
+  "autoAdvanceDelay": 3500,
+  "next": "ronnie-act3-beat3"
+}

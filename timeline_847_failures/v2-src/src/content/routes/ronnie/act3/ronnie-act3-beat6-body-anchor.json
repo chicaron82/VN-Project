@@ -1,0 +1,19 @@
+{
+  "id": "ronnie-act3-beat6-body-anchor",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "tori",
+      "emotion": "determined",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "text": "\"My body. Ronnie, my BODY is still at the hospital. I felt it pull me when you were near!\""
+    }
+  ],
+  "autoAdvanceDelay": 3000,
+  "next": "ronnie-act3-beat6-plan"
+}

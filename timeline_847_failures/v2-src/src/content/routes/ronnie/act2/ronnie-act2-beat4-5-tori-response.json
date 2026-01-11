@@ -1,0 +1,26 @@
+{
+  "id": "ronnie-act2-beat4-5-tori-response",
+  "background": "digitalSpace",
+  "sprites": [
+    {
+      "character": "ronnie",
+      "emotion": "neutral",
+      "position": "left"
+    },
+    {
+      "character": "tori",
+      "emotion": "sad",
+      "position": "right"
+    }
+  ],
+  "dialog": [
+    {
+      "speaker": "tori",
+      "variant": "through game",
+      "text": "\"Yeah. Normal sounds good.\"",
+      "internal": "[Her sprite appears on screen. She seems... off. Tired.]"
+    }
+  ],
+  "autoAdvanceDelay": 2500,
+  "next": "ronnie-act2-beat4-5-ice-cream"
+}

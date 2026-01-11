@@ -1,0 +1,14 @@
+{
+  "id": "tori-act1-scene1-collision",
+  "background": "genericBack",
+  "sprites": [],
+  "dialog": [
+    {
+      "speaker": "narrator",
+      "text": "THUD.",
+      "internal": "[She bumps into an older man. Hard. Coffee nearly spills. Both their Tamagotchis tumble to the ground.]"
+    }
+  ],
+  "autoAdvanceDelay": 2000,
+  "next": "tori-act1-scene1-apology"
+}
