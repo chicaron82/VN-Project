@@ -71,9 +71,9 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    /* Changed to prevent top clipping */
-    padding: 5vh 2rem 2rem 2rem;
+    justify-content: center;
+    /* Reverted to center as side-by-side layout saves vertical space */
+    padding: 2rem;
     gap: 1.5rem;
 
     /* Glitchy texture overlay */
@@ -97,9 +97,9 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    /* Changed to prevent top clipping */
-    padding: 5vh 2rem 2rem 2rem;
+    justify-content: center;
+    /* Reverted to center */
+    padding: 2rem;
     gap: 1.5rem;
 
     /* Elegant grid overlay */
@@ -125,6 +125,16 @@ html {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    gap: 2rem;
+}
+
+/* --- HEADER GROUP (Side-by-Side) --- */
+.header-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
 }
 
 h1 {
@@ -1009,16 +1019,14 @@ section h2 {
 
 /* --- PROJECT LOGO --- */
 .project-logo {
-    max-width: 200px;
-    /* Reduced max-width */
-    max-height: 15vh;
-    /* Restrict height based on viewport */
+    max-width: 120px;
+    /* Small for side-by-side */
     width: auto;
-    /* Allow width to adjust */
-    margin-bottom: 1rem;
-    display: block;
+    height: auto;
     object-fit: contain;
-    /* Ensure image isn't stretched */
+    margin: 0;
+    /* Remove auto margins */
+    display: block;
 }
 
 .layer-chaos .project-logo {
