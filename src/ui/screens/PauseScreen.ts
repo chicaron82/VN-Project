@@ -44,6 +44,10 @@ export class PauseScreen {
         this.container.querySelector('#quit-btn')?.addEventListener('click', () => {
             this.eventBus.emit('ui:main_menu', {});
         });
+
+        this.container.querySelector('#settings-btn')?.addEventListener('click', () => {
+            this.eventBus.emit('settings:open', {});
+        });
     }
 
     mount(parent: HTMLElement) {

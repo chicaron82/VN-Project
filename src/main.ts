@@ -9,6 +9,7 @@ import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
 import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
+import { SecretCodesManager } from '@systems/SecretCodesManager';
 import { ContentLoader } from '@systems/ContentLoader';
 import { DialogController } from '@controllers/DialogController';
 import { SpriteController } from '@controllers/SpriteController';
@@ -17,6 +18,9 @@ import { RouteSelect } from '@ui/screens/RouteSelect';
 import { PauseScreen } from '@ui/screens/PauseScreen';
 import { GameLayout } from '@ui/components/GameLayout';
 import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
+import { SettingsModal } from '@ui/components/SettingsModal';
+import { StatusBar } from '@ui/components/StatusBar';
+import { Sidebar } from '@ui/components/Sidebar';
 import '@ui/styles/main.css';
 
 // Import route JSON files (Vite handles these as static imports)
@@ -47,7 +51,21 @@ settingsSystem.init();
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
+
 const spriteController = new SpriteController(eventBus, stateManager);
+
+// Global UI Components
+const _settingsModal = new SettingsModal(eventBus);
+const _statusBar = new StatusBar(eventBus);
+const _sidebar = new Sidebar(eventBus);
+
+// Secret Codes System
+const secretCodesManager = new SecretCodesManager(eventBus);
+if (typeof window !== 'undefined') {
+    window.secretCodesManager = secretCodesManager;
+}
+
+console.log('UI initialized', { _settingsModal, _statusBar, _sidebar, secretCodesManager });
 
 // ============================================
 // App State
@@ -198,6 +216,7 @@ function showMainMenu() {
     const menu = new MainMenu(eventBus);
     menu.mount(app!);
     currentScreen = menu;
+    eventBus.emit('ui:show_status_bar', {});
     console.log('[UV7 V2] Main Menu');
 }
 
@@ -209,101 +228,7 @@ function showRouteSelect() {
     console.log('[UV7 V2] Route Select');
 }
 
-function showSettings() {
-    // Create settings overlay
-    const overlay = document.createElement('div');
-    overlay.id = 'settings-overlay';
-    overlay.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.95);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 5000;
-        font-family: 'Courier New', monospace;
-        color: #0ff;
-    `;
 
-    const currentSettings = stateManager.get<Record<string, unknown>>('settings') ?? {};
-
-    overlay.innerHTML = `
-        <div style="max-width: 500px; width: 90%; text-align: center;">
-            <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #0ff;">SETTINGS</h2>
-
-            <div style="text-align: left; margin-bottom: 2rem;">
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
-                        <input type="checkbox" id="haptics-toggle" ${currentSettings.hapticsEnabled ? 'checked' : ''}
-                            style="width: 20px; height: 20px;">
-                        <span>Haptic Feedback</span>
-                    </label>
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: flex; align-items: center; gap: 1rem; cursor: pointer;">
-                        <input type="checkbox" id="animations-toggle" ${currentSettings.animationsEnabled !== false ? 'checked' : ''}
-                            style="width: 20px; height: 20px;">
-                        <span>Animations</span>
-                    </label>
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem;">Text Speed</label>
-                    <input type="range" id="text-speed" min="10" max="100" value="${100 - ((currentSettings.textSpeed as number) || 30)}"
-                        style="width: 100%;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.5rem;">Font Size</label>
-                    <select id="font-size" style="width: 100%; padding: 0.5rem; background: #111; color: #0ff; border: 1px solid #0ff;">
-                        <option value="normal" ${currentSettings.fontSize === 'normal' ? 'selected' : ''}>Normal</option>
-                        <option value="large" ${currentSettings.fontSize === 'large' ? 'selected' : ''}>Large</option>
-                        <option value="xl" ${currentSettings.fontSize === 'xl' ? 'selected' : ''}>Extra Large</option>
-                    </select>
-                </div>
-            </div>
-
-            <button id="settings-close" style="
-                background: transparent;
-                border: 2px solid #0ff;
-                color: #0ff;
-                padding: 1rem 2rem;
-                font-family: inherit;
-                font-size: 1rem;
-                cursor: pointer;
-            ">CLOSE</button>
-        </div>
-    `;
-
-    app!.appendChild(overlay);
-
-    // Bind settings changes
-    overlay.querySelector('#haptics-toggle')?.addEventListener('change', (e) => {
-        settingsSystem.set('hapticsEnabled', (e.target as HTMLInputElement).checked);
-    });
-
-    overlay.querySelector('#animations-toggle')?.addEventListener('change', (e) => {
-        settingsSystem.set('animationsEnabled', (e.target as HTMLInputElement).checked);
-    });
-
-    overlay.querySelector('#text-speed')?.addEventListener('input', (e) => {
-        const value = parseInt((e.target as HTMLInputElement).value);
-        settingsSystem.set('textSpeed', 100 - value + 10); // Invert: higher slider = faster
-    });
-
-    overlay.querySelector('#font-size')?.addEventListener('change', (e) => {
-        settingsSystem.set('fontSize', (e.target as HTMLSelectElement).value as 'normal' | 'large' | 'xl');
-    });
-
-    overlay.querySelector('#settings-close')?.addEventListener('click', () => {
-        overlay.remove();
-    });
-
-    console.log('[UV7 V2] Settings');
-}
 
 function showCredits() {
     const overlay = document.createElement('div');
@@ -612,7 +537,7 @@ function setupEventHandlers() {
     // Navigation
     eventBus.on('ui:route_select', showRouteSelect);
     eventBus.on('ui:main_menu', showMainMenu);
-    eventBus.on('ui:settings', showSettings);
+    eventBus.on('ui:settings', () => eventBus.emit('settings:open', {}));
     eventBus.on('ui:credits', showCredits);
     eventBus.on('ui:load_menu', showLoadMenu);
 

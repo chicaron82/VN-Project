@@ -277,3 +277,44 @@ function typeOrderCode() {
 }
 
 typeOrderCode();
+
+// ==========================================
+// METRICS ANIMATION (PHASE 8)
+// ==========================================
+document.querySelectorAll('.metric-fill').forEach(bar => {
+    // Store target width and set to 0 initially
+    const targetWidth = bar.style.width;
+    bar.style.width = '0%';
+
+    // Animate to target width when visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.width = targetWidth;
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+
+    observer.observe(bar);
+});
+
+// ==========================================
+// SOCIAL SHARING
+// ==========================================
+function shareTwitter() {
+    const text = "Check out UV7: A visual novel engine built from chaos to harmony with AI. #UV7 #GameDev #AI";
+    const url = window.location.href;
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = document.querySelector('button[onclick="copyLink()"]');
+        if (btn) {
+            const originalText = btn.innerText;
+            btn.innerText = "✅ Copied!";
+            setTimeout(() => btn.innerText = originalText, 2000);
+        }
+    });
+}

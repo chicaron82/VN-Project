@@ -48,6 +48,16 @@ export type GameEvents = {
   'ui:main_menu': {};
   'ui:start_game': { route: 'ronnie' | 'tori' };
   'ui:route_select': {};
+  // Settings & HUD events
+  'settings:open': {};
+  'settings:close': {};
+  'settings:changed': { key: string; value: any };
+  'ui:show_status_bar': {};
+  'ui:hide_status_bar': {};
+  'ui:route_changed': { route: string };
+  'note:collected': { count: number };
+  'secret_code:submit': { code: string };
+  'secret_code:unlocked': { code: string; name: string };
   'ui:load_menu': {};
   'ui:settings': {};
   'ui:credits': {};
