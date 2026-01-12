@@ -209,13 +209,24 @@ function showSplash(): Promise<void> {
             }
         );
 
-        // Bind Skip
-        skipButton.addEventListener('click', () => {
+        // Bind Skip Button
+        const handleSkip = () => {
             boot.skip();
             // On skip, show full video immediately
             if (videoReveal) videoReveal.style.width = '100%';
             if (video) video.currentTime = video.duration;
-        });
+        };
+
+        skipButton.addEventListener('click', handleSkip);
+
+        // Bind Keyboard Skip
+        const keyHandler = (e: KeyboardEvent) => {
+            if (e.key === ' ' || e.key === 'Enter') {
+                handleSkip();
+                document.removeEventListener('keydown', keyHandler);
+            }
+        };
+        document.addEventListener('keydown', keyHandler);
 
         await boot.start();
 

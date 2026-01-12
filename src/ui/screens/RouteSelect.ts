@@ -61,6 +61,23 @@ export class RouteSelect {
             this.eventBus.emit('ui:start_game', { route: this.selectedRoute });
         });
 
+        // POrtrait Clicks (Select or Confirm)
+        this.container.querySelector('.ronnie-portrait')?.addEventListener('click', () => {
+            if (this.selectedRoute === 'ronnie') {
+                this.eventBus.emit('ui:start_game', { route: 'ronnie' });
+            } else {
+                this.selectRoute('ronnie');
+            }
+        });
+
+        this.container.querySelector('.tori-portrait')?.addEventListener('click', () => {
+            if (this.selectedRoute === 'tori') {
+                this.eventBus.emit('ui:start_game', { route: 'tori' });
+            } else {
+                this.selectRoute('tori');
+            }
+        });
+
         // Back Button
         this.container.querySelector('#back-to-menu')?.addEventListener('click', () => {
             this.eventBus.emit('ui:main_menu', {});
