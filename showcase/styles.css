@@ -1591,3 +1591,150 @@ section h2 {
     background: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
 }
+
+/* ==========================================================================
+   V2 IMPROVEMENTS SECTION
+   ========================================================================== */
+.improvements-section {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: #fff;
+}
+
+.improvements-section h2 {
+    color: #fff;
+}
+
+.improvements-section .section-intro {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.improvements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.improvement-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.improvement-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.improvement-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.improvement-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.improvement-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    height: auto;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.metric-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.25);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   LATEST UPDATE & V2 IMPROVEMENT CALLOUTS
+   ========================================================================== */
+.timeline-item.latest-update .timeline-marker {
+    background: #f5576c;
+    box-shadow: 0 0 0 4px rgba(245, 87, 108, 0.3);
+    animation: pulse-latest 2s infinite;
+}
+
+@keyframes pulse-latest {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        box-shadow: 0 0 0 4px rgba(245, 87, 108, 0.3);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.3);
+        box-shadow: 0 0 0 8px rgba(245, 87, 108, 0.5);
+    }
+}
+
+.timeline-item.latest-update .timeline-content h3 {
+    color: #f5576c;
+}
+
+.update-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.update-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.update-list li:last-child {
+    border-bottom: none;
+}
+
+.update-list code {
+    background: rgba(52, 152, 219, 0.1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    color: #3498db;
+}
+
+.v2-improvement-callout {
+    background: linear-gradient(135deg, rgba(245, 87, 108, 0.1), rgba(240, 147, 251, 0.1));
+    border-left: 4px solid #f5576c;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.callout-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.callout-content {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+.callout-content strong {
+    color: #f5576c;
+}
