@@ -356,6 +356,10 @@ export class SimpleCarousel {
         setTimeout(() => {
             this.renderCardStack();
             this.isAnimating = false;
+
+            // Refocus for accessibility
+            const newTopCard = this.getCurrentCardElement();
+            if (newTopCard) newTopCard.focus();
         }, 300);
     }
 

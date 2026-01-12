@@ -307,9 +307,17 @@ export class CarouselMomentum {
         if (e.key === 'ArrowLeft') {
             e.preventDefault();
             this.moveToCard(this.currentIndex - 1);
+            // Focus adjustment handled by snap callback if we wanted, 
+            // but for immediate feedback:
+            const prevCard = this.cards[Math.max(0, this.currentIndex - 1)];
+            if (prevCard) prevCard.focus();
+
         } else if (e.key === 'ArrowRight') {
             e.preventDefault();
             this.moveToCard(this.currentIndex + 1);
+            const nextCard = this.cards[Math.min(this.totalCards - 1, this.currentIndex + 1)];
+            if (nextCard) nextCard.focus();
+
         } else if (e.key === 'Enter') {
             e.preventDefault();
             const centeredCard = this.getCurrentCenteredCard();

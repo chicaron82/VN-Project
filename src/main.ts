@@ -29,6 +29,7 @@ import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
 import '@ui/styles/error-boundary.css';
 import '@ui/styles/loading-overlay.css';
+import '@ui/styles/accessibility.css';
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
