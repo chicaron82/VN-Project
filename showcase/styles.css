@@ -554,6 +554,99 @@ section h2 {
     margin-bottom: 0;
 }
 
+/* --- JOURNAL ENTRY STYLES --- */
+.timeline-item.journal-entry .timeline-content {
+    background: rgba(20, 20, 30, 0.95);
+    border-left: 4px solid #888;
+    font-family: 'Courier Prime', monospace;
+    color: #e0e0e0;
+}
+
+.timeline-item.journal-entry .timeline-content h3 {
+    color: #00ff88;
+    font-family: 'Courier Prime', monospace;
+}
+
+.timeline-item.journal-entry .timeline-content p {
+    color: #c0c0c0;
+}
+
+.timeline-item.journal-entry .timeline-marker {
+    background: #666;
+    box-shadow: 0 0 0 4px rgba(102, 102, 102, 0.2);
+}
+
+/* --- CRITICAL MILESTONE STYLES --- */
+.timeline-item.critical .timeline-content {
+    background: linear-gradient(135deg, rgba(255, 100, 100, 0.1), rgba(255, 50, 50, 0.05));
+    border-left: 4px solid #ff6b6b;
+    border: 2px solid rgba(255, 107, 107, 0.3);
+}
+
+.timeline-item.critical .timeline-content h3 {
+    color: #ff6b6b;
+}
+
+.timeline-item.critical .timeline-marker {
+    background: #ff6b6b;
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+    animation: pulse-critical 2s infinite;
+}
+
+@keyframes pulse-critical {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scale(1);
+        box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.2);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.3);
+        box-shadow: 0 0 0 8px rgba(255, 107, 107, 0.4);
+    }
+}
+
+/* --- SETTINGS CAROUSEL --- */
+.settings-carousel {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scroll-snap-type: x mandatory;
+}
+
+.settings-carousel .carousel-item {
+    flex: 0 0 auto;
+    width: 280px;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.settings-carousel img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid rgba(155, 89, 182, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-carousel img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.settings-carousel .carousel-label {
+    font-size: 0.85rem;
+    color: #666;
+    text-align: center;
+    font-weight: 600;
+}
+
 /* --- WORKFLOW SECTION --- */
 .workflow-section {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
