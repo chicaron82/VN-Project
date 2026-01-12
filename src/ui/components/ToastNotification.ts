@@ -1,18 +1,27 @@
 
 import { EventBus } from '@core/EventBus';
-import { Achievement } from '@systems/AchievementSystem';
+
+
+
+export interface ToastOptions {
+    title: string;
+    message: string;
+    icon?: string;
+    color?: string;
+    duration?: number;
+}
 
 export class ToastNotification {
     private container: HTMLElement;
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     constructor(_eventBus: EventBus) {
-        // _eventBus reserved for future event-driven toasts
-        this.container = this.createContainer();
-
-        // In a real implementation, we'd listen for a specific event carrying the achievement data.
-        // For now, let's assume we might need to pass data through visual:cue or a custom event.
-        // Refactoring EventBus to carry Achievement payload for 'achievement:unlock' is best.
+        // Reuse existing container if present (singleton pattern)
+        const existing = document.getElementById('toast-container');
+        if (existing) {
+            this.container = existing;
+        } else {
+            this.container = this.createContainer();
+        }
     }
 
     private createContainer(): HTMLElement {
@@ -32,12 +41,14 @@ export class ToastNotification {
         return div;
     }
 
-    public show(achievement: Achievement) {
+    public show(options: ToastOptions) {
         const toast = document.createElement('div');
-        toast.className = 'achievement-toast';
+        toast.className = 'ui-toast';
+        const color = options.color || '#0ff';
+
         toast.style.cssText = `
             background: rgba(0, 0, 0, 0.9);
-            border: 1px solid #0ff;
+            border: 1px solid ${color};
             color: #fff;
             padding: 15px;
             border-radius: 5px;
@@ -46,17 +57,18 @@ export class ToastNotification {
             gap: 15px;
             min-width: 300px;
             font-family: 'Courier New', monospace;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
             transform: translateX(120%);
             transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         `;
 
+        const iconHtml = options.icon ? `<div style="font-size: 2em;">${options.icon}</div>` : '';
+
         toast.innerHTML = `
-            <div style="font-size: 2em;">${achievement.icon}</div>
+            ${iconHtml}
             <div>
-                <div style="color: #0ff; font-size: 0.8em; font-weight: bold; margin-bottom: 2px;">ACHIEVEMENT UNLOCKED</div>
-                <div style="font-size: 1.1em; font-weight: bold;">${achievement.name}</div>
-                <div style="color: #aaa; font-size: 0.9em;">${achievement.description}</div>
+                <div style="color: ${color}; font-size: 0.8em; font-weight: bold; margin-bottom: 2px;">${options.title}</div>
+                <div style="font-size: 1.1em; font-weight: bold;">${options.message}</div>
             </div>
         `;
 
@@ -73,6 +85,6 @@ export class ToastNotification {
             setTimeout(() => {
                 toast.remove();
             }, 500);
-        }, 4000);
+        }, options.duration || 4000);
     }
 }

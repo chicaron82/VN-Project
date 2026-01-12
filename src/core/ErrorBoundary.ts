@@ -39,6 +39,12 @@ export class ErrorBoundary {
     private handleError(error: any) {
         this.errorCount++;
 
+        // Haptic Feedback for error
+        if (typeof navigator !== 'undefined' && navigator.vibrate) {
+            // Hardcoded error pattern from config to avoid circular deps if possible
+            navigator.vibrate([100, 50, 100, 50, 100]);
+        }
+
         // Log to console
         console.error(`[Error ${this.errorCount}/${this.maxErrors}]`, error);
 

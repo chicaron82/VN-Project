@@ -85,6 +85,21 @@ export class MenuCarousel {
                 icon: '👥',
                 background: 'radial-gradient(circle at top, #301020, #050511)',
                 action: () => this.eventBus.emit('ui:show_credits', {})
+            },
+            {
+                id: 'torigatchi',
+                title: 'TORIGATCHI',
+                subtitle: 'Digital Pet System',
+                icon: '👾',
+                background: 'radial-gradient(circle at top, #002010, #050511)',
+                locked: !window.secretCodesManager?.hasDiscoveredCode('torigatchi'),
+                special: true,
+                action: () => {
+                    if (window.secretCodesManager?.hasDiscoveredCode('torigatchi')) {
+                        // Launch Torigatchi (Placeholder for now)
+                        alert('Torigatchi System: CONNECTION ESTABLISHED... [V2 Implementation Pending]');
+                    }
+                }
             }
         ];
 

@@ -271,6 +271,7 @@ export const GameConfig = {
         STORAGE_KEY_PREFIX: 'vn_save_slot_',
         MAX_SLOTS: 6,
         AUTO_SAVE_ENABLED: false,       // Future feature
+        QUICKSAVE_SLOT: 9,
 
         // Save data structure version (for migrations)
         VERSION: 1

@@ -502,6 +502,9 @@ export class SettingsModal {
             if (el.id === `tab-${tabName}`) el.classList.add('active');
             else el.classList.remove('active');
         });
+
+        // Save active tab
+        this.saveSetting('activeTab', tabName);
     }
 
     private setTextSpeed(speed: string) {
@@ -580,6 +583,12 @@ export class SettingsModal {
 
     private loadSettings() {
         const settings = JSON.parse(localStorage.getItem('gameSettings') || '{}');
+
+        // Apply active tab (persistence)
+        if (settings.activeTab) {
+            this.currentTab = settings.activeTab;
+            this.switchTab(settings.activeTab);
+        }
 
         // Apply text speed
         if (settings.textSpeed) this.setTextSpeed(settings.textSpeed);

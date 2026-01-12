@@ -34,6 +34,8 @@
 /* Game view, dialogue, choices */
 @import 'css/sprites.css';
 /* Character sprite system */
+@import 'css/internal-bubble.css';
+/* DIZEE RESTORATION: Internal thought bubbles */
 @import 'css/tether.css';
 /* Tether meter, hold button */
 @import 'css/notes.css';

@@ -12,6 +12,7 @@ import { SettingsSystem } from '@systems/SettingsSystem';
 import { SecretCodesManager } from '@systems/SecretCodesManager';
 import { ContentLoader } from '@systems/ContentLoader';
 import { CollectiblesSystem } from '@systems/CollectiblesSystem';
+import { HapticSystem } from '@systems/HapticSystem';
 import { DialogController } from '@controllers/DialogController';
 import { SpriteController } from '@controllers/SpriteController';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -33,6 +34,8 @@ import '@ui/styles/accessibility.css';
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
+import { ToastNotification } from '@ui/components/ToastNotification';
+import { GameConfig } from '@core/GameConfig';
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -64,6 +67,8 @@ settingsSystem.init();
 const saveSystem = new SaveSystem(stateManager, eventBus);
 saveSystem.init();
 
+const hapticSystem = new HapticSystem(eventBus, settingsSystem);
+
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
@@ -80,6 +85,7 @@ const _creditsScreen = new CreditsScreen(eventBus);
 const secretCodesManager = new SecretCodesManager(eventBus);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
+const toastNotification = new ToastNotification(eventBus);
 
 // Silence unused warnings by logging
 console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _notesViewer });
@@ -103,7 +109,8 @@ console.log('UI initialized', {
     _statusBar,
     _sidebar,
     secretCodesManager,
-    collectiblesSystem
+    collectiblesSystem,
+    hapticSystem
 });
 
 // ============================================
@@ -171,14 +178,20 @@ function showSplash(): Promise<void> {
             <button id="uv7-skip-button" class="uv7-skip-btn">
                 SKIP <span class="skip-arrow">→</span>
             </button>
-            <div class="boot-skip-hint">PRESS SPACE OR ENTER</div>
+            <div class="boot-skip-hint" style="opacity: 0; transition: opacity 2s ease;">PRESS SPACE OR ENTER</div>
         `;
 
         app!.appendChild(splashContainer);
 
         const terminalElement = splashContainer.querySelector('#boot-terminal') as HTMLElement;
         const skipButton = splashContainer.querySelector('#uv7-skip-button') as HTMLElement;
+        const skipHint = splashContainer.querySelector('.boot-skip-hint') as HTMLElement;
         const video = splashContainer.querySelector('#uv7-logo-video') as HTMLVideoElement;
+
+        // V2 Polish: Fade in skip hint after 3 seconds
+        setTimeout(() => {
+            if (skipHint) skipHint.style.opacity = '0.7';
+        }, 3000);
         const videoWrap = splashContainer.querySelector('#uv7-logo-wrap') as HTMLElement;
         const videoReveal = splashContainer.querySelector('#uv7-logo-reveal') as HTMLElement;
         const logoSection = splashContainer.querySelector('.uv7-logo-section') as HTMLElement;
@@ -532,8 +545,16 @@ function updateSprites(sprites: Array<{ position?: string; variant?: string; id?
     }
 }
 
+let choiceKeyHandler: ((e: KeyboardEvent) => void) | null = null;
+
 function showChoices(choices: Array<{ text: string; next: string | null }>) {
     if (!gameLayout) return;
+
+    // Remove existing handler if any (safety)
+    if (choiceKeyHandler) {
+        document.removeEventListener('keydown', choiceKeyHandler);
+        choiceKeyHandler = null;
+    }
 
     // Create choice container
     const choiceContainer = document.createElement('div');
@@ -549,9 +570,18 @@ function showChoices(choices: Array<{ text: string; next: string | null }>) {
         z-index: 100;
     `;
 
+    // Define cleanup function
+    const cleanup = () => {
+        if (choiceKeyHandler) {
+            document.removeEventListener('keydown', choiceKeyHandler);
+            choiceKeyHandler = null;
+        }
+        choiceContainer.remove();
+    };
+
     choices.forEach((choice, index) => {
         const btn = document.createElement('button');
-        btn.textContent = choice.text;
+        btn.textContent = `${index + 1}. ${choice.text}`; // Add number prefix
         btn.style.cssText = `
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #0ff;
@@ -561,6 +591,7 @@ function showChoices(choices: Array<{ text: string; next: string | null }>) {
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s;
+            text-align: left;
         `;
         btn.addEventListener('mouseenter', () => {
             btn.style.background = 'rgba(0, 255, 255, 0.2)';
@@ -569,11 +600,21 @@ function showChoices(choices: Array<{ text: string; next: string | null }>) {
             btn.style.background = 'rgba(0, 0, 0, 0.8)';
         });
         btn.addEventListener('click', () => {
-            choiceContainer.remove();
+            cleanup();
             gameEngine.selectChoice(index);
         });
         choiceContainer.appendChild(btn);
     });
+
+    // Keyboard Handler
+    choiceKeyHandler = (e: KeyboardEvent) => {
+        const key = parseInt(e.key);
+        if (!isNaN(key) && key > 0 && key <= choices.length) {
+            cleanup();
+            gameEngine.selectChoice(key - 1);
+        }
+    };
+    document.addEventListener('keydown', choiceKeyHandler);
 
     gameLayout.viewport.appendChild(choiceContainer);
 }
@@ -597,6 +638,56 @@ function togglePause() {
 // ============================================
 
 function setupEventHandlers() {
+    document.addEventListener('keydown', (e) => {
+        // Quick Save (F5)
+        if (e.key === 'F5') {
+            e.preventDefault();
+            const slot = GameConfig.SAVE.QUICKSAVE_SLOT || 9;
+            saveSystem.saveGame(slot, 'Quick Save').then(success => {
+                if (success) {
+                    toastNotification.show({
+                        title: 'QUICK SAVE',
+                        message: 'Timeline preserved',
+                        icon: '💾',
+                        color: '#0f0'
+                    });
+                } else {
+                    toastNotification.show({
+                        title: 'ERROR',
+                        message: 'Save failed',
+                        icon: '❌',
+                        color: '#f00'
+                    });
+                }
+            });
+        }
+
+        // Quick Load (F9)
+        if (e.key === 'F9') {
+            e.preventDefault();
+            const slot = GameConfig.SAVE.QUICKSAVE_SLOT || 9;
+            if (saveSystem.hasSlot(slot)) {
+                saveSystem.loadGame(slot).then(success => {
+                    if (success) {
+                        toastNotification.show({
+                            title: 'QUICK LOAD',
+                            message: 'Timeline restored',
+                            icon: '🔄',
+                            color: '#0f0'
+                        });
+                    }
+                });
+            } else {
+                toastNotification.show({
+                    title: 'NO SAVE',
+                    message: 'No quick save found',
+                    icon: '⚠️',
+                    color: '#ff0'
+                });
+            }
+        }
+    });
+
     // Navigation
     eventBus.on('ui:route_select', showRouteSelect);
     eventBus.on('ui:main_menu', showMainMenu);
