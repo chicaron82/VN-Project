@@ -66,6 +66,22 @@
     white-space: pre-wrap;
 }
 
+/* Portrait Mode: Fixed height dialogue box (V1 parity) */
+@media (orientation: portrait) {
+    .dialog-box {
+        bottom: 20px;
+        /* Keep consistent margin */
+        height: 30vh;
+        /* Fixed height container */
+        min-height: 30vh;
+        /* Enforce it */
+        overflow-y: auto;
+        /* Allow text to scroll if too long */
+        justify-content: flex-start;
+        /* Align text to top */
+    }
+}
+
 /* Tether Overlay (if needed separately) */
 .tether-overlay {
     position: absolute;

@@ -36,6 +36,7 @@
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -52,6 +53,7 @@
         opacity: 1;
         transform: translateY(0);
     }
+
     to {
         opacity: 0;
         transform: translateY(20px);
@@ -172,6 +174,7 @@
         opacity: 0;
         filter: brightness(2) blur(4px);
     }
+
     to {
         opacity: 1;
         filter: brightness(1) blur(0);
@@ -205,18 +208,22 @@
    RESPONSIVE - MOBILE PORTRAIT
    ======================================== */
 
-@media (max-width: 768px) and (orientation: portrait) {
+@media (orientation: portrait) {
     .character-sprite {
-        width: 45%;
-        height: 70%;
+        width: 65%;
+        height: 60%;
+        bottom: 30vh !important;
+        z-index: 35;
     }
 
     .echo-group {
-        width: 50%;
-        height: 70%;
+        width: 70%;
+        height: 60%;
+        bottom: 30vh !important;
         right: 2%;
     }
 
+    /* Adjust echo width for the wider container */
     #echo-1-sprite,
     #echo-2-sprite,
     #despair-sprite {

@@ -50,6 +50,7 @@
         opacity: 0;
         transform: translateY(20px) scale(0.9);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -121,9 +122,12 @@
 }
 
 @keyframes scrollBounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateX(-50%) translateY(0);
     }
+
     50% {
         transform: translateX(-50%) translateY(-5px);
     }
@@ -134,13 +138,26 @@
    ======================================== */
 
 @media (max-width: 768px) {
+
     .internal-bubble.left-character,
     .internal-bubble.right-character {
-        top: 45%;
+        top: 15%;
+        /* V1 Parity: High up in the empty space */
         max-width: 85vw;
         left: 50% !important;
         right: auto !important;
         transform: translateX(-50%) !important;
+    }
+
+    /* Explicit portrait check to ensure we don't break small landscaped phones */
+    @media (orientation: portrait) {
+
+        .internal-bubble.left-character,
+        .internal-bubble.right-character,
+        .internal-bubble.center {
+            top: 12%;
+            /* Even higher to clear sprite heads */
+        }
     }
 
     .internal-bubble.center {
