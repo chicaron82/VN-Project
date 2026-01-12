@@ -10,6 +10,13 @@ export class NotesViewer {
     private contentPane!: HTMLElement;
     private activeNoteId: string | null = null;
 
+    // Note overlay system
+    private noteOverlay!: HTMLElement;
+    private noteOverlayContent!: HTMLElement;
+    private prevBtn!: HTMLButtonElement;
+    private nextBtn!: HTMLButtonElement;
+    private allNoteIds: string[] = [];
+
     constructor(eventBus: EventBus, collectiblesSystem: CollectiblesSystem) {
         this.eventBus = eventBus;
         this.collectiblesSystem = collectiblesSystem;
@@ -51,6 +58,9 @@ export class NotesViewer {
 
         this.notesList = this.overlay.querySelector('#notes-list-container')!;
         this.contentPane = this.overlay.querySelector('#note-content-pane')!;
+
+        // Render note overlay
+        this.renderNoteOverlay();
     }
 
     private setupListeners() {
@@ -66,6 +76,19 @@ export class NotesViewer {
 
         // Listen for open events
         this.eventBus.on('ui:notes:open', () => this.show());
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!this.noteOverlay.classList.contains('visible')) return;
+
+            if (e.key === 'Escape') {
+                this.closeNoteOverlay();
+            } else if (e.key === 'ArrowLeft') {
+                this.navigateNote('prev');
+            } else if (e.key === 'ArrowRight') {
+                this.navigateNote('next');
+            }
+        });
     }
 
     public show() {
@@ -113,7 +136,7 @@ export class NotesViewer {
             `;
 
             item.addEventListener('click', () => {
-                this.selectNote(note);
+                this.openNoteOverlay(note);
             });
 
             this.notesList.appendChild(item);
@@ -134,5 +157,99 @@ export class NotesViewer {
                 <div class="view-body">${note.content}</div>
             </div>
         `;
+    }
+
+    // ========================================
+    // NOTE OVERLAY SYSTEM (V1 PARITY)
+    // ========================================
+
+    private renderNoteOverlay() {
+        this.noteOverlay = document.createElement('div');
+        this.noteOverlay.className = 'note-overlay';
+        this.noteOverlay.innerHTML = `
+            <div class="note-overlay-content">
+                <div class="note-overlay-header">
+                    <div class="note-overlay-from"></div>
+                    <div class="note-overlay-subject"></div>
+                </div>
+                <div class="note-overlay-body"></div>
+                <div class="note-overlay-nav">
+                    <button class="note-nav-btn" id="prev-note-btn">← PREV</button>
+                    <button class="note-nav-btn" id="next-note-btn">NEXT →</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(this.noteOverlay);
+
+        this.noteOverlayContent = this.noteOverlay.querySelector('.note-overlay-content')!;
+        this.prevBtn = this.noteOverlay.querySelector('#prev-note-btn')!;
+        this.nextBtn = this.noteOverlay.querySelector('#next-note-btn')!;
+
+        // Navigation button listeners
+        this.prevBtn.addEventListener('click', () => this.navigateNote('prev'));
+        this.nextBtn.addEventListener('click', () => this.navigateNote('next'));
+
+        // Close on overlay click
+        this.noteOverlay.addEventListener('click', (e) => {
+            if (e.target === this.noteOverlay) this.closeNoteOverlay();
+        });
+    }
+
+    private openNoteOverlay(note: NoteData) {
+        this.activeNoteId = note.id;
+        this.collectiblesSystem.markAsRead(note.id);
+        this.refreshList();
+
+        // Get all note IDs for navigation
+        this.allNoteIds = this.collectiblesSystem.getNotes().map(n => n.id);
+
+        // Apply sender color class
+        this.noteOverlay.className = 'note-overlay visible sender-' + note.type;
+
+        // Populate overlay
+        const fromEl = this.noteOverlay.querySelector('.note-overlay-from')!;
+        const subjectEl = this.noteOverlay.querySelector('.note-overlay-subject')!;
+        const bodyEl = this.noteOverlay.querySelector('.note-overlay-body')!;
+
+        fromEl.textContent = `FROM: ${note.sender}`;
+        subjectEl.textContent = note.title;
+        bodyEl.textContent = note.content;
+
+        // Update navigation buttons
+        this.updateNavigationButtons();
+    }
+
+    private closeNoteOverlay() {
+        this.noteOverlay.classList.remove('visible');
+    }
+
+    private navigateNote(direction: 'prev' | 'next') {
+        if (!this.activeNoteId) return;
+
+        const currentIndex = this.allNoteIds.indexOf(this.activeNoteId);
+        if (currentIndex === -1) return;
+
+        const newIndex = direction === 'prev' ? currentIndex - 1 : currentIndex + 1;
+        if (newIndex < 0 || newIndex >= this.allNoteIds.length) return;
+
+        const newNoteId = this.allNoteIds[newIndex];
+        const newNote = this.collectiblesSystem.getNotes().find(n => n.id === newNoteId);
+
+        if (newNote) {
+            this.openNoteOverlay(newNote);
+        }
+    }
+
+    private updateNavigationButtons() {
+        if (!this.activeNoteId) return;
+
+        const currentIndex = this.allNoteIds.indexOf(this.activeNoteId);
+
+        // Disable prev if at start
+        this.prevBtn.disabled = currentIndex <= 0;
+
+        // Disable next if at end
+        this.nextBtn.disabled = currentIndex >= this.allNoteIds.length - 1;
     }
 }

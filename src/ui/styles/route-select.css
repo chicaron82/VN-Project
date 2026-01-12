@@ -1,0 +1,323 @@
+/* ========================================
+   ROUTE SELECT - V1 PARITY
+   Huge, dramatic overlapping portraits
+   ======================================== */
+
+#route-select {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a0a14 0%, #1a1a2e 100%);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#route-select-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    gap: 1.5rem;
+    position: relative;
+}
+
+/* ========================================
+   TITLE
+   ======================================== */
+
+#route-select-title {
+    text-align: center;
+    z-index: 10;
+}
+
+#route-select-title h2 {
+    font-size: 2.5em;
+    color: cyan;
+    text-shadow: 0 0 20px cyan;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+#route-select-title p {
+    font-size: 1.2em;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ========================================
+   PORTRAITS - HUGE & OVERLAPPING (V1 STYLE)
+   ======================================== */
+
+#route-portraits-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 80vh;
+    max-height: 900px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.route-portrait {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.route-portrait img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    object-position: bottom center;
+    filter: brightness(0.6) blur(2px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ronnie - Left side */
+.ronnie-portrait {
+    left: 10%;
+}
+
+.ronnie-portrait.active img {
+    filter: brightness(1) drop-shadow(0 0 40px cyan);
+    transform: scale(1.05);
+}
+
+/* Tori - Right side */
+.tori-portrait {
+    right: 10%;
+}
+
+.tori-portrait.active img {
+    filter: brightness(1) drop-shadow(0 0 40px magenta);
+    transform: scale(1.05);
+    animation: tori-glitch 0.5s ease-out;
+}
+
+@keyframes tori-glitch {
+    0% {
+        filter: contrast(1) brightness(1);
+    }
+
+    5% {
+        filter: contrast(1.3) brightness(1.2) hue-rotate(5deg);
+    }
+
+    10% {
+        filter: contrast(1.1) brightness(0.9) hue-rotate(-5deg);
+    }
+
+    15% {
+        filter: contrast(1.4) brightness(1.1);
+    }
+
+    20% {
+        filter: contrast(1) brightness(1);
+    }
+
+    100% {
+        filter: brightness(1) drop-shadow(0 0 40px magenta);
+    }
+}
+
+/* Inactive portraits */
+.route-portrait:not(.active) {
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.route-portrait.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+/* ========================================
+   TOGGLE & INFO (ABOVE PORTRAITS)
+   ======================================== */
+
+#route-toggle {
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.5rem;
+    border-radius: 50px;
+    border: 2px solid cyan;
+    backdrop-filter: blur(10px);
+}
+
+.toggle-option {
+    padding: 0.8rem 2rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.toggle-option.active {
+    background: cyan;
+    color: black;
+    box-shadow: 0 0 20px cyan;
+}
+
+.toggle-option:not(.active):hover {
+    color: white;
+}
+
+/* Tori active state */
+.toggle-option[data-route="tori"].active {
+    background: magenta;
+    box-shadow: 0 0 20px magenta;
+}
+
+#route-info-display {
+    text-align: center;
+    z-index: 10;
+    min-height: 80px;
+}
+
+.route-info-text h3 {
+    font-size: 2em;
+    color: cyan;
+    text-shadow: 0 0 15px cyan;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.route-info-text p {
+    font-size: 1.1em;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+#route-play-button {
+    padding: 1rem 3rem;
+    background: transparent;
+    border: 3px solid cyan;
+    color: cyan;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    z-index: 10;
+    border-radius: 4px;
+}
+
+#route-play-button:hover {
+    background: cyan;
+    color: black;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+#back-to-menu {
+    padding: 0.7rem 2rem;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.7);
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    border-radius: 4px;
+}
+
+#back-to-menu:hover {
+    border-color: white;
+    color: white;
+}
+
+/* ========================================
+   MOBILE / PORTRAIT
+   ======================================== */
+
+@media (max-width: 768px),
+(max-height: 600px) {
+    #route-portraits-container {
+        height: 60vh;
+        max-height: 500px;
+    }
+
+    .ronnie-portrait {
+        left: 5%;
+    }
+
+    .tori-portrait {
+        right: 5%;
+    }
+
+    #route-select-title h2 {
+        font-size: 1.8em;
+    }
+
+    #route-select-title p {
+        font-size: 1em;
+    }
+
+    .toggle-option {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9em;
+    }
+
+    .route-info-text h3 {
+        font-size: 1.5em;
+    }
+
+    #route-play-button {
+        padding: 0.8rem 2rem;
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    #route-portraits-container {
+        height: 50vh;
+        max-height: 400px;
+    }
+
+    #route-select-content {
+        gap: 1rem;
+    }
+
+    #route-select-title h2 {
+        font-size: 1.5em;
+    }
+
+    .toggle-option {
+        padding: 0.5rem 1rem;
+        font-size: 0.85em;
+    }
+}

@@ -7,4 +7,5 @@
 @import './bougie-boot-sequence.css';
 @import './settings.css';
 @import './status-bar.css';
+@import './route-select.css';
 /* Add component imports as we build them */

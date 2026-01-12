@@ -225,3 +225,295 @@
         padding: 20px;
     }
 }
+
+/* ========================================
+   NOTE OVERLAY SYSTEM (V1 PARITY)
+   Full-screen note reading view
+   ======================================== */
+
+/* Note Overlay - Full-screen email reader */
+.note-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10002;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.3s ease-out;
+}
+
+.note-overlay.visible {
+    display: flex;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+    }
+}
+
+.note-overlay-content {
+    position: relative;
+    width: 700px;
+    max-width: 90%;
+    max-height: 85vh;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 20, 0.95) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
+    padding: 30px;
+    overflow-y: auto;
+    box-shadow:
+        0 0 40px rgba(0, 255, 255, 0.3),
+        inset 0 0 60px rgba(0, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: noteSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px;
+}
+
+@keyframes noteSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header section (FROM + SUBJECT) */
+.note-overlay-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, #0ff, transparent) 1;
+}
+
+.note-overlay-from {
+    color: #0ff;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.note-overlay-subject {
+    color: #0ff;
+    font-size: 1.1em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #0ff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+}
+
+/* Note body content */
+.note-overlay-body {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 1em;
+    margin-bottom: 30px;
+    min-height: 200px;
+    white-space: pre-wrap;
+}
+
+/* Navigation buttons */
+.note-overlay-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, transparent, #0ff, transparent) 1;
+}
+
+.note-nav-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.note-nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.note-nav-btn:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
+}
+
+.note-nav-btn:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.4),
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.note-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #666;
+    color: #666;
+}
+
+/* ========================================
+   COLOR-CODED SENDER VARIANTS
+   ======================================== */
+
+/* Z - Cyan (default) */
+.sender-z .note-overlay-content {
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
+}
+
+/* CZ - Pink */
+.sender-cz .note-overlay-content {
+    border-image: linear-gradient(135deg, #ff6b9d, #ff1493) 1;
+}
+
+.sender-cz .note-overlay-from,
+.sender-cz .note-overlay-subject {
+    color: #ff6b9d;
+    background: linear-gradient(135deg, #ff6b9d, #ff1493);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-cz .note-sender {
+    color: #ff6b9d;
+}
+
+/* ZR - Purple */
+.sender-zr .note-overlay-content {
+    border-image: linear-gradient(135deg, #9d4edd, #7b2cbf) 1;
+}
+
+.sender-zr .note-overlay-from,
+.sender-zr .note-overlay-subject {
+    color: #9d4edd;
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-zr .note-sender {
+    color: #9d4edd;
+}
+
+/* GZ - Green */
+.sender-gz .note-overlay-content {
+    border-image: linear-gradient(135deg, #00ff88, #00cc66) 1;
+}
+
+.sender-gz .note-overlay-from,
+.sender-gz .note-overlay-subject {
+    color: #00ff88;
+    background: linear-gradient(135deg, #00ff88, #00cc66);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-gz .note-sender {
+    color: #00ff88;
+}
+
+/* IZ - Gold */
+.sender-iz .note-overlay-content {
+    border-image: linear-gradient(135deg, #ffd700, #ffaa00) 1;
+}
+
+.sender-iz .note-overlay-from,
+.sender-iz .note-overlay-subject {
+    color: #ffd700;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-iz .note-sender {
+    color: #ffd700;
+}
+
+/* PZ - Orange */
+.sender-pz .note-overlay-content {
+    border-image: linear-gradient(135deg, #ff6347, #ff4500) 1;
+}
+
+.sender-pz .note-overlay-from,
+.sender-pz .note-overlay-subject {
+    color: #ff6347;
+    background: linear-gradient(135deg, #ff6347, #ff4500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-pz .note-sender {
+    color: #ff6347;
+}
+
+/* ========================================
+   UNREAD BADGE ANIMATIONS
+   ======================================== */
+
+.note-item.unread::after {
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}

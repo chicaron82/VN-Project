@@ -19,11 +19,10 @@ export class RouteSelect {
 
                 <div id="route-portraits-container">
                     <div class="route-portrait ronnie-portrait active">
-                        <!-- Placeholder images until assets are guaranteed -->
-                        <div style="width: 200px; height: 300px; background: cyan; opacity: 0.5;">Ronnie Proxy</div>
+                        <img src="/assets/route-select-ronnie.webp" alt="Ronnie">
                     </div>
                     <div class="route-portrait tori-portrait">
-                        <div style="width: 200px; height: 300px; background: magenta; opacity: 0.5;">Tori Proxy</div>
+                        <img src="/assets/route-select-tori.webp" alt="Tori">
                     </div>
                 </div>
 
