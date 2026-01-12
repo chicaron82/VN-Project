@@ -141,51 +141,85 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section');
 
     sections.forEach(section => {
-        // Set initial state
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(30px)';
-        section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        // Check if section is already in viewport on load
+        const rect = section.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-        // Observe for intersection
-        fadeInObserver.observe(section);
+        if (isVisible) {
+            // Already visible - show immediately without animation
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        } else {
+            // Not visible - set initial hidden state
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            // Observe for intersection
+            fadeInObserver.observe(section);
+        }
     });
 
     // Animate timeline items individually
     const timelineItems = document.querySelectorAll('.timeline-item');
     timelineItems.forEach((item, index) => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateX(-30px)';
-        item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+        // Check if item is already in viewport on load
+        const rect = item.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-        const itemObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateX(0)';
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        if (isVisible) {
+            // Already visible - show immediately
+            item.style.opacity = '1';
+            item.style.transform = 'translateX(0)';
+            item.style.transition = `opacity 0.6s ease, transform 0.6s ease`;
+        } else {
+            // Not visible - set initial hidden state and observe
+            item.style.opacity = '0';
+            item.style.transform = 'translateX(-30px)';
+            item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
 
-        itemObserver.observe(item);
+            const itemObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateX(0)';
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+            itemObserver.observe(item);
+        }
     });
 
     // Animate stat cards with stagger
     const statCards = document.querySelectorAll('.stat-card');
     statCards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'scale(0.8)';
-        card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+        // Check if card is already in viewport on load
+        const rect = card.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-        const cardObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'scale(1)';
-                }
-            });
-        }, { threshold: 0.3 });
+        if (isVisible) {
+            // Already visible - show immediately
+            card.style.opacity = '1';
+            card.style.transform = 'scale(1)';
+            card.style.transition = `opacity 0.5s ease, transform 0.5s ease`;
+        } else {
+            // Not visible - set initial hidden state and observe
+            card.style.opacity = '0';
+            card.style.transform = 'scale(0.8)';
+            card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
 
-        cardObserver.observe(card);
+            const cardObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'scale(1)';
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            cardObserver.observe(card);
+        }
     });
 });
 

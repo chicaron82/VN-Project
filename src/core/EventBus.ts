@@ -78,6 +78,7 @@ export type GameEvents = {
   'ui:settings': {};
   'ui:credits': {};
   'ui:show_credits': {};
+  'ui:show_crew': {};  // "Meet the Crew" portrait screens (TODO: port CrewScreen from V1)
   'ui:show_main_menu': {};
   'ui:show_retry_screen': { currentRoute: string; loopVersion: number };
   'ui:retry_choice': { choice: 'restart_route' | 'change_perspective'; route?: 'ronnie' | 'tori' };

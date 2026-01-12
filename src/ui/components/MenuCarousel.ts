@@ -79,12 +79,14 @@ export class MenuCarousel {
                 action: () => this.eventBus.emit('ui:notes:open', {})
             },
             {
-                id: 'credits',
+                id: 'crew',
                 title: 'CREW',
-                subtitle: 'The UV7 Team',
+                subtitle: 'Meet the UV7 Team',
                 icon: '👥',
                 background: 'radial-gradient(circle at top, #301020, #050511)',
-                action: () => this.eventBus.emit('ui:show_credits', {})
+                // TODO: Port CrewScreen from V1 (crew-controller.js) for proper "Meet the Crew" experience
+                // Currently shows credits as placeholder - V1 has 10 portrait screens with team bios
+                action: () => this.eventBus.emit('ui:show_crew', {})
             },
             {
                 id: 'torigatchi',
