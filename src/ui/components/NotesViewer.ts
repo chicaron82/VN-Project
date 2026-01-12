@@ -7,12 +7,12 @@ export class NotesViewer {
     private collectiblesSystem: CollectiblesSystem;
     private overlay!: HTMLElement;
     private notesList!: HTMLElement;
-    private contentPane!: HTMLElement;
+    // private contentPane!: HTMLElement; // Unused
     private activeNoteId: string | null = null;
 
     // Note overlay system
     private noteOverlay!: HTMLElement;
-    private noteOverlayContent!: HTMLElement;
+    // private noteOverlayContent!: HTMLElement; // Unused
     private prevBtn!: HTMLButtonElement;
     private nextBtn!: HTMLButtonElement;
     private allNoteIds: string[] = [];
@@ -57,7 +57,7 @@ export class NotesViewer {
         document.body.appendChild(this.overlay);
 
         this.notesList = this.overlay.querySelector('#notes-list-container')!;
-        this.contentPane = this.overlay.querySelector('#note-content-pane')!;
+        // this.contentPane = this.overlay.querySelector('#note-content-pane')!;
 
         // Render note overlay
         this.renderNoteOverlay();
@@ -115,12 +115,15 @@ export class NotesViewer {
         const notes = this.collectiblesSystem.getNotes();
 
         // Sort by type then ID (or title)
+        // Sort by type then ID (or title)
         notes.sort((a, b) => {
-            if (a.type !== b.type) return a.type.localeCompare(b.type);
-            return a.id.localeCompare(b.id);
+            if (!a || !b) return 0;
+            if (a.type !== b.type) return (a.type || '').localeCompare(b.type || '');
+            return (a.id || '').localeCompare(b.id || '');
         });
 
         notes.forEach(note => {
+            if (!note) return;
             const item = document.createElement('div');
             item.className = 'note-item';
             if (this.collectiblesSystem.isRead(note.id) === false) {
@@ -143,6 +146,7 @@ export class NotesViewer {
         });
     }
 
+    /*
     private selectNote(note: NoteData) {
         this.activeNoteId = note.id;
         this.collectiblesSystem.markAsRead(note.id);
@@ -158,6 +162,7 @@ export class NotesViewer {
             </div>
         `;
     }
+    */
 
     // ========================================
     // NOTE OVERLAY SYSTEM (V1 PARITY)
@@ -182,7 +187,7 @@ export class NotesViewer {
 
         document.body.appendChild(this.noteOverlay);
 
-        this.noteOverlayContent = this.noteOverlay.querySelector('.note-overlay-content')!;
+        // this.noteOverlayContent = this.noteOverlay.querySelector('.note-overlay-content')!;
         this.prevBtn = this.noteOverlay.querySelector('#prev-note-btn')!;
         this.nextBtn = this.noteOverlay.querySelector('#next-note-btn')!;
 
@@ -202,7 +207,8 @@ export class NotesViewer {
         this.refreshList();
 
         // Get all note IDs for navigation
-        this.allNoteIds = this.collectiblesSystem.getNotes().map(n => n.id);
+        // Get all note IDs for navigation
+        this.allNoteIds = this.collectiblesSystem.getNotes().map(n => n ? n.id : '').filter(id => id !== '');
 
         // Apply sender color class
         this.noteOverlay.className = 'note-overlay visible sender-' + note.type;
@@ -234,7 +240,7 @@ export class NotesViewer {
         if (newIndex < 0 || newIndex >= this.allNoteIds.length) return;
 
         const newNoteId = this.allNoteIds[newIndex];
-        const newNote = this.collectiblesSystem.getNotes().find(n => n.id === newNoteId);
+        const newNote = this.collectiblesSystem.getNotes().find(n => n && n.id === newNoteId);
 
         if (newNote) {
             this.openNoteOverlay(newNote);
