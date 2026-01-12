@@ -24,9 +24,11 @@ import { StatusBar } from '@ui/components/StatusBar';
 import { Sidebar } from '@ui/components/Sidebar';
 import { NotesViewer } from '@ui/components/NotesViewer';
 import '@core/ErrorBoundary'; // Auto-initializes global error handler
+import { LoadingOverlay } from '@ui/components/LoadingOverlay';
 import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
 import '@ui/styles/error-boundary.css';
+import '@ui/styles/loading-overlay.css';
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
@@ -136,6 +138,9 @@ function showSplash(): Promise<void> {
         // Creates the FULL V1 structure required by bougie-boot-sequence.css
         const splashContainer = document.createElement('div');
         splashContainer.id = 'uv7-splash';
+
+        // Initialize Loading Overlay (Global)
+        new LoadingOverlay('app', eventBus);
 
         // V1 Structure: Container -> Logo Section (img+video) + Terminal
         splashContainer.innerHTML = `
@@ -423,7 +428,13 @@ function showLoadMenu() {
 // Gameplay
 // ============================================
 
-function startGame(route: 'ronnie' | 'tori') {
+async function startGame(route: 'ronnie' | 'tori') {
+    // Show loader
+    eventBus.emit('loading:start');
+
+    // Small delay to ensure loader is visible before blocking operations
+    await new Promise(r => setTimeout(r, 100));
+
     clearScreen();
 
     stateManager.set('currentRoute', route);
@@ -471,7 +482,10 @@ function startGame(route: 'ronnie' | 'tori') {
     // Load first scene based on route
     // For now, both routes start with prologue
     const firstSceneId = 'scene1_streetBump'; // First scene in prologue.json
-    gameEngine.loadScene(firstSceneId);
+    await gameEngine.loadScene(firstSceneId);
+
+    // Hide loader
+    eventBus.emit('loading:end');
 
     console.log(`[UV7 V2] Starting game: ${route} route`);
 }
