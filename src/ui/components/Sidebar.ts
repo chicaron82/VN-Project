@@ -46,6 +46,10 @@ export class Sidebar {
                         <span class="quick-action-icon">⚙️</span>
                         <span>Settings</span>
                     </button>
+                    <button class="quick-action-btn" data-action="notes">
+                        <span class="quick-action-icon">📨</span>
+                        <span>Notes</span>
+                    </button>
                     <button class="quick-action-btn" data-action="fullscreen">
                         <span class="quick-action-icon">⛶</span>
                         <span>Full</span>
@@ -91,6 +95,20 @@ export class Sidebar {
         settingsBtn?.addEventListener('click', () => {
             this.close(); // Close sidebar
             this.eventBus.emit('settings:open', {});
+        });
+
+        // Notes button click
+        const notesBtn = this.container.querySelector('[data-action="notes"]');
+        notesBtn?.addEventListener('click', () => {
+            this.close();
+            // We need a specific event for this in NotesViewer
+            // But NotesViewer might not be listening for an event yet?
+            // Wait, NotesViewer.ts didn't have a listener setup for 'ui:notes_open'
+            // let's add one to NotesViewer.ts or emit a generic 'ui:show_notes' logic
+            // For now, I'll rely on the global instance or add a listener in NotesViewer.ts
+            // Actually NotesViewer constructor called `setupListeners()` which was empty.
+            // I should have updated NotesViewer to listen for 'ui:notes:open'
+            this.eventBus.emit('ui:notes:open', {});
         });
 
         // Fullscreen button

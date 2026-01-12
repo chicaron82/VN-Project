@@ -55,7 +55,9 @@ export type GameEvents = {
   'ui:show_status_bar': {};
   'ui:hide_status_bar': {};
   'ui:route_changed': { route: string };
-  'note:collected': { count: number };
+  'note:collected': { id: string; title: string; sender: string; content?: string, count: number }; // DIZEE: Detailed note payload
+  'ui:notes:open': {};
+  'ui:notes_closed': {};
   'secret_code:submit': { code: string };
   'secret_code:unlocked': { code: string; name: string };
   'ui:load_menu': {};

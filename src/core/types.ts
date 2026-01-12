@@ -88,3 +88,13 @@ export interface GameState {
     history: SceneId[];
     playtime: number;
 }
+
+// Collectibles
+export interface NoteData {
+    id: string;
+    type: 'z' | 'cz' | 'zr' | 'gz' | 'iz' | 'pz' | 'special';
+    title: string;
+    content: string;
+    sender: string; // Derived helper
+    unlockCondition?: string; // Optional
+}

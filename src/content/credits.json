@@ -1,0 +1,32 @@
+{
+    "title": "Project UV7",
+    "team": [
+        {
+            "role": "Director & Narrative",
+            "name": "Silver"
+        },
+        {
+            "role": "Lead Architect (AI)",
+            "name": "Antigravity (Google DeepMind)"
+        },
+        {
+            "role": "Systems Engineering (AI)",
+            "name": "DiZee"
+        },
+        {
+            "role": "Creative Assistant (AI)",
+            "name": "ZeeRah"
+        }
+    ],
+    "specialThanks": [
+        "V1 Crew",
+        "The Echoes",
+        "You (The Player)"
+    ],
+    "music": [
+        {
+            "title": "Digital Void",
+            "artist": "Unknown"
+        }
+    ]
+}

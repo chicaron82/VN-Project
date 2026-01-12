@@ -1,0 +1,22 @@
+{
+    "z1": {
+        "type": "z",
+        "title": "Welcome to the Cage",
+        "content": "You think this is a game. It's not. Ideally, you wouldn't be here at all."
+    },
+    "z2": {
+        "type": "z",
+        "title": "Iteration 848",
+        "content": "We've done this 847 times before. Failure rate: 100%. Don't get your hopes up."
+    },
+    "cz1": {
+        "type": "cz",
+        "title": "I miss him",
+        "content": "Does he still think about us? Or just the body in the hospital bed?"
+    },
+    "zr1": {
+        "type": "zr",
+        "title": "Chaos Vector Detected",
+        "content": "The collision was not random. Probability < 0.0001%. Calculated intervention."
+    }
+}

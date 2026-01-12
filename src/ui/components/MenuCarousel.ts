@@ -69,7 +69,7 @@ export class MenuCarousel {
                 subtitle: 'Collected fragments',
                 icon: '📝',
                 background: 'radial-gradient(circle at top, #101030, #050511)',
-                action: () => this.eventBus.emit('ui:notes', {})
+                action: () => this.eventBus.emit('ui:notes:open', {})
             },
             {
                 id: 'credits',
@@ -77,7 +77,7 @@ export class MenuCarousel {
                 subtitle: 'The UV7 Team',
                 icon: '👥',
                 background: 'radial-gradient(circle at top, #301020, #050511)',
-                action: () => this.eventBus.emit('ui:credits', {})
+                action: () => this.eventBus.emit('ui:show_credits', {})
             }
         ];
 

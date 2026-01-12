@@ -11,6 +11,7 @@ import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { SecretCodesManager } from '@systems/SecretCodesManager';
 import { ContentLoader } from '@systems/ContentLoader';
+import { CollectiblesSystem } from '@systems/CollectiblesSystem';
 import { DialogController } from '@controllers/DialogController';
 import { SpriteController } from '@controllers/SpriteController';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -21,7 +22,12 @@ import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
 import { SettingsModal } from '@ui/components/SettingsModal';
 import { StatusBar } from '@ui/components/StatusBar';
 import { Sidebar } from '@ui/components/Sidebar';
+import { NotesViewer } from '@ui/components/NotesViewer';
 import '@ui/styles/main.css';
+import '@ui/styles/notes-viewer.css';
+
+import { CreditsScreen } from '@ui/screens/CreditsScreen';
+import { SaveSystem } from '@systems/SaveSystem';
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -31,6 +37,8 @@ import ronnieAct3Data from '@content/routes/ronnie_act3.json';
 import toriAct1Data from '@content/routes/tori_act1.json';
 import toriAct2Data from '@content/routes/tori_act2.json';
 import toriAct3Data from '@content/routes/tori_act3.json';
+
+// ... imports
 
 // ============================================
 // Core Systems
@@ -48,6 +56,9 @@ const stateManager = new StateManager({
 const settingsSystem = new SettingsSystem(stateManager);
 settingsSystem.init();
 
+const saveSystem = new SaveSystem(stateManager, eventBus);
+saveSystem.init();
+
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
@@ -58,14 +69,37 @@ const spriteController = new SpriteController(eventBus, stateManager);
 const _settingsModal = new SettingsModal(eventBus);
 const _statusBar = new StatusBar(eventBus);
 const _sidebar = new Sidebar(eventBus);
+const _creditsScreen = new CreditsScreen(eventBus);
 
-// Secret Codes System
+// Secret Codes & Collectibles
 const secretCodesManager = new SecretCodesManager(eventBus);
-if (typeof window !== 'undefined') {
-    window.secretCodesManager = secretCodesManager;
+const collectiblesSystem = new CollectiblesSystem(eventBus);
+const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
+
+// Silence unused warnings by logging
+console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _notesViewer });
+
+declare global {
+    interface Window {
+        game: any;
+        collectiblesSystem: any;
+        saveSystem: any;
+    }
 }
 
-console.log('UI initialized', { _settingsModal, _statusBar, _sidebar, secretCodesManager });
+if (typeof window !== 'undefined') {
+    (window as any).secretCodesManager = secretCodesManager;
+    (window as any).collectiblesSystem = collectiblesSystem;
+    (window as any).saveSystem = saveSystem;
+}
+
+console.log('UI initialized', {
+    _settingsModal,
+    _statusBar,
+    _sidebar,
+    secretCodesManager,
+    collectiblesSystem
+});
 
 // ============================================
 // App State

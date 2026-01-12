@@ -33,6 +33,28 @@ export class SaveSystem {
         this.eventBus = eventBus;
     }
 
+    init() {
+        // Listen for scene load to trigger auto-save
+        this.eventBus.on('scene:load', (data: { sceneId: string }) => {
+            this.autoSave(data.sceneId);
+        });
+    }
+
+    /**
+     * Auto-save current game state (Slot 0)
+     */
+    async autoSave(currentSceneId: string): Promise<boolean> {
+        // Don't auto-save on menu screens or non-gameplay scenes
+        if (currentSceneId === 'main_menu' || currentSceneId === 'splash' || currentSceneId === 'credits') {
+            return false;
+        }
+
+        console.log(`💾 Auto-saving at scene: ${currentSceneId}`);
+        return this.saveGame(0, `Auto-save: ${currentSceneId}`);
+    }
+
+
+
     /**
      * Save current game state to a slot
      */
