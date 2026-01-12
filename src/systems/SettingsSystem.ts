@@ -10,6 +10,8 @@ export interface GameSettings {
     // New Accessibility
     fontSize: 'normal' | 'large' | 'xl';
     highContrast: boolean;
+    // Skip System
+    skipEnabled: boolean; // Allow skip feature (user preference to disable)
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -19,7 +21,8 @@ const DEFAULT_SETTINGS: GameSettings = {
     volume: 1.0,
     animationsEnabled: true,
     fontSize: 'normal',
-    highContrast: false
+    highContrast: false,
+    skipEnabled: true // Skip is enabled by default (still requires unlock)
 };
 
 /**

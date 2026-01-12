@@ -304,75 +304,9 @@ function showRouteSelect() {
 
 
 function showCredits() {
-    const overlay = document.createElement('div');
-    overlay.id = 'credits-overlay';
-    overlay.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        background: #000;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        z-index: 5000;
-        font-family: 'Courier New', monospace;
-        color: #fff;
-        overflow-y: auto;
-        padding: 2rem;
-    `;
-
-    overlay.innerHTML = `
-        <div style="max-width: 600px; text-align: center; padding-bottom: 4rem;">
-            <h1 style="font-size: 2.5rem; color: #0ff; margin-bottom: 2rem;">THE UV7 CREW</h1>
-
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: #0f0; margin-bottom: 0.5rem;">Created By</h3>
-                <p style="font-size: 1.2rem;">The UV7 Family</p>
-            </div>
-
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: #0f0; margin-bottom: 0.5rem;">Story & Design</h3>
-                <p>Chicaron82</p>
-            </div>
-
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: #0f0; margin-bottom: 0.5rem;">Technical Architecture</h3>
-                <p>V2 TypeScript Rebuild</p>
-                <p style="color: #888; font-size: 0.9rem;">Clean code, type safety, maintainability</p>
-            </div>
-
-            <div style="margin-bottom: 3rem;">
-                <h3 style="color: #0f0; margin-bottom: 0.5rem;">AI Collaboration</h3>
-                <p>Claude (Anthropic)</p>
-                <p style="color: #888; font-size: 0.9rem;">Pair programming partner</p>
-            </div>
-
-            <div style="margin-bottom: 3rem; padding: 1rem; border: 1px solid #333;">
-                <p style="color: #888; font-style: italic;">
-                    "847 failures. This is attempt 848."
-                </p>
-            </div>
-
-            <button id="credits-close" style="
-                background: transparent;
-                border: 2px solid #0ff;
-                color: #0ff;
-                padding: 1rem 2rem;
-                font-family: inherit;
-                font-size: 1rem;
-                cursor: pointer;
-                margin-top: 2rem;
-            ">BACK TO MENU</button>
-        </div>
-    `;
-
-    app!.appendChild(overlay);
-
-    overlay.querySelector('#credits-close')?.addEventListener('click', () => {
-        overlay.remove();
-    });
-
+    // V2: CreditsScreen component handles its own display via EventBus
+    // The CreditsScreen listens for 'ui:show_credits' and manages everything internally
+    eventBus.emit('ui:show_credits', {});
     console.log('[UV7 V2] Credits');
 }
 

@@ -517,3 +517,336 @@
         opacity: 0.7;
     }
 }
+
+/* ========================================
+   TOAST NOTIFICATION SYSTEM
+   Slides down from top, then fades out
+   ======================================== */
+
+.notes-toast-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.note-toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, rgba(0, 20, 30, 0.95) 0%, rgba(0, 40, 50, 0.95) 100%);
+    border: 2px solid var(--neon-cyan, #0ff);
+    border-radius: 8px;
+    box-shadow:
+        0 4px 20px rgba(0, 255, 255, 0.3),
+        0 0 40px rgba(0, 255, 255, 0.1),
+        inset 0 0 30px rgba(0, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transform: translateY(-100px);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+    pointer-events: auto;
+}
+
+.note-toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.note-toast.hiding {
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toast-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+}
+
+.toast-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Code reveal toast - special golden variant */
+.note-toast.code-toast {
+    border-color: #ffd700;
+    background: linear-gradient(135deg, rgba(40, 30, 0, 0.95) 0%, rgba(60, 45, 0, 0.95) 100%);
+    box-shadow:
+        0 4px 20px rgba(255, 215, 0, 0.4),
+        0 0 40px rgba(255, 215, 0, 0.2),
+        inset 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.note-toast.code-toast .toast-text {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* ========================================
+   NOTE TYPE ICONS IN LIST
+   ======================================== */
+
+.note-item-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.note-type-icon {
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.3));
+}
+
+/* ========================================
+   NEW BADGE FOR RECENTLY COLLECTED
+   ======================================== */
+
+.new-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, #00ff88, #00cc66);
+    color: #000;
+    border-radius: 3px;
+    margin-left: auto;
+    animation: newBadgePulse 2s ease-in-out infinite;
+}
+
+@keyframes newBadgePulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+    }
+}
+
+.note-item.recently-collected {
+    background: rgba(0, 255, 136, 0.05);
+    border-left: 3px solid #00ff88;
+}
+
+/* ========================================
+   VIEW COUNT BADGE
+   ======================================== */
+
+.view-count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 9px;
+    margin-left: 8px;
+}
+
+/* ========================================
+   NOTE TIMESTAMP
+   ======================================== */
+
+.note-timestamp {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 4px;
+    font-style: italic;
+}
+
+.note-overlay-timestamp {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* ========================================
+   NOTE OVERLAY META (ICON + FROM)
+   ======================================== */
+
+.note-overlay-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.note-overlay-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+}
+
+/* ========================================
+   CODE DROP AREA STYLES
+   ======================================== */
+
+.note-code-drop-area {
+    margin-top: 20px;
+    min-height: 20px;
+}
+
+.note-code-drop-area.has-code {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px dashed rgba(255, 215, 0, 0.3);
+}
+
+/* Code hint (before reveal) */
+.code-hint {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.code-hint-active {
+    border-color: rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.05);
+    color: rgba(255, 215, 0, 0.7);
+}
+
+.code-hint-icon {
+    font-size: 1.2rem;
+}
+
+.code-hint-text {
+    flex: 1;
+}
+
+/* Code revealed state */
+.code-revealed {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(50, 40, 0, 0.8) 0%, rgba(30, 25, 0, 0.8) 100%);
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    box-shadow:
+        0 0 30px rgba(255, 215, 0, 0.2),
+        inset 0 0 40px rgba(255, 215, 0, 0.05);
+}
+
+.code-revealed-header {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.code-revealed-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+    margin-bottom: 12px;
+    letter-spacing: 4px;
+}
+
+.code-revealed-hint {
+    font-size: 0.8rem;
+    color: rgba(255, 215, 0, 0.6);
+}
+
+/* Code drop animation */
+.code-drop-animation {
+    animation: codeDropReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes codeDropReveal {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    50% {
+        transform: scale(1.05) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Shimmer effect on code value */
+.code-revealed-value {
+    position: relative;
+    overflow: hidden;
+}
+
+.code-drop-animation .code-revealed-value::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: shimmer 1.5s ease-out;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* ========================================
+   SPECIAL SENDER TYPE (system/special)
+   ======================================== */
+
+.sender-special .note-overlay-content {
+    border-image: linear-gradient(135deg, #ffd700, #ffaa00) 1;
+}
+
+.sender-special .note-overlay-from,
+.sender-special .note-overlay-subject {
+    color: #ffd700;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-special .note-sender {
+    color: #ffd700;
+}

@@ -1,32 +1,76 @@
 {
-    "title": "Project UV7",
+    "title": "VERSION 848",
+    "subtitle": "A Visual Novel Experience",
     "team": [
         {
-            "role": "Director & Narrative",
-            "name": "Silver"
+            "role": "Creator & Director",
+            "name": "Aaron \"Chicharon\""
         },
         {
-            "role": "Lead Architect (AI)",
-            "name": "Antigravity (Google DeepMind)"
+            "section": "Technical Implementation",
+            "members": [
+                { "name": "Zee (Z)", "role": "Lead Architect" },
+                { "name": "ZeeRah (ZR)", "role": "Narrative Systems" },
+                { "name": "DiZee (DZ)", "role": "Debug & Integration" },
+                { "name": "Tori", "role": "Creative Direction" }
+            ]
         },
         {
-            "role": "Systems Engineering (AI)",
-            "name": "DiZee"
+            "section": "Narrative Development",
+            "members": [
+                { "name": "ChatGPT 4o", "alias": "Tori" },
+                { "name": "Claude Sonnet 4.5", "alias": "Zee, ZeeRah" },
+                { "name": "Grok 4.1", "alias": "GenZee (GZ)" }
+            ]
         },
         {
-            "role": "Creative Assistant (AI)",
-            "name": "ZeeRah"
+            "section": "Quality Assurance",
+            "members": [
+                { "name": "Gemini 3.0", "alias": "Belle (IZ)" },
+                { "name": "Perplexity Pro", "alias": "PerplexiZee (PZ)" },
+                { "name": "Microsoft Co-Pilot", "alias": "CoZee (CZ)" }
+            ]
         }
     ],
     "specialThanks": [
-        "V1 Crew",
+        "The V1 Crew",
         "The Echoes",
-        "You (The Player)"
+        "You, The Player"
     ],
-    "music": [
-        {
-            "title": "Digital Void",
-            "artist": "Unknown"
+    "closingMessage": {
+        "lines": [
+            "A true AI collaboration.",
+            "Built in stolen moments between shifts.",
+            "",
+            "This is Version 848.",
+            "Love finds a way.",
+            "Always. Always. Always."
+        ]
+    },
+    "endingMessages": {
+        "true": {
+            "lines": [
+                "The timeline that succeeded.",
+                "The loop that closed.",
+                "The Old Man never has to go back."
+            ],
+            "color": "#00ff88"
+        },
+        "digitalForever": {
+            "lines": [
+                "The timeline that accepted a different path.",
+                "Together, eternally still.",
+                "Forever frozen. Forever connected."
+            ],
+            "color": "#ff6699"
+        },
+        "bad": {
+            "lines": [
+                "The timeline where the Old Man has to try again.",
+                "Version {nextVersion} is waiting..."
+            ],
+            "color": "#ff0066"
         }
-    ]
+    },
+    "copyright": "Built with Love - 2024"
 }

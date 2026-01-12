@@ -8,4 +8,5 @@
 @import './settings.css';
 @import './status-bar.css';
 @import './route-select.css';
+@import './credits.css';
 /* Add component imports as we build them */

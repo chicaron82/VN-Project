@@ -1,0 +1,445 @@
+/* ========================================
+   CREDITS SCREEN - Version 848
+   Elegant scrolling credits with starfield
+   ======================================== */
+
+@import './variables.css';
+
+/* ========================================
+   MAIN CONTAINER
+   ======================================== */
+#credits-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 3000;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+#credits-screen.visible {
+    opacity: 1;
+}
+
+#credits-screen.fade-out {
+    opacity: 0;
+}
+
+/* ========================================
+   STARFIELD BACKGROUND
+   ======================================== */
+.credits-starfield {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--twinkle-duration, 3s) ease-in-out infinite;
+    opacity: 0;
+}
+
+.star.small {
+    width: 1px;
+    height: 1px;
+}
+
+.star.medium {
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.star.large {
+    width: 3px;
+    height: 3px;
+    box-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* ========================================
+   SCROLLING CONTENT
+   ======================================== */
+.credits-scroll-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.credits-content {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    font-family: var(--font-mono);
+    color: var(--color-text);
+    animation: scrollCredits var(--scroll-duration, 60s) linear forwards;
+    animation-play-state: running;
+}
+
+.credits-content.fast-scroll {
+    animation-duration: 15s !important;
+}
+
+.credits-content.paused {
+    animation-play-state: paused;
+}
+
+@keyframes scrollCredits {
+    0% {
+        transform: translateY(100vh);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+.credits-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #fff;
+    text-shadow: 0 0 20px var(--color-ronnie);
+    animation: titleGlow 3s ease-in-out infinite;
+}
+
+@keyframes titleGlow {
+    0%, 100% {
+        text-shadow: 0 0 20px var(--color-ronnie);
+    }
+    50% {
+        text-shadow: 0 0 40px var(--color-ronnie), 0 0 60px var(--color-ronnie);
+    }
+}
+
+.credits-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-text-dim);
+    margin-bottom: 4rem;
+    font-style: italic;
+}
+
+.credits-divider {
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-ronnie), transparent);
+    margin: 3rem auto;
+}
+
+.credits-section {
+    margin-bottom: 4rem;
+}
+
+.credits-section-title {
+    font-size: 1.1rem;
+    color: var(--accent-color, var(--color-ronnie));
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+.credits-role {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    margin-bottom: 0.3rem;
+}
+
+.credits-name {
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 10px var(--accent-color, var(--color-ronnie));
+}
+
+.credits-team-list {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--color-text-dim);
+}
+
+.credits-message {
+    font-size: 1rem;
+    font-style: italic;
+    color: #888;
+    line-height: 1.8;
+    margin: 4rem 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.credits-logo {
+    max-width: 250px;
+    width: 70%;
+    opacity: 0.9;
+    margin: 2rem auto;
+}
+
+.credits-ending-message {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+.credits-copyright {
+    font-size: 0.8rem;
+    color: #555;
+    margin-top: 3rem;
+}
+
+/* ========================================
+   DYNAMIC ENDING TITLE STYLES
+   ======================================== */
+.ending-title-section {
+    margin-bottom: 3rem;
+}
+
+.ending-title-section .version-number {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 1rem;
+}
+
+.ending-title-section .ending-line {
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+/* True Ending - Green Theme */
+.ending-true .ending-line:nth-child(2) {
+    font-size: 1.2rem;
+    color: #00ff88;
+}
+.ending-true .ending-line:nth-child(3) {
+    font-size: 1rem;
+    color: #00ffaa;
+}
+.ending-true .ending-line:nth-child(4) {
+    font-size: 1rem;
+    color: #00ffcc;
+}
+
+/* Digital Forever Ending - Pink Theme */
+.ending-digitalForever .ending-line:nth-child(2) {
+    font-size: 1.2rem;
+    color: #ff6699;
+}
+.ending-digitalForever .ending-line:nth-child(3) {
+    font-size: 1rem;
+    color: #ff99bb;
+}
+.ending-digitalForever .ending-line:nth-child(4) {
+    font-size: 1rem;
+    color: #ffbbcc;
+}
+
+/* Bad Ending - Red Theme */
+.ending-bad .ending-line:nth-child(2) {
+    font-size: 1.2rem;
+    color: #ff0066;
+}
+.ending-bad .ending-line:nth-child(3) {
+    font-size: 1rem;
+    color: #ff3388;
+}
+
+/* ========================================
+   CHARACTER SPRITES (End Reveal)
+   ======================================== */
+.credits-character-reveal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    opacity: 0;
+    transition: opacity 2s ease-in;
+}
+
+.credits-character-reveal.visible {
+    opacity: 1;
+}
+
+.credits-character {
+    max-height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.3));
+    transition: transform 0.5s ease;
+}
+
+.credits-character.ronnie {
+    transform: translateX(-10%);
+}
+
+.credits-character.tori {
+    transform: translateX(10%);
+}
+
+/* ========================================
+   CONTROLS
+   ======================================== */
+.credits-skip-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 255, 255, 0.15);
+    color: var(--color-ronnie);
+    border: 1px solid var(--color-ronnie);
+    padding: 10px 24px;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    cursor: pointer;
+    z-index: 3001;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    letter-spacing: 2px;
+}
+
+.credits-skip-btn:hover {
+    background: var(--color-ronnie);
+    color: #000;
+    box-shadow: 0 0 15px var(--color-ronnie);
+}
+
+.credits-speed-hint {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #444;
+    z-index: 3001;
+    transition: opacity 0.5s ease;
+}
+
+.credits-speed-hint.hidden {
+    opacity: 0;
+}
+
+/* ========================================
+   ROUTE-SPECIFIC ACCENT COLORS
+   ======================================== */
+#credits-screen.route-ronnie {
+    --accent-color: var(--color-ronnie);
+}
+
+#credits-screen.route-tori {
+    --accent-color: var(--color-tori);
+}
+
+#credits-screen.route-ronnie .credits-title {
+    text-shadow: 0 0 20px var(--color-ronnie);
+}
+
+#credits-screen.route-tori .credits-title {
+    text-shadow: 0 0 20px var(--color-tori);
+}
+
+#credits-screen.route-tori .credits-section-title {
+    color: var(--color-tori);
+}
+
+#credits-screen.route-tori .credits-divider {
+    background: linear-gradient(90deg, transparent, var(--color-tori), transparent);
+}
+
+#credits-screen.route-tori .credits-skip-btn {
+    border-color: var(--color-tori);
+    color: var(--color-tori);
+}
+
+#credits-screen.route-tori .credits-skip-btn:hover {
+    background: var(--color-tori);
+    box-shadow: 0 0 15px var(--color-tori);
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+@media (max-width: 768px) {
+    .credits-title {
+        font-size: 2rem;
+    }
+
+    .credits-subtitle {
+        font-size: 1rem;
+    }
+
+    .credits-section-title {
+        font-size: 1rem;
+    }
+
+    .credits-name {
+        font-size: 1.1rem;
+    }
+
+    .credits-message {
+        font-size: 0.9rem;
+        padding: 0 10px;
+    }
+
+    .credits-skip-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .credits-character-reveal {
+        height: 50%;
+    }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    .credits-content {
+        animation-duration: 10s !important;
+    }
+
+    .star {
+        animation: none;
+        opacity: 0.5;
+    }
+
+    .credits-title {
+        animation: none;
+        text-shadow: 0 0 20px var(--color-ronnie);
+    }
+}

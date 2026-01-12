@@ -5,11 +5,27 @@ import { NoteData } from '../core/types';
 import toriNotes from '../content/notes/tori_notes.json';
 import ronnieNotes from '../content/notes/ronnie_notes.json';
 
+/**
+ * Extended state for V2 features
+ */
+interface CollectiblesState {
+    collected: string[];
+    read: string[];
+    viewCounts: Record<string, number>;
+    timestamps: Record<string, number>;
+    revealedCodes: Record<string, string>;
+}
+
 export class CollectiblesSystem {
     private eventBus: EventBus;
     private allNotes: Record<string, NoteData> = {};
     private collectedNotes: Set<string> = new Set();
     private readNotes: Set<string> = new Set();
+
+    // V2 additions: view counts, timestamps, revealed codes
+    private viewCounts: Record<string, number> = {};
+    private collectionTimestamps: Record<string, number> = {};
+    private revealedCodes: Record<string, string> = {};
 
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
@@ -64,6 +80,10 @@ export class CollectiblesSystem {
         }
 
         this.collectedNotes.add(noteId);
+
+        // Store collection timestamp
+        this.collectionTimestamps[noteId] = Date.now();
+
         this.saveState();
 
         const note = this.allNotes[noteId];
@@ -107,6 +127,58 @@ export class CollectiblesSystem {
         return count;
     }
 
+    // ========================================
+    // V2 FEATURES: View Counts, Timestamps, Codes
+    // ========================================
+
+    /**
+     * Get how many times a note has been viewed
+     */
+    public getViewCount(noteId: string): number {
+        return this.viewCounts[noteId] || 0;
+    }
+
+    /**
+     * Increment view count for a note
+     */
+    public incrementViewCount(noteId: string): void {
+        this.viewCounts[noteId] = (this.viewCounts[noteId] || 0) + 1;
+        this.saveState();
+    }
+
+    /**
+     * Get the timestamp when a note was collected
+     */
+    public getCollectionTimestamp(noteId: string): number | null {
+        return this.collectionTimestamps[noteId] || null;
+    }
+
+    /**
+     * Get a revealed code for a note (if any)
+     */
+    public getRevealedCode(noteId: string): string | null {
+        return this.revealedCodes[noteId] || null;
+    }
+
+    /**
+     * Set a revealed code for a note (RNG code drop)
+     */
+    public setRevealedCode(noteId: string, code: string): void {
+        this.revealedCodes[noteId] = code;
+        this.saveState();
+    }
+
+    /**
+     * Get all revealed codes
+     */
+    public getAllRevealedCodes(): Record<string, string> {
+        return { ...this.revealedCodes };
+    }
+
+    // ========================================
+    // HELPER METHODS
+    // ========================================
+
     private getSenderName(type: string): string {
         switch (type) {
             case 'z': return 'Z (The Architect)';
@@ -121,9 +193,12 @@ export class CollectiblesSystem {
     }
 
     private saveState() {
-        const state = {
+        const state: CollectiblesState = {
             collected: Array.from(this.collectedNotes),
-            read: Array.from(this.readNotes)
+            read: Array.from(this.readNotes),
+            viewCounts: this.viewCounts,
+            timestamps: this.collectionTimestamps,
+            revealedCodes: this.revealedCodes
         };
         localStorage.setItem('uv7_collectibles', JSON.stringify(state));
     }
@@ -132,9 +207,17 @@ export class CollectiblesSystem {
         const raw = localStorage.getItem('uv7_collectibles');
         if (raw) {
             try {
-                const state = JSON.parse(raw);
+                const state = JSON.parse(raw) as Partial<CollectiblesState>;
+
+                // Load basic collections
                 this.collectedNotes = new Set(state.collected || []);
                 this.readNotes = new Set(state.read || []);
+
+                // Load V2 data
+                this.viewCounts = state.viewCounts || {};
+                this.collectionTimestamps = state.timestamps || {};
+                this.revealedCodes = state.revealedCodes || {};
+
             } catch (e) {
                 console.error('[CollectiblesSystem] Failed to load state', e);
             }

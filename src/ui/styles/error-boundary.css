@@ -1,9 +1,259 @@
 /* ========================================
    ERROR BOUNDARY STYLES
-   Toast notifications and critical error screen
+   User-friendly error modal and toast notifications
    ======================================== */
 
-/* Error Toast Notification */
+/* ========================================
+   ERROR MODAL OVERLAY
+   Full-screen modal for critical errors
+   ======================================== */
+
+.error-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: errorFadeIn 0.3s ease-out;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.error-modal-overlay.fade-out {
+    animation: errorFadeOut 0.3s ease-out forwards;
+}
+
+.error-modal-content {
+    max-width: 500px;
+    width: 90%;
+    padding: 40px;
+    background: rgba(20, 20, 30, 0.98);
+    border: 2px solid #dc2626;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow:
+        0 0 40px rgba(220, 38, 38, 0.4),
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    animation: errorSlideIn 0.3s ease-out;
+}
+
+/* Error Icon - Big red exclamation */
+.error-modal-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: bold;
+    color: #fff;
+    box-shadow:
+        0 0 30px rgba(220, 38, 38, 0.6),
+        0 4px 20px rgba(0, 0, 0, 0.4);
+    animation: errorPulse 2s ease-in-out infinite;
+}
+
+/* Title */
+.error-modal-title {
+    font-size: 28px;
+    color: #dc2626;
+    margin: 0 0 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
+}
+
+/* User-friendly message */
+.error-modal-message {
+    font-size: 18px;
+    color: #ffffff;
+    line-height: 1.6;
+    margin: 0 0 12px;
+    font-weight: 500;
+}
+
+/* Technical error details (dimmed) */
+.error-modal-details {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 0 32px;
+    font-style: italic;
+    word-break: break-word;
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Action Buttons */
+.error-modal-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.error-btn-reload,
+.error-btn-continue {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Primary action - Reload */
+.error-btn-reload {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+.error-btn-reload:hover {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+}
+
+.error-btn-reload:active {
+    transform: translateY(0);
+}
+
+/* Secondary action - Try to Continue */
+.error-btn-continue {
+    background: transparent;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.error-btn-continue:hover {
+    background: rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+}
+
+.error-btn-continue:active {
+    transform: translateY(0);
+}
+
+/* Technical Details Accordion */
+.error-modal-technical {
+    text-align: left;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 16px;
+}
+
+.error-modal-technical summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    user-select: none;
+    outline: none;
+}
+
+.error-modal-technical summary:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.error-modal-technical-content {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.error-modal-technical-content p {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    margin: 4px 0;
+    line-height: 1.4;
+}
+
+.error-modal-technical-content pre {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 8px 0 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    max-height: 100px;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes errorFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes errorFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes errorSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes errorPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow:
+            0 0 30px rgba(220, 38, 38, 0.6),
+            0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow:
+            0 0 50px rgba(220, 38, 38, 0.8),
+            0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ========================================
+   ERROR TOAST NOTIFICATION
+   Non-blocking toast for minor errors
+   ======================================== */
+
 .error-toast {
     position: fixed;
     top: 20px;
@@ -12,11 +262,14 @@
     background: rgba(220, 38, 38, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 12px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(220, 38, 38, 0.3);
     padding: 16px 20px;
     min-width: 300px;
     max-width: 400px;
     animation: slideInRight 0.3s ease-out;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .error-toast.fade-out {
@@ -78,7 +331,6 @@
         transform: translateX(100%);
         opacity: 0;
     }
-
     to {
         transform: translateX(0);
         opacity: 1;
@@ -90,14 +342,17 @@
         transform: translateX(0);
         opacity: 1;
     }
-
     to {
         transform: translateX(100%);
         opacity: 0;
     }
 }
 
-/* Critical Error Overlay */
+/* ========================================
+   CRITICAL ERROR OVERLAY (Legacy Support)
+   Kept for backward compatibility
+   ======================================== */
+
 .critical-error-overlay {
     position: fixed;
     top: 0;
@@ -110,7 +365,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: fadeIn 0.3s ease-out;
+    animation: errorFadeIn 0.3s ease-out;
 }
 
 .critical-error-content {
@@ -126,7 +381,7 @@
 .error-icon-large {
     font-size: 80px;
     margin-bottom: 20px;
-    animation: pulse 2s infinite;
+    animation: errorPulse 2s infinite;
 }
 
 .critical-error-content h1 {
@@ -205,37 +460,55 @@
     margin: 8px 0 0 0;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+/* ========================================
+   MOBILE RESPONSIVENESS
+   ======================================== */
 
-    to {
-        opacity: 1;
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-}
-
-/* Mobile Responsiveness */
 @media (max-width: 600px) {
+    /* Error Modal */
+    .error-modal-content {
+        padding: 30px 20px;
+        margin: 20px;
+        width: calc(100% - 40px);
+    }
+
+    .error-modal-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .error-modal-title {
+        font-size: 22px;
+        letter-spacing: 1px;
+    }
+
+    .error-modal-message {
+        font-size: 16px;
+    }
+
+    .error-modal-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .error-btn-reload,
+    .error-btn-continue {
+        width: 100%;
+        padding: 16px 24px;
+    }
+
+    /* Error Toast */
     .error-toast {
         top: 10px;
         right: 10px;
         left: 10px;
         min-width: auto;
+        max-width: none;
     }
 
+    /* Critical Error (Legacy) */
     .critical-error-content {
         padding: 30px 20px;
         margin: 20px;
@@ -255,5 +528,42 @@
 
     .error-actions button {
         width: 100%;
+    }
+}
+
+/* ========================================
+   HIGH CONTRAST / ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-contrast: high) {
+    .error-modal-content {
+        border-width: 3px;
+    }
+
+    .error-modal-message {
+        font-weight: 600;
+    }
+
+    .error-btn-reload,
+    .error-btn-continue {
+        border-width: 3px;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .error-modal-overlay,
+    .error-modal-content,
+    .error-toast {
+        animation: none;
+    }
+
+    .error-modal-icon {
+        animation: none;
+    }
+
+    .error-btn-reload:hover,
+    .error-btn-continue:hover {
+        transform: none;
     }
 }

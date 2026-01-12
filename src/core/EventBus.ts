@@ -41,6 +41,12 @@ export type GameEvents = {
   'sprite:hide_all': {};
   'dialog:complete': {};
   'dialog:advance': {};
+  'dialog:skipping': {};
+  // Skip system events
+  'skip:toggle': {};
+  'skip:activate': {};
+  'skip:deactivate': {};
+  'skip:active': { isSkipping: boolean };
   'ui:show_route_select': {};
   'ui:show_skip_prompt': {};
   'ui:click': {};
@@ -61,6 +67,8 @@ export type GameEvents = {
   'ui:hide_status_bar': {};
   'ui:route_changed': { route: string };
   'note:collected': { id: string; title: string; sender: string; content?: string, count: number }; // DIZEE: Detailed note payload
+  'note:toast': { noteId: string; title: string }; // Toast notification shown
+  'code:revealed': { noteId: string; code: string }; // RNG code drop revealed
   'ui:notes:open': {};
   'ui:notes_closed': {};
   'secret_code:submit': { code: string };

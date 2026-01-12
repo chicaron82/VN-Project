@@ -1,0 +1,267 @@
+/**
+ * Skip Button Styles
+ *
+ * Floating toggle button for skip mode.
+ * Position: Top-right corner of dialog box
+ * States: Inactive, Active (skipping), Ctrl-held
+ * Route colors: Ronnie (cyan), Tori (magenta)
+ */
+
+/* ========================================
+   BASE BUTTON STYLES
+   ======================================== */
+
+.skip-button {
+    /* Positioning - top-right of dialog area */
+    position: fixed;
+    bottom: calc(var(--dialog-height, 180px) + 10px);
+    right: 20px;
+    z-index: var(--z-ui-base, 100);
+
+    /* Size & Layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 16px;
+    min-width: 70px;
+    height: 36px;
+
+    /* Typography */
+    font-family: var(--font-mono, 'Courier New', monospace);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    /* Colors - Default (neutral) */
+    background: rgba(0, 0, 0, 0.85);
+    color: var(--color-text-dim, rgba(255, 255, 255, 0.7));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+
+    /* Cursor & Interaction */
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    /* Transitions */
+    transition: all 0.2s ease;
+    opacity: 0.8;
+}
+
+.skip-button:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.95);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: scale(1.02);
+}
+
+.skip-button:active {
+    transform: scale(0.98);
+}
+
+.skip-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Skip Icon (>>) */
+.skip-button .skip-icon {
+    font-size: 0.9em;
+    margin-right: 2px;
+    animation: skip-pulse 0.5s ease-in-out infinite;
+}
+
+@keyframes skip-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ========================================
+   ACTIVE STATE (SKIPPING)
+   ======================================== */
+
+.skip-button.active {
+    /* Glow effect */
+    background: rgba(0, 255, 255, 0.15);
+    border-color: var(--color-ronnie, #00ffff);
+    color: var(--color-ronnie, #00ffff);
+    opacity: 1;
+    box-shadow:
+        0 0 10px rgba(0, 255, 255, 0.3),
+        0 0 20px rgba(0, 255, 255, 0.1),
+        inset 0 0 10px rgba(0, 255, 255, 0.05);
+}
+
+.skip-button.active:hover {
+    box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.4),
+        0 0 30px rgba(0, 255, 255, 0.2),
+        inset 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+/* ========================================
+   CTRL-HELD STATE (HOLD TO SKIP)
+   ======================================== */
+
+.skip-button.ctrl-held {
+    /* Pulsing glow for hold-to-skip */
+    animation: ctrl-held-glow 0.5s ease-in-out infinite;
+    background: rgba(0, 255, 255, 0.2);
+    border-color: var(--color-ronnie, #00ffff);
+    color: var(--color-ronnie, #00ffff);
+}
+
+@keyframes ctrl-held-glow {
+    0%, 100% {
+        box-shadow:
+            0 0 10px rgba(0, 255, 255, 0.4),
+            0 0 20px rgba(0, 255, 255, 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(0, 255, 255, 0.6),
+            0 0 40px rgba(0, 255, 255, 0.3);
+    }
+}
+
+/* ========================================
+   ROUTE-SPECIFIC COLORS
+   ======================================== */
+
+/* Ronnie Route (Cyan) */
+.skip-button.route-ronnie.active,
+.skip-button.route-ronnie.ctrl-held {
+    border-color: var(--color-ronnie, #00ffff);
+    color: var(--color-ronnie, #00ffff);
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow:
+        0 0 10px rgba(0, 255, 255, 0.3),
+        0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Tori Route (Magenta) */
+.skip-button.route-tori.active,
+.skip-button.route-tori.ctrl-held {
+    border-color: var(--color-tori, #ff00ff);
+    color: var(--color-tori, #ff00ff);
+    background: rgba(255, 0, 255, 0.15);
+    box-shadow:
+        0 0 10px rgba(255, 0, 255, 0.3),
+        0 0 20px rgba(255, 0, 255, 0.1);
+}
+
+.skip-button.route-tori.ctrl-held {
+    animation: ctrl-held-glow-tori 0.5s ease-in-out infinite;
+}
+
+@keyframes ctrl-held-glow-tori {
+    0%, 100% {
+        box-shadow:
+            0 0 10px rgba(255, 0, 255, 0.4),
+            0 0 20px rgba(255, 0, 255, 0.2);
+    }
+    50% {
+        box-shadow:
+            0 0 20px rgba(255, 0, 255, 0.6),
+            0 0 40px rgba(255, 0, 255, 0.3);
+    }
+}
+
+/* ========================================
+   INSANE MODE OVERRIDE
+   ======================================== */
+
+.insane-mode-active .skip-button.active,
+.insane-mode-active .skip-button.ctrl-held {
+    border-color: #ff0000;
+    color: #ff0000;
+    background: rgba(255, 0, 0, 0.15);
+    box-shadow:
+        0 0 10px rgba(255, 0, 0, 0.3),
+        0 0 20px rgba(255, 0, 0, 0.1);
+}
+
+/* ========================================
+   MOBILE / TOUCH STYLES
+   ======================================== */
+
+@media (max-width: 768px) {
+    .skip-button {
+        /* Larger touch target on mobile */
+        padding: 12px 20px;
+        min-width: 80px;
+        height: 44px;
+        font-size: 0.9rem;
+
+        /* Adjust position for mobile */
+        right: 10px;
+        bottom: calc(var(--dialog-height, 150px) + 15px);
+    }
+}
+
+@media (max-width: 480px) {
+    .skip-button {
+        /* Even larger on small phones */
+        padding: 10px 16px;
+        min-width: 70px;
+        height: 40px;
+        font-size: 0.8rem;
+        right: 8px;
+
+        /* Portrait mode: position above dialog */
+        bottom: calc(var(--dialog-height, 120px) + 10px);
+    }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .skip-button {
+        /* Compact for landscape */
+        padding: 6px 12px;
+        height: 32px;
+        font-size: 0.75rem;
+        bottom: auto;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* High contrast mode */
+.high-contrast .skip-button {
+    border-width: 2px;
+    font-weight: 800;
+}
+
+.high-contrast .skip-button.active {
+    background: rgba(0, 255, 255, 0.3);
+}
+
+/* Reduced motion */
+.reduced-motion .skip-button,
+.reduced-motion .skip-button .skip-icon,
+.reduced-motion .skip-button.ctrl-held {
+    animation: none !important;
+    transition: none !important;
+}
+
+/* Focus visible for keyboard navigation */
+.skip-button:focus-visible {
+    outline: 2px solid var(--color-ronnie, #00ffff);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   HIDDEN STATE (when not unlocked)
+   ======================================== */
+
+.skip-button[style*="display: none"] {
+    /* Ensure completely hidden */
+    visibility: hidden;
+    pointer-events: none;
+}
