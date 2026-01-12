@@ -164,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     entry.target.style.transform = 'translateX(0)';
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
         itemObserver.observe(item);
     });
