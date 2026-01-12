@@ -74,6 +74,13 @@ export class GameEngine {
      * Load a specific scene
      */
     async loadScene(sceneId: SceneId): Promise<void> {
+        // DIZEE: Handle special scene IDs that trigger transitions
+        if (sceneId === 'prologueComplete') {
+            console.log('[GameEngine] Prologue complete - showing route select');
+            this.eventBus.emit('ui:route_select', {});
+            return;
+        }
+
         const scene = this.scenes.get(sceneId);
 
         if (!scene) {

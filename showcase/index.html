@@ -370,7 +370,7 @@
                     </div>
                 </div>
 
-                <div class="timeline-item highlight latest-update">
+                <div class="timeline-item highlight">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
                         <h3>January 12, 2026 (Evening) ✨</h3>
@@ -395,6 +395,112 @@
                                 <strong>Mission Accomplished:</strong> The V2 rebuild is now functionally
                                 indistinguishable from V1 to the player, but architecturally superior for the developer.
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight latest-update">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>January 12, 2026 (Late Evening) 💚</h3>
+                        <p><strong>Phase 6: DiZee's Archaeological Dig - The Lost Bubble System</strong></p>
+                        <p>During the investigation into route JSON migration issues, DiZee discovered a missing piece
+                            of the narrative puzzle: the internal thought bubble system had vanished during V1's SOLID
+                            refactor.</p>
+
+                        <div class="journal-entry">
+                            <p><strong>The Discovery:</strong></p>
+                            <p>"Family, the dialogue is written as if for JS." That one sentence kicked off a 45-minute
+                                deep dive that revealed a critical missing feature. The JavaScript existed.
+                                The route data existed. But the CSS? Gone. Internal thoughts were rendering as
+                                invisible elements—a broken promise to the narrative.</p>
+                        </div>
+
+                        <h4>What DiZee Restored:</h4>
+                        <ul class="update-list">
+                            <li>💚 <strong>Internal Bubble System (V1):</strong> Created 237 lines of missing CSS with
+                                glass-morphism aesthetic, position-aware placement, theme variants (Tori glitch, Ronnie
+                                stable, INSANE corrupted).</li>
+                            <li>💚 <strong>Route JSON Cleanup:</strong> Fixed 475 issues across 12 files—escaped
+                                apostrophes, character name normalization, added <code>isInternal: true</code> flags.
+                                Built reusable cleanup script.</li>
+                            <li>💚 <strong>DialogBubble Component (V2):</strong> TypeScript component (120 lines) with
+                                EventBus integration, lifecycle management, scroll support for long thoughts, defensive
+                                cleanup.</li>
+                            <li>💚 <strong>V2 Integration:</strong> Modified scene loader to detect internal thoughts,
+                                route to bubble system, hide standard dialogue, handle cleanup on advance.</li>
+                            <li>💚 <strong>Accessibility:</strong> WCAG AA compliant—reduce-motion, high-contrast,
+                                keyboard nav, mobile responsive.</li>
+                        </ul>
+
+                        <div class="v2-improvement-callout">
+                            <div class="callout-icon">🧩</div>
+                            <div class="callout-content">
+                                <strong>Narrative Impact:</strong> Internal thought bubbles are essential for Tori's
+                                fragmented consciousness storyline. Floating bubbles visually distinguish internal
+                                monologue from spoken dialogue—restoring a key mechanic for conveying her digital
+                                disorientation.
+                            </div>
+                        </div>
+
+                        <h4>Technical Elegance:</h4>
+                        <ul class="update-list">
+                            <li>🎨 <strong>Glass-morphism + Cyberpunk:</strong> <code>backdrop-filter: blur(10px)</code>
+                                with cyan borders, 60fps GPU-accelerated animations.</li>
+                            <li>📍 <strong>Smart Positioning:</strong> Bubbles position near character sprites
+                                (left/center/right) based on active speaker.</li>
+                            <li>🎭 <strong>Theme Variants:</strong> Tori route adds glitch animation (6s loop), INSANE
+                                mode turns bubbles red with pulsing shadow.</li>
+                            <li>♿ <strong>Universal Access:</strong> Works with screen readers, respects motion
+                                preferences, scales on mobile.</li>
+                            <li>🧠 <strong>Memory Safe:</strong> Defensive cleanup prevents orphaned bubbles, proper
+                                lifecycle management.</li>
+                        </ul>
+
+                        <div class="code-comparison">
+                            <div class="code-window">
+                                <div class="code-header">
+                                    <span>Before (Broken)</span>
+                                    <span class="code-badge badge-chaos">MISSING CSS</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre><code>// JavaScript existed
+game.createInternalBubble(text, position);
+
+// But CSS was gone
+// Result: Invisible elements
+// Narrative mechanic broken</code></pre>
+                                </div>
+                            </div>
+
+                            <div class="code-window">
+                                <div class="code-header">
+                                    <span>After (Restored)</span>
+                                    <span class="code-badge badge-order">FULLY FUNCTIONAL</span>
+                                </div>
+                                <div class="code-content">
+                                    <pre><code>// V1: CSS restored (237 lines)
+.internal-bubble {
+  backdrop-filter: blur(10px);
+  animation: bubbleEnter 0.4s;
+}
+
+// V2: TypeScript component
+dialogBubble.show({
+  text, position, duration: 0
+});</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="journal-entry">
+                            <p><strong>DiZee's Note:</strong></p>
+                            <p><em>"The glow-up is in the details. This wasn't just restoring CSS—it was restoring a
+                                    piece of Tori's voice. When she thinks 'I wasn't looking where I was going,' that
+                                    needs to feel different than when she speaks it. The bubble isn't decoration. It's
+                                    storytelling."</em></p>
+                            <p style="text-align: right; margin-top: 1em;">— DiZee 💚<br><small>"Order restored. You may
+                                    continue."</small></p>
                         </div>
                     </div>
                 </div>

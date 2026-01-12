@@ -471,4 +471,74 @@ export class SpriteController {
     isEchoGroupActive(): boolean {
         return this.state.echoGroupActive;
     }
+
+    // ========================================
+    // SPRITE ANIMATIONS
+    // ========================================
+
+    /**
+     * DIZEE: Fade sequence for prologue vision (Ronnie -> Old Man -> Ronnie)
+     * Used in prologue when Tori sees glimpse of Old Man Ronnie
+     *
+     * @param position - Which sprite container ('left' or 'right')
+     * @param sprite1 - First sprite (young Ronnie)
+     * @param sprite2 - Second sprite (old Ronnie)
+     * @param duration - Total animation duration in ms (default 4000)
+     */
+    fadeSpritesSequence(position: 'left' | 'right', sprite1: string, sprite2: string, duration: number = 4000): void {
+        if (!this.viewport) {
+            console.error('[SpriteController] fadeSpritesSequence: No viewport');
+            return;
+        }
+
+        const container = this.viewport.querySelector(`.sprite-${position}`) as HTMLElement;
+        if (!container) {
+            console.error(`[SpriteController] fadeSpritesSequence: No sprite container found for position ${position}`);
+            console.log('[SpriteController] Available sprites:', this.viewport.querySelectorAll('.character-sprite'));
+            return;
+        }
+
+        console.log(`[SpriteController] Starting fade sequence at ${position}: ${sprite1} -> ${sprite2} -> ${sprite1}`);
+        console.log(`[SpriteController] Current container state:`, {
+            display: container.style.display,
+            opacity: container.style.opacity,
+            backgroundImage: container.style.backgroundImage
+        });
+
+        // Start with sprite1 (young Ronnie)
+        container.style.backgroundImage = `url('${sprite1}')`;
+        container.style.display = 'block';
+        container.style.opacity = '1';
+
+        const timing = duration / 4; // Split into 4 phases
+        console.log(`[SpriteController] Timing per phase: ${timing}ms`);
+
+        // Phase 1: Fade out sprite1
+        setTimeout(() => {
+            console.log('[SpriteController] Phase 1: Fading out sprite1');
+            container.style.transition = 'opacity 0.8s ease';
+            container.style.opacity = '0.2';
+        }, timing);
+
+        // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
+        setTimeout(() => {
+            console.log('[SpriteController] Phase 2: Switching to sprite2 (Old Man)');
+            container.style.backgroundImage = `url('${sprite2}')`;
+            container.style.opacity = '1';
+        }, timing * 1.8);
+
+        // Phase 3: Hold Old Man briefly, then fade
+        setTimeout(() => {
+            console.log('[SpriteController] Phase 3: Fading out sprite2');
+            container.style.opacity = '0.2';
+        }, timing * 2.8);
+
+        // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
+        setTimeout(() => {
+            console.log('[SpriteController] Phase 4: Switching back to sprite1 (young Ronnie)');
+            container.style.backgroundImage = `url('${sprite1}')`;
+            container.style.opacity = '1';
+            container.style.transition = 'opacity 0.6s ease';
+        }, timing * 3.5);
+    }
 }

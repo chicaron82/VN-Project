@@ -407,7 +407,7 @@
             "type": "dialog",
             "character": "Tori",
             "text": "\"We know how to save me. But we\\'re running out of time.\"",
-            "nextSceneId": "tori_act2_beat2",
+            "nextSceneId": "beat2",
             "internal": "[Visual: Ronnie grabs the Tamagotchi. Runs for the door. The race begins.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -416,7 +416,7 @@
             "isInternal": true
         },
         {
-            "id": "tori_act2_beat2",
+            "id": "beat2",
             "type": "dialog",
             "character": "Narration",
             "text": "Hospital room. Ronnie places the Tamagotchi on her bedside table.",
@@ -444,7 +444,7 @@
             "type": "dialog",
             "character": "Narration",
             "text": "The Tamagotchi buzzes. Synced with her heartbeat monitor.",
-            "nextSceneId": "tori_act2_beat2_ronnieNotice",
+            "nextSceneId": "beat2_ronnieNotice",
             "internal": "[Same rhythm. Same pulse.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -452,7 +452,7 @@
             }
         },
         {
-            "id": "tori_act2_beat2_ronnieNotice",
+            "id": "beat2_ronnieNotice",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"Weird. Battery must be dying.\"",
@@ -468,14 +468,14 @@
             "type": "dialog",
             "character": "Echoes",
             "text": "Echo 1: \"He felt it too. The buzz.\"\\nEcho 2: \"But he doesn\\'t understand what it means.\"\\nDespair: \"He never understood. Not until it was too late.\"",
-            "nextSceneId": "tori_act2_beat3",
+            "nextSceneId": "beat3",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
             }
         },
         {
-            "id": "tori_act2_beat3",
+            "id": "beat3",
             "type": "dialog",
             "character": "Narration",
             "text": "Back in the digital space. A simple maze game Ronnie coded. \"Think fast\" gameplay.",
@@ -558,14 +558,14 @@
             "type": "dialog",
             "character": "Echoes",
             "text": "Echo 1: \"It\\'s getting worse.\"\\nEcho 2: \"The system\\'s taking over.\"\\nDespair: \"You\\'re becoming a passenger in your own existence.\"",
-            "nextSceneId": "tori_act2_beat4",
+            "nextSceneId": "beat4",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
             }
         },
         {
-            "id": "tori_act2_beat4",
+            "id": "beat4",
             "type": "dialog",
             "character": "Narration",
             "text": "Hospital room again. Ronnie adjusts her blankets. The Tamagotchi is on the table.",
@@ -581,7 +581,7 @@
             "type": "dialog",
             "character": "Tori",
             "text": "\"There it is again. That pull. That warmth. It\\'s coming from my body.\"",
-            "nextSceneId": "tori_act2_beat4_understanding",
+            "nextSceneId": "beat4_understanding",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
@@ -589,18 +589,18 @@
             "isInternal": true
         },
         {
-            "id": "tori_act2_beat4_understanding",
+            "id": "beat4_understanding",
             "type": "dialog",
             "character": "Tori (internal, realization)",
             "text": "\"Wait... when I\\'m near my body, I feel more... real. More present. The corruption slows.\"",
-            "nextSceneId": "tori_act2_beat4_choice",
+            "nextSceneId": "beat4_choice",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "tori_act2_beat4_choice",
+            "id": "beat4_choice",
             "type": "dialog",
             "character": "Tori",
             "text": "\"This feeling... do I tell him? Or keep searching for proof?\"",
@@ -651,14 +651,14 @@
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"I\\'ll keep coming. Every day. I promise.\"",
-            "nextSceneId": "tori_act2_beat5",
+            "nextSceneId": "beat5",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "tori_act2_beat5",
+            "id": "beat5",
             "type": "dialog",
             "character": "Narration",
             "text": "Digital space. A memory fragment loads. Their first date. Coffee shop.",
@@ -728,14 +728,14 @@
             "type": "dialog",
             "character": "Echoes",
             "text": "Echo 1: \"She\\'s losing herself.\"\\nEcho 2: \"Piece by piece.\"\\nDespair: \"Soon there won\\'t be enough left to save.\"",
-            "nextSceneId": "tori_act2_beat6",
+            "nextSceneId": "beat6",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
             }
         },
         {
-            "id": "tori_act2_beat6",
+            "id": "beat6",
             "type": "dialog",
             "character": "Narration",
             "text": "Hospital room. Ronnie holds her hand. The Tamagotchi buzzes loudly.",
@@ -751,25 +751,25 @@
             "type": "dialog",
             "character": "Tori (internal, CLARITY)",
             "text": "\"OH. Oh my god. It\\'s the BODY. My body is the anchor. The bridge. The connection.\"",
-            "nextSceneId": "tori_act2_beat6_realization",
+            "nextSceneId": "beat6_realization",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "tori_act2_beat6_realization",
+            "id": "beat6_realization",
             "type": "dialog",
             "character": "Tori (internal, urgent)",
             "text": "\"That\\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!\"",
-            "nextSceneId": "tori_act2_beat6_echoesReact",
+            "nextSceneId": "beat6_echoesReact",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "tori_act2_beat6_echoesReact",
+            "id": "beat6_echoesReact",
             "type": "dialog",
             "character": "Echoes",
             "text": "Echo 2: \"She figured it out...\"\\nEcho 1: \"Faster than we did.\"\\nDespair: \"And it won\\'t matter. The body is dying. The bridge is burning.\"",

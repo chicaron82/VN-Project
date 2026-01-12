@@ -1,0 +1,45 @@
+{
+    "id": "v1_migration_test",
+    "background": "apartment",
+    "sprites": [
+        {
+            "id": "ronnie",
+            "position": "left",
+            "variant": "neutral"
+        },
+        {
+            "id": "tori",
+            "position": "right",
+            "variant": "annoyed"
+        }
+    ],
+    "tetherImpact": -5,
+    "dialog": [
+        {
+            "speaker": "ronnie",
+            "text": "This is a test of the V2 migration system."
+        },
+        {
+            "speaker": "tori",
+            "text": "Does it preserve the flavor though? The MSG?",
+            "emotion": "suspicious"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Yes, it tastes correct.",
+            "next": "migration_success",
+            "flags": [
+                {
+                    "flag": "msg_preserved",
+                    "value": true
+                }
+            ]
+        },
+        {
+            "text": "No, it's bland.",
+            "next": "migration_failure",
+            "tetherCost": 10
+        }
+    ]
+}

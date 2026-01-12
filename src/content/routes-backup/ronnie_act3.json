@@ -158,7 +158,7 @@
             "type": "dialog",
             "character": "Tori (slowly)",
             "text": "\"I\\'m... in the Tamagotchi. Not the game. The device itself.\"",
-            "nextSceneId": "ronnie_act3_beat4_understanding",
+            "nextSceneId": "beat4_understanding",
             "internal": "[Her sprite stutters. Reality reshaping around the revelation.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -167,7 +167,7 @@
             }
         },
         {
-            "id": "ronnie_act3_beat4_understanding",
+            "id": "beat4_understanding",
             "type": "dialog",
             "character": "Tori",
             "text": "\"The buzzes. The battery drain. That\\'s me. I\\'m killing the device just by existing in it.\"",
@@ -235,12 +235,12 @@
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"And then I remembered. The hospital. The single buzz.\"",
-            "nextSceneId": "ronnie_act3_beat5_realization",
+            "nextSceneId": "beat5_realization",
             "internal": "[Flashback: Device near Tori\\'s body. One buzz. Different from the vessel transfers.]",
             "background": "assets/hospital.png"
         },
         {
-            "id": "ronnie_act3_beat5_realization",
+            "id": "beat5_realization",
             "type": "dialog",
             "character": "Ronnie (excited)",
             "text": "\"The body. Tori, your BODY. It\\'s still there. Still alive. That buzz—you were reaching for it!\"",
@@ -330,7 +330,7 @@
             "type": "dialog",
             "character": "Tori (through device, weak)",
             "text": "\"Ronnie... I\\'m still here. Still in the Tamagotchi. It didn\\'t work.\"",
-            "nextSceneId": "ronnie_act3_beat6_realization",
+            "nextSceneId": "beat6_realization",
             "internal": "[The upload failed. She can\\'t be moved like data. She\\'s consciousness, not code.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -338,7 +338,7 @@
             }
         },
         {
-            "id": "ronnie_act3_beat6_realization",
+            "id": "beat6_realization",
             "type": "dialog",
             "character": "Ronnie (realization)",
             "text": "\"You can\\'t be uploaded. You\\'re not DATA. You\\'re a SOUL. And souls need... bodies.\"",

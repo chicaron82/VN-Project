@@ -31,11 +31,13 @@ import '@ui/styles/notes-viewer.css';
 import '@ui/styles/error-boundary.css';
 import '@ui/styles/loading-overlay.css';
 import '@ui/styles/accessibility.css';
+import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
 import { ToastNotification } from '@ui/components/ToastNotification';
 import { GameConfig } from '@core/GameConfig';
+import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -72,6 +74,7 @@ const hapticSystem = new HapticSystem(eventBus, settingsSystem);
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
+const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
 
 const spriteController = new SpriteController(eventBus, stateManager);
 
@@ -476,8 +479,12 @@ async function startGame(route: 'ronnie' | 'tori') {
             }
         });
 
-        // Click on viewport advances dialog
+        // Click on viewport advances dialog OR hides bubble
         gameLayout.viewport.addEventListener('click', () => {
+            // DIZEE: If bubble is visible, hide it and advance
+            if (dialogBubble.isVisible()) {
+                dialogBubble.hide();
+            }
             dialogController.handleClick();
         });
     }
@@ -494,14 +501,79 @@ async function startGame(route: 'ronnie' | 'tori') {
     };
 
     // Load first scene based on route
-    // For now, both routes start with prologue
-    const firstSceneId = 'scene1_streetBump'; // First scene in prologue.json
+    const firstSceneId = route === 'ronnie' ? 'ronnie_act1_prologueScene4' : 'scene1_coffee';
     await gameEngine.loadScene(firstSceneId);
 
     // Hide loader
     eventBus.emit('loading:end', {});
 
     console.log(`[UV7 V2] Starting game: ${route} route`);
+}
+
+async function startPrologue() {
+    // Show loader
+    eventBus.emit('loading:start', {});
+
+    // Small delay to ensure loader is visible before blocking operations
+    await new Promise(r => setTimeout(r, 100));
+
+    clearScreen();
+
+    // Set temporary route as 'prologue'
+    stateManager.set('currentRoute', null);
+    stateManager.set('tetherLevel', 100);
+    stateManager.set('history', []);
+
+    // Create game layout
+    gameLayout = new GameLayout('app', eventBus);
+
+    // Create effects layer (attaches to DOM via constructor)
+    if (gameLayout) {
+        new VisualEffectsLayer(
+            gameLayout.viewport,
+            gameLayout.viewport,
+            eventBus
+        );
+
+        // Set up sprite controller viewport
+        spriteController.setViewport(gameLayout.viewport);
+
+        // Set up dialog controller to update UI
+        dialogController.onTextUpdate((text) => {
+            if (gameLayout) {
+                gameLayout.dialogText.textContent = text;
+            }
+        });
+
+        // Click on viewport advances dialog OR hides bubble
+        gameLayout.viewport.addEventListener('click', () => {
+            // DIZEE: If bubble is visible, hide it and advance
+            if (dialogBubble.isVisible()) {
+                dialogBubble.hide();
+            }
+            dialogController.handleClick();
+        });
+    }
+
+    // Set up gameplay screen
+    currentScreen = {
+        unmount: () => {
+            const root = document.getElementById('app');
+            if (root) root.innerHTML = '';
+            gameLayout = null;
+            dialogController.destroy();
+            spriteController.hideAllSprites();
+        }
+    };
+
+    // Load first scene of prologue
+    const firstSceneId = 'scene1_streetBump'; // First scene in prologue.json
+    await gameEngine.loadScene(firstSceneId);
+
+    // Hide loader
+    eventBus.emit('loading:end', {});
+
+    console.log('[UV7 V2] Starting prologue');
 }
 
 function updateBackground(path: string | undefined) {
@@ -700,6 +772,10 @@ function setupEventHandlers() {
         startGame(data.route);
     });
 
+    eventBus.on('ui:start_prologue', () => {
+        startPrologue();
+    });
+
     eventBus.on('ui:pause_toggle', togglePause);
 
     // Scene loading - update UI with scene data
@@ -707,24 +783,49 @@ function setupEventHandlers() {
         const scene = gameEngine.getCurrentScene();
         if (!scene || !gameLayout) return;
 
-        // Update character name
-        const speaker = scene.character || 'Narration';
-        gameLayout.dialogName.textContent = speaker;
+        // DIZEE: Handle internal thoughts with bubble system
+        const isInternal = (scene as any).isInternal === true;
 
-        // Color based on character
-        const speakerLower = speaker.toLowerCase();
-        if (speakerLower.includes('ronnie')) {
-            gameLayout.dialogName.style.color = '#0ff';
-        } else if (speakerLower.includes('tori')) {
-            gameLayout.dialogName.style.color = '#f0f';
-        } else if (speakerLower.includes('echo 1')) {
-            gameLayout.dialogName.style.color = '#88f';
-        } else if (speakerLower.includes('echo 2')) {
-            gameLayout.dialogName.style.color = '#8f8';
-        } else if (speakerLower.includes('despair')) {
-            gameLayout.dialogName.style.color = '#f88';
+        if (isInternal) {
+            // Hide standard dialogue UI for internal thoughts
+            gameLayout.dialogBox.style.display = 'none';
+
+            // Determine bubble position based on active sprite
+            let position: 'left' | 'center' | 'right' = 'center';
+            if (scene.sprites) {
+                const spriteArray = Array.isArray(scene.sprites) ? scene.sprites : [scene.sprites];
+                const hasLeft = spriteArray.some(s => s.position === 'left' || (s as any).left);
+                const hasRight = spriteArray.some(s => s.position === 'right' || (s as any).right);
+
+                if (hasLeft && !hasRight) position = 'left';
+                else if (hasRight && !hasLeft) position = 'right';
+            }
+
+            // Don't show bubble yet - wait for dialog:show event
         } else {
-            gameLayout.dialogName.style.color = '#fff';
+            // Show standard dialogue UI
+            gameLayout.dialogBox.style.display = 'block';
+            dialogBubble.hide(); // Clear any existing bubble
+
+            // Update character name
+            const speaker = scene.character || 'Narration';
+            gameLayout.dialogName.textContent = speaker;
+
+            // Color based on character
+            const speakerLower = speaker.toLowerCase();
+            if (speakerLower.includes('ronnie')) {
+                gameLayout.dialogName.style.color = '#0ff';
+            } else if (speakerLower.includes('tori')) {
+                gameLayout.dialogName.style.color = '#f0f';
+            } else if (speakerLower.includes('echo 1')) {
+                gameLayout.dialogName.style.color = '#88f';
+            } else if (speakerLower.includes('echo 2')) {
+                gameLayout.dialogName.style.color = '#8f8';
+            } else if (speakerLower.includes('despair')) {
+                gameLayout.dialogName.style.color = '#f88';
+            } else {
+                gameLayout.dialogName.style.color = '#fff';
+            }
         }
 
         // Update background if specified
@@ -737,16 +838,68 @@ function setupEventHandlers() {
             updateSprites(scene.sprites);
         }
 
-        // Highlight active speaker
-        spriteController.highlightSpeaker(speaker);
+        // DIZEE: Handle scene effects (fadeSpritesSequence, etc.)
+        console.log('[DIZEE] Checking for effects:', { sceneId, hasEffects: !!(scene.effects), effects: scene.effects });
+        if (scene.effects && scene.effects.length > 0) {
+            scene.effects.forEach(effect => {
+                console.log('[DIZEE] Processing effect:', effect);
+                if (effect.type === 'fadeSpritesSequence') {
+                    console.log('[DIZEE] Triggering fadeSpritesSequence with 200ms delay');
+                    // Delay effect to ensure sprites are rendered
+                    setTimeout(() => {
+                        console.log('[DIZEE] Executing fadeSpritesSequence now');
+                        spriteController.fadeSpritesSequence(
+                            (effect as any).position || 'left',
+                            (effect as any).sprite1,
+                            (effect as any).sprite2,
+                            effect.duration || 4000
+                        );
+                    }, 200);
+                }
+            });
+        }
 
-        console.log(`[UV7 V2] Scene loaded: ${sceneId}`);
+        // Highlight active speaker (unless internal)
+        if (!isInternal) {
+            spriteController.highlightSpeaker(scene.character || 'Narration');
+        }
+
+        console.log(`[UV7 V2] Scene loaded: ${sceneId}${isInternal ? ' (internal)' : ''}`);
     });
 
-    // Dialog display - use DialogController for typewriter
+    // Dialog display - use DialogController for typewriter OR bubble for internal
     eventBus.on('dialog:show', ({ entry }) => {
         if (!gameLayout) return;
-        dialogController.show(entry.text);
+
+        const scene = gameEngine.getCurrentScene();
+        const isInternal = (scene as any)?.isInternal === true;
+
+        if (isInternal) {
+            // Show as floating thought bubble
+            let position: 'left' | 'center' | 'right' = 'center';
+            if (scene?.sprites) {
+                const spriteArray = Array.isArray(scene.sprites) ? scene.sprites : [scene.sprites];
+                const hasLeft = spriteArray.some(s => s.position === 'left' || (s as any).left);
+                const hasRight = spriteArray.some(s => s.position === 'right' || (s as any).right);
+
+                if (hasLeft && !hasRight) position = 'left';
+                else if (hasRight && !hasLeft) position = 'right';
+            }
+
+            dialogBubble.show({
+                text: entry.text,
+                position,
+                duration: 0 // Manual dismiss (advance with click/key)
+            });
+
+            // Still emit complete event so player can advance
+            setTimeout(() => {
+                eventBus.emit('dialog:complete', {});
+            }, 100);
+        } else {
+            // Standard dialogue box with typewriter
+            dialogController.show(entry.text);
+        }
     });
 
     // Dialog complete - check for choices
@@ -778,8 +931,12 @@ function setupEventHandlers() {
         if (e.key === 'Escape' && gameLayout) {
             togglePause();
         }
-        // Space/Enter to advance dialog
+        // Space/Enter to advance dialog OR hide bubble
         if ((e.key === ' ' || e.key === 'Enter') && gameLayout && !isPaused) {
+            // DIZEE: If bubble is visible, hide it first
+            if (dialogBubble.isVisible()) {
+                dialogBubble.hide();
+            }
             dialogController.handleClick();
         }
     });

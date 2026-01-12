@@ -80,6 +80,13 @@ export class ContentLoader {
                 }
             }
 
+            // Handle effects: JSON can have singular 'effect' or plural 'effects' array
+            let effects = sceneData.effects;
+            if (!effects && sceneData.effect) {
+                // Convert singular effect to array format
+                effects = [sceneData.effect];
+            }
+
             // Validate match with Scene interface
             const scene: Scene = {
                 id: sceneData.id,
@@ -100,7 +107,7 @@ export class ContentLoader {
                 })),
                 flags: sceneData.flags,
                 tetherImpact: sceneData.tetherImpact,
-                effects: sceneData.effects,
+                effects,
             };
 
             this.engine.registerScene(scene);

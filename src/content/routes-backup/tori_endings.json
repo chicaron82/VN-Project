@@ -48,7 +48,7 @@
             "type": "dialog",
             "character": "Narration",
             "text": "Both crash. Both transfer. Digital space. Two souls. Forever.",
-            "nextSceneId": "tori_endings_digitalForever_together",
+            "nextSceneId": "digitalForever_together",
             "internal": "[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -57,7 +57,7 @@
             }
         },
         {
-            "id": "tori_endings_digitalForever_together",
+            "id": "digitalForever_together",
             "type": "dialog",
             "character": "Tori (digital)",
             "text": "\"We\\'re together. Isn\\'t this what we wanted?\"",
@@ -192,11 +192,11 @@
             "type": "dialog",
             "character": "Narration",
             "text": "The heartbeat calls. The bridge holds. Transfer begins.",
-            "nextSceneId": "tori_endings_trueRoute_transfer",
+            "nextSceneId": "trueRoute_transfer",
             "background": "assets/hospital.png"
         },
         {
-            "id": "tori_endings_trueRoute_transfer",
+            "id": "trueRoute_transfer",
             "type": "dialog",
             "character": "Tori",
             "text": "\"I feel it... the pull... I'm going home...\"",
@@ -220,14 +220,14 @@
             "type": "dialog",
             "character": "Narration",
             "text": "Three become one.",
-            "nextSceneId": "tori_endings_trueRoute_awakening",
+            "nextSceneId": "trueRoute_awakening",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "right": "echoes"
             }
         },
         {
-            "id": "tori_endings_trueRoute_awakening",
+            "id": "trueRoute_awakening",
             "type": "dialog",
             "character": "Tori (external, whisper)",
             "text": "\"...Ronnie?\"",
@@ -243,14 +243,14 @@
             "type": "dialog",
             "character": "Ronnie (crying, laughing)",
             "text": "\"Tori! Oh god, Tori!\"",
-            "nextSceneId": "tori_endings_trueRoute_always",
+            "nextSceneId": "trueRoute_always",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "tori_endings_trueRoute_always",
+            "id": "trueRoute_always",
             "type": "dialog",
             "character": "Tori (weak smile)",
             "text": "\"Always. Always. Always.\"",

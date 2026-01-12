@@ -246,7 +246,7 @@
             "type": "dialog",
             "character": "Narration",
             "text": "Digital space. White void. Two sprites materialize.",
-            "nextSceneId": "ronnie_endings_digitalForever_together",
+            "nextSceneId": "digitalForever_together",
             "internal": "[Ronnie's form solidifies beside Tori's. Both digital. Both together.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -255,7 +255,7 @@
             }
         },
         {
-            "id": "ronnie_endings_digitalForever_together",
+            "id": "digitalForever_together",
             "type": "dialog",
             "character": "Tori (shocked)",
             "text": "\"Ronnie... what did you DO?\"",
@@ -385,14 +385,14 @@
             "type": "dialog",
             "character": "Ronnie (steady, voice anchoring)",
             "text": "\"Come home. Follow the heartbeat.\"",
-            "nextSceneId": "ronnie_endings_trueRoute_transfer",
+            "nextSceneId": "trueRoute_transfer",
             "background": "assets/hospital.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp"
             }
         },
         {
-            "id": "ronnie_endings_trueRoute_transfer",
+            "id": "trueRoute_transfer",
             "type": "dialog",
             "character": "System",
             "text": "TRANSFER PROTOCOL INITIATED... Downloading consciousness data... [Transfer complete.]",
@@ -405,7 +405,7 @@
             "type": "dialog",
             "character": "Ronnie (whispering, tears streaming)",
             "text": "\"That's it. That's it, baby. Follow me back.\"",
-            "nextSceneId": "ronnie_endings_trueRoute_awakening",
+            "nextSceneId": "trueRoute_awakening",
             "internal": "[Visual: Tamagotchi screen goes completely white. Then dark. Silent.]\\n[Beat of silence.]\\n[Her eyes flutter open.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -413,11 +413,11 @@
             }
         },
         {
-            "id": "ronnie_endings_trueRoute_awakening",
+            "id": "trueRoute_awakening",
             "type": "dialog",
             "character": "Tori (hoarse, confused)",
             "text": "\"...Ronnie?\"",
-            "nextSceneId": "ronnie_endings_trueRoute_always",
+            "nextSceneId": "trueRoute_always",
             "internal": "[He breaks. Collapses forward, forehead against her hand.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -426,7 +426,7 @@
             }
         },
         {
-            "id": "ronnie_endings_trueRoute_always",
+            "id": "trueRoute_always",
             "type": "dialog",
             "character": "Ronnie (voice shaking)",
             "text": "\"Always. Always. Always.\"",

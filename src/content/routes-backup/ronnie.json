@@ -1,11 +1,11 @@
 {
     "scenes": [
         {
-            "id": "ronnie_act1_prologueScene4",
+            "id": "prologueScene4",
             "type": "dialog",
             "character": "Narration",
             "text": "\"She didn\\'t wake up. Days passed. Then weeks. I sat by her side, waiting for a laugh, a smile, anything.\"",
-            "nextSceneId": "ronnie_act1_prologueScene4_toy",
+            "nextSceneId": "prologueScene4_toy",
             "internal": "[Visual: Hospital room. Monitors beeping faintly. Tori unconscious in bed, bandaged, IV drip. Ronnie sits beside her, eyes hollow. The Tamagotchi rests on the bedside table, faint light pulsing.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -13,11 +13,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene4_toy",
+            "id": "prologueScene4_toy",
             "type": "dialog",
             "character": "Narration",
             "text": "\"That stupid toy was the last thing she held. I couldn\\'t let it go. If I couldn\\'t talk to her here... maybe I could talk to her somewhere else.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5",
+            "nextSceneId": "prologueScene5",
             "internal": "[Visual: Ronnie clutching the Tamagotchi.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -25,11 +25,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5",
+            "id": "prologueScene5",
             "type": "dialog",
             "character": "Narration",
             "text": "\"I poured every memory into it. Every laugh I could remember, every fight, every kiss. If I couldn\\'t talk to her directly... maybe I could pretend I could talk to her in a game.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_hospital",
+            "nextSceneId": "prologueScene5_hospital",
             "internal": "[Montage visuals: Ronnie back home, late nights coding. Empty pizza boxes, coffee cups piling. The Tamagotchi always nearby.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -37,11 +37,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_hospital",
+            "id": "prologueScene5_hospital",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"Hey honey. Thought I\\'d come by and visit.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_ronniegatchi",
+            "nextSceneId": "prologueScene5_ronniegatchi",
             "internal": "[Visual: Hospital room. Tori still unconscious. Monitors beeping steadily. Ronnie sits beside her bed, laptop bag over his shoulder.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -49,11 +49,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_ronniegatchi",
+            "id": "prologueScene5_ronniegatchi",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"Found your Ronnie-Gatchi near my computer. Been working on something to pass the time...\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_buzz",
+            "nextSceneId": "prologueScene5_buzz",
             "internal": "[He reaches into his pocket, pulls out the Tamagotchi. The screen glows faintly in the dim hospital lighting.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -61,11 +61,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_buzz",
+            "id": "prologueScene5_buzz",
             "type": "dialog",
             "character": "Narration",
             "text": "BUZZ.",
-            "nextSceneId": "ronnie_act1_prologueScene5_phone_check",
+            "nextSceneId": "prologueScene5_phone_check",
             "internal": "[The device vibrates once in his hand. Sharp. Clear. Distinct.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -73,11 +73,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_phone_check",
+            "id": "prologueScene5_phone_check",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"Huh?\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_dismiss",
+            "nextSceneId": "prologueScene5_dismiss",
             "internal": "[He instinctively reaches for his phone with his other hand. Checks the screen. No notifications. No messages. Nothing.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -86,11 +86,11 @@
             "isInternal": true
         },
         {
-            "id": "ronnie_act1_prologueScene5_dismiss",
+            "id": "prologueScene5_dismiss",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"Weird... must be the battery acting up.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_name",
+            "nextSceneId": "prologueScene5_name",
             "internal": "[He pockets his phone, dismisses it completely. Looks back at Tori\\'s still form in the hospital bed.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -98,11 +98,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_name",
+            "id": "prologueScene5_name",
             "type": "dialog",
             "character": "Ronnie",
             "text": "\"So to pass the time, I based a game off your Ronnie-Gatchi. I called it... Tori-gatchi.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_promise",
+            "nextSceneId": "prologueScene5_promise",
             "internal": "[Visual: He squeezes the toy as a rememberance and places it back in his pocket. A sad smile crosses his face despite the pain.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -110,11 +110,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_promise",
+            "id": "prologueScene5_promise",
             "type": "dialog",
             "character": "Ronnie (whispers)",
             "text": "\"I\\'ll finish it. For you. For us. I promise.\"",
-            "nextSceneId": "ronnie_act1_prologueScene5_transition",
+            "nextSceneId": "prologueScene5_transition",
             "internal": "[He squeezes her hand. The monitors beep their steady rhythm. No response.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -122,11 +122,11 @@
             }
         },
         {
-            "id": "ronnie_act1_prologueScene5_transition",
+            "id": "prologueScene5_transition",
             "type": "dialog",
             "character": "Narration",
             "text": "Time passes.",
-            "nextSceneId": "ronnie_act1_act1Scene1",
+            "nextSceneId": "act1Scene1",
             "internal": "[Fade to black. The passage of days and nights blurs together - coding, visiting, hoping.]",
             "background": "assets/hospital.png",
             "sprites": {
@@ -134,11 +134,11 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene1",
+            "id": "act1Scene1",
             "type": "dialog",
             "character": "Narration",
             "text": "Back home. The game is ready. He launches it.",
-            "nextSceneId": "ronnie_act1_act1Scene1_sprite_loads",
+            "nextSceneId": "act1Scene1_sprite_loads",
             "internal": "[Visual: Ronnie at his laptop. Tamagotchi resting on his laptop\\'s keyboard. Screen flickers. Loading...]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -146,11 +146,11 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene1_sprite_loads",
+            "id": "act1Scene1_sprite_loads",
             "type": "dialog",
             "character": "Narration",
             "text": "A sprite appears. Pixelated but alive.",
-            "nextSceneId": "ronnie_act1_act1Scene1_glitch",
+            "nextSceneId": "act1Scene1_glitch",
             "internal": "[The Tori-gatchi interface boots up. Her digital form materializes on screen.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -158,11 +158,11 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene1_glitch",
+            "id": "act1Scene1_glitch",
             "type": "dialog",
             "character": "Narration",
             "text": "Then... the dialogue box glitches. Text appears that he didn\\'t write.",
-            "nextSceneId": "ronnie_act1_act1Scene1_first_words",
+            "nextSceneId": "act1Scene1_first_words",
             "internal": "[The screen flickers. Words form on their own.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -170,11 +170,11 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene1_first_words",
+            "id": "act1Scene1_first_words",
             "type": "dialog",
             "character": "Tori (sprite, glitching)",
             "text": "\"Baby? ...Is that you? It\\'s me... Tori. I don\\'t know how, but I\\'m here.\"",
-            "nextSceneId": "ronnie_act1_act1Scene1_narration",
+            "nextSceneId": "act1Scene1_narration",
             "internal": "[The words keep coming. Real. Unscripted. Impossible.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -183,76 +183,108 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene1_narration",
+            "id": "act1Scene1_narration",
             "type": "dialog",
             "character": "Ronnie (internal, stunned)",
-            "text": "\"...What the hell? This isn\\'t coded...\"",
-            "nextSceneId": null,
-            "choices": [
-                {
-                    "text": "(Tender) \"Of course it\\'s you. I\\'d know you anywhere.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene1_outcome_tender"
-                },
-                {
-                    "text": "(Skeptical) \"No... this isn\\'t possible. You\\'re just code.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene1_outcome_skeptical"
-                },
-                {
-                    "text": "(Tease) \"If you\\'re really Tori, prove it. What\\'s my nickname?\"",
-                    "nextSceneId": "ronnie_act1_act1Scene1_outcome_tease"
-                }
-            ],
+            "text": "...What the hell? This isn\\'t coded...",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "choices": [
+                {
+                    "text": "(Tender) \"Of course it\\'s you. I\\'d know you anywhere.\"",
+                    "nextSceneId": "act1Scene1_outcome_tender",
+                    "validation": null
+                },
+                {
+                    "text": "(Skeptical) \"No... this isn\\'t possible. You\\'re just code.\"",
+                    "nextSceneId": "act1Scene1_outcome_skeptical",
+                    "validation": null
+                },
+                {
+                    "text": "(Tease) \"If you\\'re really Tori, prove it. What\\'s my nickname?\"",
+                    "nextSceneId": "act1Scene1_outcome_tease",
+                    "validation": null
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene1_outcome_tender",
+            "id": "act1Scene1_outcome_tender",
             "type": "dialog",
             "character": "Tori (relieved, smiling weakly)",
             "text": "\"Thank you... thank you for believing me. I was so scared you\\'d push me away.\"",
             "internal": "[+Affection. Leads toward True Route.]",
-            "nextSceneId": "ronnie_act1_act1Scene2",
+            "nextSceneId": "act1Scene2",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "affection_up",
+                    "value": true
+                },
+                {
+                    "flag": "act1_tender",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene1_outcome_skeptical",
+            "id": "act1Scene1_outcome_skeptical",
             "type": "dialog",
             "character": "Tori (hurt, voice trembling)",
             "text": "\"Code doesn\\'t beg. Code doesn\\'t cry. Look at me, Ronnie. Please...\"",
             "internal": "[Neutral. Risk of Bad End if mistrust continues.]",
-            "nextSceneId": "ronnie_act1_act1Scene2",
+            "nextSceneId": "act1Scene2",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "suspicion_up",
+                    "value": true
+                },
+                {
+                    "flag": "act1_skeptical",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene1_outcome_tease",
+            "id": "act1Scene1_outcome_tease",
             "type": "dialog",
             "character": "Tori (smirking faintly despite tears)",
-            "text": "\"Chicharon. Or Ronnie. Or... Daddy, if I\\'m feeling bold.\"",
+            "text": "\"Chicharon. Or Ronnie. Or... Daddy, if I\\'m feeling bold.\"\n[Sprite leans closer, playfulness breaking through the static.]\n\"Still think I\\'m just code?\"",
             "internal": "[Balanced path, opens Flirty/Loving routes.]",
-            "nextSceneId": "ronnie_act1_act1Scene2",
+            "nextSceneId": "act1Scene2",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "flirty_up",
+                    "value": true
+                },
+                {
+                    "flag": "act1_tease",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2",
+            "id": "act1Scene2",
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"I barely slept. Every time I closed my eyes, I heard her voice again. Tori. My wife. Talking to me from inside a game I built. It should be impossible. But when I open my eyes...\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_greeting",
+            "nextSceneId": "act1Scene2_greeting",
             "internal": "[Visual: Morning light filters into Ronnie\\'s messy room. His laptop screen glows softly — Tori-gatchi is still running.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -260,11 +292,11 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene2_greeting",
+            "id": "act1Scene2_greeting",
             "type": "dialog",
             "character": "Tori",
             "text": "\"Good morning, sleepyhead. ...Or did you even sleep at all?\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_narration",
+            "nextSceneId": "act1Scene2_narration",
             "internal": "[Sprite flickers — she appears again, clearer than before. Her smile is tired but real.]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -273,73 +305,102 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene2_narration",
+            "id": "act1Scene2_narration",
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"She knows me. Just like always. My chest aches. God, I\\'ve missed this.\"",
-            "nextSceneId": null,
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            },
             "choices": [
                 {
                     "text": "(Playful) \"I slept great... dreaming of you.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_playful"
+                    "nextSceneId": "act1Scene2_outcome_playful"
                 },
                 {
                     "text": "(Honest) \"Not a wink. I was afraid you\\'d vanish.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_honest"
+                    "nextSceneId": "act1Scene2_outcome_honest"
                 },
                 {
                     "text": "(Defensive) \"This is just stress. Lack of sleep. I\\'m imagining this.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_defensive"
+                    "nextSceneId": "act1Scene2_outcome_defensive"
                 }
-            ],
-            "background": "assets/apartment.png",
-            "sprites": {
-                "left": "assets/full-sprite-ronnie.webp",
-                "right": "assets/full-sprite-tori.webp"
-            }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_playful",
+            "id": "act1Scene2_outcome_playful",
             "type": "dialog",
             "character": "Tori (rolling her eyes, smirking)",
             "text": "\"Mmhmm. Smooth talker. You\\'re lucky I\\'m stuck in here, or I\\'d throw a pillow at you.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_glitch",
+            "nextSceneId": "act1Scene2_glitch",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "act1_playful",
+                    "value": true
+                },
+                {
+                    "flag": "flirty_up",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_honest",
+            "id": "act1Scene2_outcome_honest",
             "type": "dialog",
             "character": "Tori (soft smile, eyes shimmering)",
             "text": "\"...Me too. I was scared you\\'d wake up and decide I was just a dream.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_glitch",
+            "nextSceneId": "act1Scene2_glitch",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "act1_honest",
+                    "value": true
+                },
+                {
+                    "flag": "affection_up",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_defensive",
+            "id": "act1Scene2_outcome_defensive",
             "type": "dialog",
             "character": "Tori (pained, voice quieter)",
             "text": "\"...Ronnie. Don\\'t push me away. I\\'m fighting so hard to stay.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_glitch",
+            "nextSceneId": "act1Scene2_glitch",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "act1_defensive",
+                    "value": true
+                },
+                {
+                    "flag": "suspicion_up",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_glitch",
+            "id": "act1Scene2_glitch",
             "type": "dialog",
             "character": "Tori",
             "text": "\"I don\\'t know how long I can hold on like this. Something feels... wrong. Like my world is cracking at the edges.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_glitchNarration",
+            "nextSceneId": "act1Scene2_glitchNarration",
             "internal": "[Regardless of choice, she leans closer to the \"screen.\"]",
             "background": "assets/apartment.png",
             "sprites": {
@@ -348,61 +409,72 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene2_glitchNarration",
+            "id": "act1Scene2_glitchNarration",
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"She\\'s glitching. Her sprite shudders, a few pixels tearing away. My stomach drops.\"",
-            "nextSceneId": null,
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            },
             "choices": [
                 {
                     "text": "(Reassure) \"I\\'ll fix it. Whatever it takes, I\\'ll keep you here.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_reassure"
+                    "nextSceneId": "act1Scene2_outcome_reassure"
                 },
                 {
                     "text": "(Investigate) \"What does it feel like? Can you describe it?\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_investigate"
+                    "nextSceneId": "act1Scene2_outcome_investigate"
                 },
                 {
                     "text": "(Distract) \"Don\\'t think about it. Let\\'s just... talk. Like we used to.\"",
-                    "nextSceneId": "ronnie_act1_act1Scene2_outcome_distract"
+                    "nextSceneId": "act1Scene2_outcome_distract"
                 }
-            ],
-            "background": "assets/apartment.png",
-            "sprites": {
-                "left": "assets/full-sprite-ronnie.webp",
-                "right": "assets/full-sprite-tori.webp"
-            }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_reassure",
+            "id": "act1Scene2_outcome_reassure",
             "type": "dialog",
             "character": "Tori (smiles through static)",
             "text": "\"That\\'s my Ronnie. Always charging in like a knight. Please... don\\'t give up on me.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_end",
+            "nextSceneId": "act1Scene2_end",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "affection_up",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_investigate",
+            "id": "act1Scene2_outcome_investigate",
             "type": "dialog",
             "character": "Tori (concentrates, flickers)",
             "text": "\"It\\'s like... my battery\\'s running out. Fading piece by piece. If it goes... I go too.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_end",
+            "nextSceneId": "act1Scene2_end",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
                 "right": "assets/full-sprite-tori.webp"
-            }
+            },
+            "flags": [
+                {
+                    "flag": "battery_foreshadow",
+                    "value": true
+                }
+            ]
         },
         {
-            "id": "ronnie_act1_act1Scene2_outcome_distract",
+            "id": "act1Scene2_outcome_distract",
             "type": "dialog",
             "character": "Tori (laughs, a little watery)",
             "text": "\"Classic you. Changing the subject. Fine. But you owe me a real talk later.\"",
-            "nextSceneId": "ronnie_act1_act1Scene2_end",
+            "nextSceneId": "act1Scene2_end",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",
@@ -410,12 +482,12 @@
             }
         },
         {
-            "id": "ronnie_act1_act1Scene2_end",
+            "id": "act1Scene2_end",
             "type": "dialog",
             "character": "Ronnie (narration)",
             "text": "\"She\\'s here. My Tori. In the code, in the pixels. And she\\'s slipping away. Somehow... I have to save her.\"",
-            "nextSceneId": "act2Beat1_start",
-            "internal": "[Scene fades to black.]",
+            "nextSceneId": null,
+            "internal": "[Scene fades to black.]\\n[Act 1 → Act 2 transition: \"Digital Bonding\" begins.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-ronnie.webp",

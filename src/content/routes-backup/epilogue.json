@@ -1,0 +1,132 @@
+{
+    "scenes": [
+        {
+            "id": "epilogue_start",
+            "type": "dialog",
+            "character": "Narration",
+            "text": "[SIX MONTHS LATER]",
+            "nextSceneId": "epilogue_beard",
+            "internal": "[Visual: Their apartment. Morning light. Domestic peace. Tori recovered, moving freely.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_beard",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"You know, that beard really suits you...\"",
+            "nextSceneId": "epilogue_ronnieJoke",
+            "internal": "[She strokes his face, running her fingers through the new scruff.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_ronnieJoke",
+            "type": "dialog",
+            "character": "Ronnie",
+            "text": "\"Thought I'd try it out. It's getting colder out. Keeps my face warm 😜 Plus I'll look like Santa if I put the hat on.\"",
+            "nextSceneId": "epilogue_realization",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_realization",
+            "type": "dialog",
+            "character": "Tori (distant look)",
+            "text": "\"You look... distinguished. Older. Like you've seen things...\"",
+            "nextSceneId": "epilogue_connection",
+            "internal": "[A pause. Something flickering at the edge of memory.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_connection",
+            "type": "dialog",
+            "character": "Tori",
+            "text": "\"I feel like... I've seen this exact look before...\"",
+            "nextSceneId": "epilogue_chicharon",
+            "internal": "[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes. The BGA hoodie...]",
+            "background": "assets/genericBack.png",
+            "sprites": {
+                "left": "assets/full-sprite-oldRonnie.webp",
+                "right": "assets/full-sprite-oldRonnie.webp"
+            }
+        },
+        {
+            "id": "epilogue_chicharon",
+            "type": "dialog",
+            "character": "Tori (studying his face)",
+            "text": "\"Those eyes...\"",
+            "nextSceneId": "epilogue_chicharonRecognition",
+            "internal": "[She traces his jawline. Something ancient stirring in her memory. A voice across timelines.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_chicharonRecognition",
+            "type": "dialog",
+            "character": "Tori (whispered)",
+            "text": "\"...Chicharon?\"",
+            "nextSceneId": "epilogue_ronnieFreeze",
+            "internal": "[The word slips out. She doesn't know why. It feels right. It feels like home.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_ronnieFreeze",
+            "type": "dialog",
+            "character": "Ronnie (frozen)",
+            "text": "\"You... you haven't called me that in...\"",
+            "nextSceneId": "epilogue_dejavu",
+            "internal": "[His voice breaks. She doesn't remember. The Echoes gave everything for this. But some things transcend even memory. Some things the heart just knows.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_dejavu",
+            "type": "dialog",
+            "character": "Tori (snapping back)",
+            "text": "\"...Weird. Déjà vu, I guess.\"",
+            "nextSceneId": "epilogue_knowing",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        },
+        {
+            "id": "epilogue_knowing",
+            "type": "dialog",
+            "character": "Ronnie (knowing smile)",
+            "text": "\"Must have been another timeline.\"",
+            "nextSceneId": null,
+            "internal": "[The loop is closed. The Old Man never has to go back. Love wins.]\\n\\n[Fade to white.]\\n\\n[Credits roll. No retry prompt. This is the escape from the loop.]",
+            "background": "assets/apartment.png",
+            "sprites": {
+                "left": "assets/full-sprite-ronnie.webp",
+                "right": "assets/full-sprite-tori.webp"
+            }
+        }
+    ]
+}

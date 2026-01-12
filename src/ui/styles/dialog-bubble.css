@@ -1,0 +1,171 @@
+/* ========================================
+   INTERNAL BUBBLE SYSTEM - V2
+   DIZEE: Restored feature, now in TypeScript
+   Floating thought bubbles for internal dialogue
+   ======================================== */
+
+/* Base internal bubble styling */
+.internal-bubble {
+    position: fixed;
+    max-width: 500px;
+    padding: 20px 30px;
+
+    /* Cyberpunk glass-morphism */
+    background: rgba(0, 20, 40, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    border-radius: 15px;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 255, 255, 0.3),
+        inset 0 0 20px rgba(0, 255, 255, 0.05);
+
+    /* Text styling */
+    color: #b3e5ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    line-height: 1.5;
+    font-style: italic;
+    text-align: center;
+
+    /* Above game elements, below overlays */
+    z-index: 90;
+
+    /* Smooth entrance animation */
+    animation: bubbleEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform-origin: center bottom;
+
+    /* Ensure text is readable */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+
+    /* Pointer events disabled - bubble is decorative */
+    pointer-events: none;
+}
+
+/* Entrance animation */
+@keyframes bubbleEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ========================================
+   POSITION VARIANTS
+   ======================================== */
+
+.internal-bubble.center {
+    left: 50%;
+    top: 40%;
+    transform: translateX(-50%);
+}
+
+.internal-bubble.left-character {
+    left: 20%;
+    top: 35%;
+    transform: translateX(0);
+}
+
+.internal-bubble.right-character {
+    right: 20%;
+    top: 35%;
+    transform: translateX(0);
+}
+
+/* ========================================
+   SCROLLABLE CONTENT
+   ======================================== */
+
+.internal-bubble.has-scroll {
+    max-height: 40vh;
+    overflow-y: auto;
+    padding-right: 35px;
+}
+
+.internal-bubble.has-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.internal-bubble.has-scroll::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.internal-bubble.has-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.5);
+    border-radius: 4px;
+}
+
+.internal-bubble.has-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.7);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #0ff;
+    font-size: 1.2em;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    animation: scrollBounce 1.5s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+@keyframes scrollBounce {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .internal-bubble.left-character,
+    .internal-bubble.right-character {
+        top: 45%;
+        max-width: 85vw;
+        left: 50% !important;
+        right: auto !important;
+        transform: translateX(-50%) !important;
+    }
+
+    .internal-bubble.center {
+        top: 48%;
+        max-width: 85vw;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .internal-bubble {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: translateY(0) scale(1) !important;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .internal-bubble {
+        background: rgba(0, 0, 0, 0.95);
+        border: 3px solid #0ff;
+        color: #0ff;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+}

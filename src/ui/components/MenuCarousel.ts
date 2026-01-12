@@ -52,7 +52,7 @@ export class MenuCarousel {
                 subtitle: 'Begin Version 848',
                 icon: '▶️',
                 background: 'radial-gradient(circle at top, #202030, #050511)',
-                action: () => this.eventBus.emit('ui:route_select', {})
+                action: () => this.eventBus.emit('ui:start_prologue', {})
             },
             {
                 id: 'continue',
