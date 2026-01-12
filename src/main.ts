@@ -35,6 +35,7 @@ import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
 import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
+import { CrewScreen } from '@ui/screens/CrewScreen';
 import { SaveSystem } from '@systems/SaveSystem';
 import { ToastNotification } from '@ui/components/ToastNotification';
 import { GameConfig } from '@core/GameConfig';
@@ -85,6 +86,7 @@ const _settingsModal = new SettingsModal(eventBus);
 const _statusBar = new StatusBar(eventBus);
 const _sidebar = new Sidebar(eventBus);
 const _creditsScreen = new CreditsScreen(eventBus);
+const _crewScreen = new CrewScreen(eventBus);
 
 // Secret Codes & Collectibles
 const secretCodesManager = new SecretCodesManager(eventBus);
@@ -94,7 +96,7 @@ const toastNotification = new ToastNotification(eventBus);
 const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI
 
 // Silence unused warnings by logging
-console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _notesViewer, _saveLoadModal });
+console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen, _notesViewer, _saveLoadModal });
 
 declare global {
     interface Window {

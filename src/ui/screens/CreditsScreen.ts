@@ -237,15 +237,7 @@ export class CreditsScreen {
             this.show();
         });
 
-        // Listen for show crew event
-        // TODO: Port CrewScreen from V1 (crew-controller.js) for proper "Meet the Crew" experience
-        // V1 has 10 portrait screens with individual team member bios
-        // For now, show credits as placeholder
-        this.eventBus.on('ui:show_crew', () => {
-            console.log('[UV7 V2] Meet the Crew requested - showing credits as placeholder');
-            console.log('[TODO] Port CrewScreen from V1 for proper portrait-based team bios');
-            this.show();
-        });
+        // Note: ui:show_crew is handled by CrewScreen component
     }
 
     /**
