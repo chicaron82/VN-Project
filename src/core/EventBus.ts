@@ -19,9 +19,10 @@ export type GameEvents = {
   'save:complete': { slot: number };
   'achievement:unlock': { id: string };
   'visual:cue': { type: string | null; channel: string };
-  'loading:start': { total: number };
+  'loading:start': { total?: number };
   'loading:progress': { current: number; total: number; file: string };
   'loading:complete': { total: number };
+  'loading:end': {};
   'tether:boost': { amount: number };
   'tether:death': {};
   'ui:screen_change': { screen: string };

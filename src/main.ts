@@ -431,7 +431,7 @@ function showLoadMenu() {
 
 async function startGame(route: 'ronnie' | 'tori') {
     // Show loader
-    eventBus.emit('loading:start');
+    eventBus.emit('loading:start', {});
 
     // Small delay to ensure loader is visible before blocking operations
     await new Promise(r => setTimeout(r, 100));
@@ -486,7 +486,7 @@ async function startGame(route: 'ronnie' | 'tori') {
     await gameEngine.loadScene(firstSceneId);
 
     // Hide loader
-    eventBus.emit('loading:end');
+    eventBus.emit('loading:end', {});
 
     console.log(`[UV7 V2] Starting game: ${route} route`);
 }
