@@ -3,6 +3,7 @@ import { StateManager } from '../../core/StateManager';
 
 /**
  * Settings configuration interface
+ * NOTE: UV7 intentionally has no audio - uses visual cues + haptics instead
  */
 interface GameSettings {
     // Text & Display
@@ -10,10 +11,7 @@ interface GameSettings {
     fontSize: 'small' | 'medium' | 'large';
     displayMode: 'auto' | 'portrait' | 'landscape';
 
-    // Audio & Feedback
-    masterVolume: number;  // 0-100
-    musicVolume: number;   // 0-100
-    sfxVolume: number;     // 0-100
+    // Feedback (no audio - intentional design decision)
     hapticEnabled: boolean;
 
     // Comfort & Accessibility
@@ -40,9 +38,6 @@ const DEFAULT_SETTINGS: GameSettings = {
     textSpeed: 'normal',
     fontSize: 'medium',
     displayMode: 'auto',
-    masterVolume: 80,
-    musicVolume: 70,
-    sfxVolume: 80,
     hapticEnabled: 'vibrate' in navigator,
     comfortIntensity: 1,
     reduceMotion: false,
@@ -93,7 +88,6 @@ export class SettingsModal {
 
                 <div class="settings-tabs">
                     <button class="settings-tab-btn active" data-tab="general">GENERAL</button>
-                    <button class="settings-tab-btn" data-tab="audio">AUDIO</button>
                     <button class="settings-tab-btn" data-tab="sensory">SENSORY</button>
                     <button class="settings-tab-btn" data-tab="shortcuts">SHORTCUTS</button>
                     <button class="settings-tab-btn" data-tab="codes">SECRET CODES</button>
@@ -234,65 +228,6 @@ export class SettingsModal {
                             <label class="setting-label">FULLSCREEN</label>
                             <div class="setting-control">
                                 <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- AUDIO TAB -->
-                    <div class="tab-panel" id="tab-audio">
-                        <div class="settings-section">
-                            <h3 class="settings-section-header">Volume Controls</h3>
-
-                            <!-- Master Volume -->
-                            <div class="setting-row">
-                                <label class="setting-label">MASTER VOLUME</label>
-                                <div class="setting-control slider-control">
-                                    <span class="slider-label-min">0%</span>
-                                    <input type="range" id="master-volume-slider" class="volume-slider" min="0" max="100" step="5" value="80">
-                                    <span class="slider-label-max">100%</span>
-                                    <span class="slider-value" id="master-volume-value">80%</span>
-                                </div>
-                            </div>
-
-                            <!-- Music Volume -->
-                            <div class="setting-row">
-                                <label class="setting-label">MUSIC VOLUME</label>
-                                <div class="setting-control slider-control">
-                                    <span class="slider-label-min">0%</span>
-                                    <input type="range" id="music-volume-slider" class="volume-slider" min="0" max="100" step="5" value="70">
-                                    <span class="slider-label-max">100%</span>
-                                    <span class="slider-value" id="music-volume-value">70%</span>
-                                </div>
-                            </div>
-
-                            <!-- SFX Volume -->
-                            <div class="setting-row">
-                                <label class="setting-label">SFX VOLUME</label>
-                                <div class="setting-control slider-control">
-                                    <span class="slider-label-min">0%</span>
-                                    <input type="range" id="sfx-volume-slider" class="volume-slider" min="0" max="100" step="5" value="80">
-                                    <span class="slider-label-max">100%</span>
-                                    <span class="slider-value" id="sfx-volume-value">80%</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="settings-section">
-                            <h3 class="settings-section-header">Feedback</h3>
-
-                            <!-- Haptic Feedback Toggle -->
-                            <div class="setting-row">
-                                <label for="haptic-toggle" class="setting-label-column">
-                                    <span class="setting-name">HAPTIC FEEDBACK</span>
-                                    <span class="setting-description">Vibration for key moments (mobile)</span>
-                                    <span class="setting-note">Android optimized. Limited iPhone support.</span>
-                                </label>
-                                <div class="setting-control">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="haptic-toggle" />
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -600,11 +535,6 @@ export class SettingsModal {
         const fsBtn = this.container.querySelector('#settings-fullscreen-btn');
         fsBtn?.addEventListener('click', () => this.toggleFullscreen());
 
-        // Volume Sliders
-        this.setupVolumeSlider('master-volume-slider', 'master-volume-value', 'masterVolume');
-        this.setupVolumeSlider('music-volume-slider', 'music-volume-value', 'musicVolume');
-        this.setupVolumeSlider('sfx-volume-slider', 'sfx-volume-value', 'sfxVolume');
-
         // Haptic Toggle
         const hapticToggle = this.container.querySelector('#haptic-toggle') as HTMLInputElement;
         hapticToggle?.addEventListener('change', () => {
@@ -694,18 +624,6 @@ export class SettingsModal {
                 this.submitSecretCode(codeInput.value.trim());
                 codeInput.value = '';
             }
-        });
-    }
-
-    private setupVolumeSlider(sliderId: string, valueId: string, settingKey: keyof GameSettings) {
-        const slider = this.container.querySelector(`#${sliderId}`) as HTMLInputElement;
-        const valueDisplay = this.container.querySelector(`#${valueId}`);
-
-        slider?.addEventListener('input', () => {
-            const value = parseInt(slider.value);
-            (this.settings as any)[settingKey] = value;
-            if (valueDisplay) valueDisplay.textContent = `${value}%`;
-            this.saveSettingDebounced(settingKey, value);
         });
     }
 
@@ -919,11 +837,6 @@ export class SettingsModal {
             if (valueDisplay) valueDisplay.textContent = `${(this.settings.autoAdvanceDelay / 1000).toFixed(1)}s`;
         }
 
-        // Volume sliders
-        this.applyVolumeSlider('master-volume-slider', 'master-volume-value', this.settings.masterVolume);
-        this.applyVolumeSlider('music-volume-slider', 'music-volume-value', this.settings.musicVolume);
-        this.applyVolumeSlider('sfx-volume-slider', 'sfx-volume-value', this.settings.sfxVolume);
-
         // Toggles
         const hapticToggle = this.container.querySelector('#haptic-toggle') as HTMLInputElement;
         if (hapticToggle) hapticToggle.checked = this.settings.hapticEnabled;
@@ -950,13 +863,6 @@ export class SettingsModal {
             tutorialToggle.checked = this.settings.tutorialHints;
             this.updateToggleStatus('tutorial-hints-status', this.settings.tutorialHints);
         }
-    }
-
-    private applyVolumeSlider(sliderId: string, valueId: string, value: number) {
-        const slider = this.container.querySelector(`#${sliderId}`) as HTMLInputElement;
-        const valueDisplay = this.container.querySelector(`#${valueId}`);
-        if (slider) slider.value = value.toString();
-        if (valueDisplay) valueDisplay.textContent = `${value}%`;
     }
 
     private applyAllSettings() {
