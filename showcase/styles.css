@@ -1738,3 +1738,42 @@ section h2 {
 .callout-content strong {
     color: #f5576c;
 }
+
+/* --- STATS MINI GRID (Phase 8 Parallel Blitz) --- */
+.stats-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+    background: rgba(52, 152, 219, 0.05);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.stat-mini {
+    text-align: center;
+    padding: 0.75rem 0.5rem;
+}
+
+.stat-mini .stat-num {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #3498db;
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.stat-mini .stat-desc {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .stats-mini-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
