@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { CarouselMomentum } from './CarouselMomentum';
+import { SimpleCarousel } from './SimpleCarousel';
 import '@ui/styles/main.css';
 
 export interface CarouselItem {
@@ -13,6 +14,11 @@ export interface CarouselItem {
     special?: boolean;
 }
 
+/**
+ * MENU CAROUSEL MANAGER
+ * Hybrid System: Switches between Simple (Portrait) & Momentum (Landscape)
+ * Ported from V1 with exact mode-switching logic
+ */
 export class MenuCarousel {
     private container: HTMLElement;
     private track: HTMLElement;
@@ -20,16 +26,17 @@ export class MenuCarousel {
     private dotsContainer: HTMLElement;
     private items: CarouselItem[];
     private eventBus: EventBus;
-    private momentumEngine: CarouselMomentum | null = null;
 
-    // Default to middle set index relative to single set
-    private initialIndex: number = 1;
+    // Active engine (either SimpleCarousel or CarouselMomentum)
+    private activeEngine: SimpleCarousel | CarouselMomentum | null = null;
+    private currentIndex: number = 1; // Start at Index 1 (Start Story)
+    private resizeTimeout: any = null;
+    private resizeListener: (() => void) | null = null;
 
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
 
-        // Define cards matching V1 MomentumAdapter
-        // Actions emit events for GameEngine/UIController to handle
+        // Define cards matching V1
         this.items = [
             {
                 id: 'settings',
@@ -53,7 +60,7 @@ export class MenuCarousel {
                 subtitle: 'Resume timeline',
                 icon: '⏯️',
                 background: 'radial-gradient(circle at top, #202025, #050511)',
-                action: () => this.eventBus.emit('ui:load_menu', {}) // Fallback to load menu if no quick continue
+                action: () => this.eventBus.emit('ui:load_menu', {})
             },
             {
                 id: 'load',
@@ -81,8 +88,9 @@ export class MenuCarousel {
             }
         ];
 
+        // Create container structure
         this.container = document.createElement('div');
-        this.container.className = 'menu-carousel momentum-mode';
+        this.container.className = 'menu-carousel'; // Mode class added by setupHybridMode
         this.container.id = 'menu-carousel';
 
         this.container.innerHTML = `
@@ -102,23 +110,66 @@ export class MenuCarousel {
         // Bind arrow events
         this.container.querySelector('.carousel-prev')?.addEventListener('click', () => this.prev());
         this.container.querySelector('.carousel-next')?.addEventListener('click', () => this.next());
+
+        console.log('🎠 MenuCarousel Manager initialized - Hybrid Mode');
     }
 
     mount(parent: HTMLElement) {
         parent.appendChild(this.container);
-        this.renderItems();
-        this.initMomentum();
+        this.setupHybridMode();
+
+        // Listen for resize to switch modes
+        this.resizeListener = () => this.handleResize();
+        window.addEventListener('resize', this.resizeListener);
     }
 
     unmount() {
-        if (this.momentumEngine) {
-            this.momentumEngine.destroy();
-            this.momentumEngine = null;
+        if (this.resizeListener) {
+            window.removeEventListener('resize', this.resizeListener);
+        }
+        if (this.activeEngine) {
+            this.activeEngine.destroy();
+            this.activeEngine = null;
         }
         this.container.remove();
     }
 
-    private renderItems() {
+    private setupHybridMode() {
+        const isPortrait = window.innerWidth < 768;
+        const desiredEngine = isPortrait ? 'SimpleCarousel' : 'CarouselMomentum';
+        const currentEngineName = this.activeEngine ? this.activeEngine.constructor.name : null;
+
+        // Only switch if different
+        if (desiredEngine !== currentEngineName) {
+            console.log(`🔄 Switching Carousel Mode: ${currentEngineName || 'None'} -> ${desiredEngine}`);
+
+            // Destroy current
+            if (this.activeEngine) {
+                this.activeEngine.destroy();
+            }
+
+            // Init new
+            if (isPortrait) {
+                this.initSimpleMode();
+            } else {
+                this.initMomentumMode();
+            }
+        }
+    }
+
+    private initSimpleMode() {
+        // SimpleCarousel handles its own rendering
+        this.activeEngine = new SimpleCarousel(this.eventBus, this.items, this.container);
+        this.activeEngine.init();
+    }
+
+    private initMomentumMode() {
+        this.container.className = 'menu-carousel momentum-mode';
+        this.renderItemsForMomentum();
+        this.initMomentumEngine();
+    }
+
+    private renderItemsForMomentum() {
         this.track.innerHTML = '';
 
         // Render 3x Cloned set (Left, Middle, Right) for infinite scroll
@@ -126,11 +177,9 @@ export class MenuCarousel {
 
         sets.flat().forEach((item, index) => {
             const card = document.createElement('div');
-            // 'torigatchi-special' class logic omitted as item doesn't have it yet, but structure exists
             card.className = `carousel-card ${item.locked ? 'locked' : ''}`;
             card.style.background = item.background;
 
-            // Real index (0 to length-1)
             const realIndex = index % this.items.length;
             card.dataset.realIndex = realIndex.toString();
 
@@ -149,11 +198,8 @@ export class MenuCarousel {
                     <button class="card-button">${item.icon} SELECT</button>
                 `;
 
-                // Click handler
                 card.onclick = () => {
-                    if (this.momentumEngine && this.momentumEngine['isDragging']) return;
-
-                    // Simple confirm: trigger action
+                    if (this.activeEngine && (this.activeEngine as any).isDragging) return;
                     this.eventBus.emit('ui:click', {});
                     item.action();
                 };
@@ -162,19 +208,18 @@ export class MenuCarousel {
             this.track.appendChild(card);
         });
 
-        this.updateDots(this.initialIndex);
+        this.updateDots(this.currentIndex);
     }
 
-    private initMomentum() {
+    private initMomentumEngine() {
         const cardElements = Array.from(this.track.querySelectorAll('.carousel-card')) as HTMLElement[];
         if (cardElements.length === 0) return;
 
-        // Measure first card width for config
         const firstCard = cardElements[0];
         if (!firstCard) return;
         const cardWidth = firstCard.offsetWidth || 400;
 
-        this.momentumEngine = new CarouselMomentum({
+        this.activeEngine = new CarouselMomentum({
             container: this.track,
             cards: cardElements,
             cardWidth: cardWidth,
@@ -184,14 +229,15 @@ export class MenuCarousel {
             totalCards: this.items.length,
             onCardChange: (index) => {
                 const realIndex = index % this.items.length;
+                this.currentIndex = realIndex;
                 this.updateDots(realIndex);
             }
         });
 
         // Jump to Initial Card in the Middle Set
         const middleOffset = this.items.length;
-        const targetIndex = middleOffset + this.initialIndex;
-        this.momentumEngine.moveToCard(targetIndex, true);
+        const targetIndex = middleOffset + this.currentIndex;
+        this.activeEngine.moveToCard(targetIndex, true);
     }
 
     private updateDots(activeIndex: number) {
@@ -202,11 +248,11 @@ export class MenuCarousel {
             if (index === activeIndex) dot.classList.add('active');
 
             dot.onclick = () => {
-                if (this.momentumEngine) {
-                    // Calculate target index in the CURRENT set or Middle set
-                    // For logic simplicity, we jump to middle set equivalent
+                if (this.activeEngine instanceof CarouselMomentum) {
                     const middleOffset = this.items.length;
-                    this.momentumEngine.moveToCard(middleOffset + index);
+                    this.activeEngine.moveToCard(middleOffset + index);
+                } else if (this.activeEngine instanceof SimpleCarousel) {
+                    // SimpleCarousel handles its own dot clicks
                 }
             };
 
@@ -214,18 +260,30 @@ export class MenuCarousel {
         });
     }
 
+    private handleResize() {
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+            this.setupHybridMode();
+        }, 100);
+    }
+
     prev() {
-        if (this.momentumEngine) {
+        if (this.activeEngine) {
             this.eventBus.emit('ui:click', {});
-            // Use internal index logic of momentum engine
-            this.momentumEngine.moveToCard(this.momentumEngine.getCurrentCard() - 1);
+            if (this.activeEngine instanceof CarouselMomentum) {
+                this.activeEngine.moveToCard(this.activeEngine.getCurrentCard() - 1);
+            }
+            // SimpleCarousel doesn't expose prev/next publicly
         }
     }
 
     next() {
-        if (this.momentumEngine) {
+        if (this.activeEngine) {
             this.eventBus.emit('ui:click', {});
-            this.momentumEngine.moveToCard(this.momentumEngine.getCurrentCard() + 1);
+            if (this.activeEngine instanceof CarouselMomentum) {
+                this.activeEngine.moveToCard(this.activeEngine.getCurrentCard() + 1);
+            }
+            // SimpleCarousel doesn't expose prev/next publicly
         }
     }
 }

@@ -83,6 +83,7 @@ export class CarouselMomentum {
         }
 
         console.log('🎠 Initializing CarouselMomentum...');
+        console.log('✅ CarouselMomentum initialized');
 
         // Touch
         this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e as TouchEvent), { passive: false });
@@ -127,6 +128,8 @@ export class CarouselMomentum {
                 return;
             }
 
+            console.log(`🎠 Card width changed: ${oldCardWidth}px → ${newCardWidth}px`);
+
             const cardSpacing = oldCardWidth + this.cardGap;
             const currentCardIndex = Math.round(-this.position / cardSpacing);
 
@@ -138,6 +141,8 @@ export class CarouselMomentum {
 
             this.updatePosition(true);
             this.updateCardOpacity();
+
+            console.log(`🎠 Repositioned to card ${currentCardIndex} with new dimensions`);
         }
     }
 
@@ -347,6 +352,8 @@ export class CarouselMomentum {
         const clampedIndex = ((targetIndex % this.cards.length) + this.cards.length) % this.cards.length;
         const targetPosition = -clampedIndex * cardSpacing;
 
+        console.log(`🎯 Snap: velocity=${this.velocity.toFixed(1)}, skip=${cardSkip} cards, target=${clampedIndex}`);
+
         this.isSnapping = true;
         const startPosition = this.position;
         const startTime = performance.now();
@@ -370,9 +377,16 @@ export class CarouselMomentum {
                 this.updatePosition(true);
                 this.updateCardOpacity();
 
+                // Haptic feedback on snap (V1 flavour: 30ms vibration)
+                if (navigator.vibrate) {
+                    navigator.vibrate(30);
+                }
+
                 if (this.onCardChange) {
                     this.onCardChange(this.currentIndex);
                 }
+
+                console.log(`🎯 Snapped to card ${this.currentIndex}`);
             }
         };
         snapAnimation();
@@ -405,9 +419,16 @@ export class CarouselMomentum {
                 this.updatePosition(true);
                 this.updateCardOpacity();
 
+                // Haptic feedback on snap (V1 flavour: 30ms vibration)
+                if (navigator.vibrate) {
+                    navigator.vibrate(30);
+                }
+
                 if (this.onCardChange) {
                     this.onCardChange(this.currentIndex);
                 }
+
+                console.log(`🎯 Snapped to card ${this.currentIndex}`);
             }
         };
         snapAnimation();
@@ -431,8 +452,12 @@ export class CarouselMomentum {
 
                 if (positionInCards > middleEnd + buffer) {
                     this.position += this.totalCardsWidth;
+                    const after = -this.position / cardSpacing;
+                    console.log(`⏩ Teleported left: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
                 } else if (positionInCards < middleStart - buffer) {
                     this.position -= this.totalCardsWidth;
+                    const after = -this.position / cardSpacing;
+                    console.log(`⏪ Teleported right: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
                 }
             }
             this.container.style.transform = `translateX(${centerOffset + this.position}px)`;
@@ -481,5 +506,6 @@ export class CarouselMomentum {
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
         if (this.resizeObserver) this.resizeObserver.disconnect();
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        console.log('🎠 CarouselMomentum destroyed');
     }
 }
