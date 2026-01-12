@@ -49,6 +49,9 @@ export type GameEvents = {
   'ui:main_menu': {};
   'ui:start_game': { route: 'ronnie' | 'tori' };
   'ui:route_select': {};
+  'ui:start_prologue': {};
+  'dialog:bubble:shown': {};
+  'dialog:bubble:hidden': {};
   // Settings & HUD events
   'settings:open': {};
   'settings:close': {};

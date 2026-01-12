@@ -493,6 +493,19 @@ async function startGame(route: 'ronnie' | 'tori') {
                 dialogController.handleClick();
             }
         });
+
+        // Click on dialog box also advances (V1 parity)
+        gameLayout.dialogBox.addEventListener('click', () => {
+            console.log('[CLICK] Dialog box clicked', { bubbleVisible: dialogBubble.isVisible() });
+            if (dialogBubble.isVisible()) {
+                console.log('[CLICK] Hiding bubble and advancing scene');
+                dialogBubble.hide();
+                eventBus.emit('dialog:advance', {});
+            } else {
+                console.log('[CLICK] Calling dialogController.handleClick()');
+                dialogController.handleClick();
+            }
+        });
     }
 
     // Set up gameplay screen
@@ -559,6 +572,19 @@ async function startPrologue() {
                 console.log('[CLICK] Hiding bubble and advancing scene');
                 dialogBubble.hide();
                 // For internal thoughts, manually trigger advance since DialogController isn't active
+                eventBus.emit('dialog:advance', {});
+            } else {
+                console.log('[CLICK] Calling dialogController.handleClick()');
+                dialogController.handleClick();
+            }
+        });
+
+        // Click on dialog box also advances (V1 parity)
+        gameLayout.dialogBox.addEventListener('click', () => {
+            console.log('[CLICK] Dialog box clicked', { bubbleVisible: dialogBubble.isVisible() });
+            if (dialogBubble.isVisible()) {
+                console.log('[CLICK] Hiding bubble and advancing scene');
+                dialogBubble.hide();
                 eventBus.emit('dialog:advance', {});
             } else {
                 console.log('[CLICK] Calling dialogController.handleClick()');
@@ -802,16 +828,8 @@ function setupEventHandlers() {
             // Hide standard dialogue UI for internal thoughts
             gameLayout.dialogBox.style.display = 'none';
 
-            // Determine bubble position based on active sprite
-            let position: 'left' | 'center' | 'right' = 'center';
-            if (scene.sprites) {
-                const spriteArray = Array.isArray(scene.sprites) ? scene.sprites : [scene.sprites];
-                const hasLeft = spriteArray.some(s => s.position === 'left' || (s as any).left);
-                const hasRight = spriteArray.some(s => s.position === 'right' || (s as any).right);
-
-                if (hasLeft && !hasRight) position = 'left';
-                else if (hasRight && !hasLeft) position = 'right';
-            }
+            // TODO: Determine bubble position based on active sprite (reserved for future use)
+            // Currently bubble position is fixed at center
 
             // Don't show bubble yet - wait for dialog:show event
         } else {

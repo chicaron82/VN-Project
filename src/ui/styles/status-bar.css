@@ -113,6 +113,39 @@
     width: 45px;
 }
 
+/* Hide sidebar toggle in portrait mode (V1 parity) */
+@media (orientation: portrait) {
+    .sidebar-toggle {
+        display: none !important;
+    }
+
+    #sidebar {
+        display: none !important;
+    }
+}
+
+/* Show sidebar and toggle in landscape mode */
+@media (min-width: 568px) and (orientation: landscape) {
+    .sidebar-toggle {
+        display: flex !important;
+    }
+
+    #sidebar {
+        display: block !important;
+    }
+}
+
+/* Show sidebar and toggle on desktop */
+@media (min-width: 769px) {
+    .sidebar-toggle {
+        display: flex !important;
+    }
+
+    #sidebar {
+        display: block !important;
+    }
+}
+
 /* Sidebar Content */
 .shade-section {
     margin-bottom: 25px;
