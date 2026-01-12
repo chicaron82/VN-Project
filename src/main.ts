@@ -481,11 +481,17 @@ async function startGame(route: 'ronnie' | 'tori') {
 
         // Click on viewport advances dialog OR hides bubble
         gameLayout.viewport.addEventListener('click', () => {
+            console.log('[CLICK] Viewport clicked', { bubbleVisible: dialogBubble.isVisible() });
             // DIZEE: If bubble is visible, hide it and advance
             if (dialogBubble.isVisible()) {
+                console.log('[CLICK] Hiding bubble and advancing scene');
                 dialogBubble.hide();
+                // For internal thoughts, manually trigger advance since DialogController isn't active
+                eventBus.emit('dialog:advance', {});
+            } else {
+                console.log('[CLICK] Calling dialogController.handleClick()');
+                dialogController.handleClick();
             }
-            dialogController.handleClick();
         });
     }
 
@@ -547,11 +553,17 @@ async function startPrologue() {
 
         // Click on viewport advances dialog OR hides bubble
         gameLayout.viewport.addEventListener('click', () => {
+            console.log('[CLICK] Viewport clicked', { bubbleVisible: dialogBubble.isVisible() });
             // DIZEE: If bubble is visible, hide it and advance
             if (dialogBubble.isVisible()) {
+                console.log('[CLICK] Hiding bubble and advancing scene');
                 dialogBubble.hide();
+                // For internal thoughts, manually trigger advance since DialogController isn't active
+                eventBus.emit('dialog:advance', {});
+            } else {
+                console.log('[CLICK] Calling dialogController.handleClick()');
+                dialogController.handleClick();
             }
-            dialogController.handleClick();
         });
     }
 
@@ -933,11 +945,17 @@ function setupEventHandlers() {
         }
         // Space/Enter to advance dialog OR hide bubble
         if ((e.key === ' ' || e.key === 'Enter') && gameLayout && !isPaused) {
+            console.log('[KEYPRESS] Space/Enter pressed', { bubbleVisible: dialogBubble.isVisible() });
             // DIZEE: If bubble is visible, hide it first
             if (dialogBubble.isVisible()) {
+                console.log('[KEYPRESS] Hiding bubble and advancing scene');
                 dialogBubble.hide();
+                // For internal thoughts, manually trigger advance since DialogController isn't active
+                eventBus.emit('dialog:advance', {});
+            } else {
+                console.log('[KEYPRESS] Calling dialogController.handleClick()');
+                dialogController.handleClick();
             }
-            dialogController.handleClick();
         }
     });
 
