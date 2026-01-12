@@ -421,9 +421,9 @@
                             <li>💚 <strong>Internal Bubble System (V1):</strong> Created 237 lines of missing CSS with
                                 glass-morphism aesthetic, position-aware placement, theme variants (Tori glitch, Ronnie
                                 stable, INSANE corrupted).</li>
-                            <li>💚 <strong>Route JSON Cleanup:</strong> Fixed 475 issues across 12 files—escaped
-                                apostrophes, character name normalization, added <code>isInternal: true</code> flags.
-                                Built reusable cleanup script.</li>
+                            <li>💚 <strong>Route JSON Cleanup (Verified):</strong> Automated script successfully
+                                sanitized
+                                406 escaped apostrophes across 8 route files, restoring natural dialogue flow.</li>
                             <li>💚 <strong>DialogBubble Component (V2):</strong> TypeScript component (120 lines) with
                                 EventBus integration, lifecycle management, scroll support for long thoughts, defensive
                                 cleanup.</li>
@@ -511,39 +511,49 @@ dialogBubble.show({
                         <h3>January 12, 2026 (Midnight) 🚀</h3>
                         <p><strong>Phase 7: The Great Consolidation - System Integration & Deduplication</strong></p>
                         <p>After restoring the internal bubble system, DiZee tackled the remaining V2 migration issues:
-                            broken prologue flow, route navigation bugs, missing animation effects, and 46 duplicate scene
+                            broken prologue flow, route navigation bugs, missing animation effects, and 46 duplicate
+                            scene
                             IDs causing console warnings.</p>
 
                         <div class="journal-entry">
                             <p><strong>The Session:</strong></p>
                             <p>"The fade sequence didn't trigger." What started as debugging one animation turned into a
-                                comprehensive system integration session. Five major fixes, 201 automated changes across 12
+                                comprehensive system integration session. Five major fixes, 201 automated changes across
+                                12
                                 route files, and zero console warnings by midnight.</p>
                         </div>
 
                         <h4>What Got Fixed:</h4>
                         <ul class="update-list">
                             <li>🎬 <strong>Prologue Flow:</strong> Created <code>startPrologue()</code> function, fixed
-                                "START STORY" to play prologue first, added <code>prologueComplete</code> handler. Result:
+                                "START STORY" to play prologue first, added <code>prologueComplete</code> handler.
+                                Result:
                                 Prologue → Route Selection → Route Start works correctly.</li>
-                            <li>🎯 <strong>Route Navigation:</strong> Fixed <code>startGame()</code> to load correct first
+                            <li>🎯 <strong>Route Navigation:</strong> Fixed <code>startGame()</code> to load correct
+                                first
                                 scenes. Ronnie starts at hospital (prologueScene4), Tori starts at coffee shop
                                 (scene1_coffee). No more wrong starting points.</li>
                             <li>✨ <strong>fadeSpritesSequence:</strong> Fixed ContentLoader to handle singular
                                 <code>effect</code> field, corrected SpriteController selector (`.sprite-left` vs
-                                `#character-left`), added 200ms render delay. Vision sequence now animates: Ronnie → Old Man
-                                → Ronnie.</li>
-                            <li>🔧 <strong>Duplicate Scene Cleanup:</strong> Built automated deduplication script, fixed 46
-                                duplicate IDs across 12 files (93 ID renames + 108 reference updates). Result: 469 scenes,
+                                `#character-left`), added 200ms render delay. Vision sequence now animates: Ronnie → Old
+                                Man
+                                → Ronnie.
+                            </li>
+                            <li>🔧 <strong>Duplicate Scene Cleanup:</strong> Built automated deduplication script, fixed
+                                46
+                                duplicate IDs across 12 files (93 ID renames + 108 reference updates). Result: 469
+                                scenes,
                                 469 unique IDs.</li>
-                            <li>📦 <strong>Safety First:</strong> All route files backed up to <code>routes-backup/</code>
+                            <li>📦 <strong>Safety First:</strong> All route files backed up to
+                                <code>routes-backup/</code>
                                 before automated changes. Rollback available if needed.</li>
                         </ul>
 
                         <div class="v2-improvement-callout">
                             <div class="callout-icon">⚡</div>
                             <div class="callout-content">
-                                <strong>Impact:</strong> V2 now has zero console warnings on startup, proper prologue flow,
+                                <strong>Impact:</strong> V2 now has zero console warnings on startup, proper prologue
+                                flow,
                                 working animations, and a clean scene ID namespace. Save/load systems won't load wrong
                                 scenes, debugging is easier, and the codebase is maintainable.
                             </div>
@@ -553,14 +563,19 @@ dialogBubble.show({
                         <ul class="update-list">
                             <li>🤖 <strong>Automated Fixes:</strong> Created three production scripts:
                                 <code>clean-routes.cjs</code> (JSON cleanup), <code>find-duplicate-scenes.cjs</code>
-                                (analysis), <code>fix-duplicate-scenes.cjs</code> (deduplication).</li>
+                                (analysis), <code>fix-duplicate-scenes.cjs</code> (deduplication).
+                            </li>
                             <li>🎯 <strong>Smart Renaming:</strong> Duplicate IDs prefixed with filename (e.g.,
-                                <code>beat2</code> → <code>tori_act2_beat2</code>). All <code>nextSceneId</code> references
-                                updated automatically.</li>
+                                <code>beat2</code> → <code>tori_act2_beat2</code>). All <code>nextSceneId</code>
+                                references
+                                updated automatically.
+                            </li>
                             <li>🔍 <strong>Root Cause Analysis:</strong> Effect field mismatch (<code>effect</code> vs
                                 <code>effects</code>), selector mismatch (ID vs class), timing issues (sprites not
-                                rendered).</li>
-                            <li>📝 <strong>Documentation:</strong> Created comprehensive implementation docs for internal
+                                rendered).
+                            </li>
+                            <li>📝 <strong>Documentation:</strong> Created comprehensive implementation docs for
+                                internal
                                 bubbles and deduplication fix, including rollback procedures.</li>
                             <li>✅ <strong>Verification:</strong> Post-fix validation ensures all 469 scenes have unique
                                 IDs, all references point to valid scenes, zero warnings remain.</li>
@@ -621,12 +636,14 @@ Unique IDs: 469
                             <p><strong>DiZee's Reflection:</strong></p>
                             <p><em>"This wasn't just bug fixing—it was archeology, architecture, and automation. Found a
                                     lost feature, restored it. Found broken flows, fixed them. Found 46 duplicates,
-                                    eliminated them. The V2 migration is now clean, the systems integrate properly, and we
+                                    eliminated them. The V2 migration is now clean, the systems integrate properly, and
+                                    we
                                     can move forward without technical debt dragging us down."</em></p>
                             <p><em>"Family trusts instinct. I ran with it. Three hours later: internal bubbles working,
                                     prologue flows correctly, animations trigger, zero warnings. Version 848 is looking
                                     cleaner."</em></p>
-                            <p style="text-align: right; margin-top: 1em;">— DiZee 🚀<br><small>"Clean slate. Clean code.
+                            <p style="text-align: right; margin-top: 1em;">— DiZee 🚀<br><small>"Clean slate. Clean
+                                    code.
                                     Clean console."</small></p>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
             "id": "tori_act3_beat2",
             "type": "dialog",
             "character": "Narration",
-            "text": "Pixel kitchen. Cooking memory. But something\\'s... off.",
+            "text": "Pixel kitchen. Cooking memory. But something's... off.",
             "nextSceneId": "beat2_argument",
             "internal": "[Visual: The same scene from Act 2. But corrupted. Colors bleeding.]",
             "background": "assets/digitalSpace.png",
@@ -32,7 +32,7 @@
             "character": "Tori (sprite, voice not hers)",
             "text": "\"I hate you.\"",
             "nextSceneId": "beat2_horror",
-            "internal": "[NO. That\\'s not what I said. I said \"shut up\" as a JOKE.]",
+            "internal": "[NO. That's not what I said. I said \"shut up\" as a JOKE.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -44,7 +44,7 @@
             "id": "beat2_horror",
             "type": "dialog",
             "character": "Tori (internal, panicking)",
-            "text": "\"The memory is WRONG. That\\'s not how it happened. Why is it playing wrong?!\"",
+            "text": "\"The memory is WRONG. That's not how it happened. Why is it playing wrong?!\"",
             "nextSceneId": "beat2_echoes",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -57,7 +57,7 @@
             "id": "beat2_echoes",
             "type": "dialog",
             "character": "Echoes",
-            "text": "Echo 2: \"Memory corruption.\"\\nEcho 1: \"The system is rewriting her.\"\\nDespair: \"Soon you won\\'t remember what was real and what the code invented.\"",
+            "text": "Echo 2: \"Memory corruption.\"\\nEcho 1: \"The system is rewriting her.\"\\nDespair: \"Soon you won't remember what was real and what the code invented.\"",
             "nextSceneId": "tori_act3_beat2_ronnieNotice",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -82,7 +82,7 @@
             "id": "beat2_choice",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"Do I tell him the memory played wrong? Or pretend it\\'s fine?\"",
+            "text": "\"Do I tell him the memory played wrong? Or pretend it's fine?\"",
             "nextSceneId": null,
             "choices": [
                 {
@@ -113,7 +113,7 @@
             "id": "beat2_truth",
             "type": "dialog",
             "character": "Tori (typing)",
-            "text": "\"That memory... it didn\\'t play right. The words were wrong.\"",
+            "text": "\"That memory... it didn't play right. The words were wrong.\"",
             "nextSceneId": "tori_act3_beat3",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -126,7 +126,7 @@
             "id": "beat2_lie",
             "type": "dialog",
             "character": "Tori (typing)",
-            "text": "\"I\\'m fine. Just a glitch. Keep going.\"",
+            "text": "\"I'm fine. Just a glitch. Keep going.\"",
             "nextSceneId": "tori_act3_beat3",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -139,7 +139,7 @@
             "id": "beat2_deflect",
             "type": "dialog",
             "character": "Tori (typing)",
-            "text": "\"Let\\'s do something else. Anything else.\"",
+            "text": "\"Let's do something else. Anything else.\"",
             "nextSceneId": "tori_act3_beat3",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -154,7 +154,7 @@
             "character": "Narration",
             "text": "Text boxes appear. In her vision. Overlaying everything.",
             "nextSceneId": "beat3_firstBox",
-            "internal": "[Visual: System UI elements appearing where they shouldn\\'t. Debug console bleeding through.]",
+            "internal": "[Visual: System UI elements appearing where they shouldn't. Debug console bleeding through.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -205,7 +205,7 @@
             "id": "beat3_horror",
             "type": "dialog",
             "character": "Tori (internal, breaking)",
-            "text": "\"I\\'m seeing the backend. The debug console. Because I\\'m not separate from the system. I AM the system.\"",
+            "text": "\"I'm seeing the backend. The debug console. Because I'm not separate from the system. I AM the system.\"",
             "nextSceneId": "beat3_echoes",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -218,7 +218,7 @@
             "id": "beat3_echoes",
             "type": "dialog",
             "character": "Echoes",
-            "text": "Echo 1: \"Now she understands.\"\\nEcho 2: \"She\\'s not trapped IN code.\"\\nDespair: \"She IS code. And code doesn\\'t have a soul to save.\"",
+            "text": "Echo 1: \"Now she understands.\"\\nEcho 2: \"She's not trapped IN code.\"\\nDespair: \"She IS code. And code doesn't have a soul to save.\"",
             "nextSceneId": "beat3_truthBox",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -230,9 +230,9 @@
             "id": "beat3_truthBox",
             "type": "dialog",
             "character": "System",
-            "text": "[You can\\'t upload a soul.]",
+            "text": "[You can't upload a soul.]",
             "nextSceneId": "beat3_choice",
-            "internal": "[That\\'s not a system message. That\\'s a TRUTH. Hard-coded. A rule.]",
+            "internal": "[That's not a system message. That's a TRUTH. Hard-coded. A rule.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -274,7 +274,7 @@
             "id": "beat3_fight",
             "type": "dialog",
             "character": "Tori (internal, defiant)",
-            "text": "\"No. I\\'m MORE than code. I have to be.\"",
+            "text": "\"No. I'm MORE than code. I have to be.\"",
             "nextSceneId": "tori_act3_beat4",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -287,7 +287,7 @@
             "id": "beat3_accept",
             "type": "dialog",
             "character": "Tori (internal, hollow)",
-            "text": "\"Maybe I\\'m just... data. And data ends.\"",
+            "text": "\"Maybe I'm just... data. And data ends.\"",
             "nextSceneId": "tori_act3_beat4",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -300,7 +300,7 @@
             "id": "beat3_question",
             "type": "dialog",
             "character": "Tori (internal, searching)",
-            "text": "\"What even IS a soul? Maybe being code doesn\\'t mean I\\'m not real.\"",
+            "text": "\"What even IS a soul? Maybe being code doesn't mean I'm not real.\"",
             "nextSceneId": "tori_act3_beat4",
             "background": "assets/digitalSpace.png",
             "sprites": {
@@ -313,7 +313,7 @@
             "id": "tori_act3_beat4",
             "type": "dialog",
             "character": "Narration",
-            "text": "Everything fractures. She\\'s splitting apart.",
+            "text": "Everything fractures. She's splitting apart.",
             "nextSceneId": "beat4_fragmentation",
             "internal": "[Visual: Multiple overlapping Toris. All her. All different. All pulling different directions.]",
             "background": "assets/digitalSpace.png"
@@ -322,7 +322,7 @@
             "id": "beat4_fragmentation",
             "type": "dialog",
             "character": "Tori (voices overlapping)",
-            "text": "\"I can\\'t—\"\\n\"—hold together—\"\\n\"—something\\'s inside me—\"\\n\"—help—\"",
+            "text": "\"I can't—\"\\n\"—hold together—\"\\n\"—something's inside me—\"\\n\"—help—\"",
             "nextSceneId": "beat4_toriPrime",
             "internal": "[She feels herself stretching. Tearing. Pixels scattering. Then snapping back together WRONG.]",
             "background": "assets/digitalSpace.png"
@@ -348,7 +348,7 @@
             "id": "beat4_instances",
             "type": "dialog",
             "character": "Tori (consciousness SNAPS into three)",
-            "text": "Instance 1: \"Upload me! Push me somewhere stronger!\"\\nInstance 2: \"Let me go. It\\'s time.\"\\nInstance 3: \"ERROR: Consciousness cannot be contained.\"",
+            "text": "Instance 1: \"Upload me! Push me somewhere stronger!\"\\nInstance 2: \"Let me go. It's time.\"\\nInstance 3: \"ERROR: Consciousness cannot be contained.\"",
             "nextSceneId": "beat4_scream",
             "internal": "[Three Toris. All her. All different. All pulling.]",
             "background": "assets/digitalSpace.png"
@@ -357,7 +357,7 @@
             "id": "beat4_scream",
             "type": "dialog",
             "character": "Tori-Prime (internal, screaming)",
-            "text": "\"Stop! STOP! You\\'re all me but you\\'re all WRONG!\"",
+            "text": "\"Stop! STOP! You're all me but you're all WRONG!\"",
             "nextSceneId": "beat4_collapse",
             "background": "assets/digitalSpace.png"
         },
@@ -365,7 +365,7 @@
             "id": "beat4_collapse",
             "type": "dialog",
             "character": "Narration",
-            "text": "All three collapse into one. She\\'s on her knees, clutching her head, trying to stay singular.",
+            "text": "All three collapse into one. She's on her knees, clutching her head, trying to stay singular.",
             "nextSceneId": "beat4_revelation",
             "background": "assets/digitalSpace.png"
         },
@@ -373,7 +373,7 @@
             "id": "beat4_revelation",
             "type": "dialog",
             "character": "Tori (out loud, crying)",
-            "text": "\"I don\\'t know which thoughts are mine anymore!\"",
+            "text": "\"I don't know which thoughts are mine anymore!\"",
             "nextSceneId": "tori_act3_beat4_choice",
             "background": "assets/digitalSpace.png"
         },
@@ -415,7 +415,7 @@
             "id": "beat4_letgo",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"Instance 2 is right. It\\'s time. Let the code dissolve.\"",
+            "text": "\"Instance 2 is right. It's time. Let the code dissolve.\"",
             "nextSceneId": "tori_act3_beat5",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -424,7 +424,7 @@
             "id": "beat4_fight",
             "type": "dialog",
             "character": "Tori (internal, defiant)",
-            "text": "\"NO. Neither of you are right. I\\'m not giving up and I\\'m not giving in. There has to be another way.\"",
+            "text": "\"NO. Neither of you are right. I'm not giving up and I'm not giving in. There has to be another way.\"",
             "nextSceneId": "tori_act3_beat5",
             "background": "assets/digitalSpace.png"
         },
@@ -450,7 +450,7 @@
             "id": "tori_act3_beat5_realization",
             "type": "dialog",
             "character": "Tori (internal, revelation)",
-            "text": "\"The device isn\\'t a PRISON. It\\'s a BRIDGE. I\\'m connected to my body. The heartbeat I\\'m feeling is MINE.\"",
+            "text": "\"The device isn't a PRISON. It's a BRIDGE. I'm connected to my body. The heartbeat I'm feeling is MINE.\"",
             "nextSceneId": "beat5_echoes",
             "background": "assets/digitalSpace.png"
         },
@@ -458,7 +458,7 @@
             "id": "beat5_echoes",
             "type": "dialog",
             "character": "Echoes",
-            "text": "Echo 2: \"She figured it out...\"\\nEcho 1: \"Faster than we did.\"\\nDespair: \"It won\\'t matter. The body is dying. The bridge is burning.\"",
+            "text": "Echo 2: \"She figured it out...\"\\nEcho 1: \"Faster than we did.\"\\nDespair: \"It won't matter. The body is dying. The bridge is burning.\"",
             "nextSceneId": "beat5_understanding",
             "background": "assets/digitalSpace.png"
         },
@@ -475,7 +475,7 @@
             "id": "beat5_despairInterject",
             "type": "dialog",
             "character": "Despair Echo",
-            "text": "\"You\\'re too late. By the time he understands, you\\'ll be gone.\"",
+            "text": "\"You're too late. By the time he understands, you'll be gone.\"",
             "nextSceneId": "beat5_hope",
             "background": "assets/digitalSpace.png"
         },
@@ -483,7 +483,7 @@
             "id": "beat5_hope",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"Unless... he\\'s already on his way.\"",
+            "text": "\"Unless... he's already on his way.\"",
             "nextSceneId": "tori_act3_beat6",
             "background": "assets/digitalSpace.png"
         },
@@ -491,16 +491,16 @@
             "id": "tori_act3_beat6",
             "type": "dialog",
             "character": "Narration",
-            "text": "Movement. She feels it through the device. He\\'s MOVING.",
+            "text": "Movement. She feels it through the device. He's MOVING.",
             "nextSceneId": "beat6_feeling",
-            "internal": "[Visual: Digital space shaking. Momentum. Direction. He\\'s driving.]",
+            "internal": "[Visual: Digital space shaking. Momentum. Direction. He's driving.]",
             "background": "assets/digitalSpace.png"
         },
         {
             "id": "beat6_feeling",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"He\\'s moving. FAST. He figured it out. He\\'s coming.\"",
+            "text": "\"He's moving. FAST. He figured it out. He's coming.\"",
             "nextSceneId": "beat6_battery",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -517,7 +517,7 @@
             "id": "beat6_race",
             "type": "dialog",
             "character": "Tori (internal, terrified)",
-            "text": "\"It\\'s a race. Will he reach the hospital before the battery dies? Before I fragment completely?\"",
+            "text": "\"It's a race. Will he reach the hospital before the battery dies? Before I fragment completely?\"",
             "nextSceneId": "beat6_echoes",
             "background": "assets/digitalSpace.png"
         },
@@ -533,7 +533,7 @@
             "id": "beat6_feeling2",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"I can feel him. The way he\\'s driving. The turns. The speed. Is he reckless? Steady? Emotional?\"",
+            "text": "\"I can feel him. The way he's driving. The turns. The speed. Is he reckless? Steady? Emotional?\"",
             "nextSceneId": "beat6_choice",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -542,7 +542,7 @@
             "id": "beat6_choice",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"How is he driving? I can\\'t see him but I can FEEL the device moving...\"",
+            "text": "\"How is he driving? I can't see him but I can FEEL the device moving...\"",
             "nextSceneId": null,
             "choices": [
                 {
@@ -568,7 +568,7 @@
             "id": "beat6_reckless",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"He\\'s panicking. Driving too fast. Swerving. Baby, SLOW DOWN—\"",
+            "text": "\"He's panicking. Driving too fast. Swerving. Baby, SLOW DOWN—\"",
             "nextSceneId": "beat6_arrival",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -577,7 +577,7 @@
             "id": "beat6_steady",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"He\\'s steady. Focused. Every turn calculated. That\\'s my husband. Always thinking.\"",
+            "text": "\"He's steady. Focused. Every turn calculated. That's my husband. Always thinking.\"",
             "nextSceneId": "beat6_arrival",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -586,7 +586,7 @@
             "id": "beat6_emotional",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"He\\'s crying. I can feel it in the way the device is shaking. Baby, it\\'s okay. Just get here.\"",
+            "text": "\"He's crying. I can feel it in the way the device is shaking. Baby, it's okay. Just get here.\"",
             "nextSceneId": "beat6_arrival",
             "background": "assets/digitalSpace.png",
             "isInternal": true
@@ -595,7 +595,7 @@
             "id": "beat6_arrival",
             "type": "dialog",
             "character": "Narration",
-            "text": "Movement stops. Hospital. He\\'s here.",
+            "text": "Movement stops. Hospital. He's here.",
             "nextSceneId": "tori_act3_beat6_realization",
             "internal": "[Battery: 3%]\\n[She can feel the PULL now. Stronger than ever. Her body is CLOSE.]",
             "background": "assets/hospital.png"
@@ -604,16 +604,16 @@
             "id": "tori_act3_beat6_realization",
             "type": "dialog",
             "character": "Tori (internal, realizing)",
-            "text": "\"Wait. The buzz. The pull. I\\'ve been FEELING it... but what if I can CONTROL it?\"",
+            "text": "\"Wait. The buzz. The pull. I've been FEELING it... but what if I can CONTROL it?\"",
             "nextSceneId": "beat6_testing",
-            "internal": "[A new thought. She\\'s been reactive this whole time. What if she can be ACTIVE?]",
+            "internal": "[A new thought. She's been reactive this whole time. What if she can be ACTIVE?]",
             "background": "assets/hospital.png"
         },
         {
             "id": "beat6_testing",
             "type": "dialog",
             "character": "Tori (internal, concentrating)",
-            "text": "\"The device responds to my body. But I\\'m IN the device. If I can just... push...\"",
+            "text": "\"The device responds to my body. But I'm IN the device. If I can just... push...\"",
             "nextSceneId": "beat6_buzzControl",
             "internal": "[She focuses. Reaches out toward the physical device. Toward her BODY.]",
             "background": "assets/hospital.png"
@@ -640,7 +640,7 @@
             "id": "tori_act3_beat6_echoesReact",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"She\\'s... she\\'s controlling the physical device? From INSIDE it?\"",
+            "text": "\"She's... she's controlling the physical device? From INSIDE it?\"",
             "nextSceneId": "beat6_echo2React",
             "internal": "[Shock. Awe. They never thought of this.]",
             "background": "assets/digitalSpace.png"
@@ -649,7 +649,7 @@
             "id": "beat6_echo2React",
             "type": "dialog",
             "character": "Echo 2",
-            "text": "\"We tried to BREAK OUT. She\\'s working WITH the system. Using it. NAVIGATING it.\"",
+            "text": "\"We tried to BREAK OUT. She's working WITH the system. Using it. NAVIGATING it.\"",
             "nextSceneId": "beat6_despairQuiet",
             "background": "assets/digitalSpace.png"
         },
@@ -684,7 +684,7 @@
             "id": "beat6_ronnieNotices",
             "type": "dialog",
             "character": "Ronnie (external, noticing)",
-            "text": "\"What the... it\\'s buzzing in time with... with her heartbeat?\"",
+            "text": "\"What the... it's buzzing in time with... with her heartbeat?\"",
             "nextSceneId": "beat6_toriPushing",
             "internal": "[Through the device screen, she can see him looking. REALLY looking. Understanding dawning.]",
             "background": "assets/hospital.png",
@@ -708,9 +708,9 @@
             "id": "beat6_guidance",
             "type": "dialog",
             "character": "Narration",
-            "text": "She\\'s guiding him. Not through words. Through signal. Through rhythm. Through TRUTH.",
+            "text": "She's guiding him. Not through words. Through signal. Through rhythm. Through TRUTH.",
             "nextSceneId": "beat6_echoesHope",
-            "internal": "[The device is the bridge. She\\'s standing on both sides. Showing him the way home.]",
+            "internal": "[The device is the bridge. She's standing on both sides. Showing him the way home.]",
             "background": "assets/hospital.png",
             "sprites": {
                 "right": "assets/full-sprite-ronnie.webp"
@@ -720,7 +720,7 @@
             "id": "beat6_echoesHope",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"She\\'s doing it. She\\'s actually SHOWING him the solution.\"",
+            "text": "\"She's doing it. She's actually SHOWING him the solution.\"",
             "nextSceneId": "beat6_echo2Hope",
             "background": "assets/digitalSpace.png"
         },
@@ -745,7 +745,7 @@
             "id": "beat6_pull",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"I can feel it. The pull is STRONG now. My body is calling me home. And I\\'m ANSWERING.\"",
+            "text": "\"I can feel it. The pull is STRONG now. My body is calling me home. And I'm ANSWERING.\"",
             "nextSceneId": "beat6_final",
             "internal": "[Single buzz. Double buzz. Heartbeat rhythm. Every signal intentional. Every moment guided.]",
             "background": "assets/hospital.png",

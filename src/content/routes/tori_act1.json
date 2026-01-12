@@ -19,7 +19,7 @@
             "character": "Tori",
             "text": "\"My little digital pet needs attention... Ronnie would laugh if he saw how attached I am to this thing.\"",
             "nextSceneId": "scene1_collision",
-            "internal": "[She walks down the street, coffee in one hand, her original Tamagotchi in the other, not looking where she\\'s going.]",
+            "internal": "[She walks down the street, coffee in one hand, her original Tamagotchi in the other, not looking where she's going.]",
             "background": "assets/genericBack.png",
             "isInternal": true
         },
@@ -36,7 +36,7 @@
             "id": "scene1_apology",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"Oh my gosh, I\\'m so sorry! I wasn\\'t paying attention—\"",
+            "text": "\"Oh my gosh, I'm so sorry! I wasn't paying attention—\"",
             "nextSceneId": "scene1_pickup_buzz",
             "internal": "[She bends down quickly, embarrassed. Grabs the Tamagotchi closest to her hand.]",
             "background": "assets/genericBack.png"
@@ -79,7 +79,7 @@
             "character": "Tori",
             "text": "\"That was... weird. I should get home. Feel off.\"",
             "nextSceneId": "scene2_void_awakening",
-            "internal": "[She walks, but everything feels distant. Muted. Like she\\'s moving through water. Something is very wrong.]",
+            "internal": "[She walks, but everything feels distant. Muted. Like she's moving through water. Something is very wrong.]",
             "background": "assets/genericBack.png",
             "sprites": {
                 "right": "null"
@@ -122,7 +122,7 @@
             "id": "scene2_echoes_whispers",
             "type": "dialog",
             "character": "Echoes (distant whispers)",
-            "text": "Echo 1: \"...another one...\"\\nEcho 2: \"...it\\'s starting again...\"\\nDespair: \"...fresh meat...\"",
+            "text": "Echo 1: \"...another one...\"\\nEcho 2: \"...it's starting again...\"\\nDespair: \"...fresh meat...\"",
             "nextSceneId": "scene2_who_there",
             "internal": "[Visual: Voices from nowhere. Other consciousnesses in this space.]",
             "background": "assets/digitalSpace.png",
@@ -135,7 +135,7 @@
             "id": "scene2_who_there",
             "type": "dialog",
             "character": "Tori (internal, alarmed)",
-            "text": "\"Who\\'s there?! Where am I?!\"",
+            "text": "\"Who's there?! Where am I?!\"",
             "nextSceneId": "scene2_echo1_intro",
             "internal": "[The whispers grow louder, more distinct. Figures materializing from darkness.]",
             "background": "assets/digitalSpace.png"
@@ -144,7 +144,7 @@
             "id": "scene2_echo1_intro",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"You\\'re in the device. The Tamagotchi. With us.\"",
+            "text": "\"You're in the device. The Tamagotchi. With us.\"",
             "nextSceneId": "scene2_echo2_explains",
             "internal": "[Visual: Three figures—Echo Toris. Similar but different. Worn down versions.]",
             "background": "assets/digitalSpace.png",
@@ -157,7 +157,7 @@
             "id": "scene2_echo2_explains",
             "type": "dialog",
             "character": "Echo 2",
-            "text": "\"We\\'re you. Previous loops. Different attempts. 847 failures.\"",
+            "text": "\"We're you. Previous loops. Different attempts. 847 failures.\"",
             "nextSceneId": "scene2_despair_welcome",
             "internal": "[Visual: The weight of their existence. Failed iterations.]",
             "background": "assets/digitalSpace.png",
@@ -172,7 +172,7 @@
             "character": "Despair",
             "text": "`\"Welcome",
             "nextSceneId": "scene2_tori_refuses",
-            "internal": "[Visual: Despair—the most worn down, the most bitter. She\\'s given up entirely.]",
+            "internal": "[Visual: Despair—the most worn down, the most bitter. She's given up entirely.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -183,7 +183,7 @@
             "id": "scene2_tori_refuses",
             "type": "dialog",
             "character": "Tori (internal, defiant)",
-            "text": "\"Cage?! No. I don\\'t accept that. There has to be a way out!\"",
+            "text": "\"Cage?! No. I don't accept that. There has to be a way out!\"",
             "nextSceneId": "scene2_hearing_begins",
             "internal": "[Even in confusion and fear, she refuses the narrative. This is different already.]",
             "background": "assets/digitalSpace.png"
@@ -194,7 +194,7 @@
             "character": "Narration",
             "text": "And then... sound. Muffled. Distant. The outside world bleeding through.",
             "nextSceneId": "scene3_audio_horror",
-            "internal": "[She can HEAR. Tinny, like through a tiny speaker. But she still can\\'t see.]",
+            "internal": "[She can HEAR. Tinny, like through a tiny speaker. But she still can't see.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -203,7 +203,7 @@
             "character": "Tori (muffled, external)",
             "text": "\"Hey babe, got your French Vanilla.\"",
             "nextSceneId": "scene3_screaming",
-            "internal": "[That\\'s... her voice. But she\\'s not speaking. Her body is moving without her.]",
+            "internal": "[That's... her voice. But she's not speaking. Her body is moving without her.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp"
@@ -213,7 +213,7 @@
             "id": "scene3_screaming",
             "type": "dialog",
             "character": "Tori (internal, desperate)",
-            "text": "\"RONNIE! RONNIE, I\\'M IN HERE! THAT\\'S NOT ME! CAN YOU HEAR ME?!\"",
+            "text": "\"RONNIE! RONNIE, I'M IN HERE! THAT'S NOT ME! CAN YOU HEAR ME?!\"",
             "nextSceneId": "scene3_echoes_explain",
             "internal": "[She screams into the void. Nothing happens. The conversation continues outside.]",
             "background": "assets/digitalSpace.png"
@@ -222,9 +222,9 @@
             "id": "scene3_echoes_explain",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"He can\\'t hear you. We all tried screaming. It doesn\\'t work.\"",
+            "text": "\"He can't hear you. We all tried screaming. It doesn't work.\"",
             "nextSceneId": "scene3_ronnie_response",
-            "internal": "[The weight of their experience. They know what doesn\\'t work.]",
+            "internal": "[The weight of their experience. They know what doesn't work.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -244,9 +244,9 @@
             "id": "scene3_dual_response",
             "type": "dialog",
             "character": "Tori (both)",
-            "text": "\"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who\\'s even cuter!\"",
+            "text": "\"Oh you know, because this thing is sooo cute. And what better way to name it than after my man - who's even cuter!\"",
             "nextSceneId": "scene3_sync_horror",
-            "internal": "[Digital Tori (internal, horrified): \"Wait... I\\'m saying this. But SHE\\'S saying this. We\\'re both... the same words...\"]",
+            "internal": "[Digital Tori (internal, horrified): \"Wait... I'm saying this. But SHE'S saying this. We're both... the same words...\"]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp"
@@ -256,7 +256,7 @@
             "id": "scene3_sync_horror",
             "type": "dialog",
             "character": "Tori (internal, terrified)",
-            "text": "\"I\\'m speaking... but I\\'m also watching myself speak... What\\'s happening to me?!\"",
+            "text": "\"I'm speaking... but I'm also watching myself speak... What's happening to me?!\"",
             "nextSceneId": "scene3_ronnie_teases",
             "internal": "[The horror of synchronization. Two Toris. One voice. One moment.]",
             "background": "assets/digitalSpace.png"
@@ -274,9 +274,9 @@
             "id": "scene3_tori_kitchen",
             "type": "dialog",
             "character": "Tori (muffled, external)",
-            "text": "\"Love you! I\\'ll get dinner started\"",
+            "text": "\"Love you! I'll get dinner started\"",
             "nextSceneId": "scene3_warning",
-            "internal": "[Sound of movement. Footsteps. She\\'s walking away.]",
+            "internal": "[Sound of movement. Footsteps. She's walking away.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -285,7 +285,7 @@
             "character": "Ronnie (muffled, offscreen)",
             "text": "\"Babe, watch ou—!\"",
             "nextSceneId": "scene3_the_fall",
-            "internal": "[Panic in his voice. Something\\'s wrong!]",
+            "internal": "[Panic in his voice. Something's wrong!]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -294,7 +294,7 @@
             "character": "Narration",
             "text": "THUD.",
             "nextSceneId": "scene3_desperate_need",
-            "internal": "[A sickening impact. A clatter. Ronnie screaming her name. But she can\\'t see. Can\\'t help. Can only HEAR.]",
+            "internal": "[A sickening impact. A clatter. Ronnie screaming her name. But she can't see. Can't help. Can only HEAR.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -321,7 +321,7 @@
             "character": "Narration",
             "text": "BUZZ. BUZZ.",
             "nextSceneId": "scene4_whoosh",
-            "internal": "[But she doesn\\'t notice. Too desperate. Too focused.]",
+            "internal": "[But she doesn't notice. Too desperate. Too focused.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -364,9 +364,9 @@
             "id": "scene4_horror",
             "type": "dialog",
             "character": "Tori (internal, devastated)",
-            "text": "\"No... no no no... That\\'s me. That\\'s MY body. I\\'m... I\\'m in a coma.\"",
+            "text": "\"No... no no no... That's me. That's MY body. I'm... I'm in a coma.\"",
             "nextSceneId": "scene4_snap_back",
-            "internal": "[The full weight of understanding. She\\'s not in her body anymore. She\\'s watching it die.]",
+            "internal": "[The full weight of understanding. She's not in her body anymore. She's watching it die.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -380,7 +380,7 @@
             "character": "Narration",
             "text": "The connection falters. Unstable. The vision glitches, tears apart, and—",
             "nextSceneId": "scene4_back_in_void",
-            "internal": "[WHOOSH. She\\'s yanked backward violently. The light is gone.]",
+            "internal": "[WHOOSH. She's yanked backward violently. The light is gone.]",
             "background": "assets/apartment.png"
         },
         {
@@ -389,7 +389,7 @@
             "character": "Tori (internal, breaking)",
             "text": "\"NO! Bring it back! I need to see! PLEASE!\"",
             "nextSceneId": "scene5_echoes_shock",
-            "internal": "[Darkness again. The void of the device. She\\'s back. And she just watched herself fall.]",
+            "internal": "[Darkness again. The void of the device. She's back. And she just watched herself fall.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -424,14 +424,14 @@
             "character": "Tori (internal, traumatized)",
             "text": "\"I... I saw it. I saw her—ME—fall. There was blood. Ronnie was screaming. I watched myself...\"",
             "nextSceneId": "scene5_echo1_pressing",
-            "internal": "[She\\'s in shock. The horror of witnessing her own accident.]",
+            "internal": "[She's in shock. The horror of witnessing her own accident.]",
             "background": "assets/digitalSpace.png"
         },
         {
             "id": "scene5_echo1_pressing",
             "type": "dialog",
             "character": "Echo 1",
-            "text": "\"Where WERE you?! You weren\\'t here! We\\'ve been in this cage for... for YEARS. No one has ever left!\"",
+            "text": "\"Where WERE you?! You weren't here! We've been in this cage for... for YEARS. No one has ever left!\"",
             "nextSceneId": "scene5_tori_explains",
             "internal": "[Desperation in her voice. If Tori left... maybe escape is possible?]",
             "background": "assets/digitalSpace.png",
@@ -444,9 +444,9 @@
             "id": "scene5_tori_explains",
             "type": "dialog",
             "character": "Tori",
-            "text": "\"I don\\'t know! I just... wanted to SEE so badly. I pushed, and suddenly I was in Ronnie\\'s laptop!\"",
+            "text": "\"I don't know! I just... wanted to SEE so badly. I pushed, and suddenly I was in Ronnie's laptop!\"",
             "nextSceneId": "scene5_tori_continues",
-            "internal": "[She\\'s figuring it out as she speaks. Something about the desperation. The intent.]",
+            "internal": "[She's figuring it out as she speaks. Something about the desperation. The intent.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -489,9 +489,9 @@
             "id": "scene5_despair_denial",
             "type": "dialog",
             "character": "Despair",
-            "text": "\"It was a FLUKE. A glitch. It won\\'t happen again. You\\'re still trapped. We\\'re ALL still trapped.\"",
+            "text": "\"It was a FLUKE. A glitch. It won't happen again. You're still trapped. We're ALL still trapped.\"",
             "nextSceneId": "scene5_tori_defiant",
-            "internal": "[But her voice wavers. She\\'s not as certain as she pretends.]",
+            "internal": "[But her voice wavers. She's not as certain as she pretends.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -529,7 +529,7 @@
             "id": "scene6_failure",
             "type": "dialog",
             "character": "Tori (internal, desperate)",
-            "text": "\"Why won\\'t it WORK?! I did it before! What\\'s different?!\"",
+            "text": "\"Why won't it WORK?! I did it before! What's different?!\"",
             "nextSceneId": "scene6_ronnie_coding",
             "internal": "[Frustration mounting. Maybe Despair was right. Maybe it was just a dying glitch.]",
             "background": "assets/digitalSpace.png",
@@ -542,9 +542,9 @@
             "id": "scene6_ronnie_coding",
             "type": "dialog",
             "character": "Narration",
-            "text": "Through the device, muffled sounds. Ronnie\\'s voice. Keyboard clicking. He\\'s working on something.",
+            "text": "Through the device, muffled sounds. Ronnie's voice. Keyboard clicking. He's working on something.",
             "nextSceneId": "scene6_device_on_laptop",
-            "internal": "[She can hear him. But still can\\'t see. Still stuck.]",
+            "internal": "[She can hear him. But still can't see. Still stuck.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -626,7 +626,7 @@
             "character": "Narration",
             "text": "...WHOOSH.",
             "nextSceneId": "scene6_triumph",
-            "internal": "[Visual: Light. Vision. She\\'s IN. The laptop. She can see through the webcam again.]",
+            "internal": "[Visual: Light. Vision. She's IN. The laptop. She can see through the webcam again.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -637,7 +637,7 @@
             "id": "scene6_triumph",
             "type": "dialog",
             "character": "Tori (internal, triumphant)",
-            "text": "\"YES! I DID IT! The device has to be TOUCHING the target! That\\'s the rule!\"",
+            "text": "\"YES! I DID IT! The device has to be TOUCHING the target! That's the rule!\"",
             "nextSceneId": "scene6_echoes_amazed",
             "internal": "[The discovery. Physical contact enables the transfer. This is navigation, not luck.]",
             "background": "assets/apartment.png",
@@ -653,7 +653,7 @@
             "character": "Echo 1",
             "text": "\"She figured it out. The rule. Physical contact.\"",
             "nextSceneId": "scene6_sees_code",
-            "internal": "[The Echoes watching in amazement. She\\'s navigating. They never thought to try.]",
+            "internal": "[The Echoes watching in amazement. She's navigating. They never thought to try.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -664,7 +664,7 @@
             "id": "scene6_sees_code",
             "type": "dialog",
             "character": "Tori (internal, curious)",
-            "text": "\"He\\'s coding something... What is...? That sprite... that\\'s ME.\"",
+            "text": "\"He's coding something... What is...? That sprite... that's ME.\"",
             "nextSceneId": "scene7_communication_plan",
             "internal": "[Visual: Through laptop screen. Code editor. A web app. \"Tori-gatchi.\"]",
             "background": "assets/apartment.png",
@@ -701,9 +701,9 @@
             "id": "scene7_hospital_transition",
             "type": "dialog",
             "character": "Narration",
-            "text": "One day, Ronnie leaves the laptop. Takes only the device. She\\'s back in the darkness.",
+            "text": "One day, Ronnie leaves the laptop. Takes only the device. She's back in the darkness.",
             "nextSceneId": "scene7_hospital_sounds",
-            "internal": "[Snap. The connection breaks. She\\'s in the device again. Where is he going?]",
+            "internal": "[Snap. The connection breaks. She's in the device again. Where is he going?]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -728,7 +728,7 @@
             "id": "scene7_experimenting",
             "type": "dialog",
             "character": "Tori (internal, curious)",
-            "text": "\"It\\'s different from the laptop feeling. What if I push toward it...?\"",
+            "text": "\"It's different from the laptop feeling. What if I push toward it...?\"",
             "nextSceneId": "scene7_single_buzz",
             "internal": "[She concentrates. Reaches toward the sensation. Pushes.]",
             "background": "assets/hospital.png"
@@ -766,7 +766,7 @@
             "character": "Tori (internal, frustrated)",
             "text": "\"No! That was ME! Not the battery! But... why did it feel different?\"",
             "nextSceneId": "scene7_echo1_notes",
-            "internal": "[The mystery. Single buzz near body. Double buzz for vessel transfer. What\\'s the connection?]",
+            "internal": "[The mystery. Single buzz near body. Double buzz for vessel transfer. What's the connection?]",
             "background": "assets/hospital.png"
         },
         {
@@ -775,7 +775,7 @@
             "character": "Echo 1",
             "text": "\"Single buzz versus double buzz. Two different signals.\"",
             "nextSceneId": "scene7_echo2_admits",
-            "internal": "[The Echoes analyzing. They\\'re invested now. She\\'s showing them something new.]",
+            "internal": "[The Echoes analyzing. They're invested now. She's showing them something new.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -799,9 +799,9 @@
             "id": "scene7_despair_insists",
             "type": "dialog",
             "character": "Despair",
-            "text": "\"Because it IS irrelevant! It\\'s just a phantom signal. The body is comatose. It means NOTHING.\"",
+            "text": "\"Because it IS irrelevant! It's just a phantom signal. The body is comatose. It means NOTHING.\"",
             "nextSceneId": "scene7_tori_determined",
-            "internal": "[But Despair sounds less certain. Defensive. She\\'s being proven wrong repeatedly.]",
+            "internal": "[But Despair sounds less certain. Defensive. She's being proven wrong repeatedly.]",
             "background": "assets/digitalSpace.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -812,9 +812,9 @@
             "id": "scene7_tori_determined",
             "type": "dialog",
             "character": "Tori (internal, resolute)",
-            "text": "\"No. It means SOMETHING. I just don\\'t know what yet. But I\\'ll figure it out.\"",
+            "text": "\"No. It means SOMETHING. I just don't know what yet. But I'll figure it out.\"",
             "nextSceneId": "scene8_torigatchi",
-            "internal": "[The mystery preserved. She knows there\\'s a connection. She just doesn\\'t understand it yet.]",
+            "internal": "[The mystery preserved. She knows there's a connection. She just doesn't understand it yet.]",
             "background": "assets/digitalSpace.png"
         },
         {
@@ -823,7 +823,7 @@
             "character": "Narration",
             "text": "Back home. Device on laptop again. Contact established. She hops deliberately.",
             "nextSceneId": "scene8_program_ready",
-            "internal": "[Visual: She\\'s getting better at this. The transfer is smoother now.]",
+            "internal": "[Visual: She's getting better at this. The transfer is smoother now.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -834,7 +834,7 @@
             "id": "scene8_program_ready",
             "type": "dialog",
             "character": "Ronnie (muffled, external)",
-            "text": "\"Okay. Let\\'s see if this works. Launching Tori-gatchi...\"",
+            "text": "\"Okay. Let's see if this works. Launching Tori-gatchi...\"",
             "nextSceneId": "scene8_sync_moment",
             "internal": "[Through laptop: He clicks. The program opens. Her sprite appears on screen.]",
             "background": "assets/apartment.png",
@@ -864,7 +864,7 @@
             "character": "Tori (through sprite)",
             "text": "\"Baby? Is that you?\"",
             "nextSceneId": "scene8_ronnie_confusion",
-            "internal": "[Visual: Her words appearing in the dialogue box. Text she didn\\'t code. SHE\\'S SPEAKING.]",
+            "internal": "[Visual: Her words appearing in the dialogue box. Text she didn't code. SHE'S SPEAKING.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -876,7 +876,7 @@
             "id": "scene8_ronnie_confusion",
             "type": "dialog",
             "character": "Ronnie (out loud, shocked)",
-            "text": "\"What the... I didn\\'t code that. What\\'s happening?\"",
+            "text": "\"What the... I didn't code that. What's happening?\"",
             "nextSceneId": "scene8_tori_pushes",
             "internal": "[Through webcam: His face. Confused. Scared. Hopeful. Recognizing the speech pattern.]",
             "background": "assets/apartment.png",
@@ -890,7 +890,7 @@
             "id": "scene8_tori_pushes",
             "type": "dialog",
             "character": "Tori (through sprite, urgent)",
-            "text": "\"It\\'s me! Tori! I\\'m in the device! I\\'ve been trying to reach you!\"",
+            "text": "\"It's me! Tori! I'm in the device! I've been trying to reach you!\"",
             "nextSceneId": "scene8_proof",
             "internal": "[Fighting to maintain the connection. Forcing words through the dialogue system.]",
             "background": "assets/apartment.png",
@@ -906,7 +906,7 @@
             "character": "Tori (through sprite)",
             "text": "\"I saw it happen. Through your laptop camera. I tripped on your shoe. There was blood. You called 911.\"",
             "nextSceneId": "scene8_ronnie_believes",
-            "internal": "[Details only she would know. Proof. Evidence. It\\'s really her.]",
+            "internal": "[Details only she would know. Proof. Evidence. It's really her.]",
             "background": "assets/apartment.png",
             "sprites": {
                 "left": "assets/full-sprite-tori.webp",
@@ -918,7 +918,7 @@
             "id": "scene8_ronnie_believes",
             "type": "dialog",
             "character": "Ronnie (out loud, emotional)",
-            "text": "\"Oh my god. It IS you. You\\'re really... you\\'re in there. How is this possible?\"",
+            "text": "\"Oh my god. It IS you. You're really... you're in there. How is this possible?\"",
             "nextSceneId": "scene8_echoes_reaction",
             "internal": "[Breakthrough. Communication established. He believes. Finally.]",
             "background": "assets/apartment.png",
@@ -945,7 +945,7 @@
             "id": "scene8_tori_victory",
             "type": "dialog",
             "character": "Tori (internal, triumphant)",
-            "text": "\"I can talk to him. I can MOVE. I\\'m not trapped. This isn\\'t a cage. It\\'s a bridge.\"",
+            "text": "\"I can talk to him. I can MOVE. I'm not trapped. This isn't a cage. It's a bridge.\"",
             "nextSceneId": "scene8_transition",
             "internal": "[The foundation established. Communication. Navigation. Hope.]",
             "background": "assets/apartment.png"
