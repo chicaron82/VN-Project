@@ -37,7 +37,8 @@
       "Bash(dir \"c:\\\\Users\\\\silve\\\\Downloads\\\\GitHub\\\\VN-Project\")",
       "Bash(npm run dev:*)",
       "Bash(curl:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

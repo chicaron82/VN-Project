@@ -30,6 +30,13 @@ export type GameEvents = {
   'effect:glitch': { intensity: number };
   'effect:shake': { intensity: string };
   'effect:flash': { color: string; duration: number };
+  'effect:echo_merge_start': {};
+  'effect:echo_merge_complete': {};
+  // Sprite controller events
+  'sprite:show_echo_group': {};
+  'sprite:set_echo_stage': { stage: 'act1' | 'act2' | 'act3' };
+  'sprite:trigger_echo_merge': { callback?: () => void };
+  'sprite:hide_all': {};
   'dialog:complete': {};
   'dialog:advance': {};
   'ui:show_route_select': {};
@@ -49,6 +56,7 @@ export type GameEvents = {
   'ui:show_retry_screen': { currentRoute: string; loopVersion: number };
   'ui:retry_choice': { choice: 'restart_route' | 'change_perspective'; route?: 'ronnie' | 'tori' };
   'ui:code_submit': { code: string };
+  'ui:notes': {}; // Added for MenuCarousel
 };
 
 export type EventName = keyof GameEvents;

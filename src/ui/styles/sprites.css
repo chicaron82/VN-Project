@@ -1,0 +1,257 @@
+/* ========================================
+   V2 CHARACTER SPRITE SYSTEM
+   Full-body sprites grounded at bottom
+   ======================================== */
+
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    width: 35%;
+    height: 85%;
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    z-index: 40;
+    pointer-events: none;
+}
+
+.sprite-left {
+    left: 5%;
+}
+
+.sprite-right {
+    right: 5%;
+}
+
+/* Sprite dimming for non-speakers */
+.character-sprite.sprite-dim {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.5);
+}
+
+/* Sprite enter animation */
+@keyframes spriteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.character-sprite.sprite-enter {
+    animation: spriteEnter 0.5s ease-out forwards;
+}
+
+/* Sprite exit animation */
+@keyframes spriteExit {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.character-sprite.sprite-exit {
+    animation: spriteExit 0.5s ease-out forwards;
+}
+
+/* ========================================
+   ECHO SPRITE GROUP (TORI ROUTE)
+   Three separate sprites: Echo 1, Echo 2, Despair
+   ======================================== */
+
+.echo-group {
+    position: absolute;
+    bottom: 0;
+    right: 5%;
+    width: 40%;
+    height: 85%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: -5%;
+    z-index: 40;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.echo-sprite {
+    background-size: contain;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease, width 0.8s ease, transform 1.5s ease-in-out;
+}
+
+/* Dim echo when not speaking */
+.echo-sprite.sprite-dim {
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.5);
+}
+
+/* Base echo sizes (33% each of container) */
+#echo-1-sprite,
+#echo-2-sprite,
+#despair-sprite {
+    width: 33%;
+    flex-shrink: 0;
+}
+
+/* ========================================
+   ECHO GROWTH STAGES
+   Visual storytelling through sprite heights
+   ======================================== */
+
+/* Act 1: Despair dominates (tallest), Echo 1 & 2 shorter */
+.echo-growth-act1 #echo-1-sprite {
+    height: 65%;
+}
+
+.echo-growth-act1 #echo-2-sprite {
+    height: 70%;
+}
+
+.echo-growth-act1 #despair-sprite {
+    height: 100%;
+}
+
+/* Act 2: Hope rising - Echo 1 & 2 growing */
+.echo-growth-act2 #echo-1-sprite {
+    height: 80%;
+}
+
+.echo-growth-act2 #echo-2-sprite {
+    height: 85%;
+}
+
+.echo-growth-act2 #despair-sprite {
+    height: 95%;
+}
+
+/* Act 3: Balance achieved - all equal */
+.echo-growth-act3 #echo-1-sprite,
+.echo-growth-act3 #echo-2-sprite,
+.echo-growth-act3 #despair-sprite {
+    height: 100%;
+}
+
+/* ========================================
+   ECHO MERGE ANIMATION
+   Three echoes slide together and fade,
+   revealing unified Tori sprite
+   ======================================== */
+
+/* Merge slide animations */
+.echo-merge-left {
+    transform: translateX(100%) !important;
+    opacity: 0 !important;
+}
+
+.echo-merge-center {
+    transform: translateX(0) !important;
+    opacity: 0 !important;
+}
+
+.echo-merge-right {
+    transform: translateX(-100%) !important;
+    opacity: 0 !important;
+}
+
+/* Tori sprite after merge */
+.tori-merged {
+    animation: toriReveal 0.5s ease-in forwards;
+}
+
+@keyframes toriReveal {
+    from {
+        opacity: 0;
+        filter: brightness(2) blur(4px);
+    }
+    to {
+        opacity: 1;
+        filter: brightness(1) blur(0);
+    }
+}
+
+/* ========================================
+   RESPONSIVE - TABLET
+   ======================================== */
+
+@media (max-width: 1024px) {
+    .character-sprite {
+        width: 40%;
+    }
+
+    .sprite-left {
+        left: 2%;
+    }
+
+    .sprite-right {
+        right: 2%;
+    }
+
+    .echo-group {
+        width: 45%;
+        right: 2%;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE PORTRAIT
+   ======================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+    .character-sprite {
+        width: 45%;
+        height: 70%;
+    }
+
+    .echo-group {
+        width: 50%;
+        height: 70%;
+        right: 2%;
+    }
+
+    #echo-1-sprite,
+    #echo-2-sprite,
+    #despair-sprite {
+        width: 35%;
+    }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE LANDSCAPE
+   ======================================== */
+
+@media (max-width: 1024px) and (orientation: landscape) {
+    .character-sprite {
+        width: 30%;
+        height: 80%;
+    }
+
+    .echo-group {
+        width: 35%;
+        height: 80%;
+    }
+}
+
+/* ========================================
+   LARGE DESKTOP (1400px+)
+   ======================================== */
+
+@media (min-width: 1400px) {
+    .character-sprite {
+        width: 30%;
+        max-width: 400px;
+    }
+
+    .echo-group {
+        width: 35%;
+        max-width: 500px;
+    }
+}

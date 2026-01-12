@@ -2,4 +2,7 @@
 @import './base.css';
 @import './animations.css';
 @import './layout.css';
+@import './sprites.css';
+@import './menu-carousel.css';
+@import './bougie-boot-sequence.css';
 /* Add component imports as we build them */

@@ -1070,3 +1070,119 @@ section h2 {
         filter: hue-rotate(50deg);
     }
 }
+
+/* --- TECHNICAL SPOTLIGHT SECTION --- */
+.spotlight-section {
+    background: #0d1117;
+    /* GitHub Dark Dimmed */
+    color: #e6edf3;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid #30363d;
+    border-bottom: 1px solid #30363d;
+}
+
+.spotlight-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 10% 20%, rgba(56, 139, 253, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(46, 160, 67, 0.05) 0%, transparent 20%);
+    pointer-events: none;
+}
+
+.spotlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 3rem auto 0;
+}
+
+.technical-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.technical-card:hover {
+    transform: translateY(-5px);
+    border-color: #58a6ff;
+}
+
+.tech-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 1rem;
+}
+
+.tech-icon {
+    font-size: 2rem;
+}
+
+.tech-header h3 {
+    font-family: 'Courier Prime', monospace;
+    font-size: 1.4rem;
+    color: #58a6ff;
+    margin: 0;
+}
+
+.tech-badge {
+    margin-left: auto;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.badge-live {
+    background: rgba(46, 160, 67, 0.2);
+    color: #3fb950;
+    border: 1px solid rgba(46, 160, 67, 0.4);
+}
+
+.badge-new {
+    background: rgba(210, 153, 34, 0.2);
+    color: #d29922;
+    border: 1px solid rgba(210, 153, 34, 0.4);
+}
+
+.tech-details {
+    color: #8b949e;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.tech-details strong {
+    color: #c9d1d9;
+}
+
+.code-snippet {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #ff7b72;
+    margin-top: 1rem;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .spotlight-grid {
+        grid-template-columns: 1fr;
+    }
+}

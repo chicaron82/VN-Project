@@ -211,10 +211,14 @@ export const GameConfig = {
 
         // Character Sprites
         sprites: {
-            ronnie: 'assets/ronnie-sprite.png',
-            tori: 'assets/tori-sprite.png',
-            oldRonnie: 'assets/old-ronnie-sprite.png',
-            threeEchoes: 'assets/threeechoessprite.png',
+            ronnie: 'assets/full-sprite-ronnie.webp',
+            tori: 'assets/full-sprite-tori.webp',
+            oldRonnie: 'assets/full-sprite-oldRonnie.webp',
+            // Individual Echo sprites (Tori route)
+            echo1: 'assets/full-sprite-echo1.webp',
+            echo2: 'assets/full-sprite-echo2.webp',
+            despair: 'assets/full-sprite-despair.webp',
+            // Route selection sprites
             routeSelectRonnie: 'assets/route-select-ronnie.webp',
             routeSelectTori: 'assets/route-select-tori.webp'
         },
