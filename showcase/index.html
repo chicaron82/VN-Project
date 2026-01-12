@@ -309,36 +309,47 @@
                 <div class="technical-card">
                     <div class="tech-header">
                         <div class="tech-icon">🎠</div>
-                        <h3>Momentum Engine</h3>
+                        <h3>Momentum Carousel</h3>
                         <span class="tech-badge badge-live">Live</span>
                     </div>
                     <div class="tech-details">
-                        <p><strong>The Challenge:</strong> Porting V1's loose JavaScript physics engine to V2's strict
-                            TypeScript environment. <code>TouchEvents</code> and null checks created a minefield of
-                            potential runtime errors.</p>
-                        <p><strong>The Fix:</strong> Implemented strict guard clauses and explicit type casting for DOM
-                            events, ensuring 60fps performance without compromising type safety.</p>
-                        <code
-                            class="code-snippet">if (!e.touches.length) return; <br>const touch = e.touches[0] as Touch;</code>
+                        <p class="tech-challenge"><strong>Challenge:</strong> V1's physics engine → TypeScript</p>
+                        <ul class="tech-fixes">
+                            <li>Guard clauses for <code>TouchEvent</code> null checks</li>
+                            <li>Explicit type casting for DOM events</li>
+                            <li>60fps performance with strict mode</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- Card 2: Bougie Boot Sequence -->
+                <!-- Card 2: Boot Sequence Parity -->
                 <div class="technical-card">
                     <div class="tech-header">
                         <div class="tech-icon">🚀</div>
                         <h3>Boot Sequence Parity</h3>
                         <span class="tech-badge badge-live">Refined</span>
                     </div>
+
+                    <!-- Before/After Screenshots -->
+                    <div class="tech-comparison">
+                        <div class="comparison-img">
+                            <img src="v1-boot-sequence.png" alt="V1 Boot Sequence">
+                            <span class="img-label">V1 Original</span>
+                        </div>
+                        <div class="comparison-img">
+                            <img src="v2-boot-sequence.png" alt="V2 Boot Sequence">
+                            <span class="img-label">V2 Parity</span>
+                        </div>
+                    </div>
+
                     <div class="tech-details">
-                        <p><strong>The Challenge:</strong> V1's boot sequence had nuanced behaviors: left-to-right logo
-                            wipe, paused video freeze-frame, landscape-responsive sizing. Initial V2 port missed these
-                            details.</p>
-                        <p><strong>The Fix:</strong> Iterative refinement. Studied V1 source, found missing media
-                            queries (250px/200px at breakpoints), fixed CSS anchor positioning, added 2s delay for video
-                            animation visibility.</p>
-                        <code
-                            class="code-snippet">video.currentTime = 0.01; // Freeze frame<br>videoReveal.style.width = percent + '%';</code>
+                        <p class="tech-challenge"><strong>Challenge:</strong> Exact visual parity with V1</p>
+                        <ul class="tech-fixes">
+                            <li>Left-to-right logo wipe (width-based reveal)</li>
+                            <li>Video freeze-frame at 0.01s until complete</li>
+                            <li>Landscape sizing: 280px → 250px → 200px</li>
+                            <li>2s delay for animation visibility</li>
+                        </ul>
                     </div>
                 </div>
             </div>
