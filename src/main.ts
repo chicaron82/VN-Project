@@ -163,6 +163,7 @@ function showSplash(): Promise<void> {
             <button id="uv7-skip-button" class="uv7-skip-btn">
                 SKIP <span class="skip-arrow">→</span>
             </button>
+            <div class="boot-skip-hint">PRESS SPACE OR ENTER</div>
         `;
 
         app!.appendChild(splashContainer);

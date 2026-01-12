@@ -760,14 +760,17 @@ body:has(#uv7-splash) {
 /* Skip Hint */
 .boot-skip-hint {
     position: fixed;
-    bottom: 30px;
-    right: 30px;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.5);
-    padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 4px;
+    top: 70px;
+    /* Under the button */
+    right: 40px;
+    /* Aligned with button */
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: rgba(0, 255, 255, 0.5);
+    /* Cyan tint */
+    letter-spacing: 1px;
+    pointer-events: none;
+    z-index: 10001;
     animation: skipHintPulse 2s ease-in-out infinite;
 }
 

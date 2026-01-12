@@ -89,7 +89,7 @@ export class BootSequence {
     async start(): Promise<void> {
         this.showHeader();
 
-        // Load Categories
+        // Load Categories - skip checks happen inside each method
         await this.loadCategory('CORE SYSTEMS', SYSTEM_FILES.core, 40, 0, 25, 'soft');
         await this.loadCategory('TETHER FRAMEWORK', SYSTEM_FILES.tether, 50, 25, 50, 'medium');
         await this.loadCategory('ROUTE HANDLERS', SYSTEM_FILES.routes, 35, 50, 75, 'soft');
@@ -99,14 +99,16 @@ export class BootSequence {
         // Easter eggs (final 2%)
         await this.showEasterEggs(98, 100);
 
-        // Final stats
+        // Final stats (respects isSkipping)
         await this.showBootStats();
 
         // Complete
         await this.showBootComplete();
 
-        // Delay before main menu
-        await this.delay(2000);
+        // Delay before main menu (skipped if isSkipping)
+        if (!this.isSkipping) {
+            await this.delay(2000);
+        }
     }
 
     private updateProgress(percent: number) {
@@ -303,10 +305,13 @@ export class BootSequence {
     }
 
     private async showBootStats() {
-        await this.delay(300);
-        this.container.style.opacity = '0';
-        this.container.style.transition = 'opacity 0.3s ease-out';
-        await this.delay(300);
+        // Quick fade if not skipping
+        if (!this.isSkipping) {
+            await this.delay(300);
+            this.container.style.opacity = '0';
+            this.container.style.transition = 'opacity 0.3s ease-out';
+            await this.delay(300);
+        }
 
         this.container.innerHTML = '';
         this.container.className = 'boot-terminal boot-final-status';
@@ -326,7 +331,11 @@ export class BootSequence {
         this.container.appendChild(finalStatusDiv);
 
         this.container.style.opacity = '1';
-        await this.delay(3000);
+
+        // Only wait 3 seconds if not skipping
+        if (!this.isSkipping) {
+            await this.delay(3000);
+        }
     }
 
     private getDynamicStats() {
@@ -374,6 +383,10 @@ export class BootSequence {
     }
 
     private delay(ms: number) {
+        // Skip delays instantly when skipping
+        if (this.isSkipping) {
+            return Promise.resolve();
+        }
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
