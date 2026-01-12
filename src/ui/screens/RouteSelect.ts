@@ -88,11 +88,28 @@ export class RouteSelect {
         this.selectedRoute = route;
         this.eventBus.emit('ui:click', {});
 
-        // Update UI logic (simplified for V2 MVP)
+        // Update Portraits
         const portraits = this.container.querySelectorAll('.route-portrait');
         portraits.forEach(p => p.classList.remove('active'));
         if (route === 'ronnie') this.container.querySelector('.ronnie-portrait')?.classList.add('active');
         else this.container.querySelector('.tori-portrait')?.classList.add('active');
+
+        // Update Toggle Buttons
+        const toggles = this.container.querySelectorAll('.toggle-option');
+        toggles.forEach(btn => {
+            const btnRoute = (btn as HTMLElement).dataset.route;
+            if (btnRoute === route) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Update Toggle Container Border
+        const toggleContainer = this.container.querySelector('#route-toggle') as HTMLElement;
+        if (toggleContainer) {
+            toggleContainer.style.borderColor = route === 'ronnie' ? 'cyan' : 'magenta';
+        }
 
         const btn = this.container.querySelector('#route-play-button') as HTMLElement;
         btn.innerText = `PLAY AS ${route.toUpperCase()}`;
