@@ -11,6 +11,7 @@ import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { ContentLoader } from '@systems/ContentLoader';
 import { DialogController } from '@controllers/DialogController';
+import { SpriteController } from '@controllers/SpriteController';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
 import { PauseScreen } from '@ui/screens/PauseScreen';
@@ -46,6 +47,7 @@ settingsSystem.init();
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
+const spriteController = new SpriteController(eventBus, stateManager);
 
 // ============================================
 // App State
@@ -72,79 +74,122 @@ function clearScreen() {
     app!.innerHTML = '';
 }
 
+// Boot Sequence Wrapper
+// Boot Sequence Wrapper
+// Boot Sequence Wrapper
 function showSplash(): Promise<void> {
-    return new Promise((resolve) => {
-        const splash = document.createElement('div');
-        splash.id = 'splash-screen';
-        splash.style.cssText = `
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            font-family: 'Courier New', monospace;
-            color: #0f0;
-        `;
+    return new Promise(async (resolve) => {
+        // Creates the FULL V1 structure required by bougie-boot-sequence.css
+        const splashContainer = document.createElement('div');
+        splashContainer.id = 'uv7-splash';
 
-        splash.innerHTML = `
-            <div style="text-align: center;">
-                <h1 style="font-size: 3rem; margin-bottom: 1rem; text-shadow: 0 0 20px #0f0;">
-                    VERSION 848
-                </h1>
-                <div style="font-size: 1rem; color: #0a0; margin-bottom: 2rem;">
-                    V2 - Clean TypeScript Rebuild
-                </div>
-                <div class="boot-sequence" style="font-size: 0.9rem; color: #0f0; opacity: 0.8;">
-                    <div id="boot-line-1">Initializing systems...</div>
-                    <div id="boot-line-2" style="opacity: 0;">Loading EventBus...</div>
-                    <div id="boot-line-3" style="opacity: 0;">Establishing tether...</div>
-                    <div id="boot-line-4" style="opacity: 0;">Ready.</div>
-                </div>
-                <div style="margin-top: 2rem;">
-                    <div style="width: 200px; height: 4px; background: #333; border-radius: 2px; overflow: hidden;">
-                        <div id="progress-bar" style="width: 0%; height: 100%; background: #0f0; transition: width 0.3s;"></div>
+        // V1 Structure: Container -> Logo Section (img+video) + Terminal
+        splashContainer.innerHTML = `
+            <div class="uv7-container">
+                <!-- Logo Section -->
+                <div class="uv7-logo-section">
+                    <div class="powered-by-text">Powered by</div>
+                    
+                    <!-- Static Logo Fallback (Hidden by default via CSS) -->
+                    <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+                    
+                    <!-- Animated Reveal Video (Width controlled by JS) -->
+                    <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
+                        <div class="uv7-logo-reveal" id="uv7-logo-reveal">
+                            <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
+                                <source src="UnitedVoices7.mp4" type="video/mp4">
+                            </video>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Boot Terminal -->
+                <div id="boot-terminal" class="boot-terminal"></div>
             </div>
+
+            <!-- Skip Button -->
+            <button id="uv7-skip-button" class="uv7-skip-btn">
+                SKIP <span class="skip-arrow">→</span>
+            </button>
         `;
 
-        app!.appendChild(splash);
+        app!.appendChild(splashContainer);
 
-        const progressBar = splash.querySelector('#progress-bar') as HTMLElement;
-        const lines = [
-            splash.querySelector('#boot-line-2') as HTMLElement,
-            splash.querySelector('#boot-line-3') as HTMLElement,
-            splash.querySelector('#boot-line-4') as HTMLElement,
-        ];
+        const terminalElement = splashContainer.querySelector('#boot-terminal') as HTMLElement;
+        const skipButton = splashContainer.querySelector('#uv7-skip-button') as HTMLElement;
+        const video = splashContainer.querySelector('#uv7-logo-video') as HTMLVideoElement;
+        const videoWrap = splashContainer.querySelector('#uv7-logo-wrap') as HTMLElement;
+        const videoReveal = splashContainer.querySelector('#uv7-logo-reveal') as HTMLElement;
+        const logoSection = splashContainer.querySelector('.uv7-logo-section') as HTMLElement;
 
-        let progress = 0;
-        const interval = setInterval(() => {
-            progress += Math.random() * 15 + 5;
-            if (progress >= 100) {
-                progress = 100;
-                clearInterval(interval);
+        // V1 Video Logic: Freeze frame
+        video.onloadeddata = () => {
+            // Seek to first frame and pause
+            video.currentTime = 0.01;
+            video.pause();
+        };
+
+        // Fallback if video fails
+        video.onerror = () => {
+            console.warn('Video failed to load, switching to static logo fallback');
+            if (logoSection) logoSection.classList.add('fallback-mode');
+        };
+
+        video.load();
+
+        // Use the new BougieBootSequence
+        const { BootSequence } = await import('@ui/components/BootSequence');
+
+        const boot = new BootSequence(
+            terminalElement,
+            gameEngine,
+            (percent) => {
+                // Video Reveal Logic (Ported from V1)
+                // Update width for Left-to-Right wipe
+                if (videoReveal) {
+                    videoReveal.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+
+                    // Update shimmer speed based on progress (V1 polish)
+                    if (percent < 70) videoReveal.style.setProperty('--shimmer-speed', '1.5s');
+                    else if (percent < 90) videoReveal.style.setProperty('--shimmer-speed', '1.0s');
+                    else videoReveal.style.setProperty('--shimmer-speed', '0.6s');
+                }
             }
-            progressBar.style.width = `${progress}%`;
+        );
 
-            if (progress > 25 && lines[0]) lines[0].style.opacity = '1';
-            if (progress > 50 && lines[1]) lines[1].style.opacity = '1';
-            if (progress > 75 && lines[2]) lines[2].style.opacity = '1';
+        // Bind Skip
+        skipButton.addEventListener('click', () => {
+            boot.skip();
+            // On skip, show full video immediately
+            if (videoReveal) videoReveal.style.width = '100%';
+            if (video) video.currentTime = video.duration;
+        });
 
-            if (progress >= 100) {
-                setTimeout(() => {
-                    splash.style.transition = 'opacity 0.5s';
-                    splash.style.opacity = '0';
-                    setTimeout(() => {
-                        splash.remove();
-                        resolve();
-                    }, 500);
-                }, 500);
-            }
-        }, 150);
+        await boot.start();
+
+        // Completion (Boot finished)
+        if (videoWrap) {
+            videoWrap.classList.remove('loading');
+            videoWrap.classList.add('ready');
+        }
+
+        // Play the video animation now that it's fully revealed
+        if (video) {
+            video.currentTime = 0; // Reset to start
+            video.play().catch(() => { });
+        }
+
+        // Wait for video animation to be visible before fading out
+        await new Promise(r => setTimeout(r, 2000));
+
+        // Fade out splash
+        splashContainer.style.opacity = '0';
+        splashContainer.style.transition = 'opacity 0.5s ease-out';
+
+        setTimeout(() => {
+            splashContainer.remove();
+            resolve();
+        }, 500);
     });
 }
 
@@ -423,6 +468,9 @@ function startGame(route: 'ronnie' | 'tori') {
             eventBus
         );
 
+        // Set up sprite controller viewport
+        spriteController.setViewport(gameLayout.viewport);
+
         // Set up dialog controller to update UI
         dialogController.onTextUpdate((text) => {
             if (gameLayout) {
@@ -443,6 +491,7 @@ function startGame(route: 'ronnie' | 'tori') {
             if (root) root.innerHTML = '';
             gameLayout = null;
             dialogController.destroy();
+            spriteController.hideAllSprites();
         }
     };
 
@@ -461,30 +510,37 @@ function updateBackground(path: string | undefined) {
     gameLayout.viewport.style.backgroundPosition = 'center';
 }
 
-function updateSprites(sprites: Array<{ position?: string; variant?: string }> | undefined) {
-    if (!gameLayout) return;
+function updateSprites(sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) {
+    if (!gameLayout || !sprites) return;
 
-    // Clear existing sprites
-    const existingSprites = gameLayout.viewport.querySelectorAll('.character-sprite');
-    existingSprites.forEach(s => s.remove());
+    // Check if this is an echo group scene
+    const hasEchoSprites = sprites.some(s =>
+        s.id?.includes('echo') || s.id?.includes('despair') ||
+        s.variant?.includes('echo') || s.variant?.includes('despair')
+    );
 
-    if (!sprites) return;
+    if (hasEchoSprites) {
+        // Use SpriteController for echo group
+        spriteController.displayEchoGroup();
 
-    for (const sprite of sprites) {
-        const img = document.createElement('img');
-        img.className = 'character-sprite';
-        img.src = sprite.variant || ''; // variant holds full path
-        img.style.cssText = `
-            position: absolute;
-            bottom: 0;
-            height: 80%;
-            max-width: 40%;
-            object-fit: contain;
-            ${sprite.position === 'left' ? 'left: 5%;' : ''}
-            ${sprite.position === 'right' ? 'right: 5%;' : ''}
-            ${sprite.position === 'center' ? 'left: 50%; transform: translateX(-50%);' : ''}
-        `;
-        gameLayout.viewport.appendChild(img);
+        // Check current act for growth stage
+        const currentScene = stateManager.get<string>('currentScene') ?? '';
+        if (currentScene.includes('act1') || currentScene.includes('Act1')) {
+            spriteController.setEchoGrowthStage('act1');
+        } else if (currentScene.includes('act2') || currentScene.includes('Act2')) {
+            spriteController.setEchoGrowthStage('act2');
+        } else if (currentScene.includes('act3') || currentScene.includes('Act3')) {
+            spriteController.setEchoGrowthStage('act3');
+        }
+    } else {
+        // Use SpriteController for standard sprites
+        for (const sprite of sprites) {
+            if (sprite.position === 'left' && sprite.variant) {
+                spriteController.showSprite('left', sprite.variant);
+            } else if (sprite.position === 'right' && sprite.variant) {
+                spriteController.showSprite('right', sprite.variant);
+            }
+        }
     }
 }
 
@@ -577,10 +633,17 @@ function setupEventHandlers() {
         gameLayout.dialogName.textContent = speaker;
 
         // Color based on character
-        if (speaker.toLowerCase().includes('ronnie')) {
+        const speakerLower = speaker.toLowerCase();
+        if (speakerLower.includes('ronnie')) {
             gameLayout.dialogName.style.color = '#0ff';
-        } else if (speaker.toLowerCase().includes('tori')) {
+        } else if (speakerLower.includes('tori')) {
             gameLayout.dialogName.style.color = '#f0f';
+        } else if (speakerLower.includes('echo 1')) {
+            gameLayout.dialogName.style.color = '#88f';
+        } else if (speakerLower.includes('echo 2')) {
+            gameLayout.dialogName.style.color = '#8f8';
+        } else if (speakerLower.includes('despair')) {
+            gameLayout.dialogName.style.color = '#f88';
         } else {
             gameLayout.dialogName.style.color = '#fff';
         }
@@ -594,6 +657,9 @@ function setupEventHandlers() {
         if (scene.sprites) {
             updateSprites(scene.sprites);
         }
+
+        // Highlight active speaker
+        spriteController.highlightSpeaker(speaker);
 
         console.log(`[UV7 V2] Scene loaded: ${sceneId}`);
     });
@@ -692,6 +758,7 @@ async function init() {
             settingsSystem,
             contentLoader,
             dialogController,
+            spriteController,
             version: 'V2-beta',
             // Debug helpers
             showRoute: showRouteSelect,
