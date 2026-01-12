@@ -23,8 +23,10 @@ import { SettingsModal } from '@ui/components/SettingsModal';
 import { StatusBar } from '@ui/components/StatusBar';
 import { Sidebar } from '@ui/components/Sidebar';
 import { NotesViewer } from '@ui/components/NotesViewer';
+import '@core/ErrorBoundary'; // Auto-initializes global error handler
 import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
+import '@ui/styles/error-boundary.css';
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
