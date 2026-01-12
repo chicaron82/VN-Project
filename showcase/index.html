@@ -176,10 +176,20 @@
                 <div class="timeline-item highlight">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <h3>January 11, 2026</h3>
+                        <h3>January 11, 2026 (AM)</h3>
                         <p><strong>V2 Gold Master</strong></p>
                         <p>Feature complete. Accessibility suite, Achievements, and Bootstrap Paradox tracking online.
                             128 tests passing. Verified stable.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item highlight">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3>January 11, 2026 (PM)</h3>
+                        <p><strong>Boot Sequence Parity</strong></p>
+                        <p>Iterative refinement of the Bougie Boot Sequence. Fixed reveal direction, video timing,
+                            landscape sizing. V2 now matches V1 exactly.</p>
                     </div>
                 </div>
             </div>
@@ -282,6 +292,55 @@
                     <li><strong>Accessibility Suite</strong> - High contrast, font scaling, reduced motion</li>
                     <li><strong>Meta-Narrative Systems</strong> - Tracking timelines across browser sessions</li>
                 </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         NEW SECTION: TECHNICAL SPOTLIGHT
+         ========================================== -->
+    <section class="spotlight-section">
+        <div class="section-content">
+            <h2>Technical Spotlight</h2>
+            <p class="section-intro">Engineering challenges overcome this weekend.</p>
+
+            <div class="spotlight-grid">
+                <!-- Card 1: Momentum Carousel -->
+                <div class="technical-card">
+                    <div class="tech-header">
+                        <div class="tech-icon">🎠</div>
+                        <h3>Momentum Engine</h3>
+                        <span class="tech-badge badge-live">Live</span>
+                    </div>
+                    <div class="tech-details">
+                        <p><strong>The Challenge:</strong> Porting V1's loose JavaScript physics engine to V2's strict
+                            TypeScript environment. <code>TouchEvents</code> and null checks created a minefield of
+                            potential runtime errors.</p>
+                        <p><strong>The Fix:</strong> Implemented strict guard clauses and explicit type casting for DOM
+                            events, ensuring 60fps performance without compromising type safety.</p>
+                        <code
+                            class="code-snippet">if (!e.touches.length) return; <br>const touch = e.touches[0] as Touch;</code>
+                    </div>
+                </div>
+
+                <!-- Card 2: Bougie Boot Sequence -->
+                <div class="technical-card">
+                    <div class="tech-header">
+                        <div class="tech-icon">🚀</div>
+                        <h3>Boot Sequence Parity</h3>
+                        <span class="tech-badge badge-live">Refined</span>
+                    </div>
+                    <div class="tech-details">
+                        <p><strong>The Challenge:</strong> V1's boot sequence had nuanced behaviors: left-to-right logo
+                            wipe, paused video freeze-frame, landscape-responsive sizing. Initial V2 port missed these
+                            details.</p>
+                        <p><strong>The Fix:</strong> Iterative refinement. Studied V1 source, found missing media
+                            queries (250px/200px at breakpoints), fixed CSS anchor positioning, added 2s delay for video
+                            animation visibility.</p>
+                        <code
+                            class="code-snippet">video.currentTime = 0.01; // Freeze frame<br>videoReveal.style.width = percent + '%';</code>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
