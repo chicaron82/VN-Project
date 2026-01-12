@@ -74,6 +74,9 @@ export class SimpleCarousel {
         this.track.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
         this.track.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
         this.track.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: true });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => this.handleKeyboard(e));
     }
 
     private renderCardStack() {
@@ -255,6 +258,27 @@ export class SimpleCarousel {
 
         this.isDragging = false;
         this.swipeDirection = null;
+    }
+
+    private handleKeyboard(e: KeyboardEvent) {
+        // Only handle if carousel is visible
+        if (!this.container || this.container.style.display === 'none') return;
+
+        // Prevent default for arrow keys and Enter
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'Enter'].includes(e.key)) {
+            e.preventDefault();
+        }
+
+        if (e.key === 'ArrowLeft') {
+            // Swipe left (go to next card)
+            this.commitSwipe('left');
+        } else if (e.key === 'ArrowRight') {
+            // Swipe right (go to previous card)
+            this.commitSwipe('right');
+        } else if (e.key === 'ArrowUp' || e.key === 'Enter') {
+            // Confirm current card (swipe up equivalent)
+            this.confirmCurrentCard();
+        }
     }
 
     private updateCardDrag(deltaX: number) {
