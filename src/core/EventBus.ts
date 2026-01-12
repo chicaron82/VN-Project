@@ -17,6 +17,7 @@ export type GameEvents = {
   'tether:change': { level: number; delta: number };
   'tether:critical': { level: number };
   'save:complete': { slot: number };
+  'load:complete': { slot: number };
   'achievement:unlock': { id: string };
   'visual:cue': { type: string | null; channel: string };
   'loading:start': { total?: number };
@@ -64,6 +65,7 @@ export type GameEvents = {
   'ui:notes_closed': {};
   'secret_code:submit': { code: string };
   'secret_code:unlocked': { code: string; name: string };
+  'ui:save_menu': {};
   'ui:load_menu': {};
   'ui:settings': {};
   'ui:credits': {};
@@ -73,6 +75,9 @@ export type GameEvents = {
   'ui:retry_choice': { choice: 'restart_route' | 'change_perspective'; route?: 'ronnie' | 'tori' };
   'ui:code_submit': { code: string };
   'ui:notes': {}; // Added for MenuCarousel
+  // Auto-save events
+  'autosave:start': { reason: string };
+  'autosave:complete': { success: boolean; slot: number };
 };
 
 export type EventName = keyof GameEvents;

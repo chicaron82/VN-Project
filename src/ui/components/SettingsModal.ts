@@ -1,13 +1,75 @@
 import { EventBus } from '../../core/EventBus';
+import { StateManager } from '../../core/StateManager';
+
+/**
+ * Settings configuration interface
+ */
+interface GameSettings {
+    // Text & Display
+    textSpeed: 'slow' | 'normal' | 'fast' | 'instant';
+    fontSize: 'small' | 'medium' | 'large';
+    displayMode: 'auto' | 'portrait' | 'landscape';
+
+    // Audio & Feedback
+    masterVolume: number;  // 0-100
+    musicVolume: number;   // 0-100
+    sfxVolume: number;     // 0-100
+    hapticEnabled: boolean;
+
+    // Comfort & Accessibility
+    comfortIntensity: number;  // 0=Gentle, 1=Normal, 2=Amped, 3=INSANE
+    reduceMotion: boolean;
+    highContrast: boolean;
+    comfortMode: boolean;  // Disable glitch effects
+
+    // Gameplay
+    autoAdvance: boolean;
+    autoAdvanceDelay: number;  // 1000-10000ms
+    autoSkipPrologue: boolean;
+
+    // UI
+    uiTheme: string;
+    tetherDifficulty: 'relaxed' | 'normal' | 'intense' | 'insane';
+    tutorialHints: boolean;
+}
+
+/**
+ * Default settings values
+ */
+const DEFAULT_SETTINGS: GameSettings = {
+    textSpeed: 'normal',
+    fontSize: 'medium',
+    displayMode: 'auto',
+    masterVolume: 80,
+    musicVolume: 70,
+    sfxVolume: 80,
+    hapticEnabled: 'vibrate' in navigator,
+    comfortIntensity: 1,
+    reduceMotion: false,
+    highContrast: false,
+    comfortMode: false,
+    autoAdvance: false,
+    autoAdvanceDelay: 2000,
+    autoSkipPrologue: false,
+    uiTheme: 'auto',
+    tetherDifficulty: 'normal',
+    tutorialHints: true
+};
 
 export class SettingsModal {
     private container!: HTMLElement;
     private isOpen: boolean = false;
     private currentTab: string = 'general';
     private eventBus: EventBus;
+    private stateManager: StateManager | null = null;
+    private saveDebounceTimer: ReturnType<typeof setTimeout> | null = null;
+    private settings: GameSettings;
 
-    constructor(eventBus: EventBus) {
+    constructor(eventBus: EventBus, stateManager?: StateManager) {
         this.eventBus = eventBus;
+        this.stateManager = stateManager || null;
+        this.settings = { ...DEFAULT_SETTINGS };
+
         this.createDOM();
         this.setupEventListeners();
         this.loadSettings();
@@ -26,11 +88,12 @@ export class SettingsModal {
 
         this.container.innerHTML = `
             <div id="settings-content">
-                <button class="close-x" id="btn-close-settings">✕</button>
+                <button class="close-x" id="btn-close-settings" aria-label="Close settings">X</button>
                 <h2>SETTINGS</h2>
 
                 <div class="settings-tabs">
                     <button class="settings-tab-btn active" data-tab="general">GENERAL</button>
+                    <button class="settings-tab-btn" data-tab="audio">AUDIO</button>
                     <button class="settings-tab-btn" data-tab="sensory">SENSORY</button>
                     <button class="settings-tab-btn" data-tab="shortcuts">SHORTCUTS</button>
                     <button class="settings-tab-btn" data-tab="codes">SECRET CODES</button>
@@ -39,102 +102,128 @@ export class SettingsModal {
                 <div class="settings-tab-content">
                     <!-- GENERAL TAB -->
                     <div class="tab-panel active" id="tab-general">
-                        <!-- Text Speed -->
-                        <div class="setting-row">
-                            <label class="setting-label">TEXT SPEED</label>
-                            <div class="setting-control">
-                                <button class="speed-btn" data-speed="slow">SLOW</button>
-                                <button class="speed-btn active" data-speed="normal">NORMAL</button>
-                                <button class="speed-btn" data-speed="fast">FAST</button>
-                                <button class="speed-btn" data-speed="instant">INSTANT</button>
-                            </div>
-                        </div>
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Text & Display</h3>
 
-                        <!-- Auto-Advance -->
-                        <div class="setting-row">
-                            <label class="setting-label">AUTO-ADVANCE</label>
-                            <div class="setting-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="auto-advance-toggle">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <span class="toggle-status" id="auto-advance-status">OFF</span>
-                            </div>
-                        </div>
-
-                        <!-- Auto-Advance Delay -->
-                        <div class="setting-row" id="auto-delay-row" style="display: none;">
-                            <label class="setting-label">AUTO DELAY</label>
-                            <div class="setting-control">
-                                <input type="range" id="auto-delay-slider" min="1000" max="5000" step="500" value="2000">
-                                <span id="auto-delay-value">2.0s</span>
-                            </div>
-                        </div>
-
-                        <!-- Auto-Skip Prologue -->
-                        <div class="setting-row">
-                            <label class="setting-label">AUTO-SKIP PROLOGUE</label>
-                            <div class="setting-control">
-                                <label class="toggle-switch" id="auto-skip-prologue-container">
-                                    <input type="checkbox" id="auto-skip-prologue-toggle">
-                                    <span class="toggle-slider"></span>
-                                </label>
-                                <span class="toggle-status" id="auto-skip-prologue-status">LOCKED</span>
-                            </div>
-                        </div>
-
-                        <!-- Display Mode -->
-                        <div class="setting-row">
-                            <label class="setting-label">DISPLAY MODE</label>
-                            <div class="setting-control">
-                                <button class="display-mode-btn active" data-mode="auto">AUTO</button>
-                                <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
-                                <button class="display-mode-btn" data-mode="landscape">LANDSCAPE</button>
-                            </div>
-                        </div>
-
-                        <!-- UI Theme -->
-                        <div class="setting-row">
-                            <label class="setting-label">UI THEME</label>
-                            <div class="setting-control theme-selector-grid">
-                                <button class="theme-pref-btn active" data-theme="auto">AUTO</button>
-                                <button class="theme-pref-btn" data-theme="ronnie">💙 RONNIE</button>
-                                <button class="theme-pref-btn" data-theme="tori">🖤 TORI</button>
-                                <button class="theme-pref-btn" data-theme="true">💚 TRUE</button>
-                                <button class="theme-pref-btn" data-theme="digital">💜 DIGITAL</button>
-                                <button class="theme-pref-btn" data-theme="bad">❤️ BAD</button>
-                            </div>
-                        </div>
-
-                        <!-- Tether Difficulty -->
-                        <div class="setting-row">
-                            <div class="difficulty-setting-container">
-                                <div class="difficulty-buttons-row">
-                                    <label class="setting-label">TORI'S ROUTE DIFFICULTY</label>
-                                    <div class="setting-control">
-                                        <button class="tether-difficulty-btn" data-difficulty="relaxed">RELAXED</button>
-                                        <button class="tether-difficulty-btn active" data-difficulty="normal">NORMAL</button>
-                                        <button class="tether-difficulty-btn" data-difficulty="intense">INTENSE</button>
-                                        <button class="tether-difficulty-btn insane-btn insane-locked" data-difficulty="insane" id="insane-difficulty-btn">
-                                            <span class="skull-icon">💀</span>
-                                        </button>
-                                    </div>
+                            <!-- Text Speed -->
+                            <div class="setting-row">
+                                <label class="setting-label">TEXT SPEED</label>
+                                <div class="setting-control">
+                                    <button class="speed-btn" data-speed="slow">SLOW</button>
+                                    <button class="speed-btn active" data-speed="normal">NORMAL</button>
+                                    <button class="speed-btn" data-speed="fast">FAST</button>
+                                    <button class="speed-btn" data-speed="instant">INSTANT</button>
                                 </div>
-                                <div class="difficulty-explanations">
-                                    <div class="difficulty-explanation-item">
-                                        <strong>Relaxed:</strong> Slower tether decay (more time to read)
+                            </div>
+
+                            <!-- Font Size -->
+                            <div class="setting-row">
+                                <label class="setting-label">FONT SIZE</label>
+                                <div class="setting-control">
+                                    <button class="font-size-btn" data-size="small">SMALL</button>
+                                    <button class="font-size-btn active" data-size="medium">MEDIUM</button>
+                                    <button class="font-size-btn" data-size="large">LARGE</button>
+                                </div>
+                            </div>
+
+                            <!-- Display Mode -->
+                            <div class="setting-row">
+                                <label class="setting-label">DISPLAY MODE</label>
+                                <div class="setting-control">
+                                    <button class="display-mode-btn active" data-mode="auto">AUTO</button>
+                                    <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
+                                    <button class="display-mode-btn" data-mode="landscape">LANDSCAPE</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Gameplay</h3>
+
+                            <!-- Auto-Advance -->
+                            <div class="setting-row">
+                                <label class="setting-label">AUTO-ADVANCE</label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="auto-advance-toggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-status" id="auto-advance-status">OFF</span>
+                                </div>
+                            </div>
+
+                            <!-- Auto-Advance Delay -->
+                            <div class="setting-row setting-sub-row" id="auto-delay-row" style="display: none;">
+                                <label class="setting-label">AUTO DELAY</label>
+                                <div class="setting-control slider-control">
+                                    <span class="slider-label-min">1s</span>
+                                    <input type="range" id="auto-delay-slider" min="1000" max="10000" step="500" value="2000">
+                                    <span class="slider-label-max">10s</span>
+                                    <span class="slider-value" id="auto-delay-value">2.0s</span>
+                                </div>
+                            </div>
+
+                            <!-- Auto-Skip Prologue -->
+                            <div class="setting-row">
+                                <label class="setting-label">AUTO-SKIP PROLOGUE</label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch" id="auto-skip-prologue-container">
+                                        <input type="checkbox" id="auto-skip-prologue-toggle">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-status" id="auto-skip-prologue-status">LOCKED</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">UI Theme</h3>
+
+                            <!-- UI Theme -->
+                            <div class="setting-row">
+                                <div class="setting-control theme-selector-grid">
+                                    <button class="theme-pref-btn active" data-theme="auto">AUTO</button>
+                                    <button class="theme-pref-btn" data-theme="ronnie">RONNIE</button>
+                                    <button class="theme-pref-btn" data-theme="tori">TORI</button>
+                                    <button class="theme-pref-btn" data-theme="true">TRUE</button>
+                                    <button class="theme-pref-btn" data-theme="digital">DIGITAL</button>
+                                    <button class="theme-pref-btn" data-theme="bad">BAD</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Tori's Route Difficulty</h3>
+
+                            <!-- Tether Difficulty -->
+                            <div class="setting-row">
+                                <div class="difficulty-setting-container">
+                                    <div class="difficulty-buttons-row">
+                                        <div class="setting-control">
+                                            <button class="tether-difficulty-btn" data-difficulty="relaxed">RELAXED</button>
+                                            <button class="tether-difficulty-btn active" data-difficulty="normal">NORMAL</button>
+                                            <button class="tether-difficulty-btn" data-difficulty="intense">INTENSE</button>
+                                            <button class="tether-difficulty-btn insane-btn insane-locked" data-difficulty="insane" id="insane-difficulty-btn">
+                                                <span class="skull-icon">SKULL</span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="difficulty-explanation-item">
-                                        <strong>Normal:</strong> Balanced experience (recommended)
-                                    </div>
-                                    <div class="difficulty-explanation-item">
-                                        <strong>Intense:</strong> Faster decay (maximum tension)
-                                    </div>
-                                    <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-locked" style="display: none;">
-                                        <strong>💀 Insane:</strong> <span class="locked-text">Complete Intense difficulty to unlock</span>
-                                    </div>
-                                    <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-unlocked" style="display: none;">
-                                        <strong>💀 Insane:</strong> <span class="warning-text">No Hold On | No Time Jump | No Mercy</span>
+                                    <div class="difficulty-explanations">
+                                        <div class="difficulty-explanation-item">
+                                            <strong>Relaxed:</strong> Slower tether decay (more time to read)
+                                        </div>
+                                        <div class="difficulty-explanation-item">
+                                            <strong>Normal:</strong> Balanced experience (recommended)
+                                        </div>
+                                        <div class="difficulty-explanation-item">
+                                            <strong>Intense:</strong> Faster decay (maximum tension)
+                                        </div>
+                                        <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-locked" style="display: none;">
+                                            <strong>SKULL Insane:</strong> <span class="locked-text">Complete Intense difficulty to unlock</span>
+                                        </div>
+                                        <div class="difficulty-explanation-item insane-explanation" id="insane-explanation-unlocked" style="display: none;">
+                                            <strong>SKULL Insane:</strong> <span class="warning-text">No Hold On | No Time Jump | No Mercy</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -149,94 +238,163 @@ export class SettingsModal {
                         </div>
                     </div>
 
+                    <!-- AUDIO TAB -->
+                    <div class="tab-panel" id="tab-audio">
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Volume Controls</h3>
+
+                            <!-- Master Volume -->
+                            <div class="setting-row">
+                                <label class="setting-label">MASTER VOLUME</label>
+                                <div class="setting-control slider-control">
+                                    <span class="slider-label-min">0%</span>
+                                    <input type="range" id="master-volume-slider" class="volume-slider" min="0" max="100" step="5" value="80">
+                                    <span class="slider-label-max">100%</span>
+                                    <span class="slider-value" id="master-volume-value">80%</span>
+                                </div>
+                            </div>
+
+                            <!-- Music Volume -->
+                            <div class="setting-row">
+                                <label class="setting-label">MUSIC VOLUME</label>
+                                <div class="setting-control slider-control">
+                                    <span class="slider-label-min">0%</span>
+                                    <input type="range" id="music-volume-slider" class="volume-slider" min="0" max="100" step="5" value="70">
+                                    <span class="slider-label-max">100%</span>
+                                    <span class="slider-value" id="music-volume-value">70%</span>
+                                </div>
+                            </div>
+
+                            <!-- SFX Volume -->
+                            <div class="setting-row">
+                                <label class="setting-label">SFX VOLUME</label>
+                                <div class="setting-control slider-control">
+                                    <span class="slider-label-min">0%</span>
+                                    <input type="range" id="sfx-volume-slider" class="volume-slider" min="0" max="100" step="5" value="80">
+                                    <span class="slider-label-max">100%</span>
+                                    <span class="slider-value" id="sfx-volume-value">80%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Feedback</h3>
+
+                            <!-- Haptic Feedback Toggle -->
+                            <div class="setting-row">
+                                <label for="haptic-toggle" class="setting-label-column">
+                                    <span class="setting-name">HAPTIC FEEDBACK</span>
+                                    <span class="setting-description">Vibration for key moments (mobile)</span>
+                                    <span class="setting-note">Android optimized. Limited iPhone support.</span>
+                                </label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="haptic-toggle" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- SENSORY TAB -->
                     <div class="tab-panel" id="tab-sensory">
-                        <!-- Tutorials Toggle -->
-                        <div class="setting-row">
-                            <label class="setting-label">TUTORIALS 👆</label>
-                            <div class="setting-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="tutorial-hints-toggle" checked>
-                                    <span class="toggle-slider"></span>
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Accessibility</h3>
+
+                            <!-- Reduce Motion Toggle -->
+                            <div class="setting-row">
+                                <label for="reduce-motion-toggle" class="setting-label-column">
+                                    <span class="setting-name">REDUCE MOTION</span>
+                                    <span class="setting-description">Minimize animations and transitions</span>
+                                    <span class="setting-note">Reduces motion for users sensitive to movement</span>
                                 </label>
-                                <span class="toggle-status" id="tutorial-hints-status">ON</span>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="reduce-motion-toggle" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Reset Tutorials Button -->
-                        <div class="setting-row">
-                            <label class="setting-label">RESET TUTORIALS</label>
-                            <div class="setting-control">
-                                <button class="action-btn" id="reset-tutorials-btn">RESET ALL</button>
-                            </div>
-                        </div>
-
-                        <!-- Haptic Feedback Toggle -->
-                        <div class="setting-row">
-                            <label for="haptic-toggle" class="setting-label-column">
-                                <span class="setting-name">HAPTIC FEEDBACK 📳</span>
-                                <span class="setting-description">Vibration for key moments (mobile)</span>
-                                <span class="setting-note">⚠️ Android optimized. Limited iPhone support.</span>
-                            </label>
-                            <div class="setting-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="haptic-toggle" />
-                                    <span class="toggle-slider"></span>
+                            <!-- High Contrast Toggle -->
+                            <div class="setting-row">
+                                <label for="high-contrast-toggle" class="setting-label-column">
+                                    <span class="setting-name">HIGH CONTRAST</span>
+                                    <span class="setting-description">Increase text and UI contrast</span>
+                                    <span class="setting-note">Makes text easier to read</span>
                                 </label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="high-contrast-toggle" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Comfort Mode Toggle -->
-                        <div class="setting-row">
-                            <label for="comfort-mode-toggle" class="setting-label-column">
-                                <span class="setting-name">COMFORT MODE 🛡️</span>
-                                <span class="setting-description">Disable glitch visual effects</span>
-                                <span class="setting-note">Reduces flickering/screen distortion for accessibility</span>
-                            </label>
-                            <div class="setting-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="comfort-mode-toggle" />
-                                    <span class="toggle-slider"></span>
+                            <!-- Comfort Mode Toggle -->
+                            <div class="setting-row">
+                                <label for="comfort-mode-toggle" class="setting-label-column">
+                                    <span class="setting-name">COMFORT MODE</span>
+                                    <span class="setting-description">Disable glitch visual effects</span>
+                                    <span class="setting-note">Reduces flickering/screen distortion for accessibility</span>
                                 </label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="comfort-mode-toggle" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Reduce Motion Toggle -->
-                        <div class="setting-row">
-                            <label for="reduce-motion-toggle" class="setting-label-column">
-                                <span class="setting-name">REDUCE MOTION ♿</span>
-                                <span class="setting-description">Minimize animations and transitions</span>
-                                <span class="setting-note">Reduces motion for users sensitive to movement</span>
-                            </label>
-                            <div class="setting-control">
-                                <label class="toggle-switch">
-                                    <input type="checkbox" id="reduce-motion-toggle" />
-                                    <span class="toggle-slider"></span>
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Sensory Intensity</h3>
+
+                            <!-- Comfort Intensity Slider -->
+                            <div class="setting-row setting-row-vertical">
+                                <label for="comfort-intensity-slider" class="setting-label-column">
+                                    <span class="setting-name">INTENSITY LEVEL</span>
+                                    <span class="setting-description">Visual & haptic feedback strength</span>
+                                    <span class="setting-note">Adjust how punchy glitches and shakes feel.</span>
                                 </label>
-                            </div>
-                        </div>
-
-                        <!-- Sensory Intensity Slider -->
-                        <div class="setting-row">
-                            <label for="comfort-intensity-slider" class="setting-label-column">
-                                <span class="setting-name">SENSORY INTENSITY 💫</span>
-                                <span class="setting-description">Visual & haptic feedback strength</span>
-                                <span class="setting-note">Adjust how punchy glitches and shakes feel.</span>
-                                <span class="setting-warning" style="color: #ff0066; text-shadow: 0 0 8px rgba(255, 0, 102, 0.6); font-weight: bold; margin-top: 8px; display: block;">
-                                    ⚠️ INSANE MODE IGNORES THIS - Always maxed out
-                                </span>
-                            </label>
-                            <div class="setting-control">
-                                <div class="intensity-slider-container">
-                                    <div class="intensity-current-label">
-                                        <span id="comfort-intensity-label" style="color: #0ff; text-shadow: 0 0 10px #0ff; font-weight: bold; font-size: 1.1em;">Normal</span>
+                                <div class="setting-control intensity-control">
+                                    <div class="intensity-slider-container">
+                                        <div class="intensity-current-label">
+                                            <span id="comfort-intensity-label" class="intensity-value-display">Normal</span>
+                                        </div>
+                                        <input type="range" id="comfort-intensity-slider" min="0" max="3" value="1" step="1" />
+                                        <div class="intensity-labels">
+                                            <span>Gentle</span>
+                                            <span>Normal</span>
+                                            <span>Amped</span>
+                                            <span class="intensity-insane">INSANE</span>
+                                        </div>
                                     </div>
-                                    <input type="range" id="comfort-intensity-slider" min="0" max="2" value="1" step="1" />
-                                    <div class="intensity-labels">
-                                        <span>Gentle</span>
-                                        <span>Normal</span>
-                                        <span>Amped</span>
-                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3 class="settings-section-header">Tutorials</h3>
+
+                            <!-- Tutorials Toggle -->
+                            <div class="setting-row">
+                                <label class="setting-label">TUTORIALS</label>
+                                <div class="setting-control">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="tutorial-hints-toggle" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-status" id="tutorial-hints-status">ON</span>
+                                </div>
+                            </div>
+
+                            <!-- Reset Tutorials Button -->
+                            <div class="setting-row">
+                                <label class="setting-label">RESET TUTORIALS</label>
+                                <div class="setting-control">
+                                    <button class="action-btn" id="reset-tutorials-btn">RESET ALL</button>
                                 </div>
                             </div>
                         </div>
@@ -302,13 +460,13 @@ export class SettingsModal {
                             </div>
 
                             <div class="keyboard-shortcuts-footer">
-                                <p>💡 Green glow indicates keyboard-focused elements</p>
+                                <p>Green glow indicates keyboard-focused elements</p>
                             </div>
 
                             <h3 style="margin-top: 30px;">BOOTSTRAP TIMELINE</h3>
                             <div class="shortcut-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
                                 <button class="action-btn" id="view-bootstrap-timeline-btn" style="width: 100%; padding: 15px;">
-                                    📜 VIEW ATTEMPT HISTORY
+                                    VIEW ATTEMPT HISTORY
                                 </button>
                                 <span class="shortcut-desc" style="text-align: center; opacity: 0.7;">
                                     Track your journey through the loop
@@ -328,7 +486,7 @@ export class SettingsModal {
                             </div>
 
                             <div id="code-success-indicator" style="display: none;">
-                                <div class="code-sparkle">✨</div>
+                                <div class="code-sparkle">*</div>
                                 <div class="code-registered">CODE REGISTERED</div>
                             </div>
 
@@ -344,10 +502,10 @@ export class SettingsModal {
                     </div>
                 </div>
 
-                <!-- Buttons -->
+                <!-- Action Buttons -->
                 <div class="settings-buttons">
                     <button class="settings-menu-button" id="btn-settings-back">BACK</button>
-                    <button class="settings-menu-button" id="btn-settings-reset">RESET TO DEFAULT</button>
+                    <button class="settings-menu-button settings-reset-btn" id="btn-settings-reset">RESET TO DEFAULT</button>
                 </div>
             </div>
         `;
@@ -356,7 +514,7 @@ export class SettingsModal {
     }
 
     private setupEventListeners() {
-        // Close button
+        // Close buttons
         this.container.querySelector('#btn-close-settings')?.addEventListener('click', () => this.close());
         this.container.querySelector('#btn-settings-back')?.addEventListener('click', () => this.close());
 
@@ -368,19 +526,37 @@ export class SettingsModal {
             });
         });
 
-        // Text Speed
+        // Text Speed Buttons
         this.container.querySelectorAll('.speed-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = e.currentTarget as HTMLElement;
-                this.setTextSpeed(target.dataset.speed || 'normal');
+                this.setTextSpeed(target.dataset.speed as GameSettings['textSpeed'] || 'normal');
+            });
+        });
+
+        // Font Size Buttons
+        this.container.querySelectorAll('.font-size-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget as HTMLElement;
+                this.setFontSize(target.dataset.size as GameSettings['fontSize'] || 'medium');
+            });
+        });
+
+        // Display Mode Buttons
+        this.container.querySelectorAll('.display-mode-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const target = e.currentTarget as HTMLElement;
+                this.setDisplayMode(target.dataset.mode as GameSettings['displayMode'] || 'auto');
             });
         });
 
         // Auto Advance Toggle
         const autoToggle = this.container.querySelector('#auto-advance-toggle') as HTMLInputElement;
         autoToggle?.addEventListener('change', () => {
+            this.settings.autoAdvance = autoToggle.checked;
             this.updateToggleStatus('auto-advance-status', autoToggle.checked);
-            this.saveSetting('autoAdvance', autoToggle.checked);
+            this.saveSettingDebounced('autoAdvance', autoToggle.checked);
+
             // Show/hide delay slider
             const delayRow = this.container.querySelector('#auto-delay-row') as HTMLElement;
             if (delayRow) delayRow.style.display = autoToggle.checked ? 'flex' : 'none';
@@ -390,20 +566,21 @@ export class SettingsModal {
         const delaySlider = this.container.querySelector('#auto-delay-slider') as HTMLInputElement;
         delaySlider?.addEventListener('input', () => {
             const value = parseInt(delaySlider.value);
+            this.settings.autoAdvanceDelay = value;
             const valueDisplay = this.container.querySelector('#auto-delay-value');
             if (valueDisplay) valueDisplay.textContent = `${(value / 1000).toFixed(1)}s`;
-            this.saveSetting('autoAdvanceDelay', value);
+            this.saveSettingDebounced('autoAdvanceDelay', value);
         });
 
-        // Display Mode
-        this.container.querySelectorAll('.display-mode-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const target = e.currentTarget as HTMLElement;
-                this.setDisplayMode(target.dataset.mode || 'auto');
-            });
+        // Auto Skip Prologue Toggle
+        const skipPrologueToggle = this.container.querySelector('#auto-skip-prologue-toggle') as HTMLInputElement;
+        skipPrologueToggle?.addEventListener('change', () => {
+            this.settings.autoSkipPrologue = skipPrologueToggle.checked;
+            this.updateToggleStatus('auto-skip-prologue-status', skipPrologueToggle.checked);
+            this.saveSettingDebounced('autoSkipPrologue', skipPrologueToggle.checked);
         });
 
-        // UI Theme
+        // UI Theme Buttons
         this.container.querySelectorAll('.theme-pref-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = e.currentTarget as HTMLElement;
@@ -411,142 +588,201 @@ export class SettingsModal {
             });
         });
 
-        // Tether Difficulty
+        // Tether Difficulty Buttons
         this.container.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = e.currentTarget as HTMLElement;
-                this.setDifficulty(target.dataset.difficulty || 'normal');
+                this.setDifficulty(target.dataset.difficulty as GameSettings['tetherDifficulty'] || 'normal');
             });
         });
 
-        // Fullscreen
+        // Fullscreen Button
         const fsBtn = this.container.querySelector('#settings-fullscreen-btn');
         fsBtn?.addEventListener('click', () => this.toggleFullscreen());
 
-        // Tutorials Toggle
-        const tutorialToggle = this.container.querySelector('#tutorial-hints-toggle') as HTMLInputElement;
-        tutorialToggle?.addEventListener('change', () => {
-            this.updateToggleStatus('tutorial-hints-status', tutorialToggle.checked);
-            this.saveSetting('tutorialHints', tutorialToggle.checked);
-        });
-
-        // Reset Tutorials
-        const resetTutorialsBtn = this.container.querySelector('#reset-tutorials-btn');
-        resetTutorialsBtn?.addEventListener('click', () => {
-            this.saveSetting('tutorialsReset', true);
-            alert('Tutorials reset! They will appear again on next playthrough.');
-        });
+        // Volume Sliders
+        this.setupVolumeSlider('master-volume-slider', 'master-volume-value', 'masterVolume');
+        this.setupVolumeSlider('music-volume-slider', 'music-volume-value', 'musicVolume');
+        this.setupVolumeSlider('sfx-volume-slider', 'sfx-volume-value', 'sfxVolume');
 
         // Haptic Toggle
         const hapticToggle = this.container.querySelector('#haptic-toggle') as HTMLInputElement;
         hapticToggle?.addEventListener('change', () => {
-            this.saveSetting('hapticEnabled', hapticToggle.checked);
-        });
-
-        // Comfort Mode Toggle
-        const comfortToggle = this.container.querySelector('#comfort-mode-toggle') as HTMLInputElement;
-        comfortToggle?.addEventListener('change', () => {
-            this.saveSetting('comfortMode', comfortToggle.checked);
+            this.settings.hapticEnabled = hapticToggle.checked;
+            this.saveSettingDebounced('hapticEnabled', hapticToggle.checked);
         });
 
         // Reduce Motion Toggle
         const reduceMotionToggle = this.container.querySelector('#reduce-motion-toggle') as HTMLInputElement;
         reduceMotionToggle?.addEventListener('change', () => {
-            this.saveSetting('reduceMotion', reduceMotionToggle.checked);
+            this.settings.reduceMotion = reduceMotionToggle.checked;
+            this.saveSettingDebounced('reduceMotion', reduceMotionToggle.checked);
+            this.applyReduceMotion(reduceMotionToggle.checked);
         });
 
-        // Sensory Intensity Slider
+        // High Contrast Toggle
+        const highContrastToggle = this.container.querySelector('#high-contrast-toggle') as HTMLInputElement;
+        highContrastToggle?.addEventListener('change', () => {
+            this.settings.highContrast = highContrastToggle.checked;
+            this.saveSettingDebounced('highContrast', highContrastToggle.checked);
+            this.applyHighContrast(highContrastToggle.checked);
+        });
+
+        // Comfort Mode Toggle
+        const comfortToggle = this.container.querySelector('#comfort-mode-toggle') as HTMLInputElement;
+        comfortToggle?.addEventListener('change', () => {
+            this.settings.comfortMode = comfortToggle.checked;
+            this.saveSettingDebounced('comfortMode', comfortToggle.checked);
+            this.applyComfortMode(comfortToggle.checked);
+        });
+
+        // Comfort Intensity Slider
         const intensitySlider = this.container.querySelector('#comfort-intensity-slider') as HTMLInputElement;
         intensitySlider?.addEventListener('input', () => {
             const value = parseInt(intensitySlider.value);
-            const labels = ['Gentle', 'Normal', 'Amped'];
-            const labelEl = this.container.querySelector('#comfort-intensity-label');
-            if (labelEl) labelEl.textContent = labels[value] || 'Normal';
-            this.saveSetting('sensoryIntensity', value);
+            this.settings.comfortIntensity = value;
+            this.updateIntensityLabel(value);
+            this.saveSettingDebounced('comfortIntensity', value);
         });
 
-        // Reset to Default
+        // Tutorial Toggle
+        const tutorialToggle = this.container.querySelector('#tutorial-hints-toggle') as HTMLInputElement;
+        tutorialToggle?.addEventListener('change', () => {
+            this.settings.tutorialHints = tutorialToggle.checked;
+            this.updateToggleStatus('tutorial-hints-status', tutorialToggle.checked);
+            this.saveSettingDebounced('tutorialHints', tutorialToggle.checked);
+        });
+
+        // Reset Tutorials Button
+        const resetTutorialsBtn = this.container.querySelector('#reset-tutorials-btn');
+        resetTutorialsBtn?.addEventListener('click', () => {
+            localStorage.removeItem('carouselTutorialDismissed');
+            this.saveSettingDebounced('tutorialsReset', true);
+
+            // Visual feedback
+            const btn = resetTutorialsBtn as HTMLButtonElement;
+            const originalText = btn.textContent;
+            btn.textContent = 'RESET!';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 1500);
+        });
+
+        // Reset to Default Button
         const resetBtn = this.container.querySelector('#btn-settings-reset');
         resetBtn?.addEventListener('click', () => {
             if (confirm('Reset all settings to default?')) {
-                localStorage.removeItem('gameSettings');
-                this.loadSettings();
-                alert('Settings reset to default!');
+                this.resetToDefaults();
             }
         });
 
         // Secret Code Submit
         const submitCodeBtn = this.container.querySelector('#submit-code-btn');
         const codeInput = this.container.querySelector('#secret-code-input') as HTMLInputElement;
+
         submitCodeBtn?.addEventListener('click', () => {
             if (codeInput && codeInput.value.trim()) {
                 this.submitSecretCode(codeInput.value.trim());
                 codeInput.value = '';
             }
         });
+
+        codeInput?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && codeInput.value.trim()) {
+                this.submitSecretCode(codeInput.value.trim());
+                codeInput.value = '';
+            }
+        });
+    }
+
+    private setupVolumeSlider(sliderId: string, valueId: string, settingKey: keyof GameSettings) {
+        const slider = this.container.querySelector(`#${sliderId}`) as HTMLInputElement;
+        const valueDisplay = this.container.querySelector(`#${valueId}`);
+
+        slider?.addEventListener('input', () => {
+            const value = parseInt(slider.value);
+            (this.settings as any)[settingKey] = value;
+            if (valueDisplay) valueDisplay.textContent = `${value}%`;
+            this.saveSettingDebounced(settingKey, value);
+        });
     }
 
     private switchTab(tabName: string) {
         this.currentTab = tabName;
 
-        // Update buttons
+        // Update tab buttons
         this.container.querySelectorAll('.settings-tab-btn').forEach(btn => {
             const el = btn as HTMLElement;
-            if (el.dataset.tab === tabName) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.dataset.tab === tabName);
         });
 
-        // Update panels
+        // Update tab panels
         this.container.querySelectorAll('.tab-panel').forEach(panel => {
             const el = panel as HTMLElement;
-            if (el.id === `tab-${tabName}`) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.id === `tab-${tabName}`);
         });
-
-        // Save active tab
-        this.saveSetting('activeTab', tabName);
     }
 
-    private setTextSpeed(speed: string) {
+    private setTextSpeed(speed: GameSettings['textSpeed']) {
+        this.settings.textSpeed = speed;
         this.container.querySelectorAll('.speed-btn').forEach(btn => {
             const el = btn as HTMLElement;
-            if (el.dataset.speed === speed) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.dataset.speed === speed);
         });
-        this.saveSetting('textSpeed', speed);
+        this.saveSettingDebounced('textSpeed', speed);
     }
 
-    private setDisplayMode(mode: string) {
+    private setFontSize(size: GameSettings['fontSize']) {
+        this.settings.fontSize = size;
+        this.container.querySelectorAll('.font-size-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.size === size);
+        });
+        this.saveSettingDebounced('fontSize', size);
+        this.applyFontSize(size);
+    }
+
+    private setDisplayMode(mode: GameSettings['displayMode']) {
+        this.settings.displayMode = mode;
         this.container.querySelectorAll('.display-mode-btn').forEach(btn => {
             const el = btn as HTMLElement;
-            if (el.dataset.mode === mode) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.dataset.mode === mode);
         });
-        this.saveSetting('displayMode', mode);
+        this.saveSettingDebounced('displayMode', mode);
+        this.applyDisplayMode(mode);
     }
 
     private setTheme(theme: string) {
+        this.settings.uiTheme = theme;
         this.container.querySelectorAll('.theme-pref-btn').forEach(btn => {
             const el = btn as HTMLElement;
-            if (el.dataset.theme === theme) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.dataset.theme === theme);
         });
-        this.saveSetting('uiTheme', theme);
+        this.saveSettingDebounced('uiTheme', theme);
     }
 
-    private setDifficulty(difficulty: string) {
+    private setDifficulty(difficulty: GameSettings['tetherDifficulty']) {
+        // Check for insane mode lock conditions here
+        const insaneLocked = localStorage.getItem('insaneModeUnlocked') !== 'true';
+        if (difficulty === 'insane' && insaneLocked) {
+            // Show locked message
+            return;
+        }
+
+        this.settings.tetherDifficulty = difficulty;
         this.container.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
             const el = btn as HTMLElement;
-            if (el.dataset.difficulty === difficulty) el.classList.add('active');
-            else el.classList.remove('active');
+            el.classList.toggle('active', el.dataset.difficulty === difficulty);
         });
-        this.saveSetting('tetherDifficulty', difficulty);
+        this.saveSettingDebounced('tetherDifficulty', difficulty);
     }
 
     private toggleFullscreen() {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable fullscreen mode: ${err.message} (${err.name})`);
+                console.error(`Error attempting to enable fullscreen mode: ${err.message}`);
             });
         } else {
             document.exitFullscreen();
@@ -554,7 +790,6 @@ export class SettingsModal {
     }
 
     private submitSecretCode(code: string) {
-        // Emit event for secret code system to handle
         this.eventBus.emit('secret_code:submit', { code });
 
         // Show success indicator temporarily
@@ -572,101 +807,275 @@ export class SettingsModal {
         if (el) el.textContent = checked ? 'ON' : 'OFF';
     }
 
+    private updateIntensityLabel(value: number) {
+        const labels = ['Gentle', 'Normal', 'Amped', 'INSANE'];
+        const colors = ['#00ff88', '#0ff', '#ff00ff', '#ff0000'];
+        const labelEl = this.container.querySelector('#comfort-intensity-label');
+
+        if (labelEl) {
+            labelEl.textContent = labels[value] || 'Normal';
+            (labelEl as HTMLElement).style.color = colors[value] || '#0ff';
+            (labelEl as HTMLElement).style.textShadow = `0 0 10px ${colors[value] || '#0ff'}`;
+        }
+    }
+
+    // ========================================
+    // SETTINGS PERSISTENCE
+    // ========================================
+
+    private saveSettingDebounced(key: string, value: any) {
+        // Clear existing timer
+        if (this.saveDebounceTimer) {
+            clearTimeout(this.saveDebounceTimer);
+        }
+
+        // Set new timer for debounced save
+        this.saveDebounceTimer = setTimeout(() => {
+            this.saveSetting(key, value);
+        }, 300);
+    }
+
     private saveSetting(key: string, value: any) {
         // Save to localStorage
         const current = JSON.parse(localStorage.getItem('gameSettings') || '{}');
         current[key] = value;
         localStorage.setItem('gameSettings', JSON.stringify(current));
 
+        // Save to StateManager if available
+        if (this.stateManager) {
+            this.stateManager.set(`settings.${key}`, value);
+            this.stateManager.save();
+        }
+
+        // Emit settings:changed event
         this.eventBus.emit('settings:changed', { key, value });
     }
 
     private loadSettings() {
-        const settings = JSON.parse(localStorage.getItem('gameSettings') || '{}');
-
-        // Apply active tab (persistence)
-        if (settings.activeTab) {
-            this.currentTab = settings.activeTab;
-            this.switchTab(settings.activeTab);
+        // Try localStorage first
+        const saved = localStorage.getItem('gameSettings');
+        if (saved) {
+            try {
+                const parsed = JSON.parse(saved);
+                this.settings = { ...DEFAULT_SETTINGS, ...parsed };
+            } catch (e) {
+                console.error('Failed to parse saved settings:', e);
+                this.settings = { ...DEFAULT_SETTINGS };
+            }
         }
 
-        // Apply text speed
-        if (settings.textSpeed) this.setTextSpeed(settings.textSpeed);
+        // Apply loaded settings to UI
+        this.applySettingsToUI();
 
-        // Apply display mode
-        if (settings.displayMode) this.setDisplayMode(settings.displayMode);
+        // Apply settings to game systems
+        this.applyAllSettings();
+    }
 
-        // Apply theme
-        if (settings.uiTheme) this.setTheme(settings.uiTheme);
+    private applySettingsToUI() {
+        // Text Speed
+        this.container.querySelectorAll('.speed-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.speed === this.settings.textSpeed);
+        });
 
-        // Apply difficulty
-        if (settings.tetherDifficulty) this.setDifficulty(settings.tetherDifficulty);
+        // Font Size
+        this.container.querySelectorAll('.font-size-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.size === this.settings.fontSize);
+        });
 
-        // Apply toggles
+        // Display Mode
+        this.container.querySelectorAll('.display-mode-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.mode === this.settings.displayMode);
+        });
+
+        // Theme
+        this.container.querySelectorAll('.theme-pref-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.theme === this.settings.uiTheme);
+        });
+
+        // Difficulty
+        this.container.querySelectorAll('.tether-difficulty-btn').forEach(btn => {
+            const el = btn as HTMLElement;
+            el.classList.toggle('active', el.dataset.difficulty === this.settings.tetherDifficulty);
+        });
+
+        // Auto Advance
         const autoToggle = this.container.querySelector('#auto-advance-toggle') as HTMLInputElement;
-        if (autoToggle && settings.autoAdvance !== undefined) {
-            autoToggle.checked = settings.autoAdvance;
-            this.updateToggleStatus('auto-advance-status', settings.autoAdvance);
+        if (autoToggle) {
+            autoToggle.checked = this.settings.autoAdvance;
+            this.updateToggleStatus('auto-advance-status', this.settings.autoAdvance);
             const delayRow = this.container.querySelector('#auto-delay-row') as HTMLElement;
-            if (delayRow) delayRow.style.display = settings.autoAdvance ? 'flex' : 'none';
+            if (delayRow) delayRow.style.display = this.settings.autoAdvance ? 'flex' : 'none';
         }
 
-        const tutorialToggle = this.container.querySelector('#tutorial-hints-toggle') as HTMLInputElement;
-        if (tutorialToggle && settings.tutorialHints !== undefined) {
-            tutorialToggle.checked = settings.tutorialHints;
-            this.updateToggleStatus('tutorial-hints-status', settings.tutorialHints);
+        // Auto Delay
+        const delaySlider = this.container.querySelector('#auto-delay-slider') as HTMLInputElement;
+        if (delaySlider) {
+            delaySlider.value = this.settings.autoAdvanceDelay.toString();
+            const valueDisplay = this.container.querySelector('#auto-delay-value');
+            if (valueDisplay) valueDisplay.textContent = `${(this.settings.autoAdvanceDelay / 1000).toFixed(1)}s`;
         }
 
+        // Volume sliders
+        this.applyVolumeSlider('master-volume-slider', 'master-volume-value', this.settings.masterVolume);
+        this.applyVolumeSlider('music-volume-slider', 'music-volume-value', this.settings.musicVolume);
+        this.applyVolumeSlider('sfx-volume-slider', 'sfx-volume-value', this.settings.sfxVolume);
+
+        // Toggles
         const hapticToggle = this.container.querySelector('#haptic-toggle') as HTMLInputElement;
-        if (hapticToggle && settings.hapticEnabled !== undefined) {
-            hapticToggle.checked = settings.hapticEnabled;
-        }
-
-        const comfortToggle = this.container.querySelector('#comfort-mode-toggle') as HTMLInputElement;
-        if (comfortToggle && settings.comfortMode !== undefined) {
-            comfortToggle.checked = settings.comfortMode;
-        }
+        if (hapticToggle) hapticToggle.checked = this.settings.hapticEnabled;
 
         const reduceMotionToggle = this.container.querySelector('#reduce-motion-toggle') as HTMLInputElement;
-        if (reduceMotionToggle && settings.reduceMotion !== undefined) {
-            reduceMotionToggle.checked = settings.reduceMotion;
-        }
+        if (reduceMotionToggle) reduceMotionToggle.checked = this.settings.reduceMotion;
 
-        // Apply sliders
-        const delaySlider = this.container.querySelector('#auto-delay-slider') as HTMLInputElement;
-        if (delaySlider && settings.autoAdvanceDelay !== undefined) {
-            delaySlider.value = settings.autoAdvanceDelay.toString();
-            const valueDisplay = this.container.querySelector('#auto-delay-value');
-            if (valueDisplay) valueDisplay.textContent = `${(settings.autoAdvanceDelay / 1000).toFixed(1)}s`;
-        }
+        const highContrastToggle = this.container.querySelector('#high-contrast-toggle') as HTMLInputElement;
+        if (highContrastToggle) highContrastToggle.checked = this.settings.highContrast;
 
+        const comfortToggle = this.container.querySelector('#comfort-mode-toggle') as HTMLInputElement;
+        if (comfortToggle) comfortToggle.checked = this.settings.comfortMode;
+
+        // Intensity slider
         const intensitySlider = this.container.querySelector('#comfort-intensity-slider') as HTMLInputElement;
-        if (intensitySlider && settings.sensoryIntensity !== undefined) {
-            intensitySlider.value = settings.sensoryIntensity.toString();
-            const labels = ['Gentle', 'Normal', 'Amped'];
-            const labelEl = this.container.querySelector('#comfort-intensity-label');
-            if (labelEl) labelEl.textContent = labels[settings.sensoryIntensity] || 'Normal';
+        if (intensitySlider) {
+            intensitySlider.value = this.settings.comfortIntensity.toString();
+            this.updateIntensityLabel(this.settings.comfortIntensity);
+        }
+
+        // Tutorial toggle
+        const tutorialToggle = this.container.querySelector('#tutorial-hints-toggle') as HTMLInputElement;
+        if (tutorialToggle) {
+            tutorialToggle.checked = this.settings.tutorialHints;
+            this.updateToggleStatus('tutorial-hints-status', this.settings.tutorialHints);
         }
     }
+
+    private applyVolumeSlider(sliderId: string, valueId: string, value: number) {
+        const slider = this.container.querySelector(`#${sliderId}`) as HTMLInputElement;
+        const valueDisplay = this.container.querySelector(`#${valueId}`);
+        if (slider) slider.value = value.toString();
+        if (valueDisplay) valueDisplay.textContent = `${value}%`;
+    }
+
+    private applyAllSettings() {
+        this.applyFontSize(this.settings.fontSize);
+        this.applyDisplayMode(this.settings.displayMode);
+        this.applyReduceMotion(this.settings.reduceMotion);
+        this.applyHighContrast(this.settings.highContrast);
+        this.applyComfortMode(this.settings.comfortMode);
+    }
+
+    // ========================================
+    // APPLY SETTINGS TO GAME SYSTEMS
+    // ========================================
+
+    private applyFontSize(size: GameSettings['fontSize']) {
+        const sizeMap = { small: '14px', medium: '16px', large: '20px' };
+        document.documentElement.style.setProperty('--dialog-font-size', sizeMap[size] || '16px');
+        document.body.setAttribute('data-font-size', size);
+    }
+
+    private applyDisplayMode(mode: GameSettings['displayMode']) {
+        const gameContainer = document.getElementById('game-container');
+        if (!gameContainer) return;
+
+        gameContainer.classList.remove('force-portrait', 'force-landscape');
+        if (mode === 'portrait') {
+            gameContainer.classList.add('force-portrait');
+        } else if (mode === 'landscape') {
+            gameContainer.classList.add('force-landscape');
+        }
+    }
+
+    private applyReduceMotion(enabled: boolean) {
+        document.body.setAttribute('data-reduce-motion', enabled ? 'true' : 'false');
+        if (enabled) {
+            document.body.classList.add('reduce-motion');
+        } else {
+            document.body.classList.remove('reduce-motion');
+        }
+    }
+
+    private applyHighContrast(enabled: boolean) {
+        document.body.setAttribute('data-high-contrast', enabled ? 'true' : 'false');
+        if (enabled) {
+            document.body.classList.add('high-contrast');
+        } else {
+            document.body.classList.remove('high-contrast');
+        }
+    }
+
+    private applyComfortMode(enabled: boolean) {
+        document.body.setAttribute('data-comfort-mode', enabled ? 'true' : 'false');
+
+        // Find all glitch elements and toggle comfort-mode class
+        document.querySelectorAll('.version-glitch').forEach(el => {
+            if (enabled) {
+                el.classList.add('comfort-mode');
+            } else {
+                el.classList.remove('comfort-mode');
+            }
+        });
+    }
+
+    private resetToDefaults() {
+        this.settings = { ...DEFAULT_SETTINGS };
+        localStorage.removeItem('gameSettings');
+
+        // Re-apply to UI and game
+        this.applySettingsToUI();
+        this.applyAllSettings();
+
+        // Save defaults
+        localStorage.setItem('gameSettings', JSON.stringify(this.settings));
+
+        // Emit reset event for each setting
+        Object.entries(this.settings).forEach(([key, value]) => {
+            this.eventBus.emit('settings:changed', { key, value });
+        });
+    }
+
+    // ========================================
+    // PUBLIC API
+    // ========================================
 
     public open() {
         this.isOpen = true;
         this.container.style.display = 'flex';
+
         // Re-load settings in case they changed externally
         this.loadSettings();
-        // Update secret codes UI
-        if (window.secretCodesManager) {
-            window.secretCodesManager.updateCodesUI();
+
+        // Update secret codes UI if available
+        if ((window as any).secretCodesManager) {
+            (window as any).secretCodesManager.updateCodesUI();
         }
-        console.debug("Settings Active:", this.isOpen, "Tab:", this.currentTab);
+
+        console.debug('Settings opened. Active tab:', this.currentTab);
     }
 
     public close(emitEvent: boolean = true) {
         if (!this.isOpen) return;
+
         this.isOpen = false;
         this.container.style.display = 'none';
+
         if (emitEvent) {
-            this.eventBus.emit('settings:close', {}); // Notify others
+            this.eventBus.emit('settings:close', {});
         }
+    }
+
+    public getSettings(): GameSettings {
+        return { ...this.settings };
+    }
+
+    public getSetting<K extends keyof GameSettings>(key: K): GameSettings[K] {
+        return this.settings[key];
+    }
+
+    public isModalOpen(): boolean {
+        return this.isOpen;
     }
 }

@@ -18,15 +18,46 @@ export interface SaveSlot {
 }
 
 /**
+ * Auto-save configuration
+ */
+interface AutoSaveConfig {
+    enabled: boolean;
+    throttleMs: number;        // Minimum time between auto-saves (30 seconds)
+    intervalMs: number;        // Time-based auto-save interval (5 minutes)
+    primarySlot: number;       // Primary auto-save slot
+    backupSlot: number;        // Backup slot for recovery
+}
+
+/**
  * SaveSystem
- * 
+ *
  * Manages game persistence to localStorage.
- * Handles slots, auto-save (slot 0), and version checks.
+ * Handles slots, auto-save (slots 0 and -1 for backup), and version checks.
+ *
+ * Auto-save triggers:
+ * - On scene load (throttled)
+ * - On choice selection
+ * - On note collection
+ * - Every 5 minutes if state is dirty
  */
 export class SaveSystem {
     private stateManager: StateManager;
     private eventBus: EventBus;
     private readonly SLOT_PREFIX = GameConfig.SAVE.STORAGE_KEY_PREFIX;
+
+    // Auto-save state
+    private autoSaveConfig: AutoSaveConfig = {
+        enabled: true,
+        throttleMs: 30000,      // 30 seconds minimum between auto-saves
+        intervalMs: 300000,     // 5 minutes
+        primarySlot: 0,         // Auto-save primary
+        backupSlot: -1          // Auto-save backup (dual backup system)
+    };
+
+    private lastAutoSaveTime: number = 0;
+    private isDirty: boolean = false;
+    private isSaving: boolean = false;
+    private intervalTimer: ReturnType<typeof setInterval> | null = null;
 
     constructor(stateManager: StateManager, eventBus: EventBus) {
         this.stateManager = stateManager;
@@ -34,26 +65,252 @@ export class SaveSystem {
     }
 
     init() {
-        // Listen for scene load to trigger auto-save
+        this.setupAutoSaveListeners();
+        this.startIntervalAutoSave();
+        console.log('[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)');
+    }
+
+    /**
+     * Setup event listeners for auto-save triggers
+     */
+    private setupAutoSaveListeners(): void {
+        // Scene load - trigger auto-save (throttled)
         this.eventBus.on('scene:load', (data: { sceneId: string }) => {
-            this.autoSave(data.sceneId);
+            this.triggerAutoSave(data.sceneId, 'scene_load');
+        });
+
+        // Choice selection - mark dirty and trigger
+        this.eventBus.on('choice:selected', () => {
+            this.markDirty('choice');
+            this.triggerAutoSave(this.getCurrentSceneId(), 'choice');
+        });
+
+        // Note collection - mark dirty and trigger
+        this.eventBus.on('note:collected', () => {
+            this.markDirty('note');
+            this.triggerAutoSave(this.getCurrentSceneId(), 'note_collected');
+        });
+
+        // Tether changes - mark dirty (but don't trigger immediate save)
+        this.eventBus.on('tether:change', () => {
+            this.markDirty('tether');
         });
     }
 
     /**
-     * Auto-save current game state (Slot 0)
+     * Start the interval-based auto-save (every 5 minutes if dirty)
      */
-    async autoSave(currentSceneId: string): Promise<boolean> {
-        // Don't auto-save on menu screens or non-gameplay scenes
-        if (currentSceneId === 'main_menu' || currentSceneId === 'splash' || currentSceneId === 'credits') {
-            return false;
+    private startIntervalAutoSave(): void {
+        if (this.intervalTimer) {
+            clearInterval(this.intervalTimer);
         }
 
-        console.log(`💾 Auto-saving at scene: ${currentSceneId}`);
-        return this.saveGame(0, `Auto-save: ${currentSceneId}`);
+        this.intervalTimer = setInterval(() => {
+            if (this.autoSaveConfig.enabled && this.isDirty && this.canAutoSave()) {
+                const sceneId = this.getCurrentSceneId();
+                if (sceneId) {
+                    this.performAutoSave(sceneId, 'interval');
+                }
+            }
+        }, this.autoSaveConfig.intervalMs);
     }
 
+    /**
+     * Get current scene ID from state
+     */
+    private getCurrentSceneId(): string {
+        const state = this.stateManager.getAll() as unknown as GameState;
+        return state?.currentScene || '';
+    }
 
+    /**
+     * Mark state as dirty (needs saving)
+     */
+    private markDirty(reason: string): void {
+        this.isDirty = true;
+        console.log(`[SaveSystem] State marked dirty: ${reason}`);
+    }
+
+    /**
+     * Check if auto-save can proceed (throttle check)
+     */
+    private canAutoSave(): boolean {
+        if (!this.autoSaveConfig.enabled) return false;
+        if (this.isSaving) return false;
+
+        const now = Date.now();
+        const elapsed = now - this.lastAutoSaveTime;
+
+        return elapsed >= this.autoSaveConfig.throttleMs;
+    }
+
+    /**
+     * Trigger an auto-save with throttling
+     */
+    private triggerAutoSave(sceneId: string, reason: string): void {
+        // Skip non-gameplay scenes
+        if (!sceneId || sceneId === 'main_menu' || sceneId === 'splash' || sceneId === 'credits') {
+            return;
+        }
+
+        if (!this.canAutoSave()) {
+            console.log(`[SaveSystem] Auto-save throttled (reason: ${reason})`);
+            return;
+        }
+
+        this.performAutoSave(sceneId, reason);
+    }
+
+    /**
+     * Perform the actual auto-save operation
+     */
+    private async performAutoSave(sceneId: string, reason: string): Promise<boolean> {
+        if (this.isSaving) return false;
+
+        this.isSaving = true;
+        this.eventBus.emit('autosave:start', { reason });
+
+        console.log(`[SaveSystem] Auto-saving (reason: ${reason}, scene: ${sceneId})`);
+
+        try {
+            // Rotate backup: copy primary to backup before saving
+            await this.rotateBackup();
+
+            // Perform the save
+            const success = await this.saveGame(
+                this.autoSaveConfig.primarySlot,
+                `Auto-save: ${sceneId}`
+            );
+
+            if (success) {
+                this.lastAutoSaveTime = Date.now();
+                this.isDirty = false;
+                console.log('[SaveSystem] Auto-save completed successfully');
+            }
+
+            this.eventBus.emit('autosave:complete', {
+                success,
+                slot: this.autoSaveConfig.primarySlot
+            });
+
+            return success;
+
+        } catch (error) {
+            console.error('[SaveSystem] Auto-save failed:', error);
+            this.eventBus.emit('autosave:complete', {
+                success: false,
+                slot: this.autoSaveConfig.primarySlot
+            });
+            return false;
+
+        } finally {
+            this.isSaving = false;
+        }
+    }
+
+    /**
+     * Rotate backup: copy primary auto-save to backup slot
+     * This provides a second recovery point if the primary becomes corrupted
+     */
+    private async rotateBackup(): Promise<void> {
+        try {
+            const primaryKey = `${this.SLOT_PREFIX}${this.autoSaveConfig.primarySlot}`;
+            const backupKey = `${this.SLOT_PREFIX}${this.autoSaveConfig.backupSlot}`;
+
+            const primaryData = localStorage.getItem(primaryKey);
+            if (primaryData) {
+                localStorage.setItem(backupKey, primaryData);
+                console.log('[SaveSystem] Backup rotated');
+            }
+        } catch (error) {
+            console.warn('[SaveSystem] Backup rotation failed:', error);
+        }
+    }
+
+    /**
+     * Public method to get auto-save slot data (for Continue button)
+     */
+    public getAutoSave(): SaveSlot | null {
+        const metadata = this.getSlotMetadata(this.autoSaveConfig.primarySlot);
+        if (!metadata) return null;
+
+        const key = `${this.SLOT_PREFIX}${this.autoSaveConfig.primarySlot}`;
+        const raw = localStorage.getItem(key);
+        if (!raw) return null;
+
+        try {
+            return JSON.parse(raw);
+        } catch {
+            return null;
+        }
+    }
+
+    /**
+     * Check if auto-save exists (for showing Continue button)
+     */
+    public hasAutoSave(): boolean {
+        return this.hasSlot(this.autoSaveConfig.primarySlot);
+    }
+
+    /**
+     * Load from auto-save slot
+     */
+    public async loadAutoSave(): Promise<boolean> {
+        return this.loadGame(this.autoSaveConfig.primarySlot);
+    }
+
+    /**
+     * Load from backup auto-save slot (recovery)
+     */
+    public async loadBackupAutoSave(): Promise<boolean> {
+        return this.loadGame(this.autoSaveConfig.backupSlot);
+    }
+
+    /**
+     * Enable/disable auto-save
+     */
+    public setAutoSaveEnabled(enabled: boolean): void {
+        this.autoSaveConfig.enabled = enabled;
+        console.log(`[SaveSystem] Auto-save ${enabled ? 'enabled' : 'disabled'}`);
+    }
+
+    /**
+     * Force an immediate auto-save (bypasses throttle)
+     */
+    public async forceAutoSave(): Promise<boolean> {
+        const sceneId = this.getCurrentSceneId();
+        if (!sceneId) return false;
+
+        // Temporarily bypass throttle
+        const originalThrottle = this.autoSaveConfig.throttleMs;
+        this.autoSaveConfig.throttleMs = 0;
+
+        const result = await this.performAutoSave(sceneId, 'forced');
+
+        this.autoSaveConfig.throttleMs = originalThrottle;
+        return result;
+    }
+
+    /**
+     * Get auto-save status for debugging
+     */
+    public getAutoSaveStatus(): {
+        enabled: boolean;
+        isDirty: boolean;
+        isSaving: boolean;
+        lastSaveTime: number;
+        timeSinceLastSave: number;
+        canSave: boolean;
+    } {
+        return {
+            enabled: this.autoSaveConfig.enabled,
+            isDirty: this.isDirty,
+            isSaving: this.isSaving,
+            lastSaveTime: this.lastAutoSaveTime,
+            timeSinceLastSave: Date.now() - this.lastAutoSaveTime,
+            canSave: this.canAutoSave()
+        };
+    }
 
     /**
      * Save current game state to a slot
@@ -79,12 +336,15 @@ export class SaveSystem {
             const key = `${this.SLOT_PREFIX}${slotId}`;
             localStorage.setItem(key, JSON.stringify(saveSlot));
 
-            this.eventBus.emit('save:complete', { slot: slotId });
-            console.log(`💾 Saved to slot ${slotId}`);
+            // Only emit save:complete for manual saves (non-auto slots)
+            if (slotId > 0) {
+                this.eventBus.emit('save:complete', { slot: slotId });
+            }
+            console.log(`[SaveSystem] Saved to slot ${slotId}`);
             return true;
 
         } catch (e) {
-            console.error('Save failed', e);
+            console.error('[SaveSystem] Save failed', e);
             return false;
         }
     }
@@ -98,7 +358,7 @@ export class SaveSystem {
             const raw = localStorage.getItem(key);
 
             if (!raw) {
-                console.warn(`No save found in slot ${slotId}`);
+                console.warn(`[SaveSystem] No save found in slot ${slotId}`);
                 return false;
             }
 
@@ -106,29 +366,25 @@ export class SaveSystem {
 
             // Version Check
             if (saveSlot.metadata.version !== GameConfig.SAVE.VERSION) {
-                console.warn(`Version mismatch: Save v${saveSlot.metadata.version} vs Game v${GameConfig.SAVE.VERSION}`);
+                console.warn(`[SaveSystem] Version mismatch: Save v${saveSlot.metadata.version} vs Game v${GameConfig.SAVE.VERSION}`);
                 // Add migration logic here in future
             }
 
             // Restore State
-            // this.stateManager.setAll(saveSlot.data); // Original line
-            // Emit generic load event effectively via state change, but maybe explicit one?
-            // GameEngine handles 'scene:load' when it detects change, or we can explicit call engine.loadScene...
-            // Ideally, simple state restoration is enough, but GameEngine might need to 'react' to the scene change.
             if (this.isValidGameState(saveSlot.data)) {
                 const restored = saveSlot.data as unknown as GameState;
 
                 // Restore state using setAll (replaces entire state)
                 this.stateManager.setAll(restored as unknown as Record<string, unknown>);
-                console.log(`📂 Loaded from slot ${slotId}`); // Changed 'slot' to 'slotId'
+                console.log(`[SaveSystem] Loaded from slot ${slotId}`);
                 return true;
             } else {
-                console.error(`Load failed: Invalid game state in slot ${slotId}`, saveSlot.data);
+                console.error(`[SaveSystem] Load failed: Invalid game state in slot ${slotId}`, saveSlot.data);
                 return false;
             }
 
         } catch (e) {
-            console.error('Load failed', e);
+            console.error('[SaveSystem] Load failed', e);
             return false;
         }
     }
@@ -185,5 +441,15 @@ export class SaveSystem {
             typeof data.tetherLevel === 'number' &&
             typeof data.flags === 'object'
         );
+    }
+
+    /**
+     * Cleanup on destroy
+     */
+    public destroy(): void {
+        if (this.intervalTimer) {
+            clearInterval(this.intervalTimer);
+            this.intervalTimer = null;
+        }
     }
 }

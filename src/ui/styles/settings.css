@@ -1,5 +1,5 @@
 /* ========================================
-   SETTINGS MENU
+   SETTINGS MENU - V2 COMPLETE STYLES
    ======================================== */
 
 #settings-menu {
@@ -20,9 +20,27 @@
     border: 3px solid #0ff;
     padding: 40px;
     border-radius: 10px;
-    max-width: 600px;
-    width: 90%;
+    max-width: 700px;
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
     box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+    position: relative;
+}
+
+#settings-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+#settings-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+#settings-content::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
 }
 
 #settings-content h2 {
@@ -31,6 +49,31 @@
     font-size: 2em;
     margin-bottom: 30px;
     text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+/* Close Button */
+.close-x {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: 2px solid #0ff;
+    color: #0ff;
+    width: 35px;
+    height: 35px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.close-x:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
 }
 
 /* ========================================
@@ -39,19 +82,20 @@
 
 .settings-tabs {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-bottom: 20px;
     border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    flex-wrap: wrap;
 }
 
 .settings-tab-btn {
-    padding: 12px 20px;
+    padding: 12px 16px;
     background: transparent;
     border: none;
     border-bottom: 3px solid transparent;
     color: rgba(0, 255, 255, 0.5);
     font-family: 'Courier New', monospace;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
@@ -71,7 +115,7 @@
 /* Tab Panels */
 .settings-tab-content {
     position: relative;
-    min-height: 400px;
+    min-height: 300px;
 }
 
 .tab-panel {
@@ -84,28 +128,644 @@
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ========================================
-   SHORTCUTS TAB STYLING
+   SETTINGS SECTIONS
+   ======================================== */
+
+.settings-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.settings-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.settings-section-header {
+    color: #0ff;
+    font-size: 0.9em;
+    letter-spacing: 0.15em;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   SETTING ROWS
+   ======================================== */
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.03);
+    border-radius: 5px;
+    border-left: 3px solid rgba(0, 255, 255, 0.2);
+    transition: border-color 0.3s ease;
+}
+
+.setting-row:hover {
+    border-left-color: #0ff;
+}
+
+.setting-row:last-child {
+    margin-bottom: 0;
+}
+
+.setting-row-vertical {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.setting-sub-row {
+    margin-left: 20px;
+    background: rgba(0, 255, 255, 0.02);
+    border-left-color: rgba(0, 255, 255, 0.15);
+}
+
+/* Setting Labels */
+.setting-label {
+    color: #0ff;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    font-family: 'Courier New', monospace;
+}
+
+.setting-label-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    flex: 1;
+}
+
+.setting-name {
+    font-size: 1em;
+    color: #0ff;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    font-family: 'Courier New', monospace;
+}
+
+.setting-description {
+    font-size: 0.85em;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: none;
+    width: auto;
+}
+
+.setting-note {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+/* Setting Control Container */
+.setting-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+}
+
+/* ========================================
+   BUTTON GROUPS (Speed, Font Size, Display Mode)
+   ======================================== */
+
+.speed-btn,
+.font-size-btn,
+.display-mode-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    min-width: 70px;
+    text-align: center;
+}
+
+.speed-btn:hover,
+.font-size-btn:hover,
+.display-mode-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.speed-btn.active,
+.font-size-btn.active,
+.display-mode-btn.active {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* ========================================
+   TOGGLE SWITCHES (iOS-Style)
+   ======================================== */
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-switch .toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    border: 2px solid rgba(0, 255, 255, 0.5);
+    width: auto;
+    height: auto;
+    transform: none;
+    box-shadow: none;
+    z-index: 1;
+}
+
+.toggle-switch .toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    top: 3px;
+    background: #0ff;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 0 10px #0ff;
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(24px);
+    box-shadow: 0 0 15px #0ff;
+}
+
+.toggle-switch .toggle-slider:hover {
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.toggle-status {
+    color: #0ff;
+    font-weight: bold;
+    min-width: 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* ========================================
+   SLIDERS
+   ======================================== */
+
+.slider-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.slider-label-min,
+.slider-label-max {
+    color: rgba(0, 255, 255, 0.6);
+    font-size: 0.75em;
+    font-family: 'Courier New', monospace;
+    min-width: 30px;
+}
+
+.slider-label-min { text-align: right; }
+.slider-label-max { text-align: left; }
+
+.slider-value {
+    color: #0ff;
+    font-weight: bold;
+    min-width: 50px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Volume Sliders */
+.volume-slider,
+#auto-delay-slider {
+    width: 150px;
+    height: 6px;
+    background: linear-gradient(to right, rgba(0, 255, 255, 0.2), rgba(0, 255, 255, 0.4));
+    border-radius: 5px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb,
+#auto-delay-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.volume-slider::-moz-range-thumb,
+#auto-delay-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #0ff;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.volume-slider:hover::-webkit-slider-thumb,
+#auto-delay-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.15);
+}
+
+/* ========================================
+   INTENSITY SLIDER (4-Level)
+   ======================================== */
+
+.intensity-control {
+    width: 100%;
+}
+
+.intensity-slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.intensity-current-label {
+    text-align: center;
+    margin-bottom: 8px;
+    min-height: 24px;
+    transition: all 0.2s ease;
+}
+
+.intensity-value-display {
+    color: #0ff;
+    text-shadow: 0 0 10px #0ff;
+    font-weight: bold;
+    font-size: 1.1em;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+#comfort-intensity-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: linear-gradient(to right,
+        rgba(0, 255, 136, 0.4) 0%,      /* Gentle - green */
+        rgba(0, 255, 255, 0.5) 33%,     /* Normal - cyan */
+        rgba(255, 0, 255, 0.6) 66%,     /* Amped - magenta */
+        rgba(255, 0, 0, 0.8) 100%       /* INSANE - red */
+    );
+    outline: none;
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#comfort-intensity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0ff;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+#comfort-intensity-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #0ff;
+    cursor: pointer;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    transition: all 0.2s ease;
+}
+
+#comfort-intensity-slider:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 1);
+}
+
+#comfort-intensity-slider:hover::-moz-range-thumb {
+    transform: scale(1.2);
+    box-shadow: 0 0 18px rgba(0, 255, 255, 1);
+}
+
+.intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: rgba(0, 255, 255, 0.7);
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.intensity-labels span {
+    flex: 1;
+    text-align: center;
+}
+
+.intensity-labels span:first-child { text-align: left; }
+.intensity-labels span:last-child { text-align: right; }
+
+.intensity-insane {
+    color: #ff0000 !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+/* ========================================
+   TETHER DIFFICULTY BUTTONS
+   ======================================== */
+
+.difficulty-setting-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.difficulty-buttons-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.difficulty-buttons-row .setting-control {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tether-difficulty-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 8px 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    min-width: 80px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tether-difficulty-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.tether-difficulty-btn.active {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+}
+
+/* Insane Mode Button */
+.tether-difficulty-btn.insane-btn {
+    position: relative;
+    border-color: #ff0066;
+    color: #ff0066;
+    background: rgba(255, 0, 102, 0.1);
+}
+
+.tether-difficulty-btn.insane-btn:hover {
+    background: rgba(255, 0, 102, 0.2);
+    box-shadow: 0 0 15px rgba(255, 0, 102, 0.5);
+}
+
+.tether-difficulty-btn.insane-btn.active {
+    background: #ff0066;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(255, 0, 102, 0.8);
+}
+
+.tether-difficulty-btn.insane-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.skull-icon {
+    font-size: 1.2em;
+    line-height: 1;
+}
+
+/* Difficulty Explanations */
+.difficulty-explanations {
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.03);
+    border-left: 3px solid rgba(0, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+.difficulty-explanation-item {
+    margin-bottom: 10px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85em;
+    line-height: 1.5;
+}
+
+.difficulty-explanation-item:last-child {
+    margin-bottom: 0;
+}
+
+.difficulty-explanation-item strong {
+    color: #0ff;
+    font-weight: bold;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.locked-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+.warning-text {
+    color: #ff0066;
+    text-shadow: 0 0 5px rgba(255, 0, 102, 0.5);
+}
+
+/* ========================================
+   UI THEME SELECTOR GRID
+   ======================================== */
+
+.theme-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+}
+
+.theme-pref-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 10px 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.theme-pref-btn:hover {
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.theme-pref-btn.active {
+    background: rgba(0, 255, 255, 0.25);
+    border-color: #0ff;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* ========================================
+   ACTION BUTTONS
+   ======================================== */
+
+.action-btn {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 10px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.action-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Settings Bottom Buttons */
+.settings-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.settings-menu-button {
+    background: rgba(0, 255, 255, 0.1);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 12px 30px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    letter-spacing: 0.1em;
+}
+
+.settings-menu-button:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+}
+
+.settings-reset-btn {
+    border-color: #ff6666;
+    color: #ff6666;
+    background: rgba(255, 102, 102, 0.1);
+}
+
+.settings-reset-btn:hover {
+    background: #ff6666;
+    color: #000;
+    box-shadow: 0 0 25px rgba(255, 102, 102, 0.8);
+}
+
+/* ========================================
+   SHORTCUTS TAB
    ======================================== */
 
 .shortcuts-list {
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .shortcuts-list h3 {
     color: #0ff;
     margin-bottom: 15px;
-    font-size: 1em;
+    font-size: 0.95em;
     letter-spacing: 0.05em;
+    font-family: 'Courier New', monospace;
 }
 
 .shortcut-item {
@@ -123,7 +783,7 @@
     color: #0ff;
     font-weight: bold;
     font-family: 'Courier New', monospace;
-    min-width: 150px;
+    min-width: 140px;
 }
 
 .shortcut-desc {
@@ -132,12 +792,26 @@
     text-align: right;
 }
 
+.keyboard-shortcuts-footer {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.keyboard-shortcuts-footer p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85em;
+    margin: 0;
+}
+
 /* ========================================
-   SECRET CODES TAB STYLING
+   SECRET CODES TAB
    ======================================== */
 
 .codes-panel {
-    padding: 20px 0;
+    padding: 10px 0;
 }
 
 .codes-intro {
@@ -167,6 +841,12 @@
     color: rgba(0, 255, 255, 0.3);
 }
 
+#secret-code-input:focus {
+    outline: none;
+    border-color: #0ff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
 #code-result-message {
     min-height: 30px;
     padding: 10px;
@@ -188,13 +868,50 @@
     color: #ff6464;
 }
 
+/* Code Success Indicator */
+#code-success-indicator {
+    position: relative;
+    text-align: center;
+    padding: 1em 0;
+    pointer-events: none;
+}
+
+.code-sparkle {
+    font-size: 3em;
+    animation: sparkle 0.6s ease-out;
+    text-align: center;
+    color: #0ff;
+}
+
+.code-registered {
+    font-family: 'Courier New', monospace;
+    color: #00ff88;
+    font-size: 0.9em;
+    text-align: center;
+    margin-top: 0.5em;
+    animation: fadeInUp 0.4s ease-out 0.2s both;
+}
+
+@keyframes sparkle {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.5) rotate(180deg); opacity: 1; }
+    100% { transform: scale(1) rotate(360deg); opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Discovered Codes List */
 .codes-discovered h3 {
     color: #0ff;
     margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
 }
 
 #codes-list {
-    max-height: 250px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
@@ -213,63 +930,207 @@
     margin-bottom: 5px;
 }
 
+.discovered-code-item .code-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85em;
+}
+
+.no-codes {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+    text-align: center;
+    padding: 40px;
+}
+
 /* ========================================
-   DIZEE: SECRET CODE SUCCESS ANIMATION
+   HIGH CONTRAST MODE STYLES
    ======================================== */
 
-#code-success-indicator {
-    position: relative;
-    text-align: center;
-    padding: 1em 0;
-    pointer-events: none;
+body.high-contrast #settings-content {
+    background: #000;
+    border-color: #fff;
 }
 
-.code-sparkle {
-    font-size: 3em;
-    animation: sparkle 0.6s ease-out;
-    text-align: center;
+body.high-contrast .setting-label,
+body.high-contrast .setting-name,
+body.high-contrast .settings-section-header {
+    color: #fff;
 }
 
-.code-registered {
-    font-family: 'Courier New', monospace;
-    color: #00ff88;
-    font-size: 0.9em;
-    text-align: center;
-    margin-top: 0.5em;
-    animation: fadeInUp 0.4s ease-out 0.2s both;
+body.high-contrast .setting-description,
+body.high-contrast .setting-note {
+    color: rgba(255, 255, 255, 0.9);
 }
 
-@keyframes sparkle {
-    0% {
-        transform: scale(0) rotate(0deg);
-        opacity: 0;
+body.high-contrast .speed-btn,
+body.high-contrast .font-size-btn,
+body.high-contrast .display-mode-btn,
+body.high-contrast .theme-pref-btn,
+body.high-contrast .action-btn {
+    border-color: #fff;
+    color: #fff;
+}
+
+body.high-contrast .speed-btn.active,
+body.high-contrast .font-size-btn.active,
+body.high-contrast .display-mode-btn.active {
+    background: #fff;
+    color: #000;
+}
+
+/* ========================================
+   REDUCE MOTION STYLES
+   ======================================== */
+
+body.reduce-motion .tab-panel {
+    animation: none;
+}
+
+body.reduce-motion .toggle-switch .toggle-slider,
+body.reduce-motion .toggle-switch .toggle-slider:before,
+body.reduce-motion .speed-btn,
+body.reduce-motion .action-btn {
+    transition: none;
+}
+
+body.reduce-motion #comfort-intensity-slider::-webkit-slider-thumb,
+body.reduce-motion .volume-slider::-webkit-slider-thumb {
+    transition: none;
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    #settings-content {
+        padding: 25px 20px;
+        max-height: 85vh;
     }
 
-    50% {
-        transform: scale(1.5) rotate(180deg);
-        opacity: 1;
+    #settings-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
     }
 
-    100% {
-        transform: scale(1) rotate(360deg);
-        opacity: 1;
+    .settings-tabs {
+        gap: 3px;
+    }
+
+    .settings-tab-btn {
+        padding: 10px 12px;
+        font-size: 0.75em;
+    }
+
+    .setting-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .setting-control {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .slider-control {
+        width: 100%;
+    }
+
+    .volume-slider,
+    #auto-delay-slider {
+        flex: 1;
+        min-width: 100px;
+    }
+
+    .theme-selector-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .theme-pref-btn {
+        font-size: 0.8em;
+        padding: 8px 12px;
+    }
+
+    .settings-buttons {
+        flex-direction: column;
+    }
+
+    .settings-menu-button {
+        width: 100%;
+    }
+
+    .code-input-group {
+        flex-direction: column;
+    }
+
+    .code-input-group .action-btn {
+        width: 100%;
+    }
+
+    .shortcut-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .shortcut-desc {
+        text-align: left;
     }
 }
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+/* Landscape Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    #settings-content {
+        padding: 15px 20px;
+        max-height: 90vh;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    #settings-content h2 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+
+    .settings-section {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+    }
+
+    .setting-row {
+        margin-bottom: 12px;
+        padding: 10px;
+    }
+
+    .intensity-labels {
+        font-size: 9px;
+        letter-spacing: 0;
+    }
+}
+
+/* Very Small Screens */
+@media (max-width: 380px) {
+    .settings-tab-btn {
+        padding: 8px 8px;
+        font-size: 0.7em;
+    }
+
+    .speed-btn,
+    .font-size-btn,
+    .display-mode-btn {
+        padding: 6px 10px;
+        font-size: 0.75em;
+        min-width: 55px;
+    }
+
+    .tether-difficulty-btn {
+        min-width: 65px;
+        font-size: 0.7em;
     }
 }
 
 /* ========================================
-   DIZEE: INBOX UNREAD BADGE
+   INBOX/UNREAD BADGE STYLES
    ======================================== */
 
 .unread-badge {
@@ -290,814 +1151,16 @@
 }
 
 @keyframes badgePulse {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: scale(1);
         box-shadow: 0 0 10px rgba(255, 0, 102, 0.8);
     }
-
     50% {
         transform: scale(1.1);
         box-shadow: 0 0 20px rgba(255, 0, 102, 1);
     }
 }
 
-/* Hide badge when count is 0 */
 .unread-badge[data-count="0"] {
     display: none !important;
-}
-
-/* NEW MAIL ANIMATION */
-@keyframes newMailSlide {
-    0% {
-        transform: translateY(-20px) scale(0.8);
-        opacity: 0;
-    }
-
-    50% {
-        transform: translateY(5px) scale(1.1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-.new-mail-pulse {
-    animation: newMailSlide 0.6s ease-out;
-}
-
-.discovered-code-item .code-desc {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85em;
-}
-
-.no-codes {
-    color: rgba(255, 255, 255, 0.4);
-    font-style: italic;
-    text-align: center;
-    padding: 40px;
-}
-
-/* ========================================
-   GENERAL TAB & EXISTING SETTINGS
-   ======================================== */
-
-.setting-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    padding: 15px;
-    background: rgba(0, 255, 255, 0.05);
-    border-radius: 5px;
-}
-
-.setting-label {
-    color: #0ff;
-    font-size: 1.1em;
-    font-weight: bold;
-    letter-spacing: 0.1em;
-}
-
-.setting-control {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: flex-end;
-    /* Right-align to match text speed and display mode rows */
-}
-
-/* Text Speed Buttons */
-.speed-btn {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 8px 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.speed-btn:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.speed-btn.active {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-}
-
-/* Display Mode Buttons (match speed buttons) */
-.display-mode-btn {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 8px 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.display-mode-btn:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.display-mode-btn.active {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-}
-
-/* Tether Difficulty Buttons - DIZEE: Unified compact sizing for all 4 buttons */
-.tether-difficulty-btn {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 8px 10px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.75em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    min-width: 80px;
-    max-width: 80px;
-    height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tether-difficulty-btn:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-.tether-difficulty-btn.active {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-}
-
-/* DIZEE: Insane Mode Button - Same size as others, skull icon inside */
-.tether-difficulty-btn.insane-btn {
-    /* Inherits unified sizing from .tether-difficulty-btn */
-    position: relative;
-}
-
-.skull-icon {
-    font-size: 1.5em;
-    line-height: 1;
-    display: block;
-}
-
-/* Hover reveals full name (tooltip) */
-.insane-btn:hover::before {
-    content: "INSANE";
-    position: absolute;
-    top: -35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.95);
-    color: #ff0066;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 0.75em;
-    white-space: nowrap;
-    z-index: 100;
-    border: 1px solid #ff0066;
-    box-shadow: 0 0 10px rgba(255, 0, 102, 0.5);
-}
-
-/* DIZEE: Portrait mobile/tablet - 2x2 grid layout ONLY for portrait */
-@media (max-width: 768px) and (orientation: portrait) {
-    .difficulty-buttons-row .setting-control {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        width: 100%;
-        max-width: 400px;
-    }
-
-    .tether-difficulty-btn {
-        min-width: unset;
-        max-width: unset;
-        width: 100%;
-        height: 45px;
-        font-size: 0.75em;
-    }
-
-    .skull-icon {
-        font-size: 1.4em;
-    }
-}
-
-/* DIZEE: Landscape - stack label above buttons */
-@media (max-width: 1023px) and (orientation: landscape) {
-    .difficulty-buttons-row {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
-    }
-
-    .difficulty-buttons-row .setting-label {
-        width: 100%;
-    }
-
-    .difficulty-buttons-row .setting-control {
-        width: 100%;
-        justify-content: flex-start;
-    }
-
-    .tether-difficulty-btn {
-        min-width: 70px;
-        max-width: 70px;
-        height: 36px;
-        font-size: 0.7em;
-        padding: 6px 8px;
-    }
-
-    .skull-icon {
-        font-size: 1.3em;
-    }
-}
-
-/* Setting Description (for tether difficulty explanations) */
-.setting-description {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-    background: rgba(0, 255, 255, 0.03);
-    border-left: 2px solid rgba(0, 255, 255, 0.2);
-    border-radius: 3px;
-}
-
-.setting-description p {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.85em;
-    margin: 5px 0;
-    line-height: 1.4;
-}
-
-/* ========================================
-   HAPTIC FEEDBACK TOGGLE
-   ZEE'S ADDITION: Toggle switch styling 🖤
-   ======================================== */
-
-.setting-label-column {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3em;
-}
-
-.setting-name {
-    font-size: 1.1em;
-    color: #0ff;
-    font-weight: bold;
-    letter-spacing: 0.1em;
-}
-
-.setting-description {
-    font-size: 0.85em;
-    color: rgba(255, 255, 255, 0.7);
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    background: none;
-    border: none;
-}
-
-.setting-note {
-    font-size: 0.75em;
-    color: rgba(255, 255, 255, 0.5);
-    font-style: italic;
-}
-
-/* Toggle Switch */
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 26px;
-}
-
-.toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-/* Pill track - matches route-toggle styling (dark background, cyan border) */
-/* IMPORTANT: Using .toggle-switch .toggle-slider for specificity over route-select-toggle.css */
-.toggle-switch .toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    transition: all 0.3s ease;
-    border-radius: 50px;
-    border: 2px solid rgba(0, 255, 255, 0.5);
-    width: auto;
-    height: auto;
-    transform: none;
-    box-shadow: none;
-    z-index: 1;
-}
-
-/* Circle indicator - cyan, slides inside the pill */
-.toggle-switch .toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 3px;
-    top: 3px;
-    background: #0ff;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 50%;
-    box-shadow: 0 0 10px #0ff;
-}
-
-/* ON state - pill fills with cyan glow, border brightens */
-.toggle-switch input:checked+.toggle-slider {
-    background: rgba(0, 255, 255, 0.2);
-    border-color: #0ff;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-}
-
-/* ON state - circle slides to right */
-.toggle-switch input:checked+.toggle-slider:before {
-    transform: translateX(24px);
-    box-shadow: 0 0 15px #0ff;
-}
-
-.toggle-switch .toggle-slider:hover {
-    border-color: #0ff;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-}
-
-/* ========================================
-   TORI'S INTENSITY SLIDER 💚
-   ======================================== */
-
-.intensity-slider-container {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-}
-
-.intensity-current-label {
-    text-align: center;
-    margin-bottom: 8px;
-    min-height: 24px;
-    transition: all 0.2s ease;
-}
-
-
-#comfort-intensity-slider {
-    width: 100%;
-    height: 8px;
-    border-radius: 4px;
-    background: linear-gradient(to right,
-            rgba(100, 200, 255, 0.3) 0%,
-            /* Gentle - soft blue */
-            rgba(0, 255, 255, 0.5) 50%,
-            /* Normal - cyan */
-            rgba(255, 100, 255, 0.7) 100%
-            /* Amped - hot pink */
-        );
-    outline: none;
-    border: 1px solid rgba(0, 255, 255, 0.3);
-    cursor: pointer;
-    -webkit-appearance: none;
-    appearance: none;
-}
-
-/* Slider thumb */
-#comfort-intensity-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #00ffff;
-    cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-    transition: all 0.2s ease;
-}
-
-#comfort-intensity-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #00ffff;
-    cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-    transition: all 0.2s ease;
-}
-
-#comfort-intensity-slider:hover::-webkit-slider-thumb {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 1);
-}
-
-#comfort-intensity-slider:hover::-moz-range-thumb {
-    transform: scale(1.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 1);
-}
-
-.intensity-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: rgba(0, 255, 255, 0.7);
-    font-family: 'Courier New', monospace;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.intensity-labels span {
-    flex: 1;
-    text-align: center;
-}
-
-.intensity-labels span:first-child {
-    text-align: left;
-}
-
-.intensity-labels span:last-child {
-    text-align: right;
-}
-
-/* Landscape: reduce letter-spacing and font-size for better readability */
-@media (max-height: 600px) and (orientation: landscape) {
-    .intensity-labels {
-        font-size: 10px;
-        letter-spacing: 0px;
-        gap: 8px;
-    }
-
-    /* Force intensity slider setting-row to stack vertically like portrait */
-    .setting-row:has(#comfort-intensity-slider) {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-    }
-
-    .setting-row:has(#comfort-intensity-slider) .setting-control {
-        width: 100%;
-        margin-top: 10px;
-    }
-
-    /* Force intensity slider to display vertically like portrait */
-    .intensity-slider-container {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        min-width: 200px;
-    }
-}
-
-/* ========================================
-   TORI'S DIFFICULTY - IMPROVED LAYOUT
-   ======================================== */
-
-.difficulty-setting-container {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-}
-
-.difficulty-buttons-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.difficulty-buttons-row .setting-label {
-    flex-shrink: 0;
-}
-
-.difficulty-buttons-row .setting-control {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-/* DIZEE: Stack label above buttons in ALL landscape orientations */
-@media (orientation: landscape) {
-    .difficulty-buttons-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .difficulty-buttons-row .setting-label {
-        width: 100%;
-    }
-
-    .difficulty-buttons-row .setting-control {
-        width: 100%;
-        justify-content: flex-start;
-    }
-}
-
-.difficulty-explanations {
-    width: 100%;
-    padding: 15px;
-    background: rgba(0, 255, 255, 0.03);
-    border-left: 3px solid rgba(0, 255, 255, 0.3);
-    border-radius: 5px;
-}
-
-.difficulty-explanation-item {
-    margin-bottom: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9em;
-    line-height: 1.5;
-}
-
-.difficulty-explanation-item:last-child {
-    margin-bottom: 0;
-}
-
-.difficulty-explanation-item strong {
-    color: #0ff;
-    font-weight: bold;
-    display: inline-block;
-    min-width: 90px;
-}
-
-/* Landscape optimization */
-@media (max-width: 1023px) and (orientation: landscape) {
-    .difficulty-setting-container {
-        gap: 10px;
-    }
-
-    .difficulty-explanations {
-        padding: 10px 12px;
-    }
-
-    .difficulty-explanation-item {
-        margin-bottom: 8px;
-        font-size: 0.85em;
-        line-height: 1.4;
-    }
-
-    .difficulty-explanation-item strong {
-        min-width: 80px;
-    }
-}
-
-/* Mobile portrait */
-@media (max-width: 767px) and (orientation: portrait) {
-    .difficulty-buttons-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .difficulty-buttons-row .setting-control {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .tether-difficulty-btn {
-        flex: 1;
-    }
-
-    .difficulty-explanation-item strong {
-        display: block;
-        margin-bottom: 3px;
-    }
-}
-
-/* Toggle status text (kept from second block) */
-.toggle-status {
-    color: #0ff;
-    font-weight: bold;
-    min-width: 40px;
-}
-
-/* Auto Delay Slider */
-#auto-delay-slider {
-    width: 200px;
-    height: 6px;
-    background: rgba(0, 255, 255, 0.2);
-    border-radius: 5px;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-}
-
-#auto-delay-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #0ff;
-    cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-}
-
-#auto-delay-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #0ff;
-    cursor: pointer;
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-    border: none;
-}
-
-#auto-delay-value {
-    color: #0ff;
-    font-weight: bold;
-    min-width: 50px;
-}
-
-/* Action Button */
-.action-btn {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 10px 20px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-}
-
-.action-btn:hover {
-    background: rgba(0, 255, 255, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-}
-
-/* Settings Bottom Buttons */
-.settings-buttons {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-    justify-content: center;
-}
-
-.settings-menu-button {
-    background: rgba(0, 255, 255, 0.1);
-    color: #0ff;
-    border: 2px solid #0ff;
-    padding: 12px 30px;
-    font-family: 'Courier New', monospace;
-    font-size: 1em;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    letter-spacing: 0.1em;
-}
-
-.settings-menu-button:hover {
-    background: #0ff;
-    color: #000;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
-}
-
-/* ========================================
-   SETTINGS MENU - SCROLLABLE FIX
-   Make settings scrollable on mobile
-   ======================================== */
-
-#settings-content {
-    max-height: 90vh;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
-}
-
-#settings-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-#settings-content::-webkit-scrollbar-track {
-    background: rgba(0, 255, 255, 0.1);
-}
-
-#settings-content::-webkit-scrollbar-thumb {
-    background: #0ff;
-    border-radius: 4px;
-}
-
-/* Mobile landscape - more compact */
-@media (max-width: 1023px) and (orientation: landscape) {
-    #settings-content {
-        padding: 20px;
-        max-height: 85vh;
-    }
-
-    #settings-content h2 {
-        font-size: 1.5em;
-        margin-bottom: 15px;
-    }
-
-    .setting-row {
-        margin-bottom: 15px;
-        padding: 10px;
-    }
-
-    .setting-label {
-        font-size: 0.9em;
-    }
-
-    .speed-btn,
-    .setting-control button {
-        padding: 6px 12px;
-        font-size: 0.85em;
-    }
-}
-
-/* Backlog screen - also scrollable */
-#backlog-content {
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-@media (max-width: 1023px) and (orientation: landscape) {
-    #backlog-content {
-        max-height: 85vh;
-        padding: 20px;
-    }
-
-    #backlog-content h2 {
-        font-size: 1.5em;
-    }
-}
-
-
-
-/* ========================================
-   UI THEME PREFERENCE BUTTONS
-   DIZEE FIX: Missing styles for theme selector
-   ======================================== */
-
-.theme-selector-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%;
-}
-
-.theme-pref-btn {
-    background: rgba(0, 0, 0, 0.6);
-    color: var(--theme-primary);
-    border: 2px solid var(--theme-primary);
-    padding: 10px 15px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border-radius: 4px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.theme-pref-btn:hover {
-    background: rgba(var(--theme-primary-rgb), 0.2);
-    box-shadow: 0 0 15px var(--theme-glow);
-    transform: translateY(-2px);
-}
-
-.theme-pref-btn.active {
-    background: rgba(var(--theme-primary-rgb), 0.3);
-    border-color: var(--theme-success);
-    color: var(--theme-success);
-    box-shadow: 0 0 20px var(--theme-glow);
-}
-
-@media (max-width: 768px) {
-    .theme-selector-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .theme-pref-btn {
-        font-size: 0.8em;
-        padding: 8px 12px;
-    }
 }

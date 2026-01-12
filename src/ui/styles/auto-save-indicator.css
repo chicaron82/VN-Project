@@ -1,0 +1,209 @@
+/* ========================================
+   AUTO-SAVE INDICATOR STYLES
+   Small floating save status indicator
+   ======================================== */
+
+.auto-save-indicator {
+    position: fixed;
+    top: 50px; /* Below status bar (40px) + padding */
+    right: 15px;
+    z-index: 9990; /* Above game, below modals (9999+) */
+
+    /* Hidden by default */
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+
+    /* Smooth transitions */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.auto-save-indicator.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: none; /* Still non-interactive */
+}
+
+.auto-save-indicator.hidden {
+    opacity: 0;
+    transform: translateX(20px);
+}
+
+/* Content Container */
+.auto-save-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+
+    /* Cyberpunk aesthetic matching V2 */
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 6px;
+
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #00ffff;
+
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+/* Icon Wrapper */
+.auto-save-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* Static save icon (floppy disk emoji fallback) */
+.save-icon-static {
+    display: inline-block;
+}
+
+/* Spinning animation during save */
+.auto-save-indicator.saving .auto-save-icon {
+    animation: save-pulse 1s ease-in-out infinite;
+}
+
+.auto-save-indicator.saving .auto-save-content {
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+/* Success state */
+.auto-save-indicator.success .auto-save-content {
+    border-color: rgba(0, 255, 136, 0.5);
+    color: #00ff88;
+}
+
+.auto-save-indicator.success .auto-save-icon {
+    animation: save-success 0.4s ease-out;
+}
+
+/* Error state */
+.auto-save-indicator.error .auto-save-content {
+    border-color: rgba(255, 68, 68, 0.5);
+    color: #ff4444;
+}
+
+.auto-save-indicator.error .auto-save-icon {
+    animation: save-error 0.3s ease-out;
+}
+
+/* Text styling */
+.auto-save-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+/* Pulsing animation during save */
+@keyframes save-pulse {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* Success bounce */
+@keyframes save-success {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Error shake */
+@keyframes save-error {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-3px);
+    }
+    75% {
+        transform: translateX(3px);
+    }
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   ======================================== */
+
+/* Portrait mode - move slightly lower to avoid notch */
+@media (orientation: portrait) {
+    .auto-save-indicator {
+        top: 55px;
+        right: 10px;
+    }
+
+    .auto-save-content {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .auto-save-icon {
+        font-size: 12px;
+    }
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+    .auto-save-indicator {
+        top: 50px;
+        right: 8px;
+    }
+
+    .auto-save-content {
+        padding: 5px 8px;
+        gap: 5px;
+    }
+
+    /* Hide text on very small screens, just show icon */
+    .auto-save-text {
+        display: none;
+    }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .auto-save-indicator {
+        transition: opacity 0.2s ease-out;
+        transform: none !important;
+    }
+
+    .auto-save-indicator.visible {
+        transform: none;
+    }
+
+    .auto-save-indicator.hidden {
+        transform: none;
+    }
+
+    .auto-save-indicator.saving .auto-save-icon,
+    .auto-save-indicator.success .auto-save-icon,
+    .auto-save-indicator.error .auto-save-icon {
+        animation: none;
+    }
+}

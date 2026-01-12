@@ -1,9 +1,11 @@
 /* ========================================
-   STATUS BAR & SIDEBAR SYSTEM (V2 Port)
+   STATUS BAR SYSTEM (V2)
+   Full-featured status bar with indicators
+   Ported from V1 notification-shade-controller
    ======================================== */
 
 /* ========================================
-   STATUS BAR (Top)
+   STATUS BAR (Fixed Top)
    ======================================== */
 #status-bar {
     position: fixed;
@@ -15,7 +17,7 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     display: none;
-    /* Hidden until splash completes */
+    /* Hidden until splash completes - shown via .visible */
     justify-content: space-between;
     align-items: center;
     padding: 0 15px;
@@ -24,17 +26,40 @@
     font-family: 'Courier New', monospace;
     color: #00ffff;
     border-bottom: 1px solid rgba(0, 255, 255, 0.2);
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, border-color 0.3s ease;
 }
 
 #status-bar.visible {
     display: flex;
 }
 
+/* Auto-hide on idle - dims the bar */
+#status-bar.idle {
+    opacity: 0.5;
+}
+
+/* ========================================
+   STATUS SECTIONS (Left | Center | Right)
+   ======================================== */
 .status-section {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.status-left {
+    flex: 1;
+    justify-content: flex-start;
+}
+
+.status-center {
+    flex: 0 0 auto;
+    justify-content: center;
+}
+
+.status-right {
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .status-item {
@@ -45,17 +70,383 @@
     letter-spacing: 0.5px;
 }
 
+/* ========================================
+   LOOP VERSION INDICATOR
+   ======================================== */
 #status-loop {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    transition: all 0.3s ease;
+}
+
+/* Pulse animation for loop increment */
+#status-loop.pulse {
+    animation: loop-pulse 0.6s ease-out;
+}
+
+@keyframes loop-pulse {
+    0% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        transform: scale(1);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8);
+        transform: scale(1.1);
+    }
+    100% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+        transform: scale(1);
+    }
+}
+
+/* Glitch effect for Ronnie route */
+#status-loop.glitch {
+    animation: ronnie-glitch 0.3s ease-out;
+}
+
+@keyframes ronnie-glitch {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(-2px);
+        color: #ff00ff;
+    }
+    40% {
+        transform: translateX(2px);
+        color: #00ff00;
+    }
+    60% {
+        transform: translateX(-1px);
+        color: #ffff00;
+    }
+    80% {
+        transform: translateX(1px);
+        color: #00ffff;
+    }
+    100% {
+        transform: translateX(0);
+        color: #00ffff;
+    }
+}
+
+/* ========================================
+   ROUTE INDICATOR
+   ======================================== */
+.route-indicator {
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Route-specific colors */
+#status-bar.ronnie-route .route-indicator {
+    color: #00ffff;
+    background: rgba(0, 255, 255, 0.15);
+    text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+}
+
+#status-bar.tori-route .route-indicator {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.15);
+    text-shadow: 0 0 6px rgba(0, 255, 136, 0.5);
+}
+
+/* ========================================
+   ACT/SCENE INDICATOR (Center)
+   ======================================== */
+.act-indicator {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: none; /* Hidden by default, shown when act is set */
+}
+
+/* ========================================
+   NOTES COLLECTED INDICATOR
+   ======================================== */
+.notes-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #00ff88;
+    transition: all 0.3s ease;
+}
+
+.notes-icon {
+    font-size: 16px;
+}
+
+.notes-count {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Pulse animation when note collected */
+.notes-indicator.pulse {
+    animation: notes-pulse 0.6s ease-out;
+}
+
+@keyframes notes-pulse {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    30% {
+        transform: scale(1.2);
+        filter: brightness(1.5);
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+}
+
+/* Glow effect on note collect */
+.notes-indicator.pulse .notes-icon {
+    animation: notes-icon-glow 0.6s ease-out;
+}
+
+@keyframes notes-icon-glow {
+    0%, 100% {
+        filter: drop-shadow(0 0 0 transparent);
+    }
+    50% {
+        filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.9));
+    }
+}
+
+/* ========================================
+   TETHER LEVEL INDICATOR (Tori Route Only)
+   ======================================== */
+.tether-indicator {
+    display: none; /* Hidden by default, shown on Tori route */
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.tether-lightning {
+    position: relative;
+    width: 20px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tether-icon {
+    position: relative;
+    z-index: 2;
+    font-size: 18px;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.5));
+}
+
+.tether-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, #00ff88, #00ffff);
+    opacity: 0.6;
+    transition: height 0.3s ease, background 0.3s ease;
+    z-index: 1;
+    border-radius: 2px;
+}
+
+.tether-value {
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 36px;
+    text-align: right;
+}
+
+/* Tether States */
+
+/* Healthy (50-100%) */
+.tether-indicator.healthy .tether-fill {
+    background: linear-gradient(to top, #00ff88, #00ffff);
+}
+
+.tether-indicator.healthy .tether-value {
+    color: #00ff88;
+}
+
+/* Warning (20-49%) */
+.tether-indicator.warning .tether-fill {
+    background: linear-gradient(to top, #ffaa00, #ffff00);
+}
+
+.tether-indicator.warning .tether-value {
+    color: #ffaa00;
+}
+
+/* Critical (0-19%) - with pulse animation */
+.tether-indicator.critical .tether-fill {
+    background: linear-gradient(to top, #ff4444, #ff8888);
+    animation: tether-critical-pulse 1s ease-in-out infinite;
+}
+
+.tether-indicator.critical .tether-value {
+    color: #ff4444;
+    animation: tether-value-pulse 1s ease-in-out infinite;
+}
+
+.tether-indicator.critical .tether-icon {
+    animation: tether-icon-shake 0.5s ease-in-out infinite;
+}
+
+@keyframes tether-critical-pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes tether-value-pulse {
+    0%, 100% {
+        text-shadow: 0 0 4px rgba(255, 68, 68, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 12px rgba(255, 68, 68, 1);
+    }
+}
+
+@keyframes tether-icon-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-1px);
+    }
+    75% {
+        transform: translateX(1px);
+    }
+}
+
+/* ========================================
+   ROUTE-SPECIFIC THEMING
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue */
+#status-bar.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.3);
+}
+
+#status-bar.ronnie-route #status-loop {
     color: #00ffff;
     text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
 }
 
-#status-route {
-    color: #ffffff;
+/* Tori Route - Green */
+#status-bar.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.3);
 }
 
-#status-progress {
+#status-bar.tori-route #status-loop {
     color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
+
+#status-bar.tori-route .notes-indicator {
+    color: #00ffff;
+}
+
+/* Heartbeat pulse on tether (Tori) */
+#status-bar.tori-route .tether-indicator.heartbeat {
+    animation: tether-heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes tether-heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    10% {
+        transform: scale(1.08);
+    }
+    20% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.05);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    #status-bar {
+        font-size: 12px;
+        padding: 0 10px;
+        height: 36px;
+    }
+
+    .status-section {
+        gap: 10px;
+    }
+
+    .status-item {
+        gap: 3px;
+    }
+
+    .route-indicator {
+        padding: 2px 6px;
+        font-size: 11px;
+    }
+
+    .tether-value {
+        font-size: 11px;
+        min-width: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    #status-bar {
+        font-size: 11px;
+        padding: 0 8px;
+    }
+
+    .status-section {
+        gap: 8px;
+    }
+
+    /* Hide act indicator on very small screens */
+    .act-indicator {
+        display: none !important;
+    }
+
+    .route-indicator {
+        padding: 2px 4px;
+        font-size: 10px;
+    }
+
+    .notes-icon {
+        font-size: 14px;
+    }
+
+    .tether-lightning {
+        width: 16px;
+        height: 20px;
+    }
+
+    .tether-icon {
+        font-size: 14px;
+    }
 }
 
 /* ========================================
@@ -70,6 +461,7 @@
     width: 300px;
     background: rgba(10, 10, 20, 0.95);
     backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     z-index: 9998;
@@ -113,7 +505,7 @@
     width: 45px;
 }
 
-/* Hide sidebar toggle in portrait mode (V1 parity) */
+/* Hide sidebar toggle in portrait mode */
 @media (orientation: portrait) {
     .sidebar-toggle {
         display: none !important;

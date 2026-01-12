@@ -32,12 +32,14 @@ import '@ui/styles/error-boundary.css';
 import '@ui/styles/loading-overlay.css';
 import '@ui/styles/accessibility.css';
 import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
+import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { SaveSystem } from '@systems/SaveSystem';
 import { ToastNotification } from '@ui/components/ToastNotification';
 import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
+import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -89,9 +91,10 @@ const secretCodesManager = new SecretCodesManager(eventBus);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 const toastNotification = new ToastNotification(eventBus);
+const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI
 
 // Silence unused warnings by logging
-console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _notesViewer });
+console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _notesViewer, _saveLoadModal });
 
 declare global {
     interface Window {
@@ -373,73 +376,8 @@ function showCredits() {
     console.log('[UV7 V2] Credits');
 }
 
-function showLoadMenu() {
-    const overlay = document.createElement('div');
-    overlay.id = 'load-overlay';
-    overlay.style.cssText = `
-        position: fixed;
-        top: 0; left: 0;
-        width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.95);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 5000;
-        font-family: 'Courier New', monospace;
-        color: #0ff;
-    `;
-
-    // Check for saves
-    const saves: string[] = [];
-    for (let i = 1; i <= 5; i++) {
-        const key = `v848_save_${i}`;
-        const data = localStorage.getItem(key);
-        saves.push(data ? `Slot ${i}: Save found` : `Slot ${i}: Empty`);
-    }
-
-    overlay.innerHTML = `
-        <div style="max-width: 500px; width: 90%; text-align: center;">
-            <h2 style="font-size: 2rem; margin-bottom: 2rem; color: #0ff;">LOAD GAME</h2>
-
-            <div style="margin-bottom: 2rem;">
-                ${saves.map((s, i) => `
-                    <div style="
-                        padding: 1rem;
-                        margin-bottom: 0.5rem;
-                        border: 1px solid ${s.includes('found') ? '#0ff' : '#333'};
-                        color: ${s.includes('found') ? '#0ff' : '#666'};
-                        cursor: ${s.includes('found') ? 'pointer' : 'not-allowed'};
-                    " class="save-slot" data-slot="${i + 1}">
-                        ${s}
-                    </div>
-                `).join('')}
-            </div>
-
-            <p style="color: #666; margin-bottom: 2rem; font-size: 0.9rem;">
-                Save system available during gameplay
-            </p>
-
-            <button id="load-close" style="
-                background: transparent;
-                border: 2px solid #0ff;
-                color: #0ff;
-                padding: 1rem 2rem;
-                font-family: inherit;
-                font-size: 1rem;
-                cursor: pointer;
-            ">BACK</button>
-        </div>
-    `;
-
-    app!.appendChild(overlay);
-
-    overlay.querySelector('#load-close')?.addEventListener('click', () => {
-        overlay.remove();
-    });
-
-    console.log('[UV7 V2] Load Menu');
-}
+// showLoadMenu - Now handled by SaveLoadModal component
+// The modal is triggered via EventBus 'ui:load_menu' and 'ui:save_menu' events
 
 // ============================================
 // Gameplay
@@ -803,7 +741,7 @@ function setupEventHandlers() {
     eventBus.on('ui:main_menu', showMainMenu);
     eventBus.on('ui:settings', () => eventBus.emit('settings:open', {}));
     eventBus.on('ui:credits', showCredits);
-    eventBus.on('ui:load_menu', showLoadMenu);
+    // ui:load_menu and ui:save_menu are now handled by SaveLoadModal component
 
     // Gameplay
     eventBus.on('ui:start_game', (data) => {
