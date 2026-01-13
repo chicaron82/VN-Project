@@ -41,7 +41,7 @@ export class GameEngine {
         this.bootstrapTracker = new BootstrapTracker(stateManager);
         this.devCommentarySystem = new DevCommentarySystem(eventBus, stateManager);
         this.achievementSystem = new AchievementSystem(eventBus, stateManager);
-        this.backlogManager = new BacklogManager(this, eventBus, stateManager);
+        this.backlogManager = new BacklogManager(eventBus, stateManager);
 
         // SecretCodesSystem depends on others
         this.secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, this.bootstrapTracker, this.devCommentarySystem);
