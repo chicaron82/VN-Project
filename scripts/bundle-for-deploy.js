@@ -79,12 +79,19 @@ for (let entry of rootEntries) {
 
 // 5. Create Landing Page
 console.log('\n✨ Creating Landing Page...');
+// Copy favicon
+if (fs.existsSync(path.join(rootDir, 'favicon.ico'))) {
+    fs.copyFileSync(path.join(rootDir, 'favicon.ico'), path.join(distDir, 'favicon.ico'));
+    console.log('   -> Copied favicon.ico');
+}
+
 const landingHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UV7 Project Hub</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <style>
         body {
             background-color: #050505;
@@ -172,6 +179,17 @@ const landingHtml = `<!DOCTYPE html>
             <a href="./index.v2.html" class="card">
                 <span class="badge badge-v2">Playable Demo</span>
                 <h2>Launch V2 Engine</h2>
+                    <!-- Static Logo Fallback (Hidden by default via CSS) -->
+                    <img src="./UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+                    
+                    <!-- Animated Reveal Video (Width controlled by JS) -->
+                    <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
+                        <div class="uv7-logo-reveal" id="uv7-logo-reveal">
+                            <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
+                                <source src="./UnitedVoices7.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
                 <p>Experience the latest build of the Vision 7 engine. Fully rebuilt with TypeScript, EventBus, and strict architecture.</p>
             </a>
 
