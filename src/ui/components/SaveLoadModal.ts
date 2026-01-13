@@ -35,7 +35,11 @@ export class SaveLoadModal {
 
         // Listen for open events
         this.eventBus.on('ui:save_menu', () => this.open('save'));
+        // Listen for open events
+        this.eventBus.on('ui:save_menu', () => this.open('save'));
         this.eventBus.on('ui:load_menu', () => this.open('load'));
+        // Listen for close event (from KeyboardController)
+        this.eventBus.on('ui:save_load:close', () => this.close());
     }
 
     private createDOM() {

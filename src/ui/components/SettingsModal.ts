@@ -1,5 +1,5 @@
 import { EventBus } from '../../core/EventBus';
-import { StateManager } from '../../core/StateManager';
+import { SettingsSystem } from '../../systems/SettingsSystem';
 
 /**
  * Settings configuration interface
@@ -56,13 +56,13 @@ export class SettingsModal {
     private isOpen: boolean = false;
     private currentTab: string = 'general';
     private eventBus: EventBus;
-    private stateManager: StateManager | null = null;
+    private settingsSystem: SettingsSystem | null = null;
     private saveDebounceTimer: ReturnType<typeof setTimeout> | null = null;
     private settings: GameSettings;
 
-    constructor(eventBus: EventBus, stateManager?: StateManager) {
+    constructor(eventBus: EventBus, settingsSystem?: SettingsSystem) {
         this.eventBus = eventBus;
-        this.stateManager = stateManager || null;
+        this.settingsSystem = settingsSystem || null;
         this.settings = { ...DEFAULT_SETTINGS };
 
         this.createDOM();
@@ -759,10 +759,10 @@ export class SettingsModal {
         current[key] = value;
         localStorage.setItem('gameSettings', JSON.stringify(current));
 
-        // Save to StateManager if available
-        if (this.stateManager) {
-            this.stateManager.set(`settings.${key}`, value);
-            this.stateManager.save();
+        // Save to SettingsSystem if available
+        if (this.settingsSystem) {
+            // @ts-ignore - dynamic key access
+            this.settingsSystem.set(key, value);
         }
 
         // Emit settings:changed event

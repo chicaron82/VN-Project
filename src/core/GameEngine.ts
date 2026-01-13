@@ -5,6 +5,7 @@ import { BootstrapTracker } from '@systems/BootstrapTracker';
 import { SecretCodesSystem } from '@systems/SecretCodesSystem';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { AchievementSystem } from '@systems/AchievementSystem';
+import { BacklogManager } from './BacklogManager';
 import { Scene, SceneId } from './types';
 
 /**
@@ -26,6 +27,7 @@ export class GameEngine {
     public secretCodesSystem: SecretCodesSystem;
     public devCommentarySystem: DevCommentarySystem;
     public achievementSystem: AchievementSystem;
+    public backlogManager: BacklogManager;
 
     constructor(
         eventBus: EventBus,
@@ -39,12 +41,19 @@ export class GameEngine {
         this.bootstrapTracker = new BootstrapTracker(stateManager);
         this.devCommentarySystem = new DevCommentarySystem(eventBus, stateManager);
         this.achievementSystem = new AchievementSystem(eventBus, stateManager);
+        this.backlogManager = new BacklogManager(this, eventBus, stateManager);
 
         // SecretCodesSystem depends on others
         this.secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, this.bootstrapTracker, this.devCommentarySystem);
 
         // Listen for dialog advancement
         this.eventBus.on('dialog:advance', () => this.advanceScene());
+
+        // Listen for Time Travel (Backlog Jump)
+        this.eventBus.on('state:restore', (data: { sceneId: string }) => {
+            console.log(`[GameEngine] Time Travel initiated to: ${data.sceneId}`);
+            this.loadScene(data.sceneId);
+        });
     }
 
     /**

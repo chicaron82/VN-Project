@@ -1,0 +1,56 @@
+/* Tips Overlay */
+.tips-overlay {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.tip-text {
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border-left: 2px solid var(--neon-cyan);
+    max-width: 80%;
+    text-align: center;
+}
+
+.tip-fade-in {
+    animation: tip-in 0.8s ease-out forwards;
+}
+
+.tip-fade-out {
+    animation: tip-out 0.8s ease-in forwards;
+}
+
+@keyframes tip-in {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+@keyframes tip-out {
+    from {
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+}

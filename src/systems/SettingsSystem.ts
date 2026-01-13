@@ -12,6 +12,9 @@ export interface GameSettings {
     highContrast: boolean;
     // Skip System
     skipEnabled: boolean; // Allow skip feature (user preference to disable)
+    // Auto-Advance
+    autoAdvance: boolean;
+    autoAdvanceDelay: number; // ms to wait after text completes
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -22,7 +25,10 @@ const DEFAULT_SETTINGS: GameSettings = {
     animationsEnabled: true,
     fontSize: 'normal',
     highContrast: false,
-    skipEnabled: true // Skip is enabled by default (still requires unlock)
+    highContrast: false,
+    skipEnabled: true, // Skip is enabled by default (still requires unlock)
+    autoAdvance: false,
+    autoAdvanceDelay: 3000 // Default 3 seconds
 };
 
 /**

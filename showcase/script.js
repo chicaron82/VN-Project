@@ -372,21 +372,13 @@ class TimelineRenderer {
 
     async loadTimeline() {
         try {
-            // Use global TIMELINE_DATA if available (loaded via script tag)
-            if (window.TIMELINE_DATA) {
-                this.phases = window.TIMELINE_DATA.phases;
-                this.render();
-                return;
-            }
-
-            // Fallback: try to fetch (works with web server)
             const response = await fetch('timeline.json');
             const data = await response.json();
             this.phases = data.phases;
             this.render();
         } catch (error) {
             console.error('Failed to load timeline:', error);
-            // Fallback: timeline already in HTML
+            console.error('Make sure you\'re using a web server (e.g., Live Server) to view this page.');
         }
     }
 

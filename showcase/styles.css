@@ -1777,3 +1777,133 @@ section h2 {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* ==========================================
+   PHASE NAVIGATION
+   ========================================== */
+.phase-nav {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.phase-nav.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.phase-nav-header {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #666;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.phase-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phase-nav-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.phase-nav-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to bottom, #3498db, #9b59b6);
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+.phase-nav-link:hover {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+    padding-left: 1rem;
+}
+
+.phase-nav-link:hover::before {
+    height: 100%;
+}
+
+.phase-nav-link.active {
+    background: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+    font-weight: 600;
+    padding-left: 1rem;
+}
+
+.phase-nav-link.active::before {
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .phase-nav {
+        position: fixed;
+        right: auto;
+        left: 50%;
+        top: auto;
+        bottom: 20px;
+        transform: translateX(-50%);
+        padding: 0.75rem;
+        max-width: 90vw;
+    }
+
+    .phase-nav-header {
+        display: none;
+    }
+
+    .phase-nav-list {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 0.25rem;
+    }
+
+    .phase-nav-link {
+        font-size: 11px;
+        padding: 0.4rem 0.6rem;
+        white-space: nowrap;
+    }
+
+    .phase-nav-link::before {
+        display: none;
+    }
+
+    .phase-nav-link:hover,
+    .phase-nav-link.active {
+        padding-left: 0.6rem;
+    }
+}

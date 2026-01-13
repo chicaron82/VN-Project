@@ -1,0 +1,186 @@
+/* Backlog / Time Machine UI */
+#backlog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    /* Above settings, below specific modals if any */
+    display: flex;
+    /* overridden by JS toggle */
+    flex-direction: column;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    backdrop-filter: blur(5px);
+}
+
+.backlog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border-bottom: 2px solid #0ff;
+}
+
+.backlog-header h2 {
+    margin: 0;
+    color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #0ff;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px #0ff;
+}
+
+#backlog-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.backlog-entry {
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    display: flex;
+    gap: 15px;
+    transition: background 0.2s;
+}
+
+.backlog-entry:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.backlog-entry.jumpable {
+    cursor: pointer;
+    border-left-color: #0f0;
+}
+
+.backlog-entry.jumpable:hover {
+    background: rgba(0, 255, 0, 0.1);
+    border-left-color: #0f0;
+    box-shadow: -5px 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.backlog-entry.locked {
+    opacity: 0.6;
+    border-left-color: #f00;
+    cursor: not-allowed;
+}
+
+.backlog-entry.distorted {
+    font-family: 'Courier New', monospace;
+    text-transform: uppercase;
+    animation: textGlitch 2s infinite;
+    color: #f88;
+}
+
+.backlog-thumbnail {
+    width: 120px;
+    height: 68px;
+    /* 16:9 aspect roughly */
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+.backlog-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.backlog-name {
+    font-weight: bold;
+    color: #0ff;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+.backlog-text {
+    line-height: 1.4;
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.distortion-badge {
+    display: inline-block;
+    background: #500;
+    color: #f00;
+    font-size: 0.6em;
+    padding: 2px 4px;
+    margin-right: 5px;
+    border: 1px solid #f00;
+}
+
+.backlog-meta {
+    font-size: 0.7em;
+    color: rgba(255, 255, 255, 0.3);
+    align-self: flex-start;
+    white-space: nowrap;
+}
+
+.empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    padding: 50px;
+    font-style: italic;
+}
+
+@keyframes textGlitch {
+    0% {
+        transform: translate(0);
+        text-shadow: 2px 0 #f00, -2px 0 #0ff;
+    }
+
+    25% {
+        transform: translate(-2px, 2px);
+    }
+
+    50% {
+        transform: translate(2px, -2px);
+        text-shadow: -2px 0 #f00, 2px 0 #0ff;
+    }
+
+    75% {
+        transform: translate(-2px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* Scrollbar */
+#backlog-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#backlog-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#backlog-list::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}

@@ -38,6 +38,7 @@ export class StatusBar {
     private loopEl!: HTMLElement;
     private routeEl!: HTMLElement;
     private actEl!: HTMLElement;
+    private autoEl!: HTMLElement;
     private notesEl!: HTMLElement;
     private tetherEl!: HTMLElement;
     private tetherValueEl!: HTMLElement;
@@ -83,6 +84,7 @@ export class StatusBar {
             <!-- Center Section: Act/Scene (optional) -->
             <div class="status-section status-center">
                 <span id="status-act" class="status-item act-indicator"></span>
+                <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
             </div>
 
             <!-- Right Section: Notes + Tether -->
@@ -105,6 +107,7 @@ export class StatusBar {
         this.loopEl = this.container.querySelector('#status-loop')!;
         this.routeEl = this.container.querySelector('#status-route')!;
         this.actEl = this.container.querySelector('#status-act')!;
+        this.autoEl = this.container.querySelector('#status-auto')!;
         this.notesEl = this.container.querySelector('#status-notes')!;
         this.tetherEl = this.container.querySelector('#status-tether')!;
         this.tetherValueEl = this.container.querySelector('#status-tether-value')!;
@@ -147,6 +150,14 @@ export class StatusBar {
         const unsubShow = this.eventBus.on('ui:show_status_bar', () => this.show());
         const unsubHide = this.eventBus.on('ui:hide_status_bar', () => this.hide());
         this.unsubscribers.push(unsubShow, unsubHide);
+
+        // Auto-Advance toggle
+        const unsubSettings = this.eventBus.on('settings:changed', (data) => {
+            if (data.key === 'autoAdvance') {
+                this.setAutoIndicator(data.value);
+            }
+        });
+        this.unsubscribers.push(unsubSettings);
     }
 
     /**
@@ -200,6 +211,10 @@ export class StatusBar {
         if (typeof notesCollected === 'number') {
             this.setNotesCollected(notesCollected);
         }
+
+        // Auto-Advance State
+        const autoAdvance = this.stateManager.get<boolean>('settings.autoAdvance');
+        this.setAutoIndicator(!!autoAdvance);
     }
 
     /**
@@ -300,6 +315,13 @@ export class StatusBar {
         this._currentAct = act;
         this.actEl.textContent = act;
         this.actEl.style.display = act ? 'inline' : 'none';
+    }
+
+    public setAutoIndicator(enabled: boolean): void {
+        this.autoEl.style.display = enabled ? 'inline' : 'none';
+        if (enabled) {
+            this.autoEl.classList.add('pulse'); // Reuse pulse animation or add new
+        }
     }
 
     /**

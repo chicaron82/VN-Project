@@ -117,7 +117,9 @@ export class NotesViewer {
         });
 
         // Listen for open events
+        // Listen for open events
         this.eventBus.on('ui:notes:open', () => this.show());
+        this.eventBus.on('ui:notes:close', () => this.hide());
 
         // Listen for note collected events - show toast
         this.eventBus.on('note:collected', (data) => {

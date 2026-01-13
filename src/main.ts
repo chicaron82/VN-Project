@@ -15,6 +15,15 @@ import { CollectiblesSystem } from '@systems/CollectiblesSystem';
 import { HapticSystem } from '@systems/HapticSystem';
 import { DialogController } from '@controllers/DialogController';
 import { SpriteController } from '@controllers/SpriteController';
+import { AutoReadController } from '@core/AutoReadController';
+import { KeyboardController } from '@core/KeyboardController';
+import { SwipeHandler } from '@core/SwipeHandler';
+import { MobileUXController } from '@controllers/MobileUXController';
+import { NotificationShade } from '@ui/components/NotificationShade';
+import { AchievementManager } from '@systems/AchievementManager';
+import { TutorialController } from '@controllers/TutorialController';
+import { AchievementToast } from '@ui/components/AchievementToast';
+import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
 import { PauseScreen } from '@ui/screens/PauseScreen';
@@ -33,6 +42,7 @@ import '@ui/styles/loading-overlay.css';
 import '@ui/styles/accessibility.css';
 import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
 import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
+import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { CrewScreen } from '@ui/screens/CrewScreen';
@@ -41,6 +51,7 @@ import { ToastNotification } from '@ui/components/ToastNotification';
 import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
+import { BacklogUI } from '@ui/components/BacklogUI'; // V2: Backlog UI
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -78,11 +89,24 @@ const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
+const autoReadController = new AutoReadController(eventBus, settingsSystem);
+const keyboardController = new KeyboardController(eventBus);
+
+// Initialize Mobile UX
+const swipeHandler = new SwipeHandler(document.body, eventBus);
+const mobileUXController = new MobileUXController(eventBus);
+const notificationShade = new NotificationShade(eventBus);
+
+// Achievement & Tutorial Systems
+const achievementManager = new AchievementManager(eventBus, stateManager);
+const _achievementToast = new AchievementToast(eventBus);
+const tutorialController = new TutorialController(eventBus, stateManager);
+const _tipsOverlay = new TipsOverlay(eventBus);
 
 const spriteController = new SpriteController(eventBus, stateManager);
 
 // Global UI Components
-const _settingsModal = new SettingsModal(eventBus);
+const _settingsModal = new SettingsModal(eventBus, settingsSystem);
 const _statusBar = new StatusBar(eventBus);
 const _sidebar = new Sidebar(eventBus);
 const _creditsScreen = new CreditsScreen(eventBus);
@@ -94,9 +118,15 @@ const collectiblesSystem = new CollectiblesSystem(eventBus);
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 const toastNotification = new ToastNotification(eventBus);
 const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI
+const _backlogUI = new BacklogUI(gameEngine.backlogManager, eventBus); // V2: Backlog UI
 
 // Silence unused warnings by logging
-console.log('UI Modules Active:', { _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen, _notesViewer, _saveLoadModal });
+console.log('UI Modules Active:', {
+    _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
+    _notesViewer, _saveLoadModal, _backlogUI,
+    autoReadController, keyboardController, swipeHandler, mobileUXController, notificationShade,
+    achievementManager, _achievementToast, tutorialController, _tipsOverlay
+});
 
 declare global {
     interface Window {
@@ -120,6 +150,8 @@ console.log('UI initialized', {
     collectiblesSystem,
     hapticSystem
 });
+
+// ... (Mobile UX initialized above)
 
 // ============================================
 // App State
@@ -810,6 +842,7 @@ function setupEventHandlers() {
     eventBus.on('dialog:complete', () => {
         const scene = gameEngine.getCurrentScene();
         if (scene?.choices && scene.choices.length > 0) {
+            eventBus.emit('choice:show', { choices: scene.choices });
             showChoices(scene.choices);
         }
     });

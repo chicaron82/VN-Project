@@ -207,7 +207,15 @@ export class DialogController {
         this.markCurrentAsRead();
 
         if (this.onUpdate) this.onUpdate(this.state.currentText);
+
+        // Emit complete first
         this.eventBus.emit('dialog:complete', {});
+
+        // Then check if we need scroll indicators (emitted for UI components)
+        // Delay slightly to let DOM update
+        setTimeout(() => {
+            this.eventBus.emit('dialog:scroll_check', {});
+        }, 50);
 
         // If skip is active and content was read, emit skipping event for auto-advance
         if (this.skipState.isSkipping) {
