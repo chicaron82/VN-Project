@@ -372,13 +372,21 @@ class TimelineRenderer {
 
     async loadTimeline() {
         try {
+            // Prioritize window.TIMELINE_DATA (loaded via script tag) to avoid CORS issues with file:// protocol
+            if (window.TIMELINE_DATA && window.TIMELINE_DATA.phases) {
+                this.phases = window.TIMELINE_DATA.phases;
+                this.render();
+                return;
+            }
+
+            // Fallback to fetch for server environments
             const response = await fetch('timeline.json');
             const data = await response.json();
             this.phases = data.phases;
             this.render();
         } catch (error) {
             console.error('Failed to load timeline:', error);
-            console.error('Make sure you\'re using a web server (e.g., Live Server) to view this page.');
+            console.error('Make sure timeline-data.js is loaded or you\'re using a web server to view this page.');
         }
     }
 
@@ -393,6 +401,11 @@ class TimelineRenderer {
             const phaseElement = this.createPhaseElement(phase);
             this.container.appendChild(phaseElement);
         });
+
+        // Trigger Syntax Highlighting
+        if (window.Prism) {
+            Prism.highlightAll();
+        }
     }
 
     createPhaseElement(phase) {
@@ -479,6 +492,27 @@ class TimelineRenderer {
             content.appendChild(callout);
         }
 
+        // Rich Media (New Structure)
+        if (phase.media) {
+            if (phase.media.carousel) {
+                content.appendChild(this.createImageCarousel(phase.media.carousel));
+            }
+            if (phase.media.codeComparison) {
+                content.appendChild(this.createCodeComparison(phase.media.codeComparison));
+            }
+            if (phase.media.codeSnippet) {
+                content.appendChild(this.createCodeSnippet(phase.media.codeSnippet));
+            }
+        }
+
+        // Legacy Support (Optional)
+        if (phase.codeComparison && !phase.media?.codeComparison) {
+            content.appendChild(this.createCodeComparison(phase.codeComparison));
+        }
+        if (phase.imageCarousel && !phase.media?.carousel) {
+            content.appendChild(this.createImageCarousel(phase.imageCarousel));
+        }
+
         // Metrics
         if (phase.metrics) {
             const metricsTitle = document.createElement('h4');
@@ -499,6 +533,12 @@ class TimelineRenderer {
             }
             if (phase.metrics.timeSpent) {
                 metricsGrid.appendChild(this.createMetricCard(phase.metrics.timeSpent, 'Time Spent'));
+            }
+            if (phase.metrics.features) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.features, 'Features'));
+            }
+            if (phase.metrics.issuesFixed) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.issuesFixed, 'Fixed'));
             }
 
             content.appendChild(metricsGrid);
@@ -525,7 +565,116 @@ class TimelineRenderer {
         card.appendChild(desc);
         return card;
     }
+
+    createImageCarousel(images) {
+        const container = document.createElement('div');
+        container.className = 'timeline-carousel-container';
+
+        const carousel = document.createElement('div');
+        carousel.className = 'timeline-carousel';
+
+        images.forEach(imgData => {
+            const item = document.createElement('div');
+            item.className = 'carousel-item';
+
+            const img = document.createElement('img');
+            img.src = imgData.url || imgData.src;
+            img.alt = imgData.caption || 'Screenshot';
+            img.loading = 'lazy'; // Lazy load images
+
+            const caption = document.createElement('span');
+            caption.className = 'carousel-label';
+            caption.textContent = imgData.caption;
+
+            item.appendChild(img);
+            item.appendChild(caption);
+            carousel.appendChild(item);
+        });
+
+        container.appendChild(carousel);
+        return container;
+    }
+
+    createCodeComparison(comparison) {
+        const container = document.createElement('div');
+        container.className = 'code-comparison';
+
+        // Before Block
+        if (comparison.before) {
+            const beforeWindow = document.createElement('div');
+            beforeWindow.className = 'code-window';
+
+            const header = document.createElement('div');
+            header.className = 'code-header';
+            header.innerHTML = `<span>${comparison.before.title || 'Before'}</span><span class="code-badge badge-chaos">${comparison.before.badge || 'CHAOS'}</span>`;
+
+            const content = document.createElement('div');
+            content.className = 'code-content';
+
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            code.className = `language-${comparison.before.lang || 'javascript'}`;
+            code.textContent = comparison.before.code;
+
+            pre.appendChild(code);
+            content.appendChild(pre);
+
+            beforeWindow.appendChild(header);
+            beforeWindow.appendChild(content);
+            container.appendChild(beforeWindow);
+        }
+
+        // After Block
+        if (comparison.after) {
+            const afterWindow = document.createElement('div');
+            afterWindow.className = 'code-window';
+
+            const header = document.createElement('div');
+            header.className = 'code-header';
+            header.innerHTML = `<span>${comparison.after.title || 'After'}</span><span class="code-badge badge-order">${comparison.after.badge || 'ORDER'}</span>`;
+
+            const content = document.createElement('div');
+            content.className = 'code-content';
+
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            code.className = `language-${comparison.after.lang || 'typescript'}`;
+            code.textContent = comparison.after.code;
+
+            pre.appendChild(code);
+            content.appendChild(pre);
+
+            afterWindow.appendChild(header);
+            afterWindow.appendChild(content);
+            container.appendChild(afterWindow);
+        }
+
+        return container;
+    }
+
+    createCodeSnippet(snippet) {
+        const container = document.createElement('div');
+        container.className = 'code-snippet-container';
+
+        const pre = document.createElement('pre');
+        const code = document.createElement('code');
+        code.className = `language-${snippet.lang || 'typescript'}`;
+        code.textContent = snippet.code;
+
+        pre.appendChild(code);
+        container.appendChild(pre);
+
+        if (snippet.caption) {
+            const caption = document.createElement('div');
+            caption.className = 'code-caption';
+            caption.textContent = snippet.caption;
+            container.appendChild(caption);
+        }
+
+        return container;
+    }
 }
+
 
 // Initialize timeline renderer
 document.addEventListener('DOMContentLoaded', () => {

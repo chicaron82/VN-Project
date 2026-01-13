@@ -10,7 +10,8 @@
     "test:v2": "vitest --config vite.config.ts",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "test:coverage:v2": "vitest --config vite.config.ts --coverage"
+    "test:coverage:v2": "vitest --config vite.config.ts --coverage",
+    "prep-release": "node scripts/bundle-for-deploy.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.6",

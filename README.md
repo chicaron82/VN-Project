@@ -152,16 +152,34 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 
 ## 🚀 Getting Started
 
-### Play Locally
+### 🖥️ Local Play (One-Click)
 
-1. Clone repo
-2. Run `npm install`
-3. Run `npm run dev`
-4. Open your browser to the local server
+**No terminal needed!**
 
-### Build
+1. Double-click **`Play-UV7.bat`** in the project folder.
+2. The game will automatically launch in your browser.
 
-Run `npm run build` to create a production-ready build in `/dist`.
+---
+
+### 🌐 Deployment (Online)
+
+This project is set up for **Zero-Config Deployment** via GitHub Pages.
+
+1. **Push** your code to GitHub.
+2. Go to **Settings > Pages**.
+3. Set **Source** to `GitHub Actions`.
+4. Wait for the `Deploy UV7 to GitHub Pages` action to finish.
+
+The site will be live at `your-username.github.io/VN-Project/`.
+
+---
+
+### 🛠️ Manual Build (Devs Only)
+
+If you want to manually build the `dist` folder:
+
+- **Command:** `npm run prep-release`
+- **Output:** `/dist` (Contains V2 Engine + Showcase + Landing Page)
 
 ### Secret Dev Commands
 
