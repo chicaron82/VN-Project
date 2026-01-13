@@ -43,7 +43,7 @@ export class TipsOverlay {
 
         this.tipElement = document.createElement('div');
         this.tipElement.className = 'tip-text tip-fade-in';
-        this.tipElement.textContent = this.TIPS[this.currentTipIndex];
+        this.tipElement.textContent = this.TIPS[this.currentTipIndex] || '';
 
         this.container.appendChild(this.tipElement);
 
@@ -83,7 +83,7 @@ export class TipsOverlay {
         setTimeout(() => {
             this.currentTipIndex = (this.currentTipIndex + 1) % this.TIPS.length;
             if (this.tipElement) {
-                this.tipElement.textContent = this.TIPS[this.currentTipIndex];
+                this.tipElement.textContent = this.TIPS[this.currentTipIndex] || '';
                 this.tipElement.classList.replace('tip-fade-out', 'tip-fade-in');
             }
         }, 800);

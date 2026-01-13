@@ -35,6 +35,7 @@ export class SwipeHandler {
 
     private handleTouchStart(e: TouchEvent): void {
         const touch = e.changedTouches[0];
+        if (!touch) return;
         this.touchStartX = touch.screenX;
         this.touchStartY = touch.screenY;
         this.touchStartTime = new Date().getTime();
@@ -42,6 +43,7 @@ export class SwipeHandler {
 
     private handleTouchEnd(e: TouchEvent): void {
         const touch = e.changedTouches[0];
+        if (!touch) return;
         const distX = touch.screenX - this.touchStartX;
         const distY = touch.screenY - this.touchStartY;
         const elapsedTime = new Date().getTime() - this.touchStartTime;

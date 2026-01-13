@@ -106,6 +106,20 @@ export type GameEvents = {
   // Auto-save events
   'autosave:start': { reason: string };
   'autosave:complete': { success: boolean; slot: number };
+
+  // Missing Events Added for V2 Build
+  'state:reset': {};
+  'state:restore': { sceneId: string; reason: string };
+  'ui:notification': { type: 'info' | 'success' | 'warning' | 'error'; message: string };
+  'ui:backlog:open': {};
+  'ui:backlog:close': {};
+  'ui:notes:close': {}; // ui:notes:open is usually just ui:notes
+  'ui:save_load:close': {};
+  'ui:console:close': {}; // Dev console
+  'ui:ending:close': {};
+  'ui:hide_hud': {};
+  'save:quick': {};
+  'load:quick': {};
 };
 
 export type EventName = keyof GameEvents;

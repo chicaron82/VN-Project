@@ -1,9 +1,9 @@
-import { BacklogManager, BacklogEntry } from '../../core/BacklogManager';
+import { BacklogManager } from '../../core/BacklogManager';
 import { EventBus } from '../../core/EventBus';
 
 export class BacklogUI {
-    private container: HTMLElement;
-    private backlogList: HTMLElement;
+    private container!: HTMLElement;
+    private backlogList!: HTMLElement;
     private backlogManager: BacklogManager;
     private eventBus: EventBus;
     private isOpen: boolean = false;

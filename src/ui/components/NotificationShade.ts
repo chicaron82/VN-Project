@@ -14,8 +14,9 @@ export class NotificationShade {
     private container: HTMLElement;
     private isOpen: boolean = false;
     private isExpanded: boolean = false;
+    private isExpanded: boolean = false;
     private currentQuickActionPage: number = 0;
-    private stateManager?: any;
+    // private stateManager?: any;
 
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;

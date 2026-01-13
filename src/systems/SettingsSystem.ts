@@ -25,7 +25,6 @@ const DEFAULT_SETTINGS: GameSettings = {
     animationsEnabled: true,
     fontSize: 'normal',
     highContrast: false,
-    highContrast: false,
     skipEnabled: true, // Skip is enabled by default (still requires unlock)
     autoAdvance: false,
     autoAdvanceDelay: 3000 // Default 3 seconds

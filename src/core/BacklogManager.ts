@@ -18,7 +18,7 @@ export interface BacklogEntry {
 }
 
 export class BacklogManager {
-    private gameEngine: GameEngine;
+    // private gameEngine: GameEngine; // Unused
     private eventBus: EventBus;
     private stateManager: StateManager;
 
@@ -41,7 +41,7 @@ export class BacklogManager {
     private lockedNarrators: string[] = ['System', 'ERROR', 'Despair', '???', 'STATIC', 'CORRUPTION'];
 
     constructor(gameEngine: GameEngine, eventBus: EventBus, stateManager: StateManager) {
-        this.gameEngine = gameEngine;
+        // this.gameEngine = gameEngine;
         this.eventBus = eventBus;
         this.stateManager = stateManager;
 
@@ -144,6 +144,7 @@ export class BacklogManager {
         }
 
         const entry = this.history[index];
+        if (!entry) return;
 
         // 1. Check Insane Mode
         // "insaneModeLocked" flag from V1

@@ -1,5 +1,5 @@
-import { EventBus } from './EventBus';
-import { GameConfig } from './GameConfig';
+import { EventBus, EventName } from './EventBus';
+// import { GameConfig } from './GameConfig';
 
 export class KeyboardController {
     private eventBus: EventBus;
@@ -120,12 +120,12 @@ export class KeyboardController {
         const el = document.getElementById(elementId);
         // Check display style AND visibility class if applicable
         if (el && (el.style.display !== 'none' && el.style.display !== '')) {
-            this.eventBus.emit(eventName, {});
+            this.eventBus.emit(eventName as EventName, {} as any);
             return true;
         }
         // Also check if class 'active' or 'visible' is used instead of display
         if (el && (el.classList.contains('visible') || el.classList.contains('active'))) {
-            this.eventBus.emit(eventName, {});
+            this.eventBus.emit(eventName as EventName, {} as any);
             return true;
         }
         return false;
