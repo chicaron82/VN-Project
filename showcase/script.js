@@ -360,3 +360,256 @@ function copyLink() {
         }
     });
 }
+
+// ==========================================
+// TIMELINE RENDERER
+// ==========================================
+class TimelineRenderer {
+    constructor(containerSelector) {
+        this.container = document.querySelector(containerSelector);
+        this.phases = [];
+    }
+
+    async loadTimeline() {
+        try {
+            // Use global TIMELINE_DATA if available (loaded via script tag)
+            if (window.TIMELINE_DATA) {
+                this.phases = window.TIMELINE_DATA.phases;
+                this.render();
+                return;
+            }
+
+            // Fallback: try to fetch (works with web server)
+            const response = await fetch('timeline.json');
+            const data = await response.json();
+            this.phases = data.phases;
+            this.render();
+        } catch (error) {
+            console.error('Failed to load timeline:', error);
+            // Fallback: timeline already in HTML
+        }
+    }
+
+    render() {
+        if (!this.container || this.phases.length === 0) return;
+
+        // Clear existing timeline (if any)
+        this.container.innerHTML = '';
+
+        // Render each phase
+        this.phases.forEach(phase => {
+            const phaseElement = this.createPhaseElement(phase);
+            this.container.appendChild(phaseElement);
+        });
+    }
+
+    createPhaseElement(phase) {
+        const item = document.createElement('div');
+        item.className = `timeline-item ${phase.type || ''}`;
+        item.id = phase.id;
+
+        const marker = document.createElement('div');
+        marker.className = 'timeline-marker';
+
+        const content = document.createElement('div');
+        content.className = 'timeline-content';
+
+        // Header
+        const header = document.createElement('h3');
+        header.textContent = `${phase.date} ${phase.emoji || ''}`;
+        content.appendChild(header);
+
+        // Title
+        const title = document.createElement('p');
+        title.innerHTML = `<strong>${phase.title}</strong>`;
+        content.appendChild(title);
+
+        // Summary
+        if (phase.summary) {
+            const summary = document.createElement('p');
+            summary.textContent = phase.summary;
+            content.appendChild(summary);
+        }
+
+        // Problem section (if exists)
+        if (phase.problem) {
+            const journalEntry = document.createElement('div');
+            journalEntry.className = 'journal-entry';
+
+            const problemTitle = document.createElement('p');
+            problemTitle.innerHTML = '<strong>The Lesson:</strong>';
+            journalEntry.appendChild(problemTitle);
+
+            const problemDesc = document.createElement('p');
+            problemDesc.textContent = `"${phase.problem.description}"`;
+            journalEntry.appendChild(problemDesc);
+
+            if (phase.problem.rootCause) {
+                const rootCause = document.createElement('p');
+                rootCause.textContent = phase.solution?.approach || '';
+                journalEntry.appendChild(rootCause);
+            }
+
+            content.appendChild(journalEntry);
+        }
+
+        // Features
+        if (phase.solution?.features) {
+            const featuresTitle = document.createElement('h4');
+            featuresTitle.textContent = 'What We Implemented:';
+            content.appendChild(featuresTitle);
+
+            const featuresList = document.createElement('ul');
+            featuresList.className = 'update-list';
+            phase.solution.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.innerHTML = feature;
+                featuresList.appendChild(li);
+            });
+            content.appendChild(featuresList);
+        }
+
+        // Callout
+        if (phase.callout) {
+            const callout = document.createElement('div');
+            callout.className = 'v2-improvement-callout';
+
+            const icon = document.createElement('div');
+            icon.className = 'callout-icon';
+            icon.textContent = phase.callout.icon;
+
+            const calloutContent = document.createElement('div');
+            calloutContent.className = 'callout-content';
+            calloutContent.innerHTML = `<strong>${phase.callout.title}</strong> ${phase.callout.text}`;
+
+            callout.appendChild(icon);
+            callout.appendChild(calloutContent);
+            content.appendChild(callout);
+        }
+
+        // Metrics
+        if (phase.metrics) {
+            const metricsTitle = document.createElement('h4');
+            metricsTitle.textContent = 'By The Numbers:';
+            content.appendChild(metricsTitle);
+
+            const metricsGrid = document.createElement('div');
+            metricsGrid.className = 'stats-mini-grid';
+
+            if (phase.metrics.linesAdded) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.linesAdded, 'Lines Added'));
+            }
+            if (phase.metrics.filesChanged) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.filesChanged, 'Files Changed'));
+            }
+            if (phase.metrics.components) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.components, 'New Components'));
+            }
+            if (phase.metrics.timeSpent) {
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics.timeSpent, 'Time Spent'));
+            }
+
+            content.appendChild(metricsGrid);
+        }
+
+        item.appendChild(marker);
+        item.appendChild(content);
+        return item;
+    }
+
+    createMetricCard(value, label) {
+        const card = document.createElement('div');
+        card.className = 'stat-mini';
+
+        const num = document.createElement('span');
+        num.className = 'stat-num';
+        num.textContent = value;
+
+        const desc = document.createElement('span');
+        desc.className = 'stat-desc';
+        desc.textContent = label;
+
+        card.appendChild(num);
+        card.appendChild(desc);
+        return card;
+    }
+}
+
+// Initialize timeline renderer
+document.addEventListener('DOMContentLoaded', () => {
+    const timelineRenderer = new TimelineRenderer('#timeline-container');
+    timelineRenderer.loadTimeline();
+});
+
+// ==========================================
+// PHASE NAVIGATION
+// ==========================================
+const phaseNav = document.getElementById('phase-nav');
+const phaseLinks = document.querySelectorAll('.phase-nav-link');
+
+// Show/hide phase nav based on scroll position
+window.addEventListener('scroll', () => {
+    const journeySection = document.querySelector('.journey-section');
+    if (!journeySection || !phaseNav) return;
+
+    const rect = journeySection.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    if (isVisible) {
+        phaseNav.classList.add('visible');
+    } else {
+        phaseNav.classList.remove('visible');
+    }
+
+    // Update active phase based on scroll position
+    updateActivePhase();
+});
+
+// Smooth scroll to phase
+phaseLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Update active phase indicator
+function updateActivePhase() {
+    const phases = [
+        { id: 'phase-1', link: document.querySelector('[data-phase="1"]') },
+        { id: 'phase-2', link: document.querySelector('[data-phase="2"]') },
+        { id: 'phase-3', link: document.querySelector('[data-phase="3"]') },
+        { id: 'phase-4', link: document.querySelector('[data-phase="4"]') },
+        { id: 'phase-5', link: document.querySelector('[data-phase="5"]') },
+        { id: 'phase-6', link: document.querySelector('[data-phase="6"]') },
+        { id: 'phase-7', link: document.querySelector('[data-phase="7"]') },
+        { id: 'phase-8', link: document.querySelector('[data-phase="8"]') },
+        { id: 'phase-9', link: document.querySelector('[data-phase="9"]') },
+        { id: 'phase-10', link: document.querySelector('[data-phase="10"]') }
+    ];
+
+    const scrollPos = window.scrollY + window.innerHeight / 3;
+
+    phases.forEach(phase => {
+        const element = document.getElementById(phase.id);
+        if (!element || !phase.link) return;
+
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + window.scrollY;
+        const elementBottom = elementTop + rect.height;
+
+        if (scrollPos >= elementTop && scrollPos < elementBottom) {
+            phase.link.classList.add('active');
+        } else {
+            phase.link.classList.remove('active');
+        }
+    });
+}

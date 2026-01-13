@@ -1,0 +1,48 @@
+// Timeline data for showcase website
+// This is loaded as a script to avoid CORS issues with local file:// protocol
+window.TIMELINE_DATA = {
+    "phases": [
+        {
+            "id": "phase-10",
+            "date": "January 12, 2026 (Evening)",
+            "emoji": "📱",
+            "title": "Phase 10: V1 Parity - NotificationShade & Sidebar",
+            "type": "highlight latest-update",
+
+            "summary": "After completing the core features, we turned to mobile UX parity. The challenge: V2's NotificationShade looked different from V1, and landscape swipe wasn't opening the sidebar. The root cause? We were patching reactively instead of studying V1's architecture first.",
+
+            "problem": {
+                "description": "V2's NotificationShade looked different from V1, and landscape swipe wasn't opening the sidebar.",
+                "rootCause": "We were patching reactively instead of studying V1's architecture first."
+            },
+
+            "solution": {
+                "approach": "Stopped, studied V1's actual implementation, and created a workflow document to enforce this pattern for all future V1→V2 porting work.",
+                "features": [
+                    "📱 <strong>NotificationShade:</strong> Two-stage expansion (carousel → full grid), landscape detection (>= 769px opens Sidebar), V1's exact DOM structure and class names for CSS parity",
+                    "🖥️ <strong>Sidebar:</strong> Status details section (route, loop, notes, tether), UV7 carrier footer, route theming, dynamic content updates",
+                    "📋 <strong>V1 Parity Workflow:</strong> Created <code>.agent/workflows/v1-parity-porting.md</code> to enforce studying V1 source before writing V2 code",
+                    "🎯 <strong>SwipeHandler:</strong> Centralized touch gesture detection with EventBus integration"
+                ]
+            },
+
+            "callout": {
+                "icon": "🧠",
+                "title": "Process Improvement:",
+                "text": "The workflow document enforces a critical rule: \"Always study V1's implementation BEFORE writing V2 code.\" This prevents the reactive patching cycle and ensures true parity by following V1's exact patterns."
+            },
+
+            "metrics": {
+                "linesAdded": 1208,
+                "filesChanged": 7,
+                "components": 3
+            },
+
+            "lessons": [
+                "Always study V1's implementation BEFORE writing V2 code",
+                "Created workflow document to enforce this pattern for future parity work",
+                "Following V1's exact architecture prevents reactive patching"
+            ]
+        }
+    ]
+};
