@@ -50,6 +50,10 @@ export class Sidebar {
                         <span class="quick-action-icon">📨</span>
                         <span>Notes</span>
                     </button>
+                    <button class="quick-action-btn" data-action="history">
+                        <span class="quick-action-icon">📜</span>
+                        <span>History</span>
+                    </button>
                     <button class="quick-action-btn" data-action="fullscreen">
                         <span class="quick-action-icon">⛶</span>
                         <span>Full</span>
@@ -57,6 +61,7 @@ export class Sidebar {
                 </div>
             </div>
 
+            <!-- V1 Parity: Status Details Section (V1 lines 358-378) -->
             <div class="shade-section sidebar-status">
                 <div class="shade-section-title">Current Status</div>
                 <div class="status-details">
@@ -65,11 +70,11 @@ export class Sidebar {
                         <span class="status-detail-value" id="sidebar-route">Menu</span>
                     </div>
                     <div class="status-detail-item">
-                        <span class="status-detail-label">Loop:</span>
+                        <span class="status-detail-label">Loop Version:</span>
                         <span class="status-detail-value" id="sidebar-loop">848</span>
                     </div>
                     <div class="status-detail-item">
-                        <span class="status-detail-label">Notes:</span>
+                        <span class="status-detail-label">Notes Collected:</span>
                         <span class="status-detail-value" id="sidebar-notes">0/42</span>
                     </div>
                 </div>
@@ -84,6 +89,11 @@ export class Sidebar {
     }
 
     private setupEventListeners() {
+        // EventBus listeners
+        this.eventBus.on('ui:sidebar:open', () => this.open());
+        this.eventBus.on('ui:sidebar:close', () => this.close());
+        this.eventBus.on('ui:sidebar:toggle', () => this.toggle());
+
         // Toggle click
         this.toggleBtn.addEventListener('click', () => this.toggle());
 
@@ -111,6 +121,13 @@ export class Sidebar {
             this.eventBus.emit('ui:notes:open', {});
         });
 
+        // History button click
+        const historyBtn = this.container.querySelector('[data-action="history"]');
+        historyBtn?.addEventListener('click', () => {
+            this.close();
+            this.eventBus.emit('ui:backlog:toggle', {});
+        });
+
         // Fullscreen button
         const fsBtn = this.container.querySelector('[data-action="fullscreen"]');
         fsBtn?.addEventListener('click', () => {
@@ -124,20 +141,101 @@ export class Sidebar {
         });
     }
 
-    public toggle() {
-        if (this.isOpen) this.close();
-        else this.open();
+    public toggle(): void {
+        if (this.isOpen) {
+            this.close();
+        } else {
+            this.open();
+        }
     }
 
-    public open() {
+    public open(): void {
+        if (this.isOpen) return;
         this.isOpen = true;
+
+        // V1 Parity: Update content when opening (V1 line 645-646)
+        this.updateContent();
+
         this.container.classList.add('visible');
         this.backdrop.classList.add('visible');
+
+        console.log('[Sidebar] Opened');
     }
 
-    public close() {
+    public close(): void {
+        if (!this.isOpen) return;
         this.isOpen = false;
+
         this.container.classList.remove('visible');
         this.backdrop.classList.remove('visible');
+
+        console.log('[Sidebar] Closed');
+    }
+
+    // V1 Parity: Update sidebar content (V1 line 730-765)
+    private updateContent(): void {
+        // Update route
+        const routeEl = this.container.querySelector('#sidebar-route');
+        if (routeEl) {
+            // TODO: Get actual route from state manager
+            routeEl.textContent = 'Menu'; // Placeholder
+        }
+
+        // Update loop
+        const loopEl = this.container.querySelector('#sidebar-loop');
+        if (loopEl) {
+            // TODO: Get actual loop version from state manager
+            loopEl.textContent = '848'; // Placeholder
+        }
+
+        // Update notes
+        const notesEl = this.container.querySelector('#sidebar-notes');
+        if (notesEl) {
+            // TODO: Get actual notes count from collectibles system
+            notesEl.textContent = '0/42'; // Placeholder
+        }
+
+        // Update tether (Tori route only)
+        const tetherItem = this.container.querySelector('#sidebar-tether-item') as HTMLElement;
+        const tetherValue = this.container.querySelector('#sidebar-tether-value');
+        if (tetherItem && tetherValue) {
+            // TODO: Check if current route is Tori
+            const isToriRoute = false; // Placeholder
+
+            if (isToriRoute) {
+                tetherItem.style.display = 'flex';
+                // TODO: Get actual tether level from state
+                const tetherLevel = 100; // Placeholder
+                tetherValue.textContent = `${Math.round(tetherLevel)}%`;
+
+                // V1 Parity: Critical state styling (V1 line 756-759)
+                if (tetherLevel < 20) {
+                    tetherValue.classList.add('critical');
+                } else {
+                    tetherValue.classList.remove('critical');
+                }
+            } else {
+                tetherItem.style.display = 'none';
+            }
+        }
+
+        // V1 Parity: Apply route theming (V1 line 652-654)
+        this.applyRouteTheming();
+    }
+
+    // V1 Parity: Route theming (V1 line 774-787)
+    private applyRouteTheming(): void {
+        // Remove existing route classes
+        this.container.classList.remove('ronnie-route', 'tori-route');
+
+        // TODO: Get actual route from state manager
+        const routeName = 'Menu'; // Placeholder
+
+        // Apply current route class
+        if (routeName.includes('Ronnie')) {
+            this.container.classList.add('ronnie-route');
+        } else if (routeName.includes('Tori')) {
+            this.container.classList.add('tori-route');
+        }
     }
 }

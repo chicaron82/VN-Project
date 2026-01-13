@@ -13,12 +13,14 @@ export type GameEvents = {
   'scene:load': { sceneId: string };
   'scene:complete': { sceneId: string };
   'dialog:show': { entry: { character: string; text: string } };
+  'choice:show': { choices: Array<{ text: string; next: string | null }> };
   'choice:selected': { choiceId: string; text: string };
   'tether:change': { level: number; delta: number };
   'tether:critical': { level: number };
   'save:complete': { slot: number };
   'load:complete': { slot: number };
   'achievement:unlock': { id: string };
+  'achievement:unlocked': { id: string; title: string; description: string; icon: string };
   'visual:cue': { type: string | null; channel: string };
   'loading:start': { total?: number };
   'loading:progress': { current: number; total: number; file: string };
@@ -42,6 +44,7 @@ export type GameEvents = {
   'dialog:complete': {};
   'dialog:advance': {};
   'dialog:skipping': {};
+  'dialog:scroll_check': {};
   // Skip system events
   'skip:toggle': {};
   'skip:activate': {};
@@ -59,6 +62,22 @@ export type GameEvents = {
   'ui:start_prologue': {};
   'dialog:bubble:shown': {};
   'dialog:bubble:hidden': {};
+  // UI Events
+  'ui:backlog:toggle': {};
+  'ui:shade:open': {};
+  'ui:shade:close': {};
+  'ui:shade:toggle': {};
+  'ui:shade:opened': {};
+  'ui:shade:closed': {};
+  'ui:sidebar:open': {};
+  'ui:sidebar:close': {};
+  'ui:sidebar:toggle': {};
+  // Input events
+  'input:swipe_left': {};
+  'input:swipe_right': {};
+  'input:swipe_up': {};
+  'input:swipe_down': {};
+  'input:double_tap': {};
   // Settings & HUD events
   'settings:open': {};
   'settings:close': {};

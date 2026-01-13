@@ -1,0 +1,368 @@
+/* Notification Shade - V1 Parity Style */
+/* Adapted from system/notification-shade.css for V2 compliance */
+
+.notification-shade {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    /* Min height logic to ensure it covers enough space */
+    min-height: 250px;
+    max-height: 80vh;
+    overflow-y: auto;
+
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+
+    z-index: 9000;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    transition: top 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.notification-shade.visible {
+    top: 0;
+}
+
+/* Route Theming - V1 Parity */
+.notification-shade.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.3);
+}
+
+.notification-shade.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.3);
+}
+
+.shade-handle {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 255, 255, 0.05));
+}
+
+.shade-handle::after {
+    content: '';
+    width: 40px;
+    height: 4px;
+    background: var(--neon-cyan);
+    border-radius: 2px;
+    opacity: 0.5;
+}
+
+.shade-content {
+    padding: 0 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.shade-header {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   QUICK ACTIONS CAROUSEL (V1 Parity)
+   ======================================== */
+.quick-actions-carousel {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.quick-actions-track {
+    display: flex;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 200%;
+    /* 2 pages */
+    will-change: transform;
+}
+
+.quick-actions-page {
+    width: 50%;
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 2px;
+}
+
+/* Dots */
+.quick-actions-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.quick-actions-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+.quick-actions-dots .dot.active {
+    background: #00ffff;
+    width: 20px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+/* Button Styles - V1 Parity */
+.action-btn {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--neon-cyan);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: 80px;
+}
+
+.action-btn:active {
+    transform: scale(0.95);
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.action-btn .icon {
+    font-size: 1.5rem;
+}
+
+.action-btn .label {
+    font-size: 0.7rem;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Expanded Actions */
+.expanded-actions-container {
+    display: none;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.notification-shade.expanded .expanded-actions-container {
+    display: flex;
+    opacity: 1;
+}
+
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Expander Dots */
+.shade-expander {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin: 0.5rem 0;
+}
+
+.expander-dots {
+    font-size: 0.8rem;
+    color: var(--neon-cyan);
+    opacity: 0.6;
+    letter-spacing: 5px;
+    animation: pulse-dots 2s infinite;
+}
+
+@keyframes pulse-dots {
+    0% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+/* NOTE PREVIEW CARD (V1 Parity) */
+.note-preview-card {
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 10px;
+}
+
+.note-preview-card:hover {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: translateX(4px);
+}
+
+.note-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.note-preview-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.note-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00ffff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-snippet {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.note-arrow {
+    font-size: 18px;
+    color: rgba(0, 255, 255, 0.6);
+    flex-shrink: 0;
+}
+
+/* Status Box */
+.shade-status-box {
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    margin-top: 5px;
+}
+
+.status-header {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.status-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.status-value.highlight {
+    color: var(--neon-cyan);
+}
+
+.tori-route .status-value.highlight {
+    color: #00ff88;
+}
+
+.status-footer {
+    margin-top: 1rem;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.uv7-label {
+    font-weight: bold;
+    color: #00ffff;
+}
+
+/* V1 Parity: Expanded Actions Grid */
+.expanded-group {
+    margin-bottom: 20px;
+}
+
+.group-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(0, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.expanded-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* V1 Parity: Expanded View Visibility */
+.quick-actions-expanded {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.quick-actions-expanded.visible {
+    opacity: 1;
+}
