@@ -62,7 +62,13 @@ import toriAct1Data from '@content/routes/tori_act1.json';
 import toriAct2Data from '@content/routes/tori_act2.json';
 import toriAct3Data from '@content/routes/tori_act3.json';
 
-// ... imports
+// Asset Imports
+import logoImg from '../assets/UnitedVoices7.png';
+import introVideoParams from '../UnitedVoices7.mp4?url'; // Use ?url to force URL mode if needed, or default import
+// Note: plain import might work but ?url is safer for large assets to ensure it's a string path
+// Actually standard import gives string URL in Vite for assets.
+// Let's rely on standard import first.
+import introVideo from '../UnitedVoices7.mp4';
 
 // ============================================
 // Core Systems
@@ -198,13 +204,13 @@ function showSplash(): Promise<void> {
                     <div class="powered-by-text">Powered by</div>
                     
                     <!-- Static Logo Fallback (Hidden by default via CSS) -->
-                    <img src="assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+                    <img src="${logoImg}" class="uv7-logo-static" alt="United Voices 7 Logo">
                     
                     <!-- Animated Reveal Video (Width controlled by JS) -->
                     <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
                         <div class="uv7-logo-reveal" id="uv7-logo-reveal">
                             <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
-                                <source src="UnitedVoices7.mp4" type="video/mp4">
+                                <source src="${introVideo}" type="video/mp4">
                             </video>
                         </div>
                     </div>
