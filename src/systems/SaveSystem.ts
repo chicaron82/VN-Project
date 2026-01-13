@@ -147,7 +147,7 @@ export class SaveSystem {
     /**
      * Trigger an auto-save with throttling
      */
-    private triggerAutoSave(sceneId: string, reason: string): void {
+    private async triggerAutoSave(sceneId: string, reason: string): Promise<void> {
         // Skip non-gameplay scenes
         if (!sceneId || sceneId === 'main_menu' || sceneId === 'splash' || sceneId === 'credits') {
             return;

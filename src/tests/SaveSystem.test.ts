@@ -62,7 +62,7 @@ describe('SaveSystem', () => {
 
     describe('Auto-save', () => {
         it('should auto-save to slot 0 when autoSave is called with valid scene', async () => {
-            await saveSystem.autoSave('scene2_intro');
+            await (saveSystem as any).triggerAutoSave('scene2_intro', 'test');
 
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 expect.stringContaining('slot0'),
@@ -71,12 +71,12 @@ describe('SaveSystem', () => {
         });
 
         it('should NOT auto-save on main_menu', async () => {
-            await saveSystem.autoSave('main_menu');
+            await (saveSystem as any).triggerAutoSave('main_menu', 'test');
             expect(localStorage.setItem).not.toHaveBeenCalled();
         });
 
         it('should NOT auto-save on splash', async () => {
-            await saveSystem.autoSave('splash');
+            await (saveSystem as any).triggerAutoSave('splash', 'test');
             expect(localStorage.setItem).not.toHaveBeenCalled();
         });
 
@@ -87,8 +87,9 @@ describe('SaveSystem', () => {
             // Extract the callback and call it
             const callback = (eventBus.on as any).mock.calls.find((call: any[]) => call[0] === 'scene:load')[1];
 
-            // Spy on autoSave
-            const autoSaveSpy = vi.spyOn(saveSystem, 'autoSave');
+            // Spy on triggerAutoSave (private method requires any cast for spy access in JS runtime, or just spy prototype?)
+            // Vitest spyOn works on method names.
+            const autoSaveSpy = vi.spyOn(saveSystem as any, 'triggerAutoSave');
 
             callback({ sceneId: 'test_scene' });
             expect(autoSaveSpy).toHaveBeenCalledWith('test_scene');

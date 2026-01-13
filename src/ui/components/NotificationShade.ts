@@ -14,8 +14,7 @@ export class NotificationShade {
     private container: HTMLElement;
     private isOpen: boolean = false;
     private isExpanded: boolean = false;
-    private isExpanded: boolean = false;
-    private currentQuickActionPage: number = 0;
+    // private _currentQuickActionPage: number = 0; // Unused
     // private stateManager?: any;
 
     constructor(eventBus: EventBus) {
@@ -388,7 +387,7 @@ export class NotificationShade {
         const dots = this.container.querySelectorAll('.quick-actions-dots .dot');
 
         if (track) {
-            this.currentQuickActionPage = pageIndex;
+            // this._currentQuickActionPage = pageIndex;
             // V1 uses percentage: -50% for page 1 (track is 200% wide, each page is 50%)
             track.style.transform = `translateX(-${pageIndex * 50}%)`;
 

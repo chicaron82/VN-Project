@@ -1,4 +1,4 @@
-import { GameEngine } from './GameEngine';
+// import { GameEngine } from './GameEngine'; // Unused
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
 
@@ -40,7 +40,7 @@ export class BacklogManager {
     // V1 Parity: Narrators that cannot be jumped to
     private lockedNarrators: string[] = ['System', 'ERROR', 'Despair', '???', 'STATIC', 'CORRUPTION'];
 
-    constructor(gameEngine: GameEngine, eventBus: EventBus, stateManager: StateManager) {
+    constructor(eventBus: EventBus, stateManager: StateManager) {
         // this.gameEngine = gameEngine;
         this.eventBus = eventBus;
         this.stateManager = stateManager;
