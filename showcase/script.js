@@ -141,6 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sections = document.querySelectorAll('section');
 
     sections.forEach(section => {
+        // BUGFIX: Skip journey-section to prevent timeline from disappearing
+        // The timeline is too long and gets hidden by the fade-in animation
+        if (section.classList.contains('journey-section')) {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+            return;
+        }
+
         // Check if section is already in viewport on load
         const rect = section.getBoundingClientRect();
         const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
