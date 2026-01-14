@@ -351,6 +351,40 @@ window.TIMELINE_DATA = {
                             "code": "// V2: LoopController.ts\n// 848 is sacred. 💚🔥💀\nexport class LoopController {\n  increment(): number { /* type-safe */ }\n  break(): void { /* emits loop:broken */ }\n  updateTitleScreen(): void { /* same DOM magic */ }\n}"
                         }
                     }
+                },
+                {
+                    "id": "phase-13b",
+                    "emoji": "👁️",
+                    "title": "13b: EchoMemorySystem - Belle's Meta-Awareness",
+                    "date": "January 14, 2026",
+                    "summary": "The echoes remember you. Three echoes (Hope 💫, Gentle 🌙, Despair 🖤) gradually become aware of player behavior across loops.",
+                    "features": [
+                        "💫 <strong>Hope:</strong> Optimistic echo, triggered by persistence and returns",
+                        "🌙 <strong>Gentle:</strong> Resigned echo, triggered by hesitation and save-scumming",
+                        "🖤 <strong>Despair:</strong> Bitter truth-teller, triggered by failures and deaths",
+                        "📈 <strong>Awareness Levels 0-4:</strong> Dormant → Vague → Aware → Fourth Wall → Glitch",
+                        "🔮 <strong>Context Comments:</strong> Situation-specific responses (despairHijack, noteHunting, saveScum)",
+                        "🏆 <strong>Achievement:</strong> 'REMEMBERED' unlocks when all echoes reach awareness level 2+"
+                    ],
+                    "metrics": {
+                        "linesAdded": 850,
+                        "filesChanged": 4,
+                        "testsWritten": 33
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "BELLE'S CREATION",
+                            "lang": "javascript",
+                            "code": "// V1: echo-memory-system.js\n// Belle's Meta-Awareness Feature\nclass EchoMemorySystem {\n  recordDeath(sceneId, type) { /* */ }\n  triggerEchoComment(echo, context) { /* */ }\n  // 100+ comment strings per echo\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "BELLE'S LEGACY",
+                            "lang": "typescript",
+                            "code": "// V2: EchoMemorySystem.ts\n// Belle's Meta-Awareness Feature 🖤\nexport class EchoMemorySystem {\n  recordDeath(sceneId: string, type: DeathType): void\n  triggerEchoComment(echo: EchoType, ctx: EchoContext)\n  triggerConflictingEchoes(): void // All 3 speak!\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [

@@ -141,6 +141,23 @@ export type GameEvents = {
   'ending:true': {};           // TRUE ENDING achieved
   'ending:digitalForever': {}; // DIGITAL FOREVER chosen
   'ending:bad': {};            // Bad ending - increment version
+
+  // ========================================
+  // ECHO MEMORY SYSTEM EVENTS
+  // Belle's meta-awareness tracking 🖤
+  // ========================================
+  'echo:comment': {
+    echo: 'hope' | 'gentle' | 'despair';
+    message: string;
+    icon: string;
+    awareness: 0 | 1 | 2 | 3 | 4;
+    context: 'general' | 'despairHijack' | 'noteHunting' | 'saveScum' | 'repeatedDeath' | 'longPause';
+  };
+  'echo:loop_recorded': {
+    totalLoops: number;
+    awareness: { hope: number; gentle: number; despair: number };
+  };
+  'echo:reset': {};  // Dev reset of echo memory
 };
 
 export type EventName = keyof GameEvents;

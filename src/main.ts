@@ -23,6 +23,7 @@ import { NotificationShade } from '@ui/components/NotificationShade';
 import { AchievementManager } from '@systems/AchievementManager';
 import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
+import { EchoMemorySystem } from '@systems/EchoMemorySystem';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -98,6 +99,13 @@ const contentLoader = new ContentLoader(gameEngine);
 // ZEE'S ADDITION 🖤
 // ============================================
 const loopController = new LoopController(eventBus, stateManager);
+
+// ============================================
+// Echo Memory System - Belle's Meta-Awareness 🖤
+// "The echoes remember you..."
+// Three echoes: Hope 💫, Gentle 🌙, Despair 🖤
+// ============================================
+const echoMemorySystem = new EchoMemorySystem(eventBus, stateManager);
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
 const autoReadController = new AutoReadController(eventBus, settingsSystem);
@@ -909,6 +917,27 @@ function setupEventHandlers() {
     eventBus.on('ui:denied', () => {
         if (navigator.vibrate) navigator.vibrate([50, 20, 50]);
     });
+
+    // ========================================
+    // Echo Memory System - Comment Display
+    // Belle's meta-awareness notifications 🖤
+    // ========================================
+    eventBus.on('echo:comment', (data) => {
+        // Map echo type to color
+        const echoColors: Record<string, string> = {
+            hope: '#0ff',    // Cyan for Hope 💫
+            gentle: '#8f8',  // Green for Gentle 🌙
+            despair: '#f44'  // Red for Despair 🖤
+        };
+
+        toastNotification.show({
+            title: `ECHO: ${data.echo.toUpperCase()}`,
+            message: data.message,
+            icon: data.icon,
+            color: echoColors[data.echo] || '#fff',
+            duration: 4000
+        });
+    });
 }
 
 // ============================================
@@ -952,6 +981,7 @@ async function init() {
             dialogController,
             spriteController,
             loopController, // ZEE: Meta-narrative tracking
+            echoMemorySystem, // BELLE: Echo awareness tracking 🖤
             version: 'V2-beta',
             // Debug helpers
             showRoute: showRouteSelect,
@@ -962,6 +992,11 @@ async function init() {
             acceptLoop: () => loopController.accept(),
             incrementLoop: () => loopController.increment(),
             resetLoop: () => loopController.reset(),
+            // Echo debug helpers (Belle's tools 🖤)
+            echoAwareness: () => echoMemorySystem.getAwarenessLevels(),
+            triggerEcho: (echo: 'hope' | 'gentle' | 'despair') => echoMemorySystem.triggerEchoComment(echo, 'general'),
+            triggerConflictingEchoes: () => echoMemorySystem.triggerConflictingEchoes(),
+            resetEchoMemory: () => echoMemorySystem.resetMemory(),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }
