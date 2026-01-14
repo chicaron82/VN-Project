@@ -1794,12 +1794,21 @@ section h2 {
     backdrop-filter: blur(10px);
     border-radius: 28px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: opacity 0.3s ease, all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     width: 170px;
     height: 56px;
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    /* Hidden by default - only visible during Journey section */
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Visible when Journey section is in viewport */
+.phase-nav.visible {
+    opacity: 1;
+    pointer-events: all;
 }
 
 /* Hover State: Expand (Desktop) */
