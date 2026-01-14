@@ -1838,17 +1838,15 @@ section h2 {
     padding: 0 16px 16px;
     margin: 0;
     max-height: 0;
-    /* Hidden by default */
     opacity: 0;
     transition: all 0.3s ease;
 }
 
-.phase-nav:hover .phase-nav-list {
+.phase-nav:hover .phase-nav-list,
+.phase-nav.expanded .phase-nav-list {
     max-height: 400px;
-    /* Allow expansion */
     opacity: 1;
     overflow-y: auto;
-    /* Scroll if too tall */
     scrollbar-width: thin;
 }
 
