@@ -693,35 +693,18 @@ document.addEventListener('DOMContentLoaded', () => {
 const phaseNav = document.getElementById('phase-nav');
 const phaseLinks = document.querySelectorAll('.phase-nav-link');
 
-// Function to check and update active phase (keep scroll listener for this)
+// Function to check and update active phase
 function updateActivePhaseOnScroll() {
     updateActivePhase();
 }
 
-// Use IntersectionObserver for robust visibility toggling
-// This ensures the nav appears EXACTLY when the Journey section enters the viewport
-const journeySectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        // Toggle visibility based on intersection (is it on screen?)
-        if (entry.isIntersecting) {
-            phaseNav.classList.add('visible');
-        } else {
-            phaseNav.classList.remove('visible');
-        }
-    });
-}, {
-    threshold: 0, // Trigger as soon as even 1 pixel is visible
-    rootMargin: "0px" // Exact viewport boundaries
-});
-
-// Start observing the journey section
-const journeySection = document.querySelector('.journey-section');
-if (journeySection) {
-    journeySectionObserver.observe(journeySection);
-}
-
-// Check active phase on scroll (only needed for the dots)
+// Persistent Phase Nav (FAB) doesn't need visibility toggling
+// It's always visible via CSS
+// We just need to update the active dot on scroll
 window.addEventListener('scroll', updateActivePhaseOnScroll);
+
+// Initialize active phase on load
+setTimeout(updateActivePhase, 100);
 
 // Smooth scroll to phase
 phaseLinks.forEach(link => {
