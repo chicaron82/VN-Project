@@ -1,0 +1,294 @@
+/* ═══════════════════════════════════════════════════════════════
+   UV7 OS - APP SWITCHER
+   iOS-style app switcher for UV7 ecosystem
+   
+   Contributors:
+   - Ronnie (Vision: "Make it bougie")
+   - Antigravity (Implementation: "Say less")
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   APP SWITCHER OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-app-switcher {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    z-index: 10001;
+    /* Above status bar */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.uv7-app-switcher.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Header */
+.app-switcher-header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.app-switcher-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.app-switcher-close {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-switcher-close:hover {
+    opacity: 1;
+}
+
+/* Content */
+.app-switcher-content {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-switcher-section {
+    margin-bottom: 2rem;
+}
+
+.app-switcher-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+/* App Cards Grid */
+.app-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .app-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* App Card */
+.app-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.app-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 136, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3),
+        0 0 20px rgba(0, 255, 136, 0.1);
+}
+
+.app-card:active {
+    transform: translateY(-2px);
+}
+
+.app-card.active {
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.app-card.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+}
+
+/* App Preview (Screenshot/Thumbnail) */
+.app-preview {
+    height: 180px;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 255, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(0, 255, 136, 0.2), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(0, 204, 255, 0.2), transparent 60%);
+}
+
+.app-preview-icon {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* App Info */
+.app-info {
+    padding: 1rem;
+}
+
+.app-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.app-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.app-badge.active {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+.app-badge.recent {
+    background: rgba(0, 204, 255, 0.2);
+    color: #00ccff;
+}
+
+.app-description {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.app-state {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.app-state-item {
+    font-size: 11px;
+    color: #666;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Empty State */
+.app-switcher-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #666;
+}
+
+.app-switcher-empty-icon {
+    font-size: 48px;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.app-switcher-empty-text {
+    font-size: 14px;
+}
+
+/* Swipe Hint */
+.app-switcher-hint {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+    .app-preview {
+        height: 140px;
+        font-size: 36px;
+    }
+
+    .app-info {
+        padding: 0.75rem;
+    }
+
+    .app-name {
+        font-size: 14px;
+    }
+
+    .app-description {
+        font-size: 12px;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    .uv7-app-switcher,
+    .app-card {
+        transition: none;
+    }
+
+    .app-card:hover {
+        transform: none;
+    }
+}

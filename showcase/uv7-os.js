@@ -31,10 +31,32 @@ class UV7OS {
         this.restoreState();
         this.startScrollListener();
 
+        // Initialize app switcher
+        setTimeout(() => this.initAppSwitcher(), 100);
+
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
         console.log('🚀 UV7 OS initialized:', this.context);
+    }
+
+    initAppSwitcher() {
+        // Wait for UV7AppSwitcher to be available
+        if (typeof UV7AppSwitcher !== 'undefined') {
+            this.appSwitcher = new UV7AppSwitcher();
+
+            // Wire up logo click
+            const statusLogo = document.querySelector('.status-logo');
+            if (statusLogo) {
+                statusLogo.addEventListener('click', () => {
+                    this.appSwitcher.toggle();
+                });
+            }
+
+            console.log('✅ App Switcher ready');
+        } else {
+            console.warn('⚠️ UV7AppSwitcher not loaded');
+        }
     }
 
     cacheElements() {
@@ -243,9 +265,15 @@ class UV7OS {
 
         const handleSwipe = () => {
             const swipeDistance = touchEndY - touchStartY;
+
             // Swipe down from top (> 100px) opens shade
             if (touchStartY < 100 && swipeDistance > 100) {
                 this.openShade();
+            }
+
+            // Swipe up (< -100px) closes shade if it's open
+            if (swipeDistance < -100 && this.elements.shade && this.elements.shade.classList.contains('open')) {
+                this.closeShade();
             }
         };
 
