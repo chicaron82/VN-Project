@@ -754,3 +754,223 @@ function updateActivePhase() {
         }
     });
 }
+
+// ==========================================
+// V3 POLISH PROTOCOL - MICHELIN TREATMENT
+// ==========================================
+
+// Story/Dev Mode Toggle
+(function initViewModeToggle() {
+    const body = document.body;
+    const sectionContent = document.querySelector('.section-content');
+
+    if (!sectionContent) return;
+
+    // Create toggle UI
+    const toggleContainer = document.createElement('div');
+    toggleContainer.className = 'view-mode-toggle';
+    toggleContainer.innerHTML = `
+        <button class="mode-btn" data-mode="story" aria-label="Story Mode">
+            📖 Story
+        </button>
+        <button class="mode-btn" data-mode="dev" aria-label="Developer Mode">
+            🔧 Dev
+        </button>
+    `;
+
+    // Insert at top of section
+    sectionContent.prepend(toggleContainer);
+
+    // Load saved preference or default to story
+    const savedMode = localStorage.getItem('uv7-view-mode') || 'story';
+    body.dataset.viewMode = savedMode;
+    updateToggleButtons(savedMode);
+
+    // Toggle button click handlers
+    toggleContainer.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            body.dataset.viewMode = mode;
+            localStorage.setItem('uv7-view-mode', mode);
+            updateToggleButtons(mode);
+        });
+    });
+
+    function updateToggleButtons(mode) {
+        toggleContainer.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === mode);
+            btn.setAttribute('aria-selected', btn.dataset.mode === mode);
+        });
+    }
+
+    // Keyboard shortcut: S to toggle
+    document.addEventListener('keydown', (e) => {
+        const el = document.activeElement;
+        const isTyping = el && (
+            el.tagName === 'INPUT' ||
+            el.tagName === 'TEXTAREA' ||
+            el.isContentEditable
+        );
+
+        if (e.key.toLowerCase() === 's' && !isTyping) {
+            e.preventDefault();
+            const currentMode = body.dataset.viewMode;
+            const newMode = currentMode === 'story' ? 'dev' : 'story';
+            body.dataset.viewMode = newMode;
+            localStorage.setItem('uv7-view-mode', newMode);
+            updateToggleButtons(newMode);
+        }
+    });
+})();
+
+// RAF Slider Optimization
+(function optimizeSlider() {
+    let rafId = null;
+    let ticking = false;
+
+    // Replace existing mousemove listener
+    const oldMouseMove = window.onmousemove;
+    window.removeEventListener('mousemove', oldMouseMove);
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+
+        if (!ticking) {
+            rafId = requestAnimationFrame(() => {
+                const x = e.clientX;
+                const width = window.innerWidth;
+                let pct = (x / width) * 100;
+                pct = Math.max(0, Math.min(100, pct));
+                updateSlider(pct);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    });
+
+    // Same for touch
+    const oldTouchMove = window.ontouchmove;
+    window.removeEventListener('touchmove', oldTouchMove);
+
+    window.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        if (!ticking) {
+            rafId = requestAnimationFrame(() => {
+                const touch = e.touches[0];
+                const x = touch.clientX;
+                const width = window.innerWidth;
+                let pct = (x / width) * 100;
+                pct = Math.max(0, Math.min(100, pct));
+                updateSlider(pct);
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: false });
+})();
+
+// Keyboard Shortcuts Help Modal
+(function initKeyboardShortcuts() {
+    const shortcuts = {
+        'Arrow Keys': 'Control comparison slider',
+        'S': 'Toggle Story/Dev mode',
+        'Esc': 'Close expanded phase',
+        '?': 'Show keyboard shortcuts'
+    };
+
+    let helpModal = null;
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '?') {
+            e.preventDefault();
+            showHelp();
+        } else if (e.key === 'Escape' && helpModal) {
+            closeHelp();
+        }
+    });
+
+    function showHelp() {
+        if (helpModal) return;
+
+        helpModal = document.createElement('div');
+        helpModal.className = 'keyboard-help-modal';
+        helpModal.innerHTML = `
+            <div class="help-content">
+                <h3>Keyboard Shortcuts</h3>
+                <ul class="shortcuts-list">
+                    ${Object.entries(shortcuts).map(([key, desc]) => `
+                        <li><kbd>${key}</kbd><span>${desc}</span></li>
+                    `).join('')}
+                </ul>
+                <button class="close-help">Close</button>
+            </div>
+        `;
+
+        document.body.appendChild(helpModal);
+
+        helpModal.querySelector('.close-help').addEventListener('click', closeHelp);
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) closeHelp();
+        });
+    }
+
+    function closeHelp() {
+        if (helpModal) {
+            helpModal.remove();
+            helpModal = null;
+        }
+    }
+})();
+
+// Context-Aware Background Code Snippets
+(function initContextAwareBackground() {
+    const chaosSnippets = [
+        "function forceUpdate() { while(true) { try { render() } catch(e) { ignore() } } }",
+        "// TODO: Fix this later... maybe...",
+        "if (user.isSad) { makeHappy(user); } else { breakStuff(); }",
+        "$('body').on('click', function() { alert('Why?'); });",
+        "return null; // I give up",
+        "try { everything() } catch (nothing) {}",
+        "// Logic is overrated"
+    ];
+
+    const orderSnippets = [
+        "class StateManager { private state: Map<string, any>; }",
+        "interface EventPayload { type: string; data: unknown; }",
+        "// TypeScript strict mode enabled",
+        "export const EventBus = new EventEmitter();",
+        "private readonly config: Readonly<Config>;",
+        "test('should handle edge cases', () => { expect(result).toBe(expected); });",
+        "// 100% type coverage achieved"
+    ];
+
+    window.currentSnippets = chaosSnippets;
+
+    // Update snippets based on scroll position
+    const phaseObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const phaseType = entry.target.dataset.type || 'chaos-entry';
+                window.currentSnippets = phaseType.includes('order') ? orderSnippets : chaosSnippets;
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // Observe all timeline items
+    setTimeout(() => {
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            phaseObserver.observe(item);
+        });
+    }, 1000);
+})();
+
+// Console Easter Egg
+console.log('%c🎮 UV7 Showcase', 'font-size: 24px; font-weight: bold; color: #00ff88;');
+console.log('%cBuilt with AI collaboration. 11 phases. 72 hours. Zero regrets.', 'color: #888;');
+console.log('%cWant to see the code? Check the repo: https://github.com/chicaron82/VN-Project', 'color: #00ccff;');
+console.log('%c💡 Tip: Press "S" to toggle Story/Dev mode | Press "?" for keyboard shortcuts', 'color: #ffaa00;');
+
+console.log('%c\n🔧 V3 Polish Protocol Active', 'font-size: 16px; font-weight: bold; color: #00ccff;');
+console.log('%cFeatures: Story/Dev toggle, RAF slider, expandable phases, context-aware backgrounds', 'color: #888;');
+console.log('%cQuality: MICHELIN ⭐⭐⭐', 'color: #00ff88; font-weight: bold;');
