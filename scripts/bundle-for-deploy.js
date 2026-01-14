@@ -424,10 +424,10 @@ const landingHtml = `<!DOCTYPE html>
         </div>
         
         <div class="card-grid">
-            <a href="./index.v2.html" class="card">
-                <span class="badge badge-v2">V2 Engine</span>
-                <h2>Launch V2</h2>
-                <p>TypeScript rebuild. EventBus architecture. 128 tests passing. Zero errors.</p>
+            <a href="./v1/index.html" class="card">
+                <span class="badge badge-legacy">Legacy V1</span>
+                <h2>Play Original</h2>
+                <p>The bootstrap paradox. Version 848. Where it all began.</p>
             </a>
 
             <a href="./showcase/index.html" class="card">
@@ -436,10 +436,10 @@ const landingHtml = `<!DOCTYPE html>
                 <p>The journey from chaos to order. 10 phases. 72 hours. AI collaboration.</p>
             </a>
 
-            <a href="./v1/index.html" class="card">
-                <span class="badge badge-legacy">Legacy V1</span>
-                <h2>Play Original</h2>
-                <p>The bootstrap paradox. Version 848. Where it all began.</p>
+            <a href="./index.v2.html" class="card">
+                <span class="badge badge-v2">V2 Engine</span>
+                <h2>Launch V2</h2>
+                <p>TypeScript rebuild. EventBus architecture. 128 tests passing. Zero errors.</p>
             </a>
         </div>
 
