@@ -549,6 +549,71 @@ class TimelineRenderer {
             content.appendChild(metricsGrid);
         }
 
+        // Sub-entries (for phases like Phase 13 that group multiple ports)
+        if (phase.subEntries && phase.subEntries.length > 0) {
+            const subEntriesContainer = document.createElement('div');
+            subEntriesContainer.className = 'sub-entries-container';
+
+            const subEntriesTitle = document.createElement('h4');
+            subEntriesTitle.textContent = 'System Ports:';
+            subEntriesContainer.appendChild(subEntriesTitle);
+
+            phase.subEntries.forEach(subEntry => {
+                const subItem = document.createElement('div');
+                subItem.className = 'sub-entry';
+                subItem.id = subEntry.id;
+
+                // Sub-entry header
+                const subHeader = document.createElement('div');
+                subHeader.className = 'sub-entry-header';
+                subHeader.innerHTML = `<span class="sub-entry-emoji">${subEntry.emoji || '📦'}</span> <strong>${subEntry.title}</strong> <span class="sub-entry-date">${subEntry.date || ''}</span>`;
+                subItem.appendChild(subHeader);
+
+                // Sub-entry summary
+                if (subEntry.summary) {
+                    const subSummary = document.createElement('p');
+                    subSummary.className = 'sub-entry-summary';
+                    subSummary.textContent = subEntry.summary;
+                    subItem.appendChild(subSummary);
+                }
+
+                // Sub-entry features
+                if (subEntry.features && subEntry.features.length > 0) {
+                    const featuresList = document.createElement('ul');
+                    featuresList.className = 'sub-entry-features';
+                    subEntry.features.forEach(feature => {
+                        const li = document.createElement('li');
+                        li.innerHTML = feature;
+                        featuresList.appendChild(li);
+                    });
+                    subItem.appendChild(featuresList);
+                }
+
+                // Sub-entry metrics (mini version)
+                if (subEntry.metrics) {
+                    const metricsRow = document.createElement('div');
+                    metricsRow.className = 'sub-entry-metrics dev-only';
+                    Object.entries(subEntry.metrics).forEach(([key, value]) => {
+                        const metric = document.createElement('span');
+                        metric.className = 'sub-metric';
+                        const label = key.replace(/([A-Z])/g, ' $1').trim();
+                        metric.innerHTML = `<strong>${value}</strong> ${label}`;
+                        metricsRow.appendChild(metric);
+                    });
+                    subItem.appendChild(metricsRow);
+                }
+
+                // Sub-entry code comparison
+                if (subEntry.codeComparison) {
+                    subItem.appendChild(this.createCodeComparison(subEntry.codeComparison));
+                }
+
+                subEntriesContainer.appendChild(subItem);
+            });
+
+            content.appendChild(subEntriesContainer);
+        }
+
         item.appendChild(marker);
         item.appendChild(content);
         return item;

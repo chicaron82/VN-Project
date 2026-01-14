@@ -608,6 +608,120 @@ section h2 {
     }
 }
 
+/* --- SUB-ENTRIES STYLES --- */
+/* For phases that group multiple system ports (e.g., Phase 13) */
+.sub-entries-container {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed rgba(52, 152, 219, 0.3);
+}
+
+.sub-entries-container h4 {
+    color: var(--order-accent);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.sub-entry {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.05));
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sub-entry:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
+}
+
+.sub-entry:last-child {
+    margin-bottom: 0;
+}
+
+.sub-entry-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.sub-entry-emoji {
+    font-size: 1.25rem;
+}
+
+.sub-entry-header strong {
+    color: var(--order-text);
+    font-size: 1rem;
+}
+
+.sub-entry-date {
+    font-size: 0.8rem;
+    color: #888;
+    margin-left: auto;
+}
+
+.sub-entry-summary {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.sub-entry-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+}
+
+.sub-entry-features li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.4;
+}
+
+.sub-entry-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--order-accent);
+    font-weight: bold;
+}
+
+.sub-entry-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.sub-metric {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.sub-metric strong {
+    color: var(--order-accent);
+    margin-right: 0.25rem;
+}
+
+/* Sub-entry code comparison - slightly smaller */
+.sub-entry .code-comparison {
+    margin-top: 1rem;
+}
+
+.sub-entry .code-window {
+    font-size: 0.85rem;
+}
+
 /* --- SETTINGS CAROUSEL --- */
 .settings-carousel {
     display: flex;

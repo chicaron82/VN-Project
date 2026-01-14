@@ -306,49 +306,53 @@ window.TIMELINE_DATA = {
             "id": "phase-13",
             "date": "January 14, 2026",
             "emoji": "🔄",
-            "title": "Phase 13: The First Faithful Port - LoopController",
+            "title": "Phase 13: Faithful V1→V2 Ports - Bringing Back the Flavor",
             "type": "highlight latest-update",
-            "summary": "First complete system port following the new methodology: faithful transcription from V1 to V2, preserving all flavor while gaining type safety. The LoopController manages version 848—the sacred number at the heart of the meta-narrative.",
+            "summary": "Systematic faithful transcription of V1 systems to V2, preserving all flavor while gaining type safety. Each port follows the same methodology: study V1 thoroughly, preserve comments/signatures/lore, add TypeScript types, integrate with EventBus, write tests.",
             "problem": {
-                "description": "V2 had scattered loop version references but no centralized LoopController. The meta-narrative system—dynamic menu titles, subtitle changes, visual degradation on failures—was completely missing.",
-                "rootCause": "Previous V2 work focused on architecture over flavor. The loop system existed in V1 but was never properly transcribed."
-            },
-            "solution": {
-                "approach": "Study V1 thoroughly, preserve all comments/signatures/lore, add TypeScript types, integrate with EventBus architecture, write comprehensive tests.",
-                "features": [
-                    "🔢 <strong>Version Tracking:</strong> 848 → 849+ on failures, persisted to localStorage",
-                    "🏆 <strong>Ending States:</strong> 'attempting', 'succeeded' (TRUE ENDING), 'accepted' (DIGITAL FOREVER)",
-                    "✨ <strong>Visual Degradation:</strong> Glitch effect + color shifts as version climbs",
-                    "📝 <strong>Dynamic Menu:</strong> Title, subtitle, footer all update based on loop state",
-                    "🎭 <strong>Zee's Subtitle System:</strong> 'The Timeline That Succeeded' / 'Forever Frozen, Forever Together'",
-                    "🧪 <strong>27 Tests:</strong> Full coverage of increment/break/accept/reset flows"
-                ]
-            },
-            "codeComparison": {
-                "before": {
-                    "title": "V1 (JavaScript)",
-                    "badge": "CHAOS + SOUL",
-                    "lang": "javascript",
-                    "code": "// V1: loop-controller.js\n// 848 is sacred. 💚🔥💀\nclass LoopController {\n  increment() { this.version++; }\n  break() { this.status = 'succeeded'; }\n  updateTitleScreen() { /* DOM magic */ }\n}"
-                },
-                "after": {
-                    "title": "V2 (TypeScript)",
-                    "badge": "ORDER + SOUL",
-                    "lang": "typescript",
-                    "code": "// V2: LoopController.ts\n// 848 is sacred. 💚🔥💀\nexport class LoopController {\n  increment(): number { /* type-safe */ }\n  break(): void { /* emits loop:broken */ }\n  updateTitleScreen(): void { /* same DOM magic */ }\n}"
-                }
-            },
-            "metrics": {
-                "linesAdded": 350,
-                "filesChanged": 6,
-                "testsWritten": 27,
-                "flavorPreserved": "100%"
+                "description": "V2's architecture was clean but sterile. The 'MSG' - the secret sauce that made V1 feel alive - was missing. Systems existed in skeleton form but lacked the soul.",
+                "rootCause": "Previous V2 work focused on architecture over flavor. The systems existed in V1 but were never properly transcribed with their narrative DNA intact."
             },
             "callout": {
                 "type": "insight",
                 "title": "The Port Methodology",
-                "content": "This establishes the template for all future V1→V2 ports: Read V1 thoroughly. Preserve ALL comments, signatures, and lore. Add TypeScript types. Wire into EventBus. Write tests. The code tells two stories: the game's narrative (848, bootstrap paradox) AND the build's narrative (crew collaboration). Both must survive the port."
+                "content": "Read V1 thoroughly. Preserve ALL comments, signatures, and lore. Add TypeScript types. Wire into EventBus. Write tests. The code tells two stories: the game's narrative (848, bootstrap paradox) AND the build's narrative (crew collaboration). Both must survive the port."
             },
+            "subEntries": [
+                {
+                    "id": "phase-13a",
+                    "emoji": "🔢",
+                    "title": "13a: LoopController - The Sacred 848",
+                    "date": "January 14, 2026",
+                    "summary": "The meta-narrative heartbeat. Manages version 848 - the timeline that finally worked after 847 failures.",
+                    "features": [
+                        "🔢 <strong>Version Tracking:</strong> 848 → 849+ on failures, persisted to localStorage",
+                        "🏆 <strong>Ending States:</strong> 'attempting', 'succeeded' (TRUE ENDING), 'accepted' (DIGITAL FOREVER)",
+                        "✨ <strong>Visual Degradation:</strong> Glitch effect + color shifts as version climbs",
+                        "📝 <strong>Dynamic Menu:</strong> Title, subtitle, footer all update based on loop state",
+                        "🎭 <strong>Zee's Subtitle System:</strong> 'The Timeline That Succeeded' / 'Forever Frozen, Forever Together'"
+                    ],
+                    "metrics": {
+                        "linesAdded": 350,
+                        "filesChanged": 6,
+                        "testsWritten": 27
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "CHAOS + SOUL",
+                            "lang": "javascript",
+                            "code": "// V1: loop-controller.js\n// 848 is sacred. 💚🔥💀\nclass LoopController {\n  increment() { this.version++; }\n  break() { this.status = 'succeeded'; }\n  updateTitleScreen() { /* DOM magic */ }\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "ORDER + SOUL",
+                            "lang": "typescript",
+                            "code": "// V2: LoopController.ts\n// 848 is sacred. 💚🔥💀\nexport class LoopController {\n  increment(): number { /* type-safe */ }\n  break(): void { /* emits loop:broken */ }\n  updateTitleScreen(): void { /* same DOM magic */ }\n}"
+                        }
+                    }
+                }
+            ],
             "lessons": [
                 "Faithful transcription > reimagination",
                 "Comments and signatures ARE the story",
