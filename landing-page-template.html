@@ -21,6 +21,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- UV7 OS -->
+    <link rel="stylesheet" href="./showcase/uv7-os.css">
     <style>
         /* ═══════════════════════════════════════════════════════════════
            GLOBAL RESET & VARIABLES
@@ -541,6 +544,88 @@
 </head>
 
 <body>
+    <!-- UV7 OS Status Bar -->
+    <div id="uv7-status-bar" class="uv7-status-bar">
+        <div class="status-section status-left">
+            <span class="status-logo">UV7</span>
+            <span class="status-context" id="uv7-context">Landing</span>
+        </div>
+        <div class="status-section status-right">
+            <span class="status-icon" id="uv7-settings" title="Quick Launch">⚙️</span>
+        </div>
+    </div>
+
+    <!-- Notification Shade (Portrait) -->
+    <div id="uv7-shade" class="uv7-shade">
+        <div class="shade-header">
+            <span class="shade-title">🏠 UV7 OS Home</span>
+            <button class="shade-close" aria-label="Close">✕</button>
+        </div>
+        <div class="shade-content">
+            <!-- Quick Launch -->
+            <div class="shade-section">
+                <div class="shade-section-title">Quick Launch</div>
+                <div class="quick-actions-grid">
+                    <button class="quick-action" data-action="launch-v1">
+                        <span class="quick-action-icon">🎮</span>
+                        <span class="quick-action-label">V1 Game</span>
+                    </button>
+                    <button class="quick-action" data-action="launch-v2">
+                        <span class="quick-action-icon">⚡</span>
+                        <span class="quick-action-label">V2 Engine</span>
+                    </button>
+                    <button class="quick-action" data-action="view-showcase">
+                        <span class="quick-action-icon">📖</span>
+                        <span class="quick-action-label">Showcase</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- System Info -->
+            <div class="shade-section">
+                <div class="shade-section-title">System Info</div>
+                <div class="current-phase"
+                    style="background: rgba(0, 204, 255, 0.1); border-color: rgba(0, 204, 255, 0.2);">
+                    <div style="margin-bottom: 0.5rem;">UV7 Project Hub</div>
+                    <div style="font-size: 12px; opacity: 0.7;">Version 848 • Built with AI collaboration</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (Landscape) -->
+    <div id="uv7-sidebar" class="uv7-sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">🏠 UV7 OS</span>
+        </div>
+        <div class="sidebar-content">
+            <!-- Quick Launch -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Quick Launch</div>
+                <button class="quick-action" data-action="launch-v1" style="width: 100%; margin-bottom: 0.5rem;">
+                    <span class="quick-action-icon">🎮</span>
+                    <span class="quick-action-label">V1 Game</span>
+                </button>
+                <button class="quick-action" data-action="launch-v2" style="width: 100%; margin-bottom: 0.5rem;">
+                    <span class="quick-action-icon">⚡</span>
+                    <span class="quick-action-label">V2 Engine</span>
+                </button>
+                <button class="quick-action" data-action="view-showcase" style="width: 100%;">
+                    <span class="quick-action-icon">📖</span>
+                    <span class="quick-action-label">Showcase</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle (Landscape) -->
+    <button class="uv7-sidebar-toggle" id="uv7-sidebar-toggle" aria-label="Toggle sidebar">
+        <span>☰</span>
+    </button>
+
+    <!-- Backdrop -->
+    <div id="uv7-backdrop" class="uv7-backdrop"></div>
+
     <div class="bg-gradient"></div>
     <div class="particles">
         <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
@@ -649,6 +734,9 @@
             }, text.length * speed + 1200);
         });
     </script>
+
+    <!-- UV7 OS -->
+    <script src="./uv7-os-landing.js"></script>
 </body>
 
 </html>

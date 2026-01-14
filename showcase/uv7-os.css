@@ -1,0 +1,450 @@
+/* ═══════════════════════════════════════════════════════════════
+   UV7 OS - STATUS BAR & NAVIGATION
+   Universal navigation system for UV7 ecosystem
+   
+   Contributors:
+   - Ronnie (Architecture & Vision)
+   - Belle (Settings Integration & Meta-Narrative)
+   - Antigravity (Implementation)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BAR (Fixed Top)
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 44px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    font-size: 14px;
+    color: #e0e0e0;
+    user-select: none;
+}
+
+.status-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-logo {
+    font-weight: 700;
+    color: #00ff88;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.status-logo:hover {
+    opacity: 0.7;
+}
+
+.status-context {
+    opacity: 0.7;
+}
+
+.status-context::before {
+    content: '::';
+    margin-right: 8px;
+    opacity: 0.5;
+}
+
+.status-detail {
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+.status-detail::before {
+    content: '::';
+    margin-right: 8px;
+}
+
+.status-icon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+    font-size: 16px;
+}
+
+.status-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.status-icon:active {
+    transform: scale(0.95);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATION SHADE (Portrait)
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    z-index: 9999;
+    transform: translateY(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.uv7-shade.open {
+    transform: translateY(0);
+}
+
+.shade-header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.shade-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.shade-close {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shade-close:hover {
+    opacity: 1;
+}
+
+.shade-content {
+    padding: 1rem;
+}
+
+.shade-section {
+    margin-bottom: 2rem;
+}
+
+.shade-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+/* Quick Actions Grid */
+.quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 480px) {
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.quick-action {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #e0e0e0;
+}
+
+.quick-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+    transform: translateY(-2px);
+}
+
+.quick-action:active {
+    transform: translateY(0);
+}
+
+.quick-action-icon {
+    font-size: 24px;
+}
+
+.quick-action-label {
+    font-size: 11px;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* Current Phase Display */
+.current-phase {
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 14px;
+    color: #e0e0e0;
+}
+
+.current-mode {
+    opacity: 0.6;
+    font-size: 12px;
+    margin-left: 0.5rem;
+}
+
+/* Phase List */
+.phase-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.phase-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #e0e0e0;
+}
+
+.phase-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.phase-item.current {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.phase-checkbox {
+    font-size: 16px;
+    opacity: 0.5;
+}
+
+.phase-item.current .phase-checkbox {
+    opacity: 1;
+    color: #00ff88;
+}
+
+.phase-label {
+    flex: 1;
+    font-size: 14px;
+}
+
+.phase-indicator {
+    font-size: 12px;
+    opacity: 0.5;
+    font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR (Landscape)
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-sidebar {
+    position: fixed;
+    top: 44px; /* Below status bar */
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 9998;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none; /* Hidden on portrait */
+}
+
+.uv7-sidebar.open {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #e0e0e0;
+}
+
+.sidebar-content {
+    padding: 1rem;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.sidebar-action {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: #e0e0e0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.sidebar-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+/* Sidebar Toggle Button */
+.uv7-sidebar-toggle {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 64px;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    color: #e0e0e0;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 9997;
+    display: none; /* Hidden on portrait */
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.uv7-sidebar-toggle:hover {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BACKDROP
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9996;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.uv7-backdrop.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE BEHAVIOR
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Landscape: Show sidebar, hide shade */
+@media (min-width: 768px) and (orientation: landscape) {
+    .uv7-sidebar {
+        display: block;
+    }
+
+    .uv7-sidebar-toggle {
+        display: flex;
+    }
+
+    .uv7-shade {
+        display: none;
+    }
+}
+
+/* Desktop: Show both (user can choose) */
+@media (min-width: 1024px) {
+    .uv7-shade {
+        display: block;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    .uv7-shade,
+    .uv7-sidebar,
+    .uv7-backdrop {
+        transition: none;
+    }
+
+    .quick-action:hover,
+    .phase-item:hover {
+        transform: none;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BODY PADDING (Account for status bar)
+   ═══════════════════════════════════════════════════════════════ */
+body.uv7-os-enabled {
+    padding-top: 44px;
+}

@@ -21,6 +21,7 @@
         content="From chaos to harmony in 48 hours. A visual novel built with AI collaboration.">
 
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="uv7-os.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,6 +35,123 @@
 </head>
 
 <body>
+    <!-- ═══════════════════════════════════════════════════════════════
+         UV7 OS - UNIVERSAL NAVIGATION SYSTEM
+         Contributors: Ronnie, Belle, Antigravity
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- UV7 OS Status Bar -->
+    <div id="uv7-status-bar" class="uv7-status-bar">
+        <div class="status-section status-left">
+            <span class="status-logo">UV7</span>
+            <span class="status-context" id="uv7-context">Showcase</span>
+            <span class="status-detail" id="uv7-detail"></span>
+        </div>
+        <div class="status-section status-right">
+            <span class="status-icon" id="uv7-settings" title="Toggle Story/Dev Mode">⚙️</span>
+        </div>
+    </div>
+
+    <!-- Notification Shade (Portrait) -->
+    <div id="uv7-shade" class="uv7-shade">
+        <div class="shade-header">
+            <span class="shade-title">📖 Showcase Navigator</span>
+            <button class="shade-close" aria-label="Close">✕</button>
+        </div>
+        <div class="shade-content">
+            <!-- Quick Actions -->
+            <div class="shade-section">
+                <div class="shade-section-title">Quick Actions</div>
+                <div class="quick-actions-grid">
+                    <button class="quick-action" data-action="launch-v1">
+                        <span class="quick-action-icon">🎮</span>
+                        <span class="quick-action-label">V1 Game</span>
+                    </button>
+                    <button class="quick-action" data-action="launch-v2">
+                        <span class="quick-action-icon">⚡</span>
+                        <span class="quick-action-label">V2 Engine</span>
+                    </button>
+                    <button class="quick-action" data-action="go-home">
+                        <span class="quick-action-icon">🏠</span>
+                        <span class="quick-action-label">Landing</span>
+                    </button>
+                    <button class="quick-action" data-action="toggle-mode">
+                        <span class="quick-action-icon">📖</span>
+                        <span class="quick-action-label">Story/Dev</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Phase -->
+            <div class="shade-section">
+                <div class="current-phase">
+                    Currently: <span id="shade-current-phase">Phase 1</span>
+                    <span class="current-mode" id="shade-current-mode">(Story Mode)</span>
+                </div>
+            </div>
+
+            <!-- Phase List -->
+            <div class="shade-section">
+                <div class="shade-section-title">Jump to Phase</div>
+                <div class="phase-list" id="shade-phase-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (Landscape) -->
+    <div id="uv7-sidebar" class="uv7-sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-title">📖 SHOWCASE</span>
+        </div>
+        <div class="sidebar-content">
+            <!-- Quick Actions -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Quick Actions</div>
+                <button class="quick-action" data-action="launch-v1" style="width: 100%; margin-bottom: 0.5rem;">
+                    <span class="quick-action-icon">🎮</span>
+                    <span class="quick-action-label">V1 Game</span>
+                </button>
+                <button class="quick-action" data-action="launch-v2" style="width: 100%; margin-bottom: 0.5rem;">
+                    <span class="quick-action-icon">⚡</span>
+                    <span class="quick-action-label">V2 Engine</span>
+                </button>
+                <button class="quick-action" data-action="go-home" style="width: 100%; margin-bottom: 0.5rem;">
+                    <span class="quick-action-icon">🏠</span>
+                    <span class="quick-action-label">Landing</span>
+                </button>
+                <button class="quick-action" data-action="toggle-mode" style="width: 100%;">
+                    <span class="quick-action-icon">📖</span>
+                    <span class="quick-action-label">Story/Dev</span>
+                </button>
+            </div>
+
+            <!-- Phases -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">🧭 Phases</div>
+                <div class="phase-list" id="sidebar-phase-list">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Home -->
+            <div class="sidebar-section">
+                <button class="sidebar-action" id="sidebar-home">
+                    🏠 UV7 OS Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle (Landscape) -->
+    <button class="uv7-sidebar-toggle" id="uv7-sidebar-toggle" aria-label="Toggle sidebar">
+        <span>☰</span>
+    </button>
+
+    <!-- Backdrop -->
+    <div id="uv7-backdrop" class="uv7-backdrop"></div>
+
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
 
@@ -648,6 +766,9 @@
     <!-- Project Scripts -->
     <script src="timeline-data.js"></script>
     <script src="script.js"></script>
+
+    <!-- UV7 OS -->
+    <script src="uv7-os.js"></script>
 </body>
 
 </html>

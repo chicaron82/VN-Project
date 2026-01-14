@@ -25,6 +25,7 @@ import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
 import { EchoMemorySystem } from '@systems/EchoMemorySystem';
 import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
+import { TetherSystem } from '@systems/TetherSystem';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -114,6 +115,14 @@ const echoMemorySystem = new EchoMemorySystem(eventBus, stateManager);
 // Visual punishment for INSANE difficulty
 // ============================================
 const insaneVisualsController = new InsaneVisualsController(eventBus, stateManager);
+
+// ============================================
+// Tether System - Tori's Lifeline ⚡
+// "The tether is her connection to reality."
+// Decay mechanics, Hold On, difficulty scaling
+// ============================================
+const tetherSystem = new TetherSystem(eventBus, stateManager);
+
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
 const autoReadController = new AutoReadController(eventBus, settingsSystem);
@@ -1012,6 +1021,16 @@ async function init() {
             triggerCorruption: (intensity?: 'light' | 'medium' | 'heavy' | 'maximum') =>
                 insaneVisualsController.triggerCorruption(intensity),
             showCage: (callback?: () => void) => insaneVisualsController.showCageOverlay(callback),
+            // Tether System debug helpers ⚡
+            tetherSystem,
+            getTether: () => tetherSystem.getLevel(),
+            setTether: (level: number) => tetherSystem.setLevel(level),
+            holdOn: () => tetherSystem.holdOn(),
+            startDecay: () => tetherSystem.startDecay(),
+            stopDecay: () => tetherSystem.stopDecay(),
+            freezeTether: () => tetherSystem.freezeDecay(),
+            resumeTether: () => tetherSystem.resumeDecay(),
+            setDifficulty: (diff: 'comfort' | 'normal' | 'intense' | 'insane') => tetherSystem.setDifficulty(diff),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }
