@@ -696,18 +696,22 @@ const phaseLinks = document.querySelectorAll('.phase-nav-link');
 // Function to check and update phase nav visibility
 function updatePhaseNavVisibility() {
     const journeySection = document.querySelector('.journey-section');
-    if (!journeySection || !phaseNav) return;
+    // CRITICAL FIX: Check the section HEADER (.section-content), not the entire section
+    // The entire section includes all timeline phases, so it triggers way too late
+    const sectionHeader = journeySection?.querySelector('.section-content');
+    if (!sectionHeader || !phaseNav) return;
 
-    const rect = journeySection.getBoundingClientRect();
+    const rect = sectionHeader.getBoundingClientRect();
 
-    // Show nav when Journey section header is visible at top of screen
-    // Hide when completely scrolled past the section
+    // Show nav as soon as "THE JOURNEY" header STARTS entering viewport
+    // (when header top reaches bottom of screen)
+    // Hide when section COMPLETELY leaves viewport
     const sectionTop = rect.top;
-    const sectionBottom = rect.bottom;
+    const sectionBottom = journeySection.getBoundingClientRect().bottom; // Use full section bottom
     const viewportHeight = window.innerHeight;
 
-    // Visible if: section has entered viewport OR we're inside it
-    // Changed to <= so it triggers AS SOON AS section top touches viewport bottom
+    // Visible if: header top is at or above viewport bottom AND full section bottom is below viewport top
+    // This means: show as SOON as "THE JOURNEY" appears, hide when entire section is gone
     const isVisible = sectionTop <= viewportHeight && sectionBottom > 0;
 
     if (isVisible) {
