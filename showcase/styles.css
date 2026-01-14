@@ -236,6 +236,7 @@ p {
 .layer-order h1 {
     background: -webkit-linear-gradient(45deg, var(--order-text), var(--order-accent));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -2px;
 }
@@ -790,6 +791,7 @@ section h2 {
     font-weight: 900;
     background: linear-gradient(135deg, #fff, #a8d8ff);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 0.5rem;
 }
