@@ -517,29 +517,34 @@ class TimelineRenderer {
         if (phase.metrics) {
             const metricsTitle = document.createElement('h4');
             metricsTitle.textContent = 'By The Numbers:';
+            metricsTitle.className = 'dev-only'; // Metrics are dev-only content
             content.appendChild(metricsTitle);
 
             const metricsGrid = document.createElement('div');
-            metricsGrid.className = 'stats-mini-grid';
+            metricsGrid.className = 'stats-mini-grid dev-only';
 
-            if (phase.metrics.linesAdded) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.linesAdded, 'Lines Added'));
-            }
-            if (phase.metrics.filesChanged) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.filesChanged, 'Files Changed'));
-            }
-            if (phase.metrics.components) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.components, 'New Components'));
-            }
-            if (phase.metrics.timeSpent) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.timeSpent, 'Time Spent'));
-            }
-            if (phase.metrics.features) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.features, 'Features'));
-            }
-            if (phase.metrics.issuesFixed) {
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics.issuesFixed, 'Fixed'));
-            }
+            // Dynamic metric rendering - supports any metric key
+            // This allows Phase 11/12's custom metrics (crewMembers, priority, etc.) to render
+            const metricLabels = {
+                linesAdded: 'Lines Added',
+                filesChanged: 'Files Changed',
+                components: 'New Components',
+                timeSpent: 'Time Spent',
+                features: 'Features',
+                issuesFixed: 'Fixed',
+                crewMembers: 'Crew Members',
+                suggestions: 'Suggestions',
+                priority: 'Priority',
+                loreBlocks: 'Lore Blocks',
+                crewSignatures: 'Crew Signatures',
+                filesModified: 'Files Modified',
+                soulRestored: 'Soul Restored'
+            };
+
+            Object.keys(phase.metrics).forEach(key => {
+                const label = metricLabels[key] || key.replace(/([A-Z])/g, ' $1').trim();
+                metricsGrid.appendChild(this.createMetricCard(phase.metrics[key], label));
+            });
 
             content.appendChild(metricsGrid);
         }
