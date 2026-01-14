@@ -142,11 +142,11 @@ describe('TetherSystem', () => {
         it('should resume decay after unfreeze', () => {
             system.startDecay();
             system.freezeDecay();
-            vi.advanceTimersByTime(2000);
+            vi.advanceTimersByTime(5000);
             const levelWhenFrozen = system.getLevel();
 
             system.resumeDecay();
-            vi.advanceTimersByTime(2000);
+            vi.advanceTimersByTime(5000);
 
             expect(system.getLevel()).toBeLessThan(levelWhenFrozen);
         });

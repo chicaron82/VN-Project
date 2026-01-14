@@ -418,6 +418,40 @@ window.TIMELINE_DATA = {
                             "code": "// V2: InsaneVisualsController.ts\n// \"SHE'S WATCHING YOU STRUGGLE.\" 💀\nexport class InsaneVisualsController {\n  showCageOverlay(callback?: () => void): void\n  triggerCorruption(intensity: CorruptionIntensity): void\n  maybeCorrupt(): void // Random torture\n}"
                         }
                     }
+                },
+                {
+                    "id": "phase-13d",
+                    "emoji": "⚡",
+                    "title": "13d: TetherSystem + DifficultyProfiles - Tori's Lifeline",
+                    "date": "January 14, 2026",
+                    "summary": "The tether is her connection to reality. Your attention is her oxygen. Full difficulty scaling from Comfort (no decay) to INSANE (66% cap, no Hold On).",
+                    "features": [
+                        "⚡ <strong>Passive Decay:</strong> Configurable rates that accelerate as tether drops",
+                        "🆘 <strong>Hold On:</strong> 15% boost with 30s cooldown - disabled in INSANE mode",
+                        "📊 <strong>Difficulty Profiles:</strong> Comfort, Normal, Intense, INSANE with complete contracts",
+                        "💀 <strong>INSANE Mode:</strong> 66% cap, no Hold On, read-only backlog, 2x decay",
+                        "🔄 <strong>State Management:</strong> Save/restore, freeze/resume decay, animated drops",
+                        "🎮 <strong>Debug Helpers:</strong> window.uv7.setTether(), freezeTether(), setDifficulty()"
+                    ],
+                    "metrics": {
+                        "linesAdded": 850,
+                        "filesChanged": 5,
+                        "testsWritten": 72
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "TETHER LIFELINE",
+                            "lang": "javascript",
+                            "code": "// V1: tether-system.js + difficulty-profiles.js\nclass TetherSystem {\n  updateTether(amount, reason) { /* decay/boost */ }\n  holdOn() { /* manual restore */ }\n  setDifficultyModifier(diff) { /* scale rates */ }\n}\nconst DIFFICULTY_PROFILES = { comfort, normal, intense, insane };"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "TETHER LEGACY",
+                            "lang": "typescript",
+                            "code": "// V2: TetherSystem.ts + DifficultyProfiles.ts\nexport class TetherSystem {\n  updateTether(amount: number, reason?: string): number\n  holdOn(): boolean // Returns false in INSANE mode\n  setDifficulty(id: DifficultyId): void\n}\nexport const DIFFICULTY_PROFILES: Record<DifficultyId, DifficultyProfile>;"
+                        }
+                    }
                 }
             ],
             "lessons": [
