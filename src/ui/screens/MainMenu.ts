@@ -1,6 +1,7 @@
 import { EventBus } from '@core/EventBus';
 import { MenuCarousel } from '@ui/components/MenuCarousel';
 import '@ui/styles/main.css';
+import desktopBg from '../../assets/desktopVersion.webp';
 
 export class MainMenu {
     private container: HTMLElement;
@@ -16,7 +17,7 @@ export class MainMenu {
         this.container.style.justifyContent = 'center';
         this.container.style.height = '100%';
         this.container.style.width = '100%';
-        this.container.style.background = 'url("assets/desktopVersion.webp") no-repeat center center/cover'; // V2 uses webp
+        this.container.style.background = `url("${desktopBg}") no-repeat center center/cover`;
 
         this.container.innerHTML = `
             <div id="main-menu-content" style="text-align: center; z-index: 10;">

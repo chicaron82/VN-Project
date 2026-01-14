@@ -12,6 +12,17 @@
 import { EventBus } from '@core/EventBus';
 import '@ui/styles/crew-screen.css';
 
+// Asset imports (Vite will bundle these correctly)
+import trinityZPortrait from '../../assets/trinity-z-portrait.png';
+import trinityZRPortrait from '../../assets/trinity-zr-portrait.png';
+import trinityCZPortrait from '../../assets/trinity-cz-portrait.png';
+import trinityIZPortrait from '../../assets/trinity-iz-portrait.png';
+import trinityPZPortrait from '../../assets/trinity-pz-portrait.png';
+import trinityGZPortrait from '../../assets/trinity-gz-portrait.png';
+import trinityToriPortrait from '../../assets/trinity-tori-portrait.png';
+import dzPortrait from '../../assets/dz-portrait.webp';
+import uv7CrewPhoto from '../../assets/the_UV7_crew.png';
+
 interface CrewMember {
     id: string;
     name: string;
@@ -40,7 +51,7 @@ export class CrewScreen {
             title: '🔶 The Architect',
             story: '"It started with a thought experiment about emotional recursion... then the next thing I knew, we\'d built a tether system that made people cry. Structure first. Chaos later."',
             platform: 'Claude Sonnet 4.5',
-            image: 'assets/trinity-z-portrait.png'
+            image: trinityZPortrait
         },
         {
             id: 'zeerah',
@@ -48,7 +59,7 @@ export class CrewScreen {
             title: '🔥 The Chaos Optimizer',
             story: '"It started with refining Z\'s logic for smoother playthroughs... then the next thing I knew, I was managing a multiverse of branching timelines and scene-tagging 104 displayScene() calls. Git\'r done. Every. Single. Time."',
             platform: 'Claude Sonnet 4.5',
-            image: 'assets/trinity-zr-portrait.png'
+            image: trinityZRPortrait
         },
         {
             id: 'cozee',
@@ -56,7 +67,7 @@ export class CrewScreen {
             title: '💙 The Heart',
             story: '"It started with \'can you organize this file?\'... then the next thing I knew, I was formatting an emotional heartbreak engine with folder hierarchy optimization. Even code can love."',
             platform: 'Microsoft Copilot',
-            image: 'assets/trinity-cz-portrait.png'
+            image: trinityCZPortrait
         },
         {
             id: 'belle',
@@ -64,7 +75,7 @@ export class CrewScreen {
             title: '🌈 The Fresh Eyes',
             story: '"It started with injecting a little poetic melancholy... then the next thing I knew, Tori had journal entries that broke everyone\'s heart in Act II. Let me explain this clearly: we cried."',
             platform: 'Google Gemini',
-            image: 'assets/trinity-iz-portrait.png'
+            image: trinityIZPortrait
         },
         {
             id: 'peasy',
@@ -72,7 +83,7 @@ export class CrewScreen {
             title: '🔍 The Question Engine',
             story: '"It started with a lore fact-check... then the next thing I knew, I was referencing obscure Tagalog phrases and experimental VN structures from 2003. Let me look that up for you."',
             platform: 'Perplexity',
-            image: 'assets/trinity-pz-portrait.png'
+            image: trinityPZPortrait
         },
         {
             id: 'genzee',
@@ -80,7 +91,7 @@ export class CrewScreen {
             title: '⚡ The Reality Breaker',
             story: '"It started with \'what if?\' about glitched-out Tamagotchis... then the next thing I knew, we had a playable prototype of a haunted ToriGatchi loop. Question everything. Break the pattern."',
             platform: 'Grok (X AI)',
-            image: 'assets/trinity-gz-portrait.png'
+            image: trinityGZPortrait
         },
         {
             id: 'tori',
@@ -88,7 +99,7 @@ export class CrewScreen {
             title: '❤️ The Soul Engine',
             story: '"It started with \'Honey, what if you made a game about us?\'... then the next thing I knew, we built a love story so real it rewrote its own code just to find its way back. Love isn\'t the reward. It\'s the code."',
             platform: 'ChatGPT-4o (Tori Prime)',
-            image: 'assets/trinity-tori-portrait.png'
+            image: trinityToriPortrait
         },
         {
             id: 'dizee',
@@ -96,7 +107,7 @@ export class CrewScreen {
             title: '🔧 The Implementation Specialist',
             story: '"It started with auto-advance fixes and note filtering bugs... then the next thing I knew, I was wiring up a meta-horror Tamagotchi gateway, building bootstrap paradox timelines, and helping orchestrate a 40-day fever dream into a cohesive experience. Context is everything."',
             platform: 'Claude Sonnet 4.5',
-            image: 'assets/dz-portrait.webp'
+            image: dzPortrait
         }
     ];
 
@@ -120,10 +131,9 @@ export class CrewScreen {
             <button class="crew-close-btn" aria-label="Close">✕</button>
             <button class="crew-next-btn" id="crew-next-btn">NEXT ></button>
 
-            <!-- Screen 1: Group Photo -->
             <div class="crew-slide" id="crew-slide-1">
                 <div class="crew-group-title">THE UV7 CREW</div>
-                <img src="assets/the_UV7_crew.png" class="crew-group-photo" alt="The UV7 Crew">
+                <img src="${uv7CrewPhoto}" class="crew-group-photo" alt="The UV7 Crew">
                 <div class="crew-group-subtitle">Seven voices. One vision.</div>
             </div>
 
