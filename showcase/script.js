@@ -706,6 +706,23 @@ window.addEventListener('scroll', updateActivePhaseOnScroll);
 // Initialize active phase on load
 setTimeout(updateActivePhase, 100);
 
+// Click toggle support for mobile/touch (works alongside hover for desktop)
+if (phaseNav) {
+    phaseNav.addEventListener('click', (e) => {
+        // Don't toggle if clicking a phase link
+        if (e.target.closest('.phase-nav-link')) return;
+
+        phaseNav.classList.toggle('expanded');
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!phaseNav.contains(e.target)) {
+            phaseNav.classList.remove('expanded');
+        }
+    });
+}
+
 // Smooth scroll to phase
 phaseLinks.forEach(link => {
     link.addEventListener('click', (e) => {

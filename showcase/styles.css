@@ -1793,40 +1793,23 @@ section h2 {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 28px;
-    /* Pill shape matching FAB height */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     width: 170px;
-    /* Fixed button width */
     height: 56px;
-    /* Fixed button height */
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
 }
 
-/* Hover State: Expand Upwards */
-.phase-nav:hover {
+/* Hover State: Expand (Desktop) */
+.phase-nav:hover,
+.phase-nav.expanded {
     height: auto;
     width: 220px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.98);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    /* Expand upwards adjustment if needed, but standard flow expands down/up depending on positioning.
-       Since it's bottom: 30px, expanding height naturally goes UP if we handle it right, 
-       or we might need bottom anchoring. 
-       Actually, standard HTML expansion goes DOWN. 
-       To make it expand UP, we need flex-direction column-reverse or similar trickery, 
-       OR just rely on bottom positioning logic:
-       If bottom is fixed, increasing height pushes the TOP up? No, usually pushes visual bottom down?
-       Let's check standard CSS behavior for fixed bottom.
-       If bottom is fixed, increasing height grows UPWARDS. Yes. */
-}
-
-/* Visibility (always visible now) */
-/* Visibility (always visible) */
-.phase-nav.visible {
-    opacity: 1;
-    pointer-events: all;
 }
 
 .phase-nav-header {
