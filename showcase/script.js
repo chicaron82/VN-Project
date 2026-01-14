@@ -693,9 +693,8 @@ document.addEventListener('DOMContentLoaded', () => {
 const phaseNav = document.getElementById('phase-nav');
 const phaseLinks = document.querySelectorAll('.phase-nav-link');
 
-// Show/hide phase nav based on scroll position
-// IMPROVED: Show nav as soon as Journey section is visible (not halfway through)
-window.addEventListener('scroll', () => {
+// Function to check and update phase nav visibility
+function updatePhaseNavVisibility() {
     const journeySection = document.querySelector('.journey-section');
     if (!journeySection || !phaseNav) return;
 
@@ -718,7 +717,14 @@ window.addEventListener('scroll', () => {
 
     // Update active phase based on scroll position
     updateActivePhase();
-});
+}
+
+// Check visibility on scroll
+window.addEventListener('scroll', updatePhaseNavVisibility);
+
+// IMPORTANT: Check visibility on page load (in case user refreshes mid-page)
+// Wait for timeline to render first
+setTimeout(updatePhaseNavVisibility, 2000);
 
 // Smooth scroll to phase
 phaseLinks.forEach(link => {
