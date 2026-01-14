@@ -707,7 +707,8 @@ function updatePhaseNavVisibility() {
     const viewportHeight = window.innerHeight;
 
     // Visible if: section has entered viewport OR we're inside it
-    const isVisible = sectionTop < viewportHeight && sectionBottom > 0;
+    // Changed to <= so it triggers AS SOON AS section top touches viewport bottom
+    const isVisible = sectionTop <= viewportHeight && sectionBottom > 0;
 
     if (isVisible) {
         phaseNav.classList.add('visible');
