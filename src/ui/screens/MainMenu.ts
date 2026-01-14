@@ -1,7 +1,7 @@
 import { EventBus } from '@core/EventBus';
 import { MenuCarousel } from '@ui/components/MenuCarousel';
 import '@ui/styles/main.css';
-import desktopBg from '../../assets/desktopVersion.webp';
+import desktopBg from '../../../assets/desktopVersion.webp';
 
 export class MainMenu {
     private container: HTMLElement;
