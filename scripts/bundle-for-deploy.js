@@ -16,7 +16,6 @@ console.log('🚀 Starting Deployment Bundle...');
 console.log('\n📦 Building V2 Engine...');
 try {
     execSync('npm run build', { stdio: 'inherit', cwd: rootDir });
-    // console.log('   (Skipping build for debug speed - ensure dist exists)');
 } catch (error) {
     console.error('❌ Build failed!');
     process.exit(1);
@@ -44,7 +43,6 @@ function copyDir(src, dest) {
         if (entry.isDirectory()) {
             copyDir(srcPath, destPath);
         } else {
-            // console.log(`   -> ${entry.name}`); // Reduced spam
             fs.copyFileSync(srcPath, destPath);
         }
     }
@@ -55,9 +53,12 @@ copyDir(showcaseDir, targetShowcaseDir);
 // 4. Copy V1 (Legacy) to dist/v1
 console.log('\n🏛️  Copying V1 Legacy to dist/v1...');
 const targetV1Dir = path.resolve(distDir, 'v1');
+
+// IMPORTANT: Do NOT exclude 'src' - V1 needs src/ui/styles/ for CSS
 const v1Exclude = [
-    'node_modules', '.git', 'dist', 'showcase', 'src', 'public', '.vscode', '.idea',
-    'timeline_847_failures', '.gemini', '.antigravity', 'v2-contributions', 'v2-starter', 'docs'
+    'node_modules', '.git', 'dist', 'showcase', 'public', '.vscode', '.idea',
+    'timeline_847_failures', '.gemini', '.antigravity', 'v2-contributions', 'v2-starter', 'docs',
+    '.agent', '.claude'
 ];
 
 if (!fs.existsSync(targetV1Dir)) fs.mkdirSync(targetV1Dir, { recursive: true });
@@ -67,8 +68,8 @@ const rootEntries = fs.readdirSync(rootDir, { withFileTypes: true });
 for (let entry of rootEntries) {
     if (v1Exclude.includes(entry.name)) continue;
 
-    // Skip file-like artifacts that shouldn't be in V1
-    if (entry.name === 'vite.config.ts' || entry.name === 'package.json' || entry.name === 'package-lock.json' || entry.name === 'tsconfig.json' || entry.name === 'tsconfig.node.json') continue;
+    // Skip V2-specific config files
+    if (['vite.config.ts', 'package.json', 'package-lock.json', 'tsconfig.json', 'tsconfig.node.json', 'tsconfig.v2.json', 'vitest.config.js'].includes(entry.name)) continue;
 
     let srcPath = path.join(rootDir, entry.name);
     let destPath = path.join(targetV1Dir, entry.name);
@@ -80,13 +81,27 @@ for (let entry of rootEntries) {
     }
 }
 
-// 5. Create Landing Page
-console.log('\n✨ Creating Landing Page...');
-// Copy favicon
-if (fs.existsSync(path.join(rootDir, 'favicon.ico'))) {
-    fs.copyFileSync(path.join(rootDir, 'favicon.ico'), path.join(distDir, 'favicon.ico'));
-    console.log('   -> Copied favicon.ico');
+// 5. Copy essential assets to dist root
+console.log('\n📦 Copying essential assets to dist root...');
+const rootAssets = ['UnitedVoices7.mp4', 'UnitedVoices7.png', 'favicon.ico', 'site.webmanifest'];
+for (const asset of rootAssets) {
+    const srcPath = path.join(rootDir, asset);
+    const altSrcPath = path.join(rootDir, 'assets', asset); // Try assets folder too
+    const destPath = path.join(distDir, asset);
+
+    if (fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, destPath);
+        console.log(`   -> Copied ${asset}`);
+    } else if (fs.existsSync(altSrcPath)) {
+        fs.copyFileSync(altSrcPath, destPath);
+        console.log(`   -> Copied ${asset} (from assets/)`);
+    } else {
+        console.log(`   ⚠️  ${asset} not found`);
+    }
 }
+
+// 6. Create Landing Page
+console.log('\n✨ Creating Landing Page...');
 
 const landingHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -182,17 +197,6 @@ const landingHtml = `<!DOCTYPE html>
             <a href="./index.v2.html" class="card">
                 <span class="badge badge-v2">Playable Demo</span>
                 <h2>Launch V2 Engine</h2>
-                    <!-- Static Logo Fallback (Hidden by default via CSS) -->
-                    <img src="./UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
-                    
-                    <!-- Animated Reveal Video (Width controlled by JS) -->
-                    <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
-                        <div class="uv7-logo-reveal" id="uv7-logo-reveal">
-                            <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
-                                <source src="./UnitedVoices7.mp4" type="video/mp4">
-                            </video>
-                        </div>
-                    </div>
                 <p>Experience the latest build of the Vision 7 engine. Fully rebuilt with TypeScript, EventBus, and strict architecture.</p>
             </a>
 
