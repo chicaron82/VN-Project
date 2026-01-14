@@ -974,3 +974,93 @@ console.log('%c💡 Tip: Press "S" to toggle Story/Dev mode | Press "?" for keyb
 console.log('%c\n🔧 V3 Polish Protocol Active', 'font-size: 16px; font-weight: bold; color: #00ccff;');
 console.log('%cFeatures: Story/Dev toggle, RAF slider, expandable phases, context-aware backgrounds', 'color: #888;');
 console.log('%cQuality: MICHELIN ⭐⭐⭐', 'color: #00ff88; font-weight: bold;');
+
+// Expandable Timeline Phases
+(function initExpandablePhases() {
+    // Wait for timeline to be rendered
+    setTimeout(() => {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        timelineItems.forEach((item, index) => {
+            // Find the content wrapper
+            const content = item.querySelector('.timeline-content');
+            if (!content) return;
+
+            // Get all children after the summary (first 3 elements: h3, title, summary)
+            const children = Array.from(content.children);
+            if (children.length <= 3) return; // Nothing to collapse
+
+            // Create details wrapper
+            const details = document.createElement('div');
+            details.className = 'timeline-details';
+
+            // Move all children after summary into details
+            children.slice(3).forEach(child => {
+                details.appendChild(child);
+            });
+
+            // Create toggle button
+            const toggle = document.createElement('button');
+            toggle.className = 'expand-toggle';
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.setAttribute('aria-label', 'Expand phase details');
+            toggle.innerHTML = '<span class="chevron">▾</span> View details';
+
+            // Insert toggle and details
+            content.appendChild(toggle);
+            content.appendChild(details);
+
+            // Toggle handler
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isExpanded = item.classList.toggle('expanded');
+                toggle.setAttribute('aria-expanded', isExpanded);
+                toggle.innerHTML = isExpanded
+                    ? '<span class="chevron">▴</span> Hide details'
+                    : '<span class="chevron">▾</span> View details';
+
+                // Scroll into view if expanding
+                if (isExpanded) {
+                    setTimeout(() => {
+                        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 300);
+                }
+            });
+
+            // Keyboard support
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+
+            // ESC to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && item.classList.contains('expanded')) {
+                    item.classList.remove('expanded');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.innerHTML = '<span class="chevron">▾</span> View details';
+                }
+            });
+
+            // Auto-expand in Dev mode
+            const body = document.body;
+            const observer = new MutationObserver(() => {
+                if (body.dataset.viewMode === 'dev') {
+                    item.classList.add('expanded');
+                    toggle.setAttribute('aria-expanded', 'true');
+                    toggle.innerHTML = '<span class="chevron">▴</span> Hide details';
+                } else if (body.dataset.viewMode === 'story') {
+                    item.classList.remove('expanded');
+                    toggle.setAttribute('aria-expanded', 'false');
+                    toggle.innerHTML = '<span class="chevron">▾</span> View details';
+                }
+            });
+
+            observer.observe(body, { attributes: true, attributeFilter: ['data-view-mode'] });
+        });
+
+        console.log('📖 Expandable timeline phases initialized');
+    }, 1500); // Wait for timeline renderer to finish
+})();
