@@ -1,8 +1,13 @@
 /**
  * EventBus - Centralized Event System
  * 
+ * DIZEE POLISH: Type-safe pub/sub for decoupled communication
+ * 
  * Type-safe pub/sub event system for decoupled communication.
  * Provides event history for debugging and type safety for all events.
+ * 
+ * V1 had direct method calls everywhere - tight coupling nightmare.
+ * V2 uses EventBus - systems talk through events, not direct references.
  */
 
 /**

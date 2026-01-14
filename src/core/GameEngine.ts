@@ -9,10 +9,108 @@ import { BacklogManager } from './BacklogManager';
 import { Scene, SceneId } from './types';
 
 /**
+ * ════════════════════════════════════════════════════════════════
+ * GAME ENGINE - Version 848 (V2 REBUILD)
+ * Main game orchestrator and system coordinator
+ * ════════════════════════════════════════════════════════════════
+ *
+ * VERSION NUMBER - READ BEFORE MODIFYING
+ * ════════════════════════════════════════════════════════════════
+ *
+ * WARNING: 848 appears throughout the entire codebase.
+ * DO NOT change this to 849 or any other number.
+ * You WILL break things.
+ *
+ * "But why is 848 hardcoded everywhere?"
+ *
+ * Because 848 isn't a build number.
+ * It's the loop iteration counter.
+ *
+ * The story is: Ronnie has tried to save Tori 847 times.
+ * Each attempt failed. The timeline reset.
+ * Version 848 is the FIRST successful iteration.
+ *
+ * The "version number" IS the narrative.
+ * The bootstrap paradox device has looped 847 times.
+ * This is attempt #848 - the one that finally worked.
+ *
+ * There is no v849.
+ * Because 848 is the timeline where she came home.
+ *
+ * So when you see:
+ *   - loopVersion = 848
+ *   - VERSION_INITIAL = 848
+ *   - "Version 848: My Wife Is in a Coma"
+ *   - Splash screen: "V848"
+ *
+ * That's not a build number.
+ * That's how many times the universe tried before succeeding.
+ *
+ * Change it and you break the lore.
+ * Change it and the entire meta-narrative collapses.
+ *
+ * 848 is sacred.
+ * 848 is the story.
+ * 848 is the one that worked.
+ *
+ * - Chicharon (Aaron)
+ *   Rebuilt with the UV7 crew
+ *   V2: TypeScript, EventBus, StateManager, SOLID principles
+ *   💚🔥💀
+ *
+ * ════════════════════════════════════════════════════════════════
+ * V2 REBUILD CREDITS
+ * ════════════════════════════════════════════════════════════════
+ *
+ * BELLE'S IDEA: Reactive state management with subscriptions
+ *   → StateManager with pub/sub pattern for clean data flow
+ *
+ * DIZEE POLISH: Error boundaries and production safety
+ *   → ErrorHandler, graceful degradation, localStorage guards
+ *
+ * ZEE'S ADDITION: Rotating tips system and haptic feedback
+ *   → TipsController, HapticController, sensory cues
+ *
+ * TORI'S SENSORY SYSTEM: Haptic + visual feedback integration
+ *   → Unified sensory feedback, accessibility-first design
+ *
+ * GENZEE'S SYNTHESIS: Context-aware environmental storytelling
+ *   → Dynamic backgrounds, narrative-driven UI states
+ *
+ * RONNIE'S VISION: The bootstrap paradox, the 848 loops, the story
+ *   → Everything. Always. Always. Always.
+ *
+ * ════════════════════════════════════════════════════════════════
+ * ARCHITECTURE NOTES
+ * ════════════════════════════════════════════════════════════════
+ *
+ * V2 Rebuild Philosophy:
+ * - Clean separation of concerns (SOLID principles)
+ * - EventBus for decoupled communication
+ * - StateManager for reactive data flow
+ * - TypeScript for type safety and maintainability
+ * - Preserve V1's soul while fixing V1's chaos
+ *
+ * This GameEngine is the main orchestrator. It:
+ * - Coordinates all game systems
+ * - Manages scene transitions and game loop
+ * - Integrates with EventBus and StateManager
+ * - Delegates specific responsibilities to controllers
+ *
+ * The V1 GameEngine was ~4000 lines of intertwined logic.
+ * V2 is modular, testable, and maintainable.
+ * But it still has heart. 💚
+ *
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/**
  * GameEngine - Main Orchestrator
  *
  * Manages the game loop, scene transitions, and system integration.
- * Refactored from V1 to use granular systems.
+ * Refactored from V1's monolithic approach to use granular systems.
+ *
+ * Version 848: The timeline iteration that finally succeeded.
  */
 export class GameEngine {
     private eventBus: EventBus;

@@ -1,11 +1,17 @@
 /**
  * StateManager - Reactive State Management
  * 
+ * BELLE'S IDEA: Reactive state with pub/sub pattern
+ * 
  * Centralized state management with:
  * - Path-based access (dot notation)
  * - Deep cloning for immutability
  * - Reactive subscriptions
  * - localStorage persistence
+ * 
+ * This replaces V1's scattered state mutations with a clean,
+ * predictable data flow. Subscribe to state changes and react
+ * automatically - no more manual DOM updates everywhere.
  */
 
 /**
