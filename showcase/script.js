@@ -698,13 +698,36 @@ function updateActivePhaseOnScroll() {
     updateActivePhase();
 }
 
-// Persistent Phase Nav (FAB) doesn't need visibility toggling
-// It's always visible via CSS
+// Phase Nav visibility is controlled by IntersectionObserver (Journey section only)
 // We just need to update the active dot on scroll
 window.addEventListener('scroll', updateActivePhaseOnScroll);
 
 // Initialize active phase on load
 setTimeout(updateActivePhase, 100);
+
+// Journey-only visibility: Show Phase Nav only when Journey section is visible
+const journeySectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            phaseNav.classList.add('visible');
+        } else {
+            phaseNav.classList.remove('visible');
+            // Also collapse and clear timer when leaving Journey section
+            phaseNav.classList.remove('expanded');
+            if (typeof phaseNavAutoCloseTimer !== 'undefined') {
+                clearTimeout(phaseNavAutoCloseTimer);
+            }
+        }
+    });
+}, {
+    threshold: 0, // Trigger as soon as 1px is visible
+    rootMargin: '0px'
+});
+
+const journeySection = document.querySelector('.journey-section');
+if (journeySection && phaseNav) {
+    journeySectionObserver.observe(journeySection);
+}
 
 // Click toggle support for mobile/touch (works alongside hover for desktop)
 let phaseNavAutoCloseTimer = null;
