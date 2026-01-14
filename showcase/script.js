@@ -738,12 +738,14 @@ if (phaseNav) {
         if (e.target.closest('.phase-nav-link')) {
             // Close immediately when selecting a phase
             phaseNav.classList.remove('expanded');
+            updateAriaExpanded();
             clearTimeout(phaseNavAutoCloseTimer);
             return;
         }
 
         // Toggle expanded state
         phaseNav.classList.toggle('expanded');
+        updateAriaExpanded();
 
         // Clear existing timer
         clearTimeout(phaseNavAutoCloseTimer);
@@ -752,6 +754,7 @@ if (phaseNav) {
         if (phaseNav.classList.contains('expanded')) {
             phaseNavAutoCloseTimer = setTimeout(() => {
                 phaseNav.classList.remove('expanded');
+                updateAriaExpanded();
             }, 3000);
         }
     });
@@ -760,6 +763,7 @@ if (phaseNav) {
     document.addEventListener('click', (e) => {
         if (!phaseNav.contains(e.target)) {
             phaseNav.classList.remove('expanded');
+            updateAriaExpanded();
             clearTimeout(phaseNavAutoCloseTimer);
         }
     });
@@ -774,9 +778,49 @@ if (phaseNav) {
         if (phaseNav.classList.contains('expanded')) {
             phaseNavAutoCloseTimer = setTimeout(() => {
                 phaseNav.classList.remove('expanded');
+                updateAriaExpanded();
             }, 3000);
         }
     });
+
+    // Keyboard support for accessibility
+    const header = phaseNav.querySelector('.phase-nav-header');
+
+    if (header) {
+        header.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                phaseNav.classList.toggle('expanded');
+                updateAriaExpanded();
+
+                // Clear existing timer
+                clearTimeout(phaseNavAutoCloseTimer);
+
+                // Start timer if expanded
+                if (phaseNav.classList.contains('expanded')) {
+                    phaseNavAutoCloseTimer = setTimeout(() => {
+                        phaseNav.classList.remove('expanded');
+                        updateAriaExpanded();
+                    }, 3000);
+                }
+            }
+        });
+    }
+
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && phaseNav.classList.contains('expanded')) {
+            phaseNav.classList.remove('expanded');
+            updateAriaExpanded();
+            clearTimeout(phaseNavAutoCloseTimer);
+        }
+    });
+
+    // Update ARIA expanded state
+    function updateAriaExpanded() {
+        const isExpanded = phaseNav.classList.contains('expanded');
+        phaseNav.setAttribute('aria-expanded', isExpanded);
+    }
 }
 
 // Smooth scroll to phase
