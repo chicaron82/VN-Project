@@ -24,6 +24,7 @@ import { AchievementManager } from '@systems/AchievementManager';
 import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
 import { EchoMemorySystem } from '@systems/EchoMemorySystem';
+import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -106,6 +107,13 @@ const loopController = new LoopController(eventBus, stateManager);
 // Three echoes: Hope 💫, Gentle 🌙, Despair 🖤
 // ============================================
 const echoMemorySystem = new EchoMemorySystem(eventBus, stateManager);
+
+// ============================================
+// Insane Visuals Controller - DiZee's Corruption 💀
+// "SHE'S WATCHING YOU STRUGGLE."
+// Visual punishment for INSANE difficulty
+// ============================================
+const insaneVisualsController = new InsaneVisualsController(eventBus, stateManager);
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
 const autoReadController = new AutoReadController(eventBus, settingsSystem);
@@ -997,6 +1005,13 @@ async function init() {
             triggerEcho: (echo: 'hope' | 'gentle' | 'despair') => echoMemorySystem.triggerEchoComment(echo, 'general'),
             triggerConflictingEchoes: () => echoMemorySystem.triggerConflictingEchoes(),
             resetEchoMemory: () => echoMemorySystem.resetMemory(),
+            // Insane Visuals debug helpers (DiZee's tools 💀)
+            insaneVisualsController,
+            activateInsane: () => insaneVisualsController.activate(),
+            deactivateInsane: () => insaneVisualsController.deactivate(),
+            triggerCorruption: (intensity?: 'light' | 'medium' | 'heavy' | 'maximum') =>
+                insaneVisualsController.triggerCorruption(intensity),
+            showCage: (callback?: () => void) => insaneVisualsController.showCageOverlay(callback),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }

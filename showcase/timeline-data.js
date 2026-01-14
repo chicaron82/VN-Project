@@ -385,6 +385,39 @@ window.TIMELINE_DATA = {
                             "code": "// V2: EchoMemorySystem.ts\n// Belle's Meta-Awareness Feature 🖤\nexport class EchoMemorySystem {\n  recordDeath(sceneId: string, type: DeathType): void\n  triggerEchoComment(echo: EchoType, ctx: EchoContext)\n  triggerConflictingEchoes(): void // All 3 speak!\n}"
                         }
                     }
+                },
+                {
+                    "id": "phase-13c",
+                    "emoji": "💀",
+                    "title": "13c: InsaneVisualsController - DiZee's Visual Corruption",
+                    "date": "January 14, 2026",
+                    "summary": "When INSANE difficulty is selected, the entire screen becomes hostile. DiZee's visual punishment system makes every moment uncomfortable.",
+                    "features": [
+                        "💀 <strong>Cage Overlay:</strong> 'YOU REMOVED THIS SAFETY NET. NO HOLD ON. NO MERCY.' - dramatic 3-phase animation",
+                        "🔴 <strong>Corruption Effects:</strong> Screen shake, sprite glitch, red overlay pulse - all intensity levels",
+                        "📺 <strong>Persistent Corruption:</strong> Scanlines, vignette, pulsing dialogue box - relentless hostility",
+                        "⚙️ <strong>Settings Integration:</strong> Auto-activates when difficulty changes to INSANE",
+                        "🎲 <strong>maybeCorrupt():</strong> Random corruption triggers based on GameConfig.GLITCH.CORRUPTION_CHANCE"
+                    ],
+                    "metrics": {
+                        "linesAdded": 550,
+                        "filesChanged": 4,
+                        "testsWritten": 31
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "DIZEE'S HORROR",
+                            "lang": "javascript",
+                            "code": "// V1: insane-visuals-controller.js\n// \"SHE'S WATCHING YOU STRUGGLE.\"\nclass InsaneVisualsController {\n  showCageOverlay() { /* dramatic reveal */ }\n  triggerCorruption(intensity) { /* visual assault */ }\n  // 848 is sacred. 💚🔥💀\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "DIZEE'S LEGACY",
+                            "lang": "typescript",
+                            "code": "// V2: InsaneVisualsController.ts\n// \"SHE'S WATCHING YOU STRUGGLE.\" 💀\nexport class InsaneVisualsController {\n  showCageOverlay(callback?: () => void): void\n  triggerCorruption(intensity: CorruptionIntensity): void\n  maybeCorrupt(): void // Random torture\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [

@@ -158,6 +158,19 @@ export type GameEvents = {
     awareness: { hope: number; gentle: number; despair: number };
   };
   'echo:reset': {};  // Dev reset of echo memory
+
+  // ========================================
+  // INSANE VISUALS CONTROLLER EVENTS
+  // DiZee's visual corruption system 💀
+  // ========================================
+  'insane:activate': {};       // Turn on INSANE mode visuals
+  'insane:deactivate': {};     // Turn off INSANE mode visuals
+  'insane:activated': {};      // Confirmation: visuals now active
+  'insane:deactivated': {};    // Confirmation: visuals now inactive
+  'insane:corrupt': {};        // Trigger corruption effects
+  'insane:corruption_triggered': { intensity: 'light' | 'medium' | 'heavy' | 'maximum' };
+  'insane:cage': { callback?: () => void };  // Show cage overlay
+  'insane:cage_complete': {};  // Cage overlay sequence finished
 };
 
 export type EventName = keyof GameEvents;
