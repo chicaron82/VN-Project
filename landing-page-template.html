@@ -1,5 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+    ╔══════════════════════════════════════════════════════════════════════╗
+    ║                      UV7 PROJECT HUB - LANDING PAGE                  ║
+    ║                                                                      ║
+    ║  MICHELIN TREATMENT BY:                                              ║
+    ║  • Tori (Design Architecture & Watermark Strategy)                   ║
+    ║  • Belle (Terminal Footer & System Boot Aesthetic)                   ║
+    ║  • Antigravity (Implementation & Polish)                             ║
+    ║                                                                      ║
+    ║  Built with unapologetic bougie energy 💎                            ║
+    ╚══════════════════════════════════════════════════════════════════════╝
+-->
 
 <head>
     <meta charset="UTF-8">
@@ -10,6 +22,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <style>
+        /* ═══════════════════════════════════════════════════════════════
+           GLOBAL RESET & VARIABLES
+           Tori: Color harmony formalization
+           ═══════════════════════════════════════════════════════════════ */
+        :root {
+            --uv7-accent: #00ff88;
+            --uv7-secondary: #00ccff;
+            --uv7-champagne: rgba(245, 238, 223, 0.92);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -25,7 +47,10 @@
             position: relative;
         }
 
-        /* Animated Background */
+        /* ═══════════════════════════════════════════════════════════════
+           ANIMATED BACKGROUND
+           Original design maintained
+           ═══════════════════════════════════════════════════════════════ */
         .bg-gradient {
             position: fixed;
             top: 0;
@@ -58,7 +83,10 @@
             }
         }
 
-        /* Particles */
+        /* ═══════════════════════════════════════════════════════════════
+           PARTICLES WITH DEPTH LAYERS
+           Antigravity: Added parallax-like depth
+           ═══════════════════════════════════════════════════════════════ */
         .particles {
             position: fixed;
             top: 0;
@@ -72,11 +100,34 @@
 
         .particle {
             position: absolute;
-            width: 2px;
-            height: 2px;
             background: rgba(0, 255, 136, 0.5);
             border-radius: 50%;
             animation: float 15s infinite ease-in-out;
+        }
+
+        /* Depth layers - closer particles are larger and more opaque */
+        .particle:nth-child(1),
+        .particle:nth-child(4),
+        .particle:nth-child(7) {
+            width: 3px;
+            height: 3px;
+            opacity: 0.8;
+        }
+
+        .particle:nth-child(2),
+        .particle:nth-child(5),
+        .particle:nth-child(8) {
+            width: 2px;
+            height: 2px;
+            opacity: 0.5;
+        }
+
+        .particle:nth-child(3),
+        .particle:nth-child(6),
+        .particle:nth-child(9) {
+            width: 1px;
+            height: 1px;
+            opacity: 0.3;
         }
 
         @keyframes float {
@@ -101,7 +152,9 @@
             }
         }
 
-        /* Container */
+        /* ═══════════════════════════════════════════════════════════════
+           CONTAINER
+           ═══════════════════════════════════════════════════════════════ */
         .container {
             position: relative;
             z-index: 10;
@@ -113,11 +166,55 @@
             padding: 2rem 1rem;
         }
 
-        /* Hero */
+        /* ═══════════════════════════════════════════════════════════════
+           HERO SECTION WITH WATERMARK
+           Tori: Ghosted logo watermark (highest impact upgrade)
+           Antigravity: Staggered entrance animation
+           ═══════════════════════════════════════════════════════════════ */
         .hero {
+            position: relative;
             text-align: center;
             margin-bottom: 3rem;
+            overflow: hidden;
             animation: fadeInUp 1s ease-out;
+        }
+
+        /* Tori: Watermark logo behind hero text */
+        .hero-watermark {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-watermark img {
+            width: min(520px, 70vw);
+            opacity: 0.045;
+            /* 4-5% is the sweet spot */
+            filter: blur(0.6px);
+            transform: translateY(-14px) scale(1.25);
+        }
+
+        /* Tori: Brand micro-mark above title */
+        .brand-mark {
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            opacity: 0.85;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .brand-mark img {
+            width: 22px;
+            height: 22px;
+            filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.45));
         }
 
         @keyframes fadeInUp {
@@ -132,10 +229,16 @@
             }
         }
 
+        .hero>h1,
+        .hero>p {
+            position: relative;
+            z-index: 1;
+        }
+
         .hero h1 {
             font-size: clamp(2rem, 8vw, 4rem);
             font-weight: 900;
-            background: linear-gradient(135deg, #00ff88, #00ccff, #00ff88);
+            background: linear-gradient(135deg, var(--uv7-accent), var(--uv7-secondary), var(--uv7-accent));
             background-size: 200% 200%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -157,13 +260,17 @@
             }
         }
 
+        /* Antigravity: Staggered entrance for tagline */
         .hero p {
             font-size: clamp(0.9rem, 2.5vw, 1.1rem);
             color: #888;
             font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
         }
 
-        /* Card Grid */
+        /* ═══════════════════════════════════════════════════════════════
+           CARD GRID
+           ═══════════════════════════════════════════════════════════════ */
         .card-grid {
             display: grid;
             gap: 1.5rem;
@@ -223,7 +330,11 @@
             }
         }
 
-        /* Card */
+        /* ═══════════════════════════════════════════════════════════════
+           CARDS WITH MICHELIN SHADOWS
+           Tori: Heavier shadows with inner highlight
+           Antigravity: Card icons for visual hierarchy
+           ═══════════════════════════════════════════════════════════════ */
         .card {
             position: relative;
             background: rgba(255, 255, 255, 0.03);
@@ -263,12 +374,15 @@
             border-radius: 20px;
         }
 
+        /* Tori: Michelin-grade hover shadows */
         .card:hover {
             transform: translateY(-8px) scale(1.02);
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(0, 255, 136, 0.4);
-            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2),
-                0 0 40px rgba(0, 204, 255, 0.1);
+            border-color: rgba(0, 255, 136, 0.45);
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.55),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 0 40px rgba(0, 255, 136, 0.15);
         }
 
         .card:hover::before {
@@ -277,6 +391,14 @@
 
         .card:active {
             transform: translateY(-4px) scale(1.01);
+        }
+
+        /* Antigravity: Card icons */
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
         }
 
         .badge {
@@ -292,13 +414,13 @@
 
         .badge-v2 {
             background: rgba(0, 255, 136, 0.2);
-            color: #00ff88;
+            color: var(--uv7-accent);
             box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
         }
 
         .badge-showcase {
             background: rgba(0, 204, 255, 0.2);
-            color: #00ccff;
+            color: var(--uv7-secondary);
             box-shadow: 0 0 20px rgba(0, 204, 255, 0.3);
         }
 
@@ -322,16 +444,85 @@
             font-weight: 300;
         }
 
-        /* Footer */
+        /* ═══════════════════════════════════════════════════════════════
+           FOOTER WITH SIGNATURE & TERMINAL
+           Tori: Brand signature moment
+           Belle: Terminal-style build info with typewriter effect
+           ═══════════════════════════════════════════════════════════════ */
         .footer {
-            margin-top: 3rem;
+            margin-top: 4rem;
             text-align: center;
-            color: #444;
+            color: #555;
             font-size: 0.75rem;
-            font-weight: 300;
         }
 
-        /* Reduced motion */
+        .footer-brand {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        .footer-brand img {
+            width: 26px;
+            height: 26px;
+        }
+
+        .footer-brand-text {
+            text-align: left;
+        }
+
+        .footer-brand-title {
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        /* Antigravity: UV7-specific tagline */
+        .footer-brand-tagline {
+            font-size: 12px;
+            opacity: 0.65;
+            color: #666;
+        }
+
+        /* Belle: Terminal-style build info */
+        .footer-meta.terminal {
+            margin-top: 18px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            font-size: 12px;
+            letter-spacing: 0.02em;
+            opacity: 0.55;
+            color: var(--uv7-champagne);
+        }
+
+        .terminal-prompt {
+            color: rgba(0, 255, 136, 0.55);
+        }
+
+        .terminal-path {
+            color: rgba(0, 204, 255, 0.45);
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            transform: translateY(1px);
+            opacity: 0.55;
+            animation: blink 1.1s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           REDUCED MOTION SUPPORT
+           Accessibility-first design
+           ═══════════════════════════════════════════════════════════════ */
         @media (prefers-reduced-motion: reduce) {
 
             *,
@@ -340,6 +531,10 @@
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
+            }
+
+            .terminal-cursor {
+                animation: none;
             }
         }
     </style>
@@ -360,36 +555,100 @@
     </div>
 
     <div class="container">
+        <!-- Tori: Hero with watermark logo -->
         <div class="hero">
+            <!-- Tori: Ghosted watermark (4-5% opacity) -->
+            <div class="hero-watermark" aria-hidden="true">
+                <img src="./assets/UnitedVoices7.png" alt="" />
+            </div>
+
+            <!-- Tori: Brand micro-mark -->
+            <div class="brand-mark">
+                <img src="./assets/UnitedVoices7.png" alt="United Voices 7" />
+                <span>United Voices 7</span>
+            </div>
+
             <h1>UV7 PROJECT HUB</h1>
             <p>Where chaos meets harmony. Choose your experience.</p>
         </div>
 
         <div class="card-grid">
+            <!-- Antigravity: Added card icons -->
             <a href="./v1/index.html" class="card">
+                <div class="card-icon">🔥</div>
                 <span class="badge badge-legacy">Legacy V1</span>
                 <h2>Play Original</h2>
                 <p>The bootstrap paradox. Version 848. Where it all began.</p>
             </a>
 
             <a href="./showcase/index.html" class="card">
+                <div class="card-icon">📖</div>
                 <span class="badge badge-showcase">Documentation</span>
                 <h2>View Showcase</h2>
-                <p>The journey from chaos to order. 10 phases. 72 hours. AI collaboration.</p>
+                <p>The journey from chaos to order. 12 phases. 72 hours. AI collaboration.</p>
             </a>
 
             <a href="./index.v2.html" class="card">
+                <div class="card-icon">⚡</div>
                 <span class="badge badge-v2">V2 Engine</span>
                 <h2>Launch V2</h2>
                 <p>TypeScript rebuild. EventBus architecture. 128 tests passing. Zero errors.</p>
             </a>
         </div>
 
+        <!-- Tori: Footer signature + Belle: Terminal build info -->
         <div class="footer">
-            <!-- BUILD_TIMESTAMP will be replaced by build script -->
-            Build: BUILD_TIMESTAMP • Built with AI collaboration
+            <div class="footer-brand">
+                <img src="./assets/UnitedVoices7.png" alt="United Voices 7" />
+                <div class="footer-brand-text">
+                    <div class="footer-brand-title">United Voices 7</div>
+                    <!-- Antigravity: UV7-specific tagline -->
+                    <div class="footer-brand-tagline">Seven voices. One story. Infinite loops.</div>
+                </div>
+            </div>
+
+            <!-- Belle: Terminal-style build info -->
+            <div class="footer-meta terminal" aria-label="Build information">
+                <span class="terminal-prompt">uv7@hub</span>:<span class="terminal-path">~/landing</span>$
+                <span id="buildLine" data-text="build=BUILD_TIMESTAMP  crew=UV7  status=✨LIVE"></span>
+                <span class="terminal-cursor" aria-hidden="true">▍</span>
+            </div>
         </div>
     </div>
+
+    <!-- Belle: Terminal typewriter effect -->
+    <script>
+        // ═══════════════════════════════════════════════════════════════
+        // TERMINAL TYPEWRITER EFFECT
+        // Belle: System boot aesthetic
+        // ═══════════════════════════════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', () => {
+            const el = document.getElementById('buildLine');
+            if (!el) return;
+
+            const text = el.getAttribute('data-text') || '';
+            const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            if (reduced) {
+                el.textContent = text;
+                return;
+            }
+
+            let i = 0;
+            const speed = 18; // Subtle terminal vibe
+            const tick = () => {
+                el.textContent = text.slice(0, i++);
+                if (i <= text.length) setTimeout(tick, speed);
+            };
+            tick();
+
+            // Belle: Fade cursor after typing completes
+            setTimeout(() => {
+                const cur = document.querySelector('.terminal-cursor');
+                if (cur) cur.style.opacity = '0.25';
+            }, text.length * speed + 1200);
+        });
+    </script>
 </body>
 
 </html>
