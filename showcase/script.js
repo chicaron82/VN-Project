@@ -694,12 +694,21 @@ const phaseNav = document.getElementById('phase-nav');
 const phaseLinks = document.querySelectorAll('.phase-nav-link');
 
 // Show/hide phase nav based on scroll position
+// IMPROVED: Show nav as soon as Journey section is visible (not halfway through)
 window.addEventListener('scroll', () => {
     const journeySection = document.querySelector('.journey-section');
     if (!journeySection || !phaseNav) return;
 
     const rect = journeySection.getBoundingClientRect();
-    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    // Show nav when Journey section header is visible at top of screen
+    // Hide when completely scrolled past the section
+    const sectionTop = rect.top;
+    const sectionBottom = rect.bottom;
+    const viewportHeight = window.innerHeight;
+
+    // Visible if: section has entered viewport OR we're inside it
+    const isVisible = sectionTop < viewportHeight && sectionBottom > 0;
 
     if (isVisible) {
         phaseNav.classList.add('visible');
