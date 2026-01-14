@@ -22,6 +22,7 @@ import { MobileUXController } from '@controllers/MobileUXController';
 import { NotificationShade } from '@ui/components/NotificationShade';
 import { AchievementManager } from '@systems/AchievementManager';
 import { TutorialController } from '@controllers/TutorialController';
+import { LoopController } from '@controllers/LoopController';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -90,6 +91,13 @@ const hapticSystem = new HapticSystem(eventBus, settingsSystem);
 
 const gameEngine = new GameEngine(eventBus, stateManager);
 const contentLoader = new ContentLoader(gameEngine);
+
+// ============================================
+// Loop Controller - Meta-narrative system
+// Tracks version 848 and loop state
+// ZEE'S ADDITION 🖤
+// ============================================
+const loopController = new LoopController(eventBus, stateManager);
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
 const autoReadController = new AutoReadController(eventBus, settingsSystem);
@@ -324,6 +332,8 @@ function showSplash(): Promise<void> {
 function showMainMenu() {
     clearScreen();
     const menu = new MainMenu(eventBus);
+    // Wire LoopController for dynamic title/subtitle/footer updates
+    menu.setLoopController(loopController);
     menu.mount(app!);
     currentScreen = menu;
     eventBus.emit('ui:show_status_bar', {});
@@ -941,11 +951,17 @@ async function init() {
             contentLoader,
             dialogController,
             spriteController,
+            loopController, // ZEE: Meta-narrative tracking
             version: 'V2-beta',
             // Debug helpers
             showRoute: showRouteSelect,
             showMenu: showMainMenu,
             startGame,
+            // Loop debug helpers
+            breakLoop: () => loopController.break(),
+            acceptLoop: () => loopController.accept(),
+            incrementLoop: () => loopController.increment(),
+            resetLoop: () => loopController.reset(),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }

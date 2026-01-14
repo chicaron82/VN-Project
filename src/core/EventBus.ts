@@ -125,6 +125,22 @@ export type GameEvents = {
   'ui:hide_hud': {};
   'save:quick': {};
   'load:quick': {};
+
+  // ========================================
+  // LOOP CONTROLLER EVENTS
+  // Zee's meta-narrative tracking system 🖤
+  // ========================================
+  'loop:updated': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+  'loop:broken': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };   // TRUE ENDING
+  'loop:accepted': { version: number; status: 'attempting' | 'succeeded' | 'accepted' }; // DIGITAL FOREVER
+  'loop:reset': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };    // Dev reset
+  'loop:retry': {};  // Player chose to retry after bad ending
+  'loop:titleUpdated': { version: number; status: 'attempting' | 'succeeded' | 'accepted' };
+
+  // Ending triggers (fire these to update loop state)
+  'ending:true': {};           // TRUE ENDING achieved
+  'ending:digitalForever': {}; // DIGITAL FOREVER chosen
+  'ending:bad': {};            // Bad ending - increment version
 };
 
 export type EventName = keyof GameEvents;

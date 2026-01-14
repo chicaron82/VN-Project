@@ -163,3 +163,83 @@
         opacity: 0;
     }
 }
+
+/* ========================================
+   LOOP CONTROLLER STYLES
+   Version glitch effect for failed loops
+   ZEE'S ADDITION 🖤
+   ======================================== */
+
+/**
+ * Version Glitch Effect
+ * Applied to main menu title when version > 848 (failed attempts)
+ * Intensity increases with failure count via color in JS
+ */
+@keyframes version-glitch-anim {
+    0% {
+        text-shadow:
+            0 0 20px currentColor,
+            2px 0 #ff0000,
+            -2px 0 #00ffff;
+        transform: translate(0);
+    }
+    20% {
+        text-shadow:
+            0 0 20px currentColor,
+            -3px 0 #ff0000,
+            3px 0 #00ffff;
+        transform: translate(-1px, 1px);
+    }
+    40% {
+        text-shadow:
+            0 0 25px currentColor,
+            3px 0 #ff0000,
+            -3px 0 #00ffff;
+        transform: translate(1px, -1px);
+    }
+    60% {
+        text-shadow:
+            0 0 15px currentColor,
+            -2px 0 #ff0000,
+            2px 0 #00ffff;
+        transform: translate(-1px, 0);
+    }
+    80% {
+        text-shadow:
+            0 0 30px currentColor,
+            2px 0 #ff0000,
+            -2px 0 #00ffff;
+        transform: translate(1px, 1px);
+    }
+    100% {
+        text-shadow:
+            0 0 20px currentColor,
+            2px 0 #ff0000,
+            -2px 0 #00ffff;
+        transform: translate(0);
+    }
+}
+
+.version-glitch {
+    animation: version-glitch-anim 0.5s ease-in-out infinite;
+    /* Color set dynamically by LoopController based on failure count */
+}
+
+/* ========================================
+   MENU FOOTER STATE STYLES
+   Visual feedback for loop status
+   ======================================== */
+
+.menu-footer {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.menu-footer.succeeded {
+    color: #ffd700 !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.menu-footer.failed {
+    color: #ff6b6b !important;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
+}
