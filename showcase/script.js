@@ -693,43 +693,35 @@ document.addEventListener('DOMContentLoaded', () => {
 const phaseNav = document.getElementById('phase-nav');
 const phaseLinks = document.querySelectorAll('.phase-nav-link');
 
-// Function to check and update phase nav visibility
-function updatePhaseNavVisibility() {
-    const journeySection = document.querySelector('.journey-section');
-    // CRITICAL FIX: Check the section HEADER (.section-content), not the entire section
-    // The entire section includes all timeline phases, so it triggers way too late
-    const sectionHeader = journeySection?.querySelector('.section-content');
-    if (!sectionHeader || !phaseNav) return;
-
-    const rect = sectionHeader.getBoundingClientRect();
-
-    // Show nav as soon as "THE JOURNEY" header STARTS entering viewport
-    // (when header top reaches bottom of screen)
-    // Hide when section COMPLETELY leaves viewport
-    const sectionTop = rect.top;
-    const sectionBottom = journeySection.getBoundingClientRect().bottom; // Use full section bottom
-    const viewportHeight = window.innerHeight;
-
-    // Visible if: header top is at or above viewport bottom AND full section bottom is below viewport top
-    // This means: show as SOON as "THE JOURNEY" appears, hide when entire section is gone
-    const isVisible = sectionTop <= viewportHeight && sectionBottom > 0;
-
-    if (isVisible) {
-        phaseNav.classList.add('visible');
-    } else {
-        phaseNav.classList.remove('visible');
-    }
-
-    // Update active phase based on scroll position
+// Function to check and update active phase (keep scroll listener for this)
+function updateActivePhaseOnScroll() {
     updateActivePhase();
 }
 
-// Check visibility on scroll
-window.addEventListener('scroll', updatePhaseNavVisibility);
+// Use IntersectionObserver for robust visibility toggling
+// This ensures the nav appears EXACTLY when the Journey section enters the viewport
+const journeySectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        // Toggle visibility based on intersection (is it on screen?)
+        if (entry.isIntersecting) {
+            phaseNav.classList.add('visible');
+        } else {
+            phaseNav.classList.remove('visible');
+        }
+    });
+}, {
+    threshold: 0, // Trigger as soon as even 1 pixel is visible
+    rootMargin: "0px" // Exact viewport boundaries
+});
 
-// IMPORTANT: Check visibility on page load (in case user refreshes mid-page)
-// Wait for timeline to render first
-setTimeout(updatePhaseNavVisibility, 2000);
+// Start observing the journey section
+const journeySection = document.querySelector('.journey-section');
+if (journeySection) {
+    journeySectionObserver.observe(journeySection);
+}
+
+// Check active phase on scroll (only needed for the dots)
+window.addEventListener('scroll', updateActivePhaseOnScroll);
 
 // Smooth scroll to phase
 phaseLinks.forEach(link => {
