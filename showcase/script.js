@@ -707,18 +707,51 @@ window.addEventListener('scroll', updateActivePhaseOnScroll);
 setTimeout(updateActivePhase, 100);
 
 // Click toggle support for mobile/touch (works alongside hover for desktop)
+let phaseNavAutoCloseTimer = null;
+
 if (phaseNav) {
     phaseNav.addEventListener('click', (e) => {
         // Don't toggle if clicking a phase link
-        if (e.target.closest('.phase-nav-link')) return;
+        if (e.target.closest('.phase-nav-link')) {
+            // Close immediately when selecting a phase
+            phaseNav.classList.remove('expanded');
+            clearTimeout(phaseNavAutoCloseTimer);
+            return;
+        }
 
+        // Toggle expanded state
         phaseNav.classList.toggle('expanded');
+
+        // Clear existing timer
+        clearTimeout(phaseNavAutoCloseTimer);
+
+        // If now expanded, set auto-close timer (3 seconds)
+        if (phaseNav.classList.contains('expanded')) {
+            phaseNavAutoCloseTimer = setTimeout(() => {
+                phaseNav.classList.remove('expanded');
+            }, 3000);
+        }
     });
 
     // Close when clicking outside
     document.addEventListener('click', (e) => {
         if (!phaseNav.contains(e.target)) {
             phaseNav.classList.remove('expanded');
+            clearTimeout(phaseNavAutoCloseTimer);
+        }
+    });
+
+    // Clear timer on hover (desktop) - keeps it open while hovering
+    phaseNav.addEventListener('mouseenter', () => {
+        clearTimeout(phaseNavAutoCloseTimer);
+    });
+
+    // Restart timer when mouse leaves (if still expanded via click)
+    phaseNav.addEventListener('mouseleave', () => {
+        if (phaseNav.classList.contains('expanded')) {
+            phaseNavAutoCloseTimer = setTimeout(() => {
+                phaseNav.classList.remove('expanded');
+            }, 3000);
         }
     });
 }
