@@ -55,7 +55,10 @@ copyDir(showcaseDir, targetShowcaseDir);
 // 4. Copy V1 (Legacy) to dist/v1
 console.log('\n🏛️  Copying V1 Legacy to dist/v1...');
 const targetV1Dir = path.resolve(distDir, 'v1');
-const v1Exclude = ['node_modules', '.git', 'dist', 'showcase', 'src', 'public', '.vscode', '.idea'];
+const v1Exclude = [
+    'node_modules', '.git', 'dist', 'showcase', 'src', 'public', '.vscode', '.idea',
+    'timeline_847_failures', '.gemini', '.antigravity', 'v2-contributions', 'v2-starter', 'docs'
+];
 
 if (!fs.existsSync(targetV1Dir)) fs.mkdirSync(targetV1Dir, { recursive: true });
 
