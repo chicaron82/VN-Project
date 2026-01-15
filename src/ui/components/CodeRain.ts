@@ -60,12 +60,18 @@ export class CodeRain {
             this.ctx.font = `${fontSize}px monospace`;
 
             for (let i = 0; i < this.drops.length; i++) {
-                const char = CodeRain.CHARS[Math.floor(Math.random() * CodeRain.CHARS.length)];
-                this.ctx.fillText(char, i * fontSize, this.drops[i] * fontSize);
+                const charIndex = Math.floor(Math.random() * CodeRain.CHARS.length);
+                const char = CodeRain.CHARS[charIndex];
+                if (!char) continue; // Safety check
+
+                const dropY = this.drops[i];
+                if (dropY === undefined) continue; // Safety check
+
+                this.ctx.fillText(char, i * fontSize, dropY * fontSize);
 
                 // Random reset when off screen
                 // V1 Logic: Math.random() > 0.975
-                if (this.drops[i] * fontSize > this.canvas.height && Math.random() > 0.975) {
+                if (dropY * fontSize > this.canvas.height && Math.random() > 0.975) {
                     this.drops[i] = 0;
                 }
 

@@ -75,15 +75,19 @@ export class NotificationShade {
         let currentTranslateX = 0;
 
         element.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
+            const touch = e.touches[0];
+            if (!touch) return;
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
             currentTranslateX = 0;
             element.style.transition = 'none';
         }, { passive: true });
 
         element.addEventListener('touchmove', (e) => {
-            const touchX = e.touches[0].clientX;
-            const touchY = e.touches[0].clientY;
+            const touch = e.touches[0];
+            if (!touch) return;
+            const touchX = touch.clientX;
+            const touchY = touch.clientY;
             const deltaX = touchX - touchStartX;
             const deltaY = touchY - touchStartY;
 

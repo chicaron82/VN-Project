@@ -1,5 +1,5 @@
 
-import { DevCommentarySystem, CrewStatement } from '@systems/DevCommentarySystem';
+import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 
 
 export class DirectorsCutScreen {
@@ -13,7 +13,7 @@ export class DirectorsCutScreen {
     public show(): void {
         if (this.container) return;
 
-        const statements = this.devCommentarySystem.getDirectorsCutStatements();
+        const statements = this.devCommentarySystem.getAllCommentary();
         this.render(statements);
     }
 

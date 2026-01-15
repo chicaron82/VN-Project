@@ -75,12 +75,12 @@ export class DevCommentarySystem {
         });
 
         // Listen for commentary display requests
-        this.eventBus.on('commentary:show', (data) => {
+        this.eventBus.on('commentary:show' as any, (data: any) => {
             this.showCommentary(data.sceneId);
         });
 
         // Listen for full commentary viewer request
-        this.eventBus.on('commentary:showAll', () => {
+        this.eventBus.on('commentary:showAll' as any, () => {
             this.showAllCommentary();
         });
     }
@@ -103,7 +103,8 @@ export class DevCommentarySystem {
         this.eventBus.emit('achievement:unlocked', {
             id: 'dev_commentary',
             title: 'Behind the Scenes',
-            description: 'Unlocked Developer Commentary'
+            description: 'Unlocked Developer Commentary',
+            icon: '📝'
         });
     }
 
