@@ -452,6 +452,42 @@ window.TIMELINE_DATA = {
                             "code": "// V2: TetherSystem.ts + DifficultyProfiles.ts\nexport class TetherSystem {\n  updateTether(amount: number, reason?: string): number\n  holdOn(): boolean // Returns false in INSANE mode\n  setDifficulty(id: DifficultyId): void\n}\nexport const DIFFICULTY_PROFILES: Record<DifficultyId, DifficultyProfile>;"
                         }
                     }
+                },
+                {
+                    "id": "phase-13e",
+                    "emoji": "🥚",
+                    "title": "13e: EasterEggController - Hidden Content System",
+                    "date": "January 14, 2026",
+                    "summary": "The game within the game. Core overlay infrastructure + essential easter eggs. Streamlined from V1's 2455 lines to focused V2 implementation.",
+                    "features": [
+                        "🥚 <strong>Core Infrastructure:</strong> Overlay creation, backdrop handling, variant styling",
+                        "🎬 <strong>UV7 Crew Bios:</strong> Meet the crew behind the game",
+                        "🔄 <strong>Loop Timeline:</strong> Visualize the bootstrap paradox",
+                        "🔢 <strong>True Attempt Number:</strong> Show actual loop version",
+                        "💚 <strong>Always Compilation:</strong> Storm Dragon's signature",
+                        "👻 <strong>Echo Compilation:</strong> All echo voice lines",
+                        "🚪 <strong>Torigatchi:</strong> Link to external project",
+                        "🖤 <strong>DiZee:</strong> Architect's signature"
+                    ],
+                    "metrics": {
+                        "linesAdded": 450,
+                        "filesChanged": 3,
+                        "testsWritten": 17
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "2455 LINES",
+                            "lang": "javascript",
+                            "code": "// V1: easter-egg-controller.js\n// 14 different easter eggs, 2455 lines\nclass EasterEggController {\n  showTorigatchiEasterEgg() { /* */ }\n  showAlwaysCompilation() { /* */ }\n  showDizeeEasterEgg() { /* */ }\n  // + 11 more easter eggs...\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "STREAMLINED",
+                            "lang": "typescript",
+                            "code": "// V2: EasterEggController.ts\n// Core infrastructure + essential easter eggs\nexport class EasterEggController {\n  private handleCodeUnlock(code: string): void\n  private createOverlay(config: OverlayConfig): {...}\n  private showUV7CrewBios(): void\n  // Extensible for more easter eggs\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [

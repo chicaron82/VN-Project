@@ -26,6 +26,7 @@ import { LoopController } from '@controllers/LoopController';
 import { EchoMemorySystem } from '@systems/EchoMemorySystem';
 import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
 import { TetherSystem } from '@systems/TetherSystem';
+import { EasterEggController } from '@controllers/EasterEggController';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -122,6 +123,13 @@ const insaneVisualsController = new InsaneVisualsController(eventBus, stateManag
 // Decay mechanics, Hold On, difficulty scaling
 // ============================================
 const tetherSystem = new TetherSystem(eventBus, stateManager);
+
+// ============================================
+// Easter Egg Controller - Hidden Content 🥚
+// "The game within the game."
+// Secret code overlays and special content
+// ============================================
+const easterEggController = new EasterEggController(eventBus, stateManager);
 
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
@@ -1031,6 +1039,8 @@ async function init() {
             freezeTether: () => tetherSystem.freezeDecay(),
             resumeTether: () => tetherSystem.resumeDecay(),
             setDifficulty: (diff: 'comfort' | 'normal' | 'intense' | 'insane') => tetherSystem.setDifficulty(diff),
+            // Easter Egg debug helpers 🥚
+            easterEggController,
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }
