@@ -48,6 +48,7 @@ import '@ui/styles/accessibility.css';
 import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
 import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
+// UV7 OS App Switcher is initialized in StatusBar.ts
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { CrewScreen } from '@ui/screens/CrewScreen';

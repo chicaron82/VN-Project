@@ -42,6 +42,8 @@
     <link rel="stylesheet" href="visual-cues.css">
     <!-- Overlay Styles (Konami controller, confirmation dialogs, etc.) -->
     <link rel="stylesheet" href="css/overlays.css">
+    <!-- UV7 OS App Switcher -->
+    <link rel="stylesheet" href="uv7-app-switcher.css">
 
     <style>
         /* ========================================
@@ -88,6 +90,12 @@
          ======================================== -->
     <div id="status-bar">
         <div class="status-section">
+            <!-- UV7 OS Logo (App Switcher Trigger) -->
+            <span class="status-item uv7-logo-trigger" id="uv7-logo-trigger"
+                style="cursor: pointer; font-weight: bold; color: #00ff88;" title="UV7 OS - Tap to switch apps">
+                <img src="UnitedVoices7.png" alt="UV7"
+                    style="height: 16px; width: auto; vertical-align: middle; margin-right: 8px;">
+            </span>
             <span id="status-loop" class="status-item"></span>
             <span id="status-route" class="status-item">Menu</span>
         </div>
@@ -2042,6 +2050,27 @@
             if (typeof EchoMemorySystem !== 'undefined') {
                 game.echoMemory = new EchoMemorySystem(game);
                 console.log('👁️ Echo Memory System ready');
+            }
+        });
+    </script>
+
+    <!-- UV7 OS App Switcher -->
+    <script src="uv7-app-switcher.js"></script>
+    <script>
+        // Initialize UV7 App Switcher for V1
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof UV7AppSwitcher !== 'undefined') {
+                window.uv7AppSwitcher = new UV7AppSwitcher();
+
+                // Wire up UV7 logo click
+                const logoTrigger = document.getElementById('uv7-logo-trigger');
+                if (logoTrigger) {
+                    logoTrigger.addEventListener('click', () => {
+                        window.uv7AppSwitcher.toggle();
+                    });
+                }
+
+                console.log('🚀 UV7 App Switcher ready (V1)');
             }
         });
     </script>

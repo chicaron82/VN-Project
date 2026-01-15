@@ -65,6 +65,29 @@ export class StatusBar {
         this.setupStateSubscriptions();
         this.setupIdleTimer();
         this.loadInitialState();
+        this.setupAppSwitcher();
+    }
+
+    /**
+     * Set up UV7 App Switcher
+     */
+    private async setupAppSwitcher(): Promise<void> {
+        try {
+            const { initializeAppSwitcher } = await import('./UV7AppSwitcher');
+            const appSwitcher = await initializeAppSwitcher();
+
+            // Wire up UV7 logo click
+            const logoTrigger = document.getElementById('uv7-logo-trigger');
+            if (logoTrigger) {
+                logoTrigger.addEventListener('click', () => {
+                    appSwitcher.toggle();
+                });
+            }
+
+            console.log('🚀 UV7 App Switcher ready (V2)');
+        } catch (error) {
+            console.warn('⚠️ UV7 App Switcher failed to load:', error);
+        }
     }
 
     /**
@@ -77,6 +100,10 @@ export class StatusBar {
         this.container.innerHTML = `
             <!-- Left Section: Loop + Route -->
             <div class="status-section status-left">
+                <!-- UV7 OS Logo (App Switcher Trigger) -->
+                <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer; margin-right: 12px;" title="UV7 OS - Tap to switch apps">
+                    <img src="/UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
+                </span>
                 <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
                 <span id="status-route" class="status-item route-indicator">MENU</span>
             </div>

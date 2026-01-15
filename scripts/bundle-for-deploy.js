@@ -83,7 +83,7 @@ for (let entry of rootEntries) {
 
 // 5. Copy essential assets to dist root
 console.log('\n📦 Copying essential assets to dist root...');
-const rootAssets = ['UnitedVoices7.mp4', 'UnitedVoices7.png', 'favicon.ico', 'site.webmanifest', 'uv7-os-landing.js'];
+const rootAssets = ['UnitedVoices7.mp4', 'UnitedVoices7.png', 'favicon.ico', 'site.webmanifest', 'uv7-os-landing.js', 'uv7-app-switcher.js', 'uv7-app-switcher.css'];
 for (const asset of rootAssets) {
     const srcPath = path.join(rootDir, asset);
     const altSrcPath = path.join(rootDir, 'assets', asset); // Try assets folder too
