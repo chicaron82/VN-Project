@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import '@ui/styles/animations.css';
+import { CodeRain } from './CodeRain';
 
 export class VisualEffectsLayer {
     private container: HTMLElement; // The target element to shake/glitch (usually the Viewport)
@@ -60,24 +61,46 @@ export class VisualEffectsLayer {
     }
 
     private triggerCodeRain(duration: number) {
-        // Placeholder for Code Rain effect
-        // In full V1 port, this would init the matrix canvas
+        // Faithful V1 Port: Matrix code rain
         console.log(`🌧️ Code Rain triggered for ${duration}ms`);
 
-        const rainOverlay = document.createElement('div');
-        rainOverlay.className = 'effect-code-rain';
-        rainOverlay.innerText = '0101010101 (Code Rain Placeholder)';
-        rainOverlay.style.color = '#0f0';
-        rainOverlay.style.display = 'flex';
-        rainOverlay.style.alignItems = 'center';
-        rainOverlay.style.justifyContent = 'center';
-        rainOverlay.style.fontSize = '2rem';
-        rainOverlay.style.background = 'rgba(0,0,0,0.5)';
+        const container = document.createElement('div');
+        container.className = 'effect-code-rain';
+        container.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 300ms ease;
+            pointer-events: none;
+        `;
 
-        this.overlayContainer.appendChild(rainOverlay);
+        this.overlayContainer.appendChild(container);
+
+        // Initialize rain
+        // V1 Default Color: Cyan (#00ffff)
+        const rain = new CodeRain(container);
+        rain.start('#00ffff');
+
+        // Fade in
+        requestAnimationFrame(() => {
+            container.style.opacity = '1';
+        });
+
+        // Cleanup sequence
+        // Fade out happens 300ms before duration ends (matching V1)
+        const fadeOutTime = Math.max(0, duration - 300);
 
         setTimeout(() => {
-            rainOverlay.remove();
-        }, duration);
+            container.style.opacity = '0';
+
+            setTimeout(() => {
+                rain.destroy();
+                container.remove();
+            }, 300);
+        }, fadeOutTime);
     }
 }
