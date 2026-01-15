@@ -3,8 +3,6 @@
  * Wraps the vanilla JS app switcher for use in V2's TypeScript environment
  */
 
-// Import the app switcher CSS
-import '../../uv7-app-switcher.css';
 
 // Declare the UV7AppSwitcher class from the vanilla JS file
 declare class UV7AppSwitcher {
