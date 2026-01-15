@@ -1,51 +1,69 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { VisualEffectsLayer } from './VisualEffectsLayer';
 import { EventBus } from '@core/EventBus';
 
+// Mock CodeRain since it's imported by VisualEffectsLayer
+vi.mock('./CodeRain', () => ({
+    CodeRain: vi.fn().mockImplementation(() => ({
+        start: vi.fn(),
+        stop: vi.fn(),
+        destroy: vi.fn(),
+    })),
+}));
+
 describe('VisualEffectsLayer', () => {
     let eventBus: EventBus;
-    let container: HTMLElement;
-    let overlay: HTMLElement;
+    let targetContainer: HTMLElement;
+    let overlayContainer: HTMLElement;
+    let layer: VisualEffectsLayer;
 
     beforeEach(() => {
         eventBus = new EventBus();
-        container = document.createElement('div');
-        overlay = document.createElement('div');
-        new VisualEffectsLayer(container, overlay, eventBus);
+        targetContainer = document.createElement('div');
+        overlayContainer = document.createElement('div');
+
+        // Mock requestAnimationFrame for CodeRain fade-in logic
+        vi.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => { cb(0); return 0; });
+
+        layer = new VisualEffectsLayer(targetContainer, overlayContainer, eventBus);
 
         vi.useFakeTimers();
     });
 
     afterEach(() => {
+        vi.restoreAllMocks();
         vi.useRealTimers();
     });
 
-    it('should apply glitch class on effect:glitch', () => {
-        eventBus.emit('effect:glitch', { intensity: 0.5 });
-        expect(container.classList.contains('effect-glitch')).toBe(true);
-
-        vi.advanceTimersByTime(600);
-        expect(container.classList.contains('effect-glitch')).toBe(false);
-    });
-
-    it('should apply shake class on effect:shake', () => {
+    it('should trigger shake effect (heavy) on event', () => {
         eventBus.emit('effect:shake', { intensity: 'heavy' });
-        expect(container.classList.contains('effect-shake-heavy')).toBe(true);
 
-        vi.advanceTimersByTime(900);
-        expect(container.classList.contains('effect-shake-heavy')).toBe(false);
+        expect(targetContainer.classList.contains('effect-shake-heavy')).toBe(true);
+
+        // Should remove after timeout (800ms)
+        vi.advanceTimersByTime(800);
+        expect(targetContainer.classList.contains('effect-shake-heavy')).toBe(false);
     });
 
-    it('should create flash overlay on effect:flash', () => {
+    it('should trigger glitch effect on event', () => {
+        eventBus.emit('effect:glitch', { intensity: 0.5 });
+
+        expect(targetContainer.classList.contains('effect-glitch')).toBe(true);
+
+        // Duration logic: Math.max(200, intensity * 1000) -> 500ms
+        vi.advanceTimersByTime(500);
+        expect(targetContainer.classList.contains('effect-glitch')).toBe(false);
+    });
+
+    it('should trigger flash effect on event', () => {
         eventBus.emit('effect:flash', { color: 'white', duration: 100 });
 
-        const flash = overlay.querySelector('.effect-flash-overlay');
+        const flash = overlayContainer.querySelector('.effect-flash-overlay');
         expect(flash).toBeTruthy();
-        if (flash) {
-            expect((flash as HTMLElement).style.background).toBe('white');
-        }
+        expect((flash as HTMLElement).style.background).toBe('white');
 
-        vi.advanceTimersByTime(200);
-        expect(overlay.querySelector('.effect-flash-overlay')).toBeFalsy();
+        // Should remove after duration + 50 -> 150ms
+        vi.advanceTimersByTime(150);
+        expect(overlayContainer.querySelector('.effect-flash-overlay')).toBeNull();
     });
 });

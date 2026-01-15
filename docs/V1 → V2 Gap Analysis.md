@@ -14,7 +14,7 @@ Secret Codes UI Discovery tracking, invalid code responses, RNG drops
 Ending Dialog 3-option system, dynamic titles per ending type
 Tether Flavor Hold On cooldown display, critical haptics, tutorial flash
 Haptic Patterns Full pattern library, comfort scaling, debounce
-Visual Effects (Phase 15 🚧) Real code rain (✅), screen shake, glitch/corruption
+~~Visual Effects~~ ✅ (Phase 15) Real code rain, screen shake, glitch/corruption
 Dev Commentary 50+ entries, CHICHARON unlock, scene mapping
 Medium Missing (Polish)
 Achievement viewer UI & progress counter

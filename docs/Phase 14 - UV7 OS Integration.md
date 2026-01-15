@@ -18,6 +18,18 @@ Successfully integrated the UV7 OS App Switcher into both V1 (legacy) and V2 (Ty
 
 ---
 
+## Phase 14 - UV7 OS Integration
+
+## User Contribution: The "No Flicker" Protocol (View Transitions)
+
+The user implemented the [View Transitions API](https://developer.chrome.com/docs/web-platform/view-transitions/) to create seamless page morphing while keeping the Status Bar persistent.
+
+- **Persistent UI:** `view-transition-name: uv7-status-bar` ensures the header stays strictly static.
+- **Slide Animations:** `::view-transition-old/new(root)` handles smooth page slides.
+- **Accessibility:** Respects `prefers-reduced-motion`.
+
+---
+
 ## V1 Integration (Legacy Game)
 
 ### Changes Made

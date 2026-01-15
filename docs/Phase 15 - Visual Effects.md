@@ -5,7 +5,7 @@
 Porting the signature visual effects that defined V1's "bougie" aesthetic.
 Focus on faithful reproduction of canvas-based effects (Code Rain) and CSS animations (Shake, Glitch).
 
-**Status:** 🚧 In Progress
+**Status:** ✅ Complete
 
 ---
 
@@ -31,8 +31,24 @@ Focus on faithful reproduction of canvas-based effects (Code Rain) and CSS anima
 
 ---
 
+## 15b: Animation Effects (Shake, Glitch, Flash) ✅
+
+**Status:** Complete
+**Feature:** Core visual distortions and feedback.
+
+### Implementation
+
+- **CSS:** `src/ui/styles/animations.css` contains all keyframes (`shake-anim`, `glitch-anim`, `flash-anim`).
+- **Logic:** `VisualEffectsLayer.ts` correctly maps events to these classes.
+- **Verification:**
+  - ✅ Unit tests in `VisualEffectsLayer.test.ts` passing for all 3 effect types.
+  - Confirmed `EventBus` wiring.
+
+---
+
 ## Remaining Scope (Gap Analysis)
 
-- [ ] Screen Shake (CSS/JS)
-- [ ] Glitch Effects (Canvas/CSS)
-- [ ] Flash/Strobe (CSS)
+- [x] Code Rain (Video/Canvas)
+- [x] Screen Shake (CSS/JS)
+- [x] Glitch Effects (Canvas/CSS)
+- [x] Flash/Strobe (CSS)
