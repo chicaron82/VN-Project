@@ -594,6 +594,40 @@ window.TIMELINE_DATA = {
                             "code": "// V2: EasterEggController.ts (~1150 lines)\npublic showKonamiControllerOverlay(): void\nprivate showKonamiSuccess(): void\npublic showKonamiInsaneEscape(): void\npublic showRonniegatchiInspiration(): void\npublic showUV7FamilyMember(member: string): void\npublic showUV7Toast(...): void\n// All inline-styled, EventBus integrated"
                         }
                     }
+                },
+                {
+                    "id": "phase-13j",
+                    "emoji": "🔓",
+                    "title": "13j: SecretCodesSystem - Full Code Discovery System",
+                    "date": "January 14, 2026",
+                    "summary": "Complete secret codes system with 13 discoverable codes, 12 dev commands, flavored invalid responses, UI rendering, and visual feedback. Faithful V1 port.",
+                    "features": [
+                        "🔓 <strong>13 Discoverable Codes:</strong> konami, torigatchi, ronniegatchi, always3, uv7crew, chicharon, bootstrap, echo, 848, dizee, echobreak, tetherlock, saveanywhere",
+                        "🛠️ <strong>12 Dev Commands:</strong> reset848, nuke, freezetether, resumetether, settethermax, settether50, unlockskip, skipintro, revealcodes, clearall, devhelp",
+                        "💬 <strong>Flavored Invalid Responses:</strong> 10 lore-appropriate error messages",
+                        "🎨 <strong>UI Rendering:</strong> renderDiscoveredCodesHTML() with lock icons and progress counter",
+                        "✨ <strong>Visual Feedback:</strong> showCodeSuccess(), showInvalidCodeResponse(), showUnlockOverlay()",
+                        "🔧 <strong>Debug Helpers:</strong> window.uv7.submitCode(), revealCodes(), getDiscoveredCodes()"
+                    ],
+                    "metrics": {
+                        "linesAdded": 470,
+                        "filesChanged": 2,
+                        "testsWritten": 0
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "760 LINES",
+                            "lang": "javascript",
+                            "code": "// V1: secret-codes-manager.js\nclass SecretCodesManager {\n  invalidResponses = ['No signal...', ...];\n  submitCode(code) { /* validate + reward */ }\n  renderDiscoveredCodes() { /* UI with 🔒 */ }\n  showInvalidCodeResponse() { /* flavored errors */ }\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "643 LINES",
+                            "lang": "typescript",
+                            "code": "// V2: SecretCodesSystem.ts\nexport class SecretCodesSystem {\n  private readonly invalidResponses: string[] = [...];\n  private handleCodeSubmit(data: { code: string }): void\n  public renderDiscoveredCodesHTML(): string\n  private showInvalidCodeResponse(): void\n  // EventBus integrated, type-safe\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [

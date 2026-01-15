@@ -171,6 +171,27 @@ export type GameEvents = {
   'insane:corruption_triggered': { intensity: 'light' | 'medium' | 'heavy' | 'maximum' };
   'insane:cage': { callback?: () => void };  // Show cage overlay
   'insane:cage_complete': {};  // Cage overlay sequence finished
+
+  // ========================================
+  // SECRET CODES & EASTER EGGS EVENTS
+  // DiZee's discovery system 🔓
+  // ========================================
+  'secret_code:discovered': { code: string; name: string };
+  'easter_egg:konami_controller': {};
+  'easter_egg:torigatchi': {};
+  'easter_egg:ronniegatchi': {};
+  'easter_egg:always': {};
+  'easter_egg:uv7crew': {};
+  'easter_egg:echo': {};
+  'easter_egg:848': { attempt: number };
+  'easter_egg:dizee': {};
+
+  // ========================================
+  // TETHER CONTROL EVENTS (for dev commands)
+  // ========================================
+  'tether:freeze': {};
+  'tether:resume': {};
+  'tether:set': { value: number };
 };
 
 export type EventName = keyof GameEvents;
