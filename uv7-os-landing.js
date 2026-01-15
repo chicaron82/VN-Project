@@ -25,6 +25,9 @@ class UV7OSLanding {
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
+        // TORI: Boot toast - one-time acknowledgment
+        this.showBootToast();
+
         console.log('🚀 UV7 OS initialized: Landing');
     }
 
@@ -241,6 +244,40 @@ class UV7OSLanding {
         if (!this.elements.sidebar) return;
         this.elements.sidebar.classList.remove('open');
         this.elements.backdrop.classList.remove('visible');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // TORI: BOOT TOAST - ONE MOMENT OF ACKNOWLEDGMENT
+    // Shows once per browser, confirms state, humanizes the system
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Show boot toast on first visit
+     * TORI: "Makes the experience feel alive"
+     */
+    showBootToast() {
+        // Check if already shown
+        const hasShown = localStorage.getItem('uv7.bootToastShown');
+        if (hasShown) return;
+
+        // Create toast element
+        const toast = document.createElement('div');
+        toast.className = 'uv7-boot-toast';
+        toast.textContent = 'UV7 OS ready • All systems nominal';
+
+        document.body.appendChild(toast);
+
+        // Auto-dismiss after 2 seconds
+        setTimeout(() => {
+            toast.classList.add('dismissing');
+
+            setTimeout(() => {
+                toast.remove();
+            }, 300); // Wait for fade-out animation
+        }, 2000);
+
+        // Mark as shown
+        localStorage.setItem('uv7.bootToastShown', 'true');
     }
 }
 

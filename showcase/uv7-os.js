@@ -39,6 +39,9 @@ class UV7OS {
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
+        // TORI: Boot toast - one-time acknowledgment
+        this.showBootToast();
+
         console.log('🚀 UV7 OS initialized:', this.context);
     }
 
@@ -113,11 +116,18 @@ class UV7OS {
     renderStatusBar() {
         if (!this.elements.statusContext || !this.elements.statusDetail) return;
 
-        // Context is always "Showcase" for this page
-        this.elements.statusContext.textContent = 'Showcase';
+        // DIZEE #3: Dynamic context based on current phase
+        const phaseData = this.phases.find(p => p.id === `phase-${this.currentPhase}`);
 
-        // Detail shows current phase
-        this.elements.statusDetail.textContent = `Phase ${this.currentPhase}`;
+        if (phaseData && phaseData.title) {
+            // Show phase-specific context
+            this.elements.statusContext.textContent = `Phase ${this.currentPhase}`;
+            this.elements.statusDetail.textContent = phaseData.title;
+        } else {
+            // Fallback to generic
+            this.elements.statusContext.textContent = 'Showcase';
+            this.elements.statusDetail.textContent = `Phase ${this.currentPhase}`;
+        }
     }
 
     renderPhaseList() {
@@ -450,6 +460,82 @@ class UV7OS {
         if (savedPhase) {
             // Scroll to saved phase after a brief delay
             setTimeout(() => this.jumpToPhase(savedPhase), 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // TORI: BOOT TOAST - ONE MOMENT OF ACKNOWLEDGMENT
+    // ═══════════════════════════════════════════════════════════════
+
+    showBootToast() {
+        const hasShown = localStorage.getItem('uv7.bootToastShown.showcase');
+        if (hasShown) return;
+
+        const toast = document.createElement('div');
+        toast.className = 'uv7-boot-toast';
+        toast.textContent = 'UV7 OS ready • All systems nominal';
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('dismissing');
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
+
+        localStorage.setItem('uv7.bootToastShown.showcase', 'true');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // DIZEE #4: PHASE CELEBRATION - REWARD SYSTEM
+    // Celebrates when phases are marked complete
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Trigger celebration toast with confetti
+     * @param {string} phaseName - e.g. "Phase 15"
+     * @param {string} achievement - e.g. "Visual parity achieved"
+     */
+    celebratePhaseComplete(phaseName, achievement) {
+        // Create celebration toast
+        const toast = document.createElement('div');
+        toast.className = 'uv7-boot-toast';
+        toast.textContent = `${phaseName} complete • ${achievement}`;
+
+        document.body.appendChild(toast);
+
+        // Spawn confetti particles
+        this.spawnConfetti();
+
+        // Auto-dismiss
+        setTimeout(() => {
+            toast.classList.add('dismissing');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    /**
+     * Spawn gold confetti particles
+     * DIZEE: "Every detail should feel intentional"
+     */
+    spawnConfetti() {
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            setTimeout(() => {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+
+                // Random horizontal position
+                particle.style.left = `${Math.random() * 100}%`;
+
+                // Slight random delay for stagger effect
+                particle.style.animationDelay = `${Math.random() * 0.3}s`;
+
+                document.body.appendChild(particle);
+
+                // Remove after animation
+                setTimeout(() => particle.remove(), 2300);
+            }, i * 30); // Stagger spawn
         }
     }
 }
