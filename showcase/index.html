@@ -180,21 +180,19 @@
                 </p>
 
                 <div class="info-grid">
-                    <div class="card">
+                    <div class="card clickable" data-section="workflow-section">
                         <h3>ARCHITECTURE</h3>
                         <p>Improvised. "If it works, don't touch it."</p>
                     </div>
-                    <div class="card">
+                    <div class="card clickable" data-section="results-section">
                         <h3>DATA</h3>
                         <p>Hardcoded in JavaScript functions. Everywhere.</p>
                     </div>
-                    <div class="card">
+                    <div class="card clickable" data-section="evolution-section">
                         <h3>TEAM</h3>
                         <p>A loose collective of AI personas arguing over features.</p>
                     </div>
                 </div>
-
-                <a href="../index.html" class="btn">ENTER THE GLITCH</a>
             </div>
         </div>
 
@@ -217,21 +215,19 @@
                 </p>
 
                 <div class="info-grid">
-                    <div class="card">
+                    <div class="card clickable" data-section="workflow-section">
                         <h3>ARCHITECTURE</h3>
                         <p>EventBus, StateManager, and Component-based UI.</p>
                     </div>
-                    <div class="card">
+                    <div class="card clickable" data-section="results-section">
                         <h3>DATA</h3>
                         <p>Pure JSON schemas validated at runtime.</p>
                     </div>
-                    <div class="card">
+                    <div class="card clickable" data-section="evolution-section">
                         <h3>TEAM</h3>
                         <p>The UV7 Crew: Optimized, Assigned, and Unified.</p>
                     </div>
                 </div>
-
-                <a href="https://github.com/chicaron82/VN-Project" class="btn">VIEW THE CODE</a>
             </div>
         </div>
 
@@ -332,19 +328,28 @@
             </p>
 
             <div class="stats-grid">
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="tests">
+                    <div class="stat-icon">✓</div>
                     <div class="stat-number" data-target="480">0</div>
                     <div class="stat-label">Tests Passing</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="phases">
+                    <div class="stat-icon">
+                        <svg class="progress-ring" viewBox="0 0 36 36">
+                            <circle class="ring-bg" cx="18" cy="18" r="16" />
+                            <circle class="ring-fill" cx="18" cy="18" r="16" />
+                        </svg>
+                    </div>
                     <div class="stat-number" data-target="14">0</div>
                     <div class="stat-label">Phases Complete</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="days">
+                    <div class="stat-icon">📅</div>
                     <div class="stat-number" data-target="7">0</div>
                     <div class="stat-label">Days in Development</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" data-stat-type="errors">
+                    <div class="stat-icon">✨</div>
                     <div class="stat-number" data-target="0">0</div>
                     <div class="stat-label">TypeScript Errors</div>
                 </div>

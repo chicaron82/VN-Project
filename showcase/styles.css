@@ -408,6 +408,24 @@ p {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
+/* Clickable cards */
+.card.clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.clickable:hover {
+    transform: translateY(-4px);
+}
+
+.layer-chaos .card.clickable:hover {
+    box-shadow: 0 0 20px var(--chaos-text);
+}
+
+.layer-order .card.clickable:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
 /* ==========================================================================
    NEW SECTIONS - Journey, Workflow, Results, Footer
    ========================================================================== */
@@ -915,6 +933,133 @@ section h2 {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   STAT MICRO-ANIMATIONS
+   ========================================================================== */
+
+.stat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.stat-card.animated .stat-icon {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Tests Passing - Green Checkmark Pulse */
+[data-stat-type="tests"] .stat-icon {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+[data-stat-type="tests"].animated .stat-icon {
+    animation: checkPulse 1.5s ease infinite;
+}
+
+@keyframes checkPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+/* Phases Complete - Progress Ring */
+.progress-ring {
+    width: 32px;
+    height: 32px;
+}
+
+.ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.2);
+    stroke-width: 3;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset 1.5s ease;
+}
+
+[data-stat-type="phases"].animated .ring-fill {
+    stroke-dashoffset: 0;
+}
+
+/* Days in Development - Calendar Bounce */
+[data-stat-type="days"] .stat-icon {
+    display: inline-block;
+}
+
+[data-stat-type="days"].animated .stat-icon {
+    animation: calendarFlip 0.6s ease-out;
+}
+
+@keyframes calendarFlip {
+    0% {
+        transform: rotateX(-90deg) scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        transform: rotateX(15deg) scale(1.1);
+    }
+
+    100% {
+        transform: rotateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* TypeScript Errors - Zero Sparkle */
+[data-stat-type="errors"] .stat-icon {
+    color: #fbbf24;
+}
+
+[data-stat-type="errors"].animated .stat-icon {
+    animation: sparkle 2s ease infinite;
+}
+
+@keyframes sparkle {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    25% {
+        transform: scale(1.3) rotate(10deg);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1) rotate(-10deg);
+        opacity: 1;
+    }
+
+    75% {
+        transform: scale(1.2) rotate(5deg);
+        opacity: 0.8;
+    }
 }
 
 .achievements {
@@ -2498,5 +2643,159 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
         font-size: 0.9rem;
         padding: 1rem 1.5rem;
         margin: 2rem auto;
+    }
+}
+
+/* ==========================================================================
+   TIMELINE PAGINATION CONTROLS
+   ========================================================================== */
+
+.timeline-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+    /* Position to the LEFT of the timeline, avoiding the vertical strip */
+    width: fit-content;
+    max-width: 45%;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+/* Top nav - sits above first phase */
+.timeline-nav-top {
+    margin-bottom: 2rem;
+}
+
+/* Bottom nav - sits below last phase */
+.timeline-nav-bottom {
+    margin-top: 2rem;
+    margin-bottom: 0;
+}
+
+/* Progress dots container */
+.timeline-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* Progress dot */
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.progress-dot:hover {
+    transform: scale(1.3);
+    background: rgba(52, 152, 219, 0.3);
+}
+
+.progress-dot.active {
+    background: #3498db;
+    transform: scale(1.2);
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+}
+
+/* Progress text */
+.progress-text {
+    font-size: 0.9rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Button container */
+.timeline-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Navigation buttons */
+.timeline-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background: transparent;
+    color: #3498db;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.timeline-btn:hover:not(:disabled) {
+    background: #3498db;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.timeline-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.timeline-btn.view-all {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-color: transparent;
+    color: #fff;
+}
+
+.timeline-btn.view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+/* Timeline phases container */
+.timeline-phases {
+    position: relative;
+}
+
+/* Keep vertical line on phases container */
+.timeline-phases::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, #3498db, #9b59b6);
+    border-radius: 2px;
+}
+
+/* Responsive pagination */
+@media (max-width: 768px) {
+    .timeline-nav {
+        padding: 1rem;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .timeline-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .timeline-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .progress-dot {
+        width: 10px;
+        height: 10px;
     }
 }

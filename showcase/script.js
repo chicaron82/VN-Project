@@ -118,6 +118,24 @@ function typeCode() {
 typeCode();
 
 // ==========================================
+// CLICKABLE INFO CARDS
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const clickableCards = document.querySelectorAll('.card.clickable[data-section]');
+
+    clickableCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const sectionClass = card.dataset.section;
+            const targetSection = document.querySelector(`.${sectionClass}`);
+
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+});
+
+// ==========================================
 // SCROLL ANIMATIONS
 // ==========================================
 
@@ -282,6 +300,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (entry.isIntersecting) {
                 const target = parseInt(entry.target.dataset.target, 10);
                 animateCountUp(entry.target, target);
+
+                // Trigger micro-animation on parent card
+                const card = entry.target.closest('.stat-card');
+                if (card) {
+                    card.classList.add('animated');
+                }
+
                 countObserver.unobserve(entry.target); // Only animate once
             }
         });
@@ -361,13 +386,17 @@ function copyLink() {
     });
 }
 
-// ==========================================
 // TIMELINE RENDERER
 // ==========================================
 class TimelineRenderer {
     constructor(containerSelector) {
         this.container = document.querySelector(containerSelector);
         this.phases = [];
+
+        // Pagination state
+        this.phasesPerPage = 3;
+        this.currentPage = 0;
+        this.viewAll = false;
     }
 
     async loadTimeline() {
@@ -379,33 +408,142 @@ class TimelineRenderer {
                 return;
             }
 
-            // Fallback to fetch for server environments
-            const response = await fetch('timeline.json');
-            const data = await response.json();
-            this.phases = data.phases;
-            this.render();
+            // Fallback message
+            console.error('Make sure timeline-data.js is loaded.');
         } catch (error) {
             console.error('Failed to load timeline:', error);
-            console.error('Make sure timeline-data.js is loaded or you\'re using a web server to view this page.');
         }
+    }
+
+    get totalPages() {
+        return Math.ceil(this.phases.length / this.phasesPerPage);
+    }
+
+    get currentPhases() {
+        if (this.viewAll) return this.phases;
+        const start = this.currentPage * this.phasesPerPage;
+        return this.phases.slice(start, start + this.phasesPerPage);
     }
 
     render() {
         if (!this.container || this.phases.length === 0) return;
 
-        // Clear existing timeline (if any)
+        // Clear existing timeline
         this.container.innerHTML = '';
 
-        // Render each phase
-        this.phases.forEach(phase => {
+        // Add TOP navigation controls
+        this.container.appendChild(this.createNavigationControls('top'));
+
+        // Render phases
+        const phasesContainer = document.createElement('div');
+        phasesContainer.className = 'timeline-phases';
+        this.currentPhases.forEach(phase => {
             const phaseElement = this.createPhaseElement(phase);
-            this.container.appendChild(phaseElement);
+            phasesContainer.appendChild(phaseElement);
         });
+        this.container.appendChild(phasesContainer);
+
+        // Add BOTTOM navigation controls
+        this.container.appendChild(this.createNavigationControls('bottom'));
 
         // Trigger Syntax Highlighting
         if (window.Prism) {
             Prism.highlightAll();
         }
+    }
+
+    createNavigationControls(position = 'top') {
+        const nav = document.createElement('div');
+        nav.className = `timeline-nav timeline-nav-${position}`;
+
+        // Progress dots container
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'timeline-progress';
+
+        // Progress dots
+        for (let i = 0; i < this.totalPages; i++) {
+            const dot = document.createElement('button');
+            dot.className = `progress-dot ${i === this.currentPage && !this.viewAll ? 'active' : ''}`;
+            dot.setAttribute('aria-label', `Go to phases ${i * this.phasesPerPage + 1}-${Math.min((i + 1) * this.phasesPerPage, this.phases.length)}`);
+            dot.addEventListener('click', () => {
+                this.viewAll = false;
+                this.currentPage = i;
+                this.render();
+                this.scrollToTimeline();
+            });
+            progressContainer.appendChild(dot);
+        }
+
+        // Progress text
+        const progressText = document.createElement('span');
+        progressText.className = 'progress-text';
+        if (this.viewAll) {
+            progressText.textContent = `Viewing all ${this.phases.length} phases`;
+        } else {
+            const start = this.currentPage * this.phasesPerPage + 1;
+            const end = Math.min((this.currentPage + 1) * this.phasesPerPage, this.phases.length);
+            progressText.textContent = `Phases ${start}-${end} of ${this.phases.length}`;
+        }
+
+        // Button container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'timeline-buttons';
+
+        // Previous button
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'timeline-btn prev';
+        prevBtn.innerHTML = '← Previous';
+        prevBtn.disabled = this.currentPage === 0 || this.viewAll;
+        prevBtn.addEventListener('click', () => {
+            if (this.currentPage > 0) {
+                this.currentPage--;
+                this.render();
+                this.scrollToTimeline();
+            }
+        });
+
+        // View All / Show Latest button
+        const viewAllBtn = document.createElement('button');
+        viewAllBtn.className = 'timeline-btn view-all';
+        viewAllBtn.textContent = this.viewAll ? 'Show Latest 3' : 'View All';
+        viewAllBtn.addEventListener('click', () => {
+            if (this.viewAll) {
+                this.viewAll = false;
+                this.currentPage = this.totalPages - 1; // Go to last page
+            } else {
+                this.viewAll = true;
+            }
+            this.render();
+            this.scrollToTimeline();
+        });
+
+        // Next button
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'timeline-btn next';
+        nextBtn.innerHTML = 'Next →';
+        nextBtn.disabled = this.currentPage >= this.totalPages - 1 || this.viewAll;
+        nextBtn.addEventListener('click', () => {
+            if (this.currentPage < this.totalPages - 1) {
+                this.currentPage++;
+                this.render();
+                this.scrollToTimeline();
+            }
+        });
+
+        // Assemble
+        buttonContainer.appendChild(prevBtn);
+        buttonContainer.appendChild(viewAllBtn);
+        buttonContainer.appendChild(nextBtn);
+
+        nav.appendChild(progressContainer);
+        nav.appendChild(progressText);
+        nav.appendChild(buttonContainer);
+
+        return nav;
+    }
+
+    scrollToTimeline() {
+        this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     createPhaseElement(phase) {
