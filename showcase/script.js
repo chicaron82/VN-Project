@@ -1246,3 +1246,105 @@ console.log('%cQuality: MICHELIN ⭐⭐⭐', 'color: #00ff88; font-weight: bold;
         console.log('📖 Expandable timeline phases initialized');
     }, 1500); // Wait for timeline renderer to finish
 })();
+
+// ==========================================
+// COLLAPSIBLE TIMELINE - PROGRESSIVE DISCLOSURE
+// Show 3 latest phases by default with expand option
+// ==========================================
+(function initCollapsibleTimeline() {
+    // Wait for timeline to be fully rendered
+    setTimeout(() => {
+        const timelineContainer = document.getElementById('timeline-container');
+        if (!timelineContainer) return;
+
+        const timelineItems = Array.from(timelineContainer.querySelectorAll('.timeline-item'));
+        if (timelineItems.length <= 3) return; // No need to collapse if 3 or fewer items
+
+        const VISIBLE_COUNT = 3;
+        const hiddenCount = timelineItems.length - VISIBLE_COUNT;
+
+        // Hide all but the first 3 items
+        timelineItems.forEach((item, index) => {
+            if (index >= VISIBLE_COUNT) {
+                item.classList.add('timeline-item-hidden');
+                item.style.display = 'none';
+            }
+        });
+
+        // Create expand/collapse button
+        const expandButton = document.createElement('button');
+        expandButton.className = 'timeline-expand-btn';
+        expandButton.innerHTML = `
+            <span class="expand-icon">▾</span>
+            <span class="expand-text">Show Full Timeline (${hiddenCount} more phases)</span>
+        `;
+        expandButton.setAttribute('aria-expanded', 'false');
+        expandButton.setAttribute('aria-label', `Show ${hiddenCount} more timeline phases`);
+
+        // Insert button after visible items
+        const insertAfter = timelineItems[VISIBLE_COUNT - 1];
+        insertAfter.parentNode.insertBefore(expandButton, insertAfter.nextSibling);
+
+        // Toggle functionality
+        let isExpanded = false;
+        expandButton.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+
+            timelineItems.forEach((item, index) => {
+                if (index >= VISIBLE_COUNT) {
+                    if (isExpanded) {
+                        item.classList.remove('timeline-item-hidden');
+                        item.style.display = '';
+                        // Stagger animation
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateX(0)';
+                        }, (index - VISIBLE_COUNT) * 50);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateX(-30px)';
+                        setTimeout(() => {
+                            item.classList.add('timeline-item-hidden');
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
+
+            // Update button
+            expandButton.setAttribute('aria-expanded', isExpanded);
+            expandButton.innerHTML = isExpanded
+                ? '<span class="expand-icon">▴</span><span class="expand-text">Show Less</span>'
+                : `<span class="expand-icon">▾</span><span class="expand-text">Show Full Timeline (${hiddenCount} more phases)</span>`;
+
+            // Scroll to button if collapsing
+            if (!isExpanded) {
+                setTimeout(() => {
+                    expandButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 350);
+            }
+        });
+
+        // Keyboard support
+        expandButton.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                expandButton.click();
+            }
+        });
+
+        // Remember state in sessionStorage
+        const savedState = sessionStorage.getItem('timeline.expanded');
+        if (savedState === 'true') {
+            expandButton.click(); // Trigger expand
+        }
+
+        // Save state on change
+        expandButton.addEventListener('click', () => {
+            sessionStorage.setItem('timeline.expanded', isExpanded);
+        });
+
+        console.log('📚 Collapsible timeline initialized');
+    }, 2000); // Wait for timeline renderer + expandable phases
+})();
+
