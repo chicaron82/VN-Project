@@ -24,7 +24,7 @@ export class DirectorsCutScreen {
         }
     }
 
-    private render(statements: CrewStatement[]): void {
+    private render(statements: Array<{ id: string; title: string; scene: string; content: string }>): void {
         const overlay = document.createElement('div');
         overlay.id = 'directors-cut-overlay';
         overlay.className = 'directors-cut-overlay';

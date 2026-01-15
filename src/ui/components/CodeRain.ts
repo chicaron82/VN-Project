@@ -73,9 +73,9 @@ export class CodeRain {
                 // V1 Logic: Math.random() > 0.975
                 if (dropY * fontSize > this.canvas.height && Math.random() > 0.975) {
                     this.drops[i] = 0;
+                } else {
+                    this.drops[i] = dropY + dropSpeed;
                 }
-
-                this.drops[i] += dropSpeed;
             }
         };
 
