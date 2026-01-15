@@ -488,6 +488,41 @@ window.TIMELINE_DATA = {
                             "code": "// V2: EasterEggController.ts\n// Core infrastructure + essential easter eggs\nexport class EasterEggController {\n  private handleCodeUnlock(code: string): void\n  private createOverlay(config: OverlayConfig): {...}\n  private showUV7CrewBios(): void\n  // Extensible for more easter eggs\n}"
                         }
                     }
+                },
+                {
+                    "id": "phase-13f",
+                    "emoji": "📜",
+                    "title": "13f: BootstrapTracker Display System - Timeline Modal",
+                    "date": "January 14, 2026",
+                    "summary": "Enhance existing BootstrapTracker with full V1 display system. Visualize attempt history with modal UI and lore-appropriate memory degradation.",
+                    "features": [
+                        "📜 <strong>Timeline Modal:</strong> Full-screen overlay displaying attempt history",
+                        "🔄 <strong>Rolling Window:</strong> Track last 5 attempts with older attempts shown as corrupted",
+                        "🎨 <strong>Color-Coded Entries:</strong> Visual distinction for success/failure/corrupted",
+                        "⌨️ <strong>Keyboard Support:</strong> ESC to close, backdrop click to dismiss",
+                        "💾 <strong>Persistence:</strong> LocalStorage integration with StateManager sync",
+                        "🎯 <strong>Secret Code:</strong> 'bootstrap' code now opens full timeline modal",
+                        "📊 <strong>Lore Display:</strong> 'Attempts #1-842 [FRAGMENTED - TOO DEGRADED TO RECONSTRUCT]'"
+                    ],
+                    "metrics": {
+                        "linesAdded": 280,
+                        "filesChanged": 2,
+                        "testsWritten": 0
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "347 LINES",
+                            "lang": "javascript",
+                            "code": "// V1: bootstrap-tracker.js\nclass BootstrapTracker {\n  showTimelineModal() {\n    const overlay = document.createElement('div');\n    overlay.innerHTML = this.generateTimelineHTML();\n    // Manual DOM event handlers\n  }\n  generateTimelineHTML() { /* 150+ lines */ }\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "ENHANCED",
+                            "lang": "typescript",
+                            "code": "// V2: BootstrapTracker.ts (128 → 408 lines)\nexport class BootstrapTracker {\n  public showTimelineModal(): void\n  private generateTimelineHTML(): string\n  private generateCorruptedEntryHTML(attempt: BootstrapAttempt): string\n  private generateNormalEntryHTML(attempt: BootstrapAttempt): string\n  // Inline-styled, no CSS dependencies\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [

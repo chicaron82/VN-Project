@@ -76,10 +76,8 @@ export class SecretCodesSystem {
                 description: 'Visualize every attempt that led here.',
                 icon: '🔄',
                 reward: () => {
-                    // In V2, we might show a modal or navigate to a timeline screen
-                    console.log('🔄 Bootstrap Timeline usage requested');
-                    // For now, since UI modal isn't built, we just log and maybe emit a toast
-                    this.eventBus.emit('visual:cue', { type: 'glitch', channel: 'ui' });
+                    console.log('🔄 Bootstrap Timeline - Opening timeline modal');
+                    this.bootstrapTracker.showTimelineModal();
                 }
             },
             '848': {
