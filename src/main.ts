@@ -27,6 +27,7 @@ import { EchoMemorySystem } from '@systems/EchoMemorySystem';
 import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
 import { TetherSystem } from '@systems/TetherSystem';
 import { EasterEggController } from '@controllers/EasterEggController';
+import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -131,6 +132,13 @@ const tetherSystem = new TetherSystem(eventBus, stateManager);
 // Secret code overlays and special content
 // ============================================
 const easterEggController = new EasterEggController(eventBus, stateManager);
+
+// ============================================
+// Dev Commentary System - Aaron's Director's Cut 📝
+// "The DVD commentary track for the game."
+// Behind-the-scenes design stories, unlocked via CHICHARON
+// ============================================
+const devCommentarySystem = new DevCommentarySystem(eventBus, stateManager);
 
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
@@ -1042,6 +1050,10 @@ async function init() {
             setDifficulty: (diff: 'comfort' | 'normal' | 'intense' | 'insane') => tetherSystem.setDifficulty(diff),
             // Easter Egg debug helpers 🥚
             easterEggController,
+            // Dev Commentary debug helpers 📝
+            devCommentarySystem,
+            showCommentary: () => devCommentarySystem.showAllCommentary(),
+            unlockCommentary: () => devCommentarySystem.unlockCommentary(),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }

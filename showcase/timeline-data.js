@@ -523,6 +523,42 @@ window.TIMELINE_DATA = {
                             "code": "// V2: BootstrapTracker.ts (128 → 408 lines)\nexport class BootstrapTracker {\n  public showTimelineModal(): void\n  private generateTimelineHTML(): string\n  private generateCorruptedEntryHTML(attempt: BootstrapAttempt): string\n  private generateNormalEntryHTML(attempt: BootstrapAttempt): string\n  // Inline-styled, no CSS dependencies\n}"
                         }
                     }
+                },
+                {
+                    "id": "phase-13g",
+                    "emoji": "📝",
+                    "title": "13g: DevCommentarySystem - Aaron's Director's Cut",
+                    "date": "January 14, 2026",
+                    "summary": "The DVD commentary track for the game. Port dev-commentary.js to V2 with full modal display system. Aaron's behind-the-scenes stories about design decisions, unlocked via CHICHARON code.",
+                    "features": [
+                        "📝 <strong>Commentary Database:</strong> 12 behind-the-scenes entries covering major design decisions",
+                        "🗝️ <strong>Secret Code Unlock:</strong> CHICHARON code unlocks all commentary",
+                        "📖 <strong>Categorized Viewer:</strong> Full modal gallery with Prologue, Routes, Features sections",
+                        "🎬 <strong>Origin Stories:</strong> French Vanilla detail, Applebee's dual route decision, Tether origin",
+                        "🐛 <strong>Happy Accidents:</strong> Despair height 'bug' turned into narrative feature",
+                        "💡 <strong>Design Philosophy:</strong> Price is Right carousel, Tinder swipe mobile, backlog time machine",
+                        "🎨 <strong>Modal UI:</strong> Inline-styled overlays with backdrop/ESC close, no CSS dependencies",
+                        "🔧 <strong>Debug Helpers:</strong> window.uv7.showCommentary(), unlockCommentary()"
+                    ],
+                    "metrics": {
+                        "linesAdded": 513,
+                        "filesChanged": 2,
+                        "testsWritten": 43
+                    },
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "148 LINES",
+                            "lang": "javascript",
+                            "code": "// V1: dev-commentary.js\nclass DevCommentary {\n  constructor(game) {\n    this.commentary = { /* 12 entries */ };\n  }\n  showCommentary(sceneId) {\n    // Delegated to game.showCommentaryOverlay()\n  }\n  getAllCommentary() { /* returns array */ }\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "FULL DISPLAY",
+                            "lang": "typescript",
+                            "code": "// V2: DevCommentarySystem.ts (513 lines)\nexport class DevCommentarySystem {\n  public showCommentary(sceneId: string): void\n  public showAllCommentary(): void // Gallery modal\n  private createCommentaryOverlay(...): void\n  private initCommentaryDatabase(): Record<string, CommentaryEntry>\n  // Self-contained modal system, EventBus integration\n}"
+                        }
+                    }
                 }
             ],
             "lessons": [
