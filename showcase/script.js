@@ -1149,7 +1149,7 @@ function updateActivePhase() {
 
 // Console Easter Egg
 console.log('%c🎮 UV7 Showcase', 'font-size: 24px; font-weight: bold; color: #00ff88;');
-console.log('%cBuilt with AI collaboration. 11 phases. 72 hours. Zero regrets.', 'color: #888;');
+console.log('%cBuilt with AI collaboration. 15 phases. 144+ hours. Zero regrets.', 'color: #888;');
 console.log('%cWant to see the code? Check the repo: https://github.com/chicaron82/VN-Project', 'color: #00ccff;');
 console.log('%c💡 Tip: Press "S" to toggle Story/Dev mode | Press "?" for keyboard shortcuts', 'color: #ffaa00;');
 
