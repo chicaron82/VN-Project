@@ -28,6 +28,7 @@ const __dirname = path.dirname(__filename);
 
 const V2_START_DATE = new Date('2026-01-08'); // V2 rebuild kickoff
 const SHOWCASE_HTML_PATH = path.join(__dirname, '../showcase/index.html');
+const LANDING_HTML_PATH = path.join(__dirname, '../landing-page-template.html');
 const TIMELINE_DATA_PATH = path.join(__dirname, '../showcase/timeline-data.js');
 
 // ═══════════════════════════════════════════════════════════════
@@ -161,6 +162,32 @@ function updateShowcaseStats(stats) {
     fs.writeFileSync(SHOWCASE_HTML_PATH, html, 'utf-8');
 }
 
+/**
+ * Update landing page HTML with calculated stats
+ */
+function updateLandingStats(stats) {
+    try {
+        let html = fs.readFileSync(LANDING_HTML_PATH, 'utf-8');
+
+        // Update Showcase card: "X phases. Y days. AI collaboration."
+        html = html.replace(
+            /(<a href="\.\/showcase\/index\.html"[^>]*>[\s\S]*?<p>)The journey from chaos to order\. \d+ phases\. \d+ (?:hours|days)\. AI collaboration\.(<\/p>)/,
+            `$1The journey from chaos to order. ${stats.phasesComplete} phases. ${stats.daysInDev} days. AI collaboration.$2`
+        );
+
+        // Update V2 card: "X tests passing"
+        html = html.replace(
+            /(<a href="\.\/index\.v2\.html"[^>]*>[\s\S]*?<p>TypeScript rebuild\. EventBus architecture\. )\d+ tests passing/,
+            `$1${stats.testsPass} tests passing`
+        );
+
+        fs.writeFileSync(LANDING_HTML_PATH, html, 'utf-8');
+        console.log('  ✅ Landing page stats updated');
+    } catch (error) {
+        console.warn('⚠️  Could not update landing page:', error.message);
+    }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // MAIN EXECUTION
 // ═══════════════════════════════════════════════════════════════
@@ -183,10 +210,11 @@ function main() {
     console.log('  ✅ TypeScript Errors:', stats.tsErrors);
     console.log('');
 
-    // Update HTML
+    // Update HTML files
     updateShowcaseStats(stats);
+    updateLandingStats(stats);
 
-    console.log('✨ Showcase stats updated successfully!\n');
+    console.log('✨ Stats updated successfully!\n');
 }
 
 // Run if called directly (ES module equivalent)
