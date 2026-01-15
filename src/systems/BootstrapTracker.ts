@@ -283,8 +283,9 @@ export class BootstrapTracker {
         });
 
         // Degraded attempts message
-        const oldestInWindow = this.timeline.attempts.length > 0
-            ? this.timeline.attempts[this.timeline.attempts.length - 1].number
+        const lastAttempt = this.timeline.attempts[this.timeline.attempts.length - 1];
+        const oldestInWindow = this.timeline.attempts.length > 0 && lastAttempt
+            ? lastAttempt.number
             : this.timeline.currentAttempt;
 
         if (oldestInWindow > 1) {
