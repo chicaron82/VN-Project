@@ -69,7 +69,7 @@ class UV7AppSwitcher {
                 description: 'TypeScript Rebuild',
                 url: '../index.v2.html',
                 color: 'rgba(0, 255, 136, 0.2)',
-                getState: () => ['Beta', '128 Tests']
+                getState: () => ['Beta', '435 Tests']
             }
         ];
     }
