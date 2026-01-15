@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/update-showcase-stats.js",
     "build": "tsc --project tsconfig.v2.json && vite build",
     "preview": "vite preview",
     "test": "vitest",
