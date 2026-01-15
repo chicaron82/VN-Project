@@ -28,6 +28,7 @@ import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
 import { TetherSystem } from '@systems/TetherSystem';
 import { EasterEggController } from '@controllers/EasterEggController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
+import { StatusNotificationController } from '@systems/StatusNotificationController';
 import { AchievementToast } from '@ui/components/AchievementToast';
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -139,6 +140,14 @@ const easterEggController = new EasterEggController(eventBus, stateManager);
 // Behind-the-scenes design stories, unlocked via CHICHARON
 // ============================================
 const devCommentarySystem = new DevCommentarySystem(eventBus, stateManager);
+
+// ============================================
+// Status Notification Controller - Toast System 📢
+// \"User feedback is essential for good UX.\"
+// Unified notification system for status bar
+// DIZEE Implementation
+// ============================================
+const statusNotificationController = new StatusNotificationController(eventBus, stateManager);
 
 const dialogController = new DialogController(settingsSystem, eventBus);
 const dialogBubble = new DialogBubble(eventBus); // DIZEE: Internal thought bubbles
@@ -1054,6 +1063,11 @@ async function init() {
             devCommentarySystem,
             showCommentary: () => devCommentarySystem.showAllCommentary(),
             unlockCommentary: () => devCommentarySystem.unlockCommentary(),
+            // Status Notification debug helpers 📢
+            statusNotificationController,
+            showToast: (msg: string) => statusNotificationController.show({ message: msg }),
+            showError: (msg: string) => statusNotificationController.showError(msg),
+            showSave: () => statusNotificationController.showSave(),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }
