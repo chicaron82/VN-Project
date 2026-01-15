@@ -74,8 +74,8 @@ export class DirectorsCutScreen {
                 background: rgba(0, 50, 50, 0.1);
             `;
             block.innerHTML = `
-                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">${s.name}</div>
-                <div style="color: #ccc;">${s.text}</div>
+                <div style="font-size: 1.2em; color: #fff; margin-bottom: 1em;">${s.title}</div>
+                <div style="color: #ccc;">${s.content}</div>
             `;
             content.appendChild(block);
         });
