@@ -2,10 +2,11 @@
  * ═══════════════════════════════════════════════════════════════
  * UV7 OS - APP SWITCHER
  * iOS-style app switcher for UV7 ecosystem
- * 
+ *
  * Contributors:
  * - Ronnie (Vision: "Make it bougie")
  * - Antigravity (Implementation: "Say less")
+ * - DiZee (Enhancement: Live state + mini preview)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -37,7 +38,11 @@ class UV7AppSwitcher {
                 description: 'UV7 Project Hub',
                 url: '../index.html',
                 color: 'rgba(0, 204, 255, 0.2)',
-                getState: () => ['Version 848', 'Home']
+                getState: () => {
+                    // DIZEE: Pull live loop version from localStorage
+                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
+                    return [`VERSION ${loopVersion}`, 'Home'];
+                }
             },
             {
                 id: 'showcase',
@@ -50,7 +55,10 @@ class UV7AppSwitcher {
                     const phase = sessionStorage.getItem('uv7-showcase-phase') || 'phase-1';
                     const phaseNum = phase.replace('phase-', '');
                     const mode = document.body.dataset.viewMode || 'story';
-                    return [`Phase ${phaseNum}`, `${mode === 'story' ? 'Story' : 'Dev'} Mode`];
+                    // DIZEE: Count discovered codes for showcase
+                    const codes = JSON.parse(localStorage.getItem('uv7_discovered_codes') || '[]');
+                    const codeCount = codes.length;
+                    return [`Phase ${phaseNum}`, codeCount > 0 ? `${codeCount} codes` : `${mode === 'story' ? 'Story' : 'Dev'} Mode`];
                 }
             },
             {
@@ -60,7 +68,13 @@ class UV7AppSwitcher {
                 description: 'Legacy Version',
                 url: '../v1/index.html',
                 color: 'rgba(255, 0, 85, 0.2)',
-                getState: () => ['Loop 848', 'Original']
+                getState: () => {
+                    // DIZEE: Pull V1 game state from localStorage
+                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
+                    const route = localStorage.getItem('uv7_current_route') || 'Menu';
+                    const routeDisplay = route.charAt(0).toUpperCase() + route.slice(1);
+                    return [`Loop ${loopVersion}`, routeDisplay];
+                }
             },
             {
                 id: 'v2',
@@ -69,7 +83,27 @@ class UV7AppSwitcher {
                 description: 'TypeScript Rebuild',
                 url: '../index.v2.html',
                 color: 'rgba(0, 255, 136, 0.2)',
-                getState: () => ['Beta', '128 Tests']
+                getState: () => {
+                    // DIZEE: Pull V2 game state from localStorage/StateManager
+                    const stateJson = localStorage.getItem('uv7_game_state');
+                    if (stateJson) {
+                        try {
+                            const state = JSON.parse(stateJson);
+                            const route = state?.game?.currentRoute || 'Menu';
+                            const tether = state?.tether?.level;
+                            const routeDisplay = route.charAt(0).toUpperCase() + route.slice(1);
+                            if (route === 'tori' && typeof tether === 'number') {
+                                return [routeDisplay, `⚡${Math.round(tether)}%`];
+                            }
+                            return [routeDisplay, 'V2 Beta'];
+                        } catch (e) {
+                            // Fallback if parse fails
+                        }
+                    }
+                    // Default state
+                    const testCount = localStorage.getItem('uv7_test_count') || '435';
+                    return ['V2 Beta', `${testCount} tests`];
+                }
             }
         ];
     }
@@ -242,8 +276,37 @@ class UV7AppSwitcher {
         // Add to recent
         this.addToRecent(app.id);
 
-        // Navigate
-        window.location.href = app.url;
+        // BELLE: Use View Transitions for seamless app switching
+        // "The visual persistence of the status bar is non-negotiable"
+        this.navigateWithTransition(app.url);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // BELLE: VIEW TRANSITIONS - THE "NO FLICKER" PROTOCOL
+    // Makes app switching feel like native iOS/Android
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Navigate to URL with View Transition animation
+     * Status bar stays fixed while content slides/fades
+     */
+    navigateWithTransition(url) {
+        // Close the switcher first for clean transition
+        this.close();
+
+        // Small delay to let close animation start
+        setTimeout(() => {
+            // Fallback for browsers without View Transitions
+            if (!document.startViewTransition) {
+                window.location.href = url;
+                return;
+            }
+
+            // Start the view transition
+            document.startViewTransition(() => {
+                window.location.href = url;
+            });
+        }, 150); // Let switcher start closing before page transition
     }
 
     open() {

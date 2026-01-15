@@ -448,3 +448,83 @@
 body.uv7-os-enabled {
     padding-top: 44px;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   VIEW TRANSITIONS (The "No Flicker" Protocol)
+   BELLE: Seamless page morphing for UV7 OS ecosystem
+
+   Makes the browser "morph" between pages, keeping the status bar
+   visually persistent even though the page is changing.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Give the status bar a unique transition tag - persists across pages */
+.uv7-status-bar {
+    view-transition-name: uv7-status-bar;
+}
+
+/* Keep status bar static during transition (the magic) */
+::view-transition-old(uv7-status-bar),
+::view-transition-new(uv7-status-bar) {
+    /* No animation - status bar stays put while content morphs */
+    animation: none;
+    mix-blend-mode: normal;
+}
+
+/* The main content transition */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 0.4s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Slide animations for page content */
+@keyframes uv7-slide-in-right {
+    from {
+        transform: translateX(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes uv7-slide-out-left {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+}
+
+/* Fade animations (default fallback) */
+@keyframes uv7-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes uv7-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Apply slide animation to page transitions */
+::view-transition-old(root) {
+    animation-name: uv7-slide-out-left;
+}
+
+::view-transition-new(root) {
+    animation-name: uv7-slide-in-right;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-name: uv7-fade-out, uv7-fade-in;
+        animation-duration: 0.2s;
+    }
+}

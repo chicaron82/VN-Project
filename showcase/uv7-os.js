@@ -2,11 +2,12 @@
  * ═══════════════════════════════════════════════════════════════
  * UV7 OS - NAVIGATION SYSTEM
  * Universal navigation for UV7 ecosystem
- * 
+ *
  * Contributors:
  * - Ronnie (Architecture & Vision)
- * - Belle (Settings Integration & Meta-Narrative)
+ * - Belle (Settings Integration, Meta-Narrative & View Transitions)
  * - Antigravity (Implementation)
+ * - DiZee (Seamless transitions enhancement)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -30,6 +31,7 @@ class UV7OS {
         this.attachHandlers();
         this.restoreState();
         this.startScrollListener();
+        this.enableSeamlessTransitions(); // BELLE: No flicker protocol
 
         // Initialize app switcher
         setTimeout(() => this.initAppSwitcher(), 100);
@@ -189,10 +191,10 @@ class UV7OS {
             this.elements.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
         }
 
-        // Sidebar home button
+        // Sidebar home button - BELLE: Use view transition
         if (this.elements.sidebarHome) {
             this.elements.sidebarHome.addEventListener('click', () => {
-                window.location.href = '../index.html';
+                this.navigateWithTransition('../index.html');
             });
         }
 
@@ -228,16 +230,21 @@ class UV7OS {
     }
 
     handleQuickAction(actionType) {
+        // Map action types to URLs
+        const actionUrls = {
+            'launch-v1': '../v1/index.html',
+            'launch-v2': '../index.v2.html',
+            'go-home': '../index.html'
+        };
+
+        // Handle URL-based actions with view transitions
+        if (actionUrls[actionType]) {
+            this.navigateWithTransition(actionUrls[actionType]);
+            return;
+        }
+
+        // Handle special actions
         switch (actionType) {
-            case 'launch-v1':
-                window.location.href = '../v1/index.html';
-                break;
-            case 'launch-v2':
-                window.location.href = '../index.v2.html';
-                break;
-            case 'go-home':
-                window.location.href = '../index.html';
-                break;
             case 'toggle-mode':
                 if (this.elements.viewToggle) {
                     this.elements.viewToggle.click();
@@ -248,6 +255,72 @@ class UV7OS {
                 }
                 break;
         }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // BELLE: VIEW TRANSITIONS - THE "NO FLICKER" PROTOCOL
+    // Makes page navigation feel like native OS app switching
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Enable seamless transitions for all navigation
+     * Intercepts link clicks to use View Transitions API
+     */
+    enableSeamlessTransitions() {
+        // Check if browser supports View Transitions
+        if (!document.startViewTransition) {
+            console.log('📺 View Transitions not supported - using standard navigation');
+            return;
+        }
+
+        console.log('✨ View Transitions enabled - seamless navigation active');
+
+        // Intercept all link clicks
+        window.addEventListener('click', (e) => {
+            const link = e.target.closest('a');
+            const actionElement = e.target.closest('[data-action]');
+
+            // Skip data-action elements (handled in handleQuickAction)
+            if (actionElement) return;
+
+            if (!link || !link.href) return;
+
+            // Only intercept local navigation (same origin)
+            try {
+                const targetUrl = new URL(link.href, window.location.origin);
+                if (targetUrl.origin !== window.location.origin) {
+                    return; // External link, let it navigate normally
+                }
+
+                // Skip in-page anchors
+                if (targetUrl.pathname === window.location.pathname && targetUrl.hash) {
+                    return;
+                }
+
+                // Intercept and use View Transition
+                e.preventDefault();
+                this.navigateWithTransition(link.href);
+            } catch (err) {
+                // Invalid URL, let default behavior handle it
+            }
+        });
+    }
+
+    /**
+     * Navigate to a URL with View Transition animation
+     * BELLE: "The visual persistence of the status bar is non-negotiable"
+     */
+    navigateWithTransition(url) {
+        // Fallback for browsers without View Transitions
+        if (!document.startViewTransition) {
+            window.location.href = url;
+            return;
+        }
+
+        // Start the view transition
+        document.startViewTransition(() => {
+            window.location.href = url;
+        });
     }
 
     attachSwipeHandler() {

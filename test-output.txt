@@ -1,6 +1,0 @@
-
-> v848-visual-novel@1.0.0 test
-> vitest --run
-
-'vitest' is not recognized as an internal or external command,
-operable program or batch file.

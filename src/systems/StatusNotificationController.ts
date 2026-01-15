@@ -44,11 +44,10 @@ export class StatusNotificationController {
     };
 
     private eventBus: EventBus;
-    private stateManager: StateManager | null;
 
-    constructor(eventBus: EventBus, stateManager?: StateManager) {
+    constructor(eventBus: EventBus, _stateManager?: StateManager) {
         this.eventBus = eventBus;
-        this.stateManager = stateManager || null;
+        // stateManager reserved for future reactive subscriptions
 
         this.notification = document.getElementById('status-notification');
         this.iconElement = this.notification?.querySelector('.status-notif-icon') || null;
@@ -88,7 +87,8 @@ export class StatusNotificationController {
             // Type-specific actions
             if (this.currentType === 'note') {
                 // Open sidebar to notes
-                this.eventBus.emit('ui:open_sidebar', { tab: 'notes' });
+                this.eventBus.emit('ui:sidebar:open', {});
+                this.eventBus.emit('ui:notes:open', {});
             }
 
             // Dismiss early
@@ -323,6 +323,137 @@ export class StatusNotificationController {
             message: message,
             duration: 3000,
             priority: 'critical'
+        });
+    }
+
+    // ========================================
+    // DIZEE: CONFIRMATION OVERLAY (V1 Parity)
+    // Styled modal replacing browser confirm()
+    // ========================================
+
+    /**
+     * Show styled confirmation overlay
+     * V1 Parity: notification-shade-controller.js showConfirmation()
+     * Returns a promise that resolves to true (confirm) or false (cancel)
+     */
+    showConfirmation(
+        title: string,
+        message: string,
+        confirmText: string = 'Confirm',
+        cancelText: string = 'Cancel'
+    ): Promise<boolean> {
+        return new Promise((resolve) => {
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'uv7-confirm-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+
+            overlay.innerHTML = `
+                <div class="uv7-confirm-modal" style="
+                    background: linear-gradient(145deg, #1a1a2e, #0f0f1a);
+                    border: 2px solid rgba(0, 255, 255, 0.4);
+                    border-radius: 16px;
+                    padding: 30px 40px;
+                    max-width: 400px;
+                    width: 90%;
+                    text-align: center;
+                    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2);
+                    transform: scale(0.9);
+                    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                ">
+                    <h3 style="
+                        color: #00ffff;
+                        font-family: 'Courier New', monospace;
+                        font-size: 18px;
+                        margin-bottom: 15px;
+                        text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+                    ">${title}</h3>
+                    <p style="
+                        color: rgba(255, 255, 255, 0.8);
+                        font-family: 'Courier New', monospace;
+                        font-size: 14px;
+                        line-height: 1.6;
+                        margin-bottom: 25px;
+                    ">${message}</p>
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <button class="uv7-confirm-cancel" style="
+                            padding: 12px 24px;
+                            background: transparent;
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                            color: rgba(255, 255, 255, 0.7);
+                            font-family: 'Courier New', monospace;
+                            font-size: 14px;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        ">${cancelText}</button>
+                        <button class="uv7-confirm-ok" style="
+                            padding: 12px 24px;
+                            background: rgba(0, 255, 255, 0.2);
+                            border: 2px solid #00ffff;
+                            color: #00ffff;
+                            font-family: 'Courier New', monospace;
+                            font-size: 14px;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+                        ">${confirmText}</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                const modal = overlay.querySelector('.uv7-confirm-modal') as HTMLElement;
+                if (modal) modal.style.transform = 'scale(1)';
+            });
+
+            // Button handlers
+            const closeOverlay = (result: boolean) => {
+                overlay.style.opacity = '0';
+                const modal = overlay.querySelector('.uv7-confirm-modal') as HTMLElement;
+                if (modal) modal.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    overlay.remove();
+                    resolve(result);
+                }, 300);
+                // V1 Parity: Haptic feedback
+                if (navigator.vibrate) navigator.vibrate(result ? 30 : 10);
+            };
+
+            const cancelBtn = overlay.querySelector('.uv7-confirm-cancel');
+            const confirmBtn = overlay.querySelector('.uv7-confirm-ok');
+
+            cancelBtn?.addEventListener('click', () => closeOverlay(false));
+            confirmBtn?.addEventListener('click', () => closeOverlay(true));
+
+            // Escape key to cancel
+            const escHandler = (e: KeyboardEvent) => {
+                if (e.key === 'Escape') {
+                    document.removeEventListener('keydown', escHandler);
+                    closeOverlay(false);
+                }
+            };
+            document.addEventListener('keydown', escHandler);
         });
     }
 }

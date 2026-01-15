@@ -2,11 +2,12 @@
  * ═══════════════════════════════════════════════════════════════
  * UV7 OS - LANDING PAGE VERSION
  * Simplified navigation for UV7 Project Hub
- * 
+ *
  * Contributors:
  * - Ronnie (Architecture & Vision)
- * - Belle (Meta-Narrative)
+ * - Belle (Meta-Narrative + View Transitions)
  * - Antigravity (Implementation)
+ * - DiZee (Seamless transitions enhancement)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -19,6 +20,7 @@ class UV7OSLanding {
     init() {
         this.cacheElements();
         this.attachHandlers();
+        this.enableSeamlessTransitions(); // BELLE: No flicker protocol
 
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
@@ -96,17 +98,91 @@ class UV7OSLanding {
     }
 
     handleQuickAction(actionType) {
-        switch (actionType) {
-            case 'launch-v1':
-                window.location.href = './v1/index.html';
-                break;
-            case 'launch-v2':
-                window.location.href = './index.v2.html';
-                break;
-            case 'view-showcase':
-                window.location.href = './showcase/index.html';
-                break;
+        // Map action types to URLs
+        const actionUrls = {
+            'launch-v1': './v1/index.html',
+            'launch-v2': './index.v2.html',
+            'view-showcase': './showcase/index.html'
+        };
+
+        const url = actionUrls[actionType];
+        if (url) {
+            // BELLE: Use seamless transition if available
+            this.navigateWithTransition(url);
         }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // BELLE: VIEW TRANSITIONS - THE "NO FLICKER" PROTOCOL
+    // Makes page navigation feel like native OS app switching
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Enable seamless transitions for all navigation
+     * Intercepts link clicks and app card clicks to use View Transitions API
+     */
+    enableSeamlessTransitions() {
+        // Check if browser supports View Transitions
+        if (!document.startViewTransition) {
+            console.log('📺 View Transitions not supported - using standard navigation');
+            return;
+        }
+
+        console.log('✨ View Transitions enabled - seamless navigation active');
+
+        // Intercept all link and action clicks
+        window.addEventListener('click', (e) => {
+            // Find if we clicked a link or an element with data-action
+            const link = e.target.closest('a');
+            const actionElement = e.target.closest('[data-action]');
+
+            let url = null;
+
+            // Handle regular links
+            if (link && link.href) {
+                url = link.href;
+            }
+            // Handle data-action elements (handled separately in handleQuickAction)
+            // Skip here to avoid double-handling
+            else if (actionElement) {
+                return; // Let handleQuickAction deal with it
+            }
+
+            if (!url) return;
+
+            // Only intercept local navigation (same origin)
+            try {
+                const targetUrl = new URL(url, window.location.origin);
+                if (targetUrl.origin !== window.location.origin) {
+                    return; // External link, let it navigate normally
+                }
+
+                // Intercept and use View Transition
+                e.preventDefault();
+                this.navigateWithTransition(url);
+            } catch (err) {
+                // Invalid URL, let default behavior handle it
+            }
+        });
+    }
+
+    /**
+     * Navigate to a URL with View Transition animation
+     * BELLE: "The visual persistence of the status bar is non-negotiable"
+     */
+    navigateWithTransition(url) {
+        // Fallback for browsers without View Transitions
+        if (!document.startViewTransition) {
+            window.location.href = url;
+            return;
+        }
+
+        // Start the view transition
+        document.startViewTransition(() => {
+            // This callback runs after the old state is captured
+            // but before the new state is rendered
+            window.location.href = url;
+        });
     }
 
     attachSwipeHandler() {

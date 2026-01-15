@@ -9,13 +9,26 @@ import { EventBus } from '@core/EventBus';
  * - Landscape detection: Opens Sidebar on desktop, Shade on mobile
  * - Paged carousel with swipe navigation
  */
+/**
+ * DIZEE: Note preview interface for shade display
+ */
+interface NotePreview {
+    id: string;
+    title: string;
+    sender: string;
+    snippet: string;
+}
+
 export class NotificationShade {
     private eventBus: EventBus;
     private container: HTMLElement;
     private isOpen: boolean = false;
     private isExpanded: boolean = false;
-    // private _currentQuickActionPage: number = 0; // Unused
-    // private stateManager?: any;
+    // DIZEE: Note preview state (V1 parity)
+    private currentNotePreview: NotePreview | null = null;
+    private notePreviewSection!: HTMLElement;
+    private notePreviewTitle!: HTMLElement;
+    private notePreviewSnippet!: HTMLElement;
 
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
@@ -23,6 +36,89 @@ export class NotificationShade {
         document.body.appendChild(this.container);
 
         this.setupListeners();
+        this.setupNotePreview();
+    }
+
+    /**
+     * DIZEE: Set up note preview card handlers (V1 parity)
+     */
+    private setupNotePreview(): void {
+        this.notePreviewSection = this.container.querySelector('#notes-preview-section') as HTMLElement;
+        this.notePreviewTitle = this.container.querySelector('.note-title') as HTMLElement;
+        this.notePreviewSnippet = this.container.querySelector('.note-snippet') as HTMLElement;
+
+        // Click handler for note preview card
+        const previewBtn = this.container.querySelector('#note-preview-btn');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', () => {
+                if (this.currentNotePreview) {
+                    // V1 Parity: Haptic feedback
+                    if (navigator.vibrate) navigator.vibrate(20);
+                    // Open notes and close shade
+                    this.eventBus.emit('ui:notes:open', {});
+                    this.close();
+                }
+            });
+
+            // DIZEE: Swipe gesture for dismissing note preview (V1 parity)
+            this.setupNoteSwipeGesture(previewBtn as HTMLElement);
+        }
+    }
+
+    /**
+     * DIZEE: Set up swipe gesture for dismissing notes (V1 parity)
+     * Swipe left to dismiss, swipe right to open
+     */
+    private setupNoteSwipeGesture(element: HTMLElement): void {
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let currentTranslateX = 0;
+
+        element.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            currentTranslateX = 0;
+            element.style.transition = 'none';
+        }, { passive: true });
+
+        element.addEventListener('touchmove', (e) => {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            const deltaX = touchX - touchStartX;
+            const deltaY = touchY - touchStartY;
+
+            // Only handle horizontal swipes
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                currentTranslateX = deltaX;
+                element.style.transform = `translateX(${deltaX}px)`;
+                element.style.opacity = String(1 - Math.abs(deltaX) / 200);
+            }
+        }, { passive: true });
+
+        element.addEventListener('touchend', () => {
+            element.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+
+            if (currentTranslateX < -100) {
+                // Swipe left: Dismiss note preview
+                element.style.transform = 'translateX(-100%)';
+                element.style.opacity = '0';
+                setTimeout(() => {
+                    this.hideNotePreview();
+                    element.style.transform = '';
+                    element.style.opacity = '';
+                }, 300);
+                // V1 Parity: Haptic feedback
+                if (navigator.vibrate) navigator.vibrate([10, 50, 10]);
+            } else if (currentTranslateX > 100) {
+                // Swipe right: Open notes
+                this.eventBus.emit('ui:notes:open', {});
+                this.close();
+            } else {
+                // Reset position
+                element.style.transform = '';
+                element.style.opacity = '';
+            }
+        });
     }
 
     private createDOM(): HTMLElement {
@@ -444,5 +540,66 @@ export class NotificationShade {
         const el = this.container.querySelector('#shade-notes');
         // TODO: Get total from config or state
         if (el) el.textContent = `${count}/??`;
+    }
+
+    // ========================================
+    // DIZEE: NOTE PREVIEW MANAGEMENT (V1 Parity)
+    // Email-style unread note preview in shade
+    // ========================================
+
+    /**
+     * Show note preview card in shade
+     * V1 Parity: notification-shade-controller.js updateNotePreview()
+     */
+    public showNotePreview(id: string, title: string, sender: string, snippet: string): void {
+        this.currentNotePreview = { id, title, sender, snippet };
+
+        if (this.notePreviewTitle) {
+            this.notePreviewTitle.textContent = `${sender}: ${title}`;
+        }
+        if (this.notePreviewSnippet) {
+            this.notePreviewSnippet.textContent = snippet.length > 50
+                ? snippet.substring(0, 50) + '...'
+                : snippet;
+        }
+        if (this.notePreviewSection) {
+            this.notePreviewSection.style.display = 'block';
+            // Animate in
+            this.notePreviewSection.classList.add('visible');
+        }
+
+        console.log(`📝 Note preview shown: ${sender} - ${title}`);
+    }
+
+    /**
+     * Hide note preview card
+     */
+    public hideNotePreview(): void {
+        this.currentNotePreview = null;
+
+        if (this.notePreviewSection) {
+            this.notePreviewSection.classList.remove('visible');
+            setTimeout(() => {
+                if (!this.currentNotePreview) {
+                    this.notePreviewSection.style.display = 'none';
+                }
+            }, 300);
+        }
+
+        console.log('📝 Note preview hidden');
+    }
+
+    /**
+     * Check if note preview is showing
+     */
+    public hasNotePreview(): boolean {
+        return this.currentNotePreview !== null;
+    }
+
+    /**
+     * Get current note preview ID
+     */
+    public getCurrentNoteId(): string | null {
+        return this.currentNotePreview?.id || null;
     }
 }
