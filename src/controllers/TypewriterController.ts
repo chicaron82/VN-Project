@@ -33,11 +33,11 @@ export class TypewriterController {
     private _stateManager: StateManager | null;
 
     // Typewriter state
-    private typewriterActive: boolean = false;
-    private typewriterInterval: number | null = null; // Fallback
+    public typewriterActive: boolean = false;
+    public typewriterInterval: number | null = null; // Fallback
     private typewriterAnimationFrame: number | null = null;
-    private typewriterCallback: (() => void) | null = null;
-    private fullDialogueText: string = '';
+    public typewriterCallback: (() => void) | null = null;
+    public fullDialogueText: string = '';
 
     // Pagination state
     private paginationActive: boolean = false;
