@@ -1467,6 +1467,41 @@ window.TIMELINE_DATA = {
                 }
             ],
             "quote": "\"Track everything. Optimize what matters.\" ⏱️"
+        },
+        {
+            "id": "phase-22",
+            "date": "January 16, 2026",
+            "emoji": "♿",
+            "title": "Phase 22: Accessibility & Polish",
+            "type": "order-entry",
+            "summary": "Accessibility & polish features. System ported: WCAG 2.1 AA compliance with screen reader support, keyboard navigation, and user preference detection. 280 V1 lines → 360 V2 lines (+29%).",
+            "subEntries": [
+                {
+                    "id": "phase-22a",
+                    "emoji": "♿",
+                    "title": "AccessibilityManager (360 lines)",
+                    "features": [
+                        "📢 ARIA Live Regions: Screen reader announcements for dialogue/choices/scenes",
+                        "⌨️ Keyboard Navigation: Tab through choices, ARIA labels on all interactive elements",
+                        "🎨 User Preferences: prefers-reduced-motion, prefers-contrast detection",
+                        "🔤 Text Sizing: 4 sizes (0.85x to 1.3x) with CSS variable --text-size-multiplier"
+                    ]
+                }
+            ],
+            "metrics": {
+                "linesAdded": 360,
+                "v1Lines": 280,
+                "expansion": "+29%",
+                "systems": 1
+            },
+            "crew": [
+                {
+                    "name": "Session 53",
+                    "contribution": "WCAG 2.1 AA compliance implementation",
+                    "icon": "♿"
+                }
+            ],
+            "quote": "\"Inclusive by design. Accessible by default.\" ♿"
         }
     ]
 };
