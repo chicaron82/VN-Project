@@ -79,7 +79,7 @@ import introVideo from '../UnitedVoices7.mp4';
 // Core Systems
 // ============================================
 const eventBus = new EventBus();
-const stateManager = new StateManager({
+const stateManager = new StateManager(eventBus, {
     currentScene: 'none',
     currentRoute: null,
     tetherLevel: 100,
