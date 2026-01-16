@@ -1424,13 +1424,24 @@ window.TIMELINE_DATA = {
                         "📊 Performance Metrics: FPS, memory, load time, assets",
                         "🔍 Flag Inspector: Flag count + important flags (INSANE, SKIP)"
                     ]
+                },
+                {
+                    "id": "phase-21a-main",
+                    "emoji": "🛠️",
+                    "title": "DevSuite Main Class (1237 lines)",
+                    "features": [
+                        "🎛️ Tabbed Interface: 6 tabs (Debug, State, Scenes, Testing, Logs, Watch)",
+                        "⌨️ Console: Command execution, history (↑↓), help system",
+                        "⌨️ Keyboard Shortcuts: Ctrl+Shift+D toggle, Ctrl+Shift+1-6 tabs, ESC close",
+                        "↔️ Resizable Divider: Drag-to-resize console panel with persistence"
+                    ]
                 }
             ],
             "metrics": {
-                "linesAdded": 1080,
-                "v1Lines": 822,
-                "expansion": "+31%",
-                "systems": 4
+                "linesAdded": 2317,
+                "v1Lines": 1904,
+                "expansion": "+22%",
+                "systems": 5
             },
             "crew": [
                 {
