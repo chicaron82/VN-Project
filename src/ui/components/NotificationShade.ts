@@ -296,6 +296,9 @@ export class NotificationShade {
     }
 
     private setupListeners(): void {
+        // V1 Parity: Keyboard shortcuts (lines 861-915)
+        document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
+
         // V1 Parity: Listen to raw swipe_down events directly (like V1's handleTouchMove)
         // NotificationShade manages its own state and routing logic
         this.eventBus.on('input:swipe_down', () => {
@@ -605,5 +608,84 @@ export class NotificationShade {
      */
     public getCurrentNoteId(): string | null {
         return this.currentNotePreview?.id || null;
+    }
+
+    // ========================================
+    // KEYBOARD SHORTCUTS
+    // V1 Parity: notification-shade-controller.js lines 866-915
+    // ========================================
+
+    /**
+     * Handle keyboard shortcuts
+     * V1 Parity: Esc, Ctrl+S/L/F/M
+     */
+    private handleKeyboardShortcut(e: KeyboardEvent): void {
+        // Don't trigger if typing in input
+        const target = e.target as HTMLElement;
+        if (target?.tagName === 'INPUT' || target?.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        switch (e.key.toLowerCase()) {
+            case 'escape':
+                // Toggle shade (mobile) or sidebar (desktop)
+                if (this.isOpen) {
+                    this.close();
+                } else if (this.isExpanded) {
+                    this.collapse();
+                } else {
+                    const isDesktop = window.innerWidth >= 769;
+                    if (isDesktop) {
+                        this.eventBus.emit('ui:sidebar:toggle', {});
+                    } else {
+                        this.open();
+                    }
+                }
+                break;
+
+            case 's':
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    // Quick save
+                    this.eventBus.emit('ui:save_menu', {});
+                    this.close();
+                    console.log('💾 Quick save (Ctrl+S)');
+                }
+                break;
+
+            case 'l':
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    // Quick load
+                    this.eventBus.emit('ui:load_menu', {});
+                    this.close();
+                    console.log('📂 Load menu (Ctrl+L)');
+                }
+                break;
+
+            case 'f':
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    // Toggle fullscreen
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(err => console.warn(err));
+                        console.log('⛶ Fullscreen enabled (Ctrl+F)');
+                    } else {
+                        document.exitFullscreen();
+                        console.log('⛶ Fullscreen disabled (Ctrl+F)');
+                    }
+                }
+                break;
+
+            case 'm':
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    // Return to menu
+                    this.eventBus.emit('ui:main_menu', {});
+                    this.close();
+                    console.log('🚪 Return to menu (Ctrl+M)');
+                }
+                break;
+        }
     }
 }
