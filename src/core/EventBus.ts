@@ -112,6 +112,10 @@ export type GameEvents = {
   'autosave:start': { reason: string };
   'autosave:complete': { success: boolean; slot: number };
 
+  // DIZEE: Loop/Scene progression events (Phase 15b)
+  'loop:incremented': { version: number; status: string };
+  'notes:ronnie_unlocked': {};
+
   // Missing Events Added for V2 Build
   'state:reset': {};
   'state:restore': { sceneId: string; reason: string };
