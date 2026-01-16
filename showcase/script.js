@@ -450,6 +450,11 @@ class TimelineRenderer {
         if (window.Prism) {
             Prism.highlightAll();
         }
+
+        // Initialize expandable phases for newly rendered items
+        if (window.initExpandablePhases) {
+            window.initExpandablePhases();
+        }
     }
 
     createNavigationControls(position = 'top') {
@@ -1296,92 +1301,109 @@ console.log('%cFeatures: Story/Dev toggle, RAF slider, expandable phases, contex
 console.log('%cQuality: MICHELIN ⭐⭐⭐', 'color: #00ff88; font-weight: bold;');
 
 // Expandable Timeline Phases
-(function initExpandablePhases() {
-    // Wait for timeline to be rendered
-    setTimeout(() => {
-        const timelineItems = document.querySelectorAll('.timeline-item');
+window.initExpandablePhases = function () {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const currentViewMode = document.body.dataset.viewMode || 'story';
 
-        timelineItems.forEach((item, index) => {
-            // Find the content wrapper
-            const content = item.querySelector('.timeline-content');
-            if (!content) return;
+    timelineItems.forEach((item, index) => {
+        // Skip if already initialized
+        if (item.dataset.expandableInitialized === 'true') return;
+        item.dataset.expandableInitialized = 'true';
 
-            // Get all children after the summary (first 3 elements: h3, title, summary)
-            const children = Array.from(content.children);
-            if (children.length <= 3) return; // Nothing to collapse
+        // Find the content wrapper
+        const content = item.querySelector('.timeline-content');
+        if (!content) return;
 
-            // Create details wrapper
-            const details = document.createElement('div');
-            details.className = 'timeline-details';
+        // Get all children after the summary (first 3 elements: h3, title, summary)
+        const children = Array.from(content.children);
+        if (children.length <= 3) return; // Nothing to collapse
 
-            // Move all children after summary into details
-            children.slice(3).forEach(child => {
-                details.appendChild(child);
-            });
+        // Create details wrapper
+        const details = document.createElement('div');
+        details.className = 'timeline-details';
 
-            // Create toggle button
-            const toggle = document.createElement('button');
-            toggle.className = 'expand-toggle';
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.setAttribute('aria-label', 'Expand phase details');
-            toggle.innerHTML = '<span class="chevron">▾</span> View details';
-
-            // Insert toggle and details
-            content.appendChild(toggle);
-            content.appendChild(details);
-
-            // Toggle handler
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isExpanded = item.classList.toggle('expanded');
-                toggle.setAttribute('aria-expanded', isExpanded);
-                toggle.innerHTML = isExpanded
-                    ? '<span class="chevron">▴</span> Hide details'
-                    : '<span class="chevron">▾</span> View details';
-
-                // Scroll into view if expanding
-                if (isExpanded) {
-                    setTimeout(() => {
-                        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 300);
-                }
-            });
-
-            // Keyboard support
-            toggle.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggle.click();
-                }
-            });
-
-            // ESC to close
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && item.classList.contains('expanded')) {
-                    item.classList.remove('expanded');
-                    toggle.setAttribute('aria-expanded', 'false');
-                    toggle.innerHTML = '<span class="chevron">▾</span> View details';
-                }
-            });
-
-            // Auto-expand in Dev mode
-            const body = document.body;
-            const observer = new MutationObserver(() => {
-                if (body.dataset.viewMode === 'dev') {
-                    item.classList.add('expanded');
-                    toggle.setAttribute('aria-expanded', 'true');
-                    toggle.innerHTML = '<span class="chevron">▴</span> Hide details';
-                } else if (body.dataset.viewMode === 'story') {
-                    item.classList.remove('expanded');
-                    toggle.setAttribute('aria-expanded', 'false');
-                    toggle.innerHTML = '<span class="chevron">▾</span> View details';
-                }
-            });
-
-            observer.observe(body, { attributes: true, attributeFilter: ['data-view-mode'] });
+        // Move all children after summary into details
+        children.slice(3).forEach(child => {
+            details.appendChild(child);
         });
 
-        console.log('📖 Expandable timeline phases initialized');
+        // Create toggle button
+        const toggle = document.createElement('button');
+        toggle.className = 'expand-toggle';
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.setAttribute('aria-label', 'Expand phase details');
+        toggle.innerHTML = '<span class="chevron">▾</span> View details';
+
+        // Insert toggle and details
+        content.appendChild(toggle);
+        content.appendChild(details);
+
+        // Set initial state based on current view mode
+        if (currentViewMode === 'dev') {
+            item.classList.add('expanded');
+            toggle.setAttribute('aria-expanded', 'true');
+            toggle.innerHTML = '<span class="chevron">▴</span> Hide details';
+        }
+
+        // Toggle handler
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExpanded = item.classList.toggle('expanded');
+            toggle.setAttribute('aria-expanded', isExpanded);
+            toggle.innerHTML = isExpanded
+                ? '<span class="chevron">▴</span> Hide details'
+                : '<span class="chevron">▾</span> View details';
+
+            // Scroll into view if expanding
+            if (isExpanded) {
+                setTimeout(() => {
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 300);
+            }
+        });
+
+        // Keyboard support
+        toggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggle.click();
+            }
+        });
+
+        // ESC to close
+        const escHandler = (e) => {
+            if (e.key === 'Escape' && item.classList.contains('expanded')) {
+                item.classList.remove('expanded');
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.innerHTML = '<span class="chevron">▾</span> View details';
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+
+        // Auto-expand/collapse based on view mode changes
+        const body = document.body;
+        const observer = new MutationObserver(() => {
+            if (body.dataset.viewMode === 'dev') {
+                item.classList.add('expanded');
+                toggle.setAttribute('aria-expanded', 'true');
+                toggle.innerHTML = '<span class="chevron">▴</span> Hide details';
+            } else if (body.dataset.viewMode === 'story') {
+                item.classList.remove('expanded');
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.innerHTML = '<span class="chevron">▾</span> View details';
+            }
+        });
+
+        observer.observe(body, { attributes: true, attributeFilter: ['data-view-mode'] });
+    });
+
+    console.log('📖 Expandable timeline phases initialized');
+};
+
+// Initial call on page load
+(function () {
+    setTimeout(() => {
+        window.initExpandablePhases();
     }, 1500); // Wait for timeline renderer to finish
 })();
 
