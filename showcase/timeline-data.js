@@ -1320,6 +1320,67 @@ window.TIMELINE_DATA = {
                 ],
                 "quote": "\"Built with love.\" 🎬"
             }
+        },
+        {
+            "id": "phase-19c",
+            "date": "January 16, 2026",
+            "emoji": "🎞️",
+            "title": "Phase 19c: CutsceneEngine - Simple Scene Transitions",
+            "type": "order-entry",
+            "summary": "Simplified cutscene system for basic scene transitions. Complex animations moved to CSS, minimal DOM manipulation. Perfect for chapter breaks and fade transitions.",
+            "features": [
+                "🎬 <strong>Start/End Control:</strong> Basic cutscene playback with game UI hiding",
+                "📦 <strong>Container Management:</strong> Auto-creates overlay structure if missing",
+                "🌟 <strong>Simple Fade:</strong> 3-second default fade transition for chapter breaks",
+                "🎨 <strong>CSS-Based:</strong> All complex animations handled by CSS classes",
+                "🚫 <strong>Pointer Events:</strong> Automatic interaction blocking during playback"
+            ],
+            "subPhases": [
+                {
+                    "id": "phase-19c-core",
+                    "title": "Cutscene Control System",
+                    "description": "Minimal cutscene engine for basic transitions",
+                    "linesOfCode": 174,
+                    "highlights": [
+                        "1-second fade-out transition on end",
+                        "Auto-creates cutscene-container + cutscene-canvas DOM",
+                        "Pointer events control for interaction blocking",
+                        "playSimpleFade() for chapter transitions"
+                    ],
+                    "codeComparison": {
+                        "before": {
+                            "title": "V1 (JavaScript)",
+                            "badge": "SIMPLIFIED",
+                            "lang": "javascript",
+                            "code": "// V1: cutscene-engine.js\nplaySimpleFade(content, duration, onComplete) {\n  this.startCutscene();\n  const canvas = document.getElementById('cutscene-canvas');\n  canvas.innerHTML = content;\n  \n  setTimeout(() => {\n    this.endCutscene(onComplete);\n  }, duration || 3000);\n}"
+                        },
+                        "after": {
+                            "title": "V2 (TypeScript)",
+                            "badge": "TYPE-SAFE FADES",
+                            "lang": "typescript",
+                            "code": "// V2: CutsceneEngine.ts\npublic playSimpleFade(content: string, duration?: number, onComplete?: () => void): void {\n  this.startCutscene();\n  const canvas = document.getElementById('cutscene-canvas');\n  if (canvas) {\n    canvas.innerHTML = content;\n  }\n  \n  setTimeout(() => {\n    this.endCutscene(onComplete);\n  }, duration || 3000);\n}"
+                        }
+                    }
+                }
+            ],
+            "metrics": {
+                "linesAdded": 174,
+                "filesChanged": 1,
+                "testsWritten": 0,
+                "v1Lines": 128,
+                "v2Lines": 174,
+                "growth": "+46 lines (TypeScript interfaces + null safety)"
+            },
+            "lessons": [
+                "Simple cutscene systems benefit from CSS-based animations",
+                "Pointer events control prevents click-through during transitions",
+                "Auto-creating DOM structure makes integration easier",
+                "1-second fade-out feels natural for cutscene exits",
+                "Minimal game instance coupling improves testability"
+            ],
+            "crewAttribution": {
+                "quote": "\"SIMPLIFIED VERSION - Basic cutscene structure only\""
+            }
         }
     ]
 };
