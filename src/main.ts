@@ -1010,7 +1010,41 @@ async function init() {
     // Show splash screen
     await showSplash();
 
-    // Show main menu
+    // ═══════════════════════════════════════════════════════════════
+    // UV7 OS INSTANT RESUME - ZEERAH'S ARCHITECTURE
+    // Check if we're resuming from app switcher
+    // ═══════════════════════════════════════════════════════════════
+    const resumeFlag = localStorage.getItem('uv7-auto-resume');
+    if (resumeFlag === 'v2') {
+        console.log('[UV7 V2] 🚀 Instant Resume detected from App Switcher');
+        localStorage.removeItem('uv7-auto-resume');
+        localStorage.removeItem('uv7-resume-timestamp');
+
+        // Try to load the last save
+        const hasSave = saveSystem.hasAutoSave();
+        if (hasSave) {
+            // Load auto-save directly
+            const success = await saveSystem.loadAutoSave();
+
+            if (success) {
+                console.log('[UV7 V2] ✅ Instant Resume successful - skipping menu');
+                toastNotification.show({
+                    title: '⚡ QUICK RESUME',
+                    message: 'Welcome back to the loop...',
+                    icon: '🔄',
+                    color: '#00ff88'
+                });
+                // Don't show main menu - game is already loaded via SaveSystem
+                return;
+            } else {
+                console.warn('[UV7 V2] ⚠️ Instant Resume failed - showing menu');
+            }
+        } else {
+            console.log('[UV7 V2] No save found for Instant Resume - showing menu');
+        }
+    }
+
+    // Show main menu (normal flow or fallback)
     showMainMenu();
 
     // Debug access

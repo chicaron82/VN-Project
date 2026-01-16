@@ -38,7 +38,12 @@
       "Bash(npm run dev:*)",
       "Bash(curl:*)",
       "Bash(npm run build:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(for file in system/game-engine.js system/game-loop.js system/asset-loader.js system/audio-manager.js system/video-player.js system/text-effects.js)",
+      "Bash(do)",
+      "Bash(if [ -f \"$file\" ])",
+      "Bash(basename:*)",
+      "Read(//c/Users/silve/Downloads/GitHub/VN-Project/**)"
     ],
     "deny": [],
     "ask": []

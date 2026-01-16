@@ -32,6 +32,45 @@ class MenuController {
      * CRITICAL METHOD: 88 lines of orchestration
      */
     showMainMenu() {
+        // ═══════════════════════════════════════════════════════════════
+        // UV7 OS INSTANT RESUME - ZEERAH'S ARCHITECTURE
+        // Check if we're resuming from app switcher
+        // ═══════════════════════════════════════════════════════════════
+        const resumeFlag = localStorage.getItem('uv7-auto-resume');
+        if (resumeFlag === 'v1') {
+            console.log('[UV7 V1] 🚀 Instant Resume detected from App Switcher');
+            localStorage.removeItem('uv7-auto-resume');
+            localStorage.removeItem('uv7-resume-timestamp');
+
+            // Check if we have save data
+            const autoSave = localStorage.getItem('autoSaveData');
+            if (autoSave) {
+                try {
+                    console.log('[UV7 V1] ✅ Instant Resume - loading auto-save');
+
+                    // Load the save and skip menu
+                    if (this.game.saveLoadUI && this.game.saveLoadUI.loadAutoSave) {
+                        this.game.saveLoadUI.loadAutoSave();
+
+                        // Show quick resume toast
+                        if (this.game.uiController && this.game.uiController.showToast) {
+                            this.game.uiController.showToast({
+                                title: '⚡ QUICK RESUME',
+                                message: 'Welcome back to the loop...',
+                                color: '#00ff88'
+                            });
+                        }
+
+                        return; // Skip menu display
+                    }
+                } catch (e) {
+                    console.warn('[UV7 V1] ⚠️ Instant Resume failed:', e);
+                }
+            } else {
+                console.log('[UV7 V1] No save found for Instant Resume - showing menu');
+            }
+        }
+
         // Hide UV7 splash (calls window.completeSplash if available)
         if (window.completeSplash) {
             window.completeSplash();

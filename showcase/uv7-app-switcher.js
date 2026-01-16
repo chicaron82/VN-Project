@@ -1,11 +1,13 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * UV7 OS - APP SWITCHER
- * iOS-style app switcher for UV7 ecosystem
- * 
+ * UV7 OS - APP SWITCHER (BOUGIE EDITION) 💎
+ * iOS/Android-style app switcher with instant resume
+ *
  * Contributors:
- * - Ronnie (Vision: "Make it bougie")
- * - Antigravity (Implementation: "Say less")
+ * - Ronnie (Vision: "Make it bougie" + Cross-app resume concept)
+ * - ZeeRah (Architecture: State restoration pattern + Android gestures)
+ * - DiZee (Enhancement: Live state + mini preview)
+ * - Antigravity (Polish: Premium UX + swipe-to-clear)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -15,6 +17,8 @@ class UV7AppSwitcher {
         this.currentApp = this.detectCurrentApp();
         this.recentApps = this.loadRecentApps();
         this.elements = {};
+        this.undoBackup = null;
+        this.undoTimeout = null;
 
         this.init();
     }
@@ -25,8 +29,12 @@ class UV7AppSwitcher {
         this.attachHandlers();
         this.render();
 
-        console.log('🚀 UV7 App Switcher initialized');
+        console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // APP DEFINITIONS
+    // ═══════════════════════════════════════════════════════════════
 
     defineApps() {
         return [
@@ -37,7 +45,14 @@ class UV7AppSwitcher {
                 description: 'UV7 Project Hub',
                 url: '../index.html',
                 color: 'rgba(0, 204, 255, 0.2)',
-                getState: () => ['Version 848', 'Home']
+                saveKeys: [], // No save data for landing
+                getState: () => {
+                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
+                    return {
+                        state: [`VERSION ${loopVersion}`, 'Home'],
+                        hasSave: false
+                    };
+                }
             },
             {
                 id: 'showcase',
@@ -46,11 +61,21 @@ class UV7AppSwitcher {
                 description: 'The Journey',
                 url: '../showcase/index.html',
                 color: 'rgba(0, 204, 255, 0.2)',
+                saveKeys: ['uv7-showcase-phase', 'uv7_discovered_codes'],
                 getState: () => {
                     const phase = sessionStorage.getItem('uv7-showcase-phase') || 'phase-1';
                     const phaseNum = phase.replace('phase-', '');
-                    const mode = document.body.dataset.viewMode || 'story';
-                    return [`Phase ${phaseNum}`, `${mode === 'story' ? 'Story' : 'Dev'} Mode`];
+                    const mode = document.body?.dataset?.viewMode || 'story';
+                    const codes = JSON.parse(localStorage.getItem('uv7_discovered_codes') || '[]');
+                    const codeCount = codes.length;
+                    const lastVisit = localStorage.getItem('uv7-showcase-last-visit');
+
+                    return {
+                        state: [`Phase ${phaseNum}`, codeCount > 0 ? `${codeCount} codes` : `${mode === 'story' ? 'Story' : 'Dev'} Mode`],
+                        hasSave: codeCount > 0,
+                        lastPlayed: lastVisit ? new Date(parseInt(lastVisit)) : null,
+                        progress: Math.min(100, Math.round((parseInt(phaseNum) / 15) * 100))
+                    };
                 }
             },
             {
@@ -60,7 +85,30 @@ class UV7AppSwitcher {
                 description: 'Legacy Version',
                 url: '../v1/index.html',
                 color: 'rgba(255, 0, 85, 0.2)',
-                getState: () => ['Loop 848', 'Original']
+                saveKeys: ['uv7_current_route', 'uv7_current_act', 'uv7_game_state_v1'],
+                getState: () => {
+                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
+                    const route = localStorage.getItem('uv7_current_route') || '';
+                    const act = localStorage.getItem('uv7_current_act');
+                    const lastPlayed = localStorage.getItem('uv7_last_played_v1');
+
+                    if (!route || route === 'menu' || route === '') {
+                        return {
+                            state: [`Loop ${loopVersion}`, 'Menu'],
+                            hasSave: false
+                        };
+                    }
+
+                    const routeDisplay = route.charAt(0).toUpperCase() + route.slice(1);
+                    const actDisplay = act ? `Act ${act}` : '';
+
+                    return {
+                        state: [routeDisplay, actDisplay || `Loop ${loopVersion}`],
+                        hasSave: true,
+                        lastPlayed: lastPlayed ? new Date(parseInt(lastPlayed)) : null,
+                        progress: this.calculateV1Progress(route, act)
+                    };
+                }
             },
             {
                 id: 'v2',
@@ -69,15 +117,168 @@ class UV7AppSwitcher {
                 description: 'TypeScript Rebuild',
                 url: '../index.v2.html',
                 color: 'rgba(0, 255, 136, 0.2)',
-                getState: () => ['Beta', '435 Tests']
+                saveKeys: ['uv7_game_state'],
+                getState: () => {
+                    const stateJson = localStorage.getItem('uv7_game_state');
+                    const lastPlayed = localStorage.getItem('uv7_last_played_v2');
+
+                    if (stateJson) {
+                        try {
+                            const state = JSON.parse(stateJson);
+                            const route = state?.game?.currentRoute || 'Menu';
+                            const act = state?.game?.currentAct;
+                            const tether = state?.tether?.level;
+
+                            if (route && route !== 'menu') {
+                                const routeDisplay = route.charAt(0).toUpperCase() + route.slice(1);
+                                return {
+                                    state: [
+                                        routeDisplay,
+                                        act ? `Act ${act}` : (typeof tether === 'number' ? `⚡${Math.round(tether)}%` : 'V2 Beta')
+                                    ],
+                                    hasSave: true,
+                                    lastPlayed: lastPlayed ? new Date(parseInt(lastPlayed)) : null,
+                                    progress: this.calculateV2Progress(state)
+                                };
+                            }
+                        } catch (e) {
+                            console.warn('Failed to parse V2 state:', e);
+                        }
+                    }
+
+                    const testCount = localStorage.getItem('uv7_test_count') || '435';
+                    return {
+                        state: ['V2 Beta', `${testCount} tests`],
+                        hasSave: false
+                    };
+                }
+            },
+            {
+                id: 'torigatchi',
+                name: 'ToriGatchi',
+                icon: '💚',
+                description: 'AI Tamagotchi Care Simulator',
+                url: '../torigatchi/index.html',
+                color: 'rgba(0, 255, 136, 0.3)',
+                saveKeys: ['torigatchi-state'],
+                getState: () => {
+                    const state = localStorage.getItem('torigatchi-state');
+                    if (!state) {
+                        return {
+                            state: ['Not Started', 'Ready to Play'],
+                            hasSave: false
+                        };
+                    }
+
+                    try {
+                        const data = JSON.parse(state);
+                        const lastFed = new Date(data.lastFed);
+                        const now = new Date();
+                        const hoursSince = (now - lastFed) / (1000 * 60 * 60);
+
+                        // Calculate mood - ZEERAH'S MOOD SYSTEM
+                        let mood, moodEmoji, isHangry = false;
+                        if (hoursSince > 24) {
+                            mood = 'BEYOND HANGRY';
+                            moodEmoji = '💀';
+                            isHangry = true;
+                        } else if (hoursSince > 8) {
+                            mood = 'HANGRY';
+                            moodEmoji = '😡';
+                            isHangry = true;
+                        } else if (hoursSince > 5) {
+                            mood = 'Hungry';
+                            moodEmoji = '😤';
+                        } else if (hoursSince > 3) {
+                            mood = 'Content';
+                            moodEmoji = '😊';
+                        } else {
+                            mood = 'Happy';
+                            moodEmoji = '💚';
+                        }
+
+                        // Fourth wall break for extreme neglect
+                        const userName = localStorage.getItem('uv7_user_name') || 'you';
+                        const neglectMessage = hoursSince > 24
+                            ? `"${userName.charAt(0).toUpperCase() + userName.slice(1)}, I KNOW you see this"`
+                            : `Fed ${Math.floor(hoursSince)}h ago`;
+
+                        return {
+                            state: [`${moodEmoji} ${mood}`, neglectMessage, `Level ${data.level || 1}`],
+                            hasSave: true,
+                            lastPlayed: lastFed,
+                            mood: mood,
+                            isHangry: isHangry
+                        };
+                    } catch {
+                        return {
+                            state: ['Error Loading'],
+                            hasSave: false
+                        };
+                    }
+                }
             }
         ];
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PROGRESS CALCULATION
+    // ═══════════════════════════════════════════════════════════════
+
+    calculateV1Progress(route, act) {
+        // V1 has 3 routes with ~3 acts each
+        const routeProgress = { tori: 0, ronnie: 33, true: 66 };
+        const base = routeProgress[route?.toLowerCase()] || 0;
+        const actProgress = act ? (parseInt(act) / 3) * 33 : 0;
+        return Math.min(100, Math.round(base + actProgress));
+    }
+
+    calculateV2Progress(state) {
+        if (!state?.game) return 0;
+        const route = state.game.currentRoute;
+        const act = state.game.currentAct || 1;
+        const sceneIndex = state.game.currentSceneIndex || 0;
+
+        // Rough estimate based on route + act + scene
+        const routeProgress = { tori: 0, ronnie: 33, true: 66 };
+        const base = routeProgress[route?.toLowerCase()] || 0;
+        const actProgress = (act / 3) * 30;
+        const sceneProgress = Math.min(3, sceneIndex / 10); // Small bonus for scene progress
+
+        return Math.min(100, Math.round(base + actProgress + sceneProgress));
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // TIME FORMATTING - RONNIE'S UX POLISH
+    // ═══════════════════════════════════════════════════════════════
+
+    formatLastPlayed(date) {
+        if (!date) return '';
+
+        const now = new Date();
+        const diff = now - date;
+        const minutes = Math.floor(diff / 60000);
+        const hours = Math.floor(diff / 3600000);
+        const days = Math.floor(diff / 86400000);
+
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days === 1) return 'Yesterday';
+        if (days < 7) return `${days}d ago`;
+
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // APP DETECTION & RECENT APPS
+    // ═══════════════════════════════════════════════════════════════
 
     detectCurrentApp() {
         const path = window.location.pathname;
         if (path.includes('showcase')) return 'showcase';
         if (path.includes('v1')) return 'v1';
+        if (path.includes('torigatchi')) return 'torigatchi';
         if (path.includes('v2') || path.includes('index.v2')) return 'v2';
         return 'landing';
     }
@@ -92,21 +293,39 @@ class UV7AppSwitcher {
     }
 
     addToRecent(appId) {
-        // Remove if already in list
         this.recentApps = this.recentApps.filter(id => id !== appId);
-        // Add to front
         this.recentApps.unshift(appId);
-        // Keep only last 3
-        this.recentApps = this.recentApps.slice(0, 3);
+        this.recentApps = this.recentApps.slice(0, 4);
         this.saveRecentApps();
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // INSTANT RESUME - ZEERAH'S ARCHITECTURE
+    // ═══════════════════════════════════════════════════════════════
+
+    setResumeFlag(appId) {
+        localStorage.setItem('uv7-auto-resume', appId);
+        localStorage.setItem('uv7-resume-timestamp', Date.now().toString());
+    }
+
+    clearResumeFlag() {
+        localStorage.removeItem('uv7-auto-resume');
+        localStorage.removeItem('uv7-resume-timestamp');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // HTML INJECTION
+    // ═══════════════════════════════════════════════════════════════
 
     injectHTML() {
         const html = `
             <div id="uv7-app-switcher" class="uv7-app-switcher">
                 <div class="app-switcher-header">
                     <span class="app-switcher-title">UV7 OS - App Switcher</span>
-                    <button class="app-switcher-close" aria-label="Close">✕</button>
+                    <div class="app-switcher-header-actions">
+                        <button class="clear-all-btn" id="clear-all-saves" title="Clear all saves">🗑️</button>
+                        <button class="app-switcher-close" aria-label="Close">✕</button>
+                    </div>
                 </div>
                 <div class="app-switcher-content">
                     <div class="app-switcher-section" id="recent-apps-section" style="display: none;">
@@ -118,9 +337,14 @@ class UV7AppSwitcher {
                         <div class="app-cards-grid" id="all-apps-grid"></div>
                     </div>
                     <div class="app-switcher-hint">
-                        Tap any app to launch • Swipe down to close
+                        <span class="hint-desktop">Tap any app to launch • Hover for options</span>
+                        <span class="hint-mobile">Tap to launch • Swipe up on card to clear save</span>
                     </div>
                 </div>
+            </div>
+            <div id="uv7-undo-toast" class="uv7-toast">
+                <span class="uv7-toast-message"></span>
+                <button class="uv7-toast-undo">UNDO</button>
             </div>
         `;
 
@@ -131,16 +355,34 @@ class UV7AppSwitcher {
         this.elements = {
             switcher: document.getElementById('uv7-app-switcher'),
             close: document.querySelector('.app-switcher-close'),
+            clearAll: document.getElementById('clear-all-saves'),
             recentSection: document.getElementById('recent-apps-section'),
             recentGrid: document.getElementById('recent-apps-grid'),
-            allGrid: document.getElementById('all-apps-grid')
+            allGrid: document.getElementById('all-apps-grid'),
+            undoToast: document.getElementById('uv7-undo-toast'),
+            undoMessage: document.querySelector('.uv7-toast-message'),
+            undoBtn: document.querySelector('.uv7-toast-undo')
         };
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EVENT HANDLERS
+    // ═══════════════════════════════════════════════════════════════
 
     attachHandlers() {
         // Close button
         if (this.elements.close) {
             this.elements.close.addEventListener('click', () => this.close());
+        }
+
+        // Clear all button
+        if (this.elements.clearAll) {
+            this.elements.clearAll.addEventListener('click', () => this.confirmClearAll());
+        }
+
+        // Undo button
+        if (this.elements.undoBtn) {
+            this.elements.undoBtn.addEventListener('click', () => this.undoClear());
         }
 
         // Escape key
@@ -174,12 +416,207 @@ class UV7AppSwitcher {
         this.elements.switcher.addEventListener('touchend', (e) => {
             touchEndY = e.changedTouches[0].clientY;
             const swipeDistance = touchEndY - touchStartY;
-            // Swipe down (> 100px) closes switcher
             if (swipeDistance > 100) {
                 this.close();
             }
         }, { passive: true });
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // SWIPE-TO-CLEAR - ANDROID MULTITASKING GESTURES
+    // ═══════════════════════════════════════════════════════════════
+
+    attachSwipeToCloseHandler(card, app) {
+        let touchStartY = 0;
+        let isDragging = false;
+
+        card.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) return;
+            touchStartY = e.touches[0].clientY;
+            isDragging = false;
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+            const currentY = e.touches[0].clientY;
+            const deltaY = touchStartY - currentY; // Positive = swipe up
+
+            if (deltaY > 10) {
+                isDragging = true;
+                card.classList.add('swiping');
+                card.style.transform = `translateY(-${Math.min(200, deltaY)}px)`;
+                card.style.opacity = Math.max(0.3, 1 - (deltaY / 200));
+            }
+        }, { passive: true });
+
+        card.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+
+            const endY = e.changedTouches[0].clientY;
+            const swipeDistance = touchStartY - endY;
+
+            card.classList.remove('swiping');
+
+            if (swipeDistance > 100 && app.saveKeys.length > 0) {
+                // Swipe was far enough - clear save
+                this.clearAppSave(app, card);
+            } else {
+                // Reset position
+                card.style.transform = '';
+                card.style.opacity = '';
+            }
+        }, { passive: true });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // SAVE CLEARING WITH UNDO - ANTIGRAVITY'S UX POLISH
+    // ═══════════════════════════════════════════════════════════════
+
+    clearAppSave(app, card) {
+        // Backup save data before clearing (for undo)
+        const backup = {};
+        app.saveKeys.forEach(key => {
+            const data = localStorage.getItem(key);
+            if (data) backup[key] = data;
+        });
+
+        // Also backup last played timestamp
+        const lastPlayedKey = `uv7_last_played_${app.id}`;
+        const lastPlayed = localStorage.getItem(lastPlayedKey);
+        if (lastPlayed) backup[lastPlayedKey] = lastPlayed;
+
+        this.undoBackup = { app, backup };
+
+        // Animate card flying off
+        card.classList.add('clearing');
+
+        // Haptic feedback on mobile
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+
+        setTimeout(() => {
+            // Clear localStorage
+            app.saveKeys.forEach(key => {
+                localStorage.removeItem(key);
+            });
+            localStorage.removeItem(lastPlayedKey);
+
+            // Remove from recent if there
+            this.recentApps = this.recentApps.filter(id => id !== app.id);
+            this.saveRecentApps();
+
+            // Show undo toast
+            this.showUndoToast(`${app.name} save cleared`);
+
+            // Re-render
+            this.render();
+        }, 300);
+    }
+
+    showUndoToast(message) {
+        if (this.undoTimeout) {
+            clearTimeout(this.undoTimeout);
+        }
+
+        this.elements.undoMessage.textContent = message;
+        this.elements.undoToast.classList.add('show');
+
+        // Auto-hide after 5 seconds
+        this.undoTimeout = setTimeout(() => {
+            this.elements.undoToast.classList.remove('show');
+            this.undoBackup = null;
+        }, 5000);
+    }
+
+    undoClear() {
+        if (!this.undoBackup) return;
+
+        const { app, backup } = this.undoBackup;
+
+        // Restore all backed up data
+        Object.entries(backup).forEach(([key, value]) => {
+            localStorage.setItem(key, value);
+        });
+
+        // Re-add to recent apps
+        this.addToRecent(app.id);
+
+        // Hide toast
+        this.elements.undoToast.classList.remove('show');
+        if (this.undoTimeout) {
+            clearTimeout(this.undoTimeout);
+            this.undoTimeout = null;
+        }
+
+        // Haptic feedback
+        if (navigator.vibrate) {
+            navigator.vibrate([25, 25, 25]);
+        }
+
+        this.undoBackup = null;
+
+        // Re-render
+        this.render();
+
+        console.log(`✅ Restored ${app.name} save data`);
+    }
+
+    confirmClearSave(app, card) {
+        const stateData = app.getState();
+        const stateStr = stateData.state.join(' • ');
+
+        const confirmed = confirm(
+            `Clear ${app.name} save data?\n\n` +
+            `Current progress: ${stateStr}\n\n` +
+            `This can be undone within 5 seconds.`
+        );
+
+        if (confirmed) {
+            this.clearAppSave(app, card);
+        }
+    }
+
+    confirmClearAll() {
+        const appsWithSaves = this.apps.filter(app => {
+            const stateData = app.getState();
+            return stateData.hasSave;
+        });
+
+        if (appsWithSaves.length === 0) {
+            alert('No saves to clear!');
+            return;
+        }
+
+        const appNames = appsWithSaves.map(a => a.name).join(', ');
+        const confirmed = confirm(
+            `Clear ALL save data?\n\n` +
+            `This will reset: ${appNames}\n\n` +
+            `This action cannot be undone!`
+        );
+
+        if (confirmed) {
+            appsWithSaves.forEach(app => {
+                app.saveKeys.forEach(key => {
+                    localStorage.removeItem(key);
+                });
+                localStorage.removeItem(`uv7_last_played_${app.id}`);
+            });
+
+            this.recentApps = [];
+            this.saveRecentApps();
+
+            // Haptic feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(100);
+            }
+
+            this.render();
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // RENDERING - THE BOUGIE CARD LAYOUT
+    // ═══════════════════════════════════════════════════════════════
 
     render() {
         // Render recent apps
@@ -193,6 +630,8 @@ class UV7AppSwitcher {
                     this.elements.recentGrid.appendChild(card);
                 }
             });
+        } else {
+            this.elements.recentSection.style.display = 'none';
         }
 
         // Render all apps
@@ -205,12 +644,27 @@ class UV7AppSwitcher {
 
     createAppCard(app, isRecent) {
         const card = document.createElement('div');
+        const stateData = app.getState();
+        const hasSave = stateData.hasSave;
         const isActive = app.id === this.currentApp;
-        card.className = `app-card ${isActive ? 'active' : ''}`;
+        const isHangry = stateData.isHangry;
 
-        const state = app.getState();
+        card.className = `app-card ${isActive ? 'active' : ''} ${isHangry ? 'hangry' : ''}`;
+        card.dataset.app = app.id;
+
+        const lastPlayedStr = stateData.lastPlayed ? this.formatLastPlayed(stateData.lastPlayed) : '';
+        const progressBar = typeof stateData.progress === 'number' && hasSave ? `
+            <div class="app-progress">
+                <div class="app-progress-bar" style="width: ${stateData.progress}%"></div>
+                <span class="app-progress-text">${stateData.progress}%</span>
+            </div>
+        ` : '';
 
         card.innerHTML = `
+            ${hasSave ? `<div class="quick-resume-badge">⚡ QUICK RESUME</div>` : ''}
+            ${hasSave && app.saveKeys.length > 0 ? `
+                <button class="app-card-close" aria-label="Clear save" title="Clear save data">✕</button>
+            ` : ''}
             <div class="app-preview" style="background: linear-gradient(135deg, ${app.color}, transparent);">
                 <div class="app-preview-icon">${app.icon}</div>
             </div>
@@ -222,35 +676,85 @@ class UV7AppSwitcher {
                 </div>
                 <div class="app-description">${app.description}</div>
                 <div class="app-state">
-                    ${state.map(s => `<span class="app-state-item">${s}</span>`).join('')}
+                    ${stateData.state.map(s => `<span class="app-state-item">${s}</span>`).join('')}
+                    ${lastPlayedStr ? `<span class="app-state-item time">${lastPlayedStr}</span>` : ''}
                 </div>
+                ${progressBar}
             </div>
         `;
 
-        card.addEventListener('click', () => this.launchApp(app));
+        // Card click to launch
+        card.addEventListener('click', (e) => {
+            // Ignore if clicking close button
+            if (e.target.classList.contains('app-card-close')) return;
+            this.launchApp(app);
+        });
+
+        // Close button (desktop)
+        const closeBtn = card.querySelector('.app-card-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.confirmClearSave(app, card);
+            });
+        }
+
+        // Swipe-to-clear (mobile)
+        if (hasSave && app.saveKeys.length > 0) {
+            this.attachSwipeToCloseHandler(card, app);
+        }
 
         return card;
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // LAUNCHING APPS - INSTANT RESUME
+    // ═══════════════════════════════════════════════════════════════
+
     launchApp(app) {
         if (app.id === this.currentApp) {
-            // Already on this app, just close switcher
             this.close();
             return;
         }
 
+        // Check if we have save data for instant resume
+        const stateData = app.getState();
+        if (stateData.hasSave) {
+            this.setResumeFlag(app.id);
+        }
+
+        // Update last played timestamp for the app we're leaving
+        localStorage.setItem(`uv7_last_played_${this.currentApp}`, Date.now().toString());
+
         // Add to recent
         this.addToRecent(app.id);
 
-        // Navigate
-        window.location.href = app.url;
+        // Navigate with View Transition
+        this.navigateWithTransition(app.url);
     }
+
+    navigateWithTransition(url) {
+        this.close();
+
+        setTimeout(() => {
+            if (!document.startViewTransition) {
+                window.location.href = url;
+                return;
+            }
+
+            document.startViewTransition(() => {
+                window.location.href = url;
+            });
+        }, 150);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // OPEN / CLOSE
+    // ═══════════════════════════════════════════════════════════════
 
     open() {
         if (!this.elements.switcher) return;
         this.elements.switcher.classList.add('open');
-
-        // Re-render to update state
         this.render();
     }
 
