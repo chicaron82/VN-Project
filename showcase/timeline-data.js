@@ -1435,12 +1435,23 @@ window.TIMELINE_DATA = {
                         "⌨️ Keyboard Shortcuts: Ctrl+Shift+D toggle, Ctrl+Shift+1-6 tabs, ESC close",
                         "↔️ Resizable Divider: Drag-to-resize console panel with persistence"
                     ]
+                },
+                {
+                    "id": "phase-21a-subsystems",
+                    "emoji": "🧩",
+                    "title": "DevSuite Subsystems (270 lines)",
+                    "features": [
+                        "📜 DevLogger: Log collection with 500 entry circular buffer",
+                        "💾 DevPresets: Save/load game state, export/import JSON",
+                        "👁️ VariableWatch: Expression eval, value formatting",
+                        "🔴 BreakpointSystem: Choice/scene/note breakpoints, pause on trigger"
+                    ]
                 }
             ],
             "metrics": {
-                "linesAdded": 2317,
-                "v1Lines": 1904,
-                "expansion": "+22%",
+                "linesAdded": 2587,
+                "v1Lines": 2155,
+                "expansion": "+20%",
                 "systems": 5
             },
             "crew": [
