@@ -1413,13 +1413,24 @@ window.TIMELINE_DATA = {
                         "💾 Cache Busting: Timestamp-based invalidation",
                         "📋 Interactive Menu: Prompt-based reload options"
                     ]
+                },
+                {
+                    "id": "phase-21b",
+                    "emoji": "🔧",
+                    "title": "DevHUDController (320 lines)",
+                    "features": [
+                        "👁️ Real-Time Display: 12 game state fields (500ms refresh)",
+                        "🎨 Color Coding: Tether (red/orange/green), FPS (green/yellow/red)",
+                        "📊 Performance Metrics: FPS, memory, load time, assets",
+                        "🔍 Flag Inspector: Flag count + important flags (INSANE, SKIP)"
+                    ]
                 }
             ],
             "metrics": {
-                "linesAdded": 760,
-                "v1Lines": 603,
-                "expansion": "+26%",
-                "systems": 3
+                "linesAdded": 1080,
+                "v1Lines": 822,
+                "expansion": "+31%",
+                "systems": 4
             },
             "crew": [
                 {
