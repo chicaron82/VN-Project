@@ -30,6 +30,10 @@ export class NotificationShade {
     private notePreviewTitle!: HTMLElement;
     private notePreviewSnippet!: HTMLElement;
 
+    // V1 Parity: Persistent state (lines 1048-1075)
+    private screenshotMode: boolean = false;
+    private idleDelay: number = 3000;
+
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
         this.container = this.createDOM();
@@ -37,6 +41,7 @@ export class NotificationShade {
 
         this.setupListeners();
         this.setupNotePreview();
+        this.loadPersistentState();
     }
 
     /**
@@ -686,6 +691,134 @@ export class NotificationShade {
                     console.log('🚪 Return to menu (Ctrl+M)');
                 }
                 break;
+        }
+    }
+
+    // ========================================
+    // PERSISTENT STATE (localStorage)
+    // V1 Parity: notification-shade-controller.js lines 1048-1075
+    // ========================================
+
+    /**
+     * Load persistent state from localStorage
+     * V1 Parity: Screenshot mode, idle delay settings
+     */
+    private loadPersistentState(): void {
+        try {
+            const saved = localStorage.getItem('notificationShadeState');
+            if (saved) {
+                const state = JSON.parse(saved);
+                this.screenshotMode = state.screenshotMode || false;
+                this.idleDelay = state.idleDelay || 3000;
+                console.log('💾 Loaded notification shade state');
+            }
+        } catch (error) {
+            console.warn('Failed to load notification shade state:', error);
+        }
+    }
+
+    /**
+     * Save persistent state to localStorage
+     * V1 Parity: Called when state changes
+     */
+    private savePersistentState(): void {
+        try {
+            const state = {
+                screenshotMode: this.screenshotMode,
+                idleDelay: this.idleDelay,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('notificationShadeState', JSON.stringify(state));
+            console.log('💾 Saved notification shade state');
+        } catch (error) {
+            console.warn('Failed to save notification shade state:', error);
+        }
+    }
+
+    /**
+     * Toggle screenshot mode - hide all UI
+     * V1 Parity: lines 1002-1023
+     */
+    public toggleScreenshotMode(): void {
+        this.screenshotMode = !this.screenshotMode;
+
+        if (this.screenshotMode) {
+            // Hide all UI elements
+            this.container.style.display = 'none';
+            document.body.classList.add('screenshot-mode');
+            this.eventBus.emit('ui:hide_status_bar', {});
+            console.log('📸 Screenshot mode: ON');
+        } else {
+            // Restore UI elements
+            this.container.style.display = '';
+            document.body.classList.remove('screenshot-mode');
+            this.eventBus.emit('ui:show_status_bar', {});
+            console.log('📸 Screenshot mode: OFF');
+        }
+
+        // Save state
+        this.savePersistentState();
+    }
+
+    /**
+     * Get screenshot mode status
+     */
+    public isInScreenshotMode(): boolean {
+        return this.screenshotMode;
+    }
+
+    // ========================================
+    // EMERGENCY FALLBACK MENU
+    // V1 Parity: notification-shade-controller.js lines 1077-1120
+    // ========================================
+
+    /**
+     * Show emergency fallback menu if system fails
+     * V1 Parity: Red button in top-right corner
+     */
+    public showEmergencyFallback(): void {
+        // Create emergency menu button if it doesn't exist
+        let emergencyBtn = document.getElementById('emergency-menu-btn');
+
+        if (!emergencyBtn) {
+            emergencyBtn = document.createElement('button');
+            emergencyBtn.id = 'emergency-menu-btn';
+            emergencyBtn.innerHTML = '☰';
+            emergencyBtn.style.cssText = `
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                width: 50px;
+                height: 50px;
+                background: rgba(255, 0, 0, 0.8);
+                border: 2px solid #fff;
+                border-radius: 50%;
+                color: #fff;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 16px rgba(255, 0, 0, 0.5);
+            `;
+            emergencyBtn.addEventListener('click', () => {
+                this.eventBus.emit('settings:open', {});
+            });
+            document.body.appendChild(emergencyBtn);
+        }
+
+        emergencyBtn.style.display = 'flex';
+        console.warn('🚨 Emergency fallback menu activated');
+    }
+
+    /**
+     * Hide emergency fallback menu
+     */
+    public hideEmergencyFallback(): void {
+        const emergencyBtn = document.getElementById('emergency-menu-btn');
+        if (emergencyBtn) {
+            emergencyBtn.style.display = 'none';
         }
     }
 }
