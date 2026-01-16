@@ -1,0 +1,293 @@
+/* ==========================================================================
+   WHO ARE WE SECTION
+   Showcasing the creator and UV7 AI crew
+   ========================================================================== */
+
+.who-section {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e0e0;
+    padding: 6rem 2rem;
+}
+
+.who-section h2 {
+    color: #fff;
+}
+
+.who-section .section-intro {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Creator Card */
+.creator-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin-bottom: 4rem;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.creator-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 255, 136, 0.2);
+}
+
+.creator-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.creator-avatar {
+    font-size: 4rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 255, 136, 0.1);
+    border-radius: 50%;
+    border: 3px solid rgba(0, 255, 136, 0.3);
+}
+
+.creator-info h3 {
+    font-size: 2rem;
+    color: #00ff88;
+    margin: 0;
+    font-weight: 700;
+}
+
+.creator-role {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0.5rem 0 0 0;
+}
+
+.creator-bio {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+}
+
+.creator-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: #00ff88;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: #00ff88;
+    transform: translateY(-2px);
+}
+
+.link-icon {
+    font-size: 1.2rem;
+}
+
+/* Crew Grid */
+.crew-grid {
+    margin-top: 3rem;
+}
+
+.crew-title {
+    font-size: 2.5rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.crew-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 3rem;
+}
+
+.crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.crew-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.crew-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.crew-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 255, 136, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.15);
+}
+
+.crew-card:hover::before {
+    opacity: 1;
+}
+
+.crew-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.crew-icon {
+    font-size: 2.5rem;
+}
+
+.crew-info h4 {
+    font-size: 1.4rem;
+    color: #fff;
+    margin: 0;
+    font-weight: 700;
+}
+
+.crew-alias {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0.25rem 0 0 0;
+}
+
+.crew-role {
+    font-size: 1rem;
+    color: #00ff88;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.crew-contribution {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 1.5rem;
+}
+
+.crew-link {
+    display: inline-flex;
+    align-items: center;
+    color: rgba(0, 204, 255, 0.9);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.crew-link:hover {
+    color: #00ccff;
+    transform: translateX(4px);
+}
+
+/* Philosophy Card */
+.philosophy-card {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 255, 0.05));
+    border: 2px solid rgba(0, 255, 136, 0.2);
+    border-radius: 16px;
+    padding: 3rem;
+    margin-top: 4rem;
+    text-align: center;
+}
+
+.philosophy-card h3 {
+    font-size: 2rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.philosophy-card p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+}
+
+.philosophy-quote {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #00ff88;
+    font-weight: 600;
+    margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .creator-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .creator-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .crew-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .philosophy-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .philosophy-card h3 {
+        font-size: 1.5rem;
+    }
+
+    .philosophy-quote {
+        font-size: 1.1rem;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+    .creator-card,
+    .crew-card,
+    .social-link,
+    .crew-link {
+        transition: none;
+    }
+
+    .creator-card:hover,
+    .crew-card:hover {
+        transform: none;
+    }
+}
