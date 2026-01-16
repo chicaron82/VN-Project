@@ -1246,549 +1246,132 @@ window.TIMELINE_DATA = {
             }
         },
         {
-            "id": "phase-19a",
+            "id": "phase-19",
             "date": "January 16, 2026",
             "emoji": "🎬",
-            "title": "Phase 19a: SceneRenderer - Visual Orchestration",
+            "title": "Phase 19: Scene Rendering & Cutscenes",
             "type": "order-entry",
-            "summary": "Core rendering system extracted from GameEngine (SOLID Refactor Session 6). Orchestrates sprite display, background transitions, choice menus, and typewriter effects. The conductor of the visual experience.",
-            "features": [
-                "🎭 <strong>Sprite Management:</strong> Left/right character sprites with fade transitions",
-                "🖼️ <strong>Background Crossfade:</strong> Dual-layer ping-pong technique for smooth transitions",
-                "🔘 <strong>Choice Menu:</strong> Rendering with locked state support + denial feedback",
-                "⌨️ <strong>Typewriter Integration:</strong> Mobile pagination + instant mode + auto-advance",
-                "👻 <strong>Echo Group:</strong> Special rendering for triple Echo sprites",
-                "💭 <strong>Belle's Memory:</strong> Echo memory integration for choice tracking"
-            ],
-            "subPhases": [
+            "summary": "Visual orchestration systems ported: SceneRenderer (SOLID Session 6) + CutsceneEngine. Sprite display, background crossfade, choice menus, typewriter effects, and simple cutscene transitions.",
+            "subEntries": [
                 {
-                    "id": "phase-19a-core",
-                    "title": "Scene Rendering Core",
-                    "description": "Sprite & background management with TypewriterController integration",
-                    "linesOfCode": 385,
-                    "highlights": [
-                        "Sprite fade transitions (300ms hide, 50ms show)",
-                        "Background ping-pong layer technique (useAltBackground toggle)",
-                        "TypewriterController public API for scene renderer access",
-                        "EventBus integration for choice:selected events"
-                    ],
-                    "codeComparison": {
-                        "before": {
-                            "title": "V1 (JavaScript)",
-                            "badge": "SOLID REFACTOR",
-                            "lang": "javascript",
-                            "code": "// V1: scene-renderer.js\nupdateSprites(sprites) {\n  if (sprites.left === null) {\n    game.spriteLeft.style.opacity = '0';\n    setTimeout(() => {\n      game.spriteLeft.style.display = 'none';\n    }, 300);\n  } else {\n    game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;\n    game.spriteLeft.style.opacity = '1';\n  }\n}"
-                        },
-                        "after": {
-                            "title": "V2 (TypeScript)",
-                            "badge": "TYPE-SAFE RENDERING",
-                            "lang": "typescript",
-                            "code": "// V2: SceneRenderer.ts\npublic updateSprites(sprites: SpriteUpdate): void {\n  if (sprites.left === null) {\n    if (game.spriteLeft) {\n      game.spriteLeft.style.opacity = '0';\n      setTimeout(() => {\n        if (game.spriteLeft) {\n          game.spriteLeft.style.display = 'none';\n        }\n      }, 300);\n    }\n  }\n}"
-                        }
-                    }
+                    "id": "phase-19a",
+                    "emoji": "🎭",
+                    "title": "SceneRenderer - Visual Orchestration (385 lines)",
+                    "features": [
+                        "🎭 Sprite Management: Left/right with 300ms fade",
+                        "🖼️ Background Crossfade: Dual-layer ping-pong",
+                        "🔘 Choice Menu: Belle's echo memory + denial feedback",
+                        "⌨️ Typewriter: Mobile pagination + instant mode"
+                    ]
+                },
+                {
+                    "id": "phase-19c",
+                    "emoji": "🎥",
+                    "title": "CutsceneEngine - Simple Transitions (174 lines)",
+                    "features": [
+                        "🎬 Simple Fades: playSimpleFade(content, duration)",
+                        "📺 Container Management: Show/hide with opacity",
+                        "🎨 CSS Delegation: Complex animations → CSS"
+                    ]
                 }
             ],
             "metrics": {
-                "linesAdded": 388,
-                "filesChanged": 2,
-                "testsWritten": 0,
-                "v1Lines": 274,
-                "v2Lines": 385,
-                "growth": "+111 lines (TypeScript interfaces + null safety)"
+                "linesAdded": 559,
+                "v1Lines": 402,
+                "expansion": "+39%"
             },
-            "lessons": [
-                "Dual-layer background technique prevents flicker during transitions",
-                "Null checks in setTimeout closures prevent race conditions",
-                "TypewriterController public API enables scene renderer integration",
-                "setInterval type casting needed for browser vs Node.js compatibility",
-                "Echo group special handling preserves meta-narrative elements",
-                "Belle's choice tracking requires choiceId before EventBus emission",
-                "Sprite fade timing (300ms/50ms) matches perceived smoothness"
-            ],
-            "crewAttribution": {
-                "systems": [
-                    {
-                        "name": "Belle",
-                        "contribution": "Echo memory choice tracking system",
-                        "icon": "💭"
-                    },
-                    {
-                        "name": "Session 53",
-                        "contribution": "SOLID refactor extraction from GameEngine",
-                        "icon": "🏗️"
-                    }
-                ],
-                "quote": "\"Built with love.\" 🎬"
-            }
-        },
-        {
-            "id": "phase-19c",
-            "date": "January 16, 2026",
-            "emoji": "🎞️",
-            "title": "Phase 19c: CutsceneEngine - Simple Scene Transitions",
-            "type": "order-entry",
-            "summary": "Simplified cutscene system for basic scene transitions. Complex animations moved to CSS, minimal DOM manipulation. Perfect for chapter breaks and fade transitions.",
-            "features": [
-                "🎬 <strong>Start/End Control:</strong> Basic cutscene playback with game UI hiding",
-                "📦 <strong>Container Management:</strong> Auto-creates overlay structure if missing",
-                "🌟 <strong>Simple Fade:</strong> 3-second default fade transition for chapter breaks",
-                "🎨 <strong>CSS-Based:</strong> All complex animations handled by CSS classes",
-                "🚫 <strong>Pointer Events:</strong> Automatic interaction blocking during playback"
-            ],
-            "subPhases": [
+            "crew": [
                 {
-                    "id": "phase-19c-core",
-                    "title": "Cutscene Control System",
-                    "description": "Minimal cutscene engine for basic transitions",
-                    "linesOfCode": 174,
-                    "highlights": [
-                        "1-second fade-out transition on end",
-                        "Auto-creates cutscene-container + cutscene-canvas DOM",
-                        "Pointer events control for interaction blocking",
-                        "playSimpleFade() for chapter transitions"
-                    ],
-                    "codeComparison": {
-                        "before": {
-                            "title": "V1 (JavaScript)",
-                            "badge": "SIMPLIFIED",
-                            "lang": "javascript",
-                            "code": "// V1: cutscene-engine.js\nplaySimpleFade(content, duration, onComplete) {\n  this.startCutscene();\n  const canvas = document.getElementById('cutscene-canvas');\n  canvas.innerHTML = content;\n  \n  setTimeout(() => {\n    this.endCutscene(onComplete);\n  }, duration || 3000);\n}"
-                        },
-                        "after": {
-                            "title": "V2 (TypeScript)",
-                            "badge": "TYPE-SAFE FADES",
-                            "lang": "typescript",
-                            "code": "// V2: CutsceneEngine.ts\npublic playSimpleFade(content: string, duration?: number, onComplete?: () => void): void {\n  this.startCutscene();\n  const canvas = document.getElementById('cutscene-canvas');\n  if (canvas) {\n    canvas.innerHTML = content;\n  }\n  \n  setTimeout(() => {\n    this.endCutscene(onComplete);\n  }, duration || 3000);\n}"
-                        }
-                    }
+                    "name": "Belle",
+                    "contribution": "Echo memory choice tracking",
+                    "icon": "💚"
+                },
+                {
+                    "name": "Session 53",
+                    "contribution": "SOLID refactor extraction",
+                    "icon": "🏗️"
                 }
             ],
-            "metrics": {
-                "linesAdded": 174,
-                "filesChanged": 1,
-                "testsWritten": 0,
-                "v1Lines": 128,
-                "v2Lines": 174,
-                "growth": "+46 lines (TypeScript interfaces + null safety)"
-            },
-            "lessons": [
-                "Simple cutscene systems benefit from CSS-based animations",
-                "Pointer events control prevents click-through during transitions",
-                "Auto-creating DOM structure makes integration easier",
-                "1-second fade-out feels natural for cutscene exits",
-                "Minimal game instance coupling improves testability"
-            ],
-            "crewAttribution": {
-                "quote": "\"SIMPLIFIED VERSION - Basic cutscene structure only\""
-            }
+            "quote": "\"Built with love.\" 🎬"
         },
         {
-            "id": "phase-19-summary",
-            "date": "January 16, 2026",
-            "emoji": "🎬",
-            "title": "Phase 19 Complete: Core Rendering Systems",
-            "type": "order-entry",
-            "summary": "Major milestone achieved! All core rendering infrastructure ported from V1 to V2. SceneRenderer orchestrates visual elements, SceneProgressionController manages story flow, and CutsceneEngine handles transitions. The visual experience is now fully type-safe.",
-            "features": [
-                "🎨 <strong>Visual Orchestration:</strong> Complete sprite, background, and choice rendering pipeline",
-                "📖 <strong>Story Flow:</strong> Prologue → route selection → route gameplay coordination",
-                "🎞️ <strong>Scene Transitions:</strong> CSS-based cutscene system for chapter breaks",
-                "💾 <strong>State Persistence:</strong> Full save/load system with Living Version tracking",
-                "🔒 <strong>Type Safety:</strong> 100% TypeScript strict mode compliance"
-            ],
-            "subPhases": [
-                {
-                    "id": "phase-19-achievements",
-                    "title": "Technical Achievements",
-                    "description": "V1→V2 parity across all rendering systems",
-                    "linesOfCode": 944,
-                    "highlights": [
-                        "SceneRenderer: 385 lines (sprite/background/choice rendering)",
-                        "SceneProgressionController: Already ported in Phase 15",
-                        "CutsceneEngine: 174 lines (simple fade transitions)",
-                        "EventBus integration throughout all systems",
-                        "Null-safety checks in all DOM manipulations"
-                    ],
-                    "codeComparison": {
-                        "before": {
-                            "title": "V1 Architecture",
-                            "badge": "FUNCTIONAL",
-                            "lang": "javascript",
-                            "code": "// V1: Direct game instance coupling\nclass SceneRenderer {\n  constructor(game) {\n    this.game = game;\n  }\n  \n  updateSprites(sprites) {\n    if (sprites.left) {\n      game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;\n    }\n  }\n}"
-                        },
-                        "after": {
-                            "title": "V2 Architecture",
-                            "badge": "DECOUPLED + TYPE-SAFE",
-                            "lang": "typescript",
-                            "code": "// V2: EventBus + TypeScript interfaces\nexport class SceneRenderer {\n  constructor(game: GameInstance, eventBus: EventBus) {\n    this.game = game;\n    this.eventBus = eventBus;\n  }\n  \n  public updateSprites(sprites: SpriteUpdate): void {\n    if (sprites.left && game.spriteLeft) {\n      game.spriteLeft.style.backgroundImage = `url(${sprites.left})`;\n    }\n  }\n}"
-                        }
-                    }
-                }
-            ],
-            "metrics": {
-                "linesAdded": 944,
-                "filesChanged": 3,
-                "testsWritten": 0,
-                "totalV1Lines": 944,
-                "totalV2Lines": 944,
-                "phasesCompleted": 3,
-                "systemsPorted": "SceneRenderer, SceneProgressionController, CutsceneEngine"
-            },
-            "lessons": [
-                "Rendering systems benefit from EventBus decoupling",
-                "TypeScript interfaces enable flexible game instance contracts",
-                "Null checks in setTimeout closures prevent race conditions",
-                "Public API exposure (TypewriterController) enables cross-system integration",
-                "CSS-based animations keep cutscene systems simple",
-                "Dual-layer background technique prevents flicker",
-                "Belle's choice tracking requires early choiceId assignment",
-                "Scene progression 848 version tracking is CRITICAL - never modify"
-            ],
-            "crewAttribution": {
-                "systems": [
-                    {
-                        "name": "Belle",
-                        "contribution": "Echo memory choice tracking integration",
-                        "icon": "💭"
-                    },
-                    {
-                        "name": "DIZEE",
-                        "contribution": "Multiple rendering system implementations",
-                        "icon": "💚"
-                    },
-                    {
-                        "name": "Session 53",
-                        "contribution": "SOLID refactor extraction from GameEngine",
-                        "icon": "🏗️"
-                    }
-                ],
-                "quote": "\"Built with love.\" 🎬 - Every frame matters."
-            }
-        },
-        {
-            "id": "phase-20a",
-            "date": "January 16, 2026",
-            "emoji": "⏸️",
-            "title": "Phase 20a: PauseManager - Centralized Pause Control",
-            "type": "order-entry",
-            "summary": "Instead of a simple boolean, uses a Set of pause reasons. Game pauses when ANY reason exists, resumes only when ALL released. Prevents pause conflicts between systems.",
-            "features": [
-                "🎯 <strong>Set-Based Tracking:</strong> Multiple pause reasons can coexist",
-                "🔄 <strong>Listener Pattern:</strong> Subscribe to pause state changes",
-                "🚨 <strong>Emergency Release:</strong> releaseAll() for force resume",
-                "📊 <strong>Debug Info:</strong> Track all active pause reasons"
-            ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20a-core",
-                        "title": "V1 Parity Port",
-                        "content": [
-                            "<strong>Source:</strong> system/pause-manager.js (168 lines → 215 lines)",
-                            "",
-                            "<strong>Usage Pattern:</strong>",
-                            "<code>pauseManager.request('tutorial');   // Game pauses",
-                            "pauseManager.request('pauseMenu');  // Still paused",
-                            "pauseManager.release('tutorial');   // Still paused (menu open)",
-                            "pauseManager.release('pauseMenu');  // NOW resumes</code>",
-                            "",
-                            "<strong>Architecture:</strong>",
-                            "• EventBus integration (pause:requested, pause:released, pause:force_released)",
-                            "• TypeScript types: PauseState, PauseListener, PauseDebugInfo",
-                            "• Set<string> for efficient reason management",
-                            "• Listener subscription with unsubscribe function",
-                            "",
-                            "<strong>V1 Parity Preserved:</strong>",
-                            "• Exact logging: \"⏸️ Game PAUSED\", \"▶️ Game RESUMED\"",
-                            "• Validation warnings for missing reasons",
-                            "• Error catching in listener notifications",
-                            "• Debug methods: getDebugInfo(), hasReason(), activeReasons"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "phase-20b",
-            "date": "January 16, 2026",
-            "emoji": "🎮",
-            "title": "Phase 20b: UIController - UI Overlay Management",
-            "type": "order-entry",
-            "summary": "Centralized UI overlay management delegating to OverlayManager. Feature unlock notifications, loading tips, haptic patterns. DIZEE's emotional language preserved.",
-            "features": [
-                "🎯 <strong>Modal Delegation:</strong> Error, warning, confirm overlays via OverlayManager",
-                "✨ <strong>Unlock Notifications:</strong> Skip mode, Notes system, ToriGatchi",
-                "💡 <strong>Loading Tips:</strong> 12 main menu + 7 route select variants",
-                "📳 <strong>Haptic Patterns:</strong> DIZEE's emotional language (1-second narrative buzzes)"
-            ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20b-core",
-                        "title": "V1 Parity Port",
-                        "content": [
-                            "<strong>Source:</strong> system/ui-controller.js (314 lines → 380 lines)",
-                            "",
-                            "<strong>Feature Unlocks:</strong>",
-                            "• Skip mode: \"The loop remembers. You remember.\"",
-                            "• Notes system: \"Some notes contain secret codes...\"",
-                            "• ToriGatchi: \"The gateway remembers you.\"",
-                            "",
-                            "<strong>DIZEE Haptic Patterns:</strong>",
-                            "<code>light: 60ms      // Quick tap (UI navigation)",
-                            "medium: 100ms    // Standard (choices, buttons)",
-                            "strong: 150ms    // Important (confirmations)",
-                            "longBuzz: 1000ms // Tamagotchi pull",
-                            "double: [1000, 200, 1000]  // Vessel hop",
-                            "denied: [80, 50, 80, 50, 80]  // Triple DENIAL (despair)",
-                            "glitch: [30, 30, 15, 40, 20]  // Reality breaks",
-                            "heartbeat: [80, 150, 100, 150]  // Tension moments</code>",
-                            "",
-                            "<strong>Architecture:</strong>",
-                            "• OverlayManager instance injection (not static)",
-                            "• Centralized DOM element accessors (11 getters)",
-                            "• Element visibility checking via getComputedStyle",
-                            "• ESC hint timing (4 seconds on desktop only)"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "phase-20c",
-            "date": "January 16, 2026",
-            "emoji": "⚠️",
-            "title": "Phase 20c: ErrorHandler - Global Error Recovery",
-            "type": "order-entry",
-            "summary": "DIZEE POLISH: Graceful degradation and error recovery. Catches unhandled errors and promise rejections. Shows user-friendly messages with recovery options. Prevents white screen of death.",
-            "features": [
-                "🚨 <strong>Global Handlers:</strong> Catch unhandled errors and promise rejections",
-                "💬 <strong>Friendly Messages:</strong> Technical errors → user-readable explanations",
-                "🔄 <strong>Recovery Options:</strong> Reload page or try to continue",
-                "📝 <strong>Error Logging:</strong> Last 10 errors stored in localStorage"
-            ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20c-core",
-                        "title": "V1 Parity Port",
-                        "content": [
-                            "<strong>Source:</strong> system/error-handler.js (252 lines → 310 lines)",
-                            "",
-                            "<strong>Error Spam Prevention:</strong>",
-                            "• Max 5 errors shown before suppression",
-                            "• Prevents infinite error loops",
-                            "• Console warning: \"Too many errors, suppressing further error UI\"",
-                            "",
-                            "<strong>User-Friendly Mapping:</strong>",
-                            "<code>fetch/network → \"Network connection lost. Please check your internet connection.\"",
-                            "localStorage/quota → \"Storage is full or unavailable. Try clearing browser data.\"",
-                            "JSON → \"Save data appears to be corrupted. You may need to start fresh.\"",
-                            "undefined/null → \"A required resource failed to load. Try refreshing the page.\"</code>",
-                            "",
-                            "<strong>Inline-Styled Overlay:</strong>",
-                            "• Z-index: 99999 (above everything)",
-                            "• Red glow: #ff4444 with text-shadow",
-                            "• Background: rgba(0, 0, 0, 0.95)",
-                            "• Two buttons: RELOAD PAGE / TRY TO CONTINUE",
-                            "• Monospace font: Courier New",
-                            "",
-                            "<strong>Error Log Structure:</strong>",
-                            "• timestamp, context, message, stack, userAgent, url",
-                            "• Prunes to last 10 errors automatically",
-                            "• Accessible via getErrorLog() for debugging"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "phase-20d",
-            "date": "January 16, 2026",
-            "emoji": "🖤",
-            "title": "Phase 20d: ToriGatchiGateway - Tori's Desperate Plea",
-            "type": "order-entry",
-            "summary": "Connect ToriGatchi mini-game to main VN. Tori is trapped inside, calling for help. 6 escalating prompts from calm → critical failure. Corruption effects if help is refused.",
-            "features": [
-                "🆘 <strong>6 Escalating Prompts:</strong> \"Hello?\" → \"CRITICAL COHERENCE FAILURE\"",
-                "👻 <strong>Echo Voices:</strong> Hope and Despair commenting on Tori's fate",
-                "💀 <strong>Corruption Effects:</strong> 5 levels of visual/text degradation",
-                "📳 <strong>Synced Haptics:</strong> DIZEE's buzz/tear effects matching visuals"
-            ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20d-core",
-                        "title": "V1 Parity Port",
-                        "content": [
-                            "<strong>Source:</strong> system/gateway.js (377 lines → 480 lines)",
-                            "",
-                            "<strong>Escalating Help Prompts:</strong>",
-                            "<code>Unlock 1 (Glitch 0): \"Hello? Can you hear me?\"",
-                            "Unlock 2 (Glitch 1): \"I'm trapped in here.\"",
-                            "Unlock 3 (Glitch 2): Echoes appear - \"She's trying so hard...\"",
-                            "Unlock 4 (Glitch 3): \"I can feel myself... fragmenting.\"",
-                            "Unlock 5 (Glitch 4): \"I c̷a̷n̷'̷t̷.̷.̷.̷ hold... together...\"",
-                            "Unlock 6 (Glitch 5): \"CRITICAL COHERENCE FAILURE\" (forced help)</code>",
-                            "",
-                            "<strong>Corruption Escalation:</strong>",
-                            "• Level 1: Screen flickers every 15s",
-                            "• Level 2: Tori sprite glitches every 20s",
-                            "• Level 3: Message text corrupted 20% of time (c̷o̷r̷r̷u̷p̷t̷e̷d̷)",
-                            "• Level 4: \"⚠️ COHERENCE DEGRADING ⚠️\" warning added",
-                            "• Level 5: Title becomes \"T̶o̶r̶i̶-̶G̶a̶t̶c̶h̶i̶ - HELP\"",
-                            "",
-                            "<strong>Launch Conditions:</strong>",
-                            "• Helped early (≤2 unlocks) → \"optimal\" start (best chance)",
-                            "• Helped normal (3-4 unlocks) → \"normal\" start",
-                            "• Helped late (≥5 unlocks) → \"desperate\" start (she's damaged)",
-                            "",
-                            "<strong>DIZEE Haptic Sync:</strong>",
-                            "• Buzz effect: [100, 50, 100, 50, 100] (500ms)",
-                            "• Screen tear: [150, 50, 150] (300ms)",
-                            "• Synced with visual animation timing"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "phase-20e",
-            "date": "January 16, 2026",
-            "emoji": "🔌",
-            "title": "Phase 20e: InputBinder - UI Event Binding",
-            "type": "order-entry",
-            "summary": "Separates HTML presentation from JavaScript logic. Centralized event binding for all UI elements. DIZEE's haptic feedback on every button click.",
-            "features": [
-                "🎯 <strong>Safe Binding:</strong> Checks if element exists before attaching",
-                "📳 <strong>Haptic Feedback:</strong> triggerSensoryFeedback on every button",
-                "🗂️ <strong>Organized by Screen:</strong> Main menu, route select, game view, pause, etc.",
-                "🔌 <strong>46 Button Bindings:</strong> Complete UI event coverage"
-            ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20e-core",
-                        "title": "V1 Parity Port",
-                        "content": [
-                            "<strong>Source:</strong> system/input-binder.js (135 lines → 180 lines)",
-                            "",
-                            "<strong>Button Inventory:</strong>",
-                            "<code>Main Menu: 10 buttons (start, continue, load, notes, torigatchi, settings, credits, crew, directors cut, contact)",
-                            "Route Select: 2 buttons (play, back)",
-                            "Game View: 4 buttons (backlog, pause, skip, close backlog)",
-                            "Pause Menu: 7 buttons (close, resume, settings, fullscreen, save, load, main menu)",
-                            "Settings: 4 buttons (close, back, reset, fullscreen)",
-                            "Save/Load: 8 buttons (close, save mode, load mode, 4 slots, 3 deletes)",
-                            "Extras: 11 buttons (dev hud, bootstrap, echo, crew nav, contact, loop init)</code>",
-                            "",
-                            "<strong>Binding Pattern:</strong>",
-                            "<code>bindClick(id, handler) {",
-                            "    const el = document.getElementById(id);",
-                            "    if (el) {",
-                            "        el.addEventListener('click', (e) => {",
-                            "            // DIZEE: Centralized haptic feedback",
-                            "            this.game.triggerSensoryFeedback('buttonPress', el, `Button click: ${id}`);",
-                            "            handler(e);",
-                            "        });",
-                            "    }",
-                            "}</code>",
-                            "",
-                            "<strong>Architecture:</strong>",
-                            "• Optional chaining (?.) for safe method calls",
-                            "• Event.stopPropagation() for delete buttons",
-                            "• Silent fail for missing elements (no console spam)",
-                            "• Organized methods: bindMainMenu(), bindRouteSelect(), bindGameView(), etc."
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "id": "phase-20-summary",
+            "id": "phase-20",
             "date": "January 16, 2026",
             "emoji": "🏗️",
-            "title": "Phase 20 Summary: System Management & Coordination Complete",
+            "title": "Phase 20: System Management & Coordination",
             "type": "order-entry",
-            "summary": "Infrastructure layer complete. 5 systems ported with full V1 parity: pause control, UI management, error recovery, ToriGatchi gateway, and event binding. 1,323 V1 lines → 1,565 V2 lines.",
-            "features": [
-                "⏸️ <strong>PauseManager (215 lines):</strong> Set-based pause reason tracking",
-                "🎮 <strong>UIController (380 lines):</strong> Overlay management + DIZEE haptics",
-                "⚠️ <strong>ErrorHandler (310 lines):</strong> Global error recovery with friendly UI",
-                "🖤 <strong>ToriGatchiGateway (480 lines):</strong> 6 escalating help prompts + corruption",
-                "🔌 <strong>InputBinder (180 lines):</strong> 46 button bindings with haptic feedback"
+            "summary": "Infrastructure layer complete. 5 systems ported: pause control, UI management, error recovery, ToriGatchi gateway, and event binding. 1,323 V1 lines → 1,565 V2 lines (+18%).",
+            "subEntries": [
+                {
+                    "id": "phase-20a",
+                    "emoji": "⏸️",
+                    "title": "PauseManager (215 lines)",
+                    "features": [
+                        "🎯 Set-Based Tracking: Multiple pause reasons coexist",
+                        "🔄 Listener Pattern: Subscribe to state changes",
+                        "🚨 Emergency Release: releaseAll() for force resume"
+                    ]
+                },
+                {
+                    "id": "phase-20b",
+                    "emoji": "🎮",
+                    "title": "UIController (380 lines)",
+                    "features": [
+                        "🎯 Modal Delegation: Error/warning/confirm via OverlayManager",
+                        "✨ Unlock Notifications: Skip, Notes, ToriGatchi",
+                        "📳 DIZEE Haptics: 1-second narrative buzzes"
+                    ]
+                },
+                {
+                    "id": "phase-20c",
+                    "emoji": "⚠️",
+                    "title": "ErrorHandler (310 lines)",
+                    "features": [
+                        "🚨 Global Handlers: Catch unhandled errors/rejections",
+                        "💬 Friendly Messages: Technical → user-readable",
+                        "🔄 Recovery Options: Reload or continue"
+                    ]
+                },
+                {
+                    "id": "phase-20d",
+                    "emoji": "🖤",
+                    "title": "ToriGatchiGateway (480 lines)",
+                    "features": [
+                        "🆘 6 Escalating Prompts: Hello → CRITICAL FAILURE",
+                        "👻 Echo Voices: Hope and Despair",
+                        "💀 Corruption: 5 levels of degradation"
+                    ]
+                },
+                {
+                    "id": "phase-20e",
+                    "emoji": "🔌",
+                    "title": "InputBinder (180 lines)",
+                    "features": [
+                        "🎯 Safe Binding: Element existence checks",
+                        "📳 Haptic Feedback: Every button click",
+                        "🔌 46 Button Bindings: Complete UI coverage"
+                    ]
+                }
             ],
-            "details": {
-                "sections": [
-                    {
-                        "id": "phase-20-achievements",
-                        "title": "Key Achievements",
-                        "content": [
-                            "<strong>Total Port Volume:</strong> 1,323 V1 lines → 1,565 V2 lines (+18% expansion)",
-                            "",
-                            "<strong>V1 Parity Preserved:</strong>",
-                            "• All dialogue text verbatim (Tori's 6 prompts, unlock notifications)",
-                            "• DIZEE's haptic emotional language intact (1-second narrative buzzes)",
-                            "• Inline-styled modals (no CSS dependencies)",
-                            "• localStorage state persistence (error log, gateway state)",
-                            "• Exact timing values (flickers, glitches, fades)",
-                            "",
-                            "<strong>TypeScript Excellence:</strong>",
-                            "• 100% strict mode compliance (0 errors)",
-                            "• Comprehensive type definitions (PauseState, PromptData, HapticPattern, etc.)",
-                            "• Safe optional chaining throughout",
-                            "• EventBus integration for V2 coordination",
-                            "",
-                            "<strong>Critical Systems Intact:</strong>",
-                            "• Pause reason tracking prevents system conflicts",
-                            "• Global error handling prevents white screen of death",
-                            "• ToriGatchi corruption creates persistent consequences",
-                            "• Centralized haptic feedback provides consistent UX",
-                            "",
-                            "<strong>Architecture Wins:</strong>",
-                            "• PauseManager: Listener pattern with unsubscribe functions",
-                            "• UIController: OverlayManager delegation (instance injection)",
-                            "• ErrorHandler: User-friendly error mapping + recovery options",
-                            "• ToriGatchiGateway: corruptText() helper for glitch effects",
-                            "• InputBinder: Safe binding pattern with element existence checks"
-                        ]
-                    },
-                    {
-                        "id": "phase-20-lessons",
-                        "title": "Lessons Learned",
-                        "content": [
-                            "1. <strong>Set-Based State > Boolean Flags:</strong> PauseManager's Set approach elegantly handles multiple pause sources without conflicts.",
-                            "",
-                            "2. <strong>Inline Styles for Critical UI:</strong> Error overlay uses inline styles to ensure it displays even if CSS fails to load.",
-                            "",
-                            "3. <strong>Escalating Consequences:</strong> ToriGatchi's 6-level progression creates emotional weight - refusing help has lasting impact.",
-                            "",
-                            "4. <strong>Centralized Haptics:</strong> InputBinder's unified haptic feedback creates consistent sensory language across entire UI.",
-                            "",
-                            "5. <strong>Graceful Degradation:</strong> ErrorHandler prevents total failure - always offer user a path forward (reload or continue).",
-                            "",
-                            "6. <strong>User-Friendly Error Messages:</strong> Technical errors mapped to actionable user messages (\"check internet connection\" vs \"fetch failed\").",
-                            "",
-                            "7. <strong>State Persistence Matters:</strong> ToriGatchi gateway state persists across sessions - your choices about helping Tori have permanent weight.",
-                            "",
-                            "8. <strong>DIZEE's Emotional Haptics:</strong> 1-second buzzes for narrative moments create distinct sensory separation from UI feedback (60-150ms)."
-                        ]
-                    }
-                ],
-                "crew": [
-                    {
-                        "name": "DIZEE",
-                        "contribution": "Haptic emotional language, error recovery UX, ToriGatchi synced vibrations",
-                        "icon": "📳"
-                    },
-                    {
-                        "name": "Tori",
-                        "contribution": "Gateway dialogue escalation, corruption effects, desperate plea narrative",
-                        "icon": "🖤"
-                    }
-                ],
-                "quote": "\"It's not too late...\" 🖤💚🔥💀 - Phase 20 Complete"
-            }
+            "metrics": {
+                "linesAdded": 1565,
+                "v1Lines": 1323,
+                "expansion": "+18%",
+                "systems": 5
+            },
+            "crew": [
+                {
+                    "name": "DIZEE",
+                    "contribution": "Haptic emotional language, error recovery UX",
+                    "icon": "📳"
+                },
+                {
+                    "name": "Tori",
+                    "contribution": "Gateway dialogue escalation",
+                    "icon": "🖤"
+                }
+            ],
+            "quote": "\"It's not too late...\" 🖤💚🔥💀"
         }
     ]
 };
