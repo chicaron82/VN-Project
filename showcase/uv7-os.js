@@ -27,7 +27,7 @@ class UV7OS {
         this.detectCurrentPhase();
         this.detectCurrentMode();
         this.renderStatusBar();
-        this.renderPhaseList();
+        this.attachSectionNavHandlers();
         this.attachHandlers();
         this.restoreState();
         this.startScrollListener();
@@ -75,14 +75,12 @@ class UV7OS {
             // Notification shade
             shade: document.getElementById('uv7-shade'),
             shadeClose: document.querySelector('.shade-close'),
-            shadeCurrentPhase: document.getElementById('shade-current-phase'),
-            shadeCurrentMode: document.getElementById('shade-current-mode'),
-            shadePhaseList: document.getElementById('shade-phase-list'),
+            shadeSectionList: document.getElementById('shade-section-list'),
 
             // Sidebar
             sidebar: document.getElementById('uv7-sidebar'),
             sidebarToggle: document.getElementById('uv7-sidebar-toggle'),
-            sidebarPhaseList: document.getElementById('sidebar-phase-list'),
+            sidebarSectionList: document.getElementById('sidebar-section-list'),
             sidebarHome: document.getElementById('sidebar-home'),
 
             // Backdrop
@@ -130,52 +128,29 @@ class UV7OS {
         }
     }
 
-    renderPhaseList() {
-        if (!this.phases || this.phases.length === 0) return;
-
-        // Clear existing lists
-        if (this.elements.shadePhaseList) {
-            this.elements.shadePhaseList.innerHTML = '';
-        }
-        if (this.elements.sidebarPhaseList) {
-            this.elements.sidebarPhaseList.innerHTML = '';
-        }
-
-        // Render each phase
-        this.phases.forEach(phase => {
-            const phaseNum = phase.id.replace('phase-', '');
-            const isCurrent = phaseNum === this.currentPhase;
-
-            // Create shade item
-            if (this.elements.shadePhaseList) {
-                const shadeItem = this.createPhaseItem(phase, isCurrent);
-                this.elements.shadePhaseList.appendChild(shadeItem);
-            }
-
-            // Create sidebar item
-            if (this.elements.sidebarPhaseList) {
-                const sidebarItem = this.createPhaseItem(phase, isCurrent);
-                this.elements.sidebarPhaseList.appendChild(sidebarItem);
-            }
+    attachSectionNavHandlers() {
+        // Attach click handlers to all section navigation buttons
+        const sectionNavButtons = document.querySelectorAll('.section-nav-item');
+        sectionNavButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionClass = button.dataset.section;
+                this.jumpToSection(sectionClass);
+            });
         });
     }
 
-    createPhaseItem(phase, isCurrent) {
-        const item = document.createElement('div');
-        item.className = `phase-item ${isCurrent ? 'current' : ''}`;
+    jumpToSection(sectionClass) {
+        const section = document.querySelector(`.${sectionClass}`);
+        if (section) {
+            // Close shade/sidebar
+            this.closeShade();
+            this.closeSidebar();
 
-        const phaseNum = phase.id.replace('phase-', '');
-        const checkbox = isCurrent ? '▣' : '▢';
-
-        item.innerHTML = `
-            <span class="phase-checkbox">${checkbox}</span>
-            <span class="phase-label">Phase ${phaseNum}</span>
-            ${isCurrent ? '<span class="phase-indicator">← YOU</span>' : ''}
-        `;
-
-        item.addEventListener('click', () => this.jumpToPhase(phase.id));
-
-        return item;
+            // Scroll to section (account for status bar)
+            const yOffset = -44; // Status bar height
+            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
     }
 
     attachHandlers() {
@@ -420,12 +395,7 @@ class UV7OS {
     }
 
     updateCurrentPhaseDisplay() {
-        if (this.elements.shadeCurrentPhase) {
-            this.elements.shadeCurrentPhase.textContent = `Phase ${this.currentPhase}`;
-        }
-
-        // Re-render phase lists to update checkboxes
-        this.renderPhaseList();
+        // Phase display removed - using section navigation instead
     }
 
     updateCurrentModeDisplay() {
