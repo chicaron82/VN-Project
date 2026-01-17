@@ -36,6 +36,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    setupFiles: ['./tests/setup.js'],
     // Only include V2 TypeScript tests, exclude V1 JavaScript tests
     include: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
     exclude: [
