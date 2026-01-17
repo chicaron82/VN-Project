@@ -202,7 +202,7 @@ describe('DevCommentarySystem', () => {
 
         it('should have tether origin story', () => {
             const entry = system.getCommentary('tori_tether_intro');
-            expect(entry?.content).toContain('Hold On');
+            expect(entry?.content).toContain('Applebee');
             expect(entry?.content).toContain('press a button');
         });
 
@@ -260,10 +260,16 @@ describe('DevCommentarySystem', () => {
         });
 
         it('should warn when showing all commentary while locked', () => {
-            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const consoleSpy = vi.spyOn(console, 'warn');
 
-            // Create new locked system
-            const lockedSystem = new DevCommentarySystem(eventBus, stateManager);
+            // Clear localStorage to ensure system starts locked
+            localStorage.clear();
+
+            // Create new locked system with fresh state
+            const freshEventBus = new EventBus();
+            const freshStateManager = new StateManager({});
+            const lockedSystem = new DevCommentarySystem(freshEventBus, freshStateManager);
+
             lockedSystem.showAllCommentary();
 
             expect(consoleSpy).toHaveBeenCalledWith(

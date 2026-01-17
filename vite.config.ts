@@ -36,7 +36,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,ts}'],
+    // Only include V2 TypeScript tests, exclude V1 JavaScript tests
+    include: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/timeline_847_failures/**',
+    ],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'json'],

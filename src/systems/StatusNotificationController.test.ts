@@ -173,12 +173,16 @@ describe('StatusNotificationController', () => {
 
     it('should sort queue by priority (high priority first)', () => {
         controller.enable();
-        controller.show({ message: 'First', duration: 5000, priority: 'normal' });
+        // Show a high priority message first so subsequent messages get queued
+        controller.show({ message: 'First', duration: 5000, priority: 'critical' });
         controller.show({ message: 'Low', duration: 1000, priority: 'low' });
         controller.show({ message: 'High', duration: 1000, priority: 'high' });
+        controller.show({ message: 'Normal', duration: 1000, priority: 'normal' });
 
+        // Queue should be sorted: high > normal > low
         expect(controller['queue'][0].message).toBe('High');
-        expect(controller['queue'][1].message).toBe('Low');
+        expect(controller['queue'][1].message).toBe('Normal');
+        expect(controller['queue'][2].message).toBe('Low');
     });
 
     it('should limit queue to 5 messages', () => {
@@ -329,7 +333,8 @@ describe('StatusNotificationController', () => {
 
         mockNotification.click();
 
-        expect(emitSpy).toHaveBeenCalledWith('ui:open_sidebar', { tab: 'notes' });
+        expect(emitSpy).toHaveBeenCalledWith('ui:sidebar:open', {});
+        expect(emitSpy).toHaveBeenCalledWith('ui:notes:open', {});
     });
 
     it('should hide notification when clicked', () => {
