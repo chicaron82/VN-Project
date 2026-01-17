@@ -51,40 +51,56 @@ function calculateDaysInDevelopment() {
  */
 function countPassingTests() {
     try {
-        // Run with timeout to prevent hanging (5 seconds max)
-        const output = execSync('npm test -- --run 2>&1', {
+        // Run V2 tests with explicit config and longer timeout (30 seconds)
+        // Note: This will throw if any tests fail, but we still get output
+        const output = execSync('npx vitest run --config vite.config.ts 2>&1', {
             encoding: 'utf-8',
-            timeout: 5000 // 5 second timeout
+            timeout: 30000, // 30 second timeout
+            stdio: 'pipe'
         });
 
-        // Look for "X passing" in test output
-        const match = output.match(/(\d+) passing/);
-        if (match) {
-            return parseInt(match[1], 10);
-        }
-
-        // Fallback: count test files
-        const testMatch = output.match(/(\d+) tests? passed/i);
+        // Look for test summary line: "Tests  X failed | Y passed (Z)"
+        const testMatch = output.match(/Tests\s+(?:\d+ failed \| )?(\d+) passed/);
         if (testMatch) {
             return parseInt(testMatch[1], 10);
         }
 
-        console.warn('⚠️  Could not parse test count, using fallback');
-        return 435; // Fallback to last known count
-    } catch (error) {
-        // If timeout or error, count test files as estimate
-        console.warn('⚠️  Test run timed out or failed, counting test files...');
-        try {
-            const testFiles = execSync('find src -name "*.test.ts" 2>&1 || find src -name "*.test.ts" -type f', {
-                encoding: 'utf-8',
-                timeout: 2000
-            });
-            const fileCount = testFiles.trim().split('\n').filter(f => f.length > 0).length;
-            // Estimate ~15 tests per file
-            return fileCount * 15;
-        } catch {
-            return 435; // Ultimate fallback
+        // Fallback: Look for standalone "X passed"
+        const passedMatch = output.match(/(\d+) passed/);
+        if (passedMatch) {
+            return parseInt(passedMatch[1], 10);
         }
+
+        console.warn('⚠️  Could not parse test count, using fallback');
+        return 465; // Fallback to last known count
+    } catch (error) {
+        // If tests fail or timeout, try to parse from error output (still contains results)
+        try {
+            const errorOutput = (error.stdout || '') + (error.stderr || '');
+
+            // Strip ANSI escape codes for easier parsing
+            const cleanOutput = errorOutput.replace(/\x1b\[[0-9;]*m/g, '');
+
+            // Look for test summary line: "Tests  X failed | Y passed (Z)"
+            // Format: "      Tests  13 failed | 465 passed (478)"
+            const testMatch = cleanOutput.match(/Tests\s+(?:\d+\s+failed\s*\|\s*)?(\d+)\s+passed\s*\((\d+)\)/);
+            if (testMatch) {
+                console.log('  ℹ️  Parsed from test output (some tests failing)');
+                return parseInt(testMatch[1], 10); // Return the passing count
+            }
+
+            // Fallback: Look for standalone "X passed"
+            const passedMatch = cleanOutput.match(/(\d+)\s+passed/);
+            if (passedMatch) {
+                console.log('  ℹ️  Parsed from test output (some tests failing)');
+                return parseInt(passedMatch[1], 10);
+            }
+        } catch {
+            // Ignore parsing errors
+        }
+
+        console.warn('⚠️  Could not parse test results, using fallback');
+        return 465; // Ultimate fallback to current count
     }
 }
 
