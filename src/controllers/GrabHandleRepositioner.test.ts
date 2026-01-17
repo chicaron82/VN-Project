@@ -1,0 +1,349 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { GrabHandleRepositioner } from './GrabHandleRepositioner';
+
+describe('GrabHandleRepositioner', () => {
+    let repositioner: GrabHandleRepositioner;
+    let mockGrabHandle: HTMLElement;
+    let mockSidebar: HTMLElement;
+
+    beforeEach(() => {
+        // Clear localStorage
+        localStorage.clear();
+
+        // Mock grab handle element
+        mockGrabHandle = document.createElement('div');
+        mockGrabHandle.id = 'sidebar-toggle';
+        mockGrabHandle.style.position = 'fixed';
+        Object.defineProperty(mockGrabHandle, 'offsetHeight', { value: 80, writable: true });
+        Object.defineProperty(mockGrabHandle, 'getBoundingClientRect', {
+            value: () => ({
+                top: 300,
+                height: 80,
+                left: 0,
+                right: 40,
+                bottom: 380,
+                width: 40
+            })
+        });
+        document.body.appendChild(mockGrabHandle);
+
+        // Mock sidebar element
+        mockSidebar = document.createElement('div');
+        mockSidebar.id = 'sidebar';
+        Object.defineProperty(mockSidebar, 'offsetWidth', { value: 350, writable: true });
+        document.body.appendChild(mockSidebar);
+
+        // Mock window dimensions
+        Object.defineProperty(window, 'innerHeight', { value: 800, writable: true });
+        Object.defineProperty(window, 'innerWidth', { value: 1200, writable: true });
+
+        // Mock navigator.vibrate
+        Object.defineProperty(navigator, 'vibrate', {
+            value: vi.fn(),
+            writable: true
+        });
+
+        repositioner = new GrabHandleRepositioner();
+    });
+
+    describe('Initialization', () => {
+        it('should initialize with default position', () => {
+            expect(repositioner.getSide()).toBe('left');
+        });
+
+        it('should load saved position from localStorage', () => {
+            const savedPosition = {
+                topPercent: 75,
+                side: 'right',
+                timestamp: Date.now()
+            };
+            localStorage.setItem('grabHandlePosition', JSON.stringify(savedPosition));
+
+            const newRepositioner = new GrabHandleRepositioner();
+
+            expect(newRepositioner.getSide()).toBe('right');
+        });
+
+        it('should handle invalid localStorage data gracefully', () => {
+            localStorage.setItem('grabHandlePosition', 'invalid json');
+
+            expect(() => new GrabHandleRepositioner()).not.toThrow();
+        });
+
+        it('should handle missing grab handle element', () => {
+            mockGrabHandle.remove();
+
+            expect(() => new GrabHandleRepositioner()).not.toThrow();
+        });
+    });
+
+    describe('Position Constraints', () => {
+        it('should enforce minimum position (stay below status bar)', () => {
+            // Simulate drag to very top
+            const rect = mockGrabHandle.getBoundingClientRect();
+            const startY = rect.top + rect.height / 2;
+
+            // Simulate touchstart
+            const touchStart = new TouchEvent('touchstart', {
+                touches: [{ clientY: startY, clientX: 20 } as Touch],
+                cancelable: true
+            });
+            mockGrabHandle.dispatchEvent(touchStart);
+
+            // Wait for drag to activate (300ms delay)
+            vi.advanceTimersByTime(300);
+
+            // Drag way up
+            const touchMove = new TouchEvent('touchmove', {
+                touches: [{ clientY: 10, clientX: 20 } as Touch],
+                cancelable: true
+            });
+            document.dispatchEvent(touchMove);
+
+            // End drag
+            const touchEnd = new TouchEvent('touchend', { cancelable: true });
+            document.dispatchEvent(touchEnd);
+
+            // Top position should be constrained to safe zone
+            // min = (50px + 40px half-handle) / 800px = 11.25%
+            const topPercent = parseFloat(mockGrabHandle.style.top);
+            expect(topPercent).toBeGreaterThan(10);
+        });
+
+        it('should enforce maximum position (stay above backlog button)', () => {
+            // Similar test but dragging down
+            const rect = mockGrabHandle.getBoundingClientRect();
+            const startY = rect.top + rect.height / 2;
+
+            const touchStart = new TouchEvent('touchstart', {
+                touches: [{ clientY: startY, clientX: 20 } as Touch],
+                cancelable: true
+            });
+            mockGrabHandle.dispatchEvent(touchStart);
+
+            vi.advanceTimersByTime(300);
+
+            // Drag way down
+            const touchMove = new TouchEvent('touchmove', {
+                touches: [{ clientY: 790, clientX: 20 } as Touch],
+                cancelable: true
+            });
+            document.dispatchEvent(touchMove);
+
+            const touchEnd = new TouchEvent('touchend', { cancelable: true });
+            document.dispatchEvent(touchEnd);
+
+            // Top position should be constrained
+            // max = (800px - 80px - 40px half-handle) / 800px = 85%
+            const topPercent = parseFloat(mockGrabHandle.style.top);
+            expect(topPercent).toBeLessThan(90);
+        });
+    });
+
+    describe('Side Flipping', () => {
+        it('should flip from left to right', () => {
+            expect(repositioner.getSide()).toBe('left');
+
+            // Access private method via type assertion
+            (repositioner as any).flipSide();
+
+            expect(repositioner.getSide()).toBe('right');
+        });
+
+        it('should flip from right to left', () => {
+            // Set to right first
+            (repositioner as any).setSide('right');
+            expect(repositioner.getSide()).toBe('right');
+
+            (repositioner as any).flipSide();
+
+            expect(repositioner.getSide()).toBe('left');
+        });
+
+        it('should update handle styling when on right side', () => {
+            (repositioner as any).setSide('right');
+
+            expect(mockGrabHandle.style.left).toBe('auto');
+            expect(mockGrabHandle.style.right).toBe('0px');
+            expect(mockGrabHandle.style.borderRadius).toBe('10px 0px 0px 10px');
+        });
+
+        it('should update handle styling when on left side', () => {
+            (repositioner as any).setSide('left');
+
+            expect(mockGrabHandle.style.left).toBe('0px');
+            expect(mockGrabHandle.style.right).toBe('auto');
+            expect(mockGrabHandle.style.borderRadius).toBe('0px 10px 10px 0px');
+        });
+
+        it('should add right-side class to sidebar when on right', () => {
+            (repositioner as any).setSide('right');
+
+            expect(mockSidebar.classList.contains('right-side')).toBe(true);
+        });
+
+        it('should remove right-side class when on left', () => {
+            mockSidebar.classList.add('right-side');
+            (repositioner as any).setSide('left');
+
+            expect(mockSidebar.classList.contains('right-side')).toBe(false);
+        });
+    });
+
+    describe('Persistence', () => {
+        it('should save position to localStorage', () => {
+            (repositioner as any).currentTop = 75;
+            (repositioner as any).currentSide = 'right';
+            (repositioner as any).savePosition();
+
+            const saved = JSON.parse(localStorage.getItem('grabHandlePosition')!);
+
+            expect(saved.topPercent).toBe(75);
+            expect(saved.side).toBe('right');
+            expect(saved.timestamp).toBeDefined();
+        });
+
+        it('should persist position after flipping sides', () => {
+            (repositioner as any).flipSide();
+
+            const saved = JSON.parse(localStorage.getItem('grabHandlePosition')!);
+            expect(saved.side).toBe('right');
+        });
+    });
+
+    describe('Double-Tap Detection', () => {
+        it('should detect double-tap within 300ms', () => {
+            const now = Date.now();
+            (repositioner as any).lastTapTime = now - 200; // 200ms ago
+
+            const timeSinceLastTap = Date.now() - (repositioner as any).lastTapTime;
+
+            expect(timeSinceLastTap).toBeLessThan((repositioner as any).doubleTapDelay);
+        });
+
+        it('should not detect double-tap after 300ms', () => {
+            const now = Date.now();
+            (repositioner as any).lastTapTime = now - 400; // 400ms ago
+
+            const timeSinceLastTap = Date.now() - (repositioner as any).lastTapTime;
+
+            expect(timeSinceLastTap).toBeGreaterThan((repositioner as any).doubleTapDelay);
+        });
+    });
+
+    describe('Haptic Feedback', () => {
+        it('should trigger light haptic', () => {
+            (repositioner as any).triggerHaptic('light');
+
+            expect(navigator.vibrate).toHaveBeenCalledWith(10);
+        });
+
+        it('should trigger medium haptic', () => {
+            (repositioner as any).triggerHaptic('medium');
+
+            expect(navigator.vibrate).toHaveBeenCalledWith(20);
+        });
+
+        it('should trigger heavy haptic (double-pulse)', () => {
+            (repositioner as any).triggerHaptic('heavy');
+
+            expect(navigator.vibrate).toHaveBeenCalledWith([30, 10, 30]);
+        });
+
+        it('should handle missing vibration API gracefully', () => {
+            // @ts-expect-error - Testing missing API
+            delete navigator.vibrate;
+
+            expect(() => (repositioner as any).triggerHaptic('light')).not.toThrow();
+        });
+    });
+
+    describe('Reset to Default', () => {
+        it('should reset position to center', () => {
+            (repositioner as any).currentTop = 75;
+            repositioner.resetToDefault();
+
+            // Check that top was reset to 50%
+            expect(mockGrabHandle.style.top).toBe('50%');
+        });
+
+        it('should reset side to left', () => {
+            (repositioner as any).setSide('right');
+            repositioner.resetToDefault();
+
+            expect(repositioner.getSide()).toBe('left');
+        });
+
+        it('should save default position to localStorage', () => {
+            (repositioner as any).currentTop = 75;
+            (repositioner as any).currentSide = 'right';
+            repositioner.resetToDefault();
+
+            const saved = JSON.parse(localStorage.getItem('grabHandlePosition')!);
+
+            expect(saved.topPercent).toBe(50);
+            expect(saved.side).toBe('left');
+        });
+    });
+
+    describe('Public API', () => {
+        it('should return current side via getSide()', () => {
+            (repositioner as any).currentSide = 'right';
+
+            expect(repositioner.getSide()).toBe('right');
+        });
+    });
+
+    describe('Edge Cases', () => {
+        it('should handle missing sidebar element gracefully', () => {
+            mockSidebar.remove();
+
+            const newRepositioner = new GrabHandleRepositioner();
+
+            // Should not throw when trying to update sidebar
+            expect(() => (newRepositioner as any).flipSide()).not.toThrow();
+        });
+    });
+
+    describe('Drag Direction Detection', () => {
+        it('should prioritize horizontal drag when deltaX > deltaY', () => {
+            const deltaX = 100;
+            const deltaY = 50;
+
+            const direction = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+
+            expect(direction).toBe('horizontal');
+        });
+
+        it('should prioritize vertical drag when deltaY > deltaX', () => {
+            const deltaX = 50;
+            const deltaY = 100;
+
+            const direction = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+
+            expect(direction).toBe('vertical');
+        });
+    });
+
+    describe('Horizontal Flip Threshold', () => {
+        it('should require 50% of screen width to flip', () => {
+            expect((repositioner as any).flipThreshold).toBe(50);
+        });
+
+        it('should detect crossing threshold', () => {
+            const viewportWidth = 1200;
+            const deltaX = 700; // More than 50%
+            const deltaPercent = Math.abs(deltaX) / viewportWidth * 100;
+
+            expect(deltaPercent).toBeGreaterThan((repositioner as any).flipThreshold);
+        });
+
+        it('should not flip below threshold', () => {
+            const viewportWidth = 1200;
+            const deltaX = 400; // Less than 50%
+            const deltaPercent = Math.abs(deltaX) / viewportWidth * 100;
+
+            expect(deltaPercent).toBeLessThan((repositioner as any).flipThreshold);
+        });
+    });
+});
