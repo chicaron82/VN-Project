@@ -27,6 +27,7 @@ import { EchoMemorySystem } from '@systems/EchoMemorySystem';
 import { InsaneVisualsController } from '@controllers/InsaneVisualsController';
 import { TetherSystem } from '@systems/TetherSystem';
 import { EasterEggController } from '@controllers/EasterEggController';
+import { DirectorsCutController } from '@controllers/DirectorsCutController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { StatusNotificationController } from '@systems/StatusNotificationController';
 import { AchievementToast } from '@ui/components/AchievementToast';
@@ -133,6 +134,14 @@ const tetherSystem = new TetherSystem(eventBus, stateManager);
 // Secret code overlays and special content
 // ============================================
 const easterEggController = new EasterEggController(eventBus, stateManager);
+
+// ============================================
+// Director's Cut Controller - Extended Crew Statements 🎬
+// "Built with love. Every statement matters."
+// Extended crew commentary about working on VERSION 848
+// Unlocked via secret code
+// ============================================
+const directorsCutController = new DirectorsCutController(eventBus, stateManager);
 
 // ============================================
 // Dev Commentary System - Aaron's Director's Cut 📝
@@ -1093,6 +1102,10 @@ async function init() {
             setDifficulty: (diff: 'comfort' | 'normal' | 'intense' | 'insane') => tetherSystem.setDifficulty(diff),
             // Easter Egg debug helpers 🥚
             easterEggController,
+            // Director's Cut debug helpers 🎬
+            directorsCutController,
+            showDirectorsCut: () => directorsCutController.show(),
+            unlockDirectorsCut: () => directorsCutController.unlock(),
             // Dev Commentary debug helpers 📝
             devCommentarySystem,
             showCommentary: () => devCommentarySystem.showAllCommentary(),

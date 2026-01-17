@@ -13,10 +13,6 @@ export interface CrewStatement {
     text: string;
 }
 
-export interface EasterEggController {
-    showUnlockOverlay(title: string, message: string, type: string): void;
-}
-
 /**
  * DirectorsCutController
  *
@@ -32,30 +28,11 @@ export interface EasterEggController {
  * "Built with love. Every statement matters." 💚🔥💀
  */
 export class DirectorsCutController {
-    private eventBus: EventBus;
-    private stateManager: StateManager;
-    private easterEggController: EasterEggController | null = null;
-
     private activeOverlay: HTMLElement | null = null;
     private escapeHandler: ((e: KeyboardEvent) => void) | null = null;
 
-    constructor(eventBus: EventBus, stateManager: StateManager) {
-        this.eventBus = eventBus;
-        this.stateManager = stateManager;
-
+    constructor(_eventBus: EventBus, _stateManager: StateManager) {
         console.log('🎬 DirectorsCutController initialized');
-    }
-
-    // ========================================
-    // INITIALIZATION
-    // ========================================
-
-    /**
-     * Set easter egg controller for unlock checks
-     * @param controller - Easter egg controller instance
-     */
-    public setEasterEggController(controller: EasterEggController): void {
-        this.easterEggController = controller;
     }
 
     // ========================================
@@ -69,13 +46,7 @@ export class DirectorsCutController {
         // Check if unlocked
         const unlocked = localStorage.getItem('directorsCutUnlocked') === 'true';
         if (!unlocked) {
-            if (this.easterEggController) {
-                this.easterEggController.showUnlockOverlay(
-                    '🔒 LOCKED',
-                    'Find the secret code to unlock the Director\'s Cut...',
-                    'warning'
-                );
-            }
+            console.warn('🔒 Director\'s Cut is locked. Find the secret code to unlock it!');
             return;
         }
 
