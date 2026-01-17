@@ -21,6 +21,7 @@ import { SwipeHandler } from '@core/SwipeHandler';
 import { MobileUXController } from '@controllers/MobileUXController';
 import { NotificationShade } from '@ui/components/NotificationShade';
 import { AchievementManager } from '@systems/AchievementManager';
+// AchievementToast removed - NotificationRail now handles achievement:unlocked
 import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
 import { EchoMemorySystem } from '@systems/EchoMemorySystem';
@@ -30,7 +31,7 @@ import { EasterEggController } from '@controllers/EasterEggController';
 import { DirectorsCutController } from '@controllers/DirectorsCutController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { StatusNotificationController } from '@systems/StatusNotificationController';
-import { AchievementToast } from '@ui/components/AchievementToast';
+// AchievementToast import removed - see line 24
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
@@ -56,7 +57,7 @@ import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { CrewScreen } from '@ui/screens/CrewScreen';
 import { SaveSystem } from '@systems/SaveSystem';
-import { ToastNotification } from '@ui/components/ToastNotification';
+// ToastNotification removed - using NotificationRail via EventBus instead
 import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
@@ -171,7 +172,7 @@ const notificationShade = new NotificationShade(eventBus);
 
 // Achievement & Tutorial Systems
 const achievementManager = new AchievementManager(eventBus, stateManager);
-const _achievementToast = new AchievementToast(eventBus);
+// AchievementToast removed - NotificationRail handles achievement:unlocked
 const tutorialController = new TutorialController(eventBus, stateManager);
 const _tipsOverlay = new TipsOverlay(eventBus);
 
@@ -188,7 +189,7 @@ const _crewScreen = new CrewScreen(eventBus);
 const secretCodesManager = new SecretCodesManager(eventBus);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
-const toastNotification = new ToastNotification(eventBus);
+// ToastNotification removed - using NotificationRail via eventBus.emit('notification:show', ...)
 const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI
 const _backlogUI = new BacklogUI(gameEngine.backlogManager, eventBus); // V2: Backlog UI
 const _notificationRail = initializeNotificationRail(eventBus); // Phase 26d: Notification Rail
@@ -198,7 +199,7 @@ console.log('UI Modules Active:', {
     _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
     _notesViewer, _saveLoadModal, _backlogUI, _notificationRail,
     autoReadController, keyboardController, swipeHandler, mobileUXController, notificationShade,
-    achievementManager, _achievementToast, tutorialController, _tipsOverlay
+    achievementManager, tutorialController, _tipsOverlay
 });
 
 declare global {
@@ -736,18 +737,23 @@ function setupEventHandlers() {
             const slot = GameConfig.SAVE.QUICKSAVE_SLOT || 9;
             saveSystem.saveGame(slot, 'Quick Save').then(success => {
                 if (success) {
-                    toastNotification.show({
+                    eventBus.emit('notification:show', {
+                        id: 'quick-save',
                         title: 'QUICK SAVE',
                         message: 'Timeline preserved',
                         icon: '💾',
-                        color: '#0f0'
+                        category: 'autosave',
+                        priority: 'normal',
+                        duration: 2000,
                     });
                 } else {
-                    toastNotification.show({
+                    eventBus.emit('notification:show', {
+                        id: 'save-error',
                         title: 'ERROR',
                         message: 'Save failed',
                         icon: '❌',
-                        color: '#f00'
+                        category: 'system',
+                        priority: 'high',
                     });
                 }
             });
@@ -760,20 +766,25 @@ function setupEventHandlers() {
             if (saveSystem.hasSlot(slot)) {
                 saveSystem.loadGame(slot).then(success => {
                     if (success) {
-                        toastNotification.show({
+                        eventBus.emit('notification:show', {
+                            id: 'quick-load',
                             title: 'QUICK LOAD',
                             message: 'Timeline restored',
                             icon: '🔄',
-                            color: '#0f0'
+                            category: 'system',
+                            priority: 'normal',
+                            duration: 2000,
                         });
                     }
                 });
             } else {
-                toastNotification.show({
+                eventBus.emit('notification:show', {
+                    id: 'no-save',
                     title: 'NO SAVE',
                     message: 'No quick save found',
                     icon: '⚠️',
-                    color: '#ff0'
+                    category: 'system',
+                    priority: 'normal',
                 });
             }
         }
@@ -977,19 +988,21 @@ function setupEventHandlers() {
     // Belle's meta-awareness notifications 🖤
     // ========================================
     eventBus.on('echo:comment', (data) => {
-        // Map echo type to color
-        const echoColors: Record<string, string> = {
-            hope: '#0ff',    // Cyan for Hope 💫
-            gentle: '#8f8',  // Green for Gentle 🌙
-            despair: '#f44'  // Red for Despair 🖤
+        // Map echo type to priority (despair = urgent, others = normal)
+        const echoPriority: Record<string, 'urgent' | 'high' | 'normal'> = {
+            hope: 'normal',
+            gentle: 'normal',
+            despair: 'high'
         };
 
-        toastNotification.show({
+        eventBus.emit('notification:show', {
+            id: `echo-${data.echo}-${Date.now()}`,
             title: `ECHO: ${data.echo.toUpperCase()}`,
             message: data.message,
             icon: data.icon,
-            color: echoColors[data.echo] || '#fff',
-            duration: 4000
+            category: 'system',
+            priority: echoPriority[data.echo] || 'normal',
+            duration: 4000,
         });
     });
 }
@@ -1039,11 +1052,14 @@ async function init() {
 
             if (success) {
                 console.log('[UV7 V2] ✅ Instant Resume successful - skipping menu');
-                toastNotification.show({
+                eventBus.emit('notification:show', {
+                    id: 'quick-resume',
                     title: '⚡ QUICK RESUME',
                     message: 'Welcome back to the loop...',
                     icon: '🔄',
-                    color: '#00ff88'
+                    category: 'system',
+                    priority: 'normal',
+                    duration: 3000,
                 });
                 // Don't show main menu - game is already loaded via SaveSystem
                 return;
