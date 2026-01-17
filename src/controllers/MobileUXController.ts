@@ -4,15 +4,16 @@ import { EventBus } from '@core/EventBus';
 
 /**
  * MobileUXController - High-Level Mobile Interaction Logic
- * 
+ *
  * Coordinates mobile-specific behaviors:
  * - Double-tap to fullscreen
  * - Handling swipe events (mapped to game actions)
- * - Scroll indicators (future)
+ * - Scroll indicators for internal thought bubbles
  */
 export class MobileUXController {
     private eventBus: EventBus;
     private lastTapTime: number = 0;
+    private mutationObserver: MutationObserver | null = null;
 
     // Configuration
     private readonly DOUBLE_TAP_DELAY = 300; // ms
@@ -20,6 +21,7 @@ export class MobileUXController {
     constructor(eventBus: EventBus) {
         this.eventBus = eventBus;
         this.setupListeners();
+        this.setupScrollIndicators();
 
         console.log('[MobileUX] Controller initialized');
     }
@@ -85,6 +87,73 @@ export class MobileUXController {
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             }
+        }
+    }
+
+    // ===========================================
+    // Scroll Indicators
+    // ===========================================
+
+    /**
+     * Setup MutationObserver to detect when internal thought bubbles are created
+     * and add scroll indicators to scrollable content
+     */
+    private setupScrollIndicators(): void {
+        this.mutationObserver = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                mutation.addedNodes.forEach((node) => {
+                    if (node instanceof HTMLElement && node.classList.contains('internal-bubble')) {
+                        this.addScrollIndicator(node);
+                    }
+                });
+            });
+        });
+
+        const gameView = document.getElementById('game-view');
+        if (gameView) {
+            this.mutationObserver.observe(gameView, { childList: true, subtree: true });
+            console.log('[MobileUX] Scroll indicators observer active');
+        }
+    }
+
+    /**
+     * Add scroll indicator to a bubble if its content is scrollable
+     * @param bubble - The bubble element to check
+     */
+    private addScrollIndicator(bubble: HTMLElement): void {
+        const checkScrollable = () => {
+            if (bubble.scrollHeight > bubble.clientHeight) {
+                bubble.classList.add('has-scroll');
+
+                // Add scroll indicator if not already present
+                if (!bubble.querySelector('.scroll-indicator')) {
+                    const indicator = document.createElement('div');
+                    indicator.className = 'scroll-indicator';
+                    indicator.innerHTML = '↓';
+                    bubble.appendChild(indicator);
+
+                    // Hide indicator when scrolled to bottom
+                    bubble.addEventListener('scroll', () => {
+                        const isAtBottom = bubble.scrollHeight - bubble.scrollTop <= bubble.clientHeight + 5;
+                        indicator.style.opacity = isAtBottom ? '0' : '1';
+                    });
+
+                    console.log('[MobileUX] Scroll indicator added to bubble');
+                }
+            }
+        };
+
+        // Check after content is rendered
+        setTimeout(checkScrollable, 100);
+    }
+
+    /**
+     * Clean up resources when controller is destroyed
+     */
+    public destroy(): void {
+        if (this.mutationObserver) {
+            this.mutationObserver.disconnect();
+            this.mutationObserver = null;
         }
     }
 }
