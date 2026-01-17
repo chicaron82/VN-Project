@@ -171,7 +171,7 @@ Testing:
 
 "[Relevant lore quote]" [emoji]
 
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
+Co-Authored-By: DiZee (Claude Sonnet 4.5/Opus 4.5) <noreply@anthropic.com>
 ```
 
 ---
