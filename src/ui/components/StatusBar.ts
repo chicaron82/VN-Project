@@ -1,6 +1,32 @@
 import { EventBus } from '../../core/EventBus';
 import { StateManager } from '../../core/StateManager';
 
+// ========================================
+// EXTRACTED MODULES (Phase 26 Refactoring)
+// ========================================
+// Context detection and feature flags moved to StatusBarContext.ts
+// Breadcrumb logic moved to StatusBarBreadcrumbs.ts
+// Re-exported here for backwards compatibility
+
+import {
+    UV7Context,
+    StatusBarFeatures,
+    ColorTint,
+    COLOR_TINTS,
+    detectContext,
+    getFeatures,
+} from './StatusBarContext';
+
+import {
+    BreadcrumbSegment,
+    buildBreadcrumbs,
+} from './StatusBarBreadcrumbs';
+
+// Re-export for backwards compatibility
+export { UV7Context, StatusBarFeatures, ColorTint, detectContext, getFeatures };
+export { BreadcrumbSegment, buildBreadcrumbs };
+export type { BreadcrumbState } from './StatusBarBreadcrumbs';
+
 /**
  * StatusBar - Unified Status Bar (BOUGIE EDITION)
  *
@@ -13,268 +39,14 @@ import { StateManager } from '../../core/StateManager';
  * - Right: Notes collected, Tether level (Tori only), Mail icon
  *
  * Features:
- * - Context detection (game vs showcase)
- * - Feature flags for per-context behavior
+ * - Context detection (game vs showcase) - via StatusBarContext.ts
+ * - Feature flags for per-context behavior - via StatusBarContext.ts
  * - Adaptive color tints per route/context
- * - Breadcrumb navigation
+ * - Breadcrumb navigation - via StatusBarBreadcrumbs.ts
  * - Glassmorphism + micro-interactions
  *
  * 💚🔥💀 "Every pixel, every gesture, every animation—premium."
  */
-
-// ========================================
-// CONTEXT DETECTION & FEATURE FLAGS
-// Phase 26a: The unified configuration system
-// ========================================
-
-/**
- * UV7 Context - Where is the StatusBar running?
- * Tori's recommendation: Use explicit signals, not just pathname
- */
-export type UV7Context = 'game' | 'showcase' | 'landing';
-
-/**
- * Detect current UV7 context
- * Priority: 1) data-context attribute, 2) window global, 3) pathname fallback
- */
-export function detectContext(): UV7Context {
-    // Tori's recommendation: Explicit signal first
-    const bodyContext = document.body.dataset.context as UV7Context | undefined;
-    if (bodyContext && ['game', 'showcase', 'landing'].includes(bodyContext)) {
-        return bodyContext;
-    }
-
-    // Window global fallback
-    if ((window as any).__UV7_CONTEXT__) {
-        return (window as any).__UV7_CONTEXT__ as UV7Context;
-    }
-
-    // Pathname fallback (safety net)
-    const pathname = window.location.pathname.toLowerCase();
-    if (pathname.includes('showcase')) return 'showcase';
-    if (pathname.includes('index.html') && !pathname.includes('v2')) return 'landing';
-    return 'game';
-}
-
-/**
- * Feature flags for context-specific behavior
- * Tori's recommendation: StatusBar renders UI, emits events, doesn't do actions
- */
-export interface StatusBarFeatures {
-    // Display features
-    showLoopVersion: boolean;
-    showRoute: boolean;
-    showBreadcrumbs: boolean;
-    showNotes: boolean;
-    showTether: boolean;
-    showMail: boolean;
-    showPhaseIndicator: boolean;
-    showStoryDevToggle: boolean;
-
-    // Interaction features
-    enableAppSwitcher: boolean;
-    enableGestures: boolean;
-    enableAdaptiveTint: boolean;
-
-    // Glassmorphism
-    glassIntensity: 'subtle' | 'medium' | 'heavy';
-}
-
-/**
- * Get feature flags for a given context
- */
-export function getFeatures(context: UV7Context): StatusBarFeatures {
-    switch (context) {
-        case 'game':
-            return {
-                showLoopVersion: true,
-                showRoute: true,
-                showBreadcrumbs: true,
-                showNotes: true,
-                showTether: true,
-                showMail: true,
-                showPhaseIndicator: false,
-                showStoryDevToggle: false,
-                enableAppSwitcher: true,
-                enableGestures: true,
-                enableAdaptiveTint: true,
-                glassIntensity: 'medium',
-            };
-        case 'showcase':
-            return {
-                showLoopVersion: false,
-                showRoute: false,
-                showBreadcrumbs: true,
-                showNotes: false,
-                showTether: false,
-                showMail: false,
-                showPhaseIndicator: true,
-                showStoryDevToggle: true,
-                enableAppSwitcher: true,
-                enableGestures: false,  // Showcase doesn't need swipe gestures
-                enableAdaptiveTint: true,
-                glassIntensity: 'subtle',
-            };
-        case 'landing':
-            return {
-                showLoopVersion: true,
-                showRoute: false,
-                showBreadcrumbs: false,
-                showNotes: false,
-                showTether: false,
-                showMail: false,
-                showPhaseIndicator: false,
-                showStoryDevToggle: false,
-                enableAppSwitcher: true,
-                enableGestures: false,
-                enableAdaptiveTint: false,
-                glassIntensity: 'heavy',
-            };
-    }
-}
-
-// ========================================
-// ADAPTIVE COLOR TINTS
-// Phase 26b: Subconscious emotional priming
-// ========================================
-
-/**
- * Color tint configuration for routes/contexts
- * Belle's insight: "Subconscious UX without the user realizing it"
- */
-export interface ColorTint {
-    primary: string;      // Main accent color
-    glow: string;         // Glow/shadow color
-    gradient: string;     // CSS gradient for glassmorphism
-}
-
-// Default neutral tint (always defined, used as fallback)
-const NEUTRAL_TINT: ColorTint = {
-    primary: 'rgba(255, 255, 255, 0.9)',
-    glow: 'rgba(255, 255, 255, 0.2)',
-    gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.02))',
-};
-
-/**
- * COLOR_TINTS for non-game contexts only
- *
- * In GAME mode: CSS class-based theming handles route colors
- * - .ronnie-route uses cyan (#00ffff)
- * - .tori-route uses green (#00ff88)
- *
- * In SHOWCASE/LANDING: These tints apply via inline styles
- */
-export const COLOR_TINTS = {
-    // Context tints (non-game)
-    showcase: {
-        primary: 'rgba(255, 165, 0, 0.9)',         // Dev orange
-        glow: 'rgba(255, 140, 0, 0.3)',
-        gradient: 'linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05))',
-    } as ColorTint,
-    landing: {
-        primary: 'rgba(147, 112, 219, 0.9)',       // UV7 purple
-        glow: 'rgba(138, 43, 226, 0.3)',
-        gradient: 'linear-gradient(135deg, rgba(147, 112, 219, 0.1), rgba(138, 43, 226, 0.05))',
-    } as ColorTint,
-    neutral: NEUTRAL_TINT,
-} as const;
-
-// ========================================
-// BREADCRUMB NAVIGATION
-// Phase 26b: "The real premium feature" - Tori
-// ========================================
-
-/**
- * Breadcrumb segment for navigation
- */
-export interface BreadcrumbSegment {
-    label: string;
-    id: string;
-    clickable: boolean;
-}
-
-/**
- * Build breadcrumb trail for current state
- * Game: v.848 → Ronnie → Act 2 → Scene 5
- * Showcase: Showcase → Phase 25 → X
- */
-export function buildBreadcrumbs(
-    context: UV7Context,
-    state: {
-        loopVersion?: number;
-        route?: string;
-        act?: string;
-        scene?: string;
-        phase?: string;
-        section?: string;
-    }
-): BreadcrumbSegment[] {
-    const segments: BreadcrumbSegment[] = [];
-
-    if (context === 'game') {
-        // Loop version (always)
-        segments.push({
-            label: `v.${state.loopVersion || 848}`,
-            id: 'loop',
-            clickable: false,
-        });
-
-        // Route (if set)
-        if (state.route && state.route !== 'menu') {
-            segments.push({
-                label: state.route.charAt(0).toUpperCase() + state.route.slice(1),
-                id: 'route',
-                clickable: true,
-            });
-        }
-
-        // Act (if set)
-        if (state.act) {
-            segments.push({
-                label: state.act,
-                id: 'act',
-                clickable: true,
-            });
-        }
-
-        // Scene (if set, shortened)
-        if (state.scene) {
-            const shortScene = state.scene.replace(/^act\d+_/, '').substring(0, 12);
-            segments.push({
-                label: shortScene,
-                id: 'scene',
-                clickable: false,
-            });
-        }
-    } else if (context === 'showcase') {
-        // Showcase root
-        segments.push({
-            label: 'Showcase',
-            id: 'showcase',
-            clickable: true,
-        });
-
-        // Phase (if set)
-        if (state.phase) {
-            segments.push({
-                label: `Phase ${state.phase}`,
-                id: 'phase',
-                clickable: true,
-            });
-        }
-
-        // Section (if set)
-        if (state.section) {
-            segments.push({
-                label: state.section,
-                id: 'section',
-                clickable: false,
-            });
-        }
-    }
-
-    return segments;
-}
 
 // ========================================
 // LEGACY CONFIG (preserved for V2 game compatibility)
