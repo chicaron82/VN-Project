@@ -14,7 +14,7 @@ interface SavedPosition {
     timestamp: number;
 }
 
-interface WindowWithGame extends Window {
+interface WindowWithGame {
     game?: {
         notificationShade?: {
             toggleSidebar: () => void;
@@ -168,8 +168,20 @@ export class GrabHandleRepositioner {
         if (!this.grabHandle) return;
 
         // Get position from touch or mouse
-        const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
-        const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
+        let clientY: number;
+        let clientX: number;
+
+        if (e instanceof TouchEvent) {
+            if (e.touches.length > 0) {
+                clientY = e.touches[0].clientY;
+                clientX = e.touches[0].clientX;
+            } else {
+                return; // No touches to track
+            }
+        } else {
+            clientY = e.clientY;
+            clientX = e.clientX;
+        }
 
         // Clear any pending tap timeout
         if (this.tapTimeout) {
@@ -258,8 +270,20 @@ export class GrabHandleRepositioner {
         if (!this.grabHandle) return;
 
         // Get position from touch or mouse
-        const clientY = e instanceof TouchEvent ? e.touches[0].clientY : e.clientY;
-        const clientX = e instanceof TouchEvent ? e.touches[0].clientX : e.clientX;
+        let clientY: number;
+        let clientX: number;
+
+        if (e instanceof TouchEvent) {
+            if (e.touches.length > 0) {
+                clientY = e.touches[0].clientY;
+                clientX = e.touches[0].clientX;
+            } else {
+                return; // No touches to track
+            }
+        } else {
+            clientY = e.clientY;
+            clientX = e.clientX;
+        }
 
         // Store the latest position for RAF
         this.latestClientY = clientY;
@@ -393,7 +417,7 @@ export class GrabHandleRepositioner {
 
     private toggleSidebar(): void {
         // Find notification shade controller to toggle sidebar
-        const win = window as WindowWithGame;
+        const win = window as unknown as WindowWithGame;
         if (win.game && win.game.notificationShade) {
             win.game.notificationShade.toggleSidebar();
         }

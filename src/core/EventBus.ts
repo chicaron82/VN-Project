@@ -145,6 +145,9 @@ export type GameEvents = {
   'ending:true': {};           // TRUE ENDING achieved
   'ending:digitalForever': {}; // DIGITAL FOREVER chosen
   'ending:bad': {};            // Bad ending - increment version
+  'ending:retry': { endingType: string | null };
+  'ending:accept': { endingType: string | null };
+  'ending:exit': { endingType: string | null };
 
   // ========================================
   // ECHO MEMORY SYSTEM EVENTS

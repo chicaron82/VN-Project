@@ -167,8 +167,9 @@ export class EndingDialogController {
 
                 case 'Enter':
                     e.preventDefault();
-                    if (this.endingDialogButtons && this.endingDialogButtons[this.currentEndingFocus]) {
-                        this.endingDialogButtons[this.currentEndingFocus].click();
+                    const enterBtn = this.endingDialogButtons?.[this.currentEndingFocus];
+                    if (enterBtn) {
+                        enterBtn.click();
                     }
                     break;
 

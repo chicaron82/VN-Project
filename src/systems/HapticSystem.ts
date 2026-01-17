@@ -44,7 +44,7 @@ export interface VisualCueManager {
  * "Built with love. Haptic precision matters." 💚🔥💀
  */
 export class HapticSystem {
-    // @ts-expect-error - Reserved for future EventBus integration
+    // EventBus for unified sensory feedback
     private eventBus: EventBus;
     private settings: SettingsProvider;
     private visualCueManager: VisualCueManager | null = null;
