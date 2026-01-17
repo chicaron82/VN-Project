@@ -1,0 +1,7 @@
+{
+    "testsPass": 465,
+    "tsErrors": 87,
+    "phasesComplete": 23,
+    "lastUpdated": "2026-01-17T02:57:00Z",
+    "note": "Run 'bash showcase/generate-stats.sh' to update with latest numbers"
+}

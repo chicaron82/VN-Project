@@ -20,21 +20,16 @@ global.localStorage = {
 
 // Mock window.matchMedia for orientation queries
 global.window = global.window || {};
-global.window.matchMedia = vi.fn().mockImplementation(query => ({
+global.window.matchMedia = (query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: vi.fn(),
-    removeListener: vi.fn(),
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-}));
+    addListener: () => {},
+    removeListener: () => {},
+    addEventListener: () => {},
+    removeEventListener: () => {},
+    dispatchEvent: () => {},
+});
 
-// Mock console methods to reduce noise in tests
-global.console = {
-    ...console,
-    log: () => { }, // Suppress logs in tests
-    warn: () => { }, // Suppress warnings in tests
-    error: console.error // Keep errors visible
-};
+// Don't mock console - let tests spy on it as needed
+// Tests can use vi.spyOn(console, 'log').mockImplementation(() => {}) to suppress if needed
