@@ -61,6 +61,7 @@ import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
 import { BacklogUI } from '@ui/components/BacklogUI'; // V2: Backlog UI
+import { initializeNotificationRail } from '@ui/components/NotificationRail'; // Phase 26d: Notification Rail
 
 // Import route JSON files (Vite handles these as static imports)
 import prologueData from '@content/routes/prologue.json';
@@ -190,11 +191,12 @@ const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 const toastNotification = new ToastNotification(eventBus);
 const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI
 const _backlogUI = new BacklogUI(gameEngine.backlogManager, eventBus); // V2: Backlog UI
+const _notificationRail = initializeNotificationRail(eventBus); // Phase 26d: Notification Rail
 
 // Silence unused warnings by logging
 console.log('UI Modules Active:', {
     _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
-    _notesViewer, _saveLoadModal, _backlogUI,
+    _notesViewer, _saveLoadModal, _backlogUI, _notificationRail,
     autoReadController, keyboardController, swipeHandler, mobileUXController, notificationShade,
     achievementManager, _achievementToast, tutorialController, _tipsOverlay
 });
@@ -1115,6 +1117,25 @@ async function init() {
             showToast: (msg: string) => statusNotificationController.show({ message: msg }),
             showError: (msg: string) => statusNotificationController.showError(msg),
             showSave: () => statusNotificationController.showSave(),
+            // Notification Rail debug helpers 🔔 (Phase 26d)
+            notificationRail: _notificationRail,
+            showNotification: (title: string, message: string, priority?: 'urgent' | 'high' | 'normal' | 'low') => {
+                eventBus.emit('notification:show', {
+                    id: `debug-${Date.now()}`,
+                    title,
+                    message,
+                    priority: priority || 'normal',
+                    category: 'system',
+                });
+            },
+            testNotifications: () => {
+                // Test all notification types
+                eventBus.emit('notification:show', { id: 'test-1', title: 'System Alert', message: 'Normal priority notification', priority: 'normal', category: 'system' });
+                setTimeout(() => eventBus.emit('notification:show', { id: 'test-2', title: 'Warning', message: 'High priority notification', priority: 'high', category: 'system' }), 500);
+                setTimeout(() => eventBus.emit('notification:show', { id: 'test-3', title: 'Achievement!', message: 'You unlocked something!', priority: 'high', category: 'achievement' }), 1000);
+                setTimeout(() => eventBus.emit('notification:show', { id: 'test-4', title: '⚠️ URGENT', message: 'Critical notification!', priority: 'urgent', category: 'tether' }), 1500);
+            },
+            clearNotifications: () => eventBus.emit('notification:clear_all', {}),
         };
         console.log('[UV7 V2] Debug: window.uv7 available');
     }

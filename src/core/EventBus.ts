@@ -199,6 +199,37 @@ export type GameEvents = {
   'tether:freeze': {};
   'tether:resume': {};
   'tether:set': { value: number };
+  'tether:warning': { level: number };
+
+  // ========================================
+  // NOTIFICATION RAIL EVENTS (Phase 26d)
+  // Premium notification system 🔔
+  // ========================================
+  'notification:show': {
+    id?: string;
+    title: string;
+    message: string;
+    icon?: string;
+    category?: 'system' | 'torigatchi' | 'achievement' | 'autosave' | 'tether' | 'note' | 'app';
+    priority?: 'urgent' | 'high' | 'normal' | 'low';
+    duration?: number;
+    actionLabel?: string;
+    actionCallback?: () => void;
+    appId?: string;
+    dismissible?: boolean;
+  };
+  'notification:dismiss': { id: string };
+  'notification:clear_all': {};
+  'notification:shown': { id: string; category: string };
+  'notification:dismissed': { id: string };
+  'notification:badge_update': { appId: string; count: number };
+
+  // App-specific notification triggers
+  'torigatchi:hunger_warning': { message?: string; urgent?: boolean };
+  'game:autosave': { scene?: string };
+  'note:received': { id?: string; sender?: string; preview?: string; title?: string };
+  'ui:achievements:open': {};
+  'app:launch': { appId: string };
 };
 
 export type EventName = keyof GameEvents;
