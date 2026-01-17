@@ -33,22 +33,18 @@ describe('HapticSystem', () => {
 
     it('should scale pattern for Gentle comfort (0)', () => {
         mockSettings.getComfortIntensity.mockReturnValue(0);
-        const pattern = [100];
-        const expected = [60]; // 0.6x
-
-        // We test the scaling logic directly via a exposed method or by mocking getPattern if we want to be precise
-        // Here we test via trigger with a known config pattern
-        // LIGHT is 10. 10 * 0.6 = 6. 
-        // Wait, the code has Math.max(5, ...). 
+        // LIGHT is 10. 10 * 0.6 = 6.
         hapticSystem.trigger('LIGHT');
-        expect(navigator.vibrate).toHaveBeenCalledWith(6);
+        // V1 parity: scalePattern returns an array for single values when scaled
+        expect(navigator.vibrate).toHaveBeenCalledWith([6]);
     });
 
     it('should scale pattern for INSANE comfort (3)', () => {
         mockSettings.getComfortIntensity.mockReturnValue(3);
         // LIGHT is 10. 10 * 2.0 = 20.
         hapticSystem.trigger('LIGHT');
-        expect(navigator.vibrate).toHaveBeenCalledWith(20);
+        // V1 parity: scalePattern returns an array for single values when scaled
+        expect(navigator.vibrate).toHaveBeenCalledWith([20]);
     });
 
     it('should debounce rapid triggers', () => {
@@ -59,28 +55,150 @@ describe('HapticSystem', () => {
 
     it('should allow forced triggers to bypass debounce', () => {
         hapticSystem.trigger('LIGHT');
-        hapticSystem.trigger('LIGHT', { force: true });
+        hapticSystem.trigger('LIGHT', '', { force: true }); // V1 parity: description param before options
         expect(navigator.vibrate).toHaveBeenCalledTimes(2);
     });
 
     it('should trigger sensory feedback (Haptic + Event)', () => {
-        // We need to spy on eventBus emit for this test, but EventBus.emit is not easily spyable unless we mock the instance method
-        // Or we can subscribe to it.
-
-        let eventReceived: any = null;
+        let visualCueReceived: any = null;
         eventBus.on('visual:cue', (data) => {
-            eventReceived = data;
+            visualCueReceived = data;
         });
 
         hapticSystem.triggerSensory('denied');
 
-        // Check Haptic
-        // denied pattern is [80, 20, 80] (as defined in GameConfig.ts port, wait, let's check values in GameConfig.ts)
-        // In GameConfig.ts: DENIED: [80, 20, 80]
+        // Check Haptic - DENIED pattern is [80, 20, 80]
         expect(navigator.vibrate).toHaveBeenCalledWith(GameConfig.HAPTICS.DENIED);
 
-        // Check Visual Event (commented out in HapticSystem.ts? No, I should uncomment it)
-        // Wait, I commented it out in the previous step because the event type wasn't defined. 
-        // I NEED TO UNCOMMENT IT IN HapticSystem.ts AFTER UPDATING EventBus.ts
+        // Check Visual Event
+        expect(visualCueReceived).not.toBeNull();
+        expect(visualCueReceived.type).toBe('denied'); // Visual type matches the cue name
+        expect(visualCueReceived.channel).toBe('critical');
+    });
+
+    describe('V1 Parity Features', () => {
+        it('should accept description parameter in trigger()', () => {
+            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+
+            // Enable debug mode for logging
+            (GameConfig as any).DEBUG_MODE = true;
+
+            hapticSystem.trigger('LIGHT', 'Test haptic description');
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Test haptic description'),
+                expect.anything()
+            );
+
+            (GameConfig as any).DEBUG_MODE = false;
+            consoleSpy.mockRestore();
+        });
+
+        it('should provide triggerHaptic() alias for V1 compatibility', () => {
+            hapticSystem.triggerHaptic('MEDIUM');
+            expect(navigator.vibrate).toHaveBeenCalled();
+        });
+
+        it('should provide triggerSensoryFeedback() alias for V1 compatibility', () => {
+            hapticSystem.triggerSensoryFeedback('denied');
+            expect(navigator.vibrate).toHaveBeenCalled();
+        });
+
+        it('should accept target element in triggerSensory()', () => {
+            const mockElement = document.createElement('div');
+            const mockVisualCueManager = {
+                trigger: vi.fn()
+            };
+
+            hapticSystem.setVisualCueManager(mockVisualCueManager);
+
+            // Need to force the trigger since it might be debounced
+            hapticSystem.trigger('LIGHT', '', { force: true });
+            hapticSystem.triggerSensory('denied', mockElement, 'Test sensory cue');
+
+            expect(mockVisualCueManager.trigger).toHaveBeenCalledWith(
+                'denied', // Visual type matches the cue name
+                mockElement,
+                { channel: 'critical' }
+            );
+        });
+
+        it('should log sensory events when DEBUG_MODE is enabled', () => {
+            (GameConfig as any).DEBUG_MODE = true;
+
+            hapticSystem.trigger('LIGHT', 'Test event');
+
+            const log = hapticSystem.getSensoryLog();
+            expect(log.length).toBe(1);
+            expect(log[0].cueType).toBe('LIGHT');
+            expect(log[0].description).toBe('Test event');
+            expect(log[0].comfort).toBe(1);
+
+            (GameConfig as any).DEBUG_MODE = false;
+        });
+
+        it('should clear sensory log', () => {
+            (GameConfig as any).DEBUG_MODE = true;
+
+            hapticSystem.trigger('LIGHT', 'Test 1');
+            hapticSystem.trigger('MEDIUM', 'Test 2', { force: true });
+
+            expect(hapticSystem.getSensoryLog().length).toBe(2);
+
+            hapticSystem.clearSensoryLog();
+
+            expect(hapticSystem.getSensoryLog().length).toBe(0);
+
+            (GameConfig as any).DEBUG_MODE = false;
+        });
+
+        it('should limit sensory log to maxSensoryLog entries', () => {
+            (GameConfig as any).DEBUG_MODE = true;
+
+            // Trigger 110 events (max is 100)
+            for (let i = 0; i < 110; i++) {
+                hapticSystem.trigger('LIGHT', `Event ${i}`, { force: true });
+            }
+
+            const log = hapticSystem.getSensoryLog();
+            expect(log.length).toBe(100);
+            // Oldest entries should be removed
+            expect(log[0].description).toBe('Event 10');
+
+            (GameConfig as any).DEBUG_MODE = false;
+        });
+
+        it('should get all haptic patterns', () => {
+            const patterns = hapticSystem.getHapticPatterns();
+            expect(patterns).toHaveProperty('LIGHT');
+            expect(patterns).toHaveProperty('MEDIUM');
+            expect(patterns).toHaveProperty('DENIED');
+        });
+
+        it('should warn when unknown sensory cue is triggered', () => {
+            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            (GameConfig as any).DEBUG_MODE = true;
+
+            // Cast to any to bypass TypeScript type checking
+            (hapticSystem as any).triggerSensory('UNKNOWN_CUE');
+
+            expect(consoleSpy).toHaveBeenCalledWith(
+                expect.stringContaining('Unknown sensory cue')
+            );
+
+            (GameConfig as any).DEBUG_MODE = false;
+            consoleSpy.mockRestore();
+        });
+
+        it('should include timestamp in sensory log entries', () => {
+            (GameConfig as any).DEBUG_MODE = true;
+
+            hapticSystem.trigger('LIGHT', 'Test');
+
+            const log = hapticSystem.getSensoryLog();
+            expect(log[0].time).toMatch(/\d{1,2}:\d{2}:\d{2}/); // Time format HH:MM:SS
+
+            (GameConfig as any).DEBUG_MODE = false;
+        });
     });
 });

@@ -1,3 +1,10 @@
+// ========================================
+// HAPTIC SYSTEM - Version 848
+// Centralized haptic feedback system
+// Extracted from GameEngine for SOLID principles
+// Enhanced V2 port with full V1 parity
+// ========================================
+
 import { GameConfig, HapticPatternName, SensoryCueName } from '@core/GameConfig';
 import { EventBus } from '@core/EventBus';
 
@@ -11,111 +18,280 @@ export interface SettingsProvider {
     getComfortIntensity(): number; // 0=Gentle, 1=Normal, 2=Amped, 3=INSANE
 }
 
+export interface SensoryLogEntry {
+    cueType: string;
+    channel: string;
+    pattern: number | number[];
+    description: string;
+    comfort: number;
+    time: string;
+}
+
+export interface VisualCueManager {
+    trigger(visualType: string, target: HTMLElement | null, options: { channel: string }): void;
+}
+
 /**
- * HapticSystem - V2
- * 
- * Centralized haptic feedback system.
- * Ports V1 logic with type safety and EventBus integration.
+ * HapticSystem
+ *
+ * Handles all vibration/haptic feedback with:
+ * - Pattern library from GameConfig
+ * - Comfort level scaling
+ * - Debounce/anti-spam
+ * - Unified sensory feedback (haptic + visual)
+ * - Debug logging for dev mode
+ *
+ * "Built with love. Haptic precision matters." 💚🔥💀
  */
 export class HapticSystem {
+    // @ts-expect-error - Reserved for future EventBus integration
     private eventBus: EventBus;
     private settings: SettingsProvider;
+    private visualCueManager: VisualCueManager | null = null;
 
+    // Debounce state
     private lastHapticTime: number = 0;
-    private hapticCooldownMs: number = GameConfig.TIMING.HAPTIC_COOLDOWN_MS;
+    private hapticCooldownMs: number = 50; // V1 parity: 50ms cooldown
+
+    // Debug logging
+    private sensoryLog: SensoryLogEntry[] = [];
+    private maxSensoryLog: number = 100;
 
     constructor(eventBus: EventBus, settings: SettingsProvider) {
         this.eventBus = eventBus;
         this.settings = settings;
+        console.log('📳 HapticSystem initialized');
     }
 
+    // ========================================
+    // VISUAL CUE MANAGER INTEGRATION
+    // ========================================
+
     /**
-   * getPattern - Retrieve pattern from config or fallback
-   */
-    getPattern(name: string): number | readonly number[] {
+     * Set visual cue manager for unified sensory feedback
+     * @param manager - Visual cue manager instance
+     */
+    public setVisualCueManager(manager: VisualCueManager): void {
+        this.visualCueManager = manager;
+    }
+
+    // ========================================
+    // PATTERN ACCESS
+    // ========================================
+
+    /**
+     * Get haptic patterns from GameConfig or fallback
+     * @param name - Pattern name
+     * @returns Pattern (number or array)
+     */
+    public getPattern(name: string): number | readonly number[] {
         const key = name.toUpperCase() as keyof typeof GameConfig.HAPTICS;
         return GameConfig.HAPTICS[key] || GameConfig.HAPTICS.LIGHT;
     }
 
-    scalePattern(pattern: number | number[] | readonly number[], comfortLevel: number): number | number[] {
-        // ensure we work with a mutable number array
-        const mutablePattern: number[] = Array.isArray(pattern) ? [...pattern] : [pattern as number];
-        let scaled: number[];
-
-        if (comfortLevel === 1) {
-            scaled = mutablePattern;
-        } else if (comfortLevel === 0) {
-            // Gentle: softer, shorter
-            scaled = mutablePattern.map(ms => Math.max(5, Math.round(ms * 0.6)));
-        } else if (comfortLevel === 2) {
-            // Amped: stronger, longer
-            scaled = mutablePattern.map(ms => Math.round(ms * 1.3));
-        } else if (comfortLevel === 3) {
-            // INSANE: MUCH stronger, MUCH longer
-            scaled = mutablePattern.map(ms => Math.round(ms * 2.0));
-        } else {
-            scaled = mutablePattern;
-        }
-
-        return Array.isArray(pattern) ? scaled : (scaled[0] ?? 50);
+    /**
+     * Get all haptic patterns from GameConfig
+     * V1 parity: Fallback patterns if GameConfig not available
+     * @returns Pattern library
+     */
+    public getHapticPatterns(): Record<string, number | readonly number[]> {
+        // Return all patterns from GameConfig
+        return GameConfig.HAPTICS;
     }
 
+    // ========================================
+    // PATTERN SCALING
+    // ========================================
+
     /**
-     * trigger - Execute haptic feedback
+     * Scale haptic pattern by comfort level
+     * @param pattern - Base pattern
+     * @param comfortLevel - 0=Gentle, 1=Normal, 2=Amped, 3=INSANE
+     * @returns Scaled pattern
      */
-    trigger(patternName: HapticPatternName, options: HapticOptions = {}): void {
+    public scalePattern(pattern: number | number[] | readonly number[], comfortLevel: number): number | number[] {
+        // 0=Gentle (60%), 1=Normal (100%), 2=Amped (130%), 3=INSANE (200%)
+        if (comfortLevel === 1) {
+            return Array.isArray(pattern) ? [...pattern] : (pattern as number);
+        }
+
+        // Normalize to mutable array
+        const arr: number[] = Array.isArray(pattern) ? [...pattern] : [pattern as number];
+
+        if (comfortLevel === 0) {
+            // Gentle: softer, shorter
+            return arr.map(ms => Math.max(5, Math.round(ms * 0.6)));
+        }
+        if (comfortLevel === 2) {
+            // Amped: stronger, longer
+            return arr.map(ms => Math.round(ms * 1.3));
+        }
+        if (comfortLevel === 3) {
+            // INSANE: MUCH stronger, MUCH longer
+            return arr.map(ms => Math.round(ms * 2.0));
+        }
+
+        return Array.isArray(pattern) ? arr : (arr[0] ?? 50);
+    }
+
+    // ========================================
+    // MAIN HAPTIC TRIGGER
+    // ========================================
+
+    /**
+     * Trigger haptic feedback
+     * @param patternName - Pattern name from library
+     * @param description - Debug description
+     * @param options - Options (channel, force)
+     */
+    public trigger(patternName: HapticPatternName, description: string = '', options: HapticOptions = {}): void {
         const { channel = 'ui', force = false } = options;
 
-        // 1. Check settings
-        if (!this.settings.getHapticEnabled()) return;
+        // Check if user has enabled haptics
+        if (!this.settings.getHapticEnabled()) {
+            return;
+        }
 
-        // 2. Check Debounce (unless forced)
+        // Check device support
+        if (!navigator.vibrate) {
+            return;
+        }
+
+        // Debounce anti-spam
         const now = performance.now();
         if (!force && (now - this.lastHapticTime) < this.hapticCooldownMs) {
+            if (GameConfig.DEBUG_MODE) console.log(`🚫 Haptic debounced: ${patternName}`);
             return;
         }
         this.lastHapticTime = now;
 
-        // 3. Get and Scale Pattern
+        // Get pattern (always returns a fallback, so no need to check for null)
         const basePattern = this.getPattern(patternName);
+
+        // Scale by comfort
         const comfort = this.settings.getComfortIntensity();
         const finalPattern = this.scalePattern(basePattern, comfort);
 
-        // 4. Execute (if supported)
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-            navigator.vibrate(finalPattern);
-        }
+        // Trigger vibration
+        navigator.vibrate(finalPattern);
 
-        // 5. Emit event for logging/debugging
-        // (Using any for data payload for now until we define a HapticEvent type strictly)
-        this.eventBus.emit('tether:change', { level: 0, delta: 0 }); // Placeholder event, maybe need a specific debug event
-        // Better: just console log in debug mode
+        // Log
+        this.logSensory(patternName, channel, finalPattern, description);
+
         if (GameConfig.DEBUG_MODE) {
-            console.log(`📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}]`, finalPattern);
+            console.log(`📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}] - ${description}`, finalPattern);
         }
     }
 
     /**
-     * triggerSensory - Unified feedback (Haptics + Visuals)
+     * Legacy V1 compatibility: triggerHaptic
+     * @param patternName - Pattern name
+     * @param description - Debug description
+     * @param options - Options
      */
-    triggerSensory(cueName: SensoryCueName): void {
-        const cue = GameConfig.SENSORY_CUES[cueName];
-        if (!cue) {
-            console.warn(`⚠️ Unknown sensory cue: ${cueName}`);
+    public triggerHaptic(patternName: HapticPatternName, description: string = '', options: HapticOptions = {}): void {
+        this.trigger(patternName, description, options);
+    }
+
+    // ========================================
+    // UNIFIED SENSORY FEEDBACK
+    // ========================================
+
+    /**
+     * Trigger combined haptic + visual feedback
+     * @param cueType - Cue type from SENSORY_CUES
+     * @param target - Visual target element
+     * @param description - Debug description
+     */
+    public triggerSensory(cueType: SensoryCueName, target: HTMLElement | null = null, description: string = ''): void {
+        // Get cue metadata from GameConfig
+        const meta = GameConfig.SENSORY_CUES[cueType];
+        if (!meta) {
+            if (GameConfig.DEBUG_MODE) {
+                console.warn(`⚠️ Unknown sensory cue: ${cueType}`);
+            }
             return;
         }
 
-        // 1. Visual Cue (Emit event for UI to handle)
-        // We need to define a 'visual:cue' event in GameEvents if we want to be strict
-        this.eventBus.emit('visual:cue', { type: cue.visualType, channel: cue.channel });
+        const { channel, basePattern, visualType } = meta;
 
-        // 2. Haptic Cue
-        if (cue.basePattern) {
-            const isCritical = cue.channel === 'critical' || cue.channel === 'narrative';
-            this.trigger(cue.basePattern as HapticPatternName, {
-                channel: cue.channel as any,
-                force: isCritical
-            });
+        // 1) Visual cue - emit event and call manager if available
+        if (visualType) {
+            // Emit event for anyone listening
+            this.eventBus.emit('visual:cue', { type: visualType, channel });
+
+            // Also trigger visual cue manager if set
+            if (this.visualCueManager) {
+                this.visualCueManager.trigger(visualType, target, { channel });
+            }
         }
+
+        // 2) Haptic (critical/narrative bypass debounce)
+        if (basePattern) {
+            const forceTrigger = channel === 'critical' || channel === 'narrative';
+            this.trigger(
+                basePattern as HapticPatternName,
+                description || `Sensory cue: ${cueType}`,
+                { channel: channel as any, force: forceTrigger }
+            );
+        }
+
+        if (GameConfig.DEBUG_MODE) {
+            console.log(`🎯 Sensory: ${cueType} [channel=${channel}] visual=${visualType || 'none'} haptic=${basePattern || 'none'}`);
+        }
+    }
+
+    /**
+     * Legacy V1 compatibility: triggerSensoryFeedback
+     * @param cueType - Cue type
+     * @param target - Target element
+     * @param description - Description
+     */
+    public triggerSensoryFeedback(cueType: SensoryCueName, target: HTMLElement | null = null, description: string = ''): void {
+        this.triggerSensory(cueType, target, description);
+    }
+
+    // ========================================
+    // DEBUG LOGGING
+    // ========================================
+
+    /**
+     * Log sensory event for debugging
+     * @param cueType - Cue type
+     * @param channel - Channel
+     * @param pattern - Pattern
+     * @param description - Description
+     */
+    private logSensory(cueType: string, channel: string, pattern: number | number[], description: string): void {
+        if (!GameConfig.DEBUG_MODE) return;
+
+        this.sensoryLog.push({
+            cueType,
+            channel,
+            pattern,
+            description,
+            comfort: this.settings.getComfortIntensity(),
+            time: new Date().toLocaleTimeString()
+        });
+
+        // Keep only last N entries
+        if (this.sensoryLog.length > this.maxSensoryLog) {
+            this.sensoryLog.shift();
+        }
+    }
+
+    /**
+     * Get sensory log for dev HUD
+     * @returns Sensory log entries
+     */
+    public getSensoryLog(): SensoryLogEntry[] {
+        return this.sensoryLog;
+    }
+
+    /**
+     * Clear sensory log
+     */
+    public clearSensoryLog(): void {
+        this.sensoryLog = [];
     }
 }
