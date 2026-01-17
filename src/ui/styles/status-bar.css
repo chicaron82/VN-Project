@@ -1,7 +1,10 @@
 /* ========================================
-   STATUS BAR SYSTEM (V2)
+   STATUS BAR SYSTEM (V2) - BOUGIE EDITION
+   Phase 26: Unified, Context-Aware, Premium
    Full-featured status bar with indicators
    Ported from V1 notification-shade-controller
+
+   "Every pixel, every gesture, every animation—premium." 💎
    ======================================== */
 
 /* ========================================
@@ -711,4 +714,207 @@
 #shade-backdrop.visible {
     opacity: 1;
     pointer-events: all;
+}
+
+/* ========================================
+   PHASE 26: BOUGIE EDITION ENHANCEMENTS
+   Context-aware, glassmorphic, breadcrumb-navigable
+   ======================================== */
+
+/* Context-specific base styling */
+#status-bar[data-context="showcase"] {
+    border-bottom-color: rgba(255, 165, 0, 0.3);
+}
+
+#status-bar[data-context="landing"] {
+    border-bottom-color: rgba(147, 112, 219, 0.3);
+}
+
+/* ========================================
+   BREADCRUMB NAVIGATION
+   "The real premium feature" - Tori 💚
+   ======================================== */
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: 'Courier New', monospace;
+}
+
+.breadcrumb-segment {
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.breadcrumb-segment.clickable {
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.breadcrumb-segment.clickable:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--status-accent, #00ffff);
+    transform: scale(1.05);
+}
+
+.breadcrumb-separator {
+    opacity: 0.5;
+    margin: 0 2px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Breadcrumb micro-interactions */
+.breadcrumb-segment.clickable:active {
+    transform: scale(0.98);
+}
+
+/* Route-specific breadcrumb accent */
+#status-bar.ronnie-route .breadcrumb-segment.clickable:hover {
+    color: rgba(255, 182, 193, 0.9);
+    box-shadow: 0 0 8px rgba(255, 105, 180, 0.3);
+}
+
+#status-bar.tori-route .breadcrumb-segment.clickable:hover {
+    color: rgba(0, 255, 255, 0.9);
+    box-shadow: 0 0 8px rgba(0, 200, 255, 0.3);
+}
+
+/* ========================================
+   PHASE INDICATOR (Showcase)
+   ======================================== */
+.phase-indicator {
+    color: rgba(255, 165, 0, 0.9);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255, 165, 0, 0.1);
+    border: 1px solid rgba(255, 165, 0, 0.2);
+}
+
+/* ========================================
+   STORY/DEV TOGGLE (Showcase)
+   ======================================== */
+.story-dev-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.story-dev-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.story-dev-toggle:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   GLASSMORPHISM ENHANCEMENTS
+   Bougie backdrop-filter effects
+   ======================================== */
+
+/* CSS custom properties for adaptive tinting */
+#status-bar {
+    --status-accent: rgba(0, 255, 255, 0.9);
+    --status-glow: rgba(0, 255, 255, 0.3);
+}
+
+/* Adaptive glow effect on status items */
+.status-item {
+    transition: all 0.3s ease;
+}
+
+.status-item:hover {
+    text-shadow: 0 0 8px var(--status-glow);
+}
+
+/* UV7 Logo bougie hover effect */
+.uv7-logo-trigger {
+    transition: all 0.3s ease;
+}
+
+.uv7-logo-trigger:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 8px var(--status-glow));
+}
+
+.uv7-logo-trigger:active {
+    transform: scale(0.95);
+}
+
+/* ========================================
+   ACCESSIBILITY: prefers-reduced-motion
+   GenZee's cherry: Inclusive without losing bougie
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    #status-bar,
+    .status-item,
+    .breadcrumb-segment,
+    .uv7-logo-trigger,
+    .story-dev-toggle,
+    .tether-indicator,
+    .notes-indicator,
+    .mail-indicator {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    /* Keep color tints and breadcrumbs readable */
+    .breadcrumb-segment.clickable:hover {
+        transform: none;
+    }
+
+    .uv7-logo-trigger:hover {
+        transform: none;
+    }
+}
+
+/* ========================================
+   RESPONSIVE BREADCRUMBS
+   ======================================== */
+@media (max-width: 768px) {
+    .breadcrumbs {
+        font-size: 10px;
+        gap: 2px;
+    }
+
+    .breadcrumb-segment {
+        padding: 1px 4px;
+    }
+
+    .breadcrumb-separator {
+        margin: 0 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Truncate breadcrumbs on very small screens */
+    .breadcrumbs {
+        max-width: 150px;
+        overflow: hidden;
+    }
+
+    .breadcrumb-segment {
+        max-width: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Hide story/dev toggle on mobile */
+    .story-dev-toggle {
+        display: none;
+    }
 }

@@ -2,15 +2,285 @@ import { EventBus } from '../../core/EventBus';
 import { StateManager } from '../../core/StateManager';
 
 /**
- * StatusBar - V2 Status Bar with Full Indicators
+ * StatusBar - Unified Status Bar (BOUGIE EDITION)
+ *
+ * Phase 26: One StatusBar to rule them all.
+ * Context-aware, glassmorphic, breadcrumb-navigable.
  *
  * Displays game state information in a fixed top bar:
- * - Left: Loop version, Route indicator
- * - Center: Act/Scene indicator (optional)
- * - Right: Notes collected, Tether level (Tori only)
+ * - Left: UV7 Logo (App Switcher), Loop version, Route/Context indicator
+ * - Center: Breadcrumb navigation (v.848 → Ronnie → Act 2 → Scene 5)
+ * - Right: Notes collected, Tether level (Tori only), Mail icon
  *
- * Port of V1 notification-shade-controller.js status bar functionality
+ * Features:
+ * - Context detection (game vs showcase)
+ * - Feature flags for per-context behavior
+ * - Adaptive color tints per route/context
+ * - Breadcrumb navigation
+ * - Glassmorphism + micro-interactions
+ *
+ * 💚🔥💀 "Every pixel, every gesture, every animation—premium."
  */
+
+// ========================================
+// CONTEXT DETECTION & FEATURE FLAGS
+// Phase 26a: The unified configuration system
+// ========================================
+
+/**
+ * UV7 Context - Where is the StatusBar running?
+ * Tori's recommendation: Use explicit signals, not just pathname
+ */
+export type UV7Context = 'game' | 'showcase' | 'landing';
+
+/**
+ * Detect current UV7 context
+ * Priority: 1) data-context attribute, 2) window global, 3) pathname fallback
+ */
+export function detectContext(): UV7Context {
+    // Tori's recommendation: Explicit signal first
+    const bodyContext = document.body.dataset.context as UV7Context | undefined;
+    if (bodyContext && ['game', 'showcase', 'landing'].includes(bodyContext)) {
+        return bodyContext;
+    }
+
+    // Window global fallback
+    if ((window as any).__UV7_CONTEXT__) {
+        return (window as any).__UV7_CONTEXT__ as UV7Context;
+    }
+
+    // Pathname fallback (safety net)
+    const pathname = window.location.pathname.toLowerCase();
+    if (pathname.includes('showcase')) return 'showcase';
+    if (pathname.includes('index.html') && !pathname.includes('v2')) return 'landing';
+    return 'game';
+}
+
+/**
+ * Feature flags for context-specific behavior
+ * Tori's recommendation: StatusBar renders UI, emits events, doesn't do actions
+ */
+export interface StatusBarFeatures {
+    // Display features
+    showLoopVersion: boolean;
+    showRoute: boolean;
+    showBreadcrumbs: boolean;
+    showNotes: boolean;
+    showTether: boolean;
+    showMail: boolean;
+    showPhaseIndicator: boolean;
+    showStoryDevToggle: boolean;
+
+    // Interaction features
+    enableAppSwitcher: boolean;
+    enableGestures: boolean;
+    enableAdaptiveTint: boolean;
+
+    // Glassmorphism
+    glassIntensity: 'subtle' | 'medium' | 'heavy';
+}
+
+/**
+ * Get feature flags for a given context
+ */
+export function getFeatures(context: UV7Context): StatusBarFeatures {
+    switch (context) {
+        case 'game':
+            return {
+                showLoopVersion: true,
+                showRoute: true,
+                showBreadcrumbs: true,
+                showNotes: true,
+                showTether: true,
+                showMail: true,
+                showPhaseIndicator: false,
+                showStoryDevToggle: false,
+                enableAppSwitcher: true,
+                enableGestures: true,
+                enableAdaptiveTint: true,
+                glassIntensity: 'medium',
+            };
+        case 'showcase':
+            return {
+                showLoopVersion: false,
+                showRoute: false,
+                showBreadcrumbs: true,
+                showNotes: false,
+                showTether: false,
+                showMail: false,
+                showPhaseIndicator: true,
+                showStoryDevToggle: true,
+                enableAppSwitcher: true,
+                enableGestures: false,  // Showcase doesn't need swipe gestures
+                enableAdaptiveTint: true,
+                glassIntensity: 'subtle',
+            };
+        case 'landing':
+            return {
+                showLoopVersion: true,
+                showRoute: false,
+                showBreadcrumbs: false,
+                showNotes: false,
+                showTether: false,
+                showMail: false,
+                showPhaseIndicator: false,
+                showStoryDevToggle: false,
+                enableAppSwitcher: true,
+                enableGestures: false,
+                enableAdaptiveTint: false,
+                glassIntensity: 'heavy',
+            };
+    }
+}
+
+// ========================================
+// ADAPTIVE COLOR TINTS
+// Phase 26b: Subconscious emotional priming
+// ========================================
+
+/**
+ * Color tint configuration for routes/contexts
+ * Belle's insight: "Subconscious UX without the user realizing it"
+ */
+export interface ColorTint {
+    primary: string;      // Main accent color
+    glow: string;         // Glow/shadow color
+    gradient: string;     // CSS gradient for glassmorphism
+}
+
+// Default neutral tint (always defined, used as fallback)
+const NEUTRAL_TINT: ColorTint = {
+    primary: 'rgba(255, 255, 255, 0.9)',
+    glow: 'rgba(255, 255, 255, 0.2)',
+    gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.02))',
+};
+
+export const COLOR_TINTS = {
+    // Route tints
+    ronnie: {
+        primary: 'rgba(255, 182, 193, 0.9)',      // Warm pink
+        glow: 'rgba(255, 105, 180, 0.3)',
+        gradient: 'linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(255, 105, 180, 0.05))',
+    } as ColorTint,
+    tori: {
+        primary: 'rgba(0, 255, 255, 0.9)',         // Cyan
+        glow: 'rgba(0, 200, 255, 0.3)',
+        gradient: 'linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 200, 255, 0.05))',
+    } as ColorTint,
+    // Context tints
+    showcase: {
+        primary: 'rgba(255, 165, 0, 0.9)',         // Dev orange
+        glow: 'rgba(255, 140, 0, 0.3)',
+        gradient: 'linear-gradient(135deg, rgba(255, 165, 0, 0.1), rgba(255, 140, 0, 0.05))',
+    } as ColorTint,
+    landing: {
+        primary: 'rgba(147, 112, 219, 0.9)',       // UV7 purple
+        glow: 'rgba(138, 43, 226, 0.3)',
+        gradient: 'linear-gradient(135deg, rgba(147, 112, 219, 0.1), rgba(138, 43, 226, 0.05))',
+    } as ColorTint,
+    neutral: NEUTRAL_TINT,
+} as const;
+
+// ========================================
+// BREADCRUMB NAVIGATION
+// Phase 26b: "The real premium feature" - Tori
+// ========================================
+
+/**
+ * Breadcrumb segment for navigation
+ */
+export interface BreadcrumbSegment {
+    label: string;
+    id: string;
+    clickable: boolean;
+}
+
+/**
+ * Build breadcrumb trail for current state
+ * Game: v.848 → Ronnie → Act 2 → Scene 5
+ * Showcase: Showcase → Phase 25 → X
+ */
+export function buildBreadcrumbs(
+    context: UV7Context,
+    state: {
+        loopVersion?: number;
+        route?: string;
+        act?: string;
+        scene?: string;
+        phase?: string;
+        section?: string;
+    }
+): BreadcrumbSegment[] {
+    const segments: BreadcrumbSegment[] = [];
+
+    if (context === 'game') {
+        // Loop version (always)
+        segments.push({
+            label: `v.${state.loopVersion || 848}`,
+            id: 'loop',
+            clickable: false,
+        });
+
+        // Route (if set)
+        if (state.route && state.route !== 'menu') {
+            segments.push({
+                label: state.route.charAt(0).toUpperCase() + state.route.slice(1),
+                id: 'route',
+                clickable: true,
+            });
+        }
+
+        // Act (if set)
+        if (state.act) {
+            segments.push({
+                label: state.act,
+                id: 'act',
+                clickable: true,
+            });
+        }
+
+        // Scene (if set, shortened)
+        if (state.scene) {
+            const shortScene = state.scene.replace(/^act\d+_/, '').substring(0, 12);
+            segments.push({
+                label: shortScene,
+                id: 'scene',
+                clickable: false,
+            });
+        }
+    } else if (context === 'showcase') {
+        // Showcase root
+        segments.push({
+            label: 'Showcase',
+            id: 'showcase',
+            clickable: true,
+        });
+
+        // Phase (if set)
+        if (state.phase) {
+            segments.push({
+                label: `Phase ${state.phase}`,
+                id: 'phase',
+                clickable: true,
+            });
+        }
+
+        // Section (if set)
+        if (state.section) {
+            segments.push({
+                label: state.section,
+                id: 'section',
+                clickable: false,
+            });
+        }
+    }
+
+    return segments;
+}
+
+// ========================================
+// LEGACY CONFIG (preserved for V2 game compatibility)
+// ========================================
 
 interface StatusBarConfig {
     loopVersion: string;
@@ -46,6 +316,17 @@ export class StatusBar {
     private stateManager: StateManager | null;
     private config: StatusBarConfig;
 
+    // ========================================
+    // PHASE 26: Context & Features (BOUGIE EDITION)
+    // ========================================
+    private context: UV7Context;
+    private features: StatusBarFeatures;
+    private currentTint: ColorTint;
+
+    // Breadcrumb elements
+    private breadcrumbsEl!: HTMLElement;
+    private currentBreadcrumbs: BreadcrumbSegment[] = [];
+
     // Element references
     private loopEl!: HTMLElement;
     private routeEl!: HTMLElement;
@@ -58,12 +339,17 @@ export class StatusBar {
     // DIZEE: Mail icon elements (V1 parity)
     private mailEl!: HTMLElement;
     private unreadBadgeEl!: HTMLElement;
+    // Phase 26: Showcase-specific elements
+    private phaseEl!: HTMLElement;
+    private storyDevToggleEl!: HTMLElement;
 
     // State tracking
     private currentRoute: 'ronnie' | 'tori' | 'menu' | 'prologue' = 'menu';
     private notesCollected: number = 0;
     private tetherLevel: number = 100;
     private _currentAct: string = ''; // Prefixed to indicate reserved for future use
+    private _currentScene: string = ''; // For breadcrumbs
+    private _currentPhase: string = ''; // Showcase phase tracking
     private idleTimer: ReturnType<typeof setTimeout> | null = null;
     private idleDelay: number = 3000;
     // DIZEE: Unread notes tracking (V1 parity)
@@ -78,12 +364,220 @@ export class StatusBar {
         this.stateManager = stateManager || null;
         this.config = { ...DEFAULT_CONFIG, ...config };
 
+        // Phase 26: Detect context and get features
+        this.context = detectContext();
+        this.features = getFeatures(this.context);
+        this.currentTint = this.context === 'showcase'
+            ? COLOR_TINTS.showcase
+            : COLOR_TINTS.neutral;
+
+        console.log(`🎨 StatusBar initialized in ${this.context} context`);
+
         this.createDOM();
         this.setupEventListeners();
         this.setupStateSubscriptions();
         this.setupIdleTimer();
         this.loadInitialState();
         this.setupAppSwitcher();
+
+        // Phase 26: Apply initial tint and glass effect
+        if (this.features.enableAdaptiveTint) {
+            this.applyColorTint(this.currentTint);
+        }
+        this.applyGlassEffect(this.features.glassIntensity);
+    }
+
+    // ========================================
+    // PHASE 26: CONTEXT & TINT METHODS
+    // ========================================
+
+    /**
+     * Get current UV7 context
+     */
+    public getContext(): UV7Context {
+        return this.context;
+    }
+
+    /**
+     * Get current feature flags
+     */
+    public getFeatures(): StatusBarFeatures {
+        return this.features;
+    }
+
+    /**
+     * Apply color tint to status bar (adaptive theming)
+     */
+    private applyColorTint(tint: ColorTint): void {
+        if (!this.container) return;
+
+        this.container.style.setProperty('--status-accent', tint.primary);
+        this.container.style.setProperty('--status-glow', tint.glow);
+        this.container.style.background = tint.gradient;
+
+        // Subtle transition for smoothness
+        this.container.style.transition = 'background 0.5s ease, box-shadow 0.5s ease';
+        this.container.style.boxShadow = `0 2px 20px ${tint.glow}, inset 0 1px 0 rgba(255, 255, 255, 0.1)`;
+
+        this.currentTint = tint;
+    }
+
+    /**
+     * Apply glassmorphism effect based on intensity
+     */
+    private applyGlassEffect(intensity: 'subtle' | 'medium' | 'heavy'): void {
+        if (!this.container) return;
+
+        const blurValues = {
+            subtle: '8px',
+            medium: '12px',
+            heavy: '20px',
+        };
+
+        const saturateValues = {
+            subtle: '150%',
+            medium: '180%',
+            heavy: '200%',
+        };
+
+        this.container.style.backdropFilter = `blur(${blurValues[intensity]}) saturate(${saturateValues[intensity]})`;
+        // Webkit prefix for Safari
+        (this.container.style as any).webkitBackdropFilter = `blur(${blurValues[intensity]}) saturate(${saturateValues[intensity]})`;
+    }
+
+    /**
+     * Update tint based on current route/context
+     * Called when route changes
+     */
+    private updateAdaptiveTint(): void {
+        if (!this.features.enableAdaptiveTint) return;
+
+        let newTint: ColorTint = COLOR_TINTS.neutral;
+
+        if (this.context === 'showcase') {
+            newTint = COLOR_TINTS.showcase;
+        } else if (this.context === 'landing') {
+            newTint = COLOR_TINTS.landing;
+        } else {
+            // Game context: tint based on route
+            switch (this.currentRoute) {
+                case 'ronnie':
+                    newTint = COLOR_TINTS.ronnie;
+                    break;
+                case 'tori':
+                    newTint = COLOR_TINTS.tori;
+                    break;
+                default:
+                    newTint = COLOR_TINTS.neutral;
+            }
+        }
+
+        this.applyColorTint(newTint);
+    }
+
+    // ========================================
+    // PHASE 26: BREADCRUMB METHODS
+    // ========================================
+
+    /**
+     * Update breadcrumb navigation display
+     */
+    private updateBreadcrumbs(): void {
+        if (!this.features.showBreadcrumbs || !this.breadcrumbsEl) return;
+
+        const segments = buildBreadcrumbs(this.context, {
+            loopVersion: 848,
+            route: this.currentRoute,
+            act: this._currentAct,
+            scene: this._currentScene,
+            phase: this._currentPhase,
+        });
+
+        this.currentBreadcrumbs = segments;
+        this.renderBreadcrumbs();
+    }
+
+    /**
+     * Render breadcrumb segments to DOM
+     */
+    private renderBreadcrumbs(): void {
+        if (!this.breadcrumbsEl) return;
+
+        this.breadcrumbsEl.innerHTML = '';
+
+        this.currentBreadcrumbs.forEach((segment, index) => {
+            // Create segment element
+            const segmentEl = document.createElement('span');
+            segmentEl.className = `breadcrumb-segment ${segment.clickable ? 'clickable' : ''}`;
+            segmentEl.textContent = segment.label;
+            segmentEl.dataset.id = segment.id;
+
+            // Add click handler for clickable segments
+            if (segment.clickable) {
+                segmentEl.addEventListener('click', () => {
+                    this.handleBreadcrumbClick(segment);
+                });
+            }
+
+            // Add micro-interaction on hover
+            segmentEl.addEventListener('mouseenter', () => {
+                if (segment.clickable) {
+                    segmentEl.style.transform = 'scale(1.05)';
+                    segmentEl.style.color = this.currentTint.primary;
+                }
+            });
+            segmentEl.addEventListener('mouseleave', () => {
+                segmentEl.style.transform = '';
+                segmentEl.style.color = '';
+            });
+
+            this.breadcrumbsEl.appendChild(segmentEl);
+
+            // Add separator (except for last segment)
+            if (index < this.currentBreadcrumbs.length - 1) {
+                const separator = document.createElement('span');
+                separator.className = 'breadcrumb-separator';
+                separator.textContent = ' → ';
+                separator.style.opacity = '0.5';
+                separator.style.margin = '0 4px';
+                this.breadcrumbsEl.appendChild(separator);
+            }
+        });
+    }
+
+    /**
+     * Handle breadcrumb segment click
+     * Tori's recommendation: Emit events, don't do actions directly
+     */
+    private handleBreadcrumbClick(segment: BreadcrumbSegment): void {
+        console.log(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
+
+        // Emit event for controllers to handle navigation
+        this.eventBus.emit('ui:screen_change', { screen: `breadcrumb:${segment.id}` });
+
+        // Haptic feedback
+        if (navigator.vibrate) navigator.vibrate(10);
+    }
+
+    /**
+     * Set current scene (for breadcrumb display)
+     */
+    public setScene(sceneId: string): void {
+        this._currentScene = sceneId;
+        this.updateBreadcrumbs();
+    }
+
+    /**
+     * Set current phase (showcase breadcrumbs)
+     */
+    public setPhase(phase: string): void {
+        this._currentPhase = phase;
+        this.updateBreadcrumbs();
+
+        // Update phase indicator if present
+        if (this.phaseEl) {
+            this.phaseEl.textContent = `Phase ${phase}`;
+        }
     }
 
     /**
@@ -294,39 +788,73 @@ export class StatusBar {
 
     /**
      * Create the status bar DOM structure
+     * Phase 26: Feature-flag-based rendering for context-aware display
      */
     private createDOM(): void {
         this.container = document.createElement('div');
         this.container.id = 'status-bar';
+        this.container.dataset.context = this.context;
 
+        // Phase 26: Context-aware DOM structure
         this.container.innerHTML = `
-            <!-- Left Section: Loop + Route -->
+            <!-- Left Section: Logo + Loop/Context -->
             <div class="status-section status-left">
                 <!-- UV7 OS Logo (App Switcher Trigger) -->
+                ${this.features.enableAppSwitcher ? `
                 <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer; margin-right: 12px;" title="UV7 OS - Tap to switch apps">
                     <img src="/UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
                 </span>
+                ` : ''}
+                ${this.features.showLoopVersion ? `
                 <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
+                ` : ''}
+                ${this.features.showRoute ? `
                 <span id="status-route" class="status-item route-indicator">MENU</span>
+                ` : ''}
+                ${this.features.showPhaseIndicator ? `
+                <span id="status-phase" class="status-item phase-indicator">Showcase</span>
+                ` : ''}
             </div>
 
-            <!-- Center Section: Act/Scene (optional) -->
+            <!-- Center Section: Breadcrumbs / Act / Auto -->
             <div class="status-section status-center">
-                <span id="status-act" class="status-item act-indicator"></span>
+                ${this.features.showBreadcrumbs ? `
+                <div id="status-breadcrumbs" class="status-item breadcrumbs" style="display: flex; align-items: center; gap: 4px; font-size: 11px;"></div>
+                ` : ''}
+                <span id="status-act" class="status-item act-indicator" style="${this.features.showBreadcrumbs ? 'display: none;' : ''}"></span>
                 <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
+                ${this.features.showStoryDevToggle ? `
+                <button id="status-story-dev-toggle" class="status-item story-dev-toggle" style="
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 4px;
+                    padding: 2px 8px;
+                    font-size: 10px;
+                    color: inherit;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                " title="Toggle Story/Dev Mode">
+                    📖 Story
+                </button>
+                ` : ''}
             </div>
 
             <!-- Right Section: Mail + Notes + Tether -->
             <div class="status-section status-right">
+                ${this.features.showMail ? `
                 <!-- DIZEE: Mail icon with unread badge (V1 parity) -->
                 <span id="status-mail" class="status-item mail-indicator" title="Unread Notes" style="display: none;">
                     <span class="mail-icon">✉️</span>
                     <span class="unread-badge" style="display: none;">0</span>
                 </span>
+                ` : ''}
+                ${this.features.showNotes ? `
                 <span id="status-notes" class="status-item notes-indicator" title="Collected Notes">
                     <span class="notes-icon">&#x1F4E7;</span>
                     <span class="notes-count">0/0</span>
                 </span>
+                ` : ''}
+                ${this.features.showTether ? `
                 <div id="status-tether" class="status-item tether-indicator">
                     <div class="tether-lightning">
                         <span class="tether-icon">&#x26A1;</span>
@@ -334,27 +862,89 @@ export class StatusBar {
                     </div>
                     <span id="status-tether-value" class="tether-value">100%</span>
                 </div>
+                ` : ''}
             </div>
         `;
 
-        // Cache element references
-        this.loopEl = this.container.querySelector('#status-loop')!;
-        this.routeEl = this.container.querySelector('#status-route')!;
-        this.actEl = this.container.querySelector('#status-act')!;
-        this.autoEl = this.container.querySelector('#status-auto')!;
-        this.notesEl = this.container.querySelector('#status-notes')!;
-        this.tetherEl = this.container.querySelector('#status-tether')!;
-        this.tetherValueEl = this.container.querySelector('#status-tether-value')!;
-        this.tetherFillEl = this.container.querySelector('.tether-fill')!;
+        // Cache element references (with null checks for feature-flagged elements)
+        this.loopEl = this.container.querySelector('#status-loop') || this.createPlaceholder();
+        this.routeEl = this.container.querySelector('#status-route') || this.createPlaceholder();
+        this.actEl = this.container.querySelector('#status-act') || this.createPlaceholder();
+        this.autoEl = this.container.querySelector('#status-auto') || this.createPlaceholder();
+        this.notesEl = this.container.querySelector('#status-notes') || this.createPlaceholder();
+        this.tetherEl = this.container.querySelector('#status-tether') || this.createPlaceholder();
+        this.tetherValueEl = this.container.querySelector('#status-tether-value') || this.createPlaceholder();
+        this.tetherFillEl = this.container.querySelector('.tether-fill') || this.createPlaceholder();
         // DIZEE: Mail icon elements
-        this.mailEl = this.container.querySelector('#status-mail')!;
-        this.unreadBadgeEl = this.container.querySelector('.unread-badge')!;
+        this.mailEl = this.container.querySelector('#status-mail') || this.createPlaceholder();
+        this.unreadBadgeEl = this.container.querySelector('.unread-badge') || this.createPlaceholder();
+        // Phase 26: Breadcrumbs and showcase elements
+        this.breadcrumbsEl = this.container.querySelector('#status-breadcrumbs') || this.createPlaceholder();
+        this.phaseEl = this.container.querySelector('#status-phase') || this.createPlaceholder();
+        this.storyDevToggleEl = this.container.querySelector('#status-story-dev-toggle') || this.createPlaceholder();
 
         // Prepend to body
         document.body.prepend(this.container);
 
         // DIZEE: Set up mail icon click handler
-        this.setupMailIconHandler();
+        if (this.features.showMail) {
+            this.setupMailIconHandler();
+        }
+
+        // Phase 26: Set up story/dev toggle
+        if (this.features.showStoryDevToggle) {
+            this.setupStoryDevToggle();
+        }
+
+        // Phase 26: Initialize breadcrumbs if enabled
+        if (this.features.showBreadcrumbs) {
+            this.updateBreadcrumbs();
+        }
+    }
+
+    /**
+     * Create a placeholder element for feature-flagged missing elements
+     * Prevents null reference errors when elements are disabled
+     */
+    private createPlaceholder(): HTMLElement {
+        const placeholder = document.createElement('span');
+        placeholder.style.display = 'none';
+        return placeholder;
+    }
+
+    /**
+     * Set up story/dev mode toggle for Showcase
+     */
+    private setupStoryDevToggle(): void {
+        if (!this.storyDevToggleEl) return;
+
+        let isStoryMode = true;
+
+        this.storyDevToggleEl.addEventListener('click', () => {
+            isStoryMode = !isStoryMode;
+            this.storyDevToggleEl.innerHTML = isStoryMode ? '📖 Story' : '🔧 Dev';
+
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(10);
+
+            // Emit event for Showcase to handle
+            this.eventBus.emit('settings:changed', {
+                key: 'viewMode',
+                value: isStoryMode ? 'story' : 'dev'
+            });
+
+            console.log(`📖 View mode: ${isStoryMode ? 'Story' : 'Dev'}`);
+        });
+
+        // Micro-interaction on hover
+        this.storyDevToggleEl.addEventListener('mouseenter', () => {
+            this.storyDevToggleEl.style.transform = 'scale(1.05)';
+            this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.2)';
+        });
+        this.storyDevToggleEl.addEventListener('mouseleave', () => {
+            this.storyDevToggleEl.style.transform = '';
+            this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
     }
 
     /**
@@ -531,6 +1121,10 @@ export class StatusBar {
 
         // Update notes total for route
         this.updateNotesDisplay();
+
+        // Phase 26: Update breadcrumbs and adaptive tint
+        this.updateBreadcrumbs();
+        this.updateAdaptiveTint();
     }
 
     /**
@@ -571,6 +1165,9 @@ export class StatusBar {
         this._currentAct = act;
         this.actEl.textContent = act;
         this.actEl.style.display = act ? 'inline' : 'none';
+
+        // Phase 26: Update breadcrumbs when act changes
+        this.updateBreadcrumbs();
     }
 
     public setAutoIndicator(enabled: boolean): void {
