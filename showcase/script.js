@@ -408,11 +408,26 @@ class TimelineRenderer {
                 return;
             }
 
-            // Fallback message
-            console.error('Make sure timeline-data.js is loaded.');
+            // Fallback: Show error message
+            console.error('Timeline data not found');
+            this.showTimelineError();
         } catch (error) {
             console.error('Failed to load timeline:', error);
+            this.showTimelineError();
         }
+    }
+
+    showTimelineError() {
+        if (!this.container) return;
+
+        this.container.innerHTML = `
+            <div class="timeline-error">
+                <div class="error-icon">⚠️</div>
+                <h3>Timeline Unavailable</h3>
+                <p>We couldn't load the project timeline. Please refresh the page or try again later.</p>
+                <button onclick="location.reload()" class="retry-btn">Retry</button>
+            </div>
+        `;
     }
 
     get totalPages() {
@@ -427,6 +442,9 @@ class TimelineRenderer {
 
     render() {
         if (!this.container || this.phases.length === 0) return;
+
+        // Clean up old event listeners before re-rendering
+        this.cleanupExpandablePhases();
 
         // Clear existing timeline
         this.container.innerHTML = '';
@@ -549,6 +567,17 @@ class TimelineRenderer {
 
     scrollToTimeline() {
         this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    cleanupExpandablePhases() {
+        // Clean up event listeners from previous render
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            if (item._cleanup) {
+                item._cleanup();
+                delete item._cleanup;
+                delete item.dataset.expandableInitialized;
+            }
+        });
     }
 
     createPhaseElement(phase) {
@@ -1395,6 +1424,12 @@ window.initExpandablePhases = function () {
         });
 
         observer.observe(body, { attributes: true, attributeFilter: ['data-view-mode'] });
+
+        // Store cleanup function to prevent memory leaks
+        item._cleanup = () => {
+            document.removeEventListener('keydown', escHandler);
+            observer.disconnect();
+        };
     });
 
     console.log('📖 Expandable timeline phases initialized');
