@@ -48,11 +48,15 @@
             overflow-x: hidden;
             min-height: 100vh;
             position: relative;
+            background-image: url('./showcase/bg-landing-hero.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
 
         /* ═══════════════════════════════════════════════════════════════
-           ANIMATED BACKGROUND
-           Original design maintained
+           ANIMATED OVERLAY
+           Original design maintained as overlay
            ═══════════════════════════════════════════════════════════════ */
         .bg-gradient {
             position: fixed;
@@ -60,8 +64,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 50%, #0a1a1a 100%);
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(26, 10, 26, 0.7) 50%, rgba(10, 26, 26, 0.85) 100%);
             z-index: 0;
+            pointer-events: none;
         }
 
         .bg-gradient::before {
@@ -673,14 +678,14 @@
                 <div class="card-icon">📖</div>
                 <span class="badge badge-showcase">Documentation</span>
                 <h2>View Showcase</h2>
-                <p>The journey from chaos to order. 23 phases. 9 days. AI collaboration.</p>
+                <p>The journey from chaos to order. 26 phases. 9 days. AI collaboration.</p>
             </a>
 
             <a href="./index.v2.html" class="card">
                 <div class="card-icon">⚡</div>
                 <span class="badge badge-v2">V2 Engine</span>
                 <h2>Launch V2</h2>
-                <p>TypeScript rebuild. EventBus architecture. 465 tests passing. Zero errors.</p>
+                <p>TypeScript rebuild. EventBus architecture. 577 tests passing. Zero errors.</p>
             </a>
         </div>
 

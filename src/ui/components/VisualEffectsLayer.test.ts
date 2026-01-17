@@ -15,7 +15,6 @@ describe('VisualEffectsLayer', () => {
     let eventBus: EventBus;
     let targetContainer: HTMLElement;
     let overlayContainer: HTMLElement;
-    let layer: VisualEffectsLayer;
 
     beforeEach(() => {
         eventBus = new EventBus();
@@ -25,7 +24,7 @@ describe('VisualEffectsLayer', () => {
         // Mock requestAnimationFrame for CodeRain fade-in logic
         vi.spyOn(window, 'requestAnimationFrame').mockImplementation(cb => { cb(0); return 0; });
 
-        layer = new VisualEffectsLayer(targetContainer, overlayContainer, eventBus);
+        new VisualEffectsLayer(targetContainer, overlayContainer, eventBus);
 
         vi.useFakeTimers();
     });

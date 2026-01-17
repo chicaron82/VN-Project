@@ -29,7 +29,7 @@ describe('Micro-Migration Integration', () => {
         global.navigator = { vibrate: vi.fn() } as any;
 
         eventBus = new EventBus();
-        stateManager = new StateManager({}); // Fix: Expects object
+        stateManager = new StateManager(eventBus);
         settingsSystem = new SettingsSystem(stateManager); // Needed for haptic system
         settingsSystem.init();
 

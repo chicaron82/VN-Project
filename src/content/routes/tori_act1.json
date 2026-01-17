@@ -955,7 +955,7 @@
             "type": "dialog",
             "character": "Narration",
             "text": "Act 1 complete. Communication achieved. The real work begins.",
-            "nextSceneId": null,
+            "nextSceneId": "beat1",
             "internal": "[Visual: Tori and Ronnie connected through the game. Echo Toris watching. A new loop. A new possibility.]",
             "background": "assets/apartment.png"
         }

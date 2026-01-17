@@ -153,7 +153,7 @@ function countTypeScriptErrors() {
 function updateShowcaseStats(stats) {
     let html = fs.readFileSync(SHOWCASE_HTML_PATH, 'utf-8');
 
-    // Update each stat using regex to find data-target attributes
+    // --- UPDATE RESULTS SECTION (stat-number) ---
     html = html.replace(
         /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">Tests Passing)/,
         `$1${stats.testsPass}$3`
@@ -164,7 +164,6 @@ function updateShowcaseStats(stats) {
         `$1${stats.phasesComplete}$3`
     );
 
-    // Update label AND value for days
     html = html.replace(
         /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">)Hours to Rebuild/,
         `$1${stats.daysInDev}$3Days in Development`
@@ -172,6 +171,30 @@ function updateShowcaseStats(stats) {
 
     html = html.replace(
         /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">TypeScript Errors)/,
+        `$1${stats.tsErrors}$3`
+    );
+
+    // --- UPDATE EVOLUTION SECTION (metric-value) ---
+    // Update Tests Passing
+    html = html.replace(
+        /(<div class="metric-value">)([\d,]+)(<\/div>\s*<div class="metric-label">Tests Passing)/,
+        `$1${stats.testsPass}$3`
+    );
+    // Update Change Label for Tests
+    html = html.replace(
+        /(<div class="metric-change">0 → )([\d,]+)(<\/div>)/,
+        `$1${stats.testsPass}$3`
+    );
+
+    // Update Phases Complete
+    html = html.replace(
+        /(<div class="metric-value">)(\d+)(<\/div>\s*<div class="metric-label">Phases Complete)/,
+        `$1${stats.phasesComplete}$3`
+    );
+
+    // Update TS Errors
+    html = html.replace(
+        /(<div class="metric-value">)(\d+)(<\/div>\s*<div class="metric-label">TS Errors)/,
         `$1${stats.tsErrors}$3`
     );
 

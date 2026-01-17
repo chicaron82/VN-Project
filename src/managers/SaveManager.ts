@@ -676,10 +676,11 @@ export class SaveManager {
 
         if (!indicator) {
             // Fallback: emit event for notification system
-            // @ts-expect-error - notification:show event will be added to GameEvents in future phase
             this.eventBus.emit('notification:show', {
+                title: isError ? 'Save Failed' : 'Save Complete',
                 message,
-                type: isError ? 'error' : 'success',
+                category: 'system',
+                icon: isError ? '❌' : '✅',
                 duration: 2000
             });
             return;

@@ -23,8 +23,10 @@ import {
 } from './StatusBarBreadcrumbs';
 
 // Re-export for backwards compatibility
-export { UV7Context, StatusBarFeatures, ColorTint, detectContext, getFeatures };
-export { BreadcrumbSegment, buildBreadcrumbs };
+export type { UV7Context, StatusBarFeatures, ColorTint };
+export { detectContext, getFeatures };
+export type { BreadcrumbSegment };
+export { buildBreadcrumbs };
 export type { BreadcrumbState } from './StatusBarBreadcrumbs';
 
 /**
@@ -1661,7 +1663,7 @@ export class StatusBar {
                 {
                     icon: '⚡',
                     label: `Tether: ${Math.round(this.tetherLevel)}%`,
-                    action: () => {} // Info only
+                    action: () => { } // Info only
                 },
                 {
                     icon: '💉',

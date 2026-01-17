@@ -3,6 +3,26 @@
    Enhanced V1→V2 comparison with premium polish
    ========================================== */
 
+/* Section Backgrounds */
+.evolution-section {
+    background-color: var(--chaos-bg, #050505);
+    background-image: url('./bg-evolution-split.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="light"] .evolution-section {
+    background-color: var(--order-bg, #f8f9fa);
+    background-image: none;
+    /* Keep light mode clean */
+    color: var(--order-text, #2c3e50);
+}
+
 /* Comparison Grid Enhancement */
 .comparison-grid {
     display: grid;
@@ -10,6 +30,7 @@
     gap: 3rem;
     margin: 3rem 0;
     position: relative;
+    z-index: 2;
 }
 
 /* VS Divider */
@@ -40,6 +61,9 @@
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 3px solid;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .col-chaos h3 {
@@ -47,9 +71,31 @@
     color: var(--chaos-text, #ff6b6b);
 }
 
+.col-chaos h3::before {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-image: url('./icon-chaos.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
 .col-order h3 {
     border-color: var(--order-text, #00ccff);
     color: var(--order-text, #00ccff);
+}
+
+.col-order h3::before {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-image: url('./icon-order.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
 }
 
 /* Comparison Items */
@@ -351,4 +397,58 @@
 [data-theme="light"] .code-header {
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Light Theme Comparison Items */
+[data-theme="light"] .comparison-item {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .comparison-item h4 {
+    color: #333;
+}
+
+[data-theme="light"] .comparison-item p {
+    color: #666;
+}
+
+/* Light Theme Metrics */
+[data-theme="light"] .metric-card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Fix VS visibility in Light Mode */
+[data-theme="light"] .comparison-grid::before {
+    background: linear-gradient(135deg, #bbb, #999);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.3;
+}
+
+[data-theme="light"] .metric-label {
+    color: #555555;
+    font-weight: 600;
+}
+
+/* Prevent gradient text clipping */
+.metric-value {
+    padding-bottom: 0.1em;
+    padding-right: 0.1em;
+    margin-right: -0.1em;
+    /* Compensate for padding */
+}
+
+[data-theme="light"] .metric-change {
+    background: rgba(0, 180, 70, 0.15);
+    color: #008800;
+}
+
+[data-theme="light"] .metric-change.negative {
+    background: rgba(220, 50, 50, 0.15);
+    color: #cc0000;
 }

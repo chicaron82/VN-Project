@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { describe, it, expect } from 'vitest';
 import fs from 'fs';
 import path from 'path';
@@ -143,7 +144,7 @@ describe('Content Verification', () => {
     describe('Ronnie Act 1 Logic', () => {
         it('should have branching choices for first conversation', () => {
             const sceneMap = new Map(ronnieData.scenes.map((s: any) => [s.id, s]));
-            const narration = sceneMap.get('act1Scene1_narration');
+            const narration = sceneMap.get('ronnie_act1Scene1_narration');
 
             expect(narration).toBeDefined();
             expect(narration.choices).toBeDefined();
@@ -152,10 +153,10 @@ describe('Content Verification', () => {
             // Verify Tender choice
             const tenderChoice = narration.choices.find((c: any) => c.text.includes('Tender'));
             expect(tenderChoice).toBeDefined();
-            expect(tenderChoice.nextSceneId).toBe('act1Scene1_outcome_tender');
+            expect(tenderChoice.nextSceneId).toBe('ronnie_act1Scene1_outcome_tender');
 
             // Verify Outcome Flags
-            const tenderOutcome = sceneMap.get('act1Scene1_outcome_tender');
+            const tenderOutcome = sceneMap.get('ronnie_act1Scene1_outcome_tender');
             expect(tenderOutcome.flags).toBeDefined();
             expect(tenderOutcome.flags.some((f: any) => f.flag === 'affection_up')).toBe(true);
         });
@@ -332,7 +333,7 @@ describe('Content Verification', () => {
                 if (steps > 20) break;
             }
             expect(current).toBeDefined();
-            expect(current!.id).toBe('trueRoute_always');
+            expect(current!.id).toBe('tori_endings_trueRoute_always');
             expect(current!.nextSceneId).toBeNull();
         });
 
@@ -353,7 +354,7 @@ describe('Content Verification', () => {
     describe('Ronnie Route', () => {
         it('Ronnie Act 1 should form a connected chain', () => {
             const scenes = new Map(ronnieAct1Data.scenes.map((s: any) => [s.id, s]));
-            let current = scenes.get('prologueScene4'); // Start of migrated Act 1
+            let current = scenes.get('ronnie_act1_prologueScene4'); // Start of migrated Act 1
             let visited = [];
 
             while (current) {
@@ -377,7 +378,7 @@ describe('Content Verification', () => {
             const lastScene = scenes.get(lastId);
             const exitNodeId = lastScene?.nextSceneId || lastScene?.choices?.[0]?.nextSceneId;
 
-            expect(exitNodeId).toBe('act2Beat1_start');
+            expect(exitNodeId).toBe('startAct2');
             expect(visited.length).toBeGreaterThan(15);
         });
 
