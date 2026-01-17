@@ -155,19 +155,17 @@ const NEUTRAL_TINT: ColorTint = {
     gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(200, 200, 200, 0.02))',
 };
 
+/**
+ * COLOR_TINTS for non-game contexts only
+ *
+ * In GAME mode: CSS class-based theming handles route colors
+ * - .ronnie-route uses cyan (#00ffff)
+ * - .tori-route uses green (#00ff88)
+ *
+ * In SHOWCASE/LANDING: These tints apply via inline styles
+ */
 export const COLOR_TINTS = {
-    // Route tints
-    ronnie: {
-        primary: 'rgba(255, 182, 193, 0.9)',      // Warm pink
-        glow: 'rgba(255, 105, 180, 0.3)',
-        gradient: 'linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(255, 105, 180, 0.05))',
-    } as ColorTint,
-    tori: {
-        primary: 'rgba(0, 255, 255, 0.9)',         // Cyan
-        glow: 'rgba(0, 200, 255, 0.3)',
-        gradient: 'linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 200, 255, 0.05))',
-    } as ColorTint,
-    // Context tints
+    // Context tints (non-game)
     showcase: {
         primary: 'rgba(255, 165, 0, 0.9)',         // Dev orange
         glow: 'rgba(255, 140, 0, 0.3)',
@@ -367,9 +365,16 @@ export class StatusBar {
         // Phase 26: Detect context and get features
         this.context = detectContext();
         this.features = getFeatures(this.context);
+
+        // Set initial tint based on context
+        // Game mode: neutral (CSS handles route colors via .ronnie-route/.tori-route)
+        // Showcase: orange dev tint
+        // Landing: purple UV7 tint
         this.currentTint = this.context === 'showcase'
             ? COLOR_TINTS.showcase
-            : COLOR_TINTS.neutral;
+            : this.context === 'landing'
+                ? COLOR_TINTS.landing
+                : COLOR_TINTS.neutral;
 
         console.log(`🎨 StatusBar initialized in ${this.context} context`);
 
@@ -381,7 +386,8 @@ export class StatusBar {
         this.setupAppSwitcher();
 
         // Phase 26: Apply initial tint and glass effect
-        if (this.features.enableAdaptiveTint) {
+        // In game mode, CSS classes handle theming - don't apply inline tints
+        if (this.features.enableAdaptiveTint && this.context !== 'game') {
             this.applyColorTint(this.currentTint);
         }
         this.applyGlassEffect(this.features.glassIntensity);
@@ -448,31 +454,47 @@ export class StatusBar {
     /**
      * Update tint based on current route/context
      * Called when route changes
+     *
+     * GAME MODE: CSS class-based theming handles route colors (.ronnie-route, .tori-route)
+     * - Ronnie: cyan (#00ffff)
+     * - Tori: green (#00ff88)
+     *
+     * SHOWCASE/LANDING: Inline tints via applyColorTint()
      */
     private updateAdaptiveTint(): void {
         if (!this.features.enableAdaptiveTint) return;
 
+        // In game context, let CSS handle route theming
+        // The .ronnie-route and .tori-route classes in status-bar.css have correct colors
+        if (this.context === 'game') {
+            // Clear any inline tint styles so CSS classes take precedence
+            this.clearInlineTint();
+            return;
+        }
+
+        // Non-game contexts: apply inline tints
         let newTint: ColorTint = COLOR_TINTS.neutral;
 
         if (this.context === 'showcase') {
             newTint = COLOR_TINTS.showcase;
         } else if (this.context === 'landing') {
             newTint = COLOR_TINTS.landing;
-        } else {
-            // Game context: tint based on route
-            switch (this.currentRoute) {
-                case 'ronnie':
-                    newTint = COLOR_TINTS.ronnie;
-                    break;
-                case 'tori':
-                    newTint = COLOR_TINTS.tori;
-                    break;
-                default:
-                    newTint = COLOR_TINTS.neutral;
-            }
         }
 
         this.applyColorTint(newTint);
+    }
+
+    /**
+     * Clear inline tint styles (let CSS classes handle theming)
+     */
+    private clearInlineTint(): void {
+        if (!this.container) return;
+
+        // Remove inline styles so CSS classes take precedence
+        this.container.style.removeProperty('--status-accent');
+        this.container.style.removeProperty('--status-glow');
+        this.container.style.background = '';
+        this.container.style.boxShadow = '';
     }
 
     // ========================================
