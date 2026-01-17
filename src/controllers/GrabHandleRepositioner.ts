@@ -173,8 +173,10 @@ export class GrabHandleRepositioner {
 
         if (e instanceof TouchEvent) {
             if (e.touches.length > 0) {
-                clientY = e.touches[0].clientY;
-                clientX = e.touches[0].clientX;
+                // We checked length, so we know index 0 exists
+                const touch = e.touches[0]!;
+                clientY = touch.clientY;
+                clientX = touch.clientX;
             } else {
                 return; // No touches to track
             }
@@ -275,8 +277,10 @@ export class GrabHandleRepositioner {
 
         if (e instanceof TouchEvent) {
             if (e.touches.length > 0) {
-                clientY = e.touches[0].clientY;
-                clientX = e.touches[0].clientX;
+                // We checked length, so we know index 0 exists
+                const touch = e.touches[0]!;
+                clientY = touch.clientY;
+                clientX = touch.clientX;
             } else {
                 return; // No touches to track
             }
