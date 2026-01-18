@@ -1,0 +1,301 @@
+/* ========================================
+   TAB BAR STYLES
+   Glassmorphic horizontal navigation
+   UV7 OS aesthetic
+   ======================================== */
+
+.tab-bar-container {
+    position: sticky;
+    top: 40px;
+    /* Below UV7 status bar */
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 0;
+}
+
+.tab-bar {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    gap: 0.5rem;
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tab-bar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari */
+}
+
+.tab-item {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tab-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-item:focus {
+    outline: 2px solid var(--uv7-accent, #00ff88);
+    outline-offset: 2px;
+}
+
+.tab-item.active {
+    color: var(--uv7-accent, #00ff88);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: var(--uv7-accent, #00ff88);
+    box-shadow: 0 0 8px var(--uv7-accent, #00ff88);
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-icon {
+    font-size: 1.2rem;
+}
+
+.tab-label {
+    font-size: 0.85rem;
+}
+
+/* Progress indicator */
+.tab-progress {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ========================================
+   TAB PANELS
+   Swipeable content areas
+   ======================================== */
+
+.tab-panels-container {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 200px);
+}
+
+.tab-panel {
+    display: none;
+    opacity: 0;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    padding: 2rem 1rem;
+    scroll-behavior: smooth;
+}
+
+.tab-panel.active {
+    display: block;
+    opacity: 1;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Slide animations */
+.tab-panel.exiting.slide-left {
+    animation: slideOutLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.exiting.slide-right {
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.entering.slide-from-right {
+    animation: slideInFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.entering.slide-from-left {
+    animation: slideInFromLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   HERO COLLAPSE
+   Shrinks after first navigation
+   ======================================== */
+
+#hero-section {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 600px;
+    overflow: hidden;
+}
+
+#hero-section.collapsed {
+    max-height: 80px;
+}
+
+#hero-section.collapsed .hero-carousel {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#hero-section.collapsed .hero-title {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+
+/* Expand button when collapsed */
+#hero-section.collapsed::after {
+    content: '⌄ Tap to expand';
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideIn {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 60%;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .tab-item {
+        min-width: 100px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .tab-icon {
+        font-size: 1rem;
+    }
+
+    .tab-label {
+        font-size: 0.75rem;
+    }
+
+    .tab-panel {
+        padding: 1rem 0.5rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .tab-item,
+    .tab-panel,
+    #hero-section {
+        transition: none;
+        animation: none;
+    }
+
+    .tab-panel.active {
+        animation: none;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.tab-item:focus-visible {
+    outline: 2px solid var(--uv7-accent, #00ff88);
+    outline-offset: 2px;
+}
