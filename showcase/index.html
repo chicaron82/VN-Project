@@ -520,7 +520,7 @@
                     <div class="stats-grid">
                         <div class="stat-card" data-stat-type="tests">
                             <div class="stat-icon">✓</div>
-                            <div class="stat-number" data-target="577">0</div>
+                            <div class="stat-number" data-target="555">0</div>
                             <div class="stat-label">Tests Passing</div>
                         </div>
                         <div class="stat-card" data-stat-type="phases">
@@ -530,7 +530,7 @@
                                     <circle class="ring-fill" cx="18" cy="18" r="16" />
                                 </svg>
                             </div>
-                            <div class="stat-number" data-target="26">0</div>
+                            <div class="stat-number" data-target="0">0</div>
                             <div class="stat-label">Phases Complete</div>
                         </div>
                         <div class="stat-card" data-stat-type="days">
@@ -1028,14 +1028,14 @@
                             <div class="metric-change">+20% expansion</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-value">26</div>
+                            <div class="metric-value">0</div>
                             <div class="metric-label">Phases Complete</div>
                             <div class="metric-change">~95% ported</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-value">577</div>
+                            <div class="metric-value">555</div>
                             <div class="metric-label">Tests Passing</div>
-                            <div class="metric-change">0 → 577</div>
+                            <div class="metric-change">0 → 555</div>
                         </div>
                         <div class="metric-card">
                             <div class="metric-value">0</div>
@@ -1686,14 +1686,13 @@ const state = StateManager.getState();
         <script src="timeline-data.js"></script>
         <script src="script.js"></script>
 
-        <!-- Spotlight Carousel System -->
-        <script src="showcase-tracker.js"></script>
-        <script src="showcase-modal.js"></script>
-        <script src="showcase-carousel.js"></script>
-
-        <!-- UV7 OS -->
+        <!-- UV7 OS (Showcase Context) -->
+        <script src="uv7-grab-handle.js"></script>
         <script src="uv7-app-switcher.js"></script>
         <script src="uv7-os.js"></script>
+        <script src="showcase-carousel.js"></script>
+
+
 
         <!-- Performance & Lazy Loading (deferred) -->
         <script defer src="performance.js"></script>

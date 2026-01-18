@@ -25,10 +25,19 @@ class UV7OSLanding {
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
-        // TORI: Boot toast - one-time acknowledgment
-        this.showBootToast();
+        // Initialize app switcher
+        setTimeout(() => this.initAppSwitcher(), 100);
 
-        console.log('🚀 UV7 OS initialized: Landing');
+        // V1 parity: grab handle reposition + persistence
+        if (typeof UV7GrabHandleRepositioner !== 'undefined') {
+            new UV7GrabHandleRepositioner(this.elements.sidebarToggle, {
+                storageKey: 'uv7-grab-handle',
+                headerSafeTop: 52,
+                bottomSafePad: 140
+            });
+        }
+
+        console.log('🚀 UV7 OS Landing Wrapper initialized');
     }
 
     cacheElements() {
@@ -203,9 +212,27 @@ class UV7OSLanding {
 
         const handleSwipe = () => {
             const swipeDistance = touchEndY - touchStartY;
-            // Swipe down from top (> 100px) opens shade
+
+            // Swipe down from top opens Shade in portrait, Sidebar in landscape
             if (touchStartY < 100 && swipeDistance > 100) {
-                this.openShade();
+                const isLandscape = window.innerWidth > window.innerHeight;
+
+                if (isLandscape) {
+                    this.openSidebar();
+                } else {
+                    this.openShade();
+                }
+                return;
+            }
+
+            // Swipe up (< -100px) closes shade/sidebar if open
+            if (swipeDistance < -100) {
+                if (this.elements.shade && this.elements.shade.classList.contains('open')) {
+                    this.closeShade();
+                }
+                if (this.elements.sidebar && this.elements.sidebar.classList.contains('open')) {
+                    this.closeSidebar();
+                }
             }
         };
 

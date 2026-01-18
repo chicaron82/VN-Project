@@ -39,6 +39,15 @@ class UV7OS {
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
+        // V1 parity: grab handle reposition + persistence
+        if (typeof UV7GrabHandleRepositioner !== 'undefined') {
+            new UV7GrabHandleRepositioner(this.elements.sidebarToggle, {
+                storageKey: 'uv7-grab-handle',
+                headerSafeTop: 52,
+                bottomSafePad: 140
+            });
+        }
+
         // TORI: Boot toast - one-time acknowledgment
         this.showBootToast();
 
@@ -323,17 +332,15 @@ class UV7OS {
 
         const handleSwipe = () => {
             const swipeDistance = touchEndY - touchStartY;
-            const isLandscape = window.innerWidth > window.innerHeight;
+            // Swipe down from top opens Shade in portrait, Sidebar in landscape
+            if (touchStartY < 100 && swipeDistance > 100) {
+                const isLandscape = window.innerWidth > window.innerHeight;
 
-            // Landscape mode: Swipe down opens sidebar
-            if (isLandscape && touchStartY < 100 && swipeDistance > 100) {
-                this.openSidebar();
-                return;
-            }
-
-            // Portrait mode: Swipe down opens shade
-            if (!isLandscape && touchStartY < 100 && swipeDistance > 100) {
-                this.openShade();
+                if (isLandscape) {
+                    this.openSidebar();
+                } else {
+                    this.openShade();
+                }
                 return;
             }
 

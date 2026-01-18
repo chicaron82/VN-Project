@@ -36,6 +36,24 @@ export class SwipeHandler {
     private handleTouchStart(e: TouchEvent): void {
         const touch = e.changedTouches[0];
         if (!touch) return;
+
+        // TORI'S FIX: Interaction Guards
+        // Don't swipe if touching interactive elements
+        const target = e.target as HTMLElement;
+        if (target.tagName === 'INPUT' ||
+            target.tagName === 'TEXTAREA' ||
+            target.closest('.carousel') ||
+            target.closest('.slider') ||
+            target.closest('code') ||
+            target.closest('.scroll-container')) {
+            console.log('[SwipeHandler] Swipe ignored - interactive target');
+            return;
+        }
+
+        // TORI'S FIX: Edge Guard for Swipe Down
+        // Only allow swipe down if starting from top edge (simulating status bar pull)
+        // We'll store the Y and check direction later, but we can flag intent here
+
         this.touchStartX = touch.clientX; // Use clientX/Y
         this.touchStartY = touch.clientY;
         this.touchStartTime = new Date().getTime();
@@ -69,8 +87,13 @@ export class SwipeHandler {
                     this.eventBus.emit('input:swipe_up', {});
                 } else {
                     // Down Swipe
-                    console.log('[SwipeHandler] Swipe Down detected');
-                    this.eventBus.emit('input:swipe_down', {});
+                    // TORI'S FIX: Only trigger if started near top
+                    if (this.touchStartY < 80) {
+                        console.log('[SwipeHandler] Swipe Down detected (from top edge)');
+                        this.eventBus.emit('input:swipe_down', {});
+                    } else {
+                        console.log('[SwipeHandler] Swipe Down ignored (not from top)');
+                    }
                 }
             }
         }

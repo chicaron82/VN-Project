@@ -12,5 +12,8 @@
 @import './notification-shade.css';
 @import './achievement-toast.css';
 @import './tips-overlay.css';
+@import './tips-overlay.css';
 @import './tutorial-overlay.css';
+@import './sidebar.css';
+/* TORI'S FIX: Sidebar polish */
 /* Add component imports as we build them */

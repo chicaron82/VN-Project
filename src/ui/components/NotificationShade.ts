@@ -346,10 +346,8 @@ export class NotificationShade {
         // NotificationShade manages its own state and routing logic
         this.eventBus.on('input:swipe_down', () => {
             // V1 Parity: Check screen width to decide Sidebar vs Shade (V1 line 589)
-            const isDesktop = window.innerWidth >= 769;
-
-            if (isDesktop) {
-                // Desktop/Landscape → Open Sidebar (V1 line 600)
+            // TORI'S FIX: Explicit routing check
+            if (window.innerWidth >= 768) {
                 console.log('[NotificationShade] Desktop mode - opening sidebar');
                 this.eventBus.emit('ui:sidebar:open', {});
                 return;

@@ -425,6 +425,19 @@
     border-color: rgba(0, 255, 136, 0.3);
 }
 
+#uv7-sidebar-toggle {
+    position: fixed;
+    /* important for persistence */
+    z-index: 3000;
+    transition: top .18s ease, left .18s ease, right .18s ease, transform .18s ease;
+}
+
+#uv7-sidebar-toggle.uv7-dragging {
+    cursor: grabbing;
+    transform: scale(1.03);
+    box-shadow: 0 0 16px rgba(0, 204, 255, 0.55);
+}
+
 .uv7-sidebar-toggle.dragging {
     cursor: grabbing !important;
     background: rgba(0, 255, 136, 0.2);

@@ -29,6 +29,7 @@ export class Sidebar {
         // Toggle Button (Grab Handle)
         this.toggleBtn = document.createElement('div');
         this.toggleBtn.className = 'sidebar-toggle';
+        this.toggleBtn.id = 'sidebar-toggle'; // TORI'S FIX: Stable ID for repositioner
         this.toggleBtn.innerHTML = '☰';
         this.toggleBtn.title = 'Open Menu';
         document.body.appendChild(this.toggleBtn);

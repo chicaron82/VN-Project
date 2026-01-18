@@ -185,6 +185,13 @@ const _sidebar = new Sidebar(eventBus);
 const _creditsScreen = new CreditsScreen(eventBus);
 const _crewScreen = new CrewScreen(eventBus);
 
+// TORI'S FIX: Initialize GrabHandleRepositioner AFTER Sidebar
+import { GrabHandleRepositioner } from '@controllers/GrabHandleRepositioner';
+// Use setTimeout to ensure DOM is fully ready, just in case
+setTimeout(() => {
+    new GrabHandleRepositioner(eventBus);
+}, 0);
+
 // Secret Codes & Collectibles
 const secretCodesManager = new SecretCodesManager(eventBus);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
