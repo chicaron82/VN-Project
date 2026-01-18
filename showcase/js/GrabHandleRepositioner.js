@@ -78,16 +78,21 @@ class GrabHandleRepositioner {
 
             this.lastTapTime = now;
         }, { passive: false });
+
+        // Desktop Double Click
+        this.grabHandle.addEventListener('dblclick', () => {
+            this.flipSide();
+        });
     }
 
     /**
      * @param {MouseEvent | TouchEvent} e
      */
+    /**
+     * @param {MouseEvent | TouchEvent} e
+     */
     handleDragStart(e) {
         if (!this.grabHandle) return;
-
-        this.isDragging = true;
-        this.grabHandle.classList.add('dragging');
 
         const clientY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
         const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
@@ -96,21 +101,36 @@ class GrabHandleRepositioner {
         this.startX = clientX;
         this.startTop = this.currentTop;
 
-        // Prevent default to avoid text selection
-        e.preventDefault();
+        // Don't set isDragging yet - wait for move threshold
+        // Don't preventDefault yet - allow click/focus
     }
 
     /**
      * @param {MouseEvent | TouchEvent} e
      */
     handleDragMove(e) {
-        if (!this.isDragging || !this.grabHandle) return;
+        if (!this.grabHandle) return;
 
         const clientY = e instanceof MouseEvent ? e.clientY : e.touches[0].clientY;
         const clientX = e instanceof MouseEvent ? e.clientX : e.touches[0].clientX;
 
-        // Calculate new position
+        // Calculate delta
         const deltaY = clientY - this.startY;
+        const deltaX = clientX - this.startX;
+        const moveDistance = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
+
+        // Only start dragging if moved more than threshold
+        if (!this.isDragging && moveDistance > 5) {
+            this.isDragging = true;
+            this.grabHandle.classList.add('dragging');
+        }
+
+        if (!this.isDragging) return;
+
+        // Prevent scrolling while dragging
+        if (e.cancelable) e.preventDefault();
+
+        // Calculate new position
         const deltaYPercent = (deltaY / window.innerHeight) * 100;
         let newTop = this.startTop + deltaYPercent;
 
@@ -123,7 +143,6 @@ class GrabHandleRepositioner {
         this.applyPosition();
 
         // Check for horizontal flip
-        const deltaX = clientX - this.startX;
         const deltaXPercent = Math.abs((deltaX / window.innerWidth) * 100);
 
         if (deltaXPercent > this.flipThreshold) {
@@ -139,11 +158,12 @@ class GrabHandleRepositioner {
     }
 
     handleDragEnd() {
-        if (!this.isDragging || !this.grabHandle) return;
-
-        this.isDragging = false;
-        this.grabHandle.classList.remove('dragging');
-        this.savePosition();
+        if (this.isDragging) {
+            this.isDragging = false;
+            this.grabHandle.classList.remove('dragging');
+            this.savePosition();
+        }
+        // If not dragging, let the default click event bubble up
     }
 
     applyPosition() {
