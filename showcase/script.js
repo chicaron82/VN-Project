@@ -646,18 +646,22 @@ class TimelineRenderer {
             content.appendChild(featuresList);
         }
 
-        // Callout
+        // Callout (supports two formats: {icon, title, text} or {type, title, content})
         if (phase.callout) {
             const callout = document.createElement('div');
             callout.className = 'v2-improvement-callout';
 
             const icon = document.createElement('div');
             icon.className = 'callout-icon';
-            icon.textContent = phase.callout.icon;
+            // Support both icon field and type-based icons
+            const iconMap = { insight: '💡', warning: '⚠️', success: '✅', info: 'ℹ️' };
+            icon.textContent = phase.callout.icon || iconMap[phase.callout.type] || '💡';
 
             const calloutContent = document.createElement('div');
             calloutContent.className = 'callout-content';
-            calloutContent.innerHTML = `<strong>${phase.callout.title}</strong> ${phase.callout.text}`;
+            // Support both text field and content field
+            const calloutText = phase.callout.text || phase.callout.content || '';
+            calloutContent.innerHTML = `<strong>${phase.callout.title || ''}</strong> ${calloutText}`;
 
             callout.appendChild(icon);
             callout.appendChild(calloutContent);
