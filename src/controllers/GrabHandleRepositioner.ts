@@ -82,8 +82,11 @@ export class GrabHandleRepositioner {
     private flipThreshold: number = 50;
 
     constructor() {
-        this.grabHandle = document.getElementById('sidebar-toggle');
-        this.sidebar = document.getElementById('sidebar');
+        // Try both IDs (V2 game uses 'sidebar-toggle', showcase/landing use 'uv7-sidebar-toggle')
+        this.grabHandle = document.getElementById('sidebar-toggle')
+            || document.getElementById('uv7-sidebar-toggle');
+        this.sidebar = document.getElementById('sidebar')
+            || document.getElementById('uv7-sidebar');
 
         // ========================================
         // EARLY RETURN IF NO GRAB HANDLE
@@ -158,6 +161,25 @@ export class GrabHandleRepositioner {
             // Single tap - toggle sidebar after confirming it's not a double-tap
             // This is already handled by the tap timeout in handleDragStart
         }, true); // Capture phase
+
+        // Watch for sidebar state changes (expanded/collapsed)
+        if (this.sidebar) {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        // Sidebar class changed - update grab bar position
+                        this.updateTogglePositionForExpandedSidebar();
+                    }
+                });
+            });
+
+            observer.observe(this.sidebar, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+
+            console.log('👀 Watching sidebar state changes');
+        }
     }
 
     // ========================================

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GrabHandleRepositioner } from './GrabHandleRepositioner';
 
 describe('GrabHandleRepositioner', () => {
@@ -7,6 +7,9 @@ describe('GrabHandleRepositioner', () => {
     let mockSidebar: HTMLElement;
 
     beforeEach(() => {
+        // Use fake timers for drag delay testing
+        vi.useFakeTimers();
+
         // Clear localStorage
         localStorage.clear();
 
@@ -44,6 +47,15 @@ describe('GrabHandleRepositioner', () => {
         });
 
         repositioner = new GrabHandleRepositioner();
+    });
+
+    afterEach(() => {
+        // Restore real timers
+        vi.useRealTimers();
+
+        // Clean up DOM
+        mockGrabHandle?.remove();
+        mockSidebar?.remove();
     });
 
     describe('Initialization', () => {
@@ -165,7 +177,7 @@ describe('GrabHandleRepositioner', () => {
 
             expect(mockGrabHandle.style.left).toBe('auto');
             expect(mockGrabHandle.style.right).toBe('0px');
-            expect(mockGrabHandle.style.borderRadius).toBe('10px 0px 0px 10px');
+            expect(mockGrabHandle.style.borderRadius).toBe('10px 0 0 10px');
         });
 
         it('should update handle styling when on left side', () => {
@@ -173,7 +185,7 @@ describe('GrabHandleRepositioner', () => {
 
             expect(mockGrabHandle.style.left).toBe('0px');
             expect(mockGrabHandle.style.right).toBe('auto');
-            expect(mockGrabHandle.style.borderRadius).toBe('0px 10px 10px 0px');
+            expect(mockGrabHandle.style.borderRadius).toBe('0 10px 10px 0');
         });
 
         it('should add right-side class to sidebar when on right', () => {
@@ -251,10 +263,25 @@ describe('GrabHandleRepositioner', () => {
         });
 
         it('should handle missing vibration API gracefully', () => {
-            // @ts-expect-error - Testing missing API
-            delete navigator.vibrate;
+            // Create a new repositioner with no vibrate API
+            const mockNav = { vibrate: undefined } as any;
+            const originalNav = global.navigator;
+            Object.defineProperty(global, 'navigator', {
+                value: mockNav,
+                writable: true,
+                configurable: true
+            });
 
-            expect(() => (repositioner as any).triggerHaptic('light')).not.toThrow();
+            try {
+                expect(() => (repositioner as any).triggerHaptic('light')).not.toThrow();
+            } finally {
+                // Restore original navigator
+                Object.defineProperty(global, 'navigator', {
+                    value: originalNav,
+                    writable: true,
+                    configurable: true
+                });
+            }
         });
     });
 

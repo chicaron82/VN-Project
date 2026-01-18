@@ -1708,6 +1708,7 @@ const state = StateManager.getState();
         <!-- Tab Navigation System -->
         <script src="js/TabController.js"></script>
         <script src="js/SwipeController.js"></script>
+        <script src="js/GrabHandleRepositioner.js"></script>
         <script>
             // Initialize tab navigation
             document.addEventListener('DOMContentLoaded', () => {
@@ -1718,6 +1719,11 @@ const state = StateManager.getState();
                         const swipeController = new SwipeController(tabController, container);
                     }
                     console.log('✅ Tab navigation initialized');
+                }
+
+                // Initialize grab handle repositioner
+                if (typeof GrabHandleRepositioner !== 'undefined') {
+                    const grabHandle = new GrabHandleRepositioner();
                 }
             });
         </script>

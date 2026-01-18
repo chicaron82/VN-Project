@@ -31,7 +31,7 @@ export class MobileUXController {
         this.eventBus.on('input:swipe_left', () => this.handleSwipeLeft());
         this.eventBus.on('input:swipe_right', () => this.handleSwipeRight());
         this.eventBus.on('input:swipe_up', () => this.handleSwipeUp());
-        // NOTE: input:swipe_down is handled by NotificationShade directly (V1 pattern)
+        this.eventBus.on('input:swipe_down', () => this.handleSwipeDown());
 
         // Double-tap listener (global on document)
         document.addEventListener('touchend', (e) => this.handleTouchEnd(e));
@@ -54,11 +54,37 @@ export class MobileUXController {
     }
 
     private handleSwipeUp(): void {
+        // Check if notification shade is handling this
+        // If shade is open, it takes priority
+        const shade = document.getElementById('notification-shade');
+        if (shade?.classList.contains('visible')) {
+            return; // Let NotificationShade handle it
+        }
+
         // Swipe Up -> Hide UI (Screenshot Mode)
         console.log('[MobileUX] Action: Hide UI');
         this.eventBus.emit('ui:hide_status_bar', {});
         // Also hide dialog box if accessible via CSS/class
         document.querySelector('.dialog-box')?.classList.toggle('hidden');
+    }
+
+    private handleSwipeDown(): void {
+        // Swipe Down routing logic:
+        // - Portrait mode (or width < height): Open NotificationShade (V1 behavior)
+        // - Landscape mode (width > height): Open Sidebar (V2 behavior)
+
+        const isLandscape = window.innerWidth > window.innerHeight;
+
+        if (isLandscape) {
+            // Landscape: Open sidebar (V2 behavior)
+            console.log('[MobileUX] Action: Open Sidebar (landscape)');
+            this.eventBus.emit('ui:sidebar:toggle', {});
+        } else {
+            // Portrait: Let NotificationShade handle it (V1 behavior)
+            // NotificationShade listens to input:swipe_down directly
+            console.log('[MobileUX] Action: NotificationShade (portrait) - passing through');
+            // No action needed here - NotificationShade already listens to input:swipe_down
+        }
     }
 
     // ===========================================

@@ -304,6 +304,44 @@ export class NotificationShade {
         // V1 Parity: Keyboard shortcuts (lines 861-915)
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
 
+        // IMPROVEMENT OVER V1: Add touch listeners to entire shade for expansion gesture
+        // V1 only listened on quick-actions-container, this makes it work anywhere on shade
+        let shadeSwipeStartY = 0;
+        let shadeSwipeStartTime = 0;
+
+        this.container.addEventListener('touchstart', (e) => {
+            if (!this.isOpen || this.isExpanded) return;
+            const touch = e.touches[0];
+            if (!touch) return;
+            shadeSwipeStartY = touch.clientY;
+            shadeSwipeStartTime = Date.now();
+        }, { passive: true });
+
+        this.container.addEventListener('touchend', (e) => {
+            if (!this.isOpen || this.isExpanded) return;
+            const touch = e.changedTouches[0];
+            if (!touch) return;
+
+            const deltaY = touch.clientY - shadeSwipeStartY;
+            const deltaTime = Date.now() - shadeSwipeStartTime;
+            const velocity = deltaY / Math.max(deltaTime, 1);
+
+            // Detect downward swipe for expansion
+            // Use either threshold (30px) OR velocity (0.3 px/ms) for responsiveness
+            const meetsThreshold = deltaY > 30;
+            const meetsVelocity = velocity > 0.3;
+            const isQuickSwipe = deltaTime < 500;
+
+            if (isQuickSwipe && (meetsThreshold || meetsVelocity)) {
+                console.log('[NotificationShade] Swipe down detected on shade - expanding', {
+                    deltaY,
+                    velocity: velocity.toFixed(2),
+                    method: meetsVelocity ? 'velocity' : 'threshold'
+                });
+                this.expand();
+            }
+        }, { passive: true });
+
         // V1 Parity: Listen to raw swipe_down events directly (like V1's handleTouchMove)
         // NotificationShade manages its own state and routing logic
         this.eventBus.on('input:swipe_down', () => {
