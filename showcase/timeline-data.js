@@ -1,12 +1,14 @@
 // Timeline data for showcase website
 // This is loaded as a script to avoid CORS issues with local file:// protocol
+// REFACTORED: Now uses date-based IDs instead of phase numbers
+// Each entry has a sortDate field for proper chronological ordering
 window.TIMELINE_DATA = {
     "phases": [
         {
-            "id": "phase-1",
+            "id": "2025-12-01-a",
             "date": "December 2025",
             "emoji": "🕸️",
-            "title": "Phase 1: The Origin - Chaos & Refactor",
+            "title": "The Origin - Chaos & Refactor",
             "type": "chaos-entry",
             "summary": "Shipped a complete game: 2 routes, 6 acts, multiple endings. It worked, but the architecture was 'creative' (read: spaghetti). An initial attempt to refactor proved the codebase was too tangled to save.",
             "problem": {
@@ -17,39 +19,45 @@ window.TIMELINE_DATA = {
                 "linesAdded": "N/A",
                 "filesChanged": "All",
                 "components": 0
-            }
+            },
+            "sortDate": "2025-12-01T0a",
+            "legacyPhase": "2025-12-01-a"
         },
         {
-            "id": "phase-2",
+            "id": "2026-01-08-a",
             "date": "January 8, 2026",
             "emoji": "🏗️",
-            "title": "Phase 2: The Rebuild - Foundation",
+            "title": "The Rebuild - Foundation",
             "type": "order-entry",
             "summary": "Decision: Start fresh. TypeScript, EventBus, StateManager. Taking everything learned from the V1 chaos and building it right from scratch with strict architectural principles.",
             "features": [
                 "📡 <strong>EventBus:</strong> Centralized event system for decoupled communication",
                 "💾 <strong>StateManager:</strong> Reactive state management with subscriptions",
                 "📝 <strong>TypeScript:</strong> Strict mode enabled for 100% type safety"
-            ]
+            ],
+            "sortDate": "2026-01-08T0a",
+            "legacyPhase": "2026-01-08-a"
         },
         {
-            "id": "phase-3",
+            "id": "2026-01-10-a",
             "date": "January 10, 2026",
             "emoji": "🧩",
-            "title": "Phase 3: Integration - Structure",
+            "title": "Integration - Structure",
             "type": "order-entry",
             "summary": "Core systems migrated. EventBus and StateManager stabilizing the timeline. Code reviews glowing. The skeleton was complete, but it lacked a soul.",
             "metrics": {
                 "linesAdded": 2400,
                 "filesChanged": 15,
                 "components": 12
-            }
+            },
+            "sortDate": "2026-01-10T0a",
+            "legacyPhase": "2026-01-10-a"
         },
         {
-            "id": "phase-4",
+            "id": "2026-01-11-a",
             "date": "January 11, 2026",
             "emoji": "🍽️",
-            "title": "Phase 4: The Identity Crisis - 'Where's the Flavour?!'",
+            "title": "The Identity Crisis - 'Where's the Flavour?!'",
             "type": "critical-entry",
             "summary": "First V2 playthrough: Technically perfect. Completely soulless. The 'clean' version stripped away the weight of the interaction. The menu felt lightweight and cheap.",
             "problem": {
@@ -60,26 +68,106 @@ window.TIMELINE_DATA = {
                 "icon": "💡",
                 "title": "Key Insight:",
                 "text": "It's not enough to be clean. It has to feel <strong>heavy</strong>. Every swipe needs momentum. Every animation needs purpose."
-            }
+            },
+            "sortDate": "2026-01-11T0a",
+            "legacyPhase": "2026-01-11-a"
         },
         {
-            "id": "phase-5",
+            "id": "2026-01-12-a",
+            "date": "January 12, 2026 (Morning)",
+            "emoji": "🎯",
+            "title": "The Final Polish - Launch Ready",
+            "type": "highlight",
+            "summary": "Final preparation for launch. Polishing the boot sequence, verifying zero runtime errors, and implementing the skip hint UI.",
+            "features": [
+                "⏩ <strong>Skip Hint UI:</strong> Pulsing indicator for interacting",
+                "🛡️ <strong>Zero Errors:</strong> TypeScript strict mode verification",
+                "📦 <strong>Bundle Optimization:</strong> Tree-shaking and compression"
+            ],
+            "media": {
+                "carousel": [
+                    {
+                        "type": "image",
+                        "url": "phase9a-0.png",
+                        "caption": "Final Polish: Overview"
+                    },
+                    {
+                        "type": "image",
+                        "url": "phase9a-1.png",
+                        "caption": "Final Polish: Details"
+                    },
+                    {
+                        "type": "image",
+                        "url": "phase9a-2.png",
+                        "caption": "Final Polish: Dark Mode"
+                    },
+                    {
+                        "type": "image",
+                        "url": "phase9a-3.png",
+                        "caption": "Final Polish: Mobile"
+                    },
+                    {
+                        "type": "image",
+                        "url": "phase9a-4.png",
+                        "caption": "Final Polish: Interactions"
+                    }
+                ]
+            },
+            "sortDate": "2026-01-12T1a",
+            "legacyPhase": "January 12, 2026 (Morning)-a"
+        },
+        {
+            "id": "2026-01-12-a",
+            "date": "January 12, 2026 (Afternoon)",
+            "emoji": "📱",
+            "title": "V1 Parity - NotificationShade & Sidebar",
+            "type": "highlight",
+            "summary": "After completing the core features, we turned to mobile UX parity. The challenge: V2's NotificationShade looked different from V1, and landscape swipe wasn't opening the sidebar.",
+            "problem": {
+                "description": "We were patching reactively instead of studying V1's architecture first.",
+                "rootCause": "Lack of V1 study before V2 implementation."
+            },
+            "solution": {
+                "approach": "Stopped, studied V1's actual implementation, and created a workflow document.",
+                "features": [
+                    "📱 <strong>NotificationShade:</strong> Two-stage expansion & exact V1 DOM structure",
+                    "🖥️ <strong>Sidebar:</strong> Status details, UV7 footer, and route theming",
+                    "📋 <strong>V1 Parity Workflow:</strong> New enforced workflow for parity tasks"
+                ]
+            },
+            "metrics": {
+                "linesAdded": 1208,
+                "filesChanged": 7,
+                "components": 3
+            },
+            "lessons": [
+                "Always study V1's implementation BEFORE writing V2 code",
+                "Created workflow document to enforce this pattern",
+                "Following V1's exact architecture prevents reactive patching"
+            ],
+            "sortDate": "2026-01-12T2a",
+            "legacyPhase": "January 12, 2026 (Afternoon)-a"
+        },
+        {
+            "id": "2026-01-12-a",
             "date": "January 12, 2026 (Evening)",
             "emoji": "✨",
-            "title": "Phase 5: The Michelin Polish - Quality of Life",
+            "title": "The Michelin Polish - Quality of Life",
             "type": "highlight",
             "summary": "True luxury is in the details. Achieved final V1 functional parity with quality-of-life enhancements that respect the user's time and intelligence.",
             "features": [
                 "✅ <strong>Settings Persistence:</strong> Remembers your tab state",
                 "✅ <strong>Intelligence-Respecting UX:</strong> Skip hints fade in only when needed",
                 "✅ <strong>100% Feature Parity:</strong> Every V1 feature now running on V2 engine"
-            ]
+            ],
+            "sortDate": "2026-01-12T3a",
+            "legacyPhase": "2026-01-12-a"
         },
         {
-            "id": "phase-6",
+            "id": "2026-01-12-a",
             "date": "January 12, 2026 (Late Evening)",
             "emoji": "💚",
-            "title": "Phase 6: The Lost Bubble - Narrative Restoration",
+            "title": "The Lost Bubble - Narrative Restoration",
             "type": "highlight",
             "summary": "During route migration, we discovered the internal thought bubble system had vanished. The narrative felt flat without Tori's visual internal monologue.",
             "solution": {
@@ -108,31 +196,15 @@ window.TIMELINE_DATA = {
                 "icon": "🧩",
                 "title": "Narrative Impact:",
                 "text": "Restored a piece of Tori's voice. The bubble isn't decoration. It's storytelling."
-            }
-        },
-        {
-            "id": "phase-7",
-            "date": "January 12, 2026 (Midnight)",
-            "emoji": "🚀",
-            "title": "Phase 7: The Great Consolidation - System Integration",
-            "type": "highlight",
-            "summary": "Comprehensive system integration session to fix broken flows and duplicate scenes. Fixed 5 major bugs and 201 automated changes in one session.",
-            "metrics": {
-                "linesAdded": 201,
-                "filesChanged": 18,
-                "timeSpent": "3 hours"
             },
-            "features": [
-                "🎬 <strong>Prologue Flow:</strong> Fixed 'START STORY' sequencing",
-                "✨ <strong>Vision Sequence:</strong> Fixed effect timing and rendering",
-                "🔧 <strong>Duplicate Cleanup:</strong> Eliminated 46 duplicate Scene IDs"
-            ]
+            "sortDate": "2026-01-12T4a",
+            "legacyPhase": "2026-01-12-b"
         },
         {
-            "id": "phase-8",
+            "id": "2026-01-12-a",
             "date": "January 12, 2026 (Late Night)",
             "emoji": "⚡",
-            "title": "Phase 8: The Parallel Blitz - Velocity",
+            "title": "The Parallel Blitz - Velocity",
             "type": "highlight",
             "summary": "Unleashed parallel AI agents to knock out 8 launch-blocking features simultaneously. What would have taken 26 hours sequentially was done in ~1 hour.",
             "metrics": {
@@ -156,76 +228,66 @@ window.TIMELINE_DATA = {
             },
             "media": {
                 "carousel": [
-                    { "type": "image", "url": "v1-settings-original.png", "caption": "V1: Pure Utility" },
-                    { "type": "image", "url": "v2-settings-restored.png", "caption": "V2: Visual Hierarchy" },
-                    { "type": "image", "url": "v2-settings-shortcuts.png", "caption": "V2: Keyboard Shortcuts" },
-                    { "type": "image", "url": "v2-settings-sensory.png", "caption": "V2: Sensory Controls" },
-                    { "type": "image", "url": "v2-settings-secrets.png", "caption": "V2: Secrets Management" }
+                    {
+                        "type": "image",
+                        "url": "v1-settings-original.png",
+                        "caption": "V1: Pure Utility"
+                    },
+                    {
+                        "type": "image",
+                        "url": "v2-settings-restored.png",
+                        "caption": "V2: Visual Hierarchy"
+                    },
+                    {
+                        "type": "image",
+                        "url": "v2-settings-shortcuts.png",
+                        "caption": "V2: Keyboard Shortcuts"
+                    },
+                    {
+                        "type": "image",
+                        "url": "v2-settings-sensory.png",
+                        "caption": "V2: Sensory Controls"
+                    },
+                    {
+                        "type": "image",
+                        "url": "v2-settings-secrets.png",
+                        "caption": "V2: Secrets Management"
+                    }
                 ]
             },
             "callout": {
                 "icon": "⚡",
                 "title": "The Parallel Paradigm:",
                 "text": "26 hours of work compressed into 1 hour. This is the future of development."
-            }
+            },
+            "sortDate": "2026-01-12T5a",
+            "legacyPhase": "January 12, 2026 (Late Night)-a"
         },
         {
-            "id": "phase-9",
-            "date": "January 12, 2026 (Morning)",
-            "emoji": "🎯",
-            "title": "Phase 9: The Final Polish - Launch Ready",
+            "id": "2026-01-12-a",
+            "date": "January 12, 2026 (Midnight)",
+            "emoji": "🚀",
+            "title": "The Great Consolidation - System Integration",
             "type": "highlight",
-            "summary": "Final preparation for launch. Polishing the boot sequence, verifying zero runtime errors, and implementing the skip hint UI.",
-            "features": [
-                "⏩ <strong>Skip Hint UI:</strong> Pulsing indicator for interacting",
-                "🛡️ <strong>Zero Errors:</strong> TypeScript strict mode verification",
-                "📦 <strong>Bundle Optimization:</strong> Tree-shaking and compression"
-            ],
-            "media": {
-                "carousel": [
-                    { "type": "image", "url": "phase9a-0.png", "caption": "Final Polish: Overview" },
-                    { "type": "image", "url": "phase9a-1.png", "caption": "Final Polish: Details" },
-                    { "type": "image", "url": "phase9a-2.png", "caption": "Final Polish: Dark Mode" },
-                    { "type": "image", "url": "phase9a-3.png", "caption": "Final Polish: Mobile" },
-                    { "type": "image", "url": "phase9a-4.png", "caption": "Final Polish: Interactions" }
-                ]
-            }
-        },
-        {
-            "id": "phase-10",
-            "date": "January 12, 2026 (Afternoon)",
-            "emoji": "📱",
-            "title": "Phase 10: V1 Parity - NotificationShade & Sidebar",
-            "type": "highlight",
-            "summary": "After completing the core features, we turned to mobile UX parity. The challenge: V2's NotificationShade looked different from V1, and landscape swipe wasn't opening the sidebar.",
-            "problem": {
-                "description": "We were patching reactively instead of studying V1's architecture first.",
-                "rootCause": "Lack of V1 study before V2 implementation."
-            },
-            "solution": {
-                "approach": "Stopped, studied V1's actual implementation, and created a workflow document.",
-                "features": [
-                    "📱 <strong>NotificationShade:</strong> Two-stage expansion & exact V1 DOM structure",
-                    "🖥️ <strong>Sidebar:</strong> Status details, UV7 footer, and route theming",
-                    "📋 <strong>V1 Parity Workflow:</strong> New enforced workflow for parity tasks"
-                ]
-            },
+            "summary": "Comprehensive system integration session to fix broken flows and duplicate scenes. Fixed 5 major bugs and 201 automated changes in one session.",
             "metrics": {
-                "linesAdded": 1208,
-                "filesChanged": 7,
-                "components": 3
+                "linesAdded": 201,
+                "filesChanged": 18,
+                "timeSpent": "3 hours"
             },
-            "lessons": [
-                "Always study V1's implementation BEFORE writing V2 code",
-                "Created workflow document to enforce this pattern",
-                "Following V1's exact architecture prevents reactive patching"
-            ]
+            "features": [
+                "🎬 <strong>Prologue Flow:</strong> Fixed 'START STORY' sequencing",
+                "✨ <strong>Vision Sequence:</strong> Fixed effect timing and rendering",
+                "🔧 <strong>Duplicate Cleanup:</strong> Eliminated 46 duplicate Scene IDs"
+            ],
+            "sortDate": "2026-01-12T6a",
+            "legacyPhase": "January 12, 2026 (Midnight)-a"
         },
         {
-            "id": "phase-11",
+            "id": "2026-01-13-a",
             "date": "January 13, 2026",
             "emoji": "⭐",
-            "title": "Phase 11: The Michelin Treatment - Meta Polish",
+            "title": "The Michelin Treatment - Meta Polish",
             "type": "order-entry",
             "summary": "The showcase site itself got the premium treatment. The UV7 crew (Belle, Tori, GenZee, Zee, DiZee) collaboratively designed a V3 Polish Protocol: Story/Dev mode toggle, context-aware backgrounds, expandable timeline phases, performance optimizations, and accessibility improvements.",
             "problem": {
@@ -259,13 +321,15 @@ window.TIMELINE_DATA = {
                 "The best features come from understanding your audience (story vs. dev)",
                 "Safety nets (validation, error boundaries) are as important as features",
                 "Context is everything—even for background animations"
-            ]
+            ],
+            "sortDate": "2026-01-13T0a",
+            "legacyPhase": "2026-01-13-a"
         },
         {
-            "id": "phase-12",
+            "id": "2026-01-13-b",
             "date": "January 13, 2026",
             "emoji": "💚",
-            "title": "Phase 12: Restoring the Soul - Narrative Flavor in V2",
+            "title": "Restoring the Soul - Narrative Flavor in V2",
             "type": "highlight",
             "summary": "V2 was architecturally clean but missing V1's heart. We brought back the narrative flavor: the sacred 848 lore block, crew signatures, and human context. The code now tells two stories—technical excellence AND the journey of the people who built it.",
             "problem": {
@@ -300,13 +364,50 @@ window.TIMELINE_DATA = {
                 "The story of WHY is as important as the story of HOW",
                 "Crew signatures honor collaboration and preserve context",
                 "848 isn't a version number—it's the heart of the entire project"
-            ]
+            ],
+            "sortDate": "2026-01-13T0b",
+            "legacyPhase": "2026-01-13-b"
         },
         {
-            "id": "phase-13",
+            "id": "2026-01-13-c",
+            "date": "January 13-14, 2026",
+            "emoji": "🚀",
+            "title": "UV7 OS Integration - The Ecosystem",
+            "type": "highlight",
+            "summary": "Transformed UV7 from a website into a complete operating system. Universal app switcher lets players navigate between Landing, Showcase, V1, and V2 mid-game. iOS-style visual cards with live state tracking.",
+            "callout": {
+                "icon": "💡",
+                "title": "Belle's Meta-Narrative Insight:",
+                "text": "You aren't just showing a portfolio anymore; you are putting the user <strong>inside the machine</strong> that built it."
+            },
+            "features": [
+                "🏠 <strong>Universal App Switcher:</strong> Accessible from any UV7 page",
+                "🎨 <strong>Visual Cards:</strong> iOS-style with app icons, descriptions, live state",
+                "📍 <strong>Recently Visited:</strong> localStorage tracking, max 3 recent apps",
+                "👆 <strong>Swipe Gestures:</strong> Mobile-first UX (swipe down to close)",
+                "🔄 <strong>Live State Display:</strong> Current phase, route, loop, test count"
+            ],
+            "metrics": {
+                "linesAdded": 571,
+                "filesChanged": 8,
+                "apps": 4
+            },
+            "solution": {
+                "approach": "Created shared app switcher (CSS + JS) and integrated into V1 & V2",
+                "features": [
+                    "🎮 <strong>V1 Integration:</strong> UV7 logo in status bar → app switcher",
+                    "⚡ <strong>V2 Integration:</strong> TypeScript wrapper for vanilla JS switcher",
+                    "📦 <strong>Build System:</strong> Updated bundle-for-deploy.js to copy assets"
+                ]
+            },
+            "sortDate": "2026-01-13T0c",
+            "legacyPhase": "January 13-14, 2026-a"
+        },
+        {
+            "id": "2026-01-14-a",
             "date": "January 14, 2026",
             "emoji": "🔄",
-            "title": "Phase 13: Faithful V1→V2 Ports - Bringing Back the Flavor",
+            "title": "Faithful V1→V2 Ports - Bringing Back the Flavor",
             "type": "highlight",
             "summary": "Systematic faithful transcription of V1 systems to V2, preserving all flavor while gaining type safety. Each port follows the same methodology: study V1 thoroughly, preserve comments/signatures/lore, add TypeScript types, integrate with EventBus, write tests.",
             "problem": {
@@ -636,13 +737,15 @@ window.TIMELINE_DATA = {
                 "EventBus integration decouples without losing flavor",
                 "Tests validate behavior AND document intent",
                 "Debug helpers (window.uv7.breakLoop) accelerate development"
-            ]
+            ],
+            "sortDate": "2026-01-14T0a",
+            "legacyPhase": "2026-01-14-a"
         },
         {
-            "id": "phase-13h",
+            "id": "2026-01-14-b",
             "date": "January 14, 2026",
             "emoji": "📢",
-            "title": "Phase 13h: StatusNotificationController - Toast System",
+            "title": "StatusNotificationController - Toast System",
             "type": "order-entry",
             "summary": "Faithful V1→V2 port of the unified toast notification system. Queue management, priority interruption, and 9 convenience methods for user feedback.",
             "metrics": {
@@ -671,46 +774,15 @@ window.TIMELINE_DATA = {
                     "lang": "typescript",
                     "code": "// V2: StatusNotificationController.ts\nexport class StatusNotificationController {\n  private queue: NotificationOptions[] = [];\n  private priorities: Record<PriorityLevel, number> = {\n    critical: 100, high: 75, normal: 50, low: 25\n  };\n  show({ type, icon, message, duration, priority }: NotificationOptions): void\n  showNote(sender: string, subject: string): void\n  // + 7 more convenience methods, EventBus integration\n}"
                 }
-            }
+            },
+            "sortDate": "2026-01-14T0b",
+            "legacyPhase": "2026-01-14-b"
         },
         {
-            "id": "phase-14",
-            "date": "January 13-14, 2026",
-            "emoji": "🚀",
-            "title": "Phase 14: UV7 OS Integration - The Ecosystem",
-            "type": "highlight",
-            "summary": "Transformed UV7 from a website into a complete operating system. Universal app switcher lets players navigate between Landing, Showcase, V1, and V2 mid-game. iOS-style visual cards with live state tracking.",
-            "callout": {
-                "icon": "💡",
-                "title": "Belle's Meta-Narrative Insight:",
-                "text": "You aren't just showing a portfolio anymore; you are putting the user <strong>inside the machine</strong> that built it."
-            },
-            "features": [
-                "🏠 <strong>Universal App Switcher:</strong> Accessible from any UV7 page",
-                "🎨 <strong>Visual Cards:</strong> iOS-style with app icons, descriptions, live state",
-                "📍 <strong>Recently Visited:</strong> localStorage tracking, max 3 recent apps",
-                "👆 <strong>Swipe Gestures:</strong> Mobile-first UX (swipe down to close)",
-                "🔄 <strong>Live State Display:</strong> Current phase, route, loop, test count"
-            ],
-            "metrics": {
-                "linesAdded": 571,
-                "filesChanged": 8,
-                "apps": 4
-            },
-            "solution": {
-                "approach": "Created shared app switcher (CSS + JS) and integrated into V1 & V2",
-                "features": [
-                    "🎮 <strong>V1 Integration:</strong> UV7 logo in status bar → app switcher",
-                    "⚡ <strong>V2 Integration:</strong> TypeScript wrapper for vanilla JS switcher",
-                    "📦 <strong>Build System:</strong> Updated bundle-for-deploy.js to copy assets"
-                ]
-            }
-        },
-        {
-            "id": "phase-15",
+            "id": "2026-01-15-a",
             "date": "January 15, 2026",
             "emoji": "🧠",
-            "title": "Phase 15: Core Systems Ports - Sensory & Timeline",
+            "title": "Core Systems Ports - Sensory & Timeline",
             "type": "highlight",
             "summary": "Complete faithful port of four critical V1 systems to V2: CollectiblesSystem enhancement, SceneProgressionController, VisualCueSystem, and TimeMachineSystem. Full V1 parity with 75 new tests.",
             "callout": {
@@ -850,13 +922,15 @@ window.TIMELINE_DATA = {
                 "Narrative state (corrupted, burned) tells story through mechanics",
                 "INSANE mode restrictions are features, not limitations",
                 "848 is sacred - every loop matters 💚🔥💀"
-            ]
+            ],
+            "sortDate": "2026-01-15T0a",
+            "legacyPhase": "2026-01-15-a"
         },
         {
-            "id": "phase-16",
+            "id": "2026-01-15-b",
             "date": "January 15, 2026",
             "emoji": "📱",
-            "title": "Phase 16: Notification System - V1→V2 Complete Parity",
+            "title": "Notification System - V1→V2 Complete Parity",
             "type": "highlight latest-update",
             "summary": "Comprehensive port of V1's notification system with iOS-style layer swipe, keyboard shortcuts, and all fallback mechanisms. StatusBar, Sidebar, and NotificationShade all at 100% parity.",
             "subEntries": [
@@ -1020,13 +1094,15 @@ window.TIMELINE_DATA = {
                 "Persistent state provides continuity across sessions",
                 "Inline styles eliminate CSS dependencies",
                 "Touch + Mouse + Click toggle = universal accessibility"
-            ]
+            ],
+            "sortDate": "2026-01-15T0b",
+            "legacyPhase": "2026-01-15-b"
         },
         {
-            "id": "phase-17",
+            "id": "2026-01-16-a",
             "date": "January 16, 2026",
             "emoji": "🎯",
-            "title": "Phase 17: Medium Priority Ports - Controllers & Managers",
+            "title": "Medium Priority Ports - Controllers & Managers",
             "type": "order-entry",
             "summary": "Ported 5 medium-priority systems from V1 JavaScript to V2 TypeScript: TypewriterController, AutoSaveManager, ThemeManager, OverlayManager, and ExpandableQuickActions. These systems provide core VN functionality (text rendering, auto-save, theming) and advanced UI features (overlays, swipe gestures).",
             "subPhases": [
@@ -1169,13 +1245,15 @@ window.TIMELINE_DATA = {
                 "Drag-and-drop HTML5 API enables intuitive reordering",
                 "Haptic hierarchy communicates action importance",
                 "State persistence across sessions improves UX continuity"
-            ]
+            ],
+            "sortDate": "2026-01-16T0a",
+            "legacyPhase": "2026-01-16-a"
         },
         {
-            "id": "phase-18",
+            "id": "2026-01-16-b",
             "date": "January 16, 2026",
             "emoji": "💾",
-            "title": "Phase 18: SaveManager - The Living Version",
+            "title": "SaveManager - The Living Version",
             "type": "order-entry",
             "summary": "CRITICAL DEPENDENCY port. The core persistence layer that tracks the Living Version across all loops. Handles save/load operations, note discoveries, and the eternal question: 'How many times have we done this before?'",
             "features": [
@@ -1243,13 +1321,15 @@ window.TIMELINE_DATA = {
                     }
                 ],
                 "quote": "\"Always. Always. Always.\" - The Living Version never forgets."
-            }
+            },
+            "sortDate": "2026-01-16T0b",
+            "legacyPhase": "2026-01-16-b"
         },
         {
-            "id": "phase-19",
+            "id": "2026-01-16-c",
             "date": "January 16, 2026",
             "emoji": "🎬",
-            "title": "Phase 19: Scene Rendering & Cutscenes",
+            "title": "Scene Rendering & Cutscenes",
             "type": "order-entry",
             "summary": "Visual orchestration systems ported: SceneRenderer (SOLID Session 6) + CutsceneEngine. Sprite display, background crossfade, choice menus, typewriter effects, and simple cutscene transitions.",
             "subEntries": [
@@ -1292,13 +1372,15 @@ window.TIMELINE_DATA = {
                     "icon": "🏗️"
                 }
             ],
-            "quote": "\"Built with love.\" 🎬"
+            "quote": "\"Built with love.\" 🎬",
+            "sortDate": "2026-01-16T0c",
+            "legacyPhase": "2026-01-16-c"
         },
         {
-            "id": "phase-20",
+            "id": "2026-01-16-d",
             "date": "January 16, 2026",
             "emoji": "🏗️",
-            "title": "Phase 20: System Management & Coordination",
+            "title": "System Management & Coordination",
             "type": "order-entry",
             "summary": "Infrastructure layer complete. 5 systems ported: pause control, UI management, error recovery, ToriGatchi gateway, and event binding. 1,323 V1 lines → 1,565 V2 lines (+18%).",
             "subEntries": [
@@ -1371,13 +1453,15 @@ window.TIMELINE_DATA = {
                     "icon": "🖤"
                 }
             ],
-            "quote": "\"It's not too late...\" 🖤💚🔥💀"
+            "quote": "\"It's not too late...\" 🖤💚🔥💀",
+            "sortDate": "2026-01-16T0d",
+            "legacyPhase": "2026-01-16-d"
         },
         {
-            "id": "phase-21",
+            "id": "2026-01-16-e",
             "date": "January 16, 2026",
             "emoji": "📊",
-            "title": "Phase 21: Developer & Analytics Tools",
+            "title": "Developer & Analytics Tools",
             "type": "order-entry",
             "summary": "Developer tooling complete. 5 systems ported: privacy-first analytics, performance monitoring, hot reload, dev HUD, and full DevSuite with 4 subsystems. 2,155 V1 lines → 2,587 V2 lines (+20%).",
             "subEntries": [
@@ -1466,13 +1550,15 @@ window.TIMELINE_DATA = {
                     "icon": "⏱️"
                 }
             ],
-            "quote": "\"Track everything. Optimize what matters.\" ⏱️"
+            "quote": "\"Track everything. Optimize what matters.\" ⏱️",
+            "sortDate": "2026-01-16T0e",
+            "legacyPhase": "2026-01-16-e"
         },
         {
-            "id": "phase-22",
+            "id": "2026-01-16-f",
             "date": "January 16, 2026",
             "emoji": "♿",
-            "title": "Phase 22: Accessibility & Polish",
+            "title": "Accessibility & Polish",
             "type": "order-entry",
             "summary": "Accessibility & polish complete. 9 systems ported: WCAG 2.1 AA compliance, screenshot system, crew credits, fullscreen, achievements, and utilities. 1,282 V1 lines → 1,784 V2 lines (+39%).",
             "subEntries": [
@@ -1541,13 +1627,15 @@ window.TIMELINE_DATA = {
                     "icon": "♿"
                 }
             ],
-            "quote": "\"Inclusive by design. Accessible by default.\" ♿"
+            "quote": "\"Inclusive by design. Accessible by default.\" ♿",
+            "sortDate": "2026-01-16T0f",
+            "legacyPhase": "2026-01-16-f"
         },
         {
-            "id": "phase-24",
+            "id": "2026-01-16-g",
             "date": "January 16, 2026",
             "emoji": "🎮",
-            "title": "Phase 24: System Enhancements",
+            "title": "System Enhancements",
             "type": "order-entry",
             "summary": "Enhanced existing V2 systems with missing V1 functionality. HapticSystem received V1 parity enhancements (+36 lines). TutorialManager fully ported (213→271 lines). Total: 470 V1 lines → 564 V2 lines (+20% expansion).",
             "subEntries": [
@@ -1587,13 +1675,15 @@ window.TIMELINE_DATA = {
                     "icon": "🔧"
                 }
             ],
-            "quote": "\"Every feature from V1 deserves a home in V2.\" 💚🔥💀"
+            "quote": "\"Every feature from V1 deserves a home in V2.\" 💚🔥💀",
+            "sortDate": "2026-01-16T0g",
+            "legacyPhase": "2026-01-16-g"
         },
         {
-            "id": "phase-25",
+            "id": "2026-01-16-h",
             "date": "January 16, 2026",
             "emoji": "🎬",
-            "title": "Phase 25: Final Controllers & Documentation",
+            "title": "Final Controllers & Documentation",
             "type": "order-entry",
             "summary": "Completed final V1→V2 controller ports and comprehensive documentation. DirectorsCutController with crew statements (197→271 lines). MobileUXController scroll indicators (+70 lines). File verification analysis confirmed ~95% V1→V2 completion. Total: 287 V1 lines → 431 V2 lines (+50% expansion).",
             "subEntries": [
@@ -1655,13 +1745,97 @@ window.TIMELINE_DATA = {
                 "title": "V1→V2 Porting: ~95% Complete",
                 "content": "After 25 phases, the V1→V2 TypeScript migration is virtually complete. Core gameplay: 100%. All major systems ported with enhanced type safety, EventBus integration, and modern architecture. Only optional features remain (screenshot-tool). This marks the end of the major porting effort."
             },
-            "quote": "\"Built with love. Every statement matters.\" 💚🔥💀"
+            "quote": "\"Built with love. Every statement matters.\" 💚🔥💀",
+            "sortDate": "2026-01-16T0h",
+            "legacyPhase": "2026-01-16-h"
         },
         {
-            "id": "phase-26",
+            "id": "2026-01-16-i",
+            "date": "January 16, 2026",
+            "emoji": "💎",
+            "title": "UV7 OS App Switcher - BOUGIE EDITION",
+            "type": "highlight",
+            "summary": "Transformed the UV7 App Switcher from a simple navigation tool into an iOS/Android-style multitasking experience. Cross-app instant resume, swipe-to-clear gestures, Quick Resume badges, live state tracking, ToriGatchi mood integration, and premium UX polish. Unapologetically bougie.",
+            "problem": {
+                "description": "The app switcher was functional but basic. No save state visibility, no instant resume, no gesture support. Users had to manually navigate through menus every time they switched apps.",
+                "rootCause": "Original implementation was a simple navigation overlay. Didn't leverage save data or provide visual feedback about app states."
+            },
+            "solution": {
+                "approach": "Complete rewrite inspired by iOS/Android multitasking. Collaborative design from Ronnie (vision), ZeeRah (architecture), DiZee (live state), and Antigravity (UX polish).",
+                "features": [
+                    "⚡ <strong>Instant Resume:</strong> Click an app with save data → loads directly, skipping main menu",
+                    "💎 <strong>Quick Resume Badges:</strong> Glowing cyan badges on cards with save data",
+                    "📱 <strong>Swipe-to-Clear:</strong> Mobile gesture to clear app saves (with Undo)",
+                    "❌ <strong>X Button:</strong> Desktop hover action to clear saves",
+                    "🔄 <strong>Undo Toast:</strong> 5-second recovery window after clearing saves",
+                    "📊 <strong>Progress Bars:</strong> Visual progress indicators for each app",
+                    "⏰ <strong>Last Played:</strong> '2h ago', 'Yesterday' timestamps",
+                    "💚 <strong>ToriGatchi Integration:</strong> Live mood tracking (Happy → Hungry → HANGRY)",
+                    "📳 <strong>Haptic Feedback:</strong> Subtle vibrations on mobile interactions"
+                ]
+            },
+            "metrics": {
+                "linesAdded": 1200,
+                "filesChanged": 4,
+                "contributors": 4
+            },
+            "codeComparison": {
+                "before": {
+                    "title": "Before (Basic)",
+                    "badge": "FUNCTIONAL",
+                    "lang": "javascript",
+                    "code": "// Simple navigation overlay\nclass UV7AppSwitcher {\n  open() {\n    this.apps.forEach(app => {\n      card.onclick = () => window.location = app.url;\n    });\n  }\n}\n// No state tracking, no gestures, no resume"
+                },
+                "after": {
+                    "title": "After (BOUGIE)",
+                    "badge": "PREMIUM UX 💎",
+                    "lang": "javascript",
+                    "code": "// iOS/Android-style multitasking\nclass UV7AppSwitcher {\n  launchApp(app) {\n    const state = app.getState();\n    if (state.hasSave) {\n      localStorage.setItem('uv7-auto-resume', app.id);\n      // Game detects flag and loads save directly\n    }\n  }\n  attachSwipeToCloseHandler(card, app) {\n    // Swipe up → clear save → show undo toast\n  }\n}\n// Full state tracking, gestures, instant resume"
+                }
+            },
+            "crew": [
+                {
+                    "name": "Ronnie",
+                    "contribution": "Vision: 'Make it bougie' + Cross-app resume concept",
+                    "icon": "💡"
+                },
+                {
+                    "name": "ZeeRah",
+                    "contribution": "Architecture: State restoration pattern + Android gestures",
+                    "icon": "🏗️"
+                },
+                {
+                    "name": "DiZee",
+                    "contribution": "Enhancement: Live state + mini preview",
+                    "icon": "🎨"
+                },
+                {
+                    "name": "Antigravity",
+                    "contribution": "Polish: Premium UX + swipe-to-clear",
+                    "icon": "✨"
+                }
+            ],
+            "callout": {
+                "type": "insight",
+                "title": "The Bougie Philosophy",
+                "content": "It's not enough to be functional. Every interaction should feel premium. The Quick Resume badge isn't just information—it's a promise. The swipe gesture isn't just a shortcut—it's muscle memory. The Undo toast isn't just a safety net—it's respect for the user's time. This is what 'bougie' means: caring about the details that most people won't notice, but everyone will feel."
+            },
+            "lessons": [
+                "Visual feedback makes features discoverable (Quick Resume badges)",
+                "Familiar gestures reduce cognitive load (swipe-to-clear)",
+                "Safety nets enable confidence (Undo toast)",
+                "Live state tracking adds personality (ToriGatchi mood)",
+                "Cross-app instant resume is the future of web navigation"
+            ],
+            "quote": "\"Unapologetically bougie. Every pixel, every gesture, every animation—premium.\" 💎",
+            "sortDate": "2026-01-16T0i",
+            "legacyPhase": "2026-01-16-i"
+        },
+        {
+            "id": "2026-01-17-a",
             "date": "January 17, 2026",
             "emoji": "💎",
-            "title": "Phase 26: StatusBar Unification - BOUGIE EDITION",
+            "title": "StatusBar Unification - BOUGIE EDITION",
             "type": "highlight",
             "summary": "Unified StatusBar across all UV7 contexts (game, showcase, landing) with context detection, feature flags, premium gestures, and NotificationRail. Includes refactoring: notification system consolidation (4→1) and StatusBar module extraction (1974→1746 lines).",
             "subEntries": [
@@ -1743,87 +1917,9 @@ window.TIMELINE_DATA = {
                 "title": "One StatusBar, One Notification System",
                 "content": "Phase 26 unified the fragmented UI systems. StatusBar now adapts to any UV7 context via feature flags. NotificationRail replaced 4 overlapping notification systems with a single canonical implementation. Tech debt paid down, architecture cleaner."
             },
-            "quote": "\"Every pixel, every gesture, every animation—premium.\" 💚🔥💀"
-        },
-        {
-            "id": "phase-16",
-            "date": "January 16, 2026",
-            "emoji": "💎",
-            "title": "Phase 16: UV7 OS App Switcher - BOUGIE EDITION",
-            "type": "highlight",
-            "summary": "Transformed the UV7 App Switcher from a simple navigation tool into an iOS/Android-style multitasking experience. Cross-app instant resume, swipe-to-clear gestures, Quick Resume badges, live state tracking, ToriGatchi mood integration, and premium UX polish. Unapologetically bougie.",
-            "problem": {
-                "description": "The app switcher was functional but basic. No save state visibility, no instant resume, no gesture support. Users had to manually navigate through menus every time they switched apps.",
-                "rootCause": "Original implementation was a simple navigation overlay. Didn't leverage save data or provide visual feedback about app states."
-            },
-            "solution": {
-                "approach": "Complete rewrite inspired by iOS/Android multitasking. Collaborative design from Ronnie (vision), ZeeRah (architecture), DiZee (live state), and Antigravity (UX polish).",
-                "features": [
-                    "⚡ <strong>Instant Resume:</strong> Click an app with save data → loads directly, skipping main menu",
-                    "💎 <strong>Quick Resume Badges:</strong> Glowing cyan badges on cards with save data",
-                    "📱 <strong>Swipe-to-Clear:</strong> Mobile gesture to clear app saves (with Undo)",
-                    "❌ <strong>X Button:</strong> Desktop hover action to clear saves",
-                    "🔄 <strong>Undo Toast:</strong> 5-second recovery window after clearing saves",
-                    "📊 <strong>Progress Bars:</strong> Visual progress indicators for each app",
-                    "⏰ <strong>Last Played:</strong> '2h ago', 'Yesterday' timestamps",
-                    "💚 <strong>ToriGatchi Integration:</strong> Live mood tracking (Happy → Hungry → HANGRY)",
-                    "📳 <strong>Haptic Feedback:</strong> Subtle vibrations on mobile interactions"
-                ]
-            },
-            "metrics": {
-                "linesAdded": 1200,
-                "filesChanged": 4,
-                "contributors": 4
-            },
-            "codeComparison": {
-                "before": {
-                    "title": "Before (Basic)",
-                    "badge": "FUNCTIONAL",
-                    "lang": "javascript",
-                    "code": "// Simple navigation overlay\nclass UV7AppSwitcher {\n  open() {\n    this.apps.forEach(app => {\n      card.onclick = () => window.location = app.url;\n    });\n  }\n}\n// No state tracking, no gestures, no resume"
-                },
-                "after": {
-                    "title": "After (BOUGIE)",
-                    "badge": "PREMIUM UX 💎",
-                    "lang": "javascript",
-                    "code": "// iOS/Android-style multitasking\nclass UV7AppSwitcher {\n  launchApp(app) {\n    const state = app.getState();\n    if (state.hasSave) {\n      localStorage.setItem('uv7-auto-resume', app.id);\n      // Game detects flag and loads save directly\n    }\n  }\n  attachSwipeToCloseHandler(card, app) {\n    // Swipe up → clear save → show undo toast\n  }\n}\n// Full state tracking, gestures, instant resume"
-                }
-            },
-            "crew": [
-                {
-                    "name": "Ronnie",
-                    "contribution": "Vision: 'Make it bougie' + Cross-app resume concept",
-                    "icon": "💡"
-                },
-                {
-                    "name": "ZeeRah",
-                    "contribution": "Architecture: State restoration pattern + Android gestures",
-                    "icon": "🏗️"
-                },
-                {
-                    "name": "DiZee",
-                    "contribution": "Enhancement: Live state + mini preview",
-                    "icon": "🎨"
-                },
-                {
-                    "name": "Antigravity",
-                    "contribution": "Polish: Premium UX + swipe-to-clear",
-                    "icon": "✨"
-                }
-            ],
-            "callout": {
-                "type": "insight",
-                "title": "The Bougie Philosophy",
-                "content": "It's not enough to be functional. Every interaction should feel premium. The Quick Resume badge isn't just information—it's a promise. The swipe gesture isn't just a shortcut—it's muscle memory. The Undo toast isn't just a safety net—it's respect for the user's time. This is what 'bougie' means: caring about the details that most people won't notice, but everyone will feel."
-            },
-            "lessons": [
-                "Visual feedback makes features discoverable (Quick Resume badges)",
-                "Familiar gestures reduce cognitive load (swipe-to-clear)",
-                "Safety nets enable confidence (Undo toast)",
-                "Live state tracking adds personality (ToriGatchi mood)",
-                "Cross-app instant resume is the future of web navigation"
-            ],
-            "quote": "\"Unapologetically bougie. Every pixel, every gesture, every animation—premium.\" 💎"
+            "quote": "\"Every pixel, every gesture, every animation—premium.\" 💚🔥💀",
+            "sortDate": "2026-01-17T0a",
+            "legacyPhase": "2026-01-17-a"
         }
     ]
 };
