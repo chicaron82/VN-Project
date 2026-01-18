@@ -31,15 +31,20 @@
     object-fit: cover;
     object-position: center;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Blending with the gradient background */
+    mix-blend-mode: overlay;
+    opacity: 0.6;
+    filter: brightness(0.8) contrast(1.2);
 }
 
 /* Parallax effect on scroll */
 .tab-panel.active .hero-banner-image {
-    transform: translateY(0);
+    transform: translateY(0) scale(1.05);
 }
 
 .hero-banner:hover .hero-banner-image {
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
 .hero-banner-content {
