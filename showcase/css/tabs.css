@@ -167,16 +167,24 @@
 
 #hero-section.collapsed {
     max-height: 80px;
+    cursor: pointer;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#hero-section.collapsed:hover {
+    background: rgba(255, 255, 255, 0.02);
 }
 
 #hero-section.collapsed .hero-carousel {
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
 #hero-section.collapsed .hero-title {
     font-size: 1.2rem;
     margin: 1rem 0;
+    transition: all 0.3s ease;
 }
 
 /* Expand button when collapsed */
@@ -187,6 +195,37 @@
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.4);
     cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+#hero-section.collapsed:hover::after {
+    color: var(--uv7-accent, #00ff88);
+}
+
+/* ========================================
+   VIEW TRANSITIONS API SUPPORT
+   Chrome 111+, Edge 111+
+   ======================================== */
+
+/* Assign view transition names to tab panels */
+[data-panel] {
+    view-transition-name: tab-panel;
+}
+
+/* Smooth cross-fade for View Transitions API */
+::view-transition-old(tab-panel),
+::view-transition-new(tab-panel) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(tab-panel) {
+    animation-name: fadeOut;
+}
+
+::view-transition-new(tab-panel) {
+    animation-name: fadeIn;
 }
 
 /* ========================================
@@ -202,6 +241,16 @@
     to {
         width: 60%;
         opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
     }
 }
 
@@ -309,4 +358,71 @@
 .tab-item:focus-visible {
     outline: 2px solid var(--uv7-accent, #00ff88);
     outline-offset: 2px;
+}
+
+/* ========================================
+   SWIPE HINT
+   First-time user guidance
+   ======================================== */
+
+.swipe-hint {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.swipe-hint.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.swipe-hint-content {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 24px;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+}
+
+.swipe-hint-text {
+    color: var(--uv7-accent, #00ff88);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.swipe-hint-icon {
+    font-size: 1.2rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.swipe-hint-icon:first-child {
+    animation-delay: 0s;
+}
+
+.swipe-hint-icon:last-child {
+    animation-delay: 0.75s;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
 }

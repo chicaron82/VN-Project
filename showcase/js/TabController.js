@@ -37,9 +37,13 @@ class TabController {
         this.tabPanels = document.querySelectorAll('[data-panel]');
         this.progressIndicator = document.getElementById('tab-progress');
 
+        // First-time user hint
+        this.hasSeenSwipeHint = localStorage.getItem('showcase-seen-swipe-hint') === 'true';
+
         // Initialize
         this.setupEventListeners();
         this.navigateToTab(this.activeTab, false); // No animation on load
+        this.showSwipeHintIfNeeded();
 
         console.log('✅ TabController initialized');
     }
@@ -125,33 +129,46 @@ class TabController {
         this.isTransitioning = true;
         this.activeTab = tabId;
 
-        // Update URL hash
-        window.location.hash = tabId;
+        // Dismiss swipe hint after first navigation
+        this.dismissSwipeHint();
 
-        // Update tab buttons
-        this.updateTabButtons();
+        // Use View Transitions API if available
+        const transition = () => {
+            // Update URL hash
+            window.location.hash = tabId;
 
-        // Update panels
-        this.updatePanels(oldTab, tabId, direction, animate);
+            // Update tab buttons
+            this.updateTabButtons();
 
-        // Update progress indicator
-        this.updateProgress();
+            // Update panels
+            this.updatePanels(oldTab, tabId, direction, animate);
 
-        // Save state
-        this.saveLastTab(tabId);
+            // Update progress indicator
+            this.updateProgress();
 
-        // Restore scroll position for this tab
-        this.restoreScrollPosition(tabId);
+            // Save state
+            this.saveLastTab(tabId);
 
-        // Collapse hero after first navigation
-        if (oldTab === 'journey' && tabId !== 'journey') {
-            this.collapseHero();
+            // Restore scroll position for this tab
+            this.restoreScrollPosition(tabId);
+
+            // Collapse hero after first navigation
+            if (oldTab === 'journey' && tabId !== 'journey') {
+                this.collapseHero();
+            }
+
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(10);
+
+            console.log(`📑 Navigated: ${oldTab} → ${tabId} (${direction})`);
+        };
+
+        // Use View Transitions API if supported
+        if (document.startViewTransition && animate) {
+            document.startViewTransition(() => transition());
+        } else {
+            transition();
         }
-
-        // Haptic feedback
-        if (navigator.vibrate) navigator.vibrate(10);
-
-        console.log(`📑 Navigated: ${oldTab} → ${tabId} (${direction})`);
 
         // Reset transition lock after animation
         setTimeout(() => {
@@ -255,6 +272,9 @@ class TabController {
         if (!hero.classList.contains('collapsed')) {
             hero.classList.add('collapsed');
             console.log('📐 Hero collapsed');
+
+            // Add click listener to expand
+            hero.addEventListener('click', () => this.expandHero(), { once: true });
         }
     }
 
@@ -352,6 +372,66 @@ class TabController {
      */
     saveLastTab(tabId) {
         localStorage.setItem('showcase-last-tab', tabId);
+    }
+
+    // ========================================
+    // SWIPE HINTS
+    // ========================================
+
+    /**
+     * Show swipe hint for first-time users
+     */
+    showSwipeHintIfNeeded() {
+        if (this.hasSeenSwipeHint) return;
+        if (window.innerWidth < 768) { // Mobile only
+            setTimeout(() => this.createSwipeHint(), 1000);
+        }
+    }
+
+    /**
+     * Create swipe hint UI
+     */
+    createSwipeHint() {
+        const hint = document.createElement('div');
+        hint.className = 'swipe-hint';
+        hint.innerHTML = `
+            <div class="swipe-hint-content">
+                <span class="swipe-hint-icon">👈</span>
+                <span class="swipe-hint-text">Swipe to explore</span>
+                <span class="swipe-hint-icon">👉</span>
+            </div>
+        `;
+
+        document.body.appendChild(hint);
+
+        // Fade in
+        requestAnimationFrame(() => {
+            hint.classList.add('visible');
+        });
+
+        // Auto-dismiss after 3 seconds
+        setTimeout(() => {
+            this.dismissSwipeHint();
+        }, 3000);
+
+        console.log('💡 Swipe hint shown');
+    }
+
+    /**
+     * Dismiss swipe hint
+     */
+    dismissSwipeHint() {
+        const hint = document.querySelector('.swipe-hint');
+        if (!hint) return;
+
+        hint.classList.remove('visible');
+        setTimeout(() => hint.remove(), 300);
+
+        // Remember that user has seen it
+        if (!this.hasSeenSwipeHint) {
+            localStorage.setItem('showcase-seen-swipe-hint', 'true');
+            this.hasSeenSwipeHint = true;
+        }
     }
 
     // ========================================
