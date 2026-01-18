@@ -16,9 +16,9 @@ export class SwipeHandler {
     private touchStartTime: number = 0;
 
     // Configuration
-    private readonly MIN_SWIPE_DISTANCE = 50; // px
-    private readonly MAX_SWIPE_TIME = 500; // ms
-    private readonly RESTRAINT = 100; // px (max perpendicular movement)
+    private readonly MIN_SWIPE_DISTANCE = 35; // px (Reduced from 50)
+    private readonly MAX_SWIPE_TIME = 650; // ms (Increased from 500)
+    private readonly RESTRAINT = 120; // px (Increased from 100)
 
     constructor(element: HTMLElement, eventBus: EventBus) {
         this.element = element;
@@ -36,16 +36,16 @@ export class SwipeHandler {
     private handleTouchStart(e: TouchEvent): void {
         const touch = e.changedTouches[0];
         if (!touch) return;
-        this.touchStartX = touch.screenX;
-        this.touchStartY = touch.screenY;
+        this.touchStartX = touch.clientX; // Use clientX/Y
+        this.touchStartY = touch.clientY;
         this.touchStartTime = new Date().getTime();
     }
 
     private handleTouchEnd(e: TouchEvent): void {
         const touch = e.changedTouches[0];
         if (!touch) return;
-        const distX = touch.screenX - this.touchStartX;
-        const distY = touch.screenY - this.touchStartY;
+        const distX = touch.clientX - this.touchStartX;
+        const distY = touch.clientY - this.touchStartY;
         const elapsedTime = new Date().getTime() - this.touchStartTime;
 
         if (elapsedTime <= this.MAX_SWIPE_TIME) {

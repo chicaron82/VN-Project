@@ -41,13 +41,20 @@ export class MobileUXController {
     // Gesture Actions
     // ===========================================
 
+    private isShadeVisible(): boolean {
+        const shade = document.getElementById('notification-shade');
+        return !!shade && shade.classList.contains('visible');
+    }
+
     private handleSwipeRight(): void {
+        if (this.isShadeVisible()) return;
         // Swipe Right -> Advance Dialog
         console.log('[MobileUX] Action: Advance');
         this.eventBus.emit('dialog:advance', { source: 'swipe' });
     }
 
     private handleSwipeLeft(): void {
+        if (this.isShadeVisible()) return;
         // Swipe Left -> Open Backlog
         console.log('[MobileUX] Action: Backlog');
         this.eventBus.emit('ui:backlog:toggle', {});
@@ -56,8 +63,7 @@ export class MobileUXController {
     private handleSwipeUp(): void {
         // Check if notification shade is handling this
         // If shade is open, it takes priority
-        const shade = document.getElementById('notification-shade');
-        if (shade?.classList.contains('visible')) {
+        if (this.isShadeVisible()) {
             return; // Let NotificationShade handle it
         }
 
@@ -69,6 +75,8 @@ export class MobileUXController {
     }
 
     private handleSwipeDown(): void {
+        if (this.isShadeVisible()) return; // <-- important
+
         // Swipe Down routing logic:
         // - Portrait mode (or width < height): Open NotificationShade (V1 behavior)
         // - Landscape mode (width > height): Open Sidebar (V2 behavior)

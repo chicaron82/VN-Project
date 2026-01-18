@@ -451,6 +451,9 @@ async function startGame(route: 'ronnie' | 'tori') {
             eventBus
         );
 
+        // TORI'S FIX: Trigger code rain AFTER effects layer exists
+        eventBus.emit('effect:code_rain', { duration: 1200 });
+
         // Set up sprite controller viewport
         spriteController.setViewport(gameLayout.viewport);
 
@@ -503,12 +506,14 @@ async function startGame(route: 'ronnie' | 'tori') {
 
     // Load first scene based on route
     const firstSceneId = route === 'ronnie' ? 'ronnie_act1_prologueScene4' : 'scene1_coffee';
-    await gameEngine.loadScene(firstSceneId);
 
-    // Hide loader
-    eventBus.emit('loading:end', {});
-
-    console.log(`[UV7 V2] Starting game: ${route} route`);
+    // TORI'S FIX: Delay the initial scene load so the rain is actually seen
+    setTimeout(async () => {
+        await gameEngine.loadScene(firstSceneId);
+        // Hide loader
+        eventBus.emit('loading:end', {});
+        console.log(`[UV7 V2] Starting game: ${route} route`);
+    }, 900);
 }
 
 async function startPrologue() {
