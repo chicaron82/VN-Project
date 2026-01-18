@@ -19,5 +19,12 @@ Things Not Sitting Right
 
 ## Showcase Website
 
-- Grab bar stuck at top
-  - Not initializing properly on showcase pagend v2, the grab bar is supposed to be repositionable
+- ~~Grab bar stuck at top~~ ✅ FIXED
+  - ~~Not initializing properly on showcase page~~
+  - Fixed CSS transform conflicts, added grab cursor, visual feedback
+- ~~Landscape swipe down dims but doesn't open sidebar~~ ✅ FIXED
+  - Added orientation detection to swipe handler
+  - Landscape: opens sidebar, Portrait: opens shade
+- ~~Dark/light mode styling inconsistencies~~ ✅ FIXED
+  - Added @media (prefers-color-scheme) support across all sections
+  - Hero banners, tabs, body text all adapt properly
