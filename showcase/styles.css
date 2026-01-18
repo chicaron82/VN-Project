@@ -2799,3 +2799,52 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
         height: 10px;
     }
 }
+/* ========================================
+   COLOR SCHEME ADAPTATIONS
+   Global light/dark mode support
+   ======================================== */
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #f8f9fa;
+        color: #2c3e50;
+    }
+
+    .section-title,
+    .timeline-header h2,
+    .phase-title,
+    .stat-number {
+        color: #1a1a1a;
+    }
+
+    .section-subtitle,
+    .phase-meta,
+    .stat-label {
+        color: #4a4a4a;
+    }
+
+    .btn-share {
+        background: rgba(0, 0, 0, 0.05);
+        color: #1a1a1a;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-share:hover {
+        background: rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-text {
+        color: #555;
+    }
+
+    .timeline-btn {
+        color: #2563eb;
+        border-color: #2563eb;
+    }
+
+    .timeline-btn:hover:not(:disabled) {
+        background: #2563eb;
+        color: #fff;
+    }
+}

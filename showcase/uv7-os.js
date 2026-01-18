@@ -323,15 +323,28 @@ class UV7OS {
 
         const handleSwipe = () => {
             const swipeDistance = touchEndY - touchStartY;
+            const isLandscape = window.innerWidth > window.innerHeight;
 
-            // Swipe down from top (> 100px) opens shade
-            if (touchStartY < 100 && swipeDistance > 100) {
-                this.openShade();
+            // Landscape mode: Swipe down opens sidebar
+            if (isLandscape && touchStartY < 100 && swipeDistance > 100) {
+                this.openSidebar();
+                return;
             }
 
-            // Swipe up (< -100px) closes shade if it's open
-            if (swipeDistance < -100 && this.elements.shade && this.elements.shade.classList.contains('open')) {
-                this.closeShade();
+            // Portrait mode: Swipe down opens shade
+            if (!isLandscape && touchStartY < 100 && swipeDistance > 100) {
+                this.openShade();
+                return;
+            }
+
+            // Swipe up (< -100px) closes shade/sidebar if open
+            if (swipeDistance < -100) {
+                if (this.elements.shade && this.elements.shade.classList.contains('open')) {
+                    this.closeShade();
+                }
+                if (this.elements.sidebar && this.elements.sidebar.classList.contains('open')) {
+                    this.closeSidebar();
+                }
             }
         };
 

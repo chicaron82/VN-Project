@@ -149,6 +149,8 @@ class GrabHandleRepositioner {
     applyPosition() {
         if (!this.grabHandle) return;
 
+        // Reset transform to prevent CSS conflicts
+        this.grabHandle.style.transform = 'none';
         this.grabHandle.style.top = `${this.currentTop}%`;
 
         if (this.currentSide === 'left') {

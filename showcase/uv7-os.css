@@ -411,7 +411,7 @@
     border-radius: 0 8px 8px 0;
     color: #e0e0e0;
     font-size: 18px;
-    cursor: pointer;
+    cursor: grab;
     z-index: 9997;
     display: none;
     /* Hidden on portrait */
@@ -423,6 +423,14 @@
 .uv7-sidebar-toggle:hover {
     background: rgba(0, 255, 136, 0.1);
     border-color: rgba(0, 255, 136, 0.3);
+}
+
+.uv7-sidebar-toggle.dragging {
+    cursor: grabbing !important;
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 4px 16px rgba(0, 255, 136, 0.3);
+    transition: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════

@@ -337,6 +337,52 @@
 }
 
 /* ========================================
+   COLOR SCHEME ADAPTATIONS
+   ======================================== */
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+    .tab-bar-container {
+        background: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-item {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .tab-item:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    .tab-item.active {
+        background: rgba(0, 255, 136, 0.15);
+    }
+
+    .tab-progress {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    #hero-section.collapsed:hover {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    #hero-section.collapsed::after {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .swipe-hint-content {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 255, 136, 0.4);
+    }
+
+    .swipe-hint-text {
+        color: #1a1a1a;
+    }
+}
+
+/* ========================================
    ACCESSIBILITY
    ======================================== */
 
