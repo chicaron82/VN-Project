@@ -1,0 +1,321 @@
+/* ========================================
+   HERO BANNERS
+   Premium section headers with gradients
+   Michelin-level visual polish
+   ======================================== */
+
+.hero-banner {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 0;
+    margin-bottom: 2rem;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.3) 0%,
+            rgba(0, 0, 0, 0.7) 100%);
+    z-index: 2;
+}
+
+.hero-banner-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Parallax effect on scroll */
+.tab-panel.active .hero-banner-image {
+    transform: translateY(0);
+}
+
+.hero-banner:hover .hero-banner-image {
+    transform: scale(1.05);
+}
+
+.hero-banner-content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.hero-banner-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-banner-subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    max-width: 600px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+/* ========================================
+   GRADIENT FALLBACKS
+   Premium gradients for each section
+   ======================================== */
+
+/* Journey - Chaos to Order */
+.hero-banner.journey {
+    background: linear-gradient(135deg,
+            #1a0a2e 0%,
+            #16213e 25%,
+            #0f3460 50%,
+            #533483 75%,
+            #e94560 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+}
+
+/* Workflow - AI Orchestration */
+.hero-banner.workflow {
+    background: linear-gradient(135deg,
+            #0a0e27 0%,
+            #1a1a3e 20%,
+            #2d1b69 40%,
+            #ff6b35 70%,
+            #00d9ff 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 12s ease infinite;
+}
+
+/* Results - Success Metrics */
+.hero-banner.results {
+    background: linear-gradient(135deg,
+            #0d1b2a 0%,
+            #1b263b 25%,
+            #415a77 50%,
+            #00ff88 75%,
+            #00d4ff 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 10s ease infinite;
+}
+
+/* Spotlight - Technical Architecture */
+.hero-banner.spotlight {
+    background: linear-gradient(135deg,
+            #0a0e27 0%,
+            #16213e 30%,
+            #00d9ff 60%,
+            #00ff88 80%,
+            #ffffff 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 14s ease infinite;
+}
+
+/* Evolution - Transformation */
+.hero-banner.evolution {
+    background: linear-gradient(90deg,
+            #e94560 0%,
+            #ff6b35 25%,
+            #1a1a3e 50%,
+            #00d9ff 75%,
+            #00ff88 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 16s ease infinite;
+}
+
+/* Who - Collaboration */
+.hero-banner.who {
+    background: linear-gradient(135deg,
+            #2d1b69 0%,
+            #ff6b35 25%,
+            #00d9ff 50%,
+            #00ff88 75%,
+            #ffd23f 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 13s ease infinite;
+}
+
+/* ========================================
+   FLOATING PARTICLES
+   Ambient visual enhancement
+   ======================================== */
+
+.hero-banner-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: floatUp 8s linear infinite;
+    opacity: 0;
+}
+
+.particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    left: 20%;
+    animation-delay: 1s;
+}
+
+.particle:nth-child(3) {
+    left: 30%;
+    animation-delay: 2s;
+}
+
+.particle:nth-child(4) {
+    left: 40%;
+    animation-delay: 3s;
+}
+
+.particle:nth-child(5) {
+    left: 50%;
+    animation-delay: 4s;
+}
+
+.particle:nth-child(6) {
+    left: 60%;
+    animation-delay: 5s;
+}
+
+.particle:nth-child(7) {
+    left: 70%;
+    animation-delay: 6s;
+}
+
+.particle:nth-child(8) {
+    left: 80%;
+    animation-delay: 7s;
+}
+
+.particle:nth-child(9) {
+    left: 90%;
+    animation-delay: 0.5s;
+}
+
+.particle:nth-child(10) {
+    left: 15%;
+    animation-delay: 1.5s;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        bottom: -10px;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.8;
+    }
+
+    90% {
+        opacity: 0.8;
+    }
+
+    100% {
+        bottom: 110%;
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .hero-banner {
+        height: 300px;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-banner-title {
+        font-size: 2rem;
+    }
+
+    .hero-banner-subtitle {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-banner {
+        height: 250px;
+        margin-bottom: 1rem;
+    }
+
+    .hero-banner-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-banner-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-banner-image,
+    .hero-banner,
+    .particle {
+        animation: none;
+        transition: none;
+    }
+
+    .hero-banner:hover .hero-banner-image {
+        transform: none;
+    }
+}
