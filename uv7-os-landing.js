@@ -25,6 +25,12 @@ class UV7OSLanding {
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
+        // PERSISTENCE: Check shared dev mode state
+        const storedMode = localStorage.getItem('uv7-dev-mode');
+        if (storedMode) {
+            document.body.dataset.viewMode = storedMode;
+        }
+
         // Initialize app switcher
         setTimeout(() => this.initAppSwitcher(), 100);
 

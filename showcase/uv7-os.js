@@ -115,9 +115,23 @@ class UV7OS {
     }
 
     detectCurrentMode() {
-        // Check body data-view-mode attribute
+        // Check body data-view-mode attribute OR localStorage
+        const storedMode = localStorage.getItem('uv7-dev-mode');
         const body = document.body;
-        this.currentMode = body.dataset.viewMode || 'story';
+
+        if (storedMode) {
+            this.currentMode = storedMode;
+            // Sync body if needed
+            if (body.dataset.viewMode !== storedMode) {
+                body.dataset.viewMode = storedMode;
+                // If there's a view toggle input, sync it too
+                if (this.elements.viewToggle && this.elements.viewToggle.type === 'checkbox') {
+                    this.elements.viewToggle.checked = (storedMode === 'dev');
+                }
+            }
+        } else {
+            this.currentMode = body.dataset.viewMode || 'story';
+        }
     }
 
     renderStatusBar() {
@@ -170,6 +184,11 @@ class UV7OS {
                 // Update mode after toggle
                 setTimeout(() => {
                     this.detectCurrentMode();
+
+                    // PERSISTENCE
+                    const newMode = document.body.dataset.viewMode;
+                    localStorage.setItem('uv7-dev-mode', newMode);
+
                     this.updateCurrentModeDisplay();
                 }, 100);
             });

@@ -101,6 +101,15 @@
         </div>
     </div>
 
+    <!-- System Banner (Michelin Polish) -->
+    <div class="system-banner">
+        <span class="sys-left">UV7 OS</span>
+        <span class="sys-capsule">
+            <span class="sys-signal"></span>
+        </span>
+        <span class="sys-right">Build v3 • All Systems Nominal</span>
+    </div>
+
     <!-- Notification Shade (Portrait) -->
     <div id="uv7-shade" class="uv7-shade">
         <div class="shade-header">
@@ -242,7 +251,7 @@
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
 
-    <div class="split-container">
+    <div class="split-container" id="hero-section">
         <!-- ==========================================
              LAYER 1: CHAOS (VERSION 1) - THE BOTTOM
              ========================================== -->
@@ -1712,7 +1721,7 @@ const state = StateManager.getState();
         <!-- Tab Navigation System -->
         <script src="js/TabController.js"></script>
         <script src="js/SwipeController.js"></script>
-        <script src="js/GrabHandleRepositioner.js"></script>
+
         <script>
             // Initialize tab navigation
             document.addEventListener('DOMContentLoaded', () => {
@@ -1725,10 +1734,7 @@ const state = StateManager.getState();
                     console.log('✅ Tab navigation initialized');
                 }
 
-                // Initialize grab handle repositioner
-                if (typeof GrabHandleRepositioner !== 'undefined') {
-                    const grabHandle = new GrabHandleRepositioner();
-                }
+
             });
         </script>
 </body>

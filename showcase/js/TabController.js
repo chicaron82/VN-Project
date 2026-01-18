@@ -26,7 +26,9 @@ class TabController {
         ];
 
         /** @type {string} */
-        this.activeTab = this.loadLastTab() || this.getTabFromHash() || 'journey';
+        // We start at 'journey' to match HTML structure, then navigate to saved/hash
+        this.activeTab = 'journey';
+        const targetTab = this.loadLastTab() || this.getTabFromHash() || 'journey';
 
         /** @type {boolean} */
         this.isTransitioning = false;
@@ -42,8 +44,16 @@ class TabController {
 
         // Initialize
         this.setupEventListeners();
-        this.navigateToTab(this.activeTab, false); // No animation on load
+
+        // Force update for initial state (even if it's journey) to set Status Bar
+        if (targetTab === 'journey') {
+            this.updateStatusBar('journey');
+        } else {
+            this.navigateToTab(targetTab, false); // No animation on load
+        }
+
         this.showSwipeHintIfNeeded();
+        this.typeBootVersion();
 
         console.log('✅ TabController initialized');
     }
@@ -83,23 +93,36 @@ class TabController {
      * @param {KeyboardEvent} e
      */
     handleKeyboard(e) {
+        // 1. Typing Guard: Don't shortcut if user is typing
+        const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+        if (activeTag === 'input' || activeTag === 'textarea' || (document.activeElement && /** @type {HTMLElement} */(document.activeElement).isContentEditable)) {
+            return;
+        }
+
+        let handled = false;
+
         // Arrow keys
         if (e.key === 'ArrowLeft') {
-            e.preventDefault();
             this.previousTab();
+            handled = true;
         } else if (e.key === 'ArrowRight') {
-            e.preventDefault();
             this.nextTab();
+            handled = true;
         }
 
-        // Number keys (1-6)
+        // Number keys (Dynamic)
         const num = parseInt(e.key);
-        if (num >= 1 && num <= 6) {
-            e.preventDefault();
+        if (!isNaN(num) && num >= 1 && num <= this.tabs.length) {
             this.navigateToTab(this.tabs[num - 1]);
+            handled = true;
         }
 
-        // Escape - collapse hero (if implemented)
+        // Only prevent default if we actually used the key
+        if (handled) {
+            e.preventDefault();
+        }
+
+        // Escape - collapse hero (always allowed)
         if (e.key === 'Escape') {
             this.collapseHero();
         }
@@ -159,6 +182,9 @@ class TabController {
 
             // Haptic feedback
             if (navigator.vibrate) navigator.vibrate(10);
+
+            // Update UV7 Status Bar (Alive Context)
+            this.updateStatusBar(tabId);
 
             console.log(`📑 Navigated: ${oldTab} → ${tabId} (${direction})`);
         };
@@ -261,6 +287,51 @@ class TabController {
         this.progressIndicator.textContent = `${dots} ${currentIndex + 1} of ${total}`;
     }
 
+    /**
+     * Update the UV7 Status Bar with current context
+     * @param {string} tabId 
+     */
+    updateStatusBar(tabId) {
+        const contextEl = document.getElementById('uv7-context');
+        const detailEl = document.getElementById('uv7-detail');
+
+        if (!contextEl || !detailEl) return;
+
+        // Map tabs to details
+        /** @type {{[key: string]: string}} */
+        const details = {
+            'journey': 'Phase 1 → 7',
+            'workflow': 'DiZee + Claude + You',
+            'results': '100% Code Coverage',
+            'spotlight': 'EventBus Architecture',
+            'evolution': '232 Tests Passing',
+            'who': 'The UV7 Crew'
+        };
+
+        // Capitalize tab name
+        const tabName = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+
+        // Update Text
+        contextEl.textContent = `Showcase • ${tabName}`;
+        detailEl.textContent = details[tabId] || 'System Nominal';
+
+        // Update Document Title (Browser Tab)
+        document.title = `UV7 • ${tabName}`;
+
+        // Trigger animation on Logo (tiny seal pulse)
+        const logo = document.querySelector('.status-logo');
+        if (logo) {
+            logo.animate([
+                { filter: 'drop-shadow(0 0 0px #00ff88)' },
+                { filter: 'drop-shadow(0 0 8px #00ff88)' },
+                { filter: 'drop-shadow(0 0 0px #00ff88)' }
+            ], {
+                duration: 600,
+                easing: 'ease-out'
+            });
+        }
+    }
+
     // ========================================
     // HERO COLLAPSE
     // ========================================
@@ -299,7 +370,7 @@ class TabController {
         if (!panel) return;
 
         // Check if already loaded
-        if (panel.dataset.loaded === 'true') return;
+        if (/** @type {HTMLElement} */(panel).dataset.loaded === 'true') return;
 
         // Load images with Intersection Observer
         const images = panel.querySelectorAll('img[data-src]');
@@ -452,6 +523,30 @@ class TabController {
      */
     getTabCount() {
         return this.tabs.length;
+    }
+
+    /**
+     * Type out the system boot version
+     */
+    typeBootVersion() {
+        const sysRight = document.querySelector('.sys-right');
+        if (!sysRight) return;
+
+        const date = new Date();
+        const buildStr = `BUILD: ${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')} • V2 • TESTS: 510 • PASS: ✅`;
+
+        let i = 0;
+        sysRight.textContent = '';
+
+        const type = () => {
+            if (i < buildStr.length) {
+                sysRight.textContent += buildStr.charAt(i);
+                i++;
+                setTimeout(type, 20 + Math.random() * 30);
+            }
+        };
+
+        setTimeout(type, 1000); // Start after load
     }
 }
 

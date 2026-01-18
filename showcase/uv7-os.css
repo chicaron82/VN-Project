@@ -11,12 +11,19 @@
 /* ═══════════════════════════════════════════════════════════════
    STATUS BAR (Fixed Top)
    ═══════════════════════════════════════════════════════════════ */
+:root {
+    --uv7-statusbar-h: 44px;
+    --uv7-banner-h: 16px;
+    --uv7-top-stack: calc(var(--uv7-statusbar-h) + var(--uv7-banner-h));
+    --uv7-accent: #00ff88;
+}
+
 .uv7-status-bar {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    height: 44px;
+    height: var(--uv7-statusbar-h);
     background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);

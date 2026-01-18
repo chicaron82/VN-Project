@@ -4,19 +4,80 @@
    UV7 OS aesthetic
    ======================================== */
 
-.tab-bar-container {
-    position: sticky;
-    top: 40px;
-    /* Below UV7 status bar */
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+
+
+/* System Banner (Michelin Polish) */
+.system-banner {
+    position: fixed;
+    top: var(--uv7-statusbar-h, 44px);
+    /* Below status bar */
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    background: #000;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    height: var(--uv7-banner-h, 16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem 0;
 }
 
+.sys-signal {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #00ff88;
+    animation: signalPulse 2s infinite;
+}
+
+@keyframes signalPulse {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+.tab-bar-container {
+    position: sticky;
+    top: var(--uv7-top-stack, 60px);
+    /* Status bar (44) + System banner (16) */
+    /* top: 0 if we want it to stick to very top, but we want it under status bar. */
+    /* UV7 status bar is usually fixed? If so, this needs to check uv7-os.css */
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.75);
+    /* Darker for better contrast */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    /* Hairline top */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0;
+    /* Tighter */
+}
+
+/* Gradient Mask for scroll hint */
 .tab-bar {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -114,11 +175,18 @@
 .tab-panel {
     display: none;
     opacity: 0;
-    max-height: calc(100vh - 140px);
-    overflow-y: auto;
+    /* Unify scrolling: Let the window handle it */
+    /* max-height: calc(100vh - 140px); */
+    /* overflow-y: auto; */
     padding: 1rem 0;
     /* Reduced from 2rem 1rem */
-    scroll-behavior: smooth;
+    /* scroll-behavior: smooth; */
+}
+
+/* Press interaction */
+.tab-item:active {
+    transform: scale(0.98);
+    transition: transform 0.08s ease-out;
 }
 
 .tab-panel.active {
@@ -461,6 +529,7 @@
 }
 
 @keyframes pulse {
+
     0%,
     100% {
         opacity: 0.5;

@@ -747,6 +747,101 @@
     <script src="showcase/uv7-grab-handle.js"></script>
     <script src="showcase/uv7-app-switcher.js"></script>
     <script src="./uv7-os-landing.js"></script>
+    <!-- BIOS Boot Sequence (One-time) -->
+    <div id="bios-boot" class="bios-overlay">
+        <div class="bios-content">
+            <div class="bios-log"></div>
+            <div class="bios-cursor">_</div>
+        </div>
+    </div>
+
+    <style>
+        .bios-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 99999;
+            display: none;
+            align-items: flex-start;
+            justify-content: flex-start;
+            padding: 2rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: #00ff88;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .bios-overlay.active {
+            display: flex;
+        }
+
+        .bios-log div {
+            opacity: 0;
+            animation: fadeIn 0.1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .bios-cursor {
+            display: inline-block;
+            animation: blink 0.5s step-end infinite;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+
+    <script>
+        (function () {
+            // Check session flag
+            if (sessionStorage.getItem('uv7-bios-shown')) return;
+
+            const overlay = document.getElementById('bios-boot');
+            const log = overlay.querySelector('.bios-log');
+            if (!overlay) return;
+
+            overlay.classList.add('active');
+
+            const lines = [
+                "INITIALIZING UV7 KERNEL...",
+                "LOADING NEURAL WEIGHTS [██████████] 100%",
+                "CHECKING INTEGRITY... OK",
+                "MOUNTING FILE SYSTEM... READ-ONLY",
+                "ESTABLISHING SECURE CONNECTION...",
+                "ACCESS GRANTED.",
+                "WELCOME, USER."
+            ];
+
+            let delay = 0;
+            lines.forEach((line, index) => {
+                delay += Math.random() * 300 + 100;
+                setTimeout(() => {
+                    const div = document.createElement('div');
+                    div.textContent = `> ${line}`;
+                    log.appendChild(div);
+                    window.scrollTo(0, document.body.scrollHeight);
+
+                    if (index === lines.length - 1) {
+                        setTimeout(() => {
+                            overlay.remove();
+                            sessionStorage.setItem('uv7-bios-shown', 'true');
+                        }, 800);
+                    }
+                }, delay);
+            });
+        })();
+    </script>
 </body>
 
 </html>
