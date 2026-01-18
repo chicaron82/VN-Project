@@ -65,7 +65,7 @@ describe('SaveSystem', () => {
             await (saveSystem as any).triggerAutoSave('scene2_intro', 'test');
 
             expect(localStorage.setItem).toHaveBeenCalledWith(
-                expect.stringContaining('slot0'),
+                expect.stringContaining('vn_save_slot_0'),
                 expect.stringContaining('scene2_intro')
             );
         });
@@ -92,7 +92,7 @@ describe('SaveSystem', () => {
             const autoSaveSpy = vi.spyOn(saveSystem as any, 'triggerAutoSave');
 
             callback({ sceneId: 'test_scene' });
-            expect(autoSaveSpy).toHaveBeenCalledWith('test_scene');
+            expect(autoSaveSpy).toHaveBeenCalledWith('test_scene', 'scene_load');
         });
     });
 
@@ -100,7 +100,7 @@ describe('SaveSystem', () => {
         it('should save to specified slot', async () => {
             await saveSystem.saveGame(1, 'Manual Save');
             expect(localStorage.setItem).toHaveBeenCalledWith(
-                expect.stringContaining('slot1'),
+                expect.stringContaining('vn_save_slot_1'),
                 expect.stringContaining('Manual Save')
             );
         });

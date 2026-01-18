@@ -49,7 +49,7 @@ describe('SecretCodesSystem & BootstrapTracker', () => {
             eventBus.emit('ui:code_submit', { code: 'konami' });
 
             expect(stateManager.get('game.easterEggs.konami')).toBe(true);
-            expect(emitSpy).toHaveBeenCalledWith('ui:screen_change', expect.objectContaining({ screen: 'secret_konami' }));
+            expect(emitSpy).toHaveBeenCalledWith('easter_egg:konami_controller', {});
             expect(emitSpy).toHaveBeenCalledWith('visual:cue', expect.objectContaining({ type: 'success' }));
         });
 
@@ -70,15 +70,13 @@ describe('SecretCodesSystem & BootstrapTracker', () => {
         it('should handle dev commands without tracking discovery', () => {
             const originalLocation = window.location;
 
-            // Mock window.location.reload
-            delete (window as any).location;
-            window.location = { ...originalLocation, reload: vi.fn() };
+            const resetSpy = vi.spyOn(bootstrapTracker, 'reset');
 
             eventBus.emit('ui:code_submit', { code: 'reset848' });
 
             const discovered = secretCodesSystem.getDiscoveredCodes();
             expect(discovered.find(c => c.code === 'reset848')).toBeUndefined();
-            expect(window.location.reload).toHaveBeenCalled();
+            expect(resetSpy).toHaveBeenCalled();
 
             // Cleanup
             window.location = originalLocation;

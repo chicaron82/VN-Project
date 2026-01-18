@@ -12,8 +12,8 @@ describe('SettingsSystem', () => {
 
         // Mock localStorage if needed, but the class handles undefined nicely or we can stub it.
         // For now, let's assume the previous mocks from setup are sufficient or re-apply if needed.
-        vi.spyOn(Storage.prototype, 'getItem').mockReturnValue(null);
-        vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { });
+        vi.spyOn(window.localStorage, 'getItem').mockReturnValue(null);
+        vi.spyOn(window.localStorage, 'setItem').mockImplementation(() => { });
     });
 
     it('should persist changes to localStorage', () => {
