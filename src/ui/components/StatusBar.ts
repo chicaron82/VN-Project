@@ -601,7 +601,7 @@ export class StatusBar {
                 <!-- UV7 OS Logo (App Switcher Trigger) -->
                 ${this.features.enableAppSwitcher ? `
                 <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer; margin-right: 12px;" title="UV7 OS - Tap to switch apps">
-                    <img src="/UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
+                    <img src="./UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
                 </span>
                 ` : ''}
                 ${this.features.showLoopVersion ? `

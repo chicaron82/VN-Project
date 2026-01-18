@@ -15,7 +15,7 @@ declare class UV7AppSwitcher {
 
 // Load the vanilla JS app switcher script
 const script = document.createElement('script');
-script.src = '/uv7-app-switcher.js';
+script.src = './uv7-app-switcher.js';
 script.async = true;
 document.head.appendChild(script);
 
