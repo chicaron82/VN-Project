@@ -654,7 +654,14 @@ class TimelineRenderer {
             const icon = document.createElement('div');
             icon.className = 'callout-icon';
             // Support both icon field and type-based icons
-            const iconMap = { insight: '💡', warning: '⚠️', success: '✅', info: 'ℹ️' };
+            const iconMap = {
+                insight: '💡',
+                warning: '⚠️',
+                success: '✅',
+                info: 'ℹ️',
+                milestone: '🏆',
+                architecture: '🏗️'
+            };
             icon.textContent = phase.callout.icon || iconMap[phase.callout.type] || '💡';
 
             const calloutContent = document.createElement('div');
