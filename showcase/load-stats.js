@@ -48,15 +48,25 @@
     }
 
     function addTypeScriptErrorStat(errorCount) {
-        // Check if TS error stat already exists
-        if (document.querySelector('[data-stat-type="ts-errors"]')) {
+        // Check for existing error card (static or dynamic)
+        const existing = document.querySelector('[data-stat-type="errors"]') || document.querySelector('[data-stat-type="ts-errors"]');
+
+        if (existing) {
+            // Update existing
+            const numberEl = existing.querySelector('.stat-number');
+            const labelEl = existing.querySelector('.stat-label');
+            if (numberEl) {
+                numberEl.dataset.target = errorCount;
+                numberEl.textContent = '0';
+            }
+            if (labelEl) labelEl.textContent = `TypeScript ${errorCount === 0 ? '✓ Clean' : 'Errors'}`;
             return;
         }
 
         const statsGrid = document.querySelector('.stats-grid');
         if (!statsGrid) return;
 
-        // Create TS error stat card
+        // Create TS error stat card if none exists
         const tsErrorCard = document.createElement('div');
         tsErrorCard.className = 'stat-card';
         tsErrorCard.dataset.statType = 'ts-errors';

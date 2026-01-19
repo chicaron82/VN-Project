@@ -292,44 +292,27 @@ class TabController {
      * @param {string} tabId 
      */
     updateStatusBar(tabId) {
-        const contextEl = document.getElementById('uv7-context');
-        const detailEl = document.getElementById('uv7-detail');
+        // --- V2 Status Bar Integration ---
+        // Sync tab state with the new unified status bar
+        if (window.uv7Runtime && window.uv7Runtime.instance) {
+            // Map tabs to friendly names for "Phase" or Breadcrumbs
+            const tabNames = {
+                'journey': 'The Journey',
+                'workflow': 'Workflow',
+                'results': 'Results',
+                'spotlight': 'Tech Spotlight',
+                'evolution': 'Evolution',
+                'who': 'The Crew'
+            };
 
-        if (!contextEl || !detailEl) return;
-
-        // Map tabs to details
-        /** @type {{[key: string]: string}} */
-        const details = {
-            'journey': 'Phase 1 → 7',
-            'workflow': 'DiZee + Claude + You',
-            'results': '100% Code Coverage',
-            'spotlight': 'EventBus Architecture',
-            'evolution': '232 Tests Passing',
-            'who': 'The UV7 Crew'
-        };
-
-        // Capitalize tab name
-        const tabName = tabId.charAt(0).toUpperCase() + tabId.slice(1);
-
-        // Update Text
-        contextEl.textContent = `Showcase • ${tabName}`;
-        detailEl.textContent = details[tabId] || 'System Nominal';
-
-        // Update Document Title (Browser Tab)
-        document.title = `UV7 • ${tabName}`;
-
-        // Trigger animation on Logo (tiny seal pulse)
-        const logo = document.querySelector('.status-logo');
-        if (logo) {
-            logo.animate([
-                { filter: 'drop-shadow(0 0 0px #00ff88)' },
-                { filter: 'drop-shadow(0 0 8px #00ff88)' },
-                { filter: 'drop-shadow(0 0 0px #00ff88)' }
-            ], {
-                duration: 600,
-                easing: 'ease-out'
-            });
+            // Update Phase/Breadcrumb in Status Bar
+            window.uv7Runtime.instance.setPhase(tabNames[tabId] || tabId);
         }
+
+        // --- Legacy Title Updates ---
+        // Update Document Title (Browser Tab)
+        const tabName = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+        document.title = `UV7 • ${tabName}`;
     }
 
     // ========================================

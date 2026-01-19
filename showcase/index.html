@@ -1721,6 +1721,8 @@ const state = StateManager.getState();
             document.addEventListener('DOMContentLoaded', () => {
                 if (typeof TabController !== 'undefined') {
                     const tabController = new TabController();
+                    console.log('🚀 Initializing UV7 Status Bar...');
+                    window.uv7Runtime = window.UV7System.createStatusBar('status-bar-container', 'showcase');
                     const container = document.querySelector('.tab-panels-container');
                     if (container && typeof SwipeController !== 'undefined') {
                         const swipeController = new SwipeController(tabController, container);
