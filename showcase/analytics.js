@@ -152,6 +152,21 @@
                     console.log(`  DOM Ready: ${domReady}ms`);
 
                     analytics.track('Performance', 'Page Load', 'Load Time', loadTime);
+
+                    // Update UI if present (Showcase Results)
+                    const v2Bar = document.getElementById('metric-load-v2-bar');
+                    const v2Value = document.getElementById('metric-load-v2-value');
+
+                    if (v2Bar && v2Value) {
+                        // Calculate percentage against V1 baseline (approx 2.4s = 2400ms)
+                        const v1Baseline = 2400;
+                        const percentage = Math.min(100, Math.max(5, (loadTime / v1Baseline) * 100));
+
+                        // Inverse logic: Less time = wider bar? No, usually performance bars are "time taken".
+                        // But here, V1 is full width (2.4s). V2 should be proportional.
+                        v2Bar.style.width = `${percentage}%`;
+                        v2Value.textContent = `${(loadTime / 1000).toFixed(2)}s`;
+                    }
                 }
             } else if (window.performance && window.performance.timing) {
                 // Fallback for older browsers
