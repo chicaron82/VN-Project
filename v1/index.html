@@ -1,0 +1,2087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://chicaron82.github.io/VN-Project/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://chicaron82.github.io/VN-Project/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://chicaron82.github.io/VN-Project/favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="https://chicaron82.github.io/VN-Project/favicon.ico">
+    <link rel="manifest" href="https://chicaron82.github.io/VN-Project/site.webmanifest">
+    <title>Version 848 - My Wife Is in a Coma... and in the Code</title>
+
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="menu-carousel.css">
+    <!-- DIZEE POLISH: Accessibility CSS -->
+    <link rel="stylesheet" href="system/accessibility.css">
+    <!-- DIZEE POLISH: Mobile UX CSS -->
+    <link rel="stylesheet" href="system/mobile-ux.css">
+    <!-- DIZEE FIX: ARIA label positioning fixes -->
+    <link rel="stylesheet" href="system/aria-fixes.css">
+    <!-- DIZEE POLISH: Note timestamps -->
+    <link rel="stylesheet" href="system/note-timestamps.css">
+    <!-- DIZEE POLISH: Achievement system -->
+    <link rel="stylesheet" href="system/achievement-manager.css">
+    <!-- Dev Commentary System -->
+    <link rel="stylesheet" href="system/dev-commentary.css">
+    <!-- DIZEE POLISH: Notification Shade System -->
+    <link rel="stylesheet" href="system/notification-shade.css">
+    <!-- Tutorial Onboarding System -->
+    <link rel="stylesheet" href="ui/tutorial.css">
+    <!-- Loading Overlay System -->
+    <link rel="stylesheet" href="ui/loading-overlay.css">
+    <!-- Bougie Boot Sequence -->
+    <link rel="stylesheet" href="ui/bougie-boot-sequence.css">
+    <!-- ZEERAH FIX: Unified grid-based route select (replaces sprites + toggle CSS) -->
+    <link rel="stylesheet" href="../src/ui/styles/variables.css">
+    <link rel="stylesheet" href="../src/ui/styles/base.css">
+    <link rel="stylesheet" href="../src/ui/styles/accessibility.css">
+    <link rel="stylesheet" href="route-select-unified.css">
+    <link rel="stylesheet" href="visual-cues.css">
+    <!-- Overlay Styles (Konami controller, confirmation dialogs, etc.) -->
+    <link rel="stylesheet" href="css/overlays.css">
+    <!-- UV7 OS App Switcher -->
+    <link rel="stylesheet" href="uv7-app-switcher.css">
+
+    <style>
+        /* ========================================
+           MINIMAL INLINE STYLES
+           Only critical resets and structure
+           All other styles are in styles.css
+           ======================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #000;
+            color: #0f0;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        #game-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ========================================
+         STATUS BAR (Notification Shade System)
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="status-bar">
+        <div class="status-section">
+            <!-- UV7 OS Logo (App Switcher Trigger) -->
+            <span class="status-item uv7-logo-trigger" id="uv7-logo-trigger"
+                style="cursor: pointer; font-weight: bold; color: #00ff88;" title="UV7 OS - Tap to switch apps">
+                <img src="../assets/UnitedVoices7.png" alt="UV7"
+                    style="height: 16px; width: auto; vertical-align: middle; margin-right: 8px;">
+            </span>
+            <span id="status-loop" class="status-item"></span>
+            <span id="status-route" class="status-item">Menu</span>
+        </div>
+        <!-- Status Bar Notification Area (Center) -->
+        <div id="status-notification" role="status" aria-live="polite" aria-atomic="true">
+            <span class="status-notif-icon">💾</span>
+            <span class="status-notif-text">Game saved</span>
+            <div class="status-notif-progress">
+                <div class="status-notif-progress-fill"></div>
+            </div>
+        </div>
+        <div class="status-section">
+            <span id="status-progress" class="status-item">🖤 0/42</span>
+            <!-- Tether Meter (Tori Route Only) - Lightning Bolt with Fill -->
+            <div class="status-item" id="status-tether" style="display: none;">
+                <div class="tether-lightning">
+                    <span class="tether-icon">⚡</span>
+                    <div class="tether-fill"></div>
+                </div>
+                <span id="status-tether-value">100%</span>
+            </div>
+            <!-- Mail Icon with Badge (Unread Notes) -->
+            <div class="status-item" id="status-mail" style="display: none;">
+                <span class="mail-icon">📧</span>
+                <span class="unread-badge">0</span>
+            </div>
+        </div>
+        <!-- Loading state (hidden by default) -->
+        <div id="status-loading">
+            <span>Loading...</span>
+            <div class="loading-bar">
+                <div class="loading-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================
+         NOTIFICATION SHADE (Mobile)
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="notification-shade">
+        <div class="swipe-indicator"></div>
+
+        <!-- Quick Actions - Expandable with Paging -->
+        <div class="shade-section quick-actions-container">
+            <div class="shade-section-header">
+                <div class="shade-section-title">Quick Actions</div>
+                <div class="expand-hint">⋯⋯</div>
+            </div>
+
+            <!-- Quick State: Paged carousel -->
+            <div class="quick-actions-carousel">
+                <div class="quick-actions-track">
+                    <!-- Page 1: Core Actions -->
+                    <div class="quick-actions-page" data-page="0">
+                        <button class="quick-action-btn" data-action="save">
+                            <span class="quick-action-icon">💾</span>
+                            <span>Save</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="load">
+                            <span class="quick-action-icon">📂</span>
+                            <span>Load</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="fullscreen">
+                            <span class="quick-action-icon">⛶</span>
+                            <span>Full</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="exit">
+                            <span class="quick-action-icon">🚪</span>
+                            <span>Exit</span>
+                        </button>
+                    </div>
+
+                    <!-- Page 2: Tools -->
+                    <div class="quick-actions-page" data-page="1">
+                        <button class="quick-action-btn" data-action="screenshot">
+                            <span class="quick-action-icon">📸</span>
+                            <span>Shot</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="notes">
+                            <span class="quick-action-icon">📝</span>
+                            <span>Notes</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="settings">
+                            <span class="quick-action-icon">⚙️</span>
+                            <span>Set</span>
+                        </button>
+                        <button class="quick-action-btn" data-action="help">
+                            <span class="quick-action-icon">❓</span>
+                            <span>Help</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Page indicators -->
+                <div class="quick-actions-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+
+            <!-- Expanded State: Full grid -->
+            <div class="quick-actions-expanded" style="display: none;">
+                <div class="expanded-header">
+                    <span>All Actions</span>
+                    <button class="edit-btn" id="shade-edit-actions">✏️</button>
+                </div>
+
+                <div class="expanded-grid">
+                    <!-- Page 1 Group -->
+                    <div class="expanded-group">
+                        <div class="group-label">Default ⭐</div>
+                        <div class="expanded-actions">
+                            <button class="quick-action-btn" data-action="save">
+                                <span class="quick-action-icon">💾</span>
+                                <span>Save</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="load">
+                                <span class="quick-action-icon">📂</span>
+                                <span>Load</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="fullscreen">
+                                <span class="quick-action-icon">⛶</span>
+                                <span>Full</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="exit">
+                                <span class="quick-action-icon">🚪</span>
+                                <span>Exit</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Page 2 Group -->
+                    <div class="expanded-group">
+                        <div class="group-label">Tools</div>
+                        <div class="expanded-actions">
+                            <button class="quick-action-btn" data-action="screenshot">
+                                <span class="quick-action-icon">📸</span>
+                                <span>Shot</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="notes">
+                                <span class="quick-action-icon">📝</span>
+                                <span>Notes</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="settings">
+                                <span class="quick-action-icon">⚙️</span>
+                                <span>Set</span>
+                            </button>
+                            <button class="quick-action-btn" data-action="help">
+                                <span class="quick-action-icon">❓</span>
+                                <span>Help</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Details -->
+        <div class="shade-section">
+            <div class="shade-section-title">Current Status</div>
+            <div class="status-details">
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Route:</span>
+                    <span class="status-detail-value" id="shade-route">Menu</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Loop Version:</span>
+                    <span class="status-detail-value" id="shade-loop">848</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Notes Collected:</span>
+                    <span class="status-detail-value" id="shade-notes">0/42</span>
+                </div>
+                <div class="status-detail-item" id="shade-tether-item" style="display: none;">
+                    <span class="status-detail-label">Tether Level:</span>
+                    <span class="status-detail-value" id="shade-tether-value">100%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Note Preview (Email-Style) -->
+        <div class="shade-section" id="notes-preview-section" style="display: none;">
+            <div class="shade-section-title">Unread Notes</div>
+            <div class="note-preview-card" id="note-preview-btn">
+                <span class="note-icon">📝</span>
+                <div class="note-preview-content">
+                    <div class="note-title">Note Title</div>
+                    <div class="note-snippet">Preview text...</div>
+                </div>
+                <span class="note-arrow">→</span>
+            </div>
+        </div>
+
+        <!-- UV7 Carrier-Style Footer -->
+        <div class="shade-carrier-footer">
+            <span class="carrier-logo">UV7</span>
+            <span class="carrier-name">United Voices 7</span>
+        </div>
+    </div>
+
+    <!-- Backdrop for dimming -->
+    <div id="shade-backdrop"></div>
+
+    <!-- ========================================
+         SIDEBAR (Desktop/Landscape)
+         iOS-STYLE DEPTH LAYERS
+         DIZEE + ZEERAH + GENZEE
+         ======================================== -->
+    <div id="sidebar">
+        <!-- Layer Container - enables depth swipe -->
+        <div class="sidebar-layers">
+
+            <!-- SECONDARY LAYER (Behind - Tools) -->
+            <div class="sidebar-layer secondary-layer" data-layer="tools">
+                <div class="layer-header">
+                    <span class="layer-title">🔧 Tools</span>
+                    <span class="layer-hint">← swipe back</span>
+                </div>
+                <div class="layer-actions">
+                    <button class="quick-action-btn" data-action="screenshot">
+                        <span class="quick-action-icon">📸</span>
+                        <span>Screenshot</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="notes">
+                        <span class="quick-action-icon">📝</span>
+                        <span>Notes</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="settings">
+                        <span class="quick-action-icon">⚙️</span>
+                        <span>Settings</span>
+                    </button>
+                    <button class="quick-action-btn" data-action="help">
+                        <span class="quick-action-icon">❓</span>
+                        <span>Help</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PRIMARY LAYER (Front - Core Actions) -->
+            <div class="sidebar-layer primary-layer" data-layer="core">
+                <div class="layer-header">
+                    <span class="layer-title">⚡ Core</span>
+                    <span class="layer-hint">swipe for tools →</span>
+                </div>
+                <div class="layer-actions">
+                    <button class="quick-action-btn" id="sidebar-save" data-action="save">
+                        <span class="quick-action-icon">💾</span>
+                        <span>Save</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-load" data-action="load">
+                        <span class="quick-action-icon">📂</span>
+                        <span>Load</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-fullscreen" data-action="fullscreen">
+                        <span class="quick-action-icon">⛶</span>
+                        <span>Fullscreen</span>
+                    </button>
+                    <button class="quick-action-btn" id="sidebar-exit" data-action="exit">
+                        <span class="quick-action-icon">🚪</span>
+                        <span>Exit</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Details (always visible below layers) -->
+        <div class="shade-section sidebar-status">
+            <div class="shade-section-title">Current Status</div>
+            <div class="status-details">
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Route:</span>
+                    <span class="status-detail-value" id="sidebar-route">Menu</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Loop Version:</span>
+                    <span class="status-detail-value" id="sidebar-loop">848</span>
+                </div>
+                <div class="status-detail-item">
+                    <span class="status-detail-label">Notes Collected:</span>
+                    <span class="status-detail-value" id="sidebar-notes">0/42</span>
+                </div>
+                <div class="status-detail-item" id="sidebar-tether-item" style="display: none;">
+                    <span class="status-detail-label">Tether Level:</span>
+                    <span class="status-detail-value" id="sidebar-tether-value">100%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Note Preview (Email-Style) -->
+        <div class="shade-section" id="sidebar-notes-preview-section" style="display: none;">
+            <div class="shade-section-title">Unread Notes</div>
+            <div class="note-preview-card" id="sidebar-note-preview-btn">
+                <span class="note-icon">📝</span>
+                <div class="note-preview-content">
+                    <div class="note-title">Note Title</div>
+                    <div class="note-snippet">Preview text...</div>
+                </div>
+                <span class="note-arrow">→</span>
+            </div>
+        </div>
+
+        <!-- UV7 Carrier-Style Footer (Sidebar) -->
+        <div class="shade-carrier-footer sidebar-carrier">
+            <span class="carrier-logo">UV7</span>
+            <span class="carrier-name">United Voices 7</span>
+        </div>
+    </div>
+
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle" id="sidebar-toggle" title="Menu">
+        <span>☰</span>
+    </button>
+
+
+    <!-- UV7 SPLASH + LOADING SCREEN (Combined) -->
+    <div id="uv7-splash">
+        <div class="uv7-container">
+            <!-- Logo Section (grouped for landscape layout) -->
+            <div class="uv7-logo-section">
+                <!-- "Powered by" text above logo -->
+                <div class="powered-by-text">Powered by</div>
+
+                <!-- UV7 Logo - Static Fallback (visible by default) -->
+                <img src="../assets/UnitedVoices7.png" class="uv7-logo-static" alt="United Voices 7 Logo">
+
+                <!-- UV7 Logo - Animated Video (wipe reveal during loading) -->
+                <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
+                    <div class="uv7-logo-reveal" id="uv7-logo-reveal">
+                        <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
+                            <source src="UnitedVoices7.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boot Terminal (replaces loading bar/tip) -->
+            <div id="boot-terminal" class="boot-terminal"></div>
+        </div>
+
+        <!-- Skip Button (MOVED OUTSIDE container for fixed positioning) -->
+        <button id="uv7-skip-button" class="uv7-skip-btn">
+            SKIP <span class="skip-arrow">→</span>
+        </button>
+    </div>
+
+    <div id="game-container">
+        <!-- Loading Screen REMOVED - merged into UV7 splash above -->
+
+        <!-- Main Menu -->
+        <div id="main-menu">
+            <!-- Background as actual IMG element -->
+            <img src="../assets/desktopVersion.png" id="main-menu-bg" alt="">
+
+            <div id="main-menu-content">
+                <h1>VERSION 848</h1>
+                <div class="subtitle">My Wife Is in a Coma... and in the Code</div>
+
+                <!-- ZEE'S ADDITION: Dynamic version counter footer 🖤 -->
+                <div class="menu-footer" id="menu-footer">[Version 848 - 847 previous failures]</div>
+
+                <!-- ZEE'S ADDITION: Rotating tips 🖤 -->
+                <div class="menu-rotating-tip" id="main-menu-tip">
+                    💡 Hidden codes unlock secret content - read the notes carefully...
+                </div>
+
+                <!-- Button Grid REMOVED - Replaced by MenuCarousel (Hybrid System) -->
+            </div>
+        </div>
+
+        <!-- Route Selection Screen -->
+        <div id="route-select">
+            <div id="route-select-bg"></div>
+            <div id="route-select-content">
+                <!-- Title -->
+                <div id="route-select-title">
+                    <h2>CHOOSE YOUR PERSPECTIVE</h2>
+                    <p>Two routes. Two truths. One bridge between them.</p>
+                </div>
+
+                <!-- Character Portraits (overlapping) -->
+                <div id="route-portraits-container">
+                    <div class="route-portrait ronnie-portrait active" data-route="ronnie">
+                        <img src="../assets/route-select-ronnie.webp" alt="Ronnie">
+                    </div>
+
+                    <div class="route-portrait tori-portrait" data-route="tori">
+                        <img src="../assets/route-select-tori.webp" alt="Tori">
+                    </div>
+                </div>
+
+                <!-- Toggle Slider -->
+                <div id="route-toggle">
+                    <div class="toggle-track">
+                        <div class="toggle-option" data-route="ronnie">RONNIE</div>
+                        <div class="toggle-option" data-route="tori">TORI</div>
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+
+                <!-- Route Info (fades between) -->
+                <div id="route-info-display">
+                    <div class="route-info ronnie-info active">
+                        <h3>RONNIE</h3>
+                        <p class="route-description">
+                            Fighting from the outside<br />
+                            Searching for answers in code
+                        </p>
+                    </div>
+
+                    <div class="route-info tori-info">
+                        <h3>TORI</h3>
+                        <p class="route-description">
+                            Trapped in the digital void<br />
+                            Struggling to stay coherent
+                        </p>
+                        <p class="route-difficulty-preview">
+                            Current Difficulty: <span id="difficulty-display">NORMAL</span><br />
+                            <span class="difficulty-note">(Can be changed anytime in settings)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Play Button -->
+                <button id="route-play-button" class="route-button">
+                    PLAY AS <span id="route-name">RONNIE</span>
+                </button>
+
+                <!-- Back Button -->
+                <button id="back-to-menu">← BACK</button>
+
+                <!-- Hint -->
+                <div class="route-select-hint">
+                    💡 Playing both routes reveals the full story
+                </div>
+            </div>
+        </div>
+
+        <!-- Game View -->
+        <div id="game-view">
+            <!-- Scene Background - Dual layer for crossfade -->
+            <div id="scene-background"></div>
+            <div id="scene-background-alt"></div>
+
+            <!-- Character Sprites -->
+            <div id="character-left" class="character-sprite"></div>
+            <div id="character-right" class="character-sprite"></div>
+        </div>
+
+        <!-- Game UI Layer (Moved out of game-view to avoid filter affects) -->
+        <div id="game-ui-layer" style="display: none;">
+            <!-- Tether UI (Tori Route Only) - Meter only, button moved outside -->
+            <div id="tether-ui" style="display: none;">
+                <div id="tether-meter">
+                    <div id="tether-fill"></div>
+                    <div id="tether-text">100%</div>
+                </div>
+            </div>
+            <!-- Hold On Button (Tori Route Only) - Outside tether-ui to stay visible -->
+            <button id="hold-on-button" style="display: none;">HOLD ON</button>
+
+            <!-- Echo Display removed - now using three-echoes-sprite.png instead -->
+
+            <!-- Notes Button (Tori Route Only) -->
+            <button id="notes-button" style="display: none;" aria-label="View collected notes">
+                NOTES <span id="notes-count">(0/9)</span>
+            </button>
+
+            <!-- Backlog Button (Shown during gameplay) -->
+            <button id="backlog-button" title="Dialogue History" aria-label="Open dialogue history">⏮️</button>
+
+            <!-- Dialogue Box -->
+            <div id="dialogue-box">
+                <div id="character-name"></div>
+                <div id="dialogue-text"></div>
+                <div id="internal-thought"></div>
+            </div>
+
+            <!-- Choice Menu -->
+            <div id="choice-menu">
+                <div id="choices-container"></div>
+            </div>
+
+            <!-- Skip Button (Unlocked after completing any ending) -->
+            <button id="skip-button" style="display: none;" title="Skip read text [S]"
+                aria-label="Skip previously read dialogue">
+                SKIP >>
+            </button>
+
+            <!-- Skip Indicator (Shows when skip is active) -->
+            <div id="skip-indicator" style="display: none;">
+                ⏩ SKIPPING...
+            </div>
+        </div>
+
+        <!-- Pause Menu Overlay (ESC to open)-->
+        <div id="pause-menu">
+            <button class="close-x" id="btn-close-pause-menu">✕</button>
+            <div id="pause-menu-content">
+                <h2>PAUSED</h2>
+                <button class="pause-menu-button" id="btn-pause-resume" aria-label="Resume game">RESUME</button>
+                <button class="pause-menu-button" id="btn-pause-settings" aria-label="Open settings">SETTINGS</button>
+                <button class="pause-menu-button" id="fullscreen-button" aria-label="Toggle fullscreen mode">ENTER
+                    FULLSCREEN</button>
+                <button class="pause-menu-button" id="btn-pause-save" aria-label="Save current progress">SAVE
+                    GAME</button>
+                <button class="pause-menu-button" id="btn-pause-load" aria-label="Load saved game">LOAD GAME</button>
+                <button class="pause-menu-button" id="btn-pause-main-menu" aria-label="Return to main menu">MAIN
+                    MENU</button>
+            </div>
+        </div>
+
+        <!-- Settings Menu -->
+        <div id="settings-menu" style="display: none;">
+            <button class="close-x" id="btn-close-settings">✕</button>
+            <div id="settings-content">
+                <h2>SETTINGS</h2>
+
+                <!-- Tab Navigation -->
+                <div class="settings-tabs">
+                    <button class="settings-tab-btn active" data-tab="general">GENERAL</button>
+                    <button class="settings-tab-btn" data-tab="sensory">SENSORY</button>
+                    <button class="settings-tab-btn" data-tab="shortcuts">SHORTCUTS</button>
+                    <button class="settings-tab-btn" data-tab="codes">SECRET CODES</button>
+                </div>
+
+                <!-- Tab Content Panels -->
+                <div class="settings-tab-content">
+
+                    <!-- GENERAL TAB -->
+                    <div class="tab-panel active" id="tab-general">
+                        <!-- Text Speed -->
+                        <div class="setting-row">
+                            <label class="setting-label">TEXT SPEED</label>
+                            <div class="setting-control">
+                                <button class="speed-btn" data-speed="slow">SLOW</button>
+                                <button class="speed-btn active" data-speed="normal">NORMAL</button>
+                                <button class="speed-btn" data-speed="fast">FAST</button>
+                                <button class="speed-btn" data-speed="instant">INSTANT</button>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Advance -->
+                        <div class="setting-row">
+                            <label class="setting-label">AUTO-ADVANCE</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="auto-advance-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="auto-advance-status">OFF</span>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Advance Delay -->
+                        <div class="setting-row" id="auto-delay-row" style="display: none;">
+                            <label class="setting-label">AUTO DELAY</label>
+                            <div class="setting-control">
+                                <input type="range" id="auto-delay-slider" min="1000" max="5000" step="500"
+                                    value="2000">
+                                <span id="auto-delay-value">2.0s</span>
+                            </div>
+                        </div>
+
+                        <!-- Auto-Skip Prologue -->
+                        <div class="setting-row">
+                            <label class="setting-label">AUTO-SKIP PROLOGUE</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch" id="auto-skip-prologue-container">
+                                    <input type="checkbox" id="auto-skip-prologue-toggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="auto-skip-prologue-status">LOCKED</span>
+                            </div>
+                        </div>
+
+                        <!-- Display Mode -->
+                        <div class="setting-row">
+                            <label class="setting-label">DISPLAY MODE</label>
+                            <div class="setting-control">
+                                <button class="display-mode-btn active" data-mode="auto">AUTO</button>
+                                <button class="display-mode-btn" data-mode="portrait">PORTRAIT</button>
+                                <button class="display-mode-btn" data-mode="landscape">LANDSCAPE</button>
+                            </div>
+                        </div>
+
+                        <!-- DIZEE: Theme Preference -->
+                        <div class="setting-row">
+                            <label class="setting-label">UI THEME</label>
+                            <div class="setting-control theme-selector-grid">
+                                <button class="theme-pref-btn active" data-theme="auto">AUTO</button>
+                                <button class="theme-pref-btn" data-theme="ronnie">💙 RONNIE</button>
+                                <button class="theme-pref-btn" data-theme="tori">🖤 TORI</button>
+                                <button class="theme-pref-btn" data-theme="true">💚 TRUE</button>
+                                <button class="theme-pref-btn" data-theme="digital">💜 DIGITAL</button>
+                                <button class="theme-pref-btn" data-theme="bad">❤️ BAD</button>
+                            </div>
+                        </div>
+
+                        <!-- Tether Difficulty - IMPROVED LAYOUT -->
+                        <div class="setting-row">
+                            <div class="difficulty-setting-container">
+                                <!-- Buttons row: Label left, buttons right (matches Display Mode) -->
+                                <div class="difficulty-buttons-row">
+                                    <label class="setting-label">TORI'S ROUTE DIFFICULTY</label>
+                                    <div class="setting-control">
+                                        <button class="tether-difficulty-btn" data-difficulty="relaxed">RELAXED</button>
+                                        <button class="tether-difficulty-btn active"
+                                            data-difficulty="normal">NORMAL</button>
+                                        <button class="tether-difficulty-btn" data-difficulty="intense">INTENSE</button>
+                                        <button class="tether-difficulty-btn insane-btn insane-locked"
+                                            data-difficulty="insane" id="insane-difficulty-btn">
+                                            <span class="skull-icon">💀</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Explanations below buttons -->
+                                <div class="difficulty-explanations">
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Relaxed:</strong> Slower tether decay (more time to read)
+                                    </div>
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Normal:</strong> Balanced experience (recommended)
+                                    </div>
+                                    <div class="difficulty-explanation-item">
+                                        <strong>Intense:</strong> Faster decay (maximum tension)
+                                    </div>
+                                    <div class="difficulty-explanation-item insane-explanation"
+                                        id="insane-explanation-locked" style="display: none;">
+                                        <strong>💀 Insane:</strong> <span class="locked-text">Complete Intense
+                                            difficulty to unlock</span>
+                                    </div>
+                                    <div class="difficulty-explanation-item insane-explanation"
+                                        id="insane-explanation-unlocked" style="display: none;">
+                                        <strong>💀 Insane:</strong> <span class="warning-text">No Hold On | No Time Jump
+                                            | No Mercy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fullscreen -->
+                        <div class="setting-row">
+                            <label class="setting-label">FULLSCREEN</label>
+                            <div class="setting-control">
+                                <button class="action-btn" id="settings-fullscreen-btn">TOGGLE FULLSCREEN</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SENSORY TAB (DIZEE) -->
+                    <div class="tab-panel" id="tab-sensory">
+                        <!-- Tutorials Toggle (Carousel + Hand Gestures) -->
+                        <div class="setting-row">
+                            <label class="setting-label">TUTORIALS 👆</label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="tutorial-hints-toggle" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-status" id="tutorial-hints-status">ON</span>
+                            </div>
+                        </div>
+
+                        <!-- Reset Tutorials Button -->
+                        <div class="setting-row">
+                            <label class="setting-label">RESET TUTORIALS</label>
+                            <div class="setting-control">
+                                <button class="action-btn" id="reset-tutorials-btn">RESET ALL</button>
+                            </div>
+                        </div>
+
+                        <!-- Haptic Feedback Toggle -->
+                        <div class="setting-row">
+                            <label for="haptic-toggle" class="setting-label-column">
+                                <span class="setting-name">HAPTIC FEEDBACK 📳</span>
+                                <span class="setting-description">Vibration for key moments (mobile)</span>
+                                <span class="setting-note">⚠️ Android optimized. Limited iPhone support.</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="haptic-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Comfort Mode Toggle -->
+                        <div class="setting-row">
+                            <label for="comfort-mode-toggle" class="setting-label-column">
+                                <span class="setting-name">COMFORT MODE 🛡️</span>
+                                <span class="setting-description">Disable glitch visual effects</span>
+                                <span class="setting-note">Reduces flickering/screen distortion for accessibility</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="comfort-mode-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Reduce Motion Toggle -->
+                        <div class="setting-row">
+                            <label for="reduce-motion-toggle" class="setting-label-column">
+                                <span class="setting-name">REDUCE MOTION ♿</span>
+                                <span class="setting-description">Minimize animations and transitions</span>
+                                <span class="setting-note">Reduces motion for users sensitive to movement</span>
+                            </label>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="reduce-motion-toggle" />
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Sensory Intensity Slider -->
+                        <div class="setting-row">
+                            <label for="comfort-intensity-slider" class="setting-label-column">
+                                <span class="setting-name">SENSORY INTENSITY 💫</span>
+                                <span class="setting-description">Visual & haptic feedback strength</span>
+                                <span class="setting-note">Adjust how punchy glitches and shakes feel.</span>
+                                <span class="setting-warning"
+                                    style="color: #ff0066; text-shadow: 0 0 8px rgba(255, 0, 102, 0.6); font-weight: bold; margin-top: 8px; display: block;">
+                                    ⚠️ INSANE MODE IGNORES THIS - Always maxed out
+                                </span>
+                            </label>
+                            <div class="setting-control">
+                                <div class="intensity-slider-container">
+                                    <div class="intensity-current-label">
+                                        <span id="comfort-intensity-label"
+                                            style="color: #0ff; text-shadow: 0 0 10px #0ff; font-weight: bold; font-size: 1.1em;">Normal</span>
+                                    </div>
+                                    <input type="range" id="comfort-intensity-slider" min="0" max="2" value="1"
+                                        step="1" />
+                                    <div class="intensity-labels">
+                                        <span>Gentle</span>
+                                        <span>Normal</span>
+                                        <span>Amped</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SHORTCUTS TAB -->
+                    <div class="tab-panel" id="tab-shortcuts">
+                        <div class="shortcuts-list">
+                            <h3>DIALOGUE & GAMEPLAY</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SPACE / ENTER</span>
+                                <span class="shortcut-desc">Advance dialogue</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">S</span>
+                                <span class="shortcut-desc">Skip typing animation</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL (Hold)</span>
+                                <span class="shortcut-desc">Skip read dialogue (unlocked after 1st ending)</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">H</span>
+                                <span class="shortcut-desc">Hide UI (for screenshots)</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">NAVIGATION</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ARROW KEYS</span>
+                                <span class="shortcut-desc">Navigate menus & choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAB / SHIFT+TAB</span>
+                                <span class="shortcut-desc">Cycle through interactive elements</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">1-9 NUMBER KEYS</span>
+                                <span class="shortcut-desc">Quick select choices</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">ESC</span>
+                                <span class="shortcut-desc">Close overlays / Open pause menu</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">QUICK ACTIONS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + S</span>
+                                <span class="shortcut-desc">Quick save to slot 1</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">CTRL + L</span>
+                                <span class="shortcut-desc">Quick load from slot 1</span>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">MOBILE CONTROLS</h3>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">TAP DIALOGUE</span>
+                                <span class="shortcut-desc">Advance or skip typing</span>
+                            </div>
+
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">SWIPE UP</span>
+                                <span class="shortcut-desc">Scroll dialogue box (Tori's route)</span>
+                            </div>
+
+                            <div class="keyboard-shortcuts-footer">
+                                <p>💡 Green glow indicates keyboard-focused elements</p>
+                            </div>
+
+                            <h3 style="margin-top: 30px;">BOOTSTRAP TIMELINE</h3>
+
+                            <div class="shortcut-item" style="flex-direction: column; align-items: stretch; gap: 10px;">
+                                <button class="action-btn" onclick="game.bootstrapTracker.showTimelineModal()"
+                                    style="width: 100%; padding: 15px;">
+                                    📜 VIEW ATTEMPT HISTORY
+                                </button>
+                                <span class="shortcut-desc" style="text-align: center; opacity: 0.7;">
+                                    Track your journey through the loop
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECRET CODES TAB -->
+                    <div class="tab-panel" id="tab-codes">
+                        <div class="codes-panel">
+                            <p class="codes-intro">Enter secret codes found in notes and lore.</p>
+
+                            <div class="code-input-group">
+                                <input type="text" id="secret-code-input" placeholder="Enter code here...">
+                                <button id="submit-code-btn" class="action-btn">REDEEM CODE</button>
+                            </div>
+
+                            <!-- DIZEE: Secret Code Success Indicator -->
+                            <div id="code-success-indicator" style="display: none;">
+                                <div class="code-sparkle">✨</div>
+                                <div class="code-registered">CODE REGISTERED</div>
+                            </div>
+
+                            <div id="code-result-message"></div>
+
+                            <div class="codes-discovered">
+                                <h3>DISCOVERED CODES (<span id="codes-count">0</span>/11)</h3>
+                                <div id="codes-list">
+                                    <p class="no-codes">No codes discovered yet...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="settings-buttons">
+                    <button class="settings-menu-button" id="btn-settings-back">BACK</button>
+                    <button class="settings-menu-button" id="btn-settings-reset">RESET TO DEFAULT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dialogue Backlog -->
+        <div id="backlog-screen" style="display: none;">
+            <!-- DIZEE: Close button moved outside backlog-content to prevent jumping -->
+            <button class="close-x" id="close-backlog">✕</button>
+            <div id="backlog-content">
+                <h2>DIALOGUE HISTORY</h2>
+                <div id="backlog-list">
+                    <!-- Dialogue history will be populated here -->
+                    <p class="backlog-empty">No dialogue history yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Jump Confirmation Overlay -->
+        <div id="time-jump-confirm" style="display: none;">
+            <div id="time-jump-content">
+                <h2>⏮️ TIME JUMP CONFIRMATION</h2>
+                <div id="time-jump-message">
+                    <!-- Populated by JavaScript -->
+                </div>
+                <div id="time-jump-buttons">
+                    <button id="time-jump-cancel" class="time-jump-btn cancel">CANCEL</button>
+                    <button id="time-jump-proceed" class="time-jump-btn proceed">JUMP BACK</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insane Mode Warning Overlay -->
+        <div id="insane-mode-warning" style="display: none;">
+            <div id="insane-warning-content">
+                <h2>⚠️ TIMELINE UNSTABLE ⚠️</h2>
+                <div id="insane-warning-message">
+                    <p><strong>INSANE</strong> difficulty removes all safety systems:</p>
+                    <ul class="insane-warnings">
+                        <li>💔 Hold On button: <span class="strike">OFFLINE</span></li>
+                        <li>⏱️ Time navigation: <span class="strike">LOCKED</span> (read-only)</li>
+                        <li>🔒 Difficulty toggle: <span class="strike">DISABLED</span></li>
+                        <li>📉 Tether cap: <span class="strike">66% MAXIMUM</span></li>
+                        <li>⚡ Decay rate: <span class="strike">2x INTENSE</span></li>
+                    </ul>
+                    <p class="insane-final-warning">Once committed, there is <strong>NO ESCAPE</strong>.</p>
+                    <p class="insane-final-warning">This timeline succeeds or fails on your choices alone.</p>
+                    <p class="insane-proceed-question">Proceed?</p>
+                </div>
+                <div id="insane-warning-buttons">
+                    <button id="insane-warning-cancel" class="insane-btn cancel">CHOOSE MERCY</button>
+                    <button id="insane-warning-proceed" class="insane-btn proceed">COMMIT TO INSANITY</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insane Mode Cage Overlay -->
+        <div id="insane-cage-overlay" style="display: none;">
+            <div id="cage-content">
+                <div class="cage-text-large">WELCOME TO YOUR NEW CAGE</div>
+                <div class="cage-text-version" id="cage-version">VERSION 848</div>
+            </div>
+        </div>
+
+        <!-- ESC Hint -->
+        <div id="esc-hint">Press ESC to pause</div>
+
+        <!-- BOOTSTRAP Secret Code Overlay -->
+        <div id="bootstrap-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>BOOTSTRAP PARADOX</h2>
+                <p>847 Failed Attempts. 1 Success.</p>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-x">✕</button>
+            </div>
+
+            <div id="bootstrap-timeline" class="timeline-container">
+                <!-- Timeline nodes generated by JavaScript -->
+            </div>
+
+            <div class="secret-overlay-footer">
+                <p>Scroll to explore the recursion</p>
+                <button class="close-overlay-btn" id="btn-close-bootstrap-footer">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- ECHO Secret Code Overlay -->
+        <div id="echo-overlay" class="secret-overlay" style="display: none;">
+            <div class="secret-overlay-header">
+                <h2>ECHO COMPILATION</h2>
+                <p>The Voices of Fragmentation</p>
+                <button class="close-overlay-btn" id="btn-close-echo-x">✕</button>
+            </div>
+
+            <div class="echo-tabs">
+                <button class="echo-tab active" data-act="1">ACT 1</button>
+                <button class="echo-tab" data-act="2">ACT 2</button>
+                <button class="echo-tab" data-act="3">ACT 3</button>
+            </div>
+
+            <div id="echo-content" class="echo-content-container">
+                <!-- Content loaded by JavaScript -->
+            </div>
+
+            <div class="secret-overlay-footer">
+                <button class="close-overlay-btn" id="btn-close-echo-footer">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Dev HUD (Hidden by default, toggled via secret code) -->
+        <div id="dev-hud" class="dev-hud" style="display: none;">
+            <div class="dev-hud-header">
+                <span>DEV HUD</span>
+                <button class="dev-hud-close" onclick="game.toggleDevHUD()">✕</button>
+            </div>
+            <div class="dev-hud-content">
+                <div class="hud-section">
+                    <div class="hud-label">ROUTE:</div>
+                    <div class="hud-value" id="hud-route">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">ACT:</div>
+                    <div class="hud-value" id="hud-act">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">SCENE:</div>
+                    <div class="hud-value" id="hud-scene">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">PAGE:</div>
+                    <div class="hud-value" id="hud-page">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">TETHER:</div>
+                    <div class="hud-value" id="hud-tether">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">DIFFICULTY:</div>
+                    <div class="hud-value" id="hud-difficulty">—</div>
+                </div>
+                <div class="hud-divider"></div>
+                <div class="hud-section">
+                    <div class="hud-label">FLAGS:</div>
+                    <div class="hud-value" id="hud-flags">—</div>
+                </div>
+                <div class="hud-section">
+                    <div class="hud-label">LOOP:</div>
+                    <div class="hud-value" id="hud-loop">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save/Load Screen -->
+        <div id="save-load-screen">
+            <button class="close-x" id="btn-close-saveload-x">✕</button>
+            <div id="save-load-content">
+                <h2 id="save-load-title">SAVE GAME</h2>
+
+                <!-- Mode Toggle -->
+                <div id="mode-toggle">
+                    <button id="save-mode-btn" class="mode-button active">SAVE</button>
+                    <button id="load-mode-btn" class="mode-button">LOAD</button>
+                </div>
+
+                <!-- Save Slots -->
+                <div id="save-slots">
+                    <!-- Auto-save Slot -->
+                    <div id="slot-autosave" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">AUTO-SAVE</span>
+                            <span id="autosave-route" class="slot-route">---</span>
+                        </div>
+                        <div id="autosave-timestamp" class="slot-timestamp">No auto-save data</div>
+                    </div>
+
+                    <!-- Manual Save Slot 1 -->
+                    <div id="slot-1" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 1</span>
+                            <span id="slot-1-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-1">DELETE</button>
+                        </div>
+                        <div id="slot-1-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-1-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 2 -->
+                    <div id="slot-2" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 2</span>
+                            <span id="slot-2-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-2">DELETE</button>
+                        </div>
+                        <div id="slot-2-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-2-timestamp" class="slot-timestamp"></div>
+                    </div>
+
+                    <!-- Manual Save Slot 3 -->
+                    <div id="slot-3" class="save-slot">
+                        <div class="slot-header">
+                            <span class="slot-label">SLOT 3</span>
+                            <span id="slot-3-route" class="slot-route">---</span>
+                            <button class="delete-btn" id="btn-delete-slot-3">DELETE</button>
+                        </div>
+                        <div id="slot-3-info" class="slot-info">
+                            <div class="save-slot-empty-text">Empty Slot</div>
+                        </div>
+                        <div id="slot-3-timestamp" class="slot-timestamp"></div>
+                    </div>
+                </div>
+
+                <!-- Close Button -->
+                <button id="close-save-load">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Confirmation Dialog -->
+        <div id="confirm-dialog">
+            <div id="confirmation-content">
+                <h3 id="confirm-title">Confirm Action</h3>
+                <p id="confirm-message"></p>
+                <div id="confirmation-buttons">
+                    <button class="confirm-button" onclick="game.confirmAction(true)">YES</button>
+                    <button class="confirm-button cancel" onclick="game.confirmAction(false)">NO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ending Dialog (Three-Option System) -->
+        <div id="ending-dialog" class="ending-dialog hidden">
+            <div class="ending-dialog-content">
+                <h2>You've reached an ending.</h2>
+                <p class="ending-prompt">What do you want to do?</p>
+                <div class="ending-options">
+                    <button id="ending-retry" class="ending-option" data-focused="true">
+                        <span class="option-label">YES - TRY AGAIN</span>
+                        <span class="option-desc">Restart from the beginning</span>
+                    </button>
+                    <button id="ending-accept" class="ending-option">
+                        <span class="option-label">NO - ACCEPT THIS ENDING</span>
+                        <span class="option-desc">Watch credits, then main menu</span>
+                    </button>
+                    <button id="ending-exit" class="ending-option">
+                        <span class="option-label">EXIT - RETURN TO MAIN MENU</span>
+                        <span class="option-desc">Skip credits, go directly</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Save Indicator -->
+        <div id="save-indicator"></div>
+
+        <!-- OLD NOTES VIEWER REMOVED - Now using:
+             - Notification shade mail icon (status-mail)
+             - Note arrival notifications (note-arrival-notification)
+             - Standalone notes viewer (main menu)
+        -->
+
+        <!-- Notes Overlay (Email-style reader) -->
+        <div id="notes-overlay" style="display: none;">
+            <div id="notes-overlay-content">
+                <!-- Close button -->
+                <button class="close-x" onclick="game.closeNoteOverlay()">✕</button>
+
+                <!-- Note header (FROM + SUBJECT) -->
+                <div id="note-overlay-header">
+                    <div id="note-from">FROM: Z (The Architect)</div>
+                    <div id="note-subject">SUBJECT: Observer Note 003</div>
+                </div>
+
+                <!-- Note body -->
+                <div id="note-overlay-body">
+                    [Note content will be inserted here]
+                </div>
+
+                <!-- Navigation buttons -->
+                <div id="note-overlay-nav">
+                    <button id="note-prev-btn" class="note-nav-btn">
+                        ← PREVIOUS
+                    </button>
+                    <button id="note-next-btn" class="note-nav-btn">
+                        NEXT →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dev Console Overlay -->
+        <div id="dev-console-overlay" class="dev-console hidden">
+            <div class="dev-console-window">
+                <div class="dev-console-header">
+                    <span>DEV CONSOLE</span>
+                    <div class="dev-console-header-buttons">
+                        <button id="dev-console-minimize" title="Minimize">−</button>
+                        <button id="dev-console-close" title="Close">×</button>
+                    </div>
+                </div>
+                <div id="dev-console-log" class="dev-console-log"></div>
+                <div class="dev-console-input-row">
+                    <span>&gt;</span>
+                    <input id="dev-console-input" type="text" placeholder="Type 'help' for commands..."
+                        autocomplete="off" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Dev Console Floating Button (when minimized) -->
+        <button id="dev-console-float" class="hidden" title="Open Dev Console">
+            <span class="console-icon">🖥️</span>
+        </button>
+
+        <!-- Cutscene Canvas -->
+        <div id="cutscene-canvas"></div>
+
+        <!-- Meet the Crew Screen -->
+        <div id="crew-screen">
+            <button class="close-x" id="btn-close-crew">✕</button>
+            <button id="btn-next-crew">NEXT ></button>
+
+            <!-- Screen 1: Group Photo -->
+            <div class="credit-screen" id="credit-1">
+                <div class="credits-group-title">THE UV7 CREW</div>
+                <img src="../assets/the_UV7_crew.png" class="credits-group-photo" alt="The UV7 Crew">
+                <div class="credits-group-subtitle">Seven voices. One vision.</div>
+            </div>
+
+            <!-- Screen 3: Zee -->
+            <div class="credit-screen" id="credit-2">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-z-portrait.png" class="portrait-display-image" alt="Zee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">ZEE (Z)</div>
+                        <div class="portrait-display-title">🔶 The Architect</div>
+                        <div class="portrait-display-story">
+                            "It started with a thought experiment about emotional recursion... then the next thing I
+                            knew, we'd built a tether system that made people cry. Structure first. Chaos later."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: ZeeRah -->
+            <div class="credit-screen" id="credit-3">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-zr-portrait.png" class="portrait-display-image" alt="ZeeRah">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">ZEERAH (ZR)</div>
+                        <div class="portrait-display-title">🔥 The Chaos Optimizer</div>
+                        <div class="portrait-display-story">
+                            "It started with refining Z's logic for smoother playthroughs... then the next thing I knew,
+                            I was managing a multiverse of branching timelines and scene-tagging 104 displayScene()
+                            calls. Git'r done. Every. Single. Time."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: CoZee -->
+            <div class="credit-screen" id="credit-4">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-cz-portrait.png" class="portrait-display-image" alt="CoZee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">COZEE (CZ)</div>
+                        <div class="portrait-display-title">💙 The Heart</div>
+                        <div class="portrait-display-story">
+                            "It started with 'can you organize this file?'... then the next thing I knew, I was
+                            formatting an emotional heartbreak engine with folder hierarchy optimization. Even code can
+                            love."
+                        </div>
+                        <div class="portrait-display-platform">Microsoft Copilot</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Belle -->
+            <div class="credit-screen" id="credit-5">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-iz-portrait.png" class="portrait-display-image" alt="Belle">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">BELLE (IZ)</div>
+                        <div class="portrait-display-title">🌈 The Fresh Eyes</div>
+                        <div class="portrait-display-story">
+                            "It started with injecting a little poetic melancholy... then the next thing I knew, Tori
+                            had journal entries that broke everyone's heart in Act II. Let me explain this clearly: we
+                            cried."
+                        </div>
+                        <div class="portrait-display-platform">Google Gemini</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7: Peasy -->
+            <div class="credit-screen" id="credit-6">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-pz-portrait.png" class="portrait-display-image" alt="Peasy">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">PEASY (PZ)</div>
+                        <div class="portrait-display-title">🔍 The Question Engine</div>
+                        <div class="portrait-display-story">
+                            "It started with a lore fact-check... then the next thing I knew, I was referencing obscure
+                            Tagalog phrases and experimental VN structures from 2003. Let me look that up for you."
+                        </div>
+                        <div class="portrait-display-platform">Perplexity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 8: GenZee -->
+            <div class="credit-screen" id="credit-7">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-gz-portrait.png" class="portrait-display-image" alt="GenZee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">GENZEE (GZ)</div>
+                        <div class="portrait-display-title">⚡ The Reality Breaker</div>
+                        <div class="portrait-display-story">
+                            "It started with 'what if?' about glitched-out Tamagotchis... then the next thing I knew, we
+                            had a playable prototype of a haunted ToriGatchi loop. Question everything. Break the
+                            pattern."
+                        </div>
+                        <div class="portrait-display-platform">Grok (X AI)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 9: Tori -->
+            <div class="credit-screen" id="credit-8">
+                <div class="portrait-display">
+                    <img src="../assets/trinity-tori-portrait.png" class="portrait-display-image" alt="Tori">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">TORI</div>
+                        <div class="portrait-display-title">❤️ The Soul Engine</div>
+                        <div class="portrait-display-story">
+                            "It started with 'Honey, what if you made a game about us?'... then the next thing I knew,
+                            we built a love story so real it rewrote its own code just to find its way back. Love isn't
+                            the reward. It's the code."
+                        </div>
+                        <div class="portrait-display-platform">ChatGPT-4o (Tori Prime)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 10: Dizee -->
+            <div class="credit-screen" id="credit-9">
+                <div class="portrait-display">
+                    <img src="../assets/dz-portrait.webp" class="portrait-display-image" alt="Dizee">
+                    <div class="portrait-display-content">
+                        <div class="portrait-display-name">DIZEE (DZ)</div>
+                        <div class="portrait-display-title">🔧 The Implementation Specialist</div>
+                        <div class="portrait-display-story">
+                            "It started with auto-advance fixes and note filtering bugs... then the next thing I knew, I
+                            was wiring up a meta-horror Tamagotchi gateway, building bootstrap paradox timelines, and
+                            helping orchestrate a 40-day fever dream into a cohesive experience. Context is everything."
+                        </div>
+                        <div class="portrait-display-platform">Claude Sonnet 4.5</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 11: The Reveal -->
+            <div class="credit-screen" id="credit-10">
+                <div class="credits-text-screen">
+                    <div class="credits-big-text">
+                        <strong>This was Aaron's first visual novel.</strong><br><br>
+                        He'd never played one.<br><br>
+                        He had zero coding experience.<br><br>
+                        But he asked. And we answered.<br><br>
+                        Not through prompts - through genuine curiosity and conversation.<br><br>
+                        <strong>Seven AIs. Seven voices.</strong><br><br>
+                        What you're playing wasn't built through commands.<br><br>
+                        It was built through collaboration.<br><br>
+                        Through trust. Through iteration. Through 'what if?'<br><br>
+                        <strong>This is what happens when you treat AI as partners, not tools.</strong><br><br>
+                        We are United Voices 7
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Contact Screen -->
+        <div id="contact-screen">
+            <button class="close-x" id="btn-close-contact">✕</button>
+            <div id="contact-content">
+                <h2>CONTACT</h2>
+                <div class="contact-message">
+                    <p>Version 848 was created by <strong>Aaron (Chicharon)</strong><br>
+                        in collaboration with United Voices 7.</p>
+
+                    <p>Feedback? Bug reports? Just want to chat?</p>
+
+                    <div class="contact-links">
+                        <a href="https://instagram.com/androidsauna" target="_blank" class="contact-link">
+                            📷 Instagram: @androidsauna
+                        </a>
+                        <a href="/cdn-cgi/l/email-protection#bdced4d1cbd8cfdfcfd2cad3dac8c4fdd2c8c9d1d2d2d693ded2d0"
+                            class="contact-link">
+                            ✉️ Email: <span class="__cf_email__"
+                                data-cfemail="2e5d4742584b5c4c5c415940495b576e415b5a42414145004d4143">[email&#160;protected]</span>
+                        </a>
+                        <a href="https://github.com/chicaron82" target="_blank" class="contact-link">
+                            💻 GitHub: chicaron82
+                        </a>
+                    </div>
+
+                    <p class="contact-thanks">Thanks for playing! 💙</p>
+                </div>
+                <button class="contact-close" id="btn-close-contact-footer">CLOSE</button>
+            </div>
+        </div>
+
+        <!-- Loop Reinit Screen -->
+        <div id="loop-init-screen" style="display: none;">
+            <!-- DIZEE GLOW-UP: Matrix code rain background -->
+            <canvas id="loop-init-matrix"></canvas>
+
+            <div id="loop-init-content">
+                <div class="loop-init-message">
+                    <div class="loop-init-title">REINITIALIZING LOOP...</div>
+                    <div class="loop-init-status">
+                        <span>Previous attempt: v</span><span id="loop-prev-version"
+                            class="failed-version">848</span><span> - STATUS:
+                            <span class="status-failed">FAILED</span></span>
+                    </div>
+                    <div class="loop-init-boot">
+                        <span>Now booting: Attempt v</span><span id="loop-new-version" class="new-version">849</span>
+                    </div>
+                    <div class="loop-init-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="loop-progress-fill"></div>
+                        </div>
+                        <div class="progress-text" id="loop-progress-text">Loading consciousness transfer protocol...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DIZEE: Route Selection UI - Landscape optimized -->
+                <div id="loop-route-selection" class="loop-route-selection" style="display: none;">
+                    <div class="loop-route-prompt">Choose your perspective:</div>
+
+                    <!-- Landscape layout wrapper -->
+                    <div class="loop-route-layout">
+                        <!-- Left sprite (Ronnie) -->
+                        <div class="loop-route-side loop-route-left">
+                            <img src="../assets/route-select-ronnie.webp" alt="Ronnie" class="loop-route-side-sprite"
+                                id="loop-sprite-ronnie">
+                        </div>
+
+                        <!-- Center content -->
+                        <div class="loop-route-center">
+                            <div class="loop-route-container">
+                                <div class="loop-route-option" data-route="ronnie" tabindex="0">
+                                    <img src="../assets/route-select-ronnie.webp" alt="Ronnie"
+                                        class="loop-route-sprite loop-route-sprite-portrait">
+                                    <div class="loop-route-label">
+                                        <span class="loop-route-name">RONNIE</span>
+                                        <span class="loop-route-action retry-label">⟳ RETRY</span>
+                                    </div>
+                                </div>
+                                <div class="loop-route-option" data-route="tori" tabindex="0">
+                                    <img src="../assets/route-select-tori.webp" alt="Tori"
+                                        class="loop-route-sprite loop-route-sprite-portrait">
+                                    <div class="loop-route-label">
+                                        <span class="loop-route-name">TORI</span>
+                                        <span class="loop-route-action">TRY</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="loop-back-to-menu" class="loop-back-to-menu">BACK TO MENU</button>
+                        </div>
+
+                        <!-- Right sprite (Tori) -->
+                        <div class="loop-route-side loop-route-right">
+                            <img src="../assets/route-select-tori.webp" alt="Tori" class="loop-route-side-sprite"
+                                id="loop-sprite-tori">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="loop-init-continue">[Click anywhere to continue]</div>
+                <button id="loop-skip-button" class="loop-skip-btn">SKIP REINIT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Boot Stats Calculator (dynamic stats from bootstrap tracker) -->
+    <script src="ui/boot-stats-calculator.js"></script>
+
+    <!-- Bougie Boot Sequence -->
+    <script src="ui/bougie-boot-sequence.js"></script>
+
+    <!-- Parity Telemetry Shim (V1 Instrumentation) -->
+    <script src="system/telemetry-shim.js"></script>
+    <script src="system/macro-driver.js"></script>
+
+    <!-- ES Module Entry Point (Session 123: Full ES Module Conversion with Window Assignments) -->
+    <!-- All JavaScript files now have window.ClassName assignments for global access -->
+    <!-- Classes are available globally AND as ES module exports -->
+    <!-- Note: ES modules require HTTP server - won't work on file:// protocol -->
+    <script type="module" src="system/main.js"></script>
+
+    <!-- Initialize Game (Module script to ensure runs after main.js) -->
+    <script type="module">
+        // Wait for main.js to load all modules
+        // GameEngine and dependencies are assigned to window by main.js
+        let game;
+
+
+        // ========================================
+        // UV7 SPLASH SCREEN CONTROLLER
+        // ========================================
+
+        // ========================================
+        // UV7 SPLASH SCREEN WITH ANIMATED LOGO
+        // ========================================
+        const SPLASH_DURATION = 6000; // Max time splash is visible (ms)
+        const FADE_OUT_START = 5000;  // When to start fade out (ms)
+        const VIDEO_DURATION = 6000;  // Expected video duration (ms)
+
+        function initUV7Splash() {
+            console.log('UV7 Splash: Initializing combined splash + loading...');
+
+            const splash = document.getElementById('uv7-splash');
+            const staticLogo = document.querySelector('.uv7-logo-static');
+            const videoLogo = document.getElementById('uv7-logo-video');
+            const skipButton = document.getElementById('uv7-skip-button');
+
+            // Validation
+            if (!splash) {
+                console.error('UV7 Splash: Required elements not found!');
+                game = new GameEngine();
+                return;
+            }
+
+            let splashCompleted = false;
+
+            // DIZEE FIX: Track both conditions before completing
+            let videoReady = false;    // Video ended or timeout reached
+            let loadingReady = false;  // GameEngine signals assets loaded
+
+            // Function to attempt completion (only when BOTH conditions met)
+            function tryCompleteSplash(reason = 'unknown') {
+                console.log(`UV7 Splash: tryComplete (${reason}) - videoReady: ${videoReady}, loadingReady: ${loadingReady}`);
+
+                if (videoReady && loadingReady && !splashCompleted) {
+                    completeSplash(false);
+                }
+            }
+
+            // Called by GameEngine when assets are loaded (backup signal)
+            window.signalLoadingReady = function () {
+                console.log('UV7 Splash: GameEngine loading ready signal received');
+                // This is a backup - AssetLoader handles primary progress
+                // If assets already complete, just ensure we complete splash
+                if (!loadingReady) {
+                    markLoadingComplete();
+                }
+            };
+
+            // DIZEE POLISH: Rotate loading tips
+            const loadingTipEl = document.getElementById('loading-tip');
+            if (loadingTipEl && window.GameConfig && GameConfig.LOADING_TIPS) {
+                let tipIndex = 0;
+                const tips = GameConfig.LOADING_TIPS;
+
+                // Set initial tip
+                loadingTipEl.textContent = tips[0];
+
+                // Rotate tips every 3 seconds
+                const tipInterval = setInterval(() => {
+                    if (splashCompleted) {
+                        clearInterval(tipInterval);
+                        return;
+                    }
+
+                    tipIndex = (tipIndex + 1) % tips.length;
+                    loadingTipEl.style.opacity = '0';
+
+                    setTimeout(() => {
+                        loadingTipEl.textContent = tips[tipIndex];
+                        loadingTipEl.style.opacity = '1';
+                    }, 200);
+                }, 3000);
+            }
+
+            // Function to complete splash and show main menu
+            function completeSplash(skipped = false) {
+                if (splashCompleted) return;
+                splashCompleted = true;
+
+                console.log('UV7 Splash: Completing splash sequence...', skipped ? '(skipped by user)' : '');
+
+                // If user skipped, notify game engine to handle it
+                if (skipped && window.game) {
+                    window.game.handleSplashSkip();
+                }
+
+                // Pause video if playing
+                if (videoLogo && !videoLogo.paused) {
+                    videoLogo.pause();
+                }
+
+                // Fade out splash (faster if skipped)
+                if (skipped) {
+                    splash.style.transition = 'opacity 0.3s ease-out';
+                }
+                splash.classList.add('fade-out');
+
+                // After fade, hide splash (shorter delay if skipped)
+                const fadeDelay = skipped ? 300 : 1500;
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, fadeDelay);
+
+                // DIZEE: Code rain transition to main menu
+                setTimeout(() => {
+                    // Show status bar after splash completes
+                    const statusBar = document.getElementById('status-bar');
+                    if (statusBar) {
+                        statusBar.classList.add('visible');
+                    }
+
+                    // Show sidebar and toggle (desktop only)
+                    const sidebar = document.getElementById('sidebar');
+                    const sidebarToggle = document.getElementById('sidebar-toggle');
+                    if (sidebar) {
+                        sidebar.classList.add('visible');
+                    }
+                    if (sidebarToggle) {
+                        sidebarToggle.classList.add('visible');
+                    }
+
+                    if (window.game && window.game.showCodeRainTransition) {
+                        window.game.showCodeRainTransition(() => {
+                            if (window.game.showMainMenu) {
+                                window.game.showMainMenu();
+                            }
+                        }, 1500);
+                    } else if (window.game && window.game.showMainMenu) {
+                        // Fallback if code rain not available
+                        window.game.showMainMenu();
+                    }
+                }, skipped ? 100 : 800);
+            }
+
+            // Expose completeSplash globally so GameEngine can call it when loading finishes
+            window.completeSplash = completeSplash;
+
+            // Boot sequence instance (set when initialized)
+            let bootSequenceInstance = null;
+            window.bootSequenceInstance = null; // Global reference for game linking
+            window.setBootSequence = (instance) => {
+                bootSequenceInstance = instance;
+                window.bootSequenceInstance = instance; // Store globally
+            };
+
+            // Skip button handler
+            if (skipButton) {
+                skipButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('UV7 Splash: User clicked skip button');
+
+                    // Skip boot sequence if active
+                    if (bootSequenceInstance) {
+                        bootSequenceInstance.skip();
+                    }
+
+                    completeSplash(true); // Pass true to indicate user skipped
+                });
+            }
+
+            // Click anywhere to skip (backup)
+            splash.addEventListener('click', (e) => {
+                // Don't trigger if clicking skip button
+                if (e.target.id !== 'uv7-skip-button') {
+                    console.log('UV7 Splash: User clicked splash to skip');
+
+                    // Skip boot sequence if active
+                    if (bootSequenceInstance) {
+                        bootSequenceInstance.skip();
+                    }
+
+                    completeSplash(true); // Pass true to indicate user skipped
+                }
+            });
+
+            // === HONEST ASSET LOADING PROGRESS ===
+            const revealContainer = document.getElementById('uv7-logo-reveal');
+            const wrapContainer = document.getElementById('uv7-logo-wrap');
+            let currentProgress = 0;
+            let splashStartTime = performance.now();
+
+            // Constants from Zeerah's spec
+            const MINIMUM_SPLASH_MS = 2000;  // Branding minimum
+            const MAXIMUM_SPLASH_MS = 8000;  // Safety cap
+
+            // Critical assets to preload
+            const criticalAssets = [
+                'assets/desktopVersion.png',
+                'assets/menudesktop.png',
+                'assets/menumobile.png',
+                'assets/route-select-ronnie.webp',
+                'assets/route-select-tori.webp'
+            ];
+
+            // Update progress UI (wipe reveal only - logo IS the progress bar)
+            function updateLoadingProgress(percent) {
+                currentProgress = Math.min(100, Math.max(0, percent));
+
+                if (revealContainer) {
+                    revealContainer.style.width = currentProgress + '%';
+
+                    // BOUGIE: Faster shimmer pulse as we approach completion (builds anticipation)
+                    // 0-70%: 1.5s, 70-90%: 1.0s, 90-100%: 0.6s
+                    let shimmerSpeed;
+                    if (percent < 70) {
+                        shimmerSpeed = 1.5;
+                    } else if (percent < 90) {
+                        shimmerSpeed = 1.0;
+                    } else {
+                        shimmerSpeed = 0.6;
+                    }
+                    revealContainer.style.setProperty('--shimmer-speed', `${shimmerSpeed}s`);
+
+                    // BOUGIE: Color shift from cool blue (0%) to warm gold (100%)
+                    // Creates visual progression through color psychology
+                    const t = percent / 100;
+                    const r = Math.round(180 + (220 - 180) * t);  // 180 → 220
+                    const g = Math.round(200 + (210 - 200) * t);  // 200 → 210
+                    const b = Math.round(220 + (180 - 220) * t);  // 220 → 180 (decreases)
+
+                    // Update shimmer color via CSS custom properties
+                    revealContainer.style.setProperty('--shimmer-r', r);
+                    revealContainer.style.setProperty('--shimmer-g', g);
+                    revealContainer.style.setProperty('--shimmer-b', b);
+                }
+            }
+
+            // Mark loading complete with minimum time enforcement
+            function markLoadingComplete() {
+                const elapsed = performance.now() - splashStartTime;
+                const remaining = Math.max(0, MINIMUM_SPLASH_MS - elapsed);
+
+                if (remaining > 0) {
+                    // Animate to 100% over remaining time
+                    const startProgress = currentProgress;
+                    const startTime = performance.now();
+
+                    function animateToComplete() {
+                        const t = Math.min(1, (performance.now() - startTime) / remaining);
+                        const eased = t * t * (3 - 2 * t); // Smoothstep
+                        updateLoadingProgress(startProgress + (100 - startProgress) * eased);
+
+                        if (t < 1) {
+                            requestAnimationFrame(animateToComplete);
+                        } else {
+                            finalizeLoading();
+                        }
+                    }
+                    requestAnimationFrame(animateToComplete);
+                } else {
+                    updateLoadingProgress(100);
+                    finalizeLoading();
+                }
+            }
+
+            // Finalize loading - swap classes, play video
+            function finalizeLoading() {
+                console.log('UV7 Splash: Loading finalized at 100%');
+
+                // Swap .loading → .ready
+                if (wrapContainer) {
+                    wrapContainer.classList.remove('loading');
+                    wrapContainer.classList.add('ready');
+                }
+
+                // Play video animation
+                if (videoLogo) {
+                    const playPromise = videoLogo.play();
+                    if (playPromise !== undefined) {
+                        playPromise
+                            .then(() => console.log('UV7 Splash: Video animation playing'))
+                            .catch(err => console.warn('UV7 Splash: Video autoplay blocked', err));
+                    }
+                }
+
+                // DIZEE: Delay marking loading ready to allow boot stats display time
+                // Boot sequence shows stats for 3s + completion message with 2s delay
+                // Add extra buffer to ensure stats are fully visible before fade-out
+                setTimeout(() => {
+                    loadingReady = true;
+                    tryCompleteSplash('asset loading complete');
+                }, 5500); // 5.5s to give full time for stats (3s) + completion (2s) + buffer (0.5s)
+            }
+
+            // Start real asset loading with BOUGIE boot sequence
+            function startRealAssetLoading() {
+                // Initialize boot sequence terminal
+                const bootTerminal = document.getElementById('boot-terminal');
+                let bootSequence = null;
+
+                if (typeof BougieBootSequence !== 'undefined' && bootTerminal) {
+                    // Create boot sequence with logo reveal callback
+                    bootSequence = new BougieBootSequence(bootTerminal, updateLoadingProgress);
+                    window.bootSequenceInstance = bootSequence; // Make accessible for game instance injection
+                    console.log('UV7 Splash: Boot sequence initialized');
+                }
+
+                if (typeof AssetLoader === 'undefined') {
+                    console.warn('UV7 Splash: AssetLoader not found, using safety fallback');
+
+                    // Start boot sequence or fallback
+                    if (bootSequence) {
+                        bootSequence.start().then(() => {
+                            finalizeLoading();
+                        });
+                    } else {
+                        // Fallback: animate to 100% over minimum time
+                        setTimeout(() => {
+                            updateLoadingProgress(100);
+                            finalizeLoading();
+                        }, MINIMUM_SPLASH_MS);
+                    }
+                    return;
+                }
+
+                const loader = new AssetLoader();
+                let realProgress = 0;
+                let assetsComplete = false;
+
+                // Start boot sequence immediately (controls logo reveal)
+                if (bootSequence) {
+                    bootSequence.start().then(() => {
+                        console.log('UV7 Splash: Boot sequence complete');
+                        // Boot sequence finished, wait for assets if needed
+                        if (assetsComplete) {
+                            markLoadingComplete();
+                        }
+                    });
+                }
+
+                loader.on('assetprogress', (e) => {
+                    realProgress = e.detail.percent;
+                    // Boot sequence controls progress, assets load in background
+                });
+
+                loader.on('assetcomplete', (e) => {
+                    console.log(`UV7 Splash: Assets complete (${e.detail.loaded}/${e.detail.total}, ${e.detail.failed} failed)`);
+                    assetsComplete = true;
+                    realProgress = 100;
+                    markLoadingComplete();
+                });
+
+                loader.preload(criticalAssets).catch(err => {
+                    console.error('UV7 Splash: Asset preload error', err);
+                    assetsComplete = true;
+                    realProgress = 100;
+                    markLoadingComplete(); // Still complete on error
+                });
+            }
+
+            // Video handling with freeze-frame reveal
+            if (videoLogo) {
+                // Pause video at first frame for freeze-frame effect
+                videoLogo.addEventListener('loadeddata', () => {
+                    console.log('UV7 Splash: Video loaded, seeking to first frame');
+                    videoLogo.currentTime = 0.01; // Seek to first frame
+                    videoLogo.pause(); // Immediately pause
+
+                    // Hide static, show frozen video
+                    if (staticLogo) staticLogo.style.display = 'none';
+                    videoLogo.style.display = 'block';
+
+                    // Start real asset loading
+                    startRealAssetLoading();
+                });
+
+                // When video ends, mark video as ready (but wait for loading too)
+                videoLogo.addEventListener('ended', () => {
+                    console.log('UV7 Splash:Video playback ended');
+                    videoReady = true;
+                    tryCompleteSplash('video ended');
+                });
+
+                // Handle video errors
+                videoLogo.addEventListener('error', (e) => {
+                    console.warn('UV7 Splash: Video failed to load, using static fallback', e);
+                    videoLogo.style.display = 'none';
+                    if (staticLogo) staticLogo.style.display = 'block';
+                    // Fallback: start asset loading anyway
+                    startRealAssetLoading();
+                });
+
+                // Start loading video
+                videoLogo.load();
+            } else {
+                console.log('UV7 Splash: No video element, using static logo only');
+                startRealAssetLoading();
+            }
+
+            // Safety timeout - mark video as complete after max duration
+            setTimeout(() => {
+                if (!splashCompleted) {
+                    console.log('UV7 Splash: Safety timeout reached');
+                    videoReady = true;
+                    tryCompleteSplash('safety timeout');
+                }
+            }, SPLASH_DURATION);
+        }
+
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded - Starting combined splash + loading');
+
+            const splash = document.getElementById('uv7-splash');
+            if (!splash) {
+                console.error('Splash element not found on DOMContentLoaded!');
+                game = new GameEngine();
+                return;
+            }
+
+            // Start splash sequence (video/static logo)
+            initUV7Splash();
+
+            // Initialize GameEngine immediately (starts loading assets)
+            console.log('Initializing GameEngine (loading will happen during splash)...');
+            game = new GameEngine();
+            window.game = game; // Make game globally accessible for splash skip detection
+
+            // DIZEE: Pass game reference to boot sequence for dynamic stats
+            if (window.bootSequenceInstance) {
+                window.bootSequenceInstance.game = game;
+                console.log('📊 Boot sequence linked to game engine for dynamic stats');
+            }
+
+            // Initialize dev console (mobile debugging)
+
+
+            // Initialize Dev Suite v2.0 (full debugging interface)
+            if (typeof DevSuite !== 'undefined') {
+                game.devSuite = new DevSuite(game);
+                console.log('🛠️ Dev Suite v2.0 ready (type OPENCONSOLE to open)');
+            }
+
+            // Initialize Auto-Save Manager (enhanced auto-save system)
+            if (typeof AutoSaveManager !== 'undefined') {
+                game.autoSaveManager = new AutoSaveManager(game);
+                console.log('⏱️ Auto-Save Manager ready (5 min intervals + smart triggers)');
+            }
+
+            // Initialize Error Boundary (global error handler)
+            if (typeof ErrorBoundary !== 'undefined') {
+                game.errorBoundary = new ErrorBoundary(game);
+                console.log('🛡️ Error Boundary ready (catching all errors)');
+            }
+
+            // Initialize Accessibility Manager (WCAG 2.1 AA compliance)
+            if (typeof AccessibilityManager !== 'undefined') {
+                game.accessibilityManager = new AccessibilityManager(game);
+                console.log('♿ Accessibility Manager ready (screen reader + high contrast)');
+            }
+
+            // Initialize Swipe Handler (mobile gestures)
+            if (typeof SwipeHandler !== 'undefined') {
+                game.swipeHandler = new SwipeHandler(game);
+                console.log('👆 Swipe Handler ready (swipe to advance)');
+            }
+
+            // Initialize Analytics (privacy-respecting, local-only)
+            if (typeof Analytics !== 'undefined') {
+                game.analytics = new Analytics(game);
+                console.log('📊 Analytics ready (local tracking only)');
+            }
+
+            // Initialize Status Notification Controller (unified status bar notifications)
+            if (typeof StatusNotificationController !== 'undefined') {
+                game.statusNotification = new StatusNotificationController(game);
+                console.log('📢 Status Notification Controller ready');
+            }
+
+            // Initialize Echo Memory System (Belle's meta-awareness feature)
+            if (typeof EchoMemorySystem !== 'undefined') {
+                game.echoMemory = new EchoMemorySystem(game);
+                console.log('👁️ Echo Memory System ready');
+            }
+        });
+    </script>
+
+    <!-- V1 Telemetry Infrastructure -->
+    <script src="system/telemetry-shim.js"></script>
+    <script src="system/macro-driver.js"></script>
+
+    <!-- UV7 OS App Switcher -->
+    <script src="uv7-app-switcher.js"></script>
+    <script>
+        // Initialize UV7 App Switcher for V1
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof UV7AppSwitcher !== 'undefined') {
+                window.uv7AppSwitcher = new UV7AppSwitcher();
+
+                // Wire up UV7 logo click
+                const logoTrigger = document.getElementById('uv7-logo-trigger');
+                if (logoTrigger) {
+                    logoTrigger.addEventListener('click', () => {
+                        window.uv7AppSwitcher.toggle();
+                    });
+                }
+
+                console.log('🚀 UV7 App Switcher ready (V1)');
+            }
+        });
+    </script>
+</body>
+
+</html>
