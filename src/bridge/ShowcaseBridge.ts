@@ -11,7 +11,7 @@ const UV7System = {
     StatusBar: StatusBar,
 
     // Factory to easily create a standalone status bar
-    createStatusBar: (containerId: string, context: UV7Context = 'showcase') => {
+    createStatusBar: (_containerId: string, context: UV7Context = 'showcase') => {
         console.log(`🏗️ Creating StatusBar for ${context}`);
 
         // 1. Setup Event Bus (communication backbone)

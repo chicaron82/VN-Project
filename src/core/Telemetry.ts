@@ -1,4 +1,4 @@
-import { EventBus, EventName, GameEvents } from './EventBus';
+import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
 
 /**
