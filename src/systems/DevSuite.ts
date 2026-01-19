@@ -308,28 +308,7 @@ export class DevSuite {
         });
     }
 
-    // ========================================
-    // SCREENSHOT
-    // ========================================
 
-    private async captureScreenshot(): Promise<void> {
-        if (!this.screenshotTool) {
-            // Lazy load screenshot tool (TODO: Implement ScreenshotTool)
-            console.warn('⚠️ ScreenshotTool not yet implemented');
-            return;
-            // const { ScreenshotTool } = await import('./screenshot-tool.js');
-            // this.screenshotTool = new ScreenshotTool(this);
-        }
-
-        // Show options
-        const action = confirm('Download screenshot?\n\nOK = Download\nCancel = Copy to clipboard');
-
-        if (action && this.screenshotTool) {
-            await this.screenshotTool.download();
-        } else if (this.screenshotTool) {
-            await this.screenshotTool.copyToClipboard();
-        }
-    }
 
     // ========================================
     // OPEN / CLOSE / MINIMIZE
@@ -1119,6 +1098,18 @@ export class DevSuite {
     // HEADER ACTIONS
     // ========================================
 
+    async captureScreenshot() {
+        if (!this.screenshotTool) {
+            // Lazy load screenshot tool
+            const { ScreenshotTool } = await import('./ScreenshotTool');
+            this.screenshotTool = new ScreenshotTool(this);
+        }
+
+        await this.screenshotTool.download().catch(err => {
+            console.error('Screenshot failed', err);
+        });
+    }
+
     private showPresetsModal(): void {
         this.presets.showModal();
     }
@@ -1135,18 +1126,14 @@ export class DevSuite {
         shortcuts.forEach(s => this.consoleLogEntry('  ' + s, 'system'));
     }
 
-    private async hotReload(): Promise<void> {
+    async hotReload() {
         if (!this.hotReloadSystem) {
-            // Lazy load hot reload system (TODO: Wire up HotReloadSystem)
-            console.warn('⚠️ HotReloadSystem not yet wired up');
-            return;
-            // const { HotReloadSystem } = await import('./HotReloadSystem');
-            // this.hotReloadSystem = new HotReloadSystem(this, eventBus);
+            // Lazy load hot reload system
+            const { HotReloadSystem } = await import('./HotReloadSystem');
+            this.hotReloadSystem = new HotReloadSystem(this);
         }
 
-        if (this.hotReloadSystem) {
-            this.hotReloadSystem.showReloadMenu();
-        }
+        this.hotReloadSystem.showReloadMenu();
     }
 
     public copyLogs(): void {

@@ -1,11 +1,16 @@
 import { EventBus } from '../../core/EventBus';
 
+import { StateManager } from '../../core/StateManager';
+import { CollectiblesSystem } from '../../systems/CollectiblesSystem';
+
 export class Sidebar {
     private container!: HTMLElement;
     private toggleBtn!: HTMLElement;
     private isOpen: boolean = false;
     private backdrop!: HTMLElement;
     private eventBus: EventBus;
+    private stateManager: StateManager;
+    private collectiblesSystem: CollectiblesSystem;
 
     // iOS-style layer swipe elements (V1 Parity: lines 1431-1447)
     private sidebarLayers: HTMLElement | null = null;
@@ -18,8 +23,10 @@ export class Sidebar {
     private isLayerDragging: boolean = false;
     private isToolsRevealed: boolean = false;
 
-    constructor(eventBus: EventBus) {
+    constructor(eventBus: EventBus, stateManager: StateManager, collectiblesSystem: CollectiblesSystem) {
         this.eventBus = eventBus;
+        this.stateManager = stateManager;
+        this.collectiblesSystem = collectiblesSystem;
         this.createDOM();
         this.setupEventListeners();
         this.initSidebarLayerSwipe();
@@ -46,87 +53,95 @@ export class Sidebar {
 
         this.container.innerHTML = `
             <!-- iOS-Style Layered Sidebar (V1 Parity) -->
+            <!-- Swipable Top Section -->
             <div class="sidebar-layers">
                 <!-- Secondary Layer (Tools) - Behind primary -->
                 <div class="secondary-layer">
-                    <div class="shade-section">
-                        <div class="shade-section-title">Tools</div>
-                        <div class="layer-hint">← Swipe to reveal</div>
-                        <div class="layer-actions">
-                            <button class="quick-action-btn" data-action="screenshot">
-                                <span class="quick-action-icon">📸</span>
-                                <span>Screenshot</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="settings">
-                                <span class="quick-action-icon">⚙️</span>
-                                <span>Settings</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="help">
-                                <span class="quick-action-icon">❓</span>
-                                <span>Help</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="exit">
-                                <span class="quick-action-icon">🚪</span>
-                                <span>Exit</span>
-                            </button>
-                        </div>
+                    <div class="shade-header-row">
+                        <span class="lightning-icon" style="color: #ff3c3c;">🔧</span>
+                        <span class="shade-section-title" style="color: #ff3c3c;">Tools</span>
+                        <span class="header-hint">← swipe back</span>
+                    </div>
+                    
+                    <div class="core-actions-grid">
+                        <button class="core-action-btn" data-action="screenshot">
+                            <span class="core-icon">📸</span>
+                            <span class="core-label">SCREENSHOT</span>
+                        </button>
+                        <button class="core-action-btn" data-action="settings">
+                            <span class="core-icon">⚙️</span>
+                            <span class="core-label">SETTINGS</span>
+                        </button>
+                        <button class="core-action-btn" data-action="help">
+                            <span class="core-icon">❓</span>
+                            <span class="core-label">HELP</span>
+                        </button>
+                        <button class="core-action-btn" data-action="exit">
+                            <span class="core-icon">🚪</span>
+                            <span class="core-label">EXIT</span>
+                        </button>
                     </div>
                 </div>
 
                 <!-- Primary Layer (Core) - Slides over secondary -->
                 <div class="primary-layer">
-                    <div class="shade-section">
-                        <div class="shade-section-title">Quick Actions</div>
-                        <div class="layer-hint">Swipe for tools →</div>
-                        <div class="layer-actions">
-                            <button class="quick-action-btn" data-action="save">
-                                <span class="quick-action-icon">💾</span>
-                                <span>Save</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="load">
-                                <span class="quick-action-icon">📂</span>
-                                <span>Load</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="notes">
-                                <span class="quick-action-icon">📨</span>
-                                <span>Notes</span>
-                            </button>
-                            <button class="quick-action-btn" data-action="history">
-                                <span class="quick-action-icon">📜</span>
-                                <span>History</span>
-                            </button>
-                        </div>
+                    <!-- Core Header with Lightning Icon -->
+                    <div class="shade-header-row">
+                        <span class="lightning-icon">⚡</span>
+                        <span class="shade-section-title">Core</span>
+                        <span class="header-hint">swipe for tools →</span>
                     </div>
 
-                    <!-- V1 Parity: Status Details Section -->
-                    <div class="shade-section sidebar-status">
-                        <div class="shade-section-title">Current Status</div>
-                        <div class="status-details">
-                            <div class="status-detail-item">
-                                <span class="status-detail-label">Route:</span>
-                                <span class="status-detail-value" id="sidebar-route">Menu</span>
-                            </div>
-                            <div class="status-detail-item">
-                                <span class="status-detail-label">Loop Version:</span>
-                                <span class="status-detail-value" id="sidebar-loop">848</span>
-                            </div>
-                            <div class="status-detail-item">
-                                <span class="status-detail-label">Notes Collected:</span>
-                                <span class="status-detail-value" id="sidebar-notes">0/42</span>
-                            </div>
-                        </div>
+                    <!-- Main Action Grid (2x2 Boxed) -->
+                    <div class="core-actions-grid">
+                        <button class="core-action-btn" data-action="save">
+                            <span class="core-icon">💾</span>
+                            <span class="core-label">SAVE</span>
+                        </button>
+                        <button class="core-action-btn" data-action="load">
+                            <span class="core-icon">📂</span>
+                            <span class="core-label">LOAD</span>
+                        </button>
+                        <button class="core-action-btn" data-action="fullscreen">
+                            <span class="core-icon">⛶</span>
+                            <span class="core-label">FULLSCREEN</span>
+                        </button>
+                        <button class="core-action-btn" data-action="exit">
+                            <span class="core-icon">🚪</span>
+                            <span class="core-label">EXIT</span>
+                        </button>
                     </div>
+                </div>
+            </div>
 
-                    <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(0, 255, 255, 0.2); text-align: center;">
-                        <span class="carrier-logo" style="color: #0ff; font-weight: bold; font-family: 'Courier New';">UV7</span>
-                        <span class="carrier-name" style="color: rgba(255,255,255,0.7); font-size: 10px; display: block;">United Voices 7</span>
+            <!-- Static Bottom Section (Status & Footer) -->
+            <div class="sidebar-static-content">
+                <!-- Status Section (Boxed) -->
+                <div class="shade-section-title status-title">CURRENT STATUS</div>
+                <div class="status-box">
+                    <div class="status-row">
+                        <span class="status-label">Route:</span>
+                        <span class="status-value highlight-cyan" id="sidebar-route">Menu</span>
                     </div>
+                    <div class="status-row">
+                        <span class="status-label">Loop Version:</span>
+                        <span class="status-value highlight-cyan" id="sidebar-loop">848</span>
+                    </div>
+                    <div class="status-row">
+                        <span class="status-label">Notes Collected:</span>
+                        <span class="status-value highlight-cyan" id="sidebar-notes">0/16</span>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div style="margin-top: auto; padding-top: 20px; text-align: center; opacity: 0.5;">
+                    <span class="carrier-logo" style="color: #0ff; font-weight: bold; font-family: 'Courier New'; letter-spacing: 1px;">UV7</span>
+                    <span class="carrier-name" style="color: rgba(255,255,255,0.7); font-size: 10px; margin-left: 10px; font-family: 'Courier New';">United Voices 7</span>
                 </div>
             </div>
         `;
         document.body.appendChild(this.container);
     }
-
     private setupEventListeners() {
         // EventBus listeners
         this.eventBus.on('ui:sidebar:open', () => this.open());
@@ -141,7 +156,7 @@ export class Sidebar {
 
         // V1 Parity: Delegate all button clicks (both layers)
         this.container.addEventListener('click', (e) => {
-            const btn = (e.target as HTMLElement).closest('.quick-action-btn');
+            const btn = (e.target as HTMLElement).closest('[data-action]');
             if (!btn) return;
 
             const action = (btn as HTMLElement).dataset.action;
@@ -163,13 +178,11 @@ export class Sidebar {
         if (this.isOpen) return;
         this.isOpen = true;
 
-        // V1 Parity: Update content when opening (V1 line 645-646)
         this.updateContent();
 
         this.container.classList.add('visible');
         this.backdrop.classList.add('visible');
-
-        console.log('[Sidebar] Opened');
+        this.toggleBtn.classList.add('open');
     }
 
     public close(): void {
@@ -178,73 +191,44 @@ export class Sidebar {
 
         this.container.classList.remove('visible');
         this.backdrop.classList.remove('visible');
-
-        console.log('[Sidebar] Closed');
+        this.toggleBtn.classList.remove('open');
     }
 
-    // V1 Parity: Update sidebar content (V1 line 730-765)
     private updateContent(): void {
-        // Update route
         const routeEl = this.container.querySelector('#sidebar-route');
         if (routeEl) {
-            // TODO: Get actual route from state manager
-            routeEl.textContent = 'Menu'; // Placeholder
+            const currentRoute = this.stateManager.get<string>('currentRoute');
+            // capitalize first letter
+            routeEl.textContent = currentRoute
+                ? currentRoute.charAt(0).toUpperCase() + currentRoute.slice(1)
+                : 'Menu';
         }
 
-        // Update loop
         const loopEl = this.container.querySelector('#sidebar-loop');
         if (loopEl) {
-            // TODO: Get actual loop version from state manager
-            loopEl.textContent = '848'; // Placeholder
+            // V1 Parity: Loop version is standard 848 for now
+            loopEl.textContent = '848';
         }
 
-        // Update notes
         const notesEl = this.container.querySelector('#sidebar-notes');
         if (notesEl) {
-            // TODO: Get actual notes count from collectibles system
-            notesEl.textContent = '0/42'; // Placeholder
+            const total = this.collectiblesSystem.getTotalCountForRoute();
+            const collected = this.collectiblesSystem.getCollectedCountForRoute();
+            notesEl.textContent = `${collected}/${total}`;
         }
 
-        // Update tether (Tori route only)
-        const tetherItem = this.container.querySelector('#sidebar-tether-item') as HTMLElement;
-        const tetherValue = this.container.querySelector('#sidebar-tether-value');
-        if (tetherItem && tetherValue) {
-            // TODO: Check if current route is Tori
-            const isToriRoute = false; // Placeholder
-
-            if (isToriRoute) {
-                tetherItem.style.display = 'flex';
-                // TODO: Get actual tether level from state
-                const tetherLevel = 100; // Placeholder
-                tetherValue.textContent = `${Math.round(tetherLevel)}%`;
-
-                // V1 Parity: Critical state styling (V1 line 756-759)
-                if (tetherLevel < 20) {
-                    tetherValue.classList.add('critical');
-                } else {
-                    tetherValue.classList.remove('critical');
-                }
-            } else {
-                tetherItem.style.display = 'none';
-            }
-        }
-
-        // V1 Parity: Apply route theming (V1 line 652-654)
         this.applyRouteTheming();
     }
 
-    // V1 Parity: Route theming (V1 line 774-787)
     private applyRouteTheming(): void {
-        // Remove existing route classes
         this.container.classList.remove('ronnie-route', 'tori-route');
 
-        // TODO: Get actual route from state manager
-        const routeName = 'Menu'; // Placeholder
+        const currentRoute = this.stateManager.get<string>('currentRoute');
+        if (!currentRoute) return;
 
-        // Apply current route class
-        if (routeName.includes('Ronnie')) {
+        if (currentRoute.toLowerCase().includes('ronnie')) {
             this.container.classList.add('ronnie-route');
-        } else if (routeName.includes('Tori')) {
+        } else if (currentRoute.toLowerCase().includes('tori')) {
             this.container.classList.add('tori-route');
         }
     }
@@ -285,12 +269,13 @@ export class Sidebar {
         document.addEventListener('mousemove', (e) => this.handleLayerMouseMove(e));
         document.addEventListener('mouseup', (e) => this.handleLayerMouseUp(e));
 
-        // Click toggle (desktop - click hint text)
-        const layerHints = this.sidebarLayers.querySelectorAll('.layer-hint');
+        // Click toggle (desktop - click hint text) - FIXED SELECTOR
+        const layerHints = this.container.querySelectorAll('.header-hint, .shade-header-row'); // Allow clicking entire header
         layerHints.forEach(hint => {
             (hint as HTMLElement).style.cursor = 'pointer';
             hint.addEventListener('click', (e) => {
                 e.stopPropagation();
+                // prevent triggering if clicking a specific icon inside header if needed
                 this.toggleToolsLayer();
             });
         });

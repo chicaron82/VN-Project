@@ -2,7 +2,8 @@
 
 #sidebar-toggle {
     position: fixed;
-    z-index: 1000;
+    z-index: 10001;
+    /* Above sidebar (9998) */
     width: 32px;
     height: 64px;
     background: rgba(10, 10, 10, 0.9);
@@ -34,7 +35,14 @@
     transition: none;
     /* Instant follow during drag */
     background: rgba(0, 255, 255, 0.15);
-    border-color: #00ffff;
+}
+
+#sidebar-toggle.open {
+    left: 280px;
+    /* Match sidebar width */
+    border-radius: 0 8px 8px 0;
+    /* Flatten left side */
+    border-left: none;
 }
 
 /* Sidebar Container */
@@ -87,4 +95,60 @@
 #shade-backdrop.visible {
     opacity: 1;
     pointer-events: all;
+}
+
+/* ========================================
+   iOS-Style Layered Swipe System
+   V1 Parity: Overlapping layers for Core/Tools
+   ======================================== */
+.sidebar-layers {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    /* Fixed height for the swipeable area (Header + Grid) */
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.secondary-layer,
+.primary-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    /* Inherit sidebar background */
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Tools (Back Layer) */
+.secondary-layer {
+    z-index: 1;
+    background: #080a10;
+    /* Match main sidebar dark theme */
+    /* background: linear-gradient(135deg, rgba(20, 0, 0, 0.9), rgba(40, 0, 0, 0.9)); REMOVED RED TINT */
+}
+
+/* Core (Front Layer) */
+.primary-layer {
+    z-index: 2;
+    background: #0a0a0f;
+    /* Opaque dark blue/black to block underlying layer */
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.8);
+    /* Stronger shadow */
+    border-right: 1px solid rgba(0, 255, 255, 0.15);
+    /* Re-apply border here */
+}
+
+/* When dragging, disable transition for instant 1:1 movement */
+.sidebar-layers.dragging .primary-layer {
+    transition: none;
+}
+
+/* Tools Revealed State (Primary layer slid over) */
+.sidebar-layers.tools-revealed .primary-layer {
+    transform: translateX(85%);
+    /* Slide 85% to the right */
 }

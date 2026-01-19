@@ -54,6 +54,8 @@ import '@ui/styles/accessibility.css';
 import '@ui/styles/dialog-bubble.css'; // DIZEE: Internal thought bubbles
 import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
+import '@ui/styles/sidebar-v1-core.css'; // V1 Sidebar Parity
+import '@ui/styles/uv7-app-switcher.css'; // App Switcher Parity
 // UV7 OS App Switcher is initialized in StatusBar.ts
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
@@ -186,10 +188,14 @@ const _tipsOverlay = new TipsOverlay(eventBus);
 
 const spriteController = new SpriteController(eventBus, stateManager);
 
+// Secret Codes & Collectibles (Initialize BEFORE UI components that depend on them)
+const secretCodesManager = new SecretCodesManager(eventBus);
+const collectiblesSystem = new CollectiblesSystem(eventBus);
+
 // Global UI Components
 const _settingsModal = new SettingsModal(eventBus, settingsSystem);
 const _statusBar = new StatusBar(eventBus);
-const _sidebar = new Sidebar(eventBus);
+const _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem);
 const _creditsScreen = new CreditsScreen(eventBus);
 const _crewScreen = new CrewScreen(eventBus);
 
@@ -200,9 +206,6 @@ setTimeout(() => {
     new GrabHandleRepositioner(eventBus);
 }, 0);
 
-// Secret Codes & Collectibles
-const secretCodesManager = new SecretCodesManager(eventBus);
-const collectiblesSystem = new CollectiblesSystem(eventBus);
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 // ToastNotification removed - using NotificationRail via eventBus.emit('notification:show', ...)
 const _saveLoadModal = new SaveLoadModal(eventBus, saveSystem, stateManager); // V2: Save/Load UI

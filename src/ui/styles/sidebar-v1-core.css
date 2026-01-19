@@ -1,0 +1,119 @@
+/* Core Header */
+.shade-header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightning-icon {
+    color: #ff9d00;
+    /* Orange lightning */
+    font-size: 16px;
+    margin-right: 8px;
+    text-shadow: 0 0 10px rgba(255, 157, 0, 0.5);
+}
+
+.shade-section-title {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: #4ff;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+    flex-grow: 1;
+}
+
+.header-hint {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Core Actions Grid (2x2) */
+.core-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.core-action-btn {
+    background: rgba(20, 30, 45, 0.8);
+    border: 1px solid rgba(60, 80, 100, 0.5);
+    border-radius: 12px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.core-action-btn:hover {
+    background: rgba(30, 45, 60, 0.9);
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.core-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.core-label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+/* Status Box */
+.status-title {
+    color: #8899a6;
+    font-size: 12px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.status-box {
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    background: rgba(0, 10, 20, 0.5);
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    font-family: 'Courier New', monospace;
+    color: #aab;
+    font-size: 14px;
+}
+
+.status-value {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.highlight-cyan {
+    color: #0ff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}

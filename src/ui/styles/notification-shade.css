@@ -11,17 +11,20 @@
     max-height: 80vh;
     overflow-y: auto;
 
-    background: rgba(10, 10, 20, 0.95);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    background: rgba(8, 10, 16, 0.98);
+    /* Deep dark blue/black */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     z-index: 9000;
-    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-right: 1px solid rgba(0, 255, 255, 0.15);
+    /* Right border for sidebar */
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
 
-    transition: top 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
     display: flex;
     flex-direction: column;
+    padding: 20px;
 }
 
 .notification-shade.visible {
@@ -30,11 +33,11 @@
 
 /* Route Theming - V1 Parity */
 .notification-shade.ronnie-route {
-    border-bottom-color: rgba(0, 255, 255, 0.3);
+    border-bottom-color: rgba(0, 255, 255, 0.4);
 }
 
 .notification-shade.tori-route {
-    border-bottom-color: rgba(0, 255, 136, 0.3);
+    border-bottom-color: rgba(0, 255, 136, 0.4);
 }
 
 .shade-handle {
@@ -64,12 +67,13 @@
 
 .shade-header {
     font-family: 'Courier New', monospace;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    color: rgba(255, 255, 255, 0.6);
-    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
     text-transform: uppercase;
+    text-shadow: 0 0 4px rgba(0, 255, 255, 0.2);
 }
 
 /* ========================================
@@ -110,7 +114,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: rgba(0, 255, 255, 0.3);
+    background: rgba(0, 255, 255, 0.2);
     transition: all 0.2s ease;
 }
 
@@ -119,12 +123,13 @@
     width: 20px;
     height: 8px;
     border-radius: 4px;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
 }
 
 /* Button Styles - V1 Parity */
 .action-btn {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid var(--neon-cyan);
+    background: rgba(10, 20, 30, 0.7);
+    border: 1px solid rgba(0, 255, 255, 0.3);
     border-radius: 8px;
     padding: 1rem;
     display: flex;
@@ -134,13 +139,21 @@
     gap: 0.5rem;
     color: var(--neon-cyan);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
     min-height: 80px;
+    box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.05);
+}
+
+.action-btn:hover {
+    border-color: rgba(0, 255, 255, 0.8);
+    background: rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 .action-btn:active {
     transform: scale(0.95);
-    background: rgba(0, 255, 255, 0.1);
+    background: rgba(0, 255, 255, 0.15);
 }
 
 .action-btn .icon {
