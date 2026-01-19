@@ -89,6 +89,7 @@ export type GameEvents = {
   'settings:changed': { key: string; value: any };
   'ui:show_status_bar': {};
   'ui:hide_status_bar': {};
+  'ui:status_update': { context: string; detail?: string };
   'ui:route_changed': { route: string };
   'note:collected': { id: string; title: string; sender: string; content?: string, count: number }; // DIZEE: Detailed note payload
   'note:toast': { noteId: string; title: string }; // Toast notification shown
@@ -255,15 +256,26 @@ interface EventHistoryEntry<T extends EventName = EventName> {
  */
 export class EventBus {
   private subscribers: Map<EventName, Set<EventCallback<EventName>>>;
+  private snoopers: Set<(event: EventName, data: any) => void>;
   private history: EventHistoryEntry[];
   private maxHistorySize: number;
   private historyEnabled: boolean;
 
   constructor(maxHistorySize = 100, historyEnabled = true) {
     this.subscribers = new Map();
+    this.snoopers = new Set();
     this.history = [];
     this.maxHistorySize = maxHistorySize;
     this.historyEnabled = historyEnabled;
+  }
+
+  /**
+   * Register a global event listener (snooper) that receives ALL events.
+   * Used for Telemetry and Debugging.
+   */
+  snoop(callback: (event: EventName, data: any) => void): () => void {
+    this.snoopers.add(callback);
+    return () => this.snoopers.delete(callback);
   }
 
   /**
@@ -324,6 +336,15 @@ export class EventBus {
         this.history.shift();
       }
     }
+
+    // Notify snoopers (Telemetry)
+    this.snoopers.forEach(snooper => {
+      try {
+        snooper(event, data);
+      } catch (error) {
+        console.error('Error in event snooper:', error);
+      }
+    });
 
     // Notify subscribers
     const callbacks = this.subscribers.get(event);

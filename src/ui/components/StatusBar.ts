@@ -796,6 +796,16 @@ export class StatusBar {
         const unsubHide = this.eventBus.on('ui:hide_status_bar', () => this.hide());
         this.unsubscribers.push(unsubShow, unsubHide);
 
+        // Status update (from Showcase/Bridge)
+        const unsubStatus = this.eventBus.on('ui:status_update', (data) => {
+            if (this.phaseEl) {
+                this.phaseEl.textContent = data.context;
+            } else if (this.routeEl) {
+                this.routeEl.textContent = data.context;
+            }
+        });
+        this.unsubscribers.push(unsubStatus);
+
         // Auto-Advance toggle
         const unsubSettings = this.eventBus.on('settings:changed', (data) => {
             if (data.key === 'autoAdvance') {

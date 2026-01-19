@@ -111,13 +111,13 @@ function countCompletedPhases() {
     try {
         const timelineContent = fs.readFileSync(TIMELINE_DATA_PATH, 'utf-8');
 
-        // Count main phase objects only (phase-1, phase-2, etc., NOT phase-13a, phase-13b)
-        // Simply count all occurrences of "id": "phase-X" where X is only digits
-        const phaseMatches = timelineContent.match(/"id":\s*"phase-\d+"/g) || [];
+        // Count all entry objects with an ID
+        // Matches "id": "YYYY-MM-DD-X"
+        const phaseMatches = timelineContent.match(/"id":\s*"/g) || [];
         return phaseMatches.length;
     } catch (error) {
         console.warn('⚠️  Could not read timeline data:', error.message);
-        return 14;
+        return 17; // Fallback
     }
 }
 
@@ -154,24 +154,25 @@ function updateShowcaseStats(stats) {
     let html = fs.readFileSync(SHOWCASE_HTML_PATH, 'utf-8');
 
     // --- UPDATE RESULTS SECTION (stat-number) ---
+    // Regex now matches ANY inner content (not just 0) and resets it to 0 for animation
     html = html.replace(
-        /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">Tests Passing)/,
-        `$1${stats.testsPass}$3`
+        /(<div class="stat-number" data-target=")\d+(">[^<]*<\/div>\s*<div class="stat-label">Tests Passing)/,
+        `$1${stats.testsPass}">0</div>\n                            <div class="stat-label">Tests Passing`
     );
 
     html = html.replace(
-        /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">Phases Complete)/,
-        `$1${stats.phasesComplete}$3`
+        /(<div class="stat-number" data-target=")\d+(">[^<]*<\/div>\s*<div class="stat-label">Phases Complete)/,
+        `$1${stats.phasesComplete}">0</div>\n                            <div class="stat-label">Phases Complete`
     );
 
     html = html.replace(
-        /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">)Hours to Rebuild/,
-        `$1${stats.daysInDev}$3Days in Development`
+        /(<div class="stat-number" data-target=")\d+(">[^<]*<\/div>\s*<div class="stat-label">)Days in Development/,
+        `$1${stats.daysInDev}">0</div>\n                            <div class="stat-label">Days in Development`
     );
 
     html = html.replace(
-        /(<div class="stat-number" data-target=")(\d+)(">0<\/div>\s*<div class="stat-label">TypeScript Errors)/,
-        `$1${stats.tsErrors}$3`
+        /(<div class="stat-number" data-target=")\d+(">[^<]*<\/div>\s*<div class="stat-label">TypeScript Errors)/,
+        `$1${stats.tsErrors}">0</div>\n                            <div class="stat-label">TypeScript Errors`
     );
 
     // --- UPDATE EVOLUTION SECTION (metric-value) ---
@@ -196,6 +197,12 @@ function updateShowcaseStats(stats) {
     html = html.replace(
         /(<div class="metric-value">)(\d+)(<\/div>\s*<div class="metric-label">TS Errors)/,
         `$1${stats.tsErrors}$3`
+    );
+
+    // --- UPDATE COMPARISON GRID (Static Text) ---
+    html = html.replace(
+        /(<h4>🧪 )[\d,]+( Automated Tests<\/h4>)/,
+        `$1${stats.testsPass}$2`
     );
 
     fs.writeFileSync(SHOWCASE_HTML_PATH, html, 'utf-8');

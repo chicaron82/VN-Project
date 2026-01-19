@@ -1,0 +1,36 @@
+import { EventBus } from '../core/EventBus';
+import { StatusBar } from '../ui/components/StatusBar';
+// Import legacy-compatible Context definitions
+import { UV7Context } from '../ui/components/StatusBarContext';
+
+console.log('🌉 UV7 System Bridge initializing...');
+
+// Create a global namespace for UV7 System components
+const UV7System = {
+    EventBus: EventBus,
+    StatusBar: StatusBar,
+
+    // Factory to easily create a standalone status bar
+    createStatusBar: (containerId: string, context: UV7Context = 'showcase') => {
+        console.log(`🏗️ Creating StatusBar for ${context}`);
+
+        // 1. Setup Event Bus (communication backbone)
+        const eventBus = new EventBus();
+
+        // 2. Initialize StatusBar (without StateManager since Showcase is stateless/manages its own state)
+        const statusBar = new StatusBar(eventBus, undefined, {
+            // We can pass initial config here if needed
+        });
+
+        // 3. Return the instance and the bus so variables can control it
+        return {
+            instance: statusBar,
+            eventBus: eventBus
+        };
+    }
+};
+
+// Expose to window
+(window as any).UV7System = UV7System;
+
+console.log('✅ UV7 System Bridge ready.');

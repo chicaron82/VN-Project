@@ -7,6 +7,8 @@
 
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { TelemetryRecorder } from '@core/Telemetry';
+import { MacroRunner } from '@core/MacroRunner';
 import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { SecretCodesManager } from '@systems/SecretCodesManager';
@@ -90,6 +92,12 @@ const stateManager = new StateManager(eventBus, {
     history: [],
     playtime: 0
 });
+
+// Telemetry Recorder (V2 Parity Verification)
+const telemetryRecorder = new TelemetryRecorder(eventBus, stateManager);
+// telemetryRecorder.start(); // Started manually by Macro Runner
+
+const macroRunner = new MacroRunner(eventBus, stateManager, telemetryRecorder);
 
 const settingsSystem = new SettingsSystem(stateManager);
 settingsSystem.init();
@@ -217,11 +225,11 @@ declare global {
     }
 }
 
-if (typeof window !== 'undefined') {
-    (window as any).secretCodesManager = secretCodesManager;
-    (window as any).collectiblesSystem = collectiblesSystem;
-    (window as any).saveSystem = saveSystem;
-}
+(window as any).secretCodesManager = secretCodesManager;
+(window as any).collectiblesSystem = collectiblesSystem;
+(window as any).saveSystem = saveSystem;
+(window as any).telemetry = telemetryRecorder;
+(window as any).macroRunner = macroRunner;
 
 console.log('UI initialized', {
     _settingsModal,

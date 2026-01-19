@@ -1,0 +1,53 @@
+[
+    {
+        "id": "init_delay",
+        "action": "wait",
+        "ms": 2000,
+        "desc": "Wait for splash/loading to settle"
+    },
+    {
+        "id": "start_game",
+        "action": "click",
+        "selector": "#uv7-skip-button",
+        "optional": true,
+        "desc": "Skip splash if present"
+    },
+    {
+        "id": "wait_menu",
+        "action": "wait_for_text",
+        "text": "VERSION 848",
+        "desc": "Wait for Main Menu"
+    },
+    {
+        "id": "start_ronnie",
+        "action": "click_route_start",
+        "route": "ronnie",
+        "desc": "Start Ronnie Route (Programmatic or UI)"
+    },
+    {
+        "id": "wait_scene_1",
+        "action": "wait_for_scene",
+        "sceneId": "scene1_coffee",
+        "desc": "Wait for first scene load"
+    },
+    {
+        "id": "advance_text_1",
+        "action": "click_viewport",
+        "desc": "Advance dialogue"
+    },
+    {
+        "id": "wait_text_1",
+        "action": "wait",
+        "ms": 1000
+    },
+    {
+        "id": "advance_text_2",
+        "action": "click_viewport",
+        "desc": "Advance dialogue"
+    },
+    {
+        "id": "wait_text_2",
+        "action": "wait",
+        "ms": 1000
+    }
+]

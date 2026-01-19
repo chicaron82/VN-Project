@@ -87,19 +87,11 @@
          Contributors: Ronnie, Belle, Antigravity
          ═══════════════════════════════════════════════════════════════ -->
 
-    <!-- UV7 OS Status Bar -->
-    <div id="uv7-status-bar" class="uv7-status-bar">
-        <div class="status-section status-left">
-            <span class="status-logo">
-                <img src="../UnitedVoices7.png" alt="UV7" style="height: 20px; width: auto; vertical-align: middle;">
-            </span>
-            <span class="status-context" id="uv7-context">Showcase</span>
-            <span class="status-detail" id="uv7-detail"></span>
-        </div>
-        <div class="status-section status-right">
-            <span class="status-icon" id="uv7-settings" title="Toggle Story/Dev Mode">⚙️</span>
-        </div>
-    </div>
+    <!-- UV7 OS Status Bar (Unified) -->
+    <!-- Replaced by UV7System.createStatusBar() via uv7-system-bridge.js -->
+
+    <!-- Bridge to V2 System Components -->
+    <script src="js/uv7-system-bridge.js"></script>
 
     <!-- System Banner (Michelin Polish) -->
     <div class="system-banner">
@@ -539,12 +531,12 @@
                                     <circle class="ring-fill" cx="18" cy="18" r="16" />
                                 </svg>
                             </div>
-                            <div class="stat-number" data-target="0">0</div>
+                            <div class="stat-number" data-target="80">0</div>
                             <div class="stat-label">Phases Complete</div>
                         </div>
                         <div class="stat-card" data-stat-type="days">
                             <div class="stat-icon">📅</div>
-                            <div class="stat-number" data-target="7">0</div>
+                            <div class="stat-number" data-target="10">0</div>
                             <div class="stat-label">Days in Development</div>
                         </div>
                         <div class="stat-card" data-stat-type="errors">
@@ -1037,7 +1029,7 @@
                             <div class="metric-change">+20% expansion</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value">80</div>
                             <div class="metric-label">Phases Complete</div>
                             <div class="metric-change">~95% ported</div>
                         </div>
@@ -1136,7 +1128,7 @@
                             </div>
 
                             <div class="comparison-item">
-                                <h4>🧪 465 Automated Tests</h4>
+                                <h4>🧪 555 Automated Tests</h4>
                                 <p>Vitest + comprehensive coverage. Every feature tested. Confidence in every commit.
                                 </p>
                                 <a href="#phase-8" class="phase-link">📖 See Phase 8: Testing</a>

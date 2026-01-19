@@ -36,6 +36,9 @@ class UV7OS {
         // Initialize app switcher
         setTimeout(() => this.initAppSwitcher(), 100);
 
+        // Initialize Unified Status Bar
+        this.initUnifiedStatusBar();
+
         // Add UV7 OS class to body
         document.body.classList.add('uv7-os-enabled');
 
@@ -75,11 +78,11 @@ class UV7OS {
 
     cacheElements() {
         this.elements = {
-            // Status bar
-            statusBar: document.getElementById('uv7-status-bar'),
-            statusContext: document.getElementById('uv7-context'),
-            statusDetail: document.getElementById('uv7-detail'),
-            statusSettings: document.getElementById('uv7-settings'),
+            // Status bar (Unified - managed by bridge)
+            // statusBar: document.getElementById('uv7-status-bar'),
+            // statusContext: document.getElementById('uv7-context'),
+            // statusDetail: document.getElementById('uv7-detail'),
+            // statusSettings: document.getElementById('uv7-settings'),
 
             // Notification shade
             shade: document.getElementById('uv7-shade'),
@@ -134,7 +137,36 @@ class UV7OS {
         }
     }
 
+    initUnifiedStatusBar() {
+        if (window.UV7System) {
+            console.log('💎 Initializing Unified StatusBar...');
+            const { instance, eventBus } = window.UV7System.createStatusBar('body', 'showcase');
+            this.statusBar = instance;
+            this.eventBus = eventBus;
+
+            // Initial render
+            this.renderStatusBar();
+        } else {
+            console.warn('⚠️ UV7System bridge not found. Status bar will be missing.');
+        }
+    }
+
     renderStatusBar() {
+        // Unified System: Emit event to update status bar
+        if (this.eventBus) {
+            const phaseData = this.phases.find(p => p.id === `phase-${this.currentPhase}`);
+            const title = phaseData ? phaseData.title : `Phase ${this.currentPhase}`;
+            const context = phaseData ? `Phase ${this.currentPhase}` : 'Showcase';
+
+            // Emit update event (StatusBar.ts needs to handle this or we add it)
+            this.eventBus.emit('ui:status_update', {
+                context: context,
+                detail: title
+            });
+            return;
+        }
+
+        // Legacy Fallback (Removed DOM elements won't be found, so this is safe)
         if (!this.elements.statusContext || !this.elements.statusDetail) return;
 
         // DIZEE #3: Dynamic context based on current phase
