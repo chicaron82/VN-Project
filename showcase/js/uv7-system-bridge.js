@@ -343,7 +343,7 @@
       if (!this.container) return;
       this.container.style.setProperty("--status-accent", tint.primary);
       this.container.style.setProperty("--status-glow", tint.glow);
-      this.container.style.background = tint.gradient;
+      this.container.style.backgroundImage = tint.gradient;
       this.container.style.transition = "background 0.5s ease, box-shadow 0.5s ease";
       this.container.style.boxShadow = `0 2px 20px ${tint.glow}, inset 0 1px 0 rgba(255, 255, 255, 0.1)`;
       this.currentTint = tint;
