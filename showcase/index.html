@@ -92,6 +92,17 @@
 
     <!-- Bridge to V2 System Components -->
     <script src="js/uv7-system-bridge.js"></script>
+    <script>
+        // Initialize UV7 Status Bar
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.UV7System) {
+                console.log('🚀 Initializing UV7 Status Bar...');
+                window.UV7System.createStatusBar('status-bar-container', 'showcase');
+            } else {
+                console.error('❌ UV7System not found. Bridge failed to load.');
+            }
+        });
+    </script>
 
     <!-- System Banner (Michelin Polish) -->
     <div class="system-banner">

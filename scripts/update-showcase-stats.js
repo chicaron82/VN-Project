@@ -234,6 +234,20 @@ function updateLandingStats(stats) {
     }
 }
 
+/**
+ * Update stats.json for dynamic loading
+ */
+function updateStatsJson(stats) {
+    try {
+        const jsonPath = path.join(__dirname, '../showcase/stats.json');
+        const jsonContent = JSON.stringify(stats, null, 4);
+        fs.writeFileSync(jsonPath, jsonContent, 'utf-8');
+        console.log('  ✅ stats.json updated');
+    } catch (error) {
+        console.warn('⚠️  Could not update stats.json:', error.message);
+    }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // MAIN EXECUTION
 // ═══════════════════════════════════════════════════════════════
@@ -256,9 +270,10 @@ function main() {
     console.log('  ✅ TypeScript Errors:', stats.tsErrors);
     console.log('');
 
-    // Update HTML files
+    // Update HTML files and JSON
     updateShowcaseStats(stats);
     updateLandingStats(stats);
+    updateStatsJson(stats);
 
     console.log('✨ Stats updated successfully!\n');
 }
