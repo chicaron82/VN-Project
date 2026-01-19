@@ -79,6 +79,8 @@
     -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
 
     display: flex;
+    justify-content: center;
+    /* Center the tabs */
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;

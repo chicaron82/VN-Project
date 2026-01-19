@@ -173,7 +173,7 @@ class TabController {
             this.saveLastTab(tabId);
 
             // Restore scroll position for this tab
-            this.restoreScrollPosition(tabId);
+            this.restoreScrollPosition(tabId, animate);
 
             // Collapse hero after first navigation
             if (oldTab === 'journey' && tabId !== 'journey') {
@@ -308,16 +308,7 @@ class TabController {
             };
 
 
-            // Update Phase/Breadcrumb in Status Bar
-            // Use setSection for showcase tabs to appear as 3rd level breadcrumb if needed,
-            // or we might want to use setPhase for high level. 
-            // Actually user wants "Showcase > Results". 
-            // In buildBreadcrumbs: if (state.section) push({ label: state.section })
-            // So we should use setSection.
-            // Also clear phase if we are just navigating top level tabs? 
-            // Actually let's just use setSection and maybe setPhase to empty or "Showcase" if needed.
-            // But setPhase adds "Phase X". 
-            win.uv7Runtime.instance.setPhase(''); // Clear phase 
+            // Update breadcrumb section
             win.uv7Runtime.instance.setSection(tabNames[tabId] || tabId);
         }
 
@@ -383,30 +374,23 @@ class TabController {
     // SCROLL POSITION MANAGEMENT
     // ========================================
 
-    /**
-     * Save scroll position for current tab
-     */
-    saveScrollPosition() {
-        const panel = document.querySelector(`[data-panel="${this.activeTab}"]`);
-        if (!panel) return;
-
-        const scrollY = panel.scrollTop || 0;
-        sessionStorage.setItem(`tab-${this.activeTab}-scroll`, String(scrollY));
-    }
 
     /**
      * Restore scroll position for a tab
+     * Scrolls window to bring tab bar into view
      * @param {string} tabId
+     * @param {boolean} smooth - Whether to use smooth scrolling
      */
-    restoreScrollPosition(tabId) {
-        const panel = document.querySelector(`[data-panel="${tabId}"]`);
-        if (!panel) return;
-
-        const savedScroll = sessionStorage.getItem(`tab-${tabId}-scroll`);
-        if (savedScroll) {
-            panel.scrollTop = parseInt(savedScroll, 10);
-        } else {
-            panel.scrollTop = 0; // Reset to top
+    restoreScrollPosition(tabId, smooth = true) {
+        // Scroll window to bring tab bar into view
+        // This ensures the active panel's content is visible
+        const tabBar = document.querySelector('.tab-bar-container');
+        if (tabBar) {
+            const tabBarTop = tabBar.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({
+                top: tabBarTop,
+                behavior: smooth ? 'smooth' : 'instant'
+            });
         }
     }
 

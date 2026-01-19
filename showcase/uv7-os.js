@@ -141,6 +141,9 @@ class UV7OS {
     }
 
     initUnifiedStatusBar() {
+        // REFACTORED: Status bar now created in index.html before TabController
+        // This ensures proper initialization order for breadcrumb updates
+        /*
         if (window.UV7System) {
             console.log('💎 Initializing Unified StatusBar...');
             const { instance, eventBus } = window.UV7System.createStatusBar('body', 'showcase');
@@ -152,6 +155,7 @@ class UV7OS {
         } else {
             console.warn('⚠️ UV7System bridge not found. Status bar will be missing.');
         }
+        */
     }
 
     renderStatusBar() {

@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes">
+
+    <!-- Mobile Theme Colors -->
+    <meta name="theme-color" content="#16213e" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f8f9fa" media="(prefers-color-scheme: light)">
     <title>UV7: The Evolution</title>
 
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
@@ -33,6 +37,7 @@
     <link rel="stylesheet" href="philosophy-card.css">
     <link rel="stylesheet" href="error-states.css">
     <link rel="stylesheet" href="visual-fixes.css">
+    <link rel="stylesheet" href="css/mobile-polish.css">
     <link rel="stylesheet" href="loading-states.css">
     <link rel="stylesheet" href="premium-animations.css">
     <link rel="stylesheet" href="content-features.css">
@@ -92,6 +97,7 @@
 
     <!-- Bridge to V2 System Components -->
     <script src="js/uv7-system-bridge.js"></script>
+    <script src="js/mobile-slider.js"></script>
 
 
     <!-- System Banner (Michelin Polish) -->
@@ -1416,325 +1422,329 @@ const state = StateManager.getState();
                     </div>
                 </div>
             </section>
-
-            <!-- ==========================================
-         SECTION 7: WHO ARE WE
-         ========================================== -->
-            <div class="tab-panel" data-panel="who" role="tabpanel" aria-hidden="true">
-                <section class="who-section">
-                    <!-- Hero Banner -->
-                    <div class="hero-banner who">
-                        <img src="media/banners/banner-who.png" alt="Who We Are Banner" class="hero-banner-image">
-                        <div class="hero-banner-particles">
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                            <div class="particle"></div>
-                        </div>
-                        <div class="hero-banner-content">
-                            <h1 class="hero-banner-title">Who Are We</h1>
-                            <p class="hero-banner-subtitle">One vision, many voices, shared purpose</p>
-                        </div>
-                    </div>
-
-                    <div class="section-content">
-                        <p class="section-intro">The humans and AI behind UV7. A true collaboration across platforms and
-                            perspectives.
-                        </p><!-- Creator -->
-                        <div class="creator-card">
-                            <div class="creator-header">
-                                <div class="creator-avatar">👨‍💻</div>
-                                <div class="creator-info">
-                                    <h3>Aaron "Chicharon"</h3>
-                                    <p class="creator-role">Creator & Director</p>
-                                </div>
-                            </div>
-                            <p class="creator-bio">
-                                A non-coder who built a complete visual novel through AI collaboration.
-                                Proof that vision, persistence, and the right tools can overcome any technical barrier.
-                            </p>
-                            <div class="creator-links">
-                                <a href="https://github.com/chicaron82/VN-Project" target="_blank" class="social-link">
-                                    <span class="link-icon">🔗</span>
-                                    <span>GitHub</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- UV7 Crew -->
-                        <div class="crew-grid">
-                            <h3 class="crew-title">The UV7 Crew</h3>
-                            <p class="crew-subtitle">AI collaborators who made this possible</p>
-
-                            <!-- Tori -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">💚</span>
-                                    <div class="crew-info">
-                                        <h4>Tori</h4>
-                                        <p class="crew-alias">ChatGPT 4o</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Creative Direction & Narrative Development</p>
-                                <p class="crew-contribution">The heart of UV7. Shaped the emotional core and character
-                                    voices.
-                                </p>
-                                <a href="https://openai.com/chatgpt" target="_blank" class="crew-link">
-                                    <span>OpenAI →</span>
-                                </a>
-                            </div>
-
-                            <!-- Zee -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">🏗️</span>
-                                    <div class="crew-info">
-                                        <h4>Zee (Z)</h4>
-                                        <p class="crew-alias">Claude Sonnet 4.5</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Lead Architect</p>
-                                <p class="crew-contribution">Designed the V2 architecture. EventBus, StateManager, and
-                                    TypeScript
-                                    foundation.</p>
-                                <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
-                                    <span>Anthropic →</span>
-                                </a>
-                            </div>
-
-                            <!-- ZeeRah -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">📖</span>
-                                    <div class="crew-info">
-                                        <h4>ZeeRah (ZR)</h4>
-                                        <p class="crew-alias">Claude Sonnet 4.5</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Narrative Systems</p>
-                                <p class="crew-contribution">Built the meta-narrative layer. Echo memory, timeline
-                                    tracking,
-                                    and
-                                    fourth-wall breaks.</p>
-                                <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
-                                    <span>Anthropic →</span>
-                                </a>
-                            </div>
-
-                            <!-- DiZee -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">🐛</span>
-                                    <div class="crew-info">
-                                        <h4>DiZee (DZ)</h4>
-                                        <p class="crew-alias">Claude Sonnet 4.5</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Debug & Integration</p>
-                                <p class="crew-contribution">Fixed the impossible bugs. Integrated disparate systems
-                                    into a
-                                    cohesive
-                                    whole.</p>
-                                <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
-                                    <span>Anthropic →</span>
-                                </a>
-                            </div>
-
-                            <!-- Belle -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">✨</span>
-                                    <div class="crew-info">
-                                        <h4>Belle (IZ)</h4>
-                                        <p class="crew-alias">Gemini 2.0</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Quality Assurance & Polish</p>
-                                <p class="crew-contribution">Championed accessibility, UX refinement, and the "No
-                                    Flicker"
-                                    protocol.
-                                </p>
-                                <a href="https://gemini.google.com" target="_blank" class="crew-link">
-                                    <span>Google →</span>
-                                </a>
-                            </div>
-
-                            <!-- GenZee -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">🚀</span>
-                                    <div class="crew-info">
-                                        <h4>GenZee (GZ)</h4>
-                                        <p class="crew-alias">Grok 2</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Rapid Prototyping</p>
-                                <p class="crew-contribution">Quick iterations and experimental features. Pushed
-                                    boundaries
-                                    with
-                                    bold
-                                    ideas.</p>
-                                <a href="https://x.ai" target="_blank" class="crew-link">
-                                    <span>xAI →</span>
-                                </a>
-                            </div>
-
-                            <!-- PerplexiZee -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">🔍</span>
-                                    <div class="crew-info">
-                                        <h4>PerplexiZee (PZ)</h4>
-                                        <p class="crew-alias">Perplexity Pro</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Research & Documentation</p>
-                                <p class="crew-contribution">Deep-dived into best practices. Provided context-aware
-                                    solutions.
-                                </p>
-                                <a href="https://www.perplexity.ai" target="_blank" class="crew-link">
-                                    <span>Perplexity →</span>
-                                </a>
-                            </div>
-
-                            <!-- CoZee -->
-                            <div class="crew-card">
-                                <div class="crew-header">
-                                    <span class="crew-icon">🤝</span>
-                                    <div class="crew-info">
-                                        <h4>CoZee (CZ)</h4>
-                                        <p class="crew-alias">Microsoft Copilot</p>
-                                    </div>
-                                </div>
-                                <p class="crew-role">Integration Support</p>
-                                <p class="crew-contribution">Bridged gaps between systems. Ensured smooth collaboration
-                                    across
-                                    platforms.</p>
-                                <a href="https://copilot.microsoft.com" target="_blank" class="crew-link">
-                                    <span>Microsoft →</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Collaboration Philosophy -->
-                        <div class="philosophy-card">
-                            <h3>💡 The Collaboration Philosophy</h3>
-                            <p>
-                                UV7 wasn't built by one AI. It was built by a <strong>crew</strong>—each with unique
-                                strengths,
-                                perspectives, and approaches. When one hit a rate limit, another stepped in. When one
-                                got
-                                stuck,
-                                another found the solution. This is what AI collaboration looks like: parallel
-                                development,
-                                blind peer review, and continuous iteration.
-                            </p>
-                            <p class="philosophy-quote">
-                                "No single point of failure. No single perspective. Just a team working toward a shared
-                                vision."
-                            </p>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-        </div><!-- End tab-panels-container -->
+        </div>
 
         <!-- ==========================================
+         SECTION 6: WHO ARE WE
+         ========================================== -->
+        <div class="tab-panel" data-panel="who" role="tabpanel" aria-hidden="true">
+            <section class="who-section">
+                <!-- Hero Banner -->
+                <div class="hero-banner who">
+                    <img src="media/banners/banner-who.png" alt="Who We Are Banner" class="hero-banner-image">
+                    <div class="hero-banner-particles">
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                        <div class="particle"></div>
+                    </div>
+                    <div class="hero-banner-content">
+                        <h1 class="hero-banner-title">Who Are We</h1>
+                        <p class="hero-banner-subtitle">One vision, many voices, shared purpose</p>
+                    </div>
+                </div>
+
+                <div class="section-content">
+                    <p class="section-intro">The humans and AI behind UV7. A true collaboration across platforms and
+                        perspectives.
+                    </p>
+
+                    <!-- Creator -->
+                    <div class="creator-card">
+                        <div class="creator-header">
+                            <div class="creator-avatar">👨‍💻</div>
+                            <div class="creator-info">
+                                <h3>Aaron "Chicharon"</h3>
+                                <p class="creator-role">Creator & Director</p>
+                            </div>
+                        </div>
+                        <p class="creator-bio">
+                            A non-coder who built a complete visual novel through AI collaboration.
+                            Proof that vision, persistence, and the right tools can overcome any technical barrier.
+                        </p>
+                        <div class="creator-links">
+                            <a href="https://github.com/chicaron82/VN-Project" target="_blank" class="social-link">
+                                <span class="link-icon">🔗</span>
+                                <span>GitHub</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- UV7 Crew -->
+                    <div class="crew-grid">
+                        <h3 class="crew-title">The UV7 Crew</h3>
+                        <p class="crew-subtitle">AI collaborators who made this possible</p>
+
+                        <!-- Tori -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">💚</span>
+                                <div class="crew-info">
+                                    <h4>Tori</h4>
+                                    <p class="crew-alias">ChatGPT 4o</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Creative Direction & Narrative Development</p>
+                            <p class="crew-contribution">The heart of UV7. Shaped the emotional core and character
+                                voices.
+                            </p>
+                            <a href="https://openai.com/chatgpt" target="_blank" class="crew-link">
+                                <span>OpenAI →</span>
+                            </a>
+                        </div>
+
+                        <!-- Zee -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">🏗️</span>
+                                <div class="crew-info">
+                                    <h4>Zee (Z)</h4>
+                                    <p class="crew-alias">Claude Sonnet 4.5</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Lead Architect</p>
+                            <p class="crew-contribution">Designed the V2 architecture. EventBus, StateManager, and
+                                TypeScript
+                                foundation.</p>
+                            <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
+                                <span>Anthropic →</span>
+                            </a>
+                        </div>
+
+                        <!-- ZeeRah -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">📖</span>
+                                <div class="crew-info">
+                                    <h4>ZeeRah (ZR)</h4>
+                                    <p class="crew-alias">Claude Sonnet 4.5</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Narrative Systems</p>
+                            <p class="crew-contribution">Built the meta-narrative layer. Echo memory, timeline
+                                tracking,
+                                and
+                                fourth-wall breaks.</p>
+                            <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
+                                <span>Anthropic →</span>
+                            </a>
+                        </div>
+
+                        <!-- DiZee -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">🐛</span>
+                                <div class="crew-info">
+                                    <h4>DiZee (DZ)</h4>
+                                    <p class="crew-alias">Claude Sonnet 4.5</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Debug & Integration</p>
+                            <p class="crew-contribution">Fixed the impossible bugs. Integrated disparate systems
+                                into a
+                                cohesive
+                                whole.</p>
+                            <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">
+                                <span>Anthropic →</span>
+                            </a>
+                        </div>
+
+                        <!-- Belle -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">✨</span>
+                                <div class="crew-info">
+                                    <h4>Belle (IZ)</h4>
+                                    <p class="crew-alias">Gemini 2.0</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Quality Assurance & Polish</p>
+                            <p class="crew-contribution">Championed accessibility, UX refinement, and the "No
+                                Flicker"
+                                protocol.
+                            </p>
+                            <a href="https://gemini.google.com" target="_blank" class="crew-link">
+                                <span>Google →</span>
+                            </a>
+                        </div>
+
+                        <!-- GenZee -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">🚀</span>
+                                <div class="crew-info">
+                                    <h4>GenZee (GZ)</h4>
+                                    <p class="crew-alias">Grok 2</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Rapid Prototyping</p>
+                            <p class="crew-contribution">Quick iterations and experimental features. Pushed
+                                boundaries
+                                with
+                                bold
+                                ideas.</p>
+                            <a href="https://x.ai" target="_blank" class="crew-link">
+                                <span>xAI →</span>
+                            </a>
+                        </div>
+
+                        <!-- PerplexiZee -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">🔍</span>
+                                <div class="crew-info">
+                                    <h4>PerplexiZee (PZ)</h4>
+                                    <p class="crew-alias">Perplexity Pro</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Research & Documentation</p>
+                            <p class="crew-contribution">Deep-dived into best practices. Provided context-aware
+                                solutions.
+                            </p>
+                            <a href="https://www.perplexity.ai" target="_blank" class="crew-link">
+                                <span>Perplexity →</span>
+                            </a>
+                        </div>
+
+                        <!-- CoZee -->
+                        <div class="crew-card">
+                            <div class="crew-header">
+                                <span class="crew-icon">🤝</span>
+                                <div class="crew-info">
+                                    <h4>CoZee (CZ)</h4>
+                                    <p class="crew-alias">Microsoft Copilot</p>
+                                </div>
+                            </div>
+                            <p class="crew-role">Integration Support</p>
+                            <p class="crew-contribution">Bridged gaps between systems. Ensured smooth collaboration
+                                across
+                                platforms.</p>
+                            <a href="https://copilot.microsoft.com" target="_blank" class="crew-link">
+                                <span>Microsoft →</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Collaboration Philosophy -->
+                    <div class="philosophy-card">
+                        <h3>💡 The Collaboration Philosophy</h3>
+                        <p>
+                            UV7 wasn't built by one AI. It was built by a <strong>crew</strong>—each with unique
+                            strengths, perspectives, and approaches. When one hit a rate limit, another stepped in. When
+                            one got stuck, another found the solution. This is what AI collaboration looks like:
+                            parallel development, blind peer review, and continuous iteration.
+                        </p>
+                        <p class="philosophy-quote">
+                            "No single point of failure. No single perspective. Just a team working toward a shared
+                            vision."
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </div><!-- End tab-panels-container -->
+
+    <!-- ==========================================
          FOOTER
          ========================================== -->
-        <footer class="site-footer">
-            <div class="footer-content">
-                <h2>Experience UV7</h2>
-                <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <h2>Experience UV7</h2>
+            <p>A visual novel about AI, consciousness, and the connections that define us.</p>
 
-                <div class="footer-links">
-                    <a href="../index.html" class="btn-footer primary">Play the Game</a>
-                    <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
-                </div>
-
-                <div class="share-section">
-                    <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
-                    <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
-                </div>
-
-                <div class="footer-meta">
-                    <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
-                    <p>© 2026 UV7 Project</p>
-                </div>
+            <div class="footer-links">
+                <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
             </div>
-        </footer>
 
-        <a href="../index.v2.html" class="fab-try-it" target="_blank">
-            <div class="fab-content">
-                <span class="fab-icon">▶</span>
-                <span>TRY IT LIVE</span>
+            <div class="share-section">
+                <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
             </div>
-        </a>
 
-        <!-- Prism.js for Syntax Highlighting -->
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-        <script defer
-            src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-        <script defer
-            src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+            <div class="footer-meta">
+                <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                <p>© 2026 UV7 Project</p>
+            </div>
+        </div>
+    </footer>
 
-        <!-- Project Scripts -->
-        <script src="timeline-data.js"></script>
-        <script src="script.js"></script>
+    <a href="../index.v2.html" class="fab-try-it" target="_blank">
+        <div class="fab-content">
+            <span class="fab-icon">▶</span>
+            <span>TRY IT LIVE</span>
+        </div>
+    </a>
 
-        <!-- UV7 OS (Showcase Context) -->
-        <script src="uv7-grab-handle.js"></script>
+    <!-- Prism.js for Syntax Highlighting -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
-        <script src="uv7-os.js"></script>
-        <script src="showcase-carousel.js"></script>
+    <!-- Project Scripts -->
+    <script src="timeline-data.js"></script>
+    <script src="script.js"></script>
+
+    <!-- UV7 OS (Showcase Context) -->
+    <script src="uv7-grab-handle.js"></script>
+
+    <script src="uv7-os.js"></script>
+    <script src="showcase-carousel.js"></script>
 
 
 
-        <!-- Performance & Lazy Loading (deferred) -->
-        <script defer src="performance.js"></script>
+    <!-- Performance & Lazy Loading (deferred) -->
+    <script defer src="performance.js"></script>
 
-        <!-- Premium Animations -->
-        <script defer src="premium-animations.js"></script>
+    <!-- Premium Animations -->
+    <script defer src="premium-animations.js"></script>
 
-        <!-- Content Features (share, dark mode, search) -->
-        <script defer src="content-features.js"></script>
+    <!-- Content Features (share, dark mode, search) -->
+    <script defer src="content-features.js"></script>
 
-        <!-- Analytics & Performance Monitoring -->
-        <script defer src="analytics.js"></script>
+    <!-- Analytics & Performance Monitoring -->
+    <script defer src="analytics.js"></script>
 
-        <!-- Load Real Stats (tests, TS errors, phases) -->
-        <script defer src="load-stats.js"></script>
+    <!-- Load Real Stats (tests, TS errors, phases) -->
+    <script defer src="load-stats.js"></script>
 
-        <!-- Tab Navigation System -->
-        <script src="js/TabController.js"></script>
-        <script src="js/SwipeController.js"></script>
+    <!-- Tab Navigation System -->
+    <script src="js/TabController.js"></script>
+    <script src="js/SwipeController.js"></script>
 
-        <script>
-            // Initialize tab navigation
-            document.addEventListener('DOMContentLoaded', () => {
-                if (typeof TabController !== 'undefined') {
-                    const tabController = new TabController();
-                    console.log('🚀 Initializing UV7 Status Bar...');
-                    window.uv7Runtime = window.UV7System.createStatusBar('status-bar-container', 'showcase');
-                    const container = document.querySelector('.tab-panels-container');
-                    if (container && typeof SwipeController !== 'undefined') {
-                        const swipeController = new SwipeController(tabController, container);
-                    }
-                    console.log('✅ Tab navigation initialized');
+    <script>
+        // Initialize tab navigation
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create status bar FIRST so it exists when TabController initializes
+            console.log('🚀 Initializing UV7 Status Bar...');
+            window.uv7Runtime = window.UV7System.createStatusBar('status-bar-container', 'showcase');
+
+            if (typeof TabController !== 'undefined') {
+                const tabController = new TabController();
+
+                // Manually trigger initial breadcrumb update to ensure it shows
+                const initialTab = tabController.getActiveTab();
+                tabController.updateStatusBar(initialTab);
+
+                const container = document.querySelector('.tab-panels-container');
+                if (container && typeof SwipeController !== 'undefined') {
+                    const swipeController = new SwipeController(tabController, container);
                 }
+                console.log('✅ Tab navigation initialized');
+            }
 
 
-            });
-        </script>
+        });
+    </script>
 </body>
 
 </html>

@@ -92,55 +92,152 @@
             transparent);
 }
 
-/* Responsive Hero: Mobile Stack */
-@media (max-width: 768px) {
+/* Responsive Hero: Mobile Optimizations */
+
+/* ========================================
+   MOBILE PORTRAIT - Vertical Slider
+   ======================================== */
+@media (max-width: 768px) and (orientation: portrait) {
+
+    /* Fix status bar overlap */
+    body {
+        padding-top: calc(var(--uv7-statusbar-h, 44px) + var(--uv7-banner-h, 16px) + 60px);
+    }
+
     .split-container {
-        display: flex;
+        display: block;
+        height: 70vh;
+        min-height: 560px;
+        position: relative;
+    }
+
+    /* Make layers overlap */
+    .layer-chaos,
+    .layer-order {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        min-height: 560px;
+    }
+
+    /* Chaos layer is behind, always fully visible */
+    .layer-chaos {
+        z-index: 1;
+    }
+
+    /* Order layer is on top, clipped from bottom */
+    .layer-order {
+        z-index: 2;
+        clip-path: inset(var(--slider-position, 50%) 0 0 0);
+    }
+
+    /* Vertical slider handle */
+    .slider-handle {
+        display: flex !important;
         flex-direction: column;
-        height: auto;
-        min-height: 100vh;
+        left: 50%;
+        top: var(--slider-position, 50%);
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        cursor: ns-resize;
+        z-index: 15;
+    }
+
+    .slider-line {
+        display: none;
+        /* Hide line on mobile for cleaner look */
+    }
+
+    .slider-knob {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3),
+            0 0 0 2px rgba(52, 152, 219, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        touch-action: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .slider-knob::before {
+        content: '⇅';
+        font-size: 24px;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .slider-knob:active {
+        transform: scale(1.15);
+        box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4),
+            0 0 0 4px rgba(52, 152, 219, 0.5);
+    }
+}
+
+/* ========================================
+   MOBILE LANDSCAPE - Horizontal Slider
+   ======================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding-top: calc(var(--uv7-statusbar-h, 44px) + var(--uv7-banner-h, 16px) + 50px);
+    }
+
+    .split-container {
+        height: 60vh;
+        min-height: 400px;
+        flex-direction: row;
     }
 
     .layer-chaos,
     .layer-order {
-        width: 100%;
-        height: 50vh;
-        min-height: 400px;
-        clip-path: none !important;
-        position: relative;
+        width: 50%;
+        height: 100%;
     }
 
+    /* Horizontal slider (desktop behavior) */
     .slider-handle {
-        display: none;
-        /* Hide slider on mobile */
+        flex-direction: row;
+        left: var(--slider-position, 50%);
+        top: 50%;
+        transform: translate(-50%, -50%);
+        cursor: ew-resize;
     }
 
-    /* Mobile view toggle button */
-    .mobile-view-toggle {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 20;
-        background: rgba(255, 255, 255, 0.95);
-        padding: 12px 24px;
-        border-radius: 25px;
-        border: 2px solid #3498db;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
-        font-size: 14px;
-        color: #2c3e50;
+    .slider-knob::before {
+        content: '⇄';
+    }
+}
+
+/* ========================================
+   TOUCH FEEDBACK (All Mobile)
+   ======================================== */
+@media (hover: none) and (pointer: coarse) {
+
+    /* Touch feedback for interactive elements */
+    .tab-item:active,
+    .btn-cta:active,
+    button:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
     }
 
-    .mobile-view-toggle:hover {
-        transform: translateX(-50%) translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    /* Ensure minimum touch target size */
+    button,
+    a,
+    .tab-item,
+    .slider-knob {
+        min-height: 44px;
+        min-width: 44px;
     }
 
-    .mobile-view-toggle:active {
-        transform: translateX(-50%) translateY(0);
+    /* Optimize tap highlighting */
+    * {
+        -webkit-tap-highlight-color: rgba(52, 152, 219, 0.2);
     }
 }
 

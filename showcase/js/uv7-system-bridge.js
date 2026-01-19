@@ -683,13 +683,16 @@
       document.body.classList.add("uv7-os-enabled"); // Added body padding
       this.container.dataset.context = this.context;
       this.container.innerHTML = `
-            <!-- Left Section: Logo + Loop/Context -->
+            <!-- Left Section: Logo + Breadcrumbs -->
             <div class="status-section status-left">
                 <!-- UV7 OS Logo (App Switcher Trigger) -->
                 ${this.features.enableAppSwitcher ? `
                 <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer; margin-right: 12px;" title="UV7 OS - Tap to switch apps">
                     <img src="./UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
                 </span>
+                ` : ""}
+                ${this.features.showBreadcrumbs ? `
+                <div id="status-breadcrumbs" class="status-item breadcrumbs" style="display: flex; align-items: center; gap: 4px; font-size: 11px;"></div>
                 ` : ""}
                 ${this.features.showLoopVersion ? `
                 <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
@@ -698,31 +701,14 @@
                 <span id="status-route" class="status-item route-indicator">MENU</span>
                 ` : ""}
                 ${this.features.showPhaseIndicator ? `
-                <span id="status-phase" class="status-item phase-indicator">Showcase</span>
+                <span id="status-phase" class="status-item phase-indicator" style="display: none;"></span>
                 ` : ""}
             </div>
 
-            <!-- Center Section: Breadcrumbs / Act / Auto -->
+            <!-- Center Section: Act / Auto -->
             <div class="status-section status-center">
-                ${this.features.showBreadcrumbs ? `
-                <div id="status-breadcrumbs" class="status-item breadcrumbs" style="display: flex; align-items: center; gap: 4px; font-size: 11px;"></div>
-                ` : ""}
-                <span id="status-act" class="status-item act-indicator" style="${this.features.showBreadcrumbs ? "display: none;" : ""}"></span>
+                <span id="status-act" class="status-item act-indicator" style="display: none;"></span>
                 <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
-                ${this.features.showStoryDevToggle ? `
-                <button id="status-story-dev-toggle" class="status-item story-dev-toggle" style="
-                    background: rgba(255, 255, 255, 0.1);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 4px;
-                    padding: 2px 8px;
-                    font-size: 10px;
-                    color: inherit;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                " title="Toggle Story/Dev Mode">
-                    📖 Story
-                </button>
-                ` : ""}
             </div>
 
             <!-- Right Section: Mail + Notes + Tether -->
