@@ -294,8 +294,10 @@ class TabController {
     updateStatusBar(tabId) {
         // --- V2 Status Bar Integration ---
         // Sync tab state with the new unified status bar
-        if (window.uv7Runtime && window.uv7Runtime.instance) {
+        const win = /** @type {any} */ (window);
+        if (win.uv7Runtime && win.uv7Runtime.instance) {
             // Map tabs to friendly names for "Phase" or Breadcrumbs
+            /** @type {{[key: string]: string}} */
             const tabNames = {
                 'journey': 'The Journey',
                 'workflow': 'Workflow',
@@ -306,7 +308,7 @@ class TabController {
             };
 
             // Update Phase/Breadcrumb in Status Bar
-            window.uv7Runtime.instance.setPhase(tabNames[tabId] || tabId);
+            win.uv7Runtime.instance.setPhase(tabNames[tabId] || tabId);
         }
 
         // --- Legacy Title Updates ---
