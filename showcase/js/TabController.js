@@ -307,8 +307,18 @@ class TabController {
                 'who': 'The Crew'
             };
 
+
             // Update Phase/Breadcrumb in Status Bar
-            win.uv7Runtime.instance.setPhase(tabNames[tabId] || tabId);
+            // Use setSection for showcase tabs to appear as 3rd level breadcrumb if needed,
+            // or we might want to use setPhase for high level. 
+            // Actually user wants "Showcase > Results". 
+            // In buildBreadcrumbs: if (state.section) push({ label: state.section })
+            // So we should use setSection.
+            // Also clear phase if we are just navigating top level tabs? 
+            // Actually let's just use setSection and maybe setPhase to empty or "Showcase" if needed.
+            // But setPhase adds "Phase X". 
+            win.uv7Runtime.instance.setPhase(''); // Clear phase 
+            win.uv7Runtime.instance.setSection(tabNames[tabId] || tabId);
         }
 
         // --- Legacy Title Updates ---
