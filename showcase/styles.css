@@ -2903,6 +2903,6 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
 
 /* Dev Mode Overrides */
 /* In Dev Mode, we might want different behavior, but per doc we keep manual control */
-body[data-view-mode="dev"] .timeline-item.expanded .timeline-details {
-    /* Optional: extra dev styling */
-}
+/* Dev Mode Overrides */
+/* In Dev Mode, we might want different behavior, but per doc we keep manual control */
+/* body[data-view-mode="dev"] .timeline-item.expanded .timeline-details {} */
