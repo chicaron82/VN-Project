@@ -1566,20 +1566,766 @@
       this.hideContextMenu();
     }
   }
+  const DEFAULT_DURATIONS = {
+    urgent: 0,
+    // Persistent until dismissed
+    high: 1e4,
+    // 10 seconds
+    normal: 5e3,
+    // 5 seconds
+    low: 3e3
+    // 3 seconds
+  };
+  const PRIORITY_COLORS = {
+    urgent: {
+      border: "rgba(255, 68, 68, 0.8)",
+      glow: "rgba(255, 68, 68, 0.4)",
+      bg: "linear-gradient(145deg, rgba(80, 20, 20, 0.95), rgba(40, 10, 10, 0.98))"
+    },
+    high: {
+      border: "rgba(255, 165, 0, 0.7)",
+      glow: "rgba(255, 165, 0, 0.3)",
+      bg: "linear-gradient(145deg, rgba(60, 40, 10, 0.95), rgba(30, 20, 5, 0.98))"
+    },
+    normal: {
+      border: "rgba(0, 255, 255, 0.5)",
+      glow: "rgba(0, 255, 255, 0.2)",
+      bg: "linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(15, 15, 26, 0.98))"
+    },
+    low: {
+      border: "rgba(255, 255, 255, 0.3)",
+      glow: "rgba(255, 255, 255, 0.1)",
+      bg: "linear-gradient(145deg, rgba(30, 30, 40, 0.9), rgba(20, 20, 30, 0.95))"
+    }
+  };
+  const CATEGORY_ICONS = {
+    system: "⚙️",
+    torigatchi: "🐱",
+    achievement: "🏆",
+    autosave: "💾",
+    tether: "⚡",
+    note: "📬",
+    app: "📱"
+  };
+  class NotificationRail {
+    constructor(eventBus) {
+      this.notifications = /* @__PURE__ */ new Map();
+      this.notificationElements = /* @__PURE__ */ new Map();
+      this.dismissTimers = /* @__PURE__ */ new Map();
+      this.badgeCounts = /* @__PURE__ */ new Map();
+      this.unsubscribers = [];
+      this.swipeState = {
+        startX: 0,
+        startY: 0,
+        currentX: 0,
+        isDragging: false,
+        targetId: null
+      };
+      this.SWIPE_THRESHOLD = 80;
+      this.ANIMATION_DURATION = 300;
+      this.eventBus = eventBus;
+      this.createDOM();
+      this.setupEventListeners();
+      this.injectStyles();
+      console.log("🔔 NotificationRail initialized (Phase 26d)");
+    }
+    // ========================================
+    // DOM CREATION
+    // ========================================
+    createDOM() {
+      this.container = document.createElement("div");
+      this.container.id = "notification-rail-container";
+      this.container.style.cssText = `
+            position: fixed;
+            top: 36px;
+            right: 12px;
+            z-index: 9998;
+            pointer-events: none;
+            max-height: calc(100vh - 60px);
+            overflow: visible;
+        `;
+      this.railElement = document.createElement("div");
+      this.railElement.id = "notification-rail";
+      this.railElement.style.cssText = `
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: auto;
+            max-height: calc(100vh - 80px);
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 4px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        `;
+      this.railElement.style.cssText += `
+            &::-webkit-scrollbar { display: none; }
+        `;
+      this.container.appendChild(this.railElement);
+      document.body.appendChild(this.container);
+    }
+    // ========================================
+    // STYLE INJECTION
+    // ========================================
+    injectStyles() {
+      if (document.getElementById("notification-rail-styles")) return;
+      const styles = document.createElement("style");
+      styles.id = "notification-rail-styles";
+      styles.textContent = `
+            /* Notification card base */
+            .notification-card {
+                position: relative;
+                width: 280px;
+                padding: 12px 16px;
+                border-radius: 12px;
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                font-family: 'Courier New', monospace;
+                cursor: pointer;
+                transform-origin: right center;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                opacity: 0;
+                transform: translateX(100%) scale(0.9);
+                touch-action: pan-y;
+            }
+
+            .notification-card.visible {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+
+            .notification-card.dismissing {
+                opacity: 0;
+                transform: translateX(120%) scale(0.8);
+            }
+
+            .notification-card.stacked {
+                position: absolute;
+                right: 0;
+            }
+
+            /* Hover effect */
+            .notification-card:hover {
+                transform: translateX(-4px) scale(1.02);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            }
+
+            .notification-card.swiping {
+                transition: none !important;
+            }
+
+            /* Priority pulse animation for urgent */
+            .notification-card.priority-urgent {
+                animation: urgentPulse 2s ease-in-out infinite;
+            }
+
+            @keyframes urgentPulse {
+                0%, 100% { box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3); }
+                50% { box-shadow: 0 4px 30px rgba(255, 68, 68, 0.6); }
+            }
+
+            /* Notification content layout */
+            .notification-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 6px;
+            }
+
+            .notification-icon {
+                font-size: 16px;
+                flex-shrink: 0;
+            }
+
+            .notification-title {
+                font-size: 12px;
+                font-weight: bold;
+                color: rgba(255, 255, 255, 0.95);
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .notification-time {
+                font-size: 10px;
+                color: rgba(255, 255, 255, 0.5);
+                flex-shrink: 0;
+            }
+
+            .notification-message {
+                font-size: 11px;
+                color: rgba(255, 255, 255, 0.8);
+                line-height: 1.4;
+                max-height: 2.8em;
+                overflow: hidden;
+            }
+
+            .notification-actions {
+                display: flex;
+                gap: 8px;
+                margin-top: 8px;
+            }
+
+            .notification-action-btn {
+                flex: 1;
+                padding: 6px 12px;
+                border: 1px solid rgba(0, 255, 255, 0.4);
+                border-radius: 6px;
+                background: rgba(0, 255, 255, 0.1);
+                color: #00ffff;
+                font-size: 10px;
+                font-family: inherit;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .notification-action-btn:hover {
+                background: rgba(0, 255, 255, 0.2);
+                border-color: rgba(0, 255, 255, 0.6);
+            }
+
+            .notification-dismiss-btn {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                color: rgba(255, 255, 255, 0.7);
+            }
+
+            .notification-dismiss-btn:hover {
+                background: rgba(255, 100, 100, 0.2);
+                border-color: rgba(255, 100, 100, 0.4);
+                color: rgba(255, 150, 150, 0.9);
+            }
+
+            /* Swipe indicator */
+            .notification-swipe-indicator {
+                position: absolute;
+                right: -30px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 14px;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+            }
+
+            .notification-card.swiping .notification-swipe-indicator {
+                opacity: 1;
+            }
+
+            /* Stack counter badge */
+            .notification-stack-badge {
+                position: absolute;
+                top: -6px;
+                right: -6px;
+                background: linear-gradient(135deg, #ff6b9d, #ff4444);
+                color: white;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px 6px;
+                border-radius: 10px;
+                min-width: 16px;
+                text-align: center;
+                box-shadow: 0 2px 8px rgba(255, 68, 68, 0.4);
+            }
+
+            /* Clear all button */
+            .notification-clear-all {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                padding: 8px 16px;
+                margin-top: 8px;
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 8px;
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 11px;
+                font-family: 'Courier New', monospace;
+                cursor: pointer;
+                transition: all 0.2s ease;
+            }
+
+            .notification-clear-all:hover {
+                background: rgba(255, 100, 100, 0.1);
+                border-color: rgba(255, 100, 100, 0.3);
+                color: rgba(255, 150, 150, 0.9);
+            }
+
+            /* Category-specific styles */
+            .notification-card.category-torigatchi .notification-icon {
+                animation: bounce 1s ease infinite;
+            }
+
+            .notification-card.category-achievement {
+                background: linear-gradient(145deg, rgba(50, 40, 10, 0.95), rgba(30, 25, 5, 0.98)) !important;
+                border-color: rgba(255, 215, 0, 0.6) !important;
+            }
+
+            .notification-card.category-achievement .notification-icon {
+                animation: shine 2s ease-in-out infinite;
+            }
+
+            @keyframes bounce {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-3px); }
+            }
+
+            @keyframes shine {
+                0%, 100% { filter: brightness(1); }
+                50% { filter: brightness(1.3); }
+            }
+
+            /* Slide-in animation for rail itself */
+            #notification-rail-container.collapsed {
+                transform: translateX(calc(100% + 20px));
+            }
+
+            #notification-rail-container {
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        `;
+      document.head.appendChild(styles);
+    }
+    // ========================================
+    // EVENT LISTENERS
+    // ========================================
+    setupEventListeners() {
+      const unsubNotify = this.eventBus.on("notification:show", (data) => {
+        this.show({
+          id: data.id || `notif-${Date.now()}`,
+          title: data.title || "Notification",
+          message: data.message || "",
+          icon: data.icon || CATEGORY_ICONS[data.category] || "📌",
+          category: data.category || "system",
+          priority: data.priority || "normal",
+          timestamp: Date.now(),
+          duration: data.duration,
+          actionLabel: data.actionLabel,
+          actionCallback: data.actionCallback,
+          appId: data.appId,
+          dismissible: data.dismissible !== false
+        });
+      });
+      this.unsubscribers.push(unsubNotify);
+      const unsubDismiss = this.eventBus.on("notification:dismiss", (data) => {
+        if (data.id) {
+          this.dismiss(data.id);
+        }
+      });
+      this.unsubscribers.push(unsubDismiss);
+      const unsubClear = this.eventBus.on("notification:clear_all", () => {
+        this.clearAll();
+      });
+      this.unsubscribers.push(unsubClear);
+      this.setupAppSpecificListeners();
+    }
+    /**
+     * Set up listeners for app-specific events
+     * ToriGatchi hunger, auto-save, achievements, tether warnings
+     */
+    setupAppSpecificListeners() {
+      const unsubHunger = this.eventBus.on("torigatchi:hunger_warning", (data) => {
+        this.show({
+          id: "torigatchi-hunger",
+          title: "ToriGatchi is Hungry!",
+          message: data.message || "Your pet needs attention soon...",
+          icon: "🐱",
+          category: "torigatchi",
+          priority: data.urgent ? "urgent" : "high",
+          timestamp: Date.now(),
+          duration: 0,
+          // Persistent until addressed
+          actionLabel: "Feed Now",
+          actionCallback: () => {
+            this.eventBus.emit("app:launch", { appId: "torigatchi" });
+          },
+          appId: "torigatchi",
+          dismissible: true
+        });
+      });
+      this.unsubscribers.push(unsubHunger);
+      const unsubAutosave = this.eventBus.on("game:autosave", (data) => {
+        this.show({
+          id: `autosave-${Date.now()}`,
+          title: "Auto-Saved",
+          message: data.scene ? `Progress saved at ${data.scene}` : "Progress saved",
+          icon: "💾",
+          category: "autosave",
+          priority: "low",
+          timestamp: Date.now(),
+          duration: 2e3,
+          // Quick confirmation
+          dismissible: true
+        });
+      });
+      this.unsubscribers.push(unsubAutosave);
+      const unsubAchievement = this.eventBus.on("achievement:unlocked", (data) => {
+        this.show({
+          id: `achievement-${data.id || Date.now()}`,
+          title: "Achievement Unlocked!",
+          message: data.title || data.description || "You did something amazing!",
+          icon: data.icon || "🏆",
+          category: "achievement",
+          priority: "high",
+          timestamp: Date.now(),
+          duration: 8e3,
+          actionLabel: "View",
+          actionCallback: () => {
+            this.eventBus.emit("ui:achievements:open", {});
+          },
+          dismissible: true
+        });
+        if (navigator.vibrate) navigator.vibrate([50, 30, 100]);
+      });
+      this.unsubscribers.push(unsubAchievement);
+      const unsubTether = this.eventBus.on("tether:warning", (data) => {
+        const level = data.level || 0;
+        const isCritical = level < 20;
+        this.show({
+          id: "tether-warning",
+          title: isCritical ? "⚠️ Tether Critical!" : "Tether Low",
+          message: `Connection at ${Math.round(level)}%${isCritical ? " - Take action!" : ""}`,
+          icon: "⚡",
+          category: "tether",
+          priority: isCritical ? "urgent" : "high",
+          timestamp: Date.now(),
+          duration: isCritical ? 0 : 5e3,
+          dismissible: !isCritical
+        });
+      });
+      this.unsubscribers.push(unsubTether);
+      const unsubNote = this.eventBus.on("note:received", (data) => {
+        this.show({
+          id: `note-${data.id || Date.now()}`,
+          title: `New Note from ${data.sender || "Unknown"}`,
+          message: data.preview || data.title || "You have a new note",
+          icon: "📬",
+          category: "note",
+          priority: "normal",
+          timestamp: Date.now(),
+          duration: 6e3,
+          actionLabel: "Read",
+          actionCallback: () => {
+            this.eventBus.emit("ui:notes:open", { noteId: data.id });
+          },
+          dismissible: true
+        });
+      });
+      this.unsubscribers.push(unsubNote);
+    }
+    // ========================================
+    // PUBLIC API
+    // ========================================
+    /**
+     * Show a notification
+     */
+    show(config) {
+      if (this.notifications.has(config.id)) {
+        this.update(config.id, config);
+        return;
+      }
+      if (config.duration === void 0) {
+        config.duration = DEFAULT_DURATIONS[config.priority];
+      }
+      this.notifications.set(config.id, config);
+      if (config.appId) {
+        const count = (this.badgeCounts.get(config.appId) || 0) + 1;
+        this.badgeCounts.set(config.appId, count);
+        this.eventBus.emit("notification:badge_update", {
+          appId: config.appId,
+          count
+        });
+      }
+      this.createNotificationElement(config);
+      if (config.duration && config.duration > 0) {
+        const timer = setTimeout(() => {
+          this.dismiss(config.id);
+        }, config.duration);
+        this.dismissTimers.set(config.id, timer);
+      }
+      this.eventBus.emit("notification:shown", { id: config.id, category: config.category });
+      console.log(`🔔 Notification shown: ${config.title} [${config.priority}]`);
+    }
+    /**
+     * Update an existing notification
+     */
+    update(id, updates) {
+      const existing = this.notifications.get(id);
+      if (!existing) return;
+      const updated = { ...existing, ...updates };
+      this.notifications.set(id, updated);
+      const element = this.notificationElements.get(id);
+      if (element) {
+        this.updateNotificationElement(element, updated);
+      }
+    }
+    /**
+     * Dismiss a notification
+     */
+    dismiss(id, skipAnimation = false) {
+      const config = this.notifications.get(id);
+      const element = this.notificationElements.get(id);
+      if (!config || !element) return;
+      const timer = this.dismissTimers.get(id);
+      if (timer) {
+        clearTimeout(timer);
+        this.dismissTimers.delete(id);
+      }
+      if (config.appId) {
+        const count = Math.max(0, (this.badgeCounts.get(config.appId) || 1) - 1);
+        this.badgeCounts.set(config.appId, count);
+        this.eventBus.emit("notification:badge_update", {
+          appId: config.appId,
+          count
+        });
+      }
+      if (!skipAnimation) {
+        element.classList.add("dismissing");
+        setTimeout(() => {
+          this.removeNotification(id);
+        }, this.ANIMATION_DURATION);
+      } else {
+        this.removeNotification(id);
+      }
+      if (navigator.vibrate) navigator.vibrate(10);
+    }
+    /**
+     * Clear all notifications
+     */
+    clearAll() {
+      const ids = Array.from(this.notifications.keys());
+      ids.forEach((id, index) => {
+        setTimeout(() => {
+          this.dismiss(id);
+        }, index * 50);
+      });
+      console.log("🧹 All notifications cleared");
+    }
+    /**
+     * Get notification count
+     */
+    getCount() {
+      return this.notifications.size;
+    }
+    /**
+     * Get notifications by category
+     */
+    getByCategory(category) {
+      return Array.from(this.notifications.values()).filter((n) => n.category === category);
+    }
+    /**
+     * Get badge count for an app
+     */
+    getBadgeCount(appId) {
+      return this.badgeCounts.get(appId) || 0;
+    }
+    /**
+     * Destroy the notification rail
+     */
+    destroy() {
+      this.dismissTimers.forEach((timer) => clearTimeout(timer));
+      this.dismissTimers.clear();
+      this.unsubscribers.forEach((unsub) => unsub());
+      this.unsubscribers = [];
+      this.container.remove();
+      console.log("🔔 NotificationRail destroyed");
+    }
+    // ========================================
+    // PRIVATE METHODS
+    // ========================================
+    /**
+     * Create notification DOM element
+     */
+    createNotificationElement(config) {
+      const colors = PRIORITY_COLORS[config.priority];
+      const card = document.createElement("div");
+      card.className = `notification-card priority-${config.priority} category-${config.category}`;
+      card.dataset.id = config.id;
+      card.style.cssText = `
+            background: ${colors.bg};
+            border: 1px solid ${colors.border};
+            box-shadow: 0 4px 20px ${colors.glow};
+        `;
+      card.innerHTML = `
+            <div class="notification-header">
+                <span class="notification-icon">${config.icon}</span>
+                <span class="notification-title">${this.escapeHtml(config.title)}</span>
+                <span class="notification-time">${this.formatTime(config.timestamp)}</span>
+            </div>
+            <div class="notification-message">${this.escapeHtml(config.message)}</div>
+            ${config.actionLabel || config.dismissible !== false ? `
+            <div class="notification-actions">
+                ${config.actionLabel ? `
+                <button class="notification-action-btn">${this.escapeHtml(config.actionLabel)}</button>
+                ` : ""}
+                ${config.dismissible !== false ? `
+                <button class="notification-action-btn notification-dismiss-btn">Dismiss</button>
+                ` : ""}
+            </div>
+            ` : ""}
+            <span class="notification-swipe-indicator">→</span>
+        `;
+      this.setupNotificationHandlers(card, config);
+      this.railElement.insertBefore(card, this.railElement.firstChild);
+      this.notificationElements.set(config.id, card);
+      requestAnimationFrame(() => {
+        card.classList.add("visible");
+      });
+      this.updateStackDisplay();
+    }
+    /**
+     * Set up event handlers for a notification card
+     */
+    setupNotificationHandlers(card, config) {
+      const actionBtn = card.querySelector(".notification-action-btn:not(.notification-dismiss-btn)");
+      if (actionBtn && config.actionCallback) {
+        actionBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          config.actionCallback();
+          this.dismiss(config.id);
+        });
+      }
+      const dismissBtn = card.querySelector(".notification-dismiss-btn");
+      if (dismissBtn) {
+        dismissBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.dismiss(config.id);
+        });
+      }
+      card.addEventListener("click", () => {
+        if (config.actionCallback) {
+          config.actionCallback();
+          this.dismiss(config.id);
+        }
+      });
+      if (config.dismissible !== false) {
+        this.setupSwipeHandlers(card, config.id);
+      }
+    }
+    /**
+     * Set up swipe-to-dismiss handlers
+     */
+    setupSwipeHandlers(card, id) {
+      card.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        if (!touch) return;
+        this.swipeState.startX = touch.clientX;
+        this.swipeState.startY = touch.clientY;
+        this.swipeState.currentX = touch.clientX;
+        this.swipeState.isDragging = false;
+        this.swipeState.targetId = id;
+      }, { passive: true });
+      card.addEventListener("touchmove", (e) => {
+        if (this.swipeState.targetId !== id) return;
+        const touch = e.touches[0];
+        if (!touch) return;
+        const deltaX = touch.clientX - this.swipeState.startX;
+        const deltaY = Math.abs(touch.clientY - this.swipeState.startY);
+        if (deltaX > 10 && deltaY < 30) {
+          this.swipeState.isDragging = true;
+          this.swipeState.currentX = touch.clientX;
+          card.classList.add("swiping");
+          card.style.transform = `translateX(${Math.max(0, deltaX)}px)`;
+          card.style.opacity = String(1 - deltaX / (this.SWIPE_THRESHOLD * 2));
+        }
+      }, { passive: true });
+      card.addEventListener("touchend", () => {
+        if (this.swipeState.targetId !== id) return;
+        const deltaX = this.swipeState.currentX - this.swipeState.startX;
+        card.classList.remove("swiping");
+        if (this.swipeState.isDragging && deltaX > this.SWIPE_THRESHOLD) {
+          this.dismiss(id);
+        } else {
+          card.style.transform = "";
+          card.style.opacity = "";
+        }
+        this.swipeState.isDragging = false;
+        this.swipeState.targetId = null;
+      });
+    }
+    /**
+     * Update notification element content
+     */
+    updateNotificationElement(element, config) {
+      const titleEl = element.querySelector(".notification-title");
+      const messageEl = element.querySelector(".notification-message");
+      const timeEl = element.querySelector(".notification-time");
+      if (titleEl) titleEl.textContent = config.title;
+      if (messageEl) messageEl.textContent = config.message;
+      if (timeEl) timeEl.textContent = this.formatTime(config.timestamp);
+      const colors = PRIORITY_COLORS[config.priority];
+      element.style.background = colors.bg;
+      element.style.borderColor = colors.border;
+      element.style.boxShadow = `0 4px 20px ${colors.glow}`;
+    }
+    /**
+     * Remove notification from DOM and storage
+     */
+    removeNotification(id) {
+      const element = this.notificationElements.get(id);
+      if (element) {
+        element.remove();
+        this.notificationElements.delete(id);
+      }
+      this.notifications.delete(id);
+      this.updateStackDisplay();
+      this.eventBus.emit("notification:dismissed", { id });
+    }
+    /**
+     * Update visual stacking of notifications
+     */
+    updateStackDisplay() {
+      const count = this.notifications.size;
+      let clearAllBtn = this.railElement.querySelector(".notification-clear-all");
+      if (count > 1 && !clearAllBtn) {
+        clearAllBtn = document.createElement("button");
+        clearAllBtn.className = "notification-clear-all";
+        clearAllBtn.innerHTML = "🧹 Clear All";
+        clearAllBtn.addEventListener("click", () => this.clearAll());
+        this.railElement.appendChild(clearAllBtn);
+      } else if (count <= 1 && clearAllBtn) {
+        clearAllBtn.remove();
+      }
+    }
+    /**
+     * Format timestamp to relative time
+     */
+    formatTime(timestamp) {
+      const diff = Date.now() - timestamp;
+      const seconds = Math.floor(diff / 1e3);
+      const minutes = Math.floor(seconds / 60);
+      if (seconds < 5) return "now";
+      if (seconds < 60) return `${seconds}s`;
+      if (minutes < 60) return `${minutes}m`;
+      return new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+    /**
+     * Escape HTML to prevent XSS
+     */
+    escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  }
   console.log("🌉 UV7 System Bridge initializing...");
   const UV7System = {
     EventBus,
     StatusBar,
+    NotificationRail,
     // Factory to easily create a standalone status bar
-    createStatusBar: (containerId, context = "showcase") => {
+    createStatusBar: (_containerId, context = "showcase") => {
       console.log(`🏗️ Creating StatusBar for ${context}`);
       const eventBus = new EventBus();
       const statusBar = new StatusBar(eventBus, void 0, {
         // We can pass initial config here if needed
       });
+      const notificationRail = new NotificationRail(eventBus);
       return {
         instance: statusBar,
-        eventBus
+        eventBus,
+        notificationRail
       };
     }
   };

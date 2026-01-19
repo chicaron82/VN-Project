@@ -174,7 +174,7 @@ const autoReadController = new AutoReadController(eventBus, settingsSystem);
 const keyboardController = new KeyboardController(eventBus);
 
 // Initialize Mobile UX
-const swipeHandler = new SwipeHandler(document.body, eventBus);
+const swipeHandler = new SwipeHandler(document.body, eventBus, settingsSystem);
 const mobileUXController = new MobileUXController(eventBus);
 const notificationShade = new NotificationShade(eventBus);
 
@@ -400,12 +400,16 @@ function showSplash(): Promise<void> {
         splashContainer.style.opacity = '0';
         splashContainer.style.transition = 'opacity 0.5s ease-out';
 
+        // Code rain transition will be triggered by init() after MainMenu mounts
+
+
         setTimeout(() => {
             splashContainer.remove();
             resolve();
         }, 500);
     });
 }
+
 
 function showMainMenu() {
     clearScreen();
@@ -1091,8 +1095,18 @@ async function init() {
         }
     }
 
-    // Show main menu (normal flow or fallback)
-    showMainMenu();
+    // Initialize global visual effects layer (for cross-screen transitions)
+    // DIZEE FIX: Attach to document.body so clearScreen() (which clears #app) doesn't destroy the effects!
+    const effectsLayer = new VisualEffectsLayer(document.body, document.body, eventBus);
+
+    // Trigger transition effect (V1 Parity) - Start rain FIRST
+    // duration=2000ms (V1) - The opacity/z-index fix should make this visible now
+    eventBus.emit('effect:code_rain', { duration: 2000 });
+
+    // Show main menu (normal flow or fallback) - Delay to let rain cover screen
+    setTimeout(() => {
+        showMainMenu();
+    }, 100);
 
     // Debug access
     if (typeof window !== 'undefined') {

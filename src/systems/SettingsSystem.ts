@@ -15,6 +15,12 @@ export interface GameSettings {
     // Auto-Advance
     autoAdvance: boolean;
     autoAdvanceDelay: number; // ms to wait after text completes
+    // Mobile Swipe
+    swipeSettings: {
+        minDistance: number;
+        maxTime: number;
+        restraint: number;
+    };
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
@@ -27,7 +33,12 @@ const DEFAULT_SETTINGS: GameSettings = {
     highContrast: false,
     skipEnabled: true, // Skip is enabled by default (still requires unlock)
     autoAdvance: false,
-    autoAdvanceDelay: 3000 // Default 3 seconds
+    autoAdvanceDelay: 3000, // Default 3 seconds
+    swipeSettings: {
+        minDistance: 35,
+        maxTime: 650,
+        restraint: 120
+    }
 };
 
 /**
@@ -119,7 +130,28 @@ export class SettingsSystem {
         if (typeof localStorage === 'undefined') return {};
         try {
             const raw = localStorage.getItem(this.STORAGE_KEY);
-            return raw ? JSON.parse(raw) : {};
+            const settings = raw ? JSON.parse(raw) : {};
+
+            // Check for V1 Swipe Settings (Migration)
+            if (!settings.swipeSettings) {
+                const legacySwipe = localStorage.getItem('swipe_settings');
+                if (legacySwipe) {
+                    try {
+                        console.log('🔄 Migrating V1 Swipe Settings...');
+                        const parsed = JSON.parse(legacySwipe);
+                        settings.swipeSettings = {
+                            minDistance: parsed.minDist || 35,
+                            maxTime: parsed.maxTime || 650,
+                            restraint: 120 // V1 didn't track this, default it
+                        };
+                        // Note: V1 invertX/Y not migrated as V2 handles direction differently
+                    } catch (e) {
+                        console.warn('Failed to migrate swipe settings', e);
+                    }
+                }
+            }
+
+            return settings;
         } catch (e) {
             console.warn('Failed to load settings', e);
             return {};

@@ -72,8 +72,10 @@ export class VisualEffectsLayer {
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: 10000;
-            opacity: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 2147483647; /* Max Z-Index */
+            opacity: 1; /* DIZEE FIX: Start noticeable immediately */
             transition: opacity 300ms ease;
             pointer-events: none;
         `;
@@ -84,11 +86,6 @@ export class VisualEffectsLayer {
         // V1 Default Color: Cyan (#00ffff)
         const rain = new CodeRain(container);
         rain.start('#00ffff');
-
-        // Fade in
-        requestAnimationFrame(() => {
-            container.style.opacity = '1';
-        });
 
         // Cleanup sequence
         // Fade out happens 300ms before duration ends (matching V1)

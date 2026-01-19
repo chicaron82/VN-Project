@@ -305,23 +305,58 @@ export class CollectiblesSystem {
     }
 
     private loadState() {
+        // Check for V2 Data
         const raw = localStorage.getItem('uv7_collectibles');
         if (raw) {
             try {
                 const state = JSON.parse(raw) as Partial<CollectiblesState>;
-
-                // Load basic collections
                 this.collectedNotes = new Set(state.collected || []);
                 this.readNotes = new Set(state.read || []);
-
-                // Load V2 data
                 this.viewCounts = state.viewCounts || {};
                 this.collectionTimestamps = state.timestamps || {};
                 this.revealedCodes = state.revealedCodes || {};
                 this.codeDrops = state.codeDrops || {};
-
+                return; // Loaded successfully
             } catch (e) {
                 console.error('[CollectiblesSystem] Failed to load state', e);
+            }
+        }
+
+        // Check for V1 Data (Migration)
+        const v1Collected = localStorage.getItem('vn_collected_notes');
+        if (v1Collected) {
+            console.log('🔄 [CollectiblesSystem] Migrating V1 Collectibles...');
+            try {
+                // Migrate collected notes
+                const collected = JSON.parse(v1Collected);
+                if (Array.isArray(collected)) {
+                    this.collectedNotes = new Set(collected);
+                }
+
+                // Migrate read status
+                const v1Read = localStorage.getItem('notesReadStatus');
+                if (v1Read) {
+                    const read = JSON.parse(v1Read);
+                    if (Array.isArray(read)) {
+                        this.readNotes = new Set(read);
+                    }
+                }
+
+                // Migrate timestamps
+                const v1Timestamps = localStorage.getItem('vn_note_timestamps');
+                if (v1Timestamps) {
+                    const timestamps = JSON.parse(v1Timestamps);
+                    // V1 might have been simple kv pair? Assuming matching structure roughly
+                    if (typeof timestamps === 'object') {
+                        this.collectionTimestamps = timestamps;
+                    }
+                }
+
+                // Save to V2 immediately
+                this.saveState();
+
+            } catch (e) {
+                console.warn('Failed to migrate V1 collectibles:', e);
             }
         }
     }

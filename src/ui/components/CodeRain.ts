@@ -44,6 +44,8 @@ export class CodeRain {
      * @param color Rain color (default: #00ffff cyan)
      */
     public start(color: string = '#00ffff'): void {
+        this.resize(); // Ensure correct size before starting
+        console.log(`🌧️ Code Rain starting. Canvas size: ${this.canvas.width}x${this.canvas.height}`);
         this.stop(); // Clear any existing loop
 
         // V1 Logic: Faster on portrait to fill screen

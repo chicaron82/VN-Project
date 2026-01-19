@@ -1,5 +1,6 @@
 
 import { EventBus } from './EventBus';
+import { SettingsSystem } from '../systems/SettingsSystem';
 
 /**
  * SwipeHandler - Mobile Touch Gesture Manager
@@ -10,19 +11,16 @@ import { EventBus } from './EventBus';
 export class SwipeHandler {
     private eventBus: EventBus;
     private element: HTMLElement;
+    private settingsSystem: SettingsSystem;
 
     private touchStartX: number = 0;
     private touchStartY: number = 0;
     private touchStartTime: number = 0;
 
-    // Configuration
-    private readonly MIN_SWIPE_DISTANCE = 35; // px (Reduced from 50)
-    private readonly MAX_SWIPE_TIME = 650; // ms (Increased from 500)
-    private readonly RESTRAINT = 120; // px (Increased from 100)
-
-    constructor(element: HTMLElement, eventBus: EventBus) {
+    constructor(element: HTMLElement, eventBus: EventBus, settingsSystem: SettingsSystem) {
         this.element = element;
         this.eventBus = eventBus;
+        this.settingsSystem = settingsSystem;
         this.setupListeners();
     }
 
@@ -62,13 +60,20 @@ export class SwipeHandler {
     private handleTouchEnd(e: TouchEvent): void {
         const touch = e.changedTouches[0];
         if (!touch) return;
+
+        // Get Settings
+        const settings = this.settingsSystem.get('swipeSettings');
+        const minDistance = settings?.minDistance ?? 35;
+        const maxTime = settings?.maxTime ?? 650;
+        const restraint = settings?.restraint ?? 120;
+
         const distX = touch.clientX - this.touchStartX;
         const distY = touch.clientY - this.touchStartY;
         const elapsedTime = new Date().getTime() - this.touchStartTime;
 
-        if (elapsedTime <= this.MAX_SWIPE_TIME) {
+        if (elapsedTime <= maxTime) {
             // Check for horizontal swipe
-            if (Math.abs(distX) >= this.MIN_SWIPE_DISTANCE && Math.abs(distY) <= this.RESTRAINT) {
+            if (Math.abs(distX) >= minDistance && Math.abs(distY) <= restraint) {
                 if (distX < 0) {
                     // Left Swipe
                     console.log('[SwipeHandler] Swipe Left detected');
@@ -80,7 +85,7 @@ export class SwipeHandler {
                 }
             }
             // Check for vertical swipe
-            else if (Math.abs(distY) >= this.MIN_SWIPE_DISTANCE && Math.abs(distX) <= this.RESTRAINT) {
+            else if (Math.abs(distY) >= minDistance && Math.abs(distX) <= restraint) {
                 if (distY < 0) {
                     // Up Swipe
                     console.log('[SwipeHandler] Swipe Up detected');

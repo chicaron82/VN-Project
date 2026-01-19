@@ -2799,6 +2799,7 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
         height: 10px;
     }
 }
+
 /* ========================================
    COLOR SCHEME ADAPTATIONS
    Global light/dark mode support
@@ -2847,4 +2848,60 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
         background: #2563eb;
         color: #fff;
     }
+}
+
+/* --- EXPANDABLE TIMELINE (PHASE 28) --- */
+.timeline-details {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.timeline-item.expanded .timeline-details {
+    max-height: 5000px;
+    /* Safe buffer for large content */
+    opacity: 1;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.expand-toggle {
+    background: none;
+    border: none;
+    color: #3498db;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    width: 100%;
+    margin-top: 0.5rem;
+    outline: none;
+}
+
+.expand-toggle:hover {
+    color: #2980b9;
+    transform: translateX(2px);
+}
+
+.expand-toggle::before {
+    content: '▸';
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-item.expanded .expand-toggle::before {
+    transform: rotate(90deg);
+}
+
+/* Dev Mode Overrides */
+/* In Dev Mode, we might want different behavior, but per doc we keep manual control */
+body[data-view-mode="dev"] .timeline-item.expanded .timeline-details {
+    /* Optional: extra dev styling */
 }

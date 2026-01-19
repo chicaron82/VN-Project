@@ -5,6 +5,49 @@
 window.TIMELINE_DATA = {
     "phases": [
         {
+            "id": "2026-01-18-a",
+            "date": "January 18, 2026",
+            "emoji": "🕵️",
+            "title": "The Parity Audit - No More Guesswork",
+            "type": "order-entry",
+            "summary": "We stopped guessing and started scanning. Initiated a comprehensive automated audit of the V1 legacy codebase against V2, scanning 77 system files and extracting 589 classes and 58 storage keys.",
+            "metrics": {
+                "filesScanned": 77,
+                "classesExposed": 589,
+                "gapsFound": "3 Critical"
+            },
+            "problem": {
+                "description": "Manual parity checks were missing invisible logic gaps (like data storage keys).",
+                "rootCause": "V2 used different storage keys (e.g., 'uv7_bootstrap_timeline' vs 'bootstrapTimeline'), causing data loss for migrating players."
+            },
+            "callout": {
+                "icon": "📝",
+                "title": "The Invisible Gaps",
+                "text": "The scanner revealed that while features <em>looked</em> complete, critical data persistence logic for the meta-narrative was disconnected."
+            },
+            "sortDate": "2026-01-18T0a",
+            "legacyPhase": "2026-01-18-a"
+        },
+        {
+            "id": "2026-01-18-b",
+            "date": "January 18, 2026",
+            "emoji": "💾",
+            "title": "Data Migration - The Bridge",
+            "type": "highlight",
+            "summary": "Implemented seamless data migration for the Bootstrap Paradox. V2 now detects legacy V1 save data (`bootstrapTimeline`) and auto-migrates it to the new V2 structure, preserving the player's history.",
+            "features": [
+                "🔄 <strong>Auto-Migration:</strong> Detects legacy `bootstrapTimeline` and upgrades it",
+                "🛡️ <strong>History Preservation:</strong> Players keep their attempt count (e.g., #853)",
+                "🧩 <strong>System Restoration:</strong> Verified `BootstrapTracker.ts` handles the sacred 848 logic correctly"
+            ],
+            "solution": {
+                "approach": "Modified `BootstrapTracker.ts` to check for legacy keys on initialization and migrate data immediately.",
+                "code": "if (legacy) { this.timeline = JSON.parse(legacy); this.saveTimeline(); }"
+            },
+            "sortDate": "2026-01-18T0b",
+            "legacyPhase": "2026-01-18-b"
+        },
+        {
             "id": "2025-12-01-a",
             "date": "December 2025",
             "emoji": "🕸️",
@@ -2025,6 +2068,39 @@ window.TIMELINE_DATA = {
             "quote": "\"The line between the game and the site has dissolved.\"",
             "sortDate": "2026-01-18T0d",
             "legacyPhase": "2026-01-18-d"
+        },
+        {
+            "id": "2026-01-19-a",
+            "date": "January 19, 2026",
+            "emoji": "🌧️",
+            "title": "The Invisible Rain Saga - A Debugging Odyssey",
+            "type": "critical-entry",
+            "summary": "Porting the 'Code Rain' transition took far longer than expected, turning a simple visual feature into a masterclass in debugging false assumptions.",
+            "problem": {
+                "description": "The effect refused to play correctly. We burned hours chasing ghosts: we thought it was a timing issue (starting too late), then a CSS issue (z-index/opacity), then a duration issue (too short).",
+                "rootCause": "We were fixing symptoms, not the disease. The real issue was that `showMainMenu()` called `clearScreen()`, which wiped the `#app` container. We were initializing the rain effect *inside* the very container we were about to nuke."
+            },
+            "solution": {
+                "approach": "Iterative failure led to the truth. We stopped guessing and looked at the lifecycle.",
+                "steps": [
+                    "❌ <strong>Attempt 1 (Timing):</strong> Added `setTimeout` to delay the menu. Result: Rain still invisible.",
+                    "❌ <strong>Attempt 2 (Visibility):</strong> Forced `z-index: 9999` and `opacity: 1`. Result: Rain appeared for a split second, then vanished.",
+                    "❌ <strong>Attempt 3 (Duration):</strong> Increased duration to 15s. Result: Just a longer awkard pause.",
+                    "✅ <strong>The Fix (Architecture):</strong> Realized `app.innerHTML = ''` was killing the effect. Moved the layer to `document.body`."
+                ]
+            },
+            "callout": {
+                "icon": "🧠",
+                "title": "The Hard Lesson",
+                "text": "Don't put your life raft inside the ship you're about to scuttle. Visual transitions that bridge two states must exist <em>outside</em> the containers of those states."
+            },
+            "metrics": {
+                "falseLeads": 3,
+                "architecturalFlaw": "Critical",
+                "lessonPermanence": "Eternal"
+            },
+            "sortDate": "2026-01-19T0a",
+            "legacyPhase": "2026-01-19-a"
         }
     ]
 };

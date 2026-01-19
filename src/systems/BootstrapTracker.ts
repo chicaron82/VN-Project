@@ -50,10 +50,25 @@ export class BootstrapTracker {
 
     private loadTimeline(): BootstrapTimeline {
         try {
+            // Check for V2 Data
             const saved = localStorage.getItem(this.STORAGE_KEY);
             if (saved) {
                 return JSON.parse(saved);
             }
+
+            // Check for V1 Data (Migration)
+            const legacy = localStorage.getItem('bootstrapTimeline');
+            if (legacy) {
+                console.log('🔄 Migrating V1 Bootstrap Timeline to V2...');
+                const parsed = JSON.parse(legacy);
+                // Save immediately to new key
+                this.timeline = parsed;
+                this.saveTimeline();
+                // Clean up old key? Maybe keep it for safety, but V2 is authoritative now.
+                // localStorage.removeItem('bootstrapTimeline'); 
+                return parsed;
+            }
+
         } catch (e) {
             console.warn('Failed to load bootstrap timeline:', e);
         }
