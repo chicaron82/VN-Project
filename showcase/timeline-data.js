@@ -1972,10 +1972,10 @@ window.TIMELINE_DATA = {
             "legacyPhase": "2026-01-18-b"
         },
         {
-            "id": "2026-01-18-a",
+            "id": "2026-01-18-c",
             "date": "January 18, 2026",
             "emoji": "🌉",
-            "title": "Phase 26: The Bridge - Core Unification",
+            "title": "The Bridge - Core Unification",
             "type": "highlight",
             "summary": "The final architectural frontier. Bridge the gap between the TypeScript-based V2 engine and the legacy vanilla JS Showcase. Unified the StatusBar component to be context-aware, running the exact same code in both environments.",
             "problem": {
@@ -2001,8 +2001,8 @@ window.TIMELINE_DATA = {
                 "title": "The Unification",
                 "text": "It's not enough to look the same. It has to BE the same. True parity means shared DNA."
             },
-            "sortDate": "2026-01-18T0a",
-            "legacyPhase": "2026-01-18-a"
+            "sortDate": "2026-01-18T0c",
+            "legacyPhase": "2026-01-18-c"
         }
     ]
 };
