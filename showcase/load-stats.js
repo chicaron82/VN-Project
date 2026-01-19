@@ -36,6 +36,12 @@
                 addTypeScriptErrorStat(stats.tsErrors);
             }
 
+            // Update Key Achievements (Result Tab)
+            const achievementsTests = document.getElementById('achievements-tests');
+            if (achievementsTests && stats.testsPass !== undefined) {
+                achievementsTests.textContent = `${stats.testsPass} tests`;
+            }
+
             // Re-trigger counter animations if they've already run
             if (window.premiumAnimations && window.premiumAnimations.initAnimatedCounters) {
                 window.premiumAnimations.initAnimatedCounters();
