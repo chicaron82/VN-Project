@@ -1,6 +1,6 @@
 
 // DOM Elements
-const container = document.querySelector('.split-container');
+const sliderContainer = document.querySelector('.split-container');
 const layerOrder = document.querySelector('.layer-order');
 const handle = document.querySelector('.slider-handle');
 
@@ -10,14 +10,21 @@ let skew = 0; // In case we want diagonal later, keeping simple for now
 let position = 50; // Percentage
 
 // Event Listeners
-handle.querySelector('.slider-knob').addEventListener('mousedown', (e) => {
-    isDragging = true;
-    container.style.cursor = 'ew-resize';
-});
+if (handle) {
+    const knob = handle.querySelector('.slider-knob');
+    if (knob) {
+        knob.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            sliderContainer.style.cursor = 'ew-resize';
+        });
+    }
+}
 
 window.addEventListener('mouseup', () => {
     isDragging = false;
-    container.style.cursor = 'default';
+    if (sliderContainer) {
+        sliderContainer.style.cursor = 'default';
+    }
 });
 
 let ticking = false;
@@ -43,11 +50,16 @@ window.addEventListener('mousemove', (e) => {
 });
 
 // Touch support
-handle.querySelector('.slider-knob').addEventListener('touchstart', (e) => {
-    isDragging = true;
-    // Prevent scrolling when starting drag on handle
-    e.preventDefault();
-}, { passive: false });
+if (handle) {
+    const knob = handle.querySelector('.slider-knob');
+    if (knob) {
+        knob.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            // Prevent scrolling when starting drag on handle
+            e.preventDefault();
+        }, { passive: false });
+    }
+}
 
 window.addEventListener('touchend', () => {
     isDragging = false;
@@ -72,16 +84,11 @@ window.addEventListener('touchmove', (e) => {
 }, { passive: false });
 
 function updateSlider(pct) {
+    if (!layerOrder || !handle) return;
+
     position = pct;
 
     // Update Clip Path for the top layer (Order)
-    // We reveal chaos (bottom) on left, Order (top) on right
-    // Wait... if slider is at 50%, left is Chaos, right is Order.
-    // So Order layer (top) needs to be clipped from LEFT.
-
-    // clip-path: polygon(X% 0, 100% 0, 100% 100%, X% 100%);
-    // If pct is 20%, we start at 20% and go right.
-
     layerOrder.style.clipPath = `polygon(${pct}% 0, 100% 0, 100% 100%, ${pct}% 100%)`;
 
     // Update Handle position
@@ -493,518 +500,22 @@ function copyLink() {
     });
 }
 
-// TIMELINE RENDERER
-// ==========================================
-class TimelineRenderer {
-    constructor(containerSelector) {
-        this.container = document.querySelector(containerSelector);
-        this.phases = [];
+// TimelineRenderer class has been moved to js/TimelineRenderer.js
 
-        // Pagination state
-        this.phasesPerPage = 3;
-        this.currentPage = 0;
-        this.viewAll = false;
-    }
-
-    async loadTimeline() {
-        try {
-            // Prioritize window.TIMELINE_DATA (loaded via script tag) to avoid CORS issues with file:// protocol
-            if (window.TIMELINE_DATA && window.TIMELINE_DATA.phases) {
-                this.phases = window.TIMELINE_DATA.phases;
-                this.render();
-                return;
-            }
-
-            // Fallback: Show error message
-            console.error('Timeline data not found');
-            this.showTimelineError();
-        } catch (error) {
-            console.error('Failed to load timeline:', error);
-            this.showTimelineError();
-        }
-    }
-
-    showTimelineError() {
-        if (!this.container) return;
-
-        this.container.innerHTML = `
-            <div class="timeline-error">
-                <div class="error-icon">⚠️</div>
-                <h3>Timeline Unavailable</h3>
-                <p>We couldn't load the project timeline. Please refresh the page or try again later.</p>
-                <button onclick="location.reload()" class="retry-btn">Retry</button>
-            </div>
-        `;
-    }
-
-    get totalPages() {
-        return Math.ceil(this.phases.length / this.phasesPerPage);
-    }
-
-    get currentPhases() {
-        if (this.viewAll) return this.phases;
-        const start = this.currentPage * this.phasesPerPage;
-        return this.phases.slice(start, start + this.phasesPerPage);
-    }
-
-    render() {
-        if (!this.container || this.phases.length === 0) return;
-
-        // Clean up old event listeners before re-rendering
-        this.cleanupExpandablePhases();
-
-        // Clear existing timeline
-        this.container.innerHTML = '';
-
-        // Add TOP navigation controls
-        this.container.appendChild(this.createNavigationControls('top'));
-
-        // Render phases
-        const phasesContainer = document.createElement('div');
-        phasesContainer.className = 'timeline-phases';
-        this.currentPhases.forEach(phase => {
-            const phaseElement = this.createPhaseElement(phase);
-            phasesContainer.appendChild(phaseElement);
-        });
-        this.container.appendChild(phasesContainer);
-
-        // Add BOTTOM navigation controls
-        this.container.appendChild(this.createNavigationControls('bottom'));
-
-        // Trigger Syntax Highlighting
-        if (window.Prism) {
-            Prism.highlightAll();
-        }
-
-        // Initialize expandable phases for newly rendered items
-        if (window.initExpandablePhases) {
-            window.initExpandablePhases();
-        }
-    }
-
-    createNavigationControls(position = 'top') {
-        const nav = document.createElement('div');
-        nav.className = `timeline-nav timeline-nav-${position}`;
-
-        // Progress dots container
-        const progressContainer = document.createElement('div');
-        progressContainer.className = 'timeline-progress';
-
-        // Progress dots
-        for (let i = 0; i < this.totalPages; i++) {
-            const dot = document.createElement('button');
-            dot.className = `progress-dot ${i === this.currentPage && !this.viewAll ? 'active' : ''}`;
-            dot.setAttribute('aria-label', `Go to phases ${i * this.phasesPerPage + 1}-${Math.min((i + 1) * this.phasesPerPage, this.phases.length)}`);
-            dot.addEventListener('click', () => {
-                this.viewAll = false;
-                this.currentPage = i;
-                this.render();
-                this.scrollToTimeline();
-            });
-            progressContainer.appendChild(dot);
-        }
-
-        // Progress text
-        const progressText = document.createElement('span');
-        progressText.className = 'progress-text';
-        if (this.viewAll) {
-            progressText.textContent = `Viewing all ${this.phases.length} phases`;
-        } else {
-            const start = this.currentPage * this.phasesPerPage + 1;
-            const end = Math.min((this.currentPage + 1) * this.phasesPerPage, this.phases.length);
-            progressText.textContent = `Phases ${start}-${end} of ${this.phases.length}`;
-        }
-
-        // Button container
-        const buttonContainer = document.createElement('div');
-        buttonContainer.className = 'timeline-buttons';
-
-        // Previous button
-        const prevBtn = document.createElement('button');
-        prevBtn.className = 'timeline-btn prev';
-        prevBtn.innerHTML = '← Previous';
-        prevBtn.disabled = this.currentPage === 0 || this.viewAll;
-        prevBtn.addEventListener('click', () => {
-            if (this.currentPage > 0) {
-                this.currentPage--;
-                this.render();
-                this.scrollToTimeline();
-            }
-        });
-
-        // View All / Show Latest button
-        const viewAllBtn = document.createElement('button');
-        viewAllBtn.className = 'timeline-btn view-all';
-        viewAllBtn.textContent = this.viewAll ? 'Show Latest 3' : 'View All';
-        viewAllBtn.addEventListener('click', () => {
-            if (this.viewAll) {
-                this.viewAll = false;
-                this.currentPage = this.totalPages - 1; // Go to last page
-            } else {
-                this.viewAll = true;
-            }
-            this.render();
-            this.scrollToTimeline();
-        });
-
-        // Next button
-        const nextBtn = document.createElement('button');
-        nextBtn.className = 'timeline-btn next';
-        nextBtn.innerHTML = 'Next →';
-        nextBtn.disabled = this.currentPage >= this.totalPages - 1 || this.viewAll;
-        nextBtn.addEventListener('click', () => {
-            if (this.currentPage < this.totalPages - 1) {
-                this.currentPage++;
-                this.render();
-                this.scrollToTimeline();
-            }
-        });
-
-        // Assemble
-        buttonContainer.appendChild(prevBtn);
-        buttonContainer.appendChild(viewAllBtn);
-        buttonContainer.appendChild(nextBtn);
-
-        nav.appendChild(progressContainer);
-        nav.appendChild(progressText);
-        nav.appendChild(buttonContainer);
-
-        return nav;
-    }
-
-    scrollToTimeline() {
-        this.container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-
-    cleanupExpandablePhases() {
-        // Clean up event listeners from previous render
-        document.querySelectorAll('.timeline-item').forEach(item => {
-            if (item._cleanup) {
-                item._cleanup();
-                delete item._cleanup;
-                delete item.dataset.expandableInitialized;
-            }
-        });
-    }
-
-    createPhaseElement(phase) {
-        const item = document.createElement('div');
-        item.className = `timeline-item ${phase.type || ''}`;
-        item.id = phase.id;
-
-        const marker = document.createElement('div');
-        marker.className = 'timeline-marker';
-
-        const content = document.createElement('div');
-        content.className = 'timeline-content';
-
-        // --- VISIBLE SECTION (Header, Title, Summary) ---
-
-        // Header
-        const header = document.createElement('h3');
-        header.textContent = `${phase.date} ${phase.emoji || ''}`;
-        content.appendChild(header);
-
-        // Title
-        const title = document.createElement('p');
-        title.innerHTML = `<strong>${phase.title}</strong>`;
-        content.appendChild(title);
-
-        // Summary
-        if (phase.summary) {
-            const summary = document.createElement('p');
-            summary.textContent = phase.summary;
-            content.appendChild(summary);
-        }
-
-        // --- EXPANDABLE SECTION ---
-        const details = document.createElement('div');
-        details.className = 'timeline-details';
-        let hasDetails = false;
-
-        // Problem section (if exists)
-        if (phase.problem) {
-            hasDetails = true;
-            const journalEntry = document.createElement('div');
-            journalEntry.className = 'journal-entry';
-            /* ... journal Content ... */
-            journalEntry.innerHTML = `
-                <p><strong>The Lesson:</strong></p>
-                <p>"${phase.problem.description}"</p>
-                ${phase.problem.rootCause ? `<p>${phase.solution?.approach || ''}</p>` : ''}
-            `;
-            details.appendChild(journalEntry);
-        }
-
-        // Features
-        if (phase.solution?.features) {
-            hasDetails = true;
-            const featuresTitle = document.createElement('h4');
-            featuresTitle.textContent = 'What We Implemented:';
-            details.appendChild(featuresTitle);
-
-            const featuresList = document.createElement('ul');
-            featuresList.className = 'update-list';
-            phase.solution.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.innerHTML = feature;
-                featuresList.appendChild(li);
-            });
-            details.appendChild(featuresList);
-        }
-
-        // Callout
-        if (phase.callout) {
-            hasDetails = true;
-            const callout = document.createElement('div');
-            callout.className = 'v2-improvement-callout';
-
-            const icon = document.createElement('div');
-            icon.className = 'callout-icon';
-            const iconMap = {
-                insight: '💡', warning: '⚠️', success: '✅', info: 'ℹ️', milestone: '🏆', architecture: '🏗️'
-            };
-            icon.textContent = phase.callout.icon || iconMap[phase.callout.type] || '💡';
-
-            const calloutContent = document.createElement('div');
-            calloutContent.className = 'callout-content';
-            const calloutText = phase.callout.text || phase.callout.content || '';
-            calloutContent.innerHTML = `<strong>${phase.callout.title || ''}</strong> ${calloutText}`;
-
-            callout.appendChild(icon);
-            callout.appendChild(calloutContent);
-            details.appendChild(callout);
-        }
-
-        // Rich Media
-        if (phase.media) {
-            hasDetails = true;
-            if (phase.media.carousel) details.appendChild(this.createImageCarousel(phase.media.carousel));
-            if (phase.media.codeComparison) details.appendChild(this.createCodeComparison(phase.media.codeComparison));
-            if (phase.media.codeSnippet) details.appendChild(this.createCodeSnippet(phase.media.codeSnippet));
-        }
-
-        // Legacy Support
-        if (phase.codeComparison && !phase.media?.codeComparison) {
-            hasDetails = true;
-            details.appendChild(this.createCodeComparison(phase.codeComparison));
-        }
-        if (phase.imageCarousel && !phase.media?.carousel) {
-            hasDetails = true;
-            details.appendChild(this.createImageCarousel(phase.imageCarousel));
-        }
-
-        // Metrics
-        if (phase.metrics) {
-            hasDetails = true;
-            const metricsTitle = document.createElement('h4');
-            metricsTitle.textContent = 'By The Numbers:';
-            metricsTitle.className = 'dev-only';
-            details.appendChild(metricsTitle);
-
-            const metricsGrid = document.createElement('div');
-            metricsGrid.className = 'stats-mini-grid dev-only';
-            const metricLabels = {
-                linesAdded: 'Lines Added', filesChanged: 'Files Changed', components: 'New Components',
-                timeSpent: 'Time Spent', features: 'Features', issuesFixed: 'Fixed',
-                crewMembers: 'Crew Members', suggestions: 'Suggestions', priority: 'Priority',
-                loreBlocks: 'Lore Blocks', crewSignatures: 'Crew Signatures',
-                filesModified: 'Files Modified', soulRestored: 'Soul Restored'
-            };
-            Object.keys(phase.metrics).forEach(key => {
-                const label = metricLabels[key] || key.replace(/([A-Z])/g, ' $1').trim();
-                metricsGrid.appendChild(this.createMetricCard(phase.metrics[key], label));
-            });
-            details.appendChild(metricsGrid);
-        }
-
-        // Sub-entries
-        if (phase.subEntries && phase.subEntries.length > 0) {
-            hasDetails = true;
-            // ... (keep sub-entry logic simple for now, or copy full block)
-            // For conciseness in this replace, I'm assuming full logic is preserved by manual copy if needed, 
-            // but since I'm rewriting the FUNCTION, I must include it.
-            const subEntriesContainer = document.createElement('div');
-            subEntriesContainer.className = 'sub-entries-container';
-            subEntriesContainer.innerHTML = '<h4>System Ports:</h4>';
-
-            phase.subEntries.forEach(subEntry => {
-                // Simplified logic for brevity in this prompt, but in reality I should preserve the complex logic
-                // I'll skip the detailed sub-entry rewrite for now and just append a placeholder if needed, 
-                // BUT wait, I need to match the user's existing logic.
-                // I will use my previously read code to reconstruct it.
-                /* ... Reconstructing ... */
-                const subItem = document.createElement('div');
-                subItem.className = 'sub-entry';
-                subItem.innerHTML = `
-                    <div class="sub-entry-header">
-                        <span class="sub-entry-emoji">${subEntry.emoji || '📦'}</span> 
-                        <strong>${subEntry.title}</strong> 
-                        <span class="sub-entry-date">${subEntry.date || ''}</span>
-                    </div>
-                    <p class="sub-entry-summary">${subEntry.summary || ''}</p>
-                 `;
-                if (subEntry.codeComparison) subItem.appendChild(this.createCodeComparison(subEntry.codeComparison));
-                subEntriesContainer.appendChild(subItem);
-            });
-            details.appendChild(subEntriesContainer);
-        }
-
-        // Toggle Button
-        if (hasDetails) {
-            const toggle = document.createElement('button');
-            toggle.className = 'expand-toggle';
-            toggle.innerHTML = 'View details';
-            toggle.setAttribute('aria-expanded', 'false');
-
-            toggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isExpanded = item.classList.toggle('expanded');
-                toggle.setAttribute('aria-expanded', isExpanded);
-                toggle.innerHTML = isExpanded ? 'Hide details' : 'View details';
-            });
-
-            content.appendChild(toggle);
-            content.appendChild(details);
-        }
-
-        item.appendChild(marker);
-        item.appendChild(content);
-        return item;
-    }
-
-    createMetricCard(value, label) {
-        const card = document.createElement('div');
-        card.className = 'stat-mini';
-
-        const num = document.createElement('span');
-        num.className = 'stat-num';
-        num.textContent = value;
-
-        const desc = document.createElement('span');
-        desc.className = 'stat-desc';
-        desc.textContent = label;
-
-        card.appendChild(num);
-        card.appendChild(desc);
-        return card;
-    }
-
-    createImageCarousel(images) {
-        const container = document.createElement('div');
-        container.className = 'timeline-carousel-container';
-
-        const carousel = document.createElement('div');
-        carousel.className = 'timeline-carousel';
-
-        images.forEach(imgData => {
-            const item = document.createElement('div');
-            item.className = 'carousel-item';
-
-            const img = document.createElement('img');
-            img.src = imgData.url || imgData.src;
-            img.alt = imgData.caption || 'Screenshot';
-            img.loading = 'lazy'; // Lazy load images
-
-            const caption = document.createElement('span');
-            caption.className = 'carousel-label';
-            caption.textContent = imgData.caption;
-
-            item.appendChild(img);
-            item.appendChild(caption);
-            carousel.appendChild(item);
-        });
-
-        container.appendChild(carousel);
-        return container;
-    }
-
-    createCodeComparison(comparison) {
-        const container = document.createElement('div');
-        container.className = 'code-comparison';
-
-        // Before Block
-        if (comparison.before) {
-            const beforeWindow = document.createElement('div');
-            beforeWindow.className = 'code-window';
-
-            const header = document.createElement('div');
-            header.className = 'code-header';
-            header.innerHTML = `<span>${comparison.before.title || 'Before'}</span><span class="code-badge badge-chaos">${comparison.before.badge || 'CHAOS'}</span>`;
-
-            const content = document.createElement('div');
-            content.className = 'code-content';
-
-            const pre = document.createElement('pre');
-            const code = document.createElement('code');
-            code.className = `language-${comparison.before.lang || 'javascript'}`;
-            code.textContent = comparison.before.code;
-
-            pre.appendChild(code);
-            content.appendChild(pre);
-
-            beforeWindow.appendChild(header);
-            beforeWindow.appendChild(content);
-            container.appendChild(beforeWindow);
-        }
-
-        // After Block
-        if (comparison.after) {
-            const afterWindow = document.createElement('div');
-            afterWindow.className = 'code-window';
-
-            const header = document.createElement('div');
-            header.className = 'code-header';
-            header.innerHTML = `<span>${comparison.after.title || 'After'}</span><span class="code-badge badge-order">${comparison.after.badge || 'ORDER'}</span>`;
-
-            const content = document.createElement('div');
-            content.className = 'code-content';
-
-            const pre = document.createElement('pre');
-            const code = document.createElement('code');
-            code.className = `language-${comparison.after.lang || 'typescript'}`;
-            code.textContent = comparison.after.code;
-
-            pre.appendChild(code);
-            content.appendChild(pre);
-
-            afterWindow.appendChild(header);
-            afterWindow.appendChild(content);
-            container.appendChild(afterWindow);
-        }
-
-        return container;
-    }
-
-    createCodeSnippet(snippet) {
-        const container = document.createElement('div');
-        container.className = 'code-snippet-container';
-
-        const pre = document.createElement('pre');
-        const code = document.createElement('code');
-        code.className = `language-${snippet.lang || 'typescript'}`;
-        code.textContent = snippet.code;
-
-        pre.appendChild(code);
-        container.appendChild(pre);
-
-        if (snippet.caption) {
-            const caption = document.createElement('div');
-            caption.className = 'code-caption';
-            caption.textContent = snippet.caption;
-            container.appendChild(caption);
-        }
-
-        return container;
-    }
-}
-
-
-// Initialize timeline renderer
+// Initialize Renderer if timeline container exists
 document.addEventListener('DOMContentLoaded', () => {
-    const timelineRenderer = new TimelineRenderer('#timeline-container');
-    timelineRenderer.loadTimeline();
+    if (document.getElementById('timeline-container')) {
+        // Ensure TimelineRenderer is loaded
+        if (window.TimelineRenderer) {
+            const renderer = new window.TimelineRenderer('#timeline-container');
+        } else {
+            console.error('TimelineRenderer class not found');
+        }
+    }
 });
+
+
+
 
 // ==========================================
 // PHASE NAVIGATION

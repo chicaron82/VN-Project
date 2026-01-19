@@ -46,6 +46,17 @@ class UV7OSLanding {
         console.log('🚀 UV7 OS Landing Wrapper initialized');
     }
 
+    initAppSwitcher() {
+        if (typeof UV7AppSwitcher !== 'undefined') {
+            if (!window.uv7AppSwitcher) {
+                window.uv7AppSwitcher = new UV7AppSwitcher();
+            }
+            console.log('📱 UV7 App Switcher linked');
+        } else {
+            console.warn('⚠️ UV7AppSwitcher not loaded');
+        }
+    }
+
     cacheElements() {
         this.elements = {
             // Status bar

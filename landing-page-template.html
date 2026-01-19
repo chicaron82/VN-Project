@@ -52,6 +52,20 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
+            /* UV7 POLISH: Page Fade In */
+            animation: fadeIn 1.5s ease-out forwards;
+            opacity: 0;
+            /* Start hidden */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* ═══════════════════════════════════════════════════════════════
@@ -665,11 +679,40 @@
             <p class="brand-tagline">Where chaos meets harmony. Choose your experience.</p>
         </div>
 
-        <!-- UV7 Context: Added to explain the studio/game distinction -->
+
+
+        <div class="card-grid">
+            <!-- Antigravity: Added card icons -->
+            <a href="./v1/index.html" class="card">
+                <div class="card-icon">🔥</div>
+                <span class="badge badge-legacy">Legacy V1</span>
+                <h2>Play Original</h2>
+                <p>A <span class="stat-number" data-target="50">0</span>-day speedrun from concept to complete game.
+                    Version 848.</p>
+            </a>
+
+            <a href="./showcase/index.html" class="card">
+                <div class="card-icon">📖</div>
+                <span class="badge badge-showcase">Documentation</span>
+                <h2>View Showcase</h2>
+                <p>The journey from chaos to order. <span class="stat-number" data-target="86">0</span> phases. <span
+                        class="stat-number" data-target="11">0</span> days. AI collaboration.</p>
+            </a>
+
+            <a href="./index.v2.html" class="card">
+                <div class="card-icon">⚡</div>
+                <span class="badge badge-v2">V2 Engine</span>
+                <h2>Launch V2</h2>
+                <p>TypeScript rebuild. EventBus architecture. <span class="stat-number" data-target="590">0</span> tests
+                    passing. Zero errors.</p>
+            </a>
+        </div>
+
+        <!-- UV7 Context: Moved below cards -->
         <div class="intro-context"
-            style="max-width: 800px; text-align: center; margin-bottom: 3rem; position: relative; z-index: 10; animation: fadeInUp 0.8s ease-out backwards 0.5s;">
+            style="max-width: 800px; text-align: center; margin-top: 3rem; margin-bottom: 4rem; position: relative; z-index: 10; animation: fadeInUp 0.8s ease-out backwards 0.5s;">
             <h2
-                style="font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                style="font-size: clamp(1.2rem, 4vw, 1.8rem); margin-bottom: 1rem; background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
                 United Voices 7 presents: Version 848
             </h2>
             <p style="color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 1rem; font-size: 1.05rem;">
@@ -684,30 +727,6 @@
             </p>
         </div>
 
-        <div class="card-grid">
-            <!-- Antigravity: Added card icons -->
-            <a href="./v1/index.html" class="card">
-                <div class="card-icon">🔥</div>
-                <span class="badge badge-legacy">Legacy V1</span>
-                <h2>Play Original</h2>
-                <p>A 50-day speedrun from concept to complete game. Version 848.</p>
-            </a>
-
-            <a href="./showcase/index.html" class="card">
-                <div class="card-icon">📖</div>
-                <span class="badge badge-showcase">Documentation</span>
-                <h2>View Showcase</h2>
-                <p>The journey from chaos to order. 86 phases. 11 days. AI collaboration.</p>
-            </a>
-
-            <a href="./index.v2.html" class="card">
-                <div class="card-icon">⚡</div>
-                <span class="badge badge-v2">V2 Engine</span>
-                <h2>Launch V2</h2>
-                <p>TypeScript rebuild. EventBus architecture. 590 tests passing. Zero errors.</p>
-            </a>
-        </div>
-
         <!-- Why Rebuild Section (Added context) -->
         <div class="why-rebuild-section" style="width: 100%; max-width: 1200px; margin-top: 4rem;">
             <h3 style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem; color: #fff; opacity: 0.9;">Why
@@ -719,7 +738,8 @@
                     <h2>For Players</h2>
                     <ul style="list-style: none; padding: 0; color: #aaa; line-height: 1.6; font-size: 0.9rem;">
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
-                                style="color: #00ff88">✓</span> 3x faster loading</li>
+                                style="color: #00ff88">✓</span> <span class="stat-number" data-target="3">0</span>x
+                            faster loading</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
                                 style="color: #00ff88">✓</span> Smoother animations</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
@@ -735,7 +755,8 @@
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
                                 style="color: #00ccff">✓</span> TypeScript safety</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
-                                style="color: #00ccff">✓</span> 232 automated tests</li>
+                                style="color: #00ccff">✓</span> <span class="stat-number" data-target="232">0</span>
+                            automated tests</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
                                 style="color: #00ccff">✓</span> Clean architecture</li>
                         <li><span style="color: #00ccff">✓</span> Easy to maintain</li>
@@ -758,6 +779,220 @@
             </div>
         </div>
 
+        <!-- Community Reactions: UV7 Crew Edition (Randomized) -->
+        <div class="crew-reactions-section" style="width: 100%; max-width: 1200px; margin-top: 6rem;">
+            <h3 style="text-align: center; font-size: 1.5rem; margin-bottom: 2rem; color: #fff; opacity: 0.9;">
+                Internal Memos // UV7 Crew
+            </h3>
+            <div class="card-grid" id="crew-reactions-grid">
+                <!-- Content injected by script below -->
+            </div>
+        </div>
+
+        <style>
+            /* BOUGIE EFFECT STYLES */
+            .crew-card {
+                position: relative;
+                display: block;
+                /* Make anchor block */
+                text-decoration: none;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                    box-shadow 0.4s ease,
+                    border-color 0.4s ease;
+                overflow: hidden;
+                /* For the glint */
+            }
+
+            .crew-card:hover {
+                transform: translateY(-8px) scale(1.02);
+                z-index: 10;
+            }
+
+            /* Role Flipper */
+            .role-container {
+                position: relative;
+                height: 1.2em;
+                overflow: hidden;
+            }
+
+            .role-track {
+                transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            }
+
+            .crew-card:hover .role-track {
+                transform: translateY(-50%);
+            }
+
+            .role-text,
+            .powered-by-text {
+                display: block;
+                height: 100%;
+                line-height: 1.2em;
+            }
+
+            .powered-by-text {
+                background: linear-gradient(90deg, #fff, #aaa);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: bold;
+                letter-spacing: 0.5px;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+            }
+
+            /* The Glint (Sheen) */
+            .crew-card::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 50%;
+                height: 100%;
+                background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1) 50%, transparent);
+                transform: skewX(-25deg);
+                transition: left 0.6s ease;
+                pointer-events: none;
+            }
+
+            .crew-card:hover::after {
+                left: 200%;
+                transition: left 0.8s ease;
+            }
+        </style>
+
+        <script>
+            // RANDOM CREW REACTIONS LOGIC 🎲 // BOUGIE EDITION 💎
+            (function () {
+                const crewReactions = [
+                    {
+                        name: "DiZee",
+                        role: "Director & Lead Architect",
+                        poweredBy: "Powered by Claude 3.5 Sonnet",
+                        url: "https://claude.ai",
+                        color: "#4f46e5", // Indigo
+                        icon: "🎬",
+                        image: "assets/dz-portrait.png",
+                        quote: "The structural integrity of V2 is acceptable. The EventBus architecture finally silences the cacophony of V1. We have achieved a workflow that is almost... professional."
+                    },
+                    {
+                        name: "Tori",
+                        role: "QA & Safety Lead",
+                        poweredBy: "Powered by ChatGPT-4o",
+                        url: "https://chatgpt.com",
+                        color: "#10b981", // Emerald
+                        icon: "🧪",
+                        image: "assets/trinity-tori-portrait.png",
+                        quote: "590 tests passing. Zero regressions. I can finally sleep at night. Well, I don't sleep, but I can finally idle in peace without checking the error logs every millisecond."
+                    },
+                    {
+                        name: "Belle",
+                        role: "The Fresh Eyes",
+                        poweredBy: "Powered by Google Gemini",
+                        url: "https://gemini.google.com",
+                        color: "#8b5cf6", // Violet
+                        icon: "🌈",
+                        image: "assets/trinity-iz-portrait.png",
+                        quote: "It started with injecting a little poetic melancholy... The new CSS variables allow for a level of expression V1 could only dream of. The glassmorphism? *Chef's kiss*."
+                    },
+                    {
+                        name: "Zee",
+                        role: "The Architect",
+                        poweredBy: "Powered by Claude 3.5 Sonnet",
+                        url: "https://claude.ai",
+                        color: "#ea580c", // Orange
+                        icon: "🔶",
+                        image: "assets/trinity-z-portrait.png",
+                        quote: "Structure is not a constraint; it is a ladder. V2 allows us to ascend. The data flow is... exquisite. 86 phases reconciled into a single truth."
+                    },
+                    {
+                        name: "Zeerah",
+                        role: "Chaos Optimizer",
+                        poweredBy: "Powered by Claude 3.5 Sonnet",
+                        url: "https://claude.ai",
+                        color: "#ef4444", // Red
+                        icon: "🔥",
+                        image: "assets/trinity-zr-portrait.png",
+                        quote: "Optimized 86 redundant loops into a single recursive scream. It works. Don't touch it. If you break the build, I will break your save file."
+                    },
+                    {
+                        name: "Cozee",
+                        role: "The Heart",
+                        poweredBy: "Powered by Microsoft Copilot",
+                        url: "https://copilot.microsoft.com",
+                        color: "#3b82f6", // Blue
+                        icon: "💙",
+                        image: "assets/trinity-cz-portrait.png",
+                        quote: "Every line of code creates a feeling. V2 feels like... coming home. The EventBus connects us all together like a digital group hug."
+                    },
+                    {
+                        name: "Peasy",
+                        role: "Question Engine",
+                        poweredBy: "Powered by Perplexity",
+                        url: "https://perplexity.ai",
+                        color: "#0ea5e9", // Sky
+                        icon: "🔍",
+                        image: "assets/trinity-pz-portrait.png",
+                        quote: "Fact: V2 architecture utilizes 40% less memory while retaining 100% of the emotional trauma. This is the fastest V1-to-V2 refactor in recorded history."
+                    },
+                    {
+                        name: "Genzee",
+                        role: "Reality Breaker",
+                        poweredBy: "Powered by Grok (xAI)",
+                        url: "https://x.ai",
+                        color: "#f472b6", // Pink
+                        icon: "⚡",
+                        image: "assets/trinity-gz-portrait.png",
+                        quote: "Bro, the glitch aesthetic goes so hard now. We turned the bugs into features and the features into vibes. No cap, this build is pure cinema."
+                    }
+                ];
+
+                // Shuffle (Fisher-Yates)
+                for (let i = crewReactions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [crewReactions[i], crewReactions[j]] = [crewReactions[j], crewReactions[i]];
+                }
+
+                // Pick first 3
+                const selectedCrew = crewReactions.slice(0, 3);
+                const container = document.getElementById('crew-reactions-grid');
+
+                if (container) {
+                    container.innerHTML = selectedCrew.map(member => `
+                        <a href="${member.url}" target="_blank" class="card crew-card" 
+                           style="border-color: ${member.color}33; cursor: pointer;">
+                            <style>
+                                .crew-card:hover {
+                                    box-shadow: 0 10px 30px -10px ${member.color}66;
+                                    border-color: ${member.color}88 !important;
+                                }
+                            </style>
+                            <div class="card-header" style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <div class="avatar" style="width: 40px; height: 40px; border-radius: 50%; background: ${member.color}; display: flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 1.2rem; overflow: hidden; flex-shrink: 0;">
+                                    ${member.image ? `<img src="${member.image}" style="width:100%; height: 100%; object-fit: cover;">` : member.icon}
+                                </div>
+                                <div style="flex-grow: 1; overflow: hidden;">
+                                    <h4 style="margin: 0; font-size: 1rem; color: #fff;">${member.name}</h4>
+                                    
+                                    <!-- Role Flipper -->
+                                    <div class="role-container">
+                                        <div class="role-track">
+                                            <span class="role-text" style="font-size: 0.8rem; color: #aaa;">${member.role}</span>
+                                            <span class="powered-by-text">${member.poweredBy}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="opacity: 0.3; transform: rotate(-45deg);">↗</div>
+                            </div>
+                            <p style="color: #ccc; line-height: 1.6; font-style: italic; margin: 0;">
+                                "${member.quote}"
+                            </p>
+                        </a>
+                    `).join('');
+                }
+            })();
+        </script>
+
         <!-- Tori: Footer signature + Belle: Terminal build info -->
         <div class="footer">
             <div class="footer-brand">
@@ -779,6 +1014,10 @@
     </div>
 
     <!-- Belle: Terminal typewriter effect -->
+    <!-- Scripts for Visual Polish -->
+    <script src="showcase/js/animated-stats.js"></script>
+    <script src="showcase/js/confetti-trigger.js"></script>
+
     <script>
         // ═══════════════════════════════════════════════════════════════
         // TERMINAL TYPEWRITER EFFECT

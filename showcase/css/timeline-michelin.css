@@ -1,0 +1,209 @@
+/* ==========================================
+   TIMELINE MICHELIN TREATMENT 🍽️
+   ========================================== */
+
+/* --- Sticky Visual Toolbar --- */
+.timeline-toolbar-container {
+    position: sticky;
+    top: 70px;
+    /* Below status bar */
+    z-index: 90;
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    background: linear-gradient(to bottom, rgba(11, 11, 15, 0.95) 0%, rgba(11, 11, 15, 0.8) 80%, transparent 100%);
+    backdrop-filter: blur(5px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.timeline-toolbar {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+}
+
+/* Controls */
+.toolbar-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.timeline-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.timeline-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.timeline-btn.active {
+    background: rgba(0, 255, 136, 0.15);
+    border-color: rgba(0, 255, 136, 0.4);
+    color: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+}
+
+/* Search Bar */
+.search-wrapper {
+    flex-grow: 1;
+    position: relative;
+}
+
+.timeline-search {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-search:focus {
+    outline: none;
+    border-color: rgba(0, 204, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.1);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    pointer-events: none;
+    font-size: 0.9rem;
+}
+
+/* --- Spotlight Effect --- */
+.timeline-phases {
+    position: relative;
+    transition: all 0.5s ease;
+}
+
+.timeline-phases.spotlight-mode .timeline-item {
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+
+/* Dimmed State */
+.timeline-phases.spotlight-mode .timeline-item.dimmed {
+    opacity: 0.1;
+    filter: blur(2px) grayscale(100%);
+    pointer-events: none;
+    transform: scale(0.98);
+}
+
+/* Focused State */
+.timeline-phases.spotlight-mode .timeline-item.focused {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.02);
+    z-index: 10;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Signal Timeline Animation --- */
+/* The vertical line base is likely in styles.css or similar. 
+   We will enhance the existing .timeline::before or creating a dedicated signal element */
+
+.timeline-signal-track {
+    position: absolute;
+    left: 50%;
+    /* Adjust based on original timeline */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255, 255, 255, 0.05);
+    /* Faint track */
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.timeline-signal-pulse {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    /* JS will animate this */
+    width: 4px;
+    height: 100px;
+    /* Length of the signal */
+    background: linear-gradient(to bottom, transparent, #00ff88, transparent);
+    transform: translateX(-50%);
+    box-shadow: 0 0 15px #00ff88;
+    z-index: 1;
+    transition: top 0.1s linear;
+    /* Smooth follow */
+    opacity: 0;
+}
+
+.timeline-section:hover .timeline-signal-pulse {
+    opacity: 1;
+}
+
+/* --- Velocity Indicators --- */
+/* Heat markers on the scrollbar or side */
+.velocity-heatmap {
+    position: absolute;
+    right: -10px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+.velocity-marker {
+    width: 100%;
+    margin-bottom: 2px;
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+.velocity-high {
+    background: #ff0055;
+    box-shadow: 0 0 5px #ff0055;
+}
+
+.velocity-med {
+    background: #ff9900;
+}
+
+.velocity-low {
+    background: #00ccff;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .timeline-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .toolbar-group {
+        justify-content: space-between;
+    }
+
+    .timeline-search {
+        width: 100%;
+    }
+}

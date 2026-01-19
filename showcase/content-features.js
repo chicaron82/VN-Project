@@ -261,7 +261,7 @@
 
         initShareButtons();
         initDarkMode();
-        initTimelineSearch();
+        // initTimelineSearch(); // Disabled: Handled by TimelineRenderer (Michelin)
         addGitHubLinks();
 
         console.log('✨ Content features ready!');
