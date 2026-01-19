@@ -92,17 +92,7 @@
 
     <!-- Bridge to V2 System Components -->
     <script src="js/uv7-system-bridge.js"></script>
-    <script>
-        // Initialize UV7 Status Bar
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.UV7System) {
-                console.log('🚀 Initializing UV7 Status Bar...');
-                window.UV7System.createStatusBar('status-bar-container', 'showcase');
-            } else {
-                console.error('❌ UV7System not found. Bridge failed to load.');
-            }
-        });
-    </script>
+
 
     <!-- System Banner (Michelin Polish) -->
     <div class="system-banner">
@@ -1701,7 +1691,7 @@ const state = StateManager.getState();
 
         <!-- UV7 OS (Showcase Context) -->
         <script src="uv7-grab-handle.js"></script>
-        <script src="uv7-app-switcher.js"></script>
+
         <script src="uv7-os.js"></script>
         <script src="showcase-carousel.js"></script>
 

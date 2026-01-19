@@ -140,16 +140,29 @@
         // Wait for page load
         window.addEventListener('load', () => {
             // Use Performance API
-            if (window.performance && window.performance.timing) {
-                const timing = window.performance.timing;
-                const loadTime = timing.loadEventEnd - timing.navigationStart;
-                const domReady = timing.domContentLoadedEventEnd - timing.navigationStart;
-                const firstPaint = timing.responseEnd - timing.fetchStart;
+            // Use Performance API (Navigation Timing Level 2)
+            if (performance.getEntriesByType) {
+                const navEntry = performance.getEntriesByType("navigation")[0];
+                if (navEntry) {
+                    const loadTime = Math.round(navEntry.loadEventEnd || navEntry.duration); // duration is a safe fallback if loadEventEnd is 0
+                    const domReady = Math.round(navEntry.domContentLoadedEventEnd);
 
-                console.log('⚡ Performance Metrics:');
+                    console.log('⚡ Performance Metrics:');
+                    console.log(`  Load Time: ${loadTime}ms`);
+                    console.log(`  DOM Ready: ${domReady}ms`);
+
+                    analytics.track('Performance', 'Page Load', 'Load Time', loadTime);
+                }
+            } else if (window.performance && window.performance.timing) {
+                // Fallback for older browsers
+                const timing = window.performance.timing;
+                const now = Date.now();
+                const loadTime = now - timing.navigationStart; // Use current time avoiding 0 loadEventEnd
+                const domReady = timing.domContentLoadedEventEnd - timing.navigationStart;
+
+                console.log('⚡ Performance Metrics (Legacy):');
                 console.log(`  Load Time: ${loadTime}ms`);
                 console.log(`  DOM Ready: ${domReady}ms`);
-                console.log(`  First Paint: ${firstPaint}ms`);
 
                 analytics.track('Performance', 'Page Load', 'Load Time', loadTime);
             }
