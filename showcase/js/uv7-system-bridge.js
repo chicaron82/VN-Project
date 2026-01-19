@@ -1,4 +1,4 @@
-(function() {
+(function () {
   "use strict";
   class EventBus {
     constructor(maxHistorySize = 100, historyEnabled = true) {
@@ -663,6 +663,8 @@
     createDOM() {
       this.container = document.createElement("div");
       this.container.id = "status-bar";
+      this.container.className = "uv7-status-bar"; // Added class for styling
+      document.body.classList.add("uv7-os-enabled"); // Added body padding
       this.container.dataset.context = this.context;
       this.container.innerHTML = `
             <!-- Left Section: Logo + Loop/Context -->
