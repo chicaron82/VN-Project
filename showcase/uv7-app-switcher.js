@@ -20,16 +20,170 @@ class UV7AppSwitcher {
         this.undoBackup = null;
         this.undoTimeout = null;
 
+        // Phase 26c: Background monitoring
+        this.backgroundMonitorInterval = null;
+        this.backgroundIndicators = new Map();
+
         this.init();
     }
 
     init() {
         this.injectHTML();
+        this.injectStyles(); // Phase 26c: Inject enhanced styles
         this.cacheElements();
         this.attachHandlers();
         this.render();
 
+        // Phase 26c: Start background monitoring for alerts
+        this.startBackgroundMonitor();
+
         console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 26c: ENHANCED STYLES INJECTION
+    // ═══════════════════════════════════════════════════════════════
+
+    injectStyles() {
+        // Only inject once
+        if (document.getElementById('uv7-app-switcher-enhanced-styles')) return;
+
+        const styles = document.createElement('style');
+        styles.id = 'uv7-app-switcher-enhanced-styles';
+        styles.textContent = `
+            /* Phase 26c: Heartbeat animation for alive apps */
+            @keyframes heartbeat {
+                0%, 100% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.15); opacity: 0.8; }
+            }
+
+            @keyframes heartbeat-glow {
+                0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0); }
+                50% { box-shadow: 0 0 15px 3px rgba(0, 255, 136, 0.4); }
+            }
+
+            .app-card.alive .app-preview-icon {
+                animation: heartbeat 2s ease-in-out infinite;
+            }
+
+            .app-card.alive {
+                animation: heartbeat-glow 2s ease-in-out infinite;
+            }
+
+            .app-card.alive::before {
+                content: '';
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                width: 8px;
+                height: 8px;
+                background: #00ff88;
+                border-radius: 50%;
+                animation: heartbeat 1s ease-in-out infinite;
+                z-index: 10;
+            }
+
+            /* Phase 26c: Background indicator pill */
+            .bg-indicator-pill {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(15, 15, 26, 0.95));
+                border: 1px solid rgba(0, 255, 255, 0.3);
+                border-radius: 20px;
+                padding: 8px 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                z-index: 9998;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+                font-family: 'Courier New', monospace;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.9);
+                transition: all 0.3s ease;
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            .bg-indicator-pill.visible {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .bg-indicator-pill:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+                border-color: rgba(0, 255, 255, 0.5);
+            }
+
+            .bg-indicator-pill.urgent {
+                border-color: rgba(255, 100, 100, 0.5);
+                animation: pulse-urgent 1.5s ease-in-out infinite;
+            }
+
+            @keyframes pulse-urgent {
+                0%, 100% { box-shadow: 0 4px 20px rgba(255, 100, 100, 0.2); }
+                50% { box-shadow: 0 4px 25px rgba(255, 100, 100, 0.5); }
+            }
+
+            .bg-indicator-icon {
+                font-size: 16px;
+            }
+
+            .bg-indicator-text {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+            }
+
+            .bg-indicator-app {
+                font-weight: bold;
+                font-size: 11px;
+            }
+
+            .bg-indicator-state {
+                font-size: 10px;
+                opacity: 0.7;
+            }
+
+            .bg-indicator-close {
+                background: none;
+                border: none;
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                padding: 2px 4px;
+                font-size: 10px;
+                transition: color 0.2s;
+            }
+
+            .bg-indicator-close:hover {
+                color: rgba(255, 255, 255, 0.9);
+            }
+
+            /* Phase 26c: Activity badge on app cards */
+            .app-activity-badge {
+                position: absolute;
+                top: -4px;
+                right: -4px;
+                background: #ff4444;
+                color: white;
+                font-size: 10px;
+                font-weight: bold;
+                padding: 2px 6px;
+                border-radius: 10px;
+                animation: bounce-in 0.3s ease;
+            }
+
+            @keyframes bounce-in {
+                0% { transform: scale(0); }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(styles);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -268,6 +422,114 @@ class UV7AppSwitcher {
         if (days < 7) return `${days}d ago`;
 
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 26c: BACKGROUND MONITORING & ALERTS
+    // Check background apps for urgent states (ToriGatchi hungry, etc.)
+    // ═══════════════════════════════════════════════════════════════
+
+    startBackgroundMonitor() {
+        // Check background apps every 30 seconds
+        this.backgroundMonitorInterval = setInterval(() => {
+            this.checkBackgroundApps();
+        }, 30000);
+
+        // Initial check
+        setTimeout(() => this.checkBackgroundApps(), 2000);
+    }
+
+    checkBackgroundApps() {
+        this.apps.forEach(app => {
+            // Skip current app
+            if (app.id === this.currentApp) return;
+
+            const stateData = app.getState();
+
+            // Check for urgent conditions
+            if (app.id === 'torigatchi' && stateData.isHangry) {
+                this.showBackgroundIndicator(app, stateData, true);
+            } else if (stateData.hasSave && this.shouldShowReminder(app)) {
+                // Show gentle reminder for apps not visited in 24+ hours
+                this.showBackgroundIndicator(app, stateData, false);
+            }
+        });
+    }
+
+    shouldShowReminder(app) {
+        const lastPlayedKey = `uv7_last_played_${app.id}`;
+        const lastPlayed = localStorage.getItem(lastPlayedKey);
+        if (!lastPlayed) return false;
+
+        const hoursSince = (Date.now() - parseInt(lastPlayed)) / (1000 * 60 * 60);
+        return hoursSince > 24;
+    }
+
+    showBackgroundIndicator(app, stateData, isUrgent) {
+        // Only show one indicator at a time per app
+        const existingPill = document.querySelector(`[data-bg-app="${app.id}"]`);
+        if (existingPill) return;
+
+        // Don't spam - check dismissal memory
+        const dismissedKey = `uv7-bg-dismissed-${app.id}`;
+        const dismissedAt = localStorage.getItem(dismissedKey);
+        if (dismissedAt) {
+            const hoursSinceDismiss = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60);
+            // Don't show again for 4 hours (or 1 hour if urgent)
+            if (hoursSinceDismiss < (isUrgent ? 1 : 4)) return;
+        }
+
+        const pill = document.createElement('div');
+        pill.className = `bg-indicator-pill ${isUrgent ? 'urgent' : ''}`;
+        pill.dataset.bgApp = app.id;
+
+        const stateText = Array.isArray(stateData.state) ? stateData.state.join(' • ') : stateData.state;
+
+        pill.innerHTML = `
+            <span class="bg-indicator-icon">${app.icon}</span>
+            <div class="bg-indicator-text">
+                <span class="bg-indicator-app">${app.name}</span>
+                <span class="bg-indicator-state">${stateText}</span>
+            </div>
+            <button class="bg-indicator-close" aria-label="Dismiss">✕</button>
+        `;
+
+        // Click to open app
+        pill.addEventListener('click', (e) => {
+            if (e.target.classList.contains('bg-indicator-close')) return;
+            this.launchApp(app);
+            pill.remove();
+        });
+
+        // Dismiss button
+        const closeBtn = pill.querySelector('.bg-indicator-close');
+        closeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            localStorage.setItem(dismissedKey, Date.now().toString());
+            pill.classList.remove('visible');
+            setTimeout(() => pill.remove(), 300);
+        });
+
+        document.body.appendChild(pill);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            pill.classList.add('visible');
+        });
+
+        // Haptic for urgent
+        if (isUrgent && navigator.vibrate) {
+            navigator.vibrate([50, 50, 50]);
+        }
+
+        console.log(`🔔 Background alert: ${app.name} - ${stateText}`);
+    }
+
+    stopBackgroundMonitor() {
+        if (this.backgroundMonitorInterval) {
+            clearInterval(this.backgroundMonitorInterval);
+            this.backgroundMonitorInterval = null;
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -649,7 +911,10 @@ class UV7AppSwitcher {
         const isActive = app.id === this.currentApp;
         const isHangry = stateData.isHangry;
 
-        card.className = `app-card ${isActive ? 'active' : ''} ${isHangry ? 'hangry' : ''}`;
+        // Phase 26c: Check if app is "alive" (has recent activity)
+        const isAlive = this.isAppAlive(app, stateData);
+
+        card.className = `app-card ${isActive ? 'active' : ''} ${isHangry ? 'hangry' : ''} ${isAlive ? 'alive' : ''}`;
         card.dataset.app = app.id;
 
         const lastPlayedStr = stateData.lastPlayed ? this.formatLastPlayed(stateData.lastPlayed) : '';
@@ -705,6 +970,39 @@ class UV7AppSwitcher {
         }
 
         return card;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 26c: "ALIVE" APP DETECTION
+    // Apps are "alive" if they have recent activity (within 30 minutes)
+    // or have ToriGatchi-style ongoing state
+    // ═══════════════════════════════════════════════════════════════
+
+    isAppAlive(app, stateData) {
+        // ToriGatchi is always "alive" if it has state
+        if (app.id === 'torigatchi' && stateData.hasSave) {
+            return true;
+        }
+
+        // Check for recent activity (within 30 minutes)
+        if (stateData.lastPlayed) {
+            const minutesSince = (Date.now() - stateData.lastPlayed.getTime()) / (1000 * 60);
+            if (minutesSince < 30) {
+                return true;
+            }
+        }
+
+        // Check explicit "last played" timestamp
+        const lastPlayedKey = `uv7_last_played_${app.id}`;
+        const lastPlayed = localStorage.getItem(lastPlayedKey);
+        if (lastPlayed) {
+            const minutesSince = (Date.now() - parseInt(lastPlayed)) / (1000 * 60);
+            if (minutesSince < 30) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     // ═══════════════════════════════════════════════════════════════

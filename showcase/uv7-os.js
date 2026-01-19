@@ -34,7 +34,8 @@ class UV7OS {
         this.enableSeamlessTransitions(); // BELLE: No flicker protocol
 
         // Initialize app switcher
-        setTimeout(() => this.initAppSwitcher(), 100);
+        // REFACTORED: Managed by Unified StatusBar (Phase 26b)
+        // setTimeout(() => this.initAppSwitcher(), 100);
 
         // Initialize Unified Status Bar
         this.initUnifiedStatusBar();
@@ -57,6 +58,7 @@ class UV7OS {
         console.log('🚀 UV7 OS initialized:', this.context);
     }
 
+    /*
     initAppSwitcher() {
         // Wait for UV7AppSwitcher to be available
         if (typeof UV7AppSwitcher !== 'undefined') {
@@ -75,6 +77,7 @@ class UV7OS {
             console.warn('⚠️ UV7AppSwitcher not loaded');
         }
     }
+    */
 
     cacheElements() {
         this.elements = {
