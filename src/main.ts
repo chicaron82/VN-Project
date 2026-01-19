@@ -1097,7 +1097,7 @@ async function init() {
 
     // Initialize global visual effects layer (for cross-screen transitions)
     // DIZEE FIX: Attach to document.body so clearScreen() (which clears #app) doesn't destroy the effects!
-    const effectsLayer = new VisualEffectsLayer(document.body, document.body, eventBus);
+    new VisualEffectsLayer(document.body, document.body, eventBus);
 
     // Trigger transition effect (V1 Parity) - Start rain FIRST
     // duration=2000ms (V1) - The opacity/z-index fix should make this visible now
