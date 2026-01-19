@@ -368,10 +368,20 @@ export class GameEngine {
     async start(): Promise<void> {
         if (!this.isInitialized) await this.init();
 
-        // Determine start scene (logic for save/load or new game)
-        // Default to 'start' or whatever config says
-        // For now, placeholder
-        // await this.loadScene('start'); 
+        console.log('[GameEngine] Starting game with polished transition...');
+
+        // 1) Trigger code rain AFTER effects layer exists
+        // Duration = 1200ms ensures it covers the load hitch
+        this.eventBus.emit('effect:code_rain', { duration: 1200 });
+
+        // 2) Delay the initial scene load so the rain is actually seen
+        // Wait 900ms (just before rain clears) to load the heavy scene
+        setTimeout(() => {
+            // Determine start scene (logic for save/load or new game)
+            // Default to 'start' or whatever config says
+            // For now, placeholder
+            this.loadScene('start');
+        }, 900);
     }
 
     // Accessors for testing
