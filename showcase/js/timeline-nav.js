@@ -1,68 +1,54 @@
 /**
- * Timeline Navigator
- * Handles sticky sidebar navigation for timeline phases and keyboard shortcuts
+ * Showcase Sidebar Navigator
+ * Handles sticky sidebar navigation for Showcase tabs and keyboard shortcuts
  */
 
-class TimelineNavigator {
+class ShowcaseSidebar {
     constructor() {
         this.nav = null;
-        this.phases = [];
-        this.observer = null;
+        this.tabs = [
+            { id: 'intro', label: 'Evolution', icon: '🧬' },
+            { id: 'timeline', label: 'Timeline', icon: '⏳' },
+            { id: 'features', label: 'Features', icon: '✨' },
+            { id: 'tech', label: 'Tech Stack', icon: '💻' },
+            { id: 'stats', label: 'Results', icon: '📊' },
+            { id: 'about', label: 'About', icon: 'ℹ️' }
+        ];
 
-        // Wait for timeline to be populated
-        this.initWhenReady();
-    }
-
-    initWhenReady() {
-        // Poll for timeline phases existence
-        const checkInterval = setInterval(() => {
-            const timeline = document.getElementById('timeline-container');
-            const phases = document.querySelectorAll('.timeline-phase');
-
-            if (timeline && phases.length > 0) {
-                clearInterval(checkInterval);
-                this.phases = Array.from(phases);
-                this.init();
-            }
-        }, 500);
-
-        // Stop checking after 10 seconds
-        setTimeout(() => clearInterval(checkInterval), 10000);
+        this.init();
     }
 
     init() {
         this.createNavigator();
-        this.setupObserver();
         this.setupKeyboardShortcuts();
-        this.setupTabListener();
+        this.setupStateListener();
+
+        // Initial active state check
+        setTimeout(() => this.updateActiveState(), 500);
     }
 
     createNavigator() {
         this.nav = document.createElement('div');
-        this.nav.className = 'timeline-navigator';
+        this.nav.className = 'timeline-navigator showcase-sidebar'; // Keep class for CSS compat
 
         const header = document.createElement('h4');
-        header.textContent = 'Timeline Phases';
+        header.textContent = 'Navigation';
         this.nav.appendChild(header);
 
         const list = document.createElement('ul');
         list.className = 'phase-list';
 
-        this.phases.forEach((phase, index) => {
-            // Ensure phase has ID
-            if (!phase.id) {
-                phase.id = `phase-${index + 1}`;
-            }
-
+        this.tabs.forEach((tab, index) => {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = `#${phase.id}`;
-            a.textContent = phase.querySelector('.phase-title')?.textContent || `Phase ${index + 1}`;
-            a.dataset.target = phase.id;
+            a.href = `#${tab.id}`;
+            a.innerHTML = `<span class="nav-icon">${tab.icon}</span> <span class="nav-label">${tab.label}</span>`;
+            a.dataset.target = tab.id;
+            a.dataset.index = index;
 
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                phase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                this.navigateToTab(tab.id);
             });
 
             li.appendChild(a);
@@ -71,34 +57,49 @@ class TimelineNavigator {
 
         this.nav.appendChild(list);
         document.body.appendChild(this.nav);
+
+        // Always visible now
+        requestAnimationFrame(() => this.nav.classList.add('visible'));
     }
 
-    setupObserver() {
-        const options = {
-            root: null,
-            rootMargin: '-20% 0px -60% 0px', // Active when in middle-ish of screen
-            threshold: 0
-        };
+    navigateToTab(tabId) {
+        // Trigger TabController
+        // Assuming TabController exposes a global method or we can click the tab button
+        const tabBtn = document.querySelector(`.tab-item[data-tab="${tabId}"]`);
+        if (tabBtn) {
+            tabBtn.click();
+        } else {
+            console.warn(`Tab button for ${tabId} not found`);
+        }
+    }
 
-        this.observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.setActive(entry.target.id);
-                }
-            });
-        }, options);
+    setupStateListener() {
+        // Listen for tab changes via mutation on the tab buttons
+        // Or if TabController emits an event. For now, rely on DOM mutation or click bubble.
 
-        this.phases.forEach(phase => {
-            this.observer.observe(phase);
+        // Option 1: Global click listener to catch tab changes
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.tab-item')) {
+                setTimeout(() => this.updateActiveState(), 50);
+            }
         });
+
+        // Option 2: Active Loop for robustness (simple polling)
+        setInterval(() => this.updateActiveState(), 1000);
     }
 
-    setActive(id) {
+    updateActiveState() {
         if (!this.nav) return;
+
+        // Find currently active tab button
+        const activeBtn = document.querySelector('.tab-navigation .tab-item.active');
+        if (!activeBtn) return;
+
+        const activeId = activeBtn.dataset.tab;
 
         const links = this.nav.querySelectorAll('a');
         links.forEach(link => {
-            if (link.dataset.target === id) {
+            if (link.dataset.target === activeId) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');
@@ -108,53 +109,25 @@ class TimelineNavigator {
 
     setupKeyboardShortcuts() {
         document.addEventListener('keydown', (e) => {
-            // Only if journey tab is active
-            if (!this.isJourneyActive()) return;
+            // Numbers 1-6 for tabs
+            // Only if not typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
-            // Numbers 1-9
-            if (e.key >= '1' && e.key <= '9') {
+            if (e.key >= '1' && e.key <= '6') {
                 const index = parseInt(e.key) - 1;
-                if (index < this.phases.length) {
-                    this.phases[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (index < this.tabs.length) {
+                    this.navigateToTab(this.tabs[index].id);
                 }
             }
         });
-    }
-
-    setupTabListener() {
-        // Toggle visibility based on active tab
-        const checkTab = () => {
-            if (this.isJourneyActive()) {
-                this.nav.classList.add('visible');
-            } else {
-                this.nav.classList.remove('visible');
-            }
-        };
-
-        // Initial check
-        checkTab();
-
-        // Listen for tab changes (MutationObserver on tab container active class)
-        // Or hooking into button clicks
-        const tabButtons = document.querySelectorAll('.tab-item');
-        tabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                setTimeout(checkTab, 100); // Wait for tab switch
-            });
-        });
-    }
-
-    isJourneyActive() {
-        const journeyPanel = document.querySelector('.tab-panel[data-panel="journey"]');
-        return journeyPanel && journeyPanel.classList.contains('active');
     }
 }
 
 // Initialize
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        new TimelineNavigator();
+        new ShowcaseSidebar();
     });
 } else {
-    new TimelineNavigator();
+    new ShowcaseSidebar();
 }

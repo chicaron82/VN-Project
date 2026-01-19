@@ -17,11 +17,36 @@
             const stats = await response.json();
             console.log('📊 Loaded real stats:', stats);
 
+            // Expose globally
+            window.UV7Stats = stats;
+
             // Update test count
             const testStat = document.querySelector('[data-stat-type="tests"] .stat-number');
             if (testStat && stats.testsPass !== undefined) {
                 testStat.dataset.target = stats.testsPass;
                 testStat.textContent = '0'; // Reset for animation
+            }
+
+            // Update Status Bar (System Right)
+            const sysRight = document.querySelector('.sys-right');
+            if (sysRight && stats.testsPass !== undefined) {
+                // If it's already typed, replace it
+                if (sysRight.textContent.includes('TESTS:')) {
+                    sysRight.textContent = sysRight.textContent.replace(/TESTS: \d+/, `TESTS: ${stats.testsPass}`);
+                }
+
+                // Also set an interval to check in case TabController is still typing
+                // The typing overwrites textContent, so we need to persist only after it's done?
+                // Or better: TabController types it once. If we replace it, we are good.
+                // But if we replace it WHILE it's typing, it might be messy.
+                // TabController takes ~2 seconds to type.
+                // We'll retry a few times.
+                setTimeout(() => {
+                    const el = document.querySelector('.sys-right');
+                    if (el && el.textContent.includes('TESTS:')) {
+                        el.textContent = el.textContent.replace(/TESTS: \d+/, `TESTS: ${stats.testsPass}`);
+                    }
+                }, 2000); // Check again after typing likely finishes
             }
 
             // Update phase count

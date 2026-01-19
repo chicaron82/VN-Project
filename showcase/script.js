@@ -508,6 +508,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure TimelineRenderer is loaded
         if (window.TimelineRenderer) {
             const renderer = new window.TimelineRenderer('#timeline-container');
+
+            // Initialize Scrubber if available
+            if (window.TimelineScrubber) {
+                new window.TimelineScrubber('.timeline-phases', renderer); // Pass container where dots should live (or body?)
+                // Actually, Scrubber usually lives in body or a fixed container. 
+                // Let's pass 'body' or just let it append itself to body if configured.
+                // My TimelineScrubber implementation expects a containerSelector to append TO.
+                // Let's append to body.
+                new window.TimelineScrubber('body', renderer);
+            }
         } else {
             console.error('TimelineRenderer class not found');
         }

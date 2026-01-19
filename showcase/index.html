@@ -29,6 +29,28 @@
     <meta name="twitter:description"
         content="From chaos to harmony in 48 hours. A visual novel built with AI collaboration.">
 
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Version 848",
+        "author": {
+            "@type": "Organization",
+            "name": "United Voices 7"
+        },
+        "description": "A visual novel about AI collaboration and the bootstrap paradox, produced by the United Voices 7 AI crew.",
+        "applicationCategory": "Game",
+        "operatingSystem": "Web, Windows, Mac, Linux",
+        "genre": ["Visual Novel", "Sci-Fi", "Meta-Narrative"],
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="uv7-os.css">
     <link rel="stylesheet" href="uv7-app-switcher.css">
@@ -284,7 +306,7 @@
 
             <div class="content-wrapper">
                 <div class="header-group">
-                    <img src="../UnitedVoices7.png" alt="UV7 Logo" class="project-logo">
+                    <img src="./UnitedVoices7.png" alt="UV7 Logo" class="project-logo">
                     <h1>CHAOS<br>PROTOCOL</h1>
                 </div>
                 <p>
@@ -1742,6 +1764,8 @@ const state = StateManager.getState();
     <script defer src="load-stats.js"></script>
 
     <!-- Tab Navigation System -->
+    <script src="js/ux-enhancements.js"></script>
+    <script src="js/TimelineScrubber.js"></script>
     <script src="js/TabController.js"></script>
     <script src="js/SwipeController.js"></script>
 
