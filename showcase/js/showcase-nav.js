@@ -7,14 +7,15 @@ class ShowcaseSidebar {
     constructor() {
         this.nav = null;
         this.tabs = [
-            { id: 'intro', label: 'Evolution', icon: '🧬' },
-            { id: 'timeline', label: 'Timeline', icon: '⏳' },
-            { id: 'features', label: 'Features', icon: '✨' },
-            { id: 'tech', label: 'Tech Stack', icon: '💻' },
-            { id: 'stats', label: 'Results', icon: '📊' },
-            { id: 'about', label: 'About', icon: 'ℹ️' }
+            { id: 'journey', label: 'Journey', icon: '🗺️' },
+            { id: 'workflow', label: 'Workflow', icon: '⚙️' },
+            { id: 'results', label: 'Results', icon: '📊' },
+            { id: 'spotlight', label: 'Spotlight', icon: '💡' },
+            { id: 'evolution', label: 'Evolution', icon: '🔄' },
+            { id: 'who', label: 'Who Are We', icon: '👥' }
         ];
 
+        console.log('ShowcaseSidebar initialized', this.tabs);
         this.init();
     }
 
@@ -28,6 +29,10 @@ class ShowcaseSidebar {
     }
 
     createNavigator() {
+        // Remove existing if any
+        const existing = document.querySelector('.timeline-navigator');
+        if (existing) existing.remove();
+
         this.nav = document.createElement('div');
         this.nav.className = 'timeline-navigator showcase-sidebar'; // Keep class for CSS compat
 
@@ -42,7 +47,12 @@ class ShowcaseSidebar {
             const li = document.createElement('li');
             const a = document.createElement('a');
             a.href = `#${tab.id}`;
-            a.innerHTML = `<span class="nav-icon">${tab.icon}</span> <span class="nav-label">${tab.label}</span>`;
+
+            // Safe innerHTML assignment
+            const iconSpan = `<span class="nav-icon">${tab.icon || '•'}</span>`;
+            const labelSpan = `<span class="nav-label">${tab.label || 'Tab'}</span>`;
+            a.innerHTML = `${iconSpan} ${labelSpan}`;
+
             a.dataset.target = tab.id;
             a.dataset.index = index;
 
@@ -64,7 +74,6 @@ class ShowcaseSidebar {
 
     navigateToTab(tabId) {
         // Trigger TabController
-        // Assuming TabController exposes a global method or we can click the tab button
         const tabBtn = document.querySelector(`.tab-item[data-tab="${tabId}"]`);
         if (tabBtn) {
             tabBtn.click();
@@ -74,9 +83,6 @@ class ShowcaseSidebar {
     }
 
     setupStateListener() {
-        // Listen for tab changes via mutation on the tab buttons
-        // Or if TabController emits an event. For now, rely on DOM mutation or click bubble.
-
         // Option 1: Global click listener to catch tab changes
         document.addEventListener('click', (e) => {
             if (e.target.closest('.tab-item')) {
@@ -92,7 +98,7 @@ class ShowcaseSidebar {
         if (!this.nav) return;
 
         // Find currently active tab button
-        const activeBtn = document.querySelector('.tab-navigation .tab-item.active');
+        const activeBtn = document.querySelector('.tab-navigation .tab-item.active, .tab-bar .tab-item.active');
         if (!activeBtn) return;
 
         const activeId = activeBtn.dataset.tab;

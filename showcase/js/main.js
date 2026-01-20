@@ -9,7 +9,7 @@ import { initChaosTyper } from './ChaosTyper.js';
 import { initViewMode } from './ViewModeController.js';
 import { initScrollAnimations } from './ScrollAnimator.js';
 import { initSocialShare } from './SocialShare.js';
-import { initTimelineComponents } from './TimelineComponents.js'; // See note below
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all modules
