@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --project tsconfig.v2.json && vite build && npm run postbuild",
-    "postbuild": "node -e \"const fs = require('fs'); fs.cpSync('v1', 'dist/v1', {recursive: true}); fs.cpSync('showcase', 'dist/showcase', {recursive: true}); fs.copyFileSync('index.html', 'dist/index.html'); fs.copyFileSync('uv7-os-landing.js', 'dist/uv7-os-landing.js');\"",
+    "postbuild": "node -e \"const fs = require('fs'); fs.cpSync('v1', 'dist/v1', {recursive: true}); fs.cpSync('showcase', 'dist/showcase', {recursive: true}); fs.cpSync('assets', 'dist/assets', {recursive: true, force: true}); fs.copyFileSync('index.html', 'dist/index.html'); fs.copyFileSync('uv7-os-landing.js', 'dist/uv7-os-landing.js'); fs.copyFileSync('favicon.ico', 'dist/favicon.ico');\"",
     "preview": "vite preview",
     "test": "vitest",
     "test:v2": "vitest --config vite.config.ts",

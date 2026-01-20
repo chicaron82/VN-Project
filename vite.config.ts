@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename)
 export default defineConfig({
   root: '.',
   base: './', // Relative paths for GitHub Pages
-  publicDir: 'assets',
+  publicDir: 'public', // Use 'public' for V2-specific assets, we'll copy 'assets' manually
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, './v2/core'),
