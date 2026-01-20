@@ -3,7 +3,7 @@
 ## Project Overview
 This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital consciousness, bootstrap paradoxes, and the nature of reality. The project has two codebases:
 - **V1**: Original JavaScript implementation in `system/` directory
-- **V2**: TypeScript rewrite in `src/` directory
+- **V2**: TypeScript rewrite in `v2/` directory
 
 **848 is sacred. 💚🔥💀**
 
@@ -17,7 +17,7 @@ This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital co
 ### Step-by-Step Process
 
 1. **Read V1 source**: Study the file in `system/` completely
-2. **Check if V2 exists**: Look in `src/systems/`, `src/controllers/`, etc.
+2. **Check if V2 exists**: Look in `v2/systems/`, `v2/controllers/`, etc.
 3. **Port faithfully**:
    - Copy ALL logic exactly as-is
    - Add TypeScript types (interfaces, enums, etc.)
@@ -40,10 +40,10 @@ This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital co
 - ❌ Do NOT add features V1 doesn't have
 
 ### Reference Files
-- `src/controllers/EasterEggController.ts` - Inline-styled modal pattern
-- `src/systems/BootstrapTracker.ts` - Display system integration
-- `src/systems/DevCommentarySystem.ts` - EventBus event handling
-- `src/systems/TetherSystem.ts` - Core game mechanic pattern
+- `v2/controllers/EasterEggController.ts` - Inline-styled modal pattern
+- `v2/systems/BootstrapTracker.ts` - Display system integration
+- `v2/systems/DevCommentarySystem.ts` - EventBus event handling
+- `v2/systems/TetherSystem.ts` - Core game mechanic pattern
 - `showcase/timeline-data.js` - Showcase entry format
 
 ### Commit Message Format

@@ -24,14 +24,14 @@
     /* Path mapping */
     "baseUrl": ".",
     "paths": {
-      "@core/*": ["./src/core/*"],
-      "@systems/*": ["./src/systems/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@ui/*": ["./src/ui/*"],
-      "@content/*": ["./src/content/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@core/*": ["./v2/core/*"],
+      "@systems/*": ["./v2/systems/*"],
+      "@controllers/*": ["./v2/controllers/*"],
+      "@ui/*": ["./v2/ui/*"],
+      "@content/*": ["./v2/content/*"],
+      "@utils/*": ["./v2/utils/*"]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "v2-temp", "src/**/*.test.ts", "src/tests/**/*"]
+  "include": ["v2/**/*"],
+  "exclude": ["node_modules", "dist", "v2-temp", "v2/**/*.test.ts", "v2/tests/**/*"]
 }

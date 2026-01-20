@@ -11,12 +11,12 @@ export default defineConfig({
   publicDir: 'assets',
   resolve: {
     alias: {
-      '@core': path.resolve(__dirname, './src/core'),
-      '@systems': path.resolve(__dirname, './src/systems'),
-      '@controllers': path.resolve(__dirname, './src/controllers'),
-      '@ui': path.resolve(__dirname, './src/ui'),
-      '@content': path.resolve(__dirname, './src/content'),
-      '@utils': path.resolve(__dirname, './src/utils'),
+      '@core': path.resolve(__dirname, './v2/core'),
+      '@systems': path.resolve(__dirname, './v2/systems'),
+      '@controllers': path.resolve(__dirname, './v2/controllers'),
+      '@ui': path.resolve(__dirname, './v2/ui'),
+      '@content': path.resolve(__dirname, './v2/content'),
+      '@utils': path.resolve(__dirname, './v2/utils'),
     },
   },
   build: {
@@ -38,7 +38,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/setup.js'],
     // Only include V2 TypeScript tests, exclude V1 JavaScript tests
-    include: ['src/**/*.test.ts', 'src/**/*.spec.ts'],
+    include: ['v2/**/*.test.ts', 'v2/**/*.spec.ts'],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
@@ -49,9 +49,9 @@ export default defineConfig({
       reporter: ['text', 'html', 'json'],
       exclude: [
         'node_modules/',
-        'src/**/*.d.ts',
-        'src/**/*.config.*',
-        'src/**/types.ts',
+        'v2/**/*.d.ts',
+        'v2/**/*.config.*',
+        'v2/**/types.ts',
       ],
     },
   },

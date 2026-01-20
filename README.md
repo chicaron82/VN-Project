@@ -18,14 +18,14 @@ Developed in collaboration with AI partners (UV7 Crew).
 
 **Modernized Codebase**: Rebuilt from the ground up to ensure stability, maintainability, and accessibility while preserving the original V1 soul.
 
-### Core Systems (`src/core`)
+### Core Systems (`v2/core`)
 
 - **GameEngine.ts**: Central coordinator using Event-Driven Architecture.
 - **EventBus.ts**: Type-safe event emission/handling (pub/sub).
 - **StateManager.ts**: Reactive state management with subscription support.
 - **GameConfig.ts**: Centralized configuration logic.
 
-### Systems (`src/systems`)
+### Systems (`v2/systems`)
 
 - **ContentLoader.ts**: Caches and loads route data efficiently.
 - **AssetLoader.ts**: Preloads images with progress tracking.
@@ -35,14 +35,14 @@ Developed in collaboration with AI partners (UV7 Crew).
 - **SecretCodesSystem.ts**: Input sequence detection for secrets.
 - **DevCommentarySystem.ts**: Meta-narrative commentary tracks.
 
-### UI Architecture (`src/ui`)
+### UI Architecture (`v2/ui`)
 
 - **GameLayout.ts**: Dynamic DOM composition.
 - **MenuController.ts**: Handling screen transitions.
 - **DirectorsCutScreen.ts**: Special UI for commentary.
 - **ToastNotification.ts**: Universal notification system.
 
-### Routes (`src/content/routes`)
+### Routes (`v2/content/routes`)
 
 - **JSON-based Sequence**: Data-driven narrative flow rather than hardcoded logic.
 
@@ -138,7 +138,7 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 /
 ├── index.html              # Entry point
 ├── vite.config.ts         # Build config
-├── src/
+├── v2/
 │   ├── core/              # Engine, State, Events
 │   ├── systems/           # Game Logic Systems
 │   ├── controllers/       # Scene/Route Controllers

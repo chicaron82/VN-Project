@@ -218,12 +218,12 @@
 
         // Map card titles to GitHub paths (you can customize these)
         const cardPaths = {
-            'Momentum Carousel': '/tree/main/system',
+            'Momentum Carousel': '/tree/main/v1/system',
             'UV7 OS': '/tree/main/showcase',
             'App Switcher': '/tree/main/showcase',
-            'TypeScript Migration': '/tree/main/src',
-            'EventBus': '/tree/main/src/core',
-            'StateManager': '/tree/main/src/managers'
+            'TypeScript Migration': '/tree/main/v2',
+            'EventBus': '/tree/main/v2/core',
+            'StateManager': '/tree/main/v2/managers'
         };
 
         technicalCards.forEach(card => {

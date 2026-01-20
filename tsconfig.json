@@ -26,22 +26,22 @@
         "baseUrl": ".",
         "paths": {
             "@core/*": [
-                "./src/core/*"
+                "./v2/core/*"
             ],
             "@systems/*": [
-                "./src/systems/*"
+                "./v2/systems/*"
             ],
             "@controllers/*": [
-                "./src/controllers/*"
+                "./v2/controllers/*"
             ],
             "@ui/*": [
-                "./src/ui/*"
+                "./v2/ui/*"
             ],
             "@content/*": [
-                "./src/content/*"
+                "./v2/content/*"
             ],
             "@utils/*": [
-                "./src/utils/*"
+                "./v2/utils/*"
             ]
         },
         "types": [
@@ -50,9 +50,7 @@
         ]
     },
     "include": [
-        "system/**/*",
-        "routes/**/*",
-        "src/**/*",
+        "v2/**/*",
         "vite.config.ts"
     ],
     "exclude": [

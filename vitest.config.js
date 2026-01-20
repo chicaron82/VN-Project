@@ -4,12 +4,12 @@ import path from 'path';
 export default defineConfig({
     resolve: {
         alias: {
-            '@core': path.resolve(__dirname, './src/core'),
-            '@systems': path.resolve(__dirname, './src/systems'),
-            '@controllers': path.resolve(__dirname, './src/controllers'),
-            '@ui': path.resolve(__dirname, './src/ui'),
-            '@content': path.resolve(__dirname, './src/content'),
-            '@utils': path.resolve(__dirname, './src/utils')
+            '@core': path.resolve(__dirname, './v2/core'),
+            '@systems': path.resolve(__dirname, './v2/systems'),
+            '@controllers': path.resolve(__dirname, './v2/controllers'),
+            '@ui': path.resolve(__dirname, './v2/ui'),
+            '@content': path.resolve(__dirname, './v2/content'),
+            '@utils': path.resolve(__dirname, './v2/utils')
         }
     },
     test: {
