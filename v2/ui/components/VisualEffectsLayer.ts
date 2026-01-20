@@ -19,7 +19,7 @@ export class VisualEffectsLayer {
         this.eventBus.on('effect:glitch', (data) => this.triggerGlitch(data.intensity));
         this.eventBus.on('effect:shake', (data) => this.triggerShake(data.intensity));
         this.eventBus.on('effect:flash', (data) => this.triggerFlash(data.color, data.duration));
-        this.eventBus.on('effect:code_rain', (data) => this.triggerCodeRain(data.duration));
+        this.eventBus.on('effect:code_rain', (data: { duration: number; color?: string }) => this.triggerCodeRain(data.duration, data.color));
     }
 
     private triggerGlitch(intensity: number) {
@@ -60,7 +60,7 @@ export class VisualEffectsLayer {
         }, duration + 50);
     }
 
-    private triggerCodeRain(duration: number) {
+    private triggerCodeRain(duration: number, color?: string) {
         // Faithful V1 Port: Matrix code rain
         console.log(`🌧️ Code Rain triggered for ${duration}ms`);
 
@@ -82,10 +82,21 @@ export class VisualEffectsLayer {
 
         this.overlayContainer.appendChild(container);
 
+        // V1 Parity: Theme-aware color
+        // 1. Use explicit color if provided
+        // 2. Try to read CSS variable --theme-primary (if V1's theme-manager is active)
+        // 3. Fall back to cyan
+        let rainColor = color;
+        if (!rainColor) {
+            const computedStyle = getComputedStyle(document.documentElement);
+            rainColor = computedStyle.getPropertyValue('--theme-primary').trim() || '#00ffff';
+        }
+
+        console.log(`🌧️ Code Rain using color: ${rainColor}`);
+
         // Initialize rain
-        // V1 Default Color: Cyan (#00ffff)
         const rain = new CodeRain(container);
-        rain.start('#00ffff');
+        rain.start(rainColor);
 
         // Cleanup sequence
         // Fade out happens 300ms before duration ends (matching V1)
