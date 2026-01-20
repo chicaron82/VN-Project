@@ -1,5 +1,5 @@
 /* Timeline Navigator - Sticky Sidebar */
-.timeline-navigator {
+.uv7-showcase-nav {
     position: fixed;
     right: 20px;
     top: 50%;
@@ -18,7 +18,7 @@
     /* Hidden by default, shown via JS when timeline is active */
 }
 
-.timeline-navigator.visible {
+.uv7-showcase-nav.visible {
     display: block;
     animation: slideInRight 0.3s ease;
 }
@@ -35,7 +35,7 @@
     }
 }
 
-.timeline-navigator h4 {
+.uv7-showcase-nav h4 {
     margin: 0 0 0.5rem 0;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -79,18 +79,18 @@
 }
 
 /* Scrollbar for navigator */
-.timeline-navigator::-webkit-scrollbar {
+.uv7-showcase-nav::-webkit-scrollbar {
     width: 4px;
 }
 
-.timeline-navigator::-webkit-scrollbar-thumb {
+.uv7-showcase-nav::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 4px;
 }
 
 /* Hide on mobile/tablet */
 @media (max-width: 1024px) {
-    .timeline-navigator {
+    .uv7-showcase-nav {
         display: none !important;
     }
 }

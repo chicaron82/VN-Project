@@ -20,21 +20,35 @@ class ShowcaseSidebar {
     }
 
     init() {
+        // AGGRESSIVE CLEANUP: Remove any ghost elements (the ones showing "NaN")
+        document.querySelectorAll('.timeline-navigator').forEach(el => {
+            console.log('Removing ghost navigator:', el);
+            el.remove();
+        });
+
         this.createNavigator();
         this.setupKeyboardShortcuts();
         this.setupStateListener();
 
         // Initial active state check
         setTimeout(() => this.updateActiveState(), 500);
+
+        // Continuous cleanup of ghosts
+        setInterval(() => {
+            const ghosts = document.querySelectorAll('.timeline-navigator');
+            if (ghosts.length > 0) {
+                ghosts.forEach(el => el.remove());
+            }
+        }, 1000);
     }
 
     createNavigator() {
-        // Remove existing if any
-        const existing = document.querySelector('.timeline-navigator');
+        // Remove existing if any (of our own type)
+        const existing = document.querySelector('.uv7-showcase-nav');
         if (existing) existing.remove();
 
         this.nav = document.createElement('div');
-        this.nav.className = 'timeline-navigator showcase-sidebar'; // Keep class for CSS compat
+        this.nav.className = 'uv7-showcase-nav showcase-sidebar'; // NEW CLASS
 
         const header = document.createElement('h4');
         header.textContent = 'Navigation';
