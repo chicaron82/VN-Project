@@ -6,15 +6,15 @@
 class TimelineRenderer {
     constructor(containerSelector) {
         this.container = document.querySelector(containerSelector);
-        this.originalPhases = [];
-        this.currentPhases = [];
+        this.originalEntries = [];
+        this.currentEntries = [];
         this.activeFilter = 'all';
         this.activeSort = 'story'; // 'story' (asc) or 'dev' (desc)
         this.searchQuery = '';
 
         // Cache DOM elements
         this.toolbar = null;
-        this.phasesContainer = null;
+        this.entriesContainer = null;
 
         // Signal Animation
         this.signalPulse = null;
@@ -86,18 +86,18 @@ class TimelineRenderer {
 
     async loadTimelineData() {
         // Check window global first (loaded via script to avoid CORS)
-        if (window.TIMELINE_DATA && window.TIMELINE_DATA.phases) {
-            this.originalPhases = window.TIMELINE_DATA.phases;
+        if (window.TIMELINE_DATA && window.TIMELINE_DATA.entries) {
+            this.originalEntries = window.TIMELINE_DATA.entries;
         } else {
             console.error("TIMELINE_DATA not found. Make sure timeline-data.js is loaded.");
-            this.originalPhases = [];
+            this.originalEntries = [];
         }
 
         // Set Sort Date if missing (fallback to ID or index)
-        this.originalPhases.forEach((phase, index) => {
-            if (!phase.sortDate) {
+        this.originalEntries.forEach((entry, index) => {
+            if (!entry.sortDate) {
                 // Approximate for legacy/missing data
-                phase.sortDate = `2026-01-01T${index}`;
+                entry.sortDate = `2026-01-01T${index}`;
             }
         });
 
@@ -108,7 +108,7 @@ class TimelineRenderer {
 
     applyLogic() {
         // 1. Filter
-        let filtered = this.originalPhases;
+        let filtered = this.originalEntries;
         if (this.activeFilter !== 'all') {
             filtered = filtered.filter(p => p.date.includes(this.activeFilter));
         }
@@ -127,7 +127,7 @@ class TimelineRenderer {
             }
         });
 
-        this.currentPhases = filtered;
+        this.currentEntries = filtered;
     }
 
     // --- RENDERING ---
@@ -139,7 +139,7 @@ class TimelineRenderer {
         this.toolbar.className = 'timeline-toolbar-container';
 
         // Extract Unique Dates for Filter
-        const dates = [...new Set(this.originalPhases.map(p => {
+        const dates = [...new Set(this.originalEntries.map(p => {
             // Simplify date string "January 12, 2026 (Morning)" -> "Jan 12"
             // This is a naive regex, might need adjustment based on real data
             const match = p.date.match(/([A-Z][a-z]+ \d+)/);
@@ -206,17 +206,17 @@ class TimelineRenderer {
 
     renderTimeline() {
         // Remove old phases if any
-        if (this.phasesContainer) this.phasesContainer.remove();
+        if (this.entriesContainer) this.entriesContainer.remove();
 
-        this.phasesContainer = document.createElement('div');
-        this.phasesContainer.className = 'timeline-phases';
+        this.entriesContainer = document.createElement('div');
+        this.entriesContainer.className = 'timeline-phases';
 
-        this.currentPhases.forEach(phase => {
-            const el = this.createPhaseElement(phase);
-            this.phasesContainer.appendChild(el);
+        this.currentEntries.forEach(entry => {
+            const el = this.createEntryElement(entry);
+            this.entriesContainer.appendChild(el);
         });
 
-        this.container.appendChild(this.phasesContainer);
+        this.container.appendChild(this.entriesContainer);
 
         // Re-apply spotlight if query exists
         if (this.searchQuery) this.applySpotlight();
@@ -227,17 +227,17 @@ class TimelineRenderer {
 
     applySpotlight() {
         const query = this.searchQuery.toLowerCase();
-        const items = this.phasesContainer.querySelectorAll('.timeline-item');
+        const items = this.entriesContainer.querySelectorAll('.timeline-item');
 
         if (!query) {
-            this.phasesContainer.classList.remove('spotlight-mode');
+            this.entriesContainer.classList.remove('spotlight-mode');
             items.forEach(item => {
                 item.classList.remove('dimmed', 'focused');
             });
             return;
         }
 
-        this.phasesContainer.classList.add('spotlight-mode');
+        this.entriesContainer.classList.add('spotlight-mode');
 
         items.forEach(item => {
             const text = item.textContent.toLowerCase();
@@ -258,14 +258,14 @@ class TimelineRenderer {
     // Keeping this mostly identical to original to preserve styling, 
     // but ensured it uses this.create... methods attached to class
 
-    createPhaseElement(phase) {
+    createEntryElement(entry) {
         // Reuse the logic from your detailed original implementation
         // For brevity in this tool call, I will include the logic needed.
         // I will assume the CSS classes align with what exists.
 
         const item = document.createElement('div');
-        item.className = `timeline-item ${phase.type || ''}`;
-        item.id = phase.id;
+        item.className = `timeline-item ${entry.type || ''}`;
+        item.id = entry.id;
 
         const marker = document.createElement('div');
         marker.className = 'timeline-marker';
@@ -275,18 +275,18 @@ class TimelineRenderer {
 
         // HEADER
         const header = document.createElement('h3');
-        header.textContent = `${phase.date} ${phase.emoji || ''}`;
+        header.textContent = `${entry.date} ${entry.emoji || ''}`;
         content.appendChild(header);
 
         // TITLE
         const title = document.createElement('p');
-        title.innerHTML = `<strong>${phase.title}</strong>`;
+        title.innerHTML = `<strong>${entry.title}</strong>`;
         content.appendChild(title);
 
         // SUMMARY
-        if (phase.summary) {
+        if (entry.summary) {
             const summary = document.createElement('p');
-            summary.innerHTML = phase.summary; // Allow HTML in summary
+            summary.innerHTML = entry.summary; // Allow HTML in summary
             content.appendChild(summary);
         }
 
@@ -299,22 +299,22 @@ class TimelineRenderer {
         let hasDetails = false;
 
         // 1. Problem
-        if (phase.problem) {
+        if (entry.problem) {
             hasDetails = true;
             details.innerHTML += `
                 <div class="journal-entry">
                     <p><strong>The Lesson:</strong></p>
-                    <p>"${phase.problem.description}"</p>
-                    ${phase.problem.rootCause ? `<p class="root-cause">Root Cause: ${phase.problem.rootCause}</p>` : ''}
+                    <p>"${entry.problem.description}"</p>
+                    ${entry.problem.rootCause ? `<p class="root-cause">Root Cause: ${entry.problem.rootCause}</p>` : ''}
                 </div>`;
         }
 
         // 2. Features
-        if (phase.features) {
+        if (entry.features) {
             hasDetails = true;
             const ul = document.createElement('ul');
             ul.className = 'update-list';
-            phase.features.forEach(f => {
+            entry.features.forEach(f => {
                 const li = document.createElement('li');
                 li.innerHTML = f;
                 ul.appendChild(li);
@@ -323,28 +323,28 @@ class TimelineRenderer {
         }
 
         // 3. Callout
-        if (phase.callout) {
+        if (entry.callout) {
             hasDetails = true;
             const callout = document.createElement('div');
             callout.className = `v2-improvement-callout`;
             // Add legacy phase styling support if needed
 
             callout.innerHTML = `
-                <div class="callout-icon">${phase.callout.icon || '💡'}</div>
+                <div class="callout-icon">${entry.callout.icon || '💡'}</div>
                 <div class="callout-content">
-                    <strong>${phase.callout.title || 'Insight:'}</strong> ${phase.callout.text || phase.callout.content || ''}
+                    <strong>${entry.callout.title || 'Insight:'}</strong> ${entry.callout.text || entry.callout.content || ''}
                 </div>
             `;
             details.appendChild(callout);
         }
 
         // 4. Media (Carousel)
-        if (phase.media && phase.media.carousel) {
+        if (entry.media && entry.media.carousel) {
             hasDetails = true;
             // Simplified carousel renderer for this MVP
             const carouselDiv = document.createElement('div');
             carouselDiv.className = 'timeline-carousel';
-            phase.media.carousel.forEach(img => {
+            entry.media.carousel.forEach(img => {
                 const imgEl = document.createElement('img');
                 imgEl.src = img.url;
                 imgEl.alt = img.caption;
@@ -356,9 +356,9 @@ class TimelineRenderer {
         }
 
         // 5. Code Comparison
-        if (phase.codeComparison || (phase.media && phase.media.codeComparison)) {
+        if (entry.codeComparison || (entry.media && entry.media.codeComparison)) {
             hasDetails = true;
-            const comp = phase.codeComparison || phase.media.codeComparison;
+            const comp = entry.codeComparison || entry.media.codeComparison;
             const compDiv = document.createElement('div');
             compDiv.className = 'code-comparison';
 
@@ -384,11 +384,11 @@ class TimelineRenderer {
         }
 
         // 6. Metrics
-        if (phase.metrics) {
+        if (entry.metrics) {
             hasDetails = true;
             const metricsGrid = document.createElement('div');
             metricsGrid.className = 'stats-mini-grid dev-only';
-            Object.entries(phase.metrics).forEach(([key, val]) => {
+            Object.entries(entry.metrics).forEach(([key, val]) => {
                 metricsGrid.innerHTML += `
                     <div class="stat-mini">
                         <span class="stat-num">${val}</span>

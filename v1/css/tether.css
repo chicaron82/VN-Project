@@ -5,7 +5,7 @@
 #tether-meter {
     width: 100%;
     height: 50px;
-    background: url('../assets/tether-meter-frame.png') center/100% 100% no-repeat;
+    background: url('../../assets/tether-meter-frame.png') center/100% 100% no-repeat;
     border: none;
     border-radius: 0;
     overflow: hidden;
@@ -100,7 +100,7 @@
 
 #hold-on-button {
     margin-top: 12px;
-    background: url('../assets/hold-on-button.png') center/100% 100% no-repeat;
+    background: url('../../assets/hold-on-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 14px 24px;
@@ -151,7 +151,7 @@
 
 /* Critical state - swap to red variant */
 #hold-on-button.critical {
-    background: url('../assets/hold-on-button-critical.png') center/100% 100% no-repeat;
+    background: url('../../assets/hold-on-button-critical.png') center/100% 100% no-repeat;
     color: #ff6b6b;
     text-shadow: 0 0 10px rgba(255, 100, 100, 0.8);
     box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
@@ -203,7 +203,7 @@ body.insane-mode #hold-on-button {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: url('../assets/notes-button.png') center/100% 100% no-repeat;
+    background: url('../../assets/notes-button.png') center/100% 100% no-repeat;
     color: #0ff;
     border: none;
     padding: 12px 20px;

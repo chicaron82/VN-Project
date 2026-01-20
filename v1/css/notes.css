@@ -405,7 +405,7 @@
    ======================================== */
 
 #dialogue-box.ronnie-route {
-    background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+    background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
         rgba(8, 14, 20, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -414,7 +414,7 @@
 }
 
 #dialogue-box.tori-route {
-    background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+    background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
         rgba(12, 15, 30, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -465,7 +465,7 @@
 
 /* Prologue - "Pre-connection" mysterious shimmer */
 #dialogue-box.prologue-style {
-    background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+    background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
         rgba(25, 15, 40, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -490,7 +490,7 @@
 
 /* Epilogue - "Resolution" warm golden glow */
 #dialogue-box.epilogue-style {
-    background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+    background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
         rgba(40, 30, 15, 0.95);
     border: none;
     padding: 35px 45px 30px 45px;
@@ -522,13 +522,13 @@
 @media (max-width: 1279px) and (orientation: landscape) {
     /* Prologue - Semi-transparent purple */
     #dialogue-box.prologue-style {
-        background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
             rgba(25, 15, 40, 0.85) !important;
     }
 
     /* Epilogue - Semi-transparent golden */
     #dialogue-box.epilogue-style {
-        background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
             rgba(40, 30, 15, 0.85) !important;
     }
 }

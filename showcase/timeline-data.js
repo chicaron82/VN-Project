@@ -3,7 +3,7 @@
 // REFACTORED: Now uses date-based IDs instead of phase numbers
 // Each entry has a sortDate field for proper chronological ordering
 window.TIMELINE_DATA = {
-    "phases": [
+    "entries": [
         {
             "id": "2026-01-19-a",
             "date": "January 19, 2026",
@@ -92,6 +92,30 @@ window.TIMELINE_DATA = {
             },
             "sortDate": "2025-12-01T0a",
             "legacyPhase": "2025-12-01-a"
+        },
+        {
+            "id": "2025-12-21-a",
+            "date": "Week of December 21, 2025",
+            "emoji": "🚀",
+            "title": "The SOLID Sprint - The Refactor Spike",
+            "type": "highlight",
+            "summary": "The turning point. We went full ham converting V1 to follow SOLID principles. A massive spike of 290 commits in one day marked the death of spaghetti code and the birth of the V2 architecture.",
+            "metrics": {
+                "commits": 290,
+                "linesChanged": "~10k",
+                "mood": "Focused"
+            },
+            "media": {
+                "carousel": [
+                    {
+                        "type": "image",
+                        "url": "commits-spike-solid.png",
+                        "caption": "The massive 290-commit spike: The death of spaghetti code."
+                    }
+                ]
+            },
+            "sortDate": "2025-12-21T0a",
+            "legacyPhase": "2025-12-21-a"
         },
         {
             "id": "2026-01-08-a",

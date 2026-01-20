@@ -22,7 +22,7 @@ class TimelineScrubber {
 
     initWhenReady() {
         const checkInterval = setInterval(() => {
-            if (this.renderer && this.renderer.currentPhases && this.renderer.currentPhases.length > 0) {
+            if (this.renderer && this.renderer.currentEntries && this.renderer.currentEntries.length > 0) {
                 clearInterval(checkInterval);
                 this.init();
             }
@@ -36,10 +36,10 @@ class TimelineScrubber {
 
     createScrubber() {
         // Extract unique Year-Month combinations
-        const phases = this.renderer.currentPhases;
-        if (!phases) return;
+        const entries = this.renderer.currentEntries;
+        if (!entries) return;
 
-        const dates = [...new Set(phases.map(p => {
+        const dates = [...new Set(entries.map(p => {
             // Parse date "January 14, 2026"
             const parts = p.date.split(',');
             if (parts.length < 2) return 'Unknown';
@@ -73,10 +73,10 @@ class TimelineScrubber {
     }
 
     scrollToDate(label) {
-        // Find first phase with this date label
-        const phase = this.renderer.currentPhases.find(p => p.date.includes(label.split(' ')[0])); // naive match
-        if (phase) {
-            const el = document.getElementById(phase.id);
+        // Find first entry with this date label
+        const entry = this.renderer.currentEntries.find(p => p.date.includes(label.split(' ')[0])); // naive match
+        if (entry) {
+            const el = document.getElementById(entry.id);
             if (el) {
                 el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 this.highlightDot(label);
@@ -96,7 +96,7 @@ class TimelineScrubber {
         // Listen to global scroll to update active dot
         window.addEventListener('scroll', () => {
             // Debounce or throttle ideal
-            // Check visible phase and update dot
+            // Check visible entry and update dot
             // Implementation omitted for brevity in MVP
         }, { passive: true });
     }

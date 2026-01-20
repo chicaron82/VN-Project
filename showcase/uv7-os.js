@@ -14,8 +14,8 @@
 class UV7OS {
     constructor(context, options = {}) {
         this.context = context; // 'showcase', 'landing', etc.
-        this.phases = options.phases || [];
-        this.currentPhase = null;
+        this.entries = options.entries || [];
+        this.currentEntry = null;
         this.currentMode = 'story'; // 'story' or 'dev'
 
         this.elements = {};
@@ -24,7 +24,7 @@ class UV7OS {
 
     init() {
         this.cacheElements();
-        this.detectCurrentPhase();
+        this.detectCurrentEntry();
         this.detectCurrentMode();
         this.renderStatusBar();
         this.attachSectionNavHandlers();
@@ -106,18 +106,21 @@ class UV7OS {
         };
     }
 
-    detectCurrentPhase() {
-        // Find which phase is currently in viewport
-        const phaseElements = document.querySelectorAll('[id^="phase-"]');
-        for (const el of phaseElements) {
+    detectCurrentEntry() {
+        // Find which entry is currently in viewport
+        // Robust selector to find any timeline item
+        const entryElements = document.querySelectorAll('.timeline-item');
+        for (const el of entryElements) {
             const rect = el.getBoundingClientRect();
             if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
-                this.currentPhase = el.id.replace('phase-', '');
+                this.currentEntry = el.id;
                 return;
             }
         }
-        // Default to phase 1 if none detected
-        this.currentPhase = '1';
+        // Default to first entry if none detected
+        if (this.entries.length > 0) {
+            this.currentEntry = this.entries[0].id;
+        }
     }
 
     detectCurrentMode() {
@@ -161,9 +164,9 @@ class UV7OS {
     renderStatusBar() {
         // Unified System: Emit event to update status bar
         if (this.eventBus) {
-            const phaseData = this.phases.find(p => p.id === `phase-${this.currentPhase}`);
-            const title = phaseData ? phaseData.title : `Phase ${this.currentPhase}`;
-            const context = phaseData ? `Phase ${this.currentPhase}` : 'Showcase';
+            const entryData = this.entries.find(p => p.id === this.currentEntry);
+            const title = entryData ? entryData.title : `Entry ${this.currentEntry}`;
+            const context = entryData ? `Entry ${this.currentEntry}` : 'Showcase';
 
             // Emit update event (StatusBar.ts needs to handle this or we add it)
             this.eventBus.emit('ui:status_update', {
@@ -176,17 +179,17 @@ class UV7OS {
         // Legacy Fallback (Removed DOM elements won't be found, so this is safe)
         if (!this.elements.statusContext || !this.elements.statusDetail) return;
 
-        // DIZEE #3: Dynamic context based on current phase
-        const phaseData = this.phases.find(p => p.id === `phase-${this.currentPhase}`);
+        // DIZEE #3: Dynamic context based on current entry
+        const entryData = this.entries.find(p => p.id === this.currentEntry);
 
-        if (phaseData && phaseData.title) {
-            // Show phase-specific context
-            this.elements.statusContext.textContent = `Phase ${this.currentPhase}`;
-            this.elements.statusDetail.textContent = phaseData.title;
+        if (entryData && entryData.title) {
+            // Show entry-specific context
+            this.elements.statusContext.textContent = `Entry`;
+            this.elements.statusDetail.textContent = entryData.title;
         } else {
             // Fallback to generic
             this.elements.statusContext.textContent = 'Showcase';
-            this.elements.statusDetail.textContent = `Phase ${this.currentPhase}`;
+            this.elements.statusDetail.textContent = `Entry ${this.currentEntry}`;
         }
     }
 
@@ -450,30 +453,30 @@ class UV7OS {
         this.elements.backdrop.classList.remove('visible');
     }
 
-    jumpToPhase(phaseId) {
-        const element = document.getElementById(phaseId);
+    jumpToEntry(entryId) {
+        const element = document.getElementById(entryId);
         if (element) {
             // Close shade/sidebar
             this.closeShade();
             this.closeSidebar();
 
-            // Scroll to phase (account for status bar)
+            // Scroll to entry (account for status bar)
             const yOffset = -44; // Status bar height
             const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
             window.scrollTo({ top: y, behavior: 'smooth' });
 
             // Save state
-            this.saveState(phaseId);
+            this.saveState(entryId);
 
-            // Update current phase
-            this.currentPhase = phaseId.replace('phase-', '');
+            // Update current entry
+            this.currentEntry = entryId;
             this.renderStatusBar();
-            this.updateCurrentPhaseDisplay();
+            this.updateCurrentEntryDisplay();
         }
     }
 
-    updateCurrentPhaseDisplay() {
-        // Phase display removed - using section navigation instead
+    updateCurrentEntryDisplay() {
+        // Entry display removed - using section navigation instead
     }
 
     updateCurrentModeDisplay() {
@@ -488,26 +491,26 @@ class UV7OS {
         window.addEventListener('scroll', () => {
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
-                const oldPhase = this.currentPhase;
-                this.detectCurrentPhase();
-                if (oldPhase !== this.currentPhase) {
+                const oldEntry = this.currentEntry;
+                this.detectCurrentEntry();
+                if (oldEntry !== this.currentEntry) {
                     this.renderStatusBar();
-                    this.updateCurrentPhaseDisplay();
-                    this.saveState(`phase-${this.currentPhase}`);
+                    this.updateCurrentEntryDisplay();
+                    this.saveState(this.currentEntry);
                 }
             }, 200);
         }, { passive: true });
     }
 
-    saveState(phaseId) {
-        sessionStorage.setItem('uv7-showcase-phase', phaseId);
+    saveState(entryId) {
+        sessionStorage.setItem('uv7-showcase-entry', entryId);
     }
 
     restoreState() {
-        const savedPhase = sessionStorage.getItem('uv7-showcase-phase');
-        if (savedPhase) {
-            // Scroll to saved phase after a brief delay
-            setTimeout(() => this.jumpToPhase(savedPhase), 500);
+        const savedEntry = sessionStorage.getItem('uv7-showcase-entry');
+        if (savedEntry) {
+            // Scroll to saved entry after a brief delay
+            setTimeout(() => this.jumpToEntry(savedEntry), 500);
         }
     }
 
@@ -534,16 +537,16 @@ class UV7OS {
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // DIZEE #4: PHASE CELEBRATION - REWARD SYSTEM
-    // Celebrates when phases are marked complete
+    // DIZEE #4: ENTRY CELEBRATION - REWARD SYSTEM
+    // Celebrates when entries are marked complete
     // ═══════════════════════════════════════════════════════════════
 
     /**
      * Trigger celebration toast with confetti
-     * @param {string} phaseName - e.g. "Phase 15"
+     * @param {string} entryName - e.g. "Phase 15"
      * @param {string} achievement - e.g. "Visual parity achieved"
      */
-    celebratePhaseComplete(phaseName, achievement) {
+    celebrateEntryComplete(entryName, achievement) {
         // Create celebration toast
         const toast = document.createElement('div');
         toast.className = 'uv7-boot-toast';
@@ -591,9 +594,9 @@ class UV7OS {
 // Initialize UV7 OS when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     // Wait for timeline data to be available
-    if (typeof TIMELINE_DATA !== 'undefined' && TIMELINE_DATA.phases) {
+    if (typeof TIMELINE_DATA !== 'undefined' && TIMELINE_DATA.entries) {
         window.uv7os = new UV7OS('showcase', {
-            phases: TIMELINE_DATA.phases
+            entries: TIMELINE_DATA.entries
         });
     } else {
         console.warn('⚠️ UV7 OS: Timeline data not available');

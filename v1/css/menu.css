@@ -199,7 +199,7 @@
 
 @media (max-width: 768px) {
     #main-menu-bg {
-        content: url('../assets/menumobile.png');
+        content: url('../../assets/menumobile.png');
     }
 
     #main-menu h1 {

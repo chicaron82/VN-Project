@@ -120,7 +120,7 @@
 
     /* Keep custom dialogue frames on mobile - just constrain positioning */
     #dialogue-box.ronnie-route {
-        background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
             rgba(8, 14, 20, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -129,7 +129,7 @@
     }
 
     #dialogue-box.tori-route {
-        background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
             rgba(12, 15, 30, 0.95) !important;
         border: none !important;
         padding: 20px 24px 16px 24px !important;
@@ -254,22 +254,22 @@
 
     /* Route-specific dialogue frames with transparency */
     #dialogue-box.ronnie-route {
-        background: url('../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
             rgba(8, 14, 20, 0.85) !important;
     }
 
     #dialogue-box.tori-route {
-        background: url('../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
             rgba(12, 15, 30, 0.85) !important;
     }
 
     #dialogue-box.prologue-style {
-        background: url('../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
             rgba(25, 15, 40, 0.85) !important;
     }
 
     #dialogue-box.epilogue-style {
-        background: url('../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+        background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
             rgba(40, 30, 15, 0.85) !important;
     }
 
