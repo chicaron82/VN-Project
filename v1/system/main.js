@@ -117,7 +117,7 @@ import '../ui/save-load-ui.js';
 // GATEWAY BRIDGE
 // ========================================
 
-import '../vn-gateway-bridge.js';
+import '../../vn-gateway-bridge.js';
 
 // ========================================
 // ROUTE MODULES

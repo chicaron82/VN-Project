@@ -35,9 +35,7 @@
     <!-- Bougie Boot Sequence -->
     <link rel="stylesheet" href="ui/bougie-boot-sequence.css">
     <!-- ZEERAH FIX: Unified grid-based route select (replaces sprites + toggle CSS) -->
-    <link rel="stylesheet" href="../v2/ui/styles/variables.css">
-    <link rel="stylesheet" href="../v2/ui/styles/base.css">
-    <link rel="stylesheet" href="../v2/ui/styles/accessibility.css">
+    <!-- V2 styles removed - V1 is now standalone -->
     <link rel="stylesheet" href="route-select-unified.css">
     <link rel="stylesheet" href="visual-cues.css">
     <!-- Overlay Styles (Konami controller, confirmation dialogs, etc.) -->
@@ -426,7 +424,7 @@
                 <div class="uv7-logo-wrap loading" id="uv7-logo-wrap">
                     <div class="uv7-logo-reveal" id="uv7-logo-reveal">
                         <video id="uv7-logo-video" class="uv7-logo-video" preload="auto" muted playsinline>
-                            <source src="../UnitedVoices7.mp4" type="video/mp4">
+                            <source src="../assets/UnitedVoices7.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
@@ -2063,7 +2061,7 @@
     <script src="system/macro-driver.js"></script>
 
     <!-- UV7 OS App Switcher -->
-    <script src="../uv7-app-switcher.js"></script>
+    <script src="../showcase/uv7-app-switcher.js"></script>
     <script>
         // Initialize UV7 App Switcher for V1
         document.addEventListener('DOMContentLoaded', () => {
