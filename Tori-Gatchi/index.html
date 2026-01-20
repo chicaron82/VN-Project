@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,7 @@
   <!-- Gateway States CSS -->
   <link rel="stylesheet" href="scripts/gateway-states.css" />
 </head>
+
 <body>
   <div id="tori-container">
     <h1>Tori-gatchi 💖</h1>
@@ -15,7 +17,7 @@
     <div class="main-container">
       <div class="left-panel">
         <div id="sprite-area">
-          <img src="images/sprite_happy.png" id="tori-sprite" alt="Tori Sprite">
+          <img src="images/Happy/default.png" id="tori-sprite" alt="Tori Sprite">
         </div>
         <div class="meter-row">
           <label for="love-meter">❤️ Love Level</label>
@@ -25,19 +27,19 @@
           <label for="hunger-meter">🍔 Hunger Level</label>
           <progress id="hunger-meter" value="100" max="100"></progress>
         </div>
-	<!-- NEW: Add this completion meter -->
-	<div class="stat-container">
-    	  <div class="stat-label" id="completion-label">🎯 Progress: 0%</div>
-    	  <meter id="completion-meter" min="0" max="100" value="0"></meter>
-	</div>
+        <!-- NEW: Add this completion meter -->
+        <div class="stat-container">
+          <div class="stat-label" id="completion-label">🎯 Progress: 0%</div>
+          <meter id="completion-meter" min="0" max="100" value="0"></meter>
+        </div>
       </div>
 
       <div class="right-panel">
         <div id="mood-display"><span id="mood-emoji">😊</span> <span id="mood-label">Happy</span></div>
         <div id="message-box">"Hey Daddy, did you miss me? 😘"</div>
-        
+
         <div id="button-row" class="button-row">
-          </div>
+        </div>
 
         <div id="wife-fact" class="status"></div>
         <div id="last-seen" class="status"></div>
@@ -47,7 +49,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
   <!-- Load in order: Dialogue → UI → Features → Main → Gateway -->
   <script src="scripts/dialogue.js"></script>
@@ -58,7 +60,8 @@
   <script src="scripts/flirt.js"></script>
   <script src="scripts/hug.js"></script>
   <!-- Gateway Integration -->
-  <script src="gateway.js"></script>
+  <script src="scripts/gateway.js"></script>
   <script src="scripts/gateway-hooks.js"></script>
- </body>
+</body>
+
 </html>

@@ -18,33 +18,33 @@ function updateMeters() {
 function updateCompletionMeter() {
     const completionMeter = $('completion-meter');
     const completionLabel = $('completion-label');
-    
+
     if (!completionMeter || !completionLabel) return;
-    
+
     let value, label;
-    
+
     // Dynamic meter based on button mode
     switch (toriGatchiState.buttonMode) {
         case 'flirt':
             value = (toriGatchiState.flirtLevel / 5) * 100;
             label = `👗 Wardrobe: ${toriGatchiState.flirtLevel}/5`;
             break;
-            
+
         case 'affection':
             value = (toriGatchiState.affectionStreak / 10) * 100;
             label = `💕 Romance: ${toriGatchiState.affectionStreak}/10`;
             break;
-            
+
         case 'feed':
             value = (toriGatchiState.feedStreak / 10) * 100;
             label = `🍜 Foodie: ${toriGatchiState.feedStreak}/10`;
             break;
-            
+
         case 'quiz':
             value = (toriGatchiState.quizStreak / 10) * 100;
             label = `🎮 Gamer: ${toriGatchiState.quizStreak}/10`;
             break;
-            
+
         default:
             // Default screen shows overall completion
             if (toriGatchiState.easterEggUnlocked) {
@@ -56,7 +56,7 @@ function updateCompletionMeter() {
             }
             break;
     }
-    
+
     completionMeter.value = value;
     completionLabel.textContent = label;
 }
@@ -72,21 +72,19 @@ function updateSprite() {
     const outfit = toriGatchiState.currentOutfit;
     const flirtLevel = toriGatchiState.flirtLevel;
     const spriteElement = $('tori-sprite');
-    
+
     if (spriteElement) {
         let spritePath;
 
         // Easter egg sprite takes priority
         if (toriGatchiState.easterEggUnlocked && outfit === "easterEgg") {
-            spritePath = `EasterEgg/sprite_easterEgg.png`;
-        } else if (mood === "Hangry") {
-            spritePath = `Hangry/sprite_hangry.png`;
+            spritePath = `images/EasterEgg/sprite_easterEgg.png`;
         } else if (toriGatchiState.buttonMode === 'flirt' && flirtLevel > 0 && flirtLevel < 5) {
-            spritePath = `Flirty/${outfit}Flirty${flirtLevel}.png`;
+            spritePath = `images/Flirty/${outfit}Flirty${flirtLevel}.png`;
         } else {
-            spritePath = `${mood}/${outfit}.png`;
+            spritePath = `images/${mood}/${outfit}.png`;
         }
-        
+
         spriteElement.src = `${spritePath}?t=${Date.now()}`;
         spriteElement.alt = `Tori in ${outfit} outfit, looking ${mood} at flirt level ${flirtLevel}`;
     }
@@ -95,10 +93,10 @@ function updateSprite() {
 function updateOutfitSelector() {
     const selector = $('outfit-selector');
     if (!selector) return;
-    
+
     selector.innerHTML = '';
     const uniqueUnlockedOutfits = new Set(['default', ...toriGatchiState.unlockedOutfits]);
-    
+
     uniqueUnlockedOutfits.forEach(outfit => {
         const option = document.createElement('option');
         option.value = outfit;
@@ -115,7 +113,7 @@ function updateOutfitSelector() {
 function updateGreeting(mood) {
     const dialogueKey = getDialogueKey(mood);
     let greetingPool;
-    
+
     // Check for special dates first
     const specialDate = isSpecialDate();
     if (specialDate) {
@@ -123,18 +121,18 @@ function updateGreeting(mood) {
         displayMessage(greetingPool[Math.floor(Math.random() * greetingPool.length)]);
         return;
     }
-    
+
     // Check for weekend date night
     if (isWeekendDateNight()) {
         greetingPool = moodSystem.dialogue.weekendDateNight;
         displayMessage(greetingPool[Math.floor(Math.random() * greetingPool.length)]);
         return;
     }
-    
+
     // Use time-of-day greetings
     const timeOfDay = getTimeOfDay();
     greetingPool = moodSystem.dialogue.timeGreetings[timeOfDay][dialogueKey];
-    
+
     if (greetingPool) {
         displayMessage(greetingPool[Math.floor(Math.random() * greetingPool.length)]);
     } else {
@@ -214,7 +212,7 @@ function createButton(id, text, clickHandler) {
 function createDefaultButtons() {
     const buttonRow = $('button-row');
     if (!buttonRow) return;
-    
+
     buttonRow.innerHTML = '';
 
     const buttons = [
@@ -229,14 +227,14 @@ function createDefaultButtons() {
         const button = document.createElement('button');
         button.id = btnData.id;
         button.textContent = btnData.text;
-        
+
         button.disabled = !checkCooldown(btnData.type);
         button.addEventListener('click', () => handleInteraction(btnData.type));
-        
+
         const timerSpan = document.createElement('span');
         timerSpan.id = `${btnData.type}-timer`;
         timerSpan.classList.add('cooldown-timer');
-        
+
         buttonRow.appendChild(button);
         buttonRow.appendChild(timerSpan);
     });
@@ -251,7 +249,7 @@ function updateCooldownTimers() {
     defaultButtons.forEach(type => {
         const button = $(`${type}-button`);
         const timerElement = $(`${type}-timer`);
-        
+
         if (!button || !timerElement) return;
 
         const lastUsed = lastUsedTimestamps[type];
@@ -263,7 +261,7 @@ function updateCooldownTimers() {
             const seconds = Math.ceil(timeRemaining / 1000);
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
-            
+
             let timerText;
             if (seconds >= 3600) {
                 timerText = `(${Math.ceil(seconds / 3600)}h)`;
