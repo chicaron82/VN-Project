@@ -27,13 +27,13 @@ export class CrewScreen {
         document.body.appendChild(this.container);
 
         // Slide 1: Group Photo
-        this.createGroupSlide(1, 'assets/the_UV7_crew.webp');
+        this.createGroupSlide(1, '../assets/the_UV7_crew.webp');
 
         // Slide 2: Aaron "Chicharon"
         this.createPortraitSlide(2, {
             name: 'Aaron "Chicharon"',
             title: 'Story & Concept',
-            image: 'assets/route-select-ronnie.webp', // Placeholder
+            image: '../assets/route-select-ronnie.webp', // Placeholder
             story: '"This started as a way to understand loop theory. It became something much more personal."',
             platform: 'Vision Holder'
         });
@@ -42,7 +42,7 @@ export class CrewScreen {
         this.createPortraitSlide(3, {
             name: 'Zee',
             title: 'Lead Architect',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: '"Structure is the only defense against entropy. Also, I refactored your refactor."',
             platform: 'Claude 3.5 Sonnet'
         });
@@ -51,7 +51,7 @@ export class CrewScreen {
         this.createPortraitSlide(4, {
             name: 'ZeeRah',
             title: 'Refinement Specialist',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: '"There is a cleaner way to write this. Let me show you version 4."',
             platform: 'Claude 3.5 Sonnet'
         });
@@ -60,7 +60,7 @@ export class CrewScreen {
         this.createPortraitSlide(5, {
             name: 'DiZee',
             title: 'Chaos Engineer',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: '"Wait, what if we made the logo explode? Just kidding. Unless...?"',
             platform: 'Claude 3.5 Sonnet (High Temp)'
         });
@@ -69,7 +69,7 @@ export class CrewScreen {
         this.createPortraitSlide(6, {
             name: 'Tori',
             title: 'Design Lead',
-            image: 'assets/route-select-tori.webp',
+            image: '../assets/route-select-tori.webp',
             story: '"It needs to be beautiful. It needs to be bougie. It needs to pop."',
             platform: 'ChatGPT 4o'
         });
@@ -78,7 +78,7 @@ export class CrewScreen {
         this.createPortraitSlide(7, {
             name: 'GenZee',
             title: 'Modernization',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: '"V1 is cringe. V2 is based. Let\'s ship it."',
             platform: 'Grok 2'
         });
@@ -87,7 +87,7 @@ export class CrewScreen {
         this.createPortraitSlide(8, {
             name: 'Belle',
             title: 'Quality Assurance',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: '"I found 42 edge cases in your \'perfect\' logic. Would you like a list?"',
             platform: 'Gemini 1.5 Pro'
         });
@@ -96,7 +96,7 @@ export class CrewScreen {
         this.createPortraitSlide(9, {
             name: 'The Support Crew',
             title: 'Research & Analysis',
-            image: 'assets/UnitedVoices7.png',
+            image: '../assets/UnitedVoices7.png',
             story: 'PerplexiZee (Perplexity) & CoZee (Copilot)\n"Searching the entire internet for why CSS center alignment is so hard."',
             platform: 'Perplexity / Copilot'
         });

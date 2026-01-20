@@ -33,7 +33,7 @@ describe('Content Verification', () => {
 
     // Helper to check asset existence
     function verifyAsset(assetPath: string) {
-        // Remove 'assets/' prefix if present, as ASSETS_ROOT is the assets folder
+        // Remove '../assets/' prefix if present, as ASSETS_ROOT is the assets folder
         const cleanPath = assetPath.replace(/^assets\//, '');
         const fullPath = path.join(ASSETS_ROOT, cleanPath);
 

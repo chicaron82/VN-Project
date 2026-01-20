@@ -202,33 +202,33 @@ export const GameConfig = {
     ASSETS: {
         // Backgrounds
         backgrounds: {
-            apartment: 'assets/apartment.webp',
-            hospital: 'assets/hospital.webp',
-            digitalSpace: 'assets/digitalSpace.webp',
-            genericBack: 'assets/genericBack.webp',
-            street: 'assets/street.png'
+            apartment: '../assets/apartment.webp',
+            hospital: '../assets/hospital.webp',
+            digitalSpace: '../assets/digitalSpace.webp',
+            genericBack: '../assets/genericBack.webp',
+            street: '../assets/street.png'
         },
 
         // Character Sprites
         sprites: {
-            ronnie: 'assets/full-sprite-ronnie.webp',
-            tori: 'assets/full-sprite-tori.webp',
-            oldRonnie: 'assets/full-sprite-oldRonnie.webp',
+            ronnie: '../assets/full-sprite-ronnie.webp',
+            tori: '../assets/full-sprite-tori.webp',
+            oldRonnie: '../assets/full-sprite-oldRonnie.webp',
             // Individual Echo sprites (Tori route)
-            echo1: 'assets/full-sprite-echo1.webp',
-            echo2: 'assets/full-sprite-echo2.webp',
-            despair: 'assets/full-sprite-despair.webp',
+            echo1: '../assets/full-sprite-echo1.webp',
+            echo2: '../assets/full-sprite-echo2.webp',
+            despair: '../assets/full-sprite-despair.webp',
             // Route selection sprites
-            routeSelectRonnie: 'assets/route-select-ronnie.webp',
-            routeSelectTori: 'assets/route-select-tori.webp'
+            routeSelectRonnie: '../assets/route-select-ronnie.webp',
+            routeSelectTori: '../assets/route-select-tori.webp'
         },
 
         // UI Assets
         ui: {
-            uv7Logo: 'assets/UnitedVoices7.webp',
-            menuBackground: 'assets/menu-bg.png',
-            menuMobile: 'assets/menumobile.webp',
-            uv7Crew: 'assets/the_UV7_crew.webp'
+            uv7Logo: '../assets/UnitedVoices7.webp',
+            menuBackground: '../assets/menu-bg.png',
+            menuMobile: '../assets/menumobile.webp',
+            uv7Crew: '../assets/the_UV7_crew.webp'
         },
 
         // Config for preload

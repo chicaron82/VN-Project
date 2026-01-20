@@ -35,10 +35,10 @@ export class SpriteController {
 
     // Echo sprite paths
     private readonly ECHO_SPRITES = {
-        echo1: 'assets/full-sprite-echo1.webp',
-        echo2: 'assets/full-sprite-echo2.webp',
-        despair: 'assets/full-sprite-despair.webp',
-        tori: 'assets/full-sprite-tori.webp'
+        echo1: '../assets/full-sprite-echo1.webp',
+        echo2: '../assets/full-sprite-echo2.webp',
+        despair: '../assets/full-sprite-despair.webp',
+        tori: '../assets/full-sprite-tori.webp'
     };
 
     constructor(eventBus: EventBus, stateManager: StateManager) {

@@ -62,30 +62,30 @@ export class CreditsPhotoController {
         return {
             trueEnding: {
                 opening: [
-                    'assets/credits-pizza-date.webp',
-                    'assets/credits-bga-hoodie.webp',
-                    'assets/credits-rodeo-date.webp'
+                    '../assets/credits-pizza-date.webp',
+                    '../assets/credits-bga-hoodie.webp',
+                    '../assets/credits-rodeo-date.webp'
                 ],
                 middle: [
-                    'assets/credits-fancy-dinner.webp',
-                    'assets/credits-sunset-proposal.webp',
-                    'assets/credits-rodeo-date.webp',
-                    'assets/credits-bga-hoodie.webp'
+                    '../assets/credits-fancy-dinner.webp',
+                    '../assets/credits-sunset-proposal.webp',
+                    '../assets/credits-rodeo-date.webp',
+                    '../assets/credits-bga-hoodie.webp'
                 ],
-                finale: 'assets/credits-gym-selfie.webp' // Always shown - "Always." anchor
+                finale: '../assets/credits-gym-selfie.webp' // Always shown - "Always." anchor
             },
             digitalForever: {
                 opening: [
-                    'assets/credits-digital-tamagotchi.webp',
-                    'assets/credits-digital-park.webp',
-                    'assets/credits-digital-apartment.webp'
+                    '../assets/credits-digital-tamagotchi.webp',
+                    '../assets/credits-digital-park.webp',
+                    '../assets/credits-digital-apartment.webp'
                 ],
                 middle: [
-                    'assets/credits-digital-holding-hands.webp',
-                    'assets/credits-digital-static.webp',
-                    'assets/credits-digital-park.webp'
+                    '../assets/credits-digital-holding-hands.webp',
+                    '../assets/credits-digital-static.webp',
+                    '../assets/credits-digital-park.webp'
                 ],
-                finale: 'assets/credits-digital-forever.webp' // Always shown - frozen together
+                finale: '../assets/credits-digital-forever.webp' // Always shown - frozen together
             }
         };
     }
