@@ -339,7 +339,7 @@ class TimelineRenderer {
         }
 
         // 3.5. Footer (Plot twist, epilogue, etc.)
-        if (entry.footer) {
+        if (entry.footer && entry.footer.text) {
             hasDetails = true;
             const footer = document.createElement('div');
             footer.className = `timeline-entry-footer`;
