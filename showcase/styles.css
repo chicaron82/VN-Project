@@ -2007,6 +2007,36 @@ section h2 {
     color: #f5576c;
 }
 
+/* --- TIMELINE ENTRY FOOTER (Plot twists, epilogues) --- */
+.timeline-entry-footer {
+    background: linear-gradient(135deg, rgba(100, 100, 100, 0.1), rgba(140, 140, 140, 0.1));
+    border-left: 4px solid #888;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    font-style: italic;
+    opacity: 0.95;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.footer-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #999;
+}
+
+.footer-content strong {
+    color: #aaa;
+    font-weight: 600;
+}
+
 /* --- STATS MINI GRID (Phase 8 Parallel Blitz) --- */
 .stats-mini-grid {
     display: grid;

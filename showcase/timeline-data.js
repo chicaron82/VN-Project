@@ -29,6 +29,10 @@ window.TIMELINE_DATA = {
                 "title": "Lessons in Defensive Programming",
                 "text": "Global selectors like `[data-target]` are dangerous. Always namespace your attributes (data-counter-target, data-nav-target) to prevent collisions. The bug was: premium-animations.js selected ALL [data-target] elements → tried parseInt('journey') → got NaN → set textContent = NaN."
             },
+            "footer": {
+                "icon": "🗑️",
+                "text": "<strong>Plot Twist:</strong> After solving the bug, we realized the floating navigation was redundant—the sidebar already had a '🧭 Navigate' section. We deleted the entire component (256 lines). Sometimes the best code is no code. 💚"
+            },
             "sortDate": "2026-01-20T0a",
             "legacyPhase": "2026-01-20-a"
         },

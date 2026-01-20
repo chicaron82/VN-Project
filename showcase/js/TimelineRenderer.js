@@ -338,6 +338,18 @@ class TimelineRenderer {
             details.appendChild(callout);
         }
 
+        // 3.5. Footer (Plot twist, epilogue, etc.)
+        if (entry.footer) {
+            hasDetails = true;
+            const footer = document.createElement('div');
+            footer.className = `timeline-entry-footer`;
+            footer.innerHTML = `
+                <div class="footer-icon">${entry.footer.icon || '📝'}</div>
+                <div class="footer-content">${entry.footer.text}</div>
+            `;
+            details.appendChild(footer);
+        }
+
         // 4. Media (Carousel)
         if (entry.media && entry.media.carousel) {
             hasDetails = true;
