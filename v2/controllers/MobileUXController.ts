@@ -46,15 +46,35 @@ export class MobileUXController {
         return !!shade && shade.classList.contains('visible');
     }
 
+    private isSidebarVisible(): boolean {
+        const sidebar = document.getElementById('sidebar');
+        return !!sidebar && sidebar.classList.contains('visible');
+    }
+
+    private isGameplayActive(): boolean {
+        // V2 Parity: Gameplay always has a #game-viewport element
+        return !!document.getElementById('game-viewport');
+    }
+
     private handleSwipeRight(): void {
-        if (this.isShadeVisible()) return;
+        // Guard: Don't advance if overlays are open
+        if (this.isShadeVisible() || this.isSidebarVisible()) return;
+
+        // Guard: Don't advance if not in gameplay (e.g. Main Menu)
+        if (!this.isGameplayActive()) return;
+
         // Swipe Right -> Advance Dialog
         console.log('[MobileUX] Action: Advance');
         this.eventBus.emit('dialog:advance', { source: 'swipe' });
     }
 
     private handleSwipeLeft(): void {
-        if (this.isShadeVisible()) return;
+        // Guard: Don't open backlog if overlays are open
+        if (this.isShadeVisible() || this.isSidebarVisible()) return;
+
+        // Guard: Don't open backlog if not in gameplay (e.g. Main Menu)
+        if (!this.isGameplayActive()) return;
+
         // Swipe Left -> Open Backlog
         console.log('[MobileUX] Action: Backlog');
         this.eventBus.emit('ui:backlog:toggle', {});
@@ -62,24 +82,35 @@ export class MobileUXController {
 
     private handleSwipeUp(): void {
         // Check if notification shade is handling this
-        // If shade is open, it takes priority
-        if (this.isShadeVisible()) {
-            return; // Let NotificationShade handle it
-        }
+        if (this.isShadeVisible()) return; // Let NotificationShade handle it
+        if (this.isSidebarVisible()) return; // Sidebar might handle swipe up later
+
+        // Only hide UI if in gameplay
+        if (!this.isGameplayActive()) return;
 
         // Swipe Up -> Hide UI (Screenshot Mode)
         console.log('[MobileUX] Action: Hide UI');
         this.eventBus.emit('ui:hide_status_bar', {});
-        // Also hide dialog box if accessible via CSS/class
+        // Also hide dialog box if accessible
         document.querySelector('.dialog-box')?.classList.toggle('hidden');
     }
 
     private handleSwipeDown(): void {
-        if (this.isShadeVisible()) return; // <-- important
+        if (this.isShadeVisible()) return;
+        if (this.isSidebarVisible()) return;
 
         // Swipe Down routing logic:
         // - Portrait mode (or width < height): Open NotificationShade (V1 behavior)
         // - Landscape mode (width > height): Open Sidebar (V2 behavior)
+        // NOTE: These should work even in menus if the UI supports it, 
+        // but user request implies restricting "gestures" during menu interaction.
+        // However, sidebar/shade usually ARE accessible globally.
+        // The user request "gesture to open the backlog" specifically targeted backlog.
+        // I will act conservatively and only restrict Backlog/Advance, 
+        // but keep Sidebar/Shade accessible if desired, or restrict them too if they conflict.
+        // Re-reading: "shouldn't pop up when the sidebar/shade is opened or when in the main menu swiping the carousel"
+        // Swiping carousel is horizontal. So Left/Right guards are most critical.
+        // Down swipe is usually safe in menu (unless it conflicts with scrolling).
 
         const isLandscape = window.innerWidth > window.innerHeight;
 
@@ -89,9 +120,7 @@ export class MobileUXController {
             this.eventBus.emit('ui:sidebar:toggle', {});
         } else {
             // Portrait: Let NotificationShade handle it (V1 behavior)
-            // NotificationShade listens to input:swipe_down directly
             console.log('[MobileUX] Action: NotificationShade (portrait) - passing through');
-            // No action needed here - NotificationShade already listens to input:swipe_down
         }
     }
 

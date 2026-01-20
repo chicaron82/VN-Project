@@ -147,6 +147,7 @@ export class Sidebar {
         this.eventBus.on('ui:sidebar:open', () => this.open());
         this.eventBus.on('ui:sidebar:close', () => this.close());
         this.eventBus.on('ui:sidebar:toggle', () => this.toggle());
+        (this.eventBus as any).on('ui:sidebar_toggle', () => this.toggle()); // V1 Parity: GrabHandle tap-to-toggle
 
         // Toggle click
         this.toggleBtn.addEventListener('click', () => this.toggle());
