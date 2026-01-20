@@ -21,11 +21,14 @@ class ShowcaseSidebar {
 
     init() {
         // AGGRESSIVE CLEANUP: Remove any ghost elements (the ones showing "NaN")
-        document.querySelectorAll('.timeline-navigator').forEach(el => {
-            console.log('Removing ghost navigator:', el);
+        const ghosts = document.querySelectorAll('.timeline-navigator');
+        console.log('[ShowcaseSidebar] Found', ghosts.length, 'ghost .timeline-navigator elements');
+        ghosts.forEach((el, i) => {
+            console.log(`[ShowcaseSidebar] Removing ghost ${i}:`, el, 'innerHTML:', el.innerHTML.substring(0, 100));
             el.remove();
         });
 
+        console.log('[ShowcaseSidebar] Creating new navigation with class .uv7-showcase-nav');
         this.createNavigator();
         this.setupKeyboardShortcuts();
         this.setupStateListener();
@@ -49,6 +52,7 @@ class ShowcaseSidebar {
 
         this.nav = document.createElement('div');
         this.nav.className = 'uv7-showcase-nav showcase-sidebar'; // NEW CLASS
+        console.log('[ShowcaseSidebar] Created nav with classes:', this.nav.className);
 
         const header = document.createElement('h4');
         header.textContent = 'Navigation';
@@ -66,6 +70,8 @@ class ShowcaseSidebar {
             const iconSpan = `<span class="nav-icon">${tab.icon || '•'}</span>`;
             const labelSpan = `<span class="nav-label">${tab.label || 'Tab'}</span>`;
             a.innerHTML = `${iconSpan} ${labelSpan}`;
+
+            console.log(`[ShowcaseSidebar] Created link for tab ${index}:`, tab.id, tab.label, tab.icon);
 
             a.dataset.target = tab.id;
             a.dataset.index = index;
