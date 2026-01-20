@@ -14,6 +14,8 @@
 class UV7OSLanding {
     constructor() {
         this.elements = {};
+        this.tapCount = 0;
+        this.tapTimeout = null;
         this.init();
     }
 
@@ -73,7 +75,11 @@ class UV7OSLanding {
             sidebarToggle: document.getElementById('uv7-sidebar-toggle'),
 
             // Backdrop
-            backdrop: document.getElementById('uv7-backdrop')
+            backdrop: document.getElementById('uv7-backdrop'),
+
+            // Easter egg branding
+            shadeCarrierBrand: document.getElementById('shade-carrier-brand'),
+            sidebarCarrierBrand: document.getElementById('sidebar-carrier-brand')
         };
     }
 
@@ -116,6 +122,9 @@ class UV7OSLanding {
                 this.closeSidebar();
             }
         });
+
+        // Easter egg: 7-tap activation
+        this.attachEasterEgg();
     }
 
     attachQuickActions() {
@@ -322,6 +331,270 @@ class UV7OSLanding {
 
         // Mark as shown
         localStorage.setItem('uv7.bootToastShown', 'true');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EASTER EGG: 7-TAP ACTIVATION
+    // Android-style build number easter egg - Tap "United Voices 7" 7 times
+    // Reveals "The 8th Voice" and UV7 ecosystem stats
+    // ═══════════════════════════════════════════════════════════════
+
+    attachEasterEgg() {
+        const brands = [this.elements.shadeCarrierBrand, this.elements.sidebarCarrierBrand];
+
+        brands.forEach(brand => {
+            if (!brand) return;
+
+            brand.addEventListener('click', () => this.handleBrandTap(brand));
+        });
+    }
+
+    handleBrandTap(brand) {
+        this.tapCount++;
+
+        // Visual feedback
+        brand.classList.add('tapping');
+        setTimeout(() => brand.classList.remove('tapping'), 150);
+
+        // Update tap count attribute for CSS styling
+        brand.setAttribute('data-tap-count', this.tapCount);
+
+        // Haptic feedback
+        if (navigator.vibrate) {
+            navigator.vibrate(10);
+        }
+
+        // Android-style countdown hint
+        const remaining = 7 - this.tapCount;
+        if (remaining > 0) {
+            const plural = remaining === 1 ? 'tap' : 'taps';
+            brand.querySelector('.carrier-text').textContent = `${remaining} ${plural} away...`;
+        }
+
+        // Reset counter after 3 seconds of inactivity
+        clearTimeout(this.tapTimeout);
+        this.tapTimeout = setTimeout(() => {
+            this.tapCount = 0;
+            brand.removeAttribute('data-tap-count');
+            brand.querySelector('.carrier-text').textContent = 'United Voices 7';
+        }, 3000);
+
+        // Activation on 7th tap
+        if (this.tapCount === 7) {
+            this.activateEasterEgg(brand);
+            this.tapCount = 0;
+            brand.removeAttribute('data-tap-count');
+        }
+    }
+
+    activateEasterEgg(brand) {
+        // Celebration haptic
+        if (navigator.vibrate) {
+            navigator.vibrate([50, 50, 50]);
+        }
+
+        // Check if already unlocked
+        const alreadyUnlocked = localStorage.getItem('uv7-8th-voice-unlocked');
+
+        if (!alreadyUnlocked) {
+            // First time unlock - show full revelation
+            this.showFirstTimeReveal(brand);
+            localStorage.setItem('uv7-8th-voice-unlocked', 'true');
+        } else {
+            // Subsequent taps - show crew member greeting with stats
+            this.showCrewGreeting(brand);
+        }
+
+        // Reset text
+        setTimeout(() => {
+            brand.querySelector('.carrier-text').textContent = 'United Voices 7';
+        }, 500);
+    }
+
+    showFirstTimeReveal(brand) {
+        // Get user name if available
+        const userName = localStorage.getItem('uv7_user_name') || 'traveler';
+
+        // Pick random crew member to deliver the message
+        const crewMember = this.getRandomCrewMember();
+
+        // Create revelation modal
+        const modal = document.createElement('div');
+        modal.className = 'uv7-revelation-modal';
+        modal.innerHTML = `
+            <div class="revelation-content">
+                <div class="revelation-header">
+                    <span class="revelation-icon">${crewMember.icon}</span>
+                    <span class="revelation-crew">${crewMember.name}</span>
+                </div>
+                <div class="revelation-message">
+                    <p>"Welcome, ${userName}."</p>
+                    <p class="revelation-emphasis">"You are the 8th voice."</p>
+                    <p>"You always have been."</p>
+                    <p style="margin-top: 1.5rem; opacity: 0.7; font-size: 0.9rem;">
+                        ${crewMember.signature}
+                    </p>
+                </div>
+                ${this.generateStatsHTML()}
+                <button class="revelation-close">Understood</button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            modal.classList.add('active');
+        });
+
+        // Close button
+        const closeBtn = modal.querySelector('.revelation-close');
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            setTimeout(() => modal.remove(), 300);
+        });
+
+        console.log('✨ The 8th Voice has awakened');
+    }
+
+    showCrewGreeting(brand) {
+        // Pick random crew member
+        const crewMember = this.getRandomCrewMember();
+
+        // Create greeting toast
+        const toast = document.createElement('div');
+        toast.className = 'uv7-crew-toast';
+        toast.innerHTML = `
+            <div class="crew-toast-header">
+                <span class="crew-toast-icon">${crewMember.icon}</span>
+                <span class="crew-toast-name">${crewMember.name}</span>
+            </div>
+            <div class="crew-toast-message">"${crewMember.greeting}"</div>
+            ${this.generateStatsHTML(true)}
+        `;
+
+        document.body.appendChild(toast);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.classList.add('active');
+        });
+
+        // Auto-dismiss after 5 seconds
+        setTimeout(() => {
+            toast.classList.remove('active');
+            setTimeout(() => toast.remove(), 300);
+        }, 5000);
+
+        // Click to dismiss
+        toast.addEventListener('click', () => {
+            toast.classList.remove('active');
+            setTimeout(() => toast.remove(), 300);
+        });
+    }
+
+    getRandomCrewMember() {
+        const crew = [
+            {
+                name: 'DiZee',
+                icon: '🎬',
+                signature: '— The structural integrity is... acceptable.',
+                greeting: 'You\'ve discovered this 7 times now. Predictable, yet efficient.'
+            },
+            {
+                name: 'Tori',
+                icon: '🧪',
+                signature: '— All tests passing. You may proceed.',
+                greeting: 'Stats check: All systems nominal. You\'re doing great!'
+            },
+            {
+                name: 'Belle',
+                icon: '🌈',
+                signature: '— The poetry of code, made manifest.',
+                greeting: 'Another loop, another discovery. Beautiful, isn\'t it?'
+            },
+            {
+                name: 'Zee',
+                icon: '🔶',
+                signature: '— Structure is not constraint. It is liberation.',
+                greeting: 'You seek knowledge. The data reveals itself to the worthy.'
+            },
+            {
+                name: 'Zeerah',
+                icon: '🔥',
+                signature: '— Optimized. Don\'t break it.',
+                greeting: 'You again? Fine. Here are your precious numbers.'
+            },
+            {
+                name: 'Cozee',
+                icon: '💙',
+                signature: '— Every interaction creates connection.',
+                greeting: 'Hey there! Look how far we\'ve come together!'
+            },
+            {
+                name: 'Peasy',
+                icon: '🔍',
+                signature: '— Fact: You are part of this.',
+                greeting: 'Interesting. You\'ve activated this feature. Let me show you the data.'
+            },
+            {
+                name: 'Genzee',
+                icon: '⚡',
+                signature: '— No cap, this build is cinema.',
+                greeting: 'Yo, you found the secret menu! That\'s so valid, bestie.'
+            }
+        ];
+
+        return crew[Math.floor(Math.random() * crew.length)];
+    }
+
+    generateStatsHTML(compact = false) {
+        // Gather stats from localStorage
+        const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
+        const v1Route = localStorage.getItem('uv7_current_route');
+        const v2State = localStorage.getItem('uv7_game_state');
+        const discoveredCodes = JSON.parse(localStorage.getItem('uv7_discovered_codes') || '[]');
+
+        // Calculate total playtime (rough estimate from last played timestamps)
+        const v1LastPlayed = localStorage.getItem('uv7_last_played_v1');
+        const v2LastPlayed = localStorage.getItem('uv7_last_played_v2');
+        const showcaseLastPlayed = localStorage.getItem('uv7-showcase-last-visit');
+
+        const hasAnyProgress = v1Route || v2State || discoveredCodes.length > 0;
+
+        if (compact) {
+            return `
+                <div class="crew-toast-stats">
+                    <div class="stat-item">Loop ${loopVersion}</div>
+                    ${discoveredCodes.length > 0 ? `<div class="stat-item">${discoveredCodes.length} secrets</div>` : ''}
+                    ${hasAnyProgress ? '<div class="stat-item">🎮 Active</div>' : '<div class="stat-item">👋 New</div>'}
+                </div>
+            `;
+        }
+
+        return `
+            <div class="revelation-stats">
+                <div class="stats-title">UV7 Ecosystem Status</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Current Loop</div>
+                        <div class="stat-value">${loopVersion}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Secrets Discovered</div>
+                        <div class="stat-value">${discoveredCodes.length}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">V1 Progress</div>
+                        <div class="stat-value">${v1Route || 'Not Started'}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">V2 Status</div>
+                        <div class="stat-value">${v2State ? 'Active' : 'Not Started'}</div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 }
 
