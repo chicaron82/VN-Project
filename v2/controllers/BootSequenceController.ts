@@ -7,7 +7,7 @@ import { LoadingOverlay } from '@ui/components/LoadingOverlay';
 // We can pass them in, or import them here if they are global assets.
 // Given V2 structure, importing them here is cleaner for encapsulation.
 import logoImg from '../../assets/UnitedVoices7.png';
-import introVideo from '../../UnitedVoices7.mp4';
+import introVideo from '../../assets/UnitedVoices7.mp4';
 
 export class BootSequenceController {
     private app: HTMLElement;
