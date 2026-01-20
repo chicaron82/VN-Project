@@ -101,7 +101,7 @@
 
     /* Fix status bar overlap */
     body {
-        padding-top: calc(var(--uv7-statusbar-h, 44px) + var(--uv7-banner-h, 16px) + 60px);
+        padding-top: var(--uv7-top-stack, 60px);
     }
 
     .split-container {
@@ -184,7 +184,7 @@
    ======================================== */
 @media (max-width: 768px) and (orientation: landscape) {
     body {
-        padding-top: calc(var(--uv7-statusbar-h, 44px) + var(--uv7-banner-h, 16px) + 50px);
+        padding-top: var(--uv7-top-stack, 60px);
     }
 
     .split-container {

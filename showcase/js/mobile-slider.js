@@ -17,7 +17,8 @@ class MobileSliderController {
 
         this.isDragging = false;
         this.currentPosition = 50; // Start at 50%
-        this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
+        // Match CSS media query exactly: (max-width: 768px) and (orientation: portrait)
+        this.isPortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
         this.hasInteracted = false; // Track user interaction for haptic feedback
 
         // Enable haptic feedback after first interaction
@@ -52,10 +53,10 @@ class MobileSliderController {
         document.addEventListener('mousemove', this.handleMouseMove.bind(this));
         document.addEventListener('mouseup', this.handleMouseUp.bind(this));
 
-        // Orientation change
+        // Orientation change - match CSS media query exactly
         window.addEventListener('orientationchange', () => {
             setTimeout(() => {
-                this.isPortrait = window.matchMedia('(orientation: portrait)').matches;
+                this.isPortrait = window.matchMedia('(max-width: 768px) and (orientation: portrait)').matches;
                 this.updateSlider(this.isPortrait ?
                     this.container.getBoundingClientRect().height / 2 :
                     this.container.getBoundingClientRect().width / 2
