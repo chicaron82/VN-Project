@@ -146,3 +146,10 @@ tmpclaude-*-cwd
 timeline_*_failures/
 *-temp/
 *-backup/
+
+# Test artifacts and logs
+test-output.txt
+test-results.json
+test-results.txt
+tsc_error.log
+*.log.txt
