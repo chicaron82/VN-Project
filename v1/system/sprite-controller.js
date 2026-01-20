@@ -256,7 +256,7 @@ class SpriteController {
                 // Phase 3: Remove echoes, prepare Tori sprite
                 container.classList.remove('echo-group');
                 container.innerHTML = '';
-                container.style.backgroundImage = "url('assets/tori-sprite.png')";
+                container.style.backgroundImage = "url('../assets/tori-sprite.png')";
                 container.style.display = 'block';
                 container.style.opacity = '0';
 
@@ -301,17 +301,17 @@ class SpriteController {
         const echo1 = document.createElement('div');
         echo1.id = 'echo-1-sprite';
         echo1.className = 'echo-sprite';
-        echo1.style.backgroundImage = "url('assets/full-sprite-echo1.webp')";
+        echo1.style.backgroundImage = "url('../assets/full-sprite-echo1.webp')";
 
         const echo2 = document.createElement('div');
         echo2.id = 'echo-2-sprite';
         echo2.className = 'echo-sprite';
-        echo2.style.backgroundImage = "url('assets/full-sprite-echo2.webp')";
+        echo2.style.backgroundImage = "url('../assets/full-sprite-echo2.webp')";
 
         const despair = document.createElement('div');
         despair.id = 'despair-sprite';
         despair.className = 'echo-sprite';
-        despair.style.backgroundImage = "url('assets/full-sprite-despair.webp')";
+        despair.style.backgroundImage = "url('../assets/full-sprite-despair.webp')";
 
         // Add to container
         this.game.spriteRight.appendChild(echo1);

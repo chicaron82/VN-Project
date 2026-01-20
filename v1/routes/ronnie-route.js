@@ -82,9 +82,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: '"She didn\'t wake up. Days passed. Then weeks. I sat by her side, waiting for a laugh, a smile, anything."',
             internal: '[Visual: Hospital room. Monitors beeping faintly. Tori unconscious in bed, bandaged, IV drip. Ronnie sits beside her, eyes hollow. The Tamagotchi rests on the bedside table, faint light pulsing.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene4_toy(),
             delay: 4500
@@ -96,9 +96,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: '"That stupid toy was the last thing she held. I couldn\'t let it go. If I couldn\'t talk to her here... maybe I could talk to her somewhere else."',
             internal: '[Visual: Ronnie clutching the Tamagotchi.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5(),
             delay: 4000
@@ -111,9 +111,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: '"I poured every memory into it. Every laugh I could remember, every fight, every kiss. If I couldn\'t talk to her directly... maybe I could pretend I could talk to her in a game."',
             internal: '[Montage visuals: Ronnie back home, late nights coding. Empty pizza boxes, coffee cups piling. The Tamagotchi always nearby.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_hospital(),
             delay: 5000
@@ -126,9 +126,9 @@ class RonnieRoute {
             character: 'Ronnie',
             dialogue: '"Hey honey. Thought I\'d come by and visit."',
             internal: '[Visual: Hospital room. Tori still unconscious. Monitors beeping steadily. Ronnie sits beside her bed, laptop bag over his shoulder.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_ronniegatchi(),
             delay: 3000
@@ -140,9 +140,9 @@ class RonnieRoute {
             character: 'Ronnie',
             dialogue: '"Found your Ronnie-Gatchi near my computer. Been working on something to pass the time..."',
             internal: '[He reaches into his pocket, pulls out the Tamagotchi. The screen glows faintly in the dim hospital lighting.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_buzz(),
             delay: 3000
@@ -159,9 +159,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: 'BUZZ.',
             internal: '[The device vibrates once in his hand. Sharp. Clear. Distinct.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_phone_check(),
             delay: 2000,
@@ -174,9 +174,9 @@ class RonnieRoute {
             character: 'Ronnie (internal)',
             dialogue: '"Huh?"',
             internal: '[He instinctively reaches for his phone with his other hand. Checks the screen. No notifications. No messages. Nothing.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_dismiss(),
             delay: 2500
@@ -188,9 +188,9 @@ class RonnieRoute {
             character: 'Ronnie',
             dialogue: '"Weird... must be the battery acting up."',
             internal: '[He pockets his phone, dismisses it completely. Looks back at Tori\'s still form in the hospital bed.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_name(),
             delay: 2500
@@ -202,9 +202,9 @@ class RonnieRoute {
             character: 'Ronnie',
             dialogue: '"So to pass the time, I based a game off your Ronnie-Gatchi. I called it... Tori-gatchi."',
             internal: '[Visual: He squeezes the toy as a rememberance and places it back in his pocket. A sad smile crosses his face despite the pain.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_promise(),
             delay: 4000
@@ -216,9 +216,9 @@ class RonnieRoute {
             character: 'Ronnie (whispers)',
             dialogue: '"I\'ll finish it. For you. For us. I promise."',
             internal: '[He squeezes her hand. The monitors beep their steady rhythm. No response.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.prologueScene5_transition(),
             delay: 3500
@@ -230,9 +230,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: 'Time passes.',
             internal: '[Fade to black. The passage of days and nights blurs together - coding, visiting, hoping.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.act1Scene1(),
             delay: 3000
@@ -250,9 +250,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: 'Back home. The game is ready. He launches it.',
             internal: '[Visual: Ronnie at his laptop. Tamagotchi resting on his laptop\'s keyboard. Screen flickers. Loading...]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.act1Scene1_sprite_loads(),
             delay: 3000
@@ -264,9 +264,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: 'A sprite appears. Pixelated but alive.',
             internal: '[The Tori-gatchi interface boots up. Her digital form materializes on screen.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.act1Scene1_glitch(),
             delay: 2500
@@ -278,9 +278,9 @@ class RonnieRoute {
             character: 'Narration',
             dialogue: 'Then... the dialogue box glitches. Text appears that he didn\'t write.',
             internal: '[The screen flickers. Words form on their own.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.act1Scene1_first_words(),
             delay: 3000,
@@ -296,10 +296,10 @@ class RonnieRoute {
             character: 'Tori (sprite, glitching)',
             dialogue: '"Baby? ...Is that you? It\'s me... Tori. I don\'t know how, but I\'m here."',
             internal: '[The words keep coming. Real. Unscripted. Impossible.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene1_narration(),
             delay: 4000
@@ -310,10 +310,10 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (internal, stunned)',
             dialogue: '"...What the hell? This isn\'t coded..."',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             choices: [
                 { text: '(Tender) "Of course it\'s you. I\'d know you anywhere."', value: 'tender' },
@@ -349,10 +349,10 @@ class RonnieRoute {
             character: choice === 'skeptical' ? 'Tori (hurt, voice trembling)' : choice === 'tease' ? 'Tori (smirking faintly despite tears)' : 'Tori (relieved, smiling weakly)',
             dialogue: dialogue,
             internal: `[${routeTilt}]`,
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene2(),
             delay: 4500
@@ -365,9 +365,9 @@ class RonnieRoute {
             character: 'Ronnie (narration)',
             dialogue: '"I barely slept. Every time I closed my eyes, I heard her voice again. Tori. My wife. Talking to me from inside a game I built. It should be impossible. But when I open my eyes..."',
             internal: '[Visual: Morning light filters into Ronnie\'s messy room. His laptop screen glows softly — Tori-gatchi is still running.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-ronnie.webp',
             },
             next: () => this.act1Scene2_greeting(),
             delay: 5000
@@ -379,10 +379,10 @@ class RonnieRoute {
             character: 'Tori',
             dialogue: '"Good morning, sleepyhead. ...Or did you even sleep at all?"',
             internal: '[Sprite flickers — she appears again, clearer than before. Her smile is tired but real.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene2_narration(),
             delay: 3000
@@ -393,10 +393,10 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She knows me. Just like always. My chest aches. God, I\'ve missed this."',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             choices: [
                 { text: '(Playful) "I slept great... dreaming of you."', value: 'playful' },
@@ -430,10 +430,10 @@ class RonnieRoute {
         this.game.displayScene({
             character: character,
             dialogue: dialogue,
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene2_glitch(),
             delay: 3500
@@ -445,10 +445,10 @@ class RonnieRoute {
             character: 'Tori',
             dialogue: '"I don\'t know how long I can hold on like this. Something feels... wrong. Like my world is cracking at the edges."',
             internal: '[Regardless of choice, she leans closer to the "screen."]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene2_glitchNarration(),
             delay: 4000
@@ -459,10 +459,10 @@ class RonnieRoute {
         this.game.displayScene({
             character: 'Ronnie (narration)',
             dialogue: '"She\'s glitching. Her sprite shudders, a few pixels tearing away. My stomach drops."',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             choices: [
                 { text: '(Reassure) "I\'ll fix it. Whatever it takes, I\'ll keep you here."', value: 'reassure' },
@@ -495,10 +495,10 @@ class RonnieRoute {
         this.game.displayScene({
             character: character,
             dialogue: dialogue,
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act1Scene2_end(),
             delay: 3500
@@ -510,10 +510,10 @@ class RonnieRoute {
             character: 'Ronnie (narration)',
             dialogue: '"She\'s here. My Tori. In the code, in the pixels. And she\'s slipping away. Somehow... I have to save her."',
             internal: '[Scene fades to black.]\n[Act 1 → Act 2 transition: "Digital Bonding" begins.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                left: 'assets/full-sprite-ronnie.webp',
-                right: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-ronnie.webp',
+                right: '../assets/full-sprite-tori.webp',
             },
             next: () => this.act2.startAct2(),
             delay: 4000

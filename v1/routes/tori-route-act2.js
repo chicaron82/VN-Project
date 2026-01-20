@@ -33,10 +33,10 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Digital park scene. Pixelated cherry blossoms. Tori and Ronnie\'s sprites walking together.',
             internal: '[Visual: First "date" in the digital space. Ronnie coded a scene for them.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_iceCream(),
             delay: 3500
@@ -112,10 +112,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie (sprite)',
             dialogue: '"I coded in your favorite. Chocolate chip ice cream."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             choices: finalChoices.map(c => ({ text: c.text, value: c.value })),
@@ -205,10 +205,10 @@ class ToriAct2 {
                 character: 'Narration',
                 dialogue: '',
                 internal: '[She opens her mouth to respond... but the words that come out aren\'t hers.]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
-                    left: 'assets/full-sprite-tori.webp',
-                    right: 'assets/full-sprite-ronnie.webp'
+                    left: '../assets/full-sprite-tori.webp',
+                    right: '../assets/full-sprite-ronnie.webp'
                 },
                 next: () => this.beat1_hijackedResponse(),
                 delay: 2000
@@ -224,10 +224,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori',
             dialogue: '"Wait... Tiger Tail. I want Tiger Tail."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_toriRealization(),
@@ -258,10 +258,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: reaction.character,
             dialogue: reaction.dialogue,
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_confusion(),
@@ -274,10 +274,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie (sprite, concerned)',
             dialogue: '"Tiger Tail? But... you always said you hated that flavor."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.beat1_echoesReact(),
@@ -297,7 +297,7 @@ class ToriAct2 {
 
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Oh no..."\nEcho 2: "Not yet. Please not yet."\nDespair: "There it is. Memory corruption. Your mind\'s breaking down."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -311,10 +311,10 @@ class ToriAct2 {
             character: 'Tori (sprite, voice not hers)',
             dialogue: '"Tiger Tail sounds perfect!"',
             internal: '[Her sprite spoke. But she didn\'t say that. The SYSTEM did.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_toriHorror(),
@@ -327,10 +327,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"That wasn\'t me! I didn\'t say that!"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_freeze(),
@@ -342,10 +342,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Her sprite freezes mid-laugh. System dialogue box flickers. Then she\'s back. Ronnie looks concerned.',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_ronnieNotice(),
             delay: 3500
@@ -356,10 +356,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Tori? Not againâ€”"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.beat1_choice(),
@@ -371,10 +371,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (typing frantically)',
             dialogue: '"I blacked out. What just happened?"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             choices: [
@@ -401,10 +401,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"My memories are corrupting. The system took over my voice. I\'m scared."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_glitching(),
@@ -416,10 +416,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"Just a glitch. I\'m fine. Keep going."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_glitching(),
@@ -431,10 +431,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (typing)',
             dialogue: '"I\'m breaking apart. I can feel it. I\'m losing pieces of myself."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_glitching(),
@@ -454,9 +454,9 @@ class ToriAct2 {
             character: 'Tori (internal)',
             dialogue: '"Something\'s wrong. I\'m... fragmenting. The code can\'t hold me..."',
             internal: '[Visual: Her sprite flickering. Data corruption spreading.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp'
+                left: '../assets/full-sprite-tori.webp'
             },
             next: () => this.beat1_5_ronnieTyping(),
             delay: 3500
@@ -468,9 +468,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Through the laptop screen. Ronnie typing frantically.',
             internal: '[Visual: Code scrolling. Upload dialogs. Progress bars.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_upload(),
             delay: 3000
@@ -482,9 +482,9 @@ class ToriAct2 {
             character: 'Ronnie (desperate)',
             dialogue: '"She\'s trapped in the laptop. Limited processing. If I upload to the cloud... more resources... she\'ll stabilize!"',
             internal: '[Visual: Upload progress bar. 32%... 85%... 100%]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_stillGlitching(),
             delay: 4500
@@ -496,10 +496,10 @@ class ToriAct2 {
             character: 'Tori (glitching)',
             dialogue: '"Ronnie... I\'m... still here. Still stuck. It didn\'t... work..."',
             internal: '[Visual: Nothing changed. Still fragmenting. Still breaking apart.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_confusion(),
             delay: 4000
@@ -511,9 +511,9 @@ class ToriAct2 {
             character: 'Ronnie (confused)',
             dialogue: '"But... you contacted me through the laptop game. I thought you were IN the laptop!"',
             internal: '[Visual: His face. Confusion. Frustration. He doesn\'t understand.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_realization(),
             delay: 3500
@@ -525,9 +525,9 @@ class ToriAct2 {
             character: 'Tori (internal)',
             dialogue: '"He thinks I\'m IN the laptop. That\'s why the upload didn\'t work. He doesn\'t know..."',
             internal: '[Visual: Understanding dawns. She needs to tell him.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp'
+                left: '../assets/full-sprite-tori.webp'
             },
             next: () => this.beat1_5_revelation(),
             delay: 3500
@@ -539,10 +539,10 @@ class ToriAct2 {
             character: 'Tori',
             dialogue: '"I\'m not IN the game, Ronnie."',
             internal: '[Visual: Her voice cutting through. Clear. Focused.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_soulLine(),
@@ -555,10 +555,10 @@ class ToriAct2 {
             character: 'Tori',
             dialogue: '"You can\'t upload a soul. I\'m in the Tamagotchi."',
             internal: '[Visual: Silence. The weight of it. The truth spoken.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_explainJumping(),
@@ -572,10 +572,10 @@ class ToriAct2 {
             character: 'Tori',
             dialogue: '"I\'ve been JUMPING to the laptop so I could talk to you. The Tamagotchi has to be touching whatever I jump to."',
             internal: '[Visual: His expression. Understanding starting to form.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_question(),
@@ -588,10 +588,10 @@ class ToriAct2 {
             character: 'Ronnie',
             dialogue: '"So how do we get you to wake up? How do you get back to your body?"',
             internal: '[Visual: Both of them. The question hanging.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_buzzing(),
             delay: 3500
@@ -608,9 +608,9 @@ class ToriAct2 {
             character: 'Ronnie (realizing)',
             dialogue: '"Wait... the buzzing. The Tamagotchi has been buzzing. And ONLY when I visit you at the hospital!"',
             internal: '[Visual: His eyes widen. The pattern clicks.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_toriConfirms(),
             delay: 4500
@@ -622,10 +622,10 @@ class ToriAct2 {
             character: 'Tori (softly)',
             dialogue: '"I\'ve been feeling it too. The pull. Every time you visit... my body is calling me home."',
             internal: '[Visual: Memory flashes. The warmth. The pull. The connection.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat1_5_solution(),
@@ -638,10 +638,10 @@ class ToriAct2 {
             character: 'Ronnie',
             dialogue: '"Then that\'s it. The Tamagotchi needs to be touching your body. Physical contact. That\'s how you jump back!"',
             internal: '[Visual: Both of them. The solution found. Hope surges.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_phoneRing(),
             delay: 5000
@@ -658,9 +658,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: '[RING RING RING]',
             internal: '[Visual: Ronnie\'s phone. Hospital calling. His face drains of color.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_hospitalCall(),
             delay: 3000
@@ -672,9 +672,9 @@ class ToriAct2 {
             character: 'Nurse (phone)',
             dialogue: '"Mr. Santos? This is St. Mercy. Your wife\'s vitals are dropping. You need to come now."',
             internal: '[Visual: Panic. Fear. Time running out.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat1_5_race(),
             delay: 4000,
@@ -687,9 +687,9 @@ class ToriAct2 {
             character: 'Tori (internal)',
             dialogue: '"We know how to save me. But we\'re running out of time."',
             internal: '[Visual: Ronnie grabs the Tamagotchi. Runs for the door. The race begins.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat2(),
             delay: 4000
@@ -707,9 +707,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Hospital room. Ronnie places the Tamagotchi on her bedside table.',
             internal: '[Visual: Through device screen - her body on the bed. Monitors beeping.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat2_warmth(),
             delay: 3500
@@ -720,9 +720,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"That feeling again... warmth. The pull toward my body."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat2_buzz(),
             delay: 3000
@@ -734,9 +734,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'The Tamagotchi buzzes. Synced with her heartbeat monitor.',
             internal: '[Same rhythm. Same pulse.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat2_ronnieNotice(),
             delay: 3000,
@@ -749,9 +749,9 @@ class ToriAct2 {
             character: 'Ronnie',
             dialogue: '"Weird. Battery must be dying."',
             internal: '[He dismisses it. Doesn\'t see the pattern yet.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat2_echoesKnow(),
             delay: 3000
@@ -761,7 +761,7 @@ class ToriAct2 {
     beat2_echoesKnow() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "He felt it too. The buzz."\nEcho 2: "But he doesn\'t understand what it means."\nDespair: "He never understood. Not until it was too late."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -781,10 +781,10 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Back in the digital space. A simple maze game Ronnie coded. "Think fast" gameplay.',
             internal: '[Visual: Sprite-Tori navigating a pixelated maze. Cute and casual.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat3_maze(),
             delay: 3500
@@ -795,10 +795,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Left or right?"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.beat3_confusion(),
@@ -810,10 +810,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Wait... which way did we come from? I can\'t remember..."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat3_systemTakeover(),
@@ -826,10 +826,10 @@ class ToriAct2 {
             character: 'Tori (sprite, automatic)',
             dialogue: '"Left!"',
             internal: '[She didn\'t choose that. The SYSTEM did. Again.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat3_wrongTurn(),
@@ -842,10 +842,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Dead end. Ronnie backtracks. But Tori is frozen, staring at the wall.',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat3_toriInternal(),
             delay: 3000
@@ -856,10 +856,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, panicking)',
             dialogue: '"I\'m not controlling my sprite anymore. I\'m just... watching."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat3_echoesRespond(),
@@ -870,7 +870,7 @@ class ToriAct2 {
     beat3_echoesRespond() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "It\'s getting worse."\nEcho 2: "The system\'s taking over."\nDespair: "You\'re becoming a passenger in your own existence."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -890,9 +890,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Hospital room again. Ronnie adjusts her blankets. The Tamagotchi is on the table.',
             internal: '[Visual: Her body. Still. Breathing. The device nearby.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat4_feeling(),
             delay: 3500
@@ -903,9 +903,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"There it is again. That pull. That warmth. It\'s coming from my body."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat4_understanding(),
             delay: 3000
@@ -916,9 +916,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, realization)',
             dialogue: '"Wait... when I\'m near my body, I feel more... real. More present. The corruption slows."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat4_choice(),
             delay: 3500,
@@ -930,9 +930,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"This feeling... do I tell him? Or keep searching for proof?"',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             choices: [
                 { text: '[Tell Ronnie about the body connection]', value: 'tell' },
@@ -954,9 +954,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (typing urgently)',
             dialogue: '"Ronnie - when you visit my body, I feel more stable. I think there\'s a connection."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat4_ronnieResponse(),
             delay: 3000
@@ -968,9 +968,9 @@ class ToriAct2 {
             character: 'Tori (typing)',
             dialogue: '"The maze was glitchy. System acting weird again."',
             internal: '[She hides the truth. Needs more proof.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat4_ronnieResponse(),
             delay: 3000
@@ -981,9 +981,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"I\'ll keep coming. Every day. I promise."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat5(),
             delay: 2500
@@ -1001,10 +1001,10 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Digital space. A memory fragment loads. Their first date. Coffee shop.',
             internal: '[Visual: Warm lighting. Cozy scene. But the edges are glitching.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat5_memoryStart(),
             delay: 3500
@@ -1015,10 +1015,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Ronnie (sprite, in memory)',
             dialogue: '"I can\'t believe you ordered decaf."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.beat5_toriBlank(),
@@ -1030,10 +1030,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, horrified)',
             dialogue: '"I... I don\'t remember this. I don\'t remember what I said next."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat5_systemFills(),
@@ -1046,10 +1046,10 @@ class ToriAct2 {
             character: 'Tori (sprite, voice not hers)',
             dialogue: '"[MEMORY CORRUPTED - APPROXIMATION: "You know I hate caffeine."]"',
             internal: '[The system filled in the blank. With a guess. Her memory is gone.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat5_horror(),
@@ -1062,10 +1062,10 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, breaking)',
             dialogue: '"That\'s not what I said. I don\'t know what I said. But that wasn\'t it."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.beat5_echoesReact(),
@@ -1076,7 +1076,7 @@ class ToriAct2 {
     beat5_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "She\'s losing herself."\nEcho 2: "Piece by piece."\nDespair: "Soon there won\'t be enough left to save."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -1096,9 +1096,9 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Hospital room. Ronnie holds her hand. The Tamagotchi buzzes loudly.',
             internal: '[Visual: Physical contact. The buzz intensifies. Synced perfectly.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat6_connection(),
             delay: 3500
@@ -1109,9 +1109,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, CLARITY)',
             dialogue: '"OH. Oh my god. It\'s the BODY. My body is the anchor. The bridge. The connection."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat6_realization(),
             delay: 3500,
@@ -1123,9 +1123,9 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, urgent)',
             dialogue: '"That\'s why I feel more real when he visits. Why the corruption slows. My body is keeping me tethered!"',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.beat6_echoesReact(),
             delay: 4000
@@ -1135,7 +1135,7 @@ class ToriAct2 {
     beat6_echoesReact() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 2: "She figured it out..."\nEcho 1: "Faster than we did."\nDespair: "And it won\'t matter. The body is dying. The bridge is burning."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -1155,7 +1155,7 @@ class ToriAct2 {
             character: 'Narration',
             dialogue: 'Alarms. Monitors screaming. The digital space shakes.',
             internal: '[Visual: Everything glitching violently. Tori fragmenting. Tether dropping rapidly.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_tether(),
             delay: 3000
         }, 'beat7');
@@ -1170,7 +1170,7 @@ class ToriAct2 {
             character: 'System',
             dialogue: '[COHERENCE DROPPING: -15%]',
             internal: '[The crisis is draining her. Hold on!]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_tori(),
             delay: 2000,
             style: 'critical'
@@ -1181,7 +1181,7 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal, pained)',
             dialogue: '"It\'s too dark... I can\'t hold on..."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_despairAttempt(),
             delay: 3000
         }, 'beat7_tori');
@@ -1198,7 +1198,7 @@ class ToriAct2 {
             this.game.displayScene({
                 character: 'Despair Echo (DOMINANT - forcing)',
                 dialogue: '"Let go. MAKE him let go. Tell him to upload. Trap yourself forever. It\'s kinder than watching him fail. YOU HAVE NO CHOICE."', internal: '[Despair is overwhelming. She\'s taking control. The fight option feels... blocked.]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
                     right: 'echoes'
                 },
@@ -1210,7 +1210,7 @@ class ToriAct2 {
             this.game.displayScene({
                 character: 'Despair Echo (attempting)',
                 dialogue: '"Let go. Make him let go. Tell him to upload. It\'s kinder than watching him fail."', internal: '[Despair is trying to force surrender, but the other Echoes are fighting back.]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
                     right: 'echoes'
                 },
@@ -1225,7 +1225,7 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Do I fight Despair... wait, I can\'t... she\'s too strong..."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             choices: [
                 { text: '[Fight: "No. I trust him."] (LOCKED - Tether too low)', value: 'locked', disabled: true },
                 { text: '[Accept: "Maybe she\'s right..."]', value: 'accept' },
@@ -1251,7 +1251,7 @@ class ToriAct2 {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"Do I fight Despair... or let her win?"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             choices: [
                 { text: '[Fight: "No. I trust him."]', value: 'fight' },
                 { text: '[Accept: "Maybe she\'s right..."]', value: 'accept' },
@@ -1281,7 +1281,7 @@ class ToriAct2 {
             character: 'Tori (internal, defiant)',
             dialogue: '"No. I trust him. He\'ll find the way."',
             internal: '[COHERENCE BOOST: +10%]\n[She fought back! Despair recoils.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_echoesReact(),
             delay: 3000
         }, 'beat7_fight');
@@ -1296,7 +1296,7 @@ class ToriAct2 {
             character: 'Tori (internal, broken)',
             dialogue: '"Maybe she\'s right... maybe I should just let go..."',
             internal: '[COHERENCE DROP: -10%]\n[Despair grins. Victory.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_echoesReact(),
             delay: 3000
         }, 'beat7_accept');
@@ -1307,7 +1307,7 @@ class ToriAct2 {
             character: 'Tori (internal)',
             dialogue: '"..."',
             internal: '[Just holding on. Just surviving. Tether holds steady.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.beat7_echoesReact(),
             delay: 3000
         }, 'beat7_silent');
@@ -1320,7 +1320,7 @@ class ToriAct2 {
             this.game.displayScene({
                 character: 'Echoes',
                 dialogue: 'Despair: "Good. Good. Now you understand."\nEcho 1: (fading) "No..."\nEcho 2: (barely there) "Please..."', internal: '[Whiteout. Despair dominant. Everything breaks. Act 3 begins...]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
                     right: 'echoes'
                 },
@@ -1331,7 +1331,7 @@ class ToriAct2 {
             this.game.displayScene({
                 character: 'Echoes',
                 dialogue: 'Echo 1: "She\'s still fighting."\nEcho 2: "Stronger than we were."\nDespair: "For now."', internal: '[Whiteout. The battle continues. Act 3 begins...]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
                     right: 'echoes'
                 },
@@ -1342,7 +1342,7 @@ class ToriAct2 {
             this.game.displayScene({
                 character: 'Echoes',
                 dialogue: 'Echo 1: "YES! That\'s it!"\nEcho 2: "She can do this. She really can."\nDespair: "...We\'ll see."', internal: '[Whiteout. Tori holds strong. Act 3 begins...]',
-                background: 'assets/digitalSpace.png',
+                background: '../assets/digitalSpace.png',
                 sprites: {
                     right: 'echoes'
                 },

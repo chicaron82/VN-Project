@@ -11,16 +11,16 @@ class Epilogue {
 
         // Set sprite positions based on which route we came from
         if (fromRoute === 'tori') {
-            this.leftSprite = 'assets/full-sprite-tori.webp';
-            this.rightSprite = 'assets/full-sprite-ronnie.webp';
-            this.oldLeftSprite = 'assets/full-sprite-tori.webp';
-            this.oldRightSprite = 'assets/full-sprite-oldRonnie.webp';
+            this.leftSprite = '../assets/full-sprite-tori.webp';
+            this.rightSprite = '../assets/full-sprite-ronnie.webp';
+            this.oldLeftSprite = '../assets/full-sprite-tori.webp';
+            this.oldRightSprite = '../assets/full-sprite-oldRonnie.webp';
         } else {
             // Default: Ronnie's route (Ronnie left, Tori right)
-            this.leftSprite = 'assets/full-sprite-ronnie.webp';
-            this.rightSprite = 'assets/full-sprite-tori.webp';
-            this.oldLeftSprite = 'assets/full-sprite-oldRonnie.webp';
-            this.oldRightSprite = 'assets/full-sprite-tori.webp';
+            this.leftSprite = '../assets/full-sprite-ronnie.webp';
+            this.rightSprite = '../assets/full-sprite-tori.webp';
+            this.oldLeftSprite = '../assets/full-sprite-oldRonnie.webp';
+            this.oldRightSprite = '../assets/full-sprite-tori.webp';
         }
     }
 
@@ -38,7 +38,7 @@ class Epilogue {
             character: 'Narration',
             dialogue: '[SIX MONTHS LATER]',
             internal: '[Visual: Their apartment. Morning light. Domestic peace. Tori recovered, moving freely.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -53,7 +53,7 @@ class Epilogue {
             character: 'Tori',
             dialogue: '"You know, that beard really suits you..."',
             internal: '[She strokes his face, running her fingers through the new scruff.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -67,7 +67,7 @@ class Epilogue {
         this.game.displayScene({
             character: 'Ronnie',
             dialogue: '"Thought I\'d try it out. It\'s getting colder out. Keeps my face warm 😜 Plus I\'ll look like Santa if I put the hat on."',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -82,7 +82,7 @@ class Epilogue {
             character: 'Tori (distant look)',
             dialogue: '"You look... distinguished. Older. Like you\'ve seen things..."',
             internal: '[A pause. Something flickering at the edge of memory.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -97,7 +97,7 @@ class Epilogue {
             character: 'Tori',
             dialogue: '"I feel like... I\'ve seen this exact look before..."',
             internal: '[FLASHBACK: The street bump. The Old Man reaching for her. Gray hair. Beard. Those same eyes. The BGA hoodie...]',
-            background: 'assets/genericBack.png',
+            background: '../assets/genericBack.png',
             sprites: {
                 left: this.oldLeftSprite,
                 right: this.oldRightSprite
@@ -112,7 +112,7 @@ class Epilogue {
             character: 'Tori (studying his face)',
             dialogue: '"Those eyes..."',
             internal: '[She traces his jawline. Something ancient stirring in her memory. A voice across timelines.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -127,7 +127,7 @@ class Epilogue {
             character: 'Tori (whispered)',
             dialogue: '"...Chicharon?"',
             internal: '[The word slips out. She doesn\'t know why. It feels right. It feels like home.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -142,7 +142,7 @@ class Epilogue {
             character: 'Ronnie (frozen)',
             dialogue: '"You... you haven\'t called me that in..."',
             internal: '[His voice breaks. She doesn\'t remember. The Echoes gave everything for this. But some things transcend even memory. Some things the heart just knows.]',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -156,7 +156,7 @@ class Epilogue {
         this.game.displayScene({
             character: 'Tori (snapping back)',
             dialogue: '"...Weird. Déjà vu, I guess."',
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite
@@ -171,7 +171,7 @@ class Epilogue {
             character: 'Ronnie (knowing smile)',
             dialogue: '"Must have been another timeline."',
             internal: `[The loop is closed. Version ${this.game.loopVersion} succeeded. The Old Man never has to go back. Love wins.]\n\n[Fade to white.]\n\n[Credits roll. No retry prompt. This is the escape from the loop.]`,
-            background: 'assets/apartment.png',
+            background: '../assets/apartment.png',
             sprites: {
                 left: this.leftSprite,
                 right: this.rightSprite

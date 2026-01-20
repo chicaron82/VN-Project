@@ -1797,7 +1797,7 @@ INSANE mode awaits those who dare.
                     font-family: 'Courier New', monospace;
                 ">THE INSPIRATION</h2>
 
-                <img src="assets/ronniegatchi-inspiration.jpg" alt="Original Tori-Gatchi pixel art" style="
+                <img src="../assets/ronniegatchi-inspiration.jpg" alt="Original Tori-Gatchi pixel art" style="
                     max-width: 100%;
                     max-height: 50vh;
                     border-radius: 8px;

@@ -208,35 +208,35 @@ const GameConfig = {
     ASSETS: {
         // Backgrounds
         backgrounds: {
-            apartment: 'assets/apartment.webp',
-            hospital: 'assets/hospital.webp',
-            digitalSpace: 'assets/digitalSpace.webp',
-            genericBack: 'assets/genericBack.webp',
-            street: 'assets/street.png'
+            apartment: '../assets/apartment.webp',
+            hospital: '../assets/hospital.webp',
+            digitalSpace: '../assets/digitalSpace.webp',
+            genericBack: '../assets/genericBack.webp',
+            street: '../assets/street.png'
         },
 
         // Character Sprites
         sprites: {
-            ronnie: 'assets/ronnie-sprite.png',
-            tori: 'assets/tori-sprite.png',
-            oldRonnie: 'assets/old-ronnie-sprite.png',
-            threeEchoes: 'assets/threeechoessprite.png',
-            routeSelectRonnie: 'assets/route-select-ronnie.webp',
-            routeSelectTori: 'assets/route-select-tori.webp'
+            ronnie: '../assets/ronnie-sprite.png',
+            tori: '../assets/tori-sprite.png',
+            oldRonnie: '../assets/old-ronnie-sprite.png',
+            threeEchoes: '../assets/threeechoessprite.png',
+            routeSelectRonnie: '../assets/route-select-ronnie.webp',
+            routeSelectTori: '../assets/route-select-tori.webp'
         },
 
         // UI Assets
         ui: {
-            uv7Logo: 'assets/UnitedVoices7.webp',
-            menuBackground: 'assets/menu-bg.png',
-            menuMobile: 'assets/menumobile.webp',
-            uv7Crew: 'assets/the_UV7_crew.webp'
+            uv7Logo: '../assets/UnitedVoices7.webp',
+            menuBackground: '../assets/menu-bg.png',
+            menuMobile: '../assets/menumobile.webp',
+            uv7Crew: '../assets/the_UV7_crew.webp'
         }
     },
 
     // Helper function for easy asset access
     getAsset(category, name) {
-        return this.ASSETS[category]?.[name] || `assets/${name}.png`;
+        return this.ASSETS[category]?.[name] || `../assets/${name}.png`;
     },
 
     // ========================================

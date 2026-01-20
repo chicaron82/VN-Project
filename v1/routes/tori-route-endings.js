@@ -22,7 +22,7 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Everything shatters. Tori is fracturing. The Echoes watch. This is the moment.',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             choices: [
                 { text: '[Accept the upload - stay digital]', value: 'upload' },
                 { text: '[Follow the heartbeat home]', value: 'heartbeat' },
@@ -73,7 +73,7 @@ class ToriEndings {
             character: 'Narration',
             dialogue: 'Upload fails. Tori fragments. Becomes another Echo in the void.',
             internal: '[Visual: Digital space. Four voices now. Echo 1, Echo 2, Despair... and Tori.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.badRoute_loop(),
             delay: 4000
         }, 'badRoute');
@@ -83,7 +83,7 @@ class ToriEndings {
         this.game.displayScene({
             character: 'New Echo (Tori)',
             dialogue: '"He\'ll try again. He always tries again."', internal: '[The loop resets. Version 849. Another Tori wakes in the void...]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             next: () => this.badRoute_retry(),
             delay: 5000
         }, 'badRoute_loop');
@@ -142,10 +142,10 @@ class ToriEndings {
             character: 'Narration',
             dialogue: 'Both crash. Both transfer. Digital space. Two souls. Forever.',
             internal: '[Visual: White void. Ronnie and Tori as digital sprites. Together. Eternal.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.digitalForever_together(),
             delay: 4000
@@ -156,10 +156,10 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"We\'re together. Isn\'t this what we wanted?"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.digitalForever_ronnie(),
@@ -171,10 +171,10 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Forever. No pain. No time. Just us."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.digitalForever_toriNotices(),
@@ -187,10 +187,10 @@ class ToriEndings {
             character: 'Tori (digital)',
             dialogue: '"You\'re still wearing the TLC hoodie. Even here."',
             internal: '[She smiles softly, touching the digital fabric.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.digitalForever_tlcReveal(),
@@ -202,10 +202,10 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Tori (digital)',
             dialogue: '"\'TLC\' - Tender Loving Care. That\'s my Ronnie."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'left'
             },
             next: () => this.digitalForever_ronnieCorrects(),
@@ -218,10 +218,10 @@ class ToriEndings {
             character: 'Ronnie (digital)',
             dialogue: '"Oh that\'s not what that stands for."',
             internal: '[He grins.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.digitalForever_actualMeaning(),
@@ -233,10 +233,10 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Ronnie (digital)',
             dialogue: '"Tori Loves Chicharon."',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp',
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp',
                 highlight: 'right'
             },
             next: () => this.digitalForever_echoesAppear(),
@@ -249,9 +249,9 @@ class ToriEndings {
             character: 'Echo 1',
             dialogue: '"Oh that\'s YOUR Ronnie, huh?"',
             internal: '[The Echoes materialize, grinning.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-tori.webp',
                 right: 'echoes'
             },
             next: () => this.digitalForever_echo2(),
@@ -263,9 +263,9 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Echo 2',
             dialogue: '"Girl, he\'s cute!"',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-tori.webp',
                 right: 'echoes'
             },
             next: () => this.digitalForever_despairTeases(),
@@ -278,9 +278,9 @@ class ToriEndings {
             character: 'Despair',
             dialogue: '"Tori Loves Chicharon?! OMG adorable."',
             internal: '[Even Despair can\'t help but smile.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
+                left: '../assets/full-sprite-tori.webp',
                 right: 'echoes'
             },
             next: () => this.digitalForever_echoes(),
@@ -292,10 +292,10 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Echoes',
             dialogue: 'Echo 1: "They made it..."\nEcho 2: "Together at least."\nDespair: "...It\'s beautiful. And hollow. But beautiful."', internal: '[Fade to white. Digital Forever - Love preserved in code.]',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
-                left: 'assets/full-sprite-tori.webp',
-                right: 'assets/full-sprite-ronnie.webp'
+                left: '../assets/full-sprite-tori.webp',
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.digitalForever_choice(),
             delay: 5000
@@ -373,7 +373,7 @@ class ToriEndings {
             character: 'Narration',
             dialogue: 'The heartbeat calls. The bridge holds. Transfer begins.',
             internal: '[Visual: Tori\'s digital form dissolving. Following the warmth home.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             next: () => this.trueRoute_transfer(),
             delay: 4000
         }, 'trueRoute');
@@ -398,7 +398,7 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Tori (internal)',
             dialogue: '"I feel it... the pull... I\'m going home..."',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             next: () => this.trueRoute_echoes(),
             delay: 3000
         }, 'trueRoute_transfer');
@@ -407,7 +407,7 @@ class ToriEndings {
     trueRoute_echoes() {
         this.game.displayScene({
             character: 'Echoes',
-            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."', background: 'assets/digitalSpace.png',
+            dialogue: 'Echo 1: "Go. Go!"\nEcho 2: "You did it. You actually did it."\nDespair: "...Tell him... tell him we\'re proud."', background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -421,7 +421,7 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Narration',
             dialogue: 'Three become one.',
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             sprites: {
                 right: 'echoes'
             },
@@ -445,9 +445,9 @@ class ToriEndings {
             character: 'Tori (external, whisper)',
             dialogue: '"...Ronnie?"',
             internal: '[Visual: Hospital room. Her eyes flutter open. Real eyes. Real body. Real breath.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.trueRoute_ronnie(),
             delay: 4000,
@@ -459,9 +459,9 @@ class ToriEndings {
         this.game.displayScene({
             character: 'Ronnie (crying, laughing)',
             dialogue: '"Tori! Oh god, Tori!"',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => this.trueRoute_always(),
             delay: 3000
@@ -484,9 +484,9 @@ class ToriEndings {
             character: 'Tori (weak smile)',
             dialogue: '"Always. Always. Always."',
             internal: '[Her hand squeezes his. Real. Warm. Alive. The Echoes fade into peace.]',
-            background: 'assets/hospital.png',
+            background: '../assets/hospital.png',
             sprites: {
-                right: 'assets/full-sprite-ronnie.webp'
+                right: '../assets/full-sprite-ronnie.webp'
             },
             next: () => {
                 // Unlock skip prologue for future playthroughs

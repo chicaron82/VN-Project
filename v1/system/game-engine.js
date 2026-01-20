@@ -794,28 +794,28 @@ class GameEngine {
         const imagesToPreload = {
             // PRIORITY 1: Critical menu assets (load first)
             critical: [
-                'assets/menudesktop.png',
-                'assets/menumobile.webp',
-                'assets/desktopVersion.webp',
-                'assets/UnitedVoices7.webp'
+                '../assets/menudesktop.png',
+                '../assets/menumobile.webp',
+                '../assets/desktopVersion.webp',
+                '../assets/UnitedVoices7.webp'
             ],
 
             // PRIORITY 2: Core gameplay assets (load second)
             gameplay: [
-                'assets/ronnie-sprite.png',
-                'assets/tori-sprite.png',
-                'assets/apartment.png',
-                'assets/hospital.png',
-                'assets/genericBack.png',
-                'assets/digitalSpace.png'
+                '../assets/ronnie-sprite.png',
+                '../assets/tori-sprite.png',
+                '../assets/apartment.png',
+                '../assets/hospital.png',
+                '../assets/genericBack.png',
+                '../assets/digitalSpace.png'
             ],
 
             // PRIORITY 3: Route-specific assets (load last)
             routes: [
-                'assets/echo-1-sprite.png',
-                'assets/echo-2-sprite.png',
-                'assets/despair-sprite.png',
-                'assets/three-echoes-sprite.png'
+                '../assets/echo-1-sprite.png',
+                '../assets/echo-2-sprite.png',
+                '../assets/despair-sprite.png',
+                '../assets/three-echoes-sprite.png'
             ]
         };
 

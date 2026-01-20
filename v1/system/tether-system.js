@@ -655,7 +655,7 @@ class TetherSystem {
             character: 'System',
             dialogue: 'CRITICAL FAILURE. TETHER SEVERED.',
             internal: `[Tori's consciousness fragments into static]\n[Version ${failedVersion} timeline COLLAPSED]\n\n**"The loop continues. She deserves another chance."**`,
-            background: 'assets/digitalSpace.png',
+            background: '../assets/digitalSpace.png',
             style: 'critical',
             choices: [
                 { text: '[BEGIN NEXT ATTEMPT]', value: 'retry' },
