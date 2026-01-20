@@ -45,7 +45,7 @@ import { StatusBar } from '@ui/components/StatusBar';
 import { Sidebar } from '@ui/components/Sidebar';
 import { NotesViewer } from '@ui/components/NotesViewer';
 import '@core/ErrorBoundary'; // Auto-initializes global error handler
-import { LoadingOverlay } from '@ui/components/LoadingOverlay';
+// import { LoadingOverlay } from '@ui/components/LoadingOverlay'; // Unused
 import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
 import '@ui/styles/error-boundary.css';
@@ -78,9 +78,9 @@ import toriAct2Data from '@content/routes/tori_act2.json';
 import toriAct3Data from '@content/routes/tori_act3.json';
 
 // Asset Imports
-import logoImg from '../assets/UnitedVoices7.png';
+// import logoImg from '../assets/UnitedVoices7.png'; // Unused
 // import introVideoParams from '../UnitedVoices7.mp4?url'; // Unused
-import introVideo from '../UnitedVoices7.mp4';
+// import introVideo from '../UnitedVoices7.mp4'; // Unused
 
 // ============================================
 // Core Systems
