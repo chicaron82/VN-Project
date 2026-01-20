@@ -184,6 +184,8 @@ export class Sidebar {
         this.container.classList.add('visible');
         this.backdrop.classList.add('visible');
         this.toggleBtn.classList.add('open');
+
+        this.eventBus.emit('ui:sidebar:opened', {});
     }
 
     public close(): void {
@@ -193,6 +195,8 @@ export class Sidebar {
         this.container.classList.remove('visible');
         this.backdrop.classList.remove('visible');
         this.toggleBtn.classList.remove('open');
+
+        this.eventBus.emit('ui:sidebar:closed', {});
     }
 
     private updateContent(): void {

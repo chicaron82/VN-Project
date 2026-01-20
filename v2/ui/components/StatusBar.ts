@@ -262,6 +262,24 @@ export class StatusBar {
     }
 
     /**
+     * Set paused state (visual indicator)
+     */
+    public setPaused(paused: boolean): void {
+        if (paused) {
+            this.routeEl.textContent = 'PAUSED';
+            this.routeEl.classList.add('paused-indicator');
+            this.routeEl.style.color = '#ff3c3c'; // Red for pause
+            this.routeEl.style.textShadow = '0 0 10px rgba(255, 60, 60, 0.5)';
+        } else {
+            // Restore route display
+            this.setRoute(this.currentRoute);
+            this.routeEl.classList.remove('paused-indicator');
+            this.routeEl.style.color = '';
+            this.routeEl.style.textShadow = '';
+        }
+    }
+
+    /**
      * Clear inline tint styles (let CSS classes handle theming)
      */
     private clearInlineTint(): void {
@@ -813,6 +831,22 @@ export class StatusBar {
             }
         });
         this.unsubscribers.push(unsubSettings);
+        // Pause State Listeners (Sidebar/Shade)
+        const pauseHandler = () => this.setPaused(true);
+        const unpauseHandler = () => this.setPaused(false);
+
+        this.eventBus.on('ui:sidebar:opened', pauseHandler);
+        this.eventBus.on('ui:shade:opened', pauseHandler);
+        this.eventBus.on('ui:sidebar:closed', unpauseHandler);
+        this.eventBus.on('ui:shade:closed', unpauseHandler);
+
+        // Add to unsubscribers
+        this.unsubscribers.push(() => {
+            this.eventBus.off('ui:sidebar:opened', pauseHandler);
+            this.eventBus.off('ui:shade:opened', pauseHandler);
+            this.eventBus.off('ui:sidebar:closed', unpauseHandler);
+            this.eventBus.off('ui:shade:closed', unpauseHandler);
+        });
     }
 
     /**

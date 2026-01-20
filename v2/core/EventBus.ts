@@ -77,6 +77,8 @@ export type GameEvents = {
   'ui:sidebar:open': {};
   'ui:sidebar:close': {};
   'ui:sidebar:toggle': {};
+  'ui:sidebar:opened': {};
+  'ui:sidebar:closed': {};
   // Input events
   'input:swipe_left': {};
   'input:swipe_right': {};

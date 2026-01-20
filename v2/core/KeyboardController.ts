@@ -98,11 +98,16 @@ export class KeyboardController {
             return;
         }
 
-        // 9. Pause Menu (Lowest Priority Overlay)
-        // If nothing else is open, toggle pause
+        // 9. Pause Menu (Replalced by Sidebar/Shade)
+        // If nothing else is open, toggle Sidebar (Landscape) or Shade (Portrait)
         // But only if we are IN GAME (not main menu)
         if (document.getElementById('game-layout')) {
-            this.eventBus.emit('ui:pause_toggle', {});
+            const isLandscape = window.innerWidth > window.innerHeight;
+            if (isLandscape) {
+                this.eventBus.emit('ui:sidebar:toggle', {});
+            } else {
+                this.eventBus.emit('ui:shade:toggle', {});
+            }
         }
     }
 

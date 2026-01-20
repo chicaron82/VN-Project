@@ -301,6 +301,9 @@ export class NotificationShade {
     }
 
     private setupListeners(): void {
+        // Toggle event (for KeyboardController)
+        this.eventBus.on('ui:shade:toggle', () => this.toggle());
+
         // V1 Parity: Keyboard shortcuts (lines 861-915)
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
 

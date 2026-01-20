@@ -67,6 +67,8 @@ function updateMoodDisplay() {
     $('mood-label').textContent = toriGatchiState.mood;
 }
 
+const CORRUPTED_OUTFITS = ['nerdyTori', 'lovingTori', 'foodieTori', 'sunsetSkirt', 'couchMode'];
+
 function updateSprite() {
     const mood = toriGatchiState.mood;
     const outfit = toriGatchiState.currentOutfit;
@@ -75,18 +77,48 @@ function updateSprite() {
 
     if (spriteElement) {
         let spritePath;
+        let isCorrupted = false;
 
-        // Easter egg sprite takes priority
-        if (toriGatchiState.easterEggUnlocked && outfit === "easterEgg") {
+        // Reset glitch effects
+        spriteElement.classList.remove('glitch-effect', 'sprite-glitch-heavy');
+        document.body.classList.remove('corruption-active');
+
+        // Check for corruption
+        if (CORRUPTED_OUTFITS.includes(outfit)) {
+            isCorrupted = true;
+            // Use default sprite as base for corruption
+            spritePath = `images/Happy/default.png`;
+
+            // Apply glitch effect from gateway-states.css
+            spriteElement.classList.add('sprite-glitch-heavy');
+            document.body.classList.add('corruption-active');
+
+            // Show system error
+            if (Math.random() < 0.3) {
+                displayMessage(`<span style="color:red; font-family:monospace;">⚠ SYSTEM ERROR: Asset '${outfit}.png' not found.<br>Project abandoned by user 'Ronnie'.</span>`);
+            }
+        }
+        // Easter egg
+        else if (toriGatchiState.easterEggUnlocked && outfit === "easterEgg") {
             spritePath = `images/EasterEgg/sprite_easterEgg.png`;
-        } else if (toriGatchiState.buttonMode === 'flirt' && flirtLevel > 0 && flirtLevel < 5) {
+        }
+        // Flirty progression
+        else if (toriGatchiState.buttonMode === 'flirt' && flirtLevel > 0 && flirtLevel < 5) {
             spritePath = `images/Flirty/${outfit}Flirty${flirtLevel}.png`;
-        } else {
+        }
+        // Standard
+        else {
             spritePath = `images/${mood}/${outfit}.png`;
         }
 
+        // Handle Hangry missing asset specifically if using standard logic
+        if (!isCorrupted && mood === 'Hangry' && outfit === 'kittenTee') {
+            // Fallback to default Hangry
+            spritePath = `images/Hangry/default.png`;
+        }
+
         spriteElement.src = `${spritePath}?t=${Date.now()}`;
-        spriteElement.alt = `Tori in ${outfit} outfit, looking ${mood} at flirt level ${flirtLevel}`;
+        spriteElement.alt = isCorrupted ? `CORRUPTED DATA` : `Tori in ${outfit} outfit`;
     }
 }
 
@@ -100,7 +132,8 @@ function updateOutfitSelector() {
     uniqueUnlockedOutfits.forEach(outfit => {
         const option = document.createElement('option');
         option.value = outfit;
-        option.textContent = outfit.charAt(0).toUpperCase() + outfit.slice(1);
+        const isCorrupted = CORRUPTED_OUTFITS.includes(outfit);
+        option.textContent = (outfit.charAt(0).toUpperCase() + outfit.slice(1)) + (isCorrupted ? " [CORRUPTED]" : "");
         if (outfit === toriGatchiState.currentOutfit) {
             option.selected = true;
         }

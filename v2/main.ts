@@ -37,7 +37,7 @@ import { StatusNotificationController } from '@systems/StatusNotificationControl
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
-import { PauseScreen } from '@ui/screens/PauseScreen';
+
 import { GameLayout } from '@ui/components/GameLayout';
 import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
 import { SettingsModal } from '@ui/components/SettingsModal';
@@ -253,7 +253,6 @@ if (!app) throw new Error('No #app element found');
 
 type Screen = { unmount: () => void };
 let currentScreen: Screen | null = null;
-let pauseScreen: PauseScreen | null = null;
 let gameLayout: GameLayout | null = null;
 let isPaused = false;
 
@@ -606,19 +605,7 @@ function showChoices(choices: Array<{ text: string; next: string | null }>) {
     gameLayout.viewport.appendChild(choiceContainer);
 }
 
-function togglePause() {
-    if (!gameLayout) return; // Not in gameplay
 
-    isPaused = !isPaused;
-
-    if (isPaused) {
-        pauseScreen = new PauseScreen(eventBus);
-        pauseScreen.mount(app!);
-    } else {
-        pauseScreen?.unmount();
-        pauseScreen = null;
-    }
-}
 
 // ============================================
 // Event Handlers
@@ -701,7 +688,7 @@ function setupEventHandlers() {
         startPrologue();
     });
 
-    eventBus.on('ui:pause_toggle', togglePause);
+
 
     // Scene loading - update UI with scene data
     eventBus.on('scene:load', ({ sceneId }) => {
@@ -846,9 +833,8 @@ function setupEventHandlers() {
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && gameLayout) {
-            togglePause();
-        }
+        // Escape handled by KeyboardController.ts
+
         // Space/Enter to advance dialog OR hide bubble
         if ((e.key === ' ' || e.key === 'Enter') && gameLayout && !isPaused) {
             console.log('[KEYPRESS] Space/Enter pressed', { bubbleVisible: dialogBubble.isVisible() });
