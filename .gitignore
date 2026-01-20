@@ -141,3 +141,8 @@ nul
 
 # Claude Code temporary directories
 tmpclaude-*-cwd
+
+# Archive folders (preserved in branches)
+timeline_*_failures/
+*-temp/
+*-backup/

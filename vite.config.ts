@@ -42,7 +42,6 @@ export default defineConfig({
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
-      '**/timeline_847_failures/**',
     ],
     coverage: {
       provider: 'v8',
