@@ -600,6 +600,35 @@ section h2 {
     box-shadow: 0 0 0 4px rgba(102, 102, 102, 0.2);
 }
 
+/* --- TIMELINE FOOTER (Plot Twist) --- */
+.timeline-entry-footer {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.95rem;
+    color: #555;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    animation: fadeIn 0.5s ease;
+}
+
+.footer-icon {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.footer-content {
+    flex: 1;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.timeline-item.journal-entry .timeline-entry-footer {
+    border-top-color: rgba(255, 255, 255, 0.1);
+    color: #aaa;
+}
+
 /* --- CRITICAL MILESTONE STYLES --- */
 .timeline-item.critical .timeline-content {
     background: linear-gradient(135deg, rgba(255, 100, 100, 0.1), rgba(255, 50, 50, 0.05));
