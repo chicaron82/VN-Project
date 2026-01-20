@@ -53,6 +53,9 @@ export class TypewriterController {
         this.eventBus = eventBus;
         this._stateManager = stateManager;
 
+        // Load initial settings
+        this.loadInitialSettings();
+
         // V1 Parity: Listen for settings changes
         this.eventBus.on('settings:changed', (data: { key: string; value: unknown }) => {
             if (data.key === 'textSpeed') {
@@ -61,6 +64,20 @@ export class TypewriterController {
         });
 
         console.log('✅ TypewriterController initialized');
+    }
+
+    private loadInitialSettings() {
+        try {
+            const saved = localStorage.getItem('gameSettings');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.textSpeed) {
+                    this.textSpeed = parsed.textSpeed;
+                }
+            }
+        } catch (e) {
+            console.warn('TypewriterController: Failed to load settings', e);
+        }
     }
 
     // ========================================
@@ -77,6 +94,12 @@ export class TypewriterController {
         // 5× slower than normal (150ms vs 30ms)
         if (this.slowRevealActive) {
             return 150;
+        }
+
+        // PRIORITY FIX: Instant should be instant, even if skipping
+        // (Because 0ms is faster than skip speed of 5ms)
+        if (this.textSpeed === 'instant') {
+            return 0;
         }
 
         // SKIP OVERRIDE: Use 5ms when skipping (6x faster than normal)

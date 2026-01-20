@@ -25,6 +25,8 @@ export class BootSequenceController {
 
     public async start(): Promise<void> {
         return new Promise(async (resolve) => {
+            let wasSkipped = false; // Track if user skipped
+
             // Creates the FULL V1 structure required by bougie-boot-sequence.css
             const splashContainer = document.createElement('div');
             splashContainer.id = 'uv7-splash';
@@ -117,6 +119,7 @@ export class BootSequenceController {
 
             // Bind Skip Button
             const handleSkip = () => {
+                wasSkipped = true; // Mark as skipped
                 boot.skip();
                 // On skip, show full video immediately
                 if (videoReveal) videoReveal.style.width = '100%';
@@ -136,7 +139,22 @@ export class BootSequenceController {
 
             await boot.start();
 
-            // Completion (Boot finished)
+            // V1 Parity: If skipped, fuck it - bail immediately with code rain
+            if (wasSkipped) {
+                console.log('🌧️ Boot skipped - triggering immediate code rain transition');
+
+                // Instant removal, no fade
+                splashContainer.remove();
+
+                // Trigger code rain BEFORE showing menu (V1 behavior)
+                this.eventBus.emit('effect:code_rain', { duration: 1500 });
+
+                // Resolve after code rain would complete
+                setTimeout(() => resolve(), 1500);
+                return;
+            }
+
+            // Normal completion (Boot finished, NOT skipped)
             if (videoWrap) {
                 videoWrap.classList.remove('loading');
                 videoWrap.classList.add('ready');
