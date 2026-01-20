@@ -15,20 +15,14 @@ class ShowcaseSidebar {
             { id: 'who', label: 'Who Are We', icon: '👥' }
         ];
 
-        console.log('ShowcaseSidebar initialized', this.tabs);
         this.init();
     }
 
     init() {
-        // AGGRESSIVE CLEANUP: Remove any ghost elements (the ones showing "NaN")
+        // Cleanup any old timeline-navigator elements
         const ghosts = document.querySelectorAll('.timeline-navigator');
-        console.log('[ShowcaseSidebar] Found', ghosts.length, 'ghost .timeline-navigator elements');
-        ghosts.forEach((el, i) => {
-            console.log(`[ShowcaseSidebar] Removing ghost ${i}:`, el, 'innerHTML:', el.innerHTML.substring(0, 100));
-            el.remove();
-        });
+        ghosts.forEach(el => el.remove());
 
-        console.log('[ShowcaseSidebar] Creating new navigation with class .uv7-showcase-nav');
         this.createNavigator();
         this.setupKeyboardShortcuts();
         this.setupStateListener();
@@ -51,8 +45,7 @@ class ShowcaseSidebar {
         if (existing) existing.remove();
 
         this.nav = document.createElement('div');
-        this.nav.className = 'uv7-showcase-nav showcase-sidebar'; // NEW CLASS
-        console.log('[ShowcaseSidebar] Created nav with classes:', this.nav.className);
+        this.nav.className = 'uv7-showcase-nav showcase-sidebar';
 
         const header = document.createElement('h4');
         header.textContent = 'Navigation';
@@ -71,9 +64,8 @@ class ShowcaseSidebar {
             const labelSpan = `<span class="nav-label">${tab.label || 'Tab'}</span>`;
             a.innerHTML = `${iconSpan} ${labelSpan}`;
 
-            console.log(`[ShowcaseSidebar] Created link for tab ${index}:`, tab.id, tab.label, tab.icon);
-
-            a.dataset.target = tab.id;
+            // Use 'tabTarget' instead of 'target' to avoid conflict with premium-animations.js counter selector
+            a.dataset.tabTarget = tab.id;
             a.dataset.index = index;
 
             a.addEventListener('click', (e) => {
@@ -125,7 +117,7 @@ class ShowcaseSidebar {
 
         const links = this.nav.querySelectorAll('a');
         links.forEach(link => {
-            if (link.dataset.target === activeId) {
+            if (link.dataset.tabTarget === activeId) {
                 link.classList.add('active');
             } else {
                 link.classList.remove('active');

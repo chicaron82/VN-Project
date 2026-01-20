@@ -5,6 +5,34 @@
 window.TIMELINE_DATA = {
     "entries": [
         {
+            "id": "2026-01-20-a",
+            "date": "January 20, 2026",
+            "emoji": "🔍",
+            "title": "The Great NaN Mystery - A Debugging Odyssey",
+            "type": "highlight",
+            "summary": "Showcase navigation displayed 'NaN' instead of section names. What seemed like a simple CSS issue turned into an epic debugging session revealing a subtle attribute name collision between two independent systems.",
+            "features": [
+                "🚨 <strong>The Symptom:</strong> Navigation sidebar showed 'NaN' instead of 'Journey', 'Workflow', etc.",
+                "✅ <strong>JavaScript Was Perfect:</strong> Console logs proved all data was correct at creation time",
+                "🔬 <strong>MutationObserver Detective Work:</strong> Deployed DOM surveillance to catch the exact moment of corruption",
+                "💡 <strong>The Culprit:</strong> premium-animations.js used `[data-target]` selector to animate counters, caught our nav links",
+                "🎯 <strong>The Fix:</strong> Renamed nav attribute from `data-target` to `data-tabTarget` to avoid collision"
+            ],
+            "metrics": {
+                "debuggingTime": "~45 minutes",
+                "hypothesesTested": 7,
+                "cacheBustersDeployed": 8,
+                "stackTracesAnalyzed": 1
+            },
+            "callout": {
+                "icon": "🎓",
+                "title": "Lessons in Defensive Programming",
+                "text": "Global selectors like `[data-target]` are dangerous. Always namespace your attributes (data-counter-target, data-nav-target) to prevent collisions. The bug was: premium-animations.js selected ALL [data-target] elements → tried parseInt('journey') → got NaN → set textContent = NaN."
+            },
+            "sortDate": "2026-01-20T0a",
+            "legacyPhase": "2026-01-20-a"
+        },
+        {
             "id": "2026-01-19-c",
             "date": "January 19, 2026",
             "emoji": "🕸️",
