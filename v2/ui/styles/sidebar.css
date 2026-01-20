@@ -1,74 +1,140 @@
-/* Sidebar & Toggle (Tori's Polish) */
+/* ========================================
+   SIDEBAR & GRAB HANDLE
+   V1 Parity Port - Faithful Recreation
+   ======================================== */
 
+/* Grab Handle Toggle Button */
 #sidebar-toggle {
     position: fixed;
-    z-index: 10001;
-    /* Above sidebar (9998) */
-    width: 32px;
-    height: 64px;
-    background: rgba(10, 10, 10, 0.9);
+    z-index: 10001; /* Above sidebar (9998) */
+
+    /* V1 Parity: Larger, more visible size */
+    width: 40px;
+    height: 80px;
+
+    /* V1 Parity: Cyan-tinted background */
+    background: rgba(0, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #e0e0e0;
+
+    /* V1 Parity: Cyan border */
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+
+    /* V1 Parity: Cyan text */
+    color: #00ffff;
+    font-size: 20px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
     cursor: grab;
     user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
 
     /* Smooth movement when not dragging */
-    transition: top 0.2s ease, left 0.2s ease, right 0.2s ease, border-radius 0.2s ease;
+    transition: all 0.2s ease;
 }
 
-#sidebar-toggle:hover {
-    background: rgba(20, 20, 20, 0.95);
-    border-color: rgba(0, 255, 255, 0.3);
-    color: #00ffff;
+#sidebar-toggle:hover,
+#sidebar-toggle:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    width: 45px; /* V1 Parity: Expand on hover */
 }
 
+#sidebar-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* V1 Parity: Dragging state with scale + width expansion */
 #sidebar-toggle.dragging {
-    opacity: 0.8;
-    box-shadow: 0 0 12px rgba(0, 255, 255, 0.6);
     cursor: grabbing;
-    transition: none;
-    /* Instant follow during drag */
-    background: rgba(0, 255, 255, 0.15);
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-50%) scale(1.1);
+    width: 50px; /* Expands during drag */
+    transition: none; /* Instant follow during drag */
+}
+
+/* V1 Parity: Crossing threshold visual feedback (green glow) */
+#sidebar-toggle.crossing-threshold {
+    background: rgba(0, 255, 0, 0.3);
+    border-color: rgba(0, 255, 0, 0.8);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    opacity: 0.8;
+    animation: pulse-crossing 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-crossing {
+    0%, 100% {
+        transform: translateY(-50%) scale(1.1);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.15);
+    }
 }
 
 #sidebar-toggle.open {
-    left: 280px;
-    /* Match sidebar width */
+    left: 280px; /* Match sidebar width */
     border-radius: 0 8px 8px 0;
-    /* Flatten left side */
     border-left: none;
 }
 
-/* Sidebar Container */
+/* ========================================
+   SIDEBAR CONTAINER
+   ======================================== */
 #sidebar {
     position: fixed;
-    top: 44px;
-    /* Below status bar */
+    top: 44px; /* Below status bar */
     bottom: 0;
     width: 280px;
+
     background: rgba(10, 10, 15, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 9998;
 
+    z-index: 9998;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 
     display: flex;
     flex-direction: column;
+
+    /* V1 PARITY FIX: Enable scrolling for overflowing content */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* V1 Parity: Custom scrollbar styling */
+#sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+#sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.5);
 }
 
 #sidebar.visible {
     transform: translateX(0);
 }
 
+/* Right-side positioning */
 #sidebar.right-side {
     left: auto;
     right: 0;
@@ -104,10 +170,9 @@
 .sidebar-layers {
     position: relative;
     width: 100%;
-    height: 380px;
-    /* Fixed height for the swipeable area (Header + Grid) */
-    overflow: hidden;
+    min-height: 380px; /* V1 FIX: Changed from fixed height to min-height */
     flex-shrink: 0;
+    overflow: visible; /* V1 FIX: Allow content to flow naturally */
 }
 
 .secondary-layer,
@@ -115,9 +180,8 @@
     position: absolute;
     inset: 0;
     width: 100%;
-    height: 100%;
+    min-height: 380px; /* Match parent min-height */
     background: inherit;
-    /* Inherit sidebar background */
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     padding: 20px;
     box-sizing: border-box;
@@ -126,20 +190,15 @@
 /* Tools (Back Layer) */
 .secondary-layer {
     z-index: 1;
-    background: #080a10;
-    /* Match main sidebar dark theme */
-    /* background: linear-gradient(135deg, rgba(20, 0, 0, 0.9), rgba(40, 0, 0, 0.9)); REMOVED RED TINT */
+    background: #080a10; /* Match main sidebar dark theme */
 }
 
 /* Core (Front Layer) */
 .primary-layer {
     z-index: 2;
-    background: #0a0a0f;
-    /* Opaque dark blue/black to block underlying layer */
+    background: #0a0a0f; /* Opaque dark blue/black to block underlying layer */
     box-shadow: -5px 0 20px rgba(0, 0, 0, 0.8);
-    /* Stronger shadow */
     border-right: 1px solid rgba(0, 255, 255, 0.15);
-    /* Re-apply border here */
 }
 
 /* When dragging, disable transition for instant 1:1 movement */
@@ -149,6 +208,197 @@
 
 /* Tools Revealed State (Primary layer slid over) */
 .sidebar-layers.tools-revealed .primary-layer {
-    transform: translateX(85%);
-    /* Slide 85% to the right */
+    transform: translateX(85%); /* Slide 85% to the right */
+}
+
+/* ========================================
+   SIDEBAR STATIC CONTENT
+   Below the swipeable layers
+   ======================================== */
+.sidebar-static-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: visible; /* Let parent sidebar handle scrolling */
+}
+
+/* ========================================
+   ROUTE THEMING
+   ======================================== */
+#sidebar.ronnie-route {
+    border-right-color: rgba(0, 255, 255, 0.3);
+}
+
+#sidebar.ronnie-route #sidebar-toggle {
+    border-color: rgba(0, 255, 255, 0.4);
+}
+
+#sidebar.tori-route {
+    border-right-color: rgba(0, 255, 136, 0.3);
+}
+
+#sidebar.tori-route #sidebar-toggle {
+    border-color: rgba(0, 255, 136, 0.4);
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+}
+
+#sidebar.tori-route #sidebar-toggle:hover {
+    border-color: rgba(0, 255, 136, 0.6);
+    background: rgba(0, 255, 136, 0.2);
+}
+
+#sidebar.tori-route #sidebar-toggle.dragging {
+    background: rgba(0, 255, 136, 0.3);
+    border-color: rgba(0, 255, 136, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+}
+
+/* ========================================
+   HEADER STYLING (Inside Layers)
+   ======================================== */
+.shade-header-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lightning-icon {
+    font-size: 18px;
+}
+
+.shade-section-title {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(0, 255, 255, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    flex: 1;
+}
+
+.header-hint {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+/* ========================================
+   CORE ACTIONS GRID (2x2 in Sidebar)
+   ======================================== */
+.core-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.core-action-btn {
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 16px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.core-action-btn:hover,
+.core-action-btn:focus {
+    background: rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+}
+
+.core-action-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.core-icon {
+    font-size: 24px;
+}
+
+.core-label {
+    font-size: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* ========================================
+   STATUS SECTION
+   ======================================== */
+.status-title {
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.status-box {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.status-row:last-child {
+    border-bottom: none;
+}
+
+.status-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-value {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.highlight-cyan {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Tori route theming for status values */
+#sidebar.tori-route .highlight-cyan {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Hide sidebar on mobile */
+@media (max-width: 768px) {
+    #sidebar,
+    #sidebar-toggle {
+        display: none !important;
+    }
+}
+
+/* Show sidebar on landscape tablet and desktop */
+@media (min-width: 769px) {
+    #sidebar,
+    #sidebar-toggle {
+        display: flex;
+    }
 }

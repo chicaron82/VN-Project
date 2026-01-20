@@ -10,6 +10,7 @@
     min-height: 250px;
     max-height: 80vh;
     overflow-y: auto;
+    overflow-x: hidden;
 
     background: rgba(8, 10, 16, 0.98);
     /* Deep dark blue/black */
@@ -17,18 +18,49 @@
     -webkit-backdrop-filter: blur(20px);
 
     z-index: 9000;
-    border-right: 1px solid rgba(0, 255, 255, 0.15);
-    /* Right border for sidebar */
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3); /* V1 Parity: Bottom border */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 
-    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: top 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 50px 20px 20px;
+}
+
+/* V1 Parity: Custom scrollbar styling */
+.notification-shade::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notification-shade::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.notification-shade::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.notification-shade::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 255, 255, 0.5);
 }
 
 .notification-shade.visible {
     top: 0;
+}
+
+/* Swipe indicator (V1 Parity) */
+.swipe-indicator {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
 }
 
 /* Route Theming - V1 Parity */

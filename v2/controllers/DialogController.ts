@@ -1,6 +1,5 @@
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { EventBus } from '@core/EventBus';
-import { GameConfig } from '@core/GameConfig';
 import { StateManager } from '@core/StateManager';
 
 export interface DialogState {
@@ -47,7 +46,6 @@ export class DialogController {
     private onUpdate: ((text: string) => void) | null = null;
 
     // Typewriter settings
-    private readonly TYPEWRITER_SPEED = GameConfig.TIMING.TYPEWRITER_SPEED_MS;
     private readonly SKIP_SPEED = 5; // 6x faster (5ms vs 30ms)
 
     constructor(settings: SettingsSystem, eventBus: EventBus, stateManager?: StateManager) {
@@ -236,20 +234,42 @@ export class DialogController {
     }
 
     private calculateSpeed(): number {
-        // V1 Logic ported to V2:
-        // if (skipActive) return 5;
-        // if (slowReveal) return 150;
-        // return 30 * multiplier;
+        // Map string settings to milliseconds
+        // 'instant' -> 0
+        // 'fast' -> 15
+        // 'normal' -> 30
+        // 'slow' -> 60
+        const speedMap: Record<string, number> = {
+            'instant': 0,
+            'fast': 15,
+            'normal': 30,
+            'slow': 60
+        };
+
+        // Get setting value (could be string or number)
+        const settingValue = this.settings.get('textSpeed');
+
+        // Resolve to numeric speed
+        let currentSpeed = 30; // Default
+
+        if (typeof settingValue === 'string' && settingValue in speedMap) {
+            currentSpeed = speedMap[settingValue] ?? 30;
+        } else if (typeof settingValue === 'number') {
+            currentSpeed = settingValue;
+        }
+
+        // PRIORITY FIX: Instant should be instant (0ms), even if skipping.
+        // Because 0ms is faster than skip speed (5ms).
+        if (currentSpeed === 0) {
+            return 0;
+        }
 
         // Skip mode: 6x speed (5ms instead of 30ms)
         if (this.skipState.isSkipping && this.isCurrentDialogueRead()) {
             return this.SKIP_SPEED;
         }
 
-        // Get speed from settings
-        const settingSpeed = this.settings.get('textSpeed') || this.TYPEWRITER_SPEED;
-
-        return settingSpeed;
+        return currentSpeed;
     }
 
     // ========================================
