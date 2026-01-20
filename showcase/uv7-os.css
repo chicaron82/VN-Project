@@ -454,9 +454,12 @@
 }
 
 @keyframes uv7-pulse-crossing {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1.03);
     }
+
     50% {
         transform: scale(1.08);
     }
@@ -538,7 +541,7 @@
    BODY PADDING (Account for status bar)
    ═══════════════════════════════════════════════════════════════ */
 body.uv7-os-enabled {
-    padding-top: 44px;
+    padding-top: var(--uv7-top-stack, 60px);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -888,8 +891,15 @@ body.uv7-os-enabled {
 }
 
 @keyframes tap-pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(0.96); }
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.96);
+    }
 }
 
 /* Progressive reveal as taps increase */
@@ -912,9 +922,12 @@ body.uv7-os-enabled {
 }
 
 @keyframes anticipation-glow {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
     }
+
     50% {
         box-shadow: 0 0 20px 2px rgba(0, 255, 136, 0.3);
     }
@@ -1311,6 +1324,7 @@ body.uv7-os-enabled {
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
     .uv7-revelation-modal,
     .revelation-content,
     .uv7-crew-toast {

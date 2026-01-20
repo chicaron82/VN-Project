@@ -53,6 +53,7 @@ html {
     /* Grid Stacking for Height Sync */
     display: grid;
     grid-template-areas: "stack";
+    margin-top: 0;
 }
 
 /* The V1/Chaos layer is the base background */
@@ -62,6 +63,8 @@ html {
     height: 100%;
     /* Fill container exactly */
     overflow: hidden;
+    margin: 0;
+    /* Force no margin */
     background: var(--chaos-bg);
     color: var(--chaos-text);
     font-family: var(--chaos-font);

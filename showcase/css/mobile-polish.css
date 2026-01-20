@@ -166,7 +166,7 @@
 
 /* Back to Top Button */
 .back-to-top {
-    position: fixed;
+    position: fixed !important;
     bottom: 24px;
     right: 24px;
     width: 48px;
