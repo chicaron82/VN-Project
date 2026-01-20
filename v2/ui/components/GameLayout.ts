@@ -25,18 +25,12 @@ export class GameLayout {
         this.viewport.className = 'game-viewport';
         this.viewport.id = 'game-viewport';
 
-        // 2. Status Bar (Top)
-        this.statusBar = document.createElement('div');
-        this.statusBar.className = 'status-bar';
-        this.statusBar.innerHTML = `
-        <div class="version-display">v848</div>
-        <div class="tether-display">
-            <div class="tether-overlay">
-                <div class="tether-fill" id="tether-fill" style="width: 100%;"></div>
-            </div>
-        </div>
-    `;
-        this.tetherFill = this.statusBar.querySelector('#tether-fill') as HTMLElement;
+        // 2. Status Bar (Top) - REMOVED: Now handled by unified StatusBar component in main.ts
+        // Legacy status bar removed to prevent duplicate status bars
+        // Tether fill is now managed by the unified StatusBar via EventBus
+        this.statusBar = document.createElement('div'); // Kept for backward compatibility
+        this.statusBar.style.display = 'none'; // Hidden - not used
+        this.tetherFill = document.createElement('div'); // Stub for backward compatibility
 
         // 3. Dialog Box (Bottom)
         this.dialogBox = document.createElement('div');
@@ -51,7 +45,7 @@ export class GameLayout {
 
         // Mount all
         this.container.appendChild(this.viewport);
-        this.container.appendChild(this.statusBar);
+        // this.container.appendChild(this.statusBar); // REMOVED: StatusBar is now mounted by unified StatusBar component
         this.container.appendChild(this.dialogBox);
 
         // Mount to DOM
@@ -66,18 +60,13 @@ export class GameLayout {
 
     /**
      * Update Tether Display
+     * NOTE: This method is now deprecated. Tether updates are handled by the unified
+     * StatusBar component via EventBus ('tether:changed' event).
+     * Kept for backward compatibility.
      */
-    updateTether(level: number) {
-        if (!this.tetherFill) return;
-        this.tetherFill.style.width = `${Math.max(0, Math.min(100, level))}%`;
-
-        // Update color based on level (could be moved to CSS classes for cleaner logic)
-        if (level < 30) {
-            this.tetherFill.style.background = 'var(--grad-tether-critical)';
-        } else if (level < 50) {
-            this.tetherFill.style.background = 'var(--grad-tether-warning)';
-        } else {
-            this.tetherFill.style.background = 'var(--grad-tether-healthy)';
-        }
+    updateTether(_level: number) {
+        // DEPRECATED: Tether updates now handled by unified StatusBar via EventBus
+        // The TetherController emits 'tether:changed' events that StatusBar listens to
+        return;
     }
 }
