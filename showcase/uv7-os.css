@@ -101,6 +101,8 @@
     left: 0;
     right: 0;
     bottom: 0;
+    padding-top: var(--uv7-statusbar-h);
+    /* Account for status bar */
     background: rgba(10, 10, 10, 0.98);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
