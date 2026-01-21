@@ -225,24 +225,27 @@
         </div>
         <div class="sidebar-content">
             <!-- Quick Actions -->
+            <!-- Quick Actions -->
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Quick Actions</div>
-                <button class="quick-action" data-action="launch-v1" style="width: 100%; margin-bottom: 0.5rem;">
-                    <span class="quick-action-icon">🎮</span>
-                    <span class="quick-action-label">V1 Game</span>
-                </button>
-                <button class="quick-action" data-action="launch-v2" style="width: 100%; margin-bottom: 0.5rem;">
-                    <span class="quick-action-icon">⚡</span>
-                    <span class="quick-action-label">V2 Engine</span>
-                </button>
-                <button class="quick-action" data-action="go-home" style="width: 100%; margin-bottom: 0.5rem;">
-                    <span class="quick-action-icon">🏠</span>
-                    <span class="quick-action-label">Landing</span>
-                </button>
-                <button class="quick-action" data-action="toggle-mode" style="width: 100%;">
-                    <span class="quick-action-icon">📖</span>
-                    <span class="quick-action-label">Story/Dev</span>
-                </button>
+                <div class="quick-actions-grid">
+                    <button class="quick-action" data-action="launch-v1">
+                        <span class="quick-action-icon">🎮</span>
+                        <span class="quick-action-label">V1 Game</span>
+                    </button>
+                    <button class="quick-action" data-action="launch-v2">
+                        <span class="quick-action-icon">⚡</span>
+                        <span class="quick-action-label">V2 Engine</span>
+                    </button>
+                    <button class="quick-action" data-action="go-home">
+                        <span class="quick-action-icon">🏠</span>
+                        <span class="quick-action-label">Landing</span>
+                    </button>
+                    <button class="quick-action" data-action="toggle-mode">
+                        <span class="quick-action-icon">📖</span>
+                        <span class="quick-action-label">Story/Dev</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Section Navigation -->
@@ -276,12 +279,7 @@
                 </div>
             </div>
 
-            <!-- Home -->
-            <div class="sidebar-section">
-                <button class="sidebar-action" id="sidebar-home">
-                    🏠 UV7 OS Home
-                </button>
-            </div>
+
         </div>
     </div>
 
@@ -676,7 +674,8 @@
                             <li><strong>Full Content Migration</strong> - 6 acts, all endings, secrets, achievements
                             </li>
                             <li><strong>TypeScript Strict Mode</strong> - ~95% type-safe, 25 minor errors remaining</li>
-                            <li><strong>Test Infrastructure</strong> - <span id="achievements-tests">55 test files</span>
+                            <li><strong>Test Infrastructure</strong> - <span id="achievements-tests">55 test
+                                    files</span>
                                 structured (implementation in progress)</li>
                             <li><strong>Accessibility Suite</strong> - High contrast, font scaling, reduced motion</li>
                             <li><strong>Meta-Narrative Systems</strong> - Tracking timelines across browser sessions
@@ -1176,7 +1175,8 @@
 
                             <div class="comparison-item">
                                 <h4>🛡️ Strict Types (Mostly)</h4>
-                                <p>TypeScript caught 40+ crashes. 25 minor errors remain (unused vars, EventBus types). Game runs great anyway.
+                                <p>TypeScript caught 40+ crashes. 25 minor errors remain (unused vars, EventBus types).
+                                    Game runs great anyway.
                                 </p>
                             </div>
 
@@ -1188,7 +1188,8 @@
 
                             <div class="comparison-item">
                                 <h4>🚧 Test Infrastructure (In Progress)</h4>
-                                <p>55 test files written but stubbed. Prioritized building over bureaucracy. Tests coming as we stabilize systems.
+                                <p>55 test files written but stubbed. Prioritized building over bureaucracy. Tests
+                                    coming as we stabilize systems.
                                 </p>
                                 <a href="#2026-01-20-e" class="phase-link">📖 See Current State</a>
                             </div>
@@ -1388,14 +1389,16 @@ const state = StateManager.getState();
                         <div class="improvement-card">
                             <div class="improvement-icon">🛡️</div>
                             <h3>Type Safety (In Progress)</h3>
-                            <p>TypeScript strict mode caught 40+ potential crashes. 25 minor errors remain (unused vars, EventBus types)</p>
+                            <p>TypeScript strict mode caught 40+ potential crashes. 25 minor errors remain (unused vars,
+                                EventBus types)</p>
                             <span class="metric-badge">~95% type-safe</span>
                         </div>
 
                         <div class="improvement-card">
                             <div class="improvement-icon">🚧</div>
                             <h3>Test Infrastructure Ready</h3>
-                            <p>55 test files structured, Vitest configured. Tests stubbed while we prioritize shipping features</p>
+                            <p>55 test files structured, Vitest configured. Tests stubbed while we prioritize shipping
+                                features</p>
                             <span class="metric-badge">Ship > Test</span>
                         </div>
 
@@ -1781,6 +1784,7 @@ const state = StateManager.getState();
 
             if (typeof TabController !== 'undefined') {
                 const tabController = new TabController();
+                window.tabController = tabController;
 
                 // Manually trigger initial breadcrumb update to ensure it shows
                 const initialTab = tabController.getActiveTab();
@@ -1790,7 +1794,7 @@ const state = StateManager.getState();
                 if (container && typeof SwipeController !== 'undefined') {
                     const swipeController = new SwipeController(tabController, container);
                 }
-                console.log('✅ Tab navigation initialized');
+                console.log('✅ nav initialized');
             }
 
 

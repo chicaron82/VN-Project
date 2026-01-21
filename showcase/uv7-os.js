@@ -205,6 +205,15 @@ class UV7OS {
     }
 
     jumpToSection(sectionClass) {
+        // DIZEE FIX: Support Tabbed Layout
+        if (window.tabController) {
+            const tabId = sectionClass.replace('-section', '');
+            window.tabController.navigateToTab(tabId);
+            this.closeShade();
+            this.closeSidebar();
+            return;
+        }
+
         const section = document.querySelector(`.${sectionClass}`);
         if (section) {
             // Close shade/sidebar
