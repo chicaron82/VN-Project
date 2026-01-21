@@ -421,9 +421,8 @@
    ═══════════════════════════════════════════════════════════════ */
 .uv7-sidebar {
     position: fixed;
-    top: 44px;
-    /* Below status bar */
-    /* padding-top removed */
+    top: 60px;
+    /* 44px Status Bar + 16px System Banner */
     right: 0;
     left: auto;
     bottom: 0;
@@ -544,27 +543,38 @@
 /* Sidebar Toggle (Right Side) */
 .uv7-sidebar-toggle {
     position: fixed;
-    top: 50px;
+    top: 75px;
+    /* Clear of header chrome */
     right: 20px;
-    /* Moved to right */
     left: auto;
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    width: 48px;
+    /* Slightly larger */
+    height: 48px;
+    background: rgba(10, 10, 15, 0.9);
+    /* High contrast background */
+    backdrop-filter: blur(12px);
     border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.4);
+    /* Tech green border */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 9999;
-    color: #fff;
+    color: #00ff88;
+    /* Tech green icon */
     font-size: 20px;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 136, 0.2);
+    /* Glow */
     display: flex;
     /* Always visible */
+}
+
+.uv7-sidebar-toggle:hover {
+    transform: scale(1.1);
+    background: rgba(0, 255, 136, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
 }
 
 .sidebar-section {
@@ -605,18 +615,7 @@
     border-color: rgba(0, 255, 136, 0.3);
 }
 
-#uv7-sidebar-toggle {
-    position: fixed;
-    /* important for persistence */
-    z-index: 3000;
-    transition: top .18s ease, left .18s ease, right .18s ease, transform .18s ease;
-}
 
-#uv7-sidebar-toggle.uv7-dragging {
-    cursor: grabbing;
-    transform: scale(1.03);
-    box-shadow: 0 0 16px rgba(0, 204, 255, 0.55);
-}
 
 /* V1 Parity: Crossing threshold visual feedback (green glow) */
 #uv7-sidebar-toggle.uv7-crossing-threshold {
