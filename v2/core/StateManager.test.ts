@@ -80,7 +80,7 @@ describe('StateManager', () => {
   describe('Reactive subscriptions', () => {
     it('should notify subscribers on change', () => {
       const callback = vi.fn();
-      
+
       stateManager.subscribe('test.value', callback);
       stateManager.set('test.value', 42);
 
@@ -90,7 +90,7 @@ describe('StateManager', () => {
 
     it('should pass old and new values to callback', () => {
       const callback = vi.fn();
-      
+
       stateManager.set('test.value', 10);
       stateManager.subscribe('test.value', callback);
       stateManager.set('test.value', 20);
@@ -100,7 +100,7 @@ describe('StateManager', () => {
 
     it('should not notify if value unchanged', () => {
       const callback = vi.fn();
-      
+
       stateManager.set('test.value', 42);
       stateManager.subscribe('test.value', callback);
       stateManager.set('test.value', 42); // Same value
@@ -111,7 +111,7 @@ describe('StateManager', () => {
     it('should support multiple subscribers for same path', () => {
       const callback1 = vi.fn();
       const callback2 = vi.fn();
-      
+
       stateManager.subscribe('test.value', callback1);
       stateManager.subscribe('test.value', callback2);
       stateManager.set('test.value', 42);
@@ -122,7 +122,7 @@ describe('StateManager', () => {
 
     it('should allow unsubscribing', () => {
       const callback = vi.fn();
-      
+
       const unsubscribe = stateManager.subscribe('test.value', callback);
       stateManager.set('test.value', 1);
       expect(callback).toHaveBeenCalledTimes(1);
@@ -137,10 +137,10 @@ describe('StateManager', () => {
         throw new Error('Callback error');
       });
       const goodCallback = vi.fn();
-      
+
       stateManager.subscribe('test.value', errorCallback);
       stateManager.subscribe('test.value', goodCallback);
-      
+
       // Should not throw
       expect(() => {
         stateManager.set('test.value', 42);
@@ -158,7 +158,7 @@ describe('StateManager', () => {
 
       const saved = localStorage.getItem('vn_state');
       expect(saved).toBeTruthy();
-      
+
       const parsed = JSON.parse(saved!);
       expect(parsed.test?.value).toBe(42);
     });
@@ -179,10 +179,10 @@ describe('StateManager', () => {
 
     it('should notify subscribers after loading', () => {
       const callback = vi.fn();
-      
+
       localStorage.setItem('vn_state', JSON.stringify({ test: { value: 42 } }));
       stateManager.subscribe('test.value', callback);
-      
+
       stateManager.load();
       expect(callback).toHaveBeenCalled();
     });
@@ -192,7 +192,7 @@ describe('StateManager', () => {
     it('should get all state', () => {
       stateManager.set('test.value1', 1);
       stateManager.set('test.value2', 2);
-      
+
       const all = stateManager.getAll();
       expect(all.test?.value1).toBe(1);
       expect(all.test?.value2).toBe(2);
@@ -200,10 +200,10 @@ describe('StateManager', () => {
 
     it('should return deep clone from getAll', () => {
       stateManager.set('test.object', { value: 42 });
-      
+
       const all = stateManager.getAll();
       (all.test as { object: { value: number } }).object.value = 99;
-      
+
       // Original should be unchanged
       expect((stateManager.get('test.object') as { value: number }).value).toBe(42);
     });
@@ -211,7 +211,7 @@ describe('StateManager', () => {
     it('should replace entire state with setAll', () => {
       stateManager.set('test.value1', 1);
       stateManager.setAll({ test: { value2: 2 } });
-      
+
       expect(stateManager.get('test.value1')).toBeUndefined();
       expect(stateManager.get('test.value2')).toBe(2);
     });
@@ -220,16 +220,16 @@ describe('StateManager', () => {
   describe('Initial state', () => {
     it('should initialize with provided state', () => {
       const initialState = { game: { currentScene: 'scene1' } };
-      const manager = new StateManager(initialState);
-      
+      const manager = new StateManager(undefined, initialState);
+
       expect(manager.get('game.currentScene')).toBe('scene1');
     });
 
     it('should use custom persistence key', () => {
-      const manager = new StateManager({}, 'custom_key');
+      const manager = new StateManager(undefined, {}, 'custom_key');
       manager.set('test.value', 42);
       manager.save();
-      
+
       expect(localStorage.getItem('custom_key')).toBeTruthy();
       expect(localStorage.getItem('vn_state')).toBeNull();
     });
