@@ -11,7 +11,8 @@
     "test:v2": "vitest v2/__tests__",
     "test:ui": "vitest --ui v2/__tests__",
     "test:coverage": "vitest --coverage v2/__tests__",
-    "test:coverage:v2": "vitest --coverage v2/__tests__"
+    "test:coverage:v2": "vitest --coverage v2/__tests__",
+    "stats": "node showcase/generate-stats.js"
   },
   "devDependencies": {
     "@types/node": "^25.0.6",
