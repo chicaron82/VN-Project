@@ -133,6 +133,9 @@ class TimelineRenderer {
     // --- RENDERING ---
 
     renderToolbar() {
+        // Sync body attribute for CSS styling hooks (e.g. auto-expand in dev mode)
+        document.body.setAttribute('data-view-mode', this.activeSort);
+
         if (this.toolbar) this.toolbar.remove();
 
         this.toolbar = document.createElement('div');
