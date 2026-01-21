@@ -179,15 +179,15 @@
     margin-bottom: 1rem;
 }
 
-/* Quick Actions Grid */
-.quick-actions-grid {
+/* Quick Actions Grid (Shade - Portrait) */
+.uv7-shade .quick-actions-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
 }
 
 @media (max-width: 768px) {
-    .quick-actions-grid {
+    .uv7-shade .quick-actions-grid {
         grid-template-columns: repeat(4, 1fr);
         /* Force 4 columns */
         gap: 0.5rem;
@@ -316,8 +316,8 @@
 }
 
 /* Section Navigation List */
-/* Quick Actions Grid */
-.quick-actions-grid {
+/* Quick Actions Grid (Sidebar - Control Center) */
+.uv7-sidebar .quick-actions-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
