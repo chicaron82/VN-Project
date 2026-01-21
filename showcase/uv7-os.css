@@ -599,30 +599,7 @@
     border-color: rgba(0, 255, 136, 0.3);
 }
 
-/* Sidebar Toggle Button */
-.uv7-sidebar-toggle {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 32px;
-    height: 64px;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-left: none;
-    border-radius: 0 8px 8px 0;
-    color: #e0e0e0;
-    font-size: 18px;
-    cursor: grab;
-    z-index: 9997;
-    display: none;
-    /* Hidden on portrait */
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-}
+
 
 .uv7-sidebar-toggle:hover {
     background: rgba(0, 255, 136, 0.1);

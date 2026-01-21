@@ -44,6 +44,8 @@ class UV7OS {
         document.body.classList.add('uv7-os-enabled');
 
         // V1 parity: grab handle reposition + persistence
+        // DISABLED for Control Center (Fixed Position)
+        /*
         if (typeof UV7GrabHandleRepositioner !== 'undefined') {
             new UV7GrabHandleRepositioner(this.elements.sidebarToggle, {
                 storageKey: 'uv7-grab-handle',
@@ -51,6 +53,7 @@ class UV7OS {
                 bottomSafePad: 140
             });
         }
+        */
 
         // TORI: Boot toast - one-time acknowledgment
         this.showBootToast();
