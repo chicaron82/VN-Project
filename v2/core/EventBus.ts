@@ -26,7 +26,7 @@ export type GameEvents = {
   'load:complete': { slot: number };
   'achievement:unlock': { id: string };
   'achievement:unlocked': { id: string; title: string; description: string; icon: string };
-  'visual:cue': { type: string | null; channel: string };
+  'visual:cue': { type: string | null; channel: string; sceneId?: string };
   'loading:start': { total?: number };
   'loading:progress': { current: number; total: number; file: string };
   'loading:complete': { total: number };
