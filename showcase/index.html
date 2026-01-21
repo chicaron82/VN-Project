@@ -221,13 +221,12 @@
     <!-- Sidebar (Landscape) -->
     <div id="uv7-sidebar" class="uv7-sidebar">
         <div class="sidebar-header">
-            <span class="sidebar-title">📖 SHOWCASE</span>
+            <span class="sidebar-title">⚡ UV7 CONTROL CENTER</span>
         </div>
         <div class="sidebar-content">
-            <!-- Quick Actions -->
-            <!-- Quick Actions -->
+            <!-- Quick Actions Grid -->
             <div class="sidebar-section">
-                <div class="sidebar-section-title">Quick Actions</div>
+                <!-- <div class="sidebar-section-title">Quick Access</div> -->
                 <div class="quick-actions-grid">
                     <button class="quick-action" data-action="launch-v1">
                         <span class="quick-action-icon">🎮</span>
@@ -239,47 +238,75 @@
                     </button>
                     <button class="quick-action" data-action="go-home">
                         <span class="quick-action-icon">🏠</span>
-                        <span class="quick-action-label">Landing</span>
+                        <span class="quick-action-label">Home</span>
                     </button>
                     <button class="quick-action" data-action="toggle-mode">
                         <span class="quick-action-icon">📖</span>
-                        <span class="quick-action-label">Story/Dev</span>
+                        <span class="quick-action-label">Mode</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Section Navigation -->
+            <!-- System Stats Widget -->
             <div class="sidebar-section">
-                <div class="sidebar-section-title">🧭 Navigate</div>
+                <div class="system-stats-widget">
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <span class="stat-label">CPU LOAD</span>
+                            <span class="stat-value" id="sys-cpu">12%</span>
+                        </div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" id="sys-cpu-bar" style="width: 12%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <span class="stat-label">RAM USAGE</span>
+                            <span class="stat-value" id="sys-ram">64%</span>
+                        </div>
+                        <div class="stat-bar-track">
+                            <div class="stat-bar-fill" id="sys-ram-bar" style="width: 64%"></div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-info">
+                            <span class="stat-label">V2 ENGINE</span>
+                            <span class="stat-value status-online">ONLINE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Directory Navigation -->
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">DIRECTORY</div>
                 <div class="section-nav-list" id="sidebar-section-list">
                     <button class="section-nav-item" data-section="journey-section">
-                        <span class="section-icon">🗺️</span>
+                        <span class="section-icon">📁</span>
                         <span class="section-label">The Journey</span>
                     </button>
                     <button class="section-nav-item" data-section="workflow-section">
-                        <span class="section-icon">⚙️</span>
+                        <span class="section-icon">📁</span>
                         <span class="section-label">Workflow</span>
                     </button>
                     <button class="section-nav-item" data-section="results-section">
-                        <span class="section-icon">📊</span>
+                        <span class="section-icon">📁</span>
                         <span class="section-label">The Results</span>
                     </button>
                     <button class="section-nav-item" data-section="spotlight-section">
-                        <span class="section-icon">💡</span>
-                        <span class="section-label">Technical Spotlight</span>
+                        <span class="section-icon">📁</span>
+                        <span class="section-label">Tech Spotlight</span>
                     </button>
                     <button class="section-nav-item" data-section="evolution-section">
-                        <span class="section-icon">🔄</span>
-                        <span class="section-label">The Evolution</span>
+                        <span class="section-icon">📁</span>
+                        <span class="section-label">Evolution archive</span>
                     </button>
                     <button class="section-nav-item" data-section="who-section">
-                        <span class="section-icon">👥</span>
-                        <span class="section-label">Who Are We</span>
+                        <span class="section-icon">📁</span>
+                        <span class="section-label">Crew Manifest</span>
                     </button>
                 </div>
             </div>
-
-
         </div>
     </div>
 

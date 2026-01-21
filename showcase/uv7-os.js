@@ -55,7 +55,34 @@ class UV7OS {
         // TORI: Boot toast - one-time acknowledgment
         this.showBootToast();
 
+        // Control Center Stats
+        this.initSystemStats();
+
         console.log('🚀 UV7 OS initialized:', this.context);
+    }
+
+    initSystemStats() {
+        const cpuVal = document.getElementById('sys-cpu');
+        const ramVal = document.getElementById('sys-ram');
+        const cpuBar = document.getElementById('sys-cpu-bar');
+        const ramBar = document.getElementById('sys-ram-bar');
+
+        if (!cpuVal || !ramVal) return;
+
+        // Animate stats
+        setInterval(() => {
+            // CPU: jittery, spikes
+            const cpu = Math.floor(Math.random() * 30) + 5; // 5-35% base
+
+            // RAM: slow creep
+            const ram = 60 + Math.floor(Math.random() * 8); // 60-68%
+
+            cpuVal.textContent = `${cpu}%`;
+            if (cpuBar) cpuBar.style.width = `${cpu}%`;
+
+            ramVal.textContent = `${ram}%`;
+            if (ramBar) ramBar.style.width = `${ram}%`;
+        }, 2000);
     }
 
     /*
