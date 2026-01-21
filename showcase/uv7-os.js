@@ -458,13 +458,13 @@ class UV7OS {
     openShade() {
         if (!this.elements.shade) return;
         this.elements.shade.classList.add('open');
-        this.elements.backdrop.classList.add('visible');
+        document.body.classList.add('uv7-no-scroll'); // Lock scroll
     }
 
     closeShade() {
         if (!this.elements.shade) return;
         this.elements.shade.classList.remove('open');
-        this.elements.backdrop.classList.remove('visible');
+        document.body.classList.remove('uv7-no-scroll'); // Unlock scroll
     }
 
     toggleSidebar() {
@@ -481,12 +481,14 @@ class UV7OS {
         if (!this.elements.sidebar) return;
         this.elements.sidebar.classList.add('open');
         this.elements.backdrop.classList.add('visible');
+        document.body.classList.add('uv7-no-scroll'); // Lock scroll
     }
 
     closeSidebar() {
         if (!this.elements.sidebar) return;
         this.elements.sidebar.classList.remove('open');
         this.elements.backdrop.classList.remove('visible');
+        document.body.classList.remove('uv7-no-scroll'); // Unlock scroll
     }
 
     jumpToEntry(entryId) {

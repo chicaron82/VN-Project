@@ -739,6 +739,13 @@ body.uv7-os-enabled {
     padding-top: var(--uv7-top-stack, 60px);
 }
 
+body.uv7-no-scroll {
+    overflow: hidden !important;
+    touch-action: none;
+    /* Disables browser handling of gestures (scrolling) */
+    overscroll-behavior: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    VIEW TRANSITIONS (The "No Flicker" Protocol)
    BELLE: Seamless page morphing for UV7 OS ecosystem
