@@ -20,31 +20,46 @@
             // Expose globally
             window.UV7Stats = stats;
 
-            // Update test count
+            // Update test count (show passing/failing for transparency)
             const testStat = document.querySelector('[data-stat-type="tests"] .stat-number');
+            const testLabel = document.querySelector('[data-stat-type="tests"] .stat-label');
+
             if (testStat && stats.testsPass !== undefined) {
+                // Show total passing as the main number
                 testStat.dataset.target = stats.testsPass;
                 testStat.textContent = '0'; // Reset for animation
+
+                // Update label to show breakdown if there are failures/skips
+                if (testLabel) {
+                    if (stats.testsFail > 0 || stats.testsSkip > 0) {
+                        const parts = [`${stats.testsPass} passing`];
+                        if (stats.testsFail > 0) parts.push(`${stats.testsFail} failing`);
+                        if (stats.testsSkip > 0) parts.push(`${stats.testsSkip} skipped`);
+                        testLabel.textContent = `Tests (${parts.join(', ')})`;
+                    } else {
+                        testLabel.textContent = `Tests (${stats.testsPass}/${stats.testsTotal} passing ✓)`;
+                    }
+                }
             }
 
             // Update Status Bar (System Right)
             const sysRight = document.querySelector('.sys-right');
             if (sysRight && stats.testsPass !== undefined) {
+                // Show transparent stats in status bar too
+                const testStatus = stats.testsFail > 0
+                    ? `TESTS: ${stats.testsPass}/${stats.testsTotal} (${stats.testsFail} failing)`
+                    : `TESTS: ${stats.testsPass}/${stats.testsTotal} ✓`;
+
                 // If it's already typed, replace it
                 if (sysRight.textContent.includes('TESTS:')) {
-                    sysRight.textContent = sysRight.textContent.replace(/TESTS: \d+/, `TESTS: ${stats.testsPass}`);
+                    sysRight.textContent = sysRight.textContent.replace(/TESTS: [^\|]+/, testStatus);
                 }
 
                 // Also set an interval to check in case TabController is still typing
-                // The typing overwrites textContent, so we need to persist only after it's done?
-                // Or better: TabController types it once. If we replace it, we are good.
-                // But if we replace it WHILE it's typing, it might be messy.
-                // TabController takes ~2 seconds to type.
-                // We'll retry a few times.
                 setTimeout(() => {
                     const el = document.querySelector('.sys-right');
                     if (el && el.textContent.includes('TESTS:')) {
-                        el.textContent = el.textContent.replace(/TESTS: \d+/, `TESTS: ${stats.testsPass}`);
+                        el.textContent = el.textContent.replace(/TESTS: [^\|]+/, testStatus);
                     }
                 }, 2000); // Check again after typing likely finishes
             }
@@ -64,7 +79,11 @@
             // Update Key Achievements (Result Tab)
             const achievementsTests = document.getElementById('achievements-tests');
             if (achievementsTests && stats.testsPass !== undefined) {
-                achievementsTests.textContent = `${stats.testsPass} tests`;
+                if (stats.testsFail > 0) {
+                    achievementsTests.textContent = `${stats.testsPass}/${stats.testsTotal} tests passing (${stats.testsFail} failing)`;
+                } else {
+                    achievementsTests.textContent = `${stats.testsPass}/${stats.testsTotal} tests passing ✓`;
+                }
             }
 
             // Re-trigger counter animations if they've already run
