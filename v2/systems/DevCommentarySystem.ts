@@ -83,6 +83,16 @@ export class DevCommentarySystem {
         this.eventBus.on('commentary:showAll' as any, () => {
             this.showAllCommentary();
         });
+
+        // Auto-notify when scene loads if commentary is available
+        this.eventBus.on('scene:load', (data: any) => {
+            if (this.isUnlocked() && this.getCommentary(data.sceneId)) {
+                this.eventBus.emit('visual:cue', {
+                    type: 'commentary_available',
+                    sceneId: data.sceneId
+                });
+            }
+        });
     }
 
     // ========================================

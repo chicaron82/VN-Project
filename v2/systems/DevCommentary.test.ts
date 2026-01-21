@@ -35,15 +35,14 @@ describe('DevCommentarySystem', () => {
         expect(stateManager.get('secrets.devCommentaryUnlocked')).toBe(true);
     });
 
-    it.skip('should check for commentary on scene load (NOT IMPLEMENTED)', () => {
-        // This test expects visual:cue emission which is not implemented in DevCommentarySystem
-        // DevCommentarySystem only responds to commentary:show events, it doesn't listen to scene:load
-        // Skipping until this feature is implemented
+    it('should check for commentary on scene load', () => {
+        // Unlock first
         vi.spyOn(Storage.prototype, 'getItem').mockImplementation((key) => key === 'devCommentaryUnlocked' ? 'true' : null);
 
         const emitSpy = vi.spyOn(eventBus, 'emit');
 
-        eventBus.emit('scene:load', { sceneId: 'prologueScene4' });
+        // Simulate scene load for a scene that has commentary
+        eventBus.emit('scene:load', { sceneId: 'prologue_street_bump' });
 
         expect(emitSpy).toHaveBeenCalledWith('visual:cue', expect.objectContaining({ type: 'commentary_available' }));
     });

@@ -22,13 +22,4 @@ describe('GameLayout', () => {
         expect(document.querySelector('.game-viewport')).toBeTruthy();
         expect(document.querySelector('.dialog-box')).toBeTruthy();
     });
-
-    it.skip('should update tether display width (DEPRECATED: now handled by StatusBar via EventBus)', () => {
-        const layout = new GameLayout('app', eventBus);
-
-        layout.updateTether(50);
-        const fill = document.getElementById('tether-fill');
-
-        expect(fill?.style.width).toBe('50%');
-    });
 });
