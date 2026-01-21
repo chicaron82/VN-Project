@@ -109,6 +109,13 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    /* Cyber Texture */
+    background-image: url('media/textures/sidebar-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
 }
 
 .uv7-shade.open {
@@ -181,7 +188,29 @@
 
 @media (max-width: 480px) {
     .quick-actions-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+        /* Force 4 columns */
+        gap: 0.5rem;
+        /* Tighter gap */
+    }
+
+    .quick-action {
+        padding: 0.5rem;
+        /* Smaller padding */
+        gap: 0.25rem;
+    }
+
+    .quick-action-icon {
+        font-size: 20px;
+        /* Smaller icon */
+        margin-bottom: 0;
+    }
+
+    .quick-action-label {
+        font-size: 9px;
+        /* Smaller text */
+        display: none;
+        /* Optional: Hide label if too cramped, or keep it */
     }
 }
 
