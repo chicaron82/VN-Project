@@ -1,0 +1,127 @@
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/silve/Downloads/GitHub/VN-Project[39m
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💥 ResetController initialized
+💥 ResetController initialized
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mInitialization[2m > [22m[2mshould log initialization message[22m[39m
+💥 ResetController initialized
+💥 ResetController initialized
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould create and display modal overlay[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould display warning title[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould list all items that will be deleted[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould display PERMANENT warning[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould have Cancel and Reset All buttons[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould return true when modal is displayed[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould close modal when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould NOT clear localStorage when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould NOT reload page when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould clear ALL localStorage when confirmed[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould reload page after confirmation[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould remove overlay before reloading[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould log nuclear reset messages[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould style Cancel button correctly[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould style Confirm button correctly[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould have hover effects on Cancel button[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould have hover effects on Confirm button[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould create overlay with correct styling[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould create box with gradient background[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould use Courier New font[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+ [33m❯[39m v2/controllers/ResetController.test.ts [2m ([22m[2m22 tests[22m [2m|[22m [31m7 failed[39m[2m)[22m[90m 292[2mms[22m[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mNuclear Reset Modal[2m > [22mshould create and display modal overlay[39m
+[31m     → expected '' to be 'fixed' // Object.is equality[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mConfirm Button[2m > [22mshould clear ALL localStorage when confirmed[39m
+[31m     → expected undefined to be +0 // Object.is equality[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mButton Styling[2m > [22mshould style Cancel button correctly[39m
+[31m     → expected '' to contain '0, 255, 0'[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mButton Styling[2m > [22mshould style Confirm button correctly[39m
+[31m     → expected 'rgba(0, 0, 0, 0)' to contain '255, 0, 0'[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mModal Structure[2m > [22mshould create overlay with correct styling[39m
+[31m     → expected 'block' to be 'flex' // Object.is equality[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mModal Structure[2m > [22mshould create box with gradient background[39m
+[31m     → expected 'rgba(0, 0, 0, 0)' to contain 'linear-gradient'[39m
+[31m   [33m❯[31m v2/controllers/ResetController.test.ts[2m > [22mResetController[2m > [22mModal Structure[2m > [22mshould use Courier New font[39m
+[31m     → expected '' to contain 'Courier'[39m
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m7 failed[39m[22m[2m | [22m[1m[32m15 passed[39m[22m[90m (22)[39m
+[2m   Start at [22m 20:26:29
+[2m   Duration [22m 1.41s[2m (transform 58ms, setup 5ms, collect 56ms, tests 292ms, environment 568ms, prepare 113ms)[22m
+

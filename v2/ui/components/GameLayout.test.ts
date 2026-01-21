@@ -23,7 +23,7 @@ describe('GameLayout', () => {
         expect(document.querySelector('.dialog-box')).toBeTruthy();
     });
 
-    it('should update tether display width', () => {
+    it.skip('should update tether display width (DEPRECATED: now handled by StatusBar via EventBus)', () => {
         const layout = new GameLayout('app', eventBus);
 
         layout.updateTether(50);

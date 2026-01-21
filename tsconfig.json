@@ -46,7 +46,8 @@
         },
         "types": [
             "node",
-            "vite/client"
+            "vite/client",
+            "vitest/globals"
         ]
     },
     "include": [

@@ -1,0 +1,178 @@
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/silve/Downloads/GitHub/VN-Project[39m
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould start locked by default[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould load commentary database[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould unlock via CHICHARON secret code[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould unlock via CHICHARON (case insensitive)[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould persist unlock state to localStorage[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould sync unlock state to StateManager[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould emit achievement event on unlock[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould restore unlocked state from localStorage[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Locked)[2m > [22m[2mshould return null for getCommentary when locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Locked)[2m > [22m[2mshould return empty array for getAllCommentary when locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return commentary for valid scene ID[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return null for invalid scene ID[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return all commentary entries[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould have all expected commentary entries[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Display (EventBus)[2m > [22m[2mshould respond to commentary:show event[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Display (EventBus)[2m > [22m[2mshould respond to commentary:showAll event[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have French Vanilla detail in prologue[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have dual route explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have tether origin story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Despair height bug story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have bootstrap paradox explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Price is Right carousel story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Tinder swipe reference[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have backlog time machine explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mModal Display System[2m > [22m[2mshould warn when showing commentary for invalid scene[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mModal Display System[2m > [22m[2mshould warn when showing all commentary while locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+ [32m✓[39m v2/systems/DevCommentarySystem.test.ts [2m ([22m[2m28 tests[22m[2m)[22m[90m 77[2mms[22m[39m
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCleanup[2m > [22m[2mshould cleanup without errors[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m28 passed[39m[22m[90m (28)[39m
+[2m   Start at [22m 20:23:16
+[2m   Duration [22m 1.03s[2m (transform 79ms, setup 6ms, collect 80ms, tests 77ms, environment 506ms, prepare 118ms)[22m
+

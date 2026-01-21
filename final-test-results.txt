@@ -1,0 +1,3498 @@
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/silve/Downloads/GitHub/VN-Project[39m
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mInitialization[2m > [22m[2mshould start with all echoes dormant (awareness 0)[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mInitialization[2m > [22m[2mshould start with 0 total loops[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mInitialization[2m > [22m[2mshould load persisted memory from localStorage[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Echo memory loaded from persistent storage
+👁️ Echo Memory System initialized
+   Total loops: 5
+   Echo awareness - Hope: 2, Gentle: 1, Despair: 3
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mLoop Tracking[2m > [22m[2mshould increment total loops on recordLoop()[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mLoop Tracking[2m > [22m[2mshould emit echo:loop_recorded event[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mLoop Tracking[2m > [22m[2mshould persist to localStorage[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mAwareness Level Progression[2m > [22m[2mshould increase Hope awareness based on loops[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+👁️ Loop recorded. Total: 3
+👁️ Loop recorded. Total: 4
+👁️ Loop recorded. Total: 5
+👁️ Loop recorded. Total: 6
+👁️ Loop recorded. Total: 7
+👁️ Loop recorded. Total: 8
+👁️ Loop recorded. Total: 9
+👁️ Loop recorded. Total: 10
+👁️ Loop recorded. Total: 11
+👁️ Loop recorded. Total: 12
+👁️ Loop recorded. Total: 13
+👁️ Loop recorded. Total: 14
+👁️ Loop recorded. Total: 15
+👁️ Loop recorded. Total: 16
+👁️ Loop recorded. Total: 17
+👁️ Loop recorded. Total: 18
+👁️ Loop recorded. Total: 19
+👁️ Loop recorded. Total: 20
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mAwareness Level Progression[2m > [22m[2mshould increase Despair awareness based on deaths[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Death recorded at scene1 (tether). Total: tether=1, despair=0
+👁️ Death recorded at scene2 (tether). Total: tether=2, despair=0
+👁️ Death recorded at scene3 (despair). Total: tether=2, despair=1
+👁️ Death recorded at scene4 (despair). Total: tether=2, despair=2
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mAwareness Level Progression[2m > [22m[2mshould increase Gentle awareness based on long pauses[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Long pause recorded at choice1
+👁️ Long pause recorded at choice2
+👁️ Long pause recorded at choice3
+👁️ Long pause recorded at choice4
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDeath Tracking[2m > [22m[2mshould track deaths by location[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Death recorded at scene1 (tether). Total: tether=1, despair=0
+👁️ Death recorded at scene1 (tether). Total: tether=2, despair=0
+👁️ Death recorded at scene2 (despair). Total: tether=2, despair=1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDeath Tracking[2m > [22m[2mshould track total deaths[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Death recorded at scene1 (tether). Total: tether=1, despair=0
+👁️ Death recorded at scene2 (despair). Total: tether=1, despair=1
+👁️ Death recorded at scene3 (tether). Total: tether=2, despair=1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDeath Tracking[2m > [22m[2mshould trigger despair comment on 3+ deaths at same location[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Death recorded at other1 (tether). Total: tether=1, despair=0
+👁️ Death recorded at other2 (tether). Total: tether=2, despair=0
+👁️ Death recorded at scene1 (tether). Total: tether=3, despair=0
+👁️ Death recorded at scene1 (tether). Total: tether=4, despair=0
+👁️ Echo comment (despair, lvl 2): The definition of insanity is trying the same thing expecting different results.
+👁️ Death recorded at scene1 (tether). Total: tether=5, despair=0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mSave Scum Detection[2m > [22m[2mshould detect save scumming (save/load within 10s)[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Save scum detected. Count: 1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mSave Scum Detection[2m > [22m[2mshould trigger Gentle comment every 3rd save scum[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+👁️ Loop recorded. Total: 3
+👁️ Loop recorded. Total: 4
+👁️ Loop recorded. Total: 5
+👁️ Save scum detected. Count: 1
+👁️ Save scum detected. Count: 2
+👁️ Echo comment (gentle, lvl 2): The save file doesn't change what happened. Just what you remember.
+👁️ Save scum detected. Count: 3
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mEcho Comments[2m > [22m[2mshould not trigger comments when dormant (awareness 0)[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mEcho Comments[2m > [22m[2mshould trigger comments when aware (awareness 1+)[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+👁️ Echo comment (hope, lvl 1): This moment... I almost remember it.
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mEcho Comments[2m > [22m[2mshould emit comments with correct icons[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+🔧 gentle awareness set to 2
+🔧 despair awareness set to 2
+👁️ Echo comment (hope, lvl 2): Maybe this time will be different?
+🏆 Achievement unlocked: REMEMBERED
+👁️ Echo comment (gentle, lvl 2): I tried that path too. It didn't work for me either.
+👁️ Echo comment (despair, lvl 2): The same mistakes. Every. Single. Time.
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mConflicting Echoes[2m > [22m[2mshould not trigger if echoes not all aware (level 2+)[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+🔧 gentle awareness set to 1
+🔧 despair awareness set to 2
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mConflicting Echoes[2m > [22m[2mshould trigger all three echoes when all aware[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+🔧 gentle awareness set to 2
+🔧 despair awareness set to 2
+👁️ Conflicting echoes triggered
+👁️ Echo comment (hope, lvl 2): Another attempt. I admire your persistence.
+🏆 Achievement unlocked: REMEMBERED
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mConflicting Echoes[2m > [22m[2mshould trigger all three echoes when all aware[22m[39m
+👁️ Echo comment (despair, lvl 2): She's watching you fail. Again.
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mConflicting Echoes[2m > [22m[2mshould trigger all three echoes when all aware[22m[39m
+👁️ Echo comment (gentle, lvl 2): You hesitate at the same moments I did.
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mAchievement: Remembered[2m > [22m[2mshould unlock when all echoes reach level 2[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+🔧 gentle awareness set to 2
+🔧 despair awareness set to 1
+👁️ Echo comment (despair, lvl 1): I've seen this before.
+🔧 despair awareness set to 2
+👁️ Echo comment (despair, lvl 2): She's watching you fail. Again.
+🏆 Achievement unlocked: REMEMBERED
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mAchievement: Remembered[2m > [22m[2mshould only unlock once[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+🔧 gentle awareness set to 2
+🔧 despair awareness set to 2
+👁️ Echo comment (hope, lvl 2): I believe in second chances. And third. And fourth...
+🏆 Achievement unlocked: REMEMBERED
+👁️ Echo comment (gentle, lvl 2): You hesitate at the same moments I did.
+👁️ Echo comment (despair, lvl 2): Wrong again. Will you ever learn?
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mHelper Methods[2m > [22m[2misEchoAwake() should check individual echo awareness[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mHelper Methods[2m > [22m[2mareAllEchoesAwake() should check all echoes[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 1
+🔧 gentle awareness set to 1
+🔧 despair awareness set to 1
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDev Tools[2m > [22m[2mreset() should clear all memory[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Loop recorded. Total: 1
+👁️ Loop recorded. Total: 2
+🔧 hope awareness set to 3
+👁️ Echo memory reset
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDev Tools[2m > [22m[2mreset() should emit echo:reset event[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Echo memory reset
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDev Tools[2m > [22m[2msetAwareness() should set individual echo levels[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 despair awareness set to 4
+🔧 hope awareness set to 2
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mDev Tools[2m > [22m[2msetLoops() should set total loops and update awareness[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 Total loops set to 15
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mRoute Completion[2m > [22m[2mshould track route completions[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Route completion: ronnie (bad)
+👁️ Route completion: tori (true)
+👁️ Route completion: ronnie (bad)
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mRoute Completion[2m > [22m[2mshould increase Hope awareness on completion[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+👁️ Route completion: ronnie (bad)
+👁️ Route completion: tori (true)
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mNotes Viewer Tracking[2m > [22m[2mshould track notes viewer opens[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mNotes Viewer Tracking[2m > [22m[2mshould trigger Hope comment on persistent note hunting[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+🔧 hope awareness set to 2
+👁️ Echo comment (hope, lvl 2): Searching for answers in the notes? I did that too.
+👁️ Echo comment (hope, lvl 2): The truth is in there somewhere. Keep looking.
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mChoice Tracking[2m > [22m[2mshould track choice history[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+[90mstdout[2m | v2/systems/EchoMemorySystem.test.ts[2m > [22m[2mEchoMemorySystem[2m > [22m[2mChoice Tracking[2m > [22m[2mshould track wrong choice repeats[22m[39m
+💚 StateManager initialized
+👁️ Echo Memory System initialized
+   Total loops: 0
+   Echo awareness - Hope: 0, Gentle: 0, Despair: 0
+
+ [32m✓[39m v2/systems/EchoMemorySystem.test.ts [2m ([22m[2m33 tests[22m[2m)[22m[90m 30[2mms[22m[39m
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould show dialog when show() is called[22m[39m
+📋 Ending dialog shown (ending type: true_ending)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould hide dialog when hide() is called[22m[39m
+📋 Ending dialog shown (ending type: true_ending)
+📋 Ending dialog hidden
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould store ending type when showing[22m[39m
+📋 Ending dialog shown (ending type: bad_ending)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould handle null ending type[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould handle missing dialog element[22m[39m
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould log when dialog is shown[22m[39m
+📋 Ending dialog shown (ending type: test_ending)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mShow/Hide Dialog[2m > [22m[2mshould log when dialog is hidden[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould emit ending:retry when Try Again is clicked[22m[39m
+📋 Ending dialog shown (ending type: test_ending)
+📋 Ending dialog hidden
+🔄 Player chose: TRY AGAIN - Restarting game...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould emit ending:accept when Accept Ending is clicked[22m[39m
+📋 Ending dialog shown (ending type: true_ending)
+📋 Ending dialog hidden
+🎬 Player chose: ACCEPT ENDING - Playing credits...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould emit ending:exit when Return to Menu is clicked[22m[39m
+📋 Ending dialog shown (ending type: bad_ending)
+📋 Ending dialog hidden
+🏠 Player chose: RETURN TO MENU - Skipping credits...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould hide dialog when Try Again is clicked[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+🔄 Player chose: TRY AGAIN - Restarting game...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould hide dialog when Accept is clicked[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+🎬 Player chose: ACCEPT ENDING - Playing credits...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mButton Actions[2m > [22m[2mshould hide dialog when Exit is clicked[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+🏠 Player chose: RETURN TO MENU - Skipping credits...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould focus first option on show[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould navigate down with ArrowDown[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould navigate up with ArrowUp[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould wrap with Tab[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould activate focused option with Enter[22m[39m
+📋 Ending dialog shown (ending type: test)
+📋 Ending dialog hidden
+🔄 Player chose: TRY AGAIN - Restarting game...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould activate Exit option with Escape[22m[39m
+📋 Ending dialog shown (ending type: test)
+📋 Ending dialog hidden
+🏠 Player chose: RETURN TO MENU - Skipping credits...
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould not navigate when dialog is hidden[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould not navigate beyond first option when ArrowUp at start[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould not navigate beyond last option when ArrowDown at end[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mKeyboard Navigation[2m > [22m[2mshould remove keyboard listener when hidden[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mFocus Management[2m > [22m[2mshould remove focus from all when focusing one[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mFocus Management[2m > [22m[2mshould handle missing button gracefully[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mError Handling[2m > [22m[2mshould log error if buttons are missing[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mCleanup[2m > [22m[2mshould hide dialog on destroy[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mCleanup[2m > [22m[2mshould clear button references on destroy[22m[39m
+📋 Ending dialog shown (ending type: null)
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+[90mstdout[2m | v2/controllers/EndingDialogController.test.ts[2m > [22m[2mEndingDialogController[2m > [22m[2mCleanup[2m > [22m[2mshould log destroy message[22m[39m
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+📋 Ending dialog hidden
+💥 EndingDialogController destroyed
+
+ [32m✓[39m v2/controllers/EndingDialogController.test.ts [2m ([22m[2m30 tests[22m[2m)[22m[90m 55[2mms[22m[39m
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mInitialization[2m > [22m[2mshould start with full tether (100%)[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mInitialization[2m > [22m[2mshould start with normal difficulty[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mInitialization[2m > [22m[2mshould sync initial state to StateManager[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould decrease tether level[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 90.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould increase tether level[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 50.0% (setup)
+⚡ Tether: 70.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould clamp to minimum 0[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+💀 Tether death triggered
+⚡ Tether: 0.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould clamp to tether cap[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 100.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould emit tether:change event[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 90.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Updates[2m > [22m[2mshould emit tether:critical when crossing threshold[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 25%
+⚡ Tether: 15.0% (test)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mPassive Decay[2m > [22m[2mshould start decay with startDecay()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+⚡ Tether: 99.8% (passive decay)
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mPassive Decay[2m > [22m[2mshould stop decay with stopDecay()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mPassive Decay[2m > [22m[2mshould not double-start decay[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mPassive Decay[2m > [22m[2mshould respect decay freeze[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+💚 DEV: Tether decay frozen
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mPassive Decay[2m > [22m[2mshould resume decay after unfreeze[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+💚 DEV: Tether decay frozen
+💚 DEV: Tether decay resumed
+⚡ Tether: 99.8% (passive decay)
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould boost tether on holdOn()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 50%
+⚡ Tether: 65.0% (HOLD ON button pressed)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould emit tether:boost event[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 50%
+⚡ Tether: 65.0% (HOLD ON button pressed)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould start cooldown after holdOn()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 100.0% (HOLD ON button pressed)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould reject holdOn() during cooldown[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 50%
+⚡ Tether: 65.0% (HOLD ON button pressed)
+⚡ Hold On on cooldown
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould reset cooldown after timeout[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 100.0% (HOLD ON button pressed)
+⚡ Hold On ready
+⚡ Hold On ready
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mHold On Mechanic[2m > [22m[2mshould track cooldown remaining[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 100.0% (HOLD ON button pressed)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould change difficulty with setDifficulty()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to Intense
+   Decay: 0.08 | Cap: 100% | Hold On: 15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould apply correct tether cap for INSANE mode[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to INSANE
+   Decay: 0.1 | Cap: 66% | Hold On: 0
+⚡ Tether set to 66%
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould disable Hold On in INSANE mode[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to INSANE
+   Decay: 0.1 | Cap: 66% | Hold On: 0
+💀 INSANE MODE: Hold On disabled
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould skip decay in Comfort mode[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to Comfort
+   Decay: 0 | Cap: 100% | Hold On: 15
+⚡ Tether decay skipped (Comfort mode)
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould emit insane:activate on INSANE selection[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to INSANE
+   Decay: 0.1 | Cap: 66% | Hold On: 0
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mDifficulty Scaling[2m > [22m[2mshould emit insane:deactivate when leaving INSANE[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to INSANE
+   Decay: 0.1 | Cap: 66% | Hold On: 0
+⚙️ Tether difficulty set to Normal
+   Decay: 0.15 | Cap: 100% | Hold On: 15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Death[2m > [22m[2mshould emit tether:death at 0%[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 0%
+💀 Tether death triggered
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mTether Death[2m > [22m[2mshould stop decay on death[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+⚡ Tether set to 0%
+⚡ Tether decay stopped
+💀 Tether death triggered
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2msetLevel() with Animation[2m > [22m[2mshould animate level drop[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+💀 INSANE MODE: Animating tether drop from 100% to 66%
+💀 Tether drop complete: 66%
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mState Management[2m > [22m[2mshould return state for save system[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to Intense
+   Decay: 0.08 | Cap: 100% | Hold On: 15
+⚡ Tether set to 75%
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mState Management[2m > [22m[2mshould restore state from save[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether system state restored
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mState Management[2m > [22m[2mshould trigger death if restored to 0%[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether system state restored
+💀 Tether death triggered
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mReset[2m > [22m[2mshould reset to full tether[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether set to 30%
+⚡ Hold On ready
+⚡ Tether decay started
+⚡ Tether system reset
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mReset[2m > [22m[2mshould reset to cap in INSANE mode[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚙️ Tether difficulty set to INSANE
+   Decay: 0.1 | Cap: 66% | Hold On: 0
+⚡ Tether set to 30%
+⚡ Hold On ready
+⚡ Tether decay started
+⚡ Tether system reset
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mReset[2m > [22m[2mshould clear Hold On cooldown[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether: 100.0% (HOLD ON button pressed)
+⚡ Hold On ready
+⚡ Tether decay started
+⚡ Tether system reset
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mEcho System (Legacy)[2m > [22m[2mshould track echo states[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mEcho System (Legacy)[2m > [22m[2mshould hide all echoes[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mEcho System (Legacy)[2m > [22m[2mshould update echo mood[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Echo despair mood updated: hostile
+⚡ TetherSystem destroyed
+
+[90mstdout[2m | v2/systems/TetherSystem.test.ts[2m > [22m[2mTetherSystem[2m > [22m[2mCleanup[2m > [22m[2mshould clean up on destroy()[22m[39m
+💚 StateManager initialized
+⚡ TetherSystem initialized
+   Difficulty: Normal | Cap: 100% | Decay: 0.15
+⚡ Tether decay started
+⚡ Tether: 100.0% (HOLD ON button pressed)
+⚡ Tether decay stopped
+⚡ TetherSystem destroyed
+⚡ TetherSystem destroyed
+
+ [32m✓[39m v2/systems/TetherSystem.test.ts [2m ([22m[2m39 tests[22m[2m)[22m[90m 34[2mms[22m[39m
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mInitialization[2m > [22m[2mshould log initialization message[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mInitialization[2m > [22m[2mshould load previously completed tutorials[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mTutorial State[2m > [22m[2mshould check if tutorial has been shown[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mTutorial State[2m > [22m[2mshould check if tutorials are enabled (default: true)[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mTutorial State[2m > [22m[2mshould allow disabling tutorials[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mTutorial State[2m > [22m[2mshould allow re-enabling tutorials[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould show tutorial for first time[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not show tutorial if already shown[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not show tutorial if disabled[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not show tutorial if no target element[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not show tutorial if target has no size[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould create backdrop that dismisses on click[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould add spotlight class to target element[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould create hand gesture emoji[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould create tooltip with text if provided[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not create tooltip if no text provided[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould create dismiss hint[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould mark tutorial as shown[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould save completed tutorial to state[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould log when tutorial is shown[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould auto-hide after default delay (4000ms)[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould auto-hide after custom delay[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mShow Hand Gesture[2m > [22m[2mshould not show multiple tutorials simultaneously[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: tutorial_1
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mPause Manager Integration[2m > [22m[2mshould request pause when showing tutorial[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mPause Manager Integration[2m > [22m[2mshould release pause when dismissing tutorial[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mPause Manager Integration[2m > [22m[2mshould not error if pause manager not set[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mDismiss Tutorial[2m > [22m[2mshould remove spotlight from target element[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mDismiss Tutorial[2m > [22m[2mshould remove overlay from DOM after animation[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 Tutorial shown: test_tutorial
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mDismiss Tutorial[2m > [22m[2mshould not error if no active tutorial[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mReset Tutorials[2m > [22m[2mshould clear all shown tutorials[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 TutorialManager initialized (event-driven mode)
+📚 All tutorials reset
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mReset Tutorials[2m > [22m[2mshould clear state[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 All tutorials reset
+
+[90mstdout[2m | v2/managers/TutorialManager.test.ts[2m > [22m[2mTutorialManager[2m > [22m[2mReset Tutorials[2m > [22m[2mshould log reset message[22m[39m
+💚 StateManager initialized
+📚 TutorialManager initialized (event-driven mode)
+📚 All tutorials reset
+
+ [32m✓[39m v2/managers/TutorialManager.test.ts [2m ([22m[2m33 tests[22m[2m)[22m[90m 110[2mms[22m[39m
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mInitialization[2m > [22m[2mshould start inactive[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould activate on activate()[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould add insane-mode-active class to game container[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould emit insane:activated event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould sync to StateManager[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould respond to insane:activate event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mActivation[2m > [22m[2mshould not double-activate[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould deactivate on deactivate()[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould remove insane-mode-active class[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould emit insane:deactivated event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould respond to insane:deactivate event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould not double-deactivate[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mDeactivation[2m > [22m[2mshould remove corruption classes from dialogue box[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mSettings Integration[2m > [22m[2mshould activate on difficulty change to insane[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mSettings Integration[2m > [22m[2mshould deactivate on difficulty change away from insane[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mSettings Integration[2m > [22m[2mshould ignore non-difficulty settings changes[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould not trigger corruption when inactive[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+⚠️ Cannot trigger corruption - INSANE mode not active
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould trigger corruption when active[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould set state to corrupting during effects[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould emit effect:shake event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould emit effect:glitch event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCorruption Effects[2m > [22m[2mshould respond to insane:corrupt event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould create cage overlay if not present[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Showing cage overlay
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould show overlay with flex display[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Showing cage overlay
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould emit insane:cage_complete after sequence[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Showing cage overlay
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould initialize disabled by default[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould find and cache DOM elements[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould enable notifications when enable() is called[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould disable notifications when disable() is called[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+📢 Notifications disabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould clear queue when disabled[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+📢 Notifications disabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould block notifications when disabled[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notification blocked (disabled): Test
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould show notification when enabled[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould apply type class to notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould apply pulse class when pulse=true[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould apply interactive class when interactive=true[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould auto-hide after duration[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould not auto-hide when duration=0 (persistent)[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould queue messages when notification is showing[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould process queue after current notification hides[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould sort queue by priority (high priority first)[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould limit queue to 5 messages[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+📉 Dropped low-priority message from full queue
+📉 Dropped low-priority message from full queue
+📉 Dropped low-priority message from full queue
+📉 Dropped low-priority message from full queue
+📉 Dropped low-priority message from full queue
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould drop low-priority messages when queue is full[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+📉 Dropped low-priority message from full queue
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould interrupt current notification with critical priority[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+🚨 Priority interrupt: critical > normal
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould not interrupt with lower priority[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowNote() should show note notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowSave() should show save notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowAutoSave() should show auto-save notification with low priority[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowSkipping() should show persistent skipping notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowDespairBlock() should show warning notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowTetherWarning() should show tether warning[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowTetherDeath() should show critical tether death notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowTutorial() should show tutorial notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshowError() should show error notification[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould emit event when note notification is clicked[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould hide notification when clicked[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould animate progress bar based on duration[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+[90mstdout[2m | v2/systems/StatusNotificationController.test.ts[2m > [22m[2mStatusNotificationController[2m > [22m[2mshould not animate progress bar when duration=0[22m[39m
+💚 StateManager initialized
+📢 StatusNotificationController initialized (disabled until game starts)
+📢 Notifications enabled
+
+ [32m✓[39m v2/systems/StatusNotificationController.test.ts [2m ([22m[2m32 tests[22m[2m)[22m[90m 131[2mms[22m[39m
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould emit insane:cage_complete after sequence[22m[39m
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould call provided callback after sequence[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Showing cage overlay
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould call provided callback after sequence[22m[39m
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCage Overlay[2m > [22m[2mshould respond to insane:cage event[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Showing cage overlay
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mmaybeCorrupt()[2m > [22m[2mshould not corrupt when inactive[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mmaybeCorrupt()[2m > [22m[2mshould sometimes corrupt when active (based on chance)[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (medium)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (medium)
+💀 INSANE MODE: Triggering visual corruption (medium)
+💀 INSANE MODE: Triggering visual corruption (medium)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (heavy)
+💀 INSANE MODE: Triggering visual corruption (light)
+💀 INSANE MODE: Triggering visual corruption (medium)
+💀 INSANE MODE: Triggering visual corruption (light)
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCleanup[2m > [22m[2mshould clean up on destroy()[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💀 INSANE MODE: Showing cage overlay
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+💀 InsaneVisualsController destroyed
+
+[90mstdout[2m | v2/controllers/InsaneVisualsController.test.ts[2m > [22m[2mInsaneVisualsController[2m > [22m[2mCleanup[2m > [22m[2mshould remove overlays on deactivation[22m[39m
+💚 StateManager initialized
+💀 InsaneVisualsController initialized
+💀 INSANE MODE: Activating visual corruption
+💀 INSANE MODE: Visual corruption active
+💚 INSANE MODE: Deactivating visual corruption
+💚 INSANE MODE: Visual corruption deactivated
+💀 InsaneVisualsController destroyed
+
+ [32m✓[39m v2/controllers/InsaneVisualsController.test.ts [2m ([22m[2m31 tests[22m[2m)[22m[90m 167[2mms[22m[39m
+ [32m✓[39m v2/systems/DevCommentarySystem.test.ts [2m ([22m[2m28 tests[22m[2m)[22m[90m 171[2mms[22m[39m
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould start locked by default[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mInitialization[2m > [22m[2mshould load commentary database[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould unlock via CHICHARON secret code[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould unlock via CHICHARON (case insensitive)[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould persist unlock state to localStorage[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould sync unlock state to StateManager[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould emit achievement event on unlock[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mUnlock Mechanics[2m > [22m[2mshould restore unlocked state from localStorage[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Locked)[2m > [22m[2mshould return null for getCommentary when locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Locked)[2m > [22m[2mshould return empty array for getAllCommentary when locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return commentary for valid scene ID[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return null for invalid scene ID[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould return all commentary entries[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Access (Unlocked)[2m > [22m[2mshould have all expected commentary entries[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Display (EventBus)[2m > [22m[2mshould respond to commentary:show event[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Display (EventBus)[2m > [22m[2mshould respond to commentary:showAll event[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have French Vanilla detail in prologue[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have dual route explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have tether origin story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Despair height bug story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have bootstrap paradox explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Price is Right carousel story[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have Tinder swipe reference[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCommentary Content Validation[2m > [22m[2mshould have backlog time machine explanation[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mModal Display System[2m > [22m[2mshould warn when showing commentary for invalid scene[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mModal Display System[2m > [22m[2mshould warn when showing all commentary while locked[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+[90mstdout[2m | v2/systems/DevCommentarySystem.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mCleanup[2m > [22m[2mshould cleanup without errors[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📝 DevCommentarySystem destroyed
+📝 DevCommentarySystem destroyed
+
+ [32m✓[39m v2/systems/TimeMachineSystem.test.ts [2m ([22m[2m45 tests[22m[2m)[22m[90m 58[2mms[22m[39m
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2minitialization[2m > [22m[2mshould initialize with empty entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2minitialization[2m > [22m[2mshould initialize with default config[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2minitialization[2m > [22m[2mshould use custom config when provided[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mbuildSnapshot[2m > [22m[2mshould build snapshot with current state[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mbuildSnapshot[2m > [22m[2mshould assign unique IDs to snapshots[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mbuildSnapshot[2m > [22m[2mshould include timestamp[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2maddCurrentState[2m > [22m[2mshould add snapshot to entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2maddCurrentState[2m > [22m[2mshould skip snapshots with no route/scene[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Skipping snapshot (no route/scene): empty
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2maddCurrentState[2m > [22m[2mshould respect priority levels[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: low [low]
+⏰ Snapshot added: high [high]
+⏰ Snapshot added: anchor [anchor]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2maddEntry[2m > [22m[2mshould add manual entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2maddEntry[2m > [22m[2mshould assign ID if not provided[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpruning[2m > [22m[2mshould prune when exceeding maxEntries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: entry 0 [normal]
+⏰ Snapshot added: entry 1 [normal]
+⏰ Snapshot added: entry 2 [normal]
+⏰ Snapshot added: entry 3 [normal]
+⏰ Snapshot added: entry 4 [normal]
+⏰ Snapshot added: entry 5 [normal]
+⏰ Snapshot added: entry 6 [normal]
+⏰ Snapshot added: entry 7 [normal]
+⏰ Snapshot added: entry 8 [normal]
+⏰ Snapshot added: entry 9 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: entry 10 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: entry 11 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: entry 12 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: entry 13 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: entry 14 [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpruning[2m > [22m[2mshould preserve anchors during smart pruning[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: anchor [anchor]
+⏰ Snapshot added: low 0 [low]
+⏰ Snapshot added: low 1 [low]
+⏰ Snapshot added: low 2 [low]
+⏰ Snapshot added: low 3 [low]
+⏰ Snapshot added: low 4 [low]
+⏰ Snapshot added: low 5 [low]
+⏰ Snapshot added: low 6 [low]
+⏰ Snapshot added: low 7 [low]
+⏰ Snapshot added: low 8 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 9 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 10 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 11 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 12 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 13 [low]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: low 14 [low]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpruning[2m > [22m[2mshould prefer pruning low priority over normal[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: low 0 [low]
+⏰ Snapshot added: low 1 [low]
+⏰ Snapshot added: low 2 [low]
+⏰ Snapshot added: low 3 [low]
+⏰ Snapshot added: low 4 [low]
+⏰ Snapshot added: low 5 [low]
+⏰ Snapshot added: normal 0 [normal]
+⏰ Snapshot added: normal 1 [normal]
+⏰ Snapshot added: normal 2 [normal]
+⏰ Snapshot added: normal 3 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: normal 4 [normal]
+⏰ Pruned 1 snapshots (smart strategy)
+⏰ Snapshot added: normal 5 [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mqueries[2m > [22m[2mshould get entry by ID[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mqueries[2m > [22m[2mshould return null for non-existent ID[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mqueries[2m > [22m[2mshould get latest entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: first [normal]
+⏰ Snapshot added: second [normal]
+⏰ Snapshot added: third [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mqueries[2m > [22m[2mshould return null for latest when empty[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mnarrative state[2m > [22m[2mshould mark entry as corrupted[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⚠️ Snapshot #1 corrupted (despair)
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mnarrative state[2m > [22m[2mshould burn entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔥 Snapshot #1 burned - unreachable
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mnarrative state[2m > [22m[2mshould lock entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mnarrative state[2m > [22m[2mshould burn entries matching predicate[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: burn me [low]
+⏰ Snapshot added: keep me [high]
+⏰ Snapshot added: burn me too [low]
+🔥 Burned 2 snapshots
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mnarrative state[2m > [22m[2mshould corrupt entries matching predicate[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: corrupt me [normal]
+⏰ Snapshot added: keep me [anchor]
+⚠️ Corrupted 1 snapshots (echo)
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjump validation[2m > [22m[2mshould allow jump to normal entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjump validation[2m > [22m[2mshould block jump to locked entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjump validation[2m > [22m[2mshould block jump to burned entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔥 Snapshot #1 burned - unreachable
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjump validation[2m > [22m[2mshould allow jump with ignoreRules option[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjump validation[2m > [22m[2mshould restrict jumps in insane mode to last 2 entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: entry 0 [normal]
+⏰ Snapshot added: entry 1 [normal]
+⏰ Snapshot added: entry 2 [normal]
+⏰ Snapshot added: entry 3 [normal]
+⏰ Snapshot added: entry 4 [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetBlockReason[2m > [22m[2mshould return locked reason[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetBlockReason[2m > [22m[2mshould return burned reason[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔥 Snapshot #1 burned - unreachable
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetBlockReason[2m > [22m[2mshould return despair corruption reason[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⚠️ Snapshot #1 corrupted (despair)
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetBlockReason[2m > [22m[2mshould return echo corruption reason[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⚠️ Snapshot #1 corrupted (echo)
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetBlockReason[2m > [22m[2mshould return null for normal entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjumpTo[2m > [22m[2mshould execute successful jump[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⏰ Jumping to snapshot #1: test
+⏰ Scene restored: scene_1
+⏰ Tether restored: 100
+⏰ Flags restored
+[GameEngine] Time Travel initiated to: scene_1
+⏰ Snapshot restoration complete
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjumpTo[2m > [22m[2mshould fail jump to non-existent entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjumpTo[2m > [22m[2mshould fail jump to locked entry[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+⏰ Jump blocked: This moment is locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjumpTo[2m > [22m[2mshould emit visual cue on successful jump[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⏰ Jumping to snapshot #1: test
+⏰ Scene restored: scene_1
+⏰ Tether restored: 100
+⏰ Flags restored
+[GameEngine] Time Travel initiated to: scene_1
+⏰ Snapshot restoration complete
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mjumpTo[2m > [22m[2mshould emit denial cue on blocked jump[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+🔒 Snapshot #1 locked
+⏰ Jump blocked: This moment is locked
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetStats[2m > [22m[2mshould return accurate stats[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: normal1 [normal]
+⏰ Snapshot added: normal2 [normal]
+⏰ Snapshot added: anchor [anchor]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mgetStats[2m > [22m[2mshould count locked/burned/corrupted[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: 1 [normal]
+⏰ Snapshot added: 2 [normal]
+⏰ Snapshot added: 3 [normal]
+🔒 Snapshot #1 locked
+🔥 Snapshot #2 burned - unreachable
+⚠️ Snapshot #3 corrupted (despair)
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpersistence[2m > [22m[2mshould serialize entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test1 [normal]
+⏰ Snapshot added: test2 [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpersistence[2m > [22m[2mshould deserialize entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Restored 1 snapshots from save
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mpersistence[2m > [22m[2mshould handle null deserialize gracefully[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mclear[2m > [22m[2mshould clear all entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test1 [normal]
+⏰ Snapshot added: test2 [normal]
+⏰ Time Machine cleared
+
+[90mstdout[2m | v2/systems/TimeMachineSystem.test.ts[2m > [22m[2mTimeMachineSystem[2m > [22m[2mclear[2m > [22m[2mshould reset ID counter[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+⏰ Time Machine System initialized
+⏰ Snapshot added: test [normal]
+⏰ Time Machine cleared
+⏰ Snapshot added: new [normal]
+
+[90mstdout[2m | v2/tests/integration/ContentVerification.test.ts[2m > [22m[2mContent Verification[2m > [22m[2mPrologue Playthrough Simulation[2m > [22m[2mshould form a connected chain of scenes[22m[39m
+✅ Simulated playthrough of 21 scenes in Prologue.
+
+ [32m✓[39m v2/tests/integration/ContentVerification.test.ts [2m ([22m[2m20 tests[22m[2m)[22m[90m 101[2mms[22m[39m
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2minitialization[2m > [22m[2mshould initialize with empty active effects[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2minitialization[2m > [22m[2mshould respond to visual:cue events[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: buttonPress
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould return baseline scale (1.0) for Normal intensity[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould return reduced scale (0.6) for Gentle intensity[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould return boosted scale (1.35) for Amped intensity[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould return INSANE scale (2.0) when insane mode is locked[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould NOT scale critical channel even in insane mode[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mintensity scaling[2m > [22m[2mshould default to Normal (1.0) when no settings exist[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mtrigger API[2m > [22m[2mshould prevent duplicate effects from stacking[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: toriHop
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mtrigger API[2m > [22m[2mshould allow different effect types simultaneously[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: toriHop
+✨ Visual cue triggered: timelineGlitch
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mtrigger API[2m > [22m[2mshould warn on unknown cue types[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould trigger toriHop with chromatic overlay[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: toriHop
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould trigger tamaPull with ripple effect[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: tamaPull
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould trigger tamaEmergency with flash overlay[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: tamaEmergency
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould trigger timelineGlitch with scan lines[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: timelineGlitch
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould trigger codeRipple with 8 particles[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: codeRipple
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mstory-specific cues[2m > [22m[2mshould use 848 sacred numbers in code particles[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: codeRipple
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mdenial cues[2m > [22m[2mshould trigger denied with glitch line[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: denied
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mdenial cues[2m > [22m[2mshould trigger harshDenial with ACCESS DENIED text[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: harshDenial
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mdenial cues[2m > [22m[2mshould create red flash overlay for harshDenial[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: harshDenial
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mUI interaction cues[2m > [22m[2mshould trigger buttonPress with scale effect[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: buttonPress
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mUI interaction cues[2m > [22m[2mshould trigger menuSelect with animation[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: menuSelect
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mUI interaction cues[2m > [22m[2mshould trigger cardSnap with pop animation[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: cardSnap
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mUI interaction cues[2m > [22m[2mshould handle positioned portraits in cardSnap[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: cardSnap
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mcleanup[2m > [22m[2mshould clear all active effects[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: toriHop
+✨ Visual cue triggered: timelineGlitch
+✨ Visual Cue System cleaned up
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mEventBus integration[2m > [22m[2mshould respond to visual:cue with type null gracefully[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2mEventBus integration[2m > [22m[2mshould use provided channel from event[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: denied
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2meffect timeouts[2m > [22m[2mshould remove toriHop effect after duration[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: toriHop
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2meffect timeouts[2m > [22m[2mshould remove harshDenial effect after 500ms[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: harshDenial
+✨ Visual Cue System cleaned up
+
+[90mstdout[2m | v2/systems/VisualCueSystem.test.ts[2m > [22m[2mVisualCueSystem[2m > [22m[2meffect timeouts[2m > [22m[2mshould remove buttonPress effect after scaled duration[22m[39m
+💚 StateManager initialized
+✨ Visual Cue System initialized
+✨ Visual cue triggered: buttonPress
+✨ Visual Cue System cleaned up
+
+ [32m✓[39m v2/controllers/ResetController.test.ts [2m ([22m[2m22 tests[22m[2m)[22m[33m 415[2mms[22m[39m
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💥 ResetController initialized
+💥 ResetController initialized
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mInitialization[2m > [22m[2mshould log initialization message[22m[39m
+💥 ResetController initialized
+💥 ResetController initialized
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould create and display modal overlay[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould display warning title[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould list all items that will be deleted[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould display PERMANENT warning[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould have Cancel and Reset All buttons[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mNuclear Reset Modal[2m > [22m[2mshould return true when modal is displayed[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould close modal when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould NOT clear localStorage when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+ [32m✓[39m v2/systems/VisualCueSystem.test.ts [2m ([22m[2m30 tests[22m[2m)[22m[33m 349[2mms[22m[39m
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mCancel Button[2m > [22m[2mshould NOT reload page when Cancel is clicked[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+❌ Nuclear reset cancelled
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould clear ALL localStorage when confirmed[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould reload page after confirmation[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould remove overlay before reloading[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mConfirm Button[2m > [22m[2mshould log nuclear reset messages[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+💥 NUCLEAR RESET INITIATED...
+💥 All localStorage cleared
+💥 Reloading page to factory state...
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould style Cancel button correctly[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould style Confirm button correctly[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould have hover effects on Cancel button[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mButton Styling[2m > [22m[2mshould have hover effects on Confirm button[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould create overlay with correct styling[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould create box with gradient background[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/controllers/ResetController.test.ts[2m > [22m[2mResetController[2m > [22m[2mModal Structure[2m > [22m[2mshould use Courier New font[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mInitialization[2m > [22m[2mshould start at attempt 848[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mInitialization[2m > [22m[2mshould sync current attempt to StateManager[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mInitialization[2m > [22m[2mshould pre-populate with 5 corrupted attempts (843-847)[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould record a failed attempt[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Tether depleted
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould record a succeeded attempt[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: succeeded - True ending reached
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould increment attempt counter after recording[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Vessel collapse
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould add new attempts to the beginning[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - First attempt
+📝 Recorded attempt #849: failed - Second attempt
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould keep only last 5 attempts[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Attempt 0
+📝 Recorded attempt #849: failed - Attempt 1
+📝 Recorded attempt #850: failed - Attempt 2
+📝 Recorded attempt #851: failed - Attempt 3
+📝 Recorded attempt #852: failed - Attempt 4
+📝 Recorded attempt #853: failed - Attempt 5
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mRecording Attempts[2m > [22m[2mshould update StateManager on record[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Test
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mPersistence[2m > [22m[2mshould save timeline to localStorage[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Test attempt
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mPersistence[2m > [22m[2mshould load timeline from localStorage[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Persisted attempt
+📜 Bootstrap tracker initialized
+Current attempt: #849
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mPersistence[2m > [22m[2mshould handle corrupted localStorage gracefully[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mManual Attempt Increment[2m > [22m[2mshould increment attempt counter without recording[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mManual Attempt Increment[2m > [22m[2mshould sync increment to StateManager[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mHistory Access[2m > [22m[2mshould return readonly history[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mHistory Access[2m > [22m[2mshould include timestamp and dateString[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Test
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mReset[2m > [22m[2mshould reset to default timeline[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Test 1
+📝 Recorded attempt #849: failed - Test 2
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mReset[2m > [22m[2mshould sync reset to StateManager[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Test
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mAttempt Types[2m > [22m[2mshould track bad endings[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Tether depleted
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mAttempt Types[2m > [22m[2mshould track digital forever endings[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: succeeded - Digital forever
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mAttempt Types[2m > [22m[2mshould track true endings[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: succeeded - True ending reached
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mAttempt Types[2m > [22m[2mshould track both routes[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - Ronnie test
+📝 Recorded attempt #849: failed - Tori test
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mCorrupted Entries[2m > [22m[2mshould have null timestamp for corrupted entries[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/BootstrapTracker.test.ts[2m > [22m[2mBootstrapTracker[2m > [22m[2mCorrupted Entries[2m > [22m[2mshould mark corrupted entries with unknown route[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+ [32m✓[39m v2/systems/BootstrapTracker.test.ts [2m ([22m[2m24 tests[22m[2m)[22m[90m 49[2mms[22m[39m
+[90mstdout[2m | v2/systems/DifficultyProfiles.test.ts[2m > [22m[2mDifficultyProfiles[2m > [22m[2munlockInsaneMode()[2m > [22m[2mshould set localStorage flag[22m[39m
+💀 INSANE MODE UNLOCKED
+
+[90mstdout[2m | v2/systems/DifficultyProfiles.test.ts[2m > [22m[2mDifficultyProfiles[2m > [22m[2misInsaneModeUnlocked()[2m > [22m[2mshould return true after unlock[22m[39m
+💀 INSANE MODE UNLOCKED
+
+ [32m✓[39m v2/systems/DifficultyProfiles.test.ts [2m ([22m[2m33 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould trigger basic haptic pattern[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] -  [33m10[39m
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould respect haptic disabled setting[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould scale pattern for Gentle comfort (0)[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=0] -  [ [33m6[39m ]
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould scale pattern for INSANE comfort (3)[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=3] -  [ [33m20[39m ]
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould debounce rapid triggers[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] -  [33m10[39m
+🚫 Haptic debounced: LIGHT
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould allow forced triggers to bypass debounce[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] -  [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] -  [33m10[39m
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mshould trigger sensory feedback (Haptic + Event)[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: denied [channel=critical, comfort=1] - Sensory cue: denied [ [33m80[39m, [33m20[39m, [33m80[39m ]
+🎯 Sensory: denied [channel=critical] visual=denied haptic=denied
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould accept description parameter in trigger()[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould provide triggerHaptic() alias for V1 compatibility[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould provide triggerSensoryFeedback() alias for V1 compatibility[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould accept target element in triggerSensory()[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould log sensory events when DEBUG_MODE is enabled[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Test event [33m10[39m
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould clear sensory log[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Test 1 [33m10[39m
+📳 Haptic: MEDIUM [channel=ui, comfort=1] - Test 2 [33m25[39m
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould limit sensory log to maxSensoryLog entries[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 0 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 1 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 2 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 3 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 4 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 5 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 6 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 7 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 8 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 9 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 10 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 11 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 12 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 13 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 14 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 15 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 16 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 17 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 18 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 19 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 20 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 21 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 22 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 23 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 24 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 25 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 26 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 27 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 28 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 29 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 30 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 31 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 32 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 33 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 34 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 35 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 36 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 37 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 38 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 39 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 40 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 41 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 42 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 43 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 44 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 45 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 46 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 47 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 48 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 49 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 50 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 51 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 52 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 53 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 54 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 55 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 56 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 57 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 58 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 59 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 60 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 61 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 62 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 63 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 64 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 65 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 66 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 67 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 68 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 69 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 70 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 71 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 72 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 73 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 74 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 75 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 76 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 77 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 78 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 79 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 80 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 81 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 82 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 83 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 84 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 85 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 86 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 87 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 88 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 89 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 90 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 91 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 92 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 93 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 94 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 95 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 96 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 97 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 98 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 99 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 100 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 101 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 102 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 103 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 104 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 105 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 106 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 107 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 108 [33m10[39m
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Event 109 [33m10[39m
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould get all haptic patterns[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould warn when unknown sensory cue is triggered[22m[39m
+📳 HapticSystem initialized
+
+[90mstdout[2m | v2/systems/HapticSystem.test.ts[2m > [22m[2mHapticSystem[2m > [22m[2mV1 Parity Features[2m > [22m[2mshould include timestamp in sensory log entries[22m[39m
+📳 HapticSystem initialized
+📳 Haptic: LIGHT [channel=ui, comfort=1] - Test [33m10[39m
+
+ [32m✓[39m v2/systems/HapticSystem.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[90m 32[2mms[22m[39m
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mInitialization[2m > [22m[2mshould start at version 848 by default[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mInitialization[2m > [22m[2mshould start with attempting status by default[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mInitialization[2m > [22m[2mshould sync to StateManager on init[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mInitialization[2m > [22m[2mshould load persisted version from localStorage[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+📂 Loop state loaded: v850 (attempting)
+🔄 LoopController initialized - VERSION 850 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould increment version by 1[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould reset status to attempting[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould persist to localStorage[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould emit loop:updated event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould respond to ending:bad event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mincrement()[2m > [22m[2mshould respond to loop:retry event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mbreak()[2m > [22m[2mshould set status to succeeded[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mbreak()[2m > [22m[2mshould not change version[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mbreak()[2m > [22m[2mshould emit loop:broken event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mbreak()[2m > [22m[2mshould respond to ending:true event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2maccept()[2m > [22m[2mshould set status to accepted[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+💫 Ending accepted. VERSION 848 locked.
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2maccept()[2m > [22m[2mshould not change version[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+💫 Ending accepted. VERSION 848 locked.
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2maccept()[2m > [22m[2mshould emit loop:accepted event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+💫 Ending accepted. VERSION 848 locked.
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2maccept()[2m > [22m[2mshould respond to ending:digitalForever event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+💫 Ending accepted. VERSION 848 locked.
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mHelper methods[2m > [22m[2misBroken() should return true when succeeded[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mHelper methods[2m > [22m[2misAccepted() should return true when accepted[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+💫 Ending accepted. VERSION 848 locked.
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mHelper methods[2m > [22m[2misAttempting() should return true when attempting[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mHelper methods[2m > [22m[2mgetFailureCount() should return failures past 848[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+🔄 Loop incremented to VERSION 850
+🔄 Loop incremented to VERSION 851
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mreset()[2m > [22m[2mshould reset to 848 and attempting[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop incremented to VERSION 849
+🔄 Loop incremented to VERSION 850
+✨ Loop broken! VERSION 850 SUCCEEDED
+🔄 Loop state reset to v848 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2mreset()[2m > [22m[2mshould emit loop:reset event[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔄 Loop state reset to v848 (attempting)
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2msetVersion()[2m > [22m[2mshould allow setting version directly (dev tool)[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔧 Loop version set to 900
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2msetVersion()[2m > [22m[2mshould not go below 848[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+🔧 Loop version set to 848
+
+[90mstdout[2m | v2/controllers/LoopController.test.ts[2m > [22m[2mLoopController[2m > [22m[2msetVersion()[2m > [22m[2mshould reset status to attempting[22m[39m
+💚 StateManager initialized
+📂 Loop state loaded: v848 (attempting)
+🔄 LoopController initialized - VERSION 848 (attempting)
+✨ Loop broken! VERSION 848 SUCCEEDED
+🔧 Loop version set to 850
+
+ [32m✓[39m v2/controllers/LoopController.test.ts [2m ([22m[2m27 tests[22m[2m)[22m[90m 24[2mms[22m[39m
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould get and set values[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould handle nested paths[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould return undefined for non-existent paths[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould handle setting null values[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould handle setting boolean values[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mBasic get/set operations[2m > [22m[2mshould handle setting string values[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mDeep cloning[2m > [22m[2mshould return deep clones to prevent mutations[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mDeep cloning[2m > [22m[2mshould deep clone on set to prevent external mutations[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mDeep cloning[2m > [22m[2mshould handle arrays correctly[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould notify subscribers on change[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould pass old and new values to callback[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould not notify if value unchanged[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould support multiple subscribers for same path[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould allow unsubscribing[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mReactive subscriptions[2m > [22m[2mshould handle errors in callbacks gracefully[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mPersistence[2m > [22m[2mshould save state to localStorage[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mPersistence[2m > [22m[2mshould load state from localStorage[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mPersistence[2m > [22m[2mshould return false if no state to load[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mPersistence[2m > [22m[2mshould notify subscribers after loading[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mgetAll and setAll[2m > [22m[2mshould get all state[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mgetAll and setAll[2m > [22m[2mshould return deep clone from getAll[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mgetAll and setAll[2m > [22m[2mshould replace entire state with setAll[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mInitial state[2m > [22m[2mshould initialize with provided state[22m[39m
+💚 StateManager initialized
+💚 StateManager initialized
+
+[90mstdout[2m | v2/core/StateManager.test.ts[2m > [22m[2mStateManager[2m > [22m[2mInitial state[2m > [22m[2mshould use custom persistence key[22m[39m
+💚 StateManager initialized
+💚 StateManager initialized
+
+ [33m❯[39m v2/core/StateManager.test.ts [2m ([22m[2m24 tests[22m [2m|[22m [31m2 failed[39m[2m)[22m[90m 51[2mms[22m[39m
+[31m   [33m❯[31m v2/core/StateManager.test.ts[2m > [22mStateManager[2m > [22mInitial state[2m > [22mshould initialize with provided state[39m
+[31m     → expected undefined to be 'scene1' // Object.is equality[39m
+[31m   [33m❯[31m v2/core/StateManager.test.ts[2m > [22mStateManager[2m > [22mInitial state[2m > [22mshould use custom persistence key[39m
+[31m     → Cannot use 'in' operator to search for 'test' in custom_key[39m
+ [32m✓[39m v2/core/EventBus.test.ts [2m ([22m[2m13 tests[22m[2m)[22m[90m 57[2mms[22m[39m
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mInitialization[2m > [22m[2mshould initialize controller[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mInitialization[2m > [22m[2mshould listen for secret_code:unlocked events[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mUV7 Crew Bios[2m > [22m[2mshould show UV7 crew overlay on uv7crew code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mLoop Timeline[2m > [22m[2mshould show loop timeline on bootstrap code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: bootstrap
+🔄 LOOP TIMELINE EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mLoop Timeline[2m > [22m[2mshould display current loop version[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: bootstrap
+🔄 LOOP TIMELINE EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mTrue Attempt Number[2m > [22m[2mshould show true attempt number on 848 code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: 848
+🔢 TRUE ATTEMPT NUMBER EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mEcho Compilation[2m > [22m[2mshould show echo compilation on echo code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: echo
+👻 ECHO COMPILATION EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mAlways Compilation[2m > [22m[2mshould show always compilation on always3 code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: always3
+💚 ALWAYS3 EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mTorigatchi Easter Egg[2m > [22m[2mshould show Torigatchi overlay on torigatchi code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: torigatchi
+🥚 TORIGATCHI EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mTorigatchi Easter Egg[2m > [22m[2mshould have button that opens Torigatchi link[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: torigatchi
+🥚 TORIGATCHI EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mDiZee Easter Egg[2m > [22m[2mshould show DiZee overlay on dizee code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: dizee
+🖤 DIZEE EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mOverlay Infrastructure[2m > [22m[2mshould track active overlays[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 Easter egg triggered: dizee
+🖤 DIZEE EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mOverlay Infrastructure[2m > [22m[2mshould remove overlays on destroy[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 EasterEggController destroyed
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mOverlay Infrastructure[2m > [22m[2mshould close overlay on backdrop click[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mOverlay Infrastructure[2m > [22m[2mshould close overlay on close button click[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: uv7crew
+🎬 UV7 CREW BIOS EASTER EGG
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mUnknown Codes[2m > [22m[2mshould log warning for unknown easter egg code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: unknown
+🥚 EasterEggController destroyed
+
+[90mstdout[2m | v2/controllers/EasterEggController.test.ts[2m > [22m[2mEasterEggController[2m > [22m[2mUnknown Codes[2m > [22m[2mshould not create overlay for unknown code[22m[39m
+💚 StateManager initialized
+🥚 EasterEggController initialized
+🥚 Easter egg triggered: unknown
+🥚 EasterEggController destroyed
+
+ [32m✓[39m v2/controllers/EasterEggController.test.ts [2m ([22m[2m17 tests[22m[2m)[22m[33m 308[2mms[22m[39m
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mAuto-save[2m > [22m[2mshould auto-save to slot 0 when autoSave is called with valid scene[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+[SaveSystem] Auto-saving (reason: test, scene: scene2_intro)
+[SaveSystem] Saved to slot 0
+[SaveSystem] Auto-save completed successfully
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mAuto-save[2m > [22m[2mshould NOT auto-save on main_menu[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mAuto-save[2m > [22m[2mshould NOT auto-save on splash[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mAuto-save[2m > [22m[2mshould trigger on scene:load event[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+[SaveSystem] Auto-saving (reason: scene_load, scene: test_scene)
+[SaveSystem] Saved to slot 0
+[SaveSystem] Auto-save completed successfully
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mManual Save/Load[2m > [22m[2mshould save to specified slot[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+[SaveSystem] Saved to slot 1
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mManual Save/Load[2m > [22m[2mshould load from specified slot[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+[SaveSystem] Loaded from slot 1
+
+[90mstdout[2m | v2/tests/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mManual Save/Load[2m > [22m[2mshould fail to load if slot empty[22m[39m
+[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)
+
+ [32m✓[39m v2/tests/SaveSystem.test.ts [2m ([22m[2m7 tests[22m[2m)[22m[90m 25[2mms[22m[39m
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mshould start prologue normally by default[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mshould autoskip prologue if unlocked and enabled[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mshould select route and load start scene[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mshould track points for current route[22m[39m
+💚 StateManager initialized
+✨ Added 5 points to tori (Total: 5)
+✨ Added 3 points to tori (Total: 8)
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mEndings and Retries[2m > [22m[2mshould trigger Epilogue when True Route ends[22m[39m
+💚 StateManager initialized
+🎬 Scene Ended: trueRoute_final
+🌟 True Ending reached. Formatting reality... [Loading Epilogue]
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mEndings and Retries[2m > [22m[2mshould emit retry screen event on Bad Route end[22m[39m
+💚 StateManager initialized
+🎬 Scene Ended: badRoute_retry
+💔 Bad Ending reached. Initializing Loop Reset...
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mEndings and Retries[2m > [22m[2mshould trigger credits on Epilogue end[22m[39m
+💚 StateManager initialized
+🎬 Scene Ended: epilogue_knowing
+🏁 Epilogue Complete. Rolling credits...
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mEndings and Retries[2m > [22m[2mshould restart route from handleRetryChoice[22m[39m
+💚 StateManager initialized
+🔄 Restarting Route: ronnie
+
+[90mstdout[2m | v2/controllers/RouteController.test.ts[2m > [22m[2mRouteController[2m > [22m[2mEndings and Retries[2m > [22m[2mshould switch perspective from handleRetryChoice[22m[39m
+💚 StateManager initialized
+👀 Switching Perspective (Route Select)
+
+ [32m✓[39m v2/controllers/RouteController.test.ts [2m ([22m[2m9 tests[22m[2m)[22m[90m 28[2mms[22m[39m
+[90mstdout[2m | v2/tests/integration/MicroMigration.test.ts[2m > [22m[2mMicro-Migration Integration[2m > [22m[2mshould verify the full lifecycle of the migration scene[22m[39m
+💚 StateManager initialized
+📳 HapticSystem initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+[GameEngine] Loaded scene: v1_migration_test
+📳 Haptic: double [channel=narrative, comfort=1] - Sensory cue: toriHop [ [33m25[39m, [33m50[39m, [33m25[39m ]
+🎯 Sensory: toriHop [channel=narrative] visual=toriHop haptic=double
+[SaveSystem] Saved to slot 1
+[SaveSystem] Loaded from slot 1
+✅ Micro-migration verification successful!
+
+ [32m✓[39m v2/tests/integration/MicroMigration.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 18[2mms[22m[39m
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mInitialization[2m > [22m[2mshould initialize without errors[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 DirectorsCutController initialized
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mInitialization[2m > [22m[2mshould log initialization message[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 DirectorsCutController initialized
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mUnlock State[2m > [22m[2mshould check if unlocked via localStorage[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mUnlock State[2m > [22m[2mshould unlock via unlock() method[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut unlocked
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mUnlock State[2m > [22m[2mshould log when unlocking[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut unlocked
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Locked State[2m > [22m[2mshould log warning when locked[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Locked State[2m > [22m[2mshould not create overlay when locked[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould create overlay when unlocked[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould create overlay with correct ID[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould create overlay with correct className[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould create overlay with correct styles[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould add fadeIn animation style[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould contain title "DIRECTOR'S CUT"[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould contain subtitle about crew statements[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould log when showing[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mShow Director's Cut - Unlocked State[2m > [22m[2mshould not show multiple overlays simultaneously[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould create close button[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould create close button with correct text[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould create close button with correct styles[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould remove overlay when close button clicked[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould change style on hover[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mClose Button[2m > [22m[2mshould revert style on mouse leave[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mEscape Key Handler[2m > [22m[2mshould close overlay on Escape key[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mEscape Key Handler[2m > [22m[2mshould not close on other keys[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mEscape Key Handler[2m > [22m[2mshould clean up escape handler on close[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mContent Formatting[2m > [22m[2mshould use monospace font[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mContent Formatting[2m > [22m[2mshould use cyan color theme[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mContent Formatting[2m > [22m[2mshould have responsive max-width[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+[90mstdout[2m | v2/controllers/DirectorsCutController.test.ts[2m > [22m[2mDirectorsCutController[2m > [22m[2mContent Formatting[2m > [22m[2mshould have proper spacing between statements[22m[39m
+💚 StateManager initialized
+🎬 DirectorsCutController initialized
+🎬 Director's Cut shown
+
+ [32m✓[39m v2/controllers/DirectorsCutController.test.ts [2m ([22m[2m29 tests[22m[2m)[22m[33m 816[2mms[22m[39m
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mBootstrapTracker[2m > [22m[2mshould initialize with default timeline[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mBootstrapTracker[2m > [22m[2mshould record attempts and enforce limit[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Recorded attempt #848: failed - test
+📝 Recorded attempt #849: failed - test
+📝 Recorded attempt #850: failed - test
+📝 Recorded attempt #851: failed - test
+📝 Recorded attempt #852: failed - test
+📝 Recorded attempt #853: failed - test
+📝 Recorded attempt #854: failed - test
+📝 Recorded attempt #855: failed - test
+📝 Recorded attempt #856: failed - test
+📝 Recorded attempt #857: failed - test
+
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mSecretCodesSystem[2m > [22m[2mshould handle konami code[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #858
+🎮 Konami Code - Opening interactive controller
+
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mSecretCodesSystem[2m > [22m[2mshould handle invalid codes[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #858
+⚠️ Invalid code: Code corrupted. Signal unclear.
+
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mSecretCodesSystem[2m > [22m[2mshould track discovered codes[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #858
+🎮 Konami Code - Opening interactive controller
+
+[90mstdout[2m | v2/systems/SecretCodes.test.ts[2m > [22m[2mSecretCodesSystem & BootstrapTracker[2m > [22m[2mSecretCodesSystem[2m > [22m[2mshould handle dev commands without tracking discovery[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #858
+💚 DEV: Reset to VERSION 848. Refresh page.
+
+ [32m✓[39m v2/systems/SecretCodes.test.ts [2m ([22m[2m6 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+[90mstdout[2m | v2/ui/components/CodeRain.test.ts[2m > [22m[2mCodeRain[2m > [22m[2mshould start animation loop[22m[39m
+🌧️ Code Rain starting. Canvas size: 1024x768
+🌧️ Code Rain started
+
+[90mstdout[2m | v2/ui/components/CodeRain.test.ts[2m > [22m[2mCodeRain[2m > [22m[2mshould cleanup on destroy[22m[39m
+🌧️ Code Rain starting. Canvas size: 1024x768
+🌧️ Code Rain started
+
+ [32m✓[39m v2/ui/components/CodeRain.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 37[2mms[22m[39m
+[90mstdout[2m | v2/controllers/TetherController.test.ts[2m > [22m[2mTetherController[2m > [22m[2mshould reduce tether level over time[22m[39m
+💚 StateManager initialized
+📉 Tether decay started
+🛑 Tether decay stopped
+
+[90mstdout[2m | v2/controllers/TetherController.test.ts[2m > [22m[2mTetherController[2m > [22m[2mshould trigger haptic warning at critical threshold[22m[39m
+💚 StateManager initialized
+📉 Tether decay started
+🛑 Tether decay stopped
+
+[90mstdout[2m | v2/controllers/TetherController.test.ts[2m > [22m[2mTetherController[2m > [22m[2mshould boost level on Hold On[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/controllers/TetherController.test.ts[2m > [22m[2mTetherController[2m > [22m[2mshould emit death event at 0[22m[39m
+💚 StateManager initialized
+📉 Tether decay started
+🛑 Tether decay stopped
+
+ [32m✓[39m v2/controllers/TetherController.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 13[2mms[22m[39m
+[90mstdout[2m | v2/systems/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mshould save game state to a slot[22m[39m
+💚 StateManager initialized
+[SaveSystem] Saved to slot 1
+
+[90mstdout[2m | v2/systems/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mshould load game state from a slot[22m[39m
+💚 StateManager initialized
+[SaveSystem] Saved to slot 1
+[SaveSystem] Loaded from slot 1
+
+[90mstdout[2m | v2/systems/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mshould return valid metadata for existing slots[22m[39m
+💚 StateManager initialized
+[SaveSystem] Saved to slot 1
+[SaveSystem] Saved to slot 2
+
+[90mstdout[2m | v2/systems/SaveSystem.test.ts[2m > [22m[2mSaveSystem[2m > [22m[2mshould handle missing slots gracefully[22m[39m
+💚 StateManager initialized
+
+ [32m✓[39m v2/systems/SaveSystem.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 12[2mms[22m[39m
+ [32m✓[39m v2/ui/components/VisualEffectsLayer.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 64[2mms[22m[39m
+[90mstdout[2m | v2/systems/DevCommentary.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mshould be locked by default[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/DevCommentary.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mshould unlock via unlockCommentary()[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+
+[90mstdout[2m | v2/systems/DevCommentary.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mshould check for commentary on scene load[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+
+[90mstdout[2m | v2/systems/DevCommentary.test.ts[2m > [22m[2mDevCommentarySystem[2m > [22m[2mshould unlock via secret code[22m[39m
+💚 StateManager initialized
+📝 DevCommentarySystem initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.
+🎙️ Dev Commentary Unlocked
+
+ [33m❯[39m v2/systems/DevCommentary.test.ts [2m ([22m[2m4 tests[22m [2m|[22m [31m3 failed[39m[2m)[22m[90m 180[2mms[22m[39m
+[31m   [33m❯[31m v2/systems/DevCommentary.test.ts[2m > [22mDevCommentarySystem[2m > [22mshould be locked by default[39m
+[31m     → devCommentarySystem.isCommentaryUnlocked is not a function[39m
+[31m   [33m❯[31m v2/systems/DevCommentary.test.ts[2m > [22mDevCommentarySystem[2m > [22mshould unlock via unlockCommentary()[39m
+[31m     → expected "setItem" to be called with arguments: [ 'devCommentaryUnlocked', 'true' ][90m
+
+Received: 
+
+[31m[90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[31m   [33m❯[31m v2/systems/DevCommentary.test.ts[2m > [22mDevCommentarySystem[2m > [22mshould check for commentary on scene load[39m
+[31m     → expected "emit" to be called with arguments: [ 'visual:cue', ObjectContaining{…} ][90m
+
+Received: 
+
+[1m  1st emit call:
+
+[22m[2m  Array [[22m
+[32m-   "visual:cue",[90m
+[32m-   ObjectContaining {[90m
+[32m-     "type": "commentary_available",[90m
+[31m+   "scene:load",[90m
+[31m+   Object {[90m
+[31m+     "sceneId": "prologueScene4",[90m
+[2m    },[22m
+[2m  ][22m
+[31m[90m
+
+Number of calls: [1m1[22m
+[31m[39m
+ [32m✓[39m v2/controllers/DialogController.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+[90mstdout[2m | v2/systems/AchievementSystem.test.ts[2m > [22m[2mAchievementSystem[2m > [22m[2mshould initialize with locked achievements[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/systems/AchievementSystem.test.ts[2m > [22m[2mAchievementSystem[2m > [22m[2mshould unlock achievement and emit event[22m[39m
+💚 StateManager initialized
+🏆 Achievement Unlocked: Speed Runner
+
+[90mstdout[2m | v2/systems/AchievementSystem.test.ts[2m > [22m[2mAchievementSystem[2m > [22m[2mshould not unlock duplicate achievements[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/systems/AchievementSystem.test.ts[2m > [22m[2mAchievementSystem[2m > [22m[2mshould listen for achievement:unlock event[22m[39m
+💚 StateManager initialized
+
+ [32m✓[39m v2/systems/AchievementSystem.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 17[2mms[22m[39m
+[90mstdout[2m | v2/controllers/Controllers.test.ts[2m > [22m[2mMenuController[2m > [22m[2mshould switch screens and update state[22m[39m
+💚 StateManager initialized
+🖥️ UI Screen: settings
+
+[90mstdout[2m | v2/controllers/Controllers.test.ts[2m > [22m[2mMenuController[2m > [22m[2mshould cleanup view when showing main menu[22m[39m
+💚 StateManager initialized
+🖥️ UI Screen: main
+
+[90mstdout[2m | v2/controllers/Controllers.test.ts[2m > [22m[2mMenuController[2m > [22m[2mshould show retry screen on event[22m[39m
+💚 StateManager initialized
+🖥️ UI Screen: retry
+
+ [32m✓[39m v2/controllers/Controllers.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 201[2mms[22m[39m
+ [32m✓[39m v2/core/GameEngine.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 16[2mms[22m[39m
+[90mstdout[2m | v2/core/GameEngine.test.ts[2m > [22m[2mGameEngine[2m > [22m[2mshould initialize[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+🚀 GameEngine initialized (v848)
+
+[90mstdout[2m | v2/core/GameEngine.test.ts[2m > [22m[2mGameEngine[2m > [22m[2mshould register and retrieve scenes[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+
+[90mstdout[2m | v2/core/GameEngine.test.ts[2m > [22m[2mGameEngine[2m > [22m[2mshould load a scene and update state[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+[GameEngine] Loaded scene: test_scene
+
+[90mstdout[2m | v2/core/GameEngine.test.ts[2m > [22m[2mGameEngine[2m > [22m[2mshould handle scene not found gracefully[22m[39m
+💚 StateManager initialized
+📜 Bootstrap tracker initialized
+Current attempt: #848
+📝 DevCommentarySystem initialized
+
+ [32m✓[39m v2/systems/ContentLoader.test.ts [2m ([22m[2m3 tests[22m[2m)[22m[90m 22[2mms[22m[39m
+ [32m✓[39m v2/content/ContentValidator.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 5[2mms[22m[39m
+ [32m✓[39m v2/systems/AssetLoader.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 20[2mms[22m[39m
+ [32m✓[39m v2/systems/SettingsSystem.test.ts [2m ([22m[2m2 tests[22m[2m)[22m[90m 9[2mms[22m[39m
+[90mstdout[2m | v2/systems/SettingsSystem.test.ts[2m > [22m[2mSettingsSystem[2m > [22m[2mshould persist changes to localStorage[22m[39m
+💚 StateManager initialized
+
+[90mstdout[2m | v2/systems/SettingsSystem.test.ts[2m > [22m[2mSettingsSystem[2m > [22m[2mshould provide helper methods for HapticSystem[22m[39m
+💚 StateManager initialized
+
+ [32m✓[39m v2/core/GameConfig.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [32m✓[39m v2/ui/components/GameLayout.test.ts [2m ([22m[2m2 tests[22m [2m|[22m [33m1 skipped[39m[2m)[22m[90m 24[2mms[22m[39m
+ [32m✓[39m v2/__tests__/sanity.test.ts [2m ([22m[2m4 tests[22m[2m)[22m[90m 6[2mms[22m[39m
+ [32m✓[39m v2/controllers/ResetController.debug.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 110[2mms[22m[39m
+[90mstdout[2m | v2/controllers/ResetController.debug.test.ts[2m > [22m[2mDebug ResetController Styles[2m > [22m[2mshould show actual cssText values[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+=== OVERLAY cssText ===
+
+
+=== BOX cssText ===
+
+
+=== CANCEL BUTTON cssText ===
+
+
+=== CONFIRM BUTTON cssText ===
+
+
+
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m38 passed[39m[22m[90m (40)[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m601 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (607)[39m
+[2m   Start at [22m 20:32:56
+[2m   Duration [22m 6.33s[2m (transform 1.58s, setup 293ms, collect 3.50s, tests 3.82s, environment 38.48s, prepare 7.83s)[22m
+

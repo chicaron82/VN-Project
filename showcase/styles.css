@@ -568,6 +568,48 @@ section h2 {
     color: #9b59b6;
 }
 
+/* Chaos type (debugging sagas, fuck-ups as content) */
+.timeline-item.chaos .timeline-marker {
+    background: linear-gradient(135deg, #ff0066, #ff6600);
+    box-shadow: 0 0 0 4px rgba(255, 0, 102, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.timeline-item.chaos .timeline-content h3 {
+    color: #ff0066;
+}
+
+.timeline-item.chaos .timeline-marker::before {
+    content: '🔥';
+    font-size: 1.2rem;
+}
+
+/* Polish type */
+.timeline-item.polish .timeline-marker {
+    background: #00ff88;
+    box-shadow: 0 0 0 4px rgba(0, 255, 136, 0.2);
+}
+
+.timeline-item.polish .timeline-content h3 {
+    color: #00ff88;
+}
+
+/* Reality-check type (current state, warts and all) */
+.timeline-item.reality-check .timeline-marker {
+    background: linear-gradient(135deg, #ff9500, #ffc107);
+    box-shadow: 0 0 0 4px rgba(255, 193, 7, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.timeline-item.reality-check .timeline-content h3 {
+    color: #ffc107;
+}
+
+.timeline-item.reality-check .timeline-marker::before {
+    content: '🚧';
+    font-size: 1.2rem;
+}
+
 .timeline-content p {
     font-size: 1rem;
     line-height: 1.6;
@@ -2056,6 +2098,55 @@ section h2 {
 .footer-icon {
     font-size: 1.5rem;
     flex-shrink: 0;
+}
+
+/* --- TIMELINE SUBSECTIONS (The Timeline, Investigation) --- */
+.timeline-subsection {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(50, 50, 50, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid #666;
+}
+
+.timeline-subsection h4 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.5rem;
+}
+
+/* --- TIMELINE ENTRY QUOTE --- */
+.timeline-entry-quote {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 0, 100, 0.05), rgba(0, 255, 150, 0.05));
+    border-left: 4px solid #00ff88;
+    border-radius: 8px;
+}
+
+.timeline-entry-quote blockquote {
+    margin: 0;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #ccc;
+    line-height: 1.6;
+}
+
+.timeline-entry-quote blockquote::before {
+    content: '"';
+    font-size: 2rem;
+    color: #00ff88;
+    opacity: 0.3;
+    margin-right: 0.25rem;
+}
+
+.timeline-entry-quote blockquote::after {
+    content: '"';
+    font-size: 2rem;
+    color: #00ff88;
+    opacity: 0.3;
+    margin-left: 0.25rem;
 }
 
 .footer-content {

@@ -577,9 +577,9 @@
 
                     <div class="stats-grid">
                         <div class="stat-card" data-stat-type="tests">
-                            <div class="stat-icon">✓</div>
-                            <div class="stat-number" data-target="590">0</div>
-                            <div class="stat-label">Tests Passing</div>
+                            <div class="stat-icon">🚧</div>
+                            <div class="stat-number" data-target="55">0</div>
+                            <div class="stat-label">Test Files (Stubbed)</div>
                         </div>
                         <div class="stat-card" data-stat-type="phases">
                             <div class="stat-icon">
@@ -589,7 +589,7 @@
                                 </svg>
                             </div>
                             <div class="stat-number" data-target="86">0</div>
-                            <div class="stat-label">Phases Complete</div>
+                            <div class="stat-label">Timeline Entries</div>
                         </div>
                         <div class="stat-card" data-stat-type="days">
                             <div class="stat-icon">📅</div>
@@ -597,9 +597,9 @@
                             <div class="stat-label">Days in Development</div>
                         </div>
                         <div class="stat-card" data-stat-type="errors">
-                            <div class="stat-icon">✨</div>
-                            <div class="stat-number" data-target="0">0</div>
-                            <div class="stat-label">TypeScript Errors</div>
+                            <div class="stat-icon">🔧</div>
+                            <div class="stat-number" data-target="25">0</div>
+                            <div class="stat-label">TS Errors (Minor)</div>
                         </div>
                     </div>
 
@@ -675,9 +675,9 @@
                             <li><strong>Component-Based UI</strong> - Automatic cleanup, consistent lifecycle</li>
                             <li><strong>Full Content Migration</strong> - 6 acts, all endings, secrets, achievements
                             </li>
-                            <li><strong>TypeScript Strict Mode</strong> - Compile-time safety, zero errors</li>
-                            <li><strong>Comprehensive Testing</strong> - <span id="achievements-tests">435 tests</span>
-                                covering core systems</li>
+                            <li><strong>TypeScript Strict Mode</strong> - ~95% type-safe, 25 minor errors remaining</li>
+                            <li><strong>Test Infrastructure</strong> - <span id="achievements-tests">55 test files</span>
+                                structured (implementation in progress)</li>
                             <li><strong>Accessibility Suite</strong> - High contrast, font scaling, reduced motion</li>
                             <li><strong>Meta-Narrative Systems</strong> - Tracking timelines across browser sessions
                             </li>
@@ -1093,12 +1093,12 @@
                             <div class="metric-change">~95% ported</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-value">590</div>
-                            <div class="metric-label">Tests Passing</div>
-                            <div class="metric-change">0 → 590</div>
+                            <div class="metric-value">55</div>
+                            <div class="metric-label">Test Files</div>
+                            <div class="metric-change">Written but stubbed</div>
                         </div>
                         <div class="metric-card">
-                            <div class="metric-value">0</div>
+                            <div class="metric-value">25</div>
                             <div class="metric-label">TS Errors</div>
                             <div class="metric-change negative">→ 0 (goal)</div>
                         </div>
@@ -1175,8 +1175,8 @@
                             </div>
 
                             <div class="comparison-item">
-                                <h4>🛡️ Strict Types</h4>
-                                <p>TypeScript caught 40+ potential crashes during migration. If it compiles, it runs.
+                                <h4>🛡️ Strict Types (Mostly)</h4>
+                                <p>TypeScript caught 40+ crashes. 25 minor errors remain (unused vars, EventBus types). Game runs great anyway.
                                 </p>
                             </div>
 
@@ -1187,10 +1187,10 @@
                             </div>
 
                             <div class="comparison-item">
-                                <h4>🧪 590 Automated Tests</h4>
-                                <p>Vitest + comprehensive coverage. Every feature tested. Confidence in every commit.
+                                <h4>🚧 Test Infrastructure (In Progress)</h4>
+                                <p>55 test files written but stubbed. Prioritized building over bureaucracy. Tests coming as we stabilize systems.
                                 </p>
-                                <a href="#phase-8" class="phase-link">📖 See Phase 8: Testing</a>
+                                <a href="#2026-01-20-e" class="phase-link">📖 See Current State</a>
                             </div>
 
                             <div class="comparison-item">
@@ -1387,16 +1387,16 @@ const state = StateManager.getState();
 
                         <div class="improvement-card">
                             <div class="improvement-icon">🛡️</div>
-                            <h3>Zero Runtime Errors</h3>
-                            <p>TypeScript strict mode caught 40+ potential crashes before they could ship</p>
-                            <span class="metric-badge">100% type-safe</span>
+                            <h3>Type Safety (In Progress)</h3>
+                            <p>TypeScript strict mode caught 40+ potential crashes. 25 minor errors remain (unused vars, EventBus types)</p>
+                            <span class="metric-badge">~95% type-safe</span>
                         </div>
 
                         <div class="improvement-card">
-                            <div class="improvement-icon">🧪</div>
-                            <h3>435 Automated Tests</h3>
-                            <p>V1 had zero tests. V2 validates core systems on every commit</p>
-                            <span class="metric-badge">∞% improvement</span>
+                            <div class="improvement-icon">🚧</div>
+                            <h3>Test Infrastructure Ready</h3>
+                            <p>55 test files structured, Vitest configured. Tests stubbed while we prioritize shipping features</p>
+                            <span class="metric-badge">Ship > Test</span>
                         </div>
 
                         <div class="improvement-card">

@@ -322,6 +322,40 @@ class TimelineRenderer {
             details.appendChild(ul);
         }
 
+        // 2.5. Timeline (for chaos entries)
+        if (entry.theTimeline) {
+            hasDetails = true;
+            const timelineDiv = document.createElement('div');
+            timelineDiv.className = 'timeline-subsection';
+            timelineDiv.innerHTML = '<h4 style="color: #888; margin-bottom: 0.5rem;">The Timeline:</h4>';
+            const ul = document.createElement('ul');
+            ul.className = 'update-list';
+            entry.theTimeline.forEach(t => {
+                const li = document.createElement('li');
+                li.innerHTML = t;
+                ul.appendChild(li);
+            });
+            timelineDiv.appendChild(ul);
+            details.appendChild(timelineDiv);
+        }
+
+        // 2.6. Investigation (for debugging entries)
+        if (entry.investigation) {
+            hasDetails = true;
+            const investigationDiv = document.createElement('div');
+            investigationDiv.className = 'timeline-subsection';
+            investigationDiv.innerHTML = '<h4 style="color: #888; margin-bottom: 0.5rem;">The Investigation:</h4>';
+            const ul = document.createElement('ul');
+            ul.className = 'update-list';
+            entry.investigation.forEach(i => {
+                const li = document.createElement('li');
+                li.innerHTML = i;
+                ul.appendChild(li);
+            });
+            investigationDiv.appendChild(ul);
+            details.appendChild(investigationDiv);
+        }
+
         // 3. Callout
         if (entry.callout) {
             hasDetails = true;
@@ -348,6 +382,15 @@ class TimelineRenderer {
                 <div class="footer-content">${entry.footer.text}</div>
             `;
             details.appendChild(footer);
+        }
+
+        // 3.6. Quote (memorable one-liner)
+        if (entry.quote) {
+            hasDetails = true;
+            const quote = document.createElement('div');
+            quote.className = 'timeline-entry-quote';
+            quote.innerHTML = `<blockquote>${entry.quote}</blockquote>`;
+            details.appendChild(quote);
         }
 
         // 4. Media (Carousel)

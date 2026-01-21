@@ -34,14 +34,19 @@ export default defineConfig({
   },
   // @ts-expect-error - Vitest config
   test: {
-    globals: true,
+    globals: true, // REQUIRED for test discovery to work
     environment: 'jsdom',
     setupFiles: ['./tests/setup.js'],
-    // Only include V2 TypeScript tests, exclude V1 JavaScript tests
-    include: ['v2/**/*.test.ts', 'v2/**/*.spec.ts'],
+    // Include ALL V2 tests wherever they are located
+    include: [
+      'v2/**/*.test.ts',
+      'v2/**/*.spec.ts'
+    ],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',
+      'v1/**',        // V1 tests have broken imports after reorganization
+      'tests/**',     // Old V1 test suite with broken paths
     ],
     coverage: {
       provider: 'v8',

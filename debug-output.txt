@@ -1,0 +1,25 @@
+
+[7m[1m[36m RUN [39m[22m[27m [36mv1.6.1[39m [90mC:/Users/silve/Downloads/GitHub/VN-Project[39m
+
+[90mstdout[2m | v2/controllers/ResetController.debug.test.ts[2m > [22m[2mDebug ResetController Styles[2m > [22m[2mshould show actual cssText values[22m[39m
+💥 ResetController initialized
+⚠️ Nuclear reset confirmation dialog displayed
+=== OVERLAY cssText ===
+
+
+=== BOX cssText ===
+
+
+=== CANCEL BUTTON cssText ===
+
+
+=== CONFIRM BUTTON cssText ===
+
+
+ [32m✓[39m v2/controllers/ResetController.debug.test.ts [2m ([22m[2m1 test[22m[2m)[22m[90m 77[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+[2m   Start at [22m 20:30:38
+[2m   Duration [22m 925ms[2m (transform 43ms, setup 6ms, collect 34ms, tests 77ms, environment 471ms, prepare 115ms)[22m
+
