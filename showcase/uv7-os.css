@@ -421,8 +421,10 @@
    ═══════════════════════════════════════════════════════════════ */
 .uv7-sidebar {
     position: fixed;
-    top: 44px;
-    /* Below status bar */
+    top: 0;
+    /* Full height */
+    padding-top: var(--uv7-statusbar-h);
+    /* Account for status bar */
     right: 0;
     left: auto;
     bottom: 0;
