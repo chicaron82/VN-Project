@@ -89,6 +89,7 @@ export class DevCommentarySystem {
             if (this.isUnlocked() && this.getCommentary(data.sceneId)) {
                 this.eventBus.emit('visual:cue', {
                     type: 'commentary_available',
+                    channel: 'ui',
                     sceneId: data.sceneId
                 });
             }
