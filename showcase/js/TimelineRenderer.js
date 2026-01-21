@@ -9,7 +9,9 @@ class TimelineRenderer {
         this.originalEntries = [];
         this.currentEntries = [];
         this.activeFilter = 'all';
-        this.activeSort = 'story'; // 'story' (asc) or 'dev' (desc)
+        // Initialize activeSort based on restored View Mode (from ViewModeController)
+        // This prevents a mismatch where Body='dev' (Expanded) but Renderer='story'
+        this.activeSort = document.body.dataset.viewMode || 'story';
         this.searchQuery = '';
 
         // Cache DOM elements
