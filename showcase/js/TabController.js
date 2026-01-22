@@ -686,6 +686,67 @@ class TabController {
         return this.tabs.length;
     }
 
+    // ========================================
+    // PHASE 26e: SWIPE INDICATOR LERP
+    // ========================================
+
+    /**
+     * Update indicator position with LERP interpolation
+     * Called during swipe gesture for 1:1 tracking
+     * @param {number} fromIdx - Current tab index
+     * @param {number} toIdx - Target tab index
+     * @param {number} progress - Progress from 0 to 1
+     */
+    updateIndicatorPosition(fromIdx, toIdx, progress) {
+        const indicator = document.querySelector('.tab-indicator');
+        if (!indicator) return;
+
+        const tabs = Array.from(this.tabButtons);
+        if (!tabs[fromIdx]) return;
+
+        // Get dimensions
+        const fromTab = /** @type {HTMLElement} */(tabs[fromIdx]);
+        const fromRect = fromTab.getBoundingClientRect();
+        const parentRect = fromTab.parentElement.getBoundingClientRect();
+
+        // Start position and width
+        let targetLeft = fromRect.left - parentRect.left;
+        let targetWidth = fromRect.width;
+
+        // If we have a target tab, interpolate towards it
+        if (tabs[toIdx]) {
+            const toTab = /** @type {HTMLElement} */(tabs[toIdx]);
+            const toRect = toTab.getBoundingClientRect();
+            const toLeft = toRect.left - parentRect.left;
+            const toWidth = toRect.width;
+
+            // LERP: Start + (Difference * Progress)
+            targetLeft = targetLeft + (toLeft - targetLeft) * progress;
+            targetWidth = targetWidth + (toWidth - targetWidth) * progress;
+        }
+
+        // Apply transform (GPU-accelerated)
+        indicator.style.transform = `translateX(${targetLeft}px)`;
+        indicator.style.width = `${targetWidth}px`;
+    }
+
+    /**
+     * Get current tab index
+     * @returns {number}
+     */
+    getCurrentTabIndex() {
+        return this.tabs.indexOf(this.activeTab);
+    }
+
+    /**
+     * Navigate to tab by index
+     * @param {number} index
+     */
+    navigateToTabIndex(index) {
+        if (index < 0 || index >= this.tabs.length) return;
+        this.navigateToTab(this.tabs[index]);
+    }
+
     /**
      * Type out the system boot version
      */

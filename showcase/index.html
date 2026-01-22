@@ -143,6 +143,8 @@
     <script src="js/uv7-system-bridge.js?v=2"></script>
     <!-- App State Manager (Phase 26d: Live Preview Cards) -->
     <script src="js/AppStateManager.js?v=1"></script>
+    <!-- Tab Swipe Controller (Phase 26e: Facebook-style swipe) -->
+    <script type="module" src="js/TabSwipeController.js?v=1"></script>
     <!-- Mobile Slider now imported by HeroSection component -->
     <script src="js/ux-enhancements.js?v=2"></script>
     <script src="js/animated-stats.js?v=2"></script>
@@ -211,6 +213,9 @@
                 <span class="tab-icon">👥</span>
                 <span class="tab-label">Who</span>
             </button>
+
+            <!-- Swipe indicator (Phase 26e: Facebook-style) -->
+            <div class="tab-indicator" aria-hidden="true"></div>
         </div>
         <div id="tab-progress" class="tab-progress">●○○○○○ 1 of 6</div>
     </div>
@@ -1586,10 +1591,33 @@ const state = StateManager.getState();
                 const initialTab = tabController.getActiveTab();
                 tabController.updateStatusBar(initialTab);
 
-                const container = document.querySelector('.tab-panels-container');
-                if (container && typeof SwipeController !== 'undefined') {
-                    const swipeController = new SwipeController(tabController, container);
-                }
+                // Phase 26e: Initialize Facebook-style tab swipe
+                import('./js/TabSwipeController.js').then(module => {
+                    const { TabSwipeController } = module;
+
+                    const viewport = document.querySelector('.tab-panels-container');
+                    const track = viewport; // Same element for now
+                    const panels = document.querySelectorAll('.tab-panel');
+                    const indicator = document.querySelector('.tab-indicator');
+
+                    if (viewport && indicator) {
+                        const swipeController = new TabSwipeController({
+                            viewport,
+                            track,
+                            panels,
+                            indicator,
+                            getCurrentIndex: () => tabController.getCurrentTabIndex(),
+                            onCommit: (index) => tabController.navigateToTabIndex(index),
+                            tabCount: tabController.getTabCount()
+                        });
+
+                        window.tabSwipeController = swipeController;
+                        console.log('✅ TabSwipeController initialized');
+                    }
+                }).catch(err => {
+                    console.warn('TabSwipeController not available:', err);
+                });
+
                 console.log('✅ nav initialized');
             }
 
