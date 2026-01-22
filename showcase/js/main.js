@@ -12,21 +12,35 @@ import { initSocialShare } from './SocialShare.js';
 import { Sidebar } from './components/Sidebar.js';
 import { NotificationShade } from './components/NotificationShade.js';
 import { HeroSection } from './components/HeroSection.js';
+import { JourneySection } from './components/JourneySection.js';
+import { WorkflowSection } from './components/WorkflowSection.js';
+import { ResultsSection } from './components/ResultsSection.js';
+import { SpotlightSection } from './components/SpotlightSection.js';
+import { EvolutionSection } from './components/EvolutionSection.js';
+import { WhoSection } from './components/WhoSection.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all modules
+    // 1. Initialize UI Components (Renders HTML structure)
+    new Sidebar();
+    new NotificationShade();
+    new HeroSection();
+
+    // Core Sections
+    new JourneySection();
+    new WorkflowSection();
+    new ResultsSection();
+    new SpotlightSection();
+    new EvolutionSection();
+    new WhoSection();
+
+    // 2. Initialize Logic & Interactivity
     initComparisonSlider();
     initChaosTyper();
     initViewMode();
     initScrollAnimations();
     initSocialShare();
     initTimelineComponents();
-
-    // Initialize UI Components
-    new Sidebar();
-    new NotificationShade();
-    new HeroSection();
 
     console.log('[UV7 Showcase] Modules Initialized 🚀');
 });
@@ -36,6 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
  * (Moved here from script.js parity logic)
  */
 function initTimelineComponents() {
+    // Retry logic is less needed now that we render JourneySection synchronously above,
+    // but kept for robustness.
     if (document.getElementById('timeline-container')) {
         // Ensure TimelineRenderer is loaded (it's a global class from TimelineRenderer.js)
         if (window.TimelineRenderer) {
@@ -54,5 +70,7 @@ function initTimelineComponents() {
                 }
             }, 500);
         }
+    } else {
+        console.warn('[Timeline] Container not found even after JourneySection init.');
     }
 }
