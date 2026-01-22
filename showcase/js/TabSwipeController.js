@@ -80,7 +80,33 @@ export class TabSwipeController {
         // Enable flex layout for swipe panning
         this.viewport.classList.add('swipe-enabled');
 
+        // Antigravity Enhancement: Accessibility announcements
+        this.setupAccessibility();
+
         console.log('✅ TabSwipeController initialized');
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // ANTIGRAVITY ENHANCEMENTS
+    // ═══════════════════════════════════════════════════════════════
+
+    setupAccessibility() {
+        // Create aria-live region for screen reader announcements
+        this.ariaLive = document.createElement('div');
+        this.ariaLive.setAttribute('aria-live', 'polite');
+        this.ariaLive.setAttribute('aria-atomic', 'true');
+        this.ariaLive.className = 'sr-only';
+        this.ariaLive.style.cssText = 'position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;';
+        document.body.appendChild(this.ariaLive);
+    }
+
+    /**
+     * @param {string} tabName
+     */
+    announceTabChange(tabName) {
+        if (this.ariaLive) {
+            this.ariaLive.textContent = `Navigated to ${tabName} tab`;
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -221,8 +247,8 @@ export class TabSwipeController {
         }
 
         // Phase 3: Update content panning
-        const currentIndex = this.getCurrentIndex();
-        const baseOffset = -currentIndex * 100; // Current tab position (%)
+        const panelIndex = this.getCurrentIndex();
+        const baseOffset = -panelIndex * 100; // Current tab position (%)
         const dragOffset = (adjustedDelta / viewportWidth) * 100; // Drag as percentage
 
         // Apply transform to track (negative because we're dragging content)
@@ -285,6 +311,16 @@ export class TabSwipeController {
         // Trigger commit callback (TabController will handle the transition)
         this.onCommit(targetIndex);
 
+        // Antigravity Enhancement: Announce tab change
+        const tabButtons = document.querySelectorAll('.tab-item');
+        if (tabButtons[targetIndex]) {
+            const tabName = tabButtons[targetIndex].textContent?.trim() || 'Unknown';
+            this.announceTabChange(tabName);
+
+            // Scroll tab bar to keep target tab visible
+            this.scrollTabBarToTab(/** @type {HTMLElement} */(tabButtons[targetIndex]));
+        }
+
         // Phase 4: Spring animation for content
         // TabController handles the actual tab switch, we just need to reset transform
         setTimeout(() => {
@@ -310,6 +346,30 @@ export class TabSwipeController {
         this.indicator.classList.remove('near-threshold');
     }
 
+    /**
+     * @param {HTMLElement} tabElement
+     */
+    scrollTabBarToTab(tabElement) {
+        const tabBar = tabElement.parentElement;
+        if (!tabBar) return;
+
+        // Check if tab bar has horizontal overflow
+        if (tabBar.scrollWidth <= tabBar.clientWidth) return;
+
+        // Calculate scroll position to center the tab
+        const tabRect = tabElement.getBoundingClientRect();
+        const barRect = tabBar.getBoundingClientRect();
+        const scrollLeft = tabBar.scrollLeft;
+
+        const targetScroll = scrollLeft + (tabRect.left - barRect.left) - (barRect.width / 2) + (tabRect.width / 2);
+
+        // Smooth scroll to target
+        tabBar.scrollTo({
+            left: targetScroll,
+            behavior: 'smooth'
+        });
+    }
+
     // ═══════════════════════════════════════════════════════════════
     // CLEANUP
     // ═══════════════════════════════════════════════════════════════
@@ -329,6 +389,12 @@ export class TabSwipeController {
         this.viewport.removeEventListener('pointermove', this.onPointerMove);
         this.viewport.removeEventListener('pointerup', this.onPointerUp);
         this.viewport.removeEventListener('pointercancel', this.onPointerCancel);
+
+        // Clean up aria-live region
+        if (this.ariaLive && this.ariaLive.parentNode) {
+            this.ariaLive.parentNode.removeChild(this.ariaLive);
+        }
+
         this.cleanup();
     }
 }

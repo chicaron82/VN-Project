@@ -618,3 +618,13 @@
     opacity: 0.3;
     pointer-events: none;
 }
+
+/* Antigravity Enhancement: Panel depth during drag */
+.tab-panels-container.dragging .tab-panel {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.tab-panels-container.dragging .tab-panel.active {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
