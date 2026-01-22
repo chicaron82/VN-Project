@@ -228,6 +228,9 @@ class TimelineRenderer {
 
         // Trigger Prism syntax highlight
         if (window.Prism) Prism.highlightAll();
+
+        // Dispatch content update event (for ScrollAnimator)
+        window.dispatchEvent(new CustomEvent('uv7-content-updated'));
     }
 
     applySpotlight() {

@@ -58,34 +58,27 @@ class UV7OS {
         // TORI: Boot toast - one-time acknowledgment
         this.showBootToast();
 
-        // Control Center Stats
-        this.initSystemStats();
+        // Control Center Stats (Refactored to Sidebar Component)
+        // this.initSystemStats();
+
+        // Global Event Listeners (Bridge to Components)
+        window.addEventListener('uv7-navigate', (e) => {
+            if (e.detail && e.detail.target) {
+                this.jumpToSection(e.detail.target);
+            }
+        });
+
+        window.addEventListener('uv7-action', (e) => {
+            if (e.detail && e.detail.action) {
+                this.handleQuickAction(e.detail.action);
+            }
+        });
 
         console.log('🚀 UV7 OS initialized:', this.context);
     }
 
     initSystemStats() {
-        const cpuVal = document.getElementById('sys-cpu');
-        const ramVal = document.getElementById('sys-ram');
-        const cpuBar = document.getElementById('sys-cpu-bar');
-        const ramBar = document.getElementById('sys-ram-bar');
-
-        if (!cpuVal || !ramVal) return;
-
-        // Animate stats
-        setInterval(() => {
-            // CPU: jittery, spikes
-            const cpu = Math.floor(Math.random() * 30) + 5; // 5-35% base
-
-            // RAM: slow creep
-            const ram = 60 + Math.floor(Math.random() * 8); // 60-68%
-
-            cpuVal.textContent = `${cpu}%`;
-            if (cpuBar) cpuBar.style.width = `${cpu}%`;
-
-            ramVal.textContent = `${ram}%`;
-            if (ramBar) ramBar.style.width = `${ram}%`;
-        }, 2000);
+        // Moved to js/components/Sidebar.js
     }
 
     /*
@@ -276,9 +269,8 @@ class UV7OS {
         }
 
         // Shade close button
-        if (this.elements.shadeClose) {
-            this.elements.shadeClose.addEventListener('click', () => this.closeShade());
-        }
+        // REFACTORED: NotificationShade.js
+
 
         // Sidebar toggle
         if (this.elements.sidebarToggle) {
@@ -304,7 +296,8 @@ class UV7OS {
         this.attachQuickActions();
 
         // Swipe down to open shade (portrait)
-        this.attachSwipeHandler();
+        // REFACTORED: Moved to NotificationShade Component
+        // this.attachSwipeHandler();
 
         // Escape key closes shade/sidebar
         document.addEventListener('keydown', (e) => {
@@ -465,14 +458,18 @@ class UV7OS {
     }
 
     closeShade() {
-        if (!this.elements.shade) return;
-        this.elements.shade.classList.remove('open');
+        const shade = this.elements.shade || document.getElementById('uv7-shade');
+        if (!shade) return;
+
+        shade.classList.remove('open');
         document.body.classList.remove('uv7-no-scroll'); // Unlock scroll
     }
 
     toggleSidebar() {
-        if (!this.elements.sidebar) return;
-        const isOpen = this.elements.sidebar.classList.contains('open');
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        if (!sidebar) return;
+
+        const isOpen = sidebar.classList.contains('open');
         if (isOpen) {
             this.closeSidebar();
         } else {
@@ -481,16 +478,24 @@ class UV7OS {
     }
 
     openSidebar() {
-        if (!this.elements.sidebar) return;
-        this.elements.sidebar.classList.add('open');
-        this.elements.backdrop.classList.add('visible');
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
+
+        if (!sidebar) return;
+
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('visible');
         document.body.classList.add('uv7-no-scroll'); // Lock scroll
     }
 
     closeSidebar() {
-        if (!this.elements.sidebar) return;
-        this.elements.sidebar.classList.remove('open');
-        this.elements.backdrop.classList.remove('visible');
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
+
+        if (!sidebar) return;
+
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('visible');
         document.body.classList.remove('uv7-no-scroll'); // Unlock scroll
     }
 

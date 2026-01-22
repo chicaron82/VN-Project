@@ -28,10 +28,18 @@ class TabController {
         /** @type {string} */
         // We start at 'journey' to match HTML structure, then navigate to saved/hash
         this.activeTab = 'journey';
-        const targetTab = this.loadLastTab() || this.getTabFromHash() || 'journey';
+
+        // Phase 26d: Check for instant resume from App Switcher
+        /** @type {{activeTab?: string, scroll?: Record<string, number>, viewMode?: string, activeEntry?: string|null}|null} */
+        const instantResume = this.checkInstantResume();
+        const targetTab = instantResume?.activeTab || this.loadLastTab() || this.getTabFromHash() || 'journey';
 
         /** @type {boolean} */
         this.isTransitioning = false;
+
+        // Phase 26d: Store resume state for scroll restoration
+        /** @type {{activeTab?: string, scroll?: Record<string, number>, viewMode?: string, activeEntry?: string|null}|null} */
+        this.instantResumeState = instantResume;
 
         // Elements
         this.tabBar = document.getElementById('tab-bar');
@@ -48,14 +56,71 @@ class TabController {
         // Force update for initial state (even if it's journey) to set Status Bar
         if (targetTab === 'journey') {
             this.updateStatusBar('journey');
+            // Phase 26d: Emit initial state
+            setTimeout(() => this.emitStateForAppSwitcher(), 500);
         } else {
             this.navigateToTab(targetTab, false); // No animation on load
+        }
+
+        // Phase 26d: Restore scroll position if instant resume
+        if (this.instantResumeState && this.instantResumeState.scroll) {
+            setTimeout(() => {
+                this.restoreInstantResumeScroll();
+            }, 600);
         }
 
         this.showSwipeHintIfNeeded();
         this.typeBootVersion();
 
         console.log('✅ TabController initialized');
+    }
+
+    /**
+     * Phase 26d: Check for instant resume flag from App Switcher
+     * @returns {{activeTab?: string, scroll?: Record<string, number>, viewMode?: string, activeEntry?: string|null}|null} Resume state or null
+     */
+    checkInstantResume() {
+        try {
+            const resumeData = localStorage.getItem('uv7-instant-resume');
+            if (!resumeData) return null;
+
+            const parsed = JSON.parse(resumeData);
+
+            // Only use if it's for showcase and recent (within 30 seconds)
+            if (parsed.appId !== 'showcase') return null;
+            if (Date.now() - parsed.timestamp > 30000) {
+                localStorage.removeItem('uv7-instant-resume');
+                return null;
+            }
+
+            // Clear the flag
+            localStorage.removeItem('uv7-instant-resume');
+
+            console.log('🚀 Instant resume triggered:', parsed.state);
+            return parsed.state;
+        } catch (e) {
+            console.warn('Failed to parse instant resume data:', e);
+            return null;
+        }
+    }
+
+    /**
+     * Phase 26d: Restore scroll position from instant resume state
+     */
+    restoreInstantResumeScroll() {
+        if (!this.instantResumeState || !this.instantResumeState.scroll) return;
+
+        const scrollPos = this.instantResumeState.scroll[this.activeTab];
+        if (typeof scrollPos === 'number' && scrollPos > 0) {
+            const panel = document.querySelector(`[data-panel="${this.activeTab}"]`);
+            if (panel) {
+                panel.scrollTo({ top: scrollPos, behavior: 'smooth' });
+                console.log(`📜 Restored scroll position: ${scrollPos}px for ${this.activeTab}`);
+            }
+        }
+
+        // Clear the state after use
+        this.instantResumeState = null;
     }
 
     // ========================================
@@ -86,6 +151,61 @@ class TabController {
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+
+        // Phase 26d: Debounced scroll tracking for each tab panel
+        /** @type {Record<string, number>} */
+        this.scrollDebounceTimers = {};
+
+        this.tabPanels.forEach(panel => {
+            const tabId = /** @type {HTMLElement} */(panel).dataset.panel;
+            if (!tabId) return;
+
+            panel.addEventListener('scroll', () => {
+                // Guard against undefined
+                if (!this.scrollDebounceTimers) return;
+
+                // Clear existing timer
+                const existingTimer = this.scrollDebounceTimers[tabId];
+                if (existingTimer !== undefined) {
+                    clearTimeout(existingTimer);
+                }
+
+                // Debounce: save scroll position after 300ms of no scrolling
+                this.scrollDebounceTimers[tabId] = window.setTimeout(() => {
+                    this.saveScrollPosition(tabId, /** @type {HTMLElement} */(panel).scrollTop);
+                }, 300);
+            }, { passive: true });
+        });
+    }
+
+    /**
+     * Phase 26d: Save scroll position for a specific tab
+     * @param {string} tabId
+     * @param {number} scrollTop
+     */
+    saveScrollPosition(tabId, scrollTop) {
+        // Only save if we have AppStateManager
+        // @ts-ignore - UV7AppStateManager is dynamically added
+        if (!window.UV7AppStateManager) return;
+
+        // Emit updated state
+        window.dispatchEvent(new CustomEvent('uv7:state:changed', {
+            detail: {
+                appId: 'showcase',
+                state: {
+                    activeTab: this.activeTab,
+                    scroll: { [tabId]: scrollTop },
+                    viewMode: document.body.dataset.viewMode || 'story'
+                },
+                preview: {
+                    badge: this.getTabDisplayName(this.activeTab),
+                    title: this.getTabDisplayName(this.activeTab),
+                    subtitle: `Scrolled ${Math.round(scrollTop)}px`
+                }
+            }
+        }));
+
+        console.log(`📜 [AppState] Saved scroll: ${tabId} @ ${scrollTop}px`);
     }
 
     /**
@@ -199,7 +319,69 @@ class TabController {
         // Reset transition lock after animation
         setTimeout(() => {
             this.isTransitioning = false;
+
+            // Phase 26d: Emit state for AppStateManager
+            this.emitStateForAppSwitcher();
         }, 300);
+    }
+
+    /**
+     * Emit current state for AppStateManager (live preview cards)
+     * Phase 26d: App Switcher Glow-Up v2.0
+     */
+    emitStateForAppSwitcher() {
+        // Get active entry if viewing timeline
+        let activeEntry = null;
+        let activeEntryTitle = null;
+
+        if (this.activeTab === 'results' || this.activeTab === 'journey') {
+            const activeCard = document.querySelector('.timeline-item.active, .timeline-entry.expanded');
+            if (activeCard) {
+                activeEntry = /** @type {HTMLElement} */(activeCard).dataset.entryId || null;
+                const titleEl = activeCard.querySelector('.entry-title, h3');
+                activeEntryTitle = titleEl?.textContent?.substring(0, 40) || null;
+            }
+        }
+
+        // Get current scroll position for this tab
+        const panel = document.querySelector(`[data-panel="${this.activeTab}"]`);
+        const scrollPosition = panel?.scrollTop || 0;
+
+        // Emit state change event
+        window.dispatchEvent(new CustomEvent('uv7:state:changed', {
+            detail: {
+                appId: 'showcase',
+                state: {
+                    activeTab: this.activeTab,
+                    scroll: { [this.activeTab]: scrollPosition },
+                    viewMode: document.body.dataset.viewMode || 'story',
+                    activeEntry: activeEntry
+                },
+                preview: {
+                    badge: this.getTabDisplayName(this.activeTab),
+                    title: activeEntryTitle || this.getTabDisplayName(this.activeTab),
+                    subtitle: document.body.dataset.viewMode === 'dev' ? 'Dev Mode' : 'Story Mode'
+                }
+            }
+        }));
+    }
+
+    /**
+     * Get human-readable tab name
+     * @param {string} tabId
+     * @returns {string}
+     */
+    getTabDisplayName(tabId) {
+        /** @type {Record<string, string>} */
+        const names = {
+            journey: 'Journey',
+            workflow: 'Workflow',
+            results: 'Timeline',
+            spotlight: 'Spotlight',
+            evolution: 'Evolution',
+            who: 'About'
+        };
+        return names[tabId] || tabId;
     }
 
     nextTab() {

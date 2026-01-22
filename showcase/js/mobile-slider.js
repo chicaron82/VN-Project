@@ -4,7 +4,7 @@
  * Includes haptic feedback and smooth touch interactions
  */
 
-class MobileSliderController {
+export class MobileSliderController {
     constructor() {
         this.container = document.querySelector('.split-container');
         this.handle = document.querySelector('.slider-handle');
@@ -30,9 +30,6 @@ class MobileSliderController {
     }
 
     init() {
-        // Only initialize on mobile
-        if (window.innerWidth > 768) return;
-
         this.setupEventListeners();
         this.updateSlider(this.isPortrait ?
             this.container.getBoundingClientRect().height / 2 :
@@ -68,9 +65,6 @@ class MobileSliderController {
 
     handleTouchStart(e) {
         this.isDragging = true;
-        this.handle.style.transform = this.isPortrait ?
-            'translate(-50%, -50%) scale(1.1)' :
-            'translate(-50%, -50%) scale(1.1)';
 
         // Haptic feedback on grab (only if user has interacted)
         if (this.hasInteracted && navigator.vibrate) {
@@ -89,7 +83,6 @@ class MobileSliderController {
     handleTouchEnd() {
         if (this.isDragging) {
             this.isDragging = false;
-            this.handle.style.transform = 'translate(-50%, -50%) scale(1)';
 
             // Haptic feedback on release (only if user has interacted)
             if (this.hasInteracted && navigator.vibrate) {
@@ -100,9 +93,6 @@ class MobileSliderController {
 
     handleMouseDown(e) {
         this.isDragging = true;
-        this.handle.style.transform = this.isPortrait ?
-            'translate(-50%, -50%) scale(1.1)' :
-            'translate(-50%, -50%) scale(1.1)';
     }
 
     handleMouseMove(e) {
@@ -113,7 +103,6 @@ class MobileSliderController {
     handleMouseUp() {
         if (this.isDragging) {
             this.isDragging = false;
-            this.handle.style.transform = 'translate(-50%, -50%) scale(1)';
         }
     }
 
@@ -125,14 +114,45 @@ class MobileSliderController {
             // Vertical slider
             const y = clientPosition - rect.top;
             percentage = Math.max(0, Math.min(100, (y / rect.height) * 100));
+
+            // Update clip-path for VERTICAL split
+            this.orderLayer.style.clipPath = `polygon(0 ${percentage}%, 100% ${percentage}%, 100% 100%, 0 100%)`;
+
+            // Update handle position (vertical)
+            this.handle.style.left = '50%';
+            this.handle.style.top = `${percentage}%`;
+            this.handle.style.width = '100%';
+            this.handle.style.height = '4px';
+            this.handle.style.display = 'block';
+
+            // Update knob cursor
+            const knob = this.handle.querySelector('.slider-knob');
+            if (knob) knob.style.cursor = 'ns-resize';
+
+            console.log(`[Slider] Portrait: ${percentage.toFixed(1)}%`);
         } else {
             // Horizontal slider
             const x = clientPosition - rect.left;
             percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+
+            // Update clip-path for HORIZONTAL split
+            this.orderLayer.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+
+            // Update handle position (horizontal)
+            this.handle.style.left = `${percentage}%`;
+            this.handle.style.top = '0';
+            this.handle.style.width = '4px';
+            this.handle.style.height = '100%';
+            this.handle.style.display = 'block';
+
+            // Update knob cursor
+            const knob = this.handle.querySelector('.slider-knob');
+            if (knob) knob.style.cursor = 'ew-resize';
+
+            console.log(`[Slider] Landscape: ${percentage.toFixed(1)}%`);
         }
 
         this.currentPosition = percentage;
-        this.container.style.setProperty('--slider-position', `${percentage}%`);
 
         // Haptic feedback at center (50%) - only if user has interacted
         if (this.hasInteracted && navigator.vibrate && Math.abs(percentage - 50) < 2) {
@@ -141,11 +161,11 @@ class MobileSliderController {
     }
 }
 
-// Initialize on DOM load
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-        new MobileSliderController();
-    });
-} else {
-    new MobileSliderController();
-}
+// Initialize on DOM load if not a module (Legacy fallback)
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', () => {
+//         new MobileSliderController();
+//     });
+// } else {
+//     new MobileSliderController();
+// }

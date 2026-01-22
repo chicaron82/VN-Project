@@ -4,6 +4,12 @@
  * Handles the "V1 vs V2" split slider logic.
  */
 export function initComparisonSlider() {
+    // Only run on desktop - MobileSliderController handles mobile
+    if (window.innerWidth <= 768 || window.matchMedia('(max-width: 768px)').matches) {
+        console.log('📱 Skipping ComparisonSlider (mobile detected)');
+        return;
+    }
+
     const sliderContainer = document.querySelector('.split-container');
     const layerOrder = document.querySelector('.layer-order');
     const handle = document.querySelector('.slider-handle');

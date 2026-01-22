@@ -54,20 +54,35 @@ export function initScrollAnimations() {
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    document.querySelectorAll('.timeline-item').forEach((item, index) => {
-        const rect = item.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-            if (item.id && window.updateBackgroundContext) {
-                window.updateBackgroundContext(item.id);
+    const observeTimelineItems = () => {
+        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+            // Avoid double-observing
+            if (item.dataset.observed) return;
+            item.dataset.observed = 'true';
+
+            const rect = item.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                item.style.opacity = '1';
+                item.style.transform = 'translateX(0)';
+                if (item.id && window.updateBackgroundContext) {
+                    window.updateBackgroundContext(item.id);
+                }
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-30px)';
+                item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                timelineObserver.observe(item);
             }
-        } else {
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-30px)';
-            item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-            timelineObserver.observe(item);
-        }
+        });
+    };
+
+    // Initial observation
+    observeTimelineItems();
+
+    // Listen for dynamic content updates
+    window.addEventListener('uv7-content-updated', () => {
+        observeTimelineItems();
+        // Also re-check stats/metrics if needed
     });
 
     // 3. Counting Stats Animation

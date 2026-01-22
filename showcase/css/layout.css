@@ -1,0 +1,154 @@
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT & POLISH
+   Refactored from visual-fixes.css & mobile-polish.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- Typography & Responsive Text (Mobile Polish) --- */
+.chaos-title,
+.order-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    line-height: 1.1;
+}
+
+.chaos-subtitle,
+.order-subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    line-height: 1.4;
+}
+
+.btn-cta {
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2rem);
+    min-height: 44px;
+    /* Touch-friendly */
+}
+
+/* --- Section Transitions (Visual Fixes) --- */
+/* Footer Transition: Gradient Separator */
+.who-section::after {
+    content: '';
+    display: block;
+    height: 100px;
+    background: linear-gradient(to bottom,
+            rgba(22, 33, 62, 1),
+            rgba(22, 33, 62, 0.5),
+            transparent);
+    margin-top: 4rem;
+}
+
+.site-footer {
+    background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+    position: relative;
+}
+
+/* Who Are We: Visual Connection */
+.who-section {
+    background: linear-gradient(to bottom,
+            rgba(118, 75, 162, 0.1) 0%,
+            #1a1a2e 10%,
+            #16213e 100%);
+    position: relative;
+}
+
+/* Subtle top border */
+.who-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(102, 126, 234, 0.5),
+            transparent);
+}
+
+/* --- Component Tweaks --- */
+
+/* Technical Cards: Consistent Heights (Visual Fixes) */
+.technical-card {
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+.technical-card .tech-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Mobile Performance & Polish --- */
+@media (max-width: 768px) {
+
+    /* Lighter glassmorphism for performance */
+    .tab-bar-container,
+    .status-bar,
+    .uv7-status-bar {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Simpler shadows */
+    .card,
+    .timeline-item,
+    .technical-card {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Optimize animations */
+    * {
+        will-change: auto !important;
+    }
+
+    .slider-knob {
+        will-change: transform;
+    }
+
+    /* Scroll Snap for Tab Panels */
+    .tab-panels-container {
+        scroll-snap-type: y proximity;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tab-panel {
+        scroll-snap-align: start;
+        scroll-snap-stop: normal;
+    }
+}
+
+/* --- Accessibility --- */
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .slider-handle,
+    .slider-knob {
+        transition: none !important;
+    }
+
+    .tab-panel {
+        animation: none !important;
+    }
+}
+
+/* High Contrast */
+@media (prefers-contrast: high) {
+    .slider-knob {
+        border: 3px solid currentColor;
+    }
+
+    button,
+    .tab-item {
+        border: 2px solid currentColor;
+    }
+}

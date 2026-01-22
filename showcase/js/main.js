@@ -9,6 +9,9 @@ import { initChaosTyper } from './ChaosTyper.js';
 import { initViewMode } from './ViewModeController.js';
 import { initScrollAnimations } from './ScrollAnimator.js';
 import { initSocialShare } from './SocialShare.js';
+import { Sidebar } from './components/Sidebar.js';
+import { NotificationShade } from './components/NotificationShade.js';
+import { HeroSection } from './components/HeroSection.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -19,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initSocialShare();
     initTimelineComponents();
+
+    // Initialize UI Components
+    new Sidebar();
+    new NotificationShade();
+    new HeroSection();
 
     console.log('[UV7 Showcase] Modules Initialized 🚀');
 });

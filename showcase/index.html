@@ -57,16 +57,24 @@
     }
     </script>
 
-    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="styles.css?v=3">
     <link rel="stylesheet" href="uv7-os.css">
+
+    <!-- Components -->
+    <link rel="stylesheet" href="css/components/sidebar.css">
+    <link rel="stylesheet" href="css/components/shade.css">
+    <link rel="stylesheet" href="css/components/hero.css">
+    <link rel="stylesheet" href="css/components/timeline.css">
+    <link rel="stylesheet" href="css/components/app-preview-cards.css">
+
+    <!-- Layout & Features -->
+    <link rel="stylesheet" href="css/layout.css">
+
+    <!-- Feature Specific -->
     <link rel="stylesheet" href="uv7-app-switcher.css">
     <link rel="stylesheet" href="showcase-carousel.css">
-
     <link rel="stylesheet" href="philosophy-card.css">
     <link rel="stylesheet" href="error-states.css">
-    <link rel="stylesheet" href="visual-fixes.css?v=2">
-    <link rel="stylesheet" href="css/mobile-polish.css?v=2">
-    <link rel="stylesheet" href="css/timeline-michelin.css?v=2">
     <link rel="stylesheet" href="loading-states.css?v=2">
     <link rel="stylesheet" href="premium-animations.css">
     <link rel="stylesheet" href="content-features.css">
@@ -133,7 +141,9 @@
 
     <!-- Bridge to V2 System Components -->
     <script src="js/uv7-system-bridge.js?v=2"></script>
-    <script src="js/mobile-slider.js?v=2"></script>
+    <!-- App State Manager (Phase 26d: Live Preview Cards) -->
+    <script src="js/AppStateManager.js?v=1"></script>
+    <!-- Mobile Slider now imported by HeroSection component -->
     <script src="js/ux-enhancements.js?v=2"></script>
     <script src="js/animated-stats.js?v=2"></script>
 
@@ -156,262 +166,19 @@
     </div>
 
     <!-- Notification Shade (Portrait) -->
-    <div id="uv7-shade" class="uv7-shade">
-        <div class="shade-header">
-            <span class="shade-title">📖 Showcase Navigator</span>
-            <button class="shade-close" aria-label="Close">✕</button>
-        </div>
-        <div class="shade-content">
-            <!-- Quick Actions -->
-            <div class="shade-section">
-                <div class="shade-section-title">Quick Actions</div>
-                <div class="quick-actions-grid">
-                    <button class="quick-action" data-action="launch-v1">
-                        <span class="quick-action-icon">🎮</span>
-                        <span class="quick-action-label">V1 Game</span>
-                    </button>
-                    <button class="quick-action" data-action="launch-v2">
-                        <span class="quick-action-icon">⚡</span>
-                        <span class="quick-action-label">V2 Engine</span>
-                    </button>
-                    <button class="quick-action" data-action="go-home">
-                        <span class="quick-action-icon">🏠</span>
-                        <span class="quick-action-label">Landing</span>
-                    </button>
-                    <button class="quick-action" data-action="toggle-mode">
-                        <span class="quick-action-icon">📖</span>
-                        <span class="quick-action-label">Story/Dev</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Section Navigation -->
-            <div class="shade-section">
-                <div class="shade-section-title">Navigate</div>
-                <div class="section-nav-list" id="shade-section-list">
-                    <button class="section-nav-item" data-section="journey-section">
-                        <span class="section-icon">🗺️</span>
-                        <span class="section-label">The Journey</span>
-                    </button>
-                    <button class="section-nav-item" data-section="workflow-section">
-                        <span class="section-icon">⚙️</span>
-                        <span class="section-label">Workflow</span>
-                    </button>
-                    <button class="section-nav-item" data-section="results-section">
-                        <span class="section-icon">📊</span>
-                        <span class="section-label">The Results</span>
-                    </button>
-                    <button class="section-nav-item" data-section="spotlight-section">
-                        <span class="section-icon">💡</span>
-                        <span class="section-label">Technical Spotlight</span>
-                    </button>
-                    <button class="section-nav-item" data-section="evolution-section">
-                        <span class="section-icon">🔄</span>
-                        <span class="section-label">The Evolution</span>
-                    </button>
-                    <button class="section-nav-item" data-section="who-section">
-                        <span class="section-icon">👥</span>
-                        <span class="section-label">Who Are We</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Notification Shade Component Mount -->
+    <div id="uv7-shade-mount"></div>
 
     <!-- Sidebar (Landscape) -->
-    <div id="uv7-sidebar" class="uv7-sidebar">
-        <div class="sidebar-header">
-            <span class="sidebar-title">⚡ UV7 CONTROL CENTER</span>
-        </div>
-        <div class="sidebar-content">
-            <!-- Quick Actions Grid -->
-            <div class="sidebar-section">
-                <!-- <div class="sidebar-section-title">Quick Access</div> -->
-                <div class="quick-actions-grid">
-                    <button class="quick-action" data-action="launch-v1">
-                        <span class="quick-action-icon">🎮</span>
-                        <span class="quick-action-label">V1 Game</span>
-                    </button>
-                    <button class="quick-action" data-action="launch-v2">
-                        <span class="quick-action-icon">⚡</span>
-                        <span class="quick-action-label">V2 Engine</span>
-                    </button>
-                    <button class="quick-action" data-action="go-home">
-                        <span class="quick-action-icon">🏠</span>
-                        <span class="quick-action-label">Home</span>
-                    </button>
-                    <button class="quick-action" data-action="toggle-mode">
-                        <span class="quick-action-icon">📖</span>
-                        <span class="quick-action-label">Mode</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- System Stats Widget -->
-            <div class="sidebar-section">
-                <div class="system-stats-widget">
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">CPU LOAD</span>
-                            <span class="stat-value" id="sys-cpu">12%</span>
-                        </div>
-                        <div class="stat-bar-track">
-                            <div class="stat-bar-fill" id="sys-cpu-bar" style="width: 12%"></div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">RAM USAGE</span>
-                            <span class="stat-value" id="sys-ram">64%</span>
-                        </div>
-                        <div class="stat-bar-track">
-                            <div class="stat-bar-fill" id="sys-ram-bar" style="width: 64%"></div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">V2 ENGINE</span>
-                            <span class="stat-value status-online">ONLINE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Directory Navigation -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">DIRECTORY</div>
-                <div class="section-nav-list" id="sidebar-section-list">
-                    <button class="section-nav-item" data-section="journey-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">The Journey</span>
-                    </button>
-                    <button class="section-nav-item" data-section="workflow-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">Workflow</span>
-                    </button>
-                    <button class="section-nav-item" data-section="results-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">The Results</span>
-                    </button>
-                    <button class="section-nav-item" data-section="spotlight-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">Tech Spotlight</span>
-                    </button>
-                    <button class="section-nav-item" data-section="evolution-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">Evolution archive</span>
-                    </button>
-                    <button class="section-nav-item" data-section="who-section">
-                        <span class="section-icon">📁</span>
-                        <span class="section-label">Crew Manifest</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sidebar Toggle (Landscape) - REMOVED DUPLICATE -->
-
-    <!-- Sidebar Toggle (Right Side) -->
-    <div id="uv7-sidebar-toggle" class="uv7-sidebar-toggle">
-        <span>☰</span>
-    </div>
-
-    <!-- Backdrop -->
-    <div id="uv7-backdrop" class="uv7-backdrop"></div>
+    <!-- Sidebar Component Mount -->
+    <div id="uv7-sidebar-mount"></div>
 
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
 
     <!-- What is UV7? Intro Section -->
-    <div class="split-container" id="hero-section">
-        <!-- ==========================================
-             LAYER 1: CHAOS (VERSION 1) - THE BOTTOM
-             ========================================== -->
-        <div class="layer-chaos">
-            <div class="chaos-code-bg">
-                // UV7_legacy_core.js
-                // Initializing organic growth...
-            </div>
-
-            <div class="content-wrapper">
-                <div class="header-group">
-                    <img src="./UnitedVoices7.png" alt="UV7 Logo" class="project-logo">
-                    <h1>CHAOS<br>PROTOCOL</h1>
-                </div>
-                <p>
-                    Built on passion, caffeine, and 2 AM brainstorming sessions.
-                    Structure was optional. Innovation was mandatory.
-                    The organic evolution of UV7.
-                </p>
-
-                <div class="info-grid">
-                    <div class="card clickable" data-section="workflow-section">
-                        <h3>ARCHITECTURE</h3>
-                        <p>Improvised. "If it works, don't touch it."</p>
-                    </div>
-                    <div class="card clickable" data-section="results-section">
-                        <h3>DATA</h3>
-                        <p>Hardcoded in JavaScript functions. Everywhere.</p>
-                    </div>
-                    <div class="card clickable" data-section="evolution-section">
-                        <h3>TEAM</h3>
-                        <p>A loose collective of AI personas arguing over features.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             LAYER 2: ORDER (VERSION 2) - THE TOP
-             ========================================== -->
-        <div class="layer-order">
-            <div class="order-diagram-bg"></div>
-            <div class="order-code-bg">// UV7_v2_core.ts
-                // System ready.</div>
-
-            <div class="content-wrapper">
-                <div class="header-group">
-
-                    <h1>STRUCTURED<br>HARMONY</h1>
-                </div>
-                <p>
-                    Reimagined with purpose. Type-safe, event-driven, and scalable.
-                    The disciplined rebuild of a chaotic masterpiece.
-                </p>
-
-                <div class="info-grid">
-                    <div class="card clickable" data-section="workflow-section">
-                        <h3>ARCHITECTURE</h3>
-                        <p>EventBus, StateManager, and Component-based UI.</p>
-                    </div>
-                    <div class="card clickable" data-section="results-section">
-                        <h3>DATA</h3>
-                        <p>Pure JSON schemas validated at runtime.</p>
-                    </div>
-                    <div class="card clickable" data-section="evolution-section">
-                        <h3>TEAM</h3>
-                        <p>The UV7 Crew: Optimized, Assigned, and Unified.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==========================================
-             CONTROLS
-             ========================================== -->
-        <div class="slider-handle">
-            <div class="slider-knob" title="Drag or use ← → arrow keys" role="slider" aria-label="Version Comparison"
-                aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">⇄</div>
-        </div>
-
-        <!-- Scroll Down Indicator -->
-        <div class="scroll-hint">
-            <span>Scroll to explore</span>
-            <div class="scroll-arrow">↓</div>
-        </div>
-
-    </div>
+    <!-- Hero Section Component Mount -->
+    <div id="uv7-hero-mount"></div>
 
 
 

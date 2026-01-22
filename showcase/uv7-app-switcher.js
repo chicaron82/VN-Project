@@ -905,6 +905,9 @@ class UV7AppSwitcher {
     }
 
     createAppCard(app, isRecent) {
+        // Phase 26d: Check if we should use v2.0 preview cards
+        const usePreviewCards = window.UV7AppStateManager !== undefined;
+
         const card = document.createElement('div');
         const stateData = app.getState();
         const hasSave = stateData.hasSave;
@@ -914,7 +917,19 @@ class UV7AppSwitcher {
         // Phase 26c: Check if app is "alive" (has recent activity)
         const isAlive = this.isAppAlive(app, stateData);
 
-        card.className = `app-card ${isActive ? 'active' : ''} ${isHangry ? 'hangry' : ''} ${isAlive ? 'alive' : ''}`;
+        // Phase 26d: Get enhanced preview from AppStateManager if available
+        let preview = null;
+        if (usePreviewCards && window.UV7AppStateManager) {
+            const savedState = window.UV7AppStateManager.getAppState(app.id);
+            if (savedState && savedState.preview) {
+                preview = savedState.preview;
+            }
+        }
+
+        // Phase 26d: Check for new content (notification badge)
+        const newContentCount = this.getNewContentCount(app);
+
+        card.className = `app-card ${isActive ? 'active' : ''} ${isHangry ? 'hangry' : ''} ${isAlive ? 'alive' : ''} ${preview ? 'has-preview' : ''}`;
         card.dataset.app = app.id;
 
         const lastPlayedStr = stateData.lastPlayed ? this.formatLastPlayed(stateData.lastPlayed) : '';
@@ -925,13 +940,32 @@ class UV7AppSwitcher {
             </div>
         ` : '';
 
+        // Phase 26d: Enhanced card with preview metadata
+        const previewBadge = preview?.badge || '';
+        const previewTitle = preview?.title || '';
+        const previewSubtitle = preview?.subtitle || '';
+
+        // Phase 26d: Notification badge HTML
+        const notificationBadge = newContentCount > 0 ? `
+            <div class="app-notification-badge" title="${newContentCount} new item${newContentCount > 1 ? 's' : ''}">
+                ${newContentCount > 9 ? '9+' : newContentCount}
+            </div>
+        ` : '';
+
         card.innerHTML = `
+            ${notificationBadge}
             ${hasSave ? `<div class="quick-resume-badge">⚡ QUICK RESUME</div>` : ''}
             ${hasSave && app.saveKeys.length > 0 ? `
                 <button class="app-card-close" aria-label="Clear save" title="Clear save data">✕</button>
             ` : ''}
             <div class="app-preview" style="background: linear-gradient(135deg, ${app.color}, transparent);">
                 <div class="app-preview-icon">${app.icon}</div>
+                ${preview ? `
+                    <div class="app-preview-meta-overlay">
+                        <span class="preview-badge">${previewBadge}</span>
+                        <span class="preview-title">${previewTitle}</span>
+                    </div>
+                ` : ''}
             </div>
             <div class="app-info">
                 <div class="app-name">
@@ -942,16 +976,30 @@ class UV7AppSwitcher {
                 <div class="app-description">${app.description}</div>
                 <div class="app-state">
                     ${stateData.state.map(s => `<span class="app-state-item">${s}</span>`).join('')}
-                    ${lastPlayedStr ? `<span class="app-state-item time">${lastPlayedStr}</span>` : ''}
+                    ${lastPlayedStr ? `<span class="app-state-item time ${lastPlayedStr === 'Just now' ? 'recent' : ''}">${lastPlayedStr}</span>` : ''}
+                    ${previewSubtitle ? `<span class="app-state-item preview">${previewSubtitle}</span>` : ''}
                 </div>
                 ${progressBar}
             </div>
         `;
 
-        // Card click to launch
+        // Card click to launch with instant resume
         card.addEventListener('click', (e) => {
             // Ignore if clicking close button
             if (e.target.classList.contains('app-card-close')) return;
+
+            // Phase 26d: Set instant resume flag if we have saved state
+            if (usePreviewCards && window.UV7AppStateManager) {
+                const savedState = window.UV7AppStateManager.getAppState(app.id);
+                if (savedState) {
+                    localStorage.setItem('uv7-instant-resume', JSON.stringify({
+                        appId: app.id,
+                        state: savedState.state,
+                        timestamp: Date.now()
+                    }));
+                }
+            }
+
             this.launchApp(app);
         });
 
@@ -970,6 +1018,44 @@ class UV7AppSwitcher {
         }
 
         return card;
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PHASE 26d: NEW CONTENT DETECTION FOR NOTIFICATION BADGES
+    // ═══════════════════════════════════════════════════════════════
+
+    getNewContentCount(app) {
+        // Get last visit timestamp for this app
+        const lastVisitKey = `uv7_last_visited_${app.id} `;
+        const lastVisit = localStorage.getItem(lastVisitKey);
+        const lastVisitTime = lastVisit ? parseInt(lastVisit) : 0;
+
+        // If never visited, don't show badge (first time users)
+        if (!lastVisitTime) return 0;
+
+        switch (app.id) {
+            case 'showcase':
+                // Check timeline entries newer than last visit
+                if (typeof TIMELINE_DATA !== 'undefined' && TIMELINE_DATA?.entries) {
+                    return TIMELINE_DATA.entries.filter(entry => {
+                        const entryDate = new Date(entry.sortDate || entry.date).getTime();
+                        return entryDate > lastVisitTime;
+                    }).length;
+                }
+                return 0;
+
+            case 'v1':
+            case 'v2':
+                // Games don't have "new content" in the same way
+                return 0;
+
+            case 'torigatchi':
+                // ToriGatchi could show achievements or milestones
+                return 0;
+
+            default:
+                return 0;
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -993,7 +1079,7 @@ class UV7AppSwitcher {
         }
 
         // Check explicit "last played" timestamp
-        const lastPlayedKey = `uv7_last_played_${app.id}`;
+        const lastPlayedKey = `uv7_last_played_${app.id} `;
         const lastPlayed = localStorage.getItem(lastPlayedKey);
         if (lastPlayed) {
             const minutesSince = (Date.now() - parseInt(lastPlayed)) / (1000 * 60);
@@ -1022,7 +1108,7 @@ class UV7AppSwitcher {
         }
 
         // Update last played timestamp for the app we're leaving
-        localStorage.setItem(`uv7_last_played_${this.currentApp}`, Date.now().toString());
+        localStorage.setItem(`uv7_last_played_${this.currentApp} `, Date.now().toString());
 
         // Add to recent
         this.addToRecent(app.id);

@@ -1,8 +1,47 @@
-/* ==========================================
-   TIMELINE MICHELIN TREATMENT 🍽️
-   ========================================== */
+/* ═══════════════════════════════════════════════════════════════
+   TIMELINE COMPONENT
+   Refactored from timeline-michelin.css & visual-fixes.css
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- Timeline Container & Continuity --- */
+/* From visual-fixes.css */
+.timeline-phases {
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: all 0.5s ease;
+}
+
+/* Fade connector at top */
+.timeline-phases::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, #3498db);
+    border-radius: 2px;
+    z-index: 1;
+}
+
+/* Fade connector at bottom */
+.timeline-phases::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(to bottom, #9b59b6, transparent);
+    border-radius: 2px;
+    z-index: 1;
+}
 
 /* --- Sticky Visual Toolbar --- */
+/* From timeline-michelin.css */
 .timeline-toolbar-container {
     position: sticky;
     top: 70px;
@@ -96,11 +135,6 @@
 }
 
 /* --- Spotlight Effect --- */
-.timeline-phases {
-    position: relative;
-    transition: all 0.5s ease;
-}
-
 .timeline-phases.spotlight-mode .timeline-item {
     transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
 }
@@ -123,18 +157,13 @@
 }
 
 /* --- Signal Timeline Animation --- */
-/* The vertical line base is likely in styles.css or similar. 
-   We will enhance the existing .timeline::before or creating a dedicated signal element */
-
 .timeline-signal-track {
     position: absolute;
     left: 50%;
-    /* Adjust based on original timeline */
     top: 0;
     bottom: 0;
     width: 2px;
     background: rgba(255, 255, 255, 0.05);
-    /* Faint track */
     transform: translateX(-50%);
     z-index: 0;
 }
@@ -143,16 +172,13 @@
     position: absolute;
     left: 50%;
     top: 0;
-    /* JS will animate this */
     width: 4px;
     height: 100px;
-    /* Length of the signal */
     background: linear-gradient(to bottom, transparent, #00ff88, transparent);
     transform: translateX(-50%);
     box-shadow: 0 0 15px #00ff88;
     z-index: 1;
     transition: top 0.1s linear;
-    /* Smooth follow */
     opacity: 0;
 }
 
@@ -161,7 +187,6 @@
 }
 
 /* --- Velocity Indicators --- */
-/* Heat markers on the scrollbar or side */
 .velocity-heatmap {
     position: absolute;
     right: -10px;
@@ -192,7 +217,7 @@
     background: #00ccff;
 }
 
-/* Mobile Adjustments */
+/* --- Mobile Adjustments --- */
 @media (max-width: 768px) {
     .timeline-toolbar {
         flex-direction: column;
@@ -201,6 +226,7 @@
 
     .toolbar-group {
         justify-content: space-between;
+        margin-bottom: 0.5rem;
     }
 
     .timeline-search {
