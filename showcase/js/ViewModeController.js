@@ -32,6 +32,7 @@ export function initViewMode() {
 
     // Initialize state
     const savedMode = localStorage.getItem('uv7-view-mode') || 'story';
+    console.log(`[ViewMode] Initializing verification. Saved: ${savedMode}`);
     setViewMode(savedMode);
 
     // --- Event Bindings ---
