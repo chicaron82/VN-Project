@@ -63,6 +63,7 @@ class UV7OSLanding {
         this.elements = {
             // Status bar
             statusBar: document.getElementById('uv7-status-bar'),
+            statusLogo: document.querySelector('.status-logo'),
             statusContext: document.getElementById('uv7-context'),
             statusSettings: document.getElementById('uv7-settings'),
 
@@ -84,6 +85,15 @@ class UV7OSLanding {
     }
 
     attachHandlers() {
+        // Status logo opens app switcher
+        if (this.elements.statusLogo) {
+            this.elements.statusLogo.addEventListener('click', () => {
+                if (window.uv7AppSwitcher) {
+                    window.uv7AppSwitcher.toggle();
+                }
+            });
+        }
+
         // Settings icon (no Story/Dev toggle on landing, so just opens shade)
         if (this.elements.statusSettings) {
             this.elements.statusSettings.addEventListener('click', () => {

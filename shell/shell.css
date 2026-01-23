@@ -1,0 +1,415 @@
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * UV7 SHELL CSS
+ * 
+ * Styles specific to the shell architecture.
+ * Works alongside existing uv7-os.css and landing-page.css.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   APP VIEWPORT
+   ═══════════════════════════════════════════════════════════════ */
+
+.app-viewport {
+    position: fixed;
+    top: 44px;
+    /* Below status bar */
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: var(--bg-primary, #0a0a0f);
+    z-index: 1;
+}
+
+.app-viewport.app-transitioning {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOADING STATE
+   ═══════════════════════════════════════════════════════════════ */
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter', sans-serif;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ERROR STATE
+   ═══════════════════════════════════════════════════════════════ */
+
+.shell-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-family: 'Inter', sans-serif;
+}
+
+.shell-error-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.shell-error h2 {
+    margin: 0 0 1rem;
+    color: #ef4444;
+}
+
+.shell-error p {
+    margin: 0 0 1.5rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.shell-error button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.shell-error button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMING SOON PLACEHOLDERS
+   ═══════════════════════════════════════════════════════════════ */
+
+.coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+}
+
+.coming-soon h1 {
+    font-size: 2.5rem;
+    margin: 0 0 1rem;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.coming-soon p {
+    margin: 0 0 0.5rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.1rem;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    color: #a5b4fc;
+    text-decoration: none;
+    border: 1px solid rgba(165, 180, 252, 0.3);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    background: rgba(165, 180, 252, 0.1);
+    border-color: rgba(165, 180, 252, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LANDING APP SPECIFIC STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.landing-app {
+    min-height: 100%;
+    position: relative;
+}
+
+.landing-app .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Intro context styling */
+.landing-app .intro-context {
+    max-width: 800px;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+    animation: fadeInUp 0.8s ease-out backwards 0.5s;
+}
+
+.landing-app .intro-context h2 {
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.landing-app .intro-context p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+}
+
+.landing-app .intro-context p.sub {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+}
+
+/* Why rebuild section */
+.landing-app .why-rebuild-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 4rem;
+}
+
+.landing-app .why-rebuild-section h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    opacity: 0.9;
+}
+
+/* Info cards */
+.landing-app .info-card {
+    pointer-events: none;
+    cursor: default;
+}
+
+.landing-app .info-card ul {
+    list-style: none;
+    padding: 0;
+    color: #aaa;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.landing-app .info-card li {
+    margin-bottom: 0.5rem;
+    display: flex;
+    gap: 8px;
+}
+
+.landing-app .check {
+    color: #00ff88;
+}
+
+.landing-app .check.dev {
+    color: #00ccff;
+}
+
+.landing-app .check.ai {
+    color: #f5eedf;
+}
+
+/* Crew reactions section */
+.landing-app .crew-reactions-section {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 6rem;
+}
+
+.landing-app .crew-reactions-section h3 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+    opacity: 0.9;
+}
+
+/* Crew card styling */
+.landing-app .crew-card {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.landing-app .crew-card:hover {
+    transform: translateY(-4px);
+}
+
+.landing-app .crew-card .card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.landing-app .crew-card .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2rem;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.landing-app .crew-card .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.landing-app .crew-card .member-info {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.landing-app .crew-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+}
+
+.landing-app .crew-card .role-text {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.landing-app .crew-card .link-arrow {
+    opacity: 0.3;
+    transform: rotate(-45deg);
+}
+
+.landing-app .crew-card .quote {
+    color: #ccc;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0;
+}
+
+/* Footer */
+.landing-app .footer {
+    width: 100%;
+    padding: 2rem 1rem;
+    margin-top: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BREADCRUMB STYLES
+   ═══════════════════════════════════════════════════════════════ */
+
+.breadcrumb-item {
+    opacity: 0.6;
+}
+
+.breadcrumb-sep {
+    margin: 0 0.5rem;
+    opacity: 0.4;
+}
+
+.breadcrumb-current {
+    opacity: 1;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TORI-GATCHI VIEWPORT SCOPING
+   Overrides body-level styles from Tori-Gatchi to work in shell
+   ═══════════════════════════════════════════════════════════════ */
+
+.torigatchi-viewport {
+    /* Override Tori-Gatchi's body styles within the viewport */
+    background: radial-gradient(circle at 50% 10%, #ffeff6, #ffe6ea) !important;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+}
+
+.torigatchi-viewport .torigatchi-app {
+    width: 100%;
+    max-width: 900px;
+}
+
+.torigatchi-viewport #tori-container {
+    /* Override the animation that assumes full page */
+    animation: none;
+    margin: 0 auto;
+}
+
+.torigatchi-viewport .shell-footer {
+    margin-top: 2rem;
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 102, 153, 0.2);
+}
+
+.torigatchi-viewport .shell-footer .back-link {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    color: #cc0052;
+    text-decoration: none;
+    border: 1px solid rgba(255, 102, 153, 0.4);
+    border-radius: 50px;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.torigatchi-viewport .shell-footer .back-link:hover {
+    background: rgba(255, 102, 153, 0.1);
+    border-color: #ff6699;
+    transform: translateY(-2px);
+}

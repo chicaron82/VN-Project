@@ -177,15 +177,15 @@
                 <div class="card-icon">📖</div>
                 <span class="badge badge-showcase">Documentation</span>
                 <h2>View Showcase</h2>
-                <p>The journey from chaos to order. <span class="stat-number" data-target="86">0</span> phases. <span
-                        class="stat-number" data-target="11">0</span> days. AI collaboration.</p>
+                <p>The journey from chaos to order. <span class="stat-number" id="timeline-count" data-target="0">0</span> entries. <span
+                        class="stat-number" data-target="14">0</span> days. AI collaboration.</p>
             </a>
 
             <a href="./index.v2.html" class="card">
                 <div class="card-icon">⚡</div>
                 <span class="badge badge-v2">V2 Engine</span>
                 <h2>Launch V2</h2>
-                <p>TypeScript rebuild. EventBus architecture. <span class="stat-number" data-target="590">0</span> tests
+                <p>TypeScript rebuild. EventBus architecture. <span class="stat-number" data-target="601">0</span> tests
                     passing. Zero errors.</p>
             </a>
         </div>
@@ -237,7 +237,7 @@
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
                                 style="color: #00ccff">✓</span> TypeScript safety</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
-                                style="color: #00ccff">✓</span> <span class="stat-number" data-target="232">0</span>
+                                style="color: #00ccff">✓</span> <span class="stat-number" data-target="601">0</span>
                             automated tests</li>
                         <li style="margin-bottom: 0.5rem; display: flex; gap: 8px;"><span
                                 style="color: #00ccff">✓</span> Clean architecture</li>
@@ -464,9 +464,24 @@
     </script>
 
     <!-- UV7 OS -->
+    <script src="showcase/timeline-data.js"></script>
     <script src="showcase/uv7-grab-handle.js"></script>
     <script src="showcase/uv7-app-switcher.js"></script>
     <script src="./uv7-os-landing.js"></script>
+    
+    <!-- Dynamic Timeline Count -->
+    <script>
+        // Set timeline entry count dynamically from TIMELINE_DATA
+        (function() {
+            const timelineCountElement = document.getElementById('timeline-count');
+            if (timelineCountElement && typeof TIMELINE_DATA !== 'undefined') {
+                const count = TIMELINE_DATA.length;
+                timelineCountElement.setAttribute('data-target', count);
+                console.log(`📊 Timeline entries: ${count}`);
+            }
+        })();
+    </script>
+    
     <!-- BIOS Boot Sequence (One-time) -->
     <div id="bios-boot" class="bios-overlay">
         <div class="bios-content">
