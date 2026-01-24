@@ -988,10 +988,16 @@ body {
     color: #00ff88;
     font-size: 14px;
     line-height: 1.5;
+    opacity: 1;
+    transition: opacity 1s ease-out;
 }
 
 .bios-overlay.active {
     display: flex;
+}
+
+.bios-overlay.fade-out {
+    opacity: 0;
 }
 
 .bios-log div {

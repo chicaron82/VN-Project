@@ -160,8 +160,9 @@ export class StatusBar {
         this.setupAppSwitcher();
 
         // Phase 26: Apply initial tint and glass effect
-        // In game mode, CSS classes handle theming - don't apply inline tints
-        if (this.features.enableAdaptiveTint && this.context !== 'game') {
+        // In game mode and showcase, CSS handles background - don't apply inline tints
+        // Only landing page uses inline tints for the purple theme
+        if (this.features.enableAdaptiveTint && this.context === 'landing') {
             this.applyColorTint(this.currentTint);
         }
         this.applyGlassEffect(this.features.glassIntensity);
@@ -241,24 +242,19 @@ export class StatusBar {
     private updateAdaptiveTint(): void {
         if (!this.features.enableAdaptiveTint) return;
 
-        // In game context, let CSS handle route theming
-        // The .ronnie-route and .tori-route classes in status-bar.css have correct colors
-        if (this.context === 'game') {
-            // Clear any inline tint styles so CSS classes take precedence
+        // In game context and showcase, let CSS handle theming
+        // Game: .ronnie-route and .tori-route classes in status-bar.css
+        // Showcase: Uses default CSS background (rgba(0, 0, 0, 0.85))
+        if (this.context === 'game' || this.context === 'showcase') {
+            // Clear any inline tint styles so CSS takes precedence
             this.clearInlineTint();
             return;
         }
 
-        // Non-game contexts: apply inline tints
-        let newTint: ColorTint = COLOR_TINTS.neutral;
-
-        if (this.context === 'showcase') {
-            newTint = COLOR_TINTS.showcase;
-        } else if (this.context === 'landing') {
-            newTint = COLOR_TINTS.landing;
+        // Landing page: apply inline purple tint
+        if (this.context === 'landing') {
+            this.applyColorTint(COLOR_TINTS.landing);
         }
-
-        this.applyColorTint(newTint);
     }
 
     /**
@@ -288,8 +284,8 @@ export class StatusBar {
         // Remove inline styles so CSS classes take precedence
         this.container.style.removeProperty('--status-accent');
         this.container.style.removeProperty('--status-glow');
-        this.container.style.background = '';
-        this.container.style.boxShadow = '';
+        this.container.style.removeProperty('background');
+        this.container.style.removeProperty('box-shadow');
     }
 
     // ========================================

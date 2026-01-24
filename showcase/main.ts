@@ -12,6 +12,7 @@ import { EventBus } from '../v2/core/EventBus';
 import { StatusBar } from '../v2/ui/components/StatusBar';
 import { NotificationRail } from '../v2/ui/components/NotificationRail';
 import type { UV7Context } from '../v2/ui/components/StatusBarContext';
+import { UV7AppSwitcher } from '../v2/ui/components/UV7AppSwitcher';
 
 // Import showcase components
 import { TimelineRenderer } from './lib/TimelineRenderer';
@@ -68,9 +69,9 @@ console.log('✅ UV7 System initialized');
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing showcase components...');
 
-    // Create status bar
-    console.log('🚀 Initializing UV7 Status Bar...');
-    window.uv7Runtime = window.UV7System.createStatusBar('status-bar-container', 'showcase');
+    // Status bar already created and mounted at line 56 - just make it visible
+    console.log('✅ UV7 Status Bar already initialized');
+    uv7System.statusBar.show();
 
     // Initialize Tab Navigation
     const tabController = new TabController();
@@ -114,6 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize App State Manager
     const appStateManager = initAppStateManager();
     console.log('✅ App State Manager initialized');
+
+    // Initialize UV7 App Switcher (proper TypeScript version)
+    const appSwitcher = new UV7AppSwitcher();
+    window.uv7AppSwitcher = appSwitcher;
+    console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
 
     // Initialize Grab Handle (for sidebar toggle)
     const sidebarToggle = document.getElementById('uv7-sidebar-toggle');

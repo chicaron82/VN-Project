@@ -541,12 +541,17 @@
                     const div = document.createElement('div');
                     div.textContent = `> ${line}`;
                     log.appendChild(div);
-                    window.scrollTo(0, document.body.scrollHeight);
+                    log.scrollTop = log.scrollHeight;  // Scroll BIOS log, not entire page
 
                     if (index === lines.length - 1) {
                         setTimeout(() => {
-                            overlay.remove();
-                            sessionStorage.setItem('uv7-bios-shown', 'true');
+                            // Trigger fade-out animation
+                            overlay.classList.add('fade-out');
+                            // Wait for fade-out to complete, then remove
+                            setTimeout(() => {
+                                overlay.remove();
+                                sessionStorage.setItem('uv7-bios-shown', 'true');
+                            }, 1000); // Match CSS transition duration
                         }, 800);
                     }
                 }, delay);
