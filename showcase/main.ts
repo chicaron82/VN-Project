@@ -33,6 +33,7 @@ import { initPerformanceOptimizations } from './lib/utils/performance';
 import { initLoadStats } from './lib/utils/load-stats';
 import { initAnalytics } from './lib/utils/analytics';
 import { initContentFeatures } from './lib/utils/content-features';
+import { initUXEnhancements } from '../v2/ui/utils/UXEnhancements';
 
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
@@ -107,6 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoadStats();
     initAnalytics();
     initContentFeatures();
+    initUXEnhancements();
     console.log('✅ Utilities initialized');
 
     // Initialize App State Manager
