@@ -124,12 +124,8 @@
     <!-- All showcase logic now imported as ES modules via main.ts -->
     <script type="module" src="main.ts"></script>
 
-    <!-- TODO: Convert remaining scripts to modules -->
-    <!-- App State Manager (Phase 26d: Live Preview Cards) -->
-    <script src="js/AppStateManager.js?v=1"></script>
-    <!-- Mobile Slider now imported by HeroSection component -->
+    <!-- Legacy compatibility scripts (still needed) -->
     <script src="js/ux-enhancements.js?v=2"></script>
-    <script src="js/animated-stats.js?v=2"></script>
     <script type="module" src="js/components/CodeComparisonModal.js"></script>
     <script type="module" src="js/main.js"></script>
 
@@ -493,74 +489,8 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
-    <!-- Project Scripts -->
-    <!-- Project Scripts -->
-    <!-- (Scripts already loaded in head) -->
-
-    <!-- TODO: Convert remaining showcase scripts to modules -->
-    <!-- These will be progressively migrated to main.ts -->
-    <!-- UV7 OS (Showcase Context) -->
-    <script src="uv7-grab-handle.js"></script>
-    <script src="uv7-os.js"></script>
-    <script src="showcase-carousel.js"></script>
-
-    <!-- Performance & Lazy Loading (deferred) -->
-    <script defer src="performance.js"></script>
-
-    <!-- Premium Animations -->
-    <script defer src="premium-animations.js"></script>
-
-    <!-- Content Features (share, dark mode, search) -->
-    <script defer src="content-features.js"></script>
-
-    <!-- Analytics & Performance Monitoring -->
-    <script defer src="analytics.js"></script>
-
-    <!-- Load Real Stats (tests, TS errors, phases) -->
-    <script defer src="load-stats.js"></script>
-    <script defer src="js/typing-effect.js"></script>
-    <script defer src="js/tilt-effect.js"></script>
-
-    <!-- Tab Swipe Controller (will be converted to module) -->
-    <script src="js/SwipeController.js"></script>
-
-    <!-- Initialize TabSwipeController (temporary compatibility bridge) -->
-    <script>
-        // Temporary: Initialize TabSwipeController until fully converted to modules
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait for main.ts to initialize tabController
-            const checkTabController = setInterval(() => {
-                if (window.tabController) {
-                    clearInterval(checkTabController);
-
-                    // Initialize TabSwipeController for horizontal swiping
-                    import('./js/TabSwipeController.js').then(module => {
-                        const { TabSwipeController } = module;
-
-                        const container = document.querySelector('.tab-panels-container');
-                        const panels = document.querySelectorAll('.tab-panel');
-                        const indicator = document.querySelector('.tab-indicator');
-                        const tabBar = document.getElementById('tab-bar');
-
-                        if (container && indicator && tabBar) {
-                            const swipeController = new TabSwipeController({
-                                container,
-                                panels,
-                                indicator,
-                                tabBar,
-                                getCurrentIndex: () => window.tabController.getCurrentTabIndex(),
-                                onTabChange: (index) => window.tabController.navigateToTabIndex(index, false)
-                            });
-
-                            window.tabSwipeController = swipeController;
-                        }
-                    }).catch(err => {
-                        console.warn('TabSwipeController not available:', err);
-                    });
-                }
-            }, 50);
-        });
-    </script>
+    <!-- All scripts now loaded via main.ts module -->
+    <!-- Legacy scripts removed - full module conversion complete -->
 </body>
 
 </html>

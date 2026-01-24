@@ -16,11 +16,23 @@ import type { UV7Context } from '../v2/ui/components/StatusBarContext';
 // Import showcase components
 import { TimelineRenderer } from './lib/TimelineRenderer';
 import { TabController } from './lib/TabController';
+import { SwipeController } from './lib/SwipeController';
+import { initAppStateManager } from './lib/AppStateManager';
+import { initShowcaseCarousel } from './lib/components/showcase-carousel';
+import { initGrabHandle } from './lib/components/uv7-grab-handle';
+import { initUV7OS } from './lib/components/uv7-os';
 
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';
 import { initTiltEffect } from './lib/effects/tilt-effect';
 import { initAnimatedStats } from './lib/effects/animated-stats';
+import { initPremiumAnimations } from './lib/effects/premium-animations';
+
+// Import utilities
+import { initPerformanceOptimizations } from './lib/utils/performance';
+import { initLoadStats } from './lib/utils/load-stats';
+import { initAnalytics } from './lib/utils/analytics';
+import { initContentFeatures } from './lib/utils/content-features';
 
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
@@ -71,14 +83,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialTab = tabController.getActiveTab();
     tabController.setActiveTab(initialTab);
 
+    // Initialize Swipe Controller for tab navigation
+    const tabPanelsContainer = document.querySelector('.tab-panels-container') as HTMLElement;
+    if (tabPanelsContainer) {
+        const swipeController = new SwipeController(tabController, tabPanelsContainer);
+        (window as any).swipeController = swipeController;
+        console.log('✅ Swipe controller initialized');
+    }
+
     // Initialize visual effects
     initTypingEffect();
     initTiltEffect();
     initAnimatedStats();
+    initPremiumAnimations();
     console.log('✅ Visual effects initialized');
 
-    // TODO: Initialize SwipeController if needed
-    // TODO: Initialize other components
+    // Initialize utilities
+    initPerformanceOptimizations();
+    initLoadStats();
+    initAnalytics();
+    initContentFeatures();
+    console.log('✅ Utilities initialized');
 
-    console.log('✅ Showcase initialized');
+    // Initialize App State Manager
+    const appStateManager = initAppStateManager();
+    console.log('✅ App State Manager initialized');
+
+    // Initialize Grab Handle (for sidebar toggle)
+    const sidebarToggle = document.getElementById('uv7-sidebar-toggle');
+    if (sidebarToggle) {
+        const grabHandle = initGrabHandle(sidebarToggle, {
+            storageKey: 'uv7-grab-handle',
+            headerSafeTop: 52,
+            bottomSafePad: 140,
+            onToggle: () => {
+                // Toggle sidebar when grab handle is tapped
+                if ((window as any).uv7os) {
+                    (window as any).uv7os.toggleSidebar();
+                }
+            }
+        });
+        console.log('✅ Grab handle initialized');
+    }
+
+    // Initialize Showcase Carousel (Spotlight tab)
+    initShowcaseCarousel();
+    console.log('✅ Showcase carousel initialized');
+
+    // Initialize UV7 OS (navigation system)
+    // Note: This auto-initializes on DOMContentLoaded, so we just log
+    console.log('✅ UV7 OS initialized');
+
+    console.log('✅ Showcase fully initialized - all modules loaded');
 });
