@@ -17,6 +17,11 @@ import type { UV7Context } from '../v2/ui/components/StatusBarContext';
 import { TimelineRenderer } from './lib/TimelineRenderer';
 import { TabController } from './lib/TabController';
 
+// Import effects
+import { initTypingEffect } from './lib/effects/typing-effect';
+import { initTiltEffect } from './lib/effects/tilt-effect';
+import { initAnimatedStats } from './lib/effects/animated-stats';
+
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
 // Create UV7 System (same factory pattern as ShowcaseBridge)
@@ -65,6 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manually trigger initial breadcrumb update to ensure it shows
     const initialTab = tabController.getActiveTab();
     tabController.setActiveTab(initialTab);
+
+    // Initialize visual effects
+    initTypingEffect();
+    initTiltEffect();
+    initAnimatedStats();
+    console.log('✅ Visual effects initialized');
 
     // TODO: Initialize SwipeController if needed
     // TODO: Initialize other components
