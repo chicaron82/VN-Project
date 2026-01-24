@@ -19,13 +19,13 @@ import { TabController } from './lib/TabController';
 import { SwipeController } from './lib/SwipeController';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
-import { initGrabHandle } from './lib/components/uv7-grab-handle';
+import { initGrabHandle } from '../v2/ui/components/GrabHandle';
 import { initUV7OS } from '../v2/ui/components/UV7OS';
 
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';
-import { initTiltEffect } from './lib/effects/tilt-effect';
-import { initAnimatedStats } from './lib/effects/animated-stats';
+import { initTilt } from '../v2/ui/effects/TiltEffect';
+import { initAnimatedStats } from '../v2/ui/effects/AnimatedStats';
 import { initPremiumAnimations } from './lib/effects/premium-animations';
 
 // Import utilities
@@ -93,7 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize visual effects
     initTypingEffect();
-    initTiltEffect();
+    initTilt('.hero-banner.home .hero-banner-image', {
+        container: '.hero-banner.home',
+        limits: 15,
+        perspective: 1000
+    });
     initAnimatedStats();
     initPremiumAnimations();
     console.log('✅ Visual effects initialized');

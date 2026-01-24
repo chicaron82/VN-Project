@@ -1,6 +1,19 @@
 /**
- * Animated Stats and Metrics
- * Handles counting up numbers and animating progress bars when they scroll into view
+ * ========================================
+ * UV7 ANIMATED STATS - V2
+ * Count-up numbers and progress bars
+ * ========================================
+ *
+ * Handles counting up numbers and animating progress bars when they scroll into view.
+ * Uses IntersectionObserver for performance.
+ *
+ * Features:
+ * - Count-up animation with ease-out quartic easing
+ * - Progress bar width animation
+ * - Intersection observer for scroll-triggered animations
+ * - One-time animation (elements are unobserved after animation)
+ *
+ * "Built with love. 💚🔥💀"
  */
 
 class AnimatedStats {
@@ -81,7 +94,10 @@ class AnimatedStats {
     }
 }
 
-// Export initialization function
+/**
+ * Initialize animated stats effect
+ */
 export function initAnimatedStats(): void {
     new AnimatedStats();
+    console.log('✅ AnimatedStats initialized');
 }

@@ -39,13 +39,13 @@ declare global {
 
 export class UV7GrabHandleRepositioner {
     private el: HTMLElement | null;
-    private storageKey: string;
-    private headerSafeTop: number;
-    private bottomSafePad: number;
-    private onToggle: (() => void) | null;
+    private storageKey!: string;
+    private headerSafeTop!: number;
+    private bottomSafePad!: number;
+    private onToggle!: (() => void) | null;
 
     // State
-    private state: GrabHandleState;
+    private state!: GrabHandleState;
 
     // Drag state
     private isDragging: boolean = false;

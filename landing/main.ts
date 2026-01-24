@@ -11,6 +11,7 @@
 
 import { initVNGatewayBridge, VNGatewayBridge } from './lib/vn-gateway-bridge';
 import { initUV7OSLanding, UV7OS } from '../v2/ui/components/UV7OS';
+import { initLandingEffects } from './lib/effects';
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -26,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize UV7 OS Landing
     const uv7os = initUV7OSLanding();
     console.log('✅ UV7 OS Landing ready');
+
+    // Initialize visual effects
+    initLandingEffects();
 
     console.log('💚 UV7 Landing Page fully initialized');
 });
