@@ -26,8 +26,8 @@ export class SwipeController {
     private currentTranslate: number = 0;
 
     // Configuration
-    private swipeThreshold: number = 50; // pixels
-    private velocityThreshold: number = 0.3; // px/ms
+    private swipeThreshold: number = 30; // pixels (reduced from 50 for easier swiping)
+    private velocityThreshold: number = 0.2; // px/ms (reduced from 0.3 for easier quick swipes)
     private maxSwipeTime: number = 500; // ms
     private rubberBandFactor: number = 0.3; // Resistance at edges
 
@@ -62,7 +62,13 @@ export class SwipeController {
         this.lastTouchX = touch.clientX;
         this.lastTouchTime = Date.now();
         this.isDragging = false;
-        this.currentTranslate = 0;
+        
+        // Start from current panel position
+        const currentIndex = this.tabController.getCurrentTabIndex();
+        this.currentTranslate = -currentIndex * window.innerWidth;
+        
+        // Add dragging class to disable CSS transitions
+        this.container.classList.add('dragging');
     }
 
     private handleTouchMove(e: TouchEvent): void {
@@ -87,21 +93,24 @@ export class SwipeController {
             this.lastTouchX = touch.clientX;
             this.lastTouchTime = Date.now();
 
-            // Apply rubber-band effect at edges
+            // Calculate translate position
             const currentIndex = this.tabController.getCurrentTabIndex();
             const totalTabs = this.tabController.getTotalTabs();
+            const baseTranslate = -currentIndex * window.innerWidth;
+            
+            // Apply rubber-band effect at edges
             const atStart = currentIndex === 0 && deltaX > 0;
             const atEnd = currentIndex === totalTabs - 1 && deltaX < 0;
 
             if (atStart || atEnd) {
                 // Reduce movement at edges
-                this.currentTranslate = deltaX * this.rubberBandFactor;
+                this.currentTranslate = baseTranslate + (deltaX * this.rubberBandFactor);
             } else {
-                this.currentTranslate = deltaX;
+                this.currentTranslate = baseTranslate + deltaX;
             }
 
-            // Visual feedback (optional - could add panel translation here)
-            this.updateVisualFeedback(this.currentTranslate);
+            // Direct manipulation: translate container as user drags
+            this.container.style.transform = `translateX(${this.currentTranslate}px)`;
         }
     }
 
@@ -121,6 +130,9 @@ export class SwipeController {
         const deltaTime = Date.now() - this.touchStartTime;
         const velocity = deltaX / Math.max(deltaTime, 1);
 
+        // Remove dragging class to re-enable smooth transitions
+        this.container.classList.remove('dragging');
+
         // Determine if we should change tabs
         const shouldChangeTabs =
             Math.abs(deltaX) > this.swipeThreshold ||
@@ -138,33 +150,13 @@ export class SwipeController {
                 this.tabController.nextTab();
                 console.log('👉 Swipe left - next tab');
             }
+        } else {
+            // Snap back to current tab
+            const currentIndex = this.tabController.getCurrentTabIndex();
+            this.container.style.transform = `translateX(${-currentIndex * window.innerWidth}px)`;
         }
 
-        // Reset visual feedback
-        this.resetVisualFeedback();
         this.reset();
-    }
-
-    /**
-     * Update visual feedback during drag
-     */
-    private updateVisualFeedback(translateX: number): void {
-        // Optional: Add visual feedback here
-        // Could translate the active panel slightly
-        const activePanel = document.querySelector('[data-panel].active');
-        if (activePanel instanceof HTMLElement) {
-            activePanel.style.transform = `translateX(${translateX * 0.1}px)`;
-        }
-    }
-
-    /**
-     * Reset visual feedback
-     */
-    private resetVisualFeedback(): void {
-        const activePanel = document.querySelector('[data-panel].active');
-        if (activePanel instanceof HTMLElement) {
-            activePanel.style.transform = '';
-        }
     }
 
     /**

@@ -61,24 +61,27 @@ function createUV7System(context: UV7Context = 'showcase') {
     };
 }
 
-// Initialize UV7 System and expose to window for legacy compatibility
-const uv7System = createUV7System('showcase');
+// Expose constructors to window for legacy compatibility
 window.UV7System = {
     EventBus,
     StatusBar,
     NotificationRail,
     createStatusBar: createUV7System, // Legacy API compatibility
 };
-window.uv7Runtime = uv7System;
-
-console.log('✅ UV7 System initialized');
 
 // Initialize showcase components on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing showcase components...');
 
-    // Status bar already created and mounted at line 56 - just make it visible
-    console.log('✅ UV7 Status Bar already initialized');
+    // Create UV7 System after DOM is ready
+    const uv7System = createUV7System('showcase');
+    window.uv7Runtime = {
+        ...uv7System,
+        instance: uv7System.statusBar // TabController expects this
+    };
+
+    console.log('✅ UV7 System initialized');
+    console.log('✅ UV7 Status Bar mounted and visible');
     uv7System.statusBar.show();
 
     // Initialize Tab Navigation
@@ -94,20 +97,33 @@ document.addEventListener('DOMContentLoaded', () => {
     new WhoSection();
     console.log('✅ Section renderers initialized');
 
-    // Initialize TimelineRenderer (Journey tab)
-    const timelineRenderer = new TimelineRenderer('#uv7-journey-mount');
+    // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
+    const timelineRenderer = new TimelineRenderer('#timeline-container');
     console.log('✅ Timeline renderer initialized');
 
     // Manually trigger initial breadcrumb update to ensure it shows
     const initialTab = tabController.getActiveTab();
     tabController.setActiveTab(initialTab);
 
-    // Initialize Swipe Controller for tab navigation
+    // Use native CSS scroll-snap instead of SwipeController
     const tabPanelsContainer = document.querySelector('.tab-panels-container') as HTMLElement;
     if (tabPanelsContainer) {
-        const swipeController = new SwipeController(tabController, tabPanelsContainer);
-        window.swipeController = swipeController;
-        console.log('✅ Swipe controller initialized');
+        let scrollTimeout: number;
+        tabPanelsContainer.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = window.setTimeout(() => {
+                const scrollLeft = tabPanelsContainer.scrollLeft;
+                const panelWidth = window.innerWidth;
+                const currentIndex = Math.round(scrollLeft / panelWidth);
+                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution'];
+                const expectedTab = tabs[currentIndex];
+                
+                if (expectedTab && expectedTab !== tabController.getActiveTab()) {
+                    tabController.setActiveTab(expectedTab);
+                }
+            }, 150);
+        });
+        console.log('✅ Scroll-snap navigation initialized');
     }
 
     // Initialize visual effects

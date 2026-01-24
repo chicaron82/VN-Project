@@ -1625,12 +1625,40 @@ body.uv7-no-scroll {
 
 .tab-panels-container {
     position: relative;
+    overflow-x: scroll;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    display: flex;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Hide scrollbar but keep functionality */
+.tab-panels-container::-webkit-scrollbar {
+    display: none;
+}
+.tab-panels-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .tab-panel {
-    display: none;
-    opacity: 0;
+    min-width: 100vw;
+    width: 100vw;
+    max-height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
     padding: 1rem 0;
+    box-sizing: border-box;
+}
+
+/* Override scroll animations in swipe mode - sections should be visible immediately */
+.tab-panel .fade-in-section,
+.tab-panel .fade-in-element {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 /* Scroll-spy mode: All panels visible, stacked vertically */

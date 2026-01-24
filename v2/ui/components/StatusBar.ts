@@ -606,6 +606,7 @@ export class StatusBar {
     private createDOM(): void {
         this.container = document.createElement('div');
         this.container.id = 'status-bar';
+        this.container.className = 'uv7-status-bar';
         this.container.dataset.context = this.context;
 
         // Phase 26: Context-aware DOM structure

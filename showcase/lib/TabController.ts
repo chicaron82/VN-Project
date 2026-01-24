@@ -43,31 +43,16 @@ export class TabController {
         this.progressIndicator = document.getElementById('tab-progress');
         this.container = document.querySelector('.tab-panels-container');
 
-        // Enable scroll-spy mode
-        if (this.container) {
-            this.container.classList.add('scroll-spy-enabled');
-        }
+        // Panels use CSS scroll-snap for native swipe behavior
 
         // Initialize
         this.setupEventListeners();
-        this.setupScrollSpy();
+        this.updatePanelVisibility();
 
-        // Fix: Remove aria-hidden from all panels in scroll-spy mode
-        // (In scroll-spy mode, all sections are visible and should be accessible)
-        this.initializePanelAccessibility();
+        // Start at home
+        this.setActiveTab('home');
 
-        // Handle initial hash/saved tab
-        const targetTab = this.loadLastTab() || this.getTabFromHash() || 'home';
-
-        // Set active tab explicitly (even if it's home)
-        this.setActiveTab(targetTab);
-
-        if (targetTab !== 'home') {
-            // Scroll to saved section after a brief delay for content to render
-            setTimeout(() => this.scrollToTab(targetTab), 100);
-        }
-
-        console.log('✅ TabController initialized (scroll-spy mode)');
+        console.log('✅ TabController initialized (swipe mode)');
     }
 
     // ========================================
@@ -107,19 +92,30 @@ export class TabController {
         // Use IntersectionObserver to detect which section is in view
         const options: IntersectionObserverInit = {
             root: null, // viewport
-            rootMargin: '-20% 0px -60% 0px', // Trigger when section is in upper-middle of viewport
-            threshold: 0
+            rootMargin: '-10% 0px -70% 0px', // Trigger only when section occupies top 20% of viewport
+            threshold: 0.1 // Require at least 10% of section to be visible
         };
 
         this.observer = new IntersectionObserver((entries) => {
+            // Find the entry with the highest intersection ratio (most visible)
+            let mostVisible = entries[0];
+            let maxRatio = 0;
+            
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const tabId = (entry.target as HTMLElement).dataset.panel;
-                    if (tabId && tabId !== this.activeTab) {
-                        this.setActiveTab(tabId);
-                    }
+                if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
+                    maxRatio = entry.intersectionRatio;
+                    mostVisible = entry;
                 }
             });
+
+            // Only update if we found a visible section
+            if (mostVisible && mostVisible.isIntersecting) {
+                const tabId = (mostVisible.target as HTMLElement).dataset.panel;
+                if (tabId && tabId !== this.activeTab) {
+                    console.log(`[ScrollSpy] Detected section: ${tabId} (ratio: ${mostVisible.intersectionRatio})`);
+                    this.setActiveTab(tabId);
+                }
+            }
         }, options);
 
         // Observe all panels
@@ -134,6 +130,8 @@ export class TabController {
     setActiveTab(tabId: string): void {
         if (!this.tabs.includes(tabId)) return;
 
+        console.log(`[TabController] setActiveTab: ${this.activeTab} → ${tabId}`);
+
         this.activeTab = tabId;
 
         // Update URL hash without scrolling
@@ -142,11 +140,37 @@ export class TabController {
         // Update UI
         this.updateTabButtons();
         this.updateProgress();
+        this.updatePanelVisibility(); // Show/hide panels
         this.updateStatusBar(tabId);
         this.saveLastTab(tabId);
 
         // Emit state for app switcher
         this.emitStateForAppSwitcher();
+    }
+
+    /**
+     * Scroll to active panel (for button clicks)
+     */
+    private updatePanelVisibility(): void {
+        const currentIndex = this.getCurrentTabIndex();
+        
+        // Update active class for styling only (don't hide panels)
+        this.tabPanels.forEach((panel, index) => {
+            if (index === currentIndex) {
+                panel.classList.add('active');
+            } else {
+                panel.classList.remove('active');
+            }
+        });
+        
+        // Scroll to the active panel
+        if (this.container) {
+            const scrollPosition = currentIndex * window.innerWidth;
+            this.container.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+        }
     }
 
     // ========================================
@@ -199,34 +223,16 @@ export class TabController {
     }
 
     /**
-     * Scroll to a specific section
+     * Scroll to a specific section (now just switches panels)
      */
     scrollToTab(tabId: string): void {
         if (!this.tabs.includes(tabId)) return;
 
-        // If we have swipe controller, use it for horizontal scrolling
-        const win = window as any;
-        if (win.tabSwipeController) {
-            const index = this.tabs.indexOf(tabId);
-            win.tabSwipeController.syncToTab(index);
-            this.setActiveTab(tabId);
-        } else {
-            // Scroll-spy mode: scroll to panel with status bar offset
-            const panel = document.querySelector(`[data-panel="${tabId}"]`) as HTMLElement;
-            if (!panel) return;
+        // In swipe mode, just switch to that tab (no scrolling)
+        this.setActiveTab(tabId);
 
-            // Account for status bar height (44px)
-            const statusBarHeight = 44;
-            const targetPosition = panel.offsetTop - statusBarHeight;
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-
-            // Update active tab after scrolling
-            this.setActiveTab(tabId);
-        }
+        // Scroll container back to top when switching tabs
+        window.scrollTo({ top: 0, behavior: 'instant' });
 
         // Haptic feedback
         if (navigator.vibrate) navigator.vibrate(10);
@@ -288,7 +294,7 @@ export class TabController {
                 spotlight: 'Tech Spotlight',
                 evolution: 'Evolution'
             };
-            win.uv7Runtime.instance.setSection(names[tabId] || tabId);
+            win.uv7Runtime.instance.setPhase(names[tabId] || tabId);
         }
         document.title = `UV7 • ${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`;
     }
