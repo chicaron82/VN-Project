@@ -1,17 +1,17 @@
 
 /**
- * SocialShare.js
+ * SocialShare.ts
  * Handles social sharing functionality.
  */
-export function initSocialShare() {
+export function initSocialShare(): void {
 
-    function shareTwitter() {
+    function shareTwitter(): void {
         const text = "Check out UV7: A visual novel engine built from chaos to harmony with AI. #UV7 #GameDev #AI";
         const url = window.location.href;
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
     }
 
-    function copyLink(btn) {
+    function copyLink(btn: HTMLElement | null): void {
         navigator.clipboard.writeText(window.location.href).then(() => {
             if (btn) {
                 const originalText = btn.innerText;
@@ -30,11 +30,11 @@ export function initSocialShare() {
     // we expose them to window.
 
     window.shareTwitter = shareTwitter;
-    window.copyLink = function () {
+    window.copyLink = function (): void {
         // Need to find the button that triggered this if called via inline handler
         // But inline handler `onclick="copyLink()"` doesn't pass `this`.
         // So we just find the button manually in the DOM like the original script did.
-        const btn = document.querySelector('button[onclick="copyLink()"]') || document.querySelector('.btn-share-copy');
+        const btn = document.querySelector<HTMLElement>('button[onclick="copyLink()"]') || document.querySelector<HTMLElement>('.btn-share-copy');
         copyLink(btn);
     };
 

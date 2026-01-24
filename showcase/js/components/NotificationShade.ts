@@ -2,8 +2,22 @@
  * NotificationShade Component (Mobile Navigation)
  * Handles rendering, swipe gestures, and interactions for the mobile shade.
  */
+
+interface ShadeElements {
+    shade: HTMLElement | null;
+    closeBtn: HTMLElement | null;
+    backdrop: HTMLElement | null;
+    sectionList: HTMLElement | null;
+}
+
 export class NotificationShade {
-    constructor(containerId = 'uv7-shade-mount') {
+    private containerId: string;
+    private touchStartY: number;
+    private touchEndY: number;
+    private minSwipeDistance: number;
+    private el!: ShadeElements;
+
+    constructor(containerId: string = 'uv7-shade-mount') {
         this.containerId = containerId;
         this.touchStartY = 0;
         this.touchEndY = 0;
@@ -15,7 +29,7 @@ export class NotificationShade {
         this.initSwipeHandler();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById(this.containerId);
         if (!mount) return;
 
@@ -85,7 +99,7 @@ export class NotificationShade {
         `;
     }
 
-    cacheElements() {
+    cacheElements(): void {
         this.el = {
             shade: document.getElementById('uv7-shade'),
             closeBtn: document.querySelector('.shade-close'),
@@ -94,22 +108,24 @@ export class NotificationShade {
         };
     }
 
-    initEvents() {
+    initEvents(): void {
         // Close Button
         this.el.closeBtn?.addEventListener('click', () => this.close());
 
         // Navigation Clicks
-        this.el.sectionList?.addEventListener('click', (e) => {
-            const btn = e.target.closest('.section-nav-item');
+        this.el.sectionList?.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
+            const btn = target.closest('.section-nav-item') as HTMLElement | null;
             if (btn) {
                 const section = btn.dataset.section;
-                this.handleNavigation(section);
+                if (section) this.handleNavigation(section);
             }
         });
 
         // Quick Actions
-        this.el.shade?.addEventListener('click', (e) => {
-            const btn = e.target.closest('.quick-action');
+        this.el.shade?.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
+            const btn = target.closest('.quick-action');
             if (btn) {
                 // Global handler delegation
             }
@@ -119,19 +135,21 @@ export class NotificationShade {
         document.addEventListener('open-shade', () => this.open());
     }
 
-    open() {
+    open(): void {
+        if (!this.el.shade) return;
         this.el.shade.classList.add('open');
         this.el.backdrop?.classList.add('active');
         document.body.classList.add('uv7-no-scroll');
     }
 
-    close() {
+    close(): void {
+        if (!this.el.shade) return;
         this.el.shade.classList.remove('open');
         this.el.backdrop?.classList.remove('active');
         document.body.classList.remove('uv7-no-scroll');
     }
 
-    handleNavigation(sectionClass) {
+    handleNavigation(sectionClass: string): void {
         this.close();
 
         // Dispatch event for Main Controller to handle scrolling/tab switching
@@ -140,23 +158,23 @@ export class NotificationShade {
         }));
     }
 
-    initSwipeHandler() {
-        document.addEventListener('touchstart', (e) => {
+    initSwipeHandler(): void {
+        document.addEventListener('touchstart', (e: TouchEvent) => {
             // Ignore if touch started on slider elements
-            const target = e.target;
+            const target = e.target as HTMLElement;
             if (target.closest('.slider-handle') || target.closest('.slider-knob') || target.closest('.split-container')) {
                 return;
             }
             this.touchStartY = e.changedTouches[0].screenY;
         }, { passive: true });
 
-        document.addEventListener('touchend', (e) => {
+        document.addEventListener('touchend', (e: TouchEvent) => {
             this.touchEndY = e.changedTouches[0].screenY;
             this.handleSwipe();
         }, { passive: true });
     }
 
-    handleSwipe() {
+    handleSwipe(): void {
         // Only active on mobile
         if (window.innerWidth > 768) return;
 

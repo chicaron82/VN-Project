@@ -1,30 +1,31 @@
 
 /**
- * ViewModeController.js
+ * ViewModeController.ts
  * Toggles between "Story Mode" and "Dev Mode".
  */
-export function initViewMode() {
+export function initViewMode(): void {
 
-    function setViewMode(mode) {
+    function setViewMode(mode: string): void {
         document.body.dataset.viewMode = mode;
         localStorage.setItem('uv7-view-mode', mode);
 
         // Update toggle button states
-        document.querySelectorAll('[data-action="toggle-mode"]').forEach(btn => {
+        document.querySelectorAll('[data-action="toggle-mode"]').forEach((btn: Element) => {
             const label = btn.querySelector('.quick-action-label');
             if (label) label.textContent = mode === 'story' ? 'Switch to Dev' : 'Switch to Story';
 
             // Also update aria-selected if it's a multi-button toggle
-            if (btn.dataset.mode) {
-                btn.classList.toggle('active', btn.dataset.mode === mode);
-                btn.setAttribute('aria-selected', btn.dataset.mode === mode);
+            const btnEl = btn as HTMLElement;
+            if (btnEl.dataset.mode) {
+                btn.classList.toggle('active', btnEl.dataset.mode === mode);
+                btn.setAttribute('aria-selected', (btnEl.dataset.mode === mode).toString());
             }
         });
 
         console.log(`[ViewMode] Switched to ${mode}`);
     }
 
-    function toggleViewMode() {
+    function toggleViewMode(): void {
         const current = document.body.dataset.viewMode || 'story';
         const next = current === 'story' ? 'dev' : 'story';
         setViewMode(next);
@@ -38,21 +39,22 @@ export function initViewMode() {
     // --- Event Bindings ---
 
     // Click handlers for toggle buttons
-    document.querySelectorAll('[data-action="toggle-mode"]').forEach(btn => {
+    document.querySelectorAll('[data-action="toggle-mode"]').forEach((btn: Element) => {
         btn.addEventListener('click', toggleViewMode);
     });
 
     // Handle dedicated mode buttons (if any exist, like in the Michelin header)
-    document.querySelectorAll('.mode-btn').forEach(btn => {
+    document.querySelectorAll('.mode-btn').forEach((btn: Element) => {
         btn.addEventListener('click', () => {
-            if (btn.dataset.mode) setViewMode(btn.dataset.mode);
+            const btnEl = btn as HTMLElement;
+            if (btnEl.dataset.mode) setViewMode(btnEl.dataset.mode);
         });
     });
 
     // Keyboard Shortcuts
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
         if (e.repeat) return;
-        const el = document.activeElement;
+        const el = document.activeElement as HTMLElement | null;
         const isTyping = el && (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable);
         if (isTyping) return;
 

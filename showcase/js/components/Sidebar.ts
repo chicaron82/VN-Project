@@ -2,8 +2,22 @@
  * Sidebar Component (UV7 Control Center)
  * Handles rendering, toggling, and system stats logic for the desktop sidebar.
  */
+
+interface SidebarElements {
+    sidebar: HTMLElement | null;
+    toggle: HTMLElement | null;
+    backdrop: HTMLElement | null;
+    cpuVal: HTMLElement | null;
+    ramVal: HTMLElement | null;
+    cpuBar: HTMLElement | null;
+    ramBar: HTMLElement | null;
+}
+
 export class Sidebar {
-    constructor(containerId = 'uv7-sidebar-mount') {
+    private containerId: string;
+    private el!: SidebarElements;
+
+    constructor(containerId: string = 'uv7-sidebar-mount') {
         this.containerId = containerId;
         this.render();
         this.cacheElements();
@@ -11,7 +25,7 @@ export class Sidebar {
         this.initSystemStats();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById(this.containerId);
         if (!mount) return;
 
@@ -117,7 +131,7 @@ export class Sidebar {
         `;
     }
 
-    cacheElements() {
+    cacheElements(): void {
         this.el = {
             sidebar: document.getElementById('uv7-sidebar'),
             toggle: document.getElementById('uv7-sidebar-toggle'),
@@ -129,7 +143,7 @@ export class Sidebar {
         };
     }
 
-    initEvents() {
+    initEvents(): void {
         // Toggle Open/Close - Context Aware
         this.el.toggle?.addEventListener('click', () => {
             // Portrait Mode: Open Shade instead of Sidebar
@@ -142,32 +156,33 @@ export class Sidebar {
         this.el.backdrop?.addEventListener('click', () => this.close());
 
         // Delegate Quick Actions & Navigation
-        this.el.sidebar?.addEventListener('click', (e) => {
+        this.el.sidebar?.addEventListener('click', (e: Event) => {
+            const target = e.target as HTMLElement;
             // 1. Section Navigation
-            const navBtn = e.target.closest('[data-section]');
+            const navBtn = target.closest('[data-section]') as HTMLElement | null;
             if (navBtn) {
                 const section = navBtn.dataset.section;
-                this.handleNavigation(section);
+                if (section) this.handleNavigation(section);
                 return;
             }
 
             // 2. Quick Actions
-            const actionBtn = e.target.closest('[data-action]');
+            const actionBtn = target.closest('[data-action]') as HTMLElement | null;
             if (actionBtn) {
                 const action = actionBtn.dataset.action;
-                this.handleAction(action);
+                if (action) this.handleAction(action);
             }
         });
     }
 
-    handleNavigation(sectionClass) {
+    handleNavigation(sectionClass: string): void {
         this.close();
         window.dispatchEvent(new CustomEvent('uv7-navigate', {
             detail: { target: sectionClass }
         }));
     }
 
-    handleAction(action) {
+    handleAction(action: string): void {
         // Dispatch generic action event for main controller/OS to handle
         window.dispatchEvent(new CustomEvent('uv7-action', {
             detail: { action: action }
@@ -180,7 +195,9 @@ export class Sidebar {
         }
     }
 
-    toggle() {
+    toggle(): void {
+        if (!this.el.sidebar || !this.el.backdrop || !this.el.toggle) return;
+
         this.el.sidebar.classList.toggle('open');
         this.el.backdrop.classList.toggle('active');
         this.el.toggle.classList.toggle('active');
@@ -193,14 +210,16 @@ export class Sidebar {
         }
     }
 
-    close() {
+    close(): void {
+        if (!this.el.sidebar || !this.el.backdrop || !this.el.toggle) return;
+
         this.el.sidebar.classList.remove('open');
         this.el.backdrop.classList.remove('active');
         this.el.toggle.classList.remove('active');
         document.body.classList.remove('uv7-no-scroll');
     }
 
-    initSystemStats() {
+    initSystemStats(): void {
         if (!this.el.cpuVal) return;
 
         // Animate stats
@@ -208,10 +227,10 @@ export class Sidebar {
             const cpu = Math.floor(Math.random() * 30) + 5; // 5-35% base
             const ram = 60 + Math.floor(Math.random() * 8); // 60-68%
 
-            this.el.cpuVal.textContent = `${cpu}%`;
+            if (this.el.cpuVal) this.el.cpuVal.textContent = `${cpu}%`;
             if (this.el.cpuBar) this.el.cpuBar.style.width = `${cpu}%`;
 
-            this.el.ramVal.textContent = `${ram}%`;
+            if (this.el.ramVal) this.el.ramVal.textContent = `${ram}%`;
             if (this.el.ramBar) this.el.ramBar.style.width = `${ram}%`;
         }, 2000);
     }

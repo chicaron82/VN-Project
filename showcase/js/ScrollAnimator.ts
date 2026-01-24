@@ -1,26 +1,27 @@
 
 /**
- * ScrollAnimator.js
+ * ScrollAnimator.ts
  * Handles IntersectionObservers for fade-ins, timeline items, and stats animations.
  */
-export function initScrollAnimations() {
+export function initScrollAnimations(): void {
 
     // 1. General Section Fade-In
-    const sectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const sectionObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
             // Already handled by CSS 'visible' classes in some cases, but sticking to script.js parity for now
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                (entry.target as HTMLElement).style.opacity = '1';
+                (entry.target as HTMLElement).style.transform = 'translateY(0)';
             }
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
 
-    document.querySelectorAll('section').forEach(section => {
+    document.querySelectorAll('section').forEach((section: Element) => {
+        const sectionEl = section as HTMLElement;
         // Skip journey-section to prevent clipping issues
         if (section.classList.contains('journey-section')) {
-            section.style.opacity = '1';
-            section.style.transform = 'translateY(0)';
+            sectionEl.style.opacity = '1';
+            sectionEl.style.transform = 'translateY(0)';
             return;
         }
 
@@ -29,48 +30,49 @@ export function initScrollAnimations() {
         // For strict parity, we re-implement the "check visibility on load" logic.
         const rect = section.getBoundingClientRect();
         if (rect.top < window.innerHeight && rect.bottom > 0) {
-            section.style.opacity = '1';
-            section.style.transform = 'translateY(0)';
+            sectionEl.style.opacity = '1';
+            sectionEl.style.transform = 'translateY(0)';
         } else {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
+            sectionEl.style.opacity = '0';
+            sectionEl.style.transform = 'translateY(30px)';
             sectionObserver.observe(section);
         }
-        section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        sectionEl.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     });
 
     // 2. Timeline Items Animation
-    const timelineObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const timelineObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateX(0)';
+                (entry.target as HTMLElement).style.opacity = '1';
+                (entry.target as HTMLElement).style.transform = 'translateX(0)';
 
                 // Context Aware Background Trigger
-                if (entry.target.id && window.updateBackgroundContext) {
-                    window.updateBackgroundContext(entry.target.id);
+                if ((entry.target as HTMLElement).id && window.updateBackgroundContext) {
+                    window.updateBackgroundContext((entry.target as HTMLElement).id);
                 }
             }
         });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    const observeTimelineItems = () => {
-        document.querySelectorAll('.timeline-item').forEach((item, index) => {
+    const observeTimelineItems = (): void => {
+        document.querySelectorAll('.timeline-item').forEach((item: Element, index: number) => {
+            const itemEl = item as HTMLElement;
             // Avoid double-observing
-            if (item.dataset.observed) return;
-            item.dataset.observed = 'true';
+            if (itemEl.dataset.observed) return;
+            itemEl.dataset.observed = 'true';
 
             const rect = item.getBoundingClientRect();
             if (rect.top < window.innerHeight && rect.bottom > 0) {
-                item.style.opacity = '1';
-                item.style.transform = 'translateX(0)';
-                if (item.id && window.updateBackgroundContext) {
-                    window.updateBackgroundContext(item.id);
+                itemEl.style.opacity = '1';
+                itemEl.style.transform = 'translateX(0)';
+                if (itemEl.id && window.updateBackgroundContext) {
+                    window.updateBackgroundContext(itemEl.id);
                 }
             } else {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-30px)';
-                item.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                itemEl.style.opacity = '0';
+                itemEl.style.transform = 'translateX(-30px)';
+                itemEl.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
                 timelineObserver.observe(item);
             }
         });
@@ -86,11 +88,11 @@ export function initScrollAnimations() {
     });
 
     // 3. Counting Stats Animation
-    const countObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const countObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.isIntersecting) {
-                const target = parseInt(entry.target.dataset.target, 10);
-                animateCountUp(entry.target, target);
+                const targetValue = parseInt((entry.target as HTMLElement).dataset.target || '0', 10);
+                animateCountUp(entry.target as HTMLElement, targetValue);
 
                 const card = entry.target.closest('.stat-card');
                 if (card) card.classList.add('animated');
@@ -100,31 +102,33 @@ export function initScrollAnimations() {
         });
     }, { threshold: 0.5 });
 
-    document.querySelectorAll('.stat-number[data-target]').forEach(num => countObserver.observe(num));
+    document.querySelectorAll('.stat-number[data-target]').forEach((num: Element) => countObserver.observe(num));
 
     // 4. Metric Bars
-    const metricObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
+    const metricObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+        entries.forEach((entry: IntersectionObserverEntry) => {
             if (entry.isIntersecting) {
-                // Restore the width from where we stashed it? 
-                // script.js logic read explicit style.width. 
+                const targetEl = entry.target as HTMLElement;
+                // Restore the width from where we stashed it?
+                // script.js logic read explicit style.width.
                 // We need to ensure we don't zero it out before reading it if this runs multiple times or late.
                 // Assuming HTML has style="width: 80%"
-                const targetWidth = entry.target.getAttribute('data-width') || entry.target.style.width;
-                if (!entry.target.getAttribute('data-width')) entry.target.setAttribute('data-width', targetWidth);
+                const targetWidth = targetEl.getAttribute('data-width') || targetEl.style.width;
+                if (!targetEl.getAttribute('data-width')) targetEl.setAttribute('data-width', targetWidth);
 
-                entry.target.style.width = targetWidth; // Apply animation
+                targetEl.style.width = targetWidth; // Apply animation
                 metricObserver.unobserve(entry.target);
             }
         });
     }, { threshold: 0.2 });
 
-    document.querySelectorAll('.metric-fill').forEach(bar => {
+    document.querySelectorAll('.metric-fill').forEach((bar: Element) => {
+        const barEl = bar as HTMLElement;
         // Stash width and reset to 0
-        const w = bar.style.width;
+        const w = barEl.style.width;
         if (w && w !== '0%') {
-            bar.setAttribute('data-width', w);
-            bar.style.width = '0%';
+            barEl.setAttribute('data-width', w);
+            barEl.style.width = '0%';
             metricObserver.observe(bar);
         }
     });
@@ -146,40 +150,45 @@ export function initScrollAnimations() {
     setTimeout(updateActivePhase, 100);
 
     // 7. Clickable Cards (Navigation)
-    document.querySelectorAll('.card.clickable[data-section]').forEach(card => {
+    document.querySelectorAll('.card.clickable[data-section]').forEach((card: Element) => {
         card.addEventListener('click', () => {
-            const sectionClass = card.dataset.section;
+            const sectionClass = (card as HTMLElement).dataset.section;
             const target = document.querySelector(`.${sectionClass}`);
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
 }
 
-function animateCountUp(element, target, duration = 2000) {
+function animateCountUp(element: HTMLElement, target: number, duration: number = 2000): void {
     const start = 0;
     const startTime = performance.now();
 
-    function update(currentTime) {
+    function update(currentTime: number): void {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
         const easeOut = 1 - Math.pow(1 - progress, 3);
         const current = Math.floor(start + (target - start) * easeOut);
 
-        element.textContent = current;
+        element.textContent = current.toString();
 
         if (progress < 1) {
             requestAnimationFrame(update);
         } else {
-            element.textContent = target;
+            element.textContent = target.toString();
         }
     }
     requestAnimationFrame(update);
 }
 
-function updateActivePhase() {
-    // Only looking for specific 10 phases as per script.js parity, 
+interface PhaseLink {
+    id: string;
+    link: Element;
+}
+
+function updateActivePhase(): void {
+    // Only looking for specific 10 phases as per script.js parity,
     // or we could make this dynamic. Sticking to parity.
-    const phases = [];
+    const phases: PhaseLink[] = [];
     for (let i = 1; i <= 10; i++) {
         const link = document.querySelector(`[data-phase="${i}"]`);
         const id = `phase-${i}`;
@@ -188,7 +197,7 @@ function updateActivePhase() {
 
     const scrollPos = window.scrollY + window.innerHeight / 3;
 
-    phases.forEach(phase => {
+    phases.forEach((phase: PhaseLink) => {
         const element = document.getElementById(phase.id);
         if (!element) return;
 

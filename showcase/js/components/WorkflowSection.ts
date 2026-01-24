@@ -3,7 +3,7 @@ export class WorkflowSection {
         this.render();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-workflow-mount');
         if (!mount) return;
 

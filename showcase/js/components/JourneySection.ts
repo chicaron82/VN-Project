@@ -3,7 +3,7 @@ export class JourneySection {
         this.render();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-journey-mount');
         if (!mount) return;
 

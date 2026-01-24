@@ -3,7 +3,7 @@ export class EvolutionSection {
         this.render();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-evolution-mount');
         if (!mount) return;
 

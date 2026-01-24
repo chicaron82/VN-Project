@@ -3,26 +3,39 @@
  * Interactive split-screen code viewer with slider control
  * Shows before/after code comparison for timeline entries
  */
+
+import type { CodeComparison } from '../types';
+
 export class CodeComparisonModal {
+    private isOpen: boolean;
+    private currentData: CodeComparison | null;
+    private sliderPosition: number;
+    private isDragging: boolean;
+    private previouslyFocusedElement: HTMLElement | null;
+    private modal!: HTMLElement;
+    private slider!: HTMLElement;
+    private sliderContainer!: HTMLElement;
+    private viewer!: HTMLElement;
+
     constructor() {
         this.isOpen = false;
         this.currentData = null;
         this.sliderPosition = 50; // percentage
         this.isDragging = false;
         this.previouslyFocusedElement = null;
-        
+
         this.init();
     }
 
-    init() {
+    init(): void {
         // Create modal container
         this.createModal();
-        
+
         // Bind event listeners
         this.bindEvents();
     }
 
-    createModal() {
+    createModal(): void {
         const modal = document.createElement('div');
         modal.id = 'code-comparison-modal';
         modal.className = 'code-comparison-modal';
@@ -90,34 +103,34 @@ export class CodeComparisonModal {
         this.viewer = modal.querySelector('.code-comparison-viewer');
     }
 
-    bindEvents() {
+    bindEvents(): void {
         // Close button
         const closeBtn = this.modal.querySelector('.code-modal-close');
-        closeBtn.addEventListener('click', () => this.close());
-        
+        if (closeBtn) closeBtn.addEventListener('click', () => this.close());
+
         // Backdrop click
         const backdrop = this.modal.querySelector('.code-modal-backdrop');
-        backdrop.addEventListener('click', () => this.close());
-        
+        if (backdrop) backdrop.addEventListener('click', () => this.close());
+
         // ESC key
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e: KeyboardEvent) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.close();
             }
         });
-        
+
         // Slider drag
-        this.slider.addEventListener('mousedown', (e) => this.startDrag(e));
-        this.slider.addEventListener('touchstart', (e) => this.startDrag(e), { passive: true });
-        
-        document.addEventListener('mousemove', (e) => this.onDrag(e));
-        document.addEventListener('touchmove', (e) => this.onDrag(e), { passive: false });
-        
+        this.slider.addEventListener('mousedown', (e: MouseEvent) => this.startDrag(e));
+        this.slider.addEventListener('touchstart', (e: TouchEvent) => this.startDrag(e), { passive: true });
+
+        document.addEventListener('mousemove', (e: MouseEvent) => this.onDrag(e));
+        document.addEventListener('touchmove', (e: TouchEvent) => this.onDrag(e), { passive: false });
+
         document.addEventListener('mouseup', () => this.stopDrag());
         document.addEventListener('touchend', () => this.stopDrag());
-        
+
         // Keyboard arrow keys
-        this.slider.addEventListener('keydown', (e) => {
+        this.slider.addEventListener('keydown', (e: KeyboardEvent) => {
             if (e.key === 'ArrowLeft') {
                 e.preventDefault();
                 this.adjustSlider(-5);
@@ -126,10 +139,11 @@ export class CodeComparisonModal {
                 this.adjustSlider(5);
             }
         });
-        
+
         // Click on viewer to move slider
-        this.viewer.addEventListener('click', (e) => {
-            if (e.target.closest('.code-slider-handle')) return;
+        this.viewer.addEventListener('click', (e: MouseEvent) => {
+            const target = e.target as HTMLElement;
+            if (target.closest('.code-slider-handle')) return;
             const rect = this.viewer.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const percentage = (x / rect.width) * 100;
@@ -137,83 +151,83 @@ export class CodeComparisonModal {
         });
     }
 
-    open(data) {
+    open(data: CodeComparison): void {
         if (!data || !data.before || !data.after) {
             console.error('Invalid code comparison data');
             return;
         }
-        
+
         this.currentData = data;
         this.isOpen = true;
-        
+
         // Store previously focused element to restore later
-        this.previouslyFocusedElement = document.activeElement;
-        
+        this.previouslyFocusedElement = document.activeElement as HTMLElement | null;
+
         // Update content
         this.updateContent(data);
-        
+
         // Show modal with animation
         this.modal.classList.add('active');
         this.modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
-        
+
         // Reset slider to center
         this.setSliderPosition(50);
-        
+
         // Focus the slider for keyboard access
         setTimeout(() => this.slider.focus(), 100);
-        
+
         console.log('[CodeComparisonModal] Opened successfully');
     }
 
-    close() {
+    close(): void {
         this.isOpen = false;
         this.modal.classList.remove('active');
         this.modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
-        
+
         // Restore focus to previously focused element
         if (this.previouslyFocusedElement && this.previouslyFocusedElement.focus) {
             this.previouslyFocusedElement.focus();
         }
-        
+
         console.log('[CodeComparisonModal] Closed');
     }
 
-    updateContent(data) {
+    updateContent(data: CodeComparison): void {
         // Update titles and badges
         const beforeTitle = this.modal.querySelector('.code-before .code-panel-title');
         const afterTitle = this.modal.querySelector('.code-after .code-panel-title');
         const beforeBadge = this.modal.querySelector('.code-before .code-panel-badge');
         const afterBadge = this.modal.querySelector('.code-after .code-panel-badge');
-        
-        beforeTitle.textContent = data.before.title || 'Before';
-        afterTitle.textContent = data.after.title || 'After';
-        beforeBadge.textContent = data.before.badge || 'OLD';
-        afterBadge.textContent = data.after.badge || 'NEW';
-        
+
+        if (beforeTitle) beforeTitle.textContent = data.before.title || 'Before';
+        if (afterTitle) afterTitle.textContent = data.after.title || 'After';
+        if (beforeBadge) beforeBadge.textContent = data.before.badge || 'OLD';
+        if (afterBadge) afterBadge.textContent = data.after.badge || 'NEW';
+
         // Update code blocks
         const beforeCode = this.modal.querySelector('.code-before .code-block');
         const afterCode = this.modal.querySelector('.code-after .code-block');
-        
-        beforeCode.textContent = data.before.code;
-        afterCode.textContent = data.after.code;
-        
+
+        if (beforeCode) beforeCode.textContent = data.before.code;
+        if (afterCode) afterCode.textContent = data.after.code;
+
         // Apply syntax highlighting if available
-        if (window.Prism) {
-            Prism.highlightElement(beforeCode);
-            Prism.highlightElement(afterCode);
+        if ((window as any).Prism && beforeCode && afterCode) {
+            (window as any).Prism.highlightElement(beforeCode);
+            (window as any).Prism.highlightElement(afterCode);
         }
     }
 
-    startDrag(e) {
+    startDrag(e: MouseEvent | TouchEvent): void {
         this.isDragging = true;
         this.slider.classList.add('dragging');
         this.sliderContainer.classList.add('dragging');
         e.stopPropagation();
     }
 
-    stopDrag() {
+    stopDrag(): void {
         if (this.isDragging) {
             this.isDragging = false;
             this.slider.classList.remove('dragging');
@@ -221,41 +235,43 @@ export class CodeComparisonModal {
         }
     }
 
-    onDrag(e) {
+    onDrag(e: MouseEvent | TouchEvent): void {
         if (!this.isDragging) return;
-        
+
         e.preventDefault();
-        
-        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+
+        const clientX = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX;
         const rect = this.viewer.getBoundingClientRect();
         const x = clientX - rect.left;
         const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-        
+
         this.setSliderPosition(percentage);
     }
 
-    adjustSlider(delta) {
+    adjustSlider(delta: number): void {
         const newPosition = Math.max(0, Math.min(100, this.sliderPosition + delta));
         this.setSliderPosition(newPosition);
     }
 
-    setSliderPosition(percentage) {
+    setSliderPosition(percentage: number): void {
         this.sliderPosition = percentage;
-        
+
         // Update slider visual position
         this.sliderContainer.style.left = `${percentage}%`;
-        
+
         // Update clip-path for before panel (only clip the "before" panel)
         // The "after" panel is always fully visible underneath
-        const beforePanel = this.modal.querySelector('.code-before');
-        
+        const beforePanel = this.modal.querySelector('.code-before') as HTMLElement | null;
+
         // Before panel shows from left edge to slider position
-        beforePanel.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
-        
+        if (beforePanel) {
+            beforePanel.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
+        }
+
         // Update ARIA value
-        this.slider.setAttribute('aria-valuenow', Math.round(percentage));
+        this.slider.setAttribute('aria-valuenow', Math.round(percentage).toString());
     }
 }
 
 // Create global instance
-window.codeComparisonModal = new CodeComparisonModal();
+(window as any).codeComparisonModal = new CodeComparisonModal();

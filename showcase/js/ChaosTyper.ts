@@ -1,11 +1,10 @@
-
 /**
- * ChaosTyper.js
+ * ChaosTyper - Background Code Typing Effects
  * Manages the background code typing effects for Chaos (V1) and Order (V2) backgrounds.
  */
 
 // Default Chaos Snippets
-const chaosSnippets = [
+const chaosSnippets: string[] = [
     "function forceUpdate() { while(true) { try { render() } catch(e) { ignore() } } }",
     "// TODO: Fix this later... maybe...",
     "if (user.isSad) { makeHappy(user); } else { breakStuff(); }",
@@ -18,7 +17,7 @@ const chaosSnippets = [
 ];
 
 // Context-Aware Snippets (mapped by Phase ID keywords)
-const contextSnippets = {
+const contextSnippets: Record<string, string[]> = {
     'phase-1': ["// Structure? Where we're going we don't need structure."],
     'phase-8': ["// DialogController: Parsing corrupted text...", "if (tether < 0) { reality.collapse() }"],
     'phase-13': ["// Porting started...", "class UV7System { constructor() { this.chaos = false; } }"],
@@ -27,7 +26,7 @@ const contextSnippets = {
 };
 
 // Clean Order Snippets
-const orderSnippets = [
+const orderSnippets: string[] = [
     'interface GameState { tethers: Map<string, number>; }',
     'class EventBus { emit<T>(event: GameEvent<T>): void; }',
     'const loadRoute = async (id: string): Promise<RouteData> => { ... }',
@@ -39,14 +38,14 @@ const orderSnippets = [
     'implements ISerializable'
 ];
 
-export function initChaosTyper() {
-    const chaosCodeBlock = document.querySelector('.chaos-code-bg');
-    const orderCodeBlock = document.querySelector('.order-code-bg');
+export function initChaosTyper(): void {
+    const chaosCodeBlock = document.querySelector('.chaos-code-bg') as HTMLElement | null;
+    const orderCodeBlock = document.querySelector('.order-code-bg') as HTMLElement | null;
 
-    let currentContext = null;
+    let currentContext: string[] | null = null;
 
     // --- Chaos Typing ---
-    function typeChaosCode() {
+    function typeChaosCode(): void {
         if (!chaosCodeBlock) return;
 
         let text = chaosCodeBlock.innerText;
@@ -63,7 +62,7 @@ export function initChaosTyper() {
     }
 
     // --- Order Typing ---
-    function typeOrderCode() {
+    function typeOrderCode(): void {
         if (!orderCodeBlock) return;
 
         let text = orderCodeBlock.innerText;
@@ -77,7 +76,7 @@ export function initChaosTyper() {
     }
 
     // Expose context updater globally so IntersectionObservers can use it
-    window.updateBackgroundContext = function (phaseId) {
+    (window as any).updateBackgroundContext = function (phaseId: string): void {
         // Look for matching key in contextSnippets
         const match = Object.keys(contextSnippets).find(key => phaseId && phaseId.includes(key));
         currentContext = match ? contextSnippets[match] : null;

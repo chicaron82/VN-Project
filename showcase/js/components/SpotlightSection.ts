@@ -3,7 +3,7 @@ export class SpotlightSection {
         this.render();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-spotlight-mount');
         if (!mount) return;
 

@@ -3,7 +3,7 @@ export class WhoSection {
         this.render();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-who-mount');
         if (!mount) return;
 

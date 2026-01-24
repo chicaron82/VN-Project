@@ -4,30 +4,30 @@ export class ResultsSection {
         this.updateDynamicStats();
     }
 
-    updateDynamicStats() {
+    updateDynamicStats(): void {
         // Update timeline entries count dynamically
         setTimeout(() => {
             if (window.TIMELINE_DATA && window.TIMELINE_DATA.entries) {
                 const timelineCard = document.querySelector('[data-stat-type="phases"] .stat-number');
                 if (timelineCard) {
-                    timelineCard.setAttribute('data-target', window.TIMELINE_DATA.entries.length);
+                    timelineCard.setAttribute('data-target', window.TIMELINE_DATA.entries.length.toString());
                     timelineCard.textContent = '0'; // Reset for animation
                 }
             }
-            
+
             // Update days in development
             const startDate = new Date('2026-01-08');
             const today = new Date();
-            const daysDiff = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+            const daysDiff = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
             const daysCard = document.querySelector('[data-stat-type="days"] .stat-number');
             if (daysCard) {
-                daysCard.setAttribute('data-target', daysDiff);
+                daysCard.setAttribute('data-target', daysDiff.toString());
                 daysCard.textContent = '0'; // Reset for animation
             }
         }, 100);
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById('uv7-results-mount');
         if (!mount) return;
 

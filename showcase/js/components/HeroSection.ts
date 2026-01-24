@@ -4,13 +4,15 @@
  * Comparison content is available in the Evolution tab.
  */
 export class HeroSection {
-    constructor(containerId = 'uv7-hero-mount') {
+    private containerId: string;
+
+    constructor(containerId: string = 'uv7-hero-mount') {
         this.containerId = containerId;
         this.render();
         this.updateDynamicStats();
     }
 
-    render() {
+    render(): void {
         const mount = document.getElementById(this.containerId);
         if (!mount) return;
 
@@ -55,22 +57,22 @@ export class HeroSection {
         `;
     }
 
-    updateDynamicStats() {
+    updateDynamicStats(): void {
         // Update timeline count from global TIMELINE_DATA if available
         setTimeout(() => {
             const timelineEl = document.getElementById('stat-timeline');
             const daysEl = document.getElementById('stat-days');
-            
+
             if (timelineEl && window.TIMELINE_DATA && window.TIMELINE_DATA.entries) {
-                timelineEl.textContent = window.TIMELINE_DATA.entries.length;
+                timelineEl.textContent = window.TIMELINE_DATA.entries.length.toString();
             }
-            
+
             if (daysEl) {
                 // Calculate days from Jan 8, 2026 to today
                 const startDate = new Date('2026-01-08');
                 const today = new Date();
-                const daysDiff = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
-                daysEl.textContent = daysDiff;
+                const daysDiff = Math.ceil((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+                daysEl.textContent = daysDiff.toString();
             }
         }, 100);
     }
