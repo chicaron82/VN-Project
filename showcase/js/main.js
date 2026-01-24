@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initViewMode();
     initScrollAnimations();
     initSocialShare();
-    initTimelineComponents();
 
     // Initialize Code Comparison after sections have rendered
     // This needs to wait for EvolutionSection to mount its content
@@ -84,33 +83,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log('[UV7 Showcase] Modules Initialized 🚀');
 });
-
-/**
- * Legacy Timeline Initialization
- * (Moved here from script.js parity logic)
- */
-function initTimelineComponents() {
-    // Retry logic is less needed now that we render JourneySection synchronously above,
-    // but kept for robustness.
-    if (document.getElementById('timeline-container')) {
-        // Ensure TimelineRenderer is loaded (it's a global class from TimelineRenderer.js)
-        if (window.TimelineRenderer) {
-            const renderer = new window.TimelineRenderer('#timeline-container');
-
-            // Initialize Scrubber
-            if (window.TimelineScrubber) {
-                new window.TimelineScrubber('body', renderer);
-            }
-        } else {
-            // It might be loaded defer, retry once
-            setTimeout(() => {
-                if (window.TimelineRenderer) {
-                    const renderer = new window.TimelineRenderer('#timeline-container');
-                    if (window.TimelineScrubber) new window.TimelineScrubber('body', renderer);
-                }
-            }, 500);
-        }
-    } else {
-        console.warn('[Timeline] Container not found even after JourneySection init.');
-    }
-}
