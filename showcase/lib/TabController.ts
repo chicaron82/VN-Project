@@ -50,8 +50,7 @@ export class TabController {
 
         // Initialize
         this.setupEventListeners();
-        // Don't setup scroll-spy immediately - let swipe controller initialize first
-        // this.setupScrollSpy();
+        this.setupScrollSpy();
 
         // Fix: Remove aria-hidden from all panels in scroll-spy mode
         // (In scroll-spy mode, all sections are visible and should be accessible)
