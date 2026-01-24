@@ -15,6 +15,7 @@ import type { UV7Context } from '../v2/ui/components/StatusBarContext';
 
 // Import showcase components
 import { TimelineRenderer } from './lib/TimelineRenderer';
+import { TabController } from './lib/TabController';
 
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
@@ -53,11 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing UV7 Status Bar...');
     (window as any).uv7Runtime = (window as any).UV7System.createStatusBar('status-bar-container', 'showcase');
 
+    // Initialize Tab Navigation
+    const tabController = new TabController();
+    (window as any).tabController = tabController; // Expose for legacy compatibility
+
     // Initialize TimelineRenderer (Journey tab)
     const timelineRenderer = new TimelineRenderer('#uv7-journey-mount');
     console.log('✅ Timeline renderer initialized');
 
-    // TODO: Initialize TabController
+    // Manually trigger initial breadcrumb update to ensure it shows
+    const initialTab = tabController.getActiveTab();
+    tabController.setActiveTab(initialTab);
+
+    // TODO: Initialize SwipeController if needed
     // TODO: Initialize other components
 
     console.log('✅ Showcase initialized');
