@@ -1633,6 +1633,12 @@ body.uv7-no-scroll {
     padding: 1rem 0;
 }
 
+/* Scroll-spy mode: All panels visible, stacked vertically */
+.tab-panels-container.scroll-spy-enabled .tab-panel {
+    display: block;
+    opacity: 1;
+}
+
 /* Press interaction */
 .tab-item:active {
     transform: scale(0.98);
