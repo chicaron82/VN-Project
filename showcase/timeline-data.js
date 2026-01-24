@@ -76,7 +76,7 @@ window.TIMELINE_DATA = {
                 "title": "Simplicity Through Subtraction",
                 "text": "The best fix for state sync bugs is eliminating the dual state. One scroll position. One active tab. IntersectionObserver bridges them."
             },
-            "quote": "The problem with two sources of truth is that eventually they'll disagree. — Antigravity"
+            "quote": "The problem with two sources of truth is that eventually they'll disagree. — DiZee"
         },
         {
             "id": "2026-01-22-b",
@@ -199,7 +199,7 @@ window.TIMELINE_DATA = {
                 "title": "Deployment Lessons",
                 "text": "Sometimes the infrastructure just ghosts you. The code was valid. The paths were correct. The server simply refused to acknowledge existence. In the face of a reality-denying CD pipeline, the only winning move is to reset."
             },
-            "quote": "It worked on my machine. It worked on the live server. But the cloud... the cloud is a place where files go to die. — Antigravity"
+            "quote": "It worked on my machine. It worked on the live server. But the cloud... the cloud is a place where files go to die. — DiZee"
         },
         {
             "id": "2026-01-21-c",
@@ -222,7 +222,7 @@ window.TIMELINE_DATA = {
                 "<strong>Phase 2 (Indicator LERP):</strong> Added updateIndicatorPosition() to TabController with linear interpolation math. Indicator follows finger with glow effect.",
                 "<strong>Phase 3 (Content Panning):</strong> Flex layout with swipe-enabled class. Panels slide with transform: translateX(baseOffset% + dragOffset%).",
                 "<strong>Phase 4 (Spring Physics):</strong> Velocity-based commit logic, haptic feedback, spring easing on settle.",
-                "<strong>Phase 5 (Antigravity Polish):</strong> aria-live announcements, tab bar scroll sync for overflow, panel depth (box-shadow) during drag."
+                "<strong>Phase 5 (DiZee Polish):</strong> aria-live announcements, tab bar scroll sync for overflow, panel depth (box-shadow) during drag."
             ],
             "metrics": {
                 "fileSize": "436 lines (TabSwipeController.js)",
@@ -233,7 +233,7 @@ window.TIMELINE_DATA = {
             "callout": {
                 "icon": "🎴",
                 "title": "Crew Collaboration",
-                "text": "Tori: Pointer Events architecture + edge resistance. Belle: LERP math + indicator interpolation. Zee: Spring easing + momentum physics. Antigravity: Accessibility + polish + integration."
+                "text": "Tori: Pointer Events architecture + edge resistance. Belle: LERP math + indicator interpolation. Zee: Spring easing + momentum physics. DiZee: Accessibility + polish + integration."
             },
             "quote": "1:1 direct manipulation is the difference between 'using an app' and 'feeling the interface respond to you.' The indicator doesn't jump—it flows. — Belle"
         },
@@ -320,9 +320,9 @@ window.TIMELINE_DATA = {
             },
             "footer": {
                 "icon": "💭",
-                "text": "<strong>Post-Session Reflection:</strong> Antigravity self-graded this session as B+ (would be A if missing CSS definitions were caught proactively). Appreciated the tight debugging feedback loop and systematic approach, but noted the need for a pre-flight checklist before marking refactoring 'complete'."
+                "text": "<strong>Post-Session Reflection:</strong> DiZee self-graded this session as B+ (would be A if missing CSS definitions were caught proactively). Appreciated the tight debugging feedback loop and systematic approach, but noted the need for a pre-flight checklist before marking refactoring 'complete'."
             },
-            "quote": "The refactoring achieved its goals - modular components, clean separation, no build step. But CSS consolidation taught me: you can't just delete old files without verifying every selector has a new home. — Antigravity",
+            "quote": "The refactoring achieved its goals - modular components, clean separation, no build step. But CSS consolidation taught me: you can't just delete old files without verifying every selector has a new home. — DiZee",
             "sortDate": "2026-01-21T18:00:00",
             "legacyPhase": "2026-01-21-a"
         },
@@ -2543,7 +2543,7 @@ window.TIMELINE_DATA = {
                 "rootCause": "Original implementation was a simple navigation overlay. Didn't leverage save data or provide visual feedback about app states."
             },
             "solution": {
-                "approach": "Complete rewrite inspired by iOS/Android multitasking. Collaborative design from Ronnie (vision), ZeeRah (architecture), DiZee (live state), and Antigravity (UX polish).",
+                "approach": "Complete rewrite inspired by iOS/Android multitasking. Collaborative design from Ronnie (vision), ZeeRah (architecture), DiZee (live state), and DiZee (UX polish).",
                 "features": [
                     "⚡ <strong>Instant Resume:</strong> Click an app with save data → loads directly, skipping main menu",
                     "💎 <strong>Quick Resume Badges:</strong> Glowing cyan badges on cards with save data",
@@ -2592,7 +2592,7 @@ window.TIMELINE_DATA = {
                     "icon": "🎨"
                 },
                 {
-                    "name": "Antigravity",
+                    "name": "DiZee",
                     "contribution": "Polish: Premium UX + swipe-to-clear",
                     "icon": "✨"
                 }

@@ -23,7 +23,7 @@ UV7-REBUILD-PLAN
 The biggest risk in your timeline
 Phase 5 “Content Migration” is likely underestimated
 
-Even with tooling, content conversion is where you’ll bleed time because you’ll discover edge cases in your scene format. Your own doc calls this out via “Antigravity” suggestions, and I agree.
+Even with tooling, content conversion is where you’ll bleed time because you’ll discover edge cases in your scene format. Your own doc calls this out via “DiZee” suggestions, and I agree.
 
 UV7-REBUILD-PLAN
 

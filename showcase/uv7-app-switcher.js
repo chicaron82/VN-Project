@@ -7,7 +7,7 @@
  * - Ronnie (Vision: "Make it bougie" + Cross-app resume concept)
  * - ZeeRah (Architecture: State restoration pattern + Android gestures)
  * - DiZee (Enhancement: Live state + mini preview)
- * - Antigravity (Polish: Premium UX + swipe-to-clear)
+ * - DiZee (Polish: Premium UX + swipe-to-clear)
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -730,7 +730,7 @@ class UV7AppSwitcher {
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // SAVE CLEARING WITH UNDO - ANTIGRAVITY'S UX POLISH
+    // SAVE CLEARING WITH UNDO - DIZEE'S UX POLISH
     // ═══════════════════════════════════════════════════════════════
 
     clearAppSave(app, card) {

@@ -6,7 +6,7 @@
    ========================================== */
 /* ==========================================================================
    UV7: THE EVOLUTION - Showcase Styles
-   Designed by Antigravity
+   Designed by DiZee
    ========================================================================== */
 
 /* --- CORE VARIABLES --- */
@@ -2816,7 +2816,7 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
    Contributors:
    - Ronnie (Architecture & Vision)
    - Belle (Settings Integration & Meta-Narrative)
-   - Antigravity (Implementation)
+   - DiZee (Implementation)
    ═══════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3623,7 +3623,7 @@ body.uv7-os-enabled {
    - Ronnie (Vision: "Make it bougie" + Cross-app resume concept)
    - ZeeRah (Architecture: State restoration pattern + Android gestures)
    - DiZee (Enhancement: Live state + mini preview)
-   - Antigravity (Polish: Premium UX + swipe-to-clear)
+   - DiZee (Polish: Premium UX + swipe-to-clear)
    ═══════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════
@@ -4053,7 +4053,7 @@ body.uv7-os-enabled {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   UNDO TOAST - ANTIGRAVITY'S SAFETY NET
+   UNDO TOAST - DIZEE'S SAFETY NET
    ═══════════════════════════════════════════════════════════════ */
 .uv7-toast {
     position: fixed;

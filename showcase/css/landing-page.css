@@ -81,7 +81,7 @@ body {
 
 /* ═══════════════════════════════════════════════════════════════
    PARTICLES WITH DEPTH LAYERS
-   Antigravity: Added parallax-like depth
+   DiZee: Added parallax-like depth
    ═══════════════════════════════════════════════════════════════ */
 .particles {
     position: fixed;
@@ -165,7 +165,7 @@ body {
 /* ═══════════════════════════════════════════════════════════════
    HERO SECTION WITH WATERMARK
    Tori: Ghosted logo watermark (highest impact upgrade)
-   Antigravity: Staggered entrance animation
+   DiZee: Staggered entrance animation
    ═══════════════════════════════════════════════════════════════ */
 .hero {
     position: relative;
@@ -309,7 +309,7 @@ body {
     }
 }
 
-/* Antigravity: Staggered entrance for tagline */
+/* DiZee: Staggered entrance for tagline */
 .hero p {
     font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     color: #888;
@@ -382,7 +382,7 @@ body {
 /* ═══════════════════════════════════════════════════════════════
    CARDS WITH MICHELIN SHADOWS
    Tori: Heavier shadows with inner highlight
-   Antigravity: Card icons for visual hierarchy
+   DiZee: Card icons for visual hierarchy
    ═══════════════════════════════════════════════════════════════ */
 .card {
     position: relative;
@@ -442,7 +442,7 @@ body {
     transform: translateY(-4px) scale(1.01);
 }
 
-/* Antigravity: Card icons */
+/* DiZee: Card icons */
 .card-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
@@ -530,7 +530,7 @@ body {
     color: #888;
 }
 
-/* Antigravity: UV7-specific tagline */
+/* DiZee: UV7-specific tagline */
 .footer-brand-tagline {
     font-size: 12px;
     opacity: 0.65;

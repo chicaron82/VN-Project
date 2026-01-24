@@ -57,7 +57,7 @@ const targetV1Dir = path.resolve(distDir, 'v1');
 // IMPORTANT: Do NOT exclude 'src' - V1 needs src/ui/styles/ for CSS
 const v1Exclude = [
     'node_modules', '.git', 'dist', 'showcase', 'public', '.vscode', '.idea',
-    'timeline_847_failures', '.gemini', '.antigravity', 'v2-contributions', 'v2-starter', 'docs',
+    'timeline_847_failures', '.gemini', '.dizee', 'v2-contributions', 'v2-starter', 'docs',
     '.agent', '.claude'
 ];
 

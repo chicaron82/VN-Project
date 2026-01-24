@@ -9,7 +9,7 @@
  * - Tori (Architecture design: Shell + Apps pattern)
  * - Belle (Gesture Arbiter concept)
  * - Zee (Hybrid approach wisdom, we're going full SPA anyway!)
- * - Antigravity (Implementation)
+ * - DiZee (Implementation)
  * ═══════════════════════════════════════════════════════════════
  */
 

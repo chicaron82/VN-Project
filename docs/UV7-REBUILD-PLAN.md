@@ -881,7 +881,7 @@ Spread content migration across phases instead of batching it all at the end.
 
 ---
 
-## Suggested Improvements (Added by Antigravity)
+## Suggested Improvements (Added by DiZee)
 
 ### 1. Content Migration Tooling
 
@@ -929,4 +929,4 @@ Version 848's aesthetic is unique and handcrafted. CSS Modules give isolation wi
 
 *Document created: January 2026*
 *UV7 Crew: Dizee, Zee, Tori, ZeeRah, Ronnie, Kai, Echo*
-*Reviewed by: Antigravity (AI Assistant)*
+*Reviewed by: DiZee (AI Assistant)*

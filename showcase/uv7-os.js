@@ -6,7 +6,7 @@
  * Contributors:
  * - Ronnie (Architecture & Vision)
  * - Belle (Settings Integration, Meta-Narrative & View Transitions)
- * - Antigravity (Implementation)
+ * - DiZee (Implementation)
  * - DiZee (Seamless transitions enhancement)
  * ═══════════════════════════════════════════════════════════════
  */

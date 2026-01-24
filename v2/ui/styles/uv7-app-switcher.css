@@ -6,7 +6,7 @@
    - Ronnie (Vision: "Make it bougie" + Cross-app resume concept)
    - ZeeRah (Architecture: State restoration pattern + Android gestures)
    - DiZee (Enhancement: Live state + mini preview)
-   - Antigravity (Polish: Premium UX + swipe-to-clear)
+   - DiZee (Polish: Premium UX + swipe-to-clear)
    ═══════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════
@@ -436,7 +436,7 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   UNDO TOAST - ANTIGRAVITY'S SAFETY NET
+   UNDO TOAST - DIZEE'S SAFETY NET
    ═══════════════════════════════════════════════════════════════ */
 .uv7-toast {
     position: fixed;
