@@ -10,7 +10,7 @@
  */
 
 import { initVNGatewayBridge, VNGatewayBridge } from './lib/vn-gateway-bridge';
-import { initUV7OSLanding, UV7OSLanding } from './lib/uv7-os-landing';
+import { initUV7OSLanding, UV7OS } from '../v2/ui/components/UV7OS';
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -36,4 +36,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export classes to window for legacy script compatibility
 (window as any).VNGatewayBridge = VNGatewayBridge;
-(window as any).UV7OSLanding = UV7OSLanding;
+(window as any).UV7OS = UV7OS;

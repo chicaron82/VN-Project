@@ -20,7 +20,7 @@ import { SwipeController } from './lib/SwipeController';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { initGrabHandle } from './lib/components/uv7-grab-handle';
-import { initUV7OS } from './lib/components/uv7-os';
+import { initUV7OS } from '../v2/ui/components/UV7OS';
 
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';

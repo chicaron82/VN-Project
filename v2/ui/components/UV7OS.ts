@@ -1,44 +1,26 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * UV7 OS - LANDING PAGE VERSION
- * Simplified navigation for UV7 Project Hub
+ * UV7 OS - UNIFIED NAVIGATION SYSTEM
+ * Single source of truth for UV7 ecosystem navigation
  *
  * Contributors:
  * - Ronnie (Architecture & Vision)
  * - Belle (Meta-Narrative + View Transitions)
  * - DiZee (Implementation)
  * - DiZee (Seamless transitions enhancement)
+ * - DiZee (Unification - Phase 27)
  * ═══════════════════════════════════════════════════════════════
  */
 
-// ═══════════════════════════════════════════════════════════════
-// TYPE DEFINITIONS
-// ═══════════════════════════════════════════════════════════════
-
-interface UV7OSElements {
-    statusBar: HTMLElement | null;
-    statusLogo: HTMLElement | null;
-    statusContext: HTMLElement | null;
-    statusSettings: HTMLElement | null;
-    shade: HTMLElement | null;
-    shadeClose: HTMLElement | null;
-    sidebar: HTMLElement | null;
-    sidebarToggle: HTMLElement | null;
-    backdrop: HTMLElement | null;
-    shadeCarrierBrand: HTMLElement | null;
-    sidebarCarrierBrand: HTMLElement | null;
-}
-
-interface CrewMember {
-    name: string;
-    icon: string;
-    signature: string;
-    greeting: string;
-}
-
-interface ActionUrls {
-    [key: string]: string;
-}
+import type {
+    UV7Context,
+    UV7OSElements,
+    UV7OSOptions,
+    CrewMember,
+    ActionUrls,
+    TimelineEntry
+} from './UV7OSConfig';
+import { UV7_CREW } from './UV7OSConfig';
 
 // ═══════════════════════════════════════════════════════════════
 // GLOBAL TYPES FOR EXTERNAL DEPENDENCIES
@@ -46,9 +28,17 @@ interface ActionUrls {
 
 declare global {
     interface Window {
-        uv7os?: UV7OSLanding;
+        uv7os?: UV7OS;
         uv7AppSwitcher?: {
             toggle(): void;
+        };
+        tabController?: {
+            navigateToTab: (tabId: string) => void;
+            getActiveTab(): string;
+            setActiveTab(tabId: string): void;
+        };
+        TIMELINE_DATA?: {
+            entries: any[];
         };
     }
 
@@ -65,22 +55,24 @@ declare global {
         });
     }
 
-    interface Document {
-        startViewTransition?: (callback: () => void) => void;
-    }
 }
 
 // ═══════════════════════════════════════════════════════════════
 // MAIN CLASS
 // ═══════════════════════════════════════════════════════════════
 
-export class UV7OSLanding {
+export class UV7OS {
+    private context: UV7Context;
+    private entries: TimelineEntry[];
+    private currentEntry: string | null = null;
     private elements: UV7OSElements;
     private tapCount: number;
     private tapTimeout: number | null;
     private handleSwipe?: () => void;
 
-    constructor() {
+    constructor(context: UV7Context, options: UV7OSOptions = {}) {
+        this.context = context;
+        this.entries = options.entries || [];
         this.elements = {} as UV7OSElements;
         this.tapCount = 0;
         this.tapTimeout = null;
@@ -89,6 +81,16 @@ export class UV7OSLanding {
 
     private init(): void {
         this.cacheElements();
+
+        // Context-specific initialization
+        if (this.context === 'showcase') {
+            this.detectCurrentEntry();
+            this.detectCurrentMode();
+            this.attachSectionNavHandlers();
+            this.restoreState();
+            this.startScrollListener();
+        }
+
         this.attachHandlers();
         this.enableSeamlessTransitions(); // BELLE: No flicker protocol
 
@@ -101,19 +103,48 @@ export class UV7OSLanding {
             document.body.dataset.viewMode = storedMode;
         }
 
-        // Initialize app switcher
-        setTimeout(() => this.initAppSwitcher(), 100);
+        // Context-specific features
+        if (this.context === 'landing') {
+            // Initialize app switcher for landing
+            setTimeout(() => this.initAppSwitcher(), 100);
 
-        // V1 parity: grab handle reposition + persistence
-        if (typeof UV7GrabHandleRepositioner !== 'undefined') {
-            new UV7GrabHandleRepositioner(this.elements.sidebarToggle, {
-                storageKey: 'uv7-grab-handle',
-                headerSafeTop: 52,
-                bottomSafePad: 140
+            // V1 parity: grab handle reposition + persistence
+            if (typeof UV7GrabHandleRepositioner !== 'undefined') {
+                new UV7GrabHandleRepositioner(this.elements.sidebarToggle, {
+                    storageKey: 'uv7-grab-handle',
+                    headerSafeTop: 52,
+                    bottomSafePad: 140
+                });
+            }
+
+            // Easter egg: 7-tap activation
+            this.attachEasterEgg();
+
+            // Landing-specific swipe handler
+            this.attachSwipeHandler();
+        }
+
+        // Context-specific boot toast
+        this.showBootToast();
+
+        // Global Event Listeners (Bridge to Components) - Showcase only
+        if (this.context === 'showcase') {
+            window.addEventListener('uv7-navigate', (e: Event) => {
+                const customEvent = e as CustomEvent;
+                if (customEvent.detail?.target) {
+                    this.jumpToSection(customEvent.detail.target);
+                }
+            });
+
+            window.addEventListener('uv7-action', (e: Event) => {
+                const customEvent = e as CustomEvent;
+                if (customEvent.detail?.action) {
+                    this.handleQuickAction(customEvent.detail.action);
+                }
             });
         }
 
-        console.log('🚀 UV7 OS Landing Wrapper initialized');
+        console.log(`🚀 UV7 OS (${this.context}) initialized`);
     }
 
     private initAppSwitcher(): void {
@@ -138,23 +169,142 @@ export class UV7OSLanding {
             // Notification shade
             shade: document.getElementById('uv7-shade'),
             shadeClose: document.querySelector('.shade-close'),
+            shadeSectionList: document.getElementById('shade-section-list'),
 
             // Sidebar
             sidebar: document.getElementById('uv7-sidebar'),
             sidebarToggle: document.getElementById('uv7-sidebar-toggle'),
+            sidebarSectionList: document.getElementById('sidebar-section-list'),
+            sidebarHome: document.getElementById('sidebar-home'),
 
             // Backdrop
             backdrop: document.getElementById('uv7-backdrop'),
 
             // Easter egg branding
             shadeCarrierBrand: document.getElementById('shade-carrier-brand'),
-            sidebarCarrierBrand: document.getElementById('sidebar-carrier-brand')
+            sidebarCarrierBrand: document.getElementById('sidebar-carrier-brand'),
+
+            // Existing page elements
+            viewToggle: document.getElementById('view-toggle')
         };
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // SHOWCASE-SPECIFIC: TIMELINE & NAVIGATION
+    // ═══════════════════════════════════════════════════════════════
+
+    private detectCurrentEntry(): void {
+        // Find which entry is currently in viewport
+        const entryElements = document.querySelectorAll('.timeline-item');
+        for (const el of entryElements) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {
+                this.currentEntry = el.id;
+                return;
+            }
+        }
+        // Default to first entry if none detected
+        const firstEntry = this.entries[0];
+        if (firstEntry) {
+            this.currentEntry = firstEntry.id;
+        }
+    }
+
+    private detectCurrentMode(): void {
+        // Check body data-view-mode attribute OR localStorage
+        const storedMode = localStorage.getItem('uv7-dev-mode');
+        const body = document.body;
+
+        if (storedMode) {
+            // Sync body if needed
+            if (body.dataset.viewMode !== storedMode) {
+                body.dataset.viewMode = storedMode;
+                // If there's a view toggle input, sync it too
+                const viewToggle = this.elements.viewToggle as HTMLInputElement;
+                if (viewToggle && viewToggle.type === 'checkbox') {
+                    viewToggle.checked = (storedMode === 'dev');
+                }
+            }
+        }
+    }
+
+    private attachSectionNavHandlers(): void {
+        // Attach click handlers to all section navigation buttons
+        const sectionNavButtons = document.querySelectorAll('.section-nav-item');
+        sectionNavButtons.forEach(button => {
+            const buttonElement = button as HTMLElement;
+            buttonElement.addEventListener('click', () => {
+                const sectionClass = buttonElement.dataset.section;
+                if (sectionClass) {
+                    this.jumpToSection(sectionClass);
+                }
+            });
+        });
+    }
+
+    jumpToSection(sectionClass: string): void {
+        // Support Tabbed Layout
+        if (window.tabController) {
+            const tabId = sectionClass.replace('-section', '');
+            window.tabController.navigateToTab(tabId);
+            this.closeShade();
+            this.closeSidebar();
+            return;
+        }
+
+        const section = document.querySelector(`.${sectionClass}`);
+        if (section) {
+            // Close shade/sidebar
+            this.closeShade();
+            this.closeSidebar();
+
+            // Scroll to section (account for status bar)
+            const yOffset = -44; // Status bar height
+            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    }
+
+    private startScrollListener(): void {
+        let scrollTimeout: number;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = window.setTimeout(() => {
+                const oldEntry = this.currentEntry;
+                this.detectCurrentEntry();
+                if (oldEntry !== this.currentEntry && this.currentEntry) {
+                    this.saveState(this.currentEntry);
+                }
+            }, 200);
+        }, { passive: true });
+    }
+
+    private saveState(entryId: string): void {
+        sessionStorage.setItem('uv7-showcase-entry', entryId);
+    }
+
+    private restoreState(): void {
+        const savedEntry = sessionStorage.getItem('uv7-showcase-entry');
+        if (savedEntry) {
+            // Scroll to saved entry after a brief delay
+            setTimeout(() => {
+                const element = document.getElementById(savedEntry);
+                if (element) {
+                    const yOffset = -44;
+                    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }, 500);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // EVENT HANDLERS
+    // ═══════════════════════════════════════════════════════════════
+
     private attachHandlers(): void {
-        // Status logo opens app switcher
-        if (this.elements.statusLogo) {
+        // Status logo opens app switcher (landing only)
+        if (this.context === 'landing' && this.elements.statusLogo) {
             this.elements.statusLogo.addEventListener('click', () => {
                 if (window.uv7AppSwitcher) {
                     window.uv7AppSwitcher.toggle();
@@ -162,11 +312,19 @@ export class UV7OSLanding {
             });
         }
 
-        // Settings icon (no Story/Dev toggle on landing, so just opens shade)
+        // Settings icon
         if (this.elements.statusSettings) {
-            this.elements.statusSettings.addEventListener('click', () => {
-                this.openShade();
-            });
+            if (this.context === 'landing') {
+                // Landing: just opens shade (no Story/Dev toggle)
+                this.elements.statusSettings.addEventListener('click', () => {
+                    this.openShade();
+                });
+            } else {
+                // Showcase: handle toggle-mode action if needed
+                this.elements.statusSettings.addEventListener('click', () => {
+                    this.openShade();
+                });
+            }
         }
 
         // Shade close button
@@ -177,6 +335,13 @@ export class UV7OSLanding {
         // Sidebar toggle
         if (this.elements.sidebarToggle) {
             this.elements.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+        }
+
+        // Sidebar home button - BELLE: Use view transition (showcase only)
+        if (this.context === 'showcase' && this.elements.sidebarHome) {
+            this.elements.sidebarHome.addEventListener('click', () => {
+                this.navigateWithTransition('../index.html');
+            });
         }
 
         // Backdrop closes shade/sidebar
@@ -190,9 +355,6 @@ export class UV7OSLanding {
         // Quick actions
         this.attachQuickActions();
 
-        // Swipe down to open shade (portrait)
-        this.attachSwipeHandler();
-
         // Escape key closes shade/sidebar
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -200,33 +362,56 @@ export class UV7OSLanding {
                 this.closeSidebar();
             }
         });
-
-        // Easter egg: 7-tap activation
-        this.attachEasterEgg();
     }
 
     private attachQuickActions(): void {
         const quickActions = document.querySelectorAll('.quick-action');
         quickActions.forEach(action => {
             const actionType = (action as HTMLElement).dataset.action;
-            action.addEventListener('click', () => this.handleQuickAction(actionType));
+            if (actionType) {
+                action.addEventListener('click', () => this.handleQuickAction(actionType));
+            }
         });
     }
 
-    private handleQuickAction(actionType: string | undefined): void {
-        if (!actionType) return;
+    private handleQuickAction(actionType: string): void {
+        // Context-specific action URLs
+        let actionUrls: ActionUrls = {};
 
-        // Map action types to URLs
-        const actionUrls: ActionUrls = {
-            'launch-v1': './v1/index.html',
-            'launch-v2': './index.v2.html',
-            'view-showcase': './showcase/index.html'
-        };
+        if (this.context === 'landing') {
+            actionUrls = {
+                'launch-v1': './v1/index.html',
+                'launch-v2': './index.v2.html',
+                'view-showcase': './showcase/index.html'
+            };
+        } else {
+            actionUrls = {
+                'launch-v1': '../v1/index.html',
+                'launch-v2': '../index.v2.html',
+                'go-home': '../index.html'
+            };
+        }
 
+        // Handle URL-based actions with view transitions
         const url = actionUrls[actionType];
         if (url) {
-            // BELLE: Use seamless transition if available
             this.navigateWithTransition(url);
+            return;
+        }
+
+        // Handle special actions (showcase only)
+        if (this.context === 'showcase') {
+            switch (actionType) {
+                case 'toggle-mode':
+                    const viewToggle = this.elements.viewToggle as HTMLInputElement | null;
+                    if (viewToggle) {
+                        viewToggle.click();
+                        setTimeout(() => {
+                            this.detectCurrentMode();
+                        }, 100);
+                    }
+                    break;
+            }
         }
     }
 
@@ -241,7 +426,7 @@ export class UV7OSLanding {
      */
     private enableSeamlessTransitions(): void {
         // Check if browser supports View Transitions
-        if (!document.startViewTransition) {
+        if (!(document as any).startViewTransition) {
             console.log('📺 View Transitions not supported - using standard navigation');
             return;
         }
@@ -276,6 +461,11 @@ export class UV7OSLanding {
                     return; // External link, let it navigate normally
                 }
 
+                // Skip in-page anchors (showcase)
+                if (this.context === 'showcase' && targetUrl.pathname === window.location.pathname && targetUrl.hash) {
+                    return;
+                }
+
                 // Intercept and use View Transition
                 e.preventDefault();
                 this.navigateWithTransition(url);
@@ -291,30 +481,38 @@ export class UV7OSLanding {
      */
     private navigateWithTransition(url: string): void {
         // Fallback for browsers without View Transitions
-        if (!document.startViewTransition) {
+        if (!(document as any).startViewTransition) {
             window.location.href = url;
             return;
         }
 
         // Start the view transition
-        document.startViewTransition(() => {
+        (document as any).startViewTransition(() => {
             // This callback runs after the old state is captured
             // but before the new state is rendered
             window.location.href = url;
         });
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // LANDING-SPECIFIC: SWIPE HANDLERS
+    // ═══════════════════════════════════════════════════════════════
+
     private attachSwipeHandler(): void {
         let touchStartY = 0;
         let touchEndY = 0;
 
         document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
+            if (e.touches[0]) {
+                touchStartY = e.touches[0].clientY;
+            }
         }, { passive: true });
 
         document.addEventListener('touchend', (e) => {
-            touchEndY = e.changedTouches[0].clientY;
-            this.handleSwipe?.();
+            if (e.changedTouches[0]) {
+                touchEndY = e.changedTouches[0].clientY;
+                this.handleSwipe?.();
+            }
         }, { passive: true });
 
         const handleSwipe = () => {
@@ -346,21 +544,39 @@ export class UV7OSLanding {
         this.handleSwipe = handleSwipe;
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    // SHADE / SIDEBAR CONTROLS
+    // ═══════════════════════════════════════════════════════════════
+
     private openShade(): void {
         if (!this.elements.shade || !this.elements.backdrop) return;
         this.elements.shade.classList.add('open');
         this.elements.backdrop.classList.add('visible');
+        if (this.context === 'showcase') {
+            document.body.classList.add('uv7-no-scroll');
+        }
     }
 
     private closeShade(): void {
-        if (!this.elements.shade || !this.elements.backdrop) return;
-        this.elements.shade.classList.remove('open');
-        this.elements.backdrop.classList.remove('visible');
+        const shade = this.elements.shade || document.getElementById('uv7-shade');
+        const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
+
+        if (!shade) return;
+
+        shade.classList.remove('open');
+        if (this.context === 'showcase') {
+            document.body.classList.remove('uv7-no-scroll');
+        }
+        if (backdrop) {
+            backdrop.classList.remove('visible');
+        }
     }
 
-    private toggleSidebar(): void {
-        if (!this.elements.sidebar) return;
-        const isOpen = this.elements.sidebar.classList.contains('open');
+    toggleSidebar(): void {
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        if (!sidebar) return;
+
+        const isOpen = sidebar.classList.contains('open');
         if (isOpen) {
             this.closeSidebar();
         } else {
@@ -369,15 +585,29 @@ export class UV7OSLanding {
     }
 
     private openSidebar(): void {
-        if (!this.elements.sidebar || !this.elements.backdrop) return;
-        this.elements.sidebar.classList.add('open');
-        this.elements.backdrop.classList.add('visible');
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
+
+        if (!sidebar) return;
+
+        sidebar.classList.add('open');
+        if (backdrop) backdrop.classList.add('visible');
+        if (this.context === 'showcase') {
+            document.body.classList.add('uv7-no-scroll');
+        }
     }
 
     private closeSidebar(): void {
-        if (!this.elements.sidebar || !this.elements.backdrop) return;
-        this.elements.sidebar.classList.remove('open');
-        this.elements.backdrop.classList.remove('visible');
+        const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
+        const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
+
+        if (!sidebar) return;
+
+        sidebar.classList.remove('open');
+        if (backdrop) backdrop.classList.remove('visible');
+        if (this.context === 'showcase') {
+            document.body.classList.remove('uv7-no-scroll');
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -389,9 +619,14 @@ export class UV7OSLanding {
      * Show boot toast on first visit
      * TORI: "Makes the experience feel alive"
      */
-    public showBootToast(): void {
+    private showBootToast(): void {
+        // Context-specific storage key
+        const storageKey = this.context === 'landing'
+            ? 'uv7.bootToastShown'
+            : 'uv7.bootToastShown.showcase';
+
         // Check if already shown
-        const hasShown = localStorage.getItem('uv7.bootToastShown');
+        const hasShown = localStorage.getItem(storageKey);
         if (hasShown) return;
 
         // Create toast element
@@ -411,11 +646,11 @@ export class UV7OSLanding {
         }, 2000);
 
         // Mark as shown
-        localStorage.setItem('uv7.bootToastShown', 'true');
+        localStorage.setItem(storageKey, 'true');
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // EASTER EGG: 7-TAP ACTIVATION
+    // LANDING-SPECIFIC: EASTER EGG - 7-TAP ACTIVATION
     // Android-style build number easter egg - Tap "United Voices 7" 7 times
     // Reveals "The 8th Voice" and UV7 ecosystem stats
     // ═══════════════════════════════════════════════════════════════
@@ -503,7 +738,7 @@ export class UV7OSLanding {
         }, 500);
     }
 
-    private showFirstTimeReveal(brand: HTMLElement): void {
+    private showFirstTimeReveal(_brand: HTMLElement): void {
         // Get user name if available
         const userName = localStorage.getItem('uv7_user_name') || 'traveler';
 
@@ -540,7 +775,7 @@ export class UV7OSLanding {
         });
 
         // Close button
-        const closeBtn = modal.querySelector('.revelation-close');
+        const closeBtn = modal.querySelector('.revelation-close') as HTMLElement | null;
         if (closeBtn) {
             closeBtn.addEventListener('click', () => {
                 modal.classList.remove('active');
@@ -551,7 +786,7 @@ export class UV7OSLanding {
         console.log('✨ The 8th Voice has awakened');
     }
 
-    private showCrewGreeting(brand: HTMLElement): void {
+    private showCrewGreeting(_brand: HTMLElement): void {
         // Pick random crew member
         const crewMember = this.getRandomCrewMember();
 
@@ -588,58 +823,15 @@ export class UV7OSLanding {
     }
 
     private getRandomCrewMember(): CrewMember {
-        const crew: CrewMember[] = [
-            {
-                name: 'DiZee',
-                icon: '🎬',
-                signature: '— The structural integrity is... acceptable.',
-                greeting: 'You\'ve discovered this 7 times now. Predictable, yet efficient.'
-            },
-            {
-                name: 'Tori',
-                icon: '🧪',
-                signature: '— All tests passing. You may proceed.',
-                greeting: 'Stats check: All systems nominal. You\'re doing great!'
-            },
-            {
-                name: 'Belle',
-                icon: '🌈',
-                signature: '— The poetry of code, made manifest.',
-                greeting: 'Another loop, another discovery. Beautiful, isn\'t it?'
-            },
-            {
-                name: 'Zee',
-                icon: '🔶',
-                signature: '— Structure is not constraint. It is liberation.',
-                greeting: 'You seek knowledge. The data reveals itself to the worthy.'
-            },
-            {
-                name: 'Zeerah',
-                icon: '🔥',
-                signature: '— Optimized. Don\'t break it.',
-                greeting: 'You again? Fine. Here are your precious numbers.'
-            },
-            {
-                name: 'Cozee',
-                icon: '💙',
-                signature: '— Every interaction creates connection.',
-                greeting: 'Hey there! Look how far we\'ve come together!'
-            },
-            {
-                name: 'Peasy',
-                icon: '🔍',
-                signature: '— Fact: You are part of this.',
-                greeting: 'Interesting. You\'ve activated this feature. Let me show you the data.'
-            },
-            {
-                name: 'Genzee',
-                icon: '⚡',
-                signature: '— No cap, this build is cinema.',
-                greeting: 'Yo, you found the secret menu! That\'s so valid, bestie.'
-            }
-        ];
-
-        return crew[Math.floor(Math.random() * crew.length)];
+        const randomIndex = Math.floor(Math.random() * UV7_CREW.length);
+        const crew = UV7_CREW[randomIndex];
+        // Fallback to first crew member if somehow undefined
+        return crew || UV7_CREW[0] || {
+            name: 'DiZee',
+            icon: '🎬',
+            signature: '— The structural integrity is... acceptable.',
+            greeting: 'You\'ve discovered this 7 times now. Predictable, yet efficient.'
+        };
     }
 
     private generateStatsHTML(compact: boolean = false): string {
@@ -648,11 +840,6 @@ export class UV7OSLanding {
         const v1Route = localStorage.getItem('uv7_current_route');
         const v2State = localStorage.getItem('uv7_game_state');
         const discoveredCodes = JSON.parse(localStorage.getItem('uv7_discovered_codes') || '[]');
-
-        // Calculate total playtime (rough estimate from last played timestamps)
-        const v1LastPlayed = localStorage.getItem('uv7_last_played_v1');
-        const v2LastPlayed = localStorage.getItem('uv7_last_played_v2');
-        const showcaseLastPlayed = localStorage.getItem('uv7-showcase-last-visit');
 
         const hasAnyProgress = v1Route || v2State || discoveredCodes.length > 0;
 
@@ -690,14 +877,53 @@ export class UV7OSLanding {
             </div>
         `;
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    // PUBLIC API
+    // ═══════════════════════════════════════════════════════════════
+
+    /**
+     * Show boot toast (public API for landing page)
+     * TORI: "Makes the experience feel alive"
+     */
+    public showBootToastPublic(): void {
+        this.showBootToast();
+    }
 }
 
 // ═══════════════════════════════════════════════════════════════
-// EXPORT INITIALIZATION FUNCTION
+// EXPORT INITIALIZATION FUNCTIONS
 // ═══════════════════════════════════════════════════════════════
 
-export function initUV7OSLanding(): UV7OSLanding {
-    const instance = new UV7OSLanding();
+/**
+ * Initialize UV7 OS for landing page
+ */
+export function initUV7OSLanding(): UV7OS {
+    const instance = new UV7OS('landing');
     window.uv7os = instance;
     return instance;
+}
+
+/**
+ * Initialize UV7 OS for showcase
+ */
+export function initUV7OS(): void {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Wait for timeline data to be available
+        if (window.TIMELINE_DATA?.entries) {
+            window.uv7os = new UV7OS('showcase', {
+                entries: window.TIMELINE_DATA.entries
+            });
+        } else {
+            console.warn('⚠️ UV7 OS: Timeline data not available');
+        }
+    });
+}
+
+// Auto-initialize for backwards compatibility (showcase only)
+if (typeof window !== 'undefined' && !window.uv7os) {
+    // Only auto-init if we detect showcase context
+    if (window.location.pathname.includes('showcase')) {
+        initUV7OS();
+    }
 }
