@@ -211,10 +211,21 @@ export class TabController {
             win.tabSwipeController.syncToTab(index);
             this.setActiveTab(tabId);
         } else {
-            // Fallback to scroll-spy mode
-            const panel = document.querySelector(`[data-panel="${tabId}"]`);
+            // Scroll-spy mode: scroll to panel with status bar offset
+            const panel = document.querySelector(`[data-panel="${tabId}"]`) as HTMLElement;
             if (!panel) return;
-            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Account for status bar height (44px)
+            const statusBarHeight = 44;
+            const targetPosition = panel.offsetTop - statusBarHeight;
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+
+            // Update active tab after scrolling
+            this.setActiveTab(tabId);
         }
 
         // Haptic feedback
