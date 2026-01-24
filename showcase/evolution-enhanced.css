@@ -135,6 +135,11 @@
     margin: 0;
 }
 
+.col-order .comparison-item p {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 400;
+}
+
 /* Code Snippets */
 .code-comparison {
     display: grid;

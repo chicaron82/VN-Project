@@ -47,6 +47,10 @@ class TabController {
         // Don't setup scroll-spy immediately - let swipe controller initialize first
         // this.setupScrollSpy();
 
+        // Fix: Remove aria-hidden from all panels in scroll-spy mode
+        // (In scroll-spy mode, all sections are visible and should be accessible)
+        this.initializePanelAccessibility();
+
         // Handle initial hash/saved tab
         const targetTab = this.loadLastTab() || this.getTabFromHash() || 'home';
         
@@ -59,6 +63,28 @@ class TabController {
         }
 
         console.log('✅ TabController initialized (scroll-spy mode)');
+    }
+
+    // ========================================
+    // ACCESSIBILITY MANAGEMENT
+    // ========================================
+
+    /**
+     * Initialize panel accessibility based on mode
+     * In scroll-spy mode: All panels visible, no aria-hidden
+     * In swipe mode: Managed by SwipeController
+     */
+    initializePanelAccessibility() {
+        // If swipe mode is enabled, let SwipeController handle it
+        if (this.container?.classList.contains('swipe-enabled')) {
+            return;
+        }
+
+        // Scroll-spy mode: all panels are visible, remove aria-hidden
+        this.tabPanels.forEach(panel => {
+            panel.removeAttribute('aria-hidden');
+            panel.removeAttribute('inert');
+        });
     }
 
     // ========================================

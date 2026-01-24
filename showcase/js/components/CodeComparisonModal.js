@@ -9,6 +9,7 @@ export class CodeComparisonModal {
         this.currentData = null;
         this.sliderPosition = 50; // percentage
         this.isDragging = false;
+        this.previouslyFocusedElement = null;
         
         this.init();
     }
@@ -25,11 +26,15 @@ export class CodeComparisonModal {
         const modal = document.createElement('div');
         modal.id = 'code-comparison-modal';
         modal.className = 'code-comparison-modal';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', 'code-modal-title');
         modal.innerHTML = `
             <div class="code-modal-backdrop"></div>
             <div class="code-modal-container">
                 <div class="code-modal-header">
-                    <h3 class="code-modal-title">Code Comparison</h3>
+                    <h3 id="code-modal-title" class="code-modal-title">Code Comparison</h3>
                     <button class="code-modal-close" aria-label="Close">&times;</button>
                 </div>
                 
@@ -141,11 +146,15 @@ export class CodeComparisonModal {
         this.currentData = data;
         this.isOpen = true;
         
+        // Store previously focused element to restore later
+        this.previouslyFocusedElement = document.activeElement;
+        
         // Update content
         this.updateContent(data);
         
         // Show modal with animation
         this.modal.classList.add('active');
+        this.modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         
         // Reset slider to center
@@ -153,12 +162,22 @@ export class CodeComparisonModal {
         
         // Focus the slider for keyboard access
         setTimeout(() => this.slider.focus(), 100);
+        
+        console.log('[CodeComparisonModal] Opened successfully');
     }
 
     close() {
         this.isOpen = false;
         this.modal.classList.remove('active');
+        this.modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
+        
+        // Restore focus to previously focused element
+        if (this.previouslyFocusedElement && this.previouslyFocusedElement.focus) {
+            this.previouslyFocusedElement.focus();
+        }
+        
+        console.log('[CodeComparisonModal] Closed');
     }
 
     updateContent(data) {
@@ -190,6 +209,7 @@ export class CodeComparisonModal {
     startDrag(e) {
         this.isDragging = true;
         this.slider.classList.add('dragging');
+        this.sliderContainer.classList.add('dragging');
         e.stopPropagation();
     }
 
@@ -197,6 +217,7 @@ export class CodeComparisonModal {
         if (this.isDragging) {
             this.isDragging = false;
             this.slider.classList.remove('dragging');
+            this.sliderContainer.classList.remove('dragging');
         }
     }
 
@@ -224,12 +245,12 @@ export class CodeComparisonModal {
         // Update slider visual position
         this.sliderContainer.style.left = `${percentage}%`;
         
-        // Update clip-path for before/after panels
+        // Update clip-path for before panel (only clip the "before" panel)
+        // The "after" panel is always fully visible underneath
         const beforePanel = this.modal.querySelector('.code-before');
-        const afterPanel = this.modal.querySelector('.code-after');
         
-        beforePanel.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
-        afterPanel.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+        // Before panel shows from left edge to slider position
+        beforePanel.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
         
         // Update ARIA value
         this.slider.setAttribute('aria-valuenow', Math.round(percentage));

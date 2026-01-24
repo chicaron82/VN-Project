@@ -87,26 +87,23 @@ export class EvolutionSection {
                                 <p>State scattered across window.gameState, localStorage, and closure variables. No
                                     single
                                     source of truth.</p>
-                                <a href="#phase-4" class="phase-link">📖 See Phase 4: StateManager</a>
                             </div>
 
                             <div class="comparison-item">
                                 <h4>🎲 Manual Testing Only</h4>
                                 <p>"It works on my machine." No automated tests. Every change risked breaking something.
                                 </p>
-                                <a href="#phase-8" class="phase-link">📖 See Phase 8: Testing</a>
                             </div>
 
                             <div class="comparison-item">
                                 <h4>🏗️ Monolithic game-engine.js</h4>
                                 <p>2,000+ line god object. Everything in one file. Impossible to maintain.</p>
-                                <a href="#phase-7" class="phase-link">📖 See Phase 7: Controllers</a>
+
                             </div>
 
                             <div class="comparison-item">
                                 <h4>🐌 Direct DOM Manipulation</h4>
                                 <p>Constant reflows. No batching. Janky animations on older devices.</p>
-                                <a href="#phase-12" class="phase-link">📖 See Phase 12: Performance</a>
                             </div>
                         </div>
 
@@ -118,6 +115,9 @@ export class EvolutionSection {
                                 <h4>📡 Event-Driven Core</h4>
                                 <p>Decoupled systems via EventBus. Tethers just listen. Menus just listen. Zero direct
                                     dependencies.</p>
+                                <button class="view-diff-button" data-comparison-id="event-handling">
+                                    <span>🔎 View Code Comparison</span>
+                                </button>
                             </div>
 
                             <div class="comparison-item">
@@ -137,7 +137,9 @@ export class EvolutionSection {
                             <div class="comparison-item">
                                 <h4>🎯 Centralized StateManager</h4>
                                 <p>Single source of truth. Immutable state updates. Time-travel debugging ready.</p>
-                                <a href="#phase-4" class="phase-link">📖 See Phase 4: StateManager</a>
+                                <button class="view-diff-button" data-comparison-id="state-management">
+                                    <span>🔎 View Code Comparison</span>
+                                </button>
                             </div>
 
                             <div class="comparison-item">
@@ -145,85 +147,20 @@ export class EvolutionSection {
                                 <p>55 test files written but stubbed. Prioritized building over bureaucracy. Tests
                                     coming as we stabilize systems.
                                 </p>
-                                <a href="#2026-01-20-e" class="phase-link">📖 See Current State</a>
                             </div>
 
                             <div class="comparison-item">
                                 <h4>🏛️ Modular Controllers</h4>
                                 <p>Single responsibility. Each controller < 300 lines. Easy to understand and
                                         extend.</p>
-                                        <a href="#phase-7" class="phase-link">📖 See Phase 7: Controllers</a>
+                                <button class="view-diff-button" data-comparison-id="architecture">
+                                    <span>🔎 View Code Comparison</span>
+                                </button>
                             </div>
 
                             <div class="comparison-item">
                                 <h4>⚡ Optimized Rendering</h4>
                                 <p>Batched updates. RequestAnimationFrame. Smooth 60fps on all devices.</p>
-                                <a href="#phase-12" class="phase-link">📖 See Phase 12: Performance</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Code Comparison Examples -->
-                    <div class="code-comparison">
-                        <div class="code-block">
-                            <div class="code-header v1">V1: Event Handling (Callback Hell)</div>
-                            <div class="code-content">
-                                <pre><code class="language-javascript">// Tightly coupled mess
-function showMenu() {
-    gameEngine.pauseDialogue();
-    menuController.show();
-    menuController.onClose = () => {
-        gameEngine.resumeDialogue();
-        if (gameEngine.currentScene) {
-            gameEngine.currentScene.refresh();
-        }
-    };
-}</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="code-block">
-                            <div class="code-header v2">V2: EventBus (Decoupled)</div>
-                            <div class="code-content">
-                                <pre><code class="language-typescript">// Clean separation
-EventBus.emit('menu:show');
-
-// Elsewhere...
-EventBus.on('menu:show', () => {
-    DialogueController.pause();
-});
-
-EventBus.on('menu:close', () => {
-    DialogueController.resume();
-});</code></pre>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="code-comparison">
-                        <div class="code-block">
-                            <div class="code-header v1">V1: State Management (Scattered)</div>
-                            <div class="code-content">
-                                <pre><code class="language-javascript">// State everywhere
-window.gameState = { /* ... */ };
-localStorage.setItem('save', JSON.stringify(data));
-let currentScene = 'intro'; // closure
-this.flags = {}; // instance variable</code></pre>
-                            </div>
-                        </div>
-
-                        <div class="code-block">
-                            <div class="code-header v2">V2: StateManager (Centralized)</div>
-                            <div class="code-content">
-                                <pre><code class="language-typescript">// Single source of truth
-StateManager.setState({
-    currentScene: 'intro',
-    flags: { metTori: true }
-});
-
-// Immutable updates
-const state = StateManager.getState();
-// Type-safe, predictable</code></pre>
                             </div>
                         </div>
                     </div>

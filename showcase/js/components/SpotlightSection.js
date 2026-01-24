@@ -78,10 +78,10 @@ export class SpotlightSection {
                         </div>
                     </div>
 
-                    <div class="spotlight-carousel-container" data-layout="landscape">
-                        <div class="carousel-track">
+                    <!-- Bento Grid -->
+                    <div class="spotlight-bento-grid">
                             <!-- Card 1: Momentum Carousel -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="1">
                                 <div class="tech-header">
                                     <div class="tech-icon">🎠</div>
                                     <h3>Momentum Carousel</h3>
@@ -100,7 +100,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 2: Boot Sequence Parity -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="2">
                                 <div class="tech-header">
                                     <div class="tech-icon">🚀</div>
                                     <h3>Boot Sequence Parity</h3>
@@ -132,7 +132,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 3: Settings & Secrets (New) -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="3">
                                 <div class="tech-header">
                                     <div class="tech-icon">⚙️</div>
                                     <h3>Settings & Secrets</h3>
@@ -151,7 +151,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 4: Cross-Game Communication -->
-                            <div class="technical-card">
+                            <div class="technical-card featured" data-card="4">
                                 <div class="tech-header">
                                     <div class="tech-icon">🎮🐣</div>
                                     <h3>Cross-Game Communication</h3>
@@ -171,7 +171,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 5: Echo Memory System -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="5">
                                 <div class="tech-header">
                                     <div class="tech-icon">🧠👁️</div>
                                     <h3>Echo Memory System</h3>
@@ -191,7 +191,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 6: Time Machine Backlog -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="6">
                                 <div class="tech-header">
                                     <div class="tech-icon">⏰🔄</div>
                                     <h3>Time Machine Backlog</h3>
@@ -212,7 +212,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 7: Event-Driven Architecture -->
-                            <div class="technical-card">
+                            <div class="technical-card featured" data-card="7">
                                 <div class="tech-header">
                                     <div class="tech-icon">📡⚡</div>
                                     <h3>Event-Driven Architecture</h3>
@@ -232,7 +232,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 8: Accessibility-First Design -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="8">
                                 <div class="tech-header">
                                     <div class="tech-icon">♿✨</div>
                                     <h3>Accessibility-First Design</h3>
@@ -252,7 +252,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 9: 50-Day Speedrun -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="9">
                                 <div class="tech-header">
                                     <div class="tech-icon">🏃⚡</div>
                                     <h3>50-Day Speedrun</h3>
@@ -271,7 +271,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 10: Hybrid Carousel System -->
-                            <div class="technical-card">
+                            <div class="technical-card" data-card="10">
                                 <div class="tech-header">
                                     <div class="tech-icon">📱💻</div>
                                     <h3>Hybrid Carousel System</h3>
@@ -291,7 +291,7 @@ export class SpotlightSection {
                             </div>
 
                             <!-- Card 11: The Soul of Iteration -->
-                            <div class="technical-card">
+                            <div class="technical-card featured" data-card="11">
                                 <div class="tech-header">
                                     <div class="tech-icon">🎨🔥</div>
                                     <h3>The Soul of Iteration</h3>
@@ -332,22 +332,6 @@ export class SpotlightSection {
                                     </p>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Carousel Navigation -->
-                    <div class="carousel-nav">
-                        <button class="nav-prev" aria-label="Previous card">←</button>
-                        <div class="nav-dots"></div>
-                        <button class="nav-next" aria-label="Next card">→</button>
-                    </div>
-
-                    <!-- "Surprise Me!" Button -->
-                    <div class="carousel-actions">
-                        <button class="surprise-btn"
-                            onclick="window.spotlightCarousel?.navigateToCard(window.spotlightTracker?.getRandomCard() || 0)">
-                            🎲 Surprise Me!
-                        </button>
                     </div>
                 </div>
 

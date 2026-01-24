@@ -819,10 +819,20 @@
      */
     setupThemeToggle() {
       if (!this.themeToggleEl) return;
+      
+      // Initialize theme from localStorage or system preference
+      const savedTheme = localStorage.getItem('uv7-theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const initialTheme = savedTheme || systemTheme;
+      
+      document.body.dataset.theme = initialTheme;
+      this.themeToggleEl.textContent = initialTheme === 'dark' ? '🌙' : '☀️';
+      
       this.themeToggleEl.addEventListener('click', () => {
         const isDark = document.body.dataset.theme === 'dark';
         const newTheme = isDark ? 'light' : 'dark';
         document.body.dataset.theme = newTheme;
+        localStorage.setItem('uv7-theme', newTheme);
         this.themeToggleEl.textContent = newTheme === 'dark' ? '🌙' : '☀️';
         if (navigator.vibrate) navigator.vibrate(10);
 
