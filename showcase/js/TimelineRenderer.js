@@ -519,6 +519,19 @@ class TimelineRenderer {
         if (entry.codeComparison || (entry.media && entry.media.codeComparison)) {
             hasDetails = true;
             const comp = entry.codeComparison || entry.media.codeComparison;
+            
+            // Add "View Diff" button for interactive modal
+            const viewDiffButton = document.createElement('button');
+            viewDiffButton.className = 'view-diff-button';
+            viewDiffButton.innerHTML = '🔍 View Interactive Comparison';
+            viewDiffButton.onclick = () => {
+                if (window.codeComparisonModal) {
+                    window.codeComparisonModal.open(comp);
+                }
+            };
+            details.appendChild(viewDiffButton);
+            
+            // Keep the static code display for fallback
             const compDiv = document.createElement('div');
             compDiv.className = 'code-comparison';
 
