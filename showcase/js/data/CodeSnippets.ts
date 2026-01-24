@@ -1,4 +1,10 @@
-export const CODE_COMPARISONS = {
+import type { CodeComparison } from '../types';
+
+interface CodeComparisonData {
+    [key: string]: CodeComparison;
+}
+
+export const CODE_COMPARISONS: CodeComparisonData = {
     'state-management': {
         before: {
             title: 'V1: Global State Chaos',

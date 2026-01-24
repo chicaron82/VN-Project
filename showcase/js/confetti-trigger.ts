@@ -1,15 +1,22 @@
 /**
+ * confetti-trigger.ts
+ */
+
+/**
  * Simple Confetti Particle System for UV7 Showcase
  * Adds a "Bougie" celebration effect for milestones.
  */
 
 class ConfettiSystem {
+    private colors: string[];
+    private container: HTMLDivElement | null;
+
     constructor() {
         this.colors = ['#4f46e5', '#10b981', '#ec4899', '#f59e0b', '#3b82f6'];
         this.container = null;
     }
 
-    createContainer() {
+    createContainer(): void {
         if (!this.container) {
             this.container = document.createElement('div');
             this.container.style.position = 'fixed';
@@ -24,7 +31,7 @@ class ConfettiSystem {
         }
     }
 
-    fire(x, y) {
+    fire(x: number, y: number): void {
         this.createContainer();
         const particleCount = 60;
 
@@ -41,7 +48,7 @@ class ConfettiSystem {
         }, 2000);
     }
 
-    createParticle(x, y) {
+    createParticle(x: number, y: number): void {
         const particle = document.createElement('div');
         const color = this.colors[Math.floor(Math.random() * this.colors.length)];
 
@@ -96,3 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+declare global {
+    interface Window {
+        uv7Confetti: ConfettiSystem;
+    }
+}
+

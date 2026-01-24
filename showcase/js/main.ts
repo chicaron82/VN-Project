@@ -1,26 +1,25 @@
-
 /**
- * main.js
+ * main.ts
  * Main entry point for UV7 Showcase.
  * Orchestrates all sub-modules.
  */
-import { initChaosTyper } from './ChaosTyper.js';
-import { initViewMode } from './ViewModeController.js';
-import { initScrollAnimations } from './ScrollAnimator.js';
-import { initSocialShare } from './SocialShare.js';
-import { Sidebar } from './components/Sidebar.js';
-import { NotificationShade } from './components/NotificationShade.js';
-import { HeroSection } from './components/HeroSection.js';
-import { JourneySection } from './components/JourneySection.js';
-import { WorkflowSection } from './components/WorkflowSection.js';
-import { ResultsSection } from './components/ResultsSection.js';
-import { SpotlightSection } from './components/SpotlightSection.js';
-import { EvolutionSection } from './components/EvolutionSection.js';
-import { WhoSection } from './components/WhoSection.js';
-
+import './types'; // Import global type definitions
+import { initChaosTyper } from './ChaosTyper';
+import { initViewMode } from './ViewModeController';
+import { initScrollAnimations } from './ScrollAnimator';
+import { initSocialShare } from './SocialShare';
+import { Sidebar } from './components/Sidebar';
+import { NotificationShade } from './components/NotificationShade';
+import { HeroSection } from './components/HeroSection';
+import { JourneySection } from './components/JourneySection';
+import { WorkflowSection } from './components/WorkflowSection';
+import { ResultsSection } from './components/ResultsSection';
+import { SpotlightSection } from './components/SpotlightSection';
+import { EvolutionSection } from './components/EvolutionSection';
+import { WhoSection } from './components/WhoSection';
 
 // Data
-import { CODE_COMPARISONS } from './data/CodeSnippets.js';
+import { CODE_COMPARISONS } from './data/CodeSnippets';
 
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize UI Components
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new HeroSection();
 
     // Initialize Code Comparison
-    const initCodeComparison = () => {
+    const initCodeComparison = (): void => {
         if (!window.codeComparisonModal) {
             console.warn('[CodeComparison] Modal not ready yet');
             return;
@@ -39,18 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`[CodeComparison] Found ${buttons.length} buttons`);
 
         buttons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', (e: Event) => {
                 e.preventDefault();
                 e.stopPropagation();
                 
                 const id = btn.getAttribute('data-comparison-id');
                 console.log(`[CodeComparison] Button clicked: ${id}`);
                 
-                const data = CODE_COMPARISONS[id];
-                if (data) {
-                    window.codeComparisonModal.open(data);
-                } else {
-                    console.error(`[CodeComparison] No data found for: ${id}`);
+                if (id) {
+                    const data = CODE_COMPARISONS[id];
+                    if (data && window.codeComparisonModal) {
+                        window.codeComparisonModal.open(data);
+                    } else {
+                        console.error(`[CodeComparison] No data found for: ${id}`);
+                    }
                 }
             });
         });
@@ -58,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('[CodeComparison] Initialized successfully');
     };
 
-    // Defer slighty to ensure DOM is ready
+    // Defer slightly to ensure DOM is ready
     setTimeout(initCodeComparison, 500);
 
     // Core Sections
