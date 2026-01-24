@@ -1,83 +1,113 @@
 /* ═══════════════════════════════════════════════════════════════
-   HERO / SPLIT COMPONENT
-   Extract from styles.css
+   HERO SECTION
+   Clean hero without comparison slider
    ═══════════════════════════════════════════════════════════════ */
 
 /* --- MAIN CONTAINER --- */
-.split-container {
+.hero-container {
     position: relative;
     width: 100vw;
-    height: 100vh;
-    /* Fixed height - slider stays within this window */
-    max-height: 100vh;
+    height: auto;
+    min-height: 60vh;
     overflow: hidden;
-    background: #050505;
-    /* Fallback for --chaos-bg */
-
-    /* Grid Stacking for Height Sync */
-    display: grid;
-    grid-template-areas: "stack";
+    background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #16213e 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
     margin-top: 0;
 }
 
-/* --- LAYERS --- */
-.layer-chaos {
-    grid-area: stack;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    margin: 0;
-    background: #050505;
-    color: #00ff41;
-    font-family: 'Courier New', monospace;
-    z-index: 1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    gap: 1.5rem;
-
-    /* Glitchy texture overlay */
-    background-image: linear-gradient(0deg, transparent 24%, rgba(0, 255, 65, .03) 25%, rgba(0, 255, 65, .03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 65, .03) 75%, rgba(0, 255, 65, .03) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 255, 65, .03) 25%, rgba(0, 255, 65, .03) 26%, transparent 27%, transparent 74%, rgba(0, 255, 65, .03) 75%, rgba(0, 255, 65, .03) 76%, transparent 77%, transparent);
-    background-size: 50px 50px;
-}
-
-.layer-order {
-    grid-area: stack;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #f8f9fa;
-    color: #2c3e50;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    z-index: 2;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    gap: 1.5rem;
-
-    /* Elegant grid overlay */
-    background-image: radial-gradient(#3498db 1px, transparent 1px);
-    background-size: 40px 40px;
-    opacity: 0.98;
-
-    /* Dynamic Clip Path handled by ComparisonSlider.js */
-    clip-path: polygon(100% 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-/* --- CONTENT --- */
-.split-container .content-wrapper {
+.hero-content {
     position: relative;
     text-align: center;
     width: 90%;
-    max-width: 1200px;
+    max-width: 900px;
     margin: auto;
+    z-index: 2;
+}
+
+.hero-header {
+    margin-bottom: 2rem;
+}
+
+.hero-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+    filter: drop-shadow(0 4px 20px rgba(52, 152, 219, 0.3));
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #3498db 0%, #2ecc71 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0.5rem 0 0 0;
+    font-style: italic;
+}
+
+.hero-description {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 700px;
+    margin: 0 auto 3rem;
+}
+
+.hero-stats {
     display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    min-width: 140px;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(52, 152, 219, 0.4);
+    transform: translateY(-4px);
+}
+
+.stat-value {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: #3498db;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
     flex-direction: column;
     align-items: center;
     gap: 2rem;

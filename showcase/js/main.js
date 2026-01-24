@@ -4,7 +4,6 @@
  * Main entry point for UV7 Showcase.
  * Orchestrates all sub-modules.
  */
-import { initComparisonSlider } from './ComparisonSlider.js';
 import { initChaosTyper } from './ChaosTyper.js';
 import { initViewMode } from './ViewModeController.js';
 import { initScrollAnimations } from './ScrollAnimator.js';
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     new WhoSection();
 
     // 2. Initialize Logic & Interactivity
-    initComparisonSlider();
     initChaosTyper();
     initViewMode();
     initScrollAnimations();

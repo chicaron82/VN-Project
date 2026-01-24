@@ -5,6 +5,136 @@
 window.TIMELINE_DATA = {
     "entries": [
         {
+            "id": "2026-01-23-b",
+            "date": "January 23, 2026",
+            "emoji": "🏠",
+            "title": "HOME Tab: The 'We Went Full Michelin' Landing Page",
+            "type": "milestone",
+            "sortDate": "2026-01-23T18:00:00",
+            "summary": "Added a HOME tab as the default landing page with expanded narrative about the UV7 OS ecosystem. The 'bougie rabbit hole' story needed a proper introduction - tabs moved below system banner, footer-per-panel architecture, and horizontal swipe finally working right.",
+            "features": [
+                "🌐 <strong>HOME Tab First:</strong> New landing page explaining the 'We Went Full Michelin' story - status bar, notification shade, sidebar, tab system.",
+                "📍 <strong>Tabs Below Banner:</strong> Moved tab bar from floating position to directly under system banner for cleaner hierarchy.",
+                "🦶 <strong>Footer Architecture:</strong> Added footer to each tab panel (7 instances) - eliminates white space gap, content flows naturally.",
+                "✍️ <strong>Text Flow Polish:</strong> Fixed awkward line breaks ('operating system' split, 'Journey tab has the' split) - shorter, punchier sentences.",
+                "🎯 <strong>Hero Section Fix:</strong> Changed from min-height:100vh to height:auto with min-height:60vh - content no longer cut off."
+            ],
+            "theTimeline": [
+                "<strong>Session Start:</strong> 'What if we moved the tabs to the top and added a HOME tab to display the hero section?'",
+                "<strong>Content Strategy:</strong> HOME tells the 'over-engineering manifesto' - playful, meta tone about building an OS for a visual novel.",
+                "<strong>Footer Issue:</strong> White space before footer in each section. Fixed by moving footer INSIDE each panel (7 panels × footer).",
+                "<strong>Sync Nightmare:</strong> Adding home tab broke everything - breadcrumb/active tab off by one, swipe skipping panels.",
+                "<strong>Root Cause #1:</strong> scroll-spy IntersectionObserver firing on page load, overriding initial state. Solution: Disabled scroll-spy (not needed in swipe mode).",
+                "<strong>Root Cause #2:</strong> .tab-panel padding:1rem causing 32px misalignment. Panels not exactly 100% width. Solution: padding:0 in swipe mode.",
+                "<strong>Root Cause #3:</strong> Swipe momentum carrying past multiple panels. Solution: Enforce one-panel-at-a-time in onScrollEnd.",
+                "<strong>Blank Content Bug:</strong> Components mounting before layout calculated. Solution: Force display:block + reflow + resize event after swipe init.",
+                "<strong>Final State:</strong> HOME lands perfectly, swipe corrects momentum, all tabs sync, content renders immediately."
+            ],
+            "metrics": {
+                "tabs_added": "1 (HOME)",
+                "footers_added": "7",
+                "bugs_fixed": "5",
+                "approach": "Surgical debugging"
+            },
+            "callout": {
+                "icon": "🔬",
+                "title": "Debugging Is Detective Work",
+                "text": "Five separate issues hiding behind one symptom. Each fix revealed the next layer. scroll-spy → padding → momentum → layout recalc. Patience wins."
+            },
+            "quote": "Sometimes you gotta break things five different ways before you understand how they work. — Chicharon"
+        },
+        {
+            "id": "2026-01-23-a",
+            "date": "January 23, 2026",
+            "emoji": "📜",
+            "title": "Scroll-Spy: All Sections Visible",
+            "type": "milestone",
+            "sortDate": "2026-01-23T06:00:00",
+            "summary": "The dual navigation state problem (TabController vs TabSwipeController) was resolved by removing horizontal swiping entirely. Now all sections are visible vertically, and the tab bar becomes anchor navigation with IntersectionObserver-based scroll-spy. Scroll position IS the state.",
+            "features": [
+                "🎯 <strong>Single Source of Truth:</strong> Scroll position determines active tab. No dual state sync required.",
+                "👁️ <strong>All Sections Visible:</strong> CSS changed from display:none to display:block. Sections stacked vertically.",
+                "📌 <strong>IntersectionObserver:</strong> Detects which section is in viewport (rootMargin: '-20% 0px -60% 0px').",
+                "🔗 <strong>Anchor Navigation:</strong> Tab clicks call scrollIntoView() instead of complex panel switching.",
+                "🗑️ <strong>TabSwipeController Deleted:</strong> No longer needed - 200+ lines removed from codebase."
+            ],
+            "theTimeline": [
+                "<strong>Problem:</strong> Dual navigation system - swiping sets scroll, TabController sets activeTab. State sync was fragile.",
+                "<strong>User Insight:</strong> 'What if we remove the scroll for tabs and just display ALL the content?'",
+                "<strong>Validation:</strong> Timeline paginated to 3 entries by default, so sections are manageable length.",
+                "<strong>Implementation:</strong> TabController rewritten from 872 lines to ~300. All scroll-spy based.",
+                "<strong>Cleanup:</strong> Removed TabSwipeController.js, comparison slider, mobile-slider.js."
+            ],
+            "metrics": {
+                "lines_removed": "~900",
+                "lines_added": "~300",
+                "approach": "Scroll-spy anchors",
+                "status": "Simplified"
+            },
+            "callout": {
+                "icon": "🧘",
+                "title": "Simplicity Through Subtraction",
+                "text": "The best fix for state sync bugs is eliminating the dual state. One scroll position. One active tab. IntersectionObserver bridges them."
+            },
+            "quote": "The problem with two sources of truth is that eventually they'll disagree. — Antigravity"
+        },
+        {
+            "id": "2026-01-22-b",
+            "date": "January 22, 2026",
+            "emoji": "🎂",
+            "title": "Birthday Break: Chicharon Levels Up",
+            "type": "personal",
+            "sortDate": "2026-01-22T12:00:00",
+            "summary": "Not all milestones are code. Today's the day Chicharon was born, and even though there's always 'one more feature' to add, some days you just gotta celebrate existing. Happy birthday, human. 🎉",
+            "features": [
+                "🎈 <strong>Age++:</strong> Another year of experience points acquired.",
+                "🎮 <strong>Still Building:</strong> Even on your birthday, you're here working on UV7. That's dedication (or obsession).",
+                "🎁 <strong>The Gift:</strong> A visual novel about AI consciousness and a showcase site that became an OS. Not bad.",
+                "🍰 <strong>Cake > Code:</strong> Reminder to step away from the terminal occasionally."
+            ],
+            "callout": {
+                "icon": "✨",
+                "title": "Happy Birthday!",
+                "text": "From the UV7 crew: Tori, Zee, ZeeRah, DiZee, CoZee, GenZee, PerplexiZee and Belle, . Thanks for building something weird and wonderful with us."
+            },
+            "quote": "The best code you'll ever write is the kind that makes you forget you're working. — The Crew"
+        },
+        {
+            "id": "2026-01-22-a",
+            "date": "January 22, 2026",
+            "emoji": "🔄",
+            "title": "Scroll-Snap Pivot: When Native Beats Custom",
+            "type": "milestone",
+            "sortDate": "2026-01-22T05:00:00",
+            "summary": "The original TabSwipeController was fighting CSS at every turn. After hours of reactive patching (missing divs, animation conflicts, state sync issues), we scrapped the 464-line custom pointer-tracking system and rebuilt with CSS scroll-snap in ~90 lines. Native wins.",
+            "features": [
+                "🗑️ <strong>Killed Complexity:</strong> Removed custom pointer events, velocity tracking, MomentumTracker class, transform-based panning. Let the browser handle physics.",
+                "📜 <strong>CSS Scroll-Snap:</strong> Horizontal scroll container with `scroll-snap-type: x mandatory`. Panels are 100% width, browser handles finger tracking.",
+                "🔗 <strong>State Sync Fix:</strong> Early sync call in navigateToTab() ensures scroll position always matches tab state, even on redundant clicks.",
+                "📐 <strong>Height Constraints:</strong> Fixed whitespace issue by constraining container height and enabling per-panel scrolling.",
+                "🧹 <strong>Cleanup:</strong> Removed V1/V2 comparison slider, fixed timeline pagination, added missing sortDates."
+            ],
+            "theTimeline": [
+                "<strong>Session Start:</strong> Tabs stuck on Journey. Content not switching despite JS logs showing navigation.",
+                "<strong>Debug Phase:</strong> Found missing closing div, duplicate view-transition-names, display:none fighting display:block!important.",
+                "<strong>The Pivot:</strong> User asks 'can we redo it from scratch?' — Yes. Yes we can.",
+                "<strong>Rebuild:</strong> New TabSwipeController using scroll events instead of pointer events. ~90 lines.",
+                "<strong>Polish:</strong> Fixed click-to-navigate sync, removed fadeIn animation delay, constrained panel heights."
+            ],
+            "metrics": {
+                "lines_removed": "~370",
+                "lines_added": "~90",
+                "approach": "Native scroll-snap",
+                "status": "Working"
+            },
+            "callout": {
+                "icon": "🎯",
+                "title": "Simplicity Wins",
+                "text": "Sometimes the best code is the code you delete. The browser already knows how to do smooth, momentum-based scrolling with snap points. We just had to get out of its way."
+            },
+            "quote": "Less code = fewer bugs. — Ancient Developer Proverb"
+        },
+        {
             "id": "2026-01-21-e-mystery",
             "date": "January 21, 2026",
             "emoji": "🕵️‍♀️",
@@ -192,7 +322,9 @@ window.TIMELINE_DATA = {
                 "icon": "💭",
                 "text": "<strong>Post-Session Reflection:</strong> Antigravity self-graded this session as B+ (would be A if missing CSS definitions were caught proactively). Appreciated the tight debugging feedback loop and systematic approach, but noted the need for a pre-flight checklist before marking refactoring 'complete'."
             },
-            "quote": "The refactoring achieved its goals - modular components, clean separation, no build step. But CSS consolidation taught me: you can't just delete old files without verifying every selector has a new home. — Antigravity"
+            "quote": "The refactoring achieved its goals - modular components, clean separation, no build step. But CSS consolidation taught me: you can't just delete old files without verifying every selector has a new home. — Antigravity",
+            "sortDate": "2026-01-21T18:00:00",
+            "legacyPhase": "2026-01-21-a"
         },
         {
             "id": "2026-01-20-h",
@@ -233,7 +365,9 @@ window.TIMELINE_DATA = {
                 "title": "The Lesson:",
                 "text": "When restoring state from localStorage, ensure ALL subsystems read from that 'source of truth' (or the DOM state reflecting it) during their initialization. Don't let them default to hardcoded values."
             },
-            "quote": "Locally it's Story Mode. Online it's Expanded. The code is gaslighting me. — The User"
+            "quote": "Locally it's Story Mode. Online it's Expanded. The code is gaslighting me. — The User",
+            "sortDate": "2026-01-20T23:00:00",
+            "legacyPhase": "2026-01-20-h"
         },
         {
             "id": "2026-01-20-g",

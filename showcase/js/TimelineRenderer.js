@@ -14,6 +14,11 @@ class TimelineRenderer {
         this.activeSort = document.body.dataset.viewMode || 'story';
         this.searchQuery = '';
 
+        // Pagination
+        this.pageSize = 3;
+        this.currentPage = 0;
+        this.paginationEnabled = true;
+
         // Cache DOM elements
         this.toolbar = null;
         this.entriesContainer = null;
@@ -216,12 +221,22 @@ class TimelineRenderer {
         this.entriesContainer = document.createElement('div');
         this.entriesContainer.className = 'timeline-phases';
 
-        this.currentEntries.forEach(entry => {
+        // Determine which entries to show based on pagination
+        const entriesToShow = this.paginationEnabled 
+            ? this.currentEntries.slice(this.currentPage * this.pageSize, (this.currentPage + 1) * this.pageSize)
+            : this.currentEntries;
+
+        entriesToShow.forEach(entry => {
             const el = this.createEntryElement(entry);
             this.entriesContainer.appendChild(el);
         });
 
         this.container.appendChild(this.entriesContainer);
+
+        // Add pagination controls if enabled
+        if (this.paginationEnabled && this.currentEntries.length > this.pageSize) {
+            this.renderPaginationControls();
+        }
 
         // Re-apply spotlight if query exists
         if (this.searchQuery) this.applySpotlight();
@@ -231,6 +246,84 @@ class TimelineRenderer {
 
         // Dispatch content update event (for ScrollAnimator)
         window.dispatchEvent(new CustomEvent('uv7-content-updated'));
+    }
+
+    renderPaginationControls() {
+        const totalPages = Math.ceil(this.currentEntries.length / this.pageSize);
+        const startEntry = this.currentPage * this.pageSize + 1;
+        const endEntry = Math.min((this.currentPage + 1) * this.pageSize, this.currentEntries.length);
+
+        const paginationDiv = document.createElement('div');
+        paginationDiv.className = 'timeline-pagination';
+        paginationDiv.innerHTML = `
+            <div class="pagination-info">
+                Showing ${startEntry}-${endEntry} of ${this.currentEntries.length} entries
+            </div>
+            <div class="pagination-controls">
+                <button class="pagination-btn" data-action="prev" ${this.currentPage === 0 ? 'disabled' : ''}>
+                    ← Previous
+                </button>
+                <button class="pagination-btn view-all" data-action="toggle-all">
+                    View All
+                </button>
+                <button class="pagination-btn" data-action="next" ${this.currentPage >= totalPages - 1 ? 'disabled' : ''}>
+                    Next →
+                </button>
+            </div>
+            <div class="pagination-dots">
+                ${Array.from({length: totalPages}, (_, i) => 
+                    `<span class="pagination-dot ${i === this.currentPage ? 'active' : ''}" data-page="${i}"></span>`
+                ).join('')}
+            </div>
+        `;
+
+        // Event listeners
+        paginationDiv.querySelector('[data-action="prev"]')?.addEventListener('click', () => {
+            if (this.currentPage > 0) {
+                this.currentPage--;
+                this.renderTimeline();
+                this.scrollToTimeline();
+            }
+        });
+
+        paginationDiv.querySelector('[data-action="next"]')?.addEventListener('click', () => {
+            if (this.currentPage < totalPages - 1) {
+                this.currentPage++;
+                this.renderTimeline();
+                this.scrollToTimeline();
+            }
+        });
+
+        paginationDiv.querySelector('[data-action="toggle-all"]')?.addEventListener('click', () => {
+            this.paginationEnabled = !this.paginationEnabled;
+            this.currentPage = 0;
+            this.renderTimeline();
+            if (this.paginationEnabled) {
+                this.scrollToTimeline();
+            }
+        });
+
+        paginationDiv.querySelectorAll('.pagination-dot').forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                const page = parseInt(e.target.dataset.page);
+                if (!isNaN(page)) {
+                    this.currentPage = page;
+                    this.renderTimeline();
+                    this.scrollToTimeline();
+                }
+            });
+        });
+
+        this.container.appendChild(paginationDiv);
+    }
+
+    scrollToTimeline() {
+        // Smooth scroll to timeline top after pagination change
+        const toolbarRect = this.toolbar?.getBoundingClientRect();
+        if (toolbarRect) {
+            const scrollTarget = window.scrollY + toolbarRect.top - 80; // 80px offset for status bar
+            window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+        }
     }
 
     applySpotlight() {

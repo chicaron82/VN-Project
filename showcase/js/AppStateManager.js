@@ -383,6 +383,7 @@ class AppStateManager {
 
     formatTabName(tab) {
         const tabNames = {
+            home: 'Home',
             journey: 'Journey',
             workflow: 'Workflow',
             results: 'Results',

@@ -1,441 +1,240 @@
 // @ts-check
 /**
  * ═══════════════════════════════════════════════════════════════
- * TAB SWIPE CONTROLLER - Facebook-Style 1:1 Direct Manipulation
+ * TAB SWIPE CONTROLLER v2 - CSS Scroll-Snap Based
  * ═══════════════════════════════════════════════════════════════
  * 
- * Implements gesture-driven tab navigation with:
- * - Finger-tracked indicator (LERP interpolation)
- * - Content panning (follows swipe)
- * - Spring physics (bouncy settle)
- * - Velocity-based commit
+ * Rebuilt from scratch using CSS scroll-snap for native feel.
  * 
- * Contributors:
- * - Tori: Pointer Events architecture, edge resistance
- * - Belle: LERP math, indicator interpolation
- * - Zee: Spring easing, momentum physics
- * - Antigravity: Accessibility, reduced motion, state integration
+ * How it works:
+ * - Container is a horizontal scroll container with scroll-snap
+ * - Panels are 100% width, laid out side-by-side
+ * - Browser handles the 1:1 finger tracking and physics
+ * - JS only syncs the indicator and notifies TabController
+ * 
+ * This approach lets the platform handle the hard stuff (momentum,
+ * rubber-banding, smooth scrolling) while we handle the state.
  * ═══════════════════════════════════════════════════════════════
  */
 
 export class TabSwipeController {
     /**
      * @param {Object} config
-     * @param {HTMLElement} config.viewport - Content viewport to attach swipe listeners
-     * @param {HTMLElement} config.track - Flex container holding tab panels
-     * @param {NodeListOf<HTMLElement>} config.panels - Individual tab panels
+     * @param {HTMLElement} config.container - The scroll container
+     * @param {NodeListOf<HTMLElement>} config.panels - Tab panels
      * @param {HTMLElement} config.indicator - Tab indicator element
-     * @param {Function} config.onCommit - Callback when swipe commits to new tab
-     * @param {Function} config.getCurrentIndex - Get current active tab index
-     * @param {number} config.tabCount - Total number of tabs
-     * @param {Object} config.tabController - TabController instance for LERP updates
+     * @param {HTMLElement} config.tabBar - Tab bar element
+     * @param {Function} config.onTabChange - Called with new index on swipe
+     * @param {Function} config.getCurrentIndex - Returns current tab index
      */
     constructor(config) {
-        this.viewport = config.viewport;
-        this.track = config.track;
+        this.container = config.container;
         this.panels = config.panels;
         this.indicator = config.indicator;
-        this.onCommit = config.onCommit;
+        this.tabBar = config.tabBar;
+        this.onTabChange = config.onTabChange;
         this.getCurrentIndex = config.getCurrentIndex;
-        this.tabCount = config.tabCount;
-        this.tabController = config.tabController;
 
-        // State
-        /** @type {{isDragging: boolean, startX: number, currentX: number, startTime: number, pointerId: number|null}} */
-        this.state = {
-            isDragging: false,
-            startX: 0,
-            currentX: 0,
-            startTime: 0,
-            pointerId: null
-        };
-
-        // Velocity tracking
-        this.velocityTracker = new MomentumTracker();
-
-        // Thresholds
-        this.DISTANCE_THRESHOLD = 0.18; // 18% of viewport width
-        this.VELOCITY_THRESHOLD = 650; // px/s
-        this.EDGE_RESISTANCE = 0.25; // Damping at first/last tab
-
-        // Performance
-        this.rafId = null;
-
-        // Check for reduced motion preference
-        this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.tabCount = this.panels.length;
+        this.scrollTimeout = null;
+        this.lastIndex = 0;
+        this.isUserScrolling = false;
+        this.isProgrammaticScroll = false;
 
         this.init();
     }
 
     init() {
-        // Pointer Events (unified touch/mouse)
-        this.viewport.addEventListener('pointerdown', this.onPointerDown);
-        this.viewport.addEventListener('pointermove', this.onPointerMove);
-        this.viewport.addEventListener('pointerup', this.onPointerUp);
-        this.viewport.addEventListener('pointercancel', this.onPointerCancel);
+        // Enable swipe CSS layout
+        this.container.classList.add('swipe-enabled');
 
-        // Prevent default touch behavior on viewport
-        this.viewport.style.touchAction = 'pan-y'; // Allow vertical scroll only
-
-        // Enable flex layout for swipe panning
-        this.viewport.classList.add('swipe-enabled');
-
-        // Antigravity Enhancement: Accessibility announcements
-        this.setupAccessibility();
-
-        console.log('✅ TabSwipeController initialized');
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // ANTIGRAVITY ENHANCEMENTS
-    // ═══════════════════════════════════════════════════════════════
-
-    setupAccessibility() {
-        // Create aria-live region for screen reader announcements
-        this.ariaLive = document.createElement('div');
-        this.ariaLive.setAttribute('aria-live', 'polite');
-        this.ariaLive.setAttribute('aria-atomic', 'true');
-        this.ariaLive.className = 'sr-only';
-        this.ariaLive.style.cssText = 'position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;';
-        document.body.appendChild(this.ariaLive);
-    }
-
-    /**
-     * @param {string} tabName
-     */
-    announceTabChange(tabName) {
-        if (this.ariaLive) {
-            this.ariaLive.textContent = `Navigated to ${tabName} tab`;
-        }
-    }
-
-    // ═══════════════════════════════════════════════════════════════
-    // POINTER EVENT HANDLERS
-    // ═══════════════════════════════════════════════════════════════
-
-    /**
-     * @param {PointerEvent} e
-     */
-    onPointerDown = (e) => {
-        // Ignore if not primary pointer (multi-touch)
-        if (!e.isPrimary) return;
-
-        // Ignore if clicking on interactive elements
-        const target = /** @type {HTMLElement} */(e.target);
-        if (target.closest('button, a, input, textarea, [contenteditable]')) {
-            return;
-        }
-
-        // Start tracking
-        this.state.isDragging = true;
-        this.state.startX = e.clientX;
-        this.state.currentX = e.clientX;
-        this.state.startTime = Date.now();
-        this.state.pointerId = e.pointerId;
-
-        // Capture pointer so we don't lose it during drag
-        this.viewport.setPointerCapture(e.pointerId);
-
-        // Reset velocity tracker
-        this.velocityTracker.reset();
-        this.velocityTracker.update(e.clientX);
-
-        // Add dragging class (disables CSS transitions)
-        this.indicator.classList.add('dragging');
-        this.track.classList.add('dragging');
-
-        console.log('🖐️ Swipe started at', e.clientX);
-    }
-
-    /**
-     * @param {PointerEvent} e
-     */
-    onPointerMove = (e) => {
-        if (!this.state.isDragging) return;
-        if (e.pointerId !== this.state.pointerId) return;
-
-        // Throttle with RAF
-        if (this.rafId) return;
-
-        this.rafId = requestAnimationFrame(() => {
-            this.state.currentX = e.clientX;
-            const deltaX = this.state.currentX - this.state.startX;
-
-            // Update velocity tracker
-            this.velocityTracker.update(e.clientX);
-
-            // Update visuals
-            this.updateDragVisuals(deltaX);
-
-            this.rafId = null;
+        // Get initial index and scroll to it
+        this.lastIndex = this.getCurrentIndex();
+        
+        // Debug: log panel order
+        console.log('📋 Panel order:', Array.from(this.panels).map(p => p.dataset.panel));
+        
+        // Defer initial scroll to after CSS applies
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                this.scrollToIndex(this.lastIndex, false);
+                this.updateIndicator();
+                
+                // Force layout recalculation for all panels
+                this.panels.forEach(panel => {
+                    panel.style.display = 'block';
+                    // Trigger reflow
+                    void panel.offsetHeight;
+                });
+                
+                // Trigger resize event for responsive components
+                window.dispatchEvent(new Event('resize'));
+                
+                console.log('✅ TabSwipeController v2 initialized at tab', this.lastIndex);
+            });
         });
-    }
 
-    /**
-     * @param {PointerEvent} e
-     */
-    onPointerUp = (e) => {
-        if (!this.state.isDragging) return;
-        if (e.pointerId !== this.state.pointerId) return;
+        // Listen for scroll
+        this.container.addEventListener('scroll', this.onScroll, { passive: true });
 
-        const deltaX = this.state.currentX - this.state.startX;
-        const velocity = this.velocityTracker.getVelocity();
+        // Detect user-initiated scroll
+        this.container.addEventListener('touchstart', this.onTouchStart, { passive: true });
+        this.container.addEventListener('mousedown', this.onMouseDown);
 
-        console.log('🖐️ Swipe ended - deltaX:', deltaX, 'velocity:', velocity);
-
-        // Release pointer capture
-        this.viewport.releasePointerCapture(e.pointerId);
-
-        // Determine commit or cancel
-        this.handleSwipeEnd(deltaX, velocity);
-
-        // Cleanup
-        this.cleanup();
-    }
-
-    /**
-     * @param {PointerEvent} e
-     */
-    onPointerCancel = (e) => {
-        if (e.pointerId !== this.state.pointerId) return;
-
-        console.log('❌ Swipe cancelled');
-
-        // Cancel transition
-        this.cancelTransition();
-        this.cleanup();
+        // Sync on resize
+        window.addEventListener('resize', this.onResize);
     }
 
     // ═══════════════════════════════════════════════════════════════
-    // VISUAL UPDATES DURING DRAG
+    // EVENT HANDLERS
     // ═══════════════════════════════════════════════════════════════
 
-    /**
-     * @param {number} deltaX
-     */
-    updateDragVisuals(deltaX) {
-        const currentIndex = this.getCurrentIndex();
-        const viewportWidth = this.viewport.offsetWidth;
-
-        // Determine direction and target tab
-        const direction = deltaX > 0 ? -1 : 1; // Swipe right = previous tab
-        const targetIndex = currentIndex + direction;
-
-        // Apply edge resistance if at boundaries
-        let adjustedDelta = deltaX;
-        if (targetIndex < 0 || targetIndex >= this.tabCount) {
-            adjustedDelta *= this.EDGE_RESISTANCE;
-            console.log('🛑 Edge resistance applied:', adjustedDelta);
+    onTouchStart = () => {
+        if (!this.isProgrammaticScroll) {
+            this.isUserScrolling = true;
         }
+    };
 
-        // Calculate progress (0 to 1)
-        const progress = Math.min(1, Math.abs(adjustedDelta) / viewportWidth);
+    onMouseDown = () => {
+        if (!this.isProgrammaticScroll) {
+            this.isUserScrolling = true;
+        }
+    };
 
-        console.log(`📊 Drag: deltaX=${deltaX.toFixed(0)}px, progress=${(progress * 100).toFixed(1)}%, target=${targetIndex}`);
+    onScroll = () => {
+        // Live update indicator
+        this.updateIndicator();
 
-        // Phase 2: Update indicator position with LERP
-        if (this.tabController && targetIndex >= 0 && targetIndex < this.tabCount) {
-            // @ts-ignore - tabController is TabController instance
-            this.tabController.updateIndicatorPosition(currentIndex, targetIndex, progress);
+        // Debounce end detection
+        if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
+        this.scrollTimeout = setTimeout(this.onScrollEnd, 100);
+    };
 
-            // Add glow near threshold
-            if (progress > 0.7) {
-                this.indicator.classList.add('near-threshold');
+    onScrollEnd = () => {
+        const newIndex = this.getVisibleIndex();
+        
+        // Only notify if user swiped (not programmatic)
+        if (newIndex !== this.lastIndex && this.isUserScrolling) {
+            // Prevent skipping multiple panels - only allow movement of 1 panel at a time
+            const diff = newIndex - this.lastIndex;
+            const correctedIndex = this.lastIndex + (diff > 0 ? 1 : (diff < 0 ? -1 : 0));
+            
+            if (correctedIndex !== newIndex) {
+                console.log(`🛑 Prevented skip: ${this.lastIndex} → ${newIndex}, correcting to ${correctedIndex}`);
+                this.scrollToIndex(correctedIndex, true);
+                this.lastIndex = correctedIndex;
+                this.onTabChange(correctedIndex);
             } else {
-                this.indicator.classList.remove('near-threshold');
+                console.log(`👆 Swipe: ${this.lastIndex} → ${newIndex}`);
+                this.lastIndex = newIndex;
+                this.onTabChange(newIndex);
             }
         }
 
-        // Phase 3: Update content panning
-        const panelIndex = this.getCurrentIndex();
-        const baseOffset = -panelIndex * 100; // Current tab position (%)
-        const dragOffset = (adjustedDelta / viewportWidth) * 100; // Drag as percentage
+        this.isUserScrolling = false;
+        this.isProgrammaticScroll = false;
+    };
 
-        // Apply transform to track (negative because we're dragging content)
-        this.track.style.transform = `translateX(calc(${baseOffset}% + ${-dragOffset}%))`;
-    }
+    onResize = () => {
+        this.scrollToIndex(this.lastIndex, false);
+        this.updateIndicator();
+    };
 
     // ═══════════════════════════════════════════════════════════════
-    // COMMIT / CANCEL LOGIC
+    // SCROLL CONTROL
     // ═══════════════════════════════════════════════════════════════
 
     /**
-     * @param {number} deltaX
-     * @param {number} velocity
+     * Get which panel is most visible
+     * @returns {number}
      */
-    handleSwipeEnd(deltaX, velocity) {
-        const viewportWidth = this.viewport.offsetWidth;
-        const distanceThreshold = viewportWidth * this.DISTANCE_THRESHOLD;
-
-        // Check if should commit
-        const shouldCommit =
-            Math.abs(deltaX) > distanceThreshold ||
-            Math.abs(velocity) > this.VELOCITY_THRESHOLD;
-
-        if (shouldCommit) {
-            this.commitTransition(deltaX);
-        } else {
-            this.cancelTransition();
-        }
+    getVisibleIndex() {
+        const w = this.container.offsetWidth;
+        if (w === 0) return 0;
+        const scrollLeft = this.container.scrollLeft;
+        const index = Math.round(scrollLeft / w);
+        console.log(`📏 Scroll: ${scrollLeft}px, Width: ${w}px, Index: ${index}`);
+        return index;
     }
 
     /**
-     * @param {number} deltaX
+     * Scroll to tab index
+     * @param {number} index
+     * @param {boolean} smooth
      */
-    commitTransition(deltaX) {
-        const direction = deltaX > 0 ? -1 : 1;
-        const currentIndex = this.getCurrentIndex();
-        const targetIndex = currentIndex + direction;
+    scrollToIndex(index, smooth = true) {
+        const w = this.container.offsetWidth;
+        const target = index * w;
 
-        // Boundary check
-        if (targetIndex < 0 || targetIndex >= this.tabCount) {
-            console.log('⛔ Cannot commit - out of bounds');
-            this.cancelTransition();
-            return;
-        }
-
-        console.log(`✅ Commit transition: ${currentIndex} → ${targetIndex}`);
-
-        // Remove dragging class (re-enable transitions)
-        this.indicator.classList.remove('dragging');
-        this.track.classList.remove('dragging');
-
-        // Reset indicator glow
-        this.indicator.classList.remove('near-threshold');
-
-        // Phase 4: Haptic feedback
-        if (navigator.vibrate) {
-            navigator.vibrate(10); // Subtle tap
-        }
-
-        // Trigger commit callback (TabController will handle the transition)
-        this.onCommit(targetIndex);
-
-        // Antigravity Enhancement: Announce tab change
-        const tabButtons = document.querySelectorAll('.tab-item');
-        if (tabButtons[targetIndex]) {
-            const tabName = tabButtons[targetIndex].textContent?.trim() || 'Unknown';
-            this.announceTabChange(tabName);
-
-            // Scroll tab bar to keep target tab visible
-            this.scrollTabBarToTab(/** @type {HTMLElement} */(tabButtons[targetIndex]));
-        }
-
-        // Phase 4: Spring animation for content
-        // TabController handles the actual tab switch, we just need to reset transform
-        setTimeout(() => {
-            const newIndex = this.getCurrentIndex();
-            const baseOffset = -newIndex * 100;
-            this.track.style.transform = `translateX(${baseOffset}%)`;
-        }, 50); // Small delay to let TabController update first
-    }
-
-    cancelTransition() {
-        console.log('↩️ Cancel transition - spring back');
-
-        // Remove dragging class (re-enable spring transition)
-        this.indicator.classList.remove('dragging');
-        this.track.classList.remove('dragging');
-
-        // Phase 4: Spring back to original position
-        const currentIndex = this.getCurrentIndex();
-        const baseOffset = -currentIndex * 100;
-        this.track.style.transform = `translateX(${baseOffset}%)`;
-
-        // Reset indicator glow
-        this.indicator.classList.remove('near-threshold');
-    }
-
-    /**
-     * @param {HTMLElement} tabElement
-     */
-    scrollTabBarToTab(tabElement) {
-        const tabBar = tabElement.parentElement;
-        if (!tabBar) return;
-
-        // Check if tab bar has horizontal overflow
-        if (tabBar.scrollWidth <= tabBar.clientWidth) return;
-
-        // Calculate scroll position to center the tab
-        const tabRect = tabElement.getBoundingClientRect();
-        const barRect = tabBar.getBoundingClientRect();
-        const scrollLeft = tabBar.scrollLeft;
-
-        const targetScroll = scrollLeft + (tabRect.left - barRect.left) - (barRect.width / 2) + (tabRect.width / 2);
-
-        // Smooth scroll to target
-        tabBar.scrollTo({
-            left: targetScroll,
-            behavior: 'smooth'
+        this.isProgrammaticScroll = true;
+        
+        this.container.scrollTo({
+            left: target,
+            behavior: smooth ? 'smooth' : 'instant'
         });
+
+        this.lastIndex = index;
+        console.log(`📍 Scroll to tab ${index} (${target}px)`);
+    }
+
+    /**
+     * External call to sync position (from TabController)
+     * @param {number} index
+     */
+    syncToTab(index) {
+        // Always scroll to ensure we're at the right position
+        // The getVisibleIndex check was causing issues when state got out of sync
+        this.scrollToIndex(index, true);
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // INDICATOR - Smooth interpolation during scroll
+    // ═══════════════════════════════════════════════════════════════
+
+    updateIndicator() {
+        if (!this.indicator || !this.tabBar) return;
+
+        const w = this.container.offsetWidth;
+        if (w === 0) return;
+
+        // Calculate scroll progress (0 = tab 0, 1 = tab 1, etc)
+        const progress = this.container.scrollLeft / w;
+
+        // Get tab buttons for positions
+        const btns = this.tabBar.querySelectorAll('[data-tab]');
+        if (btns.length === 0) return;
+
+        // Which two tabs are we between?
+        const i = Math.floor(progress);
+        const j = Math.min(i + 1, btns.length - 1);
+        const t = progress - i; // 0-1 interpolation factor
+
+        const btnA = /** @type {HTMLElement} */ (btns[i]);
+        const btnB = /** @type {HTMLElement} */ (btns[j]);
+        if (!btnA) return;
+
+        const rectA = btnA.getBoundingClientRect();
+        const rectB = btnB.getBoundingClientRect();
+        const barRect = this.tabBar.getBoundingClientRect();
+
+        // LERP position and width
+        const left = rectA.left + (rectB.left - rectA.left) * t - barRect.left;
+        const width = rectA.width + (rectB.width - rectA.width) * t;
+
+        this.indicator.style.transform = `translateX(${left}px)`;
+        this.indicator.style.width = `${width}px`;
     }
 
     // ═══════════════════════════════════════════════════════════════
     // CLEANUP
     // ═══════════════════════════════════════════════════════════════
 
-    cleanup() {
-        this.state.isDragging = false;
-        this.state.pointerId = null;
-
-        if (this.rafId) {
-            cancelAnimationFrame(this.rafId);
-            this.rafId = null;
-        }
-    }
-
     destroy() {
-        this.viewport.removeEventListener('pointerdown', this.onPointerDown);
-        this.viewport.removeEventListener('pointermove', this.onPointerMove);
-        this.viewport.removeEventListener('pointerup', this.onPointerUp);
-        this.viewport.removeEventListener('pointercancel', this.onPointerCancel);
-
-        // Clean up aria-live region
-        if (this.ariaLive && this.ariaLive.parentNode) {
-            this.ariaLive.parentNode.removeChild(this.ariaLive);
-        }
-
-        this.cleanup();
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════
-// MOMENTUM TRACKER - Velocity Calculation
-// ═══════════════════════════════════════════════════════════════
-
-class MomentumTracker {
-    constructor() {
-        /** @type {Array<{x: number, time: number}>} */
-        this.positions = [];
-        this.maxSamples = 5;
-    }
-
-    reset() {
-        this.positions = [];
-    }
-
-    /**
-     * @param {number} x
-     */
-    update(x) {
-        const now = Date.now();
-        this.positions.push({ x, time: now });
-
-        // Keep only recent samples
-        if (this.positions.length > this.maxSamples) {
-            this.positions.shift();
-        }
-    }
-
-    getVelocity() {
-        if (this.positions.length < 2) return 0;
-
-        const first = this.positions[0];
-        const last = this.positions[this.positions.length - 1];
-
-        const deltaX = last.x - first.x;
-        const deltaT = (last.time - first.time) / 1000; // seconds
-
-        return deltaT > 0 ? deltaX / deltaT : 0;
+        this.container.removeEventListener('scroll', this.onScroll);
+        this.container.removeEventListener('touchstart', this.onTouchStart);
+        this.container.removeEventListener('mousedown', this.onMouseDown);
+        window.removeEventListener('resize', this.onResize);
+        this.container.classList.remove('swipe-enabled');
+        if (this.scrollTimeout) clearTimeout(this.scrollTimeout);
     }
 }

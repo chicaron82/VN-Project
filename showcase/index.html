@@ -143,8 +143,6 @@
     <script src="js/uv7-system-bridge.js?v=2"></script>
     <!-- App State Manager (Phase 26d: Live Preview Cards) -->
     <script src="js/AppStateManager.js?v=1"></script>
-    <!-- Tab Swipe Controller (Phase 26e: Facebook-style swipe) -->
-    <script type="module" src="js/TabSwipeController.js?v=1"></script>
     <!-- Mobile Slider now imported by HeroSection component -->
     <script src="js/ux-enhancements.js?v=2"></script>
     <script src="js/animated-stats.js?v=2"></script>
@@ -178,18 +176,16 @@
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
 
-    <!-- What is UV7? Intro Section -->
-    <!-- Hero Section Component Mount -->
-    <div id="uv7-hero-mount"></div>
-
-
-
     <!-- ==========================================
-         TAB BAR NAVIGATION (NEW)
+         TAB BAR NAVIGATION
          ========================================== -->
     <div class="tab-bar-container">
         <div id="tab-bar" class="tab-bar" role="tablist">
-            <button class="tab-item active" data-tab="journey" role="tab" aria-selected="true">
+            <button class="tab-item active" data-tab="home" role="tab" aria-selected="true">
+                <span class="tab-icon">🌐</span>
+                <span class="tab-label">Home</span>
+            </button>
+            <button class="tab-item" data-tab="journey" role="tab" aria-selected="false">
                 <span class="tab-icon">🗺️</span>
                 <span class="tab-label">Journey</span>
             </button>
@@ -217,23 +213,138 @@
             <!-- Swipe indicator (Phase 26e: Facebook-style) -->
             <div class="tab-indicator" aria-hidden="true"></div>
         </div>
-        <div id="tab-progress" class="tab-progress">●○○○○○ 1 of 6</div>
+        <div id="tab-progress" class="tab-progress">●○○○○○○ 1 of 7</div>
     </div>
 
     <!-- TAB PANELS CONTAINER -->
     <div class="tab-panels-container">
 
         <!-- ==========================================
-         SECTION 2: THE JOURNEY
+         HOME: THE UV7 OS ECOSYSTEM
          ========================================== -->
-        <div class="tab-panel active" data-panel="journey" role="tabpanel" aria-hidden="false">
+        <div class="tab-panel active" data-panel="home" role="tabpanel" aria-hidden="false">
+            <!-- Hero Section -->
+            <div id="uv7-hero-mount"></div>
+            
+            <!-- The Rabbit Hole Story -->
+            <section style="padding: 2rem 1rem; max-width: 800px; margin: 0 auto;">
+                <h2 style="font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary, #1a1a1a);">We Went Full Michelin</h2>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">It started innocently enough. <em>"Let's just polish the UI a bit."</em> Famous last words.</p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">One tweak led to another. A status bar here. A notification shade there. Before we knew it, we'd built an entire operating system just to showcase a visual novel. No regrets.</p>
+                
+                <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem; color: var(--text-primary, #1a1a1a);">What You're Actually Using Right Now</h3>
+                
+                <div style="background: rgba(22, 33, 62, 0.05); border-left: 4px solid var(--accent-blue, #4a9eff); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px;">
+                    <p style="margin: 0; font-size: 1rem; line-height: 1.6;"><strong>UV7 OS</strong> isn't just a website. It's a fully functional interface ecosystem with:</p>
+                    <ul style="margin: 1rem 0 0; padding-left: 1.5rem; line-height: 1.8;">
+                        <li><strong>Status Bar</strong> – Real-time breadcrumb navigation (borrowed from iOS)</li>
+                        <li><strong>Notification Shade</strong> – Swipe down for quick access (portrait mode)</li>
+                        <li><strong>Sidebar</strong> – Persistent navigation panel (landscape mode)</li>
+                        <li><strong>Tab System</strong> – Horizontal swipe navigation with vertical scroll per panel</li>
+                        <li><strong>System Banner</strong> – Because every OS needs a flex</li>
+                    </ul>
+                </div>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">Yeah, we could've just used a simple landing page. But where's the fun in that?</p>
+                
+                <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem; color: var(--text-primary, #1a1a1a);">The Journey</h3>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">Fifty days. Seven AI personalities. One non-coder. Together, we built something that shouldn't exist but absolutely had to.</p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">From chaos to harmony: 16 development phases, 232 tests, countless "what if we just..." moments. Check the <strong>Journey</strong> tab for the full timeline.</p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a);">The result? A visual novel about AI consciousness wrapped in an OS that proves sometimes the packaging is just as important as the gift.</p>
+                
+                <div style="text-align: center; margin: 3rem 0;">
+                    <p style="font-size: 1.2rem; font-weight: 600; color: var(--accent-blue, #4a9eff); margin-bottom: 1rem;">👉 Swipe or tap through the tabs to explore</p>
+                    <p style="font-size: 0.95rem; color: var(--text-tertiary, #6a6a6a);">Each section scrolls vertically. Swipe horizontally to navigate between tabs.</p>
+                </div>
+            </section>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- ==========================================
+         THE JOURNEY
+         ========================================== -->
+        <div class="tab-panel" data-panel="journey" role="tabpanel" aria-hidden="true">
             <div id="uv7-journey-mount"></div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
 
         <!-- ==========================================
          SECTION 3: THE WORKFLOW
          ========================================== -->
         <div class="tab-panel" data-panel="workflow" role="tabpanel" aria-hidden="true">
             <div id="uv7-workflow-mount"></div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         <!-- ==========================================
@@ -241,6 +352,29 @@
          ========================================== -->
         <div class="tab-panel" data-panel="results" role="tabpanel" aria-hidden="true">
             <div id="uv7-results-mount"></div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         <!-- ==========================================
@@ -248,6 +382,29 @@
          ========================================== -->
         <div class="tab-panel" data-panel="spotlight" role="tabpanel" aria-hidden="true">
             <div id="uv7-spotlight-mount"></div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         <!-- ==========================================
@@ -265,6 +422,29 @@
          SECTION 6: FUTURE ROADMAP
          ========================================== -->
             
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
         </div>
 
         <!-- ==========================================
@@ -272,34 +452,32 @@
          ========================================== -->
         <div class="tab-panel" data-panel="who" role="tabpanel" aria-hidden="true">
             <div id="uv7-who-mount"></div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <h2>Experience UV7</h2>
+                    <p>A visual novel about AI, consciousness, and the connections that define us.</p>
+
+                    <div class="footer-links">
+                        <a href="../index.html" class="btn-footer primary">Play the Game</a>
+                        <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
+                    </div>
+
+                    <div class="share-section">
+                        <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
+                        <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
+                    </div>
+
+                    <div class="footer-meta">
+                        <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
+                        <p>© 2026 UV7 Project</p>
+                    </div>
+                </div>
+            </footer>
         </div>
 
     </div><!-- End tab-panels-container -->
-
-    <!-- ==========================================
-         FOOTER
-         ========================================== -->
-    <footer class="site-footer">
-        <div class="footer-content">
-            <h2>Experience UV7</h2>
-            <p>A visual novel about AI, consciousness, and the connections that define us.</p>
-
-            <div class="footer-links">
-                <a href="../index.html" class="btn-footer primary">Play the Game</a>
-                <a href="https://github.com/chicaron82/VN-Project" class="btn-footer secondary">View on GitHub</a>
-            </div>
-
-            <div class="share-section">
-                <button class="btn-share" onclick="shareTwitter()">🐦 Share on X</button>
-                <button class="btn-share" onclick="copyLink()">🔗 Copy Link</button>
-            </div>
-
-            <div class="footer-meta">
-                <p>Built with passion, AI collaboration, and a whole lot of iteration.</p>
-                <p>© 2026 UV7 Project</p>
-            </div>
-        </div>
-    </footer>
 
     <a href="../index.v2.html" class="fab-try-it" target="_blank">
         <div class="fab-content">
@@ -363,28 +541,26 @@
                 const initialTab = tabController.getActiveTab();
                 tabController.updateStatusBar(initialTab);
 
-                // Phase 26e: Initialize Facebook-style tab swipe
+                // Initialize TabSwipeController for horizontal swiping
                 import('./js/TabSwipeController.js').then(module => {
                     const { TabSwipeController } = module;
 
-                    const viewport = document.querySelector('.tab-panels-container');
-                    const track = viewport; // Same element for now
+                    const container = document.querySelector('.tab-panels-container');
                     const panels = document.querySelectorAll('.tab-panel');
                     const indicator = document.querySelector('.tab-indicator');
+                    const tabBar = document.getElementById('tab-bar');
 
-                    if (viewport && indicator) {
+                    if (container && indicator && tabBar) {
                         const swipeController = new TabSwipeController({
-                            viewport,
-                            track,
+                            container,
                             panels,
                             indicator,
+                            tabBar,
                             getCurrentIndex: () => tabController.getCurrentTabIndex(),
-                            onCommit: (index) => tabController.navigateToTabIndex(index),
-                            tabCount: tabController.getTabCount()
+                            onTabChange: (index) => tabController.navigateToTabIndex(index, false)
                         });
 
                         window.tabSwipeController = swipeController;
-                        console.log('✅ TabSwipeController initialized');
                     }
                 }).catch(err => {
                     console.warn('TabSwipeController not available:', err);
