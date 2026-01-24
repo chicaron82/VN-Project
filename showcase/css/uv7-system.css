@@ -1,0 +1,2123 @@
+/* ═══════════════════════════════════════════════════════════════
+   UV7 OS - STATUS BAR & NAVIGATION
+   Universal navigation system for UV7 ecosystem
+   
+   Contributors:
+   - Ronnie (Architecture & Vision)
+   - Belle (Settings Integration & Meta-Narrative)
+   - DiZee (Implementation)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BAR (Fixed Top)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+    --uv7-statusbar-h: 44px;
+    --uv7-banner-h: 16px;
+    --uv7-top-stack: calc(var(--uv7-statusbar-h) + var(--uv7-banner-h));
+    --uv7-accent: #00ff88;
+}
+
+.uv7-status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--uv7-statusbar-h);
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    z-index: 10000;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    font-size: 14px;
+    color: #e0e0e0;
+    user-select: none;
+}
+
+.status-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-logo {
+    font-weight: 700;
+    color: #00ff88;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.status-logo:hover {
+    opacity: 0.7;
+}
+
+.status-context {
+    opacity: 0.7;
+}
+
+.status-context::before {
+    content: '::';
+    margin-right: 8px;
+    opacity: 0.5;
+}
+
+.status-detail {
+    opacity: 0.5;
+    font-size: 12px;
+}
+
+.status-detail::before {
+    content: '::';
+    margin-right: 8px;
+}
+
+.status-icon {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+    font-size: 16px;
+}
+
+.status-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.status-icon:active {
+    transform: scale(0.95);
+}
+
+/* 
+   NOTE: 
+   Notification Shade moved to css/components/shade.css
+   Sidebar moved to css/components/sidebar.css
+*//* ═══════════════════════════════════════════════════════════════
+   UV7 OS - APP SWITCHER (BOUGIE EDITION) 💎
+   iOS/Android-style app switcher with instant resume
+   
+   Contributors:
+   - Ronnie (Vision: "Make it bougie" + Cross-app resume concept)
+   - ZeeRah (Architecture: State restoration pattern + Android gestures)
+   - DiZee (Enhancement: Live state + mini preview)
+   - DiZee (Polish: Premium UX + swipe-to-clear)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════════
+   APP SWITCHER OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-app-switcher {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(10, 10, 18, 0.95);
+    /* Cyber Texture */
+    background-image: url('media/textures/sidebar-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    z-index: 10001;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.uv7-app-switcher.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════════════════════ */
+.app-switcher-header {
+    position: sticky;
+    top: 0;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.app-switcher-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+}
+
+.app-switcher-header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.clear-all-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.2s;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.clear-all-btn:hover {
+    opacity: 1;
+    background: rgba(255, 60, 60, 0.2);
+    color: #ff6666;
+}
+
+.app-switcher-close {
+    background: none;
+    border: none;
+    color: #e0e0e0;
+    font-size: 24px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-switcher-close:hover {
+    opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT
+   ═══════════════════════════════════════════════════════════════ */
+.app-switcher-content {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.app-switcher-section {
+    margin-bottom: 2rem;
+}
+
+.app-switcher-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 1rem;
+    padding: 0 0.5rem;
+}
+
+/* App Cards Grid */
+.app-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+    .app-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP CARD - Phase 26d Premium Polish
+   ═══════════════════════════════════════════════════════════════ */
+.app-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        background 0.3s ease,
+        border-color 0.3s ease;
+    position: relative;
+    will-change: transform, box-shadow;
+}
+
+/* Phase 26d: Premium hover lift with shadow bloom */
+.app-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 136, 0.4);
+    transform: translateY(-8px) scale(1.02);
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 136, 0.15),
+        0 0 60px rgba(0, 255, 136, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.app-card:active {
+    transform: translateY(-4px) scale(0.99);
+    transition-duration: 0.1s;
+}
+
+.app-card.active {
+    border-color: rgba(0, 255, 136, 0.5);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.app-card.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    z-index: 2;
+}
+
+/* HANGRY state for ToriGatchi */
+.app-card.hangry {
+    border-color: rgba(255, 60, 60, 0.5);
+    animation: pulse-hangry 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hangry {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 60, 60, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 20px 5px rgba(255, 60, 60, 0.2);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   QUICK RESUME BADGE - RONNIE'S BOUGIE TOUCH
+   ═══════════════════════════════════════════════════════════════ */
+.quick-resume-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #00ff88, #00ccff);
+    color: #000;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    z-index: 3;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 12px rgba(0, 255, 136, 0.5);
+    animation: badge-glow 3s ease-in-out infinite;
+}
+
+@keyframes badge-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 2px 12px rgba(0, 255, 136, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 2px 20px rgba(0, 255, 136, 0.8);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   X BUTTON (DESKTOP) - ANDROID MULTITASKING
+   ═══════════════════════════════════════════════════════════════ */
+.app-card-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 60, 60, 0.9);
+    backdrop-filter: blur(10px);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 0;
+    z-index: 4;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.app-card:hover .app-card-close {
+    opacity: 1;
+}
+
+.app-card-close:hover {
+    transform: scale(1.15);
+    background: #ff3c3c;
+    box-shadow: 0 4px 15px rgba(255, 60, 60, 0.5);
+}
+
+/* Hide X on mobile - use swipe instead */
+@media (max-width: 768px) {
+    .app-card-close {
+        display: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP PREVIEW (SCREENSHOT/THUMBNAIL)
+   ═══════════════════════════════════════════════════════════════ */
+.app-preview {
+    height: 180px;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 204, 255, 0.1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-preview::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(0, 255, 136, 0.2), transparent 60%),
+        radial-gradient(circle at 70% 70%, rgba(0, 204, 255, 0.2), transparent 60%);
+}
+
+.app-preview-icon {
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.app-card:hover .app-preview-icon {
+    transform: scale(1.1);
+}
+
+/* ToriGatchi hangry icon animation */
+.app-card.hangry .app-preview-icon {
+    animation: shake-hangry 0.5s ease-in-out infinite;
+}
+
+@keyframes shake-hangry {
+
+    0%,
+    100% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   APP INFO
+   ═══════════════════════════════════════════════════════════════ */
+.app-info {
+    padding: 1rem;
+}
+
+.app-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.app-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.app-badge.active {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+}
+
+.app-badge.recent {
+    background: rgba(0, 204, 255, 0.2);
+    color: #00ccff;
+}
+
+.app-description {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.app-state {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.app-state-item {
+    font-size: 11px;
+    color: #aaa;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Timestamp styling */
+.app-state-item.time {
+    color: #00ccff;
+    border-color: rgba(0, 204, 255, 0.3);
+    background: rgba(0, 204, 255, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROGRESS BAR - VISUAL SAVVY
+   ═══════════════════════════════════════════════════════════════ */
+.app-progress {
+    margin-top: 10px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.app-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.app-progress-text {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    font-size: 10px;
+    color: #888;
+    font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SWIPE ANIMATION STATES
+   ═══════════════════════════════════════════════════════════════ */
+.app-card.swiping {
+    transition: none !important;
+    pointer-events: none;
+}
+
+.app-card.clearing {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transform: translateY(-120%) !important;
+    opacity: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UNDO TOAST - DIZEE'S SAFETY NET
+   ═══════════════════════════════════════════════════════════════ */
+.uv7-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 10003;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.uv7-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.uv7-toast-message {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.uv7-toast-undo {
+    background: linear-gradient(135deg, #00ff88, #00ccff);
+    color: #000;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+}
+
+.uv7-toast-undo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HINTS
+   ═══════════════════════════════════════════════════════════════ */
+.app-switcher-hint {
+    text-align: center;
+    padding: 1rem;
+    color: #666;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.hint-desktop {
+    display: inline;
+}
+
+.hint-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hint-desktop {
+        display: none;
+    }
+
+    .hint-mobile {
+        display: inline;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+    .app-preview {
+        height: 140px;
+        font-size: 36px;
+    }
+
+    .app-info {
+        padding: 0.75rem;
+    }
+
+    .app-name {
+        font-size: 14px;
+    }
+
+    .app-description {
+        font-size: 12px;
+    }
+
+    .quick-resume-badge {
+        font-size: 9px;
+        padding: 3px 8px;
+    }
+
+    .uv7-toast {
+        left: 1rem;
+        right: 1rem;
+        transform: translateX(0) translateY(100px);
+        bottom: 80px;
+    }
+
+    .uv7-toast.show {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    .uv7-app-switcher,
+    .app-card,
+    .quick-resume-badge,
+    .uv7-toast {
+        transition: none;
+    }
+
+    .app-card:hover {
+        transform: none;
+    }
+
+    .quick-resume-badge,
+    .app-card.hangry {
+        animation: none;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: PREVIEW META OVERLAY
+   Live preview cards with state persistence
+   ═══════════════════════════════════════════════════════════════ */
+.app-preview-meta-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 2;
+}
+
+.preview-badge {
+    display: inline-block;
+    width: fit-content;
+    padding: 3px 8px;
+    background: rgba(0, 255, 136, 0.2);
+    border: 1px solid rgba(0, 255, 136, 0.4);
+    border-radius: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #00ff88;
+}
+
+.preview-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Preview subtitle styling */
+.app-state-item.preview {
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.3);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+/* Has preview enhancement */
+.app-card.has-preview .app-preview {
+    height: 200px;
+}
+
+.app-card.has-preview:hover {
+    border-color: rgba(0, 255, 136, 0.5);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 136, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: STAGGER FADE-IN ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+.app-card {
+    animation: card-slide-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+}
+
+.app-card:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.app-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.app-card:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.app-card:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.app-card:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+.app-card:nth-child(6) {
+    animation-delay: 0.3s;
+}
+
+@keyframes card-slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: ENHANCED GLASSMORPHISM OVERLAY
+   ═══════════════════════════════════════════════════════════════ */
+.app-preview-meta-overlay {
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.85) 0%,
+            rgba(0, 0, 0, 0.6) 50%,
+            transparent 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* Enhanced preview badge glow */
+.preview-badge {
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+    transition: all 0.3s ease;
+}
+
+.app-card:hover .preview-badge {
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+    background: rgba(0, 255, 136, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: TIMESTAMP HUMANIZATION STYLES
+   ═══════════════════════════════════════════════════════════════ */
+.app-state-item.time {
+    position: relative;
+    padding-left: 20px;
+}
+
+.app-state-item.time::before {
+    content: '⏱️';
+    position: absolute;
+    left: 5px;
+    font-size: 10px;
+}
+
+/* "Just now" highlight */
+.app-state-item.time.recent {
+    color: #00ff88;
+    border-color: rgba(0, 255, 136, 0.4);
+    background: rgba(0, 255, 136, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: ICON PARALLAX ON HOVER
+   ═══════════════════════════════════════════════════════════════ */
+.app-preview-icon {
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-card:hover .app-preview-icon {
+    transform: scale(1.15) translateY(-5px);
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.4));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: PER-APP VISUAL THEMES
+   V1 = Chaos (Glitch), V2 = Order (Purple), ToriGatchi = Life (Green)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* V1 CHAOS THEME - Glitch shimmer effect */
+.app-card[data-app="v1"] .app-preview {
+    background: linear-gradient(135deg, rgba(0, 255, 65, 0.15), rgba(0, 0, 0, 0.9)) !important;
+    position: relative;
+}
+
+.app-card[data-app="v1"] .app-preview::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(transparent 50%, rgba(0, 255, 65, 0.03) 50%),
+        linear-gradient(90deg, transparent 50%, rgba(0, 255, 65, 0.02) 50%);
+    background-size: 4px 4px;
+    pointer-events: none;
+    animation: v1-scanlines 0.1s linear infinite;
+}
+
+@keyframes v1-scanlines {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 0 4px;
+    }
+}
+
+.app-card[data-app="v1"]:hover {
+    border-color: rgba(0, 255, 65, 0.5) !important;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(0, 255, 65, 0.2),
+        0 0 40px rgba(0, 255, 65, 0.1) !important;
+}
+
+/* V1 Glitch text effect on hover */
+.app-card[data-app="v1"]:hover .app-preview-icon {
+    animation: glitch-shake 0.3s ease infinite;
+}
+
+@keyframes glitch-shake {
+
+    0%,
+    100% {
+        transform: scale(1.15) translateY(-5px) translateX(0);
+    }
+
+    25% {
+        transform: scale(1.15) translateY(-5px) translateX(-2px);
+    }
+
+    75% {
+        transform: scale(1.15) translateY(-5px) translateX(2px);
+    }
+}
+
+/* V2 PURPLE ORDER THEME */
+.app-card[data-app="v2"] .app-preview {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.15)) !important;
+}
+
+.app-card[data-app="v2"]:hover {
+    border-color: rgba(102, 126, 234, 0.5) !important;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(102, 126, 234, 0.2),
+        0 0 40px rgba(118, 75, 162, 0.1) !important;
+}
+
+/* TORIGATCHI LIFE THEME - Pulsing green */
+.app-card[data-app="torigatchi"] .app-preview {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(26, 26, 46, 0.9)) !important;
+}
+
+.app-card[data-app="torigatchi"]:hover {
+    border-color: rgba(0, 255, 136, 0.5) !important;
+}
+
+/* SHOWCASE BLUE ORDER THEME */
+.app-card[data-app="showcase"] .app-preview {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.2), rgba(44, 62, 80, 0.15)) !important;
+}
+
+.app-card[data-app="showcase"]:hover {
+    border-color: rgba(52, 152, 219, 0.5) !important;
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(52, 152, 219, 0.2),
+        0 0 40px rgba(52, 152, 219, 0.1) !important;
+}
+
+/* LANDING NEUTRAL THEME */
+.app-card[data-app="landing"] .app-preview {
+    background: linear-gradient(135deg, rgba(248, 249, 250, 0.1), rgba(44, 62, 80, 0.2)) !important;
+}
+
+.app-card[data-app="landing"]:hover {
+    border-color: rgba(0, 204, 255, 0.4) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PHASE 26d: NOTIFICATION BADGES
+   Shows new content count on app cards
+   ═══════════════════════════════════════════════════════════════ */
+.app-notification-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    background: linear-gradient(135deg, #ff4444, #ff6666);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    box-shadow:
+        0 2px 8px rgba(255, 68, 68, 0.5),
+        0 0 15px rgba(255, 68, 68, 0.3);
+    animation: notification-pulse 2s ease-in-out infinite;
+    border: 2px solid rgba(0, 0, 0, 0.8);
+}
+
+@keyframes notification-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(255, 68, 68, 0.5), 0 0 15px rgba(255, 68, 68, 0.3);
+    }
+
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(255, 68, 68, 0.6), 0 0 25px rgba(255, 68, 68, 0.5);
+    }
+}
+
+/* Notification badge on hover - stop animation */
+.app-card:hover .app-notification-badge {
+    animation: none;
+    transform: scale(1.15);
+    box-shadow: 0 4px 15px rgba(255, 68, 68, 0.7);
+}/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR COMPONENT (Control Center)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Container */
+.uv7-sidebar {
+    position: fixed;
+    top: 60px;
+    /* 44px Status Bar + 16px System Banner */
+    right: 0;
+    left: auto;
+    bottom: 0;
+    width: 320px;
+
+    /* Visuals */
+    background: rgba(10, 10, 18, 0.85);
+    /* Darker base */
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+
+    /* Cyber Texture */
+    background-image: url('../../media/textures/sidebar-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+
+    /* Animation */
+    transform: translateX(100%);
+    /* Slide from right */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 9998;
+
+    /* Layout */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+    /* Hidden by default on mobile, handled by media query usually or JS */
+}
+
+/* Desktop override based on existing logic */
+@media (min-width: 769px) {
+    .uv7-sidebar {
+        display: block;
+    }
+}
+
+.uv7-sidebar.open {
+    transform: translateX(0);
+}
+
+/* Header */
+.uv7-sidebar .sidebar-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+}
+
+.uv7-sidebar .sidebar-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Content */
+.uv7-sidebar .sidebar-content {
+    padding: 1.5rem;
+}
+
+.sidebar-section {
+    margin-bottom: 2rem;
+}
+
+.sidebar-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+/* Quick Actions Grid (Sidebar) */
+.uv7-sidebar .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.uv7-sidebar .quick-action {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.75rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    color: #fff;
+    font-family: inherit;
+}
+
+.uv7-sidebar .quick-action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.uv7-sidebar .quick-action:active {
+    transform: translateY(0);
+}
+
+.uv7-sidebar .quick-action-icon {
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+.uv7-sidebar .quick-action-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
+}
+
+/* Directory Navigation List */
+.uv7-sidebar .section-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.uv7-sidebar .section-nav-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+}
+
+.uv7-sidebar .section-nav-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 136, 0.3);
+    transform: translateX(4px);
+    color: #fff;
+}
+
+.uv7-sidebar .section-nav-item .section-icon {
+    font-size: 18px;
+    opacity: 0.7;
+}
+
+.uv7-sidebar .section-nav-item .section-label {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* System Stats Widget */
+.system-stats-widget {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.stat-row {
+    margin-bottom: 0.75rem;
+}
+
+.stat-row:last-child {
+    margin-bottom: 0;
+}
+
+.stat-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: #adb5bd;
+}
+
+.stat-value {
+    color: #fff;
+    font-family: 'Courier Prime', monospace;
+}
+
+.stat-value.status-online {
+    color: #00ff88;
+    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+}
+
+.stat-bar-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00ccff);
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+    transition: width 0.5s ease-out;
+}
+
+/* Sidebar Toggle (Right Side - Floating Action Button) */
+.uv7-sidebar-toggle {
+    position: fixed;
+    top: 75px;
+    /* Clear of header chrome */
+    right: 20px;
+    width: 48px;
+    height: 48px;
+
+    background: rgba(10, 10, 15, 0.9);
+    backdrop-filter: blur(12px);
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 136, 0.4);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 9999;
+
+    color: #00ff88;
+    font-size: 20px;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 136, 0.2);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.uv7-sidebar-toggle:hover {
+    transform: scale(1.1);
+    background: rgba(0, 255, 136, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
+}
+
+.uv7-sidebar-toggle.active {
+    background: rgba(0, 255, 136, 0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+}
+
+/* Backdrop */
+.uv7-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 9997;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.uv7-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+}/* ═══════════════════════════════════════════════════════════════
+   NOTIFICATION SHADE (Mobile)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Scroll Lock - Prevents background scrolling when shade/sidebar is open */
+body.uv7-no-scroll {
+    overflow: hidden !important;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
+
+.uv7-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(15, 15, 20, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 9999;
+
+    transform: translateY(-100%);
+    /* Hidden (top) */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    display: flex;
+    flex-direction: column;
+
+    /* Cyber Texture */
+    background-image: url('../../media/textures/cyber_grid_texture_dark.png');
+    background-size: 400px;
+    background-repeat: repeat;
+    background-blend-mode: soft-light;
+}
+
+.uv7-shade.open {
+    transform: translateY(0);
+}
+
+/* Header */
+.uv7-shade .shade-header {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    padding-top: env(safe-area-inset-top, 20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.uv7-shade .shade-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+}
+
+.uv7-shade .shade-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    padding: 8px;
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* Content */
+.uv7-shade .shade-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    padding-bottom: 100px;
+    /* Space for bottom nav */
+}
+
+.uv7-shade .shade-section {
+    margin-bottom: 2.5rem;
+}
+
+.uv7-shade .shade-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 1rem;
+    padding-left: 0.5rem;
+}
+
+/* Quick Actions Grid (Mobile) */
+.uv7-shade .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 Columns */
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.uv7-shade .quick-action {
+    aspect-ratio: 1;
+    padding: 0.75rem;
+    gap: 0.25rem;
+
+    /* Visual Styling - Matching Sidebar */
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+    font-family: inherit;
+}
+
+.uv7-shade .quick-action:hover,
+.uv7-shade .quick-action:active {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.uv7-shade .quick-action-icon {
+    font-size: 20px;
+    margin-bottom: 0;
+}
+
+.uv7-shade .quick-action-label {
+    font-size: 9px;
+    display: none;
+    /* Hide labels for dense 4-col layout by default or keep minimal */
+}
+
+/* Section Nav List (Reuse sidebar styles logic or specific shade override) */
+.uv7-shade .section-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.uv7-shade .section-nav-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.uv7-shade .section-nav-item .section-icon {
+    font-size: 20px;
+}
+
+@media (min-width: 769px) {
+    .uv7-shade {
+        display: none;
+        /* Hide on desktop */
+    }
+}/* ========================================
+   TAB BAR STYLES
+   Glassmorphic horizontal navigation
+   UV7 OS aesthetic
+   ======================================== */
+
+
+
+/* System Banner (Michelin Polish) */
+.system-banner {
+    position: fixed;
+    top: var(--uv7-statusbar-h, 44px);
+    /* Below status bar */
+    left: 0;
+    right: 0;
+    z-index: 9000;
+    background: #000;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    height: var(--uv7-banner-h, 16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sys-signal {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #00ff88;
+    animation: signalPulse 2s infinite;
+}
+
+@keyframes signalPulse {
+    0% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+.tab-bar-container {
+    position: sticky;
+    top: var(--uv7-top-stack, 60px);
+    /* Status bar (44) + System banner (16) */
+    /* top: 0 if we want it to stick to very top, but we want it under status bar. */
+    /* UV7 status bar is usually fixed? If so, this needs to check uv7-os.css */
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.75);
+    /* Darker for better contrast */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    /* Hairline top */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0;
+    /* Tighter */
+}
+
+/* Gradient Mask for scroll hint */
+.tab-bar {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+
+    display: flex;
+    justify-content: center;
+    /* Center the tabs */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Firefox */
+    gap: 0.5rem;
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.tab-bar::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari */
+}
+
+.tab-item {
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    min-width: 120px;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tab-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-item:focus {
+    outline: 2px solid var(--uv7-accent, #00ff88);
+    outline-offset: 2px;
+}
+
+.tab-item.active {
+    color: var(--uv7-accent, #00ff88);
+    background: rgba(0, 255, 136, 0.1);
+}
+
+.tab-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: var(--uv7-accent, #00ff88);
+    box-shadow: 0 0 8px var(--uv7-accent, #00ff88);
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-icon {
+    font-size: 1.2rem;
+}
+
+.tab-label {
+    font-size: 0.85rem;
+}
+
+/* Progress indicator */
+.tab-progress {
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* ========================================
+   TAB PANELS
+   Vertically stacked sections with scroll-spy
+   ======================================== */
+
+.tab-panels-container {
+    position: relative;
+}
+
+.tab-panel {
+    display: none;
+    opacity: 0;
+    padding: 1rem 0;
+}
+
+/* Press interaction */
+.tab-item:active {
+    transform: scale(0.98);
+    transition: transform 0.08s ease-out;
+}
+
+/* Active state just for styling, all panels visible */
+.tab-panel.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Entering panels need to be visible during animation */
+.tab-panel.entering {
+    display: block;
+    opacity: 1;
+}
+
+/* Exiting panels stay visible during animation */
+.tab-panel.exiting {
+    display: block;
+    opacity: 1;
+}
+
+/* Remove excessive top padding from sections inside tab panels */
+.tab-panel section {
+    padding-top: 0 !important;
+}
+
+/* Reduce top margin on section content */
+.tab-panel .section-content {
+    padding-top: 1rem;
+}
+
+/* Slide animations */
+.tab-panel.exiting.slide-left {
+    animation: slideOutLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.exiting.slide-right {
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.entering.slide-from-right {
+    animation: slideInFromRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tab-panel.entering.slide-from-left {
+    animation: slideInFromLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   HERO COLLAPSE
+   Shrinks after first navigation
+   ======================================== */
+
+#hero-section {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    max-height: 600px;
+    overflow: hidden;
+}
+
+#hero-section.collapsed {
+    max-height: 80px;
+    cursor: pointer;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#hero-section.collapsed:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+#hero-section.collapsed .hero-carousel {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#hero-section.collapsed .hero-title {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+/* Expand button when collapsed */
+#hero-section.collapsed::after {
+    content: '⌄ Tap to expand';
+    display: block;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+#hero-section.collapsed:hover::after {
+    color: var(--uv7-accent, #00ff88);
+}
+
+/* ========================================
+   VIEW TRANSITIONS API SUPPORT
+   Chrome 111+, Edge 111+
+   ======================================== */
+
+/* Assign unique view transition names to each tab panel */
+[data-panel="journey"] {
+    view-transition-name: tab-panel-journey;
+}
+
+[data-panel="workflow"] {
+    view-transition-name: tab-panel-workflow;
+}
+
+[data-panel="results"] {
+    view-transition-name: tab-panel-results;
+}
+
+[data-panel="spotlight"] {
+    view-transition-name: tab-panel-spotlight;
+}
+
+[data-panel="evolution"] {
+    view-transition-name: tab-panel-evolution;
+}
+
+[data-panel="who"] {
+    view-transition-name: tab-panel-who;
+}
+
+/* Smooth cross-fade for View Transitions API */
+::view-transition-old(tab-panel-journey),
+::view-transition-new(tab-panel-journey),
+::view-transition-old(tab-panel-workflow),
+::view-transition-new(tab-panel-workflow),
+::view-transition-old(tab-panel-results),
+::view-transition-new(tab-panel-results),
+::view-transition-old(tab-panel-spotlight),
+::view-transition-new(tab-panel-spotlight),
+::view-transition-old(tab-panel-evolution),
+::view-transition-new(tab-panel-evolution),
+::view-transition-old(tab-panel-who),
+::view-transition-new(tab-panel-who) {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(tab-panel) {
+    animation-name: fadeOut;
+}
+
+::view-transition-new(tab-panel) {
+    animation-name: fadeIn;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes slideIn {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+
+    to {
+        width: 60%;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .tab-item {
+        min-width: 100px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .tab-icon {
+        font-size: 1rem;
+    }
+
+    .tab-label {
+        font-size: 0.75rem;
+    }
+
+    .tab-panel {
+        padding: 1rem 0.5rem;
+    }
+}
+
+/* ========================================
+   COLOR SCHEME ADAPTATIONS
+   ======================================== */
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+    .tab-bar-container {
+        background: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-item {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .tab-item:hover {
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    .tab-item.active {
+        background: rgba(0, 255, 136, 0.15);
+    }
+
+    .tab-progress {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    #hero-section.collapsed:hover {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    #hero-section.collapsed::after {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    .swipe-hint-content {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 255, 136, 0.4);
+    }
+
+    .swipe-hint-text {
+        color: #1a1a1a;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .tab-item,
+    .tab-panel,
+    #hero-section {
+        transition: none;
+        animation: none;
+    }
+
+    .tab-panel.active {
+        animation: none;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.tab-item:focus-visible {
+    outline: 2px solid var(--uv7-accent, #00ff88);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   SWIPE HINT
+   First-time user guidance
+   ======================================== */
+
+.swipe-hint {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.swipe-hint.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.swipe-hint-content {
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 24px;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 8px 32px rgba(0, 255, 136, 0.2);
+}
+
+.swipe-hint-text {
+    color: var(--uv7-accent, #00ff88);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.swipe-hint-icon {
+    font-size: 1.2rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.swipe-hint-icon:first-child {
+    animation-delay: 0s;
+}
+
+.swipe-hint-icon:last-child {
+    animation-delay: 0.75s;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* ========================================
+   PHASE 26e: TAB SWIPE INDICATOR
+   Facebook-style 1:1 direct manipulation
+   ======================================== */
+
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 120px;
+    /* Initial width (will be set by JS) */
+    background: var(--uv7-accent, #00ff88);
+    box-shadow: 0 0 8px var(--uv7-accent, #00ff88);
+    border-radius: 2px 2px 0 0;
+
+    /* Spring physics easing (Zee's secret sauce) */
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+        width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* GPU acceleration */
+    will-change: transform, width;
+    transform-origin: left center;
+}
+
+/* Remove transition during drag for 1:1 tracking */
+.tab-indicator.dragging {
+    transition: none !important;
+}
+
+/* Glow intensifies near commit threshold */
+.tab-indicator.near-threshold {
+    box-shadow: 0 0 16px var(--uv7-accent, #00ff88),
+        0 0 24px var(--uv7-accent, #00ff88);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .tab-indicator {
+        transition: none !important;
+    }
+}
+
+/* ========================================
+   PHASE 26e: HORIZONTAL SWIPE WITH VERTICAL SCROLL
+   Each panel shows full content, swipe to navigate between
+   ======================================== */
+
+/* Swipe-enabled: Horizontal scroll container */
+.tab-panels-container.swipe-enabled {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    /* Prevent momentum from carrying past multiple panels */
+    overscroll-behavior-x: contain;
+    /* Prevent extra whitespace */
+    height: 100%;
+    max-height: 100vh;
+}
+
+.tab-panels-container.swipe-enabled::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+}
+
+/* Each panel is full width, can scroll vertically */
+.tab-panels-container.swipe-enabled .tab-panel {
+    min-width: 100%;
+    max-width: 100%;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: block !important;
+    opacity: 1 !important;
+    
+    /* Remove padding that interferes with scroll calculations */
+    padding: 0;
+    box-sizing: border-box;
+    
+    /* Allow vertical scrolling within each panel */
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+    max-height: 100vh;
+}
