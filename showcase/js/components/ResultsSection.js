@@ -1,6 +1,30 @@
 export class ResultsSection {
     constructor() {
         this.render();
+        this.updateDynamicStats();
+    }
+
+    updateDynamicStats() {
+        // Update timeline entries count dynamically
+        setTimeout(() => {
+            if (window.TIMELINE_DATA && window.TIMELINE_DATA.entries) {
+                const timelineCard = document.querySelector('[data-stat-type="phases"] .stat-number');
+                if (timelineCard) {
+                    timelineCard.setAttribute('data-target', window.TIMELINE_DATA.entries.length);
+                    timelineCard.textContent = '0'; // Reset for animation
+                }
+            }
+            
+            // Update days in development
+            const startDate = new Date('2026-01-08');
+            const today = new Date();
+            const daysDiff = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+            const daysCard = document.querySelector('[data-stat-type="days"] .stat-number');
+            if (daysCard) {
+                daysCard.setAttribute('data-target', daysDiff);
+                daysCard.textContent = '0'; // Reset for animation
+            }
+        }, 100);
     }
 
     render() {
@@ -48,12 +72,12 @@ export class ResultsSection {
                                     <circle class="ring-fill" cx="18" cy="18" r="16" />
                                 </svg>
                             </div>
-                            <div class="stat-number" data-target="86">0</div>
+                            <div class="stat-number" data-target="53">0</div>
                             <div class="stat-label">Timeline Entries</div>
                         </div>
                         <div class="stat-card" data-stat-type="days">
                             <div class="stat-icon">📅</div>
-                            <div class="stat-number" data-target="11">0</div>
+                            <div class="stat-number" data-target="16">0</div>
                             <div class="stat-label">Days in Development</div>
                         </div>
                         <div class="stat-card" data-stat-type="errors">

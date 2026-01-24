@@ -177,8 +177,9 @@
                 <div class="card-icon">📖</div>
                 <span class="badge badge-showcase">Documentation</span>
                 <h2>View Showcase</h2>
-                <p>The journey from chaos to order. <span class="stat-number" id="timeline-count" data-target="0">0</span> entries. <span
-                        class="stat-number" data-target="14">0</span> days. AI collaboration.</p>
+                <p>The journey from chaos to order. <span class="stat-number" id="timeline-count"
+                        data-target="0">0</span> entries. <span class="stat-number" data-target="14">0</span> days. AI
+                    collaboration.</p>
             </a>
 
             <a href="./index.v2.html" class="card">
@@ -429,13 +430,36 @@
     <!-- Scripts for Visual Polish -->
     <script src="showcase/js/animated-stats.js"></script>
     <script src="showcase/js/confetti-trigger.js"></script>
+    <script src="showcase/js/landing-tilt.js"></script>
 
     <script>
         // ═══════════════════════════════════════════════════════════════
-        // TERMINAL TYPEWRITER EFFECT
-        // Belle: System boot aesthetic
+        // TAGLINE TYPING EFFECT & TERMINAL TYPEWRITER
+        // Belle: System boot aesthetic + Tagline drama
         // ═══════════════════════════════════════════════════════════════
         document.addEventListener('DOMContentLoaded', () => {
+            // Tagline Typing
+            const tagline = document.querySelector('.brand-tagline');
+            if (tagline) {
+                const text = tagline.textContent;
+                tagline.textContent = '';
+                tagline.style.borderRight = '2px solid var(--uv7-accent)';
+
+                let i = 0;
+                setTimeout(() => {
+                    const timer = setInterval(() => {
+                        if (i < text.length) {
+                            tagline.textContent += text.charAt(i);
+                            i++;
+                        } else {
+                            clearInterval(timer);
+                            tagline.style.borderRight = 'none';
+                        }
+                    }, 40);
+                }, 1000); // Start after logo fade-in
+            }
+
+            // Terminal
             const el = document.getElementById('buildLine');
             if (!el) return;
 
@@ -468,11 +492,11 @@
     <script src="showcase/uv7-grab-handle.js"></script>
     <script src="showcase/uv7-app-switcher.js"></script>
     <script src="./uv7-os-landing.js"></script>
-    
+
     <!-- Dynamic Timeline Count -->
     <script>
         // Set timeline entry count dynamically from TIMELINE_DATA
-        (function() {
+        (function () {
             const timelineCountElement = document.getElementById('timeline-count');
             if (timelineCountElement && typeof TIMELINE_DATA !== 'undefined') {
                 const count = TIMELINE_DATA.length;
@@ -481,7 +505,7 @@
             }
         })();
     </script>
-    
+
     <!-- BIOS Boot Sequence (One-time) -->
     <div id="bios-boot" class="bios-overlay">
         <div class="bios-content">

@@ -36,11 +36,11 @@ export class HeroSection {
                         <span class="stat-label">Passing Tests</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="stat-timeline">69</span>
+                        <span class="stat-value" id="stat-timeline">53</span>
                         <span class="stat-label">Timeline Entries</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-value" id="stat-days">14</span>
+                        <span class="stat-value" id="stat-days">16</span>
                         <span class="stat-label">Rebuild Days</span>
                     </div>
                 </div>
@@ -59,8 +59,18 @@ export class HeroSection {
         // Update timeline count from global TIMELINE_DATA if available
         setTimeout(() => {
             const timelineEl = document.getElementById('stat-timeline');
-            if (timelineEl && window.TIMELINE_DATA) {
-                timelineEl.textContent = window.TIMELINE_DATA.length;
+            const daysEl = document.getElementById('stat-days');
+            
+            if (timelineEl && window.TIMELINE_DATA && window.TIMELINE_DATA.entries) {
+                timelineEl.textContent = window.TIMELINE_DATA.entries.length;
+            }
+            
+            if (daysEl) {
+                // Calculate days from Jan 8, 2026 to today
+                const startDate = new Date('2026-01-08');
+                const today = new Date();
+                const daysDiff = Math.ceil((today - startDate) / (1000 * 60 * 60 * 24));
+                daysEl.textContent = daysDiff;
             }
         }, 100);
     }

@@ -449,6 +449,12 @@ section {
     min-height: 60vh;
 }
 
+@media (prefers-color-scheme: dark) {
+    section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
+        background: #1a1a1a;
+    }
+}
+
 .section-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -462,19 +468,37 @@ section h2 {
     text-transform: uppercase;
 }
 
+@media (prefers-color-scheme: dark) {
+    section h2 {
+        color: #e0e0e0;
+    }
+}
+
 .section-intro {
     text-align: center;
     font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-    color: #666;
+    color: rgba(100, 100, 100, 1);
     margin-bottom: 4rem;
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
 }
 
+@media (prefers-color-scheme: dark) {
+    .section-intro {
+        color: rgba(170, 170, 170, 1);
+    }
+}
+
 /* --- JOURNEY SECTION --- */
 .journey-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    .journey-section {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    }
 }
 
 .timeline {
@@ -525,6 +549,12 @@ section h2 {
     box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-marker {
+        border-color: #1a1a1a;
+    }
+}
+
 .timeline-item.highlight .timeline-marker {
     background: #9b59b6;
     box-shadow: 0 0 0 4px rgba(155, 89, 182, 0.2);
@@ -552,6 +582,13 @@ section h2 {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-content {
+        background: #2a2a2a;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+}
+
 .timeline-content:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
@@ -562,6 +599,12 @@ section h2 {
     color: #3498db;
     margin-bottom: 0.5rem;
     font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-content h3 {
+        color: #5dade2;
+    }
 }
 
 .timeline-item.highlight .timeline-content h3 {
@@ -619,6 +662,12 @@ section h2 {
     display: block;
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-content p {
+        color: #bbb;
+    }
+}
+
 /* ═══════════════════════════════════════════════════════════════
    VISUAL THEMING BY ENTRY TYPE
    Chaos → Order narrative reflected in visual design
@@ -662,6 +711,12 @@ section h2 {
     background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 152, 219, 0.02) 100%);
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-item[data-type="milestone"] .timeline-content {
+        background: linear-gradient(135deg, rgba(30, 30, 30, 1) 0%, rgba(52, 152, 219, 0.08) 100%);
+    }
+}
+
 .timeline-item[data-type="milestone"] .timeline-content:hover {
     border-color: rgba(52, 152, 219, 0.6);
     box-shadow: 0 0 25px rgba(52, 152, 219, 0.2),
@@ -693,6 +748,12 @@ section h2 {
     box-shadow: 0 0 20px rgba(155, 89, 182, 0.12),
                 0 10px 30px rgba(0, 0, 0, 0.1);
     background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(155, 89, 182, 0.03) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-item[data-type="personal"] .timeline-content {
+        background: linear-gradient(135deg, rgba(30, 30, 30, 1) 0%, rgba(155, 89, 182, 0.08) 100%);
+    }
 }
 
 .timeline-item[data-type="personal"] .timeline-content:hover {
@@ -766,6 +827,13 @@ section h2 {
     animation: fadeIn 0.5s ease;
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-entry-footer {
+        border-top-color: rgba(255, 255, 255, 0.1);
+        color: #aaa;
+    }
+}
+
 .footer-icon {
     font-size: 1.2rem;
     line-height: 1;
@@ -837,6 +905,13 @@ section h2 {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+@media (prefers-color-scheme: dark) {
+    .sub-entry {
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(155, 89, 182, 0.1));
+        border-color: rgba(52, 152, 219, 0.3);
+    }
+}
+
 .sub-entry:hover {
     transform: translateX(4px);
     box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
@@ -876,6 +951,12 @@ section h2 {
     margin-bottom: 1rem;
 }
 
+@media (prefers-color-scheme: dark) {
+    .sub-entry-summary {
+        color: #bbb;
+    }
+}
+
 .sub-entry-features {
     list-style: none;
     padding: 0;
@@ -889,6 +970,12 @@ section h2 {
     font-size: 0.9rem;
     color: #444;
     line-height: 1.4;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sub-entry-features li {
+        color: #ccc;
+    }
 }
 
 .sub-entry-features li::before {
@@ -911,6 +998,12 @@ section h2 {
 .sub-metric {
     font-size: 0.85rem;
     color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+    .sub-metric {
+        color: #999;
+    }
 }
 
 .sub-metric strong {
@@ -965,6 +1058,12 @@ section h2 {
     color: #666;
     text-align: center;
     font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+    .settings-carousel .carousel-label {
+        color: #aaa;
+    }
 }
 
 /* --- WORKFLOW SECTION --- */
@@ -1259,6 +1358,13 @@ section h2 {
     margin: 0 auto;
 }
 
+@media (prefers-color-scheme: dark) {
+    .achievements {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
 .achievements h3 {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
@@ -1316,6 +1422,12 @@ section h2 {
     display: block;
 }
 
+@media (prefers-color-scheme: dark) {
+    .footer-content>p {
+        color: #ccc;
+    }
+}
+
 .footer-links {
     display: flex;
     gap: 1.5rem;
@@ -1369,6 +1481,12 @@ section h2 {
     margin: 0.5rem 0;
     height: auto;
     display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+    .footer-meta p {
+        color: #999;
+    }
 }
 
 /* --- RESPONSIVE DESIGN --- */
@@ -1439,6 +1557,13 @@ section h2 {
     color: var(--order-text);
 }
 
+@media (prefers-color-scheme: dark) {
+    .evolution-section {
+        background: #1a1a1a;
+        color: #e0e0e0;
+    }
+}
+
 .roadmap-section {
     background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%);
     color: #fff;
@@ -1486,6 +1611,13 @@ section h2 {
     border-left: 4px solid #ccc;
 }
 
+@media (prefers-color-scheme: dark) {
+    .comparison-item {
+        background: rgba(255, 255, 255, 0.03);
+        border-left-color: #555;
+    }
+}
+
 .col-chaos .comparison-item {
     border-left-color: #00ff41;
     background: #111;
@@ -1497,6 +1629,13 @@ section h2 {
     border-left-color: #3498db;
     background: #f8f9fa;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+    .col-order .comparison-item {
+        background: #2a2a2a;
+        color: #e0e0e0;
+    }
 }
 
 .comparison-item h4 {
@@ -1916,6 +2055,13 @@ section h2 {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+@media (prefers-color-scheme: dark) {
+    .metric-card {
+        background: rgba(40, 40, 40, 0.95);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+}
+
 .metric-card h4 {
     color: #666;
     font-size: 0.9rem;
@@ -1923,6 +2069,12 @@ section h2 {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     font-weight: 700;
+}
+
+@media (prefers-color-scheme: dark) {
+    .metric-card h4 {
+        color: #aaa;
+    }
 }
 
 .metric-bar-group {
@@ -1950,6 +2102,12 @@ section h2 {
     background: #eee;
     border-radius: 6px;
     overflow: hidden;
+}
+
+@media (prefers-color-scheme: dark) {
+    .metric-track {
+        background: #333;
+    }
 }
 
 .metric-fill {
@@ -2150,6 +2308,12 @@ section h2 {
     border-bottom: 1px solid #eee;
 }
 
+@media (prefers-color-scheme: dark) {
+    .update-list li {
+        border-bottom-color: #333;
+    }
+}
+
 .update-list li:last-child {
     border-bottom: none;
 }
@@ -2185,6 +2349,12 @@ section h2 {
     color: #555;
 }
 
+@media (prefers-color-scheme: dark) {
+    .callout-content {
+        color: #bbb;
+    }
+}
+
 .callout-content strong {
     color: #f5576c;
 }
@@ -2217,6 +2387,13 @@ section h2 {
     border-left: 3px solid #666;
 }
 
+@media (prefers-color-scheme: dark) {
+    .timeline-subsection {
+        background: rgba(200, 200, 200, 0.05);
+        border-left-color: #888;
+    }
+}
+
 .timeline-subsection h4 {
     font-size: 0.9rem;
     text-transform: uppercase;
@@ -2239,6 +2416,12 @@ section h2 {
     font-style: italic;
     color: #ccc;
     line-height: 1.6;
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-entry-quote blockquote {
+        color: #ddd;
+    }
 }
 
 .timeline-entry-quote blockquote::before {
@@ -2278,6 +2461,13 @@ section h2 {
     padding: 1.5rem;
     border-radius: 12px;
     border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .stats-mini-grid {
+        background: rgba(52, 152, 219, 0.08);
+        border-color: rgba(52, 152, 219, 0.3);
+    }
 }
 
 .stat-mini {
@@ -2539,6 +2729,13 @@ section h2 {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (prefers-color-scheme: dark) {
+    .carousel-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
 .carousel-item img {
     width: 100%;
     height: 160px;
@@ -2553,6 +2750,13 @@ section h2 {
     color: #ccc;
     background: rgba(0, 0, 0, 0.5);
     text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .carousel-label {
+        color: #ddd;
+        background: rgba(0, 0, 0, 0.7);
+    }
 }
 
 /* ==========================================================================
@@ -2588,9 +2792,22 @@ section h2 {
     letter-spacing: 0.5px;
 }
 
+@media (prefers-color-scheme: dark) {
+    .mode-btn {
+        color: #aaa;
+    }
+}
+
 .mode-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+    .mode-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: #e0e0e0;
+    }
 }
 
 .mode-btn.active {

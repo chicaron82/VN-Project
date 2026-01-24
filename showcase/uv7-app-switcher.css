@@ -18,9 +18,15 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    background: rgba(10, 10, 18, 0.95);
+    /* Cyber Texture */
+    background-image: url('media/textures/sidebar-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     z-index: 10001;
     opacity: 0;
     pointer-events: none;
