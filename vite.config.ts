@@ -24,6 +24,7 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
+        main: path.resolve(__dirname, 'index.html'),
         v2: path.resolve(__dirname, 'index.v2.html'),
         showcase: path.resolve(__dirname, 'showcase/index.html'),
       },
