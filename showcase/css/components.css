@@ -108,6 +108,8 @@
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
+.split-container {
     flex-direction: column;
     align-items: center;
     gap: 2rem;
