@@ -11,10 +11,45 @@ export interface TimelineEntry {
   summary: string;
   features?: string[];
   theTimeline?: string[];
+  investigation?: string[];
+  problem?: string | {
+    description: string;
+    rootCause: string;
+  };
+  solution?: string | {
+    approach: string;
+    features?: string[];
+    steps?: string[];
+    code?: string;
+  };
+  media?: any;
+  codeComparison?: any;
+  subEntries?: any[];
+  subPhases?: any[];
+  lessons?: string[];
+  crew?: Array<{
+    name: string;
+    contribution: string;
+    icon: string;
+  }>;
+  crewAttribution?: {
+    systems: Array<{
+      name: string;
+      contribution: string;
+      icon: string;
+    }>;
+    quote: string;
+  };
   metrics?: Record<string, string | number>;
   callout?: {
-    icon: string;
+    icon?: string;
     title: string;
+    text?: string;
+    type?: string;
+    content?: string;
+  };
+  footer?: {
+    icon: string;
     text: string;
   };
   quote?: string;
