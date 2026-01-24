@@ -353,6 +353,10 @@ export class TabController {
         return this.tabs.indexOf(this.activeTab);
     }
 
+    getTotalTabs(): number {
+        return this.tabs.length;
+    }
+
     navigateToTabIndex(index: number, _animate: boolean = true): void {
         if (index >= 0 && index < this.tabs.length) {
             this.scrollToTab(this.tabs[index]);
