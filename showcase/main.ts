@@ -23,6 +23,14 @@ import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { initGrabHandle } from '../v2/ui/components/GrabHandle';
 import { initUV7OS } from '../v2/ui/components/UV7OS';
 
+// Import section renderers
+import { JourneySection } from './js/components/JourneySection';
+import { WorkflowSection } from './js/components/WorkflowSection';
+import { ResultsSection } from './js/components/ResultsSection';
+import { SpotlightSection } from './js/components/SpotlightSection';
+import { EvolutionSection } from './js/components/EvolutionSection';
+import { WhoSection } from './js/components/WhoSection';
+
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';
 import { initTilt } from '../v2/ui/effects/TiltEffect';
@@ -76,6 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Tab Navigation
     const tabController = new TabController();
     window.tabController = tabController; // Expose for legacy compatibility
+
+    // Initialize section renderers
+    new JourneySection();
+    new WorkflowSection();
+    new ResultsSection();
+    new SpotlightSection();
+    new EvolutionSection();
+    new WhoSection();
+    console.log('✅ Section renderers initialized');
 
     // Initialize TimelineRenderer (Journey tab)
     const timelineRenderer = new TimelineRenderer('#uv7-journey-mount');
