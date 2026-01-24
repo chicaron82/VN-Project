@@ -81,6 +81,17 @@
    Premium gradients for each section
    ======================================== */
 
+/* Home - The Core System */
+.hero-banner.home {
+    background: linear-gradient(135deg,
+            #020024 0%,
+            #090979 35%,
+            #00d4ff 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 20s ease infinite;
+    box-shadow: 0 10px 30px -10px rgba(0, 212, 255, 0.3);
+}
+
 /* Journey - Chaos to Order */
 .hero-banner.journey {
     background: linear-gradient(135deg,
@@ -365,4 +376,24 @@
     .hero-banner:hover .hero-banner-image {
         transform: none;
     }
+}
+
+/* Typing Effect Cursor Blink */
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: var(--accent-blue, #4a9eff);
+    }
+}
+
+.hero-banner-subtitle.typing-done {
+    animation: blink-caret 0.75s step-end infinite;
+    display: inline-block;
+    /* Ensure border shows up correctly */
+    padding-right: 4px;
 }
