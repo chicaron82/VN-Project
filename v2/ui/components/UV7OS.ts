@@ -195,7 +195,7 @@ export class UV7OS {
 
     private detectCurrentEntry(): void {
         // Find which entry is currently in viewport
-        const entryElements = document.querySelectorAll('.timeline-item');
+        const entryElements = Array.from(document.querySelectorAll('.timeline-item'));
         for (const el of entryElements) {
             const rect = el.getBoundingClientRect();
             if (rect.top >= 0 && rect.top <= window.innerHeight / 2) {

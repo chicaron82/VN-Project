@@ -76,7 +76,7 @@ export function initChaosTyper(): void {
     }
 
     // Expose context updater globally so IntersectionObservers can use it
-    (window as any).updateBackgroundContext = function (phaseId: string): void {
+    window.updateBackgroundContext = function (phaseId: string): void {
         // Look for matching key in contextSnippets
         const match = Object.keys(contextSnippets).find(key => phaseId && phaseId.includes(key));
         currentContext = match ? contextSnippets[match] : null;

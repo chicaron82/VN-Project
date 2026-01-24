@@ -271,7 +271,7 @@ export class TimelineRenderer {
         if (this.searchQuery) this.applySpotlight();
 
         // Trigger Prism syntax highlight
-        if ((window as any).Prism) (window as any).Prism.highlightAll();
+        if (window.Prism) window.Prism.highlightAll();
 
         // Dispatch content update event (for ScrollAnimator)
         window.dispatchEvent(new CustomEvent('uv7-content-updated'));

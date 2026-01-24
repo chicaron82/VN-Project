@@ -214,9 +214,9 @@ export class CodeComparisonModal {
         if (afterCode) afterCode.textContent = data.after.code;
 
         // Apply syntax highlighting if available
-        if ((window as any).Prism && beforeCode && afterCode) {
-            (window as any).Prism.highlightElement(beforeCode);
-            (window as any).Prism.highlightElement(afterCode);
+        if (window.Prism && beforeCode && afterCode) {
+            window.Prism.highlightElement(beforeCode);
+            window.Prism.highlightElement(afterCode);
         }
     }
 
@@ -274,4 +274,4 @@ export class CodeComparisonModal {
 }
 
 // Create global instance
-(window as any).codeComparisonModal = new CodeComparisonModal();
+window.codeComparisonModal = new CodeComparisonModal();

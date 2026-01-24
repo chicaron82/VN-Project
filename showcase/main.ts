@@ -54,13 +54,13 @@ function createUV7System(context: UV7Context = 'showcase') {
 
 // Initialize UV7 System and expose to window for legacy compatibility
 const uv7System = createUV7System('showcase');
-(window as any).UV7System = {
+window.UV7System = {
     EventBus,
     StatusBar,
     NotificationRail,
     createStatusBar: createUV7System, // Legacy API compatibility
 };
-(window as any).uv7Runtime = uv7System;
+window.uv7Runtime = uv7System;
 
 console.log('✅ UV7 System initialized');
 
@@ -70,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Create status bar
     console.log('🚀 Initializing UV7 Status Bar...');
-    (window as any).uv7Runtime = (window as any).UV7System.createStatusBar('status-bar-container', 'showcase');
+    window.uv7Runtime = window.UV7System.createStatusBar('status-bar-container', 'showcase');
 
     // Initialize Tab Navigation
     const tabController = new TabController();
-    (window as any).tabController = tabController; // Expose for legacy compatibility
+    window.tabController = tabController; // Expose for legacy compatibility
 
     // Initialize TimelineRenderer (Journey tab)
     const timelineRenderer = new TimelineRenderer('#uv7-journey-mount');
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabPanelsContainer = document.querySelector('.tab-panels-container') as HTMLElement;
     if (tabPanelsContainer) {
         const swipeController = new SwipeController(tabController, tabPanelsContainer);
-        (window as any).swipeController = swipeController;
+        window.swipeController = swipeController;
         console.log('✅ Swipe controller initialized');
     }
 
@@ -124,8 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bottomSafePad: 140,
             onToggle: () => {
                 // Toggle sidebar when grab handle is tapped
-                if ((window as any).uv7os) {
-                    (window as any).uv7os.toggleSidebar();
+                if (window.uv7os) {
+                    window.uv7os.toggleSidebar();
                 }
             }
         });

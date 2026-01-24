@@ -1,14 +1,71 @@
 // Timeline data for UV7 Showcase
 // Converted to ES module for Vite integration
 
+/**
+ * Media carousel item (image or video)
+ */
+export interface MediaCarouselItem {
+  type: 'image' | 'video';
+  url: string;
+  caption: string;
+}
+
+/**
+ * Media attachments for timeline entries
+ */
+export interface TimelineMedia {
+  carousel: MediaCarouselItem[];
+}
+
+/**
+ * Code snippet for comparison views
+ */
+export interface CodeSnippet {
+  title: string;
+  badge: string;
+  lang: string;
+  code: string;
+}
+
+/**
+ * Before/after code comparison
+ */
+export interface CodeComparison {
+  before: CodeSnippet;
+  after: CodeSnippet;
+}
+
+/**
+ * Crew member attribution
+ */
+export interface CrewMember {
+  name: string;
+  contribution: string;
+  icon: string;
+}
+
+/**
+ * Crew attribution block with quote
+ */
+export interface CrewAttribution {
+  systems: CrewMember[];
+  quote: string;
+}
+
+/**
+ * Main timeline entry interface
+ */
 export interface TimelineEntry {
   id: string;
-  date: string;
-  emoji: string;
+  date?: string;
+  emoji?: string;
   title: string;
-  type: string;
-  sortDate: string;
-  summary: string;
+  type?: string;
+  sortDate?: string;
+  summary?: string;
+  description?: string;
+  linesOfCode?: number;
+  highlights?: string[];
   features?: string[];
   theTimeline?: string[];
   investigation?: string[];
@@ -22,24 +79,13 @@ export interface TimelineEntry {
     steps?: string[];
     code?: string;
   };
-  media?: any;
-  codeComparison?: any;
-  subEntries?: any[];
-  subPhases?: any[];
+  media?: TimelineMedia;
+  codeComparison?: CodeComparison;
+  subEntries?: TimelineEntry[];
+  subPhases?: TimelineEntry[];
   lessons?: string[];
-  crew?: Array<{
-    name: string;
-    contribution: string;
-    icon: string;
-  }>;
-  crewAttribution?: {
-    systems: Array<{
-      name: string;
-      contribution: string;
-      icon: string;
-    }>;
-    quote: string;
-  };
+  crew?: CrewMember[];
+  crewAttribution?: CrewAttribution;
   metrics?: Record<string, string | number>;
   callout?: {
     icon?: string;
