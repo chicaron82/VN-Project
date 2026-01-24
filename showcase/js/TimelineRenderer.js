@@ -367,6 +367,10 @@ class TimelineRenderer {
         const item = document.createElement('div');
         item.className = `timeline-item ${entry.type || ''}`;
         item.id = entry.id;
+        // Add data-type attribute for CSS visual theming
+        if (entry.type) {
+            item.setAttribute('data-type', entry.type);
+        }
 
         const marker = document.createElement('div');
         marker.className = 'timeline-marker';
