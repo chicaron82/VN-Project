@@ -50,7 +50,7 @@ export class SpotlightCarousel {
 
     private init(): void {
         if (!this.container || !this.viewport || this.cards.length === 0) {
-            console.warn('SpotlightCarousel: Required elements not found');
+            // Elements not found - carousel likely not on this page
             return;
         }
 
