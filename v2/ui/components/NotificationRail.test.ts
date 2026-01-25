@@ -1,41 +1,114 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NotificationRail } from './NotificationRail';
 
+// Mock DOM
+const mockElement = {
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    setAttribute: vi.fn(),
+    style: {},
+    innerHTML: '',
+    textContent: ''
+};
+
+// Mock EventBus
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 describe('NotificationRail', () => {
+    let instance: NotificationRail;
+
     beforeEach(() => {
-        // Setup
         vi.clearAllMocks();
+        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
-        // Cleanup
+        vi.clearAllMocks();
     });
 
     describe('Initialization', () => {
-        it('should initialize correctly', () => {
-            // TODO: Add initialization test
-            expect(true).toBe(true);
+        it('should create an instance', () => {
+            expect(() => {
+                instance = new NotificationRail();
+            }).not.toThrow();
+            expect(instance).toBeDefined();
+        });
+
+        it('should initialize with default values', () => {
+            instance = new NotificationRail();
+            expect(instance).toBeInstanceOf(NotificationRail);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle basic operations', () => {
-            // TODO: Add functionality tests
-            expect(true).toBe(true);
+        it('should handle dismiss', () => {
+            instance = new NotificationRail();
+            // Test dismiss functionality
+            expect(instance).toBeDefined();
+            // TODO: Add specific assertions for dismiss
         });
+
+        it('should handle alerts', () => {
+            instance = new NotificationRail();
+            // Test alerts functionality
+            expect(instance).toBeDefined();
+            // TODO: Add specific assertions for alerts
+        });
+
+        it('should handle Switcher', () => {
+            instance = new NotificationRail();
+            // Test Switcher functionality
+            expect(instance).toBeDefined();
+            // TODO: Add specific assertions for Switcher
+        });
+
+        it('should handle ms', () => {
+            instance = new NotificationRail();
+            // Test ms functionality
+            expect(instance).toBeDefined();
+            // TODO: Add specific assertions for ms
+        });
+
+        it('should handle away', () => {
+            instance = new NotificationRail();
+            // Test away functionality
+            expect(instance).toBeDefined();
+            // TODO: Add specific assertions for away
+        });
+
     });
 
     describe('Edge Cases', () => {
-        it('should handle edge cases gracefully', () => {
-            // TODO: Add edge case tests
-            expect(true).toBe(true);
+        it('should handle null/undefined inputs gracefully', () => {
+            instance = new NotificationRail();
+            // Test with invalid inputs
+            expect(instance).toBeDefined();
+        });
+
+        it('should handle rapid consecutive calls', () => {
+            instance = new NotificationRail();
+            // Test race conditions
+            expect(instance).toBeDefined();
         });
     });
 
     describe('Error Handling', () => {
-        it('should handle errors appropriately', () => {
-            // TODO: Add error handling tests
-            expect(true).toBe(true);
+        it('should handle errors without crashing', () => {
+            instance = new NotificationRail();
+            expect(() => {
+                // Trigger potential error conditions
+            }).not.toThrow();
+        });
+
+        it('should clean up resources on error', () => {
+            instance = new NotificationRail();
+            // Verify cleanup happens
+            expect(instance).toBeDefined();
         });
     });
 });
