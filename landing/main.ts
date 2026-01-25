@@ -13,6 +13,7 @@ import { initVNGatewayBridge, VNGatewayBridge } from './lib/vn-gateway-bridge';
 import { initUV7OSLanding, UV7OS } from '../v2/ui/components/UV7OS';
 import { UV7AppSwitcher } from '../v2/ui/components/UV7AppSwitcher';
 import { initLandingEffects } from './lib/effects';
+import { UV7EchoSystem } from '../showcase/lib/UV7EchoSystem';
 
 // ═══════════════════════════════════════════════════════════════
 // INITIALIZATION
@@ -31,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize visual effects
     initLandingEffects();
+
+    // Initialize AI Crew Echo System
+    const echoSystem = new UV7EchoSystem();
+    console.log('✅ AI Crew echo system initialized');
 
     console.log('💚 UV7 Landing Page fully initialized');
 });

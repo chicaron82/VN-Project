@@ -22,6 +22,7 @@ import { SwipeController } from './lib/SwipeController';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { initGrabHandle } from '../v2/ui/components/GrabHandle';
+import { UV7EchoSystem } from './lib/UV7EchoSystem';
 // Remove initUV7OS since we'll create the instance directly
 
 // Import section renderers
@@ -216,32 +217,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ System stats animated (Bougie Factor: Always High)');
     }
 
-    // Initialize AI Crew Echo Messages (stock ticker style)
-    const crewMessages = [
-        '� Zee: "V2 architecture complete. EventBus is live. No jQuery was harmed."',
-        '🎨 DiZee: "Found the bug. Fixed the bug. Refactored the entire module. You\'re welcome."',
-        '📊 Tori: "The emotional core needs more depth here. Let me rewrite this scene."',
-        '🔮 ZeeRah: "Echo memory system detecting timeline anomalies... again."',
-        '🔍 Belle: "NO FLICKER protocol engaged. Accessibility: 100%. Polish: Michelin-level."',
-        '⚡ GenZee: "Let\'s try something crazy. What could go wrong?"',
-        '📚 PerplexiZee: "According to 47 sources, there\'s a better way to do this."',
-        '🔧 CoZee: "Bridging systems... translating between AI dialects... done."',
-        '💎 UV7 System: "All systems nominal. Bougie Factor: Critically High."',
-        '🎮 V1: "Remember when everything was in one file? Simpler times."',
-        '⚙️ V2: "Type-safe, event-driven, scalable. This is the way."',
-        '🌟 The Crew: "8 AIs, 1 codebase, infinite opinions, zero jQuery."'
-    ];
-    
-    let messageIndex = 0;
-    const statusDetail = document.getElementById('uv7-detail');
-    
-    if (statusDetail) {
-        setInterval(() => {
-            messageIndex = (messageIndex + 1) % crewMessages.length;
-            statusDetail.textContent = crewMessages[messageIndex];
-        }, 8000); // Change message every 8 seconds
-        console.log('✅ AI Crew echo messages initialized');
-    }
+    // Initialize UV7 Echo System (context-aware AI crew commentary)
+    const echoSystem = new UV7EchoSystem();
+    console.log('✅ AI Crew echo system initialized');
 
     // Initialize sidebar section navigation
     const sectionNavItems = document.querySelectorAll('.section-nav-item[data-tab]');
