@@ -1,6 +1,8 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { CodeRain } from './CodeRain';
 
+const mockHTMLElement = {} as any;
+
 describe('CodeRain', () => {
     let container: HTMLElement;
     let mockContext: any;

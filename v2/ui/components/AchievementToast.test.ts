@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AchievementToast } from './AchievementToast';
 
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -34,48 +40,48 @@ describe('AchievementToast', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new AchievementToast();
+                instance = new AchievementToast(mockEventBus);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             expect(instance).toBeInstanceOf(AchievementToast);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle createContainer', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test createContainer functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for createContainer
         });
 
         it('should handle setupListeners', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test setupListeners functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for setupListeners
         });
 
         it('should handle on', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test on functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for on
         });
 
         it('should handle show', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test show functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for show
         });
 
         it('should handle effect', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test effect functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for effect
@@ -85,13 +91,13 @@ describe('AchievementToast', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -99,14 +105,14 @@ describe('AchievementToast', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new AchievementToast();
+            instance = new AchievementToast(mockEventBus);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

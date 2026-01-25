@@ -1,6 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SettingsModal } from './SettingsModal';
 
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
+const mockSettingsSystem = {} as any; // TODO: Add specific mocks
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -43,48 +51,48 @@ describe('SettingsModal', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SettingsModal();
+                instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             expect(instance).toBeInstanceOf(SettingsModal);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle Feedback', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test Feedback functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for Feedback
         });
 
         it('should handle on', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test on functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for on
         });
 
         it('should handle if', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle createDOM', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test createDOM functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for createDOM
         });
 
         it('should handle decay', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test decay functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for decay
@@ -94,13 +102,13 @@ describe('SettingsModal', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -108,14 +116,14 @@ describe('SettingsModal', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new SettingsModal();
+            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

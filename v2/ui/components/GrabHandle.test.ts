@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { UV7GrabHandleRepositioner } from './GrabHandle';
 
+const mockHTMLElement | null = {} as any;
+
+const mockGrabHandleOptions = {} as any;
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },

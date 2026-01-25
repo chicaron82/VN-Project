@@ -2,6 +2,14 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { GameLayout } from './GameLayout';
 import { EventBus } from '@core/EventBus';
 
+const mockstring = {} as any;
+
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 describe('GameLayout', () => {
     let eventBus: EventBus;
 

@@ -1,6 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { BreadcrumbRenderer } from './StatusBarBreadcrumbs';
 
+const mockHTMLElement = {} as any;
+
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
+const mockColorTint = {} as any;
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },

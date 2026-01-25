@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MenuCarousel } from './MenuCarousel';
 
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -34,48 +40,48 @@ describe('MenuCarousel', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new MenuCarousel();
+                instance = new MenuCarousel(mockEventBus);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             expect(instance).toBeInstanceOf(MenuCarousel);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle Simple', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test Simple functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for Simple
         });
 
         it('should handle Momentum', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test Momentum functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for Momentum
         });
 
         it('should handle engine', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test engine functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for engine
         });
 
         it('should handle 1', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test 1 functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for 1
         });
 
         it('should handle emit', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test emit functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for emit
@@ -85,13 +91,13 @@ describe('MenuCarousel', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -99,14 +105,14 @@ describe('MenuCarousel', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new MenuCarousel();
+            instance = new MenuCarousel(mockEventBus);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

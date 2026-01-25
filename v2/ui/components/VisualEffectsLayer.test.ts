@@ -2,6 +2,16 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { VisualEffectsLayer } from './VisualEffectsLayer';
 import { EventBus } from '@core/EventBus';
 
+const mockHTMLElement = {} as any;
+
+const mockHTMLElement = {} as any;
+
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 // Mock CodeRain since it's imported by VisualEffectsLayer
 vi.mock('./CodeRain', () => ({
     CodeRain: vi.fn().mockImplementation(() => ({

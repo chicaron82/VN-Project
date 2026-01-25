@@ -1,6 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NotesViewer } from './NotesViewer';
 
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
+const mockCollectiblesSystem = {} as any; // TODO: Add specific mocks
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -34,48 +42,48 @@ describe('NotesViewer', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new NotesViewer();
+                instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             expect(instance).toBeInstanceOf(NotesViewer);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle Z', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test Z functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for Z
         });
 
         it('should handle CZ', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test CZ functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for CZ
         });
 
         it('should handle ZR', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test ZR functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for ZR
         });
 
         it('should handle GZ', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test GZ functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for GZ
         });
 
         it('should handle IZ', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test IZ functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for IZ
@@ -85,13 +93,13 @@ describe('NotesViewer', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -99,14 +107,14 @@ describe('NotesViewer', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new NotesViewer();
+            instance = new NotesViewer(mockEventBus, mockCollectiblesSystem);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });

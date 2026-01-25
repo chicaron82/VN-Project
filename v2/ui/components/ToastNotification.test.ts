@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { ToastNotification } from './ToastNotification';
 
+const mockEventBus = {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn()
+};
+
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -34,48 +40,48 @@ describe('ToastNotification', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new ToastNotification();
+                instance = new ToastNotification(mockEventBus);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             expect(instance).toBeInstanceOf(ToastNotification);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle present', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test present functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for present
         });
 
         it('should handle if', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test if functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for if
         });
 
         it('should handle createContainer', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test createContainer functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for createContainer
         });
 
         it('should handle show', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test show functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for show
         });
 
         it('should handle requestAnimationFrame', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test requestAnimationFrame functionality
             expect(instance).toBeDefined();
             // TODO: Add specific assertions for requestAnimationFrame
@@ -85,13 +91,13 @@ describe('ToastNotification', () => {
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test with invalid inputs
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Test race conditions
             expect(instance).toBeDefined();
         });
@@ -99,14 +105,14 @@ describe('ToastNotification', () => {
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new ToastNotification();
+            instance = new ToastNotification(mockEventBus);
             // Verify cleanup happens
             expect(instance).toBeDefined();
         });
