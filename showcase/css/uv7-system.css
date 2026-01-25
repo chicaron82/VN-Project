@@ -1319,7 +1319,7 @@ body.uv7-no-scroll {
     flex-direction: column;
 
     /* Cyber Texture */
-    background-image: url('../../media/textures/cyber_grid_texture_dark.png');
+    background-image: url('../media/textures/cyber_grid_texture_dark.png');
     background-size: 400px;
     background-repeat: repeat;
     background-blend-mode: soft-light;

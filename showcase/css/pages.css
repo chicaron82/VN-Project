@@ -522,7 +522,7 @@
     display: inline-block;
     width: 48px;
     height: 48px;
-    background-image: url('/VN-Project/showcase/icon-chaos.png');
+    background-image: url('../icon-chaos.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
