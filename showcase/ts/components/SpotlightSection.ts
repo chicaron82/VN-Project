@@ -1,3 +1,5 @@
+import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+
 export class SpotlightSection {
     constructor() {
         this.render();
@@ -10,25 +12,7 @@ export class SpotlightSection {
         mount.innerHTML = `
             <section class="spotlight-section">
                 <!-- Hero Banner -->
-                <div class="hero-banner spotlight">
-                    <img src="media/banners/banner-spotlight.png" alt="Spotlight Banner" class="hero-banner-image">
-                    <div class="hero-banner-particles">
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                    </div>
-                    <div class="hero-banner-content">
-                        <h1 class="hero-banner-title">Technical Spotlight</h1>
-                        <p class="hero-banner-subtitle">Clean architecture, modern patterns, premium execution</p>
-                    </div>
-                </div>
+                ${createBanner(BANNER_CONFIGS.spotlight)}
 
                 <div class="section-content">
                     <p class="section-intro">Engineering challenges overcome this weekend.</p>

@@ -1,3 +1,5 @@
+import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+
 export class ResultsSection {
     constructor() {
         this.render();
@@ -34,25 +36,7 @@ export class ResultsSection {
         mount.innerHTML = `
             <section class="results-section">
                 <!-- Hero Banner -->
-                <div class="hero-banner results">
-                    <img src="media/banners/banner-results.png" alt="Results Banner" class="hero-banner-image">
-                    <div class="hero-banner-particles">
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                    </div>
-                    <div class="hero-banner-content">
-                        <h1 class="hero-banner-title">The Results</h1>
-                        <p class="hero-banner-subtitle">Vision, AI collaboration, and smart workflow design</p>
-                    </div>
-                </div>
+                ${createBanner(BANNER_CONFIGS.results)}
 
                 <div class="section-content">
                     <p class="section-intro">What happens when you combine vision, AI collaboration, and smart workflow

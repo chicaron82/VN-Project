@@ -46,6 +46,7 @@ import { initLoadStats } from './lib/utils/load-stats';
 import { initAnalytics } from './lib/utils/analytics';
 import { initContentFeatures } from './lib/utils/content-features';
 import { initUXEnhancements } from '../v2/ui/utils/UXEnhancements';
+import { injectFooters } from './lib/FooterInjector';
 
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
@@ -75,6 +76,9 @@ window.UV7System = {
 // Initialize showcase components on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing showcase components...');
+
+    // Inject footers from template (DRY optimization)
+    injectFooters();
 
     // Create UV7 System after DOM is ready
     const uv7System = createUV7System('showcase');

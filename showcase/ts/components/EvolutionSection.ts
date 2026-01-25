@@ -1,3 +1,5 @@
+import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+
 export class EvolutionSection {
     constructor() {
         this.render();
@@ -10,25 +12,7 @@ export class EvolutionSection {
         mount.innerHTML = `
             <section class="evolution-section">
                 <!-- Hero Banner -->
-                <div class="hero-banner evolution">
-                    <img src="media/banners/banner-evolution.png" alt="Evolution Banner" class="hero-banner-image">
-                    <div class="hero-banner-particles">
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                    </div>
-                    <div class="hero-banner-content">
-                        <h1 class="hero-banner-title">The Evolution</h1>
-                        <p class="hero-banner-subtitle">From chaos to clarity, from prototype to production</p>
-                    </div>
-                </div>
+                ${createBanner(BANNER_CONFIGS.evolution)}
 
                 <div class="section-content">
                     <p class="section-intro">From legacy code to modern architecture. A side-by-side comparison of the

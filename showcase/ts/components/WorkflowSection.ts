@@ -1,3 +1,5 @@
+import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+
 export class WorkflowSection {
     constructor() {
         this.render();
@@ -11,25 +13,7 @@ export class WorkflowSection {
         mount.innerHTML = `
             <section class="workflow-section">
                 <!-- Hero Banner -->
-                <div class="hero-banner workflow">
-                    <img src="media/banners/banner-workflow.png" alt="Workflow Banner" class="hero-banner-image">
-                    <div class="hero-banner-particles">
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                        <div class="particle"></div>
-                    </div>
-                    <div class="hero-banner-content">
-                        <h1 class="hero-banner-title">The Workflow</h1>
-                        <p class="hero-banner-subtitle">Orchestrating AI collaboration at scale</p>
-                    </div>
-                </div>
+                ${createBanner(BANNER_CONFIGS.workflow)}
 
                 <div class="section-content">
                     <p class="section-intro">How one non-coder orchestrated multiple AI instances to build a complete
