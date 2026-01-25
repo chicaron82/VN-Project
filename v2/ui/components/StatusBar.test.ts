@@ -1,39 +1,27 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { StatusBar } from './StatusBar';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-const mockStateManager = {
-    getState: vi.fn(() => ({})),
-    setState: vi.fn(),
-    subscribe: vi.fn()
-};
-
-const mockPartial<StatusBarConfig> = {} as any;
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
+    style: { setProperty: vi.fn(), removeProperty: vi.fn() },
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    prepend: vi.fn(),
+    querySelector: vi.fn(),
+    dataset: {},
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn()
 };
+mockElement.querySelector.mockReturnValue(mockElement);
 
-// Mock localStorage
-const localStorageMock = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn()
-};
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+
+// Spy on body.prepend instead of overwriting body
+vi.spyOn(document.body, 'prepend').mockImplementation(vi.fn());
+(global as any).document.getElementById = vi.fn().mockReturnValue(null);
+(global as any).navigator = { vibrate: vi.fn() };
 
 // Mock EventBus
 const mockEventBus = {
@@ -42,96 +30,70 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock StateManager
+const mockStateManager = {
+    get: vi.fn(),
+    set: vi.fn(),
+    subscribe: vi.fn()
+};
+
+// Mock Context dependencies
+vi.mock('./StatusBarContext', () => ({
+    detectContext: vi.fn().mockReturnValue('game'),
+    getFeatures: vi.fn().mockReturnValue({
+        enableAdaptiveTint: true,
+        glassIntensity: 'medium',
+        showLoopVersion: true,
+        showRoute: true,
+        showNotes: true,
+        showTether: true,
+        showMail: true,
+        showBreadcrumbs: true
+    }),
+    COLOR_TINTS: {
+        neutral: { primary: '#fff', glow: '#fff', gradient: '' }
+    }
+}));
+
+vi.mock('./StatusBarBreadcrumbs', () => ({
+    buildBreadcrumbs: vi.fn().mockReturnValue([])
+}));
+
 describe('StatusBar', () => {
     let instance: StatusBar;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
+                instance = new StatusBar(mockEventBus as any, mockStateManager as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            expect(instance).toBeInstanceOf(StatusBar);
+            expect(document.createElement).toHaveBeenCalledWith('div');
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle MODULES', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test MODULES functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for MODULES
+        it('should update route on event', () => {
+            instance = new StatusBar(mockEventBus as any, mockStateManager as any);
+
+            const handler = mockEventBus.on.mock.calls.find((c: any) => c[0] === 'ui:route_changed')[1];
+            handler({ route: 'tori' });
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:route_changed', expect.any(Function));
         });
 
-        it('should handle Bar', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test Bar functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Bar
-        });
-
-        it('should handle navigation', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test navigation functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for navigation
-        });
-
-        it('should handle detection', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test detection functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for detection
-        });
-
-        it('should handle CONFIG', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test CONFIG functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for CONFIG
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new StatusBar(mockEventBus, mockStateManager, mockPartial<StatusBarConfig>);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+        it('should handle paused state', () => {
+            instance = new StatusBar(mockEventBus as any, mockStateManager as any);
+            instance.setPaused(true);
         });
     });
 });

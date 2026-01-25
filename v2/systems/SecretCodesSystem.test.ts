@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SecretCodesSystem } from './SecretCodesSystem';
+import { StateManager } from '../core/StateManager';
+import { BootstrapTracker } from './BootstrapTracker';
 
 // Mock DOM
 const mockElement = {
@@ -28,6 +30,19 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock StateManager
+const mockStateManager = {
+    get: vi.fn(),
+    set: vi.fn()
+} as unknown as StateManager;
+
+// Mock BootstrapTracker
+const mockBootstrapTracker = {
+    getCurrentAttempt: vi.fn().mockReturnValue(848),
+    showTimelineModal: vi.fn(),
+    reset: vi.fn()
+} as unknown as BootstrapTracker;
+
 describe('SecretCodesSystem', () => {
     let instance: SecretCodesSystem;
 
@@ -43,80 +58,20 @@ describe('SecretCodesSystem', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SecretCodesSystem();
+                instance = new SecretCodesSystem(mockEventBus as any, mockStateManager, mockBootstrapTracker);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new SecretCodesSystem();
+            instance = new SecretCodesSystem(mockEventBus as any, mockStateManager, mockBootstrapTracker);
             expect(instance).toBeInstanceOf(SecretCodesSystem);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle Discoverable', () => {
-            instance = new SecretCodesSystem();
-            // Test Discoverable functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Discoverable
-        });
-
-        it('should handle Lore', () => {
-            instance = new SecretCodesSystem();
-            // Test Lore functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Lore
-        });
-
-        it('should handle Utility', () => {
-            instance = new SecretCodesSystem();
-            // Test Utility functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Utility
-        });
-
-        it('should handle Commands', () => {
-            instance = new SecretCodesSystem();
-            // Test Commands functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Commands
-        });
-
-        it('should handle responses', () => {
-            instance = new SecretCodesSystem();
-            // Test responses functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for responses
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SecretCodesSystem();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SecretCodesSystem();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SecretCodesSystem();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SecretCodesSystem();
-            // Verify cleanup happens
+            instance = new SecretCodesSystem(mockEventBus as any, mockStateManager, mockBootstrapTracker);
             expect(instance).toBeDefined();
         });
     });

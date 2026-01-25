@@ -1,5 +1,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SwipeHandler } from './SwipeHandler';
+import { SettingsSystem } from '../systems/SettingsSystem';
+
+// Mock Element
+const mockElement = {
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    getBoundingClientRect: vi.fn(),
+    contains: vi.fn(),
+    tagName: 'DIV',
+    closest: vi.fn().mockReturnValue(null),
+    style: {}
+};
 
 // Mock EventBus
 const mockEventBus = {
@@ -7,6 +19,11 @@ const mockEventBus = {
     off: vi.fn(),
     emit: vi.fn()
 };
+
+// Mock SettingsSystem
+const mockSettingsSystem = {
+    get: vi.fn().mockReturnValue({})
+} as unknown as SettingsSystem;
 
 describe('SwipeHandler', () => {
     let instance: SwipeHandler;
@@ -22,89 +39,48 @@ describe('SwipeHandler', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SwipeHandler();
+                instance = new SwipeHandler(mockElement as any, mockEventBus as any, mockSettingsSystem);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
-        it('should initialize with default values', () => {
-            instance = new SwipeHandler();
-            expect(instance).toBeInstanceOf(SwipeHandler);
+        it('should setup listeners', () => {
+            new SwipeHandler(mockElement as any, mockEventBus as any, mockSettingsSystem);
+            expect(mockElement.addEventListener).toHaveBeenCalledWith('touchstart', expect.any(Function), { passive: true });
+            expect(mockElement.addEventListener).toHaveBeenCalledWith('touchend', expect.any(Function));
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle setupListeners', () => {
-            instance = new SwipeHandler();
-            // Test setupListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupListeners
-        });
+        it('should handle swipe right', () => {
+            instance = new SwipeHandler(mockElement as any, mockEventBus as any, mockSettingsSystem);
 
-        it('should handle addEventListener', () => {
-            instance = new SwipeHandler();
-            // Test addEventListener functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for addEventListener
-        });
+            // Simulate TouchStart
+            const touchStartHandler = mockElement.addEventListener.mock.calls.find(call => call[0] === 'touchstart')?.[1];
+            expect(touchStartHandler).toBeDefined();
 
-        it('should handle handleTouchStart', () => {
-            instance = new SwipeHandler();
-            // Test handleTouchStart functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for handleTouchStart
-        });
+            touchStartHandler({
+                changedTouches: [{ clientX: 0, clientY: 100 }],
+                target: mockElement
+            });
 
-        it('should handle if', () => {
-            instance = new SwipeHandler();
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
+            // Simulate TouchEnd (Swipe Right: X+100)
+            const touchEndHandler = mockElement.addEventListener.mock.calls.find(call => call[0] === 'touchend')?.[1];
+            expect(touchEndHandler).toBeDefined();
 
-        it('should handle closest', () => {
-            instance = new SwipeHandler();
-            // Test closest functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for closest
-        });
+            touchEndHandler({
+                changedTouches: [{ clientX: 100, clientY: 100 }],
+                target: mockElement
+            });
 
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SwipeHandler();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SwipeHandler();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SwipeHandler();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SwipeHandler();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            expect(mockEventBus.emit).toHaveBeenCalledWith('input:swipe_right', {});
         });
     });
 
     describe('Lifecycle', () => {
         it('should cleanup resources properly', () => {
-            instance = new SwipeHandler();
+            instance = new SwipeHandler(mockElement as any, mockEventBus as any, mockSettingsSystem);
             instance.destroy();
-            // Verify cleanup
             expect(instance).toBeDefined();
         });
     });

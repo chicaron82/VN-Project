@@ -44,7 +44,7 @@ interface GameReference {
     };
 }
 
-interface AchievementManager {
+interface AchievementSystemType {
     startRouteTimer(): void;
     checkArchivist(): void;
     checkExplorer(): void;
@@ -56,7 +56,7 @@ interface AchievementManager {
 
 export class AchievementHooks {
     private game: GameReference | null = null;
-    private achievementManager: AchievementManager | null = null;
+    private achievementManager: AchievementSystemType | null = null;
     private toriGatchiCheckInterval: number | null = null;
 
     constructor(_eventBus?: EventBus) {
@@ -70,9 +70,9 @@ export class AchievementHooks {
     /**
      * Initialize and hook achievement triggers
      */
-    public init(game: GameReference, achievementManager: AchievementManager): void {
+    public init(game: GameReference, achievementSystem: AchievementSystemType): void {
         this.game = game;
-        this.achievementManager = achievementManager;
+        this.achievementManager = achievementSystem;
 
         this.hookAchievementTriggers();
         console.log('🏆 Achievement hooks initialized');

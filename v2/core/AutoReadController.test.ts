@@ -1,16 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AutoReadController } from './AutoReadController';
-
-// Mock DOM
-const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
+import { SettingsSystem } from '../systems/SettingsSystem';
 
 // Mock EventBus
 const mockEventBus = {
@@ -19,96 +9,54 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock SettingsSystem
+const mockSettingsSystem = {
+    get: vi.fn().mockReturnValue(true) // Default to enabled
+} as unknown as SettingsSystem;
+
 describe('AutoReadController', () => {
     let instance: AutoReadController;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new AutoReadController();
+                instance = new AutoReadController(mockEventBus as any, mockSettingsSystem);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
-        it('should initialize with default values', () => {
-            instance = new AutoReadController();
-            expect(instance).toBeInstanceOf(AutoReadController);
+        it('should setup listeners', () => {
+            new AutoReadController(mockEventBus as any, mockSettingsSystem);
+            expect(mockEventBus.on).toHaveBeenCalledWith('dialog:complete', expect.any(Function));
+            expect(mockEventBus.on).toHaveBeenCalledWith('dialog:show', expect.any(Function));
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle setupListeners', () => {
-            instance = new AutoReadController();
-            // Test setupListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupListeners
-        });
+        it('should start timer on dialog complete', () => {
+            instance = new AutoReadController(mockEventBus as any, mockSettingsSystem);
+            // Mock settings
+            (mockSettingsSystem.get as any).mockReturnValueOnce(true).mockReturnValueOnce(1000); // Enabled, 1000ms delay
 
-        it('should handle on', () => {
-            instance = new AutoReadController();
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
+            // Trigger dialog:complete
+            const callback = mockEventBus.on.mock.calls.find(call => call[0] === 'dialog:complete')?.[1];
+            expect(callback).toBeDefined();
+            callback && callback();
 
-        it('should handle starts', () => {
-            instance = new AutoReadController();
-            // Test starts functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for starts
-        });
+            // Fast forward
+            vi.advanceTimersByTime(1000);
 
-        it('should handle menu', () => {
-            instance = new AutoReadController();
-            // Test menu functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for menu
-        });
-
-        it('should handle startTimer', () => {
-            instance = new AutoReadController();
-            // Test startTimer functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for startTimer
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new AutoReadController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new AutoReadController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new AutoReadController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new AutoReadController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            expect(mockEventBus.emit).toHaveBeenCalledWith('dialog:advance', { source: 'auto-read' });
         });
     });
 });

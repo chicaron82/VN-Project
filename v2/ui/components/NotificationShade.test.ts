@@ -1,31 +1,28 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NotificationShade } from './NotificationShade';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-// Mock DOM
-const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+// Mock mockElement to support querySelector returning another mock
+const createMockElement = () => ({
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
-    style: {},
+    style: { display: 'none', transform: '', opacity: '' },
     innerHTML: '',
-    textContent: ''
-};
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(), // Will link circular if needed or return null
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    dataset: {}
+});
 
-// Mock localStorage
-const localStorageMock = {
-    getItem: vi.fn(),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn()
-};
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+const mockContainer = createMockElement();
+// Make querySelector return a mock element for children searches
+mockContainer.querySelector.mockImplementation(() => createMockElement());
+
+(global as any).document.createElement = vi.fn().mockReturnValue(mockContainer);
+(global as any).document.body.appendChild = vi.fn();
+(global as any).document.addEventListener = vi.fn(); // For keydown
 
 // Mock EventBus
 const mockEventBus = {
@@ -39,91 +36,38 @@ describe('NotificationShade', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new NotificationShade(mockEventBus);
+                instance = new NotificationShade(mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new NotificationShade(mockEventBus);
-            expect(instance).toBeInstanceOf(NotificationShade);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle Menu', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test Menu functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Menu
+        it('should open shade', () => {
+            instance = new NotificationShade(mockEventBus as any);
+            instance.open();
+            expect(mockContainer.classList.add).toHaveBeenCalledWith('visible');
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:shade:opened', {});
         });
 
-        it('should handle Carousel', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test Carousel functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Carousel
-        });
+        it('should toggle screenshot mode', () => {
+            instance = new NotificationShade(mockEventBus as any);
+            instance.toggleScreenshotMode();
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:hide_status_bar', {});
 
-        it('should handle Grid', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test Grid functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Grid
-        });
-
-        it('should handle state', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test state functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for state
-        });
-
-        it('should handle handlers', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test handlers functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for handlers
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new NotificationShade(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new NotificationShade(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            instance.toggleScreenshotMode();
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:show_status_bar', {});
         });
     });
 });

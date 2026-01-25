@@ -1,22 +1,15 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AutoSaveIndicator } from './AutoSaveIndicator';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
+    classList: { add: vi.fn(), remove: vi.fn(), replace: vi.fn() },
+    querySelector: vi.fn().mockReturnValue({ textContent: '' }),
+    remove: vi.fn()
 };
+(global as any).document.getElementById = vi.fn().mockReturnValue(null);
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.body.appendChild = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -30,91 +23,39 @@ describe('AutoSaveIndicator', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new AutoSaveIndicator(mockEventBus);
+                instance = new AutoSaveIndicator(mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            expect(instance).toBeInstanceOf(AutoSaveIndicator);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle createDOM', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test createDOM functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for createDOM
+        it('should show saving state', () => {
+            instance = new AutoSaveIndicator(mockEventBus as any);
+            instance.show('Saving...');
+            expect(mockElement.classList.remove).toHaveBeenCalled();
+            expect(mockElement.classList.add).toHaveBeenCalledWith('visible', 'saving');
         });
 
-        it('should handle present', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test present functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for present
-        });
+        it('should show success state', () => {
+            instance = new AutoSaveIndicator(mockEventBus as any);
+            instance.showSuccess('Saved!');
+            expect(mockElement.classList.add).toHaveBeenCalledWith('visible', 'success');
 
-        it('should handle if', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
-
-        it('should handle initListeners', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test initListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for initListeners
-        });
-
-        it('should handle on', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new AutoSaveIndicator(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // Advance for hide
+            vi.advanceTimersByTime(2000);
+            expect(mockElement.classList.add).toHaveBeenCalledWith('hidden');
         });
     });
 });

@@ -1,22 +1,33 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MenuCarousel } from './MenuCarousel';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    remove: vi.fn(),
+    offsetWidth: 400,
+    dataset: {} // Fixed: Added dataset
 };
+mockElement.querySelector.mockReturnValue(mockElement);
+
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+(global as any).window = {
+    innerWidth: 400, // Default portrait
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    setTimeout: vi.fn(),
+    clearTimeout: vi.fn()
+};
+(global as any).navigator = { vibrate: vi.fn() };
 
 // Mock EventBus
 const mockEventBus = {
@@ -30,91 +41,46 @@ describe('MenuCarousel', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new MenuCarousel(mockEventBus);
+                instance = new MenuCarousel(mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
-
-        it('should initialize with default values', () => {
-            instance = new MenuCarousel(mockEventBus);
-            expect(instance).toBeInstanceOf(MenuCarousel);
-        });
     });
 
-    describe('Core Functionality', () => {
-        it('should handle Simple', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test Simple functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Simple
+    describe('Mounting', () => {
+        it('should mount in simple mode (portrait)', () => {
+            instance = new MenuCarousel(mockEventBus as any);
+            const parent = { ...mockElement, appendChild: vi.fn() } as any;
+
+            (window as any).innerWidth = 400; // Portrait
+            instance.mount(parent);
+
+            expect(parent.appendChild).toHaveBeenCalled();
         });
 
-        it('should handle Momentum', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test Momentum functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Momentum
-        });
+        it('should switch mode on resize', () => {
+            instance = new MenuCarousel(mockEventBus as any);
+            const parent = { ...mockElement, appendChild: vi.fn() } as any;
+            instance.mount(parent);
 
-        it('should handle engine', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test engine functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for engine
-        });
+            // Resize to landscape
+            (window as any).innerWidth = 1000;
+            const resizeHandler = (window.addEventListener as any).mock.calls.find((c: any) => c[0] === 'resize')[1];
+            expect(resizeHandler).toBeDefined();
 
-        it('should handle 1', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test 1 functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for 1
-        });
-
-        it('should handle emit', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test emit functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for emit
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new MenuCarousel(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new MenuCarousel(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            resizeHandler();
+            vi.runAllTimers(); // Throttle
         });
     });
 });

@@ -1,28 +1,35 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SettingsModal } from './SettingsModal';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-const mockSettingsSystem = {} as any; // TODO: Add specific mocks
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    dataset: {},
+    value: ''
 };
+mockElement.querySelector.mockReturnValue(mockElement);
+
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+(global as any).document.body.appendChild = vi.fn();
+
+// Safe Mocking for documentElement
+if (global.document && global.document.documentElement) {
+    (global.document.documentElement as any).requestFullscreen = vi.fn();
+}
+(global as any).document.exitFullscreen = vi.fn();
 
 // Mock localStorage
 const localStorageMock = {
-    getItem: vi.fn(),
+    getItem: vi.fn().mockReturnValue('{}'),
     setItem: vi.fn(),
     removeItem: vi.fn(),
     clear: vi.fn()
@@ -36,96 +43,49 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+const mockSettingsSystem = {
+    set: vi.fn()
+};
+
 describe('SettingsModal', () => {
     let instance: SettingsModal;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
+        const mockBtn = { ...mockElement };
+        mockElement.querySelectorAll.mockReturnValue([mockBtn]);
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SettingsModal(mockEventBus, mockSettingsSystem);
+                instance = new SettingsModal(mockEventBus as any, mockSettingsSystem as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            expect(instance).toBeInstanceOf(SettingsModal);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle Feedback', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test Feedback functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Feedback
+        it('should load settings from localStorage', () => {
+            localStorageMock.getItem.mockReturnValue(JSON.stringify({ textSpeed: 'fast' }));
+            instance = new SettingsModal(mockEventBus as any, mockSettingsSystem as any);
+            expect(localStorageMock.getItem).toHaveBeenCalledWith('gameSettings');
         });
 
-        it('should handle on', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
+        it('should save setting debounced', () => {
+            instance = new SettingsModal(mockEventBus as any, mockSettingsSystem as any);
+            (instance as any).setTextSpeed('instant');
 
-        it('should handle if', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
-
-        it('should handle createDOM', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test createDOM functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for createDOM
-        });
-
-        it('should handle decay', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test decay functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for decay
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SettingsModal(mockEventBus, mockSettingsSystem);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            vi.advanceTimersByTime(300 + 50);
+            expect(mockSettingsSystem.set).toHaveBeenCalledWith('textSpeed', 'instant');
+            expect(localStorageMock.setItem).toHaveBeenCalled();
+            expect(mockEventBus.emit).toHaveBeenCalledWith('settings:changed', { key: 'textSpeed', value: 'instant' });
         });
     });
 });

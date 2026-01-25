@@ -11,7 +11,7 @@ import { TelemetryRecorder } from '@core/Telemetry';
 import { MacroRunner } from '@core/MacroRunner';
 import { GameEngine } from '@core/GameEngine';
 import { SettingsSystem } from '@systems/SettingsSystem';
-import { SecretCodesManager } from '@systems/SecretCodesManager';
+import { SecretCodesSystem } from '@systems/SecretCodesSystem';
 import { ContentLoader } from '@systems/ContentLoader';
 import { CollectiblesSystem } from '@systems/CollectiblesSystem';
 import { HapticSystem } from '@systems/HapticSystem';
@@ -22,7 +22,7 @@ import { KeyboardController } from '@core/KeyboardController';
 import { SwipeHandler } from '@core/SwipeHandler';
 import { MobileUXController } from '@controllers/MobileUXController';
 import { NotificationShade } from '@ui/components/NotificationShade';
-import { AchievementManager } from '@systems/AchievementManager';
+import { AchievementSystem } from '@systems/AchievementSystem';
 // AchievementToast removed - NotificationRail now handles achievement:unlocked
 import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
@@ -33,6 +33,7 @@ import { EasterEggController } from '@controllers/EasterEggController';
 import { DirectorsCutController } from '@controllers/DirectorsCutController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { StatusNotificationController } from '@systems/StatusNotificationController';
+import { BootstrapTracker } from '@systems/BootstrapTracker';
 // AchievementToast import removed - see line 24
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -181,15 +182,16 @@ const mobileUXController = new MobileUXController(eventBus);
 const notificationShade = new NotificationShade(eventBus);
 
 // Achievement & Tutorial Systems
-const achievementManager = new AchievementManager(eventBus, stateManager);
+const achievementSystem = new AchievementSystem(eventBus, stateManager);
 // AchievementToast removed - NotificationRail handles achievement:unlocked
 const tutorialController = new TutorialController(eventBus, stateManager);
 const _tipsOverlay = new TipsOverlay(eventBus);
 
 const spriteController = new SpriteController(eventBus, stateManager);
 
+const bootstrapTracker = new BootstrapTracker(stateManager); // Needed for SecretCodesSystem
 // Secret Codes & Collectibles (Initialize BEFORE UI components that depend on them)
-const secretCodesManager = new SecretCodesManager(eventBus);
+const secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, bootstrapTracker);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
 
 // Global UI Components
@@ -217,7 +219,7 @@ console.log('UI Modules Active:', {
     _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
     _notesViewer, _saveLoadModal, _backlogUI, _notificationRail,
     autoReadController, keyboardController, swipeHandler, mobileUXController, notificationShade,
-    achievementManager, tutorialController, _tipsOverlay
+    achievementSystem, tutorialController, _tipsOverlay
 });
 
 declare global {
@@ -228,7 +230,7 @@ declare global {
     }
 }
 
-(window as any).secretCodesManager = secretCodesManager;
+(window as any).secretCodesManager = secretCodesSystem;
 (window as any).collectiblesSystem = collectiblesSystem;
 (window as any).saveSystem = saveSystem;
 (window as any).telemetry = telemetryRecorder;
@@ -238,7 +240,7 @@ console.log('UI initialized', {
     _settingsModal,
     _statusBar,
     _sidebar,
-    secretCodesManager,
+    secretCodesSystem,
     collectiblesSystem,
     hapticSystem
 });

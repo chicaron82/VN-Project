@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TutorialController } from './TutorialController';
+import { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {
@@ -9,8 +10,11 @@ const mockElement = {
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.body.appendChild = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -19,12 +23,17 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock StateManager
+const mockStateManager = {
+    get: vi.fn().mockReturnValue([]), // Return empty array for seen tutorials
+    set: vi.fn()
+} as unknown as StateManager;
+
 describe('TutorialController', () => {
     let instance: TutorialController;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -34,81 +43,34 @@ describe('TutorialController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new TutorialController();
+                instance = new TutorialController(mockEventBus as any, mockStateManager);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new TutorialController();
+            instance = new TutorialController(mockEventBus as any, mockStateManager);
             expect(instance).toBeInstanceOf(TutorialController);
+        });
+
+        it('should setup listeners', () => {
+            instance = new TutorialController(mockEventBus as any, mockStateManager);
+            expect(mockEventBus.on).toHaveBeenCalledWith('dialog:show', expect.any(Function));
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:pause_toggle', expect.any(Function));
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle setupListeners', () => {
-            instance = new TutorialController();
-            // Test setupListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupListeners
-        });
+        it('should trigger swipe tutorial', () => {
+            instance = new TutorialController(mockEventBus as any, mockStateManager);
+            // Simulate dialog showing
+            const callback = mockEventBus.on.mock.calls.find(call => call[0] === 'dialog:show')?.[1];
+            expect(callback).toBeDefined();
+            callback && callback();
 
-        it('should handle on', () => {
-            instance = new TutorialController();
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
-
-        it('should handle triggerTutorial', () => {
-            instance = new TutorialController();
-            // Test triggerTutorial functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for triggerTutorial
-        });
-
-        it('should handle switch', () => {
-            instance = new TutorialController();
-            // Test switch functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for switch
-        });
-
-        it('should handle showSwipeAdvance', () => {
-            instance = new TutorialController();
-            // Test showSwipeAdvance functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for showSwipeAdvance
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new TutorialController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new TutorialController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new TutorialController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new TutorialController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // Should modify DOM
+            expect(document.createElement).toHaveBeenCalledWith('div');
+            expect(document.body.appendChild).toHaveBeenCalled();
         });
     });
 });

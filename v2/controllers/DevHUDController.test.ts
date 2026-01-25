@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { DevHUDController } from './DevHUDController';
+import { DevHUDController, GameInstance } from './DevHUDController';
 
 // Mock DOM
 const mockElement = {
@@ -7,10 +7,12 @@ const mockElement = {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
-    style: {},
+    style: { display: 'none' },
     innerHTML: '',
     textContent: ''
 };
+(global as any).document.getElementById = vi.fn().mockReturnValue(mockElement);
+(global as any).window = { setInterval: vi.fn(), clearInterval: vi.fn() };
 
 // Mock EventBus
 const mockEventBus = {
@@ -19,12 +21,38 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock GameInstance
+const mockGame: GameInstance = {
+    uiController: {
+        devHud: mockElement as any
+    },
+    currentRoute: {
+        constructor: { name: 'TestRoute' },
+        currentAct: 1
+    },
+    currentScene: 'TestScene',
+    currentPageIndex: 0,
+    tetherSystem: {
+        tetherLevel: 50
+    },
+    settingsManager: {
+        settings: {
+            tetherDifficulty: 'normal'
+        }
+    },
+    gameState: {
+        flags: { test: true }
+    },
+    loopVersion: 848,
+    loadTime: 100,
+    assetsLoaded: 10
+};
+
 describe('DevHUDController', () => {
     let instance: DevHUDController;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -34,81 +62,34 @@ describe('DevHUDController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new DevHUDController();
+                instance = new DevHUDController(mockGame, mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new DevHUDController();
-            expect(instance).toBeInstanceOf(DevHUDController);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle js', () => {
-            instance = new DevHUDController();
-            // Test js functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for js
+        it('should toggle visibility', () => {
+            instance = new DevHUDController(mockGame, mockEventBus as any);
+
+            instance.toggle();
+            expect(mockElement.style.display).toBe('block');
+            expect(instance.isActive()).toBe(true);
+
+            instance.toggle();
+            expect(mockElement.style.display).toBe('none');
+            expect(instance.isActive()).toBe(false);
         });
 
-        it('should handle toggle', () => {
-            instance = new DevHUDController();
-            // Test toggle functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for toggle
-        });
+        it('should update HUD fields', () => {
+            instance = new DevHUDController(mockGame, mockEventBus as any);
+            instance.toggle(); // Activate to allow updates
 
-        it('should handle update', () => {
-            instance = new DevHUDController();
-            // Test update functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for update
-        });
+            instance.update();
 
-        it('should handle updatePerformanceMetrics', () => {
-            instance = new DevHUDController();
-            // Test updatePerformanceMetrics functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for updatePerformanceMetrics
-        });
-
-        it('should handle levels', () => {
-            instance = new DevHUDController();
-            // Test levels functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for levels
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new DevHUDController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new DevHUDController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new DevHUDController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new DevHUDController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // Check if getElementById was called for fields
+            expect(document.getElementById).toHaveBeenCalledWith('hud-route');
+            expect(document.getElementById).toHaveBeenCalledWith('hud-tether');
         });
     });
 });

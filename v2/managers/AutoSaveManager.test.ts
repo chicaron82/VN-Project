@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AutoSaveManager } from './AutoSaveManager';
+import { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {
@@ -9,8 +10,11 @@ const mockElement = {
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.body.appendChild = vi.fn();
 
 // Mock localStorage
 const localStorageMock = {
@@ -28,96 +32,52 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock StateManager
+const mockStateManager = {
+    get: vi.fn(),
+    set: vi.fn(),
+    exportState: vi.fn().mockReturnValue({}),
+    importState: vi.fn()
+} as unknown as StateManager;
+
+// Mock SaveManager
+const mockSaveManager = {
+    autoSave: vi.fn().mockResolvedValue(undefined)
+};
+
 describe('AutoSaveManager', () => {
     let instance: AutoSaveManager;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new AutoSaveManager();
+                instance = new AutoSaveManager(mockEventBus as any, mockStateManager, mockSaveManager);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new AutoSaveManager();
-            expect(instance).toBeInstanceOf(AutoSaveManager);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle autoSave', () => {
-            instance = new AutoSaveManager();
-            // Test autoSave functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for autoSave
+        it('should setup listeners', () => {
+            instance = new AutoSaveManager(mockEventBus as any, mockStateManager, mockSaveManager);
+            expect(mockEventBus.on).toHaveBeenCalledWith('scene:loaded', expect.any(Function));
+            expect(mockEventBus.on).toHaveBeenCalledWith('choice:selected', expect.any(Function));
         });
 
-        it('should handle js', () => {
-            instance = new AutoSaveManager();
-            // Test js functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for js
-        });
-
-        it('should handle save', () => {
-            instance = new AutoSaveManager();
-            // Test save functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for save
-        });
-
-        it('should handle triggers', () => {
-            instance = new AutoSaveManager();
-            // Test triggers functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for triggers
-        });
-
-        it('should handle throttling', () => {
-            instance = new AutoSaveManager();
-            // Test throttling functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for throttling
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new AutoSaveManager();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new AutoSaveManager();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new AutoSaveManager();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new AutoSaveManager();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+        it('should trigger auto save', async () => {
+            instance = new AutoSaveManager(mockEventBus as any, mockStateManager, mockSaveManager);
+            await instance.forceSave();
+            expect(mockSaveManager.autoSave).toHaveBeenCalled();
         });
     });
 });

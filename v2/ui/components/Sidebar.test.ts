@@ -1,30 +1,28 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Sidebar } from './Sidebar';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-const mockStateManager = {
-    getState: vi.fn(() => ({})),
-    setState: vi.fn(),
-    subscribe: vi.fn()
-};
-
-const mockCollectiblesSystem = {} as any; // TODO: Add specific mocks
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    closest: vi.fn(),
+    dataset: {},
+    offsetWidth: 200
 };
+mockElement.querySelector.mockReturnValue(mockElement); // Default return self
+
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement }); // New instance
+(global as any).document.body.appendChild = vi.fn();
+(global as any).document.addEventListener = vi.fn();
+(global as any).navigator.vibrate = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -33,12 +31,25 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+const mockStateManager = {
+    get: vi.fn((key) => {
+        if (key === 'currentRoute') return 'ronnie';
+        return null;
+    }),
+    set: vi.fn(),
+    subscribe: vi.fn()
+};
+
+const mockCollectiblesSystem = {
+    getTotalCountForRoute: vi.fn().mockReturnValue(10),
+    getCollectedCountForRoute: vi.fn().mockReturnValue(5)
+};
+
 describe('Sidebar', () => {
     let instance: Sidebar;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -48,81 +59,37 @@ describe('Sidebar', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
+                instance = new Sidebar(mockEventBus as any, mockStateManager as any, mockCollectiblesSystem as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            expect(instance).toBeInstanceOf(Sidebar);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle elements', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test elements functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for elements
+        it('should open sidebar', () => {
+            instance = new Sidebar(mockEventBus as any, mockStateManager as any, mockCollectiblesSystem as any);
+            instance.open();
+
+            expect(mockElement.classList.add).toHaveBeenCalledWith('visible'); // Container
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:sidebar:opened', {});
         });
 
-        it('should handle createDOM', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test createDOM functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for createDOM
+        it('should close sidebar', () => {
+            instance = new Sidebar(mockEventBus as any, mockStateManager as any, mockCollectiblesSystem as any);
+            instance.open(); // Open first
+            instance.close();
+
+            expect(mockElement.classList.remove).toHaveBeenCalledWith('visible');
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:sidebar:closed', {});
         });
 
-        it('should handle Button', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test Button functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Button
-        });
+        it('should toggle sidebar', () => {
+            instance = new Sidebar(mockEventBus as any, mockStateManager as any, mockCollectiblesSystem as any);
+            instance.toggle(); // Open
+            expect(mockElement.classList.add).toHaveBeenCalledWith('visible');
 
-        it('should handle design', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test design functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for design
-        });
-
-        it('should handle Sidebar', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test Sidebar functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Sidebar
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new Sidebar(mockEventBus, mockStateManager, mockCollectiblesSystem);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            instance.toggle(); // Close
+            expect(mockElement.classList.remove).toHaveBeenCalledWith('visible');
         });
     });
 });

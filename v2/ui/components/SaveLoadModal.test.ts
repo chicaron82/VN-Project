@@ -1,30 +1,26 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SaveLoadModal } from './SaveLoadModal';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-const mockSaveSystem = {} as any; // TODO: Add specific mocks
-
-const mockStateManager = {
-    getState: vi.fn(() => ({})),
-    setState: vi.fn(),
-    subscribe: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    remove: vi.fn(),
+    dataset: {}
 };
+mockElement.querySelector.mockReturnValue(mockElement);
+
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+(global as any).document.body.appendChild = vi.fn();
+(global as any).document.addEventListener = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -33,12 +29,26 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+const mockSaveSystem = {
+    getSlotMetadata: vi.fn().mockReturnValue(null), // Empty slots by default
+    saveGame: vi.fn().mockResolvedValue(true),
+    loadGame: vi.fn().mockResolvedValue(true),
+    deleteSlot: vi.fn()
+};
+
+const mockStateManager = {
+    get: vi.fn((key) => {
+        if (key === 'currentRoute') return 'ronnie';
+        return null;
+    }),
+    set: vi.fn()
+};
+
 describe('SaveLoadModal', () => {
     let instance: SaveLoadModal;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -48,81 +58,44 @@ describe('SaveLoadModal', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
+                instance = new SaveLoadModal(mockEventBus as any, mockSaveSystem as any, mockStateManager as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            expect(instance).toBeInstanceOf(SaveLoadModal);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle slot', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test slot functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for slot
+        it('should open in save mode', () => {
+            instance = new SaveLoadModal(mockEventBus as any, mockSaveSystem as any, mockStateManager as any);
+            instance.open('save');
+
+            expect(mockElement.classList.add).toHaveBeenCalledWith('mode-save');
+            expect(mockSaveSystem.getSlotMetadata).toHaveBeenCalledTimes(4); // 0 (auto) + 1-3
         });
 
-        it('should handle colors', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test colors functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for colors
+        it('should open in load mode', () => {
+            instance = new SaveLoadModal(mockEventBus as any, mockSaveSystem as any, mockStateManager as any);
+            instance.open('load');
+
+            expect(mockElement.classList.add).toHaveBeenCalledWith('mode-load');
         });
 
-        it('should handle on', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
+        it('should handle save action', async () => {
+            instance = new SaveLoadModal(mockEventBus as any, mockSaveSystem as any, mockStateManager as any);
+            instance.open('save');
+
+            await (instance as any).handleSlotAction('save', 1);
+            expect(mockSaveSystem.saveGame).toHaveBeenCalledWith(1, expect.stringContaining('Ronnie'));
+            expect(mockEventBus.emit).toHaveBeenCalledWith('save:complete', expect.anything());
         });
 
-        it('should handle event', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test event functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for event
-        });
+        it('should handle load action', async () => {
+            instance = new SaveLoadModal(mockEventBus as any, mockSaveSystem as any, mockStateManager as any);
+            instance.open('load');
 
-        it('should handle createDOM', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test createDOM functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for createDOM
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SaveLoadModal(mockEventBus, mockSaveSystem, mockStateManager);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            await (instance as any).handleSlotAction('load', 1);
+            expect(mockSaveSystem.loadGame).toHaveBeenCalledWith(1);
+            expect(mockEventBus.emit).toHaveBeenCalledWith('load:complete', expect.anything());
         });
     });
 });

@@ -48,7 +48,7 @@ export function initChaosTyper(): void {
     function typeChaosCode(): void {
         if (!chaosCodeBlock) return;
 
-        let text = chaosCodeBlock.innerText;
+        let text = chaosCodeBlock.textContent || '';
         if (text.length > 500) text = text.substring(200); // trimming
 
         // Choose snippet: Context-aware priority
@@ -56,7 +56,7 @@ export function initChaosTyper(): void {
         const snippet = snippets[Math.floor(Math.random() * snippets.length)];
 
         text += "\n" + snippet;
-        chaosCodeBlock.innerText = text;
+        chaosCodeBlock.textContent = text;
 
         setTimeout(typeChaosCode, Math.random() * 500 + 100);
     }
@@ -65,12 +65,12 @@ export function initChaosTyper(): void {
     function typeOrderCode(): void {
         if (!orderCodeBlock) return;
 
-        let text = orderCodeBlock.innerText;
+        let text = orderCodeBlock.textContent || '';
         if (text.length > 500) text = text.substring(200);
 
         const snippet = orderSnippets[Math.floor(Math.random() * orderSnippets.length)];
         text += '\n' + snippet;
-        orderCodeBlock.innerText = text;
+        orderCodeBlock.textContent = text;
 
         setTimeout(typeOrderCode, Math.random() * 2000 + 1000); // Slower, more deliberate
     }

@@ -1,15 +1,30 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MenuController } from './MenuController';
 
+// Mock RetryScreen
+vi.mock('@ui/screens/RetryScreen', () => ({
+    RetryScreen: vi.fn().mockImplementation(() => ({
+        show: vi.fn(),
+        hide: vi.fn(),
+        mount: vi.fn(),
+        container: { style: {} }
+    }))
+}));
+
 // Mock DOM
-const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
+(global as any).document.getElementById = vi.fn().mockReturnValue(null);
+// Use spyOn for body.appendChild
+if (global.document && global.document.body) {
+    vi.spyOn(global.document.body, 'appendChild').mockImplementation(vi.fn());
+} else {
+    // If body doesn't exist (rare), recreate safe mock or ignore
+    // Usually jsdom has body.
+}
+
+// Mock StateManager
+const mockStateManager = {
+    set: vi.fn(),
+    get: vi.fn()
 };
 
 // Mock EventBus
@@ -24,7 +39,6 @@ describe('MenuController', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -34,81 +48,32 @@ describe('MenuController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new MenuController();
+                instance = new MenuController(mockStateManager as any, mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new MenuController();
-            expect(instance).toBeInstanceOf(MenuController);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle bindEvents', () => {
-            instance = new MenuController();
-            // Test bindEvents functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for bindEvents
+        it('should show menu and set state', () => {
+            instance = new MenuController(mockStateManager as any, mockEventBus as any);
+            instance.showMenu('main');
+
+            expect(mockStateManager.set).toHaveBeenCalledWith('ui.activeScreen', 'main');
+            expect(mockEventBus.emit).toHaveBeenCalledWith('ui:screen_change', { screen: 'main' });
         });
 
-        it('should handle on', () => {
-            instance = new MenuController();
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
+        it('should handle retry screen', () => {
+            instance = new MenuController(mockStateManager as any, mockEventBus as any);
+            instance.showMenu('retry');
+
+            expect(mockStateManager.set).toHaveBeenCalledWith('ui.activeScreen', 'retry');
         });
 
-        it('should handle showMenu', () => {
-            instance = new MenuController();
-            // Test showMenu functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for showMenu
-        });
-
-        it('should handle if', () => {
-            instance = new MenuController();
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
-
-        it('should handle show', () => {
-            instance = new MenuController();
-            // Test show functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for show
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new MenuController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new MenuController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new MenuController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new MenuController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+        it('should handle event subscription', () => {
+            instance = new MenuController(mockStateManager as any, mockEventBus as any);
+            // Verify binding
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:show_retry_screen', expect.any(Function));
         });
     });
 });

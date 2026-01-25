@@ -1,22 +1,20 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TipsOverlay } from './TipsOverlay';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), replace: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+(global as any).document.getElementById = vi.fn().mockReturnValue(mockElement); // Target exists
 
 // Mock EventBus
 const mockEventBus = {
@@ -30,91 +28,49 @@ describe('TipsOverlay', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
-        it('should create an instance', () => {
-            expect(() => {
-                instance = new TipsOverlay(mockEventBus);
-            }).not.toThrow();
-            expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new TipsOverlay(mockEventBus);
-            expect(instance).toBeInstanceOf(TipsOverlay);
+        it('should verify event subscription', () => {
+            new TipsOverlay(mockEventBus as any);
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:main_menu', expect.any(Function));
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:start_game', expect.any(Function));
+            expect(mockEventBus.on).toHaveBeenCalledWith('ui:route_select', expect.any(Function));
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle setupListeners', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test setupListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupListeners
+        it('should mount when triggered', () => {
+            instance = new TipsOverlay(mockEventBus as any);
+
+            // Trigger main_menu
+            const handler = mockEventBus.on.mock.calls.find((c: any) => c[0] === 'ui:main_menu')[1];
+            handler();
+
+            expect(document.createElement).toHaveBeenCalledWith('div');
+            expect(mockElement.appendChild).toHaveBeenCalled(); // container to target
         });
 
-        it('should handle on', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
+        it('should rotate tips', () => {
+            instance = new TipsOverlay(mockEventBus as any);
+            instance.mount();
+
+            // Advance timer
+            vi.advanceTimersByTime(8000 + 100);
+            expect(mockElement.classList.replace).toHaveBeenCalled(); // fade-in/out
         });
 
-        it('should handle mount', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test mount functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for mount
-        });
-
-        it('should handle if', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
-
-        it('should handle unmount', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test unmount functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for unmount
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new TipsOverlay(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new TipsOverlay(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+        it('should unmount', () => {
+            instance = new TipsOverlay(mockEventBus as any);
+            instance.mount();
+            instance.unmount();
+            expect(mockElement.remove).toHaveBeenCalled();
         });
     });
 });

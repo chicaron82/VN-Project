@@ -1,24 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SkipButton } from './SkipButton';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
-const mockSkipButtonConfig = {} as any;
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
-    style: {},
+    style: { display: 'none' },
     innerHTML: '',
-    textContent: ''
+    parentNode: { removeChild: vi.fn() },
+    remove: vi.fn()
 };
+(global as any).document.getElementById = vi.fn().mockReturnValue(null);
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.body.appendChild = vi.fn();
+(global as any).document.addEventListener = vi.fn();
+(global as any).document.removeEventListener = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -27,12 +25,19 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+const mockDialogController = {
+    isSkipUnlocked: vi.fn().mockReturnValue(true),
+    getSkipState: vi.fn().mockReturnValue({ isSkipping: false }),
+    hasReadContent: vi.fn().mockReturnValue(true)
+};
+
 describe('SkipButton', () => {
     let instance: SkipButton;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        mockElement.style.display = 'none';
+        mockElement.classList.contains.mockReturnValue(false);
     });
 
     afterEach(() => {
@@ -41,82 +46,33 @@ describe('SkipButton', () => {
 
     describe('Initialization', () => {
         it('should create an instance', () => {
-            expect(() => {
-                instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            }).not.toThrow();
+            instance = new SkipButton(mockEventBus as any);
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            expect(instance).toBeInstanceOf(SkipButton);
+            expect(document.createElement).toHaveBeenCalledWith('button');
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle Ctrl', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test Ctrl functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Ctrl
+        it('should toggle skip on click', () => {
+            instance = new SkipButton(mockEventBus as any);
+            instance.setDialogController(mockDialogController as any);
+
+            // Trigger click
+            const clickHandler = mockElement.addEventListener.mock.calls.find((c: any) => c[0] === 'click')[1];
+            clickHandler({ preventDefault: vi.fn(), stopPropagation: vi.fn() });
+
+            expect(mockEventBus.emit).toHaveBeenCalledWith('skip:toggle', {});
         });
 
-        it('should handle S', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test S functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for S
-        });
+        it('should update visibility based on unlock status', () => {
+            instance = new SkipButton(mockEventBus as any);
+            mockDialogController.isSkipUnlocked.mockReturnValue(false);
+            instance.setDialogController(mockDialogController as any);
+            expect(mockElement.style.display).toBe('none');
 
-        it('should handle skippable', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test skippable functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for skippable
-        });
-
-        it('should handle configuration', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test configuration functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for configuration
-        });
-
-        it('should handle getConfig', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test getConfig functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for getConfig
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SkipButton(mockEventBus, mockSkipButtonConfig);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            mockDialogController.isSkipUnlocked.mockReturnValue(true);
+            instance.updateVisibility();
+            expect(mockElement.style.display).toBe('flex');
         });
     });
 });

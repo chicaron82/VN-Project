@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { BootSequenceController } from './BootSequenceController';
+import { GameEngine } from '@core/GameEngine';
 
 // Mock DOM
 const mockElement = {
@@ -7,10 +8,24 @@ const mockElement = {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
-    style: {},
+    style: { opacity: '1', width: '0%', transition: '' },
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn().mockReturnValue({
+        style: {},
+        classList: { add: vi.fn(), remove: vi.fn() },
+        pause: vi.fn(),
+        load: vi.fn(),
+        play: vi.fn().mockResolvedValue(undefined),
+        currentTime: 0,
+        addEventListener: vi.fn()
+    }),
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.getElementById = vi.fn().mockReturnValue(mockElement);
+(global as any).document.body.appendChild = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -19,12 +34,16 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock GameEngine
+const mockGameEngine = {
+    // Add GameEngine methods if needed
+} as unknown as GameEngine;
+
 describe('BootSequenceController', () => {
     let instance: BootSequenceController;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -34,81 +53,26 @@ describe('BootSequenceController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new BootSequenceController();
+                instance = new BootSequenceController(mockEventBus as any, mockGameEngine);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new BootSequenceController();
-            expect(instance).toBeInstanceOf(BootSequenceController);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle if', () => {
-            instance = new BootSequenceController();
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
-        });
+        it('should start sequence', async () => {
+            instance = new BootSequenceController(mockEventBus as any, mockGameEngine);
+            // Mock dynamic import
+            vi.mock('@ui/components/BootSequence', () => ({
+                BootSequence: class {
+                    constructor(_el: any, _engine: any, _cb: any) { }
+                    start() { return Promise.resolve(); }
+                    skip() { }
+                }
+            }));
 
-        it('should handle start', () => {
-            instance = new BootSequenceController();
-            // Test start functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for start
-        });
-
-        it('should handle Promise', () => {
-            instance = new BootSequenceController();
-            // Test Promise functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Promise
-        });
-
-        it('should handle Overlay', () => {
-            instance = new BootSequenceController();
-            // Test Overlay functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Overlay
-        });
-
-        it('should handle Section', () => {
-            instance = new BootSequenceController();
-            // Test Section functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Section
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new BootSequenceController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new BootSequenceController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new BootSequenceController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new BootSequenceController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // start() is async and complex, just verify it runs without error for now
+            await expect(instance.start()).resolves.toBeUndefined();
         });
     });
 });

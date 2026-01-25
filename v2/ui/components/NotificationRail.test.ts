@@ -1,12 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NotificationRail } from './NotificationRail';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
@@ -15,8 +9,24 @@ const mockElement = {
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    insertBefore: vi.fn(),
+    firstChild: null,
+    querySelector: vi.fn(),
+    remove: vi.fn(),
+    dataset: {}
 };
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+// Use spyOn instead of assignment for read-only properties
+const appendSpy = vi.fn();
+if (global.document && global.document.head) {
+    vi.spyOn(global.document.head, 'appendChild').mockImplementation(appendSpy);
+}
+
+(global as any).document.body.appendChild = vi.fn();
+(global as any).document.getElementById = vi.fn().mockReturnValue(null);
+(global as any).requestAnimationFrame = vi.fn().mockImplementation(cb => cb());
 
 // Mock EventBus
 const mockEventBus = {
@@ -30,91 +40,44 @@ describe('NotificationRail', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new NotificationRail(mockEventBus);
+                instance = new NotificationRail(mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new NotificationRail(mockEventBus);
-            expect(instance).toBeInstanceOf(NotificationRail);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle dismiss', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test dismiss functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for dismiss
+        it('should show notification', () => {
+            instance = new NotificationRail(mockEventBus as any);
+            const config = {
+                id: 'test',
+                title: 'Test',
+                message: 'Msg',
+                icon: 'ICON',
+                category: 'system' as any,
+                priority: 'normal' as any,
+                timestamp: Date.now()
+            };
+            instance.show(config);
         });
 
-        it('should handle alerts', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test alerts functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for alerts
-        });
+        it('should dismiss notification', () => {
+            instance = new NotificationRail(mockEventBus as any);
+            instance.show({ id: 'test', title: 'T', message: 'M', icon: 'I', category: 'system', priority: 'normal', timestamp: Date.now() });
 
-        it('should handle Switcher', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test Switcher functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Switcher
-        });
-
-        it('should handle ms', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test ms functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for ms
-        });
-
-        it('should handle away', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test away functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for away
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new NotificationRail(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new NotificationRail(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            instance.dismiss('test');
+            vi.advanceTimersByTime(300 + 50);
         });
     });
 });

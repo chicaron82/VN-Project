@@ -1,19 +1,44 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { UV7OS } from './UV7OS';
 
-const mockUV7Context = {} as any;
-
-const mockUV7OSOptions = {} as any;
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
+    removeAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn().mockImplementation(() => mockElement),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    dataset: {}
+};
+(global as any).document.getElementById = vi.fn().mockReturnValue(mockElement);
+(global as any).document.querySelector = vi.fn().mockReturnValue(mockElement);
+(global as any).document.querySelectorAll = vi.fn().mockReturnValue([]);
+
+// Use spyOn for body methods/props
+if (global.document && global.document.body) {
+    // Cannot spy on property value easily on existing object unless configurable
+    // Just avoid assigning to dataset. The mock element already has dataset: {} on children.
+    // If UV7OS accesses document.body.dataset, it accesses the real one (empty DOMStringMap).
+    // We can define property if helpful
+    // Object.defineProperty(document.body, 'dataset', { value: {}, configurable: true });
+}
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement, style: {} });
+(global as any).document.body.appendChild = vi.fn();
+
+(global as any).window = {
+    addEventListener: vi.fn(),
+    setInterval: vi.fn(),
+    setTimeout: vi.fn(),
+    clearTimeout: vi.fn(),
+    location: { hostname: 'localhost', pathname: '/', origin: 'http://localhost' },
+    innerWidth: 1000,
+    innerHeight: 500
 };
 
 // Mock localStorage
@@ -30,7 +55,6 @@ describe('UV7OS', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -38,83 +62,34 @@ describe('UV7OS', () => {
     });
 
     describe('Initialization', () => {
-        it('should create an instance', () => {
-            expect(() => {
-                instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            }).not.toThrow();
-            expect(instance).toBeDefined();
+        it('should create an instance for landing context', () => {
+            expect(() => typeTest('landing')).not.toThrow();
         });
 
-        it('should initialize with default values', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            expect(instance).toBeInstanceOf(UV7OS);
+        it('should create an instance for showcase context', () => {
+            expect(() => typeTest('showcase')).not.toThrow();
         });
     });
 
-    describe('Core Functionality', () => {
-        it('should handle Ronnie', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test Ronnie functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Ronnie
-        });
+    function typeTest(context: 'landing' | 'showcase') {
+        const os = new UV7OS(context, {});
+        expect(os).toBeDefined();
+    }
 
-        it('should handle Belle', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test Belle functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for Belle
-        });
+    describe('Sidebar Controls', () => {
+        it('should toggle sidebar', () => {
+            const os = new UV7OS('landing', {});
 
-        it('should handle DiZee', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test DiZee functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for DiZee
-        });
+            // Mock sidebar closed initially
+            mockElement.classList.contains.mockReturnValue(false);
 
-        it('should handle toggle', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test toggle functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for toggle
-        });
+            os.toggleSidebar();
+            expect(mockElement.classList.add).toHaveBeenCalledWith('open');
 
-        it('should handle getActiveTab', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test getActiveTab functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for getActiveTab
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new UV7OS(mockUV7Context, mockUV7OSOptions);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // Mock sidebar open
+            mockElement.classList.contains.mockReturnValue(true);
+            os.toggleSidebar();
+            expect(mockElement.classList.remove).toHaveBeenCalledWith('open');
         });
     });
 });

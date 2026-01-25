@@ -1,24 +1,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { LoadingOverlay } from './LoadingOverlay';
 
-const mockstring = {} as any;
-
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     style: {},
     innerHTML: '',
-    textContent: ''
+    appendChild: vi.fn()
 };
+const mockRoot = { ...mockElement, appendChild: vi.fn() };
+
+(global as any).document.createElement = vi.fn().mockReturnValue(mockElement);
+(global as any).document.getElementById = vi.fn((id) => id === 'root' ? mockRoot : null);
 
 // Mock EventBus
 const mockEventBus = {
@@ -32,91 +25,45 @@ describe('LoadingOverlay', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
-        it('should create an instance', () => {
-            expect(() => {
-                instance = new LoadingOverlay(mockstring, mockEventBus);
-            }).not.toThrow();
+        it('should create an instance and mount', () => {
+            instance = new LoadingOverlay('root', mockEventBus as any);
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            expect(instance).toBeInstanceOf(LoadingOverlay);
+            expect(document.getElementById).toHaveBeenCalledWith('root');
+            expect(mockRoot.appendChild).toHaveBeenCalled();
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle if', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test if functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
+        it('should show on event', () => {
+            instance = new LoadingOverlay('root', mockEventBus as any);
+
+            // Invoke handler
+            const handler = mockEventBus.on.mock.calls.find((c: any) => c[0] === 'loading:start')[1];
+            handler();
+
+            expect(mockElement.classList.remove).toHaveBeenCalledWith('hidden');
+            expect(mockElement.classList.add).toHaveBeenCalledWith('visible');
         });
 
-        it('should handle initListeners', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test initListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for initListeners
-        });
+        it('should hide after delay', () => {
+            instance = new LoadingOverlay('root', mockEventBus as any);
+            instance.show();
 
-        it('should handle on', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
+            instance.hide(); // Should not hide immediately if too fast
+            vi.advanceTimersByTime(100);
+            expect(mockElement.classList.add).not.toHaveBeenCalledWith('hidden');
 
-        it('should handle show', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test show functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for show
-        });
-
-        it('should handle hide', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test hide functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for hide
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new LoadingOverlay(mockstring, mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            vi.advanceTimersByTime(800); // Advance past min time
+            expect(mockElement.classList.add).toHaveBeenCalledWith('hidden');
         });
     });
 });

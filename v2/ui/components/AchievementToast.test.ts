@@ -1,22 +1,21 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { AchievementToast } from './AchievementToast';
 
-const mockEventBus = {
-    on: vi.fn(),
-    off: vi.fn(),
-    emit: vi.fn()
-};
-
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), replace: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement });
+(global as any).document.body.appendChild = vi.fn();
+(global as any).navigator.vibrate = vi.fn();
 
 // Mock EventBus
 const mockEventBus = {
@@ -30,91 +29,44 @@ describe('AchievementToast', () => {
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
+        vi.useFakeTimers();
     });
 
     afterEach(() => {
         vi.clearAllMocks();
+        vi.useRealTimers();
     });
 
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new AchievementToast(mockEventBus);
+                instance = new AchievementToast(mockEventBus as any);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new AchievementToast(mockEventBus);
-            expect(instance).toBeInstanceOf(AchievementToast);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle createContainer', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test createContainer functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for createContainer
-        });
+        it('should show toast', () => {
+            instance = new AchievementToast(mockEventBus as any);
 
-        it('should handle setupListeners', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test setupListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupListeners
-        });
+            instance.show({ title: 'Test', description: 'Desc', icon: '🏆' });
 
-        it('should handle on', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
+            expect(document.createElement).toHaveBeenCalledWith('div');
+            // Check calling appendChild on the container (which was created in constructor)
+            // We need to verify the container was created first, which happens in constructor.
+            // Since we reuse mockElement for all createCalls, checking if appendChild was called twice 
+            // (once for container to body, once for toast to container) is a proxy.
 
-        it('should handle show', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test show functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for show
-        });
+            expect(document.body.appendChild).toHaveBeenCalled(); // Container to body
+            // Since all createElements return the SAME mock object in this simple mock schema,
+            // calling appendChild on 'this.container' is calling it on the same mock object 
+            // as document.createElement returned.
+            // We can verify calls on the mock object.
 
-        it('should handle effect', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test effect functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for effect
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new AchievementToast(mockEventBus);
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new AchievementToast(mockEventBus);
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            // Fast forward to verify removal
+            vi.advanceTimersByTime(5000 + 1000);
+            expect(mockElement.remove).toHaveBeenCalled();
         });
     });
 });

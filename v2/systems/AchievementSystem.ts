@@ -181,4 +181,47 @@ export class AchievementSystem {
     public getAchievements(): Achievement[] {
         return Object.values(this.achievements);
     }
+
+    // ========================================
+    // ACHIEVEMENT CHECK STUBS (Legacy Hooks Support)
+    // ========================================
+
+    public startRouteTimer() {
+        // TODO: Implement Speed Runner timer logic
+        console.log('🏆 [AchievementSystem] startRouteTimer called');
+    }
+
+    public checkArchivist() {
+        // TODO: Implement Archivist check via CollectiblesSystem
+        console.log('🏆 [AchievementSystem] checkArchivist called');
+    }
+
+    public checkExplorer() {
+        // TODO: Implement Explorer check via BacklogManager
+        console.log('🏆 [AchievementSystem] checkExplorer called');
+    }
+
+    public checkPetParent() {
+        // TODO: Implement Pet Parent check via ToriGatchi
+        console.log('🏆 [AchievementSystem] checkPetParent called');
+    }
+
+    public checkTimeTravel(endingId: string) {
+        // TODO: Implement Time Traveler / Endings checks
+        console.log(`🏆 [AchievementSystem] checkTimeTravel called for ${endingId}`);
+        // Basic check: Unlock ending achievement if exists
+        this.unlock(endingId);
+        this.unlock('time_traveler');
+        // Check completionist...?
+    }
+
+    public checkSpeedRunner() {
+        // TODO: Implement Speed Runner check
+        console.log('🏆 [AchievementSystem] checkSpeedRunner called');
+    }
+
+    public checkInsane() {
+        // TODO: Implement Insane check
+        console.log('🏆 [AchievementSystem] checkInsane called');
+    }
 }

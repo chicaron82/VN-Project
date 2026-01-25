@@ -1,16 +1,23 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SpriteController } from './SpriteController';
+import { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
+    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn(), contains: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
     style: {},
     innerHTML: '',
-    textContent: ''
+    textContent: '',
+    appendChild: vi.fn(),
+    querySelector: vi.fn(),
+    querySelectorAll: vi.fn().mockReturnValue([]),
+    remove: vi.fn()
 };
+(global as any).document.createElement = vi.fn().mockReturnValue({ ...mockElement, style: {} }); // Return new object
+(global as any).requestAnimationFrame = vi.fn().mockImplementation(cb => cb());
 
 // Mock EventBus
 const mockEventBus = {
@@ -19,12 +26,17 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
+// Mock StateManager
+const mockStateManager = {
+    get: vi.fn(),
+    set: vi.fn()
+} as unknown as StateManager;
+
 describe('SpriteController', () => {
     let instance: SpriteController;
 
     beforeEach(() => {
         vi.clearAllMocks();
-        document.body.innerHTML = '<div id="test-container"></div>';
     });
 
     afterEach(() => {
@@ -34,81 +46,43 @@ describe('SpriteController', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new SpriteController();
+                instance = new SpriteController(mockEventBus as any, mockStateManager);
             }).not.toThrow();
             expect(instance).toBeDefined();
-        });
-
-        it('should initialize with default values', () => {
-            instance = new SpriteController();
-            expect(instance).toBeInstanceOf(SpriteController);
         });
     });
 
     describe('Core Functionality', () => {
-        it('should handle system', () => {
-            instance = new SpriteController();
-            // Test system functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for system
+        it('should show sprite', () => {
+            instance = new SpriteController(mockEventBus as any, mockStateManager);
+
+            // Setup viewport mock
+            const viewport = { ...mockElement } as any;
+            instance.setViewport(viewport);
+
+            // Mock querySelector to return null initially (creating new sprite)
+            viewport.querySelector = vi.fn().mockReturnValue(null);
+
+            instance.showSprite('left', 'image.png');
+
+            expect(document.createElement).toHaveBeenCalledWith('div');
+            expect(viewport.appendChild).toHaveBeenCalled();
+            expect(instance.getState().left).toBe('image.png');
         });
 
-        it('should handle stages', () => {
-            instance = new SpriteController();
-            // Test stages functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for stages
-        });
+        it('should hide sprite', () => {
+            instance = new SpriteController(mockEventBus as any, mockStateManager);
+            const viewport = { ...mockElement } as any;
+            instance.setViewport(viewport);
 
-        it('should handle setupEventListeners', () => {
-            instance = new SpriteController();
-            // Test setupEventListeners functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setupEventListeners
-        });
+            // Mock existing sprite
+            const sprite = { style: {}, remove: vi.fn() } as any;
+            viewport.querySelector = vi.fn().mockReturnValue(sprite);
 
-        it('should handle on', () => {
-            instance = new SpriteController();
-            // Test on functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for on
-        });
-
-        it('should handle setViewport', () => {
-            instance = new SpriteController();
-            // Test setViewport functionality
-            expect(instance).toBeDefined();
-            // TODO: Add specific assertions for setViewport
-        });
-
-    });
-
-    describe('Edge Cases', () => {
-        it('should handle null/undefined inputs gracefully', () => {
-            instance = new SpriteController();
-            // Test with invalid inputs
-            expect(instance).toBeDefined();
-        });
-
-        it('should handle rapid consecutive calls', () => {
-            instance = new SpriteController();
-            // Test race conditions
-            expect(instance).toBeDefined();
-        });
-    });
-
-    describe('Error Handling', () => {
-        it('should handle errors without crashing', () => {
-            instance = new SpriteController();
-            expect(() => {
-                // Trigger potential error conditions
-            }).not.toThrow();
-        });
-
-        it('should clean up resources on error', () => {
-            instance = new SpriteController();
-            // Verify cleanup happens
-            expect(instance).toBeDefined();
+            instance.hideSprite('left');
+            expect(sprite.style.opacity).toBe('0');
+            // Timeout not tested here directly unless using fake timers, but state should update
+            expect(instance.getState().left).toBeNull();
         });
     });
 });

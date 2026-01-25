@@ -4,7 +4,7 @@ import { EventBus } from '@core/EventBus';
 
 const mockHTMLElement = {} as any;
 
-const mockHTMLElement = {} as any;
+
 
 const mockEventBus = {
     on: vi.fn(),
