@@ -163,8 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
             bottomSafePad: 140,
             onToggle: () => {
                 // Toggle sidebar when grab handle is tapped
+                console.log('[GrabHandle] onToggle callback - window.uv7os:', window.uv7os);
                 if (window.uv7os) {
                     window.uv7os.toggleSidebar();
+                } else {
+                    console.error('[GrabHandle] window.uv7os is not defined!');
                 }
             }
         });

@@ -581,10 +581,16 @@ export class UV7OS {
     }
 
     toggleSidebar(): void {
+        console.log('[UV7OS] toggleSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
-        if (!sidebar) return;
+        console.log('[UV7OS] sidebar element:', sidebar);
+        if (!sidebar) {
+            console.error('[UV7OS] Sidebar element not found!');
+            return;
+        }
 
         const isOpen = sidebar.classList.contains('open');
+        console.log('[UV7OS] sidebar isOpen:', isOpen);
         if (isOpen) {
             this.closeSidebar();
         } else {
@@ -593,11 +599,16 @@ export class UV7OS {
     }
 
     private openSidebar(): void {
+        console.log('[UV7OS] openSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
         const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
 
-        if (!sidebar) return;
+        if (!sidebar) {
+            console.error('[UV7OS] openSidebar: sidebar not found');
+            return;
+        }
 
+        console.log('[UV7OS] Adding open class to sidebar');
         sidebar.classList.add('open');
         if (backdrop) backdrop.classList.add('visible');
         if (this.context === 'showcase') {
@@ -606,6 +617,7 @@ export class UV7OS {
     }
 
     private closeSidebar(): void {
+        console.log('[UV7OS] closeSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
         const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
 
