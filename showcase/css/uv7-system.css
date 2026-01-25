@@ -118,7 +118,7 @@
     bottom: 0;
     background: rgba(10, 10, 18, 0.95);
     /* Cyber Texture */
-    background-image: url('media/textures/sidebar-bg.png');
+    background-image: url('../media/textures/sidebar-bg.png');
     background-size: cover;
     background-position: center;
     background-blend-mode: overlay;
