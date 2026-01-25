@@ -13,6 +13,7 @@ import { StatusBar } from '../v2/ui/components/StatusBar';
 import { NotificationRail } from '../v2/ui/components/NotificationRail';
 import type { UV7Context } from '../v2/ui/components/StatusBarContext';
 import { UV7AppSwitcher } from '../v2/ui/components/UV7AppSwitcher';
+import { UV7OS } from '../v2/ui/components/UV7OS'; // Import the class directly
 
 // Import showcase components
 import { TimelineRenderer } from './lib/TimelineRenderer';
@@ -21,7 +22,7 @@ import { SwipeController } from './lib/SwipeController';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { initGrabHandle } from '../v2/ui/components/GrabHandle';
-import { initUV7OS } from '../v2/ui/components/UV7OS';
+// Remove initUV7OS since we'll create the instance directly
 
 // Import section renderers
 import { JourneySection } from './js/components/JourneySection';
@@ -193,9 +194,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initShowcaseCarousel();
     console.log('✅ Showcase carousel initialized');
 
-    // Initialize UV7 OS (navigation system)
-    // Note: This auto-initializes on DOMContentLoaded, so we just log
-    console.log('✅ UV7 OS initialized');
+    // Initialize UV7 OS (navigation system) - must create instance directly
+    // because we're already inside DOMContentLoaded
+    if (window.TIMELINE_DATA?.entries) {
+        window.uv7os = new UV7OS('showcase', {
+            entries: window.TIMELINE_DATA.entries
+        });
+        console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
+    } else {
+        // Fallback: create without timeline data
+        window.uv7os = new UV7OS('showcase');
+        console.warn('⚠️ UV7 OS initialized without timeline data');
+    }
 
     console.log('✅ Showcase fully initialized - all modules loaded');
 });
