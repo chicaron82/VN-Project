@@ -452,7 +452,7 @@
 /* Section Backgrounds */
 .evolution-section {
     background-color: var(--chaos-bg, #050505);
-    background-image: url('./bg-evolution-split.png');
+    background-image: url('/VN-Project/showcase/bg-evolution-split.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -522,7 +522,7 @@
     display: inline-block;
     width: 48px;
     height: 48px;
-    background-image: url('./icon-chaos.png');
+    background-image: url('/VN-Project/showcase/icon-chaos.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
@@ -538,7 +538,7 @@
     display: inline-block;
     width: 48px;
     height: 48px;
-    background-image: url('./icon-order.png');
+    background-image: url('/VN-Project/showcase/icon-order.png');
     background-size: contain;
     background-repeat: no-repeat;
     vertical-align: middle;
