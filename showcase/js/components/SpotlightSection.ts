@@ -309,6 +309,7 @@ export class SpotlightSection {
                                                 <li>Efficient, hands-off, "set and forget"</li>
                                                 <li>Gets you to the destination</li>
                                                 <li>Optimized for speed and completion</li>
+                                                <li>Perfect for well-defined requirements</li>
                                             </ul>
                                         </div>
                                         <div class="philosophy-side">
@@ -317,17 +318,41 @@ export class SpotlightSection {
                                                 <li>Spontaneous ideas, mid-flight pivots</li>
                                                 <li>"What if we made it bougie?"</li>
                                                 <li>Sending it back to the kitchen for flavor</li>
+                                                <li>Discovery during implementation</li>
                                                 <li>The Michelin treatment—soul included</li>
                                             </ul>
                                         </div>
+                                    </div>
+                                    <div class="methodology-example">
+                                        <h5>📝 Example: The StatusBar Evolution</h5>
+                                        <p><strong>Agentic:</strong> "Build a status bar with these specs."<br>
+                                        <strong>Riffing:</strong> "StatusBar → wait, make it context-aware → actually, unify it across ALL apps → but add breadcrumbs → and make them clickable → with glassmorphism → and premium animations..."</p>
+                                        <p class="methodology-note">Result: A unified component that works across 3+ contexts instead of 3 separate implementations.</p>
+                                    </div>
+                                    <div class="conversation-approach">
+                                        <h5>💬 Prompt Engineering vs Natural Conversation</h5>
+                                        <div class="conversation-comparison">
+                                            <div class="conversation-style">
+                                                <strong>Efficient Prompts:</strong><br>
+                                                "Create a TypeScript class for status bar management with the following methods..."
+                                            </div>
+                                            <div class="conversation-style">
+                                                <strong>Natural Conversation:</strong><br>
+                                                "YOO!! what's cookin?! Ready to roll? I got a bougie idea that is absolutely wild! What if we made the status bar feel PREMIUM..."
+                                            </div>
+                                        </div>
+                                        <p class="energy-insight">
+                                            <strong>The Energy Matching Hack:</strong> AIs respond to your energy. Come in transactional, get bland output. 
+                                            Come in hot with enthusiasm—suddenly they're not just executing, they're <em>creating</em>. 
+                                            Yes, it's frustrating when ideas don't translate immediately, but that's where the magic happens.
+                                        </p>
                                     </div>
                                     <p class="tech-insight">
                                         <strong>The Truth:</strong> Both get you there. But only one feels
                                         <em>alive</em>.
                                         UV7 wasn't just built—it was <strong>crafted</strong>. Every "wait, what if..."
                                         moment added personality. Every "this needs more flavor" pivot made it premium.
-                                        The Michelin treatment isn't about efficiency. It's about caring enough to
-                                        iterate
+                                        The iterative approach doesn't just solve problems—it discovers better problems to solve.
                                         until it's <em>perfect</em>.
                                     </p>
                                 </div>

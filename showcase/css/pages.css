@@ -1241,6 +1241,88 @@
     font-style: italic;
 }
 
+.methodology-example {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: rgba(255, 136, 0, 0.05);
+    border-left: 3px solid #ff8800;
+    border-radius: 8px;
+}
+
+.methodology-example h5 {
+    color: #ff8800;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.methodology-example p {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+}
+
+.methodology-note {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.conversation-approach {
+    margin: 1.5rem 0;
+    padding: 1.25rem;
+    background: rgba(0, 212, 255, 0.05);
+    border-left: 3px solid #00d4ff;
+    border-radius: 8px;
+}
+
+.conversation-approach h5 {
+    color: #00d4ff;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.conversation-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+    font-size: 0.85rem;
+}
+
+.conversation-style {
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.conversation-style strong {
+    color: #00d4ff;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.energy-insight {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(255, 105, 180, 0.05);
+    border: 1px solid rgba(255, 105, 180, 0.2);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.energy-insight strong {
+    color: #ff69b4;
+}
+
+.energy-insight em {
+    color: #ff8800;
+    font-style: italic;
+}
+
 /* ========================================
    LIGHT MODE
    ======================================== */
@@ -1293,6 +1375,11 @@
     .tech-comparison-philosophy {
         grid-template-columns: 1fr;
         gap: 1rem;
+    }
+    
+    .conversation-comparison {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
 }
 /* ==========================================
