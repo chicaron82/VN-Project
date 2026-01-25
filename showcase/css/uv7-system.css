@@ -1147,6 +1147,70 @@
     gap: 0.5rem;
 }
 
+/* Sidebar Section Styling */
+.uv7-sidebar .sidebar-section {
+    margin-bottom: 1.5rem;
+}
+
+.uv7-sidebar .sidebar-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.75rem;
+    padding-left: 0.25rem;
+}
+
+.uv7-sidebar .sidebar-apps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.uv7-sidebar .sidebar-app {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+}
+
+.uv7-sidebar .sidebar-app:hover {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 136, 0.15);
+}
+
+.uv7-sidebar .sidebar-app:active {
+    transform: translateY(0);
+}
+
+.uv7-sidebar .sidebar-app .app-icon {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.uv7-sidebar .sidebar-app .app-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.02em;
+}
+
+.uv7-sidebar .section-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
 .uv7-sidebar .section-nav-item {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
