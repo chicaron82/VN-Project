@@ -378,17 +378,20 @@ export class UV7OS {
         // Context-specific action URLs
         let actionUrls: ActionUrls = {};
 
+        // Get base path - works for both local dev and GitHub Pages
+        const basePath = window.location.pathname.includes('/VN-Project/') ? '/VN-Project' : '';
+        
         if (this.context === 'landing') {
             actionUrls = {
-                'launch-v1': './v1/index.html',
-                'launch-v2': './index.v2.html',
-                'view-showcase': './showcase/index.html'
+                'launch-v1': `${basePath}/v1/index.html`,
+                'launch-v2': `${basePath}/index.v2.html`,
+                'view-showcase': `${basePath}/showcase/index.html`
             };
         } else {
             actionUrls = {
-                'launch-v1': '../v1/index.html',
-                'launch-v2': '../index.v2.html',
-                'go-home': '../index.html'
+                'launch-v1': `${basePath}/v1/index.html`,
+                'launch-v2': `${basePath}/index.v2.html`,
+                'go-home': `${basePath}/index.html`
             };
         }
 
