@@ -1,0 +1,310 @@
+/**
+ * UNIFIED DESIGN SYSTEM
+ * Implements Aaron's vision: unified backgrounds with enhanced differentiation
+ * 
+ * Features:
+ * 1. Subtle section dividers
+ * 2. Banner fade transitions
+ * 3. Content width constraints
+ * 4. Enhanced typography hierarchy
+ * 5. Footer "anchor" enhancement
+ * 6. Dark mode smart separators
+ * 7. Section-aware scroll progress
+ */
+
+/* ==========================================================================
+   1. UNIFIED SECTION BACKGROUNDS
+   Hero banners provide color, content stays clean and consistent
+   ========================================================================== */
+
+.journey-section,
+.workflow-section,
+.results-section,
+.spotlight-section,
+.evolution-section {
+    background: #ffffff !important;
+    color: #1a1a1a;
+}
+
+@media (prefers-color-scheme: dark) {
+    .journey-section,
+    .workflow-section,
+    .results-section,
+    .spotlight-section,
+    .evolution-section {
+        background: #1a1a1a !important;
+        color: #e0e0e0;
+    }
+}
+
+/* ==========================================================================
+   2. BANNER FADE TRANSITIONS
+   Smooth gradient fade from banner colors into unified background
+   ========================================================================== */
+
+.hero-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #ffffff) 100%);
+    z-index: 4;
+    pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .hero-banner::after {
+        background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #1a1a1a) 100%);
+    }
+}
+
+/* Section-specific fade colors (inherit from banners) */
+.hero-banner.home::after {
+    --section-bg-fade: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+    .hero-banner.home::after {
+        --section-bg-fade: #1a1a1a;
+    }
+}
+
+/* ==========================================================================
+   3. CONTENT WIDTH CONSTRAINTS
+   Optimize reading experience with centered, constrained text
+   ========================================================================== */
+
+.section-content {
+    max-width: 800px !important;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+}
+
+/* Wide elements (images, grids, interactive components) can break out */
+.section-content .stats-grid,
+.section-content .workflow-diagram,
+.section-content .evolution-metrics,
+.section-content .spotlight-grid,
+.section-content .timeline {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================================================
+   4. ENHANCED TYPOGRAPHY HIERARCHY
+   Stronger contrast and spacing since color won't differentiate sections
+   ========================================================================== */
+
+section h2 {
+    font-size: clamp(2.8rem, 5vw, 4rem) !important;
+    font-weight: 900 !important;
+    margin-bottom: 1.5rem !important;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+}
+
+section h3 {
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+}
+
+.section-intro {
+    font-size: clamp(1.15rem, 2vw, 1.5rem) !important;
+    line-height: 1.8 !important;
+    margin-bottom: 3rem !important;
+}
+
+section p {
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   5. SUBTLE SECTION DIVIDERS
+   Visual separation without color changes
+   ========================================================================== */
+
+.tab-panel {
+    position: relative;
+}
+
+.tab-panel:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(100, 100, 100, 0.15) 20%,
+        rgba(100, 100, 100, 0.15) 80%,
+        transparent 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+    .tab-panel:not(:last-child)::after {
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 20%,
+            rgba(255, 255, 255, 0.1) 80%,
+            transparent 100%);
+    }
+}
+
+/* Enhanced shadow separator for better depth */
+.tab-panel:not(:last-child) {
+    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.03);
+}
+
+@media (prefers-color-scheme: dark) {
+    .tab-panel:not(:last-child) {
+        box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.03);
+    }
+}
+
+/* ==========================================================================
+   6. FOOTER ANCHOR ENHANCEMENT
+   Make footer transition more pronounced as the only color change
+   ========================================================================== */
+
+.site-footer {
+    margin-top: 0 !important;
+    box-shadow: 0 -20px 40px -10px rgba(0, 0, 0, 0.2) !important;
+    position: relative;
+}
+
+.site-footer::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.05) 100%);
+    pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .site-footer::before {
+        background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
+    }
+}
+
+/* Subtle scroll-triggered animation */
+.site-footer {
+    animation: footerSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes footerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   7. SECTION-AWARE SCROLL PROGRESS
+   Progress bar changes color based on current active section
+   ========================================================================== */
+
+.scroll-progress {
+    transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Default/Home gradient */
+.scroll-progress[data-section="home"] {
+    background: linear-gradient(90deg, #020024, #090979, #00d4ff) !important;
+}
+
+/* Journey - Chaos to Order (purple/pink) */
+.scroll-progress[data-section="journey"] {
+    background: linear-gradient(90deg, #533483, #e94560, #ff6b35) !important;
+}
+
+/* Workflow - AI Orchestration (purple/orange/cyan) */
+.scroll-progress[data-section="workflow"] {
+    background: linear-gradient(90deg, #2d1b69, #ff6b35, #00d9ff) !important;
+}
+
+/* Results - Success Metrics (blue/green) */
+.scroll-progress[data-section="results"] {
+    background: linear-gradient(90deg, #1b263b, #00ff88, #00d4ff) !important;
+}
+
+/* Spotlight - Technical Architecture (cyan/green/white) */
+.scroll-progress[data-section="spotlight"] {
+    background: linear-gradient(90deg, #16213e, #00d9ff, #00ff88) !important;
+}
+
+/* Evolution - Transformation (red/orange/cyan/green) */
+.scroll-progress[data-section="evolution"] {
+    background: linear-gradient(90deg, #e94560, #ff6b35, #00d9ff, #00ff88) !important;
+}
+
+/* ==========================================================================
+   8. DARK MODE SMART SEPARATORS
+   Additional subtle visual guides in dark mode
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    /* Very subtle borders around major content blocks */
+    .stat-card,
+    .workflow-step,
+    .timeline-entry,
+    .feature-card {
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Subtle glow on interactive elements */
+    .stat-card:hover,
+    .workflow-step:hover,
+    .timeline-entry:hover {
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+    }
+}
+
+/* ==========================================================================
+   9. BREATHING ROOM
+   Additional spacing for unified design
+   ========================================================================== */
+
+.tab-panel {
+    padding-bottom: 4rem;
+}
+
+section:not(:first-child) {
+    padding-top: 2rem;
+}
+
+/* ==========================================================================
+   10. TEXT COLOR OVERRIDES
+   Ensure text is always readable on white/dark backgrounds
+   ========================================================================== */
+
+.workflow-section h2,
+.workflow-section h3,
+.workflow-section .section-intro,
+.results-section h2,
+.results-section h3,
+.results-section .section-intro {
+    color: inherit !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .workflow-section,
+    .results-section {
+        color: #e0e0e0;
+    }
+}

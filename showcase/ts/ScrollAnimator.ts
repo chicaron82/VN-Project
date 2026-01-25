@@ -133,15 +133,33 @@ export function initScrollAnimations(): void {
         }
     });
 
-    // 5. Scroll Progress Bar
+    // 5. Scroll Progress Bar with Section-Aware Colors
     const scrollProgress = document.getElementById('scroll-progress');
     if (scrollProgress) {
-        window.addEventListener('scroll', () => {
+        const updateScrollProgress = () => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollTop / docHeight) * 100;
             scrollProgress.style.width = `${scrollPercent}%`;
-        });
+
+            // Determine which section is currently visible
+            const panels = document.querySelectorAll('.tab-panel');
+            let currentSection = 'home';
+            
+            panels.forEach((panel) => {
+                const rect = panel.getBoundingClientRect();
+                // Section is "active" if its top is in the upper third of viewport
+                if (rect.top <= window.innerHeight / 3 && rect.bottom >= 0) {
+                    const panelId = panel.getAttribute('data-panel');
+                    if (panelId) currentSection = panelId;
+                }
+            });
+
+            scrollProgress.setAttribute('data-section', currentSection);
+        };
+
+        window.addEventListener('scroll', updateScrollProgress);
+        updateScrollProgress(); // Initial call
     }
 
     // 6. Phase Nav active state
