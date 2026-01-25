@@ -42,8 +42,8 @@ describe('ChaosTyper', () => {
         const initialChaos = chaosContainer.textContent;
         const initialOrder = orderContainer.textContent;
         
-        // Fast forward time
-        vi.advanceTimersByTime(2000);
+        // Fast forward time (Order typing can take up to 3000ms + random buffer)
+        vi.advanceTimersByTime(4000);
 
         // Content should have changed
         expect(chaosContainer.textContent).not.toBe(initialChaos);
