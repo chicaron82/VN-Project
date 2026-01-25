@@ -378,8 +378,11 @@ export class UV7OS {
         // Context-specific action URLs
         let actionUrls: ActionUrls = {};
 
-        // Get base path - works for both local dev and GitHub Pages
-        const basePath = window.location.pathname.includes('/VN-Project/') ? '/VN-Project' : '';
+        // Get base path - robust detection for GitHub Pages
+        const basePath = (window.location.hostname.includes('github.io') || 
+                         window.location.pathname.includes('/VN-Project/')) ? '/VN-Project' : '';
+        
+        console.log(`🔍 Base path detection: hostname=${window.location.hostname}, pathname=${window.location.pathname}, basePath=${basePath}`);
         
         if (this.context === 'landing') {
             actionUrls = {
