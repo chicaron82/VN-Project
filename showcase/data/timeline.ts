@@ -1055,7 +1055,7 @@ export const TIMELINE_DATA: TimelineData = {
                 "carousel": [
                     {
                         "type": "image",
-                        "url": "commits-spike-solid.png",
+                        "url": "media/banners/commits-spike-solid.png",
                         "caption": "The massive 290-commit spike: The death of spaghetti code."
                     }
                 ]

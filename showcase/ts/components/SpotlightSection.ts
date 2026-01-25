@@ -110,11 +110,11 @@ export class SpotlightSection {
                                 <!-- Before/After Screenshots -->
                                 <div class="tech-comparison">
                                     <div class="comparison-img">
-                                        <img src="v1-boot-sequence.png" alt="V1 Boot Sequence">
+                                        <img src="media/settings/v1-boot-sequence.png" alt="V1 Boot Sequence">
                                         <span class="img-label">V1 Original</span>
                                     </div>
                                     <div class="comparison-img">
-                                        <img src="v2-boot-sequence.png" alt="V2 Boot Sequence">
+                                        <img src="media/settings/v2-boot-sequence.png" alt="V2 Boot Sequence">
                                         <span class="img-label">V2 Parity</span>
                                     </div>
                                 </div>

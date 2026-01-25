@@ -21,7 +21,7 @@ body {
     overflow-x: hidden;
     min-height: 100vh;
     position: relative;
-    background-image: url('../bg-landing-hero.png');
+    background-image: url('../media/banners/bg-landing-hero.png');
     /* Corrected path relative to css file location */
     background-size: cover;
     background-position: center;

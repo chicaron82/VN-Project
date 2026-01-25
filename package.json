@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --project tsconfig.v2.json && vite build && npm run postbuild",
-    "postbuild": "node -e \"const fs = require('fs'); fs.cpSync('v1', 'dist/v1', {recursive: true}); fs.cpSync('assets', 'dist/assets', {recursive: true, force: true}); fs.cpSync('showcase/media', 'dist/showcase/media', {recursive: true, force: true}); ['icon-order.png', 'icon-chaos.png', 'bg-evolution-split.png', 'v1-boot-sequence.png', 'v2-boot-sequence.png', 'UnitedVoices7.png', 'v1-settings-original.png', 'v2-settings-restored.png', 'v2-settings-secrets.png', 'v2-settings-sensory.png', 'v2-settings-shortcuts.png', 'v2_portrait_fixed.png', 'v2_portrait_issue.png', 'bg-landing-hero.png', 'commits-spike-solid.png', 'stats.json'].forEach(f => fs.copyFileSync('showcase/' + f, 'dist/showcase/' + f)); fs.copyFileSync('favicon.ico', 'dist/favicon.ico'); fs.copyFileSync('site.webmanifest', 'dist/site.webmanifest');\"",
+    "postbuild": "node -e \"const fs = require('fs'); fs.cpSync('v1', 'dist/v1', {recursive: true}); fs.cpSync('assets', 'dist/assets', {recursive: true, force: true}); fs.cpSync('showcase/media', 'dist/showcase/media', {recursive: true, force: true}); fs.copyFileSync('showcase/stats.json', 'dist/showcase/stats.json'); fs.copyFileSync('favicon.ico', 'dist/favicon.ico'); fs.copyFileSync('site.webmanifest', 'dist/site.webmanifest');\"",
     "preview": "vite preview",
     "test": "vitest v2/__tests__",
     "test:v2": "vitest v2/__tests__",

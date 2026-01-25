@@ -26,12 +26,12 @@ import { UV7EchoSystem } from './lib/UV7EchoSystem';
 // Remove initUV7OS since we'll create the instance directly
 
 // Import section renderers
-import { JourneySection } from './js/components/JourneySection';
-import { WorkflowSection } from './js/components/WorkflowSection';
-import { ResultsSection } from './js/components/ResultsSection';
-import { SpotlightSection } from './js/components/SpotlightSection';
-import { EvolutionSection } from './js/components/EvolutionSection';
-import { WhoSection } from './js/components/WhoSection';
+import { JourneySection } from './ts/components/JourneySection';
+import { WorkflowSection } from './ts/components/WorkflowSection';
+import { ResultsSection } from './ts/components/ResultsSection';
+import { SpotlightSection } from './ts/components/SpotlightSection';
+import { EvolutionSection } from './ts/components/EvolutionSection';
+import { WhoSection } from './ts/components/WhoSection';
 
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';

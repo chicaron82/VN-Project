@@ -21,7 +21,7 @@ export class HeroSection {
         <div class="hero-container" id="hero-section">
             <div class="hero-content">
                 <div class="hero-header">
-                    <img src="../UnitedVoices7.png" alt="UV7 Logo" class="hero-logo">
+                    <img src="media/banners/UnitedVoices7.png" alt="UV7 Logo" class="hero-logo">
                     <h1 class="hero-title">Version 848</h1>
                     <p class="hero-subtitle">From Chaos to Harmony</p>
                 </div>
