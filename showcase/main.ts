@@ -205,15 +205,15 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(() => {
             // CPU: jittery, spikes randomly (5-35%)
             const cpu = Math.floor(Math.random() * 30) + 5;
-            // RAM: slow creep (60-68%)
-            const ram = 60 + Math.floor(Math.random() * 8);
+            // Bougie Factor: consistently high (85-95%) because we fancy 💅
+            const ram = 85 + Math.floor(Math.random() * 10);
             
             cpuVal.textContent = `${cpu}%`;
             cpuBar.style.width = `${cpu}%`;
             ramVal.textContent = `${ram}%`;
             ramBar.style.width = `${ram}%`;
         }, 2000);
-        console.log('✅ System stats animated');
+        console.log('✅ System stats animated (Bougie Factor: Always High)');
     }
 
     // Initialize sidebar section navigation
