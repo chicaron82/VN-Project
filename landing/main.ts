@@ -11,6 +11,7 @@
 
 import { initVNGatewayBridge, VNGatewayBridge } from './lib/vn-gateway-bridge';
 import { initUV7OSLanding, UV7OS } from '../v2/ui/components/UV7OS';
+import { UV7AppSwitcher } from '../v2/ui/components/UV7AppSwitcher';
 import { initLandingEffects } from './lib/effects';
 
 // ═══════════════════════════════════════════════════════════════
@@ -41,3 +42,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Export classes to window for legacy script compatibility
 (window as any).VNGatewayBridge = VNGatewayBridge;
 (window as any).UV7OS = UV7OS;
+(window as any).UV7AppSwitcher = UV7AppSwitcher;
