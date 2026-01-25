@@ -119,8 +119,10 @@ export class UV7OS {
 
             // Easter egg: 7-tap activation
             this.attachEasterEgg();
+        }
 
-            // Landing-specific swipe handler
+        // Swipe handler for both landing and showcase
+        if (this.context === 'landing' || this.context === 'showcase') {
             this.attachSwipeHandler();
         }
 
