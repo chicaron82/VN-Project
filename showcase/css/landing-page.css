@@ -646,7 +646,7 @@ body {
 
 .uv7-sidebar.open {
     transform: translateX(0);
-    display: block;
+    display: block !important; /* Override display: none on mobile */
 }
 
 /* Desktop - always visible */

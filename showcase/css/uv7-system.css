@@ -1053,6 +1053,7 @@
 
 .uv7-sidebar.open {
     transform: translateX(0);
+    display: block !important; /* Override display: none on mobile */
 }
 
 /* Header */
