@@ -244,8 +244,9 @@ export class TimelineRenderer {
     }
 
     private renderTimeline(): void {
-        // Remove old phases if any
+        // Remove old phases and pagination if any
         if (this.entriesContainer) this.entriesContainer.remove();
+        this.container?.querySelector('.timeline-pagination')?.remove();
 
         this.entriesContainer = document.createElement('div');
         this.entriesContainer.className = 'timeline-phases';
