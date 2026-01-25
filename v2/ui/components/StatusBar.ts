@@ -611,32 +611,17 @@ export class StatusBar {
 
         // Phase 26: Context-aware DOM structure
         this.container.innerHTML = `
-            <!-- Left Section: Logo + Loop/Context -->
-            <div class="status-section status-left">
+            <!-- Left Section: Logo + Breadcrumbs + Story/Dev Toggle (all left-aligned) -->
+            <div class="status-section status-left" style="justify-content: flex-start; gap: 12px;">
                 <!-- UV7 OS Logo (App Switcher Trigger) -->
                 ${this.features.enableAppSwitcher ? `
-                <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer; margin-right: 12px;" title="UV7 OS - Tap to switch apps">
+                <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer;" title="UV7 OS - Tap to switch apps">
                     <img src="/VN-Project/assets/UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
                 </span>
                 ` : ''}
-                ${this.features.showLoopVersion ? `
-                <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
-                ` : ''}
-                ${this.features.showRoute ? `
-                <span id="status-route" class="status-item route-indicator">MENU</span>
-                ` : ''}
-                ${this.features.showPhaseIndicator ? `
-                <span id="status-phase" class="status-item phase-indicator">Showcase</span>
-                ` : ''}
-            </div>
-
-            <!-- Center Section: Breadcrumbs / Act / Auto -->
-            <div class="status-section status-center">
                 ${this.features.showBreadcrumbs ? `
                 <div id="status-breadcrumbs" class="status-item breadcrumbs" style="display: flex; align-items: center; gap: 4px; font-size: 11px;"></div>
                 ` : ''}
-                <span id="status-act" class="status-item act-indicator" style="${this.features.showBreadcrumbs ? 'display: none;' : ''}"></span>
-                <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
                 ${this.features.showStoryDevToggle ? `
                 <button id="status-story-dev-toggle" class="status-item story-dev-toggle" style="
                     background: rgba(255, 255, 255, 0.1);
@@ -651,6 +636,21 @@ export class StatusBar {
                     📖 Story
                 </button>
                 ` : ''}
+                ${this.features.showLoopVersion ? `
+                <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
+                ` : ''}
+                ${this.features.showRoute ? `
+                <span id="status-route" class="status-item route-indicator">MENU</span>
+                ` : ''}
+                ${this.features.showPhaseIndicator ? `
+                <span id="status-phase" class="status-item phase-indicator">Showcase</span>
+                ` : ''}
+            </div>
+
+            <!-- Center Section: Act / Auto -->
+            <div class="status-section status-center">
+                <span id="status-act" class="status-item act-indicator" style="${this.features.showBreadcrumbs ? 'display: none;' : ''}"></span>
+                <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
             </div>
 
             <!-- Right Section: Mail + Notes + Tether -->
