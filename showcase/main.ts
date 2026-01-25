@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (cpuVal && cpuBar && ramVal && ramBar) {
         setInterval(() => {
-            // CPU: jittery, spikes randomly (5-35%)
+            // CHAOS METER: jittery, spikes randomly (5-35%)
             const cpu = Math.floor(Math.random() * 30) + 5;
             // Bougie Factor: consistently high (85-95%) because we fancy 💅
             const ram = 85 + Math.floor(Math.random() * 10);
@@ -214,6 +214,33 @@ document.addEventListener('DOMContentLoaded', () => {
             ramBar.style.width = `${ram}%`;
         }, 2000);
         console.log('✅ System stats animated (Bougie Factor: Always High)');
+    }
+
+    // Initialize AI Crew Echo Messages (stock ticker style)
+    const crewMessages = [
+        '💭 Zee: "Just ship it. We\'ll fix it in post."',
+        '🎨 DiZee: "This needs MORE polish. And particle effects."',
+        '📊 Tori: "According to my analysis, the Bougie Factor is critically high."',
+        '🔮 Belle: "The echo system is detecting temporal anomalies..."',
+        '⚡ GenZee: "V2 is objectively superior. Fight me."',
+        '🌸 Trinity: "Can we add more sparkles? Everything needs sparkles."',
+        '🎭 ARIA: "The narrative structure demands a plot twist here."',
+        '🛠️ Jake: "I fixed the bug. Also I rewrote the entire system. You\'re welcome."',
+        '💎 UV7 System: "All systems nominal. Bougie levels: Optimal."',
+        '🎮 V1: "Remember when we had jQuery? Good times."',
+        '⚙️ V2: "EventBus has 47 subscribers. This is fine."',
+        '🌟 The Crew: "8 AIs, 1 codebase, infinite opinions."'
+    ];
+    
+    let messageIndex = 0;
+    const statusDetail = document.getElementById('uv7-detail');
+    
+    if (statusDetail) {
+        setInterval(() => {
+            messageIndex = (messageIndex + 1) % crewMessages.length;
+            statusDetail.textContent = crewMessages[messageIndex];
+        }, 8000); // Change message every 8 seconds
+        console.log('✅ AI Crew echo messages initialized');
     }
 
     // Initialize sidebar section navigation
