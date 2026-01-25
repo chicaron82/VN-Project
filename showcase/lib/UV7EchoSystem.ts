@@ -105,7 +105,19 @@ export class UV7EchoSystem {
         // Listen for section changes
         this.detectSectionChanges();
         
-        console.log('✅ UV7 Echo System initialized');
+        // Keyboard shortcut: Ctrl/Cmd + E to toggle settings
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+                e.preventDefault();
+                if (this.settingsPanel?.classList.contains('open')) {
+                    this.closeSettings();
+                } else {
+                    this.openSettings();
+                }
+            }
+        });
+        
+        console.log('✅ UV7 Echo System initialized (Ctrl/Cmd+E for settings)');
     }
 
     private createSettingsPanel(): void {
@@ -142,7 +154,8 @@ export class UV7EchoSystem {
 
                 <div class="echo-crew-status">
                     <strong>Current Section:</strong> <span id="echo-current-section">${this.currentSection}</span><br>
-                    <strong>Messages Available:</strong> <span id="echo-msg-count">${this.getSectionMessages().length}</span>
+                    <strong>Messages Available:</strong> <span id="echo-msg-count">${this.getSectionMessages().length}</span><br>
+                    <strong>Tip:</strong> <span style="opacity: 0.7;">Press <kbd style="padding: 2px 6px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 3px; font-size: 11px;">Ctrl+E</kbd> or <kbd style="padding: 2px 6px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 3px; font-size: 11px;">⌘E</kbd> to toggle settings</span>
                 </div>
             </div>
         `;
@@ -272,10 +285,19 @@ export class UV7EchoSystem {
         
         if (this.detailElement) {
             this.detailElement.style.opacity = '0';
+            this.detailElement.classList.add('message-changing');
+            
             setTimeout(() => {
                 if (this.detailElement) {
                     this.detailElement.textContent = `${msg.emoji} ${msg.crew}: "${msg.text}"`;
                     this.detailElement.style.opacity = '1';
+                    
+                    // Remove the glow class after animation completes
+                    setTimeout(() => {
+                        if (this.detailElement) {
+                            this.detailElement.classList.remove('message-changing');
+                        }
+                    }, 600);
                 }
             }, 300);
         }
