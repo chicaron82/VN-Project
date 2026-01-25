@@ -201,21 +201,18 @@ export class UV7EchoSystem {
     }
 
     private addBannerControls(): void {
-        // Add settings gear icon to banner
-        const banner = document.querySelector('.system-banner');
-        if (!banner) return;
-
-        const settingsBtn = document.createElement('button');
-        settingsBtn.className = 'echo-settings-btn';
-        settingsBtn.innerHTML = '⚙️';
-        settingsBtn.title = 'Echo Settings';
-        settingsBtn.setAttribute('aria-label', 'Open Echo Settings');
-        settingsBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.openSettings();
-        });
-
-        banner.appendChild(settingsBtn);
+        // Hook into the sidebar settings button
+        const settingsBtn = document.getElementById('echo-settings-trigger');
+        if (settingsBtn) {
+            settingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.openSettings();
+                // Close sidebar after opening settings
+                if ((window as any).uv7os) {
+                    (window as any).uv7os.closeSidebar();
+                }
+            });
+        }
 
         // Click banner to pause/resume
         if (this.detailElement) {

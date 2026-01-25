@@ -934,9 +934,8 @@ export function initUV7OS(): void {
             window.uv7os = new UV7OS('showcase', {
                 entries: window.TIMELINE_DATA.entries
             });
-        } else {
-            console.warn('⚠️ UV7 OS: Timeline data not available');
         }
+        // Silent fallback - main.ts handles initialization now
     });
 }
 
