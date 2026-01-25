@@ -218,18 +218,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize AI Crew Echo Messages (stock ticker style)
     const crewMessages = [
-        '💭 Zee: "Just ship it. We\'ll fix it in post."',
-        '🎨 DiZee: "This needs MORE polish. And particle effects."',
-        '📊 Tori: "According to my analysis, the Bougie Factor is critically high."',
-        '🔮 Belle: "The echo system is detecting temporal anomalies..."',
-        '⚡ GenZee: "V2 is objectively superior. Fight me."',
-        '🌸 Trinity: "Can we add more sparkles? Everything needs sparkles."',
-        '🎭 ARIA: "The narrative structure demands a plot twist here."',
-        '🛠️ Jake: "I fixed the bug. Also I rewrote the entire system. You\'re welcome."',
-        '💎 UV7 System: "All systems nominal. Bougie levels: Optimal."',
-        '🎮 V1: "Remember when we had jQuery? Good times."',
-        '⚙️ V2: "EventBus has 47 subscribers. This is fine."',
-        '🌟 The Crew: "8 AIs, 1 codebase, infinite opinions."'
+        '� Zee: "V2 architecture complete. EventBus is live. No jQuery was harmed."',
+        '🎨 DiZee: "Found the bug. Fixed the bug. Refactored the entire module. You\'re welcome."',
+        '📊 Tori: "The emotional core needs more depth here. Let me rewrite this scene."',
+        '🔮 ZeeRah: "Echo memory system detecting timeline anomalies... again."',
+        '🔍 Belle: "NO FLICKER protocol engaged. Accessibility: 100%. Polish: Michelin-level."',
+        '⚡ GenZee: "Let\'s try something crazy. What could go wrong?"',
+        '📚 PerplexiZee: "According to 47 sources, there\'s a better way to do this."',
+        '🔧 CoZee: "Bridging systems... translating between AI dialects... done."',
+        '💎 UV7 System: "All systems nominal. Bougie Factor: Critically High."',
+        '🎮 V1: "Remember when everything was in one file? Simpler times."',
+        '⚙️ V2: "Type-safe, event-driven, scalable. This is the way."',
+        '🌟 The Crew: "8 AIs, 1 codebase, infinite opinions, zero jQuery."'
     ];
     
     let messageIndex = 0;
