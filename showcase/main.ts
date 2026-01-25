@@ -175,11 +175,31 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ Grab handle initialized');
     }
 
-    // Initialize sidebar navigation
-    const sidebarApps = document.querySelectorAll('.sidebar-app[data-tab]');
-    sidebarApps.forEach(app => {
-        app.addEventListener('click', () => {
-            const tab = app.getAttribute('data-tab');
+    // Initialize sidebar quick actions
+    document.querySelectorAll('.quick-action').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const action = btn.getAttribute('data-action');
+            if (action === 'launch-v1') {
+                window.location.href = '/VN-Project/v1/';
+            } else if (action === 'launch-v2') {
+                window.location.href = '/VN-Project/index.v2.html';
+            } else if (action === 'go-home') {
+                window.location.href = '/VN-Project/';
+            } else if (action === 'toggle-mode') {
+                // Toggle between story and dev mode
+                const currentMode = document.body.dataset.viewMode || 'story';
+                const newMode = currentMode === 'story' ? 'dev' : 'story';
+                document.body.dataset.viewMode = newMode;
+                localStorage.setItem('uv7-dev-mode', newMode);
+            }
+        });
+    });
+
+    // Initialize sidebar section navigation
+    const sectionNavItems = document.querySelectorAll('.section-nav-item[data-tab]');
+    sectionNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const tab = item.getAttribute('data-tab');
             if (tab && window.tabController) {
                 window.tabController.switchTab(tab);
                 // Close sidebar after navigation
