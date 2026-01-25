@@ -171,6 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ Grab handle initialized');
     }
 
+    // Initialize sidebar navigation
+    const sidebarApps = document.querySelectorAll('.sidebar-app[data-tab]');
+    sidebarApps.forEach(app => {
+        app.addEventListener('click', () => {
+            const tab = app.getAttribute('data-tab');
+            if (tab && window.tabController) {
+                window.tabController.switchTab(tab);
+                // Close sidebar after navigation
+                if (window.uv7os) {
+                    window.uv7os.closeSidebar();
+                }
+            }
+        });
+    });
+
     // Initialize Showcase Carousel (Spotlight tab)
     initShowcaseCarousel();
     console.log('✅ Showcase carousel initialized');
