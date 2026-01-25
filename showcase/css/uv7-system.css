@@ -1267,17 +1267,43 @@
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.05em;
-    color: #adb5bd;
+}
+
+.stat-label {
+    color: #888;
 }
 
 .stat-value {
-    color: #fff;
-    font-family: 'Courier Prime', monospace;
+    color: #00ff88;
+    font-family: monospace;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
 }
 
 .stat-value.status-online {
     color: #00ff88;
-    text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+    text-transform: uppercase;
+}
+
+.stat-bar-track {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00cc66);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+}
+
+/* Directory Navigation List */
+.uv7-sidebar .section-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .stat-bar-track {

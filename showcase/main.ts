@@ -195,6 +195,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Initialize animated system stats (fake but cool!)
+    const cpuVal = document.getElementById('sys-cpu');
+    const cpuBar = document.getElementById('sys-cpu-bar');
+    const ramVal = document.getElementById('sys-ram');
+    const ramBar = document.getElementById('sys-ram-bar');
+
+    if (cpuVal && cpuBar && ramVal && ramBar) {
+        setInterval(() => {
+            // CPU: jittery, spikes randomly (5-35%)
+            const cpu = Math.floor(Math.random() * 30) + 5;
+            // RAM: slow creep (60-68%)
+            const ram = 60 + Math.floor(Math.random() * 8);
+            
+            cpuVal.textContent = `${cpu}%`;
+            cpuBar.style.width = `${cpu}%`;
+            ramVal.textContent = `${ram}%`;
+            ramBar.style.width = `${ram}%`;
+        }, 2000);
+        console.log('✅ System stats animated');
+    }
+
     // Initialize sidebar section navigation
     const sectionNavItems = document.querySelectorAll('.section-nav-item[data-tab]');
     sectionNavItems.forEach(item => {
