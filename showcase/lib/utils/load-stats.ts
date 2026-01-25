@@ -48,13 +48,24 @@ async function loadRealStats(): Promise<void> {
             // Update label to show breakdown if there are failures/skips
             if (testLabel) {
                 if ((stats.testsFail ?? 0) > 0 || (stats.testsSkip ?? 0) > 0) {
-                    const parts = [`${stats.testsPass} passing`];
-                    if (stats.testsFail && stats.testsFail > 0) parts.push(`${stats.testsFail} failing`);
-                    if (stats.testsSkip && stats.testsSkip > 0) parts.push(`${stats.testsSkip} skipped`);
-                    testLabel.textContent = `Tests (${parts.join(', ')})`;
+                    testLabel.textContent = `Test Files (${stats.testsPass ?? 0} pass, ${stats.testsFail ?? 0} fail, ${stats.testsSkip ?? 0} skip)`;
                 } else {
-                    testLabel.textContent = `Tests (${stats.testsPass}/${stats.testsTotal} passing ✓)`;
+                    testLabel.textContent = 'Test Files';
                 }
+            }
+
+            // Update all dynamic test count spans across the showcase
+            const testCountSpans = document.querySelectorAll('#test-file-count, #test-coverage-count');
+            testCountSpans.forEach(span => {
+                if (stats.testsTotal !== undefined) {
+                    span.textContent = stats.testsTotal.toString();
+                }
+            });
+
+            // Update timeline phase count if available
+            const phaseCountSpan = document.getElementById('timeline-phase-count');
+            if (phaseCountSpan && stats.phasesComplete !== undefined) {
+                phaseCountSpan.textContent = stats.phasesComplete.toString();
             }
         }
 
