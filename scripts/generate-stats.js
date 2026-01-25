@@ -18,13 +18,27 @@ console.log('📊 Generating stats.json from actual project data...\n');
 // Count test files
 function countTestFiles() {
     try {
-        const output = execSync(
-            'find tests -type f \\( -name "*.test.ts" -o -name "*.test.js" -o -name "*.spec.ts" -o -name "*.spec.js" \\) | wc -l',
-            { cwd: projectRoot, encoding: 'utf-8' }
-        );
-        return parseInt(output.trim(), 10);
+        // Recursively count test files using fs
+        const countInDir = (dir) => {
+            let count = 0;
+            try {
+                const items = fs.readdirSync(dir, { withFileTypes: true });
+                for (const item of items) {
+                    const fullPath = path.join(dir, item.name);
+                    if (item.isDirectory() && !['node_modules', 'dist', 'build', '.git'].includes(item.name)) {
+                        count += countInDir(fullPath);
+                    } else if (item.isFile() && /\.(test|spec)\.(ts|js)$/.test(item.name)) {
+                        count++;
+                    }
+                }
+            } catch (err) {
+                // Skip directories we can't read
+            }
+            return count;
+        };
+        return countInDir(projectRoot);
     } catch (error) {
-        console.warn('⚠️  Could not count test files, using fallback');
+        console.warn('⚠️  Could not count test files:', error.message);
         return 0;
     }
 }
