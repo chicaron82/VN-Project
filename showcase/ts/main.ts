@@ -17,11 +17,15 @@ import { ResultsSection } from './components/ResultsSection';
 import { SpotlightSection } from './components/SpotlightSection';
 import { EvolutionSection } from './components/EvolutionSection';
 import { WhoSection } from './components/WhoSection';
+import { MagneticCursor } from './MagneticCursor';
 
 // Data
 import { CODE_COMPARISONS } from './data/CodeSnippets';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Initialize Effect
+    const cursor = new MagneticCursor();
+
     // 1. Initialize UI Components
     const sidebar = new Sidebar();
     new NotificationShade();

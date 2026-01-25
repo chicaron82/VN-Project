@@ -1,13 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { initChaosTyper } from './ChaosTyper';
 
-// Add global declaration for updateBackgroundContext
-declare global {
-    interface Window {
-        updateBackgroundContext: (phaseId: string) => void;
-    }
-}
-
 describe('ChaosTyper', () => {
     let chaosContainer: HTMLElement;
     let orderContainer: HTMLElement;
@@ -54,7 +47,7 @@ describe('ChaosTyper', () => {
         initChaosTyper();
         
         // Trigger a specific phase context
-        window.updateBackgroundContext('phase-13'); // "Porting started..."
+        window.updateBackgroundContext?.('phase-13'); // "Porting started..."
 
         // Advance time enough for typing to happen
         // We can't easily deterministic test random selection, but we can verify it doesn't crash

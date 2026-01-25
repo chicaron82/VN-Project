@@ -3,6 +3,13 @@ import { CarouselMomentum } from './CarouselMomentum';
 import { SimpleCarousel } from './SimpleCarousel';
 import '@ui/styles/main.css';
 
+// Type shim for global window object
+declare global {
+    interface Window {
+        secretCodesManager?: any; // Avoiding full import cycle, just needs to exist
+    }
+}
+
 export interface CarouselItem {
     id: string;
     title: string;

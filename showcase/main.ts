@@ -19,6 +19,7 @@ import { UV7OS } from '../v2/ui/components/UV7OS'; // Import the class directly
 import { TimelineRenderer } from './lib/TimelineRenderer';
 import { TabController } from './lib/TabController';
 import { SwipeController } from './lib/SwipeController';
+import { MagneticCursor } from './ts/MagneticCursor';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { initGrabHandle } from '../v2/ui/components/GrabHandle';
@@ -130,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize visual effects
     initTypingEffect();
+    new MagneticCursor();
     initTilt('.hero-banner.home .hero-banner-image', {
         container: '.hero-banner.home',
         limits: 15,
