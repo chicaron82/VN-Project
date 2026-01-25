@@ -259,7 +259,7 @@ export class UV7AppSwitcher {
                 name: 'Landing',
                 icon: '🏠',
                 description: 'UV7 Project Hub',
-                url: '../index.html',
+                url: '/VN-Project/',
                 color: 'rgba(0, 204, 255, 0.2)',
                 saveKeys: [], // No save data for landing
                 getState: (): AppStateData => {
@@ -275,7 +275,7 @@ export class UV7AppSwitcher {
                 name: 'Showcase',
                 icon: '📖',
                 description: 'The Journey',
-                url: '../showcase/index.html',
+                url: '/VN-Project/showcase/',
                 color: 'rgba(0, 204, 255, 0.2)',
                 saveKeys: ['uv7-showcase-phase', 'uv7_discovered_codes'],
                 getState: (): AppStateData => {
@@ -299,7 +299,7 @@ export class UV7AppSwitcher {
                 name: 'V1 Game',
                 icon: '🎮',
                 description: 'Legacy Version',
-                url: '../v1/index.html',
+                url: '/VN-Project/v1/',
                 color: 'rgba(255, 0, 85, 0.2)',
                 saveKeys: ['uv7_current_route', 'uv7_current_act', 'uv7_game_state_v1'],
                 getState: (): AppStateData => {
@@ -331,7 +331,7 @@ export class UV7AppSwitcher {
                 name: 'V2 Engine',
                 icon: '⚡',
                 description: 'TypeScript Rebuild',
-                url: '../index.v2.html',
+                url: '/VN-Project/index.v2.html',
                 color: 'rgba(0, 255, 136, 0.2)',
                 saveKeys: ['uv7_game_state'],
                 getState: (): AppStateData => {
