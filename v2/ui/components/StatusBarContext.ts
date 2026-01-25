@@ -95,7 +95,7 @@ export function getFeatures(context: UV7Context): StatusBarFeatures {
                 showNotes: false,
                 showTether: false,
                 showMail: false,
-                showPhaseIndicator: true,
+                showPhaseIndicator: false,
                 showStoryDevToggle: true,
                 enableAppSwitcher: true,
                 enableGestures: false,  // Showcase doesn't need swipe gestures

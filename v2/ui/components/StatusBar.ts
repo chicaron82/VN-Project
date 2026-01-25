@@ -732,11 +732,20 @@ export class StatusBar {
     private setupStoryDevToggle(): void {
         if (!this.storyDevToggleEl) return;
 
-        let isStoryMode = true;
+        // Read initial mode from localStorage or body dataset
+        const savedMode = localStorage.getItem('uv7-dev-mode') || document.body.dataset.viewMode || 'story';
+        let isStoryMode = savedMode === 'story';
+        this.storyDevToggleEl.innerHTML = isStoryMode ? '📖 Story' : '🔧 Dev';
+        document.body.dataset.viewMode = isStoryMode ? 'story' : 'dev';
 
         this.storyDevToggleEl.addEventListener('click', () => {
             isStoryMode = !isStoryMode;
+            const newMode = isStoryMode ? 'story' : 'dev';
             this.storyDevToggleEl.innerHTML = isStoryMode ? '📖 Story' : '🔧 Dev';
+
+            // Update body dataset and localStorage
+            document.body.dataset.viewMode = newMode;
+            localStorage.setItem('uv7-dev-mode', newMode);
 
             // Haptic feedback
             if (navigator.vibrate) navigator.vibrate(10);
@@ -744,10 +753,10 @@ export class StatusBar {
             // Emit event for Showcase to handle
             this.eventBus.emit('settings:changed', {
                 key: 'viewMode',
-                value: isStoryMode ? 'story' : 'dev'
+                value: newMode
             });
 
-            console.log(`📖 View mode: ${isStoryMode ? 'Story' : 'Dev'}`);
+            console.log(`📖 View mode: ${newMode}`);
         });
 
         // Micro-interaction on hover

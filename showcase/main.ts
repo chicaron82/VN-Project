@@ -187,11 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (action === 'go-home') {
                 window.location.href = '/VN-Project/';
             } else if (action === 'toggle-mode') {
-                // Toggle between story and dev mode
-                const currentMode = document.body.dataset.viewMode || 'story';
-                const newMode = currentMode === 'story' ? 'dev' : 'story';
-                document.body.dataset.viewMode = newMode;
-                localStorage.setItem('uv7-dev-mode', newMode);
+                // Trigger the status bar toggle button
+                const statusToggle = document.getElementById('status-story-dev-toggle');
+                if (statusToggle) {
+                    statusToggle.click();
+                }
+                // Close sidebar after toggling
+                if (window.uv7os) {
+                    window.uv7os.closeSidebar();
+                }
             }
         });
     });
@@ -248,9 +252,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
     } else {
-        // Fallback: create without timeline data
+        // Fallback: create without timeline data (silent)
         window.uv7os = new UV7OS('showcase');
-        console.warn('⚠️ UV7 OS initialized without timeline data');
     }
 
     console.log('✅ Showcase fully initialized - all modules loaded');
