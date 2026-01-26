@@ -2990,11 +2990,12 @@ section h2 {
 }
 
 .metric-value {
-    width: 70px;
+    min-width: 70px;
     text-align: right;
     font-family: monospace;
     font-weight: 600;
     color: #333;
+    white-space: nowrap;
 }
 
 /* --- 3. FLOATING 'TRY IT' BUTTON --- */
