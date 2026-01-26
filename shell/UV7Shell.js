@@ -57,6 +57,9 @@ export class UV7Shell {
         // Initialize router (will trigger first app load)
         this.router.init();
 
+        // Attach quick action listeners (initial setup)
+        this.attachQuickActionListeners();
+
         this.initialized = true;
         console.log('[UV7Shell] Initialized successfully');
     }
@@ -233,6 +236,51 @@ export class UV7Shell {
     }
 
     /**
+     * Attach event listeners to quick action buttons
+     * Called after sidebar content is injected/restored
+     */
+    attachQuickActionListeners() {
+        document.querySelectorAll('.quick-action[data-action]').forEach(btn => {
+            // Remove old listener if exists (prevent duplicates)
+            btn.replaceWith(btn.cloneNode(true));
+        });
+
+        // Re-query after cloning (to get fresh references)
+        document.querySelectorAll('.quick-action[data-action]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const action = e.currentTarget.dataset.action;
+
+                // Close shade/sidebar
+                document.getElementById('uv7-shade')?.classList.remove('open');
+                document.getElementById('uv7-sidebar')?.classList.remove('open');
+                document.getElementById('uv7-backdrop')?.classList.remove('visible');
+
+                // Navigate based on action
+                switch (action) {
+                    case 'launch-v1':
+                        location.hash = '#/v1';
+                        break;
+                    case 'launch-v2':
+                        location.hash = '#/v2';
+                        break;
+                    case 'view-showcase':
+                        location.hash = '#/showcase';
+                        break;
+                    case 'launch-torigatchi':
+                        location.hash = '#/torigatchi';
+                        break;
+                    case 'go-home':
+                        location.hash = '#/';
+                        break;
+                    case 'toggle-mode':
+                        // Let the app handle this
+                        break;
+                }
+            });
+        });
+    }
+
+    /**
      * Restore the default shell sidebar
      */
     restoreDefaultSidebar() {
@@ -267,6 +315,9 @@ export class UV7Shell {
                     </button>
                 </div>
             `;
+
+            // Re-attach event listeners to the new buttons
+            this.attachQuickActionListeners();
         }
     }
 

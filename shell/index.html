@@ -152,37 +152,9 @@
          ═══════════════════════════════════════════════════════════════ -->
     <script type="module" src="./shell/UV7Shell.js"></script>
 
-    <!-- Quick action handlers -->
+    <!-- Shade/Sidebar/Backdrop handlers -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Quick action buttons in shade/sidebar
-            document.querySelectorAll('.quick-action[data-action]').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const action = e.currentTarget.dataset.action;
-
-                    // Close shade/sidebar
-                    document.getElementById('uv7-shade')?.classList.remove('open');
-                    document.getElementById('uv7-sidebar')?.classList.remove('open');
-                    document.getElementById('uv7-backdrop')?.classList.remove('visible');
-
-                    // Navigate based on action
-                    switch (action) {
-                        case 'launch-v1':
-                            location.hash = '#/v1';
-                            break;
-                        case 'launch-v2':
-                            location.hash = '#/v2';
-                            break;
-                        case 'view-showcase':
-                            location.hash = '#/showcase';
-                            break;
-                        case 'launch-torigatchi':
-                            location.hash = '#/torigatchi';
-                            break;
-                    }
-                });
-            });
-
             // Shade close button
             document.querySelector('.shade-close')?.addEventListener('click', () => {
                 document.getElementById('uv7-shade')?.classList.remove('open');
@@ -203,6 +175,8 @@
                 sidebar?.classList.toggle('open');
                 backdrop?.classList.toggle('visible');
             });
+
+            // Quick action handlers are managed by UV7Shell.attachQuickActionListeners()
         });
     </script>
 </body>

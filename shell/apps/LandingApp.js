@@ -67,6 +67,7 @@ export class LandingApp extends BaseApp {
     constructor(shell) {
         super(shell);
         this.id = 'landing';
+        this.easterEggTaps = 0; // Track taps on UV7 logo
     }
 
     getStatusBarConfig() {
@@ -87,6 +88,7 @@ export class LandingApp extends BaseApp {
         this.initAnimatedStats();
         this.initTypewriterEffect();
         this.attachCardNavigation();
+        this.initEasterEgg();
 
         console.log('[LandingApp] Mounted');
     }
@@ -315,6 +317,150 @@ export class LandingApp extends BaseApp {
                 }, 100);
             });
         });
+    }
+
+    initEasterEgg() {
+        // UV7 Easter Egg - tap the footer brand 7 times (like Android build number)
+        const footerBrand = this.container.querySelector('.footer-brand');
+        if (!footerBrand) return;
+
+        footerBrand.style.cursor = 'pointer';
+        footerBrand.style.userSelect = 'none';
+
+        footerBrand.addEventListener('click', () => {
+            this.easterEggTaps++;
+
+            const remaining = 7 - this.easterEggTaps;
+
+            if (this.easterEggTaps === 7) {
+                // Easter egg unlocked!
+                this.showEasterEgg();
+                this.easterEggTaps = 0; // Reset
+            } else if (this.easterEggTaps >= 4) {
+                // Show hint after 4 taps
+                this.showToast(`${remaining} more ${remaining === 1 ? 'tap' : 'taps'} to unlock UV7 secrets...`);
+            }
+
+            // Reset after 2 seconds of inactivity
+            clearTimeout(this.easterEggTimeout);
+            this.easterEggTimeout = setTimeout(() => {
+                this.easterEggTaps = 0;
+            }, 2000);
+        });
+    }
+
+    showToast(message) {
+        // Simple toast notification
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: #00ff88;
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 10000;
+            pointer-events: none;
+            animation: fadeInOut 2s ease-in-out;
+        `;
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.remove();
+        }, 2000);
+    }
+
+    showEasterEgg() {
+        // Show UV7 easter egg modal
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        modal.innerHTML = `
+            <div style="
+                background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+                border: 2px solid #00ff88;
+                border-radius: 16px;
+                padding: 40px;
+                max-width: 500px;
+                text-align: center;
+                box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+            ">
+                <div style="font-size: 64px; margin-bottom: 20px;">🎉</div>
+                <h2 style="color: #00ff88; font-size: 28px; margin-bottom: 16px; font-family: 'Outfit', sans-serif;">
+                    UV7 Easter Egg Unlocked!
+                </h2>
+                <p style="color: #fff; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
+                    <strong>Loop #848</strong><br>
+                    "Always. Always. Always."<br><br>
+                    <span style="color: #00ff88;">Seven voices. One vision. Infinite iterations.</span>
+                </p>
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 14px; margin-bottom: 24px;">
+                    💚 Built with chaos<br>
+                    🔥 Refined with discipline<br>
+                    💀 Perfected with love
+                </p>
+                <button style="
+                    background: #00ff88;
+                    color: #000;
+                    border: none;
+                    padding: 12px 32px;
+                    border-radius: 24px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    font-family: 'Outfit', sans-serif;
+                ">Close</button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Close on click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.tagName === 'BUTTON') {
+                modal.style.animation = 'fadeOut 0.3s ease-out';
+                setTimeout(() => modal.remove(), 300);
+            }
+        });
+
+        // Add CSS animations if not already present
+        if (!document.getElementById('easter-egg-styles')) {
+            const style = document.createElement('style');
+            style.id = 'easter-egg-styles';
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+                @keyframes fadeInOut {
+                    0%, 100% { opacity: 0; }
+                    10%, 90% { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
     }
 }
 
