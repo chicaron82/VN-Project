@@ -2264,3 +2264,18 @@ body.in-shell-mode .uv7-sidebar-toggle,
 body.in-shell-mode .uv7-backdrop {
     display: none !important;
 }
+
+/* Hide status bar in shell mode (shell provides its own) */
+body.in-shell-mode .uv7-status-bar {
+    display: none !important;
+}
+
+/* Adjust system banner to top when status bar is hidden */
+body.in-shell-mode .system-banner {
+    top: 0 !important;
+}
+
+/* Adjust tab bar position (only banner height, no status bar) */
+body.in-shell-mode .tab-bar-container {
+    top: var(--uv7-banner-h, 16px) !important;
+}
