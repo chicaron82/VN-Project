@@ -335,6 +335,9 @@ export class UV7Shell {
 
             // Re-attach event listeners to the new buttons
             this.attachQuickActionListeners();
+
+            // Re-attach easter egg listener to the new branding element
+            this.initEasterEgg();
         }
     }
 
@@ -346,10 +349,16 @@ export class UV7Shell {
         const brandingElements = document.querySelectorAll('.uv7-carrier-branding');
 
         brandingElements.forEach(element => {
-            element.style.cursor = 'pointer';
-            element.style.userSelect = 'none';
+            // Remove old listener if exists (prevent duplicates)
+            const newElement = element.cloneNode(true);
+            element.parentNode.replaceChild(newElement, element);
 
-            element.addEventListener('click', () => {
+            // Style the new element
+            newElement.style.cursor = 'pointer';
+            newElement.style.userSelect = 'none';
+
+            // Add listener to the new element
+            newElement.addEventListener('click', () => {
                 this.easterEggTaps++;
 
                 const remaining = 7 - this.easterEggTaps;
@@ -389,7 +398,7 @@ export class UV7Shell {
             border-radius: 24px;
             font-size: 14px;
             font-weight: 500;
-            z-index: 10000;
+            z-index: 99999;
             pointer-events: none;
             animation: fadeInOut 2s ease-in-out;
         `;
@@ -416,7 +425,7 @@ export class UV7Shell {
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10000;
+            z-index: 99999;
             animation: fadeIn 0.3s ease-out;
         `;
 
