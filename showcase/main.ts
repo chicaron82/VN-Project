@@ -27,6 +27,7 @@ import { UV7EchoSystem } from './lib/UV7EchoSystem';
 // Remove initGrabHandle since UV7OS handles it automatically
 
 // Import section renderers
+import { HomeSection } from './ts/components/HomeSection';
 import { JourneySection } from './ts/components/JourneySection';
 import { WorkflowSection } from './ts/components/WorkflowSection';
 import { ResultsSection } from './ts/components/ResultsSection';
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.tabController = tabController; // Expose for legacy compatibility
 
     // Initialize section renderers
+    new HomeSection();
     new JourneySection();
     new WorkflowSection();
     new ResultsSection();
