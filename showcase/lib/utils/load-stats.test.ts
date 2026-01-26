@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loadRealStats } from './load-stats';
 
 // Mock fetch
@@ -50,7 +50,7 @@ describe('loadRealStats', () => {
         // Check DOM updates
         const testStat = document.querySelector('[data-stat-type="tests"] .stat-number');
         expect(testStat?.getAttribute('data-target')).toBe('100');
-        
+
         // Window global should be set
         expect(window.UV7Stats).toEqual(mockStats);
     });
@@ -65,9 +65,9 @@ describe('loadRealStats', () => {
 
         expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('stats.json not found'));
     });
-    
+
     it('should handle clean test run (0 failures)', async () => {
-         const mockStats = {
+        const mockStats = {
             testsPass: 100,
             testsFail: 0,
             testsSkip: 0,
@@ -80,7 +80,7 @@ describe('loadRealStats', () => {
         });
 
         await loadRealStats();
-        
+
         const testLabel = document.querySelector('[data-stat-type="tests"] .stat-label');
         // Logic might not change label if clean, depending on implementation
         // But let's verify no error text added
@@ -88,7 +88,7 @@ describe('loadRealStats', () => {
     });
 
     it('should display failures if present', async () => {
-         const mockStats = {
+        const mockStats = {
             testsPass: 80,
             testsFail: 20,
             testsSkip: 0,
@@ -101,7 +101,7 @@ describe('loadRealStats', () => {
         });
 
         await loadRealStats();
-        
+
         const testLabel = document.querySelector('[data-stat-type="tests"] .stat-label');
         expect(testLabel?.textContent).toContain('20 fail');
     });

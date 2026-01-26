@@ -1,0 +1,37 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@core/*": [
+                "../v2/core/*"
+            ],
+            "@systems/*": [
+                "../v2/systems/*"
+            ],
+            "@controllers/*": [
+                "../v2/controllers/*"
+            ],
+            "@ui/*": [
+                "../v2/ui/*"
+            ],
+            "@content/*": [
+                "../v2/content/*"
+            ],
+            "@utils/*": [
+                "../v2/utils/*"
+            ]
+        },
+        "types": [
+            "node",
+            "vite/client"
+        ]
+    },
+    "include": [
+        "**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}

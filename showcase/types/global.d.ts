@@ -6,6 +6,9 @@
 import type { CodeComparisonModal } from '../js/components/CodeComparisonModal';
 import type { TabController } from '../lib/TabController';
 import type { SwipeController } from '../lib/SwipeController';
+import type { EventBus } from '../../v2/core/EventBus';
+import type { StatusBar } from '../../v2/ui/components/StatusBar';
+import type { NotificationRail } from '../../v2/ui/components/NotificationRail';
 
 declare global {
   interface Window {
@@ -34,12 +37,32 @@ declare global {
     // View mode toggle
     toggleViewMode?: () => void;
 
-    // UV7 System bridge
-    UV7System?: any; // TODO: Type this properly
-    uv7Runtime?: any;
+    // UV7 System bridge (constructors and factory)
+    UV7System?: {
+      EventBus: typeof EventBus;
+      StatusBar: typeof StatusBar;
+      NotificationRail: typeof NotificationRail;
+      createStatusBar: (context?: string) => {
+        eventBus: EventBus;
+        statusBar: StatusBar;
+        notificationRail: NotificationRail;
+      };
+    };
+
+    // UV7 Runtime instance
+    uv7Runtime?: {
+      eventBus: EventBus;
+      statusBar: StatusBar;
+      notificationRail: NotificationRail;
+      instance: StatusBar;
+    };
 
     // Tab navigation
-    tabController?: TabController;
+    tabController?: TabController & {
+      navigateToTab: (tabId: string) => void;
+      getActiveTab(): string;
+      setActiveTab(tabId: string): void;
+    };
     swipeController?: SwipeController;
 
     // UV7 OS navigation
@@ -71,7 +94,9 @@ declare global {
 
     // App switcher
     UV7AppSwitcher?: any;
+
+    // Note: TIMELINE_DATA is declared in AppStateManager.ts
   }
 }
 
-export {};
+export { };

@@ -11,14 +11,14 @@
 import { EventBus } from '../v2/core/EventBus';
 import { StatusBar } from '../v2/ui/components/StatusBar';
 import { NotificationRail } from '../v2/ui/components/NotificationRail';
-import type { UV7Context } from '../v2/ui/components/StatusBarContext';
+// UV7Context type removed as it is no longer used
 import { UV7AppSwitcher } from '../v2/ui/components/UV7AppSwitcher';
 import { UV7OS } from '../v2/ui/components/UV7OS'; // Import the class directly
 
 // Import showcase components
 import { TimelineRenderer } from './lib/TimelineRenderer';
 import { TabController } from './lib/TabController';
-import { SwipeController } from './lib/SwipeController';
+// SwipeController replaced by CSS scroll-snap
 import { MagneticCursor } from './ts/MagneticCursor';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
@@ -55,7 +55,7 @@ import { injectFooters } from './lib/FooterInjector';
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
 // Create UV7 System (same factory pattern as ShowcaseBridge)
-function createUV7System(context: UV7Context = 'showcase') {
+function createUV7System(context: string = 'showcase') {
     console.log(`🏗️ Creating UV7 System for ${context}`);
 
     const eventBus = new EventBus();
@@ -93,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
     uv7System.statusBar.show();
 
     // Initialize UI Components
-    const sidebar = new Sidebar();
-    const notificationShade = new NotificationShade();
+    // Initialize UI Components
+    new Sidebar();
+    new NotificationShade();
     console.log('✅ Sidebar and NotificationShade initialized');
 
     // Initialize Tab Navigation
@@ -114,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
     injectFooters();
 
     // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
-    const timelineRenderer = new TimelineRenderer('#timeline-container');
+    // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
+    new TimelineRenderer('#timeline-container');
     console.log('✅ Timeline renderer initialized');
 
     // Manually trigger initial breadcrumb update to ensure it shows
@@ -133,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const currentIndex = Math.round(scrollLeft / panelWidth);
                 const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution'];
                 const expectedTab = tabs[currentIndex];
-                
+
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {
                     tabController.setActiveTab(expectedTab);
                 }
@@ -163,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ Utilities initialized');
 
     // Initialize App State Manager
-    const appStateManager = initAppStateManager();
+    // Initialize App State Manager
+    initAppStateManager();
     console.log('✅ App State Manager initialized');
 
     // Initialize UV7 App Switcher (proper TypeScript version)
@@ -174,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Grab Handle (for sidebar toggle)
     const sidebarToggle = document.getElementById('uv7-sidebar-toggle');
     if (sidebarToggle) {
-        const grabHandle = initGrabHandle(sidebarToggle, {
+        initGrabHandle(sidebarToggle, {
             storageKey: 'uv7-grab-handle',
             headerSafeTop: 52,
             bottomSafePad: 140,
@@ -191,26 +194,49 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ Grab handle initialized');
     }
 
-    // Initialize sidebar quick actions
+    // Initialize sidebar quick actions with shell awareness
     document.querySelectorAll('.quick-action').forEach((btn) => {
         btn.addEventListener('click', () => {
             const action = btn.getAttribute('data-action');
+
+            // Detect if we're inside the unified shell (iframe) or standalone
+            const isInShell = window.self !== window.top;
+
             if (action === 'launch-v1') {
-                window.location.href = '/VN-Project/v1/';
+                if (isInShell) {
+                    // Navigate parent shell via hash
+                    window.parent.location.hash = '#/v1';
+                } else {
+                    // Navigate to shell with hash
+                    window.location.href = '../index.html#/v1';
+                }
             } else if (action === 'launch-v2') {
-                window.location.href = '/VN-Project/index.v2.html';
+                if (isInShell) {
+                    window.parent.location.hash = '#/v2';
+                } else {
+                    window.location.href = '../index.html#/v2';
+                }
             } else if (action === 'go-home') {
-                window.location.href = '/VN-Project/';
+                if (isInShell) {
+                    window.parent.location.hash = '#/landing';
+                } else {
+                    window.location.href = '../index.html#/landing';
+                }
             } else if (action === 'toggle-mode') {
                 // Trigger the status bar toggle button
                 const statusToggle = document.getElementById('status-story-dev-toggle');
                 if (statusToggle) {
                     statusToggle.click();
                 }
-                // Close sidebar after toggling
-                if (window.uv7os) {
-                    window.uv7os.closeSidebar();
-                }
+            }
+
+            // Close sidebar after any action
+            const sidebar = document.getElementById('uv7-sidebar');
+            const backdrop = document.getElementById('uv7-backdrop');
+            if (sidebar && sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                backdrop?.classList.remove('visible');
+                document.body.classList.remove('uv7-no-scroll');
             }
         });
     });
@@ -227,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cpu = Math.floor(Math.random() * 30) + 5;
             // Bougie Factor: consistently high (85-95%) because we fancy 💅
             const ram = 85 + Math.floor(Math.random() * 10);
-            
+
             cpuVal.textContent = `${cpu}%`;
             cpuBar.style.width = `${cpu}%`;
             ramVal.textContent = `${ram}%`;
@@ -237,7 +263,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initialize UV7 Echo System (context-aware AI crew commentary)
-    const echoSystem = new UV7EchoSystem();
+    // Initialize UV7 Echo System (context-aware AI crew commentary)
+    new UV7EchoSystem();
     console.log('✅ AI Crew echo system initialized');
 
     // Initialize sidebar section navigation
@@ -246,10 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', () => {
             const tab = item.getAttribute('data-tab');
             if (tab && window.tabController) {
-                window.tabController.switchTab(tab);
+                window.tabController.navigateToTab(tab);
                 // Close sidebar after navigation
-                if (window.uv7os) {
-                    window.uv7os.closeSidebar();
+                const sidebar = document.getElementById('uv7-sidebar');
+                const backdrop = document.getElementById('uv7-backdrop');
+                if (sidebar && sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    backdrop?.classList.remove('visible');
+                    document.body.classList.remove('uv7-no-scroll');
                 }
             }
         });
