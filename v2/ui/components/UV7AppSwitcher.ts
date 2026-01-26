@@ -253,13 +253,16 @@ export class UV7AppSwitcher {
     // ═══════════════════════════════════════════════════════════════
 
     private defineApps(): AppDefinition[] {
+        // Detect if we're in the unified shell (hash-based routing)
+        const isShellMode = !!(window as any).uv7Shell;
+
         return [
             {
                 id: 'landing',
                 name: 'Landing',
                 icon: '🏠',
                 description: 'UV7 Project Hub',
-                url: '/VN-Project/',
+                url: isShellMode ? '#/landing' : '/VN-Project/',
                 color: 'rgba(0, 204, 255, 0.2)',
                 saveKeys: [], // No save data for landing
                 getState: (): AppStateData => {
@@ -275,7 +278,7 @@ export class UV7AppSwitcher {
                 name: 'Showcase',
                 icon: '📖',
                 description: 'The Journey',
-                url: '/VN-Project/showcase/',
+                url: isShellMode ? '#/showcase' : '/VN-Project/showcase/',
                 color: 'rgba(0, 204, 255, 0.2)',
                 saveKeys: ['uv7-showcase-phase', 'uv7_discovered_codes'],
                 getState: (): AppStateData => {
@@ -299,7 +302,7 @@ export class UV7AppSwitcher {
                 name: 'V1 Game',
                 icon: '🎮',
                 description: 'Legacy Version',
-                url: '/VN-Project/v1/',
+                url: isShellMode ? '#/v1' : '/VN-Project/v1/',
                 color: 'rgba(255, 0, 85, 0.2)',
                 saveKeys: ['uv7_current_route', 'uv7_current_act', 'uv7_game_state_v1'],
                 getState: (): AppStateData => {
@@ -331,7 +334,7 @@ export class UV7AppSwitcher {
                 name: 'V2 Engine',
                 icon: '⚡',
                 description: 'TypeScript Rebuild',
-                url: '/VN-Project/index.v2.html',
+                url: isShellMode ? '#/v2' : '/VN-Project/index.v2.html',
                 color: 'rgba(0, 255, 136, 0.2)',
                 saveKeys: ['uv7_game_state'],
                 getState: (): AppStateData => {
@@ -374,7 +377,7 @@ export class UV7AppSwitcher {
                 name: 'ToriGatchi',
                 icon: '💚',
                 description: 'AI Tamagotchi Care Simulator',
-                url: '../torigatchi/index.html',
+                url: isShellMode ? '#/torigatchi' : '../torigatchi/index.html',
                 color: 'rgba(0, 255, 136, 0.3)',
                 saveKeys: ['torigatchi-state'],
                 getState: (): AppStateData => {
@@ -599,6 +602,20 @@ export class UV7AppSwitcher {
     // ═══════════════════════════════════════════════════════════════
 
     private detectCurrentApp(): string {
+        // Check if we're in shell mode
+        const isShellMode = !!(window as any).uv7Shell;
+
+        if (isShellMode) {
+            // Use hash-based detection
+            const hash = window.location.hash.replace(/^#\/?/, '').split('/')[0];
+            if (hash === 'showcase') return 'showcase';
+            if (hash === 'v1') return 'v1';
+            if (hash === 'v2') return 'v2';
+            if (hash === 'torigatchi') return 'torigatchi';
+            if (hash === 'landing' || hash === '') return 'landing';
+        }
+
+        // Fallback to pathname-based detection for standalone mode
         const path = window.location.pathname;
         if (path.includes('showcase')) return 'showcase';
         if (path.includes('v1')) return 'v1';
@@ -1191,14 +1208,23 @@ export class UV7AppSwitcher {
         this.close();
 
         setTimeout(() => {
-            if (!(document as any).startViewTransition) {
-                window.location.href = url;
-                return;
-            }
+            // Check if we're in shell mode (hash-based routing)
+            const isShellMode = !!(window as any).uv7Shell;
 
-            (document as any).startViewTransition(() => {
-                window.location.href = url;
-            });
+            if (isShellMode && url.startsWith('#')) {
+                // Use hash navigation for shell mode
+                window.location.hash = url;
+            } else {
+                // Use full page navigation for standalone mode
+                if (!(document as any).startViewTransition) {
+                    window.location.href = url;
+                    return;
+                }
+
+                (document as any).startViewTransition(() => {
+                    window.location.href = url;
+                });
+            }
         }, 150);
     }
 

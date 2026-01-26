@@ -95,10 +95,13 @@ export function buildBreadcrumbs(
             clickable: true,
         });
 
-        // Phase (if set)
+        // Phase/Tab (if set) - don't add "Phase" prefix for tab names
         if (state.phase) {
+            // Tab names like "The Journey", "Workflow", etc. should display as-is
+            // Phase numbers like "13" should get "Phase" prefix
+            const isPhaseNumber = /^\d+$/.test(state.phase);
             segments.push({
-                label: `Phase ${state.phase}`,
+                label: isPhaseNumber ? `Phase ${state.phase}` : state.phase,
                 id: 'phase',
                 clickable: true,
             });
@@ -182,7 +185,7 @@ export class BreadcrumbRenderer {
             if (index < segments.length - 1) {
                 const separator = document.createElement('span');
                 separator.className = 'breadcrumb-separator';
-                separator.textContent = ' → ';
+                separator.textContent = ' › ';
                 separator.style.opacity = '0.5';
                 separator.style.margin = '0 4px';
                 this.container.appendChild(separator);

@@ -350,7 +350,7 @@ export class StatusBar {
             if (index < this.currentBreadcrumbs.length - 1) {
                 const separator = document.createElement('span');
                 separator.className = 'breadcrumb-separator';
-                separator.textContent = ' → ';
+                separator.textContent = ' › ';
                 separator.style.opacity = '0.5';
                 separator.style.margin = '0 4px';
                 this.breadcrumbsEl.appendChild(separator);
