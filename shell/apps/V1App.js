@@ -1,9 +1,9 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- * V1 APP - ADAPTER/STUB
- * 
- * Adapter for the V1 game. Will wrap the existing V1 code
- * in app lifecycle hooks in Phase 4.
+ * V1 APP - IFRAME WRAPPER
+ *
+ * Loads the original V1 game in an iframe for isolation.
+ * This preserves V1's global listeners without conflicts.
  * ═══════════════════════════════════════════════════════════════
  */
 
@@ -25,16 +25,18 @@ export class V1App extends BaseApp {
     async mount(container, params = {}) {
         await super.mount(container, params);
 
+        // Load V1 game in an iframe for isolation
         container.innerHTML = `
             <div class="v1-app">
-                <div class="coming-soon">
-                    <h1>🔥 V1 Game</h1>
-                    <p>The original chaos is being adapted for the Shell!</p>
-                    <p>This requires careful wrapping of V1's global listeners.</p>
-                    <a href="#/" class="back-link">← Back to Landing</a>
-                </div>
+                <iframe
+                    src="./v1/index.html"
+                    style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;"
+                    title="Version 848 V1 Game"
+                ></iframe>
             </div>
         `;
+
+        console.log('[V1App] Mounted V1 game in iframe');
     }
 }
 
