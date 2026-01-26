@@ -130,6 +130,15 @@ export type GameEvents = {
   'ui:console:close': {}; // Dev console
   'ui:ending:close': {};
   'ui:hide_hud': {};
+  // Back Button Manager Events
+  'ui:menu:open': {};
+  'ui:menu:close': {};
+  'ui:shade:close_request': {};
+  'ui:sidebar:close_request': {};
+  'ui:backlog:close_request': {};
+  'ui:menu:close_request': {};
+  'ui:toast': { message: string, duration?: number };  // Toast notifications
+
   'save:quick': {};
   'load:quick': {};
 

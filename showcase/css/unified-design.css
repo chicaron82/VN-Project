@@ -176,6 +176,12 @@ section h3 {
 section p {
     line-height: 1.75;
     margin-bottom: 1.5rem;
+    /* Force single column layout */
+    width: 100%;
+    max-width: 800px;
+    display: block;
+    columns: auto;
+    column-count: auto;
 }
 
 /* ==========================================================================

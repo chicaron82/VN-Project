@@ -4,15 +4,7 @@ import { StateManager } from '../core/StateManager';
 import { BootstrapTracker } from './BootstrapTracker';
 
 // Mock DOM
-const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
+
 
 // Mock localStorage
 const localStorageMock = {

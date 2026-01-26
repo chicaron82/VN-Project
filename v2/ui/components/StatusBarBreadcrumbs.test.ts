@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { BreadcrumbRenderer, buildBreadcrumbs } from './StatusBarBreadcrumbs';
 
 // Mock DOM
@@ -14,7 +14,11 @@ const mockEventBus = {
     emit: vi.fn()
 };
 
-const mockTint = { primary: '#fff', secondary: '#000' };
+const mockTint = {
+    primary: '#fff',
+    glow: 'rgba(255, 255, 255, 0.5)',
+    gradient: 'linear-gradient(to right, #000, #fff)'
+};
 
 (global as any).document.createElement = vi.fn().mockReturnValue({
     className: '',

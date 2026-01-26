@@ -887,12 +887,8 @@ body {
     transform: scale(0.95);
 }
 
-/* Hide toggle on desktop where sidebar is always visible */
-@media (min-width: 769px) and (orientation: landscape) {
-    .uv7-sidebar-toggle {
-        display: none;
-    }
-}
+/* Grab handle should be visible in both portrait and landscape modes */
+/* Users can toggle the sidebar on/off in both viewports */
 
 /* Backdrop (appears when sidebar/shade is open on mobile) */
 .uv7-backdrop {

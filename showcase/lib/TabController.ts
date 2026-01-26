@@ -47,10 +47,12 @@ export class TabController {
 
         // Initialize
         this.setupEventListeners();
+        this.initializePanelAccessibility();
         this.updatePanelVisibility();
 
-        // Start at home
-        this.setActiveTab('home');
+        // Start at saved tab or home
+        const lastTab = this.loadLastTab();
+        this.setActiveTab(lastTab && this.tabs.includes(lastTab) ? lastTab : 'home');
 
         console.log('✅ TabController initialized (swipe mode)');
     }

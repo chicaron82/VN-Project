@@ -187,6 +187,11 @@ const achievementSystem = new AchievementSystem(eventBus, stateManager);
 const tutorialController = new TutorialController(eventBus, stateManager);
 const _tipsOverlay = new TipsOverlay(eventBus);
 
+// Back Button Manager (Android Hierarchy Port)
+import { BackButtonManager } from '@systems/BackButtonManager';
+const backButtonManager = new BackButtonManager(eventBus);
+backButtonManager.init();
+
 const spriteController = new SpriteController(eventBus, stateManager);
 
 const bootstrapTracker = new BootstrapTracker(stateManager); // Needed for SecretCodesSystem

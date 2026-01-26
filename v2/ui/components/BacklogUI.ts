@@ -42,11 +42,15 @@ export class BacklogUI {
         this.eventBus.on('ui:backlog:open', () => this.open());
         this.eventBus.on('ui:backlog:close', () => this.close());
         this.eventBus.on('ui:backlog:toggle', () => this.toggle());
+        this.eventBus.on('ui:backlog:close_request', () => this.close()); // Handle Back Button
 
         // Close button
         const closeBtn = this.container.querySelector('.close-btn');
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.close());
+            closeBtn.addEventListener('click', () => {
+                this.close();
+                this.eventBus.emit('ui:backlog:close', {}); // Notify manager of manual close
+            });
         }
 
         // Close on background click (optional, maybe not for backlog if it covers full screen)
@@ -60,6 +64,9 @@ export class BacklogUI {
         this.isOpen = true;
         this.render();
         this.container.style.display = 'flex';
+        // Notify manager to push history state
+        this.eventBus.emit('ui:backlog:open', {});
+
         // Scroll to bottom
         setTimeout(() => {
             this.backlogList.scrollTop = this.backlogList.scrollHeight;
@@ -70,6 +77,8 @@ export class BacklogUI {
         if (!this.isOpen) return;
         this.isOpen = false;
         this.container.style.display = 'none';
+        // Note: We don't emit ui:backlog:close here to avoid circular loops
+        // The manager listens to ui:backlog:close solely for manual interactions (via the button listener above)
     }
 
     public toggle(): void {

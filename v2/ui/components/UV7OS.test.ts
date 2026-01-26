@@ -51,7 +51,7 @@ const localStorageMock = {
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('UV7OS', () => {
-    let instance: UV7OS;
+
 
     beforeEach(() => {
         vi.clearAllMocks();

@@ -175,16 +175,8 @@ p {
     line-height: 1.6;
     max-width: 650px;
     /* Slightly wider */
-    margin: 0;
-    /* Removed margin in favor of gap */
-
-    /* Force height alignment for description block */
-    height: 6em;
-    /* Fixed height for description block (3-4 lines) */
-    display: flex;
-    align-items: flex-start;
-    /* Align top */
-    justify-content: center;
+    margin: 0 0 1.5rem 0;
+    /* Add bottom margin for standard flow */
 }
 
 /* --- CHAOS SPECIFIC STYLES --- */
@@ -677,7 +669,7 @@ section h2 {
 .timeline-item[data-type="chaos"] .timeline-content {
     border: 2px solid rgba(255, 0, 102, 0.3);
     box-shadow: 0 0 20px rgba(255, 0, 102, 0.15),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
@@ -698,16 +690,26 @@ section h2 {
 }
 
 @keyframes glitch {
-    0%, 100% { transform: translate(0, 0); }
-    33% { transform: translate(-2px, 2px); }
-    66% { transform: translate(2px, -2px); }
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    33% {
+        transform: translate(-2px, 2px);
+    }
+
+    66% {
+        transform: translate(2px, -2px);
+    }
 }
 
 /* MILESTONE: Cyan/Blue Clean Border */
 .timeline-item[data-type="milestone"] .timeline-content {
     border: 2px solid rgba(52, 152, 219, 0.4);
     box-shadow: 0 0 15px rgba(52, 152, 219, 0.1),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
     background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(52, 152, 219, 0.02) 100%);
 }
 
@@ -720,25 +722,28 @@ section h2 {
 .timeline-item[data-type="milestone"] .timeline-content:hover {
     border-color: rgba(52, 152, 219, 0.6);
     box-shadow: 0 0 25px rgba(52, 152, 219, 0.2),
-                0 15px 40px rgba(0, 0, 0, 0.15);
+        0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* CRITICAL: Amber/Orange Pulsing */
 .timeline-item[data-type="critical"] .timeline-content {
     border: 2px solid rgba(255, 149, 0, 0.4);
     box-shadow: 0 0 20px rgba(255, 149, 0, 0.15),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
     animation: pulseAmber 3s ease-in-out infinite;
 }
 
 @keyframes pulseAmber {
-    0%, 100% {
+
+    0%,
+    100% {
         box-shadow: 0 0 15px rgba(255, 149, 0, 0.1),
-                    0 10px 30px rgba(0, 0, 0, 0.1);
+            0 10px 30px rgba(0, 0, 0, 0.1);
     }
+
     50% {
         box-shadow: 0 0 30px rgba(255, 149, 0, 0.3),
-                    0 15px 40px rgba(0, 0, 0, 0.15);
+            0 15px 40px rgba(0, 0, 0, 0.15);
     }
 }
 
@@ -746,7 +751,7 @@ section h2 {
 .timeline-item[data-type="personal"] .timeline-content {
     border: 2px solid rgba(155, 89, 182, 0.3);
     box-shadow: 0 0 20px rgba(155, 89, 182, 0.12),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
     background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(155, 89, 182, 0.03) 100%);
 }
 
@@ -759,33 +764,33 @@ section h2 {
 .timeline-item[data-type="personal"] .timeline-content:hover {
     border-color: rgba(155, 89, 182, 0.5);
     box-shadow: 0 0 30px rgba(155, 89, 182, 0.2),
-                0 15px 40px rgba(0, 0, 0, 0.15);
+        0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* POLISH: Green Glow */
 .timeline-item[data-type="polish"] .timeline-content {
     border: 2px solid rgba(0, 255, 136, 0.3);
     box-shadow: 0 0 15px rgba(0, 255, 136, 0.1),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-item[data-type="polish"] .timeline-content:hover {
     border-color: rgba(0, 255, 136, 0.5);
     box-shadow: 0 0 25px rgba(0, 255, 136, 0.2),
-                0 15px 40px rgba(0, 0, 0, 0.15);
+        0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* REALITY-CHECK: Orange Warning Border */
 .timeline-item[data-type="reality-check"] .timeline-content {
     border: 2px solid rgba(255, 193, 7, 0.4);
     box-shadow: 0 0 15px rgba(255, 193, 7, 0.12),
-                0 10px 30px rgba(0, 0, 0, 0.1);
+        0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .timeline-item[data-type="reality-check"] .timeline-content:hover {
     border-color: rgba(255, 193, 7, 0.6);
     box-shadow: 0 0 25px rgba(255, 193, 7, 0.2),
-                0 15px 40px rgba(0, 0, 0, 0.15);
+        0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 .timeline-content p:last-child {
@@ -4247,7 +4252,8 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
 /* In Dev Mode, we might want different behavior, but per doc we keep manual control */
 /* Dev Mode Overrides */
 /* In Dev Mode, we might want different behavior, but per doc we keep manual control */
-/* body[data-view-mode="dev"] .timeline-item.expanded .timeline-details {} *//* ═══════════════════════════════════════════════════════════════
+/* body[data-view-mode="dev"] .timeline-item.expanded .timeline-details {} */
+/* ═══════════════════════════════════════════════════════════════
    LAYOUT & POLISH
    Refactored from visual-fixes.css & mobile-polish.css
    ═══════════════════════════════════════════════════════════════ */
@@ -4400,7 +4406,9 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
     .tab-item {
         border: 2px solid currentColor;
     }
-}/* ==========================================
+}
+
+/* ==========================================
    PREMIUM ANIMATIONS - PHASE 2
    Smooth scroll, parallax, micro-interactions
    ========================================== */
@@ -4757,7 +4765,9 @@ button,
 /* Prevent layout shifts */
 img {
     content-visibility: auto;
-}/* ==========================================
+}
+
+/* ==========================================
    LOADING STATES - SKELETON LOADERS
    ========================================== */
 
@@ -4971,7 +4981,9 @@ img {
     .touch-ripple {
         display: none;
     }
-}/* ==========================================
+}
+
+/* ==========================================
    ERROR STATES & LOADING
    ========================================== */
 
