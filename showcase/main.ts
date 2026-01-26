@@ -22,9 +22,9 @@ import { TabController } from './lib/TabController';
 import { MagneticCursor } from './ts/MagneticCursor';
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
-import { initGrabHandle } from '../v2/ui/components/GrabHandle';
 import { UV7EchoSystem } from './lib/UV7EchoSystem';
 // Remove initUV7OS since we'll create the instance directly
+// Remove initGrabHandle since UV7OS handles it automatically
 
 // Import section renderers
 import { JourneySection } from './ts/components/JourneySection';
@@ -34,7 +34,7 @@ import { SpotlightSection } from './ts/components/SpotlightSection';
 import { EvolutionSection } from './ts/components/EvolutionSection';
 import { WhoSection } from './ts/components/WhoSection';
 
-// Import UI components
+// Import showcase UI components
 import { Sidebar } from './ts/components/Sidebar';
 import { NotificationShade } from './ts/components/NotificationShade';
 
@@ -81,19 +81,28 @@ window.UV7System = {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing showcase components...');
 
-    // Create UV7 System after DOM is ready
-    const uv7System = createUV7System('showcase');
-    window.uv7Runtime = {
-        ...uv7System,
-        instance: uv7System.statusBar // TabController expects this
-    };
+    // Detect if we're running inside the unified shell (iframe)
+    const isInShell = window.self !== window.top;
+    console.log(`[Showcase] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 
-    console.log('✅ UV7 System initialized');
-    console.log('✅ UV7 Status Bar mounted and visible');
-    uv7System.statusBar.show();
+    // Add class to body for shell-specific styling
+    // Only create UV7 System chrome (status bar, etc.) in standalone mode
+    let uv7System;
+    if (!isInShell) {
+        uv7System = createUV7System('showcase');
+        window.uv7Runtime = {
+            ...uv7System,
+            instance: uv7System.statusBar // TabController expects this
+        };
 
-    // Initialize UI Components
-    // Initialize UI Components
+        console.log('✅ UV7 System initialized');
+        console.log('✅ UV7 Status Bar mounted and visible');
+        uv7System.statusBar.show();
+    } else {
+        console.log('⏭️ Skipping UV7 System (shell provides chrome)');
+    }
+
+    // Initialize UI Components (always - showcase has its own sidebar even in shell mode)
     new Sidebar();
     new NotificationShade();
     console.log('✅ Sidebar and NotificationShade initialized');
@@ -164,64 +173,45 @@ document.addEventListener('DOMContentLoaded', () => {
     initUXEnhancements();
     console.log('✅ Utilities initialized');
 
-    // Initialize App State Manager
-    // Initialize App State Manager
-    initAppStateManager();
-    console.log('✅ App State Manager initialized');
+    // Initialize App State Manager and App Switcher (only in standalone mode)
+    if (!isInShell) {
+        initAppStateManager();
+        console.log('✅ App State Manager initialized');
 
-    // Initialize UV7 App Switcher (proper TypeScript version)
-    const appSwitcher = new UV7AppSwitcher();
-    window.uv7AppSwitcher = appSwitcher;
-    console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
-
-    // Initialize Grab Handle (for sidebar toggle)
-    const sidebarToggle = document.getElementById('uv7-sidebar-toggle');
-    if (sidebarToggle) {
-        initGrabHandle(sidebarToggle, {
-            storageKey: 'uv7-grab-handle',
-            headerSafeTop: 52,
-            bottomSafePad: 140,
-            onToggle: () => {
-                // Toggle sidebar when grab handle is tapped
-                console.log('[GrabHandle] onToggle callback - window.uv7os:', window.uv7os);
-                if (window.uv7os) {
-                    window.uv7os.toggleSidebar();
-                } else {
-                    console.error('[GrabHandle] window.uv7os is not defined!');
-                }
-            }
-        });
-        console.log('✅ Grab handle initialized');
+        // Initialize UV7 App Switcher (proper TypeScript version)
+        const appSwitcher = new UV7AppSwitcher();
+        window.uv7AppSwitcher = appSwitcher;
+        console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
+    } else {
+        console.log('⏭️ Skipping App Switcher (shell mode)');
     }
 
-    // Initialize sidebar quick actions with shell awareness
+    // Initialize UV7 OS (navigation system) - ALWAYS, even in shell mode
+    if (window.TIMELINE_DATA?.entries) {
+        window.uv7os = new UV7OS('showcase', {
+            entries: window.TIMELINE_DATA.entries
+        });
+        console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
+    } else {
+        // Fallback: create without timeline data (silent)
+        window.uv7os = new UV7OS('showcase');
+        console.log('✅ UV7 OS initialized (no timeline data)');
+    }
+
+    // Grab handle is initialized by UV7OS automatically
+    // No need to initialize it here - UV7OS.attachHandlers() already adds click listener
+
+    // Initialize sidebar quick actions - ALWAYS
     document.querySelectorAll('.quick-action').forEach((btn) => {
         btn.addEventListener('click', () => {
             const action = btn.getAttribute('data-action');
 
-            // Detect if we're inside the unified shell (iframe) or standalone
-            const isInShell = window.self !== window.top;
-
             if (action === 'launch-v1') {
-                if (isInShell) {
-                    // Navigate parent shell via hash
-                    window.parent.location.hash = '#/v1';
-                } else {
-                    // Navigate to shell with hash
-                    window.location.href = '../index.html#/v1';
-                }
+                window.location.href = '../index.html#/v1';
             } else if (action === 'launch-v2') {
-                if (isInShell) {
-                    window.parent.location.hash = '#/v2';
-                } else {
-                    window.location.href = '../index.html#/v2';
-                }
+                window.location.href = '../index.html#/v2';
             } else if (action === 'go-home') {
-                if (isInShell) {
-                    window.parent.location.hash = '#/landing';
-                } else {
-                    window.location.href = '../index.html#/landing';
-                }
+                window.location.href = '../index.html#/landing';
             } else if (action === 'toggle-mode') {
                 // Trigger the status bar toggle button
                 const statusToggle = document.getElementById('status-story-dev-toggle');
@@ -241,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Initialize animated system stats (fake but cool!)
+    // Initialize animated system stats - ALWAYS (sidebar widget)
     const cpuVal = document.getElementById('sys-cpu');
     const cpuBar = document.getElementById('sys-cpu-bar');
     const ramVal = document.getElementById('sys-ram');
@@ -267,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new UV7EchoSystem();
     console.log('✅ AI Crew echo system initialized');
 
-    // Initialize sidebar section navigation
+    // Initialize sidebar section navigation - ALWAYS
     const sectionNavItems = document.querySelectorAll('.section-nav-item[data-tab]');
     sectionNavItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -285,22 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+    console.log('✅ Sidebar section navigation initialized');
 
     // Initialize Showcase Carousel (Spotlight tab)
     initShowcaseCarousel();
     console.log('✅ Showcase carousel initialized');
 
-    // Initialize UV7 OS (navigation system) - must create instance directly
-    // because we're already inside DOMContentLoaded
-    if (window.TIMELINE_DATA?.entries) {
-        window.uv7os = new UV7OS('showcase', {
-            entries: window.TIMELINE_DATA.entries
-        });
-        console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
-    } else {
-        // Fallback: create without timeline data (silent)
-        window.uv7os = new UV7OS('showcase');
-    }
-
-    console.log('✅ Showcase fully initialized - all modules loaded');
+    console.log(`✅ Showcase fully initialized - ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 });

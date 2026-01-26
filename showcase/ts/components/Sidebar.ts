@@ -14,123 +14,15 @@ interface SidebarElements {
 }
 
 export class Sidebar {
-    private containerId: string;
     private el!: SidebarElements;
 
-    constructor(containerId: string = 'uv7-sidebar-mount') {
-        this.containerId = containerId;
+    constructor() {
         console.log('📋 Sidebar: Starting initialization...');
-        this.render();
+        // Don't render - use existing HTML from index.html
         this.cacheElements();
         this.initEvents();
-        this.initSystemStats();
+        // Don't initialize system stats here - main.ts handles it
         console.log('✅ Sidebar: Fully initialized');
-    }
-
-    render(): void {
-        const mount = document.getElementById(this.containerId);
-        if (!mount) return;
-
-        mount.innerHTML = `
-            <!-- Sidebar (Landscape) -->
-            <div id="uv7-sidebar" class="uv7-sidebar">
-                <div class="sidebar-header">
-                    <span class="sidebar-title">⚡ UV7 CONTROL CENTER</span>
-                </div>
-                <div class="sidebar-content">
-                    <!-- Quick Actions Grid -->
-                    <div class="sidebar-section">
-                        <div class="quick-actions-grid">
-                            <button class="quick-action" data-action="launch-v1">
-                                <span class="quick-action-icon">🎮</span>
-                                <span class="quick-action-label">V1 Game</span>
-                            </button>
-                            <button class="quick-action" data-action="launch-v2">
-                                <span class="quick-action-icon">⚡</span>
-                                <span class="quick-action-label">V2 Engine</span>
-                            </button>
-                            <button class="quick-action" data-action="go-home">
-                                <span class="quick-action-icon">🏠</span>
-                                <span class="quick-action-label">Home</span>
-                            </button>
-                            <button class="quick-action" data-action="toggle-mode">
-                                <span class="quick-action-icon">📖</span>
-                                <span class="quick-action-label">Mode</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- System Stats Widget -->
-                    <div class="sidebar-section">
-                        <div class="system-stats-widget">
-                            <div class="stat-row">
-                                <div class="stat-info">
-                                    <span class="stat-label">CPU LOAD</span>
-                                    <span class="stat-value" id="sys-cpu">12%</span>
-                                </div>
-                                <div class="stat-bar-track">
-                                    <div class="stat-bar-fill" id="sys-cpu-bar" style="width: 12%"></div>
-                                </div>
-                            </div>
-                            <div class="stat-row">
-                                <div class="stat-info">
-                                    <span class="stat-label">RAM USAGE</span>
-                                    <span class="stat-value" id="sys-ram">64%</span>
-                                </div>
-                                <div class="stat-bar-track">
-                                    <div class="stat-bar-fill" id="sys-ram-bar" style="width: 64%"></div>
-                                </div>
-                            </div>
-                            <div class="stat-row">
-                                <div class="stat-info">
-                                    <span class="stat-label">V2 ENGINE</span>
-                                    <span class="stat-value status-online">ONLINE</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Directory Navigation -->
-                    <div class="sidebar-section">
-                        <div class="sidebar-section-title">DIRECTORY</div>
-                        <div class="section-nav-list" id="sidebar-section-list">
-                            <button class="section-nav-item" data-section="journey-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">The Journey</span>
-                            </button>
-                            <button class="section-nav-item" data-section="workflow-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">Workflow</span>
-                            </button>
-                            <button class="section-nav-item" data-section="results-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">The Results</span>
-                            </button>
-                            <button class="section-nav-item" data-section="spotlight-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">Tech Spotlight</span>
-                            </button>
-                            <button class="section-nav-item" data-section="evolution-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">Evolution archive</span>
-                            </button>
-                            <button class="section-nav-item" data-section="who-section">
-                                <span class="section-icon">📁</span>
-                                <span class="section-label">Crew Manifest</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Sidebar Toggle (Right Side) -->
-            <div id="uv7-sidebar-toggle" class="uv7-sidebar-toggle">
-                <span>☰</span>
-            </div>
-
-            <!-- Backdrop -->
-            <div id="uv7-backdrop" class="uv7-backdrop"></div>
-        `;
     }
 
     cacheElements(): void {
@@ -146,95 +38,71 @@ export class Sidebar {
     }
 
     initEvents(): void {
-        // Toggle Open/Close - Context Aware
-        this.el.toggle?.addEventListener('click', (e: Event) => {
-            e.stopPropagation(); // Prevent backdrop from catching this click
-            // Portrait Mode: Open Shade instead of Sidebar
-            if (window.innerWidth <= 768) {
-                document.dispatchEvent(new CustomEvent('open-shade'));
-            } else {
-                this.toggle();
-            }
+        // Toggle button - handled by UV7OS/GrabHandle in main.ts
+        // Backdrop close
+        this.el.backdrop?.addEventListener('click', () => {
+            this.close();
         });
-        this.el.backdrop?.addEventListener('click', () => this.close());
 
-        // Delegate Quick Actions & Navigation
+        // Quick Actions and Section Navigation (from HTML)
+        // Note: main.ts also handles these, so we keep this as fallback
         this.el.sidebar?.addEventListener('click', (e: Event) => {
             const target = e.target as HTMLElement;
-            // 1. Section Navigation
-            const navBtn = target.closest('[data-section]') as HTMLElement | null;
-            if (navBtn) {
-                const section = navBtn.dataset.section;
-                if (section) this.handleNavigation(section);
+
+            // 1. Quick Actions
+            const actionBtn = target.closest('.quick-action') as HTMLElement | null;
+            if (actionBtn) {
+                const action = actionBtn.getAttribute('data-action');
+                if (action) {
+                    // Let main.ts handle the action logic
+                    // Just close sidebar if it's not the toggle-mode action
+                    if (action !== 'toggle-mode') {
+                        this.close();
+                    }
+                }
                 return;
             }
 
-            // 2. Quick Actions
-            const actionBtn = target.closest('[data-action]') as HTMLElement | null;
-            if (actionBtn) {
-                const action = actionBtn.dataset.action;
-                if (action) this.handleAction(action);
+            // 2. Section Navigation (uses data-tab in HTML)
+            const navBtn = target.closest('.section-nav-item[data-tab]') as HTMLElement | null;
+            if (navBtn) {
+                const tab = navBtn.getAttribute('data-tab');
+                if (tab && window.tabController) {
+                    window.tabController.navigateToTab(tab);
+                    this.close();
+                }
+                return;
+            }
+
+            // 3. Echo Settings button
+            const echoBtn = target.closest('#echo-settings-trigger') as HTMLElement | null;
+            if (echoBtn) {
+                // Let UV7EchoSystem handle this
+                this.close();
             }
         });
     }
 
-    handleNavigation(sectionClass: string): void {
-        this.close();
-        window.dispatchEvent(new CustomEvent('uv7-navigate', {
-            detail: { target: sectionClass }
-        }));
-    }
-
-    handleAction(action: string): void {
-        // Dispatch generic action event for main controller/OS to handle
-        window.dispatchEvent(new CustomEvent('uv7-action', {
-            detail: { action: action }
-        }));
-
-        // Special case: Mode toggle needs visual update immediately?
-        // No, let state manager handle it.
-        if (action !== 'toggle-mode') {
-            this.close();
-        }
-    }
-
+    // Public method for UV7OS to call
     toggle(): void {
-        if (!this.el.sidebar || !this.el.backdrop || !this.el.toggle) return;
+        if (!this.el.sidebar || !this.el.backdrop) return;
 
-        this.el.sidebar.classList.toggle('open');
-        this.el.backdrop.classList.toggle('active');
-        this.el.toggle.classList.toggle('active');
+        const isOpen = this.el.sidebar.classList.contains('open');
 
-        // Body Scroll Lock
-        if (this.el.sidebar.classList.contains('open')) {
-            document.body.classList.add('uv7-no-scroll');
+        if (isOpen) {
+            this.close();
         } else {
-            document.body.classList.remove('uv7-no-scroll');
+            this.el.sidebar.classList.add('open');
+            this.el.backdrop.classList.add('visible');
+            document.body.classList.add('uv7-no-scroll');
         }
     }
 
     close(): void {
-        if (!this.el.sidebar || !this.el.backdrop || !this.el.toggle) return;
+        if (!this.el.sidebar || !this.el.backdrop) return;
 
         this.el.sidebar.classList.remove('open');
-        this.el.backdrop.classList.remove('active');
-        this.el.toggle.classList.remove('active');
+        this.el.backdrop.classList.remove('visible');
         document.body.classList.remove('uv7-no-scroll');
-    }
-
-    initSystemStats(): void {
-        if (!this.el.cpuVal) return;
-
-        // Animate stats
-        setInterval(() => {
-            const cpu = Math.floor(Math.random() * 30) + 5; // 5-35% base
-            const ram = 60 + Math.floor(Math.random() * 8); // 60-68%
-
-            if (this.el.cpuVal) this.el.cpuVal.textContent = `${cpu}%`;
-            if (this.el.cpuBar) this.el.cpuBar.style.width = `${cpu}%`;
-
-            if (this.el.ramVal) this.el.ramVal.textContent = `${ram}%`;
-            if (this.el.ramBar) this.el.ramBar.style.width = `${ram}%`;
-        }, 2000);
     }
 }

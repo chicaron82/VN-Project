@@ -18,8 +18,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
+    /* Apps handle their own scrolling (especially iframed apps) */
     background: var(--bg-primary, #0a0a0f);
     z-index: 1;
 }
@@ -157,7 +157,9 @@
    ═══════════════════════════════════════════════════════════════ */
 
 .landing-app {
-    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
     position: relative;
 }
 
@@ -412,4 +414,9 @@
     background: rgba(255, 102, 153, 0.1);
     border-color: #ff6699;
     transform: translateY(-2px);
+}
+/* Hide shell sidebar when app has its own */
+body.app-has-own-sidebar .uv7-sidebar-toggle,
+body.app-has-own-sidebar .uv7-sidebar {
+    display: none !important;
 }

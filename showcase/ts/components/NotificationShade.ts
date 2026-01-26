@@ -11,131 +11,83 @@ interface ShadeElements {
 }
 
 export class NotificationShade {
-    private containerId: string;
     private touchStartY: number;
     private touchEndY: number;
     private minSwipeDistance: number;
     private el!: ShadeElements;
 
-    constructor(containerId: string = 'uv7-shade-mount') {
-        this.containerId = containerId;
+    constructor() {
         this.touchStartY = 0;
         this.touchEndY = 0;
         this.minSwipeDistance = 50;
 
         console.log('🔔 NotificationShade: Starting initialization...');
-        this.render();
+
+        // Clear any old rendered shade HTML from the mount point
+        const shadeMount = document.getElementById('uv7-shade-mount');
+        if (shadeMount) {
+            shadeMount.innerHTML = '';
+            console.log('🧹 Cleared old shade mount content');
+        }
+
+        // Also remove any lingering uv7-shade elements from previous renders
+        const oldShade = document.getElementById('uv7-shade');
+        if (oldShade && oldShade.parentElement?.id === 'uv7-shade-mount') {
+            oldShade.remove();
+            console.log('🧹 Removed old shade element from DOM');
+        }
+
+        // Remove any duplicate sidebar toggles from old shade renders
+        // Do this check multiple times to catch dynamically created duplicates
+        const removeDuplicates = () => {
+            const allToggles = document.querySelectorAll('.uv7-sidebar-toggle');
+            console.log(`🧹 Checking for duplicate toggles... Found ${allToggles.length} button(s)`);
+
+            if (allToggles.length > 1) {
+                allToggles.forEach((toggle, index) => {
+                    const rect = toggle.getBoundingClientRect();
+                    console.log(`  Toggle ${index}:`, {
+                        id: toggle.id || '(no id)',
+                        parent: toggle.parentElement?.tagName,
+                        position: `${Math.round(rect.left)},${Math.round(rect.top)}`,
+                        hasId: !!toggle.id
+                    });
+                });
+
+                // Keep only the FIRST one found, remove all others
+                allToggles.forEach((toggle, index) => {
+                    if (index > 0) {
+                        console.log(`🧹 Removing toggle ${index}`);
+                        toggle.remove();
+                    }
+                });
+            }
+        };
+
+        removeDuplicates();
+        // Check again after a short delay to catch any dynamically created toggles
+        setTimeout(removeDuplicates, 100);
+        setTimeout(removeDuplicates, 500);
+        setTimeout(removeDuplicates, 1000); // Extra check
+
+        // Don't render - in showcase, we just use the sidebar for both portrait/landscape
         this.cacheElements();
         this.initEvents();
         this.initSwipeHandler();
-        console.log('✅ NotificationShade: Fully initialized');
-    }
-
-    render(): void {
-        const mount = document.getElementById(this.containerId);
-        if (!mount) return;
-
-        mount.innerHTML = `
-            <!-- Notification Shade (Portrait) -->
-            <div id="uv7-shade" class="uv7-shade">
-                <div class="shade-header">
-                    <span class="shade-title">📖 Showcase Navigator</span>
-                    <button class="shade-close" aria-label="Close">✕</button>
-                </div>
-                <div class="shade-content">
-                    <!-- Quick Actions -->
-                    <div class="shade-section">
-                        <div class="shade-section-title">Quick Actions</div>
-                        <div class="quick-actions-grid">
-                            <button class="quick-action" data-action="launch-v1">
-                                <span class="quick-action-icon">🎮</span>
-                                <span class="quick-action-label">V1 Game</span>
-                            </button>
-                            <button class="quick-action" data-action="launch-v2">
-                                <span class="quick-action-icon">⚡</span>
-                                <span class="quick-action-label">V2 Engine</span>
-                            </button>
-                            <button class="quick-action" data-action="go-home">
-                                <span class="quick-action-icon">🏠</span>
-                                <span class="quick-action-label">Landing</span>
-                            </button>
-                            <button class="quick-action" data-action="toggle-mode">
-                                <span class="quick-action-icon">📖</span>
-                                <span class="quick-action-label">Story/Dev</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Section Navigation -->
-                    <div class="shade-section">
-                        <div class="shade-section-title">Navigate</div>
-                        <div class="section-nav-list" id="shade-section-list">
-                            <button class="section-nav-item" data-section="journey-section">
-                                <span class="section-icon">🗺️</span>
-                                <span class="section-label">The Journey</span>
-                            </button>
-                            <button class="section-nav-item" data-section="workflow-section">
-                                <span class="section-icon">⚙️</span>
-                                <span class="section-label">Workflow</span>
-                            </button>
-                            <button class="section-nav-item" data-section="results-section">
-                                <span class="section-icon">📊</span>
-                                <span class="section-label">The Results</span>
-                            </button>
-                            <button class="section-nav-item" data-section="spotlight-section">
-                                <span class="section-icon">💡</span>
-                                <span class="section-label">Technical Spotlight</span>
-                            </button>
-                            <button class="section-nav-item" data-section="evolution-section">
-                                <span class="section-icon">🔄</span>
-                                <span class="section-label">The Evolution</span>
-                            </button>
-                            <button class="section-nav-item" data-section="who-section">
-                                <span class="section-icon">👥</span>
-                                <span class="section-label">Who Are We</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        console.log('✅ NotificationShade: Fully initialized (using sidebar for all viewports)');
     }
 
     cacheElements(): void {
+        // Use sidebar as the "shade" for portrait mode
         this.el = {
-            shade: document.getElementById('uv7-shade'),
-            closeBtn: document.querySelector('.shade-close'),
+            shade: document.getElementById('uv7-sidebar'),
+            closeBtn: null, // No close button needed - backdrop handles it
             backdrop: document.getElementById('uv7-backdrop'),
-            sectionList: document.getElementById('shade-section-list')
+            sectionList: null // Navigation handled by Sidebar component
         };
     }
 
     initEvents(): void {
-        // Close Button
-        this.el.closeBtn?.addEventListener('click', () => this.close());
-
-        // Navigation Clicks
-        this.el.sectionList?.addEventListener('click', (e: Event) => {
-            const target = e.target as HTMLElement;
-            const btn = target.closest('.section-nav-item') as HTMLElement | null;
-            if (btn) {
-                const section = btn.dataset.section;
-                if (section) this.handleNavigation(section);
-            }
-        });
-
-        // Quick Actions
-        this.el.shade?.addEventListener('click', (e: Event) => {
-            const target = e.target as HTMLElement;
-            const btn = target.closest('.quick-action');
-            if (btn) {
-                // Global handler delegation
-            }
-        });
-
-        // Listen for global open requests (helpers)
-        document.addEventListener('open-shade', () => this.open());
-
         // Listen for StatusBar swipe-down gesture (ui:shade:toggle event)
         // Wait for UV7 Runtime to be available, then subscribe to EventBus
         let retryCount = 0;
@@ -148,11 +100,10 @@ export class NotificationShade {
 
             if (runtime && runtime.eventBus) {
                 runtime.eventBus.on('ui:shade:toggle', () => {
-                    console.log('📱 ui:shade:toggle event received');
-                    if (this.el.shade?.classList.contains('open')) {
-                        this.close();
-                    } else {
-                        this.open();
+                    console.log('📱 ui:shade:toggle event received - toggling sidebar');
+                    // In portrait mode, swipe-down on status bar should open sidebar
+                    if (window.uv7os) {
+                        window.uv7os.toggleSidebar();
                     }
                 });
                 console.log('✅ NotificationShade listening to EventBus ui:shade:toggle');
@@ -168,27 +119,17 @@ export class NotificationShade {
         setupEventBusListener();
     }
 
+    // These methods now delegate to UV7OS
     open(): void {
-        if (!this.el.shade) return;
-        this.el.shade.classList.add('open');
-        this.el.backdrop?.classList.add('active');
-        document.body.classList.add('uv7-no-scroll');
+        if (window.uv7os) {
+            window.uv7os.toggleSidebar();
+        }
     }
 
     close(): void {
-        if (!this.el.shade) return;
-        this.el.shade.classList.remove('open');
-        this.el.backdrop?.classList.remove('active');
-        document.body.classList.remove('uv7-no-scroll');
-    }
-
-    handleNavigation(sectionClass: string): void {
-        this.close();
-
-        // Dispatch event for Main Controller to handle scrolling/tab switching
-        window.dispatchEvent(new CustomEvent('uv7-navigate', {
-            detail: { target: sectionClass }
-        }));
+        if (window.uv7os) {
+            window.uv7os.toggleSidebar();
+        }
     }
 
     initSwipeHandler(): void {
@@ -208,26 +149,30 @@ export class NotificationShade {
     }
 
     handleSwipe(): void {
-        // Only active on mobile
+        // Only active on mobile (portrait mode)
         if (window.innerWidth > 768) return;
 
         const distance = this.touchEndY - this.touchStartY;
-        const isShadeOpen = this.el.shade?.classList.contains('open');
+        const isSidebarOpen = this.el.shade?.classList.contains('open');
 
         // Swipe Up (negative distance) to close
-        if (isShadeOpen && distance < -this.minSwipeDistance) {
-            this.close();
+        if (isSidebarOpen && distance < -this.minSwipeDistance) {
+            if (window.uv7os) {
+                window.uv7os.toggleSidebar();
+            }
             return;
         }
 
-        // Swipe Down (positive distance) > threshold
+        // Swipe Down (positive distance) to open
         // Allow opening from anywhere in the top half of the screen (more forgiving)
         const isTopHalf = this.touchStartY < window.innerHeight / 2;
         const isAtScrollTop = window.scrollY < 100;
 
-        // Open shade if: swipe down started in top half OR user is at top of page
-        if (!isShadeOpen && distance > this.minSwipeDistance && (isTopHalf || isAtScrollTop)) {
-            this.open();
+        // Open sidebar if: swipe down started in top half OR user is at top of page
+        if (!isSidebarOpen && distance > this.minSwipeDistance && (isTopHalf || isAtScrollTop)) {
+            if (window.uv7os) {
+                window.uv7os.toggleSidebar();
+            }
         }
     }
 }

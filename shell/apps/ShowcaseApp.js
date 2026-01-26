@@ -28,18 +28,27 @@ export class ShowcaseApp extends BaseApp {
     async mount(container, params = {}) {
         await super.mount(container, params);
 
+        // Hide shell's sidebar toggle - showcase has its own
+        document.body.classList.add('app-has-own-sidebar');
+
         // Load current showcase in an iframe
         container.innerHTML = `
-            <div class="showcase-app">
+            <div class="showcase-app" style="width: 100%; height: 100vh; overflow: hidden; position: relative;">
                 <iframe
                     src="./showcase/index.html"
-                    style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;"
+                    style="width: 100%; height: 100%; border: none; display: block;"
                     title="UV7 Showcase"
                 ></iframe>
             </div>
         `;
 
         console.log('[ShowcaseApp] Mounted showcase in iframe');
+    }
+
+    async unmount() {
+        // Restore shell's sidebar toggle
+        document.body.classList.remove('app-has-own-sidebar');
+        await super.unmount();
     }
 }
 
