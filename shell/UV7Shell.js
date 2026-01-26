@@ -151,6 +151,9 @@ export class UV7Shell {
             // Update status bar
             this.updateStatusBar(app.getStatusBarConfig());
 
+            // Update sidebar
+            this.updateSidebar(app.getSidebarConfig());
+
             // Store reference
             this.currentApp = app;
 
@@ -187,6 +190,83 @@ export class UV7Shell {
         // Update document title
         if (title) {
             document.title = `${title} | UV7`;
+        }
+    }
+
+    /**
+     * Update the sidebar based on app config
+     * @param {Object|null} config - Sidebar configuration {title, content, init}
+     */
+    updateSidebar(config = null) {
+        const sidebar = document.getElementById('uv7-sidebar');
+        if (!sidebar) return;
+
+        // If no config provided, restore default shell sidebar
+        if (!config) {
+            this.restoreDefaultSidebar();
+            return;
+        }
+
+        const { title, content, init } = config;
+
+        // Update sidebar title
+        const sidebarTitle = sidebar.querySelector('.sidebar-title');
+        if (sidebarTitle && title) {
+            sidebarTitle.textContent = title;
+        }
+
+        // Update sidebar content
+        const sidebarContent = sidebar.querySelector('.sidebar-content');
+        if (sidebarContent && content) {
+            sidebarContent.innerHTML = content;
+
+            // Run initialization function if provided
+            if (typeof init === 'function') {
+                try {
+                    init();
+                    console.log('[UV7Shell] Sidebar init function executed');
+                } catch (error) {
+                    console.error('[UV7Shell] Sidebar init function failed:', error);
+                }
+            }
+        }
+    }
+
+    /**
+     * Restore the default shell sidebar
+     */
+    restoreDefaultSidebar() {
+        const sidebar = document.getElementById('uv7-sidebar');
+        if (!sidebar) return;
+
+        const sidebarTitle = sidebar.querySelector('.sidebar-title');
+        if (sidebarTitle) {
+            sidebarTitle.textContent = '🏠 UV7 OS';
+        }
+
+        const sidebarContent = sidebar.querySelector('.sidebar-content');
+        if (sidebarContent) {
+            sidebarContent.innerHTML = `
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Quick Launch</div>
+                    <button class="quick-action" data-action="launch-v1" style="width: 100%; margin-bottom: 0.5rem;">
+                        <span class="quick-action-icon">🎮</span>
+                        <span class="quick-action-label">V1 Game</span>
+                    </button>
+                    <button class="quick-action" data-action="launch-v2" style="width: 100%; margin-bottom: 0.5rem;">
+                        <span class="quick-action-icon">⚡</span>
+                        <span class="quick-action-label">V2 Engine</span>
+                    </button>
+                    <button class="quick-action" data-action="view-showcase" style="width: 100%; margin-bottom: 0.5rem;">
+                        <span class="quick-action-icon">📖</span>
+                        <span class="quick-action-label">Showcase</span>
+                    </button>
+                    <button class="quick-action" data-action="launch-torigatchi" style="width: 100%;">
+                        <span class="quick-action-icon">💖</span>
+                        <span class="quick-action-label">Tori-gatchi</span>
+                    </button>
+                </div>
+            `;
         }
     }
 

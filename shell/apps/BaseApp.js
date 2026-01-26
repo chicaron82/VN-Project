@@ -74,6 +74,15 @@ export class BaseApp {
     }
 
     /**
+     * Get the sidebar configuration for this app
+     * @returns {Object|null} - {title, content, init} or null to use default shell sidebar
+     */
+    getSidebarConfig() {
+        // Return null to keep shell's default sidebar
+        return null;
+    }
+
+    /**
      * Get current app state for persistence
      * @returns {Object}
      */

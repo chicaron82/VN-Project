@@ -1573,6 +1573,11 @@ body.uv7-no-scroll {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Shell Mode: Adjust positioning when status bar is managed by parent shell */
+body.uv7-shell-mode .system-banner {
+    top: 0;
+}
+
 .sys-signal {
     display: inline-block;
     width: 6px;
@@ -1616,6 +1621,12 @@ body.uv7-no-scroll {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 0.25rem 0;
     /* Tighter */
+}
+
+/* Shell Mode: Adjust tab bar positioning */
+body.uv7-shell-mode .tab-bar-container {
+    top: var(--uv7-banner-h, 16px);
+    /* Just below system banner */
 }
 
 /* Gradient Mask for scroll hint */
@@ -2244,4 +2255,12 @@ body.uv7-no-scroll {
     overflow-x: hidden;
     height: 100vh;
     max-height: 100vh;
+}
+/* ═══════════════════════════════════════════════════════════════
+   SHELL MODE - Hide showcase's internal sidebar (shell provides it)
+   ═══════════════════════════════════════════════════════════════ */
+body.in-shell-mode .uv7-sidebar,
+body.in-shell-mode .uv7-sidebar-toggle,
+body.in-shell-mode .uv7-backdrop {
+    display: none !important;
 }

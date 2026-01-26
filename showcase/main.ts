@@ -86,10 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log(`[Showcase] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 
     // Add class to body for shell-specific styling
-    // Only create UV7 System chrome (status bar, etc.) in standalone mode
-    let uv7System;
-    if (!isInShell) {
-        uv7System = createUV7System('showcase');
+    if (isInShell) {
+        document.body.classList.add('in-shell-mode');
+        console.log('⏭️ Skipping UV7 System (shell provides chrome)');
+        console.log('⏭️ Skipping Sidebar/NotificationShade (shell provides context-aware sidebar)');
+    } else {
+        // Only create UV7 System chrome (status bar, sidebar, etc.) in standalone mode
+        const uv7System = createUV7System('showcase');
         window.uv7Runtime = {
             ...uv7System,
             instance: uv7System.statusBar // TabController expects this
@@ -98,14 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ UV7 System initialized');
         console.log('✅ UV7 Status Bar mounted and visible');
         uv7System.statusBar.show();
-    } else {
-        console.log('⏭️ Skipping UV7 System (shell provides chrome)');
-    }
 
-    // Initialize UI Components (always - showcase has its own sidebar even in shell mode)
-    new Sidebar();
-    new NotificationShade();
-    console.log('✅ Sidebar and NotificationShade initialized');
+        // Initialize UI Components (only in standalone mode)
+        new Sidebar();
+        new NotificationShade();
+        console.log('✅ Sidebar and NotificationShade initialized');
+    }
 
     // Initialize Tab Navigation
     const tabController = new TabController();
@@ -280,6 +281,63 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Showcase Carousel (Spotlight tab)
     initShowcaseCarousel();
     console.log('✅ Showcase carousel initialized');
+
+    // Listen for messages from parent shell (when running in iframe)
+    if (isInShell) {
+        window.addEventListener('message', (event) => {
+            // Verify message is from parent (basic security)
+            if (event.source !== window.parent) return;
+
+            const { type, tab, action } = event.data;
+
+            switch (type) {
+                case 'navigate-tab':
+                    // Navigate to the specified tab
+                    if (tab && window.tabController) {
+                        console.log(`[Showcase] Navigating to tab: ${tab}`);
+                        window.tabController.navigateToTab(tab);
+                    }
+                    break;
+
+                case 'quick-action':
+                    // Handle quick actions
+                    console.log(`[Showcase] Handling quick action: ${action}`);
+                    switch (action) {
+                        case 'launch-v1':
+                            window.parent.location.hash = '#/v1';
+                            break;
+                        case 'launch-v2':
+                            window.parent.location.hash = '#/v2';
+                            break;
+                        case 'go-home':
+                            window.parent.location.hash = '#/';
+                            break;
+                        case 'toggle-mode':
+                            // Toggle story/dev mode
+                            const currentMode = document.body.classList.contains('story-mode') ? 'story' : 'dev';
+                            if (currentMode === 'story') {
+                                document.body.classList.remove('story-mode');
+                                document.body.classList.add('dev-mode');
+                            } else {
+                                document.body.classList.remove('dev-mode');
+                                document.body.classList.add('story-mode');
+                            }
+                            break;
+                    }
+                    break;
+
+                case 'echo-settings':
+                    // Trigger echo settings
+                    console.log('[Showcase] Opening Echo settings');
+                    const echoBtn = document.getElementById('echo-settings-trigger');
+                    if (echoBtn) {
+                        echoBtn.click();
+                    }
+                    break;
+            }
+        });
+        console.log('✅ Parent message listener initialized');
+    }
 
     console.log(`✅ Showcase fully initialized - ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 });

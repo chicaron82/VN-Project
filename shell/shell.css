@@ -415,8 +415,3 @@
     border-color: #ff6699;
     transform: translateY(-2px);
 }
-/* Hide shell sidebar when app has its own */
-body.app-has-own-sidebar .uv7-sidebar-toggle,
-body.app-has-own-sidebar .uv7-sidebar {
-    display: none !important;
-}
