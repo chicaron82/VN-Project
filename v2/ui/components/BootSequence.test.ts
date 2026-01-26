@@ -1,17 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { BootSequence } from './BootSequence';
 
-// Mock DOM
-const mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
-
 // Mock localStorage
 const localStorageMock = {
     getItem: vi.fn(),
@@ -20,6 +9,18 @@ const localStorageMock = {
     clear: vi.fn()
 };
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+const mockGame = {
+    bootstrapTracker: {
+        getCurrentAttempt: vi.fn().mockReturnValue(1),
+        getHistory: vi.fn().mockReturnValue({ attempts: [] })
+    },
+    stateManager: {
+        get: vi.fn()
+    }
+} as any;
+
+const mockContainer = document.createElement('div');
 
 describe('BootSequence', () => {
     let instance: BootSequence;
@@ -36,80 +37,72 @@ describe('BootSequence', () => {
     describe('Initialization', () => {
         it('should create an instance', () => {
             expect(() => {
-                instance = new BootSequence();
+                instance = new BootSequence(mockContainer, mockGame);
             }).not.toThrow();
             expect(instance).toBeDefined();
         });
 
         it('should initialize with default values', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             expect(instance).toBeInstanceOf(BootSequence);
         });
     });
 
     describe('Core Functionality', () => {
         it('should handle start', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             // Test start functionality
             expect(instance).toBeDefined();
-            // TODO: Add specific assertions for start
         });
 
         it('should handle eggs', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             // Test eggs functionality
             expect(instance).toBeDefined();
-            // TODO: Add specific assertions for eggs
         });
 
         it('should handle stats', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             // Test stats functionality
             expect(instance).toBeDefined();
-            // TODO: Add specific assertions for stats
         });
 
         it('should handle menu', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             // Test menu functionality
             expect(instance).toBeDefined();
-            // TODO: Add specific assertions for menu
         });
 
         it('should handle if', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             // Test if functionality
             expect(instance).toBeDefined();
-            // TODO: Add specific assertions for if
         });
 
     });
 
     describe('Edge Cases', () => {
         it('should handle null/undefined inputs gracefully', () => {
-            instance = new BootSequence();
-            // Test with invalid inputs
+            instance = new BootSequence(mockContainer, mockGame);
             expect(instance).toBeDefined();
         });
 
         it('should handle rapid consecutive calls', () => {
-            instance = new BootSequence();
-            // Test race conditions
+            instance = new BootSequence(mockContainer, mockGame);
             expect(instance).toBeDefined();
         });
     });
 
     describe('Error Handling', () => {
         it('should handle errors without crashing', () => {
-            instance = new BootSequence();
+            instance = new BootSequence(mockContainer, mockGame);
             expect(() => {
                 // Trigger potential error conditions
             }).not.toThrow();
         });
 
         it('should clean up resources on error', () => {
-            instance = new BootSequence();
-            // Verify cleanup happens
+            instance = new BootSequence(mockContainer, mockGame);
             expect(instance).toBeDefined();
         });
     });

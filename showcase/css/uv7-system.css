@@ -96,7 +96,8 @@
    NOTE: 
    Notification Shade moved to css/components/shade.css
    Sidebar moved to css/components/sidebar.css
-*//* ═══════════════════════════════════════════════════════════════
+*/
+/* ═══════════════════════════════════════════════════════════════
    UV7 OS - APP SWITCHER (BOUGIE EDITION) 💎
    iOS/Android-style app switcher with instant resume
    
@@ -125,7 +126,7 @@
 
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
-    z-index: 10001;
+    z-index: 10005;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1003,7 +1004,9 @@
     animation: none;
     transform: scale(1.15);
     box-shadow: 0 4px 15px rgba(255, 68, 68, 0.7);
-}/* ═══════════════════════════════════════════════════════════════
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SIDEBAR COMPONENT (Control Center)
    ═══════════════════════════════════════════════════════════════ */
 
@@ -1053,7 +1056,8 @@
 
 .uv7-sidebar.open {
     transform: translateX(0);
-    display: block !important; /* Override display: none on mobile */
+    display: block !important;
+    /* Override display: none on mobile */
 }
 
 /* Header */
@@ -1377,7 +1381,9 @@
 .uv7-backdrop.active {
     opacity: 1;
     pointer-events: auto;
-}/* ═══════════════════════════════════════════════════════════════
+}
+
+/* ═══════════════════════════════════════════════════════════════
    NOTIFICATION SHADE (Mobile)
    ═══════════════════════════════════════════════════════════════ */
 
@@ -1543,7 +1549,9 @@ body.uv7-no-scroll {
         display: none;
         /* Hide on desktop */
     }
-}/* ========================================
+}
+
+/* ========================================
    TAB BAR STYLES
    Glassmorphic horizontal navigation
    UV7 OS aesthetic
@@ -1731,16 +1739,20 @@ body.uv7-shell-mode .tab-bar-container {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     display: flex;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
 }
 
 /* Hide scrollbar but keep functionality */
 .tab-panels-container::-webkit-scrollbar {
     display: none;
 }
+
 .tab-panels-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 .tab-panel {
@@ -2224,7 +2236,8 @@ body.uv7-shell-mode .tab-bar-container {
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
     /* Prevent momentum from carrying past multiple panels */
     overscroll-behavior-x: contain;
     /* Prevent extra whitespace */
@@ -2233,7 +2246,8 @@ body.uv7-shell-mode .tab-bar-container {
 }
 
 .tab-panels-container.swipe-enabled::-webkit-scrollbar {
-    display: none; /* Chrome, Safari */
+    display: none;
+    /* Chrome, Safari */
 }
 
 /* Each panel is full width, can scroll vertically */
@@ -2245,17 +2259,18 @@ body.uv7-shell-mode .tab-bar-container {
     scroll-snap-stop: always;
     display: block !important;
     opacity: 1 !important;
-    
+
     /* Remove padding that interferes with scroll calculations */
     padding: 0;
     box-sizing: border-box;
-    
+
     /* Allow vertical scrolling within each panel */
     overflow-y: auto;
     overflow-x: hidden;
     height: 100vh;
     max-height: 100vh;
 }
+
 /* ═══════════════════════════════════════════════════════════════
    SHELL MODE - Hide showcase's internal sidebar (shell provides it)
    ═══════════════════════════════════════════════════════════════ */

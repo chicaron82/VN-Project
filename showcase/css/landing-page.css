@@ -851,3 +851,97 @@ body {
         opacity: 0;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   EVOLUTION METRICS DASHBOARD
+   Added to fix truncation issues and style the stats cards
+   ═══════════════════════════════════════════════════════════════ */
+.evolution-metrics {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin: 3rem 0;
+    justify-content: center;
+}
+
+.metric-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    min-width: 200px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    /* Ensure number doesn't break */
+    white-space: nowrap;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+.metric-change {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(0, 255, 136, 0.15);
+    color: #00ff88;
+    font-weight: 600;
+}
+
+.metric-change.negative {
+    background: rgba(255, 60, 60, 0.15);
+    color: #ff6666;
+}
+
+/* Architecture Diagram Layout */
+.architecture-grid {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.architecture-side {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 768px) {
+    .evolution-metrics {
+        flex-direction: column;
+    }
+
+    .metric-card {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .architecture-grid {
+        flex-direction: column;
+    }
+}

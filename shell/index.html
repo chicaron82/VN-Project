@@ -26,7 +26,6 @@
 
     <!-- UV7 OS Styles -->
     <link rel="stylesheet" href="./showcase/uv7-os.css">
-    <link rel="stylesheet" href="./showcase/uv7-app-switcher.css">
     <link rel="stylesheet" href="./showcase/css/landing-page.css">
     <link rel="stylesheet" href="./shell/shell.css">
 </head>
@@ -143,6 +142,31 @@
 
     <!-- Backdrop -->
     <div id="uv7-backdrop" class="uv7-backdrop"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         APP SWITCHER - Shell owns this
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="uv7-app-switcher" class="uv7-app-switcher">
+        <div class="app-switcher-header">
+            <span class="app-switcher-title">Recent Apps</span>
+            <div class="app-switcher-header-actions">
+                <button class="clear-all-btn" id="app-switcher-clear">Clear All</button>
+                <button class="app-switcher-close" aria-label="Close">✕</button>
+            </div>
+        </div>
+        <div class="app-switcher-content">
+            <div class="app-switcher-section">
+                <!-- <div class="app-switcher-section-title">Active Sessions</div> -->
+                <div class="app-cards-grid" id="app-cards-grid">
+                    <!-- Cards injected by UV7Shell -->
+                </div>
+                <div class="app-switcher-hint">
+                    <span class="hint-desktop">Press ESC to close</span>
+                    <span class="hint-mobile">Tap background to close</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════
          APP VIEWPORT - Apps render here
