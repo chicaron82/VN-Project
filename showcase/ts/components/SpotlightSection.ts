@@ -15,7 +15,10 @@ export class SpotlightSection {
                 ${createBanner(BANNER_CONFIGS.spotlight)}
 
                 <div class="section-content">
-                    <p class="section-intro">Engineering challenges overcome this weekend.</p>
+                    <p class="section-intro">
+                        Deep dive into <strong>Version 848's</strong> most interesting technical achievements.
+                        From tether mechanics to save systems, here's what makes the engine tick.
+                    </p>
 
                     <!-- LIVE CODE DIFF (New) -->
                     <div class="code-evolution-container">

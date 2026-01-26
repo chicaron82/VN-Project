@@ -93,14 +93,14 @@ export class TabController {
         const options: IntersectionObserverInit = {
             root: null, // viewport
             rootMargin: '-10% 0px -70% 0px', // Trigger only when section occupies top 20% of viewport
-            threshold: 0.1 // Require at least 10% of section to be visible
+            threshold: 0.01 // Require at least 1% of section to be visible (supports long panels)
         };
 
         this.observer = new IntersectionObserver((entries) => {
             // Find the entry with the highest intersection ratio (most visible)
             let mostVisible = entries[0];
             let maxRatio = 0;
-            
+
             entries.forEach(entry => {
                 if (entry.isIntersecting && entry.intersectionRatio > maxRatio) {
                     maxRatio = entry.intersectionRatio;
@@ -153,7 +153,7 @@ export class TabController {
      */
     private updatePanelVisibility(): void {
         const currentIndex = this.getCurrentTabIndex();
-        
+
         // Update active class for styling only (don't hide panels)
         this.tabPanels.forEach((panel, index) => {
             if (index === currentIndex) {
@@ -162,7 +162,7 @@ export class TabController {
                 panel.classList.remove('active');
             }
         });
-        
+
         // Scroll to the active panel
         if (this.container) {
             const scrollPosition = currentIndex * window.innerWidth;

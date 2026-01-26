@@ -17,6 +17,19 @@
    Hero banners provide color, content stays clean and consistent
    ========================================================================== */
 
+/* Light mode color variables */
+:root {
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --accent-blue: #4a9eff;
+}
+
+/* Home tab panel */
+.tab-panel[data-panel="home"] {
+    background: #ffffff !important;
+    color: #1a1a1a;
+}
+
 .journey-section,
 .workflow-section,
 .results-section,
@@ -26,7 +39,19 @@
     color: #1a1a1a;
 }
 
+/* Dark mode via OS preference OR manual toggle */
 @media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #e0e0e0;
+        --text-secondary: #b0b0b0;
+        --accent-blue: #6ab9ff;
+    }
+
+    .tab-panel[data-panel="home"] {
+        background: #1a1a1a !important;
+        color: #e0e0e0;
+    }
+
     .journey-section,
     .workflow-section,
     .results-section,
@@ -35,6 +60,26 @@
         background: #1a1a1a !important;
         color: #e0e0e0;
     }
+}
+
+[data-theme="dark"] {
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --accent-blue: #6ab9ff;
+}
+
+[data-theme="dark"] .tab-panel[data-panel="home"] {
+    background: #1a1a1a !important;
+    color: #e0e0e0;
+}
+
+[data-theme="dark"] .journey-section,
+[data-theme="dark"] .workflow-section,
+[data-theme="dark"] .results-section,
+[data-theme="dark"] .spotlight-section,
+[data-theme="dark"] .evolution-section {
+    background: #1a1a1a !important;
+    color: #e0e0e0;
 }
 
 /* ==========================================================================
@@ -60,6 +105,10 @@
     }
 }
 
+[data-theme="dark"] .hero-banner::after {
+    background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #1a1a1a) 100%);
+}
+
 /* Section-specific fade colors (inherit from banners) */
 .hero-banner.home::after {
     --section-bg-fade: #ffffff;
@@ -69,6 +118,10 @@
     .hero-banner.home::after {
         --section-bg-fade: #1a1a1a;
     }
+}
+
+[data-theme="dark"] .hero-banner.home::after {
+    --section-bg-fade: #1a1a1a;
 }
 
 /* ==========================================================================
@@ -158,6 +211,14 @@ section p {
     }
 }
 
+[data-theme="dark"] .tab-panel:not(:last-child)::after {
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.1) 20%,
+        rgba(255, 255, 255, 0.1) 80%,
+        transparent 100%);
+}
+
 /* Enhanced shadow separator for better depth */
 .tab-panel:not(:last-child) {
     box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.03);
@@ -167,6 +228,10 @@ section p {
     .tab-panel:not(:last-child) {
         box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.03);
     }
+}
+
+[data-theme="dark"] .tab-panel:not(:last-child) {
+    box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.03);
 }
 
 /* ==========================================================================
@@ -195,6 +260,10 @@ section p {
     .site-footer::before {
         background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
     }
+}
+
+[data-theme="dark"] .site-footer::before {
+    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
 }
 
 /* Subtle scroll-triggered animation */
@@ -275,6 +344,20 @@ section p {
     }
 }
 
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .workflow-step,
+[data-theme="dark"] .timeline-entry,
+[data-theme="dark"] .feature-card {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .stat-card:hover,
+[data-theme="dark"] .workflow-step:hover,
+[data-theme="dark"] .timeline-entry:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
 /* ==========================================================================
    9. BREATHING ROOM
    Additional spacing for unified design
@@ -307,4 +390,9 @@ section:not(:first-child) {
     .results-section {
         color: #e0e0e0;
     }
+}
+
+[data-theme="dark"] .workflow-section,
+[data-theme="dark"] .results-section {
+    color: #e0e0e0;
 }

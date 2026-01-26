@@ -10,6 +10,7 @@ export interface BannerConfig {
     subtitle: string;
     image: string;
     alt: string;
+    section: string;  // Section identifier for CSS class (e.g., 'journey', 'workflow')
 }
 
 function escapeHtml(text: string): string {
@@ -20,7 +21,7 @@ function escapeHtml(text: string): string {
 
 export function createBanner(config: BannerConfig): string {
     return `
-        <div class="hero-banner">
+        <div class="hero-banner ${escapeHtml(config.section)}">
             <img src="${escapeHtml(config.image)}" alt="${escapeHtml(config.alt)}" class="hero-banner-image">
             <div class="hero-banner-particles">
                 ${Array.from({ length: 10 }, () => '<div class="particle"></div>').join('')}
@@ -34,35 +35,41 @@ export function createBanner(config: BannerConfig): string {
 }
 
 // Banner configurations for each section
+// Using absolute paths from base for proper Vite resolution
 export const BANNER_CONFIGS: Record<string, BannerConfig> = {
     journey: {
         title: 'The Journey',
         subtitle: 'From organic chaos to structured harmony in record time',
-        image: 'media/banners/banner-journey.png',
-        alt: 'Journey Banner'
+        image: '/VN-Project/showcase/media/banners/banner-journey.png',
+        alt: 'Journey Banner',
+        section: 'journey'
     },
     workflow: {
         title: 'The Workflow',
         subtitle: 'How a non-coder and AI built a game engine together',
-        image: 'media/banners/banner-workflow.png',
-        alt: 'Workflow Banner'
+        image: '/VN-Project/showcase/media/banners/banner-workflow.png',
+        alt: 'Workflow Banner',
+        section: 'workflow'
     },
     results: {
         title: 'The Results',
         subtitle: 'Numbers that tell a story of relentless iteration',
-        image: 'media/banners/banner-results.png',
-        alt: 'Results Banner'
+        image: '/VN-Project/showcase/media/banners/banner-results.png',
+        alt: 'Results Banner',
+        section: 'results'
     },
     spotlight: {
         title: 'Technical Spotlight',
         subtitle: 'A deep dive into the features that make UV7 special',
-        image: 'media/banners/banner-spotlight.png',
-        alt: 'Spotlight Banner'
+        image: '/VN-Project/showcase/media/banners/banner-spotlight.png',
+        alt: 'Spotlight Banner',
+        section: 'spotlight'
     },
     evolution: {
         title: 'The Evolution',
         subtitle: 'V1 vs V2: A tale of technical refinement',
-        image: 'media/banners/banner-evolution.png',
-        alt: 'Evolution Banner'
+        image: '/VN-Project/showcase/media/banners/banner-evolution.png',
+        alt: 'Evolution Banner',
+        section: 'evolution'
     }
 };

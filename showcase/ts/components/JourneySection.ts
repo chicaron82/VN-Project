@@ -16,7 +16,15 @@ export class JourneySection {
                 ${createBanner(BANNER_CONFIGS.journey)}
 
                 <div class="section-content">
-                    <p class="section-intro">From organic chaos to structured harmony in record time.</p>
+                    <h2 style="font-size: 1.8rem; margin-bottom: 1rem;">Building Version 848: The Complete Timeline</h2>
+                    <p class="section-intro">
+                        From first commit to final polish: how <strong>Version 848</strong> evolved
+                        from a 50-day speedrun (V1) to a professional rebuild (V2). Every phase documented.
+                    </p>
+                    <p style="font-size: 1rem; margin-bottom: 2rem; opacity: 0.8;">
+                        Toggle between <strong>Story Mode</strong> (chronological journey) and
+                        <strong>Dev Log</strong> (reverse timeline) to see how the game came together.
+                    </p>
 
                     <!-- Timeline entries loaded dynamically from timeline.json -->
                     <div class="timeline" id="timeline-container">

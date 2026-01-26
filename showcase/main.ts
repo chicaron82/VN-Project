@@ -34,6 +34,10 @@ import { SpotlightSection } from './ts/components/SpotlightSection';
 import { EvolutionSection } from './ts/components/EvolutionSection';
 import { WhoSection } from './ts/components/WhoSection';
 
+// Import UI components
+import { Sidebar } from './ts/components/Sidebar';
+import { NotificationShade } from './ts/components/NotificationShade';
+
 // Import effects
 import { initTypingEffect } from './lib/effects/typing-effect';
 import { initTilt } from '../v2/ui/effects/TiltEffect';
@@ -77,9 +81,6 @@ window.UV7System = {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 Initializing showcase components...');
 
-    // Inject footers from template (DRY optimization)
-    injectFooters();
-
     // Create UV7 System after DOM is ready
     const uv7System = createUV7System('showcase');
     window.uv7Runtime = {
@@ -90,6 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('✅ UV7 System initialized');
     console.log('✅ UV7 Status Bar mounted and visible');
     uv7System.statusBar.show();
+
+    // Initialize UI Components
+    const sidebar = new Sidebar();
+    const notificationShade = new NotificationShade();
+    console.log('✅ Sidebar and NotificationShade initialized');
 
     // Initialize Tab Navigation
     const tabController = new TabController();
@@ -103,6 +109,9 @@ document.addEventListener('DOMContentLoaded', () => {
     new EvolutionSection();
     new WhoSection();
     console.log('✅ Section renderers initialized');
+
+    // Inject footers AFTER sections render (DRY optimization)
+    injectFooters();
 
     // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
     const timelineRenderer = new TimelineRenderer('#timeline-container');

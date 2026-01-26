@@ -19,10 +19,12 @@ export class Sidebar {
 
     constructor(containerId: string = 'uv7-sidebar-mount') {
         this.containerId = containerId;
+        console.log('📋 Sidebar: Starting initialization...');
         this.render();
         this.cacheElements();
         this.initEvents();
         this.initSystemStats();
+        console.log('✅ Sidebar: Fully initialized');
     }
 
     render(): void {
@@ -145,7 +147,8 @@ export class Sidebar {
 
     initEvents(): void {
         // Toggle Open/Close - Context Aware
-        this.el.toggle?.addEventListener('click', () => {
+        this.el.toggle?.addEventListener('click', (e: Event) => {
+            e.stopPropagation(); // Prevent backdrop from catching this click
             // Portrait Mode: Open Shade instead of Sidebar
             if (window.innerWidth <= 768) {
                 document.dispatchEvent(new CustomEvent('open-shade'));

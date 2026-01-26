@@ -16,8 +16,9 @@ export class WorkflowSection {
                 ${createBanner(BANNER_CONFIGS.workflow)}
 
                 <div class="section-content">
-                    <p class="section-intro">How one non-coder orchestrated multiple AI instances to build a complete
-                        game.
+                    <p class="section-intro">
+                        How one non-coder orchestrated eight AI instances to build <strong>Version 848</strong>—a
+                        complete visual novel about consciousness, identity, and the boundaries of reality.
                     </p>
 
                     <div class="workflow-diagram">
@@ -242,10 +243,10 @@ export class WorkflowSection {
                         <div class="methodology-insight code-fingerprints">
                             <h4>✍️ AI Fingerprints in Code</h4>
                             <p class="fingerprints-intro">
-                                The codebase itself becomes a collaboration record. Comments throughout (especially in V1) 
-                                credit specific AIs for contributions: "DiZee helped fix this animation issue," "Tori and I 
-                                riffed this navigation idea," "GenZee suggested this optimization." Code becomes living 
-                                documentation of the creative process.
+                                The <strong>Version 848</strong> codebase itself becomes a collaboration record. Comments
+                                throughout (especially in V1) credit specific AIs for contributions: "DiZee helped fix this
+                                animation issue," "Tori and I riffed this navigation idea," "GenZee suggested this optimization."
+                                Code becomes living documentation of the creative process.
                             </p>
 
                             <div class="fingerprint-examples">

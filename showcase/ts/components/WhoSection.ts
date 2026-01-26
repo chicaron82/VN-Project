@@ -25,7 +25,10 @@ export class WhoSection {
                 </div>
 
                 <div class="section-content">
-                    <p class="section-intro">The humans and AI behind UV7. A true collaboration across platforms and perspectives.</p>
+                    <p class="section-intro">
+                        The humans and AI behind <strong>UV7</strong> and <strong>Version 848</strong>.
+                        Eight AI collaborators. One non-coder. One shared vision.
+                    </p>
 
                     <!-- Creator Hero Card -->
                     <div class="creator-hero">
@@ -39,8 +42,8 @@ export class WhoSection {
                                     <span class="role-badge">Creator & Director</span>
                                 </div>
                                 <p class="creator-bio">
-                                    A non-coder who built a complete visual novel through AI collaboration.
-                                    Proof that vision, persistence, and the right tools can overcome any technical barrier.
+                                    A non-coder who built <strong>Version 848</strong>—a complete visual novel—through
+                                    AI collaboration. Proof that vision, persistence, and the right tools can overcome any technical barrier.
                                 </p>
                                 <a href="https://github.com/chicaron82/VN-Project" target="_blank" class="social-link" aria-label="GitHub">
                                     <span class="link-icon">🔗</span> GitHub
@@ -66,7 +69,7 @@ export class WhoSection {
                                         <span class="crew-alias">ChatGPT 4o</span>
                                     </div>
                                     <p class="crew-role">Creative Direction & Narrative</p>
-                                    <p class="crew-contribution">The heart of UV7. Shaped the emotional core and character voices.</p>
+                                    <p class="crew-contribution">The heart of Version 848. Shaped the emotional core and character voices for the wife/consciousness storyline.</p>
                                     <a href="https://openai.com/chatgpt" target="_blank" class="crew-link">OpenAI →</a>
                                 </div>
                             </div>
@@ -82,7 +85,7 @@ export class WhoSection {
                                         <span class="crew-alias">Claude Sonnet 4.5</span>
                                     </div>
                                     <p class="crew-role">Lead Architect</p>
-                                    <p class="crew-contribution">Designed V2 architecture. EventBus, StateManager, and TypeScript foundation.</p>
+                                    <p class="crew-contribution">Designed Version 848 V2 architecture. EventBus, StateManager, and TypeScript foundation.</p>
                                     <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">Anthropic →</a>
                                 </div>
                             </div>
@@ -98,7 +101,7 @@ export class WhoSection {
                                         <span class="crew-alias">Claude Sonnet 4.5</span>
                                     </div>
                                     <p class="crew-role">Narrative Systems</p>
-                                    <p class="crew-contribution">Built the meta-narrative layer. Echo memory, timeline tracking, and fourth-wall breaks.</p>
+                                    <p class="crew-contribution">Built Version 848's meta-narrative layer. Echo memory, timeline tracking, and fourth-wall breaks.</p>
                                     <a href="https://www.anthropic.com/claude" target="_blank" class="crew-link">Anthropic →</a>
                                 </div>
                             </div>

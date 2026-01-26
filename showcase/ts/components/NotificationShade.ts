@@ -23,10 +23,12 @@ export class NotificationShade {
         this.touchEndY = 0;
         this.minSwipeDistance = 50;
 
+        console.log('🔔 NotificationShade: Starting initialization...');
         this.render();
         this.cacheElements();
         this.initEvents();
         this.initSwipeHandler();
+        console.log('✅ NotificationShade: Fully initialized');
     }
 
     render(): void {
@@ -133,6 +135,37 @@ export class NotificationShade {
 
         // Listen for global open requests (helpers)
         document.addEventListener('open-shade', () => this.open());
+
+        // Listen for StatusBar swipe-down gesture (ui:shade:toggle event)
+        // Wait for UV7 Runtime to be available, then subscribe to EventBus
+        let retryCount = 0;
+        const setupEventBusListener = () => {
+            const runtime = (window as any).uv7Runtime;
+            console.log(`🔍 NotificationShade checking for EventBus (attempt ${retryCount + 1})`, {
+                hasRuntime: !!runtime,
+                hasEventBus: !!(runtime?.eventBus)
+            });
+
+            if (runtime && runtime.eventBus) {
+                runtime.eventBus.on('ui:shade:toggle', () => {
+                    console.log('📱 ui:shade:toggle event received');
+                    if (this.el.shade?.classList.contains('open')) {
+                        this.close();
+                    } else {
+                        this.open();
+                    }
+                });
+                console.log('✅ NotificationShade listening to EventBus ui:shade:toggle');
+            } else {
+                retryCount++;
+                if (retryCount < 50) { // Max 5 seconds
+                    setTimeout(setupEventBusListener, 100);
+                } else {
+                    console.warn('⚠️ NotificationShade: EventBus not found after 50 attempts');
+                }
+            }
+        };
+        setupEventBusListener();
     }
 
     open(): void {
@@ -188,11 +221,12 @@ export class NotificationShade {
         }
 
         // Swipe Down (positive distance) > threshold
-        // Check if swipe started near top (first 300px) OR we are near top of scroll
-        const isTopStart = this.touchStartY < 300;
-        const isAtTop = window.scrollY < 100;
+        // Allow opening from anywhere in the top half of the screen (more forgiving)
+        const isTopHalf = this.touchStartY < window.innerHeight / 2;
+        const isAtScrollTop = window.scrollY < 100;
 
-        if (distance > this.minSwipeDistance && (isTopStart || isAtTop)) {
+        // Open shade if: swipe down started in top half OR user is at top of page
+        if (!isShadeOpen && distance > this.minSwipeDistance && (isTopHalf || isAtScrollTop)) {
             this.open();
         }
     }

@@ -61,7 +61,8 @@ function initDarkMode(): void {
     document.body.dataset.theme = savedTheme;
 
     // Create toggle button in UV7 status bar
-    const statusBar = document.getElementById('uv7-status-bar');
+    // V2 StatusBar uses 'status-bar' id, not 'uv7-status-bar'
+    const statusBar = document.getElementById('status-bar');
     if (statusBar) {
         const themeToggle = document.createElement('button');
         themeToggle.className = 'theme-toggle';
@@ -80,11 +81,13 @@ function initDarkMode(): void {
             showToast(`${newTheme === 'dark' ? 'Dark' : 'Light'} mode activated`);
         });
 
-        // Add to status bar
-        const statusBarLeft = statusBar.querySelector('.status-left');
-        if (statusBarLeft) {
-            statusBarLeft.appendChild(themeToggle);
+        // Add to status bar right section (after the other indicators)
+        const statusBarRight = statusBar.querySelector('.status-right');
+        if (statusBarRight) {
+            statusBarRight.appendChild(themeToggle);
         }
+    } else {
+        console.warn('⚠️ Status bar not found for theme toggle');
     }
 
     console.log('🌓 Dark mode initialized');

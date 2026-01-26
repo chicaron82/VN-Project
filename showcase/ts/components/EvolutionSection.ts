@@ -15,9 +15,16 @@ export class EvolutionSection {
                 ${createBanner(BANNER_CONFIGS.evolution)}
 
                 <div class="section-content">
-                    <p class="section-intro">From legacy code to modern architecture. A side-by-side comparison of the
-                        transformation.
-                    </p><!-- Metrics Dashboard -->
+                    <p class="section-intro">
+                        <strong>Version 848</strong> evolved from a rapid-fire prototype to a production-ready engine.
+                        Here's the side-by-side comparison of that transformation.
+                    </p>
+
+                    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+                        Version 848 V1 → V2 Migration
+                    </h3>
+
+                    <!-- Metrics Dashboard -->
                     <div class="evolution-metrics">
                         <div class="metric-card">
                             <div class="metric-value">6,247</div>
@@ -44,7 +51,7 @@ export class EvolutionSection {
                     <div class="comparison-grid">
                         <!-- V1 Chaos Column -->
                         <div class="comparison-column col-chaos">
-                            <h3>V1: The Prototype</h3>
+                            <h3>Version 848 V1: The Prototype</h3>
 
                             <div class="comparison-item">
                                 <h4>🕸️ Spaghetti Dependencies</h4>
@@ -93,7 +100,7 @@ export class EvolutionSection {
 
                         <!-- V2 Order Column -->
                         <div class="comparison-column col-order">
-                            <h3>V2: The Rebuild</h3>
+                            <h3>Version 848 V2: The Production Build</h3>
 
                             <div class="comparison-item">
                                 <h4>📡 Event-Driven Core</h4>
