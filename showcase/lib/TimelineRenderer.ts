@@ -3,9 +3,11 @@
  * Handles rendering, filtering, sorting, and spotlight search for project timeline.
  *
  * Converted to TypeScript ES module for Vite integration.
+ * Phase 1: Integrated with TimelineAnimations for smooth transitions
  */
 
 import { TIMELINE_DATA, type TimelineEntry, type TimelineData } from '../data/timeline';
+import { timelineAnimations } from '../ts/TimelineAnimations';
 
 export class TimelineRenderer {
     private container: HTMLElement | null;
@@ -276,6 +278,16 @@ export class TimelineRenderer {
 
         // Dispatch content update event (for ScrollAnimator)
         window.dispatchEvent(new CustomEvent('uv7-content-updated'));
+
+        // Phase 1: Apply entrance animations to timeline items
+        timelineAnimations.refresh();
+        const items = Array.from(this.entriesContainer?.querySelectorAll('.timeline-item') || []) as HTMLElement[];
+        if (items.length > 0) {
+            timelineAnimations.animateItems(items, 100, 50);
+        }
+
+        // Phase 1: Enable ripple effects on toolbar buttons
+        timelineAnimations.enableRippleForButtons('.timeline-btn');
     }
 
     private renderPaginationControls(): void {
