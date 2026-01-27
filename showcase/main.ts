@@ -235,24 +235,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize animated system stats - ALWAYS (sidebar widget)
+    // Initialize animated system stats - ALWAYS (sidebar widget)
     const cpuVal = document.getElementById('sys-cpu');
     const cpuBar = document.getElementById('sys-cpu-bar');
     const ramVal = document.getElementById('sys-ram');
     const ramBar = document.getElementById('sys-ram-bar');
 
     if (cpuVal && cpuBar && ramVal && ramBar) {
-        setInterval(() => {
-            // CHAOS METER: jittery, spikes randomly (5-35%)
-            const cpu = Math.floor(Math.random() * 30) + 5;
-            // Bougie Factor: consistently high (85-95%) because we fancy 💅
-            const ram = 85 + Math.floor(Math.random() * 10);
+        // Organic Random Walk State
+        let chaosLevel = 12;
+        let chaosTarget = 12;
+        let lastChaosUpdate = 0;
 
-            cpuVal.textContent = `${cpu}%`;
-            cpuBar.style.width = `${cpu}%`;
-            ramVal.textContent = `${ram}%`;
-            ramBar.style.width = `${ram}%`;
-        }, 2000);
-        console.log('✅ System stats animated (Bougie Factor: Always High)');
+        let bougieLevel = 88;
+        let bougieTarget = 92;
+        let lastBougieUpdate = 0;
+
+        const updateStats = (timestamp: number) => {
+            // Update targets occasionally (Chaos: jittery, Bougie: stable)
+            if (timestamp - lastChaosUpdate > 800 + Math.random() * 1000) {
+                // Chaos drifts between 5% and 45%, occasionally spiking
+                chaosTarget = Math.max(5, Math.min(45, chaosTarget + (Math.random() - 0.5) * 30));
+                lastChaosUpdate = timestamp;
+            }
+
+            if (timestamp - lastBougieUpdate > 2000 + Math.random() * 2000) {
+                // Bougie Factor stays high (85-99%) because we ARE that fancy 💅
+                bougieTarget = Math.max(85, Math.min(99, bougieTarget + (Math.random() - 0.5) * 10));
+                lastBougieUpdate = timestamp;
+            }
+
+            // Smooth interpolation (Lerp)
+            // Chaos moves snappier (0.05), Bougie moves elegantly slow (0.01)
+            chaosLevel += (chaosTarget - chaosLevel) * 0.05;
+            bougieLevel += (bougieTarget - bougieLevel) * 0.01;
+
+            // Render
+            const chaosDisplay = Math.round(chaosLevel);
+            const bougieDisplay = Math.round(bougieLevel);
+
+            cpuVal.textContent = `${chaosDisplay}%`;
+            cpuBar.style.width = `${chaosDisplay}%`;
+
+            ramVal.textContent = `${bougieDisplay}%`;
+            ramBar.style.width = `${bougieDisplay}%`;
+
+            requestAnimationFrame(updateStats);
+        };
+
+        requestAnimationFrame(updateStats);
+        console.log('✅ System stats animated (Mode: Organic Walk)');
     }
 
     // Initialize UV7 Echo System (context-aware AI crew commentary)

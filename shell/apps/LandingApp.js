@@ -8,6 +8,7 @@
  */
 
 import { BaseApp } from './BaseApp.js';
+import { shellAudio } from '../audio/ShellAudio.js';
 
 // Crew reactions data for randomization
 const CREW_REACTIONS = [
@@ -80,6 +81,26 @@ export class LandingApp extends BaseApp {
     async mount(container, params = {}) {
         await super.mount(container, params);
 
+        // Check if we've already booted this session
+        const hasBooted = sessionStorage.getItem('uv7_has_booted');
+
+        if (!hasBooted) {
+            // First time load - Play Cinematic Boot
+            await this.runBootSequence(container);
+            sessionStorage.setItem('uv7_has_booted', 'true');
+        } else {
+            // Hot reload / Return visitor - Instant Mount
+            this.mountMainContent(container);
+        }
+
+        console.log('[LandingApp] Mounted');
+    }
+
+    /**
+     * mountMainContent
+     * Renders the actual Landing Page UI (post-boot)
+     */
+    mountMainContent(container) {
         // Render content
         container.innerHTML = this.renderTemplate();
 
@@ -89,16 +110,113 @@ export class LandingApp extends BaseApp {
         this.initTypewriterEffect();
         this.attachCardNavigation();
         this.initEasterEgg();
-
-        console.log('[LandingApp] Mounted');
     }
 
-    async unmount() {
-        // Clean up any intervals/timeouts
-        if (this.typewriterTimeout) {
-            clearTimeout(this.typewriterTimeout);
-        }
-        await super.unmount();
+    /**
+     * runBootSequence
+     * The "Wild Ass Information" BIOS startup
+     */
+    async runBootSequence(container) {
+        // Init audio (user interaction might be required by browser, but we try)
+        // Note: Chrome blocks audio until click. We might need a "Press Key to Start" if we want guaranteed sound.
+        // For now, we attempt silent init or hope for previous interaction.
+        if (window.shellAudio) window.shellAudio.init();
+
+        // 1. Setup Boot DOM
+        container.innerHTML = `
+            <div class="boot-screen" style="
+                background: #000;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 2rem;
+                font-family: 'Courier New', monospace;
+                color: #00ff88;
+                overflow: hidden;
+                position: relative;
+                z-index: 9999;
+            ">
+                <div class="boot-logo" style="margin-bottom: 2rem; font-weight: bold; font-size: 1.2rem;">
+                    UV7 TERMINAL // v8.4.8
+                </div>
+                <div class="boot-log" id="boot-log"></div>
+                <div class="scanline" style="
+                    position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+                    background: rgba(0, 255, 136, 0.1);
+                    animation: scan 2s linear infinite;
+                    pointer-events: none;
+                "></div>
+            </div>
+            <style>
+                @keyframes scan { 0% { top: -10px; } 100% { top: 100%; } }
+                .log-line { margin-bottom: 4px; opacity: 0.8; }
+                .log-line.error { color: #ff4444; }
+                .log-line.warn { color: #ffaa00; }
+                .log-line.success { color: #00ff88; text-shadow: 0 0 5px rgba(0,255,136,0.5); }
+            </style>
+        `;
+
+        const log = container.querySelector('#boot-log');
+        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+        const addLog = (text, type = '') => {
+            const div = document.createElement('div');
+            div.className = `log-line ${type}`;
+            div.textContent = `> ${text}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            if (window.shellAudio) window.shellAudio.play(type === 'error' ? 'error' : 'click');
+        };
+
+        // 2. The Sequence
+        if (window.shellAudio) window.shellAudio.play('startup'); // Try to play drone
+
+        addLog('BIOS CHECK...', 'warn');
+        await sleep(300);
+        addLog('CPU: UV7 Neural Core... OK', 'success');
+        await sleep(150);
+        addLog('RAM: 848TB Infinite Loop... OK', 'success');
+        await sleep(150);
+        addLog('GPU: Reality Engine v2... OK', 'success');
+        await sleep(400);
+
+        addLog('Mounting File Systems...');
+        await sleep(200);
+        addLog('/dev/v1/chaos ...... MOUNTED (Read Only)');
+        await sleep(100);
+        addLog('/dev/v2/order ...... MOUNTED (Read/Write)');
+        await sleep(100);
+        addLog('/dev/showcase ...... MOUNTED');
+        await sleep(500);
+
+        addLog('Initializing Neural Link...');
+        await sleep(300);
+        addLog('Connecting to Crew [DiZee, Tori, Belle, Zee]...');
+        await sleep(600);
+        addLog('Handshake Established. Latency: 0ms', 'success');
+        await sleep(400);
+
+        addLog('Loading Graphical Shell...');
+        await sleep(800);
+
+        // Glitch Effect
+        addLog('EXECUTING STARTUP.BAT', 'warn');
+        if (window.shellAudio) window.shellAudio.play('glitch');
+
+        const bootScreen = container.querySelector('.boot-screen');
+        bootScreen.style.filter = 'contrast(200%) brightness(200%)';
+        bootScreen.style.transform = 'skewX(10deg)';
+        await sleep(100);
+        bootScreen.style.filter = 'none';
+        bootScreen.style.transform = 'none';
+        await sleep(50);
+        bootScreen.style.opacity = '0';
+        bootScreen.style.transition = 'opacity 0.5s ease-out';
+
+        await sleep(500);
+
+        // 3. Mount Real App
+        this.mountMainContent(container);
     }
 
     renderTemplate() {

@@ -15,6 +15,7 @@
 
 import { GestureRouter } from './GestureRouter.js';
 import { Router } from './Router.js';
+import { shellAudio } from './audio/ShellAudio.js';
 
 export class UV7Shell {
     constructor() {
@@ -63,6 +64,9 @@ export class UV7Shell {
         // Register all apps
         await this.registerApps();
 
+        // Initialize global audio interactions
+        this.initGlobalAudio();
+
         // Initialize router (will trigger first app load)
         this.router.init();
 
@@ -77,6 +81,27 @@ export class UV7Shell {
 
         this.initialized = true;
         console.log('[UV7Shell] Initialized successfully');
+    }
+
+    /**
+     * Initialize global audio feedback
+     */
+    initGlobalAudio() {
+        document.addEventListener('click', (e) => {
+            // Resume context on first interaction
+            if (shellAudio.ctx?.state === 'suspended') {
+                shellAudio.resume();
+            }
+
+            // Play sound for interactive elements
+            const target = e.target.closest('button, a, .clickable, .app-card, .quick-action');
+            if (target) {
+                shellAudio.play('click');
+            }
+        });
+
+        // Optional: Hover sounds (can be annoying, keep disabled or very subtle)
+        // document.addEventListener('mouseenter', (e) => { ... }, true);
     }
 
     /**
