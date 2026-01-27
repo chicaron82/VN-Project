@@ -97,7 +97,8 @@ export class TimelineAnimations {
         ripple.className = 'ripple';
 
         const rect = button.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
+        // Use minimum size of 100px if button has no dimensions
+        const size = Math.max(rect.width, rect.height, 100);
         const x = event.clientX - rect.left - size / 2;
         const y = event.clientY - rect.top - size / 2;
 
@@ -114,7 +115,8 @@ export class TimelineAnimations {
         console.log('💧 [TimelineAnimations] Ripple triggered', {
             button: button.className,
             position: { x, y },
-            size
+            size,
+            rect: { width: rect.width, height: rect.height }
         });
     }
 
