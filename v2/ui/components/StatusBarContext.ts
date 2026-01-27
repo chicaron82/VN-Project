@@ -57,6 +57,7 @@ export interface StatusBarFeatures {
     showMail: boolean;
     showPhaseIndicator: boolean;
     showStoryDevToggle: boolean;
+    showSettings: boolean;
 
     // Interaction features
     enableAppSwitcher: boolean;
@@ -82,6 +83,7 @@ export function getFeatures(context: UV7Context): StatusBarFeatures {
                 showMail: true,
                 showPhaseIndicator: false,
                 showStoryDevToggle: false,
+                showSettings: false,
                 enableAppSwitcher: true,
                 enableGestures: true,
                 enableAdaptiveTint: true,
@@ -97,6 +99,7 @@ export function getFeatures(context: UV7Context): StatusBarFeatures {
                 showMail: false,
                 showPhaseIndicator: false,
                 showStoryDevToggle: true,
+                showSettings: true,
                 enableAppSwitcher: true,
                 enableGestures: false,  // Showcase doesn't need swipe gestures
                 enableAdaptiveTint: true,
@@ -112,6 +115,7 @@ export function getFeatures(context: UV7Context): StatusBarFeatures {
                 showMail: false,
                 showPhaseIndicator: false,
                 showStoryDevToggle: false,
+                showSettings: false,
                 enableAppSwitcher: true,
                 enableGestures: false,
                 enableAdaptiveTint: false,

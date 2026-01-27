@@ -138,11 +138,19 @@ export class GestureRouter {
 
         // Handle shell actions
         if (this.shellAction === 'shade-pending' && this.lockedDirection === 'vertical' && deltaY > 0) {
-            // Confirmed shade pull-down
-            this.shellAction = 'shade';
+            // Confirmed pull-down
+            this.shellAction = 'shell-trigger';
             e.preventDefault();
             e.stopPropagation();
-            this.shell.openShade();
+
+            // Check orientation
+            if (window.innerWidth > window.innerHeight) {
+                // Landscape -> Sidebar
+                this.shell.openSidebar();
+            } else {
+                // Portrait -> Shade
+                this.shell.openShade();
+            }
             return;
         }
 

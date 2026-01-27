@@ -21,6 +21,7 @@ export class Sidebar {
         // Don't render - use existing HTML from index.html
         this.cacheElements();
         this.initEvents();
+
         // Don't initialize system stats here - main.ts handles it
         console.log('✅ Sidebar: Fully initialized');
     }
@@ -86,23 +87,29 @@ export class Sidebar {
     // Public method for UV7OS to call
     toggle(): void {
         if (!this.el.sidebar || !this.el.backdrop) return;
-
         const isOpen = this.el.sidebar.classList.contains('open');
-
         if (isOpen) {
             this.close();
         } else {
-            this.el.sidebar.classList.add('open');
-            this.el.backdrop.classList.add('visible');
-            document.body.classList.add('uv7-no-scroll');
+            this.open();
         }
+    }
+
+    open(): void {
+        this.el.sidebar?.classList.add('open');
+        this.el.backdrop?.classList.add('visible');
+        document.body.classList.add('uv7-no-scroll');
     }
 
     close(): void {
         if (!this.el.sidebar || !this.el.backdrop) return;
+
+
 
         this.el.sidebar.classList.remove('open');
         this.el.backdrop.classList.remove('visible');
         document.body.classList.remove('uv7-no-scroll');
     }
 }
+
+

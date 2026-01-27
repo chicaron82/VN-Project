@@ -415,3 +415,31 @@
     border-color: #ff6699;
     transform: translateY(-2px);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   TORI STATUS BRIDGE
+   ═══════════════════════════════════════════════════════════════ */
+
+.tori-status {
+    display: none;
+    /* Hidden by default, toggled by JS */
+    align-items: center;
+    gap: 6px;
+    margin-right: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+    user-select: none;
+    font-family: 'Inter', sans-serif;
+}
+
+.tori-status:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.tori-status:active {
+    transform: scale(0.95);
+}

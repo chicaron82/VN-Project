@@ -89,130 +89,50 @@ export class UV7EchoSystem {
     private init(): void {
         this.bannerElement = document.querySelector('.system-banner .sys-right');
         this.detailElement = document.getElementById('uv7-detail');
-        
+
         if (!this.bannerElement) {
             console.warn('[EchoSystem] System banner not found');
             return;
         }
 
-        this.createSettingsPanel();
+        // No longer creating own settings panel - using Shell Settings
+        // this.createSettingsPanel();
+
         this.addBannerControls();
-        
+
         if (this.settings.enabled) {
             this.start();
         }
 
         // Listen for section changes
         this.detectSectionChanges();
-        
-        // Keyboard shortcut: Ctrl/Cmd + E to toggle settings
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
-                e.preventDefault();
-                if (this.settingsPanel?.classList.contains('open')) {
-                    this.closeSettings();
-                } else {
-                    this.openSettings();
-                }
+
+        // Listen for settings changes from Shell (via localStorage/StorageEvent)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'uv7-echo-settings') {
+                this.reloadSettings();
             }
         });
-        
-        console.log('✅ UV7 Echo System initialized (Ctrl/Cmd+E for settings)');
+
+        console.log('✅ UV7 Echo System initialized (Managed by Shell Settings)');
     }
 
-    private createSettingsPanel(): void {
-        const panel = document.createElement('div');
-        panel.id = 'uv7-echo-settings';
-        panel.className = 'echo-settings-panel';
-        panel.innerHTML = `
-            <div class="echo-settings-header">
-                <h3>🎭 AI Crew Echo Settings</h3>
-                <button class="echo-close-btn" aria-label="Close">×</button>
-            </div>
-            <div class="echo-settings-body">
-                <div class="echo-setting">
-                    <label>
-                        <input type="checkbox" id="echo-enabled" ${this.settings.enabled ? 'checked' : ''}>
-                        Enable AI Crew Commentary
-                    </label>
-                    <p class="echo-setting-desc">Let the crew provide ambient meta-commentary as you explore</p>
-                </div>
-                
-                <div class="echo-setting">
-                    <label for="echo-frequency">Message Frequency: <span id="echo-freq-val">${this.settings.frequency}s</span></label>
-                    <input type="range" id="echo-frequency" min="5" max="20" step="1" value="${this.settings.frequency}">
-                    <p class="echo-setting-desc">How often messages change (5s = rapid, 20s = chill)</p>
-                </div>
-                
-                <div class="echo-setting">
-                    <label>
-                        <input type="checkbox" id="echo-pause-hover" ${this.settings.pauseOnHover ? 'checked' : ''}>
-                        Pause on Hover
-                    </label>
-                    <p class="echo-setting-desc">Stop message rotation when hovering over status bar</p>
-                </div>
+    private reloadSettings(): void {
+        this.settings = this.loadSettings();
+        console.log('[EchoSystem] Settings reloaded', this.settings);
 
-                <div class="echo-crew-status">
-                    <strong>Current Section:</strong> <span id="echo-current-section">${this.currentSection}</span><br>
-                    <strong>Messages Available:</strong> <span id="echo-msg-count">${this.getSectionMessages().length}</span><br>
-                    <strong>Tip:</strong> <span style="opacity: 0.7;">Press <kbd style="padding: 2px 6px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 3px; font-size: 11px;">Ctrl+E</kbd> or <kbd style="padding: 2px 6px; background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); border-radius: 3px; font-size: 11px;">⌘E</kbd> to toggle settings</span>
-                </div>
-            </div>
-        `;
-
-        document.body.appendChild(panel);
-        this.settingsPanel = panel;
-
-        // Wire up event listeners
-        panel.querySelector('.echo-close-btn')?.addEventListener('click', () => this.closeSettings());
-        panel.querySelector('#echo-enabled')?.addEventListener('change', (e) => {
-            this.settings.enabled = (e.target as HTMLInputElement).checked;
-            this.saveSettings();
-            if (this.settings.enabled) {
-                this.start();
-            } else {
-                this.stop();
-            }
-        });
-
-        const freqSlider = panel.querySelector('#echo-frequency') as HTMLInputElement;
-        const freqVal = panel.querySelector('#echo-freq-val');
-        freqSlider?.addEventListener('input', (e) => {
-            const val = (e.target as HTMLInputElement).value;
-            if (freqVal) freqVal.textContent = `${val}s`;
-            this.settings.frequency = parseInt(val);
-            this.saveSettings();
-            if (this.settings.enabled) {
-                this.restart();
-            }
-        });
-
-        panel.querySelector('#echo-pause-hover')?.addEventListener('change', (e) => {
-            this.settings.pauseOnHover = (e.target as HTMLInputElement).checked;
-            this.saveSettings();
-        });
-
-        // Click outside to close
-        panel.addEventListener('click', (e) => {
-            if (e.target === panel) {
-                this.closeSettings();
-            }
-        });
+        if (this.settings.enabled) {
+            if (!this.interval) this.start();
+            else this.restart();
+        } else {
+            this.stop();
+        }
     }
+
+    // private createSettingsPanel(): void { ... removed ... }
 
     private addBannerControls(): void {
-        // Hook into the sidebar settings button
-        const settingsBtn = document.getElementById('echo-settings-trigger');
-        if (settingsBtn) {
-            settingsBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.openSettings();
-                // Close sidebar after opening settings
-                if ((window as any).uv7os) {
-                    (window as any).uv7os.closeSidebar();
-                }
-            });
-        }
+        // Sidebar trigger removed - moved to Shell Shade
 
         // Click banner to pause/resume
         if (this.detailElement) {
@@ -260,13 +180,13 @@ export class UV7EchoSystem {
     private setSection(section: string): void {
         this.currentSection = section;
         this.messageIndex = 0; // Reset to start of new section messages
-        
+
         // Update settings panel if open
         const sectionDisplay = document.getElementById('echo-current-section');
         const msgCount = document.getElementById('echo-msg-count');
         if (sectionDisplay) sectionDisplay.textContent = section;
         if (msgCount) msgCount.textContent = String(this.getSectionMessages().length);
-        
+
         console.log(`[EchoSystem] Section changed: ${section}`);
     }
 
@@ -279,16 +199,16 @@ export class UV7EchoSystem {
 
         const messages = this.getSectionMessages();
         const msg = messages[this.messageIndex];
-        
+
         if (this.detailElement) {
             this.detailElement.style.opacity = '0';
             this.detailElement.classList.add('message-changing');
-            
+
             setTimeout(() => {
                 if (this.detailElement) {
                     this.detailElement.textContent = `${msg.emoji} ${msg.crew}: "${msg.text}"`;
                     this.detailElement.style.opacity = '1';
-                    
+
                     // Remove the glow class after animation completes
                     setTimeout(() => {
                         if (this.detailElement) {
@@ -304,12 +224,12 @@ export class UV7EchoSystem {
 
     public start(): void {
         if (this.interval) return;
-        
+
         this.showNextMessage(); // Show first message immediately
         this.interval = window.setInterval(() => {
             this.showNextMessage();
         }, this.settings.frequency * 1000);
-        
+
         console.log(`[EchoSystem] Started (${this.settings.frequency}s interval)`);
     }
 
@@ -369,7 +289,7 @@ export class UV7EchoSystem {
                 console.warn('[EchoSystem] Failed to parse stored settings');
             }
         }
-        
+
         // Default settings
         return {
             enabled: true,
@@ -378,7 +298,4 @@ export class UV7EchoSystem {
         };
     }
 
-    private saveSettings(): void {
-        localStorage.setItem('uv7-echo-settings', JSON.stringify(this.settings));
-    }
 }

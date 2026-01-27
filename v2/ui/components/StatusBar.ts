@@ -114,6 +114,7 @@ export class StatusBar {
     // Phase 26: Showcase-specific elements
     private phaseEl!: HTMLElement;
     private storyDevToggleEl!: HTMLElement;
+    private settingsEl!: HTMLElement;
 
     // State tracking
     private currentRoute: 'ronnie' | 'tori' | 'menu' | 'prologue' = 'menu';
@@ -677,6 +678,11 @@ export class StatusBar {
                     <span id="status-tether-value" class="tether-value">100%</span>
                 </div>
                 ` : ''}
+                ${this.features.showSettings ? `
+                <span id="status-settings" class="status-item settings-indicator" title="System Settings" style="cursor: pointer; font-size: 16px;">
+                    ⚙️
+                </span>
+                ` : ''}
             </div>
         `;
 
@@ -696,6 +702,7 @@ export class StatusBar {
         this.breadcrumbsEl = this.container.querySelector('#status-breadcrumbs') || this.createPlaceholder();
         this.phaseEl = this.container.querySelector('#status-phase') || this.createPlaceholder();
         this.storyDevToggleEl = this.container.querySelector('#status-story-dev-toggle') || this.createPlaceholder();
+        this.settingsEl = this.container.querySelector('#status-settings') || this.createPlaceholder();
 
         // Prepend to body
         document.body.prepend(this.container);
@@ -708,6 +715,11 @@ export class StatusBar {
         // Phase 26: Set up story/dev toggle
         if (this.features.showStoryDevToggle) {
             this.setupStoryDevToggle();
+        }
+
+        // Set up Settings Cog
+        if (this.features.showSettings) {
+            this.setupSettingsHandler();
         }
 
         // Phase 26: Initialize breadcrumbs if enabled
@@ -768,6 +780,29 @@ export class StatusBar {
             this.storyDevToggleEl.style.transform = '';
             this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
         });
+    }
+
+    /**
+     * Set up Settings Cog handler
+     * Emits ui:settings:toggle for NotificationShade/Sidebar to handle
+     */
+    private setupSettingsHandler(): void {
+        this.settingsEl.addEventListener('click', () => {
+            console.log('⚙️ Settings Cog clicked');
+
+            // Haptic feedback
+            if (navigator.vibrate) navigator.vibrate(10);
+
+            // Emit toggle event
+            this.eventBus.emit('ui:settings:toggle', {});
+
+            // Visual feedback
+            const currentRotation = this.settingsEl.style.transform === 'rotate(90deg)' ? 'rotate(180deg)' : 'rotate(90deg)';
+            this.settingsEl.style.transform = currentRotation;
+        });
+
+        // Hover effect
+        this.settingsEl.style.transition = 'transform 0.3s ease';
     }
 
     /**

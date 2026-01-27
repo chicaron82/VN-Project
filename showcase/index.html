@@ -64,6 +64,7 @@
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/cursor.css">
     <link rel="stylesheet" href="css/unified-design.css">
+    <link rel="stylesheet" href="css/theme-toggle.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -232,12 +233,61 @@
                 </div>
             </div>
 
+
+        </div>
+
+    </div>
+
+    <!-- UV7 Notification Shade (Settings Panel) -->
+    <div id="uv7-shade" class="uv7-shade">
+        <div class="shade-header">
+            <span class="shade-title">⚙️ System Settings</span>
+            <span class="shade-close-btn" style="cursor: pointer;">✕</span>
+        </div>
+
+        <div class="shade-content">
+            <!-- Theme Settings -->
+            <div class="shade-section">
+                <div class="shade-section-title">Visuals</div>
+                <div class="shade-setting-row">
+                    <div>
+                        <span class="setting-label">Sync with System</span>
+                        <small class="setting-desc">Match device theme</small>
+                    </div>
+                    <div class="toggle-switch" id="showcase-theme-auto">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="shade-setting-row" id="manual-theme-row">
+                    <span class="setting-label">Dark Mode</span>
+                    <div class="toggle-switch" id="showcase-theme-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Echo Settings -->
-            <div class="sidebar-section">
-                <button class="section-nav-item" id="echo-settings-trigger">
-                    <span class="section-icon">🎭</span>
-                    <span class="section-label">AI Crew Settings</span>
-                </button>
+            <div class="shade-section">
+                <div class="shade-section-title">AI Crew</div>
+                <div class="shade-setting-row">
+                    <span class="setting-label">Crew Commentary</span>
+                    <div class="toggle-switch" id="showcase-echo-toggle">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
+                <div class="shade-setting-control">
+                    <div class="setting-label-row">
+                        <span class="setting-label">Frequency</span>
+                        <span class="setting-value" id="showcase-echo-freq-val">10s</span>
+                    </div>
+                    <input type="range" class="uv7-slider" id="showcase-echo-freq" min="5" max="20" step="1">
+                </div>
+                <div class="shade-setting-row" style="margin-top: 10px;">
+                    <span class="setting-label">Pause on Hover</span>
+                    <div class="toggle-switch" id="showcase-echo-hover">
+                        <div class="toggle-knob"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

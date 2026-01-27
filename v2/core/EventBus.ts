@@ -103,6 +103,7 @@ export type GameEvents = {
   'ui:save_menu': {};
   'ui:load_menu': {};
   'ui:settings': {};
+  'ui:settings:toggle': {};
   'ui:credits': {};
   'ui:show_credits': {};
   'ui:show_crew': {};  // "Meet the Crew" portrait screens (TODO: port CrewScreen from V1)
