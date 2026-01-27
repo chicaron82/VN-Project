@@ -110,6 +110,43 @@ export class LandingApp extends BaseApp {
         this.initTypewriterEffect();
         this.attachCardNavigation();
         this.initEasterEgg();
+
+        // Load stats
+        this.fetchStats();
+    }
+
+    async fetchStats() {
+        try {
+            // Note: Use relative path assuming we serve from root
+            // Showcase stats are often in showcase/stats.json or root stats.json depending on build
+            const response = await fetch('/stats.json').catch(() => fetch('showcase/stats.json'));
+            if (!response || !response.ok) return;
+
+            const stats = await response.json();
+
+            // Map stats to UI
+            // V1: 50 days (Bootstrap Paradox) - Static
+
+            // Showcase: phasesComplete, daysInDev
+            this.updateStat('showcase', 0, stats.phasesComplete); // Phases
+            this.updateStat('showcase', 1, stats.daysInDev);      // Days
+
+            // V2: testsPass
+            this.updateStat('v2', 0, stats.testsPass);
+        } catch (e) {
+            console.warn('[LandingApp] Stats fetch failed:', e);
+        }
+    }
+
+    updateStat(appId, index, value) {
+        if (value === undefined) return;
+        const selector = `.app-card[data-app="${appId}"] .stat-number`;
+        const els = this.container.querySelectorAll(selector);
+        if (els[index]) {
+            els[index].dataset.target = value;
+            // If already animated, update text directly
+            if (els[index].textContent !== '0') els[index].textContent = value;
+        }
     }
 
     /**
