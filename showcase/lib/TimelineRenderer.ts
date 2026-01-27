@@ -288,6 +288,14 @@ export class TimelineRenderer {
 
         // Phase 1: Enable ripple effects on toolbar buttons
         timelineAnimations.enableRippleForButtons('.timeline-btn');
+
+        // Phase 1: Add click-to-highlight for timeline entries
+        items.forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', () => {
+                timelineAnimations.scrollToElement(item, 100);
+            });
+        });
     }
 
     private renderPaginationControls(): void {

@@ -110,6 +110,12 @@ export class TimelineAnimations {
 
         button.appendChild(ripple);
         setTimeout(() => ripple.remove(), 600);
+
+        console.log('💧 [TimelineAnimations] Ripple triggered', {
+            button: button.className,
+            position: { x, y },
+            size
+        });
     }
 
     /**
