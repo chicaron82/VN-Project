@@ -19,6 +19,9 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     transform-origin: center;
     will-change: transform, opacity;
+    /* Start hidden for entrance animation */
+    opacity: 0;
+    transform: translateY(20px);
 }
 
 /* Filtering out animation */
@@ -31,6 +34,12 @@
 /* Filtering in animation */
 .timeline-item.filtering-in {
     animation: filterIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* After animation completes, ensure item is visible */
+.timeline-item.animated {
+    opacity: 1 !important;
+    transform: none !important;
 }
 
 @keyframes filterIn {

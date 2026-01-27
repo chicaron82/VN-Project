@@ -73,9 +73,10 @@ export class TimelineAnimations {
                     item.classList.add('filtering-in');
                 }, index * duration);
 
-                // Remove animation class after completion
+                // Remove animation class and mark as animated after completion
                 setTimeout(() => {
                     item.classList.remove('filtering-in');
+                    item.classList.add('animated');
                 }, (index * duration) + 500);
             });
         }, 450);
@@ -175,9 +176,10 @@ export class TimelineAnimations {
             setTimeout(() => {
                 item.classList.add('filtering-in');
 
-                // Remove animation class after completion
+                // Remove animation class and mark as animated after completion
                 setTimeout(() => {
                     item.classList.remove('filtering-in');
+                    item.classList.add('animated');
                 }, 500);
             }, delay + (index * duration));
         });
