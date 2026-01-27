@@ -19,7 +19,7 @@ import { UV7OS } from '../v2/ui/components/UV7OS'; // Import the class directly
 import { TimelineRenderer } from './lib/TimelineRenderer';
 import { TabController } from './lib/TabController';
 // SwipeController replaced by CSS scroll-snap
-import { MagneticCursor } from './ts/MagneticCursor';
+// import { MagneticCursor } from './ts/MagneticCursor'; // Disabled to show timeline ripple effects
 import { initAppStateManager } from './lib/AppStateManager';
 import { initShowcaseCarousel } from './lib/components/showcase-carousel';
 import { UV7EchoSystem } from './lib/UV7EchoSystem';
@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize visual effects
     initTypingEffect();
-    new MagneticCursor();
+    // new MagneticCursor(); // Disabled to show timeline ripple effects
     initTilt('.hero-banner.home .hero-banner-image', {
         container: '.hero-banner.home',
         limits: 15,
