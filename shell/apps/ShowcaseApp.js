@@ -112,14 +112,6 @@ export class ShowcaseApp extends BaseApp {
                         </button>
                     </div>
                 </div>
-
-                <!-- Echo Settings -->
-                <div class="sidebar-section">
-                    <button class="section-nav-item" data-showcase-action="echo-settings">
-                        <span class="section-icon">🎭</span>
-                        <span class="section-label">AI Crew Settings</span>
-                    </button>
-                </div>
             `,
             init: () => {
                 // Animate system stats (CHAOS METER & BOUGIE FACTOR)
@@ -189,21 +181,6 @@ export class ShowcaseApp extends BaseApp {
                         }
                     });
                 });
-
-                // Handle echo settings
-                const echoBtn = document.querySelector('[data-showcase-action="echo-settings"]');
-                if (echoBtn) {
-                    echoBtn.addEventListener('click', () => {
-                        const iframe = document.querySelector('.showcase-app iframe');
-                        if (iframe && iframe.contentWindow) {
-                            iframe.contentWindow.postMessage({
-                                type: 'echo-settings'
-                            }, '*');
-                        }
-                        document.getElementById('uv7-sidebar')?.classList.remove('open');
-                        document.getElementById('uv7-backdrop')?.classList.remove('visible');
-                    });
-                }
 
                 console.log('[ShowcaseApp] Sidebar initialized');
             }

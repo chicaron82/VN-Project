@@ -55,160 +55,13 @@ function initShareButtons(): void {
 // 2. DARK MODE TOGGLE
 // ==========================================
 
-function initDarkMode(): void {
-    // Check for saved preference or default to dark
-    const savedTheme = localStorage.getItem('uv7-theme') || 'dark';
-    document.body.dataset.theme = savedTheme;
-
-    // Create toggle button in UV7 status bar
-    // V2 StatusBar uses 'status-bar' id, not 'uv7-status-bar'
-    const statusBar = document.getElementById('status-bar');
-    if (statusBar) {
-        const themeToggle = document.createElement('button');
-        themeToggle.className = 'theme-toggle';
-        themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
-        themeToggle.setAttribute('aria-label', 'Toggle theme');
-        themeToggle.title = 'Toggle light/dark mode';
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.body.dataset.theme;
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-
-            document.body.dataset.theme = newTheme;
-            localStorage.setItem('uv7-theme', newTheme);
-            themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
-
-            showToast(`${newTheme === 'dark' ? 'Dark' : 'Light'} mode activated`);
-        });
-
-        // Add to status bar right section (after the other indicators)
-        const statusBarRight = statusBar.querySelector('.status-right');
-        if (statusBarRight) {
-            statusBarRight.appendChild(themeToggle);
-        }
-    } else {
-        console.warn('⚠️ Status bar not found for theme toggle');
-    }
-
-    console.log('🌓 Dark mode initialized');
-}
+// Dark Mode logic removed (Handled by NotificationShade)
 
 // ==========================================
 // 3. TIMELINE SEARCH/FILTER
 // ==========================================
 
-function initTimelineSearch(): void {
-    const timelineContainer = document.querySelector('.timeline-phases');
-    if (!timelineContainer) return;
-
-    // Create search bar
-    const searchContainer = document.createElement('div');
-    searchContainer.className = 'timeline-search-container';
-    searchContainer.innerHTML = `
-        <div class="timeline-search">
-            <input
-                type="text"
-                id="timeline-search-input"
-                placeholder="Search timeline phases..."
-                aria-label="Search timeline"
-            />
-            <button id="timeline-search-clear" aria-label="Clear search">✕</button>
-        </div>
-        <div class="timeline-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="architecture">Architecture</button>
-            <button class="filter-btn" data-filter="ui">UI</button>
-            <button class="filter-btn" data-filter="testing">Testing</button>
-        </div>
-    `;
-
-    // Insert before timeline
-    timelineContainer.parentNode?.insertBefore(searchContainer, timelineContainer);
-
-    const searchInput = document.getElementById('timeline-search-input') as HTMLInputElement;
-    const clearBtn = document.getElementById('timeline-search-clear') as HTMLButtonElement;
-    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-
-    // Search functionality
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const query = (e.target as HTMLInputElement).value.toLowerCase();
-            filterTimeline(query);
-            if (clearBtn) {
-                clearBtn.style.display = query ? 'block' : 'none';
-            }
-        });
-    }
-
-    if (clearBtn && searchInput) {
-        clearBtn.addEventListener('click', () => {
-            searchInput.value = '';
-            filterTimeline('');
-            clearBtn.style.display = 'none';
-        });
-    }
-
-    // Filter buttons
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filter = btn.dataset.filter;
-            if (filter) {
-                filterTimelineByCategory(filter);
-            }
-        });
-    });
-
-    console.log('🔍 Timeline search initialized');
-}
-
-function filterTimeline(query: string): void {
-    const items = document.querySelectorAll<HTMLElement>('.timeline-item');
-    let visibleCount = 0;
-
-    items.forEach(item => {
-        const text = item.textContent?.toLowerCase() || '';
-        const matches = text.includes(query);
-
-        item.style.display = matches ? '' : 'none';
-        if (matches) visibleCount++;
-    });
-
-    // Show "no results" message if needed
-    showSearchResults(visibleCount, query);
-}
-
-function filterTimelineByCategory(category: string): void {
-    const items = document.querySelectorAll<HTMLElement>('.timeline-item');
-
-    items.forEach(item => {
-        if (category === 'all') {
-            item.style.display = '';
-        } else {
-            const itemCategory = item.dataset.category || '';
-            item.style.display = itemCategory.includes(category) ? '' : 'none';
-        }
-    });
-}
-
-function showSearchResults(count: number, query: string): void {
-    let resultsMsg = document.getElementById('search-results-msg') as HTMLElement | null;
-
-    if (count === 0 && query) {
-        if (!resultsMsg) {
-            resultsMsg = document.createElement('div');
-            resultsMsg.id = 'search-results-msg';
-            resultsMsg.className = 'search-no-results';
-            document.querySelector('.timeline-phases')?.appendChild(resultsMsg);
-        }
-        resultsMsg.textContent = `No phases found for "${query}"`;
-        resultsMsg.style.display = 'block';
-    } else if (resultsMsg) {
-        resultsMsg.style.display = 'none';
-    }
-}
+// Timeline Search logic removed (Handled by Michelin renderer)
 
 // ==========================================
 // 4. TOAST NOTIFICATIONS
@@ -286,8 +139,8 @@ function init(): void {
     console.log('🎯 Initializing content features...');
 
     initShareButtons();
-    initDarkMode();
-    // initTimelineSearch(); // Disabled: Handled by TimelineRenderer (Michelin)
+    // Dark mode -> NotificationShade
+    // Search -> TimelineRenderer
     addGitHubLinks();
 
     console.log('✨ Content features ready!');

@@ -8,6 +8,7 @@ import { initChaosTyper } from './ChaosTyper';
 import { initViewMode } from './ViewModeController';
 import { initScrollAnimations } from './ScrollAnimator';
 import { initSocialShare } from './SocialShare';
+import { initContentFeatures } from '../lib/utils/content-features';
 import { Sidebar } from './components/Sidebar';
 import { NotificationShade } from './components/NotificationShade';
 import { HeroSection } from './components/HeroSection';
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new WhoSection();
 
     // 2. Initialize Logic & Interactivity
+    initContentFeatures();
     initChaosTyper();
     initViewMode();
     initScrollAnimations();

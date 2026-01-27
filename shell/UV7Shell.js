@@ -16,6 +16,8 @@
 import { GestureRouter } from './GestureRouter.js';
 import { Router } from './Router.js';
 import { shellAudio } from './audio/ShellAudio.js';
+import { generateShadeContent } from './ShadeTemplate.js';
+import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 
 export class UV7Shell {
     constructor() {
@@ -58,6 +60,12 @@ export class UV7Shell {
         // Cache DOM elements
         this.cacheElements();
 
+        // Render shade content (single source of truth)
+        this.renderShade();
+
+        // Render default sidebar content (single source of truth)
+        this.renderDefaultSidebar();
+
         // Initialize gesture router
         this.gestureRouter.init();
 
@@ -79,8 +87,277 @@ export class UV7Shell {
         // Initialize UV7 easter egg (7-tap on carrier branding)
         this.initEasterEgg();
 
+        // Initialize Tori-gatchi Status Bridge
+        this.initToriBridge();
+
+        // Initialize Settings Icon
+        this.initSettingsIcon();
+
+        // Initialize System Settings (Theme & Echo)
+        this.initSettings();
+
         this.initialized = true;
         console.log('[UV7Shell] Initialized successfully');
+    }
+
+    /**
+     * Initialize System Settings
+     * Handles Theme Toggle and Echo System configuration
+     */
+    initSettings() {
+        // --- 1. Theme Toggle (Auto + Manual) ---
+        const themeToggle = document.getElementById('shell-theme-toggle');
+        const autoToggle = document.getElementById('shell-theme-auto');
+        const manualRow = document.getElementById('shell-manual-theme-row');
+
+        if (themeToggle && autoToggle) {
+            // State defaults
+            const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false'; // Default to true
+            const currentTheme = localStorage.getItem('uv7-theme') || 'dark';
+
+            console.log(`[Shell Theme] Init: auto=${isAuto}, theme=${currentTheme}`);
+
+            // Helper to apply theme
+            const applyTheme = (auto, theme) => {
+                console.log(`[Shell Theme] Applying: auto=${auto}, theme=${theme}`);
+                if (auto) {
+                    autoToggle.classList.add('active');
+                    if (manualRow) {
+                        manualRow.style.opacity = '0.5';
+                        manualRow.style.pointerEvents = 'none';
+                    }
+                    // Clear overrides so OS preference wins
+                    document.body.classList.remove('light-mode', 'dark-mode');
+                } else {
+                    autoToggle.classList.remove('active');
+                    if (manualRow) {
+                        manualRow.style.opacity = '1';
+                        manualRow.style.pointerEvents = 'auto';
+                    }
+                    // Apply manual override
+                    if (theme === 'light') {
+                        document.body.classList.add('light-mode');
+                        document.body.classList.remove('dark-mode');
+                        themeToggle.classList.add('active');
+                    } else {
+                        document.body.classList.add('dark-mode');
+                        document.body.classList.remove('light-mode');
+                        themeToggle.classList.remove('active');
+                    }
+                }
+                // Dispatch event for components that need to know
+                window.dispatchEvent(new CustomEvent('uv7:theme-change', {
+                    detail: { theme: auto ? 'auto' : theme }
+                }));
+
+                // Notify iframe'd apps (like showcase) of theme change
+                const iframes = document.querySelectorAll('iframe');
+                iframes.forEach(iframe => {
+                    if (iframe.contentWindow) {
+                        iframe.contentWindow.postMessage({
+                            type: 'theme-change',
+                            auto: auto,
+                            theme: theme
+                        }, '*');
+                    }
+                });
+            };
+
+            // Init
+            applyTheme(isAuto, currentTheme);
+
+            // Auto Toggle Handler
+            autoToggle.addEventListener('click', () => {
+                const newAutoState = !autoToggle.classList.contains('active');
+                localStorage.setItem('uv7-theme-auto', newAutoState ? 'true' : 'false');
+                const storedTheme = localStorage.getItem('uv7-theme') || 'dark';
+                applyTheme(newAutoState, storedTheme);
+                this.showToast(newAutoState ? '⚙️ Synced with System' : '🎨 Manual Mode Enabled');
+                console.log(`[Shell Theme] Auto mode: ${newAutoState ? 'ON' : 'OFF'}, Theme: ${storedTheme}`);
+            });
+
+            // Manual Toggle Handler
+            themeToggle.addEventListener('click', () => {
+                if (autoToggle.classList.contains('active')) return; // Disabled when auto is on
+                const currentStored = localStorage.getItem('uv7-theme') || 'dark';
+                const newTheme = currentStored === 'light' ? 'dark' : 'light';
+                localStorage.setItem('uv7-theme', newTheme);
+                applyTheme(false, newTheme);
+                const icon = newTheme === 'dark' ? '🌙' : '☀️';
+                this.showToast(`${icon} Switched to ${newTheme === 'dark' ? 'Dark' : 'Light'} Mode`);
+                console.log(`[Shell Theme] Manual toggle: ${currentStored} → ${newTheme}`);
+            });
+        }
+
+        // --- 2. Echo System Settings ---
+        const echoContainer = document.getElementById('uv7-echo-settings-container');
+        if (echoContainer) {
+            // Load saved settings (matches key used by UV7EchoSystem.ts)
+            let echoSettings = { enabled: true, frequency: 10, pauseOnHover: true };
+            try {
+                const stored = localStorage.getItem('uv7-echo-settings');
+                if (stored) echoSettings = JSON.parse(stored);
+            } catch (e) { console.warn('Failed to parse echo settings', e); }
+
+            // Render Controls
+            echoContainer.innerHTML = `
+                <div class="echo-control-group">
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="shell-echo-enabled" ${echoSettings.enabled ? 'checked' : ''}>
+                            Enable AI Crew Commentary
+                        </label>
+                    </div>
+                    <div class="echo-control-row">
+                        <span class="setting-label" style="font-size: 0.85rem">Frequency: <span id="shell-echo-freq-val">${echoSettings.frequency}s</span></span>
+                        <input type="range" class="uv7-slider" id="shell-echo-freq" min="5" max="20" step="1" value="${echoSettings.frequency}">
+                    </div>
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="shell-echo-hover" ${echoSettings.pauseOnHover ? 'checked' : ''}>
+                            Pause on Hover
+                        </label>
+                    </div>
+                </div>
+            `;
+
+            // Bind Events
+            const enabledCheck = document.getElementById('shell-echo-enabled');
+            const freqSlider = document.getElementById('shell-echo-freq');
+            const freqVal = document.getElementById('shell-echo-freq-val');
+            const hoverCheck = document.getElementById('shell-echo-hover');
+
+            const saveEchoSettings = () => {
+                const newSettings = {
+                    enabled: enabledCheck.checked,
+                    frequency: parseInt(freqSlider.value),
+                    pauseOnHover: hoverCheck.checked
+                };
+                localStorage.setItem('uv7-echo-settings', JSON.stringify(newSettings));
+                // Dispatch storage event manually for same-window updates if needed, 
+                // but UV7EchoSystem listens to storage event (cross-tab) or we can dispatch a custom event.
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'uv7-echo-settings',
+                    newValue: JSON.stringify(newSettings)
+                }));
+            };
+
+            enabledCheck?.addEventListener('change', saveEchoSettings);
+
+            freqSlider?.addEventListener('input', (e) => {
+                freqVal.textContent = `${e.target.value}s`;
+                saveEchoSettings();
+            });
+
+            hoverCheck?.addEventListener('change', saveEchoSettings);
+        }
+    }
+
+    /**
+     * Initialize Settings Icon (Status Bar)
+     * Wires the cog wheel to open the Notification Shade
+     */
+    initSettingsIcon() {
+        const settingsIcon = document.getElementById('uv7-settings');
+        if (settingsIcon) {
+            // Make it clickable
+            settingsIcon.style.cursor = 'pointer';
+
+            settingsIcon.addEventListener('click', () => {
+                this.openShade();
+            });
+
+            // Console log to confirm wiring
+            console.log('[UV7Shell] Settings icon wired to Notification Shade');
+        }
+    }
+
+    /**
+     * Initialize Tori-gatchi Status Bridge
+     * Monitors localStorage for Tori's state and updates status bar
+     */
+    initToriBridge() {
+        const statusRight = document.querySelector('.status-right');
+        if (!statusRight) return;
+
+        // Create status item
+        const toriStatus = document.createElement('span');
+        toriStatus.id = 'tori-status';
+        toriStatus.className = 'tori-status'; // See shell.css
+        toriStatus.title = "Tori's Status";
+
+        // Add click to launch app
+        toriStatus.addEventListener('click', () => {
+            this.navigateTo('torigatchi');
+        });
+
+        // Insert before settings icon
+        const settingsIcon = document.getElementById('uv7-settings');
+        if (settingsIcon) {
+            statusRight.insertBefore(toriStatus, settingsIcon);
+        } else {
+            statusRight.appendChild(toriStatus);
+        }
+
+        // Poll for updates (every 2s is enough for "real-time" feel without perf hit)
+        setInterval(() => this.updateToriStatus(), 2000);
+
+        // Listen for storage events (if multiple tabs/windows)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'toriGatchiState') {
+                this.updateToriStatus();
+            }
+        });
+
+        // Initial check
+        this.updateToriStatus();
+    }
+
+    /**
+     * Update Tori status display
+     */
+    updateToriStatus() {
+        const toriStatus = document.getElementById('tori-status');
+        if (!toriStatus) return;
+
+        try {
+            const stateStr = localStorage.getItem('toriGatchiState');
+            if (!stateStr) {
+                toriStatus.style.display = 'none';
+                return;
+            }
+
+            const state = JSON.parse(stateStr);
+            if (!state) return;
+
+            const { mood, hunger, love } = state;
+
+            // Determine icon and color based on mood
+            let icon = '🥚';
+            let color = '#fff';
+
+            // Mood Logic (Simplified from main.js)
+            if (mood === 'Hangry') { icon = '💢'; color = '#ff4d4d'; }
+            else if (mood === 'Sleepy') { icon = '💤'; color = '#a8b2d1'; }
+            else if (mood === 'Sad' || mood === 'Lonely') { icon = '😢'; color = '#7aa2f7'; }
+            else if (mood === 'Flirty') { icon = '😘'; color = '#f778ba'; }
+            else if (mood === 'Adored') { icon = '🥰'; color = '#bb9af7'; }
+            else if (mood === 'Happy') { icon = '😊'; color = '#9ece6a'; }
+            else if (mood === 'Grumpy') { icon = '😠'; color = '#e0af68'; }
+
+            // Show critical warnings
+            let text = mood;
+            if (hunger < 30) { text = `${mood} (Hungry)`; }
+            if (love < 30) { text = `${mood} (Lonely)`; }
+
+            toriStatus.innerHTML = `${icon} ${text}`;
+            toriStatus.style.color = color;
+            toriStatus.style.display = 'flex';
+
+        } catch (e) {
+            console.warn('[UV7Shell] Failed to parse Tori state', e);
+            toriStatus.style.display = 'none';
+        }
     }
 
     /**
@@ -122,6 +399,56 @@ export class UV7Shell {
         if (!this.elements.viewport) {
             console.error('[UV7Shell] Could not find #app-viewport element!');
         }
+    }
+
+    /**
+     * Render Shade Content
+     * Uses ShadeTemplate.js for single source of truth
+     */
+    renderShade() {
+        const shade = document.getElementById('uv7-shade');
+        if (!shade) {
+            console.error('[UV7Shell] Could not find shade element');
+            return;
+        }
+
+        // Get shade content container (preserving header if it exists)
+        let shadeContent = shade.querySelector('.shade-content');
+
+        if (!shadeContent) {
+            console.warn('[UV7Shell] No .shade-content found, rendering full structure');
+            // If no content div exists, inject the whole structure
+            shade.innerHTML = `
+                <div class="shade-header">
+                    <span class="shade-title">🏠 UV7 OS Home</span>
+                    <button class="shade-close" aria-label="Close">✕</button>
+                </div>
+                <div class="shade-content"></div>
+            `;
+            shadeContent = shade.querySelector('.shade-content');
+        }
+
+        // Inject content from template
+        shadeContent.innerHTML = generateShadeContent({ isShell: true });
+
+        console.log('[UV7Shell] Shade content rendered from template');
+    }
+
+    /**
+     * Render Default Sidebar Content
+     * Uses SidebarTemplate.js for single source of truth
+     */
+    renderDefaultSidebar() {
+        const sidebar = document.getElementById('uv7-sidebar');
+        if (!sidebar) {
+            console.error('[UV7Shell] Could not find sidebar element');
+            return;
+        }
+
+        // Inject default sidebar content from template
+        sidebar.innerHTML = generateDefaultSidebarContent({ title: '🏠 UV7 OS' });
+
+        console.log('[UV7Shell] Default sidebar rendered from template');
     }
 
     /**

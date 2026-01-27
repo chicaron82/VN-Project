@@ -1,0 +1,131 @@
+/* ═══════════════════════════════════════════════════════════════
+   THEME TOGGLE OVERRIDES
+   Forces Light/Dark mode classes to override default media queries
+   ═══════════════════════════════════════════════════════════════ */
+
+/* --- FORCE LIGHT MODE (User requested Light, System is Dark) --- */
+body.light-mode section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
+    background: var(--order-bg) !important;
+    color: var(--order-text) !important;
+}
+
+body.light-mode section h2 {
+    color: var(--order-text) !important;
+}
+
+body.light-mode .section-intro {
+    color: rgba(100, 100, 100, 1) !important;
+}
+
+body.light-mode .journey-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+}
+
+/* Timeline Overrides for Light Mode */
+body.light-mode .timeline-marker {
+    border-color: #fff !important;
+}
+
+body.light-mode .timeline-content {
+    background: #fff !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .timeline-content h3 {
+    color: #3498db !important;
+}
+
+body.light-mode .timeline-content p {
+    color: #555 !important;
+}
+
+body.light-mode .sub-entry {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.05)) !important;
+    border-color: rgba(52, 152, 219, 0.2) !important;
+}
+
+body.light-mode .sub-entry-summary {
+    color: #555 !important;
+}
+
+body.light-mode .sub-entry-features li {
+    color: #444 !important;
+}
+
+body.light-mode .sub-metric {
+    color: #666 !important;
+}
+
+body.light-mode .settings-carousel .carousel-label {
+    color: #666 !important;
+}
+
+body.light-mode .timeline-entry-footer {
+    border-top-color: rgba(0, 0, 0, 0.1) !important;
+    color: #555 !important;
+}
+
+/* --- FORCE DARK MODE (User requested Dark, System is Light) --- */
+/* Only needed if base styles are Light by default (which they are in base.css) */
+/* The existing media query handles system dark mode, but we need to force it if class is present */
+
+body.dark-mode section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
+    background: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode section h2 {
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .section-intro {
+    color: rgba(170, 170, 170, 1) !important;
+}
+
+body.dark-mode .journey-section {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
+}
+
+/* Timeline Overrides for Dark Mode */
+body.dark-mode .timeline-marker {
+    border-color: #1a1a1a !important;
+}
+
+body.dark-mode .timeline-content {
+    background: #2a2a2a !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .timeline-content h3 {
+    color: #5dade2 !important;
+}
+
+body.dark-mode .timeline-content p {
+    color: #bbb !important;
+}
+
+body.dark-mode .sub-entry {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(155, 89, 182, 0.1)) !important;
+    border-color: rgba(52, 152, 219, 0.3) !important;
+}
+
+body.dark-mode .sub-entry-summary {
+    color: #bbb !important;
+}
+
+body.dark-mode .sub-entry-features li {
+    color: #ccc !important;
+}
+
+body.dark-mode .sub-metric {
+    color: #999 !important;
+}
+
+body.dark-mode .settings-carousel .carousel-label {
+    color: #aaa !important;
+}
+
+body.dark-mode .timeline-entry-footer {
+    border-top-color: rgba(255, 255, 255, 0.1) !important;
+    color: #aaa !important;
+}
