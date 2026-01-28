@@ -194,6 +194,7 @@
     border-radius: 3px;
     outline: none;
     -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
 }
 

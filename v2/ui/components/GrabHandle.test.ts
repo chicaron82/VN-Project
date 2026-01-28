@@ -7,7 +7,7 @@ const mockElement = {
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
     setAttribute: vi.fn(),
-    style: {},
+    style: { position: '' },
     dataset: {}
 };
 

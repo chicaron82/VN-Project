@@ -3,6 +3,27 @@
    Forces Light/Dark mode classes to override default media queries
    ═══════════════════════════════════════════════════════════════ */
 
+/* CSS Variables for Light Mode */
+body.light-mode {
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a4a4a;
+    --text-tertiary: #6a6a6a;
+    --accent-blue: #4a9eff;
+    --order-bg: #f8f9fa;
+    --order-text: #1a1a1a;
+}
+
+/* CSS Variables for Dark Mode */
+body.dark-mode {
+    --text-primary: #e0e0e0;
+    --text-secondary: #bbb;
+    --text-tertiary: #999;
+    --accent-blue: #5dade2;
+    --order-bg: #1a1a1a;
+    --order-text: #e0e0e0;
+}
+
+
 /* --- FORCE LIGHT MODE (User requested Light, System is Dark) --- */
 body.light-mode section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
     background: var(--order-bg) !important;
@@ -64,6 +85,30 @@ body.light-mode .timeline-entry-footer {
     border-top-color: rgba(0, 0, 0, 0.1) !important;
     color: #555 !important;
 }
+
+/* Theme rules for excluded sections */
+body.light-mode .workflow-section,
+body.light-mode .results-section,
+body.light-mode .evolution-section,
+body.light-mode .roadmap-section {
+    background: var(--order-bg) !important;
+    color: var(--order-text) !important;
+}
+
+body.light-mode .workflow-section h2,
+body.light-mode .results-section h2,
+body.light-mode .evolution-section h2,
+body.light-mode .roadmap-section h2 {
+    color: var(--order-text) !important;
+}
+
+/* Home content wrapper for full-width background */
+body.light-mode .home-content-wrapper {
+    background: var(--order-bg) !important;
+    width: 100%;
+}
+
+
 
 /* --- FORCE DARK MODE (User requested Dark, System is Light) --- */
 /* Only needed if base styles are Light by default (which they are in base.css) */
@@ -128,4 +173,26 @@ body.dark-mode .settings-carousel .carousel-label {
 body.dark-mode .timeline-entry-footer {
     border-top-color: rgba(255, 255, 255, 0.1) !important;
     color: #aaa !important;
+}
+
+/* Theme rules for excluded sections */
+body.dark-mode .workflow-section,
+body.dark-mode .results-section,
+body.dark-mode .evolution-section,
+body.dark-mode .roadmap-section {
+    background: #1a1a1a !important;
+    color: #e0e0e0 !important;
+}
+
+body.dark-mode .workflow-section h2,
+body.dark-mode .results-section h2,
+body.dark-mode .evolution-section h2,
+body.dark-mode .roadmap-section h2 {
+    color: #e0e0e0 !important;
+}
+
+/* Home content wrapper for full-width background */
+body.dark-mode .home-content-wrapper {
+    background: #1a1a1a !important;
+    width: 100%;
 }

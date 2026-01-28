@@ -46,17 +46,29 @@ export class NotificationShade {
     // ===========================================
 
     private initSettings(): void {
-        // Wire up close button
-        this.el.closeBtn?.addEventListener('click', () => {
-            this.close();
-        });
+        console.log('🔧 [NotificationShade] Initializing settings...');
+
+        // Wire up close button with debugging
+        if (this.el.closeBtn) {
+            console.log('✅ [NotificationShade] Close button found:', this.el.closeBtn);
+            this.el.closeBtn.addEventListener('click', (e) => {
+                console.log('🔘 [NotificationShade] Close button clicked!');
+                e.stopPropagation(); // Prevent event bubbling
+                this.close();
+            });
+        } else {
+            console.error('❌ [NotificationShade] Close button NOT found! Selector: .shade-close-btn');
+        }
 
         // Also close on backdrop click if shade is open
-        this.el.backdrop?.addEventListener('click', () => {
-            if (this.el.shade?.style.display !== 'none') {
-                this.close();
-            }
-        });
+        if (this.el.backdrop) {
+            this.el.backdrop.addEventListener('click', () => {
+                console.log('🔘 [NotificationShade] Backdrop clicked');
+                if (this.el.shade?.style.display !== 'none') {
+                    this.close();
+                }
+            });
+        }
 
         // 1. Theme Logic (Auto + Manual)
         const themeToggle = document.getElementById('showcase-theme-toggle');

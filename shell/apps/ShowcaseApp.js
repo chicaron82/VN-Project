@@ -197,9 +197,26 @@ export class ShowcaseApp extends BaseApp {
                     src="./showcase/index.html"
                     style="width: 100%; height: 100%; border: none; display: block;"
                     title="UV7 Showcase"
+                    id="showcase-iframe"
                 ></iframe>
             </div>
         `;
+
+        // Send initial theme to iframe when it loads
+        const iframe = container.querySelector('#showcase-iframe');
+        if (iframe) {
+            iframe.addEventListener('load', () => {
+                console.log('[ShowcaseApp] Iframe loaded, sending initial theme');
+                const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false';
+                const theme = localStorage.getItem('uv7-theme') || 'dark';
+
+                iframe.contentWindow.postMessage({
+                    type: 'theme-change',
+                    auto: isAuto,
+                    theme: theme
+                }, '*');
+            });
+        }
 
         console.log('[ShowcaseApp] Mounted showcase in iframe');
     }
