@@ -43,6 +43,7 @@ import { TimelineDeepLink } from './TimelineDeepLink';
 import { TimelineKeyboardNav } from './TimelineKeyboardNav';
 import { TimelineHoverPreview } from './TimelineHoverPreview';
 import { TimelinePlayback } from './TimelinePlayback';
+import { TimelineParallax } from './TimelineParallax';
 import { TimelineHeatmap } from './TimelineHeatmap';
 import { TimelineExport } from './TimelineExport';
 
@@ -148,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new TimelineKeyboardNav('.timeline-phases', '.timeline-search');
     new TimelineHoverPreview('.timeline-phases');
     new TimelinePlayback('.timeline-phases');
+    new TimelineParallax('.timeline-phases');
     new TimelineHeatmap('.timeline-phases');
     new TimelineExport('.timeline-phases');
     console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
