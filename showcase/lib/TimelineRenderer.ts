@@ -39,8 +39,6 @@ export class TimelineRenderer {
 
     // Signal Animation
     private signalPulse: HTMLElement | null;
-    private isScrolling: boolean;
-    private scrollTimeout?: number;
 
     // Phase 4: Enhanced search
     private timelineSearch: TimelineSearch | null;
@@ -73,7 +71,6 @@ export class TimelineRenderer {
 
         // Signal Animation
         this.signalPulse = null;
-        this.isScrolling = false;
 
         // Phase 4: Enhanced search
         this.timelineSearch = null;
@@ -680,15 +677,6 @@ export class TimelineRenderer {
         item.appendChild(marker);
         item.appendChild(content);
         return item;
-    }
-
-    private escapeHtml(unsafe: string): string {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
     }
 
     /**
