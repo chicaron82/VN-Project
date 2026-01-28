@@ -179,7 +179,6 @@ const keyboardController = new KeyboardController(eventBus);
 // Initialize Mobile UX
 const swipeHandler = new SwipeHandler(document.body, eventBus, settingsSystem);
 const mobileUXController = new MobileUXController(eventBus);
-const notificationShade = new NotificationShade(eventBus);
 
 // Achievement & Tutorial Systems
 const achievementSystem = new AchievementSystem(eventBus, stateManager);
@@ -199,19 +198,45 @@ const bootstrapTracker = new BootstrapTracker(stateManager); // Needed for Secre
 const secretCodesSystem = new SecretCodesSystem(eventBus, stateManager, bootstrapTracker);
 const collectiblesSystem = new CollectiblesSystem(eventBus);
 
+// ============================================
+// Shell Detection
+// ============================================
+// Detect if running in shell mode (iframe) to avoid dual chrome
+const isInShell = window.parent !== window;
+console.log(`[V2] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
+
+// ============================================
 // Global UI Components
+// ============================================
 const _settingsModal = new SettingsModal(eventBus, settingsSystem);
-const _statusBar = new StatusBar(eventBus);
-const _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem);
+
+// Chrome components - only create in standalone mode
+// Shell provides StatusBar, Sidebar, NotificationShade
+let _statusBar: StatusBar | null = null;
+let _sidebar: Sidebar | null = null;
+let _notificationShade: NotificationShade | null = null;
+
+if (!isInShell) {
+    _statusBar = new StatusBar(eventBus);
+    _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem);
+    _notificationShade = new NotificationShade(eventBus);
+    console.log('[V2] Standalone mode - chrome created');
+} else {
+    console.log('[V2] Shell mode - using shell chrome');
+}
+
+// Game-specific screens (always created)
 const _creditsScreen = new CreditsScreen(eventBus);
 const _crewScreen = new CrewScreen(eventBus);
 
-// TORI'S FIX: Initialize GrabHandleRepositioner AFTER Sidebar
+// TORI'S FIX: Initialize GrabHandleRepositioner AFTER Sidebar (if sidebar exists)
 import { GrabHandleRepositioner } from '@controllers/GrabHandleRepositioner';
 // Use setTimeout to ensure DOM is fully ready, just in case
-setTimeout(() => {
-    new GrabHandleRepositioner(eventBus);
-}, 0);
+if (_sidebar) {
+    setTimeout(() => {
+        new GrabHandleRepositioner(eventBus);
+    }, 0);
+}
 
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 // ToastNotification removed - using NotificationRail via eventBus.emit('notification:show', ...)
@@ -222,8 +247,8 @@ const _notificationRail = initializeNotificationRail(eventBus); // Phase 26d: No
 // Silence unused warnings by logging
 console.log('UI Modules Active:', {
     _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
-    _notesViewer, _saveLoadModal, _backlogUI, _notificationRail,
-    autoReadController, keyboardController, swipeHandler, mobileUXController, notificationShade,
+    _notesViewer, _saveLoadModal, _backlogUI, _notificationRail, _notificationShade,
+    autoReadController, keyboardController, swipeHandler, mobileUXController,
     achievementSystem, tutorialController, _tipsOverlay
 });
 
