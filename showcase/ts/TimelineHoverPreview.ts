@@ -142,7 +142,7 @@ export class TimelineHoverPreview {
         if (titleEl) titleEl.textContent = title;
         if (summaryEl) {
             summaryEl.textContent = summary;
-            summaryEl.style.display = summary ? 'block' : 'none';
+            (summaryEl as HTMLElement).style.display = summary ? 'block' : 'none';
         }
 
         // Position tooltip

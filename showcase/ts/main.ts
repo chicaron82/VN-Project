@@ -41,6 +41,7 @@ import { TimelineAnimations } from './TimelineAnimations';
 import { TimelineStats } from './TimelineStats';
 import { TimelineDeepLink } from './TimelineDeepLink';
 import { TimelineKeyboardNav } from './TimelineKeyboardNav';
+import { TimelineHoverPreview } from './TimelineHoverPreview';
 
 // Import showcase UI components
 import { Sidebar } from './components/Sidebar';
