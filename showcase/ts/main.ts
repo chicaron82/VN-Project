@@ -45,6 +45,7 @@ import { TimelineHoverPreview } from './TimelineHoverPreview';
 import { TimelinePlayback } from './TimelinePlayback';
 import { TimelineParallax } from './TimelineParallax';
 import { TimelineBackgrounds } from './TimelineBackgrounds';
+import { TimelineAudio } from './TimelineAudio';
 import { TimelineHeatmap } from './TimelineHeatmap';
 import { TimelineExport } from './TimelineExport';
 
@@ -152,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new TimelinePlayback('.timeline-phases');
     new TimelineParallax('.timeline-phases');
     new TimelineBackgrounds('.timeline-phases');
+    new TimelineAudio('.timeline-phases');
     new TimelineHeatmap('.timeline-phases');
     new TimelineExport('.timeline-phases');
     console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
