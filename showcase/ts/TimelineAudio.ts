@@ -220,7 +220,7 @@ export class TimelineAudio {
         const t = this.ctx.currentTime;
         const freqs = [220, 330, 440, 550]; // A major 7ish
 
-        freqs.forEach((f, i) => {
+        freqs.forEach((f) => {
             const osc = this.ctx!.createOscillator();
             const gain = this.ctx!.createGain();
 
