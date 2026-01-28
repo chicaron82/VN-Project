@@ -71,24 +71,34 @@ export class TimelineSearch {
      */
     private indexEntries(timelineSelector: string): void {
         const timeline = document.querySelector(timelineSelector);
-        if (!timeline) return;
+        if (!timeline) {
+            console.warn('🔍 [TimelineSearch] Timeline container not found:', timelineSelector);
+            return;
+        }
 
         const items = timeline.querySelectorAll('.timeline-item');
+        console.log('🔍 [TimelineSearch] Found', items.length, 'timeline items');
 
         items.forEach((item) => {
             const element = item as HTMLElement;
-            const id = element.dataset.id || '';
-            const title = element.querySelector('.timeline-title')?.textContent || '';
-            const description = element.querySelector('.timeline-description')?.textContent || '';
+            const id = element.id || element.dataset.id || '';
 
-            // Extract features
+            // TimelineRenderer structure: title is in <strong>, summary in <p>
+            const titleElement = element.querySelector('strong');
+            const title = titleElement?.textContent?.trim() || '';
+
+            // Get all text content for description (summary + features)
+            const contentDiv = element.querySelector('.timeline-content');
+            const description = contentDiv?.textContent?.trim() || '';
+
+            // Extract features from update-list
             const features: string[] = [];
-            element.querySelectorAll('.timeline-feature').forEach(f => {
+            element.querySelectorAll('.update-list li').forEach(f => {
                 const text = f.textContent?.trim();
                 if (text) features.push(text);
             });
 
-            // Extract crew members
+            // Extract crew members (if any)
             const crew: string[] = [];
             element.querySelectorAll('.crew-member').forEach(c => {
                 const text = c.textContent?.trim();
@@ -114,6 +124,8 @@ export class TimelineSearch {
                 searchText
             });
         });
+
+        console.log('🔍 [TimelineSearch] Indexed', this.entries.length, 'entries');
     }
 
     /**
