@@ -44,6 +44,7 @@ import { TimelineKeyboardNav } from './TimelineKeyboardNav';
 import { TimelineHoverPreview } from './TimelineHoverPreview';
 import { TimelinePlayback } from './TimelinePlayback';
 import { TimelineHeatmap } from './TimelineHeatmap';
+import { TimelineExport } from './TimelineExport';
 
 // Import showcase UI components
 import { Sidebar } from './components/Sidebar';
@@ -148,7 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const timelineHoverPreview = new TimelineHoverPreview('.timeline-phases');
     const timelinePlayback = new TimelinePlayback('.timeline-phases');
     const timelineHeatmap = new TimelineHeatmap('.timeline-phases');
-    console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap)');
+    const timelineExport = new TimelineExport('.timeline-phases');
+    console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
 
     // Wire up deep linking to navigate on URL changes
     timelineDeepLink.onNavigateChange((params) => {
