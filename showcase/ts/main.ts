@@ -136,13 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize timeline enhancements (MAXIMUM MICHELIN)
     // Note: TimelineRenderer creates its own scrubber and has search in toolbar
     // We only add keyboard nav and deep linking here
-    new TimelineAnimations('.timeline');
+    const timelineAnimations = new TimelineAnimations('.timeline-phases');
     if (window.TIMELINE_DATA?.entries) {
         new TimelineStats(window.TIMELINE_DATA.entries as any);
     }
     const timelineDeepLink = new TimelineDeepLink();
-    const timelineKeyboardNav = new TimelineKeyboardNav('.timeline', '.timeline-search');
-    console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav)');
+    const timelineKeyboardNav = new TimelineKeyboardNav('.timeline-phases', '.timeline-search');
+    const timelineHoverPreview = new TimelineHoverPreview('.timeline-phases');
+    console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews)');
 
     // Wire up deep linking to navigate on URL changes
     timelineDeepLink.onNavigateChange((params) => {
