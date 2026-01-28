@@ -7,7 +7,7 @@
  * Phase 2: Integrated with TimelineStats for category dashboard
  */
 
-import { TIMELINE_DATA, type TimelineEntry, type TimelineData } from '../data/timeline';
+import { TIMELINE_DATA, type TimelineEntry } from '../data/timeline';
 import { timelineAnimations } from '../ts/TimelineAnimations';
 import { TimelineStats } from '../ts/TimelineStats';
 import { TimelineScrubber } from '../ts/TimelineScrubber';
@@ -99,7 +99,7 @@ export class TimelineRenderer {
         this.renderTimeline();
 
         // Phase 3: Initialize Timeline Scrubber (after timeline is rendered)
-        this.timelineScrubber = new TimelineScrubber('.timeline-phases', '#timeline-container');
+        this.timelineScrubber = new TimelineScrubber('.timeline-phases');
 
         // Phase 4: Initialize Enhanced Search (after timeline is rendered)
         // This adds fuzzy matching, autocomplete, and keyboard nav to the existing toolbar search
@@ -280,7 +280,7 @@ export class TimelineRenderer {
         // 1. Filter
         let filtered = this.originalEntries;
         if (this.activeFilter !== 'all') {
-            filtered = filtered.filter(p => p.date.includes(this.activeFilter));
+            filtered = filtered.filter(p => p.date?.includes(this.activeFilter));
         }
 
         // 2. Search (Spotlight)
@@ -291,9 +291,9 @@ export class TimelineRenderer {
         // 3. Sort
         filtered.sort((a, b) => {
             if (this.activeSort === 'story') {
-                return a.sortDate.localeCompare(b.sortDate);
+                return (a.sortDate || '').localeCompare(b.sortDate || '');
             } else {
-                return b.sortDate.localeCompare(a.sortDate);
+                return (b.sortDate || '').localeCompare(a.sortDate || '');
             }
         });
 
@@ -315,8 +315,8 @@ export class TimelineRenderer {
         const dates = [...new Set(this.originalEntries.map(p => {
             // Simplify date string "January 12, 2026 (Morning)" -> "Jan 12"
             // This is a naive regex, might need adjustment based on real data
-            const match = p.date.match(/([A-Z][a-z]+ \d+)/);
-            return match ? match[0] : p.date;
+            const match = p.date?.match(/([A-Z][a-z]+ \d+)/);
+            return match ? match[0] : (p.date || '');
         }))];
 
         // Build Filter Options
