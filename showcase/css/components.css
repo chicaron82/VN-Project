@@ -2806,3 +2806,477 @@ select.timeline-btn option {
         font-size: 14px;
     }
 }
+
+/* ==========================================
+   COOKING METAPHOR SECTION
+   DiZee Implementation - Recipe vs Ingredients
+   ========================================== */
+
+.cooking-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .cooking-comparison {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.cooking-approach {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px solid;
+}
+
+.agentic-approach {
+    background: rgba(100, 100, 100, 0.05);
+    border-color: rgba(100, 100, 100, 0.3);
+}
+
+.uv7-approach {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.approach-header {
+    margin-bottom: 1.5rem;
+}
+
+.approach-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.approach-header h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.approach-tagline {
+    font-style: italic;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+.example-prompt,
+.example-conversation {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.example-prompt blockquote,
+.example-conversation blockquote {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1rem;
+    border-left: 3px solid currentColor;
+    opacity: 0.9;
+}
+
+.chat-exchange {
+    margin: 1rem 0;
+}
+
+.chat-line {
+    margin: 0.5rem 0;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.chat-line.user {
+    background: rgba(0, 255, 136, 0.1);
+    margin-left: 0;
+    margin-right: 2rem;
+}
+
+.chat-line.ai {
+    background: rgba(147, 51, 234, 0.1);
+    margin-left: 2rem;
+    margin-right: 0;
+}
+
+.invention-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    border-left: 4px solid #00ff88;
+}
+
+.approach-result {
+    margin: 1.5rem 0;
+}
+
+.result-item {
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.result-item.good {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+}
+
+.result-item.bad {
+    background: rgba(255, 100, 100, 0.1);
+    color: #ff6464;
+}
+
+.result-item.neutral {
+    background: rgba(255, 200, 0, 0.1);
+    color: #ffc800;
+}
+
+.approach-summary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.key-difference-callout {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(59, 130, 246, 0.1));
+    border-radius: 12px;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.key-difference-callout h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.difference-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+@media (max-width: 600px) {
+    .difference-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.diff-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .diff-item {
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
+
+.difference-insight {
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+.real-world-examples {
+    margin: 2rem 0;
+}
+
+.example-card {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    border-left: 4px solid #00ff88;
+}
+
+@media (prefers-color-scheme: dark) {
+    .example-card {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.example-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.example-icon {
+    font-size: 1.5rem;
+}
+
+.example-body {
+    margin-top: 1rem;
+}
+
+.example-wrong,
+.example-right {
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+}
+
+.example-wrong {
+    background: rgba(255, 100, 100, 0.1);
+    border-left: 3px solid #ff6464;
+}
+
+.example-right {
+    background: rgba(0, 255, 136, 0.1);
+    border-left: 3px solid #00ff88;
+}
+
+.sous-chef-metaphor {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: rgba(147, 51, 234, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(147, 51, 234, 0.3);
+}
+
+.sous-chef-metaphor h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.sous-chef-metaphor p {
+    margin: 0.75rem 0;
+}
+
+.msg-source {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* ==========================================
+   SOMA'S JOURNEY SECTION
+   DiZee Implementation - V1 vs V2 Comparison
+   ========================================== */
+
+.soma-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+@media (max-width: 900px) {
+    .soma-comparison {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.soma-phase {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px solid;
+}
+
+.v1-phase {
+    background: rgba(255, 100, 50, 0.05);
+    border-color: rgba(255, 100, 50, 0.4);
+}
+
+.v2-phase {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: rgba(0, 255, 136, 0.4);
+}
+
+.phase-header {
+    margin-bottom: 1.5rem;
+}
+
+.phase-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.phase-header h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.phase-tagline {
+    font-style: italic;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+.phase-characteristics {
+    margin: 1.5rem 0;
+}
+
+.phase-characteristics h5 {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.phase-characteristics ul {
+    list-style: none;
+    padding: 0;
+}
+
+.phase-characteristics li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.phase-characteristics li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: currentColor;
+    opacity: 0.6;
+}
+
+.phase-code-example {
+    margin: 1.5rem 0;
+}
+
+.phase-code-example h5 {
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.phase-code-example pre {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.phase-code-example code {
+    color: #00ff88;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+}
+
+.phase-strength {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .phase-strength {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.soma-lesson,
+.training-conclusion {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(147, 51, 234, 0.1));
+    border-radius: 12px;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.soma-lesson h5,
+.training-conclusion h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.soma-lesson p,
+.training-conclusion p {
+    margin: 0.75rem 0;
+    line-height: 1.6;
+}
+
+.soma-quote {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #00ff88;
+    font-style: italic;
+}
+
+@media (prefers-color-scheme: dark) {
+    .soma-quote {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.three-attempts-story {
+    margin: 2rem 0;
+}
+
+.three-attempts-story h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.attempt-card {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid;
+}
+
+.attempt-1 {
+    background: rgba(255, 100, 100, 0.05);
+    border-color: #ff6464;
+}
+
+.attempt-2 {
+    background: rgba(255, 200, 0, 0.05);
+    border-color: #ffc800;
+}
+
+.attempt-3 {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: #00ff88;
+}
+
+.attempt-card strong {
+    display: block;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.attempt-result {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) {
+    .attempt-result {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.attempts-lesson {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 255, 136, 0.4);
+    text-align: center;
+    font-size: 1.1rem;
+}

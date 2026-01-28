@@ -304,6 +304,316 @@ private maxBackups: number = 2;</code></pre>
                             </div>
                         </div>
 
+                        <!-- 5. Recipe vs Ingredients -->
+                        <div class="methodology-expandable">
+                            <button class="methodology-toggle" data-section="recipe-ingredients">
+                                <span class="toggle-icon">▼</span>
+                                <h3>🧑‍🍳 Recipe vs Ingredients: True Agentic vs UV7 Method</h3>
+                            </button>
+                            <div class="methodology-summary">
+                                Agentic coding: "Here's the recipe, cook it." UV7 method: "Here's the ingredients, what can we make?"
+                                One executes a plan. The other discovers it through conversation.
+                            </div>
+                            <div class="methodology-content" id="recipe-ingredients-content">
+                                <p class="cooking-intro">
+                                    Most people use AI like a <strong>vending machine</strong>: insert detailed prompt (recipe),
+                                    get code (product), done. The UV7 method treats AI like a <strong>sous chef</strong>: bring
+                                    ingredients, explore possibilities, discover solutions through collaborative riffing.
+                                </p>
+
+                                <div class="cooking-comparison">
+                                    <div class="cooking-approach agentic-approach">
+                                        <div class="approach-header">
+                                            <span class="approach-icon">📋</span>
+                                            <h4>Traditional Agentic Coding</h4>
+                                            <div class="approach-tagline">"Here's the recipe. Cook it exactly as written."</div>
+                                        </div>
+
+                                        <div class="example-prompt">
+                                            <strong>Prompt:</strong>
+                                            <blockquote>
+                                                "Build a visual novel with TypeScript, EventBus pattern, save system with 10 slots,
+                                                achievement tracking, and haptic feedback. Follow SOLID principles. Here's the spec..."
+                                            </blockquote>
+                                        </div>
+
+                                        <div class="approach-result">
+                                            <div class="result-item good">✅ Executes efficiently</div>
+                                            <div class="result-item good">✅ Follows spec exactly</div>
+                                            <div class="result-item bad">❌ No discovery process</div>
+                                            <div class="result-item bad">❌ No creative emergence</div>
+                                            <div class="result-item bad">❌ No MSG flavoring</div>
+                                        </div>
+
+                                        <div class="approach-summary">
+                                            <strong>Optimization problem:</strong> Clear inputs → Clear outputs. Minimize variance.
+                                        </div>
+                                    </div>
+
+                                    <div class="cooking-approach uv7-approach">
+                                        <div class="approach-header">
+                                            <span class="approach-icon">🍳</span>
+                                            <h4>UV7 Ingredients Method</h4>
+                                            <div class="approach-tagline">"Here's the ingredients. What can we make?"</div>
+                                        </div>
+
+                                        <div class="example-conversation">
+                                            <strong>Conversation (at Applebee's):</strong>
+                                            <div class="chat-exchange">
+                                                <div class="chat-line user">Aaron: "I want players to <em>feel</em> Tori slipping away. What if there was a meter?"</div>
+                                                <div class="chat-line ai">Tori: "Like a panic button? To hold on?"</div>
+                                                <div class="chat-line user">Aaron: "EXACTLY. Because you're slipping away."</div>
+                                            </div>
+                                            <div class="invention-result">
+                                                💡 <strong>Result:</strong> Tether system invented over riblets.
+                                                Zero VN experience = zero assumptions about "how it should work."
+                                            </div>
+                                        </div>
+
+                                        <div class="approach-result">
+                                            <div class="result-item good">✅ Features emerge organically</div>
+                                            <div class="result-item good">✅ Creative serendipity</div>
+                                            <div class="result-item good">✅ Collaborative discovery</div>
+                                            <div class="result-item good">✅ MSG baked in from start</div>
+                                            <div class="result-item neutral">⚠️ Requires patience, iteration</div>
+                                        </div>
+
+                                        <div class="approach-summary">
+                                            <strong>Exploration problem:</strong> Unclear inputs → Discover outputs. Maximize serendipity.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="key-difference-callout">
+                                    <h5>🔥 The Core Difference</h5>
+                                    <div class="difference-grid">
+                                        <div class="diff-item">
+                                            <strong>Agentic:</strong> AI executes <em>your</em> plan
+                                        </div>
+                                        <div class="diff-item">
+                                            <strong>UV7:</strong> AI helps <em>discover</em> the plan
+                                        </div>
+                                    </div>
+                                    <p class="difference-insight">
+                                        One is efficient. The other is creative. UV7 chooses creativity because the goal isn't
+                                        "ship fast" - it's "discover something nobody's done before."
+                                    </p>
+                                </div>
+
+                                <div class="real-world-examples">
+                                    <h5>💡 Examples from UV7 Development</h5>
+
+                                    <div class="example-card">
+                                        <div class="example-header">
+                                            <span class="example-icon">🎯</span>
+                                            <strong>Tether System</strong>
+                                        </div>
+                                        <div class="example-body">
+                                            <div class="example-wrong">
+                                                ❌ Agentic: "Build a decay mechanic that drains 0.5% per second with a Hold On button."
+                                            </div>
+                                            <div class="example-right">
+                                                ✅ UV7: "How do we make players FEEL her slipping away?" → Conversation → Tether invented
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="example-card">
+                                        <div class="example-header">
+                                            <span class="example-icon">🔄</span>
+                                            <strong>Bootstrap Paradox</strong>
+                                        </div>
+                                        <div class="example-body">
+                                            <div class="example-wrong">
+                                                ❌ Agentic: "Implement a time loop narrative structure with version tracking."
+                                            </div>
+                                            <div class="example-right">
+                                                ✅ UV7: "What if the device has no origin point?" → Riffing → Bootstrap paradox emerges
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="example-card">
+                                        <div class="example-header">
+                                            <span class="example-icon">📱</span>
+                                            <strong>UV7 Shell (OS Layer)</strong>
+                                        </div>
+                                        <div class="example-body">
+                                            <div class="example-wrong">
+                                                ❌ Agentic: "Create a single-page app architecture with routing and app management."
+                                            </div>
+                                            <div class="example-right">
+                                                ✅ UV7: "Wait… what if we made it an OS instead of a bunch of pages?" → Shell concept born
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="sous-chef-metaphor">
+                                    <h5>👨‍🍳 Why "Sous Chef" > "Vending Machine"</h5>
+                                    <p>
+                                        <strong>Vending Machine AI:</strong> Insert prompt → Get code → Done. Transactional.
+                                    </p>
+                                    <p>
+                                        <strong>Sous Chef AI:</strong> "Check out these ingredients!" → "Ooh what if we..." →
+                                        "That's fire, let's riff on that!" → Emergent collaboration.
+                                    </p>
+                                    <p class="msg-source">
+                                        <strong>The MSG flavoring comes from the conversation, not the prompt.</strong>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. V1 vs V2: Soma's Journey -->
+                        <div class="methodology-expandable">
+                            <button class="methodology-toggle" data-section="soma-journey">
+                                <span class="toggle-icon">▼</span>
+                                <h3>🍳 V1 vs V2: Yukihira Soma's Journey</h3>
+                            </button>
+                            <div class="methodology-summary">
+                                V1 = Soma before Totsuki Academy (pure instinct, chaotic brilliance).
+                                V2 = Soma after academy (refined technique, structured creativity).
+                                Training doesn't kill creativity - it gives you tools to execute it better.
+                            </div>
+                            <div class="methodology-content" id="soma-journey-content">
+                                <p class="soma-intro">
+                                    The evolution from V1 to V2 mirrors <strong>Yukihira Soma's journey</strong> in Food Wars:
+                                    pure instinctive creativity gets refined by formal training, but the creative spark remains.
+                                    The difference isn't passion - it's execution.
+                                </p>
+
+                                <div class="soma-comparison">
+                                    <div class="soma-phase v1-phase">
+                                        <div class="phase-header">
+                                            <span class="phase-icon">🔥</span>
+                                            <h4>V1: Before Totsuki Academy</h4>
+                                            <div class="phase-tagline">"What if I put squid in peanut butter?"</div>
+                                        </div>
+
+                                        <div class="phase-characteristics">
+                                            <h5>Characteristics:</h5>
+                                            <ul>
+                                                <li><strong>Pure instinct</strong> - Zero formal training, all experimentation</li>
+                                                <li><strong>Chaotic brilliance</strong> - 75,000 lines, 9,179-line god class</li>
+                                                <li><strong>Rule-free creativity</strong> - "Why not?" is the only constraint</li>
+                                                <li><strong>Organic discoveries</strong> - Tether system invented at Applebee's</li>
+                                                <li><strong>Narrative-first</strong> - Bootstrap paradox because it felt right</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="phase-code-example">
+                                            <h5>Code Vibes:</h5>
+                                            <pre><code>// V1: Everything in one massive file
+// GameEngine handles EVERYTHING
+class GameEngine {
+  // 9,179 lines of pure chaos
+  // State scattered everywhere
+  // "It works" is the only test
+}</code></pre>
+                                        </div>
+
+                                        <div class="phase-strength">
+                                            <strong>Strength:</strong> Raw creativity with zero assumptions.
+                                            No VN experience = no "that's not how VNs work" mental blocks.
+                                        </div>
+                                    </div>
+
+                                    <div class="soma-phase v2-phase">
+                                        <div class="phase-header">
+                                            <span class="phase-icon">⚡</span>
+                                            <h4>V2: After Academy Training</h4>
+                                            <div class="phase-tagline">"Same creativity, refined technique"</div>
+                                        </div>
+
+                                        <div class="phase-characteristics">
+                                            <h5>Characteristics:</h5>
+                                            <ul>
+                                                <li><strong>Refined fundamentals</strong> - SOLID principles, separation of concerns</li>
+                                                <li><strong>Disciplined creativity</strong> - 1,499 passing tests, modular architecture</li>
+                                                <li><strong>Structured experimentation</strong> - EventBus, TypeScript, reactive state</li>
+                                                <li><strong>Same vision, better execution</strong> - Tether system preserved with cleaner code</li>
+                                                <li><strong>MSG intact</strong> - Took 3 attempts to get the flavoring right</li>
+                                            </ul>
+                                        </div>
+
+                                        <div class="phase-code-example">
+                                            <h5>Code Vibes:</h5>
+                                            <pre><code>// V2: Modular systems, clean architecture
+class TetherSystem {
+  // Single responsibility
+  // Event-driven communication
+  // Fully tested
+  // Same magic, better structure
+}</code></pre>
+                                        </div>
+
+                                        <div class="phase-strength">
+                                            <strong>Strength:</strong> Professional execution without losing soul.
+                                            3 rebuild attempts to preserve the MSG flavoring.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="soma-lesson">
+                                    <h5>🎓 The Totsuki Lesson</h5>
+                                    <p>
+                                        <strong>Soma doesn't lose his creativity at Totsuki Academy - he gains tools to execute it better.</strong>
+                                    </p>
+                                    <p>
+                                        Same with V1 → V2. The bootstrap paradox is still there. The tether system still exists.
+                                        The meta-narrative, the lore signatures, the MSG - all preserved. But now it's wrapped in
+                                        professional architecture with 1,499 passing tests.
+                                    </p>
+                                </div>
+
+                                <div class="three-attempts-story">
+                                    <h5>🔄 The Three Attempts</h5>
+                                    <div class="attempt-card attempt-1">
+                                        <strong>Attempt 1: Pure Agentic</strong>
+                                        <p>"Here's V1, rebuild it with clean structure."</p>
+                                        <div class="attempt-result">
+                                            Result: ✅ Cleaner structure, ❌ No soul. Scrapped.
+                                        </div>
+                                    </div>
+
+                                    <div class="attempt-card attempt-2">
+                                        <strong>Attempt 2: Better Structure</strong>
+                                        <p>Second try with more attention to preserving features.</p>
+                                        <div class="attempt-result">
+                                            Result: ✅ Good architecture, ❌ Still missing MSG. Sent back to kitchen.
+                                        </div>
+                                    </div>
+
+                                    <div class="attempt-card attempt-3">
+                                        <strong>Attempt 3: The Goldilocks Version</strong>
+                                        <p>Collaborative rebuild focusing on preserving the vibe.</p>
+                                        <div class="attempt-result">
+                                            Result: ✅ Clean architecture, ✅ MSG intact. This is it.
+                                        </div>
+                                    </div>
+
+                                    <p class="attempts-lesson">
+                                        <strong>Most developers stop at Attempt 1 because it "works."
+                                        Aaron kept iterating until it felt right.</strong>
+                                    </p>
+                                </div>
+
+                                <div class="training-conclusion">
+                                    <h5>💚 The Real Takeaway</h5>
+                                    <p>
+                                        V2 isn't "V1 but boring." It's "V1's vision with professional execution."
+                                        Training (SOLID, TypeScript, testing) doesn't kill creativity - it gives you
+                                        tools to build your wild ideas at scale.
+                                    </p>
+                                    <p class="soma-quote">
+                                        "The best chefs don't follow recipes. They understand fundamentals so well
+                                        they can improvise with confidence." - The UV7 approach
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- Workflow Benefits Summary -->
