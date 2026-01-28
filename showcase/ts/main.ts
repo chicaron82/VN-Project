@@ -41,6 +41,7 @@ import { TimelineAnimations } from './TimelineAnimations';
 import { TimelineStats } from './TimelineStats';
 import { TimelineScrubber } from './TimelineScrubber';
 import { TimelineSearch } from './TimelineSearch';
+import { TimelineDeepLink } from './TimelineDeepLink';
 
 // Import showcase UI components
 import { Sidebar } from './components/Sidebar';
@@ -137,15 +138,48 @@ document.addEventListener('DOMContentLoaded', () => {
     // Note: These are initialized but not stored as they manage themselves
     new TimelineAnimations('.timeline');
     if (window.TIMELINE_DATA?.entries) {
-        new TimelineStats(window.TIMELINE_DATA.entries as TimelineEntry[]);
+        new TimelineStats(window.TIMELINE_DATA.entries as any);
     }
     new TimelineScrubber('#timeline-container');
     const timelineSearch = new TimelineSearch('.timeline', '#timeline-search');
-    console.log('✅ Timeline enhancements initialized (animations, stats, scrubber, search)');
+    const timelineDeepLink = new TimelineDeepLink();
+    console.log('✅ Timeline enhancements initialized (animations, stats, scrubber, search, deep linking)');
 
     // Wire up search callback to scroll to entry
     timelineSearch.onSelect((entry) => {
         console.log('🔍 [Search] Selected entry:', entry.title);
+        // Update URL when entry is selected
+        timelineDeepLink.navigateToEntry(entry.id);
+    });
+
+    // Wire up deep linking to search
+    timelineDeepLink.onNavigateChange((params) => {
+        console.log('🔗 [DeepLink] Navigating to:', params);
+
+        // Apply search if present
+        if (params.search) {
+            timelineSearch.search(params.search);
+        }
+
+        // Apply filter if present (would need filter system integration)
+        if (params.filter) {
+            console.log('🔗 [DeepLink] Filter not yet implemented:', params.filter);
+        }
+
+        // Navigate to entry if present
+        if (params.entryId) {
+            const element = document.querySelector(`[data-id="${params.entryId}"]`);
+            if (element) {
+                element.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                element.classList.add('highlight-pulse');
+                setTimeout(() => {
+                    element.classList.remove('highlight-pulse');
+                }, 2000);
+            }
+        }
     });
 
     // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
