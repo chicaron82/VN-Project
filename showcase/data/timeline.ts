@@ -5,105 +5,105 @@
  * Media carousel item (image or video)
  */
 export interface MediaCarouselItem {
-  type: 'image' | 'video';
-  url: string;
-  caption: string;
+    type: 'image' | 'video';
+    url: string;
+    caption: string;
 }
 
 /**
  * Media attachments for timeline entries
  */
 export interface TimelineMedia {
-  carousel: MediaCarouselItem[];
+    carousel: MediaCarouselItem[];
 }
 
 /**
  * Code snippet for comparison views
  */
 export interface CodeSnippet {
-  title: string;
-  badge: string;
-  lang: string;
-  code: string;
+    title: string;
+    badge: string;
+    lang: string;
+    code: string;
 }
 
 /**
  * Before/after code comparison
  */
 export interface CodeComparison {
-  before: CodeSnippet;
-  after: CodeSnippet;
+    before: CodeSnippet;
+    after: CodeSnippet;
 }
 
 /**
  * Crew member attribution
  */
 export interface CrewMember {
-  name: string;
-  contribution: string;
-  icon: string;
+    name: string;
+    contribution: string;
+    icon: string;
 }
 
 /**
  * Crew attribution block with quote
  */
 export interface CrewAttribution {
-  systems: CrewMember[];
-  quote: string;
+    systems: CrewMember[];
+    quote: string;
 }
 
 /**
  * Main timeline entry interface
  */
 export interface TimelineEntry {
-  id: string;
-  date?: string;
-  emoji?: string;
-  title: string;
-  type?: string;
-  sortDate?: string;
-  summary?: string;
-  description?: string;
-  linesOfCode?: number;
-  highlights?: string[];
-  features?: string[];
-  theTimeline?: string[];
-  investigation?: string[];
-  problem?: string | {
-    description: string;
-    rootCause: string;
-  };
-  solution?: string | {
-    approach: string;
-    features?: string[];
-    steps?: string[];
-    code?: string;
-  };
-  media?: TimelineMedia;
-  codeComparison?: CodeComparison;
-  subEntries?: TimelineEntry[];
-  subPhases?: TimelineEntry[];
-  lessons?: string[];
-  crew?: CrewMember[];
-  crewAttribution?: CrewAttribution;
-  metrics?: Record<string, string | number>;
-  callout?: {
-    icon?: string;
+    id: string;
+    date?: string;
+    emoji?: string;
     title: string;
-    text?: string;
     type?: string;
-    content?: string;
-  };
-  footer?: {
-    icon: string;
-    text: string;
-  };
-  quote?: string;
-  legacyPhase?: string;
+    sortDate?: string;
+    summary?: string;
+    description?: string;
+    linesOfCode?: number;
+    highlights?: string[];
+    features?: string[];
+    theTimeline?: string[];
+    investigation?: string[];
+    problem?: string | {
+        description: string;
+        rootCause: string;
+    };
+    solution?: string | {
+        approach: string;
+        features?: string[];
+        steps?: string[];
+        code?: string;
+    };
+    media?: TimelineMedia;
+    codeComparison?: CodeComparison;
+    subEntries?: TimelineEntry[];
+    subPhases?: TimelineEntry[];
+    lessons?: string[];
+    crew?: CrewMember[];
+    crewAttribution?: CrewAttribution;
+    metrics?: Record<string, string | number>;
+    callout?: {
+        icon?: string;
+        title: string;
+        text?: string;
+        type?: string;
+        content?: string;
+    };
+    footer?: {
+        icon: string;
+        text: string;
+    };
+    quote?: string;
+    legacyPhase?: string;
 }
 
 export interface TimelineData {
-  entries: TimelineEntry[];
+    entries: TimelineEntry[];
 }
 
 export const TIMELINE_DATA: TimelineData = {
@@ -3293,6 +3293,86 @@ export const TIMELINE_DATA: TimelineData = {
             },
             "sortDate": "2026-01-27T0a",
             "legacyPhase": "2026-01-27-a"
+        },
+        {
+            "id": "uv7-system-architecture",
+            "date": "2026-01-27 (PM)",
+            "title": "One Shell Rules All: UV7System",
+            "emoji": "🏗️",
+            "summary": "Massive architecture shift from \"iframe chaos\" to a unified OS model. The shell now provides all chrome services (status bar, shade, sidebar), and apps simply consume them.",
+            "type": "architecture",
+            "theTimeline": [
+                "Identified \"Inversion of Control\" issue (apps creating their own shell)",
+                "Extracted chrome logic into `UV7System.js`",
+                "Refactored Showcase and Shell to use the new system",
+                "Eliminated double status bars and sync issues forever"
+            ],
+            "features": [
+                "✅ <strong>Unified OS Model:</strong> Shell creates chrome once, apps detect and adapt",
+                "🔌 <strong>Plug & Play:</strong> New apps just import `UV7System` and work instantly",
+                "🐛 <strong>Bug Extermination:</strong> Fixed theme toggle sync and dual status bars",
+                "🧹 <strong>Clean Code:</strong> Removed hundreds of lines of duplicated logic"
+            ],
+            "metrics": {
+                "Architecture": "Unified",
+                "Duplication": "0%",
+                "Scalability": "Infinite",
+                "Shells": "1"
+            },
+            "callout": {
+                "icon": "👑",
+                "title": "One Shell to Rule Them All",
+                "text": "Before this, every app was trying to be its own operating system. Now, `UV7Shell` is the true OS, and everything else is just software running on it."
+            },
+            "crewAttribution": {
+                "systems": [
+                    { "name": "Antigravity", "contribution": "Architect", "icon": "🧠" }
+                ],
+                "quote": "\"It feels like a real operating system now.\""
+            },
+            "sortDate": "2026-01-27T18:00:00",
+            "legacyPhase": "Phase 15"
+        },
+        {
+            "id": "maximum-michelin-timeline",
+            "date": "2026-01-28 (AM)",
+            "title": "MAXIMUM MICHELIN TIMELINE",
+            "emoji": "🌌",
+            "summary": "The ultimate timeline experience. 15 phases of polish turning a simple list into an interactive, bougie, sensory journey through development history.",
+            "type": "milestone",
+            "theTimeline": [
+                "Implemented Parallax Scrolling & Dynamic/Fluid Backgrounds",
+                "Added Procedural Audio (Synthesized UI sounds) & Haptics",
+                "Built Heatmap View & Interactive Playback System",
+                "Added Search, Deep Linking, and Export functionality"
+            ],
+            "features": [
+                "🔊 <strong>Procedural Audio:</strong> Web Audio API synthesis for UI sounds (no assets)",
+                "🌈 <strong>Dynamic Backgrounds:</strong> Fluid gradients that shift based on timeline era",
+                "🖱️ <strong>Rich Interaction:</strong> Hover previews, glassmorphism, and haptic feedback",
+                "📊 <strong>Data Density:</strong> GitHub-style heatmap and rolling stats dashboard",
+                "🔍 <strong>Power Tools:</strong> Fuzzy search, keyboard nav, and auto-scroll playback"
+            ],
+            "metrics": {
+                "Phases Completed": "15/15",
+                "Bougie Level": "Maximum",
+                "Audio Assets": "0 (Synth)",
+                "Vibe": "Immaculate"
+            },
+            "callout": {
+                "icon": "👨‍🍳",
+                "title": "The Michelin Treatment",
+                "text": "We didn't just display the data; we celebrated it. Every interaction—from the scroll physics to the audio clicks—was crafted to feel premium."
+            },
+            "crewAttribution": {
+                "systems": [
+                    { "name": "ZeeRah's Chaos", "contribution": "Vibe Director", "icon": "😈" },
+                    { "name": "Antigravity", "contribution": "Implementation", "icon": "👨‍💻" }
+                ],
+                "quote": "\"848 is sacred. 💚🔥💀\""
+            },
+            "sortDate": "2026-01-28T02:00:00",
+            "legacyPhase": "Phase 16"
         }
     ]
 };
