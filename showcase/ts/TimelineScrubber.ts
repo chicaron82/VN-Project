@@ -17,7 +17,6 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import type { TimelineEntry } from '../data/timeline';
 import { timelineAnimations } from './TimelineAnimations';
 
 export interface ScrubberEntry {
@@ -40,7 +39,6 @@ export class TimelineScrubber {
     private animationFrame: number | null = null;
 
     constructor(
-        timelineSelector: string = '.timeline-phases',
         containerSelector: string = '#timeline-container'
     ) {
         this.container = document.querySelector(containerSelector);
@@ -153,7 +151,9 @@ export class TimelineScrubber {
                 this.jumpToEntry(index);
             });
 
-            this.segments.appendChild(segment);
+            if (this.segments) {
+                this.segments.appendChild(segment);
+            }
         });
 
         console.log('🎨 [TimelineScrubber] Rendered', this.entries.length, 'segments');
