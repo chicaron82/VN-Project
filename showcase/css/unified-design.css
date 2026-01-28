@@ -327,6 +327,11 @@ section p {
     background: linear-gradient(90deg, #e94560, #ff6b35, #00d9ff, #00ff88) !important;
 }
 
+/* Experiment - Science & Glitch */
+.scroll-progress[data-section="experiment"] {
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #2c003e) !important;
+}
+
 /* ==========================================================================
    8. DARK MODE SMART SEPARATORS
    Additional subtle visual guides in dark mode

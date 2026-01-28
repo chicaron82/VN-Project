@@ -281,7 +281,11 @@ export class TimelineRenderer {
         // 1. Filter
         let filtered = this.originalEntries;
         if (this.activeFilter !== 'all') {
-            filtered = filtered.filter(p => p.date?.includes(this.activeFilter));
+            filtered = filtered.filter(p => {
+                const dateMatch = p.date?.includes(this.activeFilter);
+                const tagMatch = p.tags?.includes(this.activeFilter);
+                return dateMatch || tagMatch;
+            });
         }
 
         // 2. Search (Spotlight)
@@ -315,13 +319,21 @@ export class TimelineRenderer {
         // Extract Unique Dates for Filter
         const dates = [...new Set(this.originalEntries.map(p => {
             // Simplify date string "January 12, 2026 (Morning)" -> "Jan 12"
-            // This is a naive regex, might need adjustment based on real data
             const match = p.date?.match(/([A-Z][a-z]+ \d+)/);
             return match ? match[0] : (p.date || '');
         }))];
 
-        // Build Filter Options
-        const filterOptions = dates.map(date => `<option value="${date}">${date}</option>`).join('');
+        // Extract Unique Tags for Filter
+        const tags = [...new Set(this.originalEntries.flatMap(p => p.tags || []))].sort();
+
+        // Build Filter Options with Groups
+        let filterOptions = `<optgroup label="Tracks & Phases">`;
+        filterOptions += tags.map(tag => `<option value="${tag}">${tag}</option>`).join('');
+        filterOptions += `</optgroup>`;
+
+        filterOptions += `<optgroup label="Dates">`;
+        filterOptions += dates.map(date => `<option value="${date}">${date}</option>`).join('');
+        filterOptions += `</optgroup>`;
 
         this.toolbar.innerHTML = `
             <div class="timeline-toolbar">
@@ -336,7 +348,7 @@ export class TimelineRenderer {
 
                 <div class="toolbar-group">
                      <select class="timeline-btn" id="timeline-filter">
-                        <option value="all">All Dates</option>
+                        <option value="all">Show All</option>
                         ${filterOptions}
                      </select>
                 </div>
@@ -568,6 +580,20 @@ export class TimelineRenderer {
 
         const content = document.createElement('div');
         content.className = 'timeline-content';
+
+        // BADGES (Tags)
+        if (entry.tags && entry.tags.length > 0) {
+            const tagsContainer = document.createElement('div');
+            tagsContainer.className = 'timeline-tags';
+            entry.tags.forEach(tag => {
+                const badge = document.createElement('span');
+                badge.className = 'timeline-badge';
+                badge.setAttribute('data-tag', tag);
+                badge.textContent = tag;
+                tagsContainer.appendChild(badge);
+            });
+            content.appendChild(tagsContainer);
+        }
 
         // HEADER
         const header = document.createElement('h3');

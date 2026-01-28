@@ -34,6 +34,7 @@ import { WorkflowSection } from './components/WorkflowSection';
 import { ResultsSection } from './components/ResultsSection';
 import { SpotlightSection } from './components/SpotlightSection';
 import { EvolutionSection } from './components/EvolutionSection';
+import { ExperimentSection } from './components/ExperimentSection';
 import { WhoSection } from './components/WhoSection';
 
 // Import timeline enhancements
@@ -136,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     new ResultsSection();
     new SpotlightSection();
     new EvolutionSection();
+    new ExperimentSection();
     new WhoSection();
     console.log('✅ Section renderers initialized');
 
@@ -203,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const scrollLeft = tabPanelsContainer.scrollLeft;
                 const panelWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / panelWidth);
-                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution'];
+                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution', 'experiment'];
                 const expectedTab = tabs[currentIndex];
 
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {
@@ -217,8 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize visual effects
     initTypingEffect();
     // new MagneticCursor(); // Disabled to show timeline ripple effects
-    initTilt('.hero-banner.home .hero-banner-image', {
-        container: '.hero-banner.home',
+    initTilt('.hero-banner .hero-banner-image', {
+        container: '.hero-banner',
         limits: 15,
         perspective: 1000
     });

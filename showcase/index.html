@@ -229,6 +229,10 @@
                         <span class="section-icon">🔄</span>
                         <span class="section-label">The Evolution</span>
                     </button>
+                    <button class="section-nav-item" data-tab="experiment">
+                        <span class="section-icon">🧪</span>
+                        <span class="section-label">V3 Experiment</span>
+                    </button>
                     <button class="section-nav-item" data-tab="who">
                         <span class="section-icon">👥</span>
                         <span class="section-label">Who Are We</span>
@@ -335,11 +339,15 @@
                 <span class="tab-icon">🔄</span>
                 <span class="tab-label">Evolution</span>
             </button>
+            <button class="tab-item" data-tab="experiment" role="tab" aria-selected="false">
+                <span class="tab-icon">🧪</span>
+                <span class="tab-label">Experiment</span>
+            </button>
 
             <!-- Swipe indicator (Phase 26e: Facebook-style) -->
             <div class="tab-indicator" aria-hidden="true"></div>
         </div>
-        <div id="tab-progress" class="tab-progress">●○○○○○ 1 of 6</div>
+        <div id="tab-progress" class="tab-progress">●○○○○○○ 1 of 7</div>
     </div>
 
     <!-- TAB PANELS CONTAINER -->
@@ -410,6 +418,16 @@
          SECTION 6: FUTURE ROADMAP
          ========================================== -->
 
+
+            <!-- Footer (injected from template) -->
+            <div class="footer-placeholder"></div>
+        </div>
+
+        <!-- ==========================================
+         SECTION 6: THE V3 EXPERIMENT
+         ========================================== -->
+        <div class="tab-panel" data-panel="experiment" role="tabpanel" aria-hidden="true">
+            <div id="uv7-experiment-mount"></div>
 
             <!-- Footer (injected from template) -->
             <div class="footer-placeholder"></div>

@@ -465,7 +465,353 @@ private maxBackups: number = 2;</code></pre>
                             </div>
                         </div>
 
-                        <!-- 6. V1 vs V2: Soma's Journey -->
+                        <!-- 6. The V3 Experiment: Multi-Model Edition -->
+                        <div class="methodology-expandable">
+                            <button class="methodology-toggle" data-section="v3-experiment">
+                                <span class="toggle-icon">▼</span>
+                                <h3>🧪 The V3 Experiment: Can Soul Be Prompted? (Multi-Model Edition)</h3>
+                            </button>
+                            <div class="methodology-summary">
+                                The ultimate test: Can emergent creativity be reverse-engineered? Four AI models (Claude, Gemini, GPT-4o, Grok)
+                                each cook from two recipes (chaos vs structure). 8 agents, zero human intervention, 10-way comparison. Status: In Progress.
+                            </div>
+                            <div class="methodology-content" id="v3-experiment-content">
+                                <p class="experiment-intro">
+                                    After building V1 through ingredients-based collaboration and refining it to V2 with professional
+                                    architecture, we asked the ultimate questions: <strong>Can the soul of V1 be captured in a prompt?</strong>
+                                    Can chaos be codified? Can emergence be reverse-engineered? <strong>And do different AI models interpret
+                                    the same recipe differently?</strong>
+                                </p>
+
+                                <div class="experiment-question-callout">
+                                    <h5>🤔 The Core Questions</h5>
+                                    <p>
+                                        <strong>Question 1:</strong> If AI analyzes V1 completely and writes a <em>perfect recipe</em> capturing every mechanic,
+                                        timing value, quirk, and MSG comment... can a fresh agentic AI follow that recipe and produce
+                                        something with <strong>soul?</strong>
+                                    </p>
+                                    <p style="margin-top: 1rem;">
+                                        <strong>Question 2:</strong> If we give the <em>same recipe</em> to four different AI models
+                                        (Claude, Gemini, GPT-4o, Grok), will they produce similar results? Or does each model's
+                                        "cooking style" create unique interpretations? <strong>Can we measure model bias directly?</strong>
+                                    </p>
+                                </div>
+
+                                <div class="experiment-design">
+                                    <h5>🔬 Experimental Design</h5>
+
+                                    <div class="experiment-phase">
+                                        <div class="phase-number">Phase 1</div>
+                                        <div class="phase-content">
+                                            <h6>Deep V1 Analysis</h6>
+                                            <p>
+                                                DiZee (Claude Sonnet 4.5) reads ALL of V1's 75,000 lines: every system, mechanic, quirk,
+                                                timing value, color, interaction pattern, lore signature, crew credit, edge case, and
+                                                "bug that became a feature."
+                                            </p>
+                                            <div class="phase-output">
+                                                <strong>Output:</strong> Comprehensive "V1 DNA" document capturing what makes it special
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="experiment-phase">
+                                        <div class="phase-number">Phase 2</div>
+                                        <div class="phase-content">
+                                            <h6>Recipe Generation (Two Approaches)</h6>
+                                            <div class="recipe-cards">
+                                                <div class="recipe-card recipe-a">
+                                                    <h7>📋 Recipe A: From V1 Chaos</h7>
+                                                    <ul>
+                                                        <li>Full system inventory</li>
+                                                        <li>Implementation details (how it works)</li>
+                                                        <li>MSG preservation (lore, signatures, credits)</li>
+                                                        <li>Exact values (timing, colors, strings)</li>
+                                                        <li>Edge cases & quirks</li>
+                                                        <li>Self-documentation requirement</li>
+                                                    </ul>
+                                                    <p class="recipe-note">
+                                                        Hypothesis: Chaos contains more information. Hyper-detailed recipe (~30k+ tokens).
+                                                    </p>
+                                                </div>
+
+                                                <div class="recipe-card recipe-b">
+                                                    <h7>📐 Recipe B: From V2 Structure</h7>
+                                                    <ul>
+                                                        <li>Architecture patterns (EventBus, modular)</li>
+                                                        <li>TypeScript interfaces & types</li>
+                                                        <li>Test requirements (1,499 tests baseline)</li>
+                                                        <li>V1 MSG to preserve (explicit)</li>
+                                                        <li>Clean code requirements (SOLID)</li>
+                                                        <li>Self-documentation requirement</li>
+                                                    </ul>
+                                                    <p class="recipe-note">
+                                                        Hypothesis: Structure enables creativity. Pattern-focused, cleaner prompt.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="experiment-phase">
+                                        <div class="phase-number">Phase 3</div>
+                                        <div class="phase-content">
+                                            <h6>Multi-Model Agentic Cooking (8 Parallel Agents)</h6>
+
+                                            <div class="model-groups">
+                                                <div class="model-group">
+                                                    <h7>📋 Recipe A (Chaos) → 4 Models</h7>
+                                                    <div class="agent-cards">
+                                                        <div class="agent-card agent-belle">
+                                                            <strong>V3a-Belle</strong>
+                                                            <span class="agent-model">Gemini 1.5 Pro</span>
+                                                        </div>
+                                                        <div class="agent-card agent-dizee">
+                                                            <strong>V3a-DiZee</strong>
+                                                            <span class="agent-model">Claude Sonnet 4.5</span>
+                                                        </div>
+                                                        <div class="agent-card agent-tori">
+                                                            <strong>V3a-Tori</strong>
+                                                            <span class="agent-model">GPT-4o</span>
+                                                        </div>
+                                                        <div class="agent-card agent-genzee">
+                                                            <strong>V3a-GenZee</strong>
+                                                            <span class="agent-model">Grok 2</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="model-group">
+                                                    <h7>📐 Recipe B (Structure) → 4 Models</h7>
+                                                    <div class="agent-cards">
+                                                        <div class="agent-card agent-belle">
+                                                            <strong>V3b-Belle</strong>
+                                                            <span class="agent-model">Gemini 1.5 Pro</span>
+                                                        </div>
+                                                        <div class="agent-card agent-dizee">
+                                                            <strong>V3b-DiZee</strong>
+                                                            <span class="agent-model">Claude Sonnet 4.5</span>
+                                                        </div>
+                                                        <div class="agent-card agent-tori">
+                                                            <strong>V3b-Tori</strong>
+                                                            <span class="agent-model">GPT-4o</span>
+                                                        </div>
+                                                        <div class="agent-card agent-genzee">
+                                                            <strong>V3b-GenZee</strong>
+                                                            <span class="agent-model">Grok 2</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="experiment-rules">
+                                                <strong>Experiment Rules:</strong>
+                                                <ul>
+                                                    <li>Fresh AI instances (zero prior context)</li>
+                                                    <li>Pure agentic, ZERO human intervention</li>
+                                                    <li>Self-document to timeline as they build</li>
+                                                    <li>No "sent back to kitchen" - cook once, serve</li>
+                                                    <li>Only intervene for compilation errors</li>
+                                                    <li>Run all 8 agents in parallel</li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="predicted-biases">
+                                                <strong>Predicted Model Biases:</strong>
+                                                <div class="bias-predictions">
+                                                    <div class="bias-item">
+                                                        <strong>Claude (DiZee):</strong> Best MSG preservation, narrative coherence, might be overly cautious
+                                                    </div>
+                                                    <div class="bias-item">
+                                                        <strong>Gemini (Belle):</strong> Cleanest code structure, best optimization, might sacrifice personality
+                                                    </div>
+                                                    <div class="bias-item">
+                                                        <strong>GPT-4o (Tori):</strong> Best creative interpretation, understands "why," might take liberties
+                                                    </div>
+                                                    <div class="bias-item">
+                                                        <strong>Grok (GenZee):</strong> Total wild card, unknown biases, pure experiment
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="experiment-phase">
+                                        <div class="phase-number">Phase 4</div>
+                                        <div class="phase-content">
+                                            <h6>10-Way Comparative Analysis</h6>
+                                            <p>Aaron (and fresh AI reviewers) compare all versions:</p>
+
+                                            <div class="comparison-matrix">
+                                                <div class="matrix-header">
+                                                    <strong>Comparison Matrix:</strong>
+                                                </div>
+                                                <div class="matrix-versions">
+                                                    <div class="version-item control">V1 (Control - Ingredients)</div>
+                                                    <div class="version-item control">V2 (Control - Refined)</div>
+                                                    <div class="version-item">V3a-Belle (Chaos)</div>
+                                                    <div class="version-item">V3a-DiZee (Chaos)</div>
+                                                    <div class="version-item">V3a-Tori (Chaos)</div>
+                                                    <div class="version-item">V3a-GenZee (Chaos)</div>
+                                                    <div class="version-item">V3b-Belle (Structure)</div>
+                                                    <div class="version-item">V3b-DiZee (Structure)</div>
+                                                    <div class="version-item">V3b-Tori (Structure)</div>
+                                                    <div class="version-item">V3b-GenZee (Structure)</div>
+                                                </div>
+                                                <div class="matrix-criteria">
+                                                    <strong>Evaluation Criteria:</strong>
+                                                    <ul>
+                                                        <li>Functional parity (does it work?)</li>
+                                                        <li>MSG preservation (soul intact?)</li>
+                                                        <li>Code quality (clean, maintainable?)</li>
+                                                        <li>"Feel" matches (interactions right?)</li>
+                                                        <li>Test coverage (how tested?)</li>
+                                                        <li>Development time (how long?)</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="analysis-questions">
+                                                <strong>Key Research Questions:</strong>
+                                                <ul>
+                                                    <li><strong>Recipe Effectiveness:</strong> Does Recipe A (chaos) or Recipe B (structure) work better?</li>
+                                                    <li><strong>Model Performance:</strong> Which model preserves MSG best? Which produces cleanest code?</li>
+                                                    <li><strong>Model Clustering:</strong> Do models cluster? (Gemini+Claude similar? GPT+Grok similar?)</li>
+                                                    <li><strong>Recipe×Model Interaction:</strong> Do certain models excel with certain recipes?</li>
+                                                    <li><strong>Emergence Gap:</strong> What aspects can't be prompted, regardless of model?</li>
+                                                    <li><strong>Practical Guide:</strong> Can we build a "model selection framework" for developers?</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="experiment-outcomes">
+                                    <h5>🎯 Possible Outcomes (All Valuable)</h5>
+
+                                    <div class="outcome-card outcome-success">
+                                        <div class="outcome-header">
+                                            <span class="outcome-icon">✅</span>
+                                            <strong>All Models Capture MSG Successfully</strong>
+                                        </div>
+                                        <p class="outcome-thesis">
+                                            <strong>Thesis:</strong> "Emergent creativity CAN be codified. Recipes work across architectures.
+                                            The 'ingredients method' is Phase 1 (exploration), agentic is Phase 2 (execution)."
+                                        </p>
+                                        <p class="outcome-implication">
+                                            <strong>Implication:</strong> Recipe vs ingredients aren't competing - they're sequential.
+                                            Explore with ingredients, then codify for replication. Model choice matters less than recipe quality.
+                                        </p>
+                                    </div>
+
+                                    <div class="outcome-card outcome-partial">
+                                        <div class="outcome-header">
+                                            <span class="outcome-icon">⚠️</span>
+                                            <strong>Models Get Function, Miss Soul</strong>
+                                        </div>
+                                        <p class="outcome-thesis">
+                                            <strong>Thesis:</strong> "Soul requires conversation, regardless of model. You can prompt WHAT and HOW,
+                                            but not WHY or FEEL. Emergence is fundamentally un-promptable across all architectures."
+                                        </p>
+                                        <p class="outcome-implication">
+                                            <strong>Implication:</strong> Ingredients method isn't just different - it's NECESSARY
+                                            for creative work. Agentic is for execution, not discovery. No model can bridge the emergence gap.
+                                        </p>
+                                    </div>
+
+                                    <div class="outcome-card outcome-comparison">
+                                        <div class="outcome-header">
+                                            <span class="outcome-icon">📊</span>
+                                            <strong>Model Biases Revealed</strong>
+                                        </div>
+                                        <p class="outcome-thesis">
+                                            <strong>If models diverge wildly:</strong> Recipes require interpretation. Each model's "cooking style"
+                                            creates unique results. We can build a model selection framework: "Use Claude for MSG preservation,
+                                            Gemini for clean architecture, GPT-4o for creative interpretation."
+                                        </p>
+                                        <p class="outcome-thesis">
+                                            <strong>If models cluster (Gemini+Claude similar, GPT+Grok similar):</strong> Model families share biases.
+                                            Training approach matters more than specific model.
+                                        </p>
+                                        <p class="outcome-thesis">
+                                            <strong>If Recipe A > Recipe B across models:</strong> Chaos contains more information. Detail beats patterns.
+                                        </p>
+                                        <p class="outcome-thesis">
+                                            <strong>If Recipe B > Recipe A across models:</strong> Structure enables interpretation. Patterns are more actionable.
+                                        </p>
+                                    </div>
+
+                                    <div class="outcome-card outcome-research">
+                                        <div class="outcome-header">
+                                            <span class="outcome-icon">📚</span>
+                                            <strong>Research Contribution</strong>
+                                        </div>
+                                        <p class="outcome-thesis">
+                                            <strong>Regardless of outcome:</strong> This is publishable research. "Measuring Emergent Creativity
+                                            Across LLM Architectures: A Comparative Study Using Visual Novel Reconstruction." We're systematically
+                                            measuring whether model architecture affects interpretation of identical specifications.
+                                        </p>
+                                        <p class="outcome-implication">
+                                            <strong>Practical Output:</strong> A model selection guide for developers. "Need MSG? Use Claude.
+                                            Need clean code? Use Gemini. Need creative interpretation? Use GPT-4o. Chaos-faithful? Use Grok."
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="experiment-meta">
+                                    <h5>🎨 The Meta Beauty</h5>
+                                    <p>
+                                        This experiment <strong>becomes part of the narrative</strong>. Whether models succeed or fail,
+                                        whether they converge or diverge, we're documenting the <strong>limits and possibilities of
+                                        AI collaboration</strong> in real-time. This isn't just development - it's <strong>research</strong>.
+                                    </p>
+                                    <blockquote class="experiment-quote">
+                                        "We built V1 through ingredients. We refined it to V2 through training. Then we asked:
+                                        can we teach an AI to capture the soul of V1 in a recipe? Can chaos be codified?
+                                        And do different AI minds interpret the same recipe differently? We gave the same recipes
+                                        to Claude, Gemini, GPT-4o, and Grok. Here's what happened..."
+                                    </blockquote>
+                                    <div class="meta-insights">
+                                        <div class="meta-insight-item">
+                                            <strong>If all models succeed:</strong> Emergence can be codified. Recipes work universally.
+                                        </div>
+                                        <div class="meta-insight-item">
+                                            <strong>If all models fail:</strong> Soul requires conversation. Ingredients method is necessary.
+                                        </div>
+                                        <div class="meta-insight-item">
+                                            <strong>If models diverge:</strong> We've measured model bias directly. We can build a selection framework.
+                                        </div>
+                                        <div class="meta-insight-item">
+                                            <strong>Either way:</strong> This is a legitimate contribution to AI research.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="experiment-status">
+                                    <h5>📍 Current Status</h5>
+                                    <div class="status-badge in-progress">
+                                        🚧 In Progress - Phase 1: Deep V1 Analysis
+                                    </div>
+                                    <p style="margin-top: 1rem;">
+                                        <strong>What's happening now:</strong> DiZee (Claude Sonnet 4.5) is analyzing all of V1's 75,000 lines
+                                        across 69 system files to create the comprehensive DNA document. This will inform both Recipe A
+                                        (chaos-based, hyper-detailed) and Recipe B (structure-based, pattern-focused).
+                                    </p>
+                                    <p style="margin-top: 1rem;">
+                                        <strong>What's next:</strong> Once recipes are generated, we'll launch 8 agents in parallel:
+                                        Belle (Gemini), DiZee (Claude), Tori (GPT-4o), and GenZee (Grok) will each cook from both recipes.
+                                        Zero human intervention. Pure agentic. Then we compare all 10 versions (V1 + V2 + 8 V3 variants).
+                                    </p>
+                                    <p style="margin-top: 1rem;">
+                                        <strong>Timeline updates:</strong> Each phase will be documented in real-time on the Journey tab.
+                                        Follow along as we discover whether soul can be prompted, and whether different AI minds
+                                        interpret the same recipe differently.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. V1 vs V2: Soma's Journey -->
                         <div class="methodology-expandable">
                             <button class="methodology-toggle" data-section="soma-journey">
                                 <span class="toggle-icon">▼</span>

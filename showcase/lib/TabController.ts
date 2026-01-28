@@ -30,7 +30,8 @@ export class TabController {
             'workflow',
             'results',
             'spotlight',
-            'evolution'
+            'evolution',
+            'experiment'
             // Note: 'who' was merged into 'home' tab
         ];
 
@@ -294,7 +295,8 @@ export class TabController {
                 workflow: 'Workflow',
                 results: 'Results',
                 spotlight: 'Tech Spotlight',
-                evolution: 'Evolution'
+                evolution: 'Evolution',
+                experiment: 'V3 Experiment'
             };
             win.uv7Runtime.instance.setPhase(names[tabId] || tabId);
         }
@@ -350,7 +352,8 @@ export class TabController {
             workflow: 'Workflow',
             results: 'Timeline',
             spotlight: 'Spotlight',
-            evolution: 'Evolution'
+            evolution: 'Evolution',
+            experiment: 'Experiment'
         };
         return names[tabId] || tabId;
     }

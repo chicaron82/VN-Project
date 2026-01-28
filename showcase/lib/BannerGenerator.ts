@@ -71,5 +71,12 @@ export const BANNER_CONFIGS: Record<string, BannerConfig> = {
         image: '/VN-Project/showcase/media/banners/banner-evolution.png',
         alt: 'Evolution Banner',
         section: 'evolution'
+    },
+    experiment: {
+        title: 'The V3 Experiment',
+        subtitle: 'Can "soul" be reverse-engineered into a recipe?',
+        image: '/VN-Project/showcase/media/banners/banner-experiment.png',
+        alt: 'V3 Experiment Banner',
+        section: 'experiment'
     }
 };

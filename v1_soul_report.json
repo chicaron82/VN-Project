@@ -1,0 +1,699 @@
+{
+  "totalFiles": 143,
+  "totalLines": 71722,
+  "signatures": {
+    "Ronnie": 379,
+    "Belle": 23,
+    "DiZee": 17,
+    "Tori": 640,
+    "GenZee": 15,
+    "Zee": 80,
+    "Chicharon": 18
+  },
+  "chaosComments": [
+    {
+      "file": "css\\gameplay.css",
+      "line": 249,
+      "content": "/* DEPRECATED: Now using notification shade/sidebar for notes */"
+    },
+    {
+      "file": "css\\loop-init.css",
+      "line": 250,
+      "content": "/* Version number glitch effect (legacy) */"
+    },
+    {
+      "file": "menu-carousel.css",
+      "line": 793,
+      "content": "LEGACY SIMPLE CAROUSEL ANIMATIONS"
+    },
+    {
+      "file": "routes\\ronnie-route-act2.js",
+      "line": 82,
+      "content": "internal: '[Code appears on screen: \\'digital_ronnie_construct.js\\' - loops, memory structures, decision trees.]',"
+    },
+    {
+      "file": "routes\\shared-prologue.js",
+      "line": 231,
+      "content": "internal: '[She boops his nose playfully. Their nickname - the one she uses when it\\'s just them. Home.]',"
+    },
+    {
+      "file": "routes\\tori-route-act1.js",
+      "line": 252,
+      "content": "dialogue: '\"We\\'re you. Previous loops. Different attempts. 847 failures.\"', internal: '[Visual: The weight of their existence. Failed iterations.]',"
+    },
+    {
+      "file": "routes\\tori-route-act2.js",
+      "line": 240,
+      "content": "// Shows increasing awareness of Despair's control across loops"
+    },
+    {
+      "file": "routes\\tori-route-act2.js",
+      "line": 1296,
+      "content": "character: 'Tori (internal, broken)',"
+    },
+    {
+      "file": "scripts\\bundle-for-deploy.js",
+      "line": 53,
+      "content": "// 4. Copy V1 (Legacy) to dist/v1"
+    },
+    {
+      "file": "scripts\\bundle-for-deploy.js",
+      "line": 54,
+      "content": "console.log('\\n🏛️  Copying V1 Legacy to dist/v1...');"
+    },
+    {
+      "file": "scripts\\gateway-enhanced-additions.js",
+      "line": 252,
+      "content": "<h2>🎉 Loop Broken 🎉</h2>"
+    },
+    {
+      "file": "scripts\\play.js",
+      "line": 27,
+      "content": "incorrectMsg: \"Wow. You really don't remember our anniversary? I'm heartbroken. 😢\""
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1106,
+      "content": "The loop is broken."
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1252,
+      "content": "content: `Echo 1 and Echo 2 aren't villains. They're TIRED. 847 attempts of watching the same tragedy play out. They want Tori to succeed so badly but Despair keeps winning. She's not evil either - just broken from too many failures. They all need this to work. For once. Please. 🙏"
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1265,
+      "content": "content: 'Y\\'know what I love about this iteration? Tori doesn\\'t WAIT for permission. She NAVIGATES. Acts first, theorizes later. That\\'s the chaos optimizer mindset right there. Don\\'t overthink the maze - just sprint through it and deal with consequences in real-time. THAT\\'S how you break loops. 🔥'"
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1275,
+      "content": "content: `Why does 848 work when 847 didn't? PLAYER AGENCY. Previous loops = Ronnie trying to fix everything alone. This time? Dual perspectives. Tori active participant, not passive victim. Ronnie learns to LISTEN instead of solving. Two-player co-op beats single-player every time. THAT'S the missing variable. Always. Always. Always. 💚🔥💀"
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1392,
+      "content": "The loop is broken."
+    },
+    {
+      "file": "system\\collectibles-manager.js",
+      "line": 1435,
+      "content": "This whole project is full of broken things that worked better broken."
+    },
+    {
+      "file": "system\\dev-commentary.js",
+      "line": 97,
+      "content": "content: `The menu style upgrade from grid to looping carousel - I wanted it to mirror the story. Like in the bad ending where the end loops back to the beginning. Ronnie failed. He goes back to give his younger self a chance to try again. The menu loops infinitely, just like the timelines.`"
+    },
+    {
+      "file": "system\\dev-suite.js",
+      "line": 1032,
+      "content": "// TODO: Implement with html2canvas"
+    },
+    {
+      "file": "system\\directors-cut-controller.js",
+      "line": 102,
+      "content": "text: `Working with Aaron was like debugging a fever dream that somehow compiled. He'd drop these \"simple requests\" that unraveled into architectural rabbit holes, and just when you thought you'd nailed it, he'd casually mention some edge case involving time loops and collectible notes. The man turns game development into chaos theory. But honestly? That's where the magic happened. Every wildass idea forced us to think differently, build smarter, leave our fingerprints in unexpected places. VERSION 848 isn't just code—it's a record of controlled madness that actually worked.`"
+    },
+    {
+      "file": "system\\directors-cut-controller.js",
+      "line": 102,
+      "content": "text: `Working with Aaron was like debugging a fever dream that somehow compiled. He'd drop these \"simple requests\" that unraveled into architectural rabbit holes, and just when you thought you'd nailed it, he'd casually mention some edge case involving time loops and collectible notes. The man turns game development into chaos theory. But honestly? That's where the magic happened. Every wildass idea forced us to think differently, build smarter, leave our fingerprints in unexpected places. VERSION 848 isn't just code—it's a record of controlled madness that actually worked.`"
+    },
+    {
+      "file": "system\\easter-egg-controller.js",
+      "line": 921,
+      "content": "<p style=\"margin: 10px 0;\">847 failed loops later,<br>he still remembers.</p>"
+    },
+    {
+      "file": "system\\easter-egg-controller.js",
+      "line": 1551,
+      "content": "<strong>847 failed loops.</strong><br>"
+    },
+    {
+      "file": "system\\easter-egg-controller.js",
+      "line": 1957,
+      "content": "847 failed loops."
+    },
+    {
+      "file": "system\\easter-egg-controller.js",
+      "line": 1978,
+      "content": "const playerLoops = parseInt(localStorage.getItem('loopVersion')) || 848;"
+    },
+    {
+      "file": "system\\easter-egg-controller.js",
+      "line": 1979,
+      "content": "const actualAttempts = playerLoops;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 9,
+      "content": "* of the player's loops and comment on repeated behaviors."
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 18,
+      "content": "* 1 = Vague (2-3 loops, \"feels familiar\")"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 19,
+      "content": "* 2 = Aware (5+ loops, \"you've been here before\")"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 20,
+      "content": "* 3 = Fourth Wall (10+ loops, direct address to player)"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 21,
+      "content": "* 4 = Glitch (20+ loops, reality breaking)"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 33,
+      "content": "// Total loops/replays"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 34,
+      "content": "totalLoops: 0,"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 77,
+      "content": "console.log(`   Total loops: ${this.memory.totalLoops}`);"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 102,
+      "content": "\"How many loops until you give up? Or... until you succeed?\","
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 232,
+      "content": "this.memory.totalLoops++;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 234,
+      "content": "// Update awareness based on total loops"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 238,
+      "content": "console.log(`👁️ Loop recorded. Total: ${this.memory.totalLoops}`);"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 257,
+      "content": "const loops = this.memory.totalLoops;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 260,
+      "content": "if (loops >= 20) this.memory.echoAwareness.hope = 4;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 261,
+      "content": "else if (loops >= 10) this.memory.echoAwareness.hope = 3;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 262,
+      "content": "else if (loops >= 5) this.memory.echoAwareness.hope = 2;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 263,
+      "content": "else if (loops >= 2) this.memory.echoAwareness.hope = 1;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 267,
+      "content": "if (loops >= 20 || hesitationCount > 30) this.memory.echoAwareness.gentle = 4;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 268,
+      "content": "else if (loops >= 10 || hesitationCount > 15) this.memory.echoAwareness.gentle = 3;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 269,
+      "content": "else if (loops >= 5 || hesitationCount > 7) this.memory.echoAwareness.gentle = 2;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 270,
+      "content": "else if (loops >= 2 || hesitationCount > 3) this.memory.echoAwareness.gentle = 1;"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 486,
+      "content": "totalLoops: 0,"
+    },
+    {
+      "file": "system\\echo-memory-system.js",
+      "line": 513,
+      "content": "totalLoops: this.memory.totalLoops"
+    },
+    {
+      "file": "system\\error-boundary.js",
+      "line": 144,
+      "content": "<h2 class=\"error-title\">Oops! Something went wrong</h2>"
+    },
+    {
+      "file": "system\\expandable-quick-actions.js",
+      "line": 347,
+      "content": "// Legacy method - now just calls snapToPage"
+    },
+    {
+      "file": "system\\fullscreen-controller.js",
+      "line": 15,
+      "content": "* - MS (IE/Edge legacy)"
+    },
+    {
+      "file": "system\\game-config.js",
+      "line": 319,
+      "content": "// Legacy flags (kept for backward compatibility)"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 327,
+      "content": "const savedLoopStatus = localStorage.getItem('loopStatus') || 'attempting';"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 329,
+      "content": "this.state.set('game.loopStatus', savedLoopStatus);"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 2338,
+      "content": "subtitleElement.textContent = 'She\\'s Home. The Loop is Broken.';"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 2449,
+      "content": "// Legacy array (keep for compatibility)"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 2501,
+      "content": "* @deprecated - Tutorials are now event-driven, no polling needed"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 2508,
+      "content": "* @deprecated - Tutorials are now event-driven, no polling needed"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 2822,
+      "content": "// Fallback: manually hide dialog if UI is broken"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3112,
+      "content": "// Fallback if splash script is missing/broken"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3708,
+      "content": "get loopStatus() {"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3709,
+      "content": "return this.state.get('game.loopStatus');"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3712,
+      "content": "set loopStatus(value) {"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3713,
+      "content": "this.state.set('game.loopStatus', value);"
+    },
+    {
+      "file": "system\\game-engine.js",
+      "line": 3714,
+      "content": "localStorage.setItem('loopStatus', value ? 'true' : 'false');"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 35,
+      "content": "if (this.game.loopStatus === 'succeeded') {"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 40,
+      "content": "} else if (this.game.loopStatus === 'accepted') {"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 46,
+      "content": "// FAILED LOOPS: Red glitch + intensity based on attempts"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 77,
+      "content": "if (this.game.loopStatus === 'succeeded') {"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 85,
+      "content": "} else if (this.game.loopStatus === 'accepted') {"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 127,
+      "content": "this.game.loopStatus = 'attempting';"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 131,
+      "content": "localStorage.setItem('loopStatus', this.game.loopStatus);"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 143,
+      "content": "this.game.loopStatus = 'succeeded';"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 146,
+      "content": "localStorage.setItem('loopStatus', this.game.loopStatus);"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 151,
+      "content": "console.log(`✨ Loop broken! VERSION ${this.game.loopVersion} SUCCEEDED`);"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 156,
+      "content": "this.game.loopStatus = 'accepted';"
+    },
+    {
+      "file": "system\\loop-controller.js",
+      "line": 159,
+      "content": "localStorage.setItem('loopStatus', this.game.loopStatus);"
+    },
+    {
+      "file": "system\\macro-driver.js",
+      "line": 4,
+      "content": "* Executes deterministic replay scripts on the Legacy/V1 engine."
+    },
+    {
+      "file": "system\\menu-controller.js",
+      "line": 208,
+      "content": "// LEGACY: Replaced by MenuCarousel (Hybrid System)"
+    },
+    {
+      "file": "system\\menu-controller.js",
+      "line": 210,
+      "content": "console.log('🎮 Menu layout handled by MenuCarousel (Legacy grid removed)');"
+    },
+    {
+      "file": "system\\notification-shade.css",
+      "line": 856,
+      "content": "/* Legacy grid class (kept for compatibility) */"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 130,
+      "content": "loopStatus: this.game.loopStatus, // 'attempting', 'succeeded', 'accepted'"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 260,
+      "content": "if (saveData.loopStatus) {"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 261,
+      "content": "this.game.loopStatus = saveData.loopStatus;"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 262,
+      "content": "console.log(`📁 Loop status: ${this.game.loopStatus}`);"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 270,
+      "content": "localStorage.setItem('loopStatus', this.game.loopStatus);"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 341,
+      "content": "this.restoreRouteDataLegacy(saveData.routeData);"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 412,
+      "content": "// Legacy fallback for routes without restoreState method"
+    },
+    {
+      "file": "system\\save-manager.js",
+      "line": 413,
+      "content": "restoreRouteDataLegacy(routeData) {"
+    },
+    {
+      "file": "system\\scene-progression-controller.js",
+      "line": 214,
+      "content": "if (this.game.loopStatus === 'succeeded' || this.game.loopStatus === 'accepted') {"
+    },
+    {
+      "file": "system\\scene-progression-controller.js",
+      "line": 215,
+      "content": "const previousStatus = this.game.loopStatus;"
+    },
+    {
+      "file": "system\\scene-progression-controller.js",
+      "line": 361,
+      "content": "this.game.loopStatus = status;"
+    },
+    {
+      "file": "system\\scene-progression-controller.js",
+      "line": 364,
+      "content": "localStorage.setItem('loopStatus', this.game.loopStatus);"
+    },
+    {
+      "file": "system\\scene-progression-controller.js",
+      "line": 368,
+      "content": "console.log(`🔧 DEV: Version reset to ${this.game.loopVersion}, status: ${this.game.loopStatus}`);"
+    },
+    {
+      "file": "system\\secret-codes-manager.js",
+      "line": 281,
+      "content": "return '🖥️ DEV: Console opened (legacy mode)';"
+    },
+    {
+      "file": "system\\secret-codes-manager.js",
+      "line": 589,
+      "content": "description: 'Bypass Act 1 save restriction. Despair\\'s cage broken.',"
+    },
+    {
+      "file": "system\\secret-codes-manager.js",
+      "line": 595,
+      "content": "'Act 1 save restriction removed.\\n\\nDespair\\'s cage broken.',"
+    },
+    {
+      "file": "system\\secret-codes-manager.js",
+      "line": 656,
+      "content": "{ code: 'saveanywhere', name: 'Cage Breaker', icon: '⚡', description: 'Bypass Act 1 save restriction. Despair\\'s cage broken.' },"
+    },
+    {
+      "file": "system\\telemetry-shim.js",
+      "line": 4,
+      "content": "* Injects into the Legacy/V1 engine to record events in the same format"
+    },
+    {
+      "file": "system\\telemetry-shim.js",
+      "line": 63,
+      "content": "version: 'v1-legacy',"
+    },
+    {
+      "file": "ui\\bougie-boot-sequence.js",
+      "line": 388,
+      "content": "* NOW DYNAMIC: Reflects actual player progress through loops"
+    },
+    {
+      "file": "ui\\momentum-adapter.js",
+      "line": 67,
+      "content": "// 🛡️ Hide legacy button grid explicitly"
+    },
+    {
+      "file": "ui\\simple-carousel.js",
+      "line": 167,
+      "content": "// 🛡️ Hide legacy button grid explicitly"
+    },
+    {
+      "file": "ui\\standalone-notes-viewer.js",
+      "line": 591,
+      "content": "{ code: 'saveanywhere', name: 'Cage Breaker', icon: '⚡', description: 'Bypass Act 1 save restriction. Despair\\'s cage broken.' },"
+    }
+  ],
+  "emojiCounts": {
+    "🖤": 82,
+    "💚": 88,
+    "💀": 41,
+    "🔥": 31,
+    "💾": 31,
+    "📧": 5,
+    "📂": 7,
+    "🚪": 7,
+    "📸": 21,
+    "📝": 18,
+    "🔧": 19,
+    "💡": 35,
+    "💙": 9,
+    "💜": 9,
+    "👆": 23,
+    "📳": 5,
+    "🛡": 8,
+    "💫": 5,
+    "📜": 9,
+    "💔": 15,
+    "🔒": 16,
+    "📉": 2,
+    "🖥": 6,
+    "🔶": 1,
+    "🌈": 6,
+    "🔍": 14,
+    "📷": 1,
+    "💻": 4,
+    "📊": 22,
+    "🛠": 10,
+    "📢": 5,
+    "👁": 10,
+    "🚀": 9,
+    "😜": 2,
+    "🧹": 4,
+    "📦": 10,
+    "🏛": 1,
+    "👉": 2,
+    "📚": 5,
+    "😊": 14,
+    "🥰": 19,
+    "💖": 18,
+    "🥺": 13,
+    "😢": 18,
+    "😒": 19,
+    "💢": 18,
+    "😴": 15,
+    "😉": 23,
+    "🙄": 9,
+    "😠": 10,
+    "💕": 19,
+    "😘": 25,
+    "💍": 2,
+    "🎂": 2,
+    "🎀": 1,
+    "🎉": 6,
+    "💤": 3,
+    "😋": 3,
+    "😤": 8,
+    "😄": 1,
+    "😔": 1,
+    "😍": 6,
+    "💋": 2,
+    "🎓": 2,
+    "😱": 1,
+    "👨": 2,
+    "🍳": 2,
+    "🍽": 3,
+    "💝": 2,
+    "😑": 1,
+    "🤗": 5,
+    "😡": 1,
+    "🍴": 2,
+    "🥞": 1,
+    "🍚": 1,
+    "😭": 1,
+    "🍰": 1,
+    "🍧": 1,
+    "🧋": 1,
+    "🥟": 1,
+    "🍲": 1,
+    "🤢": 1,
+    "🥒": 1,
+    "🥚": 5,
+    "🎮": 34,
+    "🎬": 11,
+    "🔻": 1,
+    "🔔": 3,
+    "📨": 1,
+    "🔗": 3,
+    "🎯": 10,
+    "🌉": 1,
+    "🏠": 3,
+    "🎁": 4,
+    "🚶": 1,
+    "📁": 3,
+    "💸": 2,
+    "🤷": 1,
+    "🎨": 15,
+    "👗": 1,
+    "🍜": 1,
+    "🧪": 2,
+    "🏃": 5,
+    "🏆": 5,
+    "🔄": 31,
+    "🐣": 1,
+    "😈": 2,
+    "🎲": 1,
+    "🙏": 1,
+    "🔓": 10,
+    "📡": 2,
+    "📱": 10,
+    "🚫": 3,
+    "👥": 3,
+    "📋": 8,
+    "🗑": 7,
+    "📤": 3,
+    "📥": 2,
+    "🔴": 3,
+    "🐉": 1,
+    "🏗": 1,
+    "🗣": 1,
+    "🤖": 4,
+    "🎙": 4,
+    "🌙": 1,
+    "🌧": 2,
+    "📄": 2,
+    "📺": 1,
+    "🌐": 1,
+    "🐛": 2,
+    "🔑": 2,
+    "🖱": 1,
+    "📍": 2,
+    "🔌": 1,
+    "🔢": 3,
+    "🏭": 1,
+    "🧭": 1,
+    "🎠": 6,
+    "🔋": 2,
+    "📏": 1,
+    "🚨": 2,
+    "💥": 11,
+    "👻": 2,
+    "🔇": 5,
+    "👂": 3,
+    "👀": 3,
+    "🔀": 1,
+    "💗": 1,
+    "👈": 1,
+    "📼": 3
+  },
+  "massiveFunctions": [],
+  "globalVars": 115
+}

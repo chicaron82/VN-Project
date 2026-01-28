@@ -61,6 +61,7 @@ export interface TimelineEntry {
     emoji?: string;
     title: string;
     type?: string;
+    tags?: string[];
     sortDate?: string;
     summary?: string;
     description?: string;
