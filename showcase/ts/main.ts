@@ -42,6 +42,7 @@ import { TimelineStats } from './TimelineStats';
 import { TimelineScrubber } from './TimelineScrubber';
 import { TimelineSearch } from './TimelineSearch';
 import { TimelineDeepLink } from './TimelineDeepLink';
+import { TimelineKeyboardNav } from './TimelineKeyboardNav';
 
 // Import showcase UI components
 import { Sidebar } from './components/Sidebar';
@@ -143,7 +144,8 @@ document.addEventListener('DOMContentLoaded', () => {
     new TimelineScrubber('#timeline-container');
     const timelineSearch = new TimelineSearch('.timeline', '#timeline-search');
     const timelineDeepLink = new TimelineDeepLink();
-    console.log('✅ Timeline enhancements initialized (animations, stats, scrubber, search, deep linking)');
+    const timelineKeyboardNav = new TimelineKeyboardNav('.timeline', '#timeline-search');
+    console.log('✅ Timeline enhancements initialized (animations, stats, scrubber, search, deep linking, keyboard nav)');
 
     // Wire up search callback to scroll to entry
     timelineSearch.onSelect((entry) => {
