@@ -58,7 +58,7 @@ export class TimelineRenderer {
         // Pagination
         this.pageSize = 3;
         this.currentPage = 0;
-        this.paginationEnabled = true;
+        this.paginationEnabled = false; // Disabled for search to work on all entries
 
         // Cache DOM elements
         this.toolbar = null;
@@ -104,6 +104,9 @@ export class TimelineRenderer {
         // Phase 4: Initialize Enhanced Search (after timeline is rendered)
         // This adds fuzzy matching, autocomplete, and keyboard nav to the existing toolbar search
         this.timelineSearch = new TimelineSearch('.timeline-phases', '.timeline-search');
+
+        // Refresh search index after any timeline re-render
+        this.refreshSearchIndex();
 
         // Setup Observers
         this.setupInteractions();
@@ -686,5 +689,14 @@ export class TimelineRenderer {
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
             .replace(/'/g, "&#039;");
+    }
+
+    /**
+     * Refresh search index after timeline re-renders
+     */
+    private refreshSearchIndex(): void {
+        if (this.timelineSearch) {
+            this.timelineSearch.refreshIndex('.timeline-phases');
+        }
     }
 }

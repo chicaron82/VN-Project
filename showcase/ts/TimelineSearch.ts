@@ -449,4 +449,13 @@ export class TimelineSearch {
             this.performSearch(query);
         }
     }
+
+    /**
+     * Refresh index (call after timeline re-renders)
+     */
+    public refreshIndex(timelineSelector: string = '.timeline-phases'): void {
+        this.entries = [];
+        this.indexEntries(timelineSelector);
+        console.log('🔄 [TimelineSearch] Index refreshed');
+    }
 }
