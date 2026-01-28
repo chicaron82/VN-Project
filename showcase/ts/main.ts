@@ -13,7 +13,8 @@ import { StatusBar } from '../../v2/ui/components/StatusBar';
 import { NotificationRail } from '../../v2/ui/components/NotificationRail';
 // UV7Context type removed as it is no longer used
 import { UV7AppSwitcher } from '../../v2/ui/components/UV7AppSwitcher';
-import { UV7OS } from '../../v2/ui/components/UV7OS'; // Import the class directly
+import { UV7OS } from '../../v2/ui/components/UV7OS';
+import type { TimelineEntry } from '../../v2/ui/components/UV7OSConfig'; // Import the class directly
 
 // Import showcase components
 import { TimelineRenderer } from '../lib/TimelineRenderer';
@@ -192,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize UV7 OS (navigation system) - ALWAYS, even in shell mode
     if (window.TIMELINE_DATA?.entries) {
         window.uv7os = new UV7OS('showcase', {
-            entries: window.TIMELINE_DATA.entries
+            entries: window.TIMELINE_DATA.entries as TimelineEntry[]
         });
         console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
     } else {
