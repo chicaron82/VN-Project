@@ -39,6 +39,7 @@ export class TimelineRenderer {
 
     // Signal Animation
     private signalPulse: HTMLElement | null;
+    private scrollTimeout?: number;
 
     // Phase 4: Enhanced search
     private timelineSearch: TimelineSearch | null;
