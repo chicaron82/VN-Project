@@ -26,6 +26,29 @@ export class JourneySection {
                         <strong>Dev Log</strong> (reverse timeline) to see how the game came together.
                     </p>
 
+                    <!-- Timeline Search -->
+                    <div class="timeline-search-container">
+                        <div class="search-input-wrapper">
+                            <span class="search-icon">🔍</span>
+                            <input 
+                                type="search" 
+                                id="timeline-search"
+                                class="timeline-search-input"
+                                placeholder="Search timeline... (e.g., 'EventBus', 'boot sequence', 'DiZee')"
+                                autocomplete="off"
+                            >
+                            <button class="search-clear" aria-label="Clear search">×</button>
+                        </div>
+                        
+                        <div class="search-suggestions" id="search-suggestions">
+                            <!-- Generated dynamically -->
+                        </div>
+                        
+                        <div class="search-results-count">
+                            <span id="results-count">103</span> entries
+                        </div>
+                    </div>
+
                     <!-- Timeline entries loaded dynamically from timeline.json -->
                     <div class="timeline" id="timeline-container">
                         <!-- Timeline will be populated by TimelineRenderer -->

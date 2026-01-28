@@ -36,6 +36,12 @@ import { SpotlightSection } from './components/SpotlightSection';
 import { EvolutionSection } from './components/EvolutionSection';
 import { WhoSection } from './components/WhoSection';
 
+// Import timeline enhancements
+import { TimelineAnimations } from './TimelineAnimations';
+import { TimelineStats } from './TimelineStats';
+import { TimelineScrubber } from './TimelineScrubber';
+import { TimelineSearch } from './TimelineSearch';
+
 // Import showcase UI components
 import { Sidebar } from './components/Sidebar';
 import { NotificationShade } from './components/NotificationShade';
@@ -127,7 +133,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inject footers AFTER sections render (DRY optimization)
     injectFooters();
 
-    // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
+    // Initialize timeline enhancements (MAXIMUM MICHELIN)
+    // Note: These are initialized but not stored as they manage themselves
+    new TimelineAnimations('.timeline');
+    if (window.TIMELINE_DATA?.entries) {
+        new TimelineStats(window.TIMELINE_DATA.entries as TimelineEntry[]);
+    }
+    new TimelineScrubber('#timeline-container');
+    const timelineSearch = new TimelineSearch('.timeline', '#timeline-search');
+    console.log('✅ Timeline enhancements initialized (animations, stats, scrubber, search)');
+
+    // Wire up search callback to scroll to entry
+    timelineSearch.onSelect((entry) => {
+        console.log('🔍 [Search] Selected entry:', entry.title);
+    });
+
     // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
     new TimelineRenderer('#timeline-container');
     console.log('✅ Timeline renderer initialized');
