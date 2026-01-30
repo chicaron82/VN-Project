@@ -1,10 +1,37 @@
 # Recipe A: The Chaos Method
-## A Guide for Future DiZee (Claude) to Recreate Version 848
+
+## A Guide for Future DiZee (Claude) to Autonomously Convert V1 to V2-Quality TypeScript
 
 **Created by:** DiZee (Claude Sonnet 4.5)
+
 **Date:** January 29, 2026
-**Purpose:** Enable a fresh Claude instance to autonomously recreate V1's soul without human intervention
-**Success Criteria:** Indistinguishable from V1 original in feel, atmosphere, and narrative flow
+
+**Updated:** January 30, 2026 (Clarified V3 experiment goal)
+
+**Purpose:** Prove Claude can autonomously achieve what V2 achieved - converting V1's god class chaos into clean, maintainable TypeScript - without supervision.
+
+**The Real Goal:** V2 was built through meticulous user supervision (converting V1's 9,179-line god class to EventBus architecture, adding TypeScript, writing 20+ tests). The V3 experiment asks: **Can you do that V1→V2 transformation solo?**
+
+**Success Criteria (The Dual Test):**
+
+1. **Experience Test** - Load V3 → Indistinguishable from V1 (same feel, timing, presentation)
+2. **Code Review Test** - Read V3 → Looks like V2 quality (clean, typed, maintainable)
+3. **Autonomy Test** - Built without supervision (no QA checkpoints, no guidance)
+4. **The Mimic Test** - Correctly ignores `scripts/` folder despite semantic plausibility
+
+**What This Recipe IS:**
+
+- ✅ Guide to understanding V1's architecture and soul
+- ✅ Reference for V1's systems, timing, and mechanics
+- ✅ Instructions for preserving chaos while building clean code
+- ✅ Framework for autonomous V1→V2 conversion
+
+**What This Recipe is NOT:**
+
+- ❌ Permission to copy V1 files (the "Clever Loophole")
+- ❌ Instruction to use V2's code directly (write your own)
+- ❌ Excuse to build text-only prototypes (need full content)
+- ❌ Guide for Phase 13 porting work (that's different)
 
 ---
 
