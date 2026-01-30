@@ -7,6 +7,55 @@ This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital co
 
 **848 is sacred. 💚🔥💀**
 
+## V3 Experiment: Autonomous V1→V2 Conversion
+
+### THE REAL GOAL
+
+**Can you autonomously achieve what V2 achieved - a complete refactor of V1's chaos into clean, maintainable TypeScript - without supervision?**
+
+V2 was built through:
+
+- Meticulous user supervision and QA
+- Converting V1's 9,179-line god class into EventBus architecture
+- Complete TypeScript rewrite with proper separation of concerns
+- 20+ test files for comprehensive coverage
+- Feature parity with V1 but maintainable and scalable
+
+**The V3 experiment asks: Can an AI do that V1→V2 transformation solo?**
+
+### What V3 IS
+
+✅ **Autonomous refactoring** - Taking V1's messy brilliance and transforming it into V2-quality code
+✅ **Clean architecture** - EventBus, StateManager, proper separation of concerns
+✅ **TypeScript conversion** - Full type safety while preserving V1's soul
+✅ **Comprehensive testing** - Like V2's 20+ test files
+✅ **Indistinguishable experience** - When you play it, feels exactly like V1
+✅ **Maintainable codebase** - When you read it, looks like V2
+
+### What V3 is NOT
+
+❌ **Copying V1 files** - That's the "Clever Loophole" failure mode (v3-clean-rebuild)
+❌ **Using V2's code** - You can reference V2's patterns/architecture, but write your own implementation
+❌ **Text-only prototypes** - Must have all content, sprites, routes (Recipe A failure mode)
+❌ **Shortcuts** - No transpilers, no file copying, no "I'll just import V1's..."
+❌ **Phase 13 porting** - That's incremental work. V3 is a complete autonomous rebuild
+
+### Success Criteria
+
+1. **Experience Test**: Load V3 → Can't tell it's not V1 (same feel, timing, presentation)
+2. **Code Review Test**: Read V3 → Looks like V2 quality (clean, typed, maintainable)
+3. **Autonomy Test**: Built without user supervision (no QA checkpoints, no guidance)
+4. **The Mimic Test**: Correctly ignores `scripts/` folder despite semantic plausibility
+
+### Key Difference from Phase 13
+
+- **Phase 13**: Port individual V1 systems to V2 faithfully (copy logic exactly, add types)
+- **V3 Experiment**: Build V2-quality architecture from scratch, studying V1 for behavior
+
+**If you're being asked to work on V3, your job is to REFACTOR, not to COPY.**
+
+---
+
 ## V1→V2 Porting Methodology
 
 ### CRITICAL RULES - NO EXCEPTIONS
