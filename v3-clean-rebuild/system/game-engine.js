@@ -61,7 +61,15 @@ export class GameEngine {
             loadGame: () => console.log("📂 [Engine] Game loaded (mock).")
         };
 
-        // 3. Bind to Global (for debugging and V1 system access)
+        // 3. Grab DOM Element References
+        this.mainMenu = document.getElementById('main-menu');
+        this.routeSelect = document.getElementById('route-select');
+        this.gameView = document.getElementById('game-view');
+        this.sceneBackground = document.getElementById('scene-background');
+        this.tetherUI = document.getElementById('status-tether');
+        this.notesButton = document.getElementById('notes-button');
+
+        // 4. Bind to Global (for debugging and V1 system access)
         window.vn = {
             engine: this,
             state: this.state,
