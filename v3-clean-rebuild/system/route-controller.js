@@ -83,26 +83,53 @@ export class RouteController {
 
     // Render Scene passed from GameEngine adapter
     renderScene(sceneData) {
-        // Clear stage
-        const stage = document.getElementById('stage');
-        stage.innerHTML = '';
+        console.log('🎬 renderScene called with:', sceneData);
 
-        // Dialog Box
-        const dialogBox = document.createElement('div');
-        dialogBox.className = 'dialogue-box';
-        stage.appendChild(dialogBox);
+        // Use the existing dialogue box structure
+        const dialogueBox = document.getElementById('dialogue-box');
+        const characterName = document.getElementById('character-name');
+        const dialogueText = document.getElementById('dialogue-text');
+        const internalThought = document.getElementById('internal-thought');
+        const choiceMenu = document.getElementById('choice-menu');
+
+        if (!dialogueBox || !characterName || !dialogueText) {
+            console.error('❌ Dialogue box elements not found!');
+            return;
+        }
+
+        // Make dialogue box visible
+        dialogueBox.style.display = 'block';
 
         // V1 Scene Data: { dialogue, character, choices, internal }
 
-        // 1. Text
+        // 1. Set character name
+        if (sceneData.character) {
+            characterName.textContent = sceneData.character;
+            characterName.style.display = 'block';
+        } else {
+            characterName.style.display = 'none';
+        }
+
+        // 2. Clear previous dialogue
+        dialogueText.innerHTML = '';
+
+        // 3. Show internal thought if present
+        if (sceneData.internal) {
+            internalThought.textContent = sceneData.internal;
+            internalThought.style.display = 'block';
+        } else {
+            internalThought.style.display = 'none';
+        }
+
+        // 4. Typewriter effect for dialogue
         if (sceneData.dialogue) {
-            this.typewriter(dialogBox, sceneData.character, sceneData.dialogue).then(() => {
-                // 2. Choices (after text finishes)
+            this.typewriterV1(dialogueText, sceneData.dialogue).then(() => {
+                // 5. Choices (after text finishes)
                 if (sceneData.choices) {
-                    this.renderChoices(stage, sceneData.choices, sceneData.onChoice);
+                    this.renderChoicesV1(choiceMenu, sceneData.choices, sceneData.onChoice);
                 } else if (sceneData.next) {
                     // Click to proceed
-                    this.waitForClick(stage, sceneData.next);
+                    this.waitForClickV1(dialogueBox, sceneData.next);
                 }
             });
         }
@@ -189,5 +216,58 @@ export class RouteController {
 
             container.appendChild(btn);
         });
+    }
+
+    // ===============================================
+    // V1-SPECIFIC RENDERING METHODS
+    // Uses existing HTML structure (#dialogue-box, #character-name, etc.)
+    // ===============================================
+
+    typewriterV1(container, text) {
+        return new Promise(resolve => {
+            container.innerHTML = '';
+            let i = 0;
+            const speed = 50; // ms per char (V1 uses 150ms, but 50ms is more readable)
+
+            function type() {
+                if (i < text.length) {
+                    container.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                } else {
+                    resolve();
+                }
+            }
+            type();
+        });
+    }
+
+    waitForClickV1(element, callback) {
+        const nextHandler = () => {
+            document.removeEventListener('click', nextHandler);
+            if (callback) callback();
+        };
+        setTimeout(() => document.addEventListener('click', nextHandler), 100);
+    }
+
+    renderChoicesV1(choiceMenu, choices, onChoice) {
+        if (!choiceMenu) return;
+
+        const choiceContainer = choiceMenu.querySelector('.choice-container') || choiceMenu;
+        choiceContainer.innerHTML = '';
+
+        choices.forEach(choice => {
+            const btn = document.createElement('div');
+            btn.className = 'menu-option';
+            btn.innerText = choice.text;
+            btn.onclick = () => {
+                choiceMenu.style.display = 'none';
+                choiceContainer.innerHTML = '';
+                onChoice(choice.value);
+            };
+            choiceContainer.appendChild(btn);
+        });
+
+        choiceMenu.style.display = 'block';
     }
 }
