@@ -8,6 +8,7 @@
  */
 
 import { TIMELINE_DATA, type TimelineEntry } from '../data/timeline';
+import { V3_LAB_DATA } from '../data/v3-lab-entries'; // Import V3 Data
 import { timelineAnimations } from '../ts/TimelineAnimations';
 import { TimelineStats } from '../ts/TimelineStats';
 import { TimelineScrubber } from '../ts/TimelineScrubber';
@@ -18,6 +19,7 @@ export class TimelineRenderer {
     private originalEntries: TimelineEntry[];
     private currentEntries: TimelineEntry[];
     private activeFilter: string;
+    private activeMode: 'project' | 'v3-lab'; // New V3 Mode State
     private activeSort: string;
     private searchQuery: string;
 
@@ -49,6 +51,7 @@ export class TimelineRenderer {
         this.originalEntries = [];
         this.currentEntries = [];
         this.activeFilter = 'all';
+        this.activeMode = 'project'; // Default to Project History
         // Initialize activeSort based on restored View Mode (from ViewModeController)
         // This prevents a mismatch where Body='dev' (Expanded) but Renderer='story'
         this.activeSort = document.body.dataset.viewMode || 'story';
@@ -149,10 +152,6 @@ export class TimelineRenderer {
     private setupInteractions(): void {
         // Observer for context updates (if needed)
         // For now, the global scroll listener handles the signal pulse
-        // We can add IntersectionObservers here for individual phase highlighting if we want "active" states
-
-        // Example: Highlight active phase in sidebar (though sidebar handles this itself)
-        // This is a placeholder for future interaction logic to satisfy the init call
         console.log('🍽️ Timeline interactions initialized');
     }
 
@@ -261,8 +260,14 @@ export class TimelineRenderer {
     }
 
     private async loadTimelineData(): Promise<void> {
-        // Import from ES module instead of window global
-        this.originalEntries = TIMELINE_DATA.entries;
+        // Swap Data Source based on Active Mode
+        if (this.activeMode === 'v3-lab') {
+            this.originalEntries = V3_LAB_DATA.entries;
+            console.log('🧪 Loaded V3 Lab Data');
+        } else {
+            this.originalEntries = TIMELINE_DATA.entries;
+            console.log('📜 Loaded Project History');
+        }
 
         // Set Sort Date if missing (fallback to ID or index)
         this.originalEntries.forEach((entry, index) => {
@@ -278,8 +283,16 @@ export class TimelineRenderer {
     // --- CORE LOGIC ---
 
     private applyLogic(): void {
-        // 1. Filter
-        let filtered = this.originalEntries;
+        // 1. Filter by Mode (Project vs V3 Lab)
+        let filtered = this.originalEntries.filter(p => {
+            if (this.activeMode === 'v3-lab') {
+                return p.isV3Entry === true;
+            } else {
+                return !p.isV3Entry;
+            }
+        });
+
+        // 2. Filter by Category/Tag
         if (this.activeFilter !== 'all') {
             filtered = filtered.filter(p => {
                 const dateMatch = p.date?.includes(this.activeFilter);
@@ -288,12 +301,10 @@ export class TimelineRenderer {
             });
         }
 
-        // 2. Search (Spotlight)
-        // We don't remove items in search, we just mark them for "Spotlight"
-        // But if filtering, we do remove.
-        // Let's keep search separate: Search affects VISIBILITY STATE (dimming), not existence.
+        // 3. Search (Spotlight)
+        // ...
 
-        // 3. Sort
+        // 4. Sort
         filtered.sort((a, b) => {
             if (this.activeSort === 'story') {
                 return (a.sortDate || '').localeCompare(b.sortDate || '');
@@ -337,6 +348,15 @@ export class TimelineRenderer {
 
         this.toolbar.innerHTML = `
             <div class="timeline-toolbar">
+                <div class="toolbar-group mode-toggle-group">
+                    <button class="timeline-btn ${this.activeMode === 'project' ? 'active' : ''}" data-action="mode" data-value="project">
+                        <span>📜</span> History
+                    </button>
+                    <button class="timeline-btn ${this.activeMode === 'v3-lab' ? 'active' : ''}" data-action="mode" data-value="v3-lab">
+                        <span>🧪</span> V3 Lab
+                    </button>
+                </div>
+                
                 <div class="toolbar-group">
                     <button class="timeline-btn ${this.activeSort === 'story' ? 'active' : ''}" data-action="sort" data-value="story">
                         <span>📜</span> Story
@@ -355,7 +375,7 @@ export class TimelineRenderer {
 
                 <div class="search-wrapper">
                     <span class="search-icon">🔍</span>
-                    <input type="text" class="timeline-search" placeholder="Spotlight search (e.g. 'EventBus', 'Tori')..." />
+                    <input type="text" class="timeline-search" placeholder="Spotlight search..." value="${this.searchQuery}" />
                     <div class="search-suggestions" id="search-suggestions">
                         <!-- Autocomplete suggestions generated by TimelineSearch -->
                     </div>
@@ -367,6 +387,25 @@ export class TimelineRenderer {
         this.container?.insertBefore(this.toolbar, this.container.firstChild);
 
         // Events
+
+        // Mode Toggle
+        this.toolbar.querySelectorAll('[data-action="mode"]').forEach(btn => {
+            btn.addEventListener('click', async (e) => { // Make async
+                const target = e.currentTarget as HTMLElement;
+                const mode = target.dataset.value as 'project' | 'v3-lab';
+                if (mode && this.activeMode !== mode) {
+                    this.activeMode = mode;
+                    this.activeFilter = 'all'; // Reset filter
+
+                    // Reload Data Source
+                    await this.loadTimelineData();
+
+                    this.renderToolbar(); // Re-render to update active state
+                    this.renderTimeline();
+                }
+            });
+        });
+
         this.toolbar.querySelectorAll('[data-action="sort"]').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const target = e.currentTarget as HTMLElement;
@@ -581,6 +620,34 @@ export class TimelineRenderer {
         const content = document.createElement('div');
         content.className = 'timeline-content';
 
+        // MODEL BADGE
+        if (entry.modelId) {
+            const modelBadge = document.createElement('div');
+            modelBadge.className = `model-badge model-${entry.modelId}`;
+
+            // Map ID to Name and Logo
+            const names: Record<string, string> = {
+                belle: 'Gemini 1.5 Pro',
+                dizee: 'Claude 3.5 Sonnet',
+                tori: 'GPT-4o',
+                genzee: 'Grok 2'
+            };
+            const logos: Record<string, string> = {
+                belle: 'media/logos/gemini.svg',
+                dizee: 'media/logos/claude.svg',
+                tori: 'media/logos/openai.svg',
+                genzee: 'media/logos/grok.svg'
+            };
+
+            const logoPath = logos[entry.modelId];
+            if (logoPath) {
+                modelBadge.innerHTML = `<img src="${logoPath}" class="model-logo" alt="${entry.modelId}" /> ${names[entry.modelId] || entry.modelId}`;
+            } else {
+                modelBadge.innerHTML = `<span class="model-icon">🤖</span> ${names[entry.modelId] || entry.modelId}`;
+            }
+            content.appendChild(modelBadge);
+        }
+
         // BADGES (Tags)
         if (entry.tags && entry.tags.length > 0) {
             const tagsContainer = document.createElement('div');
@@ -685,6 +752,60 @@ export class TimelineRenderer {
                 `;
             });
             details.appendChild(metricsGrid);
+        }
+
+        // 6. V3 Scorecard (The Competitive Edge)
+        if (entry.scorecard) {
+            hasDetails = true;
+            const sc = entry.scorecard;
+            const scorecardDiv = document.createElement('div');
+            scorecardDiv.className = 'v3-scorecard-container';
+            scorecardDiv.innerHTML = `
+                <h4 class="v3-score-title">🧪 Experiment Scorecard</h4>
+                <div class="v3-score-grid">
+                    <div class="v3-stat-item">
+                        <span class="v3-label">Creativity</span>
+                        <span class="v3-value high">${sc.creativity}/10</span>
+                    </div>
+                    <div class="v3-stat-item">
+                        <span class="v3-label">Fun Factor</span>
+                        <span class="v3-value">${sc.funFactor}/10</span>
+                    </div>
+                     <div class="v3-stat-item">
+                        <span class="v3-label">MSG Sensitivity</span>
+                        <span class="v3-value">${sc.sensitivity}</span>
+                    </div>
+                    <div class="v3-stat-item">
+                        <span class="v3-label">Aggression</span>
+                        <span class="v3-value">${sc.aggression}</span>
+                    </div>
+                    <div class="v3-stat-wide">
+                        <span class="v3-tag adherence-${sc.adherence.toLowerCase()}">${sc.adherence} Adherence</span>
+                        <span class="v3-tag velocity-${sc.velocity.toLowerCase()}">${sc.velocity} Velocity</span>
+                    </div>
+                </div>
+             `;
+            details.appendChild(scorecardDiv);
+        }
+
+        // 7. Director's Cut (Judgement)
+        if (entry.judgement) {
+            hasDetails = true;
+            const jd = entry.judgement;
+            const judgeDiv = document.createElement('div');
+            judgeDiv.className = `v3-judgement-container verdict-${jd.verdict}`;
+
+            const stamp = jd.verdict === 'understood' ? 'ASSIGNMENT UNDERSTOOD' : 'ROGUE AGENT';
+            const icon = jd.verdict === 'understood' ? '✅' : '❌';
+
+            judgeDiv.innerHTML = `
+                <div class="judge-stamp">${stamp}</div>
+                <div class="judge-notes">
+                    <span class="judge-icon">${icon}</span>
+                    <span class="judge-text">${jd.notes}</span>
+                </div>
+            `;
+            details.appendChild(judgeDiv);
         }
 
         // Toggle Button

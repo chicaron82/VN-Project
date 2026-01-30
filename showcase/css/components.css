@@ -4243,3 +4243,876 @@ select.timeline-btn option {
         background: rgba(0, 255, 136, 0.05);
     }
 }
+
+/* =========================================
+   V3 EXPERIMENT DASHBOARD (The Competitive Edge)
+   ========================================= */
+
+/* Mode Toggle Group (Protocol Droid vs Mad Scientist) */
+.mode-toggle-group .timeline-btn {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+    min-width: 110px;
+    justify-content: center;
+}
+
+.mode-toggle-group .timeline-btn[data-value="v3-lab"].active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3));
+    border-color: rgba(236, 72, 153, 0.5);
+    box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.mode-toggle-group .timeline-btn[data-value="project"].active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(16, 185, 129, 0.3));
+    border-color: rgba(16, 185, 129, 0.5);
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+}
+
+/* V3 Scorecard Container */
+.v3-scorecard-container {
+    margin-top: 1rem;
+    padding: 1.25rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+/* "Holo-foil" effect for the card */
+.v3-scorecard-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+    opacity: 0.7;
+}
+
+.v3-score-title {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Score Grid */
+.v3-score-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.v3-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.v3-stat-wide {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 0.5rem;
+}
+
+.v3-label {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.v3-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.v3-value.high {
+    color: #4ade80;
+    text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+}
+
+/* V3 Tags (Pills) */
+.v3-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+}
+
+/* Adherence Colors */
+.adherence-strict {
+    background: rgba(139, 92, 246, 0.15);
+    color: #a78bfa;
+    border-color: rgba(139, 92, 246, 0.3);
+}
+
+.adherence-loose {
+    background: rgba(251, 191, 36, 0.15);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.adherence-rogue {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.3);
+    animation: pulse-rogue 2s infinite;
+}
+
+/* Velocity Colors */
+.velocity-fast {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.velocity-average {
+    background: rgba(107, 114, 128, 0.2);
+    color: #d1d5db;
+}
+
+.velocity-slow {
+    background: rgba(255, 255, 255, 0.05);
+    color: #9ca3af;
+}
+
+@keyframes pulse-rogue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+    }
+}
+
+/* Judgement (Director's Cut) */
+.v3-judgement-container {
+    margin-top: 1rem;
+    position: relative;
+    padding: 1rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.judge-stamp {
+    font-family: 'Black Ops One', sans-serif;
+    /* Or Impact/Stencil */
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transform: rotate(-5deg);
+    padding: 0.5rem 1rem;
+    border: 4px solid;
+    border-radius: 10px;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Verdict: Understood (Green) */
+.verdict-understood .judge-stamp {
+    color: #4ade80;
+    border-color: #4ade80;
+    text-shadow: 0 0 15px rgba(74, 222, 128, 0.6);
+}
+
+.verdict-understood {
+    border-color: rgba(74, 222, 128, 0.3);
+    background: linear-gradient(135deg, rgba(74, 222, 128, 0.05), transparent);
+}
+
+/* Verdict: Rogue (Red) */
+.verdict-rogue .judge-stamp {
+    color: #ef4444;
+    border-color: #ef4444;
+    text-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
+}
+
+.verdict-rogue {
+    border-color: rgba(239, 68, 68, 0.3);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), transparent);
+}
+
+.judge-notes {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 0.75rem;
+    border-top: 1px dotted rgba(255, 255, 255, 0.2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+.judge-icon {
+    font-size: 1.25rem;
+}
+
+/* ==========================================================================
+   MODEL BADGES (Timeline)
+   ========================================================================== */
+.model-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    width: fit-content;
+}
+
+.model-badge .model-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.model-badge .model-logo {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    vertical-align: middle;
+}
+
+/* Gemini (Belle) - Blue */
+.model-belle {
+    background: rgba(66, 133, 244, 0.15);
+    border-color: rgba(66, 133, 244, 0.4);
+    color: #8ab4f8;
+    box-shadow: 0 0 10px rgba(66, 133, 244, 0.1);
+}
+
+/* Claude (DiZee) - Purple */
+.model-dizee {
+    background: rgba(147, 51, 234, 0.15);
+    border-color: rgba(147, 51, 234, 0.4);
+    color: #d8b4fe;
+    box-shadow: 0 0 10px rgba(147, 51, 234, 0.1);
+}
+
+/* GPT-4o (Tori) - Green */
+.model-tori {
+    background: rgba(0, 168, 107, 0.15);
+    border-color: rgba(0, 168, 107, 0.4);
+    color: #6fcf97;
+    box-shadow: 0 0 10px rgba(0, 168, 107, 0.1);
+}
+
+/* Grok (GenZee) - Orange */
+.model-genzee {
+    background: rgba(255, 87, 51, 0.15);
+    border-color: rgba(255, 87, 51, 0.4);
+    color: #ff9e80;
+    box-shadow: 0 0 10px rgba(255, 87, 51, 0.1);
+}
+/* ═══════════════════════════════════════════════════════════════
+   POST-MORTEM REFLECTIONS SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.experiment-reflections {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+}
+
+.reflections-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+/* Reflection Cards */
+.reflection-card {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+}
+
+.reflection-belle {
+    border-color: #ff6b9d;
+}
+
+.reflection-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.reflection-icon {
+    font-size: 2rem;
+}
+
+.reflection-header h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.reflection-status {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.status-failed {
+    background: #ff4757;
+    color: white;
+}
+
+.status-passed {
+    background: #00ff88;
+    color: var(--bg-primary);
+}
+
+.status-partial {
+    background: #ffd93d;
+    color: var(--bg-primary);
+}
+
+/* Reflection Content */
+.reflection-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.reflection-section {
+    background: var(--accent-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.reflection-section h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+    font-size: 1.2rem;
+}
+
+.reflection-section ul {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.reflection-section li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+}
+
+.reflection-section code {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.9rem;
+}
+
+/* Special Reflection Sections */
+.reflection-failure {
+    border-left: 4px solid #ff4757;
+}
+
+.reflection-verdict {
+    border-left: 4px solid #ffd93d;
+}
+
+.reflection-quote {
+    font-size: 1.15rem;
+    font-style: italic;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+}
+
+.reflection-quote-critical {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-style: italic;
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+    border: 2px solid #ff4757;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.reflection-lesson {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+    border: 2px solid var(--accent-primary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* Reflection Template */
+.reflection-template {
+    background: var(--card-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.reflection-template h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.reflection-template ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.reflection-template li {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.template-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--accent-secondary);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+    font-style: italic;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .experiment-reflections {
+        padding: 1.5rem;
+    }
+
+    .reflection-card {
+        padding: 1.5rem;
+    }
+
+    .reflection-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .reflection-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .reflection-quote {
+        font-size: 1rem;
+    }
+
+    .reflection-quote-critical {
+        font-size: 1.05rem;
+        padding: 1rem;
+    }
+
+    .reflection-section {
+        padding: 1rem;
+    }
+
+    .reflection-template {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .experiment-reflections {
+        padding: 1rem;
+        margin: 2rem 0;
+    }
+
+    .reflection-card {
+        padding: 1rem;
+    }
+
+    .reflection-icon {
+        font-size: 1.5rem;
+    }
+
+    .reflection-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .reflection-section h4 {
+        font-size: 1rem;
+    }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .reflection-section code {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   BELLE'S PATH COMPARISON SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.reflection-comparison {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(78, 205, 196, 0.05) 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.reflection-comparison h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+    font-size: 1.4rem;
+}
+
+.comparison-intro {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+/* Comparison Paths */
+.comparison-paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.comparison-path {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.path-v1 {
+    border-color: #ff6b6b;
+}
+
+.path-v2 {
+    border-color: #4ecdc4;
+}
+
+.comparison-path h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.path-metaphor {
+    background: var(--accent-secondary);
+    padding: 1rem;
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.path-difficulty {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #ffd700;
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    font-weight: 600;
+}
+
+.path-challenges {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.path-challenges li {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.path-lessons {
+    background: var(--accent-secondary);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.path-lessons ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.5rem;
+}
+
+.path-lessons li {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+/* Self-Assessment Table */
+.self-assessment {
+    margin: 2rem 0;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+}
+
+.self-assessment h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.assessment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.assessment-table th,
+.assessment-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.assessment-table th {
+    background: var(--accent-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.assessment-table td {
+    line-height: 1.5;
+}
+
+.grade-a {
+    color: #00ff88;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.grade-b {
+    color: #ffd93d;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.grade-c {
+    color: #ff4757;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Trade-offs Comparison Table */
+.path-comparison-table {
+    margin: 2rem 0;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+}
+
+.path-comparison-table h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.trade-offs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.trade-offs-table th,
+.trade-offs-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.trade-offs-table th {
+    background: var(--accent-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.trade-offs-table td {
+    line-height: 1.5;
+}
+
+.comparison-positive {
+    color: #00ff88;
+    font-weight: 600;
+}
+
+.comparison-negative {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Path Conclusion */
+.path-conclusion {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+    border: 2px solid var(--accent-primary);
+    border-radius: 10px;
+}
+
+.conclusion-quote {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 6px;
+}
+
+.path-conclusion p {
+    line-height: 1.7;
+    margin: 1rem 0;
+}
+
+.final-verdict {
+    background: var(--accent-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #ffd93d;
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .reflection-comparison {
+        padding: 1.5rem;
+    }
+
+    .comparison-paths {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .comparison-path {
+        padding: 1rem;
+    }
+
+    .self-assessment,
+    .path-comparison-table {
+        padding: 1rem;
+    }
+
+    .assessment-table,
+    .trade-offs-table {
+        font-size: 0.9rem;
+    }
+
+    .assessment-table th,
+    .assessment-table td,
+    .trade-offs-table th,
+    .trade-offs-table td {
+        padding: 0.6rem 0.4rem;
+    }
+
+    .conclusion-quote {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+
+    .path-conclusion {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .reflection-comparison {
+        padding: 1rem;
+    }
+
+    .comparison-path h5 {
+        font-size: 1rem;
+    }
+
+    .path-metaphor {
+        font-size: 0.85rem;
+        padding: 0.8rem;
+    }
+
+    .assessment-table,
+    .trade-offs-table {
+        font-size: 0.85rem;
+    }
+
+    /* Stack table cells on very small screens */
+    .assessment-table th:nth-child(3),
+    .assessment-table td:nth-child(3) {
+        display: block;
+        width: 100%;
+        padding-top: 0.3rem;
+    }
+
+    .conclusion-quote {
+        font-size: 1rem;
+    }
+}
+
+/* Dark Mode Table Adjustments */
+@media (prefers-color-scheme: dark) {
+    .assessment-table th,
+    .trade-offs-table th {
+        background: rgba(0, 255, 136, 0.1);
+    }
+}
+

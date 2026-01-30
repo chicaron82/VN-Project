@@ -55,6 +55,27 @@ export interface CrewAttribution {
 /**
  * Main timeline entry interface
  */
+export interface V3Judgement {
+    verdict: 'understood' | 'rogue' | 'failed';
+    notes: string;
+}
+
+export interface V3Scorecard {
+    velocity: 'Fast' | 'Average' | 'Slow';
+    adherence: 'Strict' | 'Loose' | 'Rogue';
+    creativity: number; // 1-10
+    funFactor: number;  // 1-10
+    sensitivity: number; // MSG Sensitivity
+    aggression: number;  // Refactor Aggression
+}
+
+export interface V3Stats {
+    commits: number;
+    corrections: number;
+    notesDetected: number;
+    archInsights: number;
+}
+
 export interface TimelineEntry {
     id: string;
     date?: string;
@@ -101,6 +122,13 @@ export interface TimelineEntry {
     };
     quote?: string;
     legacyPhase?: string;
+
+    // V3 Lab Specific
+    isV3Entry?: boolean;
+    modelId?: 'belle' | 'dizee' | 'tori' | 'genzee';
+    scorecard?: V3Scorecard;
+    stats?: V3Stats;
+    judgement?: V3Judgement;
 }
 
 export interface TimelineData {

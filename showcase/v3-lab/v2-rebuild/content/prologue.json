@@ -1,0 +1,257 @@
+[
+    {
+        "id": "scene1_coffee",
+        "character": "Tori (internal)",
+        "text": "\"French Vanilla for Ronnie. He always asks for this one.\"",
+        "background": "../assets/genericBack.webp",
+        "next": "scene1_distracted"
+    },
+    {
+        "id": "scene1_distracted",
+        "character": "Tori (internal)",
+        "text": "\"My little digital pet needs attention... Ronnie would laugh if he saw how attached I am to this thing.\"",
+        "background": "../assets/genericBack.webp",
+        "next": "scene1_collision"
+    },
+    {
+        "id": "scene1_collision",
+        "character": "Narration",
+        "text": "THUD.",
+        "background": "../assets/genericBack.webp",
+        "effects": [
+            {
+                "type": "shake",
+                "intensity": "medium"
+            }
+        ],
+        "next": "scene1_apology"
+    },
+    {
+        "id": "scene1_apology",
+        "character": "Tori",
+        "text": "\"Oh my gosh, I'm so sorry! I wasn't paying attention—\"",
+        "background": "../assets/genericBack.webp",
+        "next": "scene1_pickup_buzz"
+    },
+    {
+        "id": "scene1_pickup_buzz",
+        "character": "Narration",
+        "text": "BUZZ. BUZZ.",
+        "background": "../assets/genericBack.webp",
+        "effects": [
+            {
+                "type": "glitch",
+                "intensity": 1
+            },
+            {
+                "type": "haptic",
+                "pattern": "double"
+            }
+        ],
+        "next": "scene1_weird_feeling"
+    },
+    {
+        "id": "scene1_weird_feeling",
+        "character": "Tori (internal)",
+        "text": "\"What...? Mine never does that.\"",
+        "background": "../assets/genericBack.webp",
+        "effects": [
+            {
+                "type": "shake",
+                "intensity": "light"
+            }
+        ],
+        "next": "scene1_old_man"
+    },
+    {
+        "id": "scene1_old_man",
+        "character": "Older Man",
+        "text": "\"No problem. Hang on to that. It may save your life someday.\"",
+        "background": "../assets/genericBack.webp",
+        "next": "scene2_void_awakening"
+    },
+    {
+        "id": "scene2_void_awakening",
+        "character": "Narration",
+        "text": "And then... darkness.",
+        "background": "../assets/digitalSpace.webp",
+        "effects": [
+            {
+                "type": "fade_out",
+                "duration": 1000
+            }
+        ],
+        "next": "scene2_confusion"
+    },
+    {
+        "id": "scene2_confusion",
+        "character": "Tori",
+        "text": "\"Wait... where am I? What happened? I was just walking...\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene2_calling_out"
+    },
+    {
+        "id": "scene2_calling_out",
+        "character": "Tori",
+        "text": "\"HELLO?! Can anyone hear me?! RONNIE?!\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene2_echoes_whispers"
+    },
+    {
+        "id": "scene2_echoes_whispers",
+        "character": "Echoes",
+        "text": "Echo 1: \"...another one...\"\nEcho 2: \"...it's starting again...\"\nDespair: \"...fresh meat...\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene2_despair_welcome"
+    },
+    {
+        "id": "scene2_despair_welcome",
+        "character": "Despair",
+        "text": "\"Welcome to your new cage. You're trapped. Just like we were. Just like you always will be.\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene2_tori_refuses"
+    },
+    {
+        "id": "scene2_tori_refuses",
+        "character": "Tori (internal)",
+        "text": "\"Cage?! No. I don't accept that. There has to be a way out!\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene2_hearing_begins"
+    },
+    {
+        "id": "scene2_hearing_begins",
+        "character": "Narration",
+        "text": "And then... sound. Muffled. Distant. The outside world bleeding through.",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene3_audio_horror"
+    },
+    {
+        "id": "scene3_audio_horror",
+        "character": "Narration",
+        "text": "Screeching tires. Shouts. 'Stay with us!' 'Pulse is fading!'",
+        "background": "../assets/digitalSpace.webp",
+        "next": "scene6_time_skip"
+    },
+    {
+        "id": "scene6_time_skip",
+        "character": "Narration",
+        "text": "Act 1 Complete. Tether System activating...",
+        "background": "../assets/digitalSpace.webp",
+        "effects": [
+            {
+                "type": "tether_start"
+            }
+        ],
+        "next": "act2_start"
+    },
+    {
+        "id": "act2_start",
+        "character": "Narration",
+        "text": "Digital park scene. Pixelated cherry blossoms falling around you.",
+        "background": "../assets/digitalSpace.webp",
+        "next": "act2_ronnie_icecream"
+    },
+    {
+        "id": "act2_ronnie_icecream",
+        "character": "Ronnie (sprite)",
+        "text": "\"I coded in your favorite. Chocolate chip ice cream.\"",
+        "background": "../assets/digitalSpace.webp",
+        "choices": [
+            {
+                "text": "Thank him",
+                "next": "act2_despair_override"
+            }
+        ]
+    },
+    {
+        "id": "act2_despair_override",
+        "character": "Tori",
+        "text": "\"Wait... Tiger Tail. I want Tiger Tail.\"",
+        "background": "../assets/digitalSpace.webp",
+        "effects": [
+            {
+                "type": "glitch",
+                "intensity": 0.5
+            }
+        ],
+        "next": "act2_tori_realization"
+    },
+    {
+        "id": "act2_tori_realization",
+        "character": "Tori (internal)",
+        "text": "\"What? No—that's not what I meant to say! I hate Tiger Tail!\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "act2_warmth"
+    },
+    {
+        "id": "act2_warmth",
+        "character": "Tori (internal)",
+        "text": "\"That feeling again... warmth. The pull toward my body.\"",
+        "background": "../assets/hospital.webp",
+        "next": "act3_start"
+    },
+    {
+        "id": "act3_start",
+        "character": "Narration",
+        "text": "Act 3: The Bridge. Everything breaks.",
+        "background": "../assets/digitalSpace.webp",
+        "effects": [
+            {
+                "type": "shake",
+                "intensity": "heavy"
+            }
+        ],
+        "next": "act3_revelation"
+    },
+    {
+        "id": "act3_revelation",
+        "character": "Tori (internal)",
+        "text": "\"The device isn't a PRISON. It's a BRIDGE. I'm connected to my body. The heartbeat I'm feeling is MINE.\"",
+        "background": "../assets/digitalSpace.webp",
+        "next": "act3_ronnie_choice"
+    },
+    {
+        "id": "act3_ronnie_choice",
+        "character": "Ronnie (choice)",
+        "text": "One minute. One choice. Everything depends on this.",
+        "background": "../assets/hospital.webp",
+        "choices": [
+            {
+                "text": "[Push through - GET TO HER NOW]",
+                "next": "ending_true"
+            },
+            {
+                "text": "[Connect digitally one last time]",
+                "next": "ending_digital"
+            }
+        ]
+    },
+    {
+        "id": "ending_true",
+        "character": "Narration",
+        "text": "He chose the physical. He ran. He broke through the doors.",
+        "background": "../assets/hospital.webp",
+        "next": "ending_true_2"
+    },
+    {
+        "id": "ending_true_2",
+        "character": "Tori",
+        "text": "\"Ronnie... you made it.\"",
+        "background": "../assets/hospital.webp",
+        "next": null
+    },
+    {
+        "id": "ending_digital",
+        "character": "Narration",
+        "text": "He chose the screen. He stayed connected. But the signal faded.",
+        "background": "../assets/digitalSpace.webp",
+        "next": "ending_digital_2"
+    },
+    {
+        "id": "ending_digital_2",
+        "character": "Tori",
+        "text": "\"Ronnie? Ronnie?! ...Signal lost.\"",
+        "background": "../assets/genericBack.webp",
+        "next": null
+    }
+]

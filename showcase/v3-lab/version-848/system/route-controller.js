@@ -5,7 +5,13 @@
 export class RouteController {
     constructor(engine) {
         this.engine = engine;
+        this.game = engine; // Alias for V1 routes
         this.currentRoute = null;
+
+        // Expose systems that routes expect on the controller
+        this.tetherSystem = engine.tetherSystem;
+        this.echoMemory = engine.echoMemory;
+        this.collectiblesManager = engine.collectiblesManager;
     }
 
     async start() {
@@ -17,14 +23,32 @@ export class RouteController {
         console.log(`📖 RouteController: Loading route [${routeName}]...`);
 
         try {
-            // Dynamic import of route modules
-            // Note: In V3 Lab environment, we need to ensure the path is correct relative to this file
+            // Dynamic import
             const module = await import(`../routes/${routeName}.js`);
-            const routeData = module.Prologue; // Assuming named export matches convention
 
-            if (routeData) {
-                await this.playScene(routeData);
+            // Determine if it's a V1 Class or V3 JSON
+            // V1 Routes export classes like { RonnieRoute }
+
+            let routeInstance;
+            const exportKey = Object.keys(module)[0];
+            const RouteClass = module[exportKey];
+
+            if (typeof RouteClass === 'function') {
+                console.log(`✨ Detected V1 Route Class: ${exportKey}`);
+                routeInstance = new RouteClass(this); // Pass Controller (which has .game and .tetherSystem)
+                if (routeInstance.start) {
+                    routeInstance.start();
+                } else {
+                    console.warn("⚠️ Route class has no start() method.");
+                }
+            } else if (module.Prologue || module.RonnieRoute || module.ToriRoute) {
+                // Fallback for the JSON objects I created earlier
+                const data = module.Prologue || module.RonnieRoute || module.ToriRoute;
+                await this.playScene(data);
             }
+
+            this.currentRoute = routeInstance;
+
         } catch (e) {
             console.error("❌ RouteController: Failed to load route", e);
             const stage = document.getElementById('stage');
@@ -55,6 +79,64 @@ export class RouteController {
                 await this.presentChoice(stage, line);
             }
         }
+    }
+
+    // Render Scene passed from GameEngine adapter
+    renderScene(sceneData) {
+        // Clear stage
+        const stage = document.getElementById('stage');
+        stage.innerHTML = '';
+
+        // Dialog Box
+        const dialogBox = document.createElement('div');
+        dialogBox.className = 'dialogue-box';
+        stage.appendChild(dialogBox);
+
+        // V1 Scene Data: { dialogue, character, choices, internal }
+
+        // 1. Text
+        if (sceneData.dialogue) {
+            this.typewriter(dialogBox, sceneData.character, sceneData.dialogue).then(() => {
+                // 2. Choices (after text finishes)
+                if (sceneData.choices) {
+                    this.renderChoices(stage, sceneData.choices, sceneData.onChoice);
+                } else if (sceneData.next) {
+                    // Click to proceed
+                    this.waitForClick(stage, sceneData.next);
+                }
+            });
+        }
+    }
+
+    waitForClick(container, callback) {
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        container.appendChild(cursor);
+
+        const nextHandler = () => {
+            document.removeEventListener('click', nextHandler);
+            cursor.remove();
+            if (callback) callback();
+        };
+        setTimeout(() => document.addEventListener('click', nextHandler), 100);
+    }
+
+    renderChoices(container, choices, onChoice) {
+        const choiceContainer = document.createElement('div');
+        choiceContainer.className = 'choice-container';
+
+        choices.forEach(choice => {
+            const btn = document.createElement('div');
+            btn.className = 'menu-option';
+            btn.innerText = choice.text;
+            btn.onclick = () => {
+                choiceContainer.remove();
+                onChoice(choice.value);
+            };
+            choiceContainer.appendChild(btn);
+        });
+
+        container.appendChild(choiceContainer);
     }
 
     typewriter(container, speaker, text) {

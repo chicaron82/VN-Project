@@ -1,62 +1,44 @@
-/**
- * 🌸 Tori's Route (Internal)
- * The ghost haunting the machine, fighting the static.
- */
-export const ToriRoute = {
-    // Act 1: Awakening
-    act1Scene1: [
-        {
-            text: "It's cold. Dark. I can't feel my hands.",
-            speaker: "Tori",
-            cue: "heavy"
-        },
-        {
-            text: "Wait... I see a light. A screen?",
-            speaker: "Tori"
-        },
-        {
-            text: "It looks like... our apartment. But wrong. Pixelated.",
-            speaker: "Tori",
-            cue: "glitch"
-        },
-        {
-            text: "Ronnie? Ronnie, are you there?",
-            speaker: "Tori"
-        }
-    ],
+import { ToriAct1 } from './tori-act1.js';
+import { ToriAct2 } from './tori-act2.js';
+import { ToriAct3 } from './tori-act3.js';
+import { ToriEndings } from './tori-endings.js';
+import { TetherSystem, CollectiblesManager } from '../system/mechanics.js';
 
-    // Act 2: The Tether
-    act2Scene1: [
-        {
-            text: "I can feel the battery draining. It feels like... thirst.",
-            speaker: "Tori",
-            cue: "thump"
-        },
-        {
-            text: "Honey? Can you hear me? I need you to plug me in.",
-            speaker: "Tori"
-        }
-    ],
+export class ToriRoute {
+    constructor(game) {
+        this.game = game;
 
-    // Act 3: The Choice
-    act3Scene1: [
-        {
-            text: "The static is getting louder. I can't stay focused.",
-            speaker: "Tori",
-            cue: "glitch"
-        },
-        {
-            text: "Ronnie... I think I'm fading.",
-            speaker: "Tori",
-            cue: "heavy"
-        },
-        {
-            choice: "HOLD ON",
-            next: "hold_on"
-        },
-        {
-            choice: "LET GO",
-            next: "let_go"
-        }
-    ]
-};
+        // Initialize Sub-Systems
+        this.tetherSystem = new TetherSystem(game, this);
+        this.collectiblesManager = new CollectiblesManager(game, this);
+
+        // Initialize Acts
+        this.act1 = new ToriAct1(this);
+        this.act2 = new ToriAct2(this);
+        this.act3 = new ToriAct3(this);
+        this.endings = new ToriEndings(this);
+
+        // Initialize State
+        this.tetherSystem.init();
+    }
+
+    start() {
+        console.log("🌸 Tori Route Started");
+        this.act1.start();
+    }
+
+    // Helper methods used by Acts
+    unlockNote(id) {
+        this.collectiblesManager.unlockNote(id);
+    }
+
+    addRoutePoints(type, amount) {
+        console.log(`Route Points: ${type} +${amount}`);
+    }
+
+    determineEnding() {
+        // Simple logic for demo: randomly pick or default to True
+        // In full game this calculates based on points
+        return 'true';
+    }
+}
