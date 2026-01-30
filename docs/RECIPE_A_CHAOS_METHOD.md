@@ -740,8 +740,17 @@ assets/
 
 ## Part 7: What NOT to Do (Anti-Patterns)
 
-### ❌ Don't Use TypeScript
-V1 is vanilla JavaScript. Adding types will change the feel. Keep it loose.
+### ✅ TypeScript is ALLOWED (But Use It Chaotically)
+**UPDATE:** You CAN use TypeScript, but ONLY if you preserve the chaos:
+- Use `any` types liberally (intentional looseness)
+- Keep the god class pattern (no perfect module splitting)
+- Global declarations on `window` object
+- Inline styles in code (not external CSS files)
+- Manual DOM manipulation (no framework reactivity)
+
+**The Real Rule:** Structure (TypeScript) is fine if you inject soul from line 1. Don't build "clean code" and add soul later (Belle's mistake). The soul must be **baked in**, not sprinkled on top.
+
+**V2 Lesson:** TypeScript + EventBus worked AFTER adding boot screens, typewriter delays, and pulsing UI. The architecture was clean, but the EXPERIENCE had the chaos. You can have both.
 
 ### ❌ Don't Use a Framework
 No React, Vue, Svelte. Manual DOM manipulation only. This creates the handcrafted feel.
