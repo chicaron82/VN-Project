@@ -1,0 +1,336 @@
+/* ========================================
+   OVERLAYS CSS - Version 848
+   Centralized overlay styling
+   Extracted from inline JS styles
+   ======================================== */
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* ========================================
+   KONAMI CONTROLLER OVERLAY
+   Interactive NES-style controller
+   ======================================== */
+
+.konami-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.konami-content {
+    max-width: 600px;
+    width: 100%;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.15) 0%, #1a1a2e 100%);
+    border: 3px solid var(--theme-primary, #00ff88);
+    border-radius: 10px;
+    padding: 30px;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 50px var(--theme-glow, rgba(0, 255, 136, 0.3));
+    text-align: center;
+}
+
+.konami-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--theme-primary, #00ff88);
+    margin-bottom: 10px;
+    text-shadow: 0 0 15px var(--theme-glow, rgba(0, 255, 136, 0.3));
+}
+
+.konami-subtitle {
+    font-size: 0.9em;
+    color: var(--theme-text-muted, #888);
+    margin-bottom: 20px;
+}
+
+.konami-instructions {
+    font-size: 0.85em;
+    color: var(--theme-text-muted, #888);
+    margin-bottom: 15px;
+}
+
+.konami-hint {
+    font-size: 0.75em;
+    color: var(--theme-text-muted, #888);
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+/* Progress Dots */
+.konami-progress {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 25px;
+}
+
+.konami-progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0, 255, 136, 0.2);
+    transition: all 0.3s ease;
+}
+
+.konami-progress-dot.correct {
+    background: var(--theme-success, #00ff88);
+    box-shadow: 0 0 10px var(--theme-success, #00ff88);
+}
+
+.konami-progress-dot.wrong {
+    background: var(--theme-error, #ff4444);
+    box-shadow: 0 0 10px var(--theme-error, #ff4444);
+}
+
+/* Controller Container */
+.konami-controller {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+/* D-Pad */
+.konami-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    grid-template-rows: repeat(3, 60px);
+    gap: 5px;
+}
+
+/* Base Button Styles */
+.konami-btn {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 255, 136, 0.1));
+    border: 2px solid var(--theme-primary, #00ff88);
+    color: var(--theme-primary, #00ff88);
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.konami-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.konami-btn:active {
+    transform: scale(0.95);
+}
+
+/* D-Pad Button Positions */
+.konami-btn-up {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.konami-btn-left {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+.konami-btn-right {
+    grid-area: 2 / 3 / 3 / 4;
+}
+
+.konami-btn-down {
+    grid-area: 3 / 2 / 4 / 3;
+}
+
+/* Action Buttons Container */
+.konami-actions {
+    display: flex;
+    gap: 25px;
+}
+
+/* Action Buttons (B, A) */
+.konami-btn-action {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(255, 68, 68, 0.3), rgba(255, 68, 68, 0.1));
+    border: 3px solid var(--theme-error, #ff4444);
+    color: var(--theme-error, #ff4444);
+    font-size: 1.8em;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+.konami-btn-action:hover {
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.5);
+}
+
+/* Footer */
+.konami-footer {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.konami-close-btn {
+    padding: 12px 30px;
+    background: rgba(0, 255, 136, 0.1);
+    border: 2px solid var(--theme-primary, #00ff88);
+    color: var(--theme-primary, #00ff88);
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.konami-close-btn:hover {
+    background: rgba(0, 255, 136, 0.3);
+    box-shadow: 0 0 15px var(--theme-glow, rgba(0, 255, 136, 0.3));
+}
+
+.konami-esc-hint {
+    font-size: 0.8em;
+    color: var(--theme-text-muted, #888);
+    opacity: 0.6;
+}
+
+/* Shake Animation Class */
+.overlay-shake {
+    animation: shake 0.4s ease;
+}
+
+/* ========================================
+   CONFIRMATION OVERLAY
+   Generic confirmation dialog
+   ======================================== */
+
+.confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10003;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.confirmation-overlay.visible {
+    opacity: 1;
+}
+
+.confirmation-dialog {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 2px solid var(--theme-primary, #00ff88);
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 0 30px var(--theme-glow, rgba(0, 255, 136, 0.3));
+}
+
+.confirmation-title {
+    color: var(--theme-primary, #00ff88);
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+}
+
+.confirmation-message {
+    color: #ccc;
+    font-size: 1em;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.confirmation-confirm,
+.confirmation-cancel {
+    padding: 12px 25px;
+    border: 2px solid;
+    border-radius: 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: transparent;
+}
+
+.confirmation-confirm {
+    border-color: var(--theme-primary, #00ff88);
+    color: var(--theme-primary, #00ff88);
+}
+
+.confirmation-confirm:hover {
+    background: var(--theme-primary, #00ff88);
+    color: #000;
+}
+
+.confirmation-cancel {
+    border-color: #ff5555;
+    color: #ff5555;
+}
+
+.confirmation-cancel:hover {
+    background: #ff5555;
+    color: #000;
+}

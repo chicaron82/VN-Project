@@ -1,0 +1,122 @@
+/* ========================================
+   AUTO-SAVE INDICATOR
+   ======================================== */
+
+.auto-save-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #4ade80;
+    border-radius: 8px;
+    padding: 12px 20px;
+
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+.auto-save-indicator.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.auto-save-indicator.hidden {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.auto-save-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.auto-save-icon {
+    font-size: 1.2em;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.auto-save-text {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+/* Success state */
+.auto-save-indicator.success {
+    border-color: #4ade80;
+}
+
+.auto-save-indicator.success .auto-save-text {
+    color: #4ade80;
+}
+
+.auto-save-indicator.success .auto-save-icon {
+    animation: none;
+}
+
+/* Error state */
+.auto-save-indicator.error {
+    border-color: #f87171;
+}
+
+.auto-save-indicator.error .auto-save-text {
+    color: #f87171;
+}
+
+.auto-save-indicator.error .auto-save-icon {
+    animation: shake 0.5s ease;
+}
+
+/* Animations */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .auto-save-indicator {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 0.8em;
+    }
+
+    .auto-save-content {
+        gap: 6px;
+    }
+}

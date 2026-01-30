@@ -2,20 +2,27 @@
  * 🚂 GameEngine (The Brain)
  * Orchestrates the Visual Novel lifecycle.
  */
-import { StateManager } from './state-manager.js';
-import { RouteController } from './route-controller.js';
-import { VisualCueManager } from './visual-cue-manager.js';
-import { Gateway } from './gateway.js';
-import { TetherSystem } from './tether-system.js';
-import { EchoMemorySystem } from './echo-memory-system.js';
-import { SettingsManager } from './settings-manager.js';
-import { CollectiblesManager } from './collectibles-manager.js';
-import { MenuController } from './menu-controller.js';
-import { ThemeManager } from './theme-manager.js';
-import { TipsController } from './tips-controller.js';
-import { SecretCodesManager } from './secret-codes-manager.js';
-import { DevCommentary } from './dev-commentary.js';
-import { NotificationShadeController } from './notification-shade-controller.js';
+
+// 1. V1 Dependency Imports (to populate globals FIRST)
+import './difficulty-profiles.js?v=v3';
+import './logger.js?v=v3';
+import './telemetry-shim.js?v=v3';
+
+// 2. System imports
+import { StateManager } from './state-manager.js?v=v3';
+import { RouteController } from './route-controller.js?v=v3';
+import { VisualCueManager } from './visual-cue-manager.js?v=v3';
+import { Gateway } from './gateway.js?v=v3';
+import { TetherSystem } from './tether-system.js?v=v3';
+import { EchoMemorySystem } from './echo-memory-system.js?v=v3';
+import { SettingsManager } from './settings-manager.js?v=v3';
+import { CollectiblesManager } from './collectibles-manager.js?v=v3';
+import { MenuController } from './menu-controller.js?v=v3';
+import { ThemeManager } from './theme-manager.js?v=v3';
+import { TipsController } from './tips-controller.js?v=v3';
+import { SecretCodesManager } from './secret-codes-manager.js?v=v3';
+import { DevCommentary } from './dev-commentary.js?v=v3';
+import { NotificationShadeController } from './notification-shade-controller.js?v=v3';
 
 export class GameEngine {
     constructor() {
@@ -149,3 +156,6 @@ export class GameEngine {
         location.reload();
     }
 }
+
+// Expose Class for Shim Patching (Module Scope)
+window.GameEngine = GameEngine;

@@ -1,0 +1,61 @@
+/* ========================================
+   DIZEE POLISH: MOBILE UX ENHANCEMENTS
+   ======================================== */
+
+/* Scroll indicator for internal thought bubbles */
+.internal-bubble.has-scroll {
+    position: relative;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #0ff;
+    font-size: 1.2em;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    animation: scrollBounce 1.5s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+}
+
+@keyframes scrollBounce {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(5px);
+    }
+}
+
+/* Increase button sizes on mobile for easier tapping */
+@media (max-width: 768px) {
+
+    #backlog-button,
+    #skip-button {
+        min-width: 100px !important;
+        min-height: 50px !important;
+        font-size: 1em !important;
+    }
+
+    .choice-button {
+        min-height: 60px !important;
+        font-size: 1.1em !important;
+        padding: 15px 20px !important;
+    }
+
+    .pause-menu-button {
+        min-height: 55px !important;
+        font-size: 1.1em !important;
+    }
+
+    .menu-button {
+        min-height: 55px !important;
+        font-size: 1em !important;
+    }
+}

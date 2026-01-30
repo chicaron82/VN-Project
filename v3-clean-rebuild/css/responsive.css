@@ -1,0 +1,568 @@
+/* ========================================
+   MOBILE RESPONSIVE - BELLE'S FIX
+   Revised: Nov 22, 2024
+   Fixed: Dialogue box overlapping sprites
+   ======================================== */
+
+/* ================================================
+   DESKTOP - Large screens (≥1280px)
+   Shows torso portion of full-body sprites
+   ================================================ */
+@media (min-width: 1280px) {
+    .character-sprite {
+        /* Positioning - sits just above dialogue box */
+        bottom: 0;
+        width: 350px;
+        height: 500px;
+
+        /* Show torso (top portion) of full-body sprite */
+        background-size: auto 180%;
+        background-position: top center;
+        background-repeat: no-repeat;
+    }
+
+    #character-left {
+        left: 5%;
+    }
+
+    #character-right {
+        right: 5%;
+    }
+}
+
+@media (max-width: 1023px) and (orientation: portrait) {
+    #game-view {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        height: 100dvh;
+        /* Dynamic viewport height for mobile browsers */
+        justify-content: flex-end;
+        overflow: hidden;
+    }
+
+    #scene-background,
+    #scene-background-alt {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    /* FULL-BODY SPRITES - Stand ON dialogue box as platform
+       ZEE'S PORTRAIT SPEC: Sprites grounded on dialogue box top edge
+       65vh sprite height + 30vh dialogue = 95vh total, leaving 5vh for status bar */
+    .character-sprite {
+        position: absolute !important;
+        bottom: 28vh !important;
+        /* Aligned to dialogue box top - sprites stand on it (tucked 2vh behind) */
+        top: auto !important;
+
+        height: 65vh !important;
+        /* Sprite container height - maximizes vertical space */
+        width: 45vw !important;
+        /* Wider for better sprite visibility */
+        max-width: 50vw !important;
+        /* Prevent sprites from being too wide on narrow screens */
+
+        background-position: bottom center !important;
+        /* Ensure feet are aligned to platform edge */
+        background-size: contain !important;
+        /* Scale sprite to fit container proportionally */
+
+        z-index: 40 !important;
+    }
+
+    #character-left {
+        left: 0% !important;
+        right: auto !important;
+        transform: none !important;
+    }
+
+    #character-right {
+        right: 5% !important;
+        left: auto !important;
+        transform: none !important;
+    }
+
+    /* DIALOGUE BOX - FIXED HEIGHT, overlays bottom 30vh */
+    #dialogue-box {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 5% !important;
+        right: 5% !important;
+        width: auto !important;
+        max-width: none !important;
+        height: 30vh !important;
+        /* LOCKED HEIGHT */
+        max-height: 30vh !important;
+        min-height: 30vh !important;
+        /* Force it to stay 30vh always */
+        transform: none !important;
+        margin: 0 !important;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0;
+        padding: 12px 16px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        box-sizing: border-box;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        pointer-events: auto !important;
+        touch-action: manipulation;
+        z-index: 50 !important;
+    }
+
+    /* Keep custom dialogue frames on mobile - just constrain positioning */
+    #dialogue-box.ronnie-route {
+        background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+            rgba(8, 14, 20, 0.95) !important;
+        border: none !important;
+        padding: 20px 24px 16px 24px !important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.15) !important;
+    }
+
+    #dialogue-box.tori-route {
+        background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+            rgba(12, 15, 30, 0.95) !important;
+        border: none !important;
+        padding: 20px 24px 16px 24px !important;
+        padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.2) !important;
+        animation: toriFrameFlicker 8s ease-in-out infinite !important;
+    }
+
+    #pause-button {
+        top: 8px;
+        padding: 6px 12px;
+        font-size: 0.8em;
+        z-index: 100;
+    }
+
+    /* Tether UI - below top row to not cover pause */
+    #tether-ui {
+        width: 55%;
+        max-width: 200px;
+        top: 50px;
+        /* Below pause/notes row */
+        left: 8px;
+        right: auto;
+    }
+
+    #tether-meter {
+        height: 30px;
+        padding: 4px 6px;
+        font-size: 0.8em;
+    }
+
+    #hold-on-button {
+        height: 30px;
+        padding: 6px 10px;
+        font-size: 0.7em;
+        margin-top: 4px;
+    }
+
+    #notes-button {
+        top: 8px;
+        right: 8px;
+        padding: 6px 10px;
+        font-size: 0.7em;
+        min-width: auto;
+        height: 30px;
+    }
+
+    #character-name {
+        font-size: 1rem;
+        margin-bottom: 6px;
+        font-weight: 600;
+    }
+
+    #dialogue-text {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 6px;
+    }
+
+    #internal-thought {
+        font-size: 0.8rem;
+        line-height: 1.4;
+        margin-top: 8px;
+        padding: 8px 10px;
+        max-height: 10vh;
+        overflow-y: auto;
+    }
+}
+
+/* General mobile (both orientations) - text sizing only */
+@media (max-width: 1023px) {
+    #dialogue-box {
+        padding: 12px 16px;
+        font-size: 0.9rem;
+        /* Height controlled by orientation-specific queries below */
+    }
+
+    #character-name {
+        font-size: 1rem;
+        margin-bottom: 6px;
+    }
+
+    #dialogue-text {
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    #internal-thought {
+        font-size: 0.8rem;
+        margin-top: 8px;
+        padding: 8px 10px;
+        max-height: 10vh;
+    }
+}
+
+/* Safe area support for notched phones */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+    @media (max-width: 768px) {
+        #dialogue-box {
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+    }
+}
+
+/* Landscape mobile/tablet - covers up to typical laptop widths */
+@media (max-width: 1279px) and (orientation: landscape) {
+    /* FULL-BODY SPRITES: Grounded at viewport bottom
+       Feet extend behind semi-transparent dialogue box
+       For screenshot mode: full standing sprite visible */
+
+    #dialogue-box {
+        height: 35vh !important;
+        max-height: 35vh !important;
+        min-height: 35vh !important;
+        left: 5%;
+        right: 5%;
+        width: 90%;
+        transform: translateX(0);
+        /* Semi-transparent so sprite feet show through */
+        background-color: rgba(10, 15, 25, 0.85) !important;
+    }
+
+    /* Route-specific dialogue frames with transparency */
+    #dialogue-box.ronnie-route {
+        background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+            rgba(8, 14, 20, 0.85) !important;
+    }
+
+    #dialogue-box.tori-route {
+        background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+            rgba(12, 15, 30, 0.85) !important;
+    }
+
+    #dialogue-box.prologue-style {
+        background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+            rgba(25, 15, 40, 0.85) !important;
+    }
+
+    #dialogue-box.epilogue-style {
+        background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+            rgba(40, 30, 15, 0.85) !important;
+    }
+
+    /* ================================================
+       FULL-BODY SPRITES - MOBILE LANDSCAPE
+       Adjust these values to tweak sprite appearance:
+       ================================================ */
+    .character-sprite {
+        /* POSITIONING */
+        bottom: 0 !important;
+        /* Grounded at screen bottom */
+        top: auto !important;
+
+        /* SIZE - Adjust these to change sprite size */
+        width: 60vh !important;
+        /* Width (based on viewport height) */
+        height: 95vh !important;
+        /* Height (95% of screen) */
+        max-height: 95vh !important;
+        min-height: unset !important;
+
+        /* DISPLAY */
+        background-position: bottom center !important;
+        /* Show from feet up */
+        background-size: contain !important;
+        /* Fit entire sprite */
+        background-repeat: no-repeat !important;
+    }
+
+    /* LEFT/RIGHT POSITIONING ONLY - no size values here */
+    #character-left {
+        left: 0 !important;
+        /* Distance from left edge */
+    }
+
+    #character-right {
+        right: 0 !important;
+        /* Distance from right edge */
+    }
+
+    #internal-thought {
+        max-height: 15vh;
+    }
+
+    /* Tether UI in landscape - top left, compact */
+    #tether-ui {
+        top: 8px;
+        left: 8px;
+        width: 30%;
+        max-width: 200px;
+    }
+
+    #tether-meter {
+        height: 28px;
+        font-size: 0.75em;
+    }
+
+    #hold-on-button {
+        height: 28px;
+        font-size: 0.65em;
+        margin-top: 4px;
+    }
+}
+
+/* Tap feedback */
+@media (max-width: 768px) {
+    #dialogue-box:active {
+        opacity: 0.95;
+        transition: opacity 0.1s ease;
+    }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) and (orientation: portrait) {
+    .character-sprite {
+        width: 140px !important;
+        height: 240px !important;
+        bottom: 20vh !important;
+        /* Lower to account for address bar */
+    }
+
+    #character-right {
+        bottom: 22vh !important;
+    }
+
+    #dialogue-box {
+        max-height: 30vh !important;
+    }
+
+    /* Push bubbles lower on small screens to avoid sprite chin */
+    .internal-bubble.left-character,
+    .internal-bubble.right-character {
+        top: 45% !important;
+        /* Lower */
+    }
+
+    .internal-bubble.center {
+        top: 48% !important;
+    }
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    #insane-warning-content {
+        padding: 30px 20px;
+        max-width: 95%;
+    }
+
+    #insane-warning-content h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    #insane-warning-message p {
+        font-size: 1em;
+    }
+
+    .insane-warnings li {
+        font-size: 0.95em;
+    }
+
+    #insane-warning-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .insane-btn {
+        font-size: 1em;
+        padding: 12px 20px;
+        min-width: auto;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    #insane-warning-content {
+        padding: 25px 15px;
+    }
+
+    #insane-warning-content h2 {
+        font-size: 1.5em;
+    }
+
+    .insane-warnings {
+        padding: 15px;
+    }
+
+    .insane-warnings li {
+        font-size: 0.9em;
+        padding: 8px 0;
+    }
+}
+
+/* ========================================
+   LANDSCAPE ORIENTATION FIX
+   Shrink content to fit shorter viewport height
+   ======================================== */
+
+@media (orientation: landscape) and (max-height: 600px) {
+    #insane-warning-content {
+        padding: 20px 15px;
+        max-width: 90%;
+        max-height: 95vh;
+        overflow-y: auto;
+        /* Fallback if still too tall */
+    }
+
+    #insane-warning-content h2 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+
+    #insane-warning-message p {
+        font-size: 0.85em;
+        margin-bottom: 10px;
+    }
+
+    .insane-warnings {
+        padding: 12px;
+        margin: 12px 0;
+    }
+
+    .insane-warnings li {
+        font-size: 0.85em;
+        padding: 6px 0;
+    }
+
+    .insane-final-warning {
+        font-size: 0.95em;
+        margin: 10px 0 !important;
+    }
+
+    .insane-proceed-question {
+        font-size: 1em;
+        margin-top: 15px !important;
+    }
+
+    #insane-warning-buttons {
+        margin-top: 15px;
+        gap: 12px;
+    }
+
+    .insane-btn {
+        font-size: 0.9em;
+        padding: 10px 20px;
+        min-width: 150px;
+    }
+}
+
+/* Extra short landscape devices (phones in landscape) */
+@media (orientation: landscape) and (max-height: 450px) {
+    #insane-warning-content h2 {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    #insane-warning-message p {
+        font-size: 0.75em;
+    }
+
+    .insane-warnings {
+        padding: 8px;
+        margin: 8px 0;
+    }
+
+    .insane-warnings li {
+        font-size: 0.75em;
+        padding: 4px 0;
+    }
+
+    .insane-btn {
+        font-size: 0.8em;
+        padding: 8px 15px;
+        min-width: 120px;
+    }
+}
+
+/* ========================================
+/* ==========================================
+   FORCE ORIENTATION (LAYOUT OVERRIDE)
+   ZEE'S FIX: Actually switch layouts instead of rotating 🖤
+   ========================================== */
+
+/* Force landscape layout (wider dialogue, landscape sprite positioning) */
+.force-landscape #dialogue-box {
+    max-width: 80% !important;
+}
+
+.force-landscape .sprite-container {
+    /* Landscape sprite positioning */
+    width: 35% !important;
+}
+
+.force-landscape #character-left {
+    left: 5% !important;
+}
+
+.force-landscape #character-right {
+    right: 5% !important;
+}
+
+/* Apply landscape-specific settings UI */
+.force-landscape .settings-content {
+    max-width: 900px !important;
+}
+
+/* Force portrait layout (narrower dialogue, portrait sprite positioning) */
+.force-portrait #dialogue-box {
+    max-width: 95% !important;
+}
+
+.force-portrait .sprite-container {
+    /* Portrait sprite positioning */
+    width: 45% !important;
+}
+
+.force-portrait #character-left {
+    left: 2% !important;
+}
+
+.force-portrait #character-right {
+    right: 2% !important;
+}
+
+/* Force portrait settings UI */
+.force-portrait .settings-content {
+    max-width: 500px !important;
+}
+
+/* ZEE'S NOTE: This approach overrides layout rules with !important
+   instead of rotating the visual. Device orientation doesn't change,
+   but CSS layout responds as if it did. 🖤 */

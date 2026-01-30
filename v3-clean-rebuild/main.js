@@ -3,6 +3,8 @@
  * Imports and initializes the Game Engine.
  */
 import { GameEngine } from './system/game-engine.js';
+import { SettingsManager } from './system/settings-manager.js';
+console.log('🧪 Diagnostic: SettingsManager import test...', SettingsManager);
 
 // Wait for DOM
 document.addEventListener('DOMContentLoaded', async () => {

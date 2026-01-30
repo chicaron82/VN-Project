@@ -35,7 +35,7 @@ export class RouteController {
 
             if (typeof RouteClass === 'function') {
                 console.log(`✨ Detected V1 Route Class: ${exportKey}`);
-                routeInstance = new RouteClass(this); // Pass Controller (which has .game and .tetherSystem)
+                routeInstance = new RouteClass(this.engine); // Pass Engine (V1 routes expect game instance with displayScene)
                 if (routeInstance.start) {
                     routeInstance.start();
                 } else {

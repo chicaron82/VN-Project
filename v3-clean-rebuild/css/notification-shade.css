@@ -1,0 +1,1997 @@
+/* ========================================
+   NOTIFICATION SHADE SYSTEM
+   Mobile-first notification shade with status bar
+   DIZEE + ZEERAH + GENZEE COLLABORATION
+   ======================================== */
+
+/* ========================================
+   STATUS BAR (Always Visible)
+   ======================================== */
+
+#status-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: none;
+    /* Hidden until splash completes */
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+    z-index: 9999;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    transition: opacity 0.3s ease;
+}
+
+/* Show status bar after splash */
+#status-bar.visible {
+    display: flex;
+}
+
+/* Auto-hide on idle */
+#status-bar.idle {
+    opacity: 0.5;
+}
+
+/* Status bar sections */
+.status-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Loop version with pulse animation */
+#status-loop {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+#status-loop.pulse {
+    animation: loop-pulse 0.6s ease-out;
+}
+
+@keyframes loop-pulse {
+    0% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.8);
+    }
+
+    100% {
+        text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    }
+}
+
+/* Route indicator */
+#status-route {
+    color: #ffffff;
+}
+
+/* Progress indicator (notes) */
+#status-progress {
+    color: #00ff88;
+}
+
+/* ========================================
+   TETHER LIGHTNING BOLT (Tori Route)
+   ======================================== */
+
+#status-tether {
+    display: none;
+    /* Hidden by default, shown on Tori route */
+    align-items: center;
+    gap: 8px;
+}
+
+#status-tether.visible {
+    display: flex;
+}
+
+.tether-lightning {
+    position: relative;
+    width: 20px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tether-icon {
+    position: relative;
+    z-index: 2;
+    font-size: 18px;
+}
+
+.tether-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(to top, #00ff88, #00ffff);
+    opacity: 0.6;
+    transition: height 0.3s ease, background 0.3s ease;
+    z-index: 1;
+}
+
+/* Tether states */
+#status-tether.warning .tether-fill {
+    background: linear-gradient(to top, #ffaa00, #ffff00);
+}
+
+#status-tether.critical .tether-fill {
+    background: linear-gradient(to top, #ff4444, #ff8888);
+    animation: tether-pulse 1s ease-in-out infinite;
+}
+
+#status-tether-value {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ========================================
+   MAIL ICON WITH BADGE
+   ======================================== */
+
+#status-mail {
+    display: none;
+    position: relative;
+    align-items: center;
+    gap: 5px;
+}
+
+#status-mail.visible {
+    display: flex;
+}
+
+.mail-icon {
+    font-size: 16px;
+    animation: mail-pulse 2s ease-in-out infinite;
+}
+
+@keyframes mail-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.unread-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: #ff4444;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 4px;
+    border-radius: 8px;
+    min-width: 14px;
+    text-align: center;
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.7);
+    }
+
+    50% {
+        box-shadow: 0 0 0 4px rgba(255, 68, 68, 0);
+    }
+}
+
+/* ========================================
+   STATUS BAR NOTIFICATION AREA
+   Center space for system messages
+   ======================================== */
+
+/* Container - lives in center of status bar */
+#status-notification {
+    position: absolute;
+    left: 280px;
+    /* After version + route */
+    right: 140px;
+    /* Before notes count */
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+
+    display: none;
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+#status-notification.visible {
+    display: flex;
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Hover state for interactive notifications */
+#status-notification.interactive:hover {
+    background: rgba(0, 255, 255, 0.05);
+    border-radius: 4px;
+    padding: 2px 6px;
+    margin: -2px -6px;
+}
+
+/* Icon */
+.status-notif-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+/* Message text */
+.status-notif-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Progress bar - shows time remaining */
+.status-notif-progress {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(0, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.status-notif-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+    width: 100%;
+    transform-origin: left;
+    transition: transform linear;
+}
+
+/* Type-specific colors */
+#status-notification.type-note {
+    color: #00ffff;
+}
+
+#status-notification.type-save {
+    color: #00ff88;
+}
+
+#status-notification.type-warning {
+    color: #ffaa00;
+}
+
+#status-notification.type-error {
+    color: #ff6b6b;
+}
+
+#status-notification.type-skip {
+    color: #00aaff;
+}
+
+#status-notification.type-tutorial {
+    color: #ff00ff;
+}
+
+/* Screenshot mode indicator - bougie cyan glow */
+body.ui-hidden #status-notification {
+    color: #00ffff !important;
+    text-shadow: 0 0 12px rgba(0, 255, 255, 0.8);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    pointer-events: none !important;
+}
+
+body.ui-hidden #status-notification .status-notif-icon {
+    animation: screenshotPulse 2s ease-in-out infinite;
+}
+
+@keyframes screenshotPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px rgba(0, 255, 255, 0.6));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 12px rgba(0, 255, 255, 1));
+    }
+}
+
+/* Hide progress bar in screenshot mode */
+body.ui-hidden #status-notification .status-notif-progress {
+    display: none;
+}
+
+/* ECHO MEMORY SYSTEM - Mystical purple for echo comments */
+#status-notification.type-echo {
+    color: #bf00ff;
+    background: linear-gradient(135deg,
+            rgba(100, 50, 150, 0.9),
+            rgba(50, 0, 100, 0.85));
+    border-left: 3px solid #bf00ff;
+    box-shadow: 0 0 20px rgba(191, 0, 255, 0.3),
+        inset 0 0 30px rgba(191, 0, 255, 0.1);
+    text-shadow: 0 0 8px rgba(191, 0, 255, 0.5);
+}
+
+/* FIXED POINT IN TIME - Locked/warning events */
+#status-notification.type-fixed-point {
+    color: #ff6b6b;
+    background: linear-gradient(135deg,
+            rgba(150, 50, 50, 0.9),
+            rgba(100, 20, 20, 0.85));
+    border-left: 3px solid #ff4444;
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+}
+
+/* Pulse animation for important messages */
+@keyframes status-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+#status-notification.pulse {
+    animation: status-pulse 1s ease-in-out infinite;
+}
+
+
+/* ========================================
+   NOTE PREVIEW CARD
+   ======================================== */
+
+.note-preview-card {
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: pan-y;
+    /* Allow vertical scrolling but enable horizontal swipe */
+}
+
+.note-preview-card:hover,
+.note-preview-card:focus {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: translateX(4px);
+}
+
+.note-preview-card:active {
+    transform: scale(0.98);
+}
+
+.note-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+}
+
+.note-preview-content {
+    flex: 1;
+    min-width: 0;
+    /* Allow text truncation */
+}
+
+.note-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00ffff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.note-snippet {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.note-arrow {
+    font-size: 18px;
+    color: rgba(0, 255, 255, 0.6);
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.note-preview-card:hover .note-arrow {
+    transform: translateX(4px);
+}
+
+/* Swipe feedback (mobile) */
+.note-preview-card.swiping {
+    transition: transform 0.1s ease;
+}
+
+.note-preview-card.swipe-left {
+    transform: translateX(-100px);
+    opacity: 0.5;
+}
+
+.note-preview-card.swipe-right {
+    transform: translateX(100px);
+    opacity: 0.5;
+}
+
+/* Tether critical state */
+
+/* ========================================
+   ROUTE-SPECIFIC THEMING
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue */
+#status-bar.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.3);
+}
+
+#status-bar.ronnie-route #status-loop {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+
+/* Glitch effect on loop number (Ronnie) */
+#status-bar.ronnie-route #status-loop.glitch {
+    animation: ronnie-glitch 0.3s ease-out;
+}
+
+@keyframes ronnie-glitch {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-2px);
+        color: #ff00ff;
+    }
+
+    40% {
+        transform: translateX(2px);
+        color: #00ff00;
+    }
+
+    60% {
+        transform: translateX(-1px);
+        color: #ffff00;
+    }
+
+    80% {
+        transform: translateX(1px);
+        color: #00ffff;
+    }
+
+    100% {
+        transform: translateX(0);
+        color: #00ffff;
+    }
+}
+
+/* Tori Route - Green */
+#status-bar.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.3);
+}
+
+#status-bar.tori-route #status-loop {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+}
+
+#status-bar.tori-route #status-progress {
+    color: #00ffff;
+}
+
+/* Heartbeat pulse on tether (Tori) */
+#status-bar.tori-route #status-tether.heartbeat {
+    animation: tether-heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes tether-heartbeat {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+
+    10% {
+        transform: scale(1.1);
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.9);
+    }
+
+    20% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+
+    30% {
+        transform: scale(1.08);
+        text-shadow: 0 0 12px rgba(0, 255, 136, 0.8);
+    }
+
+    40% {
+        transform: scale(1);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
+    }
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+#status-bar.loading {
+    justify-content: center;
+}
+
+#status-loading {
+    display: none;
+    align-items: center;
+    gap: 10px;
+}
+
+#status-bar.loading #status-loading {
+    display: flex;
+}
+
+#status-bar.loading .status-section {
+    display: none;
+}
+
+.loading-bar {
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ffff, #00ff88);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    #status-bar {
+        font-size: 12px;
+        padding: 0 10px;
+        height: 36px;
+    }
+
+    .status-section {
+        gap: 10px;
+    }
+
+    .status-item {
+        gap: 3px;
+    }
+}
+
+@media (max-width: 480px) {
+    #status-bar {
+        font-size: 11px;
+        padding: 0 8px;
+    }
+
+    .status-section {
+        gap: 8px;
+    }
+
+    /* Hide route name on very small screens */
+    #status-route {
+        display: none;
+    }
+}
+
+/* ========================================
+   NOTIFICATION SHADE (Mobile)
+   Coming in Phase 2
+   ======================================== */
+
+#notification-shade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 9998;
+    padding: 50px 20px 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Shade open state */
+#notification-shade.open {
+    transform: translateY(0);
+}
+
+/* Shade sections */
+.shade-section {
+    margin-bottom: 25px;
+}
+
+.shade-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-family: 'Courier New', monospace;
+}
+
+/* ========================================
+   SCREENSHOT MODE
+   Hide UI for clean screenshots
+   ======================================== */
+
+body.screenshot-mode #status-bar,
+body.screenshot-mode #notification-shade,
+body.screenshot-mode #sidebar,
+body.screenshot-mode .sidebar-toggle,
+body.screenshot-mode #shade-backdrop {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.screenshot-mode #dialogue-box {
+    opacity: 0.5;
+}
+
+/* ========================================
+   EXPANDABLE QUICK ACTIONS
+   Three-state system: Collapsed → Quick → Expanded
+   ======================================== */
+
+/* Quick Actions Container */
+.quick-actions-container {
+    position: relative;
+}
+
+.shade-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.expand-hint {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 2px;
+    animation: pulse-hint 2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Paged Carousel (Quick State) */
+.quick-actions-carousel {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.quick-actions-track {
+    display: flex;
+    transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    width: 200%;
+    /* 2 pages */
+    will-change: transform;
+    /* GPU acceleration */
+}
+
+.quick-actions-page {
+    min-width: 50%;
+    /* 50% of track = 100% of container */
+    flex-shrink: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Page Dots */
+.quick-actions-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.quick-actions-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transition: all 0.2s ease;
+}
+
+.quick-actions-dots .dot.active {
+    background: #00ffff;
+    width: 20px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+/* Expanded Grid (Full State) */
+.quick-actions-expanded {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: opacity, transform;
+    /* GPU acceleration */
+}
+
+.quick-actions-expanded.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.expanded-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.edit-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 6px 12px;
+    color: #00ffff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.expanded-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.expanded-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.group-label {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(0, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.expanded-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+/* Legacy grid class (kept for compatibility) */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.quick-action-btn {
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Courier New', monospace;
+    color: #00ffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.quick-action-btn:hover,
+.quick-action-btn:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.05);
+}
+
+.quick-action-btn:active {
+    transform: scale(0.95);
+}
+
+.quick-action-icon {
+    font-size: 24px;
+}
+
+/* ========================================
+   EDIT MODE STYLES
+   ======================================== */
+
+/* Edit button active state */
+.edit-btn.active {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+/* Editable action buttons */
+.quick-action-btn.editable {
+    position: relative;
+    cursor: move;
+    padding: 12px 10px;
+}
+
+.quick-action-btn.editable:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Drag handle */
+.drag-handle {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    font-size: 14px;
+    color: rgba(0, 255, 255, 0.4);
+    cursor: move;
+    user-select: none;
+}
+
+/* Star button */
+.star-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+}
+
+.star-btn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.star-btn.active {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+}
+
+/* Dragging states */
+.quick-action-btn.dragging {
+    opacity: 0.4;
+    transform: scale(0.95);
+}
+
+.quick-action-btn.drag-over {
+    border-color: rgba(255, 215, 0, 0.8);
+    background: rgba(255, 215, 0, 0.1);
+    transform: scale(1.05);
+}
+
+/* Reset button */
+.reset-defaults-btn {
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: rgba(255, 100, 100, 0.1);
+    border: 1px solid rgba(255, 100, 100, 0.3);
+    border-radius: 10px;
+    color: #ff6464;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reset-defaults-btn:hover {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: rgba(255, 100, 100, 0.6);
+    transform: scale(1.02);
+}
+
+/* Edit mode container adjustments */
+.quick-actions-expanded.edit-mode .expanded-header {
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* ========================================
+   HELP OVERLAY
+   ======================================== */
+
+.quick-actions-help-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.quick-actions-help-overlay.visible {
+    opacity: 1;
+}
+
+.quick-actions-help-overlay.closing {
+    opacity: 0;
+}
+
+.help-content {
+    background: rgba(20, 20, 30, 0.95);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-radius: 16px;
+    max-width: 500px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    animation: helpSlideIn 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+@keyframes helpSlideIn {
+    from {
+        transform: translateY(-20px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.help-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 15px;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.help-header h3 {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.help-close-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+}
+
+.help-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.help-body {
+    padding: 20px;
+}
+
+.help-section {
+    margin-bottom: 25px;
+}
+
+.help-section:last-child {
+    margin-bottom: 0;
+}
+
+.help-title {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #00ffff;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.help-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.help-item:last-child {
+    border-bottom: none;
+}
+
+.help-gesture {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(0, 255, 255, 0.8);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 120px;
+}
+
+.help-desc {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.help-footer {
+    padding: 15px 20px 20px;
+    border-top: 1px solid rgba(0, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+}
+
+.help-got-it-btn {
+    background: rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(0, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 12px 30px;
+    color: #00ffff;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
+}
+
+.help-got-it-btn:hover {
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.02);
+}
+
+.help-got-it-btn:active {
+    transform: scale(0.98);
+}
+
+/* Mobile responsiveness for help */
+@media (max-width: 480px) {
+    .help-content {
+        max-width: 100%;
+        border-radius: 12px;
+    }
+
+    .help-header h3 {
+        font-size: 16px;
+    }
+
+    .help-gesture {
+        min-width: 100px;
+        font-size: 11px;
+    }
+
+    .help-desc {
+        font-size: 11px;
+    }
+}
+
+/* Status Details */
+.status-details {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.status-detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.status-detail-item:last-child {
+    border-bottom: none;
+}
+
+.status-detail-label {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.status-detail-value {
+    color: #00ffff;
+    font-weight: 600;
+}
+
+/* Backdrop */
+#shade-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 9997;
+}
+
+#shade-backdrop.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Swipe indicator (subtle hint) */
+.swipe-indicator {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .quick-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .quick-action-btn {
+        padding: 12px 8px;
+        font-size: 10px;
+    }
+
+    .quick-action-icon {
+        font-size: 20px;
+    }
+
+    /* Ensure new carousel pages maintain 4 columns */
+    .quick-actions-page {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+
+    .expanded-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #notification-shade {
+        padding: 45px 15px 15px;
+    }
+
+    .quick-actions {
+        gap: 8px;
+    }
+
+    .quick-action-btn {
+        padding: 10px 6px;
+        font-size: 9px;
+    }
+
+    /* Ensure new carousel pages maintain 4 columns */
+    .quick-actions-page {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .expanded-actions {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+}
+
+/* Settings button (bottom right) */
+.shade-settings-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 24px;
+    color: #00ffff;
+}
+
+.shade-settings-btn:hover,
+.shade-settings-btn:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    transform: scale(1.1) rotate(45deg);
+}
+
+.shade-settings-btn:active {
+    transform: scale(0.95) rotate(45deg);
+}
+
+/* ========================================
+   ROUTE-SPECIFIC THEMING (Shade & Sidebar)
+   ======================================== */
+
+/* Ronnie Route - Cyan/Blue */
+#notification-shade.ronnie-route,
+#sidebar.ronnie-route {
+    border-bottom-color: rgba(0, 255, 255, 0.4);
+    border-right-color: rgba(0, 255, 255, 0.4);
+}
+
+#notification-shade.ronnie-route .shade-section-title,
+#sidebar.ronnie-route .shade-section-title {
+    color: rgba(0, 255, 255, 0.8);
+}
+
+#notification-shade.ronnie-route .quick-action-btn,
+#sidebar.ronnie-route .quick-action-btn {
+    border-color: rgba(0, 255, 255, 0.4);
+}
+
+#notification-shade.ronnie-route .quick-action-btn:hover,
+#sidebar.ronnie-route .quick-action-btn:hover {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+#notification-shade.ronnie-route .status-details,
+#sidebar.ronnie-route .status-details {
+    border-color: rgba(0, 255, 255, 0.3);
+}
+
+#notification-shade.ronnie-route .status-detail-value,
+#sidebar.ronnie-route .status-detail-value {
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.4);
+}
+
+/* Tori Route - Green */
+#notification-shade.tori-route,
+#sidebar.tori-route {
+    border-bottom-color: rgba(0, 255, 136, 0.4);
+    border-right-color: rgba(0, 255, 136, 0.4);
+}
+
+#notification-shade.tori-route .shade-section-title,
+#sidebar.tori-route .shade-section-title {
+    color: rgba(0, 255, 136, 0.8);
+}
+
+#notification-shade.tori-route .quick-action-btn,
+#sidebar.tori-route .quick-action-btn {
+    border-color: rgba(0, 255, 136, 0.4);
+}
+
+#notification-shade.tori-route .quick-action-btn:hover,
+#sidebar.tori-route .quick-action-btn:hover {
+    background: rgba(0, 255, 136, 0.2);
+    border-color: rgba(0, 255, 136, 0.7);
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+}
+
+#notification-shade.tori-route .status-details,
+#sidebar.tori-route .status-details {
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+#notification-shade.tori-route .status-detail-value,
+#sidebar.tori-route .status-detail-value {
+    color: #00ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.4);
+}
+
+/* Tether critical state (Tori only) */
+#notification-shade.tori-route .status-detail-value.critical,
+#sidebar.tori-route .status-detail-value.critical {
+    color: #ff4444;
+    text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    animation: tether-pulse-value 1s ease-in-out infinite;
+}
+
+@keyframes tether-pulse-value {
+
+    0%,
+    100% {
+        text-shadow: 0 0 8px rgba(255, 68, 68, 0.6);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(255, 68, 68, 1);
+    }
+}
+
+/* ========================================
+   MICRO-ANIMATIONS
+   ======================================== */
+
+/* Quick action button spring effect */
+.quick-action-btn {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.quick-action-btn:active {
+    transform: scale(0.9);
+    transition: all 0.1s ease;
+}
+
+/* Settings button rotation */
+.shade-settings-btn,
+#sidebar .quick-action-btn:has(.quick-action-icon:contains("⚙️")) {
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Shade/Sidebar slide-in animation */
+#notification-shade.open {
+    animation: shade-slide-in 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes shade-slide-in {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+#sidebar.expanded {
+    animation: sidebar-slide-in 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+@keyframes sidebar-slide-in {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Status detail items fade in */
+.status-detail-item {
+    animation: fade-in-up 0.3s ease-out backwards;
+}
+
+.status-detail-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.status-detail-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.status-detail-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.status-detail-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fade-in-up {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   SIDEBAR (Desktop)
+   ======================================== */
+
+#sidebar {
+    position: fixed;
+    top: 40px;
+    /* Below status bar */
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background: rgba(10, 10, 20, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    z-index: 9998;
+    padding: 20px;
+    overflow-y: auto;
+    border-right: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
+    display: none;
+    /* Hidden on mobile and during splash */
+    opacity: 0;
+    /* Hidden during splash */
+    pointer-events: none;
+}
+
+/* Show sidebar after splash */
+#sidebar.visible {
+    display: block;
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* Collapsed state for left side (default) - slide off to left */
+#sidebar:not(.right-side):not(.expanded) {
+    transform: translateX(-100%);
+}
+
+/* Expanded state for left side - slide in from left */
+#sidebar:not(.right-side).expanded {
+    transform: translateX(0);
+}
+
+/* Collapsed toggle button */
+.sidebar-toggle {
+    position: fixed;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 80px;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+    display: none;
+    /* Hidden on mobile and during splash */
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    transition: all 0.2s ease;
+    z-index: 9999;
+    font-size: 20px;
+    color: #00ffff;
+    opacity: 0;
+    /* Hidden during splash */
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+}
+
+/* Dragging state */
+.sidebar-toggle.dragging {
+    cursor: grabbing;
+    background: rgba(0, 255, 255, 0.3);
+    border-color: rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-50%) scale(1.1);
+    width: 50px;
+}
+
+/* Crossing threshold (horizontal drag to flip sides) */
+.sidebar-toggle.crossing-threshold {
+    background: rgba(0, 255, 0, 0.3);
+    border-color: rgba(0, 255, 0, 0.8);
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+    opacity: 0.8;
+    animation: pulse-crossing 0.5s ease-in-out infinite;
+}
+
+@keyframes pulse-crossing {
+
+    0%,
+    100% {
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    50% {
+        transform: translateY(-50%) scale(1.15);
+    }
+}
+
+/* Show toggle after splash */
+.sidebar-toggle.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus {
+    background: rgba(0, 255, 255, 0.2);
+    border-color: rgba(0, 255, 255, 0.6);
+    width: 45px;
+}
+
+.sidebar-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* Keep toggle visible when sidebar is expanded (for closing) */
+#sidebar.expanded~.sidebar-toggle {
+    /* Remove opacity: 0 - keep it visible */
+    left: 292px;
+    /* Move it to the edge of the sidebar */
+    transition: left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), all 0.2s ease;
+}
+
+/* Right-side sidebar (when flipped) */
+#sidebar.right-side {
+    left: auto;
+    right: 0;
+    border-right: none;
+    border-left: 2px solid rgba(0, 255, 255, 0.3);
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Collapsed state for right side - slide off to right */
+#sidebar.right-side:not(.expanded) {
+    transform: translateX(100%);
+}
+
+/* Expanded state for right side - slide in from right */
+#sidebar.right-side.expanded {
+    transform: translateX(0);
+}
+
+/* Toggle position when sidebar is on right and expanded */
+#sidebar.right-side.expanded~.sidebar-toggle {
+    left: auto;
+    right: 292px;
+}
+
+/* Sidebar uses same content styles as shade */
+#sidebar .shade-section {
+    margin-bottom: 25px;
+}
+
+#sidebar .quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+/* Landscape mobile/tablet - show sidebar */
+@media (min-width: 568px) and (orientation: landscape) {
+    #sidebar {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    /* Hide mobile shade in landscape */
+    #notification-shade {
+        display: none !important;
+    }
+}
+
+/* Desktop breakpoint - show sidebar, hide shade */
+@media (min-width: 769px) {
+    #sidebar {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+    }
+
+    /* Hide mobile shade on desktop */
+    #notification-shade {
+        display: none !important;
+    }
+}
+
+/* Tablet landscape - show sidebar */
+@media (min-width: 769px) and (max-width: 1024px) {
+    #sidebar {
+        width: 280px;
+    }
+}
+
+/* ========================================
+   CONFIRMATION OVERLAY
+   ======================================== */
+
+.confirmation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.confirmation-overlay.visible {
+    opacity: 1;
+}
+
+.confirmation-dialog {
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.95), rgba(30, 30, 35, 0.95));
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.confirmation-overlay.visible .confirmation-dialog {
+    transform: scale(1);
+}
+
+.confirmation-title {
+    margin: 0 0 12px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.confirmation-message {
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+}
+
+.confirmation-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.confirmation-buttons button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.confirmation-cancel {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.confirmation-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.confirmation-confirm {
+    background: linear-gradient(135deg, #ff4757, #ff6b81);
+    color: #fff;
+}
+
+.confirmation-confirm:hover {
+    background: linear-gradient(135deg, #ff6b81, #ff8fa3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+}
+
+.confirmation-buttons button:active {
+    transform: translateY(0);
+}
+
+/* ========================================
+   SIDEBAR DEPTH LAYERS (iOS-STYLE)
+   DIZEE IMPLEMENTATION - MICHELIN EDITION
+   ======================================== */
+
+.sidebar-layers {
+    position: relative;
+    width: 100%;
+    height: auto;
+    perspective: 1000px;
+    /* Enable 3D depth effect */
+}
+
+/* Base layer styling */
+.sidebar-layer {
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(20, 20, 40, 0.9);
+    border: 1px solid rgba(100, 255, 218, 0.15);
+    margin-bottom: 12px;
+    transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* PRIMARY LAYER (Front - Core Actions) */
+.primary-layer {
+    z-index: 2;
+    background: rgba(25, 25, 50, 0.95);
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.4),
+        0 0 1px rgba(100, 255, 218, 0.3);
+}
+
+/* SECONDARY LAYER (Behind - Tools) */
+.secondary-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background: rgba(15, 15, 35, 0.95);
+    transform: scale(0.95) translateY(8px);
+    opacity: 0.6;
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(100, 255, 218, 0.1);
+}
+
+/* Layer header */
+.layer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.layer-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(100, 255, 218, 0.9);
+    letter-spacing: 0.5px;
+}
+
+.layer-hint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+/* Layer actions grid */
+.layer-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.layer-actions .quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: rgba(100, 255, 218, 0.05);
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.layer-actions .quick-action-btn:hover {
+    background: rgba(100, 255, 218, 0.12);
+    border-color: rgba(100, 255, 218, 0.3);
+    transform: translateY(-2px);
+}
+
+.layer-actions .quick-action-btn:active {
+    transform: translateY(0);
+}
+
+.layer-actions .quick-action-icon {
+    font-size: 20px;
+}
+
+/* ========================================
+   DEPTH LAYER SWIPE STATES
+   ======================================== */
+
+/* When tools layer is revealed (swiped right on primary) */
+.sidebar-layers.tools-revealed .primary-layer {
+    transform: translateX(85%);
+    opacity: 0.4;
+    box-shadow:
+        -4px 0 20px rgba(0, 0, 0, 0.3),
+        0 0 1px rgba(100, 255, 218, 0.2);
+}
+
+.sidebar-layers.tools-revealed .secondary-layer {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    z-index: 3;
+    /* Bring to front when revealed */
+}
+
+/* Drag state - during swipe */
+.sidebar-layers.dragging .primary-layer,
+.sidebar-layers.dragging .secondary-layer {
+    transition: none !important;
+    /* Disable transition during drag for responsive feel */
+}
+
+/* ========================================
+   STATUS SECTION (below layers)
+   ======================================== */
+
+.sidebar-status {
+    margin-top: 8px;
+}
+
+/* ========================================
+   UV7 CARRIER-STYLE FOOTER
+   iOS-inspired branding at bottom of shade
+   ======================================== */
+
+.shade-carrier-footer {
+    position: absolute;
+    bottom: 16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 8px 16px;
+    pointer-events: none;
+}
+
+.carrier-logo {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(100, 255, 218, 0.7);
+    letter-spacing: 1px;
+    margin-right: 6px;
+}
+
+.carrier-name {
+    font-size: 11px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.5px;
+}
+
+/* Sidebar variant - position at bottom of sidebar */
+.sidebar-carrier {
+    position: relative;
+    margin-top: auto;
+    padding-top: 20px;
+}

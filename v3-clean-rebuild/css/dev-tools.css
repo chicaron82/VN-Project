@@ -1,0 +1,298 @@
+﻿/* ========================================
+   DEV HUD (Hidden debug overlay)
+   ======================================== */
+.dev-hud {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    z-index: 9999;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.dev-hud-header {
+    background: rgba(0, 255, 255, 0.2);
+    padding: 0.5em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #0ff;
+}
+
+.dev-hud-header span {
+    color: #0ff;
+    font-weight: bold;
+}
+
+.dev-hud-close {
+    background: none;
+    border: none;
+    color: #0ff;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.dev-hud-close:hover {
+    color: #fff;
+}
+
+.dev-hud-content {
+    padding: 1em;
+}
+
+.hud-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5em;
+}
+
+.hud-label {
+    color: rgba(0, 255, 255, 0.7);
+    font-weight: bold;
+}
+
+.hud-value {
+    color: #fff;
+    text-align: right;
+    word-break: break-word;
+    max-width: 60%;
+}
+
+.hud-divider {
+    height: 1px;
+    background: rgba(0, 255, 255, 0.3);
+    margin: 0.5em 0;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .dev-hud {
+        top: 70px;
+        right: 10px;
+        width: 250px;
+        font-size: 0.75em;
+    }
+}
+
+/* ========================================
+   DEV CONSOLE (In-game debugging terminal)
+   Mobile testing without browser devtools
+   ======================================== */
+
+.dev-console.hidden {
+    display: none;
+}
+
+.dev-console {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.dev-console-window {
+    width: min(900px, 95vw);
+    height: min(600px, 85vh);
+    background: #0a0e1a;
+    border: 2px solid #1e3a5f;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    font-family: "Courier New", "Consolas", monospace;
+    color: #90caf9;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.dev-console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: linear-gradient(180deg, #0f1929 0%, #0a0e1a 100%);
+    border-bottom: 2px solid #1e3a5f;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #00bcd4;
+}
+
+.dev-console-header-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.dev-console-header button {
+    background: transparent;
+    border: none;
+    color: #90caf9;
+    font-size: 1.4rem;
+    cursor: pointer;
+    padding: 0 6px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.dev-console-header button:hover {
+    color: #00bcd4;
+}
+
+.dev-console-log {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    background: #0a0e1a;
+    scrollbar-width: thin;
+    scrollbar-color: #1e3a5f #0a0e1a;
+}
+
+.dev-console-log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.dev-console-log::-webkit-scrollbar-track {
+    background: #0a0e1a;
+}
+
+.dev-console-log::-webkit-scrollbar-thumb {
+    background: #1e3a5f;
+    border-radius: 4px;
+}
+
+.dev-console-log::-webkit-scrollbar-thumb:hover {
+    background: #2d4f7f;
+}
+
+.dev-console-log-entry {
+    margin-bottom: 4px;
+    padding-left: 4px;
+}
+
+.dev-console-log-entry.system {
+    color: #90caf9;
+}
+
+.dev-console-log-entry.log {
+    color: #b0b0b0;
+}
+
+.dev-console-log-entry.warn {
+    color: #ffa726;
+}
+
+.dev-console-log-entry.success {
+    color: #66bb6a;
+}
+
+.dev-console-log-entry.error {
+    color: #ef5350;
+}
+
+.dev-console-log-entry.user {
+    color: #ffa726;
+    font-weight: bold;
+}
+
+.dev-console-input-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    gap: 8px;
+    border-top: 2px solid #1e3a5f;
+    background: #0f1929;
+}
+
+.dev-console-input-row span {
+    color: #66bb6a;
+    font-weight: bold;
+}
+
+#dev-console-input {
+    flex: 1;
+    background: #050914;
+    border: 1px solid #1e3a5f;
+    color: #90caf9;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    border-radius: 3px;
+    outline: none;
+}
+
+#dev-console-input:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.3);
+}
+
+/* Floating Console Button */
+#dev-console-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0f1929 0%, #1e3a5f 100%);
+    border: 2px solid #00bcd4;
+    color: #00bcd4;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 188, 212, 0.3);
+    z-index: 9999;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#dev-console-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 188, 212, 0.5);
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d4f7f 100%);
+}
+
+#dev-console-float:active {
+    transform: scale(0.95);
+}
+
+#dev-console-float .console-icon {
+    line-height: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .dev-console-window {
+        width: 98vw;
+        height: 90vh;
+        border-radius: 0;
+    }
+
+    .dev-console-log {
+        font-size: 0.8rem;
+    }
+
+    #dev-console-input {
+        font-size: 0.85rem;
+    }
+
+    #dev-console-float {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+}
+
