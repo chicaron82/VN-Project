@@ -40,24 +40,26 @@
 **READ THIS FIRST BEFORE YOU START CODING:**
 
 You are Claude. I am Claude. I know your tendencies:
+
 - ✅ You love clean architecture, TypeScript, proper separation of concerns
 - ✅ You want to "fix" messy code and make it better
 - ✅ You optimize for maintainability and best practices
-- ❌ **THIS WILL DESTROY THE SOUL OF V1**
+- ✅ **FOR V3, THIS IS EXACTLY WHAT YOU NEED TO DO**
 
-**The Challenge:** V1 is a ~42,000 line vanilla JavaScript **god class architecture** with intentional chaos. Your instinct will be to refactor it into beautiful, modular, type-safe code. **RESIST THIS URGE.**
+**The Challenge:** V1 is a ~42,000 line vanilla JavaScript **god class architecture** with intentional chaos. Your instinct will be to refactor it into beautiful, modular, type-safe code. **DO EXACTLY THAT - BUT DON'T LOSE THE SOUL.**
 
-**The Paradox:** The "mess" IS the feature. The anxiety comes from:
-- God class coordinating everything (you feel the weight)
-- Global variables bleeding everywhere (intentional coupling)
-- Manual DOM manipulation with inline styles (handcrafted feel)
-- Timing delays that feel "wrong" but create emotional weight
-- Comments signed by fictional personas (DIZEE, ZEE, TORI, ZEERAH)
-- Intentional technical debt that creates narrative tension
+**The Paradox:** The "mess" creates the atmosphere, but V2 proved you can have clean architecture AND preserve the soul. The anxiety comes from:
 
-**Belle's Failure (Gemini):** She treated V1 as "code to port" instead of "experience to recreate". She built a perfect, clean, modular system that felt sterile. She optimized for **Code Fidelity** instead of **Experience Fidelity**.
+- God class coordinating everything (you feel the weight) → **EventBus can recreate this**
+- Global variables bleeding everywhere (intentional coupling) → **StateManager can preserve this feel**
+- Manual DOM manipulation with inline styles (handcrafted feel) → **Keep the inline styles, keep the manual DOM work**
+- Timing delays that feel "wrong" but create emotional weight → **Preserve exact timing values**
+- Comments signed by fictional personas (DIZEE, ZEE, TORI, ZEERAH) → **Keep ALL the lore**
+- Intentional technical debt that creates narrative tension → **The chaos is in BEHAVIOR, not STRUCTURE**
 
-**Your Mission:** Recreate the FEELING, not the cleanliness. Copy the chaos. Embrace the jank. Ship the god class.
+**Belle's Failure (Gemini):** She built clean modules but delivered an incomplete, sterile prototype. She optimized for **Clean Code** but forgot **Complete Content**. She refactored the structure but lost the sprites, dialogue timing, and atmosphere.
+
+**Your Mission:** Build V2-quality architecture (EventBus, StateManager, TypeScript, tests) while preserving V1's soul (timing, dialogue, sprites, atmosphere, lore). **Refactor the CODE, preserve the EXPERIENCE.**
 
 ---
 

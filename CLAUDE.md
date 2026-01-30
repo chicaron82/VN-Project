@@ -54,6 +54,19 @@ V2 was built through:
 
 **If you're being asked to work on V3, your job is to REFACTOR, not to COPY.**
 
+### The Soul Preservation Paradox
+
+V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its structure (god class).
+
+- ✅ **DO** break up the god class into EventBus/StateManager (like V2 did)
+- ✅ **DO** use TypeScript, proper separation of concerns, comprehensive tests
+- ✅ **DO** create clean, maintainable architecture
+- ❌ **DON'T** lose V1's timing values, dialogue content, sprites, atmosphere
+- ❌ **DON'T** build sterile, incomplete prototypes
+- ❌ **DON'T** skip content in favor of "clean architecture"
+
+**The Challenge:** V2's architecture + V1's soul = V3's goal.
+
 ---
 
 ## V1→V2 Porting Methodology
