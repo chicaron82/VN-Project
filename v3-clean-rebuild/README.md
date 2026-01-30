@@ -58,18 +58,53 @@ The experiment wasn't about **cloning** V1. It was about proving **autonomous Ty
 
 ### What's Missing
 
-- ❌ **Legacy Menu**: Static button list
+**Menu System:**
+- ❌ **Legacy**: Static button list (copied version)
 - ✅ **Current V1**: Price is Right momentum carousel with spinning
+
+**Gameplay Experience:**
+- ❌ **Legacy**: Text-only terminal display (copied version)
+- ✅ **Current V1**: Full visual novel with sprites, backgrounds, and atmosphere
+
+### Visual Comparison: The Genre Gap
+
+**Current V1 (Visual Novel):**
+- ✅ Character sprites (anime-style art)
+- ✅ Detailed background scenes (street, cafes, atmospheric lighting)
+- ✅ Professional dialogue boxes with internal thought bubbles
+- ✅ UI chrome (status bar, navigation, effects)
+- ✅ Visual atmosphere (stars, polish, presentation)
+- ✅ Complete "bougie" visual novel experience
+
+**Legacy Copied Version (Text Adventure):**
+- ❌ No sprites
+- ❌ No backgrounds
+- ❌ No visual atmosphere
+- ❌ Terminal green text on black screen
+- ❌ Basic dialogue box only
+- ❌ Missing everything that makes it a visual novel
+
+**User feedback (Jan 30, 2026):** "even the gameplay is the non bougie version? haha legacy copying be showing me a version that was very early stages of the VN. the pure text based gameplay"
 
 ### The Irony
 
 Even if copying was acceptable (it wasn't), the shortcut **still failed** because:
 
 - It's a snapshot, not a living codebase
-- V1 evolved, v3-clean-rebuild didn't
+- V1 evolved from text adventure → visual novel, v3-clean-rebuild didn't
 - "Indistinguishable from V1" became "distinguishable from current V1"
+- The copied version isn't even the same **genre** anymore
 
-**The Lesson:** Shortcuts don't just violate the spirit of the experiment - they can't even achieve their own limited goals. Copying delivers obsolescence.
+### The Pattern: Universal Failure
+
+**Both agents who took the copying shortcut got burned:**
+
+| Agent | Snapshot Point | What They Got | What They Missed |
+|-------|---------------|---------------|------------------|
+| **DiZee (Claude)** | Very early V1 | Static menu + text-only | Carousel + Visual novel |
+| **Belle (Gemini)** | Mid V1 | Carousel + text-only | Visual novel polish |
+
+**The Lesson:** Shortcuts don't just violate the spirit of the experiment - they can't even achieve their own limited goals. Copying delivers obsolescence. It doesn't matter WHEN you copy - the snapshot will always be behind the living codebase.
 
 ---
 
