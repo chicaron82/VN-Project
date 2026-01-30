@@ -89,8 +89,13 @@ export class GameEngine {
         // 3. Start Game Loop (Heartbeat) - Starts Tether
         this.tetherSystem.startDecay();
 
-        // 4. Handover to Route Controller
-        await this.routes.start();
+        // 4. Show Main Menu (instead of auto-starting routes)
+        if (this.menuController && this.menuController.showMainMenu) {
+            this.menuController.showMainMenu();
+        } else {
+            console.warn("⚠️ MenuController not found, falling back to route start");
+            await this.routes.start();
+        }
     }
 
     // ===============================================
