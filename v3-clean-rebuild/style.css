@@ -1,0 +1,339 @@
+/* V3: THE STYLE */
+/* Goal: Look like a dying monitor */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+:root {
+    --terminal-green: #33ff33;
+    --terminal-dim: #1a801a;
+    --terminal-bg: #050505;
+    --scanline-color: rgba(0, 0, 0, 0.5);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000;
+    color: var(--terminal-green);
+    font-family: 'VT323', monospace;
+    overflow: hidden;
+    cursor: none;
+    /* We render our own cursor */
+}
+
+/* 1. CRT CONTAINER */
+#crt-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--terminal-bg);
+}
+
+/* 2. SCANLINES overlay */
+#scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0) 50%,
+            rgba(0, 0, 0, 0.2) 50%,
+            rgba(0, 0, 0, 0.2));
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* 3. VIGNETTE overlay */
+#vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 1) 100%);
+    pointer-events: none;
+    z-index: 11;
+}
+
+/* 4. STAGE (The Content) */
+#stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    text-shadow: 0 0 5px var(--terminal-dim);
+    transition: opacity 0.2s linear;
+}
+
+/* Utility Classes */
+.text-ghost {
+    animation: ghost 3s infinite;
+}
+
+@keyframes ghost {
+    0% {
+        transform: translate(0, 0);
+        text-shadow: 2px 0 red, -2px 0 blue;
+    }
+
+    95% {
+        transform: translate(0, 0);
+        text-shadow: 2px 0 red, -2px 0 blue;
+    }
+
+    96% {
+        transform: translate(-2px, 1px);
+    }
+
+    97% {
+        transform: translate(1px, -1px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+        text-shadow: 2px 0 red, -2px 0 blue;
+    }
+}
+
+/* CURSOR BLINK */
+.cursor {
+    display: inline-block;
+    width: 0.6em;
+    height: 1em;
+    background-color: var(--terminal-green);
+    animation: blink 0.8s infinite;
+    /* The Sacred 800ms */
+    vertical-align: bottom;
+}
+
+@keyframes blink {
+
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Phase Specifics */
+.memory-ok {
+    color: var(--terminal-dim);
+}
+
+.memory-warn {
+    color: yellow;
+}
+
+.memory-fail {
+    color: red;
+    font-weight: bold;
+}
+
+/* Menu Styling */
+.menu-option {
+    margin: 1rem 0;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.menu-option:hover {
+    text-shadow: 0 0 10px var(--terminal-green);
+}
+
+.menu-option:before {
+    content: '> ';
+    opacity: 0;
+}
+
+.menu-option:hover:before {
+    opacity: 1;
+}
+
+/* Dialogue Box Mockup */
+.dialogue-box {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    border: 2px solid var(--terminal-green);
+    padding: 1rem;
+    background: rgba(0, 50, 0, 0.9);
+}
+
+/* ========================================
+   V1 VISUAL CUES (The Sensory Layer)
+   ======================================== */
+
+/* Tori Body Hop - Double flicker with chromatic aberration */
+@keyframes body-hop-flicker {
+    0% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    15% {
+        opacity: 0.7;
+        filter: brightness(1.3);
+    }
+
+    30% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        filter: brightness(0.9);
+    }
+
+    65% {
+        opacity: 0.6;
+        filter: brightness(1.4);
+    }
+
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+/* Chromatic split overlay */
+.chromatic-split {
+    background: linear-gradient(90deg, rgba(255, 0, 0, 0.1) 0%, transparent 2%, transparent 98%, rgba(0, 255, 255, 0.1) 100%);
+    animation: chromatic-shift 0.4s ease-out;
+}
+
+@keyframes chromatic-shift {
+    0% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+
+    25% {
+        transform: translateX(-2px);
+        opacity: 0.8;
+    }
+
+    50% {
+        transform: translateX(2px);
+        opacity: 0.6;
+    }
+
+    75% {
+        transform: translateX(-1px);
+        opacity: 0.4;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+}
+
+/* Tether Pull - Inward squeeze */
+@keyframes tether-pull {
+    0% {
+        transform: scale(1);
+    }
+
+    40% {
+        transform: scale(0.98);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Code Ripple - used for picking up Tamagotchi */
+@keyframes code-ripple {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+        box-shadow: 0 0 0 rgba(0, 255, 136, 0.5);
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+        box-shadow: 0 0 50px rgba(0, 255, 136, 0);
+    }
+}
+
+.code-ripple-effect {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 2px solid var(--terminal-green);
+    animation: code-ripple 0.6s ease-out;
+    pointer-events: none;
+}
+
+/* Glitch Active State */
+.glitch-active #stage {
+    animation: body-hop-flicker 0.2s .1s infinite;
+}
+
+.shake-heavy #crt-container {
+    animation: tether-pull 0.2s infinite;
+}
+
+/* ========================================
+   UI INSTINCTS (Bubbles & Hovers)
+   ======================================== */
+
+.memory-bubble {
+    position: absolute;
+    background: white;
+    color: black;
+    padding: 0.5rem 1rem;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.memory-bubble.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.memory-bubble:after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 20px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: white transparent;
+    display: block;
+    width: 0;
+}
+
+.hover-bubble {
+    position: absolute;
+    bottom: 5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--terminal-dim);
+    font-size: 1rem;
+    font-style: italic;
+    animation: ghost 2s infinite;
+    pointer-events: none;
+}
