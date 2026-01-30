@@ -1,0 +1,402 @@
+/* ========================================
+   VISUAL CUE ANIMATIONS
+   Pairs with haptic feedback system
+   Creates unified sensory language for Version 848
+   🖤💚🔥💀 Built by UV7 Crew
+   ======================================== */
+
+/* ========================================
+   STORY-SPECIFIC CUES
+   ======================================== */
+
+/* Tori Body Hop - Double flicker with chromatic aberration */
+@keyframes body-hop-flicker {
+    0% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    15% {
+        opacity: 0.7;
+        filter: brightness(1.3);
+    }
+    30% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.8;
+        filter: brightness(0.9);
+    }
+    65% {
+        opacity: 0.6;
+        filter: brightness(1.4);
+    }
+    100% {
+        opacity: 1;
+        filter: brightness(1);
+    }
+}
+
+/* Chromatic split overlay */
+.chromatic-split {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.1) 0%,
+        transparent 2%,
+        transparent 98%,
+        rgba(0, 255, 255, 0.1) 100%
+    );
+    animation: chromatic-shift 0.4s ease-out;
+}
+
+@keyframes chromatic-shift {
+    0% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+    25% {
+        transform: translateX(-2px);
+        opacity: 0.8;
+    }
+    50% {
+        transform: translateX(2px);
+        opacity: 0.6;
+    }
+    75% {
+        transform: translateX(-1px);
+        opacity: 0.4;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 0;
+    }
+}
+
+/* Tether Pull - Inward squeeze */
+@keyframes tether-pull {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Tether ripple effect */
+@keyframes ripple-expand {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.tether-ripple {
+    animation: ripple-expand 0.6s ease-out;
+}
+
+/* Emergency Flash - Red warning pulse */
+.emergency-flash {
+    background: radial-gradient(
+        circle at center,
+        rgba(255, 50, 50, 0.3) 0%,
+        rgba(255, 0, 0, 0.1) 50%,
+        transparent 100%
+    );
+    animation: emergency-pulse 0.5s ease-out;
+}
+
+@keyframes emergency-pulse {
+    0%, 100% {
+        opacity: 0;
+    }
+    20%, 60% {
+        opacity: 1;
+    }
+    40%, 80% {
+        opacity: 0.3;
+    }
+}
+
+/* Timeline Glitch - Reality distortion */
+.timeline-glitch {
+    background: rgba(0, 255, 255, 0.05);
+    animation: timeline-distort 0.6s ease-out;
+}
+
+@keyframes timeline-distort {
+    0% {
+        transform: skewX(0deg);
+        opacity: 0;
+    }
+    20% {
+        transform: skewX(2deg);
+        opacity: 0.8;
+    }
+    40% {
+        transform: skewX(-3deg);
+        opacity: 0.6;
+    }
+    60% {
+        transform: skewX(1deg);
+        opacity: 0.4;
+    }
+    80% {
+        transform: skewX(-0.5deg);
+        opacity: 0.2;
+    }
+    100% {
+        transform: skewX(0deg);
+        opacity: 0;
+    }
+}
+
+/* Code Particles */
+.code-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    color: #00bcd4;
+    font-size: 14px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    pointer-events: none;
+    animation: particle-burst 0.6s ease-out forwards;
+    z-index: 9999;
+}
+
+/* Denial Effects - Triple buzz emotional feedback */
+
+/* Denial Shake - Gentle "no" for blocked saves */
+@keyframes denial-shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50% {
+        transform: translateX(-8px);
+    }
+    20%, 40%, 60% {
+        transform: translateX(8px);
+    }
+    70% {
+        transform: translateX(0);
+    }
+}
+
+/* Glitch line flash */
+@keyframes glitch-line-flash {
+    0% {
+        opacity: 0;
+        width: 0;
+    }
+    20%, 60% {
+        opacity: 1;
+        width: 100%;
+    }
+    40%, 80% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 0;
+        width: 100%;
+    }
+}
+
+/* Harsh Denial - Screen tilt for insane mode lockouts */
+@keyframes harsh-denial-reject {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    15% {
+        transform: rotate(-2deg) scale(0.98);
+    }
+    30% {
+        transform: rotate(2deg) scale(0.98);
+    }
+    45% {
+        transform: rotate(-1.5deg) scale(0.99);
+    }
+    60% {
+        transform: rotate(1.5deg) scale(0.99);
+    }
+    75% {
+        transform: rotate(-0.5deg) scale(1);
+    }
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+/* Harsh denial flash */
+.harsh-denial-flash {
+    animation: harsh-flash-pulse 0.5s ease-out;
+}
+
+@keyframes harsh-flash-pulse {
+    0%, 100% {
+        opacity: 0;
+    }
+    15%, 45%, 75% {
+        opacity: 1;
+    }
+    30%, 60%, 90% {
+        opacity: 0.2;
+    }
+}
+
+/* Access Denied shattered text */
+@keyframes shattered-text {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+        filter: blur(10px);
+    }
+    30% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: blur(0px);
+    }
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+        filter: blur(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.2);
+        filter: blur(5px);
+    }
+}
+
+@keyframes particle-burst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translate(var(--tx), var(--ty)) scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(calc(var(--tx) * 0.5), calc(var(--ty) * 0.5)) scale(0.5);
+        opacity: 0;
+    }
+}
+
+/* ========================================
+   UI INTERACTION CUES
+   ======================================== */
+
+/* Menu Glow Pulse */
+@keyframes menu-glow-pulse {
+    0% {
+        box-shadow: 0 0 0px rgba(0, 188, 212, 0);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(0, 188, 212, 0.8);
+    }
+    100% {
+        box-shadow: 0 0 0px rgba(0, 188, 212, 0);
+    }
+}
+
+/* Card Snap Pop */
+@keyframes card-snap-pop {
+    0% {
+        transform: scale(1);
+    }
+    40% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Button Press (handled via inline styles, but here for reference) */
+.button-press-active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.6);
+    transition: all 0.1s ease-out;
+}
+
+/* ========================================
+   ACCESSIBILITY & COMFORT MODE
+   ======================================== */
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+    .chromatic-split,
+    .timeline-glitch,
+    .emergency-flash {
+        animation-duration: 0.1s;
+        opacity: 0.5;
+    }
+
+    .code-particle {
+        display: none;
+    }
+
+    @keyframes body-hop-flicker {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.9;
+        }
+    }
+
+    @keyframes tether-pull {
+        0%, 100% {
+            transform: scale(1);
+        }
+    }
+}
+
+/* Comfort Mode overrides (when comfortMode setting is ON) */
+body[data-comfort-mode="true"] .chromatic-split,
+body[data-comfort-mode="true"] .timeline-glitch,
+body[data-comfort-mode="true"] .emergency-flash {
+    animation: none !important;
+    opacity: 0 !important;
+}
+
+body[data-comfort-mode="true"] .code-particle {
+    display: none !important;
+}
+
+body[data-comfort-mode="true"] .body-hop-flicker,
+body[data-comfort-mode="true"] .tether-pull {
+    animation: gentle-pulse 0.3s ease-out !important;
+}
+
+@keyframes gentle-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.95;
+    }
+}
+
+/* ========================================
+   OVERLAY BASE STYLES
+   ======================================== */
+
+.visual-cue-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9998;
+}

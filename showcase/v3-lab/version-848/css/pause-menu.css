@@ -1,0 +1,453 @@
+/* ========================================
+   PAUSE MENU
+   ======================================== */
+
+#pause-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    /* DIZEE GLOW-UP: Glassmorphism */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+#pause-menu.active {
+    display: flex;
+}
+
+/* DIZEE GLOW-UP: Match settings menu aesthetic */
+#pause-menu-content {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    /* Navy gradient like settings */
+    backdrop-filter: blur(10px);
+    /* Glassmorphism */
+    border: 3px solid #0ff;
+    /* Thick cyan border */
+    padding: 30px;
+    /* Reduced from 40px */
+    border-radius: 10px;
+    min-width: 400px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    /* DIZEE FIX: Prevent overflow in landscape */
+    overflow-y: auto;
+    /* Allow scrolling if needed */
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    /* Glowing cyan shadow */
+    position: relative;
+    text-align: center;
+}
+
+#pause-menu-content h2 {
+    color: #0ff;
+    text-align: center;
+    font-size: 1.8em;
+    /* Reduced from 2em */
+    margin-bottom: 20px;
+    /* Reduced from 30px */
+    text-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+}
+
+/* DIZEE GLOW-UP: Pause menu buttons with premium styling */
+.pause-menu-button {
+    width: 100%;
+    padding: 12px 20px;
+    /* Reduced from 15px */
+    margin: 8px 0;
+    /* Reduced from 10px */
+    background: rgba(0, 255, 255, 0.1);
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    /* Reduced from 1.1em */
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.pause-menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.pause-menu-button:active {
+    transform: translateY(0);
+}
+
+#pause-button {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: url('../../assets/pause-button.png') center/100% 100% no-repeat;
+    color: #0ff;
+    border: none;
+    padding: 8px 20px;
+    min-width: 60px;
+    height: 45px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.3s;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+/* Ronnie Route - Terminal Ground pause UI */
+#pause-button.ronnie-route {
+    background: url('../../assets/pause-button-ronnie.png') center/contain no-repeat;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+        0 0 30px rgba(0, 200, 100, 0.1);
+}
+
+#pause-button.ronnie-route:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+        0 0 40px rgba(0, 200, 100, 0.2);
+    filter: brightness(1.1);
+}
+
+#pause-menu-content.ronnie-route {
+    background: linear-gradient(135deg, rgba(8, 14, 20, 0.98), rgba(10, 16, 24, 0.98));
+    border: 2px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
+        0 0 80px rgba(0, 200, 100, 0.1);
+}
+
+#pause-menu-content.ronnie-route h2 {
+    color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+/* Tori Route - Fractured Glass pause UI */
+#pause-button.tori-route {
+    background: url('../../assets/pause-button-tori.png') center/contain no-repeat;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+        0 0 25px rgba(255, 50, 100, 0.1);
+    animation: pauseButtonGlitch 8s ease-in-out infinite;
+}
+
+#pause-button.tori-route:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+        0 0 35px rgba(255, 50, 100, 0.2);
+    filter: brightness(1.1);
+}
+
+@keyframes pauseButtonGlitch {
+
+    0%,
+    100% {
+        filter: none;
+    }
+
+    48% {
+        filter: none;
+    }
+
+    50% {
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+
+    52% {
+        filter: none;
+    }
+}
+
+#pause-content.tori-route {
+    background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
+    border: 2px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
+        0 0 60px rgba(255, 50, 100, 0.08);
+    animation: pauseMenuFlicker 8s ease-in-out infinite;
+}
+
+@keyframes pauseMenuFlicker {
+
+    0%,
+    100% {
+        opacity: 1;
+        filter: none;
+    }
+
+    50% {
+        opacity: 0.98;
+        filter: brightness(1.05);
+    }
+}
+
+#pause-content.tori-route h2 {
+    color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
+        0 0 20px rgba(255, 50, 100, 0.2);
+}
+
+#pause-button:hover {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.4);
+    filter: brightness(1.2);
+}
+
+.pause-menu-button {
+    display: block;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: #0ff;
+    border: 2px solid #0ff;
+    padding: 15px 30px;
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 5px #0ff;
+}
+
+.pause-menu-button:hover {
+    background: rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px #0ff;
+    transform: translateX(5px);
+}
+
+.pause-menu-button.danger {
+    border-color: #f00;
+    color: #f00;
+    text-shadow: 0 0 5px #f00;
+}
+
+.pause-menu-button.danger:hover {
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 20px #f00;
+}
+
+/* Keyboard Shortcuts Section */
+.keyboard-shortcuts {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 255, 255, 0.3);
+    text-align: left;
+}
+
+.shortcuts-title {
+    color: #00ffff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.shortcut-item {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.shortcut-item .key {
+    display: inline-block;
+    background: rgba(0, 255, 255, 0.2);
+    border: 1px solid #00ffff;
+    color: #00ffff;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+.shortcut-item .hint {
+    color: #666;
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+/* ========================================
+   ESC HINT
+   ======================================== */
+
+/* DIZEE POLISH: Moved to top center of dialogue box */
+#esc-hint {
+    position: fixed;
+    bottom: 155px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ffff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 100;
+    backdrop-filter: blur(5px);
+}
+
+#esc-hint.show {
+    opacity: 1;
+}
+
+#esc-hint.visible {
+    opacity: 1;
+}
+
+/* ========================================
+   SAVE/LOAD SCREEN
+   ======================================== */
+
+#save-load-screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1500;
+    justify-content: center;
+    align-items: center;
+}
+
+#save-load-screen.active {
+    display: flex;
+}
+
+#save-load-content {
+    background: #1a1a2e;
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid #00ffff;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#save-load-title {
+    color: #00ffff;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#mode-toggle {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.mode-button {
+    background: #2a2a3e;
+    color: #00ffff;
+    border: 2px solid #00ffff;
+    padding: 0.5rem 2rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.mode-button.active {
+    background: #00ffff;
+    color: #000;
+}
+
+.mode-button:hover {
+    background: #00ff88;
+    color: #000;
+}
+
+#close-save-load {
+    display: block;
+    margin: 1.5rem auto 0;
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#close-save-load:hover {
+    background: #ff6666;
+}
+
+.save-slot {
+    background: #2a2a3e;
+    border: 2px solid #00ffff;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.save-slot:hover {
+    background: #3a3a4e;
+    border-color: #00ff88;
+}
+
+.save-slot.empty {
+    opacity: 0.6;
+}
+
+.slot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.slot-label {
+    font-weight: bold;
+    color: #00ffff;
+}
+
+.slot-route {
+    color: #00ff88;
+    font-size: 0.9rem;
+}
+
+.slot-info {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.slot-timestamp {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+
+.save-slot-empty-text {
+    color: #666;
+    font-style: italic;
+}
+
+.delete-btn {
+    background: #ff4444;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #ff6666;
+}
+

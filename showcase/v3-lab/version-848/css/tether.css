@@ -1,0 +1,488 @@
+/* ========================================
+   TETHER METER - Digital Frame Style
+   ======================================== */
+
+#tether-meter {
+    width: 100%;
+    height: 50px;
+    background: url('../../assets/tether-meter-frame.png') center/100% 100% no-repeat;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+    padding: 8px 10px;
+    box-sizing: border-box;
+}
+
+#tether-fill {
+    height: 100%;
+    background: linear-gradient(90deg,
+            rgba(0, 255, 255, 0.9) 0%,
+            rgba(0, 255, 136, 0.9) 50%,
+            rgba(0, 255, 200, 0.95) 100%);
+    width: 100%;
+    transition: width 0.5s ease-out, background 0.3s;
+    box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    position: relative;
+    border-radius: 2px;
+}
+
+/* Scanline effect on fill */
+#tether-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.1) 2px,
+            rgba(0, 0, 0, 0.1) 4px);
+    pointer-events: none;
+}
+
+#tether-fill.critical {
+    background: linear-gradient(90deg,
+            rgba(255, 50, 50, 0.9) 0%,
+            rgba(255, 100, 50, 0.9) 50%,
+            rgba(255, 80, 80, 0.95) 100%);
+    box-shadow:
+        0 0 25px rgba(255, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    animation: tetherCriticalPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes tetherCriticalPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+}
+
+#tether-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8), 0 0 2px #000;
+    font-size: 0.95em;
+    letter-spacing: 0.05em;
+    z-index: 3;
+}
+
+@keyframes tetherPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* ========================================
+   HOLD ON BUTTON - Digital Frame Style
+   ======================================== */
+
+#hold-on-button {
+    margin-top: 12px;
+    background: url('../../assets/hold-on-button.png') center/100% 100% no-repeat;
+    color: #0ff;
+    border: none;
+    padding: 14px 24px;
+    height: 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    width: 180px;
+    /* Fixed width instead of 100% since it's outside tether-ui now */
+    position: fixed;
+    /* Fixed position for visibility */
+    left: 20px;
+    /* Position below where tether-ui was */
+    top: 40px;
+    /* Adjust based on status bar height */
+    z-index: 200;
+    /* Above other content */
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+#hold-on-button:hover {
+    box-shadow: 0 0 35px rgba(0, 255, 255, 0.4);
+    text-shadow: 0 0 15px rgba(0, 255, 255, 1);
+    filter: brightness(1.2);
+}
+
+#hold-on-button:active {
+    transform: scale(0.98);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.6);
+}
+
+#hold-on-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(0.5);
+}
+
+#hold-on-button:disabled:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    filter: grayscale(0.5);
+    transform: none;
+}
+
+/* Critical state - swap to red variant */
+#hold-on-button.critical {
+    background: url('../../assets/hold-on-button-critical.png') center/100% 100% no-repeat;
+    color: #ff6b6b;
+    text-shadow: 0 0 10px rgba(255, 100, 100, 0.8);
+    box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+    animation: holdOnCriticalPulse 0.6s ease-in-out infinite;
+}
+
+/* Tutorial flash - one-time attention grabber */
+#hold-on-button.tutorial-flash {
+    animation: tutorialFlash 2s ease-in-out infinite;
+}
+
+@keyframes tutorialFlash {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        transform: scale(1);
+    }
+
+    50% {
+        box-shadow: 0 0 60px rgba(0, 255, 255, 0.8);
+        transform: scale(1.05);
+    }
+}
+
+@keyframes holdOnCriticalPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5);
+    }
+}
+
+/* Hide HOLD ON button in screenshot mode and insane mode */
+body.ui-hidden #hold-on-button,
+body.insane-mode #hold-on-button {
+    display: none !important;
+}
+
+/* ========================================
+   NOTES BUTTON - Digital Frame Style
+   ======================================== */
+
+#notes-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: url('../../assets/notes-button.png') center/100% 100% no-repeat;
+    color: #0ff;
+    border: none;
+    padding: 12px 20px;
+    min-width: 160px;
+    height: 50px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    display: none;
+    z-index: 100;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    animation: notesIdlePulse 4s ease-in-out infinite;
+}
+
+@keyframes notesIdlePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.35);
+    }
+}
+
+#notes-button:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
+    text-shadow: 0 0 12px rgba(0, 255, 255, 1);
+    filter: brightness(1.15);
+    animation: none;
+}
+
+#notes-button:active {
+    transform: scale(0.97);
+}
+
+#notes-count {
+    color: #00ff88;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+}
+
+/* Echo display removed - now using three-echoes-sprite.png instead */
+
+/* Tori Route - Fractured Glass notes UI */
+#notes-button.tori-route {
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+        0 0 25px rgba(255, 50, 100, 0.1);
+    animation: toriNotesGlitch 6s ease-in-out infinite;
+}
+
+@keyframes toriNotesGlitch {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+            0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+
+    48% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+            0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(0, 255, 255, 0.4),
+            0 0 35px rgba(255, 50, 100, 0.2);
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+
+    52% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3),
+            0 0 25px rgba(255, 50, 100, 0.1);
+        filter: none;
+    }
+}
+
+#notes-button.tori-route:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.5),
+        0 0 40px rgba(255, 50, 100, 0.2);
+    animation: none;
+}
+
+#notes-viewer.tori-route {
+    background: linear-gradient(135deg, rgba(12, 15, 30, 0.98), rgba(15, 18, 35, 0.98));
+    border: 3px solid #0ff;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3),
+        0 0 60px rgba(255, 50, 100, 0.1);
+    animation: notesViewerFlicker 8s ease-in-out infinite;
+}
+
+@keyframes notesViewerFlicker {
+
+    0%,
+    100% {
+        opacity: 1;
+        filter: none;
+    }
+
+    48% {
+        opacity: 1;
+        filter: none;
+    }
+
+    50% {
+        opacity: 0.98;
+        filter: brightness(1.05) hue-rotate(3deg);
+    }
+
+    52% {
+        opacity: 1;
+        filter: none;
+    }
+}
+
+#notes-viewer.tori-route h2 {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6),
+        0 0 20px rgba(255, 50, 100, 0.2);
+}
+
+#notes-viewer {
+    position: fixed !important;
+    top: 80px !important;
+    right: 20px !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: 600px;
+    max-width: 90%;
+    max-height: 80vh;
+    /* DIZEE: Match settings menu aesthetic */
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    border-radius: 10px;
+    padding: 30px;
+    display: none;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+    animation: notesViewerSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes notesViewerSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+
+/* Scanline overlay effect */
+#notes-viewer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent 0px,
+            transparent 2px,
+            rgba(0, 255, 255, 0.02) 2px,
+            rgba(0, 255, 255, 0.02) 4px);
+    pointer-events: none;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+
+#notes-viewer h2 {
+    color: #0ff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    font-size: 1.4em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, #0ff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 255, 0.4));
+    position: relative;
+    z-index: 2;
+}
+
+/* ZEERAH'S FIX: Removed #close-notes and :hover CSS - button no longer exists */
+
+
+.note-item {
+    margin-bottom: 15px;
+    padding: 15px 18px;
+    background: linear-gradient(135deg, rgba(0, 20, 40, 0.6) 0%, rgba(0, 10, 30, 0.6) 100%);
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    border-left: 4px solid #0ff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.3),
+        inset 0 0 20px rgba(0, 255, 255, 0.05);
+    border-radius: 4px;
+    z-index: 2;
+}
+
+/* Animated gradient background on hover */
+.note-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.note-item:hover::before {
+    left: 100%;
+}
+
+.note-item:hover {
+    background: linear-gradient(135deg, rgba(0, 30, 60, 0.8) 0%, rgba(0, 20, 50, 0.8) 100%);
+    border-color: #0ff;
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(0, 255, 255, 0.3),
+        inset 0 0 30px rgba(0, 255, 255, 0.1);
+    transform: translateX(5px) translateY(-2px);
+}
+
+.note-item.note-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #666;
+}
+
+.note-title {
+    color: #0ff;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.note-content {
+    display: none;
+    color: #fff;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.note-item.expanded .note-content {
+    display: block;
+}
+
+.meta-note {
+    border-color: #ff00ff;
+}
+
+.meta-note .note-title {
+    color: #ff00ff;
+}
+
+.despair-note {
+    border-color: #ff6b6b;
+}
+
+.despair-note .note-title {
+    color: #ff6b6b;
+}

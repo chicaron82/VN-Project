@@ -1,0 +1,1320 @@
+/* ========================================
+   EMAIL-STYLE NOTES OVERLAY
+   ======================================== */
+
+/* Notes Overlay - Full-screen email reader */
+#notes-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 10002;
+    /* DIZEE FIX: Higher than standalone notes viewer (10001) to appear on top */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.3s ease-out;
+}
+
+@keyframes overlayFadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+
+    to {
+        opacity: 1;
+        backdrop-filter: blur(10px);
+    }
+}
+
+#notes-overlay-content {
+    position: relative;
+    width: 700px;
+    max-width: 90%;
+    max-height: 85vh;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(10, 10, 20, 0.95) 100%);
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
+    padding: 30px;
+    overflow-y: auto;
+    box-shadow:
+        0 0 40px rgba(0, 255, 255, 0.3),
+        inset 0 0 60px rgba(0, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: noteSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 4px;
+}
+
+@keyframes noteSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Header section (FROM + SUBJECT) */
+#note-overlay-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, #0ff, transparent) 1;
+}
+
+#note-from {
+    color: #0ff;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#note-subject {
+    color: #0ff;
+    font-size: 1.1em;
+    font-weight: bold;
+    background: linear-gradient(135deg, #0ff, #00aaff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+}
+
+/* Note body content */
+#note-overlay-body {
+    color: #fff;
+    line-height: 1.6;
+    font-size: 1em;
+    margin-bottom: 30px;
+    min-height: 200px;
+}
+
+/* Navigation buttons */
+#note-overlay-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, transparent, #0ff, transparent) 1;
+}
+
+.note-nav-btn {
+    flex: 1;
+    padding: 12px 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+.note-nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.note-nav-btn:hover:not(:disabled)::before {
+    width: 300px;
+    height: 300px;
+}
+
+.note-nav-btn:hover:not(:disabled) {
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow:
+        0 0 20px rgba(0, 255, 255, 0.4),
+        inset 0 0 20px rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.note-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #666;
+    color: #666;
+}
+
+/* Header-only note items in main list */
+.note-item-header {
+    margin-bottom: 12px;
+    padding: 12px 15px;
+    border: 2px solid #0ff;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.note-item-header::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(180deg, #0ff, #00aaff);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.note-item-header:hover::before {
+    opacity: 1;
+}
+
+.note-item-header:hover {
+    background: rgba(0, 255, 255, 0.15);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    transform: translateX(5px);
+}
+
+.note-item-header.unread {
+    border-color: #ff0066;
+    animation: unreadPulse 2s ease-in-out infinite;
+}
+
+@keyframes unreadPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 102, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 0, 102, 0.6);
+    }
+}
+
+.note-item-header.unread .note-header-from,
+.note-item-header.unread .note-header-subject {
+    color: #ff0066;
+}
+
+.note-header-from {
+    color: #0ff;
+    font-size: 0.85em;
+    font-weight: bold;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.note-header-subject {
+    color: #0ff;
+    font-size: 0.95em;
+    font-weight: bold;
+}
+
+.note-unread-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #ff0066;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 0 8px #ff0066;
+    animation: dotPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+}
+
+/* Color-coded sender variants */
+.sender-z #notes-overlay-content {
+    border-image: linear-gradient(135deg, #0ff, #00aaff) 1;
+}
+
+.sender-cz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ff6b9d, #ff1493) 1;
+}
+
+.sender-cz #note-from,
+.sender-cz #note-subject {
+    color: #ff6b9d;
+    background: linear-gradient(135deg, #ff6b9d, #ff1493);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-zr #notes-overlay-content {
+    border-image: linear-gradient(135deg, #9d4edd, #7b2cbf) 1;
+}
+
+.sender-zr #note-from,
+.sender-zr #note-subject {
+    color: #9d4edd;
+    background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-gz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #00ff88, #00cc66) 1;
+}
+
+.sender-gz #note-from,
+.sender-gz #note-subject {
+    color: #00ff88;
+    background: linear-gradient(135deg, #00ff88, #00cc66);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-iz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ffd700, #ffaa00) 1;
+}
+
+.sender-iz #note-from,
+.sender-iz #note-subject {
+    color: #ffd700;
+    background: linear-gradient(135deg, #ffd700, #ffaa00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sender-pz #notes-overlay-content {
+    border-image: linear-gradient(135deg, #ff6347, #ff4500) 1;
+}
+
+.sender-pz #note-from,
+.sender-pz #note-subject {
+    color: #ff6347;
+    background: linear-gradient(135deg, #ff6347, #ff4500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Meta and Despair note variants for overlay */
+.meta-note #note-from,
+.meta-note #note-subject {
+    color: #ff00ff;
+}
+
+.meta-note #notes-overlay-content {
+    border-color: #ff00ff;
+}
+
+.meta-note #note-overlay-header,
+.meta-note #note-overlay-nav {
+    border-color: #ff00ff;
+}
+
+.meta-note .note-nav-btn {
+    border-color: #ff00ff;
+    color: #ff00ff;
+}
+
+.meta-note .note-nav-btn:hover:not(:disabled) {
+    background: rgba(255, 0, 255, 0.2);
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+}
+
+.despair-note #note-from,
+.despair-note #note-subject {
+    color: #ff6b6b;
+}
+
+.despair-note #notes-overlay-content {
+    border-color: #ff6b6b;
+}
+
+.despair-note #note-overlay-header,
+.despair-note #note-overlay-nav {
+    border-color: #ff6b6b;
+}
+
+.despair-note .note-nav-btn {
+    border-color: #ff6b6b;
+    color: #ff6b6b;
+}
+
+.despair-note .note-nav-btn:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.2);
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+}
+
+/* ========================================
+   DIALOGUE SYSTEM
+   ======================================== */
+
+#dialogue-box {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 900px;
+    min-height: 180px;
+    /* ZEERAH: Fixed height to prevent jumping */
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid #0ff;
+    border-bottom: none;
+    padding: 20px 30px;
+    box-shadow: 0 -5px 30px rgba(0, 255, 255, 0.3);
+    z-index: 50;
+    display: none;
+}
+
+/* ========================================
+   ROUTE-SPECIFIC DIALOGUE FRAMES
+   ======================================== */
+
+#dialogue-box.ronnie-route {
+    background: url('../../assets/dialogue-frame-ronnie.png') center/100% 100% no-repeat,
+        rgba(8, 14, 20, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.2),
+        0 0 80px rgba(0, 200, 100, 0.1);
+}
+
+#dialogue-box.tori-route {
+    background: url('../../assets/dialogue-frame-tori.png') center/100% 100% no-repeat,
+        rgba(12, 15, 30, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.25),
+        0 0 60px rgba(255, 50, 100, 0.08);
+    /* Subtle animation for instability feel */
+    animation: toriFrameFlicker 8s ease-in-out infinite;
+}
+
+@keyframes toriFrameFlicker {
+
+    0%,
+    100% {
+        opacity: 1;
+        filter: none;
+    }
+
+    48% {
+        opacity: 1;
+        filter: none;
+    }
+
+    50% {
+        opacity: 0.97;
+        filter: brightness(1.1) hue-rotate(5deg);
+    }
+
+    52% {
+        opacity: 1;
+        filter: none;
+    }
+
+    78% {
+        opacity: 1;
+        filter: none;
+    }
+
+    80% {
+        opacity: 0.98;
+        filter: brightness(0.95);
+    }
+
+    82% {
+        opacity: 1;
+        filter: none;
+    }
+}
+
+/* Prologue - "Pre-connection" mysterious shimmer */
+#dialogue-box.prologue-style {
+    background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+        rgba(25, 15, 40, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
+        0 0 60px rgba(75, 0, 130, 0.2);
+    animation: prologueShimmer 4s ease-in-out infinite;
+}
+
+@keyframes prologueShimmer {
+
+    0%,
+    100% {
+        box-shadow: 0 0 40px rgba(138, 43, 226, 0.3),
+            0 0 60px rgba(75, 0, 130, 0.2);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgba(138, 43, 226, 0.4),
+            0 0 70px rgba(75, 0, 130, 0.3);
+    }
+}
+
+/* Epilogue - "Resolution" warm golden glow */
+#dialogue-box.epilogue-style {
+    background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+        rgba(40, 30, 15, 0.95);
+    border: none;
+    padding: 35px 45px 30px 45px;
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
+        0 0 60px rgba(255, 165, 0, 0.15);
+    animation: epiloguePulse 6s ease-in-out infinite;
+}
+
+@keyframes epiloguePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.25),
+            0 0 60px rgba(255, 165, 0, 0.15);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.35),
+            0 0 70px rgba(255, 165, 0, 0.2);
+    }
+}
+
+/* ========================================
+   LANDSCAPE MODE - SEMI-TRANSPARENT DIALOGUE BOXES
+   Show full-body sprites with feet visible through dialogue box
+   Matches Ronnie's route transparency on all routes
+   ======================================== */
+
+@media (max-width: 1279px) and (orientation: landscape) {
+    /* Prologue - Semi-transparent purple */
+    #dialogue-box.prologue-style {
+        background: url('../../assets/dialogue-frame-prologue.png') center/100% 100% no-repeat,
+            rgba(25, 15, 40, 0.85) !important;
+    }
+
+    /* Epilogue - Semi-transparent golden */
+    #dialogue-box.epilogue-style {
+        background: url('../../assets/dialogue-frame-epilogue.png') center/100% 100% no-repeat,
+            rgba(40, 30, 15, 0.85) !important;
+    }
+}
+
+#character-name {
+    color: #0ff;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #0ff;
+    font-weight: bold;
+}
+
+#dialogue-text {
+    color: #fff;
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+#internal-thought {
+    display: none;
+    color: #aaa;
+    font-style: italic;
+    font-size: 0.95em;
+    margin-top: 15px;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.6);
+    border-left: 3px solid #00ffcc;
+    border-radius: 4px;
+    line-height: 1.5;
+    max-height: 20vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #00ffcc #222;
+    /* Force scrolling to work on mobile */
+    touch-action: pan-y;
+    overscroll-behavior-y: contain;
+}
+
+#internal-thought::-webkit-scrollbar {
+    width: 6px;
+}
+
+#internal-thought::-webkit-scrollbar-track {
+    background: #222;
+    border-radius: 3px;
+}
+
+#internal-thought::-webkit-scrollbar-thumb {
+    background: #00ffcc;
+    border-radius: 3px;
+}
+
+#internal-thought::-webkit-scrollbar-thumb:hover {
+    background: #00ffee;
+}
+
+/* ========================================
+   CHOICE MENU
+   ======================================== */
+
+#choice-menu {
+    position: fixed;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 700px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 3px solid #0ff;
+    padding: 20px;
+    display: none;
+    z-index: 150;
+    /* DIZEE: Higher than skip button (100) to prevent overlap */
+}
+
+/* DIZEE: Ending-style choice buttons - vertical stack, gradients, premium feel 💚 */
+#choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.choice-option {
+    padding: 18px 50px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 300px;
+    max-width: 600px;
+    width: 90%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+
+    /* Default gradient - teal/cyan theme */
+    background: linear-gradient(135deg, #0a3d62, #3c6382);
+    color: #60a3bc;
+    border: 2px solid #00b7ff;
+    box-shadow: 0 4px 20px rgba(0, 183, 255, 0.4);
+}
+
+.choice-option:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 30px rgba(0, 183, 255, 0.7);
+}
+
+.choice-option:focus {
+    /* Focus state - no scale, just outline for keyboard nav */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+}
+
+.choice-option:active {
+    transform: scale(0.98);
+}
+
+/* Locked/disabled choices */
+.choice-option.locked {
+    background: linear-gradient(135deg, #1a1a1a, #333);
+    color: #666;
+    border-color: #444;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.choice-option.locked:hover {
+    transform: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Route-specific theming */
+/* Ronnie route - blue/tech theme */
+.ronnie-route .choice-option {
+    background: linear-gradient(135deg, #1e3a5f, #2d4f7f);
+    border-color: #00bcd4;
+    box-shadow: 0 4px 20px rgba(0, 188, 212, 0.4);
+}
+
+.ronnie-route .choice-option:hover {
+    box-shadow: 0 6px 30px rgba(0, 188, 212, 0.7);
+}
+
+/* Tori route - pink/warm theme */
+.tori-route .choice-option {
+    background: linear-gradient(135deg, #660066, #990099);
+    color: #cc66cc;
+    border-color: #cc66cc;
+    box-shadow: 0 4px 20px rgba(204, 102, 204, 0.4);
+}
+
+.tori-route .choice-option:hover {
+    box-shadow: 0 6px 30px rgba(204, 102, 204, 0.7);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .choice-option {
+        min-width: 250px;
+        font-size: 1em;
+        padding: 15px 30px;
+    }
+}
+
+
+/* ========================================
+   NOTES BUTTON - NEW NOTE NOTIFICATION
+   Flash animation when note is unlocked
+   ======================================== */
+
+#notes-button.pulse {
+    animation: newNoteFlash 0.8s ease-in-out 3 !important;
+}
+
+@keyframes newNoteFlash {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        transform: scale(1);
+        filter: brightness(1);
+    }
+
+    50% {
+        box-shadow: 0 0 50px rgba(0, 255, 255, 0.9),
+            0 0 80px rgba(0, 255, 255, 0.6),
+            0 0 100px rgba(0, 255, 255, 0.3);
+        transform: scale(1.15);
+        filter: brightness(1.5);
+    }
+}
+
+/* Make the notification more persistent */
+#notes-button.pulse #notes-count {
+    animation: countPulse 0.4s ease-in-out 6;
+}
+
+@keyframes countPulse {
+
+    0%,
+    100% {
+        color: #00ff88;
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+        transform: scale(1);
+    }
+
+    50% {
+        color: #00ffff;
+        text-shadow: 0 0 20px rgba(0, 255, 255, 1),
+            0 0 40px rgba(0, 255, 255, 0.8);
+        transform: scale(1.3);
+    }
+}
+
+/* ========================================
+   FLOATING NOTE NOTIFICATION
+   Appears when note is unlocked
+   ======================================== */
+
+.note-notification {
+    position: fixed;
+    bottom: 35vh;
+    /* Just above dialogue box on mobile */
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: linear-gradient(135deg, rgba(0, 255, 255, 0.95) 0%, rgba(0, 200, 200, 0.95) 100%);
+    color: #000;
+    padding: 12px 24px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 8px 24px rgba(0, 255, 255, 0.4),
+        0 0 40px rgba(0, 255, 255, 0.2);
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1em;
+    letter-spacing: 0.05em;
+}
+
+.note-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.note-notification-icon {
+    font-size: 1.5em;
+    animation: noteBounce 0.6s ease-in-out infinite;
+}
+
+.note-notification-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes noteBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+/* Desktop/Landscape: Position near top */
+@media (min-width: 768px) and (orientation: landscape) {
+    .note-notification {
+        top: 80px;
+        bottom: auto;
+        right: 20px;
+        left: auto;
+        transform: translateX(20px);
+    }
+
+    .note-notification.show {
+        transform: translateX(0);
+    }
+}
+
+/* Desktop: More space, bigger notification */
+@media (min-width: 1024px) {
+    .note-notification {
+        padding: 15px 30px;
+        font-size: 1.1em;
+        top: 90px;
+    }
+}
+
+/* Subtle persistent indicator on notes button */
+#notes-button.has-new-note {
+    animation: subtleNewNotePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtleNewNotePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.6),
+            0 0 50px rgba(0, 255, 255, 0.3);
+    }
+}
+
+/* Clear indicator when notes viewer is opened */
+#notes-viewer:not([style*="display: none"])~* #notes-button.has-new-note {
+    animation: none;
+}
+
+/* ========================================
+   STANDALONE NOTES VIEWER (MAIN MENU)
+   View unlocked notes without loading route
+   ======================================== */
+
+.standalone-notes-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10001 !important;
+    /* ZEE'S FIX: Higher than pause menu (10000) 🖤 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.standalone-notes-viewer.show {
+    opacity: 1;
+}
+
+.standalone-notes-content {
+    /* DIZEE: Match settings menu aesthetic exactly */
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    border: 3px solid #0ff;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+}
+
+.notes-header {
+    padding: 25px;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notes-header h2 {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.8em;
+    letter-spacing: 0.15em;
+    margin: 0;
+    text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+}
+
+.notes-count-display {
+    color: #00ff88;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+}
+
+.close-notes-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid #0ff;
+    color: #0ff;
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Courier New', monospace;
+}
+
+.close-notes-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: rotate(90deg);
+}
+
+/* DIZEE FIX: Prevent focus state from changing close button position */
+.close-notes-btn:focus {
+    position: absolute !important;
+    /* Keep absolute positioning on focus - prevent jumping */
+    outline: 2px solid #00ff41;
+    outline-offset: 2px;
+    box-shadow: 0 0 12px rgba(0, 255, 65, 0.5);
+}
+
+/* DIZEE: Tab Navigation */
+.notes-tabs {
+    display: flex;
+    border-bottom: 2px solid rgba(0, 255, 255, 0.3);
+    padding: 0 25px;
+    gap: 5px;
+}
+
+.notes-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: rgba(0, 255, 255, 0.5);
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+
+.notes-tab:hover:not(.locked) {
+    color: #0ff;
+    background: rgba(0, 255, 255, 0.05);
+}
+
+.notes-tab.active {
+    color: #0ff;
+    border-bottom-color: #0ff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+}
+
+.notes-tab.locked {
+    color: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+}
+
+/* Tab Content Containers */
+.notes-tab-content {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 25px;
+    scrollbar-width: thin;
+    scrollbar-color: #0ff rgba(0, 255, 255, 0.1);
+}
+
+.notes-tab-content.active {
+    display: block;
+}
+
+.notes-tab-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.notes-tab-content::-webkit-scrollbar-track {
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.notes-tab-content::-webkit-scrollbar-thumb {
+    background: #0ff;
+    border-radius: 4px;
+}
+
+.tab-notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Locked Tab Message */
+.locked-tab-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.locked-tab-message .lock-icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+.locked-tab-message h3 {
+    color: rgba(0, 255, 255, 0.4);
+    font-family: 'Courier New', monospace;
+    font-size: 1.5em;
+    letter-spacing: 0.2em;
+    margin-bottom: 15px;
+}
+
+.locked-tab-message p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.locked-tab-message .hint {
+    color: rgba(0, 255, 136, 0.4);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* Features Tab */
+.features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.feature-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: rgba(0, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    border-left: 4px solid #0ff;
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.feature-entry:hover {
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #0ff;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.feature-icon {
+    font-size: 2.5em;
+    min-width: 60px;
+    text-align: center;
+}
+
+.feature-details {
+    flex: 1;
+}
+
+.feature-name {
+    color: #0ff;
+    font-family: 'Courier New', monospace;
+    font-size: 1.2em;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+}
+
+.feature-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.no-features-message {
+    text-align: center;
+    padding: 60px 40px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.no-features-message p {
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+.no-features-message .hint {
+    color: rgba(0, 255, 136, 0.5);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+/* DIZEE: Codes Tab Styles */
+.codes-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.codes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(0, 255, 170, 0.3);
+}
+
+.codes-header h3 {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3em;
+    color: #00ffaa;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.codes-progress {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    color: #00ffaa;
+    font-weight: bold;
+}
+
+.codes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.code-entry {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 170, 0.2);
+    border-left: 4px solid rgba(0, 255, 170, 0.5);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.code-entry.discovered {
+    border-left-color: #00ffaa;
+}
+
+.code-entry.discovered:hover {
+    background: rgba(0, 255, 170, 0.05);
+    border-color: rgba(0, 255, 170, 0.4);
+    transform: translateX(5px);
+}
+
+.code-entry.locked {
+    border-left-color: #666;
+    opacity: 0.6;
+}
+
+.code-icon {
+    font-size: 2em;
+    margin-right: 15px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.code-details {
+    flex: 1;
+}
+
+.code-name {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.code-entry.discovered .code-name {
+    color: #00ffaa;
+}
+
+.code-entry.locked .code-name {
+    color: #888;
+}
+
+.code-description {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.code-entry.discovered .code-description {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.code-entry.locked .code-description {
+    color: #666;
+    font-style: italic;
+}
+
+.code-status {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+    color: #00ffaa;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+.codes-hint {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(0, 255, 170, 0.05);
+    border: 1px solid rgba(0, 255, 170, 0.2);
+    border-radius: 4px;
+}
+
+.codes-hint p {
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+.codes-hint p:first-child {
+    color: #00ffaa;
+}
+
+
+.notes-footer {
+    padding: 20px 25px;
+    border-top: 2px solid rgba(0, 255, 255, 0.3);
+    text-align: center;
+}
+
+.notes-footer .back-btn {
+    background: transparent;
+    border: 2px solid #0ff;
+    color: #0ff;
+    padding: 12px 40px;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.notes-footer .back-btn:hover {
+    background: #0ff;
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .standalone-notes-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .notes-header {
+        padding: 20px;
+    }
+
+    .notes-header h2 {
+        font-size: 1.4em;
+    }
+
+    .notes-list-container {
+        padding: 15px;
+    }
+
+    .note-entry {
+        padding: 12px;
+    }
+
+    .note-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+

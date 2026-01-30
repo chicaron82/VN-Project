@@ -1,0 +1,483 @@
+/* ========================================
+   CHARACTER SPRITE SYSTEM
+   Full-body sprites grounded at bottom
+   Dialogue box covers lower portion
+   ======================================== */
+
+.character-sprite {
+    position: absolute;
+    bottom: 0;
+    /* Grounded at bottom */
+    width: 350px;
+    height: 600px;
+    /* Tall enough for full body */
+    background-size: contain;
+    background-position: bottom center;
+    /* Show from feet up */
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    display: none;
+    z-index: 40;
+    pointer-events: none;
+}
+
+#character-left {
+    left: 5%;
+}
+
+#character-right {
+    right: 5%;
+}
+
+.character-sprite.sprite-dim {
+    opacity: 0.35 !important;
+    /* Override animation opacity */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Sprite enter animation - starts at opacity 0, ends at 1 */
+@keyframes spriteEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.character-sprite.sprite-enter {
+    animation: spriteEnter 0.5s ease-out forwards;
+}
+
+/* If sprite has BOTH sprite-enter and sprite-dim, dim wins */
+/* If sprite has BOTH sprite-enter and sprite-dim, animate to dim opacity */
+.character-sprite.sprite-enter.sprite-dim {
+    animation: spriteEnterDim 0.5s ease-out forwards;
+}
+
+@keyframes spriteEnterDim {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 0.35;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spriteExit {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+.character-sprite.sprite-exit {
+    animation: spriteExit 0.5s ease-out forwards;
+}
+
+/* ========================================
+   ECHO SPRITES - GROUNDED POSITIONING
+   Three sprites grounded at bottom like Tori
+   Despair same height, Echo 1 & 2 shorter
+   ======================================== */
+
+/* Container for all three Echoes */
+#character-right.echo-group {
+    display: flex;
+    align-items: flex-end;
+    /* Ground all at bottom */
+    justify-content: flex-end;
+    gap: -20vh;
+    /* Large overlap - they stand together */
+    width: auto !important;
+    /* Auto width to accommodate sprite sizes */
+    height: 100% !important;
+    bottom: 0 !important;
+    right: 5% !important;
+}
+
+/* Individual echo sprites */
+.echo-sprite {
+    background-size: contain;
+    background-position: bottom center;
+    /* Grounded at feet */
+    background-repeat: no-repeat;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: opacity 0.3s ease, filter 0.3s ease, height 0.8s ease, width 0.8s ease;
+    opacity: 1;
+}
+
+/* Dim echo when not speaking */
+.echo-sprite.sprite-dim {
+    opacity: 0.35;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)) brightness(0.6);
+}
+
+/* Echo 1 & 2: Shoulder height of Despair (~75% of full height) */
+#echo-1-sprite,
+#echo-2-sprite {
+    width: 50vh !important;
+    height: 75vh !important;
+    /* 2:3 aspect ratio - 75% of Despair */
+    order: 1;
+}
+
+#echo-2-sprite {
+    order: 2;
+}
+
+/* Despair: Full height - tall like Tori */
+#despair-sprite {
+    width: 53.33vh !important;
+    height: 800vh !important;
+    /* 2:3 aspect ratio - matches Tori height */
+    order: 3;
+}
+
+/* Large desktop - use fixed px for best quality */
+@media (min-width: 1400px) and (min-height: 900px) {
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 600px !important;
+        height: 900px !important;
+        /* 2:3 aspect ratio - desktop size */
+    }
+
+    #despair-sprite {
+        width: 800px !important;
+        height: 1200px !important;
+        /* 2:3 aspect ratio - desktop size */
+    }
+}
+
+@media (max-width: 768px) {
+    .character-sprite {
+        width: 280px;
+        height: 80vh;
+    }
+
+    #character-left {
+        left: 2%;
+    }
+
+    #character-right {
+        right: 2%;
+    }
+
+    /* Echo group - tablet */
+    #character-right.echo-group {
+        width: auto !important;
+        bottom: 0 !important;
+        gap: -70px;
+    }
+
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 40vh !important;
+        height: 60vh !important;
+        /* 2:3 aspect ratio - 75% of Despair's height */
+    }
+
+    #despair-sprite {
+        width: 53.33vh !important;
+        height: 80vh !important;
+        /* 2:3 aspect ratio - matches Tori sprite height */
+    }
+}
+
+/* ========================================
+   MOBILE PORTRAIT - ECHO STACKING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: portrait) {
+
+    /* Echo group - portrait */
+    #character-right.echo-group {
+        width: auto !important;
+        bottom: 0 !important;
+        gap: -65px;
+    }
+
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 40vh !important;
+        height: 60vh !important;
+        /* 2:3 aspect ratio - 75% of Despair */
+    }
+
+    #despair-sprite {
+        width: 53.33vh !important;
+        height: 80vh !important;
+        /* 2:3 aspect ratio - matches Tori */
+    }
+}
+
+/* ========================================
+   MOBILE LANDSCAPE - ECHO SIZING
+   ======================================== */
+
+@media (max-width: 1023px) and (orientation: landscape) {
+    #character-right.echo-group {
+        width: auto !important;
+        bottom: 0 !important;
+        gap: -60px;
+    }
+
+    #echo-1-sprite,
+    #echo-2-sprite {
+        width: 40vh !important;
+        height: 60vh !important;
+        /* 2:3 aspect ratio - landscape 75% */
+    }
+
+    #despair-sprite {
+        width: 53.33vh !important;
+        height: 80vh !important;
+        /* 2:3 aspect ratio - landscape full height */
+    }
+}
+
+/* ========================================
+   ECHO GROWTH - VISUAL STORYTELLING
+   Echoes grow taller as hope increases
+   Height-based instead of scale for proper grounding
+   ======================================== */
+
+/* Act 1: Echo 1 and Echo 2 at shoulder height, Despair dominant */
+.echo-growth-act1 #echo-1-sprite,
+.echo-growth-act1 #echo-2-sprite {
+    width: 50vh !important;
+    height: 75vh !important;
+    /* ~75% of Despair - shoulder height */
+}
+
+.echo-growth-act1 #despair-sprite {
+    width: 66.67vh !important;
+    height: 100vh !important;
+    /* Full height - dominates */
+}
+
+/* Act 2: Echo 1 and Echo 2 growing taller */
+.echo-growth-act2 #echo-1-sprite,
+.echo-growth-act2 #echo-2-sprite {
+    width: 58.33vh !important;
+    height: 87.5vh !important;
+    /* ~87.5% - rising to nearly equal */
+}
+
+.echo-growth-act2 #despair-sprite {
+    width: 66.67vh !important;
+    height: 100vh !important;
+    /* Still full height */
+}
+
+/* Act 3: All equal - balance achieved */
+.echo-growth-act3 #echo-1-sprite,
+.echo-growth-act3 #echo-2-sprite,
+.echo-growth-act3 #despair-sprite {
+    width: 66.67vh !important;
+    height: 100vh !important;
+    /* All equal - balance achieved */
+}
+
+/* Large desktop growth stages - use fixed px */
+@media (min-width: 1400px) and (min-height: 900px) {
+    .echo-growth-act1 #echo-1-sprite,
+    .echo-growth-act1 #echo-2-sprite {
+        width: 600px !important;
+        height: 900px !important;
+    }
+
+    .echo-growth-act1 #despair-sprite {
+        width: 800px !important;
+        height: 1200px !important;
+    }
+
+    .echo-growth-act2 #echo-1-sprite,
+    .echo-growth-act2 #echo-2-sprite {
+        width: 700px !important;
+        height: 1050px !important;
+    }
+
+    .echo-growth-act2 #despair-sprite {
+        width: 800px !important;
+        height: 1200px !important;
+    }
+
+    .echo-growth-act3 #echo-1-sprite,
+    .echo-growth-act3 #echo-2-sprite,
+    .echo-growth-act3 #despair-sprite {
+        width: 800px !important;
+        height: 1200px !important;
+    }
+}
+
+/* ========================================
+   SCREENSHOT MODE PLATFORM
+   ZEE'S SPEC: Keep dialogue box visible as platform
+   for sprite grounding, but hide all text elements
+   Triggered by H key (toggleUI)
+   ======================================== */
+
+/* When UI is hidden, keep dialogue box as platform */
+body.ui-hidden #dialogue-box {
+    display: block !important;
+    opacity: 0.35 !important;
+    /* Make platform more subtle - it's visual grounding, not UI */
+    background: rgba(15, 15, 45, 0.4) !important;
+    /* Lighter background - less prominent */
+    pointer-events: none !important;
+    /* Ensure it doesn't interfere with interactions */
+    border-top: 1px solid rgba(100, 255, 218, 0.2) !important;
+    /* Subtle cyan accent line - marks platform edge */
+}
+
+/* Hide all text elements in screenshot mode */
+body.ui-hidden .dialogue-text,
+body.ui-hidden #dialogue-text,
+body.ui-hidden .character-name,
+body.ui-hidden #character-name,
+body.ui-hidden .continue-indicator,
+body.ui-hidden #continue-indicator,
+body.ui-hidden .dialogue-choice,
+body.ui-hidden .choice-button {
+    display: none !important;
+    /* Hide text, keep the box as stage platform */
+}
+
+/* ========================================
+   SCREENSHOT MODE - STATUS BAR OVERRIDE
+   Keep status bar visible to show context
+   Route, loop, and Screenshot Mode indicator
+   ======================================== */
+
+/* Keep status bar visible and slightly transparent */
+body.ui-hidden #status-bar {
+    display: flex !important;
+    opacity: 0.75 !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(15px) !important;
+    -webkit-backdrop-filter: blur(15px) !important;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.15) !important;
+    pointer-events: none !important;
+}
+
+/* Hide some status bar elements in screenshot mode */
+body.ui-hidden #status-mail,
+body.ui-hidden #status-progress {
+    display: none !important;
+}
+
+/* ========================================
+   SCREENSHOT MODE WATERMARK
+   UV7 branding with animated fade-in
+   ======================================== */
+
+/* Watermark container - bottom right corner */
+body.ui-hidden::after {
+    content: '';
+    position: fixed;
+    bottom: 32vh;
+    /* Above dialogue box (30vh) */
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    background: url('../../assets/UnitedVoices7.png') no-repeat center;
+    background-size: contain;
+    opacity: 0;
+    animation: watermarkFadeIn 1s ease-out 0.3s forwards;
+    pointer-events: none;
+    z-index: 9998;
+    filter: drop-shadow(0 2px 8px rgba(0, 255, 255, 0.3));
+}
+
+@keyframes watermarkFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 0.6;
+        transform: translateY(0);
+    }
+}
+
+/* Version text below logo */
+body.ui-hidden::before {
+    content: 'VERSION 848';
+    position: fixed;
+    bottom: calc(32vh - 10px);
+    /* Just below logo */
+    right: 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00ffff;
+    text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+    letter-spacing: 2px;
+    opacity: 0;
+    animation: watermarkFadeIn 1s ease-out 0.5s forwards;
+    pointer-events: none;
+    z-index: 9998;
+}
+
+/* Mobile adjustments for watermark */
+@media (max-width: 768px) {
+    body.ui-hidden::after {
+        width: 80px;
+        height: 80px;
+        right: 15px;
+        bottom: 32vh;
+    }
+
+    body.ui-hidden::before {
+        font-size: 9px;
+        right: 15px;
+        bottom: calc(32vh - 8px);
+    }
+}
+
+/* ========================================
+   MOBILE TAP-TO-EXIT HINT
+   Show subtle tap indicator on mobile
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Add tap hint below status bar on mobile */
+    body.ui-hidden #status-notification::after {
+        content: '(Tap anywhere to exit)';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 8px;
+        font-size: 11px;
+        color: rgba(0, 255, 255, 0.6);
+        text-shadow: 0 0 6px rgba(0, 255, 255, 0.4);
+        white-space: nowrap;
+        animation: tapHintPulse 2s ease-in-out infinite;
+        pointer-events: none;
+    }
+
+    @keyframes tapHintPulse {
+        0%, 100% {
+            opacity: 0.6;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+}

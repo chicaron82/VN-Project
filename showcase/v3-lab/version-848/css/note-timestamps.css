@@ -1,0 +1,17 @@
+/* ========================================
+   DIZEE POLISH: NOTE TIMESTAMPS
+   ======================================== */
+
+.note-timestamp {
+    font-size: 0.75em;
+    color: rgba(0, 255, 255, 0.6);
+    font-family: 'Courier New', monospace;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Timestamp in note headers */
+.note-item-header .note-timestamp {
+    text-align: right;
+    padding-right: 10px;
+}

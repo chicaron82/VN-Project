@@ -2,20 +2,27 @@
  * 🚂 GameEngine (The Brain)
  * Orchestrates the Visual Novel lifecycle.
  */
-import { StateManager } from './state-manager.js';
-import { RouteController } from './route-controller.js';
-import { VisualCueManager } from './visual-cue-manager.js';
-import { Gateway } from './gateway.js';
-import { TetherSystem } from './tether-system.js';
-import { EchoMemorySystem } from './echo-memory-system.js';
-import { SettingsManager } from './settings-manager.js';
-import { CollectiblesManager } from './collectibles-manager.js';
-import { MenuController } from './menu-controller.js';
-import { ThemeManager } from './theme-manager.js';
-import { TipsController } from './tips-controller.js';
-import { SecretCodesManager } from './secret-codes-manager.js';
-import { DevCommentary } from './dev-commentary.js';
-import { NotificationShadeController } from './notification-shade-controller.js';
+
+// 1. V1 Dependency Imports (to populate globals FIRST)
+import './difficulty-profiles.js?v=v3';
+import './logger.js?v=v3';
+import './telemetry-shim.js?v=v3';
+
+// 2. System imports
+import { StateManager } from './state-manager.js?v=v3';
+import { RouteController } from './route-controller.js?v=v3';
+import { VisualCueManager } from './visual-cue-manager.js?v=v3';
+import { Gateway } from './gateway.js?v=v3';
+import { TetherSystem } from './tether-system.js?v=v3';
+import { EchoMemorySystem } from './echo-memory-system.js?v=v3';
+import { SettingsManager } from './settings-manager.js?v=v3';
+import { CollectiblesManager } from './collectibles-manager.js?v=v3';
+import { MenuController } from './menu-controller.js?v=v3';
+import { ThemeManager } from './theme-manager.js?v=v3';
+import { TipsController } from './tips-controller.js?v=v3';
+import { SecretCodesManager } from './secret-codes-manager.js?v=v3';
+import { DevCommentary } from './dev-commentary.js?v=v3';
+import { NotificationShadeController } from './notification-shade-controller.js?v=v3';
 
 export class GameEngine {
     constructor() {
@@ -54,7 +61,10 @@ export class GameEngine {
             loadGame: () => console.log("📂 [Engine] Game loaded (mock).")
         };
 
-        // 3. Bind to Global (for debugging and V1 system access)
+        // 3. Cache DOM Elements (CRITICAL FIX)
+        this.cacheDOM();
+
+        // 4. Bind to Global (for debugging and V1 system access)
         window.vn = {
             engine: this,
             state: this.state,
@@ -82,9 +92,85 @@ export class GameEngine {
         // 3. Start Game Loop (Heartbeat) - Starts Tether
         this.tetherSystem.startDecay();
 
-        // 4. Handover to Route Controller
-        await this.routes.start();
+        // 4. Show Main Menu (instead of auto-starting routes)
+        if (this.menuController && this.menuController.showMainMenu) {
+            this.menuController.showMainMenu();
+        } else {
+            console.warn("⚠️ MenuController not found, falling back to route start");
+            await this.routes.start();
+        }
     }
+
+    cacheDOM() {
+        console.log("🏗️ GameEngine: Caching DOM elements...");
+        this.container = document.getElementById('uv7-container');
+        this.mainMenu = document.getElementById('main-menu');
+        this.routeSelect = document.getElementById('route-select');
+        this.gameView = document.getElementById('game-view');
+
+        // Scene Elements
+        this.sceneBackground = document.getElementById('scene-background');
+        this.sceneBackgroundAlt = document.getElementById('scene-background-alt');
+        this.spriteLeft = document.getElementById('character-left');
+        this.spriteRight = document.getElementById('character-right');
+
+        // Dialogue Elements
+        this.dialogueBox = document.getElementById('dialogue-box');
+        this.characterName = document.getElementById('character-name');
+        this.dialogueText = document.getElementById('dialogue-text');
+        this.choiceMenu = document.getElementById('choice-menu');
+
+        // UI Elements
+        this.tetherUI = document.getElementById('tether-ui');
+        this.notesButton = document.getElementById('notes-button');
+    }
+
+    // ===============================================
+    // UI HELPER METHODS (Called by Adapters)
+    // ===============================================
+
+    startStory() {
+        console.log("🎬 GameEngine: Starting Story Mode...");
+        if (this.mainMenu) {
+            this.mainMenu.style.opacity = '0';
+            setTimeout(() => {
+                this.mainMenu.style.display = 'none';
+                this.showRouteSelect();
+            }, 500);
+        } else {
+            this.showRouteSelect();
+        }
+    }
+
+    continueGame() {
+        console.log("⏯️ GameEngine: Continue Game...");
+        // Mock implementation
+        if (this.saveManager) this.saveManager.loadGame();
+    }
+
+    showSettings() {
+        console.log("⚙️ GameEngine: Show Settings...");
+        const settingsMenu = document.getElementById('settings-menu');
+        if (settingsMenu) {
+            settingsMenu.style.display = 'flex';
+        }
+    }
+
+    showSaveLoadScreen(mode) {
+        console.log(`💾 GameEngine: Show Save/Load (${mode})...`);
+        // Mock
+    }
+
+    openStandaloneNotes() {
+        console.log("📝 GameEngine: Open Notes...");
+        // Mock
+    }
+
+    showCredits() { console.log("⭐ Credits clicked"); }
+    showMeetTheCrew() { console.log("👥 Crew clicked"); }
+    showDirectorsCut() { console.log("🎬 Directors Cut clicked"); }
+    showContact() { console.log("📧 Contact clicked"); }
+
 
     // ===============================================
     // V1 COMPATIBILITY LAYER (The Adapter)
@@ -97,7 +183,7 @@ export class GameEngine {
 
         console.log(`🎬 Displaying Scene: ${sceneData.character || 'Narrator'}`);
         // Delegate to RouteController which handles the DOM rendering
-        this.routes.renderScene(sceneData);
+        return this.routes.renderScene(sceneData);
     }
 
     showRouteSelect() {
@@ -149,3 +235,6 @@ export class GameEngine {
         location.reload();
     }
 }
+
+// Expose Class for Shim Patching (Module Scope)
+window.GameEngine = GameEngine;

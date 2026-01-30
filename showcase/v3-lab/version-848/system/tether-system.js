@@ -13,13 +13,11 @@ export class TetherSystem {
         this.isDecaying = false;
         this.lastUpdate = 0;
 
-        // Difficulty (User Settings)
-        this.difficulty = localStorage.getItem('tetherDifficulty') || 'normal';
-
-        // Constants (derived from V1 analysis)
-        this.DECAY_INTERVAL_MS = 1000;
-        this.HOLD_ON_COOLDOWN_MS = 30000;
-        this.HOLD_ON_RESTORE = 15;
+        // Initialize state-manager bridge
+        if (this.game.state) {
+            this.game.state.set('tether.difficulty', this.difficulty);
+            this.game.state.set('tether.level', this.tetherLevel);
+        }
 
         console.log(`🧵 TetherSystem initialized. Difficulty: ${this.difficulty}`);
     }
@@ -40,6 +38,12 @@ export class TetherSystem {
 
     setTetherLevel(level, animate = false) {
         this.tetherLevel = Math.max(0, Math.min(100, level));
+
+        // Push to StateManager (Reactivity Bridge)
+        if (this.game.state) {
+            this.game.state.set('tether.level', this.tetherLevel);
+        }
+
         this.updateUI();
     }
 
@@ -73,6 +77,11 @@ export class TetherSystem {
             this.game.triggerSensoryFeedback('glitch');
         }
 
+        // Push to StateManager (Reactivity Bridge)
+        if (this.game.state) {
+            this.game.state.set('tether.level', this.tetherLevel);
+        }
+
         this.updateUI();
         this.loopId = requestAnimationFrame(() => this.updateLoop());
     }
@@ -80,6 +89,11 @@ export class TetherSystem {
     handleTetherDeath() {
         this.stopDecay();
         this.tetherLevel = 0;
+
+        if (this.game.state) {
+            this.game.state.set('tether.level', 0);
+        }
+
         this.updateUI();
 
         console.warn("💀 TETHER RUPTURED. CONNECTION LOST.");
@@ -95,6 +109,11 @@ export class TetherSystem {
 
         // Apply restoration
         this.tetherLevel = Math.min(100, this.tetherLevel + this.HOLD_ON_RESTORE);
+
+        if (this.game.state) {
+            this.game.state.set('tether.level', this.tetherLevel);
+        }
+
         this.updateUI();
 
         console.log("✊ HOLD ON triggered. Tether restored.");

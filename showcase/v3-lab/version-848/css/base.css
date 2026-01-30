@@ -1,0 +1,175 @@
+/* ========================================
+   BASE - Theme Variables & Core Animations
+   Version 848 Core Styles
+   ======================================== */
+
+/* ========================================
+   THEME VARIABLES (Set by ThemeManager.js)
+   Defaults to Ronnie/Menu theme (cyan)
+   ======================================== */
+:root {
+    /* Primary colors - overridden by ThemeManager */
+    --theme-primary: #00ffff;
+    --theme-primary-rgb: 0, 255, 255;
+    --theme-accent: #00ccff;
+    --theme-glow: rgba(0, 255, 255, 0.5);
+    --theme-glow-strong: rgba(0, 255, 255, 0.8);
+    --theme-background: rgba(0, 10, 20, 0.95);
+    --theme-background-solid: #000a14;
+    --theme-border: #00ffff;
+    --theme-text: #00ffff;
+    --theme-text-muted: #66cccc;
+    --theme-success: #00ff88;
+    --theme-warning: #ffcc00;
+    --theme-error: #ff4444;
+}
+
+/* ========================================
+   CORE ANIMATIONS
+   ======================================== */
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        text-shadow: 0 0 20px #0ff, 0 0 40px #000, 0 0 10px #000;
+    }
+
+    50% {
+        opacity: 0.8;
+        text-shadow: 0 0 30px #0ff, 0 0 50px #000, 0 0 15px #000;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes screenShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translate(-3px, 3px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translate(3px, -3px);
+    }
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip-path: inset(40% 0 61% 0);
+    }
+
+    20% {
+        clip-path: inset(92% 0 1% 0);
+    }
+
+    40% {
+        clip-path: inset(43% 0 1% 0);
+    }
+
+    60% {
+        clip-path: inset(25% 0 58% 0);
+    }
+
+    80% {
+        clip-path: inset(54% 0 7% 0);
+    }
+
+    100% {
+        clip-path: inset(58% 0 43% 0);
+    }
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes flicker {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+}
+
+/* UTILITY CLASSES */
+.hidden {
+    display: none !important;
+}

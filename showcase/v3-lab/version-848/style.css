@@ -61,6 +61,48 @@ body {
 }
 
 /* 4. STAGE (The Content) */
+/* 4. GAME VIEW & STAGE */
+#game-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 15;
+    display: block;
+}
+
+/* Ensure dialogue box is on top and anchored to VIEWPORT */
+.dialogue-box {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 2rem !important;
+    left: 2rem !important;
+    right: 2rem !important;
+    height: auto !important;
+    min-height: 150px;
+    z-index: 10000 !important;
+    /* Above scanlines (9999) */
+    background: rgba(0, 50, 0, 0.95);
+    color: var(--terminal-green);
+    border: 2px solid var(--terminal-green);
+    box-shadow: 0 0 20px rgba(0, 50, 0, 0.8);
+}
+
+.choice-container {
+    position: fixed !important;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    z-index: 99999 !important;
+    background: rgba(0, 0, 0, 0.95);
+    /* Slightly opaque */
+    padding: 2rem;
+    border: 2px solid var(--terminal-green);
+}
+
 #stage {
     position: relative;
     width: 100%;
