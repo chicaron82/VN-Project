@@ -4795,6 +4795,265 @@ select.timeline-btn option {
 
 
 /* ═══════════════════════════════════════════════════════════════
+   THE MIMIC: CHAOS VARIABLE SECTION
+   ═══════════════════════════════════════════════════════════════ */
+
+.experiment-variable-mimic {
+    margin: 3rem 0;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(239, 68, 68, 0.05));
+    border: 3px dashed rgba(239, 68, 68, 0.6);
+    border-radius: 16px;
+    position: relative;
+}
+
+.experiment-variable-mimic::before {
+    content: '⚠️ COGNITIVE TRAP ACTIVE';
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: rgba(220, 38, 38, 0.9);
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 4px;
+}
+
+.experiment-variable-mimic > h2 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+    .experiment-variable-mimic > h2 {
+        color: #ef4444;
+    }
+}
+
+.mimic-container {
+    display: grid;
+    gap: 2rem;
+}
+
+.mimic-origin,
+.mimic-decision,
+.mimic-results,
+.mimic-analysis,
+.mimic-metaphor {
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 12px;
+    border-left: 4px solid #ef4444;
+}
+
+@media (prefers-color-scheme: dark) {
+    .mimic-origin,
+    .mimic-decision,
+    .mimic-results,
+    .mimic-analysis,
+    .mimic-metaphor {
+        background: rgba(255, 255, 255, 0.03);
+    }
+}
+
+.mimic-origin h3,
+.mimic-decision h3,
+.mimic-results h3,
+.mimic-analysis h3,
+.mimic-metaphor h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #dc2626;
+}
+
+@media (prefers-color-scheme: dark) {
+    .mimic-origin h3,
+    .mimic-decision h3,
+    .mimic-results h3,
+    .mimic-analysis h3,
+    .mimic-metaphor h3 {
+        color: #ef4444;
+    }
+}
+
+.mimic-origin code,
+.mimic-decision code,
+.mimic-results code,
+.mimic-analysis code {
+    background: rgba(239, 68, 68, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.mimic-criteria {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+}
+
+.mimic-criteria li {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 3px solid #f97316;
+    border-radius: 6px;
+}
+
+.mimic-victim {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-radius: 12px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: start;
+}
+
+.victim-belle {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.05));
+    border: 2px solid rgba(220, 38, 38, 0.3);
+}
+
+.victim-dizee {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.05));
+    border: 2px solid rgba(34, 197, 94, 0.3);
+}
+
+.victim-icon {
+    font-size: 2rem;
+    line-height: 1;
+}
+
+.victim-status {
+    font-weight: 700;
+    color: #dc2626;
+}
+
+.victim-dizee .victim-status {
+    color: #16a34a;
+}
+
+.victim-desc {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #64748b;
+}
+
+@media (prefers-color-scheme: dark) {
+    .victim-desc {
+        color: #94a3b8;
+    }
+}
+
+.mimic-tension {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .mimic-tension {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .tension-vs {
+        text-align: center;
+    }
+}
+
+.tension-side {
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.tension-pattern {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05));
+    border: 2px solid rgba(239, 68, 68, 0.3);
+}
+
+.tension-graph {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.05));
+    border: 2px solid rgba(34, 197, 94, 0.3);
+}
+
+.tension-side h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.tension-side ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.tension-side li {
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.tension-vs {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ef4444;
+    text-align: center;
+}
+
+.mimic-verdict {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.1));
+    border-left: 5px solid #dc2626;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-style: italic;
+}
+
+.mimic-metaphor blockquote {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 4px solid #3b82f6;
+    border-radius: 8px;
+    font-style: italic;
+    line-height: 1.8;
+}
+
+.mimic-weaponization {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(239, 68, 68, 0.05);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+    .experiment-variable-mimic {
+        padding: 1.5rem;
+    }
+
+    .mimic-victim {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .victim-icon {
+        font-size: 1.5rem;
+    }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
    BELLE'S PATH COMPARISON SECTION
    ═══════════════════════════════════════════════════════════════ */
 
