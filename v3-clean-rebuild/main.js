@@ -17,52 +17,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // @ts-ignore
     window.game = game;
 
-    // BOOT SEQUENCE INTEGRATION
-    const bootTerminal = document.getElementById('boot-terminal');
+    // BOOT SEQUENCE INTEGRATION - TEMPORARILY DISABLED FOR DEBUGGING
     const splashScreen = document.getElementById('uv7-splash');
 
-    // Check if Boot Sequence script is loaded and container exists
-    // @ts-ignore
-    if (bootTerminal && window.BougieBootSequence) {
-        console.log("🖥️ Initiating Bougie Boot Sequence...");
-
-        // Callback to update logo reveal if needed
-        const logoRevealCallback = (percent) => {
-            // Optional: update a progress bar or syncing logo animation
-            // const logo = document.getElementById('uv7-logo-video');
-            // if (logo) ...
-        };
-
-        // @ts-ignore
-        const boot = new window.BougieBootSequence(bootTerminal, logoRevealCallback);
-
-        // Connect game instance to boot sequence (for dynamic stats)
-        boot.game = game;
-
-        try {
-            // Run boot sequence - this awaits until completion (including "online" delay)
-            await boot.start();
-
-            console.log("✅ Boot Complete. Transitioning to Menu...");
-
-            // Fade out splash
-            if (splashScreen) {
-                splashScreen.style.transition = 'opacity 1s ease-out';
-                splashScreen.style.opacity = '0';
-
-                // Remove from flow after fade
-                setTimeout(() => {
-                    splashScreen.style.display = 'none';
-                }, 1000);
-            }
-
-        } catch (e) {
-            console.error("⚠️ Boot sequence error:", e);
-            if (splashScreen) splashScreen.style.display = 'none';
-        }
-    } else {
-        console.warn("⚠️ Boot component missing or script not loaded. Skipping sequence.");
-        if (splashScreen) splashScreen.style.display = 'none';
+    // Skip boot sequence, just hide splash immediately
+    console.log("⚠️ Boot sequence DISABLED for debugging. Hiding splash...");
+    if (splashScreen) {
+        splashScreen.style.display = 'none';
     }
 
     // START GAME ENGINE
