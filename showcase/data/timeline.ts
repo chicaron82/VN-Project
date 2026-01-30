@@ -129,6 +129,40 @@ export interface TimelineEntry {
     scorecard?: V3Scorecard;
     stats?: V3Stats;
     judgement?: V3Judgement;
+
+    // V3 Session Detailed Reporting
+    timestamp?: Date;
+    agent?: string;
+    agentAlias?: string;
+    sessionType?: string;
+    primaryFocus?: string;
+    approach?: {
+        title: string;
+        description: string;
+        keyInsights: string[];
+    };
+    implementation?: {
+        directory: string;
+        strategy: string;
+        files: string[];
+        whatPreserved: string[];
+        futureEnhancements: string[];
+    };
+    outcomeCode?: {
+        linesChanged: number;
+        linesAdded: string | number;
+        systemsIntegrated: string[];
+    };
+    machineReflection?: {
+        whatWentRight: string[];
+        challenges: string[];
+        nextSteps: string[];
+    };
+    effort?: {
+        duration: string;
+        complexity: string;
+        iterations: number;
+    };
 }
 
 export interface TimelineData {

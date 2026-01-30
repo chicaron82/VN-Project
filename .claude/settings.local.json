@@ -44,7 +44,8 @@
       "Bash(if [ -f \"$file\" ])",
       "Bash(basename:*)",
       "Read(//c/Users/silve/Downloads/GitHub/VN-Project/**)",
-      "Bash(if [ -f \"showcase/css/$file\" ])"
+      "Bash(if [ -f \"showcase/css/$file\" ])",
+      "Read(//c/**)"
     ],
     "deny": [],
     "ask": []
