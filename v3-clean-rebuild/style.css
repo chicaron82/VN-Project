@@ -231,6 +231,44 @@ body {
     background: rgba(0, 50, 0, 0.9);
 }
 
+/* Dialogue Box (ID-based for V1 compatibility) */
+#dialogue-box {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+    max-width: calc(100% - 4rem);
+    border: 2px solid var(--terminal-green);
+    padding: 1.5rem;
+    background: rgba(0, 50, 0, 0.95);
+    display: none;
+    z-index: 100;
+}
+
+#character-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--terminal-green);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+#dialogue-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--terminal-green);
+    min-height: 3rem;
+}
+
+#internal-thought {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--terminal-dim);
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--terminal-dim);
+}
+
 /* ========================================
    V1 VISUAL CUES (The Sensory Layer)
    ======================================== */
