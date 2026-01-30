@@ -97,13 +97,100 @@ export class GameEngine {
         // 3. Start Game Loop (Heartbeat) - Starts Tether
         this.tetherSystem.startDecay();
 
-        // 4. Show Main Menu (instead of auto-starting routes)
+        // 4. Set up menu button click handlers
+        this.setupMenuButtonHandlers();
+
+        // 5. Show Main Menu (instead of auto-starting routes)
         if (this.menuController && this.menuController.showMainMenu) {
             this.menuController.showMainMenu();
         } else {
             console.warn("⚠️ MenuController not found, falling back to route start");
             await this.routes.start();
         }
+    }
+
+    // ===============================================
+    // MENU BUTTON HANDLERS
+    // ===============================================
+
+    setupMenuButtonHandlers() {
+        console.log("🎮 Setting up menu button handlers...");
+
+        // Get all menu buttons
+        const menuButtons = document.querySelectorAll('.menu-btn');
+
+        menuButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const action = button.getAttribute('data-action');
+                console.log(`🎯 Menu button clicked: ${action}`);
+
+                switch(action) {
+                    case 'start':
+                        this.startStory();
+                        break;
+                    case 'continue':
+                        this.continueGame();
+                        break;
+                    case 'load':
+                        this.showLoadScreen();
+                        break;
+                    case 'settings':
+                        this.showSettings();
+                        break;
+                    case 'credits':
+                        this.showCredits();
+                        break;
+                    default:
+                        console.warn(`Unknown menu action: ${action}`);
+                }
+            });
+        });
+    }
+
+    // Start new story (plays prologue then shows route select)
+    async startStory() {
+        console.log("▶️ Starting story...");
+
+        // Hide main menu
+        if (this.mainMenu) {
+            this.mainMenu.style.display = 'none';
+        }
+
+        // Show game view
+        if (this.gameView) {
+            this.gameView.style.display = 'block';
+        }
+
+        // Start prologue route
+        await this.routes.start();
+    }
+
+    // Continue from last save
+    continueGame() {
+        console.log("⏯️ Continue game...");
+        // TODO: Implement continue logic
+        alert("Continue feature not yet implemented");
+    }
+
+    // Show load screen
+    showLoadScreen() {
+        console.log("💾 Show load screen...");
+        // TODO: Implement load screen
+        alert("Load feature not yet implemented");
+    }
+
+    // Show settings
+    showSettings() {
+        console.log("⚙️ Show settings...");
+        // TODO: Implement settings
+        alert("Settings not yet implemented");
+    }
+
+    // Show credits
+    showCredits() {
+        console.log("🎬 Show credits...");
+        // TODO: Implement credits
+        alert("Credits not yet implemented");
     }
 
     // ===============================================
