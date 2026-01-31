@@ -31,7 +31,6 @@ import { UV7EchoSystem } from '../lib/UV7EchoSystem';
 import { HomeSection } from './components/HomeSection';
 import { JourneySection } from './components/JourneySection';
 import { WorkflowSection } from './components/WorkflowSection';
-import { ResultsSection } from './components/ResultsSection';
 import { SpotlightSection } from './components/SpotlightSection';
 import { EvolutionSection } from './components/EvolutionSection';
 import { ExperimentSection } from './components/ExperimentSection';
@@ -134,7 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
     new HomeSection();
     new JourneySection();
     new WorkflowSection();
-    new ResultsSection();
     new SpotlightSection();
     new EvolutionSection();
     new ExperimentSection();
@@ -205,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const scrollLeft = tabPanelsContainer.scrollLeft;
                 const panelWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / panelWidth);
-                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution', 'experiment', 'who'];
+                const tabs = ['home', 'journey', 'workflow', 'spotlight', 'evolution', 'experiment', 'who'];
                 const expectedTab = tabs[currentIndex];
 
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {

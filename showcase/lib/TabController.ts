@@ -28,7 +28,6 @@ export class TabController {
             'home',
             'journey',
             'workflow',
-            'results',
             'spotlight',
             'evolution',
             'experiment',
@@ -54,6 +53,9 @@ export class TabController {
         // Start at saved tab or home
         const lastTab = this.loadLastTab();
         this.setActiveTab(lastTab && this.tabs.includes(lastTab) ? lastTab : 'home');
+
+        // Update indicator on window resize
+        window.addEventListener('resize', () => this.updateIndicator());
 
         console.log('✅ TabController initialized (swipe mode)');
     }
@@ -276,6 +278,31 @@ export class TabController {
                 btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
             }
         });
+
+        // Update tab indicator position
+        this.updateIndicator();
+    }
+
+    private updateIndicator(): void {
+        const indicator = document.querySelector('.tab-indicator') as HTMLElement;
+        if (!indicator) return;
+
+        // Find the active tab button
+        const activeButton = Array.from(this.tabButtons).find(btn =>
+            (btn as HTMLElement).dataset.tab === this.activeTab
+        ) as HTMLElement;
+
+        if (!activeButton) return;
+
+        // Position indicator under active tab
+        const buttonRect = activeButton.getBoundingClientRect();
+        const tabBarRect = this.tabBar?.getBoundingClientRect();
+
+        if (tabBarRect) {
+            const leftOffset = buttonRect.left - tabBarRect.left;
+            indicator.style.transform = `translateX(${leftOffset}px)`;
+            indicator.style.width = `${buttonRect.width}px`;
+        }
     }
 
     private updateProgress(): void {
@@ -293,7 +320,6 @@ export class TabController {
                 home: 'UV7 OS',
                 journey: 'The Journey',
                 workflow: 'Workflow',
-                results: 'Results',
                 spotlight: 'Tech Spotlight',
                 evolution: 'Evolution',
                 experiment: 'V3 Experiment',
@@ -351,7 +377,6 @@ export class TabController {
             home: 'Home',
             journey: 'Journey',
             workflow: 'Workflow',
-            results: 'Timeline',
             spotlight: 'Spotlight',
             evolution: 'Evolution',
             experiment: 'Experiment',

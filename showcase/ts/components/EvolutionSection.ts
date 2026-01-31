@@ -132,6 +132,105 @@ export class EvolutionSection {
                         </div>
                     </div>
 
+                    <!-- Development Metrics -->
+                    <div style="margin: 3rem 0;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
+                            📊 By The Numbers
+                        </h3>
+                        <p style="text-align: center; opacity: 0.8; margin-bottom: 2rem;">
+                            Real-time stats from the V2 rebuild
+                        </p>
+
+                        <div class="stats-grid">
+                            <div class="stat-card" data-stat-type="tests">
+                                <div class="stat-icon">✅</div>
+                                <div class="stat-number" data-target="1499">0</div>
+                                <div class="stat-label">Tests Passing</div>
+                            </div>
+                            <div class="stat-card" data-stat-type="phases">
+                                <div class="stat-icon">
+                                    <svg class="progress-ring" viewBox="0 0 36 36">
+                                        <circle class="ring-bg" cx="18" cy="18" r="16" />
+                                        <circle class="ring-fill" cx="18" cy="18" r="16" />
+                                    </svg>
+                                </div>
+                                <div class="stat-number" data-target="82">0</div>
+                                <div class="stat-label">Timeline Phases</div>
+                            </div>
+                            <div class="stat-card" data-stat-type="days">
+                                <div class="stat-icon">📅</div>
+                                <div class="stat-number" data-target="24">0</div>
+                                <div class="stat-label">Days in Development</div>
+                            </div>
+                            <div class="stat-card" data-stat-type="errors">
+                                <div class="stat-icon">✓</div>
+                                <div class="stat-number" data-target="0">0</div>
+                                <div class="stat-label">TS Errors</div>
+                            </div>
+                        </div>
+
+                        <!-- Performance Metrics -->
+                        <div class="metrics-container" style="margin-top: 2rem;">
+                            <div class="metric-card">
+                                <h4>LOAD TIME</h4>
+                                <div class="metric-bar-group">
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V1</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v1" style="width: 100%"></div>
+                                        </div>
+                                        <span class="metric-value">2.4s</span>
+                                    </div>
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V2</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v2" style="width: 30%"></div>
+                                        </div>
+                                        <span class="metric-value">0.7s</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>BUNDLE SIZE</h4>
+                                <div class="metric-bar-group">
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V1</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v1" style="width: 100%"></div>
+                                        </div>
+                                        <span class="metric-value">5MB</span>
+                                    </div>
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V2</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v2" style="width: 40%"></div>
+                                        </div>
+                                        <span class="metric-value">2MB</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="metric-card">
+                                <h4>STABILITY</h4>
+                                <div class="metric-bar-group">
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V1</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v1" style="width: 85%"></div>
+                                        </div>
+                                        <span class="metric-value">Low</span>
+                                    </div>
+                                    <div class="metric-bar-wrapper">
+                                        <span class="metric-label">V2</span>
+                                        <div class="metric-track">
+                                            <div class="metric-fill fill-v2" style="width: 100%"></div>
+                                        </div>
+                                        <span class="metric-value">100%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Architecture Diagram -->
                     <div class="architecture-diagram">
                         <h3 class="architecture-title">Architecture Evolution</h3>

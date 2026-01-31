@@ -57,61 +57,17 @@ export class WorkflowSection {
                 <!-- Hero Banner -->
                 ${createBanner(BANNER_CONFIGS.workflow)}
 
-                <!-- At-A-Glance Quick Cards -->
-                <div class="banner-quick-cards">
-                    <div class="banner-quick-card" data-scroll-to="parallel-dev-section">
-                        <span class="card-icon">💡</span>
-                        <span class="card-label">Parallel Dev</span>
-                    </div>
-                    <div class="banner-quick-card" data-scroll-to="peer-review-section">
-                        <span class="card-icon">🔍</span>
-                        <span class="card-label">Blind Review</span>
-                    </div>
-                    <div class="banner-quick-card" data-scroll-to="retrospectives-section">
-                        <span class="card-icon">🔄</span>
-                        <span class="card-label">Retrospectives</span>
-                    </div>
-                </div>
-
                 <div class="section-content">
                     <p class="section-intro">
                         How one non-coder orchestrated eight AI instances to build <strong>Version 848</strong>—a
                         complete visual novel about consciousness, identity, and the boundaries of reality.
                     </p>
 
-                    <!-- Core Workflow Overview -->
-                    <div class="workflow-diagram">
-                        <div class="workflow-step" id="parallel-dev-section">
-                            <div class="step-icon">💡</div>
-                            <h3>Parallel Development</h3>
-                            <p>Hit rate limits? Switch AI instances. By the time you cycle back, cooldowns are reset.
-                                Continuous momentum.</p>
-                        </div>
-
-                        <div class="workflow-arrow">→</div>
-
-                        <div class="workflow-step" id="peer-review-section">
-                            <div class="step-icon">🔍</div>
-                            <h3>Blind Peer Review</h3>
-                            <p>Drop code to a fresh AI with no context. Get unbiased feedback. Shuttle concerns between
-                                coder and reviewer until consensus.</p>
-                        </div>
-
-                        <div class="workflow-arrow">→</div>
-
-                        <div class="workflow-step" id="retrospectives-section">
-                            <div class="step-icon">🔄</div>
-                            <h3>Retrospectives</h3>
-                            <p>End each session: "What worked? What didn't? What could be better?" Tackle improvements
-                                next session. Continuous iteration.</p>
-                        </div>
-                    </div>
-
                     <!-- Collapsible Deep Dives -->
                     <div class="methodology-deep-dives">
 
                         <!-- 1. Blind Peer Review -->
-                        <div class="methodology-expandable">
+                        <div class="methodology-expandable" id="peer-review-section">
                             <button class="methodology-toggle" data-section="peer-review">
                                 <span class="toggle-icon">▼</span>
                                 <h3>🔍 Blind Peer Review Process</h3>
@@ -180,8 +136,8 @@ export class WorkflowSection {
                             </div>
                         </div>
 
-                        <!-- 2. Cognitive Diversity -->
-                        <div class="methodology-expandable">
+                        <!-- 2. Cognitive Diversity (Parallel Development) -->
+                        <div class="methodology-expandable" id="parallel-dev-section">
                             <button class="methodology-toggle" data-section="cognitive-diversity">
                                 <span class="toggle-icon">▼</span>
                                 <h3>🧠 Cognitive Diversity Arbitrage</h3>
@@ -697,5 +653,23 @@ class TetherSystem {
                 </div>
             </section>
         `;
+
+        // Inject quick cards into banner content area
+        const bannerContent = mount.querySelector('.hero-banner-content');
+        if (bannerContent) {
+            const quickCardsHTML = `
+                <div class="banner-quick-cards">
+                    <div class="banner-quick-card" data-scroll-to="parallel-dev-section">
+                        <span class="card-icon">💡</span>
+                        <span class="card-label">Parallel Dev</span>
+                    </div>
+                    <div class="banner-quick-card" data-scroll-to="peer-review-section">
+                        <span class="card-icon">🔍</span>
+                        <span class="card-label">Blind Review</span>
+                    </div>
+                </div>
+            `;
+            bannerContent.insertAdjacentHTML('beforeend', quickCardsHTML);
+        }
     }
 }

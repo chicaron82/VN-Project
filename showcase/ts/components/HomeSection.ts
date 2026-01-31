@@ -59,6 +59,91 @@ export class HomeSection {
                         "If consciousness exists in code, is it still real?"
                     </p>
 
+                    <!-- THE GAME: Story & Themes -->
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08)); border-radius: 12px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(102, 126, 234, 0.2);">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary, #1a1a1a);">
+                            🎮 The Story
+                        </h3>
+
+                        <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
+                            <strong>Ronnie</strong> is a husband watching his wife slip away. <strong>Tori's</strong> body lies comatose in a hospital bed,
+                            her consciousness trapped inside a mysterious device—a digital tamagotchi with no origin point.
+                        </p>
+
+                        <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
+                            As Ronnie races to bring her back before her body fails, he discovers the device operates on a loop.
+                            <strong>Version 848</strong>—the current attempt. Every failure resets. Every success creates a paradox.
+                        </p>
+
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0;">
+                            <div style="background: rgba(0, 0, 0, 0.2); padding: 1.5rem; border-radius: 8px; border-left: 3px solid #ff6b9d;">
+                                <h4 style="margin: 0 0 0.5rem; color: #ff6b9d; font-size: 1.1rem;">👨 Ronnie's Route</h4>
+                                <p style="margin: 0; font-size: 0.95rem; line-height: 1.5; opacity: 0.9;">
+                                    The external perspective. Racing against time, making impossible choices.
+                                    Can love survive when consciousness becomes code?
+                                </p>
+                            </div>
+                            <div style="background: rgba(0, 0, 0, 0.2); padding: 1.5rem; border-radius: 8px; border-left: 3px solid #00ccff;">
+                                <h4 style="margin: 0 0 0.5rem; color: #00ccff; font-size: 1.1rem;">👩 Tori's Route</h4>
+                                <p style="margin: 0; font-size: 0.95rem; line-height: 1.5; opacity: 0.9;">
+                                    The internal experience. Trapped in digital space, watching her body decay.
+                                    Is consciousness real if it only exists in code?
+                                </p>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 1.1rem; line-height: 1.7; margin-top: 1.5rem; padding: 1rem; background: rgba(255, 107, 157, 0.1); border-radius: 6px;">
+                            <strong>The Bootstrap Paradox:</strong> The device has no beginning. No inventor. No first version.
+                            It exists because it exists. And with each loop, the question becomes clearer:
+                            <em>Are Ronnie and Tori saving each other, or creating each other?</em>
+                        </p>
+                    </div>
+
+                    <!-- Core Themes -->
+                    <div style="margin: 2rem 0;">
+                        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">
+                            💭 Core Themes
+                        </h3>
+                        <div style="display: grid; gap: 1rem;">
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <span style="font-size: 1.5rem;">🧠</span>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Consciousness & Identity:</strong>
+                                    <p style="margin: 0.25rem 0 0; opacity: 0.85;">
+                                        If your mind is copied into code, is it still you? Or just data that thinks it's you?
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <span style="font-size: 1.5rem;">🔄</span>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Bootstrap Paradoxes:</strong>
+                                    <p style="margin: 0.25rem 0 0; opacity: 0.85;">
+                                        Effects without causes. Loops without origins. Reality bending back on itself.
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <span style="font-size: 1.5rem;">💔</span>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Love & Loss:</strong>
+                                    <p style="margin: 0.25rem 0 0; opacity: 0.85;">
+                                        How far would you go to save someone? What would you sacrifice? What lines would you cross?
+                                    </p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem; align-items: start;">
+                                <span style="font-size: 1.5rem;">⚖️</span>
+                                <div>
+                                    <strong style="font-size: 1.1rem;">Choice & Consequence:</strong>
+                                    <p style="margin: 0.25rem 0 0; opacity: 0.85;">
+                                        Every decision branches. Every ending matters. The Tether system measures your grip on reality itself.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div
                         style="background: rgba(22, 33, 62, 0.05); border-left: 4px solid var(--accent-blue, #4a9eff); padding: 1.5rem; margin: 1.5rem 0; border-radius: 4px;">
                         <p style="margin: 0 0 1rem; font-size: 1rem; line-height: 1.6;">
