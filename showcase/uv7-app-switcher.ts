@@ -11,12 +11,60 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+type AppId = 'landing' | 'showcase' | 'v1' | 'v2' | 'torigatchi';
+
+interface AppStateData {
+    state: string[];
+    hasSave: boolean;
+    lastPlayed?: Date | null;
+    progress?: number;
+    mood?: string;
+    isHangry?: boolean;
+}
+
+interface AppDefinition {
+    id: AppId;
+    name: string;
+    icon: string;
+    description: string;
+    url: string;
+    color: string;
+    saveKeys: string[];
+    getState: () => AppStateData;
+}
+
+interface AppSwitcherElements {
+    switcher: HTMLElement | null;
+    close: HTMLElement | null;
+    clearAll: HTMLElement | null;
+    recentSection: HTMLElement | null;
+    recentGrid: HTMLElement | null;
+    allGrid: HTMLElement | null;
+    undoToast: HTMLElement | null;
+    undoMessage: HTMLElement | null;
+    undoBtn: HTMLElement | null;
+}
+
+interface UndoBackup {
+    app: AppDefinition;
+    backup: Record<string, string>;
+}
+
 class UV7AppSwitcher {
+    private apps: AppDefinition[];
+    private currentApp: AppId;
+    private recentApps: AppId[];
+    private elements: AppSwitcherElements;
+    private undoBackup: UndoBackup | null;
+    private undoTimeout: number | null;
+    private backgroundMonitorInterval: number | null;
+    private backgroundIndicators: Map<string, boolean>;
+
     constructor() {
         this.apps = this.defineApps();
         this.currentApp = this.detectCurrentApp();
         this.recentApps = this.loadRecentApps();
-        this.elements = {};
+        this.elements = {} as AppSwitcherElements;
         this.undoBackup = null;
         this.undoTimeout = null;
 
@@ -27,7 +75,7 @@ class UV7AppSwitcher {
         this.init();
     }
 
-    init() {
+    init(): void {
         this.injectHTML();
         this.injectStyles(); // Phase 26c: Inject enhanced styles
         this.cacheElements();
@@ -44,7 +92,7 @@ class UV7AppSwitcher {
     // PHASE 26c: ENHANCED STYLES INJECTION
     // ═══════════════════════════════════════════════════════════════
 
-    injectStyles() {
+    injectStyles(): void {
         // Only inject once
         if (document.getElementById('uv7-app-switcher-enhanced-styles')) return;
 
@@ -190,7 +238,7 @@ class UV7AppSwitcher {
     // APP DEFINITIONS
     // ═══════════════════════════════════════════════════════════════
 
-    defineApps() {
+    defineApps(): AppDefinition[] {
         return [
             {
                 id: 'landing',
@@ -328,10 +376,10 @@ class UV7AppSwitcher {
                         const data = JSON.parse(state);
                         const lastFed = new Date(data.lastFed);
                         const now = new Date();
-                        const hoursSince = (now - lastFed) / (1000 * 60 * 60);
+                        const hoursSince = (now.getTime() - lastFed.getTime()) / (1000 * 60 * 60);
 
                         // Calculate mood - ZEERAH'S MOOD SYSTEM
-                        let mood, moodEmoji, isHangry = false;
+                        let mood: string, moodEmoji: string, isHangry = false;
                         if (hoursSince > 24) {
                             mood = 'BEYOND HANGRY';
                             moodEmoji = '💀';
@@ -379,22 +427,22 @@ class UV7AppSwitcher {
     // PROGRESS CALCULATION
     // ═══════════════════════════════════════════════════════════════
 
-    calculateV1Progress(route, act) {
+    calculateV1Progress(route: string, act: string | null): number {
         // V1 has 3 routes with ~3 acts each
-        const routeProgress = { tori: 0, ronnie: 33, true: 66 };
+        const routeProgress: Record<string, number> = { tori: 0, ronnie: 33, true: 66 };
         const base = routeProgress[route?.toLowerCase()] || 0;
         const actProgress = act ? (parseInt(act) / 3) * 33 : 0;
         return Math.min(100, Math.round(base + actProgress));
     }
 
-    calculateV2Progress(state) {
+    calculateV2Progress(state: any): number {
         if (!state?.game) return 0;
         const route = state.game.currentRoute;
         const act = state.game.currentAct || 1;
         const sceneIndex = state.game.currentSceneIndex || 0;
 
         // Rough estimate based on route + act + scene
-        const routeProgress = { tori: 0, ronnie: 33, true: 66 };
+        const routeProgress: Record<string, number> = { tori: 0, ronnie: 33, true: 66 };
         const base = routeProgress[route?.toLowerCase()] || 0;
         const actProgress = (act / 3) * 30;
         const sceneProgress = Math.min(3, sceneIndex / 10); // Small bonus for scene progress
@@ -406,11 +454,9 @@ class UV7AppSwitcher {
     // TIME FORMATTING - RONNIE'S UX POLISH
     // ═══════════════════════════════════════════════════════════════
 
-    formatLastPlayed(date) {
-        if (!date) return '';
-
+    formatLastPlayed(date: Date): string {
         const now = new Date();
-        const diff = now - date;
+        const diff = now.getTime() - date.getTime();
         const minutes = Math.floor(diff / 60000);
         const hours = Math.floor(diff / 3600000);
         const days = Math.floor(diff / 86400000);
@@ -429,9 +475,9 @@ class UV7AppSwitcher {
     // Check background apps for urgent states (ToriGatchi hungry, etc.)
     // ═══════════════════════════════════════════════════════════════
 
-    startBackgroundMonitor() {
+    startBackgroundMonitor(): void {
         // Check background apps every 30 seconds
-        this.backgroundMonitorInterval = setInterval(() => {
+        this.backgroundMonitorInterval = window.setInterval(() => {
             this.checkBackgroundApps();
         }, 30000);
 
@@ -439,7 +485,7 @@ class UV7AppSwitcher {
         setTimeout(() => this.checkBackgroundApps(), 2000);
     }
 
-    checkBackgroundApps() {
+    checkBackgroundApps(): void {
         this.apps.forEach(app => {
             // Skip current app
             if (app.id === this.currentApp) return;
@@ -456,7 +502,7 @@ class UV7AppSwitcher {
         });
     }
 
-    shouldShowReminder(app) {
+    shouldShowReminder(app: AppDefinition): boolean {
         const lastPlayedKey = `uv7_last_played_${app.id}`;
         const lastPlayed = localStorage.getItem(lastPlayedKey);
         if (!lastPlayed) return false;
@@ -465,7 +511,7 @@ class UV7AppSwitcher {
         return hoursSince > 24;
     }
 
-    showBackgroundIndicator(app, stateData, isUrgent) {
+    showBackgroundIndicator(app: AppDefinition, stateData: AppStateData, isUrgent: boolean): void {
         // Only show one indicator at a time per app
         const existingPill = document.querySelector(`[data-bg-app="${app.id}"]`);
         if (existingPill) return;
@@ -496,13 +542,13 @@ class UV7AppSwitcher {
 
         // Click to open app
         pill.addEventListener('click', (e) => {
-            if (e.target.classList.contains('bg-indicator-close')) return;
+            if ((e.target as HTMLElement).classList.contains('bg-indicator-close')) return;
             this.launchApp(app);
             pill.remove();
         });
 
         // Dismiss button
-        const closeBtn = pill.querySelector('.bg-indicator-close');
+        const closeBtn = pill.querySelector('.bg-indicator-close') as HTMLButtonElement;
         closeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             localStorage.setItem(dismissedKey, Date.now().toString());
@@ -525,7 +571,7 @@ class UV7AppSwitcher {
         console.log(`🔔 Background alert: ${app.name} - ${stateText}`);
     }
 
-    stopBackgroundMonitor() {
+    stopBackgroundMonitor(): void {
         if (this.backgroundMonitorInterval) {
             clearInterval(this.backgroundMonitorInterval);
             this.backgroundMonitorInterval = null;
@@ -536,7 +582,7 @@ class UV7AppSwitcher {
     // APP DETECTION & RECENT APPS
     // ═══════════════════════════════════════════════════════════════
 
-    detectCurrentApp() {
+    detectCurrentApp(): AppId {
         const path = window.location.pathname;
         if (path.includes('showcase')) return 'showcase';
         if (path.includes('v1')) return 'v1';
@@ -545,16 +591,16 @@ class UV7AppSwitcher {
         return 'landing';
     }
 
-    loadRecentApps() {
+    loadRecentApps(): AppId[] {
         const recent = localStorage.getItem('uv7-recent-apps');
         return recent ? JSON.parse(recent) : [];
     }
 
-    saveRecentApps() {
+    saveRecentApps(): void {
         localStorage.setItem('uv7-recent-apps', JSON.stringify(this.recentApps));
     }
 
-    addToRecent(appId) {
+    addToRecent(appId: AppId): void {
         this.recentApps = this.recentApps.filter(id => id !== appId);
         this.recentApps.unshift(appId);
         this.recentApps = this.recentApps.slice(0, 4);
@@ -565,12 +611,12 @@ class UV7AppSwitcher {
     // INSTANT RESUME - ZEERAH'S ARCHITECTURE
     // ═══════════════════════════════════════════════════════════════
 
-    setResumeFlag(appId) {
+    setResumeFlag(appId: AppId): void {
         localStorage.setItem('uv7-auto-resume', appId);
         localStorage.setItem('uv7-resume-timestamp', Date.now().toString());
     }
 
-    clearResumeFlag() {
+    clearResumeFlag(): void {
         localStorage.removeItem('uv7-auto-resume');
         localStorage.removeItem('uv7-resume-timestamp');
     }
@@ -579,7 +625,7 @@ class UV7AppSwitcher {
     // HTML INJECTION
     // ═══════════════════════════════════════════════════════════════
 
-    injectHTML() {
+    injectHTML(): void {
         const html = `
             <div id="uv7-app-switcher" class="uv7-app-switcher">
                 <div class="app-switcher-header">
@@ -613,7 +659,7 @@ class UV7AppSwitcher {
         document.body.insertAdjacentHTML('beforeend', html);
     }
 
-    cacheElements() {
+    cacheElements(): void {
         this.elements = {
             switcher: document.getElementById('uv7-app-switcher'),
             close: document.querySelector('.app-switcher-close'),
@@ -631,7 +677,7 @@ class UV7AppSwitcher {
     // EVENT HANDLERS
     // ═══════════════════════════════════════════════════════════════
 
-    attachHandlers() {
+    attachHandlers(): void {
         // Close button
         if (this.elements.close) {
             this.elements.close.addEventListener('click', () => this.close());
@@ -667,15 +713,15 @@ class UV7AppSwitcher {
         this.attachSwipeHandler();
     }
 
-    attachSwipeHandler() {
+    attachSwipeHandler(): void {
         let touchStartY = 0;
         let touchEndY = 0;
 
-        this.elements.switcher.addEventListener('touchstart', (e) => {
+        this.elements.switcher?.addEventListener('touchstart', (e) => {
             touchStartY = e.touches[0].clientY;
         }, { passive: true });
 
-        this.elements.switcher.addEventListener('touchend', (e) => {
+        this.elements.switcher?.addEventListener('touchend', (e) => {
             touchEndY = e.changedTouches[0].clientY;
             const swipeDistance = touchEndY - touchStartY;
             if (swipeDistance > 100) {
@@ -688,7 +734,7 @@ class UV7AppSwitcher {
     // SWIPE-TO-CLEAR - ANDROID MULTITASKING GESTURES
     // ═══════════════════════════════════════════════════════════════
 
-    attachSwipeToCloseHandler(card, app) {
+    attachSwipeToCloseHandler(card: HTMLElement, app: AppDefinition): void {
         let touchStartY = 0;
         let isDragging = false;
 
@@ -706,7 +752,7 @@ class UV7AppSwitcher {
                 isDragging = true;
                 card.classList.add('swiping');
                 card.style.transform = `translateY(-${Math.min(200, deltaY)}px)`;
-                card.style.opacity = Math.max(0.3, 1 - (deltaY / 200));
+                card.style.opacity = String(Math.max(0.3, 1 - (deltaY / 200)));
             }
         }, { passive: true });
 
@@ -733,9 +779,9 @@ class UV7AppSwitcher {
     // SAVE CLEARING WITH UNDO - DIZEE'S UX POLISH
     // ═══════════════════════════════════════════════════════════════
 
-    clearAppSave(app, card) {
+    clearAppSave(app: AppDefinition, card: HTMLElement): void {
         // Backup save data before clearing (for undo)
-        const backup = {};
+        const backup: Record<string, string> = {};
         app.saveKeys.forEach(key => {
             const data = localStorage.getItem(key);
             if (data) backup[key] = data;
@@ -775,22 +821,24 @@ class UV7AppSwitcher {
         }, 300);
     }
 
-    showUndoToast(message) {
+    showUndoToast(message: string): void {
         if (this.undoTimeout) {
             clearTimeout(this.undoTimeout);
         }
 
-        this.elements.undoMessage.textContent = message;
-        this.elements.undoToast.classList.add('show');
+        if (this.elements.undoMessage) {
+            this.elements.undoMessage.textContent = message;
+        }
+        this.elements.undoToast?.classList.add('show');
 
         // Auto-hide after 5 seconds
-        this.undoTimeout = setTimeout(() => {
-            this.elements.undoToast.classList.remove('show');
+        this.undoTimeout = window.setTimeout(() => {
+            this.elements.undoToast?.classList.remove('show');
             this.undoBackup = null;
         }, 5000);
     }
 
-    undoClear() {
+    undoClear(): void {
         if (!this.undoBackup) return;
 
         const { app, backup } = this.undoBackup;
@@ -804,7 +852,7 @@ class UV7AppSwitcher {
         this.addToRecent(app.id);
 
         // Hide toast
-        this.elements.undoToast.classList.remove('show');
+        this.elements.undoToast?.classList.remove('show');
         if (this.undoTimeout) {
             clearTimeout(this.undoTimeout);
             this.undoTimeout = null;
@@ -823,7 +871,7 @@ class UV7AppSwitcher {
         console.log(`✅ Restored ${app.name} save data`);
     }
 
-    confirmClearSave(app, card) {
+    confirmClearSave(app: AppDefinition, card: HTMLElement): void {
         const stateData = app.getState();
         const stateStr = stateData.state.join(' • ');
 
@@ -838,7 +886,7 @@ class UV7AppSwitcher {
         }
     }
 
-    confirmClearAll() {
+    confirmClearAll(): void {
         const appsWithSaves = this.apps.filter(app => {
             const stateData = app.getState();
             return stateData.hasSave;
@@ -880,31 +928,39 @@ class UV7AppSwitcher {
     // RENDERING - THE BOUGIE CARD LAYOUT
     // ═══════════════════════════════════════════════════════════════
 
-    render() {
+    render(): void {
         // Render recent apps
         if (this.recentApps.length > 0) {
-            this.elements.recentSection.style.display = 'block';
-            this.elements.recentGrid.innerHTML = '';
-            this.recentApps.forEach(appId => {
-                const app = this.apps.find(a => a.id === appId);
-                if (app) {
-                    const card = this.createAppCard(app, true);
-                    this.elements.recentGrid.appendChild(card);
-                }
-            });
+            if (this.elements.recentSection) {
+                this.elements.recentSection.style.display = 'block';
+            }
+            if (this.elements.recentGrid) {
+                this.elements.recentGrid.innerHTML = '';
+                this.recentApps.forEach(appId => {
+                    const app = this.apps.find(a => a.id === appId);
+                    if (app) {
+                        const card = this.createAppCard(app, true);
+                        this.elements.recentGrid!.appendChild(card);
+                    }
+                });
+            }
         } else {
-            this.elements.recentSection.style.display = 'none';
+            if (this.elements.recentSection) {
+                this.elements.recentSection.style.display = 'none';
+            }
         }
 
         // Render all apps
-        this.elements.allGrid.innerHTML = '';
-        this.apps.forEach(app => {
-            const card = this.createAppCard(app, false);
-            this.elements.allGrid.appendChild(card);
-        });
+        if (this.elements.allGrid) {
+            this.elements.allGrid.innerHTML = '';
+            this.apps.forEach(app => {
+                const card = this.createAppCard(app, false);
+                this.elements.allGrid!.appendChild(card);
+            });
+        }
     }
 
-    createAppCard(app, isRecent) {
+    createAppCard(app: AppDefinition, isRecent: boolean): HTMLElement {
         const card = document.createElement('div');
         const stateData = app.getState();
         const hasSave = stateData.hasSave;
@@ -951,7 +1007,7 @@ class UV7AppSwitcher {
         // Card click to launch
         card.addEventListener('click', (e) => {
             // Ignore if clicking close button
-            if (e.target.classList.contains('app-card-close')) return;
+            if ((e.target as HTMLElement).classList.contains('app-card-close')) return;
             this.launchApp(app);
         });
 
@@ -978,7 +1034,7 @@ class UV7AppSwitcher {
     // or have ToriGatchi-style ongoing state
     // ═══════════════════════════════════════════════════════════════
 
-    isAppAlive(app, stateData) {
+    isAppAlive(app: AppDefinition, stateData: AppStateData): boolean {
         // ToriGatchi is always "alive" if it has state
         if (app.id === 'torigatchi' && stateData.hasSave) {
             return true;
@@ -1009,7 +1065,7 @@ class UV7AppSwitcher {
     // LAUNCHING APPS - INSTANT RESUME
     // ═══════════════════════════════════════════════════════════════
 
-    launchApp(app) {
+    launchApp(app: AppDefinition): void {
         if (app.id === this.currentApp) {
             this.close();
             return;
@@ -1031,16 +1087,16 @@ class UV7AppSwitcher {
         this.navigateWithTransition(app.url);
     }
 
-    navigateWithTransition(url) {
+    navigateWithTransition(url: string): void {
         this.close();
 
         setTimeout(() => {
-            if (!document.startViewTransition) {
+            if (!(document as any).startViewTransition) {
                 window.location.href = url;
                 return;
             }
 
-            document.startViewTransition(() => {
+            (document as any).startViewTransition(() => {
                 window.location.href = url;
             });
         }, 150);
@@ -1050,18 +1106,18 @@ class UV7AppSwitcher {
     // OPEN / CLOSE
     // ═══════════════════════════════════════════════════════════════
 
-    open() {
+    open(): void {
         if (!this.elements.switcher) return;
         this.elements.switcher.classList.add('open');
         this.render();
     }
 
-    close() {
+    close(): void {
         if (!this.elements.switcher) return;
         this.elements.switcher.classList.remove('open');
     }
 
-    toggle() {
+    toggle(): void {
         if (this.isOpen()) {
             this.close();
         } else {
@@ -1069,8 +1125,15 @@ class UV7AppSwitcher {
         }
     }
 
-    isOpen() {
-        return this.elements.switcher && this.elements.switcher.classList.contains('open');
+    isOpen(): boolean {
+        return this.elements.switcher ? this.elements.switcher.classList.contains('open') : false;
+    }
+}
+
+// Extend Window interface for TypeScript
+declare global {
+    interface Window {
+        UV7AppSwitcher: typeof UV7AppSwitcher;
     }
 }
 
