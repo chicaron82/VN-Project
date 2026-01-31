@@ -1,7 +1,7 @@
 /**
  * ═══════════════════════════════════════════════════════════════
  * SHELL AUDIO CONTROLLER
- * 
+ *
  * Lightweight, asset-free SFX using Web Audio API oscillators.
  * Provides the "Hollywood OS" sound palette:
  * - Chirps
@@ -11,7 +11,22 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+type SoundEffect = 'boop' | 'click' | 'hover' | 'error' | 'glitch' | 'startup';
+type OscillatorType = 'sine' | 'triangle' | 'sawtooth' | 'square';
+
+declare global {
+    interface Window {
+        shellAudio: ShellAudio;
+        webkitAudioContext?: typeof AudioContext;
+    }
+}
+
 export class ShellAudio {
+    private ctx: AudioContext | null;
+    private masterGain: GainNode | null;
+    private initialized: boolean;
+    private muted: boolean;
+
     constructor() {
         this.ctx = null;
         this.masterGain = null;
@@ -23,12 +38,12 @@ export class ShellAudio {
      * Initialize Audio Context (must be triggered by user interaction first)
      * but we prep it here.
      */
-    init() {
+    init(): void {
         if (this.initialized) return;
 
         try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            this.ctx = new AudioContext();
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            this.ctx = new AudioContextClass();
             this.masterGain = this.ctx.createGain();
             this.masterGain.gain.value = 0.15; // Keep it subtle by default
             this.masterGain.connect(this.ctx.destination);
@@ -42,7 +57,7 @@ export class ShellAudio {
     /**
      * Resume context if suspended (browser policy)
      */
-    async resume() {
+    async resume(): Promise<void> {
         if (!this.ctx) this.init();
         if (this.ctx?.state === 'suspended') {
             await this.ctx.resume();
@@ -51,9 +66,8 @@ export class ShellAudio {
 
     /**
      * Play a synthesized sound effect
-     * @param {'boop'|'click'|'error'|'glitch'|'startup'} type 
      */
-    play(type) {
+    play(type: SoundEffect): void {
         if (this.muted || !this.initialized) return;
         this.resume(); // Try to resume just in case
 
@@ -83,8 +97,8 @@ export class ShellAudio {
     /**
      * Low-level tone generator
      */
-    playTone(freq, type, duration, vol = 0.1, delay = 0) {
-        if (!this.ctx) return;
+    private playTone(freq: number, type: OscillatorType, duration: number, vol = 0.1, delay = 0): void {
+        if (!this.ctx || !this.masterGain) return;
 
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
@@ -107,8 +121,8 @@ export class ShellAudio {
     /**
      * Complex Startup Sound (Drifting chord)
      */
-    playStartupSequence() {
-        if (!this.ctx) return;
+    private playStartupSequence(): void {
+        if (!this.ctx || !this.masterGain) return;
 
         const now = this.ctx.currentTime;
         const duration = 2.5;
@@ -141,8 +155,8 @@ export class ShellAudio {
     /**
      * White noise burst for glitches
      */
-    playGlitchNoise() {
-        if (!this.ctx) return;
+    private playGlitchNoise(): void {
+        if (!this.ctx || !this.masterGain) return;
 
         const bufferSize = this.ctx.sampleRate * 0.1; // 100ms
         const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);

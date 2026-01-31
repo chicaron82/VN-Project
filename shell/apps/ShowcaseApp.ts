@@ -8,15 +8,27 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp } from './BaseApp.js';
+import { BaseApp, StatusBarConfig, SidebarConfig } from './BaseApp.js';
+import type { UV7Shell } from '../UV7Shell.js';
+
+interface ExtendedStatusBarConfig extends StatusBarConfig {
+    showBreadcrumb?: boolean;
+    breadcrumbPath?: string[];
+}
+
+declare global {
+    interface Window {
+        showcaseAnimations?: number[];
+    }
+}
 
 export class ShowcaseApp extends BaseApp {
-    constructor(shell) {
+    constructor(shell: UV7Shell) {
         super(shell);
         this.id = 'showcase';
     }
 
-    getStatusBarConfig() {
+    getStatusBarConfig(): ExtendedStatusBarConfig {
         return {
             title: 'Showcase',
             context: 'Showcase',
@@ -25,7 +37,7 @@ export class ShowcaseApp extends BaseApp {
         };
     }
 
-    getSidebarConfig() {
+    getSidebarConfig(): SidebarConfig {
         return {
             title: '📖 SHOWCASE',
             content: `
@@ -117,9 +129,9 @@ export class ShowcaseApp extends BaseApp {
                 // Animate system stats (CHAOS METER & BOUGIE FACTOR)
                 const animateStats = () => {
                     const cpuEl = document.getElementById('sys-cpu');
-                    const cpuBar = document.getElementById('sys-cpu-bar');
+                    const cpuBar = document.getElementById('sys-cpu-bar') as HTMLElement;
                     const ramEl = document.getElementById('sys-ram');
-                    const ramBar = document.getElementById('sys-ram-bar');
+                    const ramBar = document.getElementById('sys-ram-bar') as HTMLElement;
 
                     if (cpuEl && cpuBar && ramEl && ramBar) {
                         const cpu = Math.floor(Math.random() * 30) + 5; // 5-35%
@@ -135,7 +147,7 @@ export class ShowcaseApp extends BaseApp {
                 // Initial animation
                 animateStats();
                 // Repeat every 2 seconds
-                const animInterval = setInterval(animateStats, 2000);
+                const animInterval = window.setInterval(animateStats, 2000);
 
                 // Store interval ID for cleanup
                 if (!window.showcaseAnimations) {
@@ -147,7 +159,7 @@ export class ShowcaseApp extends BaseApp {
                 document.querySelectorAll('[data-showcase-nav]').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const tab = btn.getAttribute('data-showcase-nav');
-                        const iframe = document.querySelector('.showcase-app iframe');
+                        const iframe = document.querySelector('.showcase-app iframe') as HTMLIFrameElement;
                         if (iframe && iframe.contentWindow) {
                             iframe.contentWindow.postMessage({
                                 type: 'navigate-tab',
@@ -164,7 +176,7 @@ export class ShowcaseApp extends BaseApp {
                 document.querySelectorAll('[data-action]').forEach(btn => {
                     btn.addEventListener('click', () => {
                         const action = btn.getAttribute('data-action');
-                        const iframe = document.querySelector('.showcase-app iframe');
+                        const iframe = document.querySelector('.showcase-app iframe') as HTMLIFrameElement;
 
                         // Send to iframe for handling
                         if (iframe && iframe.contentWindow) {
@@ -187,7 +199,7 @@ export class ShowcaseApp extends BaseApp {
         };
     }
 
-    async mount(container, params = {}) {
+    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load current showcase in an iframe
@@ -203,14 +215,14 @@ export class ShowcaseApp extends BaseApp {
         `;
 
         // Send initial theme to iframe when it loads
-        const iframe = container.querySelector('#showcase-iframe');
+        const iframe = container.querySelector('#showcase-iframe') as HTMLIFrameElement;
         if (iframe) {
             iframe.addEventListener('load', () => {
                 console.log('[ShowcaseApp] Iframe loaded, sending initial theme');
                 const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false';
                 const theme = localStorage.getItem('uv7-theme') || 'dark';
 
-                iframe.contentWindow.postMessage({
+                iframe.contentWindow?.postMessage({
                     type: 'theme-change',
                     auto: isAuto,
                     theme: theme
@@ -221,7 +233,7 @@ export class ShowcaseApp extends BaseApp {
         console.log('[ShowcaseApp] Mounted showcase in iframe');
     }
 
-    async unmount() {
+    async unmount(): Promise<void> {
         // Clean up animations
         if (window.showcaseAnimations) {
             window.showcaseAnimations.forEach(id => clearInterval(id));

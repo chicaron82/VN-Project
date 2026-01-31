@@ -1,10 +1,10 @@
 /**
  * ═══════════════════════════════════════════════════════════════
  * UV7 SHELL - SINGLE-PAGE APPLICATION CONTROLLER
- * 
+ *
  * The master controller for the UV7 OS single-index architecture.
  * Manages app lifecycle, routing, and unified status bar.
- * 
+ *
  * CREW CREDITS:
  * - Tori (Architecture design: Shell + Apps pattern)
  * - Belle (Gesture Arbiter concept)
@@ -17,52 +17,88 @@ import { GestureRouter } from './GestureRouter.js';
 import { Router } from './Router.js';
 import { shellAudio } from './audio/ShellAudio.js';
 import { UV7System } from './UV7System.js';
-import { GrabHandleController } from './GrabHandleController';
+import { GrabHandleController } from './GrabHandleController.js';
 import { ToriService } from './services/ToriService.js';
+import type { BaseApp } from './apps/BaseApp.js';
+
+interface AppLoader {
+    (): Promise<{ default: new (shell: UV7Shell) => BaseApp }>;
+}
+
+interface ShellElements {
+    viewport: HTMLElement | null;
+    statusBar: HTMLElement | null;
+    statusContext: HTMLElement | null;
+    shade: HTMLElement | null;
+    sidebar: HTMLElement | null;
+    backdrop: HTMLElement | null;
+    appSwitcher: HTMLElement | null;
+    appCardsGrid: HTMLElement | null;
+}
+
+interface AppConfig {
+    title: string;
+    icon: string;
+    description: string;
+}
+
+interface RecentApp extends AppConfig {
+    id: string;
+    timestamp: Date;
+}
+
+interface StatusBarConfig {
+    title?: string;
+    context?: string;
+    showBreadcrumb?: boolean;
+    breadcrumbPath?: string[];
+}
+
+interface SidebarConfig {
+    title: string;
+    content: string;
+    init?: () => void;
+}
+
+declare global {
+    interface Window {
+        uv7Shell: UV7Shell | null;
+    }
+}
 
 export class UV7Shell {
+    currentApp: BaseApp | null;
+    private appRegistry: Map<string, AppLoader>;
+    gestureRouter: GestureRouter;
+    router: Router;
+    system: UV7System | null;
+    private grabHandle: GrabHandleController | null;
+    private toriService: ToriService | null;
+    private elements: ShellElements;
+    private initialized: boolean;
+    private easterEggTaps: number;
+    private easterEggTimeout: number | null;
+    private recentApps: RecentApp[];
+
     constructor() {
-        /** @type {import('./apps/BaseApp.js').BaseApp|null} */
         this.currentApp = null;
-
-        /** @type {Map<string, typeof import('./apps/BaseApp.js').BaseApp>} */
         this.appRegistry = new Map();
-
-        /** @type {GestureRouter} */
         this.gestureRouter = new GestureRouter(this);
-
-        /** @type {Router} */
         this.router = new Router(this);
-
-        /** @type {UV7System} */
         this.system = null;
-
-        /** @type {GrabHandleController} */
         this.grabHandle = null;
-
-        /** @type {ToriService} */
         this.toriService = null;
-
-        /** @type {Object} */
-        this.elements = {};
-
-        /** @type {boolean} */
+        this.elements = {} as ShellElements;
         this.initialized = false;
-
-        /** @type {number} Easter egg tap counter */
         this.easterEggTaps = 0;
-
-        /** @type {number|null} Easter egg timeout ID */
         this.easterEggTimeout = null;
-
-        /** @type {Array<Object>} Recent apps list for switcher */
         this.recentApps = [];
     }
 
     /**
      * Initialize the shell
      */
-    async init() {
+    async init(): Promise<void> {
         if (this.initialized) return;
 
         console.log('[UV7Shell] Initializing...');
@@ -83,7 +119,7 @@ export class UV7Shell {
 
         // Listen for controller toggle events
         window.addEventListener('uv7:sidebar-toggle', () => {
-            this.system.toggleSidebar();
+            this.system!.toggleSidebar();
         });
 
         // Initialize Tori Service (Background Ghost Engine)
@@ -125,15 +161,14 @@ export class UV7Shell {
      * Initialize Settings Icon (Status Bar)
      * Wires the cog wheel to open the Notification Shade
      */
-    initSettingsIcon() {
-
+    private initSettingsIcon(): void {
         const settingsIcon = document.getElementById('uv7-settings');
         if (settingsIcon) {
             // Make it clickable
             settingsIcon.style.cursor = 'pointer';
 
             settingsIcon.addEventListener('click', () => {
-                this.system.openShade();
+                this.system!.openShade();
             });
 
             // Console log to confirm wiring
@@ -145,7 +180,7 @@ export class UV7Shell {
      * Initialize Tori-gatchi Status Bridge
      * Monitors localStorage for Tori's state and updates status bar
      */
-    initToriBridge() {
+    private initToriBridge(): void {
         console.log('[UV7Shell] initToriBridge() called');
 
         const statusRight = document.querySelector('.status-right');
@@ -196,14 +231,14 @@ export class UV7Shell {
     /**
      * Update Tori status display
      */
-    updateToriStatus() {
+    private updateToriStatus(): void {
         const toriStatus = document.getElementById('tori-status');
         if (!toriStatus) return;
 
         try {
             const stateStr = localStorage.getItem('toriGatchiState');
             if (!stateStr) {
-                toriStatus.style.display = 'none';
+                (toriStatus as HTMLElement).style.display = 'none';
                 return;
             }
 
@@ -231,19 +266,19 @@ export class UV7Shell {
             if (love < 30) { text = `${mood} (Lonely)`; }
 
             toriStatus.innerHTML = `${icon} ${text}`;
-            toriStatus.style.color = color;
-            toriStatus.style.display = 'flex';
+            (toriStatus as HTMLElement).style.color = color;
+            (toriStatus as HTMLElement).style.display = 'flex';
 
         } catch (e) {
             console.warn('[UV7Shell] Failed to parse Tori state', e);
-            toriStatus.style.display = 'none';
+            (toriStatus as HTMLElement).style.display = 'none';
         }
     }
 
     /**
      * Initialize global audio feedback
      */
-    initGlobalAudio() {
+    private initGlobalAudio(): void {
         document.addEventListener('click', (e) => {
             // Resume context on first interaction
             if (shellAudio.ctx?.state === 'suspended') {
@@ -251,7 +286,7 @@ export class UV7Shell {
             }
 
             // Play sound for interactive elements
-            const target = e.target.closest('button, a, .clickable, .app-card, .quick-action');
+            const target = (e.target as HTMLElement).closest('button, a, .clickable, .app-card, .quick-action');
             if (target) {
                 shellAudio.play('click');
             }
@@ -264,7 +299,7 @@ export class UV7Shell {
     /**
      * Cache frequently used DOM elements
      */
-    cacheElements() {
+    private cacheElements(): void {
         this.elements = {
             viewport: document.getElementById('app-viewport'),
             statusBar: document.getElementById('uv7-status-bar'),
@@ -284,7 +319,7 @@ export class UV7Shell {
     /**
      * Register all available apps
      */
-    async registerApps() {
+    private async registerApps(): Promise<void> {
         // Apps are registered lazily - we just define their IDs here
         // Actual module loading happens in loadApp()
         this.appRegistry.set('landing', () => import('./apps/LandingApp.js'));
@@ -298,10 +333,10 @@ export class UV7Shell {
 
     /**
      * Load and mount an app
-     * @param {string} appId - The app identifier
-     * @param {Object} params - Route parameters
+     * @param appId - The app identifier
+     * @param params - Route parameters
      */
-    async loadApp(appId, params = {}) {
+    async loadApp(appId: string, params: Record<string, any> = {}): Promise<void> {
         console.log(`[UV7Shell] Loading app: ${appId}`, params);
 
         // Check if app exists
@@ -329,7 +364,7 @@ export class UV7Shell {
             }
 
             // Dynamic import the app module
-            const appLoader = this.appRegistry.get(appId);
+            const appLoader = this.appRegistry.get(appId)!;
             const AppModule = await appLoader();
             const AppClass = AppModule.default;
 
@@ -343,7 +378,7 @@ export class UV7Shell {
             }
 
             // Mount the app
-            await app.mount(this.elements.viewport, params);
+            await app.mount(this.elements.viewport!, params);
 
             // Register gesture handlers
             if (app.gestureHandlers) {
@@ -363,7 +398,7 @@ export class UV7Shell {
 
         } catch (error) {
             console.error(`[UV7Shell] Failed to load app ${appId}:`, error);
-            this.showErrorState(appId, error);
+            this.showErrorState(appId, error as Error);
         } finally {
             this.elements.viewport?.classList.remove('app-transitioning');
 
@@ -376,9 +411,9 @@ export class UV7Shell {
 
     /**
      * Update the status bar based on app config
-     * @param {Object} config - Status bar configuration
+     * @param config - Status bar configuration
      */
-    updateStatusBar(config = {}) {
+    private updateStatusBar(config: StatusBarConfig = {}): void {
         const { title, context, showBreadcrumb, breadcrumbPath } = config;
 
         // Update context text
@@ -402,9 +437,9 @@ export class UV7Shell {
 
     /**
      * Update the sidebar based on app config
-     * @param {Object|null} config - Sidebar configuration {title, content, init}
+     * @param config - Sidebar configuration {title, content, init}
      */
-    updateSidebar(config = null) {
+    private updateSidebar(config: SidebarConfig | null = null): void {
         const sidebar = document.getElementById('uv7-sidebar');
         if (!sidebar) return;
 
@@ -443,7 +478,7 @@ export class UV7Shell {
      * Attach event listeners to quick action buttons
      * Called after sidebar content is injected/restored
      */
-    attachQuickActionListeners() {
+    private attachQuickActionListeners(): void {
         document.querySelectorAll('.quick-action[data-action]').forEach(btn => {
             // Remove old listener if exists (prevent duplicates)
             btn.replaceWith(btn.cloneNode(true));
@@ -452,7 +487,7 @@ export class UV7Shell {
         // Re-query after cloning (to get fresh references)
         document.querySelectorAll('.quick-action[data-action]').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const action = e.currentTarget.dataset.action;
+                const action = (e.currentTarget as HTMLElement).dataset.action;
 
                 // Close shade/sidebar
                 document.getElementById('uv7-shade')?.classList.remove('open');
@@ -487,7 +522,7 @@ export class UV7Shell {
     /**
      * Restore the default shell sidebar
      */
-    restoreDefaultSidebar() {
+    private restoreDefaultSidebar(): void {
         const sidebar = document.getElementById('uv7-sidebar');
         if (!sidebar) return;
 
@@ -539,14 +574,14 @@ export class UV7Shell {
     /**
      * Initialize UV7 Easter Egg (7-tap on carrier branding)
      */
-    initEasterEgg() {
+    private initEasterEgg(): void {
         // Find all carrier branding elements (shade + sidebar)
         const brandingElements = document.querySelectorAll('.uv7-carrier-branding');
 
         brandingElements.forEach(element => {
             // Remove old listener if exists (prevent duplicates)
-            const newElement = element.cloneNode(true);
-            element.parentNode.replaceChild(newElement, element);
+            const newElement = element.cloneNode(true) as HTMLElement;
+            element.parentNode!.replaceChild(newElement, element);
 
             // Style the new element
             newElement.style.cursor = 'pointer';
@@ -568,8 +603,8 @@ export class UV7Shell {
                 }
 
                 // Reset after 2 seconds of inactivity
-                clearTimeout(this.easterEggTimeout);
-                this.easterEggTimeout = setTimeout(() => {
+                clearTimeout(this.easterEggTimeout!);
+                this.easterEggTimeout = window.setTimeout(() => {
                     this.easterEggTaps = 0;
                 }, 2000);
             });
@@ -579,7 +614,7 @@ export class UV7Shell {
     /**
      * Show toast notification
      */
-    showToast(message) {
+    showToast(message: string): void {
         const toast = document.createElement('div');
         toast.textContent = message;
         toast.style.cssText = `
@@ -608,7 +643,7 @@ export class UV7Shell {
     /**
      * Show UV7 Easter Egg modal
      */
-    showEasterEgg() {
+    private showEasterEgg(): void {
         const modal = document.createElement('div');
         modal.style.cssText = `
             position: fixed;
@@ -666,7 +701,7 @@ export class UV7Shell {
 
         // Close on click
         modal.addEventListener('click', (e) => {
-            if (e.target === modal || e.target.tagName === 'BUTTON') {
+            if (e.target === modal || (e.target as HTMLElement).tagName === 'BUTTON') {
                 modal.style.animation = 'fadeOut 0.3s ease-out';
                 setTimeout(() => modal.remove(), 300);
             }
@@ -696,10 +731,10 @@ export class UV7Shell {
 
     /**
      * Show error state in viewport
-     * @param {string} appId 
-     * @param {Error} error 
+     * @param appId
+     * @param error
      */
-    showErrorState(appId, error) {
+    private showErrorState(appId: string, error: Error): void {
         if (this.elements.viewport) {
             this.elements.viewport.innerHTML = `
                 <div class="shell-error">
@@ -714,10 +749,10 @@ export class UV7Shell {
 
     /**
      * Navigate to an app (convenience method)
-     * @param {string} appId 
-     * @param {Object} params 
+     * @param appId
+     * @param params
      */
-    navigateTo(appId, params = {}) {
+    navigateTo(appId: string, params: Record<string, any> = {}): void {
         this.router.navigate(appId, params);
     }
 
@@ -725,27 +760,27 @@ export class UV7Shell {
     // SHADE & SIDEBAR CONTROLS (Shell owns these)
     // ═══════════════════════════════════════════════════════════════
 
-    openShade() {
+    openShade(): void {
         this.elements.shade?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
-    closeShade() {
+    closeShade(): void {
         this.elements.shade?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
 
-    toggleSidebar() {
+    toggleSidebar(): void {
         this.elements.sidebar?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
     }
 
-    openSidebar() {
+    openSidebar(): void {
         this.elements.sidebar?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
-    closeSidebar() {
+    closeSidebar(): void {
         this.elements.sidebar?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
@@ -757,13 +792,13 @@ export class UV7Shell {
     /**
      * Initialize App Switcher events
      */
-    initAppSwitcher() {
+    private initAppSwitcher(): void {
         // Status Logo toggles switcher (User request)
         const logoBtn = document.querySelector('.status-logo');
         if (logoBtn) {
             // Remove old listeners by cloning
             const newBtn = logoBtn.cloneNode(true);
-            logoBtn.parentNode.replaceChild(newBtn, logoBtn);
+            logoBtn.parentNode!.replaceChild(newBtn, logoBtn);
 
             newBtn.addEventListener('click', () => {
                 this.toggleAppSwitcher();
@@ -795,9 +830,9 @@ export class UV7Shell {
 
     /**
      * Add app to recent list
-     * @param {string} appId 
+     * @param appId
      */
-    addToRecentApps(appId) {
+    private addToRecentApps(appId: string): void {
         // Remove if exists (to move to top)
         this.recentApps = this.recentApps.filter(app => app.id !== appId);
 
@@ -817,10 +852,10 @@ export class UV7Shell {
 
     /**
      * Get static config for app (placeholder)
-     * @param {string} appId 
+     * @param appId
      */
-    getAppConfig(appId) {
-        const configs = {
+    private getAppConfig(appId: string): AppConfig {
+        const configs: Record<string, AppConfig> = {
             'landing': { title: 'Home', icon: '🏠', description: 'UV7 Landing Page' },
             'showcase': { title: 'Showcase', icon: '📖', description: 'Design System & Docs' },
             'v1': { title: 'V1 Game', icon: '🎮', description: 'The Original Chaos' },
@@ -833,7 +868,7 @@ export class UV7Shell {
     /**
      * Toggle App Switcher visibility
      */
-    toggleAppSwitcher() {
+    toggleAppSwitcher(): void {
         if (this.elements.appSwitcher?.classList.contains('open')) {
             this.closeAppSwitcher();
         } else {
@@ -841,13 +876,13 @@ export class UV7Shell {
         }
     }
 
-    openAppSwitcher() {
+    openAppSwitcher(): void {
         this.renderAppSwitcher();
         this.elements.appSwitcher?.classList.add('open');
         this.elements.backdrop?.classList.add('visible'); // Optional: reuse backdrop or switcher has its own bg
     }
 
-    closeAppSwitcher() {
+    closeAppSwitcher(): void {
         this.elements.appSwitcher?.classList.remove('open');
         // Don't hide backdrop if sidebar/shade is open
         if (!this.elements.sidebar?.classList.contains('open') &&
@@ -859,7 +894,7 @@ export class UV7Shell {
     /**
      * Render the App Cards
      */
-    renderAppSwitcher() {
+    renderAppSwitcher(): void {
         // Safe get grid
         let grid = this.elements.appCardsGrid;
         if (!grid) {
@@ -911,14 +946,14 @@ export class UV7Shell {
 
     /**
      * Remove from recent list
-     * @param {string} appId 
+     * @param appId
      */
-    removeFromRecent(appId) {
+    removeFromRecent(appId: string): void {
         this.recentApps = this.recentApps.filter(app => app.id !== appId);
         this.renderAppSwitcher();
     }
 
-    formatTime(date) {
+    private formatTime(date: Date): string {
         return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 }

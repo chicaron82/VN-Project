@@ -7,22 +7,23 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp } from './BaseApp.js';
+import { BaseApp, StatusBarConfig } from './BaseApp.js';
+import type { UV7Shell } from '../UV7Shell.js';
 
 export class V1App extends BaseApp {
-    constructor(shell) {
+    constructor(shell: UV7Shell) {
         super(shell);
         this.id = 'v1';
     }
 
-    getStatusBarConfig() {
+    getStatusBarConfig(): StatusBarConfig {
         return {
             title: 'Version 848 (V1)',
             context: 'V1 Game'
         };
     }
 
-    async mount(container, params = {}) {
+    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load V1 game in an iframe for isolation

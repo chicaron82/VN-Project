@@ -6,22 +6,23 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp } from './BaseApp.js';
+import { BaseApp, StatusBarConfig } from './BaseApp.js';
+import type { UV7Shell } from '../UV7Shell.js';
 
 export class TorigatchiApp extends BaseApp {
-    constructor(shell) {
+    constructor(shell: UV7Shell) {
         super(shell);
         this.id = 'torigatchi';
     }
 
-    getStatusBarConfig() {
+    getStatusBarConfig(): StatusBarConfig {
         return {
             title: 'Tori-gatchi',
             context: 'Tori-gatchi 💖'
         };
     }
 
-    async mount(container, params = {}) {
+    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load Tori-gatchi in an iframe

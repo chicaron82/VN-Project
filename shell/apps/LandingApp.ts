@@ -1,17 +1,35 @@
 /**
  * ═══════════════════════════════════════════════════════════════
  * LANDING APP - UV7 PROJECT HUB
- * 
+ *
  * The landing page converted to a shell-compatible app module.
  * Extracted from the original index.html.
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp } from './BaseApp.js';
+import { BaseApp, StatusBarConfig } from './BaseApp.js';
+import type { UV7Shell } from '../UV7Shell.js';
 import { shellAudio } from '../audio/ShellAudio.js';
 
+interface CrewMember {
+    name: string;
+    role: string;
+    poweredBy: string;
+    url: string;
+    color: string;
+    icon: string;
+    image: string;
+    quote: string;
+}
+
+interface Stats {
+    phasesComplete?: number;
+    daysInDev?: number;
+    testsPass?: number;
+}
+
 // Crew reactions data for randomization
-const CREW_REACTIONS = [
+const CREW_REACTIONS: CrewMember[] = [
     {
         name: "DiZee",
         role: "Director & Lead Architect",
@@ -65,20 +83,24 @@ const CREW_REACTIONS = [
 ];
 
 export class LandingApp extends BaseApp {
-    constructor(shell) {
+    private easterEggTaps: number;
+    private easterEggTimeout?: number;
+    private typewriterTimeout?: number;
+
+    constructor(shell: UV7Shell) {
         super(shell);
         this.id = 'landing';
         this.easterEggTaps = 0; // Track taps on UV7 logo
     }
 
-    getStatusBarConfig() {
+    getStatusBarConfig(): StatusBarConfig {
         return {
             title: 'UV7 Project Hub',
             context: 'Landing'
         };
     }
 
-    async mount(container, params = {}) {
+    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Check if we've already booted this session
@@ -100,7 +122,7 @@ export class LandingApp extends BaseApp {
      * mountMainContent
      * Renders the actual Landing Page UI (post-boot)
      */
-    mountMainContent(container) {
+    mountMainContent(container: HTMLElement): void {
         // Render content
         container.innerHTML = this.renderTemplate();
 
@@ -115,14 +137,14 @@ export class LandingApp extends BaseApp {
         this.fetchStats();
     }
 
-    async fetchStats() {
+    async fetchStats(): Promise<void> {
         try {
             // Note: Use relative path assuming we serve from root
             // Showcase stats are often in showcase/stats.json or root stats.json depending on build
             const response = await fetch('/stats.json').catch(() => fetch('showcase/stats.json'));
             if (!response || !response.ok) return;
 
-            const stats = await response.json();
+            const stats: Stats = await response.json();
 
             // Map stats to UI
             // V1: 50 days (Bootstrap Paradox) - Static
@@ -138,14 +160,14 @@ export class LandingApp extends BaseApp {
         }
     }
 
-    updateStat(appId, index, value) {
+    updateStat(appId: string, index: number, value?: number): void {
         if (value === undefined) return;
         const selector = `.app-card[data-app="${appId}"] .stat-number`;
-        const els = this.container.querySelectorAll(selector);
+        const els = this.container!.querySelectorAll(selector);
         if (els[index]) {
-            els[index].dataset.target = value;
+            (els[index] as HTMLElement).dataset.target = String(value);
             // If already animated, update text directly
-            if (els[index].textContent !== '0') els[index].textContent = value;
+            if (els[index].textContent !== '0') els[index].textContent = String(value);
         }
     }
 
@@ -153,7 +175,7 @@ export class LandingApp extends BaseApp {
      * runBootSequence
      * The "Wild Ass Information" BIOS startup
      */
-    async runBootSequence(container) {
+    async runBootSequence(container: HTMLElement): Promise<void> {
         // Init audio (user interaction might be required by browser, but we try)
         // Note: Chrome blocks audio until click. We might need a "Press Key to Start" if we want guaranteed sound.
         // For now, we attempt silent init or hope for previous interaction.
@@ -194,9 +216,9 @@ export class LandingApp extends BaseApp {
             </style>
         `;
 
-        const log = container.querySelector('#boot-log');
-        const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-        const addLog = (text, type = '') => {
+        const log = container.querySelector('#boot-log')!;
+        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+        const addLog = (text: string, type = '') => {
             const div = document.createElement('div');
             div.className = `log-line ${type}`;
             div.textContent = `> ${text}`;
@@ -240,7 +262,7 @@ export class LandingApp extends BaseApp {
         addLog('EXECUTING STARTUP.BAT', 'warn');
         if (window.shellAudio) window.shellAudio.play('glitch');
 
-        const bootScreen = container.querySelector('.boot-screen');
+        const bootScreen = container.querySelector('.boot-screen') as HTMLElement;
         bootScreen.style.filter = 'contrast(200%) brightness(200%)';
         bootScreen.style.transform = 'skewX(10deg)';
         await sleep(100);
@@ -256,7 +278,7 @@ export class LandingApp extends BaseApp {
         this.mountMainContent(container);
     }
 
-    renderTemplate() {
+    renderTemplate(): string {
         return `
             <div class="landing-app">
                 <div class="bg-gradient"></div>
@@ -265,22 +287,22 @@ export class LandingApp extends BaseApp {
             `<div class="particle" style="left: ${left}%; animation-delay: ${i * 0.5}s;"></div>`
         ).join('')}
                 </div>
-                
+
                 <div class="container">
                     <!-- Hero Section -->
                     <div class="hero">
                         <div class="hero-watermark" aria-hidden="true">
                             <img src="assets/UnitedVoices7.png" alt="" />
                         </div>
-                        
+
                         <div class="brand-hero-container">
                             <div class="brand-glow"></div>
                             <img src="assets/UnitedVoices7.png" alt="United Voices 7" class="main-brand-logo">
                         </div>
-                        
+
                         <p class="brand-tagline">Where chaos meets harmony. Choose your experience.</p>
                     </div>
-                    
+
                     <!-- Main App Cards -->
                     <div class="card-grid">
                         <a href="#/v1" class="card app-card" data-app="v1">
@@ -289,14 +311,14 @@ export class LandingApp extends BaseApp {
                             <h2>Play Original</h2>
                             <p>A <span class="stat-number" data-target="50">0</span>-day speedrun from concept to complete game. Version 848.</p>
                         </a>
-                        
+
                         <a href="#/showcase" class="card app-card" data-app="showcase">
                             <div class="card-icon">📖</div>
                             <span class="badge badge-showcase">Documentation</span>
                             <h2>View Showcase</h2>
                             <p>The journey from chaos to order. <span class="stat-number" data-target="86">0</span> phases. <span class="stat-number" data-target="11">0</span> days. AI collaboration.</p>
                         </a>
-                        
+
                         <a href="#/v2" class="card app-card" data-app="v2">
                             <div class="card-icon">⚡</div>
                             <span class="badge badge-v2">V2 Engine</span>
@@ -304,7 +326,7 @@ export class LandingApp extends BaseApp {
                             <p>TypeScript rebuild. EventBus architecture. <span class="stat-number" data-target="590">0</span> tests passing. Zero errors.</p>
                         </a>
                     </div>
-                    
+
                     <!-- Context Section -->
                     <div class="intro-context">
                         <h2>United Voices 7 presents: Version 848</h2>
@@ -312,7 +334,7 @@ export class LandingApp extends BaseApp {
                         <strong>Version 848</strong> is the visual novel itself.</p>
                         <p class="sub">This hub documents the journey from the chaotic <strong>V1 Speedrun</strong> to the refined architectural dish that is <strong>V2</strong>.</p>
                     </div>
-                    
+
                     <!-- Why Rebuild Section -->
                     <div class="why-rebuild-section">
                         <h3>Why Rebuild from Scratch?</h3>
@@ -349,14 +371,14 @@ export class LandingApp extends BaseApp {
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Crew Reactions -->
                     <div class="crew-reactions-section">
                         <h3>Internal Memos // UV7 Crew</h3>
                         <div class="card-grid" id="crew-reactions-grid"></div>
                     </div>
                 </div>
-                
+
                 <!-- Footer -->
                 <div class="footer">
                     <div class="footer-brand">
@@ -376,16 +398,16 @@ export class LandingApp extends BaseApp {
         `;
     }
 
-    initCrewReactions() {
+    initCrewReactions(): void {
         // Shuffle crew reactions
         const shuffled = [...CREW_REACTIONS].sort(() => Math.random() - 0.5);
         const selected = shuffled.slice(0, 3);
 
-        const container = this.container.querySelector('#crew-reactions-grid');
+        const container = this.container!.querySelector('#crew-reactions-grid');
         if (!container) return;
 
         container.innerHTML = selected.map(member => `
-            <a href="${member.url}" target="_blank" class="card crew-card" 
+            <a href="${member.url}" target="_blank" class="card crew-card"
                style="border-color: ${member.color}33;">
                 <div class="card-header">
                     <div class="avatar" style="background: ${member.color};">
@@ -406,13 +428,13 @@ export class LandingApp extends BaseApp {
         `).join('');
     }
 
-    initAnimatedStats() {
-        const statElements = this.container.querySelectorAll('.stat-number');
+    initAnimatedStats(): void {
+        const statElements = this.container!.querySelectorAll('.stat-number');
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    this.animateStat(entry.target);
+                    this.animateStat(entry.target as HTMLElement);
                     observer.unobserve(entry.target);
                 }
             });
@@ -421,17 +443,17 @@ export class LandingApp extends BaseApp {
         statElements.forEach(el => observer.observe(el));
     }
 
-    animateStat(element) {
-        const target = parseInt(element.dataset.target, 10);
+    animateStat(element: HTMLElement): void {
+        const target = parseInt(element.dataset.target || '0', 10);
         const duration = 1500;
         const start = performance.now();
 
-        const animate = (now) => {
+        const animate = (now: number) => {
             const elapsed = now - start;
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
 
-            element.textContent = Math.floor(target * eased);
+            element.textContent = String(Math.floor(target * eased));
 
             if (progress < 1) {
                 requestAnimationFrame(animate);
@@ -441,8 +463,8 @@ export class LandingApp extends BaseApp {
         requestAnimationFrame(animate);
     }
 
-    initTypewriterEffect() {
-        const el = this.container.querySelector('#buildLine');
+    initTypewriterEffect(): void {
+        const el = this.container!.querySelector('#buildLine') as HTMLElement;
         if (!el) return;
 
         const text = el.dataset.text || '';
@@ -451,32 +473,32 @@ export class LandingApp extends BaseApp {
         const type = () => {
             el.textContent = text.slice(0, i++);
             if (i <= text.length) {
-                this.typewriterTimeout = setTimeout(type, 18);
+                this.typewriterTimeout = window.setTimeout(type, 18);
             }
         };
 
         type();
     }
 
-    attachCardNavigation() {
+    attachCardNavigation(): void {
         // Cards use hash links, which Router will handle
         // But we can add click effects here
-        const cards = this.container.querySelectorAll('.app-card');
+        const cards = this.container!.querySelectorAll('.app-card');
 
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 // Add visual feedback
-                card.style.transform = 'scale(0.98)';
+                (card as HTMLElement).style.transform = 'scale(0.98)';
                 setTimeout(() => {
-                    card.style.transform = '';
+                    (card as HTMLElement).style.transform = '';
                 }, 100);
             });
         });
     }
 
-    initEasterEgg() {
+    initEasterEgg(): void {
         // UV7 Easter Egg - tap the footer brand 7 times (like Android build number)
-        const footerBrand = this.container.querySelector('.footer-brand');
+        const footerBrand = this.container!.querySelector('.footer-brand') as HTMLElement;
         if (!footerBrand) return;
 
         footerBrand.style.cursor = 'pointer';
@@ -498,13 +520,13 @@ export class LandingApp extends BaseApp {
 
             // Reset after 2 seconds of inactivity
             clearTimeout(this.easterEggTimeout);
-            this.easterEggTimeout = setTimeout(() => {
+            this.easterEggTimeout = window.setTimeout(() => {
                 this.easterEggTaps = 0;
             }, 2000);
         });
     }
 
-    showToast(message) {
+    showToast(message: string): void {
         // Simple toast notification
         const toast = document.createElement('div');
         toast.textContent = message;
@@ -531,7 +553,7 @@ export class LandingApp extends BaseApp {
         }, 2000);
     }
 
-    showEasterEgg() {
+    showEasterEgg(): void {
         // Show UV7 easter egg modal
         const modal = document.createElement('div');
         modal.style.cssText = `
@@ -590,7 +612,7 @@ export class LandingApp extends BaseApp {
 
         // Close on click
         modal.addEventListener('click', (e) => {
-            if (e.target === modal || e.target.tagName === 'BUTTON') {
+            if (e.target === modal || (e.target as HTMLElement).tagName === 'BUTTON') {
                 modal.style.animation = 'fadeOut 0.3s ease-out';
                 setTimeout(() => modal.remove(), 300);
             }

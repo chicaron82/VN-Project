@@ -1,10 +1,10 @@
 /**
  * ═══════════════════════════════════════════════════════════════
  * UV7 ROUTER - HASH-BASED NAVIGATION
- * 
+ *
  * Handles URL routing for the single-page application.
  * Uses hash-based routing (#/app/params) for simplicity.
- * 
+ *
  * Routes:
  *   #/           → landing
  *   #/landing    → landing
@@ -17,11 +17,22 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import type { UV7Shell } from './UV7Shell.js';
+
+interface RouteMap {
+    [key: string]: string;
+}
+
+interface ParsedRoute {
+    appId: string;
+    params: Record<string, string>;
+}
+
 export class Router {
-    /**
-     * @param {import('./UV7Shell.js').UV7Shell} shell 
-     */
-    constructor(shell) {
+    private shell: UV7Shell;
+    private routes: RouteMap;
+
+    constructor(shell: UV7Shell) {
         this.shell = shell;
 
         // Default app mappings
@@ -38,7 +49,7 @@ export class Router {
     /**
      * Initialize the router
      */
-    init() {
+    init(): void {
         // Listen for hash changes
         window.addEventListener('hashchange', () => this.handleRoute());
 
@@ -51,7 +62,7 @@ export class Router {
     /**
      * Parse the current hash and load the appropriate app
      */
-    handleRoute() {
+    handleRoute(): void {
         const { appId, params } = this.parseHash();
 
         console.log(`[Router] Navigating to: ${appId}`, params);
@@ -61,9 +72,8 @@ export class Router {
 
     /**
      * Parse the URL hash into app ID and parameters
-     * @returns {{ appId: string, params: Object }}
      */
-    parseHash() {
+    parseHash(): ParsedRoute {
         // Remove leading '#/' or '#'
         let hash = location.hash.replace(/^#\/?/, '');
 
@@ -75,7 +85,7 @@ export class Router {
         const appId = this.routes[appKey] || 'landing';
 
         // Remaining segments are key/value pairs
-        const params = {};
+        const params: Record<string, string> = {};
         for (let i = 1; i < segments.length; i += 2) {
             const key = segments[i];
             const value = segments[i + 1];
@@ -89,10 +99,10 @@ export class Router {
 
     /**
      * Navigate to an app
-     * @param {string} appId - The app to navigate to
-     * @param {Object} params - Optional parameters
+     * @param appId - The app to navigate to
+     * @param params - Optional parameters
      */
-    navigate(appId, params = {}) {
+    navigate(appId: string, params: Record<string, string> = {}): void {
         // Build hash
         let hash = `#/${appId}`;
 
@@ -108,23 +118,21 @@ export class Router {
     /**
      * Navigate back in history
      */
-    back() {
+    back(): void {
         history.back();
     }
 
     /**
      * Get the current app ID
-     * @returns {string}
      */
-    getCurrentAppId() {
+    getCurrentAppId(): string {
         return this.parseHash().appId;
     }
 
     /**
      * Get the current route params
-     * @returns {Object}
      */
-    getCurrentParams() {
+    getCurrentParams(): Record<string, string> {
         return this.parseHash().params;
     }
 }

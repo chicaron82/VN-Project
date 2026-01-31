@@ -7,8 +7,34 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import type { UV7Shell } from '../UV7Shell.js';
+
+interface ToriState {
+    love: number;
+    hunger: number;
+    lastLoveDecay: number;
+    lastHungerDecay: number;
+    mood?: string;
+}
+
+interface ToriSettings {
+    notifyHunger: boolean;
+    notifyLonely: boolean;
+    notifyCritical: boolean;
+}
+
 export class ToriService {
-    constructor(shell) {
+    private shell: UV7Shell;
+    private readonly STATE_KEY: string;
+    private readonly LOVE_DECAY_INTERVAL_MINUTES: number;
+    private readonly LOVE_DECAY_AMOUNT: number;
+    private readonly HUNGER_DECAY_INTERVAL_MINUTES: number;
+    private readonly HUNGER_DECAY_AMOUNT: number;
+    private settings: ToriSettings;
+    private lastNotificationTime: number;
+    private readonly NOTIFICATION_COOLDOWN: number;
+
+    constructor(shell: UV7Shell) {
         this.shell = shell;
 
         // Simulation Constants (Must match main.js)
@@ -33,16 +59,17 @@ export class ToriService {
     /**
      * Start the service
      */
-    init() {
+    init(): void {
         console.log('[ToriService] Initializing ghost engine...');
 
         // Load settings
         this.loadSettings();
 
         // Listen for settings changes
-        window.addEventListener('uv7:tori-settings-change', (e) => {
-            console.log('[ToriService] Settings updated:', e.detail);
-            this.settings = e.detail;
+        window.addEventListener('uv7:tori-settings-change', (e: Event) => {
+            const customEvent = e as CustomEvent<ToriSettings>;
+            console.log('[ToriService] Settings updated:', customEvent.detail);
+            this.settings = customEvent.detail;
         });
 
         // Run immediately
@@ -54,7 +81,7 @@ export class ToriService {
         console.log('[ToriService] Background service running');
     }
 
-    loadSettings() {
+    private loadSettings(): void {
         try {
             const stored = localStorage.getItem('uv7-tori-settings');
             if (stored) this.settings = JSON.parse(stored);
@@ -66,21 +93,21 @@ export class ToriService {
     /**
      * Main simulation tick
      */
-    tick() {
+    private tick(): void {
         try {
             const stateStr = localStorage.getItem(this.STATE_KEY);
             if (!stateStr) return; // Not started yet
 
-            const state = JSON.parse(stateStr);
+            const state: ToriState = JSON.parse(stateStr);
             if (!state) return;
 
             // 1. Calculate Decay (Read-Only Simulation)
             // We don't WRITE state here to avoid race conditions with the open app.
             // We just detect if we need to notify.
-            // Actually, we SHOULD write state if the app isn't open? 
-            // For now, let's just checking current state. If the app is closed, 
+            // Actually, we SHOULD write state if the app isn't open?
+            // For now, let's just checking current state. If the app is closed,
             // main.js isn't running, so decay isn't happening.
-            // 
+            //
             // CRITICAL: The Shell needs to actually PERFORM decay if the app is closed!
             // But we must be careful not to conflict if the app IS open.
 
@@ -88,8 +115,8 @@ export class ToriService {
             // If IFrame exists, let it handle decay.
             // If not, we handle it?
 
-            // Actually, let's keep it simple: Just READ current state. 
-            // If main.js runs via IFrame, it updates storage. 
+            // Actually, let's keep it simple: Just READ current state.
+            // If main.js runs via IFrame, it updates storage.
             // If the user hasn't opened it in days, the state in storage is OLD.
             // So we need to compute what the state WOULD be.
 
@@ -100,7 +127,7 @@ export class ToriService {
             this.checkNotifications(projected);
 
             // Note: We deliberately do NOT save the projected state back to localStorage.
-            // We let the game logic (main.js) handle the official "catch up" calculation 
+            // We let the game logic (main.js) handle the official "catch up" calculation
             // when it next launches. We just peek to see if we SHOULD warn the user.
 
         } catch (e) {
@@ -111,7 +138,7 @@ export class ToriService {
     /**
      * Project what the state is right now based on time elapsed
      */
-    calculateProjectedState(state) {
+    private calculateProjectedState(state: ToriState): ToriState {
         const now = Date.now();
 
         // Clone state to protect original
@@ -146,12 +173,12 @@ export class ToriService {
     /**
      * Check if we should notify the user
      */
-    checkNotifications(state) {
+    private checkNotifications(state: ToriState): void {
         const now = Date.now();
         if (now - this.lastNotificationTime < this.NOTIFICATION_COOLDOWN) return;
 
-        let message = null;
-        let icon = null;
+        let message: string | null = null;
+        let icon: string | null = null;
 
         // Priority 1: Hangry (Critical)
         if (state.hunger <= 10 && this.settings.notifyCritical) {
@@ -174,12 +201,12 @@ export class ToriService {
             icon = "🎮";
         }
 
-        if (message) {
+        if (message && icon) {
             this.sendNotification(message, icon);
         }
     }
 
-    sendNotification(message, icon) {
+    private sendNotification(message: string, icon: string): void {
         console.log(`[ToriService] Notification: ${message}`);
 
         // Use Shell Toast
