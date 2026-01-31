@@ -31,7 +31,7 @@ export class V1App extends BaseApp {
             <div class="v1-app">
                 <iframe
                     src="./v1/index.html"
-                    style="width: 100%; height: 100vh; border: none; position: absolute; top: 0; left: 0;"
+                    style="width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0;"
                     title="Version 848 V1 Game"
                 ></iframe>
             </div>
