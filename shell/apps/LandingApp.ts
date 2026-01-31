@@ -386,8 +386,9 @@ export class LandingApp extends BaseApp {
                             animation: fadeInUp 1s ease-out 0.4s backwards;
                         ">
                             Most developers ship a game and call it done.<br>
-                            I shipped a game, rebuilt it from scratch, documented every step,<br>
-                            and turned the whole thing into a playground.
+                            I am not a dev, I just have ideas and keep having fun.<br>
+                            Shipped a game, rebuilt it from scratch, and just started to document it.<br>
+                            This is my playground of ideas.
                         </p>
 
                         <!-- CTA -->
@@ -397,7 +398,7 @@ export class LandingApp extends BaseApp {
                             margin: 0;
                             font-weight: 600;
                             animation: fadeInUp 1.2s ease-out 0.6s backwards;
-                        ">Choose your adventure ↓</p>
+                        ">choose your flavour ↓</p>
                     </div>
 
                     <!-- Main App Cards -->
