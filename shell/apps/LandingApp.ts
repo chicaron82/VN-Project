@@ -353,17 +353,51 @@ export class LandingApp extends BaseApp {
 
                 <div class="container">
                     <!-- Hero Section -->
-                    <div class="hero">
+                    <div class="hero" style="text-align: center; padding: 4rem 2rem; position: relative;">
                         <div class="hero-watermark" aria-hidden="true">
                             <img src="assets/UnitedVoices7.png" alt="" />
                         </div>
 
-                        <div class="brand-hero-container">
-                            <div class="brand-glow"></div>
-                            <img src="assets/UnitedVoices7.png" alt="United Voices 7" class="main-brand-logo">
+                        <!-- Small logo accent -->
+                        <div class="hero-logo-accent" style="margin-bottom: 2rem; animation: fadeInUp 0.6s ease-out;">
+                            <img src="assets/UnitedVoices7.png" alt="United Voices 7" style="width: 80px; height: 80px; opacity: 0.9;" />
                         </div>
 
-                        <p class="brand-tagline">Welcome to my playground!! 🎮✨</p>
+                        <!-- Main headline -->
+                        <h1 class="hero-headline" style="
+                            font-size: clamp(2.5rem, 8vw, 4.5rem);
+                            font-weight: 900;
+                            margin: 0 0 1.5rem;
+                            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+                            -webkit-background-clip: text;
+                            background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            line-height: 1.1;
+                            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+                        ">You Found the Playground</h1>
+
+                        <!-- Subheadline -->
+                        <p class="hero-subheadline" style="
+                            font-size: clamp(1rem, 2.5vw, 1.25rem);
+                            color: rgba(255, 255, 255, 0.8);
+                            max-width: 800px;
+                            margin: 0 auto 2rem;
+                            line-height: 1.6;
+                            animation: fadeInUp 1s ease-out 0.4s backwards;
+                        ">
+                            Most developers ship a game and call it done.<br>
+                            I shipped a game, rebuilt it from scratch, documented every step,<br>
+                            and turned the whole thing into a playground.
+                        </p>
+
+                        <!-- CTA -->
+                        <p class="hero-cta" style="
+                            font-size: 1.1rem;
+                            color: rgba(165, 180, 252, 0.7);
+                            margin: 0;
+                            font-weight: 600;
+                            animation: fadeInUp 1.2s ease-out 0.6s backwards;
+                        ">Choose your adventure ↓</p>
                     </div>
 
                     <!-- Main App Cards -->
