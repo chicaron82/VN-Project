@@ -79,6 +79,17 @@ export class GestureRouter {
 
     /**
      * Initialize gesture handling
+     *
+     * Sets up global touch event listeners using capture phase to intercept
+     * gestures before they reach apps. This allows the shell to claim
+     * priority zones (status bar, notification shade) while delegating
+     * everything else to the active app.
+     *
+     * Called once during UV7Shell initialization.
+     *
+     * @example
+     * const gestureRouter = new GestureRouter(shell);
+     * gestureRouter.init();
      */
     init(): void {
         // Use capture phase to intercept before apps
@@ -91,8 +102,29 @@ export class GestureRouter {
 
     /**
      * Register an app's gesture handlers
-     * @param appId
-     * @param handlers - { onTouchStart, onTouchMove, onTouchEnd, onSwipe }
+     *
+     * When an app mounts, it can register handlers to receive touch events
+     * that aren't claimed by shell priority zones. The app becomes the
+     * active recipient for all non-shell gestures.
+     *
+     * @param appId - Unique identifier for the app
+     * @param handlers - Object containing optional gesture callbacks:
+     *   - onTouchStart: Called when touch begins (not in shell zone)
+     *   - onTouchMove: Called during drag with deltaX/deltaY info
+     *   - onTouchEnd: Called when touch ends
+     *   - onSwipe: Called for swipe gestures (left/right/up/down)
+     *
+     * @example
+     * class MyApp extends BaseApp {
+     *   async mount(container) {
+     *     this.shell.gestureRouter.registerApp(this.id, {
+     *       onSwipe: (direction) => {
+     *         if (direction === 'left') this.nextPage();
+     *         if (direction === 'right') this.prevPage();
+     *       }
+     *     });
+     *   }
+     * }
      */
     registerApp(appId: string, handlers: GestureHandlers): void {
         this.appHandlers.set(appId, handlers);
@@ -102,7 +134,20 @@ export class GestureRouter {
 
     /**
      * Unregister an app's gesture handlers
-     * @param appId
+     *
+     * Called when an app unmounts to clean up its gesture handlers.
+     * If the app was the active recipient, gesture routing returns
+     * to shell-only mode until a new app registers.
+     *
+     * @param appId - Unique identifier for the app to unregister
+     *
+     * @example
+     * class MyApp extends BaseApp {
+     *   async unmount() {
+     *     this.shell.gestureRouter.unregisterApp(this.id);
+     *     await super.unmount();
+     *   }
+     * }
      */
     unregisterApp(appId: string): void {
         this.appHandlers.delete(appId);
@@ -226,7 +271,14 @@ export class GestureRouter {
     }
 
     /**
-     * Destroy gesture handling (cleanup)
+     * Destroy gesture handling and clean up listeners
+     *
+     * Removes all global touch event listeners. Called during shell
+     * shutdown or hot reload scenarios.
+     *
+     * @example
+     * // During shell cleanup
+     * gestureRouter.destroy();
      */
     destroy(): void {
         document.removeEventListener('touchstart', this.handleTouchStart, { capture: true } as EventListenerOptions);

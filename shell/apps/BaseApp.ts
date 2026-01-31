@@ -41,8 +41,18 @@ export class BaseApp {
 
     /**
      * Mount the app into a container
-     * @param container - The viewport element
-     * @param params - Route parameters
+     *
+     * Called when the app is loaded and should render its UI.
+     * Subclasses should override to implement custom mounting logic.
+     *
+     * @param container - The viewport element to render into
+     * @param params - Route parameters from the URL (e.g., { phase: '42' })
+     *
+     * @example
+     * async mount(container, params) {
+     *   await super.mount(container, params);
+     *   container.innerHTML = '<div>My App</div>';
+     * }
      */
     async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
         this.container = container;
@@ -53,7 +63,17 @@ export class BaseApp {
     }
 
     /**
-     * Unmount the app and clean up
+     * Unmount the app and clean up resources
+     *
+     * Called when the app is being unloaded (switching to another app).
+     * Override to clean up event listeners, timers, intervals, etc.
+     *
+     * @example
+     * async unmount() {
+     *   clearInterval(this.myInterval);
+     *   window.removeEventListener('resize', this.handleResize);
+     *   await super.unmount();
+     * }
      */
     async unmount(): Promise<void> {
         // Clean up event listeners, timers, etc.
@@ -67,7 +87,18 @@ export class BaseApp {
 
     /**
      * Called when route parameters change without full remount
-     * @param params
+     *
+     * Use this for handling deep linking within your app without
+     * a full unmount/remount cycle.
+     *
+     * @param params - Updated route parameters
+     *
+     * @example
+     * onRouteChange(params) {
+     *   if (params.phase) {
+     *     this.navigateToPhase(params.phase);
+     *   }
+     * }
      */
     onRouteChange(params: Record<string, any>): void {
         // Subclasses can override for deep linking
@@ -75,6 +106,20 @@ export class BaseApp {
 
     /**
      * Get the status bar configuration for this app
+     *
+     * Override to customize the status bar title and context display.
+     *
+     * @returns Status bar configuration with title and optional breadcrumbs
+     *
+     * @example
+     * getStatusBarConfig() {
+     *   return {
+     *     title: 'My App',
+     *     context: 'Section Name',
+     *     showBreadcrumb: true,
+     *     breadcrumbPath: ['Home', 'Settings', 'Account']
+     *   };
+     * }
      */
     getStatusBarConfig(): StatusBarConfig {
         return {
@@ -85,7 +130,22 @@ export class BaseApp {
 
     /**
      * Get the sidebar configuration for this app
-     * @returns {title, content, init} or null to use default shell sidebar
+     *
+     * Override to provide custom sidebar content.
+     * Return null to use the default shell sidebar.
+     *
+     * @returns Sidebar configuration or null for default
+     *
+     * @example
+     * getSidebarConfig() {
+     *   return {
+     *     title: '📖 Navigation',
+     *     content: '<button>Section 1</button>',
+     *     init: () => {
+     *       document.querySelector('button').onclick = () => alert('Clicked!');
+     *     }
+     *   };
+     * }
      */
     getSidebarConfig(): SidebarConfig | null {
         // Return null to keep shell's default sidebar

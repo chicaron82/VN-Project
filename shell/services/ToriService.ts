@@ -57,7 +57,20 @@ export class ToriService {
     }
 
     /**
-     * Start the service
+     * Start the background Tori-gatchi service
+     *
+     * Initializes the "ghost engine" that keeps Tori alive even when the
+     * Tori-gatchi app is closed. Sets up event listeners for state changes,
+     * begins the simulation tick loop (runs every minute), and handles
+     * notifications when Tori needs attention.
+     *
+     * Called once during UV7Shell initialization.
+     *
+     * @example
+     * const toriService = new ToriService(shell);
+     * toriService.init();
+     * // Now Tori's needs decay in the background
+     * // Status bar updates automatically via events
      */
     init(): void {
         console.log('[ToriService] Initializing ghost engine...');

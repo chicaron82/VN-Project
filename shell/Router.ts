@@ -72,6 +72,16 @@ export class Router {
 
     /**
      * Parse the URL hash into app ID and parameters
+     *
+     * Converts hash URLs like:
+     * - `#/` → { appId: 'landing', params: {} }
+     * - `#/showcase` → { appId: 'showcase', params: {} }
+     * - `#/showcase/phase/42` → { appId: 'showcase', params: { phase: '42' } }
+     *
+     * @returns Parsed route with appId and key-value parameters
+     * @example
+     * // URL: #/v1/route/ronnie/act/2
+     * parseHash() // → { appId: 'v1', params: { route: 'ronnie', act: '2' } }
      */
     parseHash(): ParsedRoute {
         // Remove leading '#/' or '#'
@@ -98,9 +108,17 @@ export class Router {
     }
 
     /**
-     * Navigate to an app
-     * @param appId - The app to navigate to
-     * @param params - Optional parameters
+     * Navigate to an app programmatically
+     *
+     * Updates the URL hash and triggers app loading.
+     * Parameters are encoded as key/value pairs in the URL.
+     *
+     * @param appId - The app to navigate to ('landing', 'showcase', 'v1', 'v2', 'torigatchi')
+     * @param params - Optional key-value parameters for the app
+     *
+     * @example
+     * router.navigate('showcase') // → #/showcase
+     * router.navigate('showcase', { phase: '42' }) // → #/showcase/phase/42
      */
     navigate(appId: string, params: Record<string, string> = {}): void {
         // Build hash
@@ -116,21 +134,36 @@ export class Router {
     }
 
     /**
-     * Navigate back in history
+     * Navigate back in browser history
+     *
+     * Calls window.history.back() to return to the previous page/app.
+     * Useful for implementing back buttons in apps.
+     *
+     * @example
+     * router.back() // Go to previous route
      */
     back(): void {
         history.back();
     }
 
     /**
-     * Get the current app ID
+     * Get the current active app ID
+     *
+     * @returns The ID of the currently active app
+     * @example
+     * router.getCurrentAppId() // → 'showcase' (if URL is #/showcase/phase/42)
      */
     getCurrentAppId(): string {
         return this.parseHash().appId;
     }
 
     /**
-     * Get the current route params
+     * Get the current route parameters
+     *
+     * @returns Object containing key-value parameters from the current URL
+     * @example
+     * // URL: #/showcase/phase/42
+     * router.getCurrentParams() // → { phase: '42' }
      */
     getCurrentParams(): Record<string, string> {
         return this.parseHash().params;

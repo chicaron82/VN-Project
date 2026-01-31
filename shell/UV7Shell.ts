@@ -97,6 +97,20 @@ export class UV7Shell {
 
     /**
      * Initialize the shell
+     *
+     * Bootstraps the UV7 OS environment by setting up:
+     * - UV7System (status bar, shade, sidebar chrome)
+     * - GestureRouter (touch input management)
+     * - ToriService (background Tori-gatchi simulation)
+     * - Router (hash-based navigation)
+     * - App registry (lazy-loaded app modules)
+     * - App switcher and quick actions
+     *
+     * Called automatically on DOMContentLoaded. Should only be called once.
+     *
+     * @example
+     * const shell = new UV7Shell();
+     * await shell.init();
      */
     async init(): Promise<void> {
         if (this.initialized) return;
@@ -344,8 +358,26 @@ export class UV7Shell {
 
     /**
      * Load and mount an app
-     * @param appId - The app identifier
-     * @param params - Route parameters
+     *
+     * Handles the complete app lifecycle:
+     * 1. Unmount current app (if any)
+     * 2. Dynamically import the app module (code-splitting)
+     * 3. Instantiate and mount the new app
+     * 4. Register gesture handlers with GestureRouter
+     * 5. Update status bar and sidebar based on app config
+     * 6. Add to recent apps for the app switcher
+     *
+     * If the app is already loaded, just triggers onRouteChange() with new params.
+     *
+     * @param appId - The app identifier ('landing', 'showcase', 'v1', 'v2', 'torigatchi')
+     * @param params - Route parameters from the URL hash
+     *
+     * @example
+     * // Via router (typical)
+     * shell.router.navigate('showcase', { phase: '42' });
+     *
+     * // Direct call (advanced)
+     * await shell.loadApp('showcase', { phase: '42' });
      */
     async loadApp(appId: string, params: Record<string, any> = {}): Promise<void> {
         console.log(`[UV7Shell] Loading app: ${appId}`, params);
@@ -623,7 +655,17 @@ export class UV7Shell {
     }
 
     /**
-     * Show toast notification
+     * Show a temporary toast notification
+     *
+     * Displays a message at the bottom of the screen for 2 seconds
+     * with a fade-in/out animation. Used for system notifications
+     * and user feedback.
+     *
+     * @param message - The text to display in the toast
+     *
+     * @example
+     * shell.showToast('Settings saved!');
+     * shell.showToast('💖 Tori is happy!');
      */
     showToast(message: string): void {
         const toast = document.createElement('div');
@@ -759,9 +801,17 @@ export class UV7Shell {
     }
 
     /**
-     * Navigate to an app (convenience method)
-     * @param appId
-     * @param params
+     * Navigate to an app
+     *
+     * Convenience method that wraps router.navigate(). Updates the URL hash
+     * and triggers app loading. Use this instead of manually setting location.hash.
+     *
+     * @param appId - The app identifier to navigate to
+     * @param params - Optional key-value parameters for the app
+     *
+     * @example
+     * shell.navigateTo('showcase');
+     * shell.navigateTo('showcase', { phase: '42' });
      */
     navigateTo(appId: string, params: Record<string, any> = {}): void {
         this.router.navigate(appId, params);
@@ -771,26 +821,64 @@ export class UV7Shell {
     // SHADE & SIDEBAR CONTROLS (Shell owns these)
     // ═══════════════════════════════════════════════════════════════
 
+    /**
+     * Open the notification shade
+     *
+     * Shows the shade panel (settings, quick actions, system info).
+     * Managed by UV7System but controlled by shell.
+     *
+     * @example
+     * shell.openShade();
+     */
     openShade(): void {
         this.elements.shade?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
+    /**
+     * Close the notification shade
+     *
+     * @example
+     * shell.closeShade();
+     */
     closeShade(): void {
         this.elements.shade?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
 
+    /**
+     * Toggle the sidebar visibility
+     *
+     * Opens if closed, closes if open. Used by pull-down gesture
+     * in landscape mode.
+     *
+     * @example
+     * shell.toggleSidebar();
+     */
     toggleSidebar(): void {
         this.elements.sidebar?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
     }
 
+    /**
+     * Open the sidebar
+     *
+     * Shows the sidebar panel (quick launch, navigation).
+     *
+     * @example
+     * shell.openSidebar();
+     */
     openSidebar(): void {
         this.elements.sidebar?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
+    /**
+     * Close the sidebar
+     *
+     * @example
+     * shell.closeSidebar();
+     */
     closeSidebar(): void {
         this.elements.sidebar?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
@@ -877,7 +965,13 @@ export class UV7Shell {
     }
 
     /**
-     * Toggle App Switcher visibility
+     * Toggle the app switcher overlay
+     *
+     * Shows the recent apps interface (similar to iOS/Android task switcher).
+     * Triggered by tapping the UV7 logo in the status bar.
+     *
+     * @example
+     * shell.toggleAppSwitcher();
      */
     toggleAppSwitcher(): void {
         if (this.elements.appSwitcher?.classList.contains('open')) {
@@ -887,12 +981,29 @@ export class UV7Shell {
         }
     }
 
+    /**
+     * Open the app switcher
+     *
+     * Renders recent apps and displays the switcher overlay.
+     *
+     * @example
+     * shell.openAppSwitcher();
+     */
     openAppSwitcher(): void {
         this.renderAppSwitcher();
         this.elements.appSwitcher?.classList.add('open');
         this.elements.backdrop?.classList.add('visible'); // Optional: reuse backdrop or switcher has its own bg
     }
 
+    /**
+     * Close the app switcher
+     *
+     * Hides the app switcher overlay. Preserves backdrop if
+     * sidebar or shade is still open.
+     *
+     * @example
+     * shell.closeAppSwitcher();
+     */
     closeAppSwitcher(): void {
         this.elements.appSwitcher?.classList.remove('open');
         // Don't hide backdrop if sidebar/shade is open
@@ -956,8 +1067,15 @@ export class UV7Shell {
     }
 
     /**
-     * Remove from recent list
-     * @param appId
+     * Remove an app from the recent apps list
+     *
+     * Removes the app from the switcher and re-renders the UI.
+     * Called when user clicks the X button on an app card.
+     *
+     * @param appId - The app identifier to remove
+     *
+     * @example
+     * shell.removeFromRecent('v1');
      */
     removeFromRecent(appId: string): void {
         this.recentApps = this.recentApps.filter(app => app.id !== appId);
