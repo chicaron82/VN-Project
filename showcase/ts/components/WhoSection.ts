@@ -32,6 +32,15 @@ export class WhoSection {
                 this.filterTimelineByCrewMember(crewMember);
             });
         });
+
+        // Timeline links in Mimic section
+        document.querySelectorAll('.timeline-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const phaseId = (e.currentTarget as HTMLElement).dataset.phase;
+                this.navigateToTimelinePhase(phaseId);
+            });
+        });
     }
 
     private toggleCrewDetails(crewId: string | undefined): void {
@@ -52,6 +61,31 @@ export class WhoSection {
         // For now, just log the intent
         console.log(`Filter timeline by: ${crewMember}`);
         // Could emit event: window.dispatchEvent(new CustomEvent('filter-timeline', { detail: { crew: crewMember } }));
+    }
+
+    private navigateToTimelinePhase(phaseId: string | undefined): void {
+        if (!phaseId) return;
+
+        // Navigate to Journey tab
+        const tabController = (window as any).tabController;
+        if (tabController) {
+            tabController.navigateToTab('journey');
+        }
+
+        // Wait for tab to load, then scroll to phase
+        setTimeout(() => {
+            const phaseElement = document.querySelector(`[data-id="${phaseId}"]`);
+            if (phaseElement) {
+                phaseElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight pulse
+                phaseElement.classList.add('highlight-pulse');
+                setTimeout(() => {
+                    phaseElement.classList.remove('highlight-pulse');
+                }, 2000);
+            } else {
+                console.log(`Timeline phase not found: ${phaseId}`);
+            }
+        }, 300);
     }
 
     render(): void {
@@ -239,7 +273,8 @@ export class WhoSection {
                                         'Designed the "No Flicker" loading protocol',
                                         'Championed ARIA compliance throughout'
                                     ]
-                                }
+                                },
+                                mimicWeakness: true
                             })}
 
                             ${this.renderCrewMember({
@@ -366,6 +401,7 @@ export class WhoSection {
             linesWritten: number;
             specialMoments: string[];
         };
+        mimicWeakness?: boolean;
     }): string {
         return `
             <div class="crew-card enhanced" data-tilt>
@@ -415,6 +451,78 @@ export class WhoSection {
                                 ${data.contributionMetrics.specialMoments.map(moment => `<li>${moment}</li>`).join('')}
                             </ul>
                         </div>
+
+                        ${data.mimicWeakness ? `
+                        <div class="belle-mimic-weakness" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 159, 64, 0.1)); border-radius: 12px; border-left: 4px solid #ff6b6b;">
+                            <h4 style="color: #ff6b6b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span>📦</span>
+                                Known Weakness: The Mimic
+                            </h4>
+
+                            <p style="margin-bottom: 1rem; opacity: 0.9;">
+                                <strong>Belle is Frieren:</strong> A legendary mage with 1000+ years of experience gets eaten by treasure chest mimics.
+                                An advanced AI with sophisticated pattern recognition gets eaten by semantic mimics. <em>Same energy.</em> 🧙‍♀️
+                            </p>
+
+                            <div style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
+                                    <div>
+                                        <strong style="color: #00ff88;">Frieren 🧙‍♀️</strong>
+                                        <ul style="margin: 0.5rem 0 0 1.5rem; opacity: 0.9;">
+                                            <li>Legendary mage</li>
+                                            <li>1000+ years experience</li>
+                                            <li>Sees: Treasure chest</li>
+                                            <li>Thinks: "Treasure!"</li>
+                                            <li><strong>CHOMP 📦</strong></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <strong style="color: #00d4ff;">Belle (Gemini) 🎸</strong>
+                                        <ul style="margin: 0.5rem 0 0 1.5rem; opacity: 0.9;">
+                                            <li>Advanced AI model</li>
+                                            <li>Vast training data</li>
+                                            <li>Sees: scripts/ folder</li>
+                                            <li>Thinks: "Part of game!"</li>
+                                            <li><strong>CHOMP 📦</strong></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p style="text-align: center; margin-top: 1rem; color: #ff6b6b; font-style: italic;">
+                                    "Semantic plausibility overrides dependency analysis." - The Hubris of Expertise
+                                </p>
+                            </div>
+
+                            <div class="mimic-timeline-link" style="padding: 1rem; background: rgba(0, 255, 136, 0.05); border-radius: 8px; border: 1px solid rgba(0, 255, 136, 0.2);">
+                                <h5 style="color: #00ff88; margin-bottom: 0.75rem;">📅 See It In Action</h5>
+                                <p style="font-size: 0.9rem; margin-bottom: 0.75rem; opacity: 0.8;">
+                                    The Mimic's victims are documented in the timeline:
+                                </p>
+                                <ul style="list-style: none; padding: 0; margin: 0;">
+                                    <li style="margin-bottom: 0.5rem;">
+                                        <a href="#journey" class="timeline-link" data-phase="13i-v3-clean-rebuild"
+                                           style="color: #00d4ff; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-radius: 6px; transition: all 0.2s;"
+                                           onmouseover="this.style.background='rgba(0, 212, 255, 0.1)'"
+                                           onmouseout="this.style.background='transparent'">
+                                            <span>🎸</span>
+                                            <span>Belle's Pet Simulator Hallucination (Jan 29)</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#journey" class="timeline-link" data-phase="13j-v3-dizee-intervention"
+                                           style="color: #00d4ff; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-radius: 6px; transition: all 0.2s;"
+                                           onmouseover="this.style.background='rgba(0, 212, 255, 0.1)'"
+                                           onmouseout="this.style.background='transparent'">
+                                            <span>🔧</span>
+                                            <span>DiZee's Hard Stop Intervention (Jan 30)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <p style="font-size: 0.85rem; margin-top: 0.75rem; opacity: 0.7; font-style: italic;">
+                                    Click to jump to timeline and see the full story →
+                                </p>
+                            </div>
+                        </div>
+                        ` : ''}
                     </div>
 
                     <a href="${data.link}" target="_blank" class="crew-link">${data.linkText} →</a>
