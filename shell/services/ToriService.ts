@@ -72,6 +72,18 @@ export class ToriService {
             this.settings = customEvent.detail;
         });
 
+        // Listen for localStorage changes (when Tori-gatchi updates state)
+        window.addEventListener('storage', (e: StorageEvent) => {
+            if (e.key === this.STATE_KEY && e.newValue) {
+                this.onStateChange();
+            }
+        });
+
+        // Also listen for custom event from same-window updates
+        window.addEventListener('uv7:tori-state-update', () => {
+            this.onStateChange();
+        });
+
         // Run immediately
         this.tick();
 
@@ -79,6 +91,27 @@ export class ToriService {
         setInterval(() => this.tick(), 60000);
 
         console.log('[ToriService] Background service running');
+    }
+
+    /**
+     * Called when Tori state changes
+     * Emits event for UI to update
+     */
+    private onStateChange(): void {
+        const stateStr = localStorage.getItem(this.STATE_KEY);
+        if (!stateStr) return;
+
+        try {
+            const state: ToriState = JSON.parse(stateStr);
+            const projected = this.calculateProjectedState(state);
+
+            // Emit event for listeners (e.g., UV7Shell status bar)
+            window.dispatchEvent(new CustomEvent('uv7:tori-status-changed', {
+                detail: projected
+            }));
+        } catch (e) {
+            console.warn('[ToriService] Failed to parse state on change', e);
+        }
     }
 
     private loadSettings(): void {

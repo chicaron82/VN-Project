@@ -212,8 +212,11 @@ export class UV7Shell {
             statusRight.appendChild(toriStatus);
         }
 
-        // Poll for updates (every 2s is enough for "real-time" feel without perf hit)
-        setInterval(() => this.updateToriStatus(), 2000);
+        // Listen for Tori status change events (event-based, not polling)
+        window.addEventListener('uv7:tori-status-changed', (e: Event) => {
+            const customEvent = e as CustomEvent;
+            this.updateToriStatus(customEvent.detail);
+        });
 
         // Listen for storage events (if multiple tabs/windows)
         window.addEventListener('storage', (e) => {
@@ -230,19 +233,27 @@ export class UV7Shell {
 
     /**
      * Update Tori status display
+     * @param projectedState - Optional pre-calculated state from ToriService
      */
-    private updateToriStatus(): void {
+    private updateToriStatus(projectedState?: any): void {
         const toriStatus = document.getElementById('tori-status');
         if (!toriStatus) return;
 
         try {
-            const stateStr = localStorage.getItem('toriGatchiState');
-            if (!stateStr) {
-                (toriStatus as HTMLElement).style.display = 'none';
-                return;
+            let state;
+
+            // Use provided state or fetch from localStorage
+            if (projectedState) {
+                state = projectedState;
+            } else {
+                const stateStr = localStorage.getItem('toriGatchiState');
+                if (!stateStr) {
+                    (toriStatus as HTMLElement).style.display = 'none';
+                    return;
+                }
+                state = JSON.parse(stateStr);
             }
 
-            const state = JSON.parse(stateStr);
             if (!state) return;
 
             const { mood, hunger, love } = state;
