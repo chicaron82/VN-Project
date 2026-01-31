@@ -398,6 +398,16 @@ export class UV7Shell {
         // Start transition
         this.elements.viewport?.classList.add('app-transitioning');
 
+        // Show loading state
+        if (this.elements.viewport) {
+            this.elements.viewport.innerHTML = `
+                <div class="loading-state">
+                    <div class="loading-spinner"></div>
+                    <div>Loading ${appId}...</div>
+                </div>
+            `;
+        }
+
         try {
             // Unmount current app
             if (this.currentApp) {
@@ -415,7 +425,7 @@ export class UV7Shell {
             const app = new AppClass(this);
             app.id = appId;
 
-            // Clear viewport
+            // Clear viewport (remove loading state)
             if (this.elements.viewport) {
                 this.elements.viewport.innerHTML = '';
             }
