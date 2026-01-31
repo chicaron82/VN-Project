@@ -23,8 +23,8 @@ interface CrewMember {
 }
 
 interface Stats {
-    phasesComplete?: number;
-    daysInDev?: number;
+    milestones?: number;
+    daysHavingFun?: number;
     testsPass?: number;
 }
 
@@ -148,9 +148,9 @@ export class LandingApp extends BaseApp {
             // Map stats to UI
             // V1: 50 days (Bootstrap Paradox) - Static
 
-            // Showcase: phasesComplete, daysInDev
-            this.updateStat('showcase', 0, stats.phasesComplete); // Phases
-            this.updateStat('showcase', 1, stats.daysInDev);      // Days
+            // Showcase: daysHavingFun, milestones
+            this.updateStat('showcase', 0, stats.daysHavingFun);  // Days having fun
+            this.updateStat('showcase', 1, stats.milestones);     // Milestones
 
             // V2: testsPass
             this.updateStat('v2', 0, stats.testsPass);
@@ -363,73 +363,73 @@ export class LandingApp extends BaseApp {
                             <img src="assets/UnitedVoices7.png" alt="United Voices 7" class="main-brand-logo">
                         </div>
 
-                        <p class="brand-tagline">Where chaos meets harmony. Choose your experience.</p>
+                        <p class="brand-tagline">Welcome to my playground!! 🎮✨</p>
                     </div>
 
                     <!-- Main App Cards -->
                     <div class="card-grid">
                         <a href="#/v1" class="card app-card" data-app="v1">
                             <div class="card-icon">🔥</div>
-                            <span class="badge badge-legacy">Legacy V1</span>
-                            <h2>Play Original</h2>
-                            <p>A <span class="stat-number" data-target="50">0</span>-day speedrun from concept to complete game. Version 848.</p>
+                            <span class="badge badge-legacy">The Origin</span>
+                            <h2>Play V1</h2>
+                            <p>A <span class="stat-number" data-target="50">0</span>-day sprint of pure chaos and discovery. This is where it all started.</p>
                         </a>
 
                         <a href="#/showcase" class="card app-card" data-app="showcase">
                             <div class="card-icon">📖</div>
-                            <span class="badge badge-showcase">Documentation</span>
-                            <h2>View Showcase</h2>
-                            <p>The journey from chaos to order. <span class="stat-number" data-target="86">0</span> phases. <span class="stat-number" data-target="11">0</span> days. AI collaboration.</p>
+                            <span class="badge badge-showcase">The Journey</span>
+                            <h2>View Timeline</h2>
+                            <p><span class="stat-number" data-target="11">0</span> days having fun. <span class="stat-number" data-target="86">0</span> milestones. Every iteration documented.</p>
                         </a>
 
                         <a href="#/v2" class="card app-card" data-app="v2">
                             <div class="card-icon">⚡</div>
-                            <span class="badge badge-v2">V2 Engine</span>
+                            <span class="badge badge-v2">The Evolution</span>
                             <h2>Launch V2</h2>
-                            <p>TypeScript rebuild. EventBus architecture. <span class="stat-number" data-target="590">0</span> tests passing. Zero errors.</p>
+                            <p>What happens when you rebuild for fun. <span class="stat-number" data-target="590">0</span> tests. Clean architecture. Same soul.</p>
                         </a>
                     </div>
 
                     <!-- Context Section -->
                     <div class="intro-context">
-                        <h2>United Voices 7 presents: Version 848</h2>
-                        <p><strong>United Voices 7</strong> is the mock production studio—a collective of AI personalities collaborating with one human developer.<br>
-                        <strong>Version 848</strong> is the visual novel itself.</p>
-                        <p class="sub">This hub documents the journey from the chaotic <strong>V1 Speedrun</strong> to the refined architectural dish that is <strong>V2</strong>.</p>
+                        <h2>Code. Play. Iterate. Repeat.</h2>
+                        <p>This is my creative playground—where I build visual novels, experiment with architectures, and collaborate with AI personalities.<br>
+                        <strong>Version 848</strong> is the game. <strong>United Voices 7</strong> is the crew. The journey is the whole point.</p>
+                        <p class="sub">From chaotic <strong>V1 speedruns</strong> to polished <strong>V2 refactors</strong> to the <strong>Shell architecture</strong> that holds it all together—every iteration taught me something new.</p>
                     </div>
 
-                    <!-- Why Rebuild Section -->
+                    <!-- What's Here Section -->
                     <div class="why-rebuild-section">
-                        <h3>Why Rebuild from Scratch?</h3>
+                        <h3>What You'll Find Here</h3>
                         <div class="card-grid">
                             <div class="card info-card">
-                                <div class="card-icon">🚀</div>
-                                <h2>For Players</h2>
+                                <div class="card-icon">🎮</div>
+                                <h2>The Game</h2>
                                 <ul>
-                                    <li><span class="check">✓</span> <span class="stat-number" data-target="3">0</span>x faster loading</li>
-                                    <li><span class="check">✓</span> Smoother animations</li>
-                                    <li><span class="check">✓</span> Mobile-optimized</li>
-                                    <li><span class="check">✓</span> Fewer bugs</li>
+                                    <li><span class="check">✓</span> Visual novel about digital consciousness</li>
+                                    <li><span class="check">✓</span> Two versions (V1 chaos, V2 refinement)</li>
+                                    <li><span class="check">✓</span> Bootstrap paradoxes & time loops</li>
+                                    <li><span class="check">✓</span> Ronnie & Tori routes</li>
                                 </ul>
                             </div>
                             <div class="card info-card">
                                 <div class="card-icon">🛠️</div>
-                                <h2>For Developers</h2>
+                                <h2>The Tech</h2>
                                 <ul>
-                                    <li><span class="check dev">✓</span> TypeScript safety</li>
+                                    <li><span class="check dev">✓</span> V1→V2 refactor journey</li>
+                                    <li><span class="check dev">✓</span> Shell architecture (UV7 OS)</li>
                                     <li><span class="check dev">✓</span> <span class="stat-number" data-target="232">0</span> automated tests</li>
-                                    <li><span class="check dev">✓</span> Clean architecture</li>
-                                    <li><span class="check dev">✓</span> Easy to maintain</li>
+                                    <li><span class="check dev">✓</span> Full timeline of iterations</li>
                                 </ul>
                             </div>
                             <div class="card info-card">
-                                <div class="card-icon">📚</div>
-                                <h2>For AI Collaboration</h2>
+                                <div class="card-icon">🤖</div>
+                                <h2>The Methodology</h2>
                                 <ul>
-                                    <li><span class="check ai">✓</span> Proof of concept</li>
-                                    <li><span class="check ai">✓</span> Documented process</li>
-                                    <li><span class="check ai">✓</span> Replicable workflow</li>
-                                    <li><span class="check ai">✓</span> Open source</li>
+                                    <li><span class="check ai">✓</span> Human + AI collaboration</li>
+                                    <li><span class="check ai">✓</span> Iterative development approach</li>
+                                    <li><span class="check ai">✓</span> Learning by building</li>
+                                    <li><span class="check ai">✓</span> Having fun first</li>
                                 </ul>
                             </div>
                         </div>
