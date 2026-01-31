@@ -160,12 +160,20 @@ export class TimelineRenderer {
     }
 
     private setupToolbarAutoHide(): void {
-        let lastScrollY = window.scrollY;
+        // Find the scrollable container (Journey tab panel)
+        const scrollContainer = document.querySelector('[data-panel="journey"]') as HTMLElement;
+
+        if (!scrollContainer) {
+            console.warn('⚠️ Journey panel not found, toolbar auto-hide disabled');
+            return;
+        }
+
+        let lastScrollY = 0;
         let scrollTimeout: number;
         let isToolbarExpanded = true;
 
         const handleScroll = () => {
-            const currentScrollY = window.scrollY;
+            const currentScrollY = scrollContainer.scrollTop;
             const scrollDelta = currentScrollY - lastScrollY;
             const toolbar = this.toolbar;
 
@@ -197,8 +205,8 @@ export class TimelineRenderer {
             lastScrollY = currentScrollY;
         };
 
-        // Attach scroll listener
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        // Attach scroll listener to the Journey panel
+        scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
 
         // Click compact toolbar to expand
         this.toolbar?.addEventListener('click', (e) => {
@@ -211,7 +219,8 @@ export class TimelineRenderer {
                 // Auto-collapse after 5 seconds of no interaction
                 clearTimeout(scrollTimeout);
                 scrollTimeout = window.setTimeout(() => {
-                    if (window.scrollY > 100 && isToolbarExpanded) {
+                    const currentScrollY = scrollContainer.scrollTop;
+                    if (currentScrollY > 100 && isToolbarExpanded) {
                         this.toolbar?.classList.remove('toolbar-expanded');
                         this.toolbar?.classList.add('toolbar-compact');
                         isToolbarExpanded = false;
@@ -220,7 +229,7 @@ export class TimelineRenderer {
             }
         });
 
-        console.log('🎯 Toolbar auto-hide enabled');
+        console.log('🎯 Toolbar auto-hide enabled on Journey panel');
     }
 
     private renderStatsContainer(): void {
