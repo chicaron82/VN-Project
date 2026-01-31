@@ -1613,47 +1613,86 @@ body.uv7-shell-mode .system-banner {
     }
 }
 
+/* Main Tab Bar Container - COMPACT MODE */
 .tab-bar-container {
     position: sticky;
-    top: var(--uv7-top-stack, 60px);
-    /* Status bar (44) + System banner (16) */
-    /* top: 0 if we want it to stick to very top, but we want it under status bar. */
-    /* UV7 status bar is usually fixed? If so, this needs to check uv7-os.css */
+    /* Use fixed variable for stack height */
+    top: var(--uv7-statusbar-h, 44px);
     z-index: 100;
-    background: rgba(0, 0, 0, 0.75);
-    /* Darker for better contrast */
+
+    background: rgba(10, 10, 10, 0.9);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-    /* Hairline top */
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.25rem 0;
-    /* Tighter */
-}
 
-/* Shell Mode: Adjust tab bar positioning */
-body.uv7-shell-mode .tab-bar-container {
-    top: var(--uv7-banner-h, 16px);
-    /* Just below system banner */
-}
-
-/* Gradient Mask for scroll hint */
-.tab-bar {
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+    /* Tighter vertical spacing */
+    padding: 0;
+    height: 60px;
+    /* Force compact height */
 
     display: flex;
+    align-items: center;
     justify-content: center;
-    /* Center the tabs */
+}
+
+/* Portrait Overflow Indicator */
+@media (orientation: portrait) {
+    .tab-bar-container::after {
+        content: '›';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 30px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(to left, rgba(10, 10, 10, 1) 40%, transparent);
+        color: var(--uv7-accent, #00ff88);
+        font-size: 24px;
+        pointer-events: none;
+        opacity: 0.8;
+    }
+}
+
+/* Shell Mode Override */
+body.uv7-shell-mode .tab-bar-container {
+    top: 0;
+}
+
+/* Scroll Masking */
+.tab-bar {
+    mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+
+    display: flex;
+    align-items: center;
+    /* Center alignment when few items */
+    justify-content: flex-start;
+
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    /* Firefox */
-    gap: 0.5rem;
+
+    gap: 0.25rem;
     padding: 0 1rem;
+
+    width: 100%;
+    height: 100%;
+
     max-width: 1200px;
     margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .tab-bar {
+        justify-content: center;
+    }
 }
 
 .tab-bar::-webkit-scrollbar {
@@ -1719,12 +1758,9 @@ body.uv7-shell-mode .tab-bar-container {
 }
 
 /* Progress indicator */
+/* Progress indicator (Hidden for compact mode) */
 .tab-progress {
-    text-align: center;
-    padding: 0.5rem;
-    font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.4);
-    font-family: 'JetBrains Mono', monospace;
+    display: none !important;
 }
 
 /* ========================================

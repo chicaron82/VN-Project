@@ -167,8 +167,18 @@ export class TimelineRenderer {
         this.statsContainer = document.createElement('div');
         this.statsContainer.innerHTML = statsHTML;
 
-        // Insert at the top of the timeline container
-        this.container?.insertBefore(this.statsContainer, this.container.firstChild);
+        this.statsContainer.innerHTML = statsHTML;
+        // Also add class to ensure correct full-width styling
+        this.statsContainer.classList.add('timeline-stats-wrapper');
+
+        // Insert BEFORE the timeline container (outside of the timeline layout context)
+        // This ensures the vertical line doesn't run through the stats
+        if (this.container && this.container.parentNode) {
+            this.container.parentNode.insertBefore(this.statsContainer, this.container);
+        } else {
+            // Fallback
+            this.container?.insertBefore(this.statsContainer, this.container.firstChild);
+        }
 
         // Add click handlers for category filtering
         this.attachStatsClickHandlers();

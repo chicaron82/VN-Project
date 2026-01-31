@@ -56,8 +56,17 @@ export class Sidebar {
                 const action = actionBtn.getAttribute('data-action');
                 if (action) {
                     // Let main.ts handle the action logic
-                    // Just close sidebar if it's not the toggle-mode action
-                    if (action !== 'toggle-mode') {
+                    // JUST close sidebar if it's not the toggle-mode action
+                    if (action === 'go-home') {
+                        // "Home" in sidebar now means "Showcase Home Tab"
+                        if (window.tabController) {
+                            window.tabController.navigateToTab('home');
+                            this.close();
+                        }
+                    } else if (action === 'go-landing') {
+                        // "Landing" means exit to main index
+                        window.location.href = '../index.html#/landing';
+                    } else if (action !== 'toggle-mode') {
                         this.close();
                     }
                 }

@@ -8,7 +8,6 @@ import type { CodeComparison } from '../types';
 
 export class CodeComparisonModal {
     private isOpen: boolean;
-    private currentData: CodeComparison | null;
     private sliderPosition: number;
     private isDragging: boolean;
     private previouslyFocusedElement: HTMLElement | null;
@@ -19,7 +18,6 @@ export class CodeComparisonModal {
 
     constructor() {
         this.isOpen = false;
-        this.currentData = null;
         this.sliderPosition = 50; // percentage
         this.isDragging = false;
         this.previouslyFocusedElement = null;
@@ -95,12 +93,12 @@ export class CodeComparisonModal {
                 </div>
             </div>
         `;
-        
+
         document.body.appendChild(modal);
         this.modal = modal;
-        this.slider = modal.querySelector('.code-slider-handle');
-        this.sliderContainer = modal.querySelector('.code-slider-container');
-        this.viewer = modal.querySelector('.code-comparison-viewer');
+        this.slider = modal.querySelector('.code-slider-handle') as HTMLElement;
+        this.sliderContainer = modal.querySelector('.code-slider-container') as HTMLElement;
+        this.viewer = modal.querySelector('.code-comparison-viewer') as HTMLElement;
     }
 
     bindEvents(): void {
@@ -157,7 +155,6 @@ export class CodeComparisonModal {
             return;
         }
 
-        this.currentData = data;
         this.isOpen = true;
 
         // Store previously focused element to restore later

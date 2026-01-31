@@ -7,11 +7,24 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-/* Search Container */
+/* Toolbar Container (Search + Filters) */
+.timeline-toolbar-container {
+    margin: 2rem 0 1rem 0;
+    z-index: 95;
+    position: sticky;
+    /* Status (44) + TabBar (60) = 104px */
+    top: 104px;
+    transition: top 0.3s ease;
+
+    background: rgba(10, 10, 18, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Old search container class - keeping just in case */
 .timeline-search-container {
-    position: relative;
-    margin: 2rem 0;
-    z-index: 50;
+    display: none;
 }
 
 /* Search Input Wrapper */

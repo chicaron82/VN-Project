@@ -129,25 +129,45 @@
 }
 
 /* Sidebar Toggle Button */
+/* Sidebar Toggle Button - Drawer Handle Style */
 .uv7-sidebar-toggle {
     display: flex;
-    /* Always visible for now unless hidden by logic */
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    width: 40px;
-    height: 40px;
-    transition: all 0.2s;
-    cursor: pointer;
-    border: none;
-    color: #fff;
-    font-size: 1.5rem;
+
     position: fixed;
-    /* Fallback if not placed */
-    top: 54px;
-    left: 12px;
+    top: 15vh;
+    /* Repositionable vertically (approx) */
+    left: 0;
+
+    width: 48px;
+    height: 64px;
+
+    background: rgba(10, 10, 15, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: none;
+    /* Merge with edge */
+    border-radius: 0 16px 16px 0;
+    /* Pill/Tab shape */
+
+    color: #00ff88;
+    font-size: 1.5rem;
+    cursor: pointer;
     z-index: 10003;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.uv7-sidebar-toggle:hover {
+    width: 56px;
+    /* Peek out */
+    background: rgba(10, 10, 15, 1);
+    box-shadow: 4px 0 20px rgba(0, 255, 136, 0.2);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
 @media (min-width: 769px) {

@@ -40,8 +40,16 @@
 /* Stats Grid */
 .stats-grid {
     display: grid;
+    /* Default to auto-fit for adaptability */
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
+}
+
+@media (min-width: 1200px) {
+    .stats-grid {
+        /* Force 4 columns on large screens as requested */
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 /* Stat Card */
@@ -145,12 +153,10 @@
     left: 0;
     bottom: 0;
     right: 0;
-    background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
     animation: shimmer 2s infinite;
 }
 
@@ -158,6 +164,7 @@
     0% {
         transform: translateX(-100%);
     }
+
     100% {
         transform: translateX(100%);
     }
@@ -176,9 +183,12 @@
 }
 
 @keyframes countPulse {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.1);
         color: #00ff88;
@@ -241,6 +251,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
     .stat-card,
     .stat-bar-fill,
     .stat-value {
