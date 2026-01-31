@@ -4,6 +4,7 @@ export class WorkflowSection {
     constructor() {
         this.render();
         this.attachExpandHandlers();
+        this.attachQuickCardHandlers();
     }
 
     attachExpandHandlers(): void {
@@ -24,6 +25,28 @@ export class WorkflowSection {
         });
     }
 
+    attachQuickCardHandlers(): void {
+        // Handle clicks on banner quick-access cards
+        document.querySelectorAll('.banner-quick-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const target = e.currentTarget as HTMLElement;
+                const scrollTo = target.dataset.scrollTo;
+
+                if (scrollTo) {
+                    const targetSection = document.getElementById(scrollTo);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // Add highlight pulse
+                        targetSection.classList.add('highlight-pulse');
+                        setTimeout(() => {
+                            targetSection.classList.remove('highlight-pulse');
+                        }, 2000);
+                    }
+                }
+            });
+        });
+    }
+
     render(): void {
         const mount = document.getElementById('uv7-workflow-mount');
         console.log('[WorkflowSection] Mount point:', mount ? 'found' : 'NOT FOUND');
@@ -34,6 +57,22 @@ export class WorkflowSection {
                 <!-- Hero Banner -->
                 ${createBanner(BANNER_CONFIGS.workflow)}
 
+                <!-- At-A-Glance Quick Cards -->
+                <div class="banner-quick-cards">
+                    <div class="banner-quick-card" data-scroll-to="parallel-dev-section">
+                        <span class="card-icon">💡</span>
+                        <span class="card-label">Parallel Dev</span>
+                    </div>
+                    <div class="banner-quick-card" data-scroll-to="peer-review-section">
+                        <span class="card-icon">🔍</span>
+                        <span class="card-label">Blind Review</span>
+                    </div>
+                    <div class="banner-quick-card" data-scroll-to="retrospectives-section">
+                        <span class="card-icon">🔄</span>
+                        <span class="card-label">Retrospectives</span>
+                    </div>
+                </div>
+
                 <div class="section-content">
                     <p class="section-intro">
                         How one non-coder orchestrated eight AI instances to build <strong>Version 848</strong>—a
@@ -42,7 +81,7 @@ export class WorkflowSection {
 
                     <!-- Core Workflow Overview -->
                     <div class="workflow-diagram">
-                        <div class="workflow-step">
+                        <div class="workflow-step" id="parallel-dev-section">
                             <div class="step-icon">💡</div>
                             <h3>Parallel Development</h3>
                             <p>Hit rate limits? Switch AI instances. By the time you cycle back, cooldowns are reset.
@@ -51,7 +90,7 @@ export class WorkflowSection {
 
                         <div class="workflow-arrow">→</div>
 
-                        <div class="workflow-step">
+                        <div class="workflow-step" id="peer-review-section">
                             <div class="step-icon">🔍</div>
                             <h3>Blind Peer Review</h3>
                             <p>Drop code to a fresh AI with no context. Get unbiased feedback. Shuttle concerns between
@@ -60,7 +99,7 @@ export class WorkflowSection {
 
                         <div class="workflow-arrow">→</div>
 
-                        <div class="workflow-step">
+                        <div class="workflow-step" id="retrospectives-section">
                             <div class="step-icon">🔄</div>
                             <h3>Retrospectives</h3>
                             <p>End each session: "What worked? What didn't? What could be better?" Tackle improvements
