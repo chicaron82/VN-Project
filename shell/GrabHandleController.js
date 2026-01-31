@@ -1,11 +1,12 @@
 /**
  * ========================================
- * GRAB HANDLE REPOSITIONER
+ * GRAB HANDLE REPOSITIONER (SHELL PORT)
  * V1 Parity Port - Complete Implementation
  * ========================================
  *
  * Faithful port of V1's 633-line grab-handle-repositioner.js
- *
+ * Adapted for UV7 Shell (Vanilla JS)
+ * 
  * Features:
  * - 300ms drag delay (prevents accidental drags while tapping)
  * - Tap-to-toggle sidebar (single tap opens/closes)
@@ -19,58 +20,44 @@
  * "Built with love. 💚🔥💀"
  */
 
-import { EventBus } from '@core/EventBus';
-
-type GrabPosition = {
-    top: number;
-    side: 'left' | 'right';
-};
-
-export class GrabHandleRepositioner {
-    private handle: HTMLElement | null;
-    private sidebar: HTMLElement | null;
-    private eventBus: EventBus;
-    private position: GrabPosition;
-
-    // Drag state
-    private isDragging = false;
-    private dragStartX = 0;
-    private dragStartY = 0;
-    private currentX = 0;
-    private currentY = 0;
-    // private dragStartTime = 0; // Reserved for velocity calculations
-    private isDragDelayActive = false;
-    private dragDelayTimer: number | null = null;
-    private wasDragging = false;
-
-    // RAF state
-    private rafPending = false;
-
-    // Tap state
-    private lastTapTime = 0;
-    private tapTimeout: number | null = null;
-    private isDoubleTapping = false;
-    private pendingTap = false;
-
-    // Touch/Mouse state
-    private usingTouch = false;
-    private touchPreventTimer: number | null = null;
-
-    // Horizontal flip state
-    private horizontalFlipPending = false;
-
-    // Constants
-    private readonly HOLD_DELAY = 300; // ms before drag starts
-    private readonly DOUBLE_TAP_DELAY = 300; // ms window for double-tap
-    private readonly FLIP_THRESHOLD = 50; // % of screen width
-    private readonly MIN_DRAG_DISTANCE = 5; // px to distinguish tap from drag
-
-    constructor(eventBus: EventBus) {
-        this.eventBus = eventBus;
+export class GrabHandleController {
+    constructor() {
         this.position = this.loadPosition();
 
-        this.handle = document.getElementById('sidebar-toggle');
-        this.sidebar = document.getElementById('sidebar');
+        this.handle = document.getElementById('uv7-sidebar-toggle');
+        this.sidebar = document.getElementById('uv7-sidebar');
+
+        // Drag state
+        this.isDragging = false;
+        this.dragStartX = 0;
+        this.dragStartY = 0;
+        this.currentX = 0;
+        this.currentY = 0;
+        this.isDragDelayActive = false;
+        this.dragDelayTimer = null;
+        this.wasDragging = false;
+
+        // RAF state
+        this.rafPending = false;
+
+        // Tap state
+        this.lastTapTime = 0;
+        this.tapTimeout = null;
+        this.isDoubleTapping = false;
+        this.pendingTap = false;
+
+        // Touch/Mouse state
+        this.usingTouch = false;
+        this.touchPreventTimer = null;
+
+        // Horizontal flip state
+        this.horizontalFlipPending = false;
+
+        // Constants
+        this.HOLD_DELAY = 300; // ms before drag starts
+        this.DOUBLE_TAP_DELAY = 300; // ms window for double-tap
+        this.FLIP_THRESHOLD = 50; // % of screen width
+        this.MIN_DRAG_DISTANCE = 5; // px to distinguish tap from drag
 
         if (!this.handle) {
             console.warn('[GrabHandle] Toggle button not found (is Sidebar initialized?)');
@@ -80,10 +67,10 @@ export class GrabHandleRepositioner {
         this.applyPosition();
         this.attachEvents();
 
-        console.log('[GrabHandle] ✅ V1 Parity Complete - All features active', this.position);
+        console.log('[GrabHandle] ✅ Shell Controller Active', this.position);
     }
 
-    private attachEvents() {
+    attachEvents() {
         if (!this.handle) return;
 
         // ========================================
@@ -110,7 +97,7 @@ export class GrabHandleRepositioner {
     // MOUSE HANDLERS
     // ========================================
 
-    private handleMouseDown(e: MouseEvent) {
+    handleMouseDown(e) {
         // Only left click
         if (e.button !== 0) return;
 
@@ -124,7 +111,6 @@ export class GrabHandleRepositioner {
         this.dragStartY = e.clientY;
         this.currentX = e.clientX;
         this.currentY = e.clientY;
-        // this.dragStartTime = Date.now();
         this.isDragDelayActive = true;
         this.horizontalFlipPending = false;
 
@@ -139,7 +125,7 @@ export class GrabHandleRepositioner {
         e.preventDefault(); // Prevent text selection
     }
 
-    private handleMouseMove(e: MouseEvent) {
+    handleMouseMove(e) {
         if (this.isDragDelayActive || !this.isDragging) {
             // Track position but don't drag yet
             this.currentX = e.clientX;
@@ -157,7 +143,7 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private handleMouseUp(e: MouseEvent) {
+    handleMouseUp(e) {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -205,7 +191,7 @@ export class GrabHandleRepositioner {
     // TOUCH HANDLERS
     // ========================================
 
-    private handleTouchStart(e: TouchEvent) {
+    handleTouchStart(e) {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -220,7 +206,6 @@ export class GrabHandleRepositioner {
         this.dragStartY = touch.clientY;
         this.currentX = touch.clientX;
         this.currentY = touch.clientY;
-        // this.dragStartTime = Date.now();
         this.isDragDelayActive = true;
         this.horizontalFlipPending = false;
 
@@ -233,7 +218,7 @@ export class GrabHandleRepositioner {
         }, this.HOLD_DELAY);
     }
 
-    private handleTouchMove(e: TouchEvent) {
+    handleTouchMove(e) {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -256,7 +241,7 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private handleTouchEnd(e: TouchEvent) {
+    handleTouchEnd(e) {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -304,7 +289,7 @@ export class GrabHandleRepositioner {
     // TAP HANDLING
     // ========================================
 
-    private handleTap() {
+    handleTap() {
         const now = Date.now();
 
         // Check for double-tap
@@ -341,19 +326,24 @@ export class GrabHandleRepositioner {
     // CLICK INTERCEPTION
     // ========================================
 
-    private handleClick(e: MouseEvent) {
+    handleClick(e) {
         // Prevent click if we just finished dragging
         if (this.wasDragging || this.isDoubleTapping) {
             e.preventDefault();
             e.stopPropagation();
         }
+        // Note: For valid taps, we let the click proceed OR handle it via handleTap()
+        // Here, handleTap() emits the event, so we generally want to swallow the click
+        // to avoid double-handling if an inline listener exists.
+        // However, if we remove inline listeners, swallowing is fine.
+        // "Tap" logic is running separately via mouseup/touchend.
     }
 
     // ========================================
     // DRAG LOGIC
     // ========================================
 
-    private startDrag() {
+    startDrag() {
         this.isDragging = true;
         if (this.handle) {
             this.handle.classList.add('dragging');
@@ -361,7 +351,7 @@ export class GrabHandleRepositioner {
         this.triggerHaptic('light');
     }
 
-    private updateDragPosition() {
+    updateDragPosition() {
         this.rafPending = false;
 
         if (!this.isDragging) return;
@@ -400,7 +390,7 @@ export class GrabHandleRepositioner {
         this.dragStartY = this.currentY;
     }
 
-    private endDrag() {
+    endDrag() {
         this.isDragging = false;
         if (this.handle) {
             this.handle.classList.remove('dragging');
@@ -415,13 +405,15 @@ export class GrabHandleRepositioner {
     // SIDEBAR INTEGRATION
     // ========================================
 
-    private toggleSidebar() {
+    toggleSidebar() {
         // Emit event to toggle sidebar
-        (this.eventBus as any).emit('ui:sidebar_toggle', {});
+        window.dispatchEvent(new CustomEvent('uv7:sidebar-toggle', {
+            detail: { source: 'grab-handle' }
+        }));
         console.log('[GrabHandle] 👆 Tap-to-toggle sidebar');
     }
 
-    private flipSide() {
+    flipSide() {
         this.position.side = this.position.side === 'left' ? 'right' : 'left';
         this.applyPosition();
         this.savePosition();
@@ -442,14 +434,14 @@ export class GrabHandleRepositioner {
     // POSITION MANAGEMENT
     // ========================================
 
-    private clamp() {
+    clamp() {
         // Constraints: Below status bar (top), above bottom usage area
         const min = 50; // Status bar height + buffer
         const max = window.innerHeight - 80; // Bottom margin for backlog button
         this.position.top = Math.max(min, Math.min(max, this.position.top));
     }
 
-    private applyPosition() {
+    applyPosition() {
         if (!this.handle) return;
 
         // Use transform for centering + top offset
@@ -460,6 +452,7 @@ export class GrabHandleRepositioner {
         this.handle.style.right = this.position.side === 'right' ? '0' : 'auto';
 
         // Update border radius and borders based on side
+        // Stealth Pill: 16px radius
         if (this.position.side === 'left') {
             this.handle.style.borderRadius = '0 16px 16px 0';
             this.handle.style.borderLeft = 'none';
@@ -469,11 +462,11 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private savePosition() {
+    savePosition() {
         localStorage.setItem('uv7-grab-handle', JSON.stringify(this.position));
     }
 
-    private loadPosition(): GrabPosition {
+    loadPosition() {
         try {
             const saved = localStorage.getItem('uv7-grab-handle');
             if (saved) return JSON.parse(saved);
@@ -488,11 +481,8 @@ export class GrabHandleRepositioner {
     // HAPTIC FEEDBACK
     // ========================================
 
-    private triggerHaptic(type: 'light' | 'medium' | 'heavy') {
-        // Emit haptic event for HapticSystem to handle
-        (this.eventBus as any).emit('haptic:trigger', { type });
-
-        // Fallback vibration for browsers without HapticSystem
+    triggerHaptic(type) {
+        // Simple navigator.vibrate fallback
         if (navigator.vibrate) {
             switch (type) {
                 case 'light':

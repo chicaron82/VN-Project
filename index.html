@@ -164,13 +164,8 @@
                 document.getElementById('uv7-backdrop')?.classList.remove('visible');
             });
 
-            // Sidebar toggle
-            document.getElementById('uv7-sidebar-toggle')?.addEventListener('click', () => {
-                const sidebar = document.getElementById('uv7-sidebar');
-                const backdrop = document.getElementById('uv7-backdrop');
-                sidebar?.classList.toggle('open');
-                backdrop?.classList.toggle('visible');
-            });
+            // Sidebar toggle handled by GrabHandleController
+            // document.getElementById('uv7-sidebar-toggle')?.addEventListener('click', ...);
         });
     </script>
 </body>

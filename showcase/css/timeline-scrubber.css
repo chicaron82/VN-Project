@@ -12,17 +12,26 @@
  */
 
 .timeline-scrubber {
-    position: sticky;
-    /* Status (44) + TabBar (60) + Search (~96) = 200px */
-    top: 200px;
+    /* Merged into Sticky Toolbar - No longer sticky itself */
+    position: relative;
+    top: auto;
     z-index: 90;
-    margin: 0;
-    padding: 0.5rem 0;
 
-    background: rgba(10, 10, 18, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    margin: 0;
+    padding: 0.5rem 1rem;
+    /* Add horizontal padding to match toolbar */
+
+    background: transparent;
+    /* Inherit BG from toolbar */
+    backdrop-filter: none;
+    border-bottom: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+background: rgba(10, 10, 18, 0.9);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .scrubber-label {

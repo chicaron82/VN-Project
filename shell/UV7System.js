@@ -176,6 +176,7 @@ export class UV7System {
     initSettings() {
         this.initThemeSettings();
         this.initEchoSettings();
+        this.initToriSettings();
     }
 
     /**
@@ -335,6 +336,73 @@ export class UV7System {
             saveEchoSettings();
         });
         hoverCheck?.addEventListener('change', saveEchoSettings);
+        hoverCheck?.addEventListener('change', saveEchoSettings);
+    }
+
+    /**
+     * Initialize Tori-Gatchi Settings
+     */
+    initToriSettings() {
+        const toriContainer = document.getElementById('uv7-tori-settings-container');
+        if (!toriContainer) return;
+
+        // Load saved settings (Default: All active)
+        let toriSettings = { notifyHunger: true, notifyLonely: true, notifyCritical: true };
+        try {
+            const stored = localStorage.getItem('uv7-tori-settings');
+            if (stored) toriSettings = JSON.parse(stored);
+        } catch (e) {
+            console.warn('[UV7System] Failed to parse Tori settings', e);
+        }
+
+        // Render controls
+        toriContainer.innerHTML = `
+            <div class="echo-control-group">
+                <div class="echo-control-row">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="${this.prefix}-tori-hunger" ${toriSettings.notifyHunger ? 'checked' : ''}>
+                        Notify on Hunger
+                    </label>
+                </div>
+                <div class="echo-control-row">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="${this.prefix}-tori-lonely" ${toriSettings.notifyLonely ? 'checked' : ''}>
+                        Notify on Loneliness
+                    </label>
+                </div>
+                <!--
+                <div class="echo-control-row">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="${this.prefix}-tori-critical" ${toriSettings.notifyCritical ? 'checked' : ''}>
+                        Critical Alerts Only
+                    </label>
+                </div>
+                -->
+            </div>
+        `;
+
+        // Bind events
+        const hungerCheck = document.getElementById(`${this.prefix}-tori-hunger`);
+        const lonelyCheck = document.getElementById(`${this.prefix}-tori-lonely`);
+        // const criticalCheck = document.getElementById(`${this.prefix}-tori-critical`);
+
+        const saveToriSettings = () => {
+            const newSettings = {
+                notifyHunger: hungerCheck.checked,
+                notifyLonely: lonelyCheck.checked,
+                notifyCritical: true // criticalCheck.checked
+            };
+            localStorage.setItem('uv7-tori-settings', JSON.stringify(newSettings));
+
+            // Dispatch event for Service
+            window.dispatchEvent(new CustomEvent('uv7:tori-settings-change', {
+                detail: newSettings
+            }));
+        };
+
+        hungerCheck?.addEventListener('change', saveToriSettings);
+        lonelyCheck?.addEventListener('change', saveToriSettings);
+        // criticalCheck?.addEventListener('change', saveToriSettings);
     }
 
     /**

@@ -92,11 +92,13 @@ export class TimelineScrubber {
             </div>
         `;
 
-        // Insert after toolbar (filters), before timeline entries
+        // Insert INSIDE the toolbar (filters), effectively merging them
         const toolbar = this.container?.querySelector('.timeline-toolbar-container');
         if (toolbar) {
-            // Insert after toolbar
-            toolbar.parentNode?.insertBefore(scrubber, toolbar.nextSibling);
+            // Append to toolbar so they stick together as one unit
+            toolbar.appendChild(scrubber);
+            // Add a class to toolbar to indicate it now has a footer
+            toolbar.classList.add('has-scrubber');
         } else {
             // Fallback: insert at the beginning if toolbar not found
             this.container?.insertBefore(scrubber, this.container.firstChild);

@@ -17,6 +17,8 @@ import { GestureRouter } from './GestureRouter.js';
 import { Router } from './Router.js';
 import { shellAudio } from './audio/ShellAudio.js';
 import { UV7System } from './UV7System.js';
+import { GrabHandleController } from './GrabHandleController.js';
+import { ToriService } from './services/ToriService.js';
 
 export class UV7Shell {
     constructor() {
@@ -34,6 +36,12 @@ export class UV7Shell {
 
         /** @type {UV7System} */
         this.system = null;
+
+        /** @type {GrabHandleController} */
+        this.grabHandle = null;
+
+        /** @type {ToriService} */
+        this.toriService = null;
 
         /** @type {Object} */
         this.elements = {};
@@ -69,6 +77,18 @@ export class UV7Shell {
             prefix: 'shell'
         });
         await this.system.init();
+
+        // Initialize Grab Handle Controller (V1 Parity)
+        this.grabHandle = new GrabHandleController();
+
+        // Listen for controller toggle events
+        window.addEventListener('uv7:sidebar-toggle', () => {
+            this.system.toggleSidebar();
+        });
+
+        // Initialize Tori Service (Background Ghost Engine)
+        this.toriService = new ToriService(this);
+        this.toriService.init();
 
         // Initialize gesture router
         this.gestureRouter.init();

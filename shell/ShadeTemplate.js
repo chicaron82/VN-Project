@@ -43,6 +43,12 @@ export function generateShadeContent(options = {}) {
 
         ${isShell ? generateQuickLaunchSection() : ''}
 
+        <!-- Tori-Gatchi Settings -->
+        <div class="shade-section">
+            <div class="shade-section-title">Tori-Gatchi</div>
+            <div id="uv7-tori-settings-container"></div>
+        </div>
+
         <!-- AI Crew Settings -->
         <div class="shade-section">
             <div class="shade-section-title">AI Crew</div>

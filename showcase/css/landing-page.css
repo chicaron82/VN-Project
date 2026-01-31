@@ -673,34 +673,7 @@ body {
 }
 
 /* Sidebar Toggle Button */
-.uv7-sidebar-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 56px;
-    height: 56px;
-    background: rgba(0, 255, 136, 0.9);
-    border: none;
-    border-radius: 50%;
-    color: #000;
-    font-size: 24px;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease;
-    z-index: 9997;
-}
-
-.uv7-sidebar-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.5);
-}
-
-.uv7-sidebar-toggle:active {
-    transform: scale(0.95);
-}
+/* Sidebar Toggle Button styles moved to sidebar.css */
 
 /* Grab handle should be visible in both portrait and landscape modes */
 /* Users can toggle the sidebar on/off in both viewports */

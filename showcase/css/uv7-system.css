@@ -1325,43 +1325,7 @@
     transition: width 0.5s ease-out;
 }
 
-/* Sidebar Toggle (Right Side - Floating Action Button) */
-.uv7-sidebar-toggle {
-    position: fixed;
-    top: 75px;
-    /* Clear of header chrome */
-    right: 20px;
-    width: 48px;
-    height: 48px;
-
-    background: rgba(10, 10, 15, 0.9);
-    backdrop-filter: blur(12px);
-    border-radius: 50%;
-    border: 1px solid rgba(0, 255, 136, 0.4);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 9999;
-
-    color: #00ff88;
-    font-size: 20px;
-
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 136, 0.2);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.uv7-sidebar-toggle:hover {
-    transform: scale(1.1);
-    background: rgba(0, 255, 136, 0.15);
-    box-shadow: 0 6px 20px rgba(0, 255, 136, 0.3);
-}
-
-.uv7-sidebar-toggle.active {
-    background: rgba(0, 255, 136, 0.2);
-    box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-}
+/* Sidebar Toggle Button styles moved to sidebar.css */
 
 /* Backdrop */
 .uv7-backdrop {

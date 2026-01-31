@@ -15,6 +15,14 @@
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.1) 100%);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+
+    /* Fix squished look: Allow full width */
+    width: 100%;
+    max-width: 1400px;
+    /* Optional cap for ultra-wide */
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
 }
 
 /* Header */
