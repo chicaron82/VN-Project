@@ -139,9 +139,8 @@ export class LandingApp extends BaseApp {
 
     async fetchStats(): Promise<void> {
         try {
-            // Note: Use relative path assuming we serve from root
-            // Showcase stats are often in showcase/stats.json or root stats.json depending on build
-            const response = await fetch('/stats.json').catch(() => fetch('showcase/stats.json'));
+            // Note: Try showcase/stats.json first (where it actually lives), fall back to root
+            const response = await fetch('showcase/stats.json').catch(() => fetch('/stats.json'));
             if (!response || !response.ok) return;
 
             const stats: Stats = await response.json();

@@ -17,8 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { generateShadeContent } from './ShadeTemplate';
-import { generateDefaultSidebarContent } from './SidebarTemplate';
+import { generateShadeContent } from './ShadeTemplate.js';
+import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 
 interface UV7SystemOptions {
     mode?: 'shell' | 'standalone';

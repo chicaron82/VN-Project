@@ -9,7 +9,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { generateQuickActionButtons } from './QuickActions';
+import { generateQuickActionButtons } from './QuickActions.js';
 
 interface SidebarOptions {
     title?: string;
