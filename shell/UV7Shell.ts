@@ -948,11 +948,16 @@ export class UV7Shell {
             const stored = localStorage.getItem('uv7-recent-apps');
             if (stored) {
                 const apps = JSON.parse(stored);
-                // Convert timestamp strings back to Date objects
-                return apps.map((app: any) => ({
-                    ...app,
-                    timestamp: new Date(app.timestamp)
-                }));
+                // Convert timestamp strings back to Date objects and validate
+                return apps.map((app: any) => {
+                    // Ensure app has all required properties by merging with fresh config
+                    const config = this.getAppConfig(app.id || 'unknown');
+                    return {
+                        id: app.id || 'unknown',
+                        ...config,
+                        timestamp: app.timestamp ? new Date(app.timestamp) : new Date()
+                    };
+                }).filter((app: RecentApp) => app.id !== 'unknown');
             }
         } catch (e) {
             console.warn('[UV7Shell] Failed to load recent apps', e);
