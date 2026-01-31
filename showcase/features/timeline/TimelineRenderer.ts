@@ -560,9 +560,9 @@ export class TimelineRenderer {
         // Dispatch content update event (for ScrollAnimator)
         window.dispatchEvent(new CustomEvent('uv7-content-updated'));
 
-        // Phase 1: Apply entrance animations to timeline items
+        // Phase 1: Apply entrance animations to blog entries
         timelineAnimations.refresh();
-        const items = Array.from(this.entriesContainer?.querySelectorAll('.timeline-item') || []) as HTMLElement[];
+        const items = Array.from(this.entriesContainer?.querySelectorAll('.blog-entry') || []) as HTMLElement[];
         if (items.length > 0) {
             timelineAnimations.animateItems(items, 100, 50);
         }
@@ -570,7 +570,7 @@ export class TimelineRenderer {
         // Phase 1: Enable ripple effects on toolbar buttons
         timelineAnimations.enableRippleForButtons('.timeline-btn');
 
-        // Phase 1: Add click-to-highlight for timeline entries
+        // Phase 1: Add click-to-highlight for blog entries
         items.forEach(item => {
             item.style.cursor = 'pointer';
             item.addEventListener('click', () => {
@@ -664,7 +664,7 @@ export class TimelineRenderer {
 
     private applySpotlight(): void {
         const query = this.searchQuery.toLowerCase();
-        const items = this.entriesContainer?.querySelectorAll('.timeline-item');
+        const items = this.entriesContainer?.querySelectorAll('.blog-entry');
 
         if (!query) {
             this.entriesContainer?.classList.remove('spotlight-mode');
@@ -692,71 +692,140 @@ export class TimelineRenderer {
 
     // --- DOM GENERATION ---
 
+    /**
+     * Estimate word count for reading time calculation
+     */
+    private estimateWordCount(entry: TimelineEntry): number {
+        let text = entry.title + ' ' + (entry.summary || '');
+        if (entry.features) text += ' ' + entry.features.join(' ');
+        if (entry.theTimeline) text += ' ' + entry.theTimeline.join(' ');
+        if (entry.quote) text += ' ' + entry.quote;
+        return text.split(/\s+/).length;
+    }
+
+    /**
+     * Determine vibe indicator based on entry tags/type
+     */
+    private getVibeIndicator(entry: TimelineEntry): { emoji: string; label: string } {
+        const tags = entry.tags || [];
+        const type = entry.type || '';
+
+        // Check for specific keywords in title/summary
+        const content = `${entry.title} ${entry.summary || ''}`.toLowerCase();
+
+        if (content.includes('milestone') || content.includes('achievement') || content.includes('complete')) {
+            return { emoji: '🎯', label: 'Milestone' };
+        }
+        if (content.includes('bug') || content.includes('fix') || content.includes('debug')) {
+            return { emoji: '💀', label: 'Debug Hell' };
+        }
+        if (content.includes('refactor') || content.includes('clean')) {
+            return { emoji: '✨', label: 'Clean Refactor' };
+        }
+        if (content.includes('experiment') || content.includes('trying') || tags.includes('v3-lab')) {
+            return { emoji: '🤔', label: 'Experiment' };
+        }
+        if (type === 'breakthrough' || content.includes('breakthrough')) {
+            return { emoji: '🔥', label: 'Breakthrough' };
+        }
+
+        // Default: Having fun
+        return { emoji: '🎮', label: 'Having Fun' };
+    }
+
+    /**
+     * Get icon for stat type
+     */
+    private getStatIcon(statKey: string): string {
+        const icons: Record<string, string> = {
+            linesAdded: '📊',
+            linesChanged: '📝',
+            filesChanged: '📁',
+            testsAdded: '🧪',
+            commits: '💾',
+            duration: '⏱️'
+        };
+        return icons[statKey] || '📊';
+    }
+
     private createEntryElement(entry: TimelineEntry): HTMLElement {
         const item = document.createElement('div');
-        item.className = `timeline-item ${entry.type || ''}`;
+        item.className = `blog-entry ${entry.type || ''}`;
         item.id = entry.id;
-        // Add data-type attribute for CSS visual theming
+        // Add data-type attribute for CSS visual theming (V1/V2/Shell flavors)
         if (entry.type) {
             item.setAttribute('data-type', entry.type);
         }
 
-        const marker = document.createElement('div');
-        marker.className = 'timeline-marker';
+        // Calculate reading time (rough estimate: 200 words/min)
+        const wordCount = this.estimateWordCount(entry);
+        const readingTime = Math.max(1, Math.ceil(wordCount / 200));
+
+        // Determine vibe indicator based on tags/type
+        const vibe = this.getVibeIndicator(entry);
 
         const content = document.createElement('div');
-        content.className = 'timeline-content';
+        content.className = 'blog-card';
 
-        // MODEL BADGE
+        // BLOG CARD HEADER (Metadata bar)
+        const cardHeader = document.createElement('div');
+        cardHeader.className = 'blog-card-header';
+
+        // AI Avatar + Name
+        const authorInfo = document.createElement('div');
+        authorInfo.className = 'blog-author-info';
+
         if (entry.modelId) {
-            const modelBadge = document.createElement('div');
-            modelBadge.className = `model-badge model-${entry.modelId}`;
-
-            // Map ID to Name and Logo
             const names: Record<string, string> = {
-                belle: 'Gemini 1.5 Pro',
-                dizee: 'Claude 3.5 Sonnet',
-                tori: 'GPT-4o',
-                genzee: 'Grok 2'
+                belle: 'Belle',
+                dizee: 'DiZee',
+                tori: 'Tori',
+                genzee: 'Genzee'
             };
-            const logos: Record<string, string> = {
-                belle: 'media/logos/gemini.svg',
-                dizee: 'media/logos/claude.svg',
-                tori: 'media/logos/openai.svg',
-                genzee: 'media/logos/grok.svg'
+            const avatars: Record<string, string> = {
+                belle: 'assets/trinity-iz-portrait.png',
+                dizee: 'assets/dz-portrait.png',
+                tori: 'assets/trinity-tori-portrait.png',
+                genzee: 'assets/trinity-gz-portrait.png'
             };
 
-            const logoPath = logos[entry.modelId];
-            if (logoPath) {
-                modelBadge.innerHTML = `<img src="${logoPath}" class="model-logo" alt="${entry.modelId}" /> ${names[entry.modelId] || entry.modelId}`;
+            const avatarPath = avatars[entry.modelId];
+            const authorName = names[entry.modelId] || entry.modelId;
+
+            if (avatarPath) {
+                authorInfo.innerHTML = `
+                    <img src="${avatarPath}" class="blog-avatar" alt="${authorName}" />
+                    <span class="blog-author-name">${authorName}</span>
+                `;
             } else {
-                modelBadge.innerHTML = `<span class="model-icon">🤖</span> ${names[entry.modelId] || entry.modelId}`;
+                authorInfo.innerHTML = `<span class="blog-author-name">🤖 ${authorName}</span>`;
             }
-            content.appendChild(modelBadge);
         }
 
-        // BADGES (Tags)
+        // Metadata: Date • Category • Reading Time • Vibe
+        const metadata = document.createElement('div');
+        metadata.className = 'blog-metadata';
+
+        let metaHTML = `<span class="blog-date">${entry.date}</span>`;
+
+        // Add primary tag/category
         if (entry.tags && entry.tags.length > 0) {
-            const tagsContainer = document.createElement('div');
-            tagsContainer.className = 'timeline-tags';
-            entry.tags.forEach(tag => {
-                const badge = document.createElement('span');
-                badge.className = 'timeline-badge';
-                badge.setAttribute('data-tag', tag);
-                badge.textContent = tag;
-                tagsContainer.appendChild(badge);
-            });
-            content.appendChild(tagsContainer);
+            metaHTML += ` • <span class="blog-category">${entry.tags[0]}</span>`;
         }
 
-        // HEADER
-        const header = document.createElement('h3');
-        header.textContent = `${entry.date} ${entry.emoji || ''}`;
-        content.appendChild(header);
+        metaHTML += ` • <span class="blog-reading-time">${readingTime} min read</span>`;
+        metaHTML += ` • <span class="blog-vibe">${vibe.emoji} ${vibe.label}</span>`;
 
-        // TITLE
-        const title = document.createElement('p');
-        title.innerHTML = `<strong>${entry.title}</strong>`;
+        metadata.innerHTML = metaHTML;
+
+        cardHeader.appendChild(authorInfo);
+        cardHeader.appendChild(metadata);
+        content.appendChild(cardHeader);
+
+        // TITLE (Larger, blog-style)
+        const title = document.createElement('h2');
+        title.className = 'blog-title';
+        title.innerHTML = `${entry.emoji || ''} ${entry.title}`.trim();
         content.appendChild(title);
 
         // SUMMARY
@@ -895,21 +964,37 @@ export class TimelineRenderer {
             details.appendChild(judgeDiv);
         }
 
-        // Toggle Button
+        // Mini Stats Preview (shown when collapsed)
+        if (entry.metrics) {
+            const statsPreview = document.createElement('div');
+            statsPreview.className = 'blog-stats-preview';
+            const metricsEntries = Object.entries(entry.metrics);
+            if (metricsEntries.length > 0) {
+                statsPreview.innerHTML = metricsEntries.slice(0, 3).map(([key, val]) => {
+                    const icon = this.getStatIcon(key);
+                    return `<span class="stat-pill">${icon} ${val}</span>`;
+                }).join('');
+                content.appendChild(statsPreview);
+            }
+        }
+
+        // Read More Button
         if (hasDetails) {
             const toggle = document.createElement('button');
-            toggle.className = 'expand-toggle';
-            toggle.textContent = 'View details';
+            toggle.className = 'blog-read-more';
+            toggle.innerHTML = 'Read More <span class="arrow">↓</span>';
             toggle.onclick = (e) => {
                 e.stopPropagation();
                 item.classList.toggle('expanded');
-                toggle.textContent = item.classList.contains('expanded') ? 'Hide details' : 'View details';
+                toggle.innerHTML = item.classList.contains('expanded')
+                    ? 'Show Less <span class="arrow">↑</span>'
+                    : 'Read More <span class="arrow">↓</span>';
             };
             content.appendChild(toggle);
             content.appendChild(details);
         }
 
-        item.appendChild(marker);
+        // Blog-style: No timeline marker, just the card
         item.appendChild(content);
         return item;
     }
