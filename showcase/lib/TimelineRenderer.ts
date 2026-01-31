@@ -152,7 +152,75 @@ export class TimelineRenderer {
     private setupInteractions(): void {
         // Observer for context updates (if needed)
         // For now, the global scroll listener handles the signal pulse
+
+        // Auto-hide sticky toolbar on scroll
+        this.setupToolbarAutoHide();
+
         console.log('🍽️ Timeline interactions initialized');
+    }
+
+    private setupToolbarAutoHide(): void {
+        let lastScrollY = window.scrollY;
+        let scrollTimeout: number;
+        let isToolbarExpanded = true;
+
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            const scrollDelta = currentScrollY - lastScrollY;
+            const toolbar = this.toolbar;
+
+            if (!toolbar) return;
+
+            // Clear previous timeout
+            clearTimeout(scrollTimeout);
+
+            // Scrolling down
+            if (scrollDelta > 5 && currentScrollY > 100) {
+                toolbar.classList.add('toolbar-hidden');
+                toolbar.classList.remove('toolbar-compact', 'toolbar-expanded');
+                isToolbarExpanded = false;
+            }
+            // Scrolling up
+            else if (scrollDelta < -5) {
+                toolbar.classList.remove('toolbar-hidden');
+                toolbar.classList.add('toolbar-compact');
+                toolbar.classList.remove('toolbar-expanded');
+                isToolbarExpanded = false;
+            }
+            // At top of page
+            else if (currentScrollY < 50) {
+                toolbar.classList.remove('toolbar-hidden', 'toolbar-compact');
+                toolbar.classList.add('toolbar-expanded');
+                isToolbarExpanded = true;
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        // Attach scroll listener
+        window.addEventListener('scroll', handleScroll, { passive: true });
+
+        // Click compact toolbar to expand
+        this.toolbar?.addEventListener('click', (e) => {
+            if (this.toolbar?.classList.contains('toolbar-compact')) {
+                e.stopPropagation();
+                this.toolbar.classList.remove('toolbar-compact');
+                this.toolbar.classList.add('toolbar-expanded');
+                isToolbarExpanded = true;
+
+                // Auto-collapse after 5 seconds of no interaction
+                clearTimeout(scrollTimeout);
+                scrollTimeout = window.setTimeout(() => {
+                    if (window.scrollY > 100 && isToolbarExpanded) {
+                        this.toolbar?.classList.remove('toolbar-expanded');
+                        this.toolbar?.classList.add('toolbar-compact');
+                        isToolbarExpanded = false;
+                    }
+                }, 5000);
+            }
+        });
+
+        console.log('🎯 Toolbar auto-hide enabled');
     }
 
     private renderStatsContainer(): void {

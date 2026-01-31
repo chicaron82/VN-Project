@@ -552,7 +552,40 @@
     background: linear-gradient(to bottom, rgba(11, 11, 15, 0.95) 0%, rgba(11, 11, 15, 0.8) 80%, transparent 100%);
     backdrop-filter: blur(5px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-height: 300px;
+    overflow: hidden;
+}
+
+/* Auto-hide states */
+.timeline-toolbar-container.toolbar-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.timeline-toolbar-container.toolbar-compact .timeline-toolbar,
+.timeline-toolbar-container.toolbar-compact .scrubber-label {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.timeline-toolbar-container.toolbar-compact {
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.timeline-toolbar-container.toolbar-compact:hover {
+    background: linear-gradient(to bottom, rgba(11, 11, 15, 1) 0%, rgba(11, 11, 15, 0.9) 80%, transparent 100%);
+}
+
+.timeline-toolbar-container.toolbar-expanded {
+    max-height: 300px;
 }
 
 .timeline-toolbar {
@@ -912,9 +945,21 @@ select.timeline-btn option {
 }
 
 /* Hide scrubber on mobile */
+/* Hide scrubber on very small screens, but keep for landscape/tablets */
 @media (max-width: 768px) {
     .timeline-scrubber {
-        display: none;
+        display: flex;
+        /* Force show */
+        right: 5px;
+        padding: 6px 4px;
+        transform: translateY(-50%) scale(0.75);
+        transform-origin: right center;
+        background: rgba(11, 11, 15, 0.8);
+    }
+
+    .scrubber-label {
+        display: none !important;
+        /* Hide labels on mobile to save space */
     }
 }
 
@@ -4541,6 +4586,7 @@ select.timeline-btn option {
     color: #ff9e80;
     box-shadow: 0 0 10px rgba(255, 87, 51, 0.1);
 }
+
 /* ═══════════════════════════════════════════════════════════════
    POST-MORTEM REFLECTIONS SECTION
    ═══════════════════════════════════════════════════════════════ */
@@ -4821,14 +4867,14 @@ select.timeline-btn option {
     border-radius: 4px;
 }
 
-.experiment-variable-mimic > h2 {
+.experiment-variable-mimic>h2 {
     font-size: 1.8rem;
     margin-bottom: 2rem;
     color: #dc2626;
 }
 
 @media (prefers-color-scheme: dark) {
-    .experiment-variable-mimic > h2 {
+    .experiment-variable-mimic>h2 {
         color: #ef4444;
     }
 }
@@ -4850,6 +4896,7 @@ select.timeline-btn option {
 }
 
 @media (prefers-color-scheme: dark) {
+
     .mimic-origin,
     .mimic-decision,
     .mimic-results,
@@ -4870,6 +4917,7 @@ select.timeline-btn option {
 }
 
 @media (prefers-color-scheme: dark) {
+
     .mimic-origin h3,
     .mimic-decision h3,
     .mimic-results h3,
@@ -5369,9 +5417,52 @@ select.timeline-btn option {
 
 /* Dark Mode Table Adjustments */
 @media (prefers-color-scheme: dark) {
+
     .assessment-table th,
     .trade-offs-table th {
         background: rgba(0, 255, 136, 0.1);
     }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Explicit support for light theme
+   ═══════════════════════════════════════════════════════════════ */
+body.light-mode .hero-title {
+    color: #1a1a1a;
+    text-shadow: none;
+    background: linear-gradient(135deg, #2980b9 0%, #27ae60 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .hero-subtitle {
+    color: #666;
+}
+
+body.light-mode .hero-description {
+    color: #555;
+    font-weight: 500;
+}
+
+body.light-mode .stat-item {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .stat-item:hover {
+    background: #f8f9fa;
+    border-color: rgba(52, 152, 219, 0.4);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .stat-value {
+    color: #2980b9;
+}
+
+body.light-mode .stat-label {
+    color: #666;
+}
