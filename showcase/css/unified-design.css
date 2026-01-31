@@ -201,28 +201,28 @@ section p {
     right: 10%;
     height: 1px;
     background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(100, 100, 100, 0.15) 20%,
-        rgba(100, 100, 100, 0.15) 80%,
-        transparent 100%);
+            transparent 0%,
+            rgba(100, 100, 100, 0.15) 20%,
+            rgba(100, 100, 100, 0.15) 80%,
+            transparent 100%);
 }
 
 @media (prefers-color-scheme: dark) {
     .tab-panel:not(:last-child)::after {
         background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.1) 20%,
-            rgba(255, 255, 255, 0.1) 80%,
-            transparent 100%);
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 20%,
+                rgba(255, 255, 255, 0.1) 80%,
+                transparent 100%);
     }
 }
 
 [data-theme="dark"] .tab-panel:not(:last-child)::after {
     background: linear-gradient(90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.1) 20%,
-        rgba(255, 255, 255, 0.1) 80%,
-        transparent 100%);
+            transparent 0%,
+            rgba(255, 255, 255, 0.1) 20%,
+            rgba(255, 255, 255, 0.1) 80%,
+            transparent 100%);
 }
 
 /* Enhanced shadow separator for better depth */
@@ -282,6 +282,7 @@ section p {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -338,6 +339,7 @@ section p {
    ========================================================================== */
 
 @media (prefers-color-scheme: dark) {
+
     /* Very subtle borders around major content blocks */
     .stat-card,
     .workflow-step,
@@ -397,6 +399,7 @@ section:not(:first-child) {
 }
 
 @media (prefers-color-scheme: dark) {
+
     .workflow-section,
     .results-section {
         color: #e0e0e0;
@@ -406,4 +409,49 @@ section:not(:first-child) {
 [data-theme="dark"] .workflow-section,
 [data-theme="dark"] .results-section {
     color: #e0e0e0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE: SPOTLIGHT & TECHNICAL CARDS
+   Ensure explicit visibility for Bento Grid items
+   ═══════════════════════════════════════════════════════════════ */
+body.light-mode .technical-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+body.light-mode .technical-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+    border-color: rgba(52, 152, 219, 0.3);
+}
+
+body.light-mode .tech-header h3 {
+    color: #1a1a1a;
+}
+
+body.light-mode .tech-details p,
+body.light-mode .tech-details li {
+    color: #555;
+}
+
+body.light-mode .tech-icon {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+/* Fix code window in light mode */
+body.light-mode .code-window {
+    background: #1e1e1e;
+    /* Keep code dark even in light mode for contrast */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .code-header {
+    background: #252526;
+    border-bottom: 1px solid #333;
+    color: #ccc;
 }

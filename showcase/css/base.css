@@ -2256,6 +2256,25 @@ section h2 {
     color: #fff;
 }
 
+/* Explicit Light Mode Overrides */
+body.light-mode .achievements {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .achievements h3 {
+    color: #1a1a1a;
+}
+
+body.light-mode .achievements li {
+    color: rgba(0, 0, 0, 0.8);
+    border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .achievements li strong {
+    color: #1a1a1a;
+}
+
 /* --- FOOTER --- */
 .site-footer {
     background: #0a0a0a;
@@ -2996,6 +3015,30 @@ section h2 {
     font-weight: 600;
     color: #333;
     white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+    .metric-value {
+        color: #ddd;
+    }
+}
+
+/* Explicit Light Mode Overrides (for manual toggle) */
+body.light-mode .metric-card {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .metric-card h4 {
+    color: #666;
+}
+
+body.light-mode .metric-track {
+    background: #eee;
+}
+
+body.light-mode .metric-value {
+    color: #333;
 }
 
 /* --- 3. FLOATING 'TRY IT' BUTTON --- */

@@ -257,6 +257,66 @@
     }
 }
 
+/* Light mode overrides */
+body.light-mode .stats-title {
+    color: #1a1a1a;
+    text-shadow: none;
+}
+
+body.light-mode .stats-subtitle {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+body.light-mode .timeline-stats-dashboard {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .stat-card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .stat-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+body.light-mode .stat-value {
+    color: #2c3e50;
+}
+
+body.light-mode .stat-label {
+    color: rgba(0, 0, 0, 0.6);
+}
+
+body.light-mode .stat-icon {
+    color: #2c3e50;
+    /* Emoji fallbacks/SVG fills usually inherit */
+}
+
+body.light-mode .stat-bar {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .stat-percentage {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/* Total card active state in light mode */
+body.light-mode .stat-card.active,
+body.light-mode .stat-card.selected {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: #00b862;
+}
+
+body.light-mode .stat-card.active .stat-value,
+body.light-mode .stat-card.selected .stat-value {
+    color: #00a055;
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
 

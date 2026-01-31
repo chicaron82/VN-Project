@@ -118,6 +118,7 @@
     margin: 0 0 0.5rem 0;
     background: linear-gradient(90deg, #fff, #b4b4b4);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -808,8 +809,13 @@
 .phase-link:hover {
     background: rgba(102, 126, 234, 0.3);
     border-color: #667eea;
-    transform: translateY(-2px);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
+
+
+
+
 
 .phase-link::after {
     display: none;
@@ -1040,6 +1046,8 @@
             #00d4ff);
     background-size: 300% 300%;
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -2057,4 +2065,75 @@
     .contrast-gallery {
         grid-template-columns: 1fr;
     }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES: EVOLUTION
+   (Re-applied cleanly)
+   ═══════════════════════════════════════════════════════════════ */
+body.light-mode .comparison-item {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .comparison-item p {
+    color: #555;
+    font-weight: 400;
+}
+
+body.light-mode .comparison-grid::before {
+    /* "VS" Text */
+    background: linear-gradient(135deg, #2980b9, #27ae60);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.2;
+}
+
+body.light-mode .code-comparison {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .metric-card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .metric-label {
+    color: #666;
+}
+
+body.light-mode .architecture-diagram {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .architecture-title {
+    color: #1a1a1a;
+}
+
+body.light-mode .architecture-side h4 {
+    color: #333;
+}
+
+body.light-mode .layer {
+    background: #e6f7ff;
+    border-color: #1890ff;
+}
+
+body.light-mode .layer-title {
+    color: #0050b3;
+}
+
+body.light-mode .layer-items {
+    color: #555;
+}
+
+body.light-mode .web-node {
+    background: #fff1f0;
+    border-color: #ff4d4f;
+    color: #a8071a;
 }

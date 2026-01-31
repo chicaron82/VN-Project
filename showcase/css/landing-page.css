@@ -587,6 +587,61 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Explicit support for light theme
+   ═══════════════════════════════════════════════════════════════ */
+body.light-mode {
+    background: #f8f9fa;
+    color: #1a1a1a;
+    background-image: none;
+    /* Clean background for light mode */
+}
+
+body.light-mode .hero h1 {
+    /* Gradient text usually works on white, but ensure fallback */
+    text-shadow: none;
+}
+
+body.light-mode .hero p {
+    color: #4a4a4a;
+    font-weight: 400;
+}
+
+body.light-mode .card {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+}
+
+body.light-mode .card:hover {
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 255, 136, 0.6);
+}
+
+body.light-mode .card h2 {
+    color: #1a1a1a;
+}
+
+body.light-mode .card p {
+    color: #555;
+}
+
+body.light-mode .badge {
+    box-shadow: none;
+    border: 1px solid currentColor;
+}
+
+body.light-mode .footer-brand-title {
+    color: #333;
+}
+
+body.light-mode .footer-brand-tagline {
+    color: #666;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    REDUCED MOTION SUPPORT
    Accessibility-first design
    ═══════════════════════════════════════════════════════════════ */
