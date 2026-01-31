@@ -7,12 +7,12 @@
  * Phase 2: Integrated with TimelineStats for category dashboard
  */
 
-import { TIMELINE_DATA, type TimelineEntry } from '../data/timeline';
-import { V3_LAB_DATA } from '../data/v3-lab-entries'; // Import V3 Data
-import { timelineAnimations } from '../ts/TimelineAnimations';
-import { TimelineStats } from '../ts/TimelineStats';
-import { TimelineScrubber } from '../ts/TimelineScrubber';
-import { TimelineSearch } from '../ts/TimelineSearch';
+import { TIMELINE_DATA, type TimelineEntry } from '../../data/timeline';
+import { V3_LAB_DATA } from '../../data/v3-lab-entries'; // Import V3 Data
+import { timelineAnimations } from './TimelineAnimations';
+import { TimelineStats } from './TimelineStats';
+import { TimelineScrubber } from './TimelineScrubber';
+import { TimelineSearch } from './TimelineSearch';
 
 export class TimelineRenderer {
     private container: HTMLElement | null;

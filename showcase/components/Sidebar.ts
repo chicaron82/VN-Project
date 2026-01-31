@@ -5,7 +5,7 @@
  * Uses shared UV7GrabHandleRepositioner from V2 for smooth, professional grab handle behavior.
  */
 
-import { UV7GrabHandleRepositioner } from '../../../v2/ui/components/GrabHandle';
+import { UV7GrabHandleRepositioner } from '../../v2/ui/components/GrabHandle';
 
 interface SidebarElements {
     sidebar: HTMLElement | null;

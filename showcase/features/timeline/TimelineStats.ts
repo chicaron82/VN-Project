@@ -11,7 +11,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import type { TimelineEntry } from '../data/timeline';
+import type { TimelineEntry } from '../../data/timeline';
 
 export interface CategoryStat {
     name: string;

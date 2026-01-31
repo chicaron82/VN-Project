@@ -1,5 +1,5 @@
 
-import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
 
 /**
  * ═══════════════════════════════════════════════════════════════
