@@ -169,6 +169,11 @@ export class ToriService {
             // Projected State Calculation
             const projected = this.calculateProjectedState(state);
 
+            // Emit status change event for UI updates
+            window.dispatchEvent(new CustomEvent('uv7:tori-status-changed', {
+                detail: projected
+            }));
+
             // Check for critical conditions
             this.checkNotifications(projected);
 
