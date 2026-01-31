@@ -181,6 +181,9 @@ export class LandingApp extends BaseApp {
         // For now, we attempt silent init or hope for previous interaction.
         if (window.shellAudio) window.shellAudio.init();
 
+        // Skip flag
+        let skipped = false;
+
         // 1. Setup Boot DOM
         container.innerHTML = `
             <div class="boot-screen" style="
@@ -200,6 +203,17 @@ export class LandingApp extends BaseApp {
                     UV7 TERMINAL // v8.4.8
                 </div>
                 <div class="boot-log" id="boot-log"></div>
+                <div class="boot-skip-hint" id="boot-skip-hint" style="
+                    position: absolute;
+                    bottom: 2rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    color: rgba(0, 255, 136, 0.5);
+                    font-size: 0.9rem;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    cursor: pointer;
+                ">Press any key or tap to skip</div>
                 <div class="scanline" style="
                     position: absolute; top: 0; left: 0; width: 100%; height: 10px;
                     background: rgba(0, 255, 136, 0.1);
@@ -217,8 +231,12 @@ export class LandingApp extends BaseApp {
         `;
 
         const log = container.querySelector('#boot-log')!;
+        const skipHint = container.querySelector('#boot-skip-hint') as HTMLElement;
+        const bootScreen = container.querySelector('.boot-screen') as HTMLElement;
+
         const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
         const addLog = (text: string, type = '') => {
+            if (skipped) return;
             const div = document.createElement('div');
             div.className = `log-line ${type}`;
             div.textContent = `> ${text}`;
@@ -227,55 +245,101 @@ export class LandingApp extends BaseApp {
             if (window.shellAudio) window.shellAudio.play(type === 'error' ? 'error' : 'click');
         };
 
+        // Skip handler
+        const skip = () => {
+            if (skipped) return;
+            skipped = true;
+            bootScreen.style.opacity = '0';
+            bootScreen.style.transition = 'opacity 0.3s ease-out';
+            setTimeout(() => this.mountMainContent(container), 300);
+        };
+
+        // Show skip hint after 2 seconds
+        setTimeout(() => {
+            if (!skipped && skipHint) {
+                skipHint.style.opacity = '1';
+            }
+        }, 2000);
+
+        // Skip on any key press or click
+        const keyHandler = (e: KeyboardEvent) => skip();
+        const clickHandler = (e: MouseEvent) => skip();
+
+        document.addEventListener('keydown', keyHandler, { once: true });
+        bootScreen.addEventListener('click', clickHandler, { once: true });
+
+        // Cleanup listeners if boot completes naturally
+        const cleanup = () => {
+            document.removeEventListener('keydown', keyHandler);
+            bootScreen.removeEventListener('click', clickHandler);
+        };
+
         // 2. The Sequence
         if (window.shellAudio) window.shellAudio.play('startup'); // Try to play drone
 
         addLog('BIOS CHECK...', 'warn');
+        if (skipped) { cleanup(); return; }
         await sleep(300);
         addLog('CPU: UV7 Neural Core... OK', 'success');
+        if (skipped) { cleanup(); return; }
         await sleep(150);
         addLog('RAM: 848TB Infinite Loop... OK', 'success');
+        if (skipped) { cleanup(); return; }
         await sleep(150);
         addLog('GPU: Reality Engine v2... OK', 'success');
+        if (skipped) { cleanup(); return; }
         await sleep(400);
 
         addLog('Mounting File Systems...');
+        if (skipped) { cleanup(); return; }
         await sleep(200);
         addLog('/dev/v1/chaos ...... MOUNTED (Read Only)');
+        if (skipped) { cleanup(); return; }
         await sleep(100);
         addLog('/dev/v2/order ...... MOUNTED (Read/Write)');
+        if (skipped) { cleanup(); return; }
         await sleep(100);
         addLog('/dev/showcase ...... MOUNTED');
+        if (skipped) { cleanup(); return; }
         await sleep(500);
 
         addLog('Initializing Neural Link...');
+        if (skipped) { cleanup(); return; }
         await sleep(300);
         addLog('Connecting to Crew [DiZee, Tori, Belle, Zee]...');
+        if (skipped) { cleanup(); return; }
         await sleep(600);
         addLog('Handshake Established. Latency: 0ms', 'success');
+        if (skipped) { cleanup(); return; }
         await sleep(400);
 
         addLog('Loading Graphical Shell...');
+        if (skipped) { cleanup(); return; }
         await sleep(800);
 
         // Glitch Effect
         addLog('EXECUTING STARTUP.BAT', 'warn');
         if (window.shellAudio) window.shellAudio.play('glitch');
 
-        const bootScreen = container.querySelector('.boot-screen') as HTMLElement;
+        if (skipped) { cleanup(); return; }
         bootScreen.style.filter = 'contrast(200%) brightness(200%)';
         bootScreen.style.transform = 'skewX(10deg)';
         await sleep(100);
+        if (skipped) { cleanup(); return; }
         bootScreen.style.filter = 'none';
         bootScreen.style.transform = 'none';
         await sleep(50);
+        if (skipped) { cleanup(); return; }
         bootScreen.style.opacity = '0';
         bootScreen.style.transition = 'opacity 0.5s ease-out';
 
         await sleep(500);
 
-        // 3. Mount Real App
-        this.mountMainContent(container);
+        // Cleanup and mount real app
+        cleanup();
+        if (!skipped) {
+            this.mountMainContent(container);
+        }
     }
 
     renderTemplate(): string {
