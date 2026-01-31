@@ -17,57 +17,57 @@ import { UV7OS } from '../../v2/ui/components/UV7OS';
 import type { TimelineEntry } from '../../v2/ui/components/UV7OSConfig'; // Import the class directly
 
 // Import showcase components
-import { TimelineRenderer } from '../lib/TimelineRenderer';
-import { TabController } from '../lib/TabController';
+import { TimelineRenderer } from '../features/timeline/TimelineRenderer';
+import { TabController } from './TabController';
 // SwipeController replaced by CSS scroll-snap
-// import { MagneticCursor } from './MagneticCursor'; // Disabled to show timeline ripple effects
-import { initAppStateManager } from '../lib/AppStateManager';
-import { initShowcaseCarousel } from '../lib/components/showcase-carousel';
-import { UV7EchoSystem } from '../lib/UV7EchoSystem';
+// import { MagneticCursor } from '../components/MagneticCursor'; // Disabled to show timeline ripple effects
+import { initAppStateManager } from './AppStateManager';
+import { initShowcaseCarousel } from '../components/showcase-carousel';
+import { UV7EchoSystem } from '../features/UV7EchoSystem';
 // Remove initUV7OS since we'll create the instance directly
 // Remove initGrabHandle since UV7OS handles it automatically
 
 // Import section renderers
-import { HomeSection } from './components/HomeSection';
-import { JourneySection } from './components/JourneySection';
-import { WorkflowSection } from './components/WorkflowSection';
-import { SpotlightSection } from './components/SpotlightSection';
-import { EvolutionSection } from './components/EvolutionSection';
-import { ExperimentSection } from './components/ExperimentSection';
-import { WhoSection } from './components/WhoSection';
+import { HomeSection } from '../components/HomeSection';
+import { JourneySection } from '../components/JourneySection';
+import { WorkflowSection } from '../components/WorkflowSection';
+import { SpotlightSection } from '../components/SpotlightSection';
+import { EvolutionSection } from '../components/EvolutionSection';
+import { ExperimentSection } from '../components/ExperimentSection';
+import { WhoSection } from '../components/WhoSection';
 
 // Import timeline enhancements
-import { TimelineAnimations } from './TimelineAnimations';
-import { TimelineStats } from './TimelineStats';
-import { TimelineDeepLink } from './TimelineDeepLink';
-import { TimelineKeyboardNav } from './TimelineKeyboardNav';
-import { TimelineHoverPreview } from './TimelineHoverPreview';
-import { TimelinePlayback } from './TimelinePlayback';
-import { TimelineParallax } from './TimelineParallax';
-import { TimelineBackgrounds } from './TimelineBackgrounds';
-import { TimelineAudio } from './TimelineAudio';
-import { TimelineHaptics } from './TimelineHaptics';
-import { TimelineMeta } from './TimelineMeta';
-import { TimelineHeatmap } from './TimelineHeatmap';
-import { TimelineExport } from './TimelineExport';
+import { TimelineAnimations } from '../features/timeline/TimelineAnimations';
+import { TimelineStats } from '../features/timeline/TimelineStats';
+import { TimelineDeepLink } from '../features/timeline/TimelineDeepLink';
+import { TimelineKeyboardNav } from '../features/timeline/TimelineKeyboardNav';
+import { TimelineHoverPreview } from '../features/timeline/TimelineHoverPreview';
+import { TimelinePlayback } from '../features/timeline/TimelinePlayback';
+import { TimelineParallax } from '../features/timeline/TimelineParallax';
+import { TimelineBackgrounds } from '../features/timeline/TimelineBackgrounds';
+import { TimelineAudio } from '../features/timeline/TimelineAudio';
+import { TimelineHaptics } from '../features/timeline/TimelineHaptics';
+import { TimelineMeta } from '../features/timeline/TimelineMeta';
+import { TimelineHeatmap } from '../features/timeline/TimelineHeatmap';
+import { TimelineExport } from '../features/timeline/TimelineExport';
 
 // Import showcase UI components
-import { Sidebar } from './components/Sidebar';
-import { NotificationShade } from './components/NotificationShade';
+import { Sidebar } from '../components/Sidebar';
+import { NotificationShade } from '../components/NotificationShade';
 
 // Import effects
-import { initTypingEffect } from '../lib/effects/typing-effect';
+import { initTypingEffect } from '../effects/typing-effect';
 import { initTilt } from '../../v2/ui/effects/TiltEffect';
 import { initAnimatedStats } from '../../v2/ui/effects/AnimatedStats';
-import { initPremiumAnimations } from '../lib/effects/premium-animations';
+import { initPremiumAnimations } from '../effects/premium-animations';
 
 // Import utilities
-import { initPerformanceOptimizations } from '../lib/utils/performance';
-import { initLoadStats } from '../lib/utils/load-stats';
-import { initAnalytics } from '../lib/utils/analytics';
-import { initContentFeatures } from '../lib/utils/content-features';
+import { initPerformanceOptimizations } from '../utils/performance';
+import { initLoadStats } from '../utils/load-stats';
+import { initAnalytics } from '../utils/analytics';
+import { initContentFeatures } from '../utils/content-features';
 import { initUXEnhancements } from '../../v2/ui/utils/UXEnhancements';
-import { injectFooters } from '../lib/FooterInjector';
+import { injectFooters } from '../components/FooterInjector';
 
 console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
