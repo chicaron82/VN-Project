@@ -1,9 +1,13 @@
 import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
+import { CodeComparisonSection } from './CodeComparisonSection';
 
 export class ResultsSection {
+
+
     constructor() {
         this.render();
         this.updateDynamicStats();
+        this.initializeCodeComparison();
     }
 
     updateDynamicStats(): void {
@@ -160,8 +164,18 @@ export class ResultsSection {
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Code Comparison Mount Point -->
+                    <div id="code-comparison-mount"></div>
                 </div>
             </section>
         `;
+    }
+
+    private initializeCodeComparison(): void {
+        // Initialize code comparison section after a brief delay to ensure mount point exists
+        setTimeout(() => {
+            new CodeComparisonSection();
+        }, 100);
     }
 }

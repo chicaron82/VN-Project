@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const scrollLeft = tabPanelsContainer.scrollLeft;
                 const panelWidth = window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / panelWidth);
-                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution', 'experiment'];
+                const tabs = ['home', 'journey', 'workflow', 'results', 'spotlight', 'evolution', 'experiment', 'who'];
                 const expectedTab = tabs[currentIndex];
 
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {

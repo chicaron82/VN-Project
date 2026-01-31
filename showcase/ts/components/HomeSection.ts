@@ -201,9 +201,6 @@ export class HomeSection {
                 </section>
             </div>
 
-            <!-- Who Are We Section (merged from Who tab) -->
-            <div id="uv7-who-mount"></div>
-
             <!-- Footer (injected from template) -->
             <div class="footer-placeholder"></div>
         </div>

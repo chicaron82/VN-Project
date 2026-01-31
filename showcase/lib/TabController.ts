@@ -31,8 +31,8 @@ export class TabController {
             'results',
             'spotlight',
             'evolution',
-            'experiment'
-            // Note: 'who' was merged into 'home' tab
+            'experiment',
+            'who'
         ];
 
         this.activeTab = 'home';
@@ -296,7 +296,8 @@ export class TabController {
                 results: 'Results',
                 spotlight: 'Tech Spotlight',
                 evolution: 'Evolution',
-                experiment: 'V3 Experiment'
+                experiment: 'V3 Experiment',
+                who: 'The Crew'
             };
             win.uv7Runtime.instance.setPhase(names[tabId] || tabId);
         }
@@ -353,7 +354,8 @@ export class TabController {
             results: 'Timeline',
             spotlight: 'Spotlight',
             evolution: 'Evolution',
-            experiment: 'Experiment'
+            experiment: 'Experiment',
+            who: 'Who'
         };
         return names[tabId] || tabId;
     }

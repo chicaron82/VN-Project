@@ -68,6 +68,7 @@
     <link rel="stylesheet" href="css/timeline-playback.css">
     <link rel="stylesheet" href="css/timeline-heatmap.css">
     <link rel="stylesheet" href="css/timeline-export.css">
+    <link rel="stylesheet" href="css/code-comparison.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -351,11 +352,15 @@
                 <span class="tab-icon">🧪</span>
                 <span class="tab-label">Experiment</span>
             </button>
+            <button class="tab-item" data-tab="who" role="tab" aria-selected="false">
+                <span class="tab-icon">👥</span>
+                <span class="tab-label">Who</span>
+            </button>
 
             <!-- Swipe indicator (Phase 26e: Facebook-style) -->
             <div class="tab-indicator" aria-hidden="true"></div>
         </div>
-        <div id="tab-progress" class="tab-progress">●○○○○○○ 1 of 7</div>
+        <div id="tab-progress" class="tab-progress">●○○○○○○○ 1 of 8</div>
     </div>
 
     <!-- TAB PANELS CONTAINER -->
@@ -436,6 +441,16 @@
          ========================================== -->
         <div class="tab-panel" data-panel="experiment" role="tabpanel" aria-hidden="true">
             <div id="uv7-experiment-mount"></div>
+
+            <!-- Footer (injected from template) -->
+            <div class="footer-placeholder"></div>
+        </div>
+
+        <!-- ==========================================
+         SECTION 7: WHO ARE WE
+         ========================================== -->
+        <div class="tab-panel" data-panel="who" role="tabpanel" aria-hidden="true">
+            <div id="uv7-who-mount"></div>
 
             <!-- Footer (injected from template) -->
             <div class="footer-placeholder"></div>

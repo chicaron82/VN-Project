@@ -20,51 +20,6 @@ export class SpotlightSection {
                         From tether mechanics to save systems, here's what makes the engine tick.
                     </p>
 
-                    <!-- LIVE CODE DIFF (New) -->
-                    <div class="code-evolution-container">
-                        <div class="code-window">
-                            <div class="code-header">
-                                <span>legacy_tether_v1.js</span>
-                                <span class="code-badge badge-chaos">CHAOS</span>
-                            </div>
-                            <div class="code-content">// The Spaghetti Incident
-                                function updateTether() {
-                                <span class="keyword">if</span> (window.isDecaying) {
-                                <span class="comment">// Hope this exists...</span>
-                                tether -= 0.5;
-                                <span class="keyword">if</span> (tether < 0) die(); } <span class="comment">// Data
-                                    mixed
-                                    with
-                                    UI logic</span>
-                                    $('.tether-bar').css('width', tether + '%');
-                                    }
-                            </div>
-                        </div>
-                        <div class="code-window">
-                            <div class="code-header">
-                                <span>TetherSystem.ts</span>
-                                <span class="code-badge badge-order">ORDER</span>
-                            </div>
-                            <div class="code-content"><span class="comment">// Type-Safe Event Driven</span>
-                                <span class="keyword">class</span> TetherSystem {
-                                <span class="keyword">private</span> level: <span class="type">number</span> = 100;
-
-                                <span class="keyword">public</span> decay(amount: <span class="type">number</span>):
-                                <span class="type">void</span> {
-                                <span class="keyword">this</span>.level = Math.max(0, <span
-                                    class="keyword">this</span>.level -
-                                amount);
-                                <span class="keyword">this</span>.eventBus.emit(<span
-                                    class="string">'tether:update'</span>,
-                                {
-                                level: <span class="keyword">this</span>.level
-                                });
-                                }
-                                }
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Bento Grid -->
                     <div class="spotlight-bento-grid">
                             <!-- Card 1: Momentum Carousel -->

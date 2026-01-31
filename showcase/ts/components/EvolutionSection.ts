@@ -3,80 +3,6 @@ import { createBanner, BANNER_CONFIGS } from '../../lib/BannerGenerator';
 export class EvolutionSection {
     constructor() {
         this.render();
-        this.updateDynamicStats();
-    }
-
-    updateDynamicStats(): void {
-        // Wait a bit for stats to load
-        setTimeout(() => {
-            const stats = window.UV7Stats;
-            if (!stats) {
-                console.warn('📊 UV7Stats not loaded yet for Evolution section');
-                return;
-            }
-
-            // Update Phases Complete
-            if (stats.phasesComplete !== undefined) {
-                const phasesValue = document.querySelector('.evolution-metrics .metric-card:nth-child(2) .metric-value');
-                if (phasesValue) {
-                    phasesValue.textContent = stats.phasesComplete.toString();
-                }
-            }
-
-            // Update Test Files Count
-            if (stats.testsTotal !== undefined) {
-                const testsValue = document.querySelector('.evolution-metrics .metric-card:nth-child(3) .metric-value');
-                const testsLabel = document.querySelector('.evolution-metrics .metric-card:nth-child(3) .metric-change');
-                if (testsValue) {
-                    testsValue.textContent = stats.testsTotal.toLocaleString();
-                }
-                if (testsLabel) {
-                    const passing = stats.testsPass ?? stats.testsTotal;
-                    const failing = stats.testsFail ?? 0;
-                    if (failing > 0) {
-                        testsLabel.textContent = `${passing} passing, ${failing} failing`;
-                    } else {
-                        testsLabel.textContent = `${passing} passing ✓`;
-                    }
-                }
-            }
-
-            // Update TypeScript Errors
-            if (stats.tsErrors !== undefined) {
-                const errorsValue = document.querySelector('.evolution-metrics .metric-card:nth-child(4) .metric-value');
-                const errorsChange = document.querySelector('.evolution-metrics .metric-card:nth-child(4) .metric-change');
-                if (errorsValue) {
-                    errorsValue.textContent = stats.tsErrors.toString();
-                }
-                if (errorsChange) {
-                    if (stats.tsErrors === 0) {
-                        errorsChange.textContent = '✓ Clean';
-                        errorsChange.classList.remove('negative');
-                    } else {
-                        errorsChange.textContent = `→ 0 (goal)`;
-                        errorsChange.classList.add('negative');
-                    }
-                }
-            }
-
-            // Update comparison text references
-            const strictTypesText = document.querySelector('.comparison-column.col-order .comparison-item:nth-child(3) p');
-            if (strictTypesText && stats.tsErrors !== undefined) {
-                if (stats.tsErrors === 0) {
-                    strictTypesText.textContent = 'TypeScript caught 40+ crashes. All errors resolved. Clean build ✓';
-                } else {
-                    strictTypesText.textContent = `TypeScript caught 40+ crashes. ${stats.tsErrors} minor errors remain (unused vars, EventBus types). Game runs great anyway.`;
-                }
-            }
-
-            const testInfraText = document.querySelector('.comparison-column.col-order .comparison-item:nth-child(5) p');
-            if (testInfraText && stats.testsTotal !== undefined) {
-                const passing = stats.testsPass ?? stats.testsTotal;
-                testInfraText.textContent = `${stats.testsTotal} test files with ${passing} tests passing. Full coverage in progress.`;
-            }
-
-            console.log('📊 Evolution stats updated:', stats);
-        }, 500);
     }
 
     render(): void {
@@ -95,32 +21,12 @@ export class EvolutionSection {
                     </p>
 
                     <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
-                        Version 848 V1 → V2 Migration
+                        The Transformation Story
                     </h3>
 
-                    <!-- Metrics Dashboard -->
-                    <div class="evolution-metrics">
-                        <div class="metric-card">
-                            <div class="metric-value">6,247</div>
-                            <div class="metric-label">Lines Migrated</div>
-                            <div class="metric-change">+20% expansion</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">79</div>
-                            <div class="metric-label">Phases Complete</div>
-                            <div class="metric-change">~95% ported</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">1,137</div>
-                            <div class="metric-label">Test Files</div>
-                            <div class="metric-change">1137 passing ✓</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-value">0</div>
-                            <div class="metric-label">TS Errors</div>
-                            <div class="metric-change">✓ Clean</div>
-                        </div>
-                    </div>
+                    <p class="section-intro" style="max-width: 700px; margin: 0 auto 3rem; text-align: center; font-size: 1.1rem;">
+                        From spaghetti chaos to clean architecture. Here's how V2 fixed what V1 broke—and why it mattered.
+                    </p>
 
                     <div class="comparison-grid">
                         <!-- V1 Chaos Column -->
