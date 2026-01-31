@@ -370,23 +370,23 @@ export class LandingApp extends BaseApp {
                     <div class="card-grid">
                         <a href="#/v1" class="card app-card" data-app="v1">
                             <div class="card-icon">🔥</div>
-                            <span class="badge badge-legacy">The Origin</span>
-                            <h2>Play V1</h2>
-                            <p>A <span class="stat-number" data-target="50">0</span>-day sprint of pure chaos and discovery. This is where it all started.</p>
+                            <span class="badge badge-legacy">Original</span>
+                            <h2>Version 848: V1</h2>
+                            <p>Play the original <span class="stat-number" data-target="50">0</span>-day build. Raw, chaotic, complete.</p>
                         </a>
 
                         <a href="#/showcase" class="card app-card" data-app="showcase">
                             <div class="card-icon">📖</div>
-                            <span class="badge badge-showcase">The Journey</span>
-                            <h2>View Timeline</h2>
-                            <p><span class="stat-number" data-target="11">0</span> days having fun. <span class="stat-number" data-target="86">0</span> milestones. Every iteration documented.</p>
+                            <span class="badge badge-showcase">Behind the Scenes</span>
+                            <h2>The Timeline</h2>
+                            <p><span class="stat-number" data-target="11">0</span> days having fun. <span class="stat-number" data-target="86">0</span> milestones. See how it's made.</p>
                         </a>
 
                         <a href="#/v2" class="card app-card" data-app="v2">
                             <div class="card-icon">⚡</div>
-                            <span class="badge badge-v2">The Evolution</span>
-                            <h2>Launch V2</h2>
-                            <p>What happens when you rebuild for fun. <span class="stat-number" data-target="590">0</span> tests. Clean architecture. Same soul.</p>
+                            <span class="badge badge-v2">Rebuilt</span>
+                            <h2>Version 848: V2</h2>
+                            <p>Play the TypeScript rebuild. <span class="stat-number" data-target="590">0</span> tests. Same story, cleaner code.</p>
                         </a>
                     </div>
 
@@ -398,28 +398,55 @@ export class LandingApp extends BaseApp {
                         <p class="sub">From chaotic <strong>V1 speedruns</strong> to polished <strong>V2 refactors</strong> to the <strong>Shell architecture</strong> that holds it all together—every iteration taught me something new.</p>
                     </div>
 
-                    <!-- What's Here Section -->
+                    <!-- Version 848: The Game Section -->
                     <div class="why-rebuild-section">
-                        <h3>What You'll Find Here</h3>
+                        <h3>Version 848: The Visual Novel</h3>
                         <div class="card-grid">
                             <div class="card info-card">
-                                <div class="card-icon">🎮</div>
-                                <h2>The Game</h2>
+                                <div class="card-icon">📖</div>
+                                <h2>Story & Themes</h2>
                                 <ul>
-                                    <li><span class="check">✓</span> Visual novel about digital consciousness</li>
-                                    <li><span class="check">✓</span> Two versions (V1 chaos, V2 refinement)</li>
+                                    <li><span class="check">✓</span> Meta-narrative about AI & consciousness</li>
                                     <li><span class="check">✓</span> Bootstrap paradoxes & time loops</li>
-                                    <li><span class="check">✓</span> Ronnie & Tori routes</li>
+                                    <li><span class="check">✓</span> Breaking the fourth wall</li>
+                                    <li><span class="check">✓</span> Digital existence & identity</li>
                                 </ul>
                             </div>
                             <div class="card info-card">
-                                <div class="card-icon">🛠️</div>
-                                <h2>The Tech</h2>
+                                <div class="card-icon">💚</div>
+                                <h2>Routes & Characters</h2>
                                 <ul>
-                                    <li><span class="check dev">✓</span> V1→V2 refactor journey</li>
-                                    <li><span class="check dev">✓</span> Shell architecture (UV7 OS)</li>
+                                    <li><span class="check">✓</span> Ronnie route (the developer)</li>
+                                    <li><span class="check">✓</span> Tori route (the AI)</li>
+                                    <li><span class="check">✓</span> Multiple endings</li>
+                                    <li><span class="check">✓</span> Branching dialogue paths</li>
+                                </ul>
+                            </div>
+                            <div class="card info-card">
+                                <div class="card-icon">⚡</div>
+                                <h2>Experience</h2>
+                                <ul>
+                                    <li><span class="check">✓</span> 2-3 hour playthrough</li>
+                                    <li><span class="check">✓</span> Visual novel mechanics</li>
+                                    <li><span class="check">✓</span> Custom UI/UX design</li>
+                                    <li><span class="check">✓</span> Two versions to choose from</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The Playground Section -->
+                    <div class="why-rebuild-section">
+                        <h3>The Playground: Beyond the Game</h3>
+                        <div class="card-grid">
+                            <div class="card info-card">
+                                <div class="card-icon">🛠️</div>
+                                <h2>The Tech Journey</h2>
+                                <ul>
+                                    <li><span class="check dev">✓</span> V1: <span class="stat-number" data-target="50">0</span>-day speedrun build</li>
+                                    <li><span class="check dev">✓</span> V2: Complete TypeScript rebuild</li>
+                                    <li><span class="check dev">✓</span> Shell: UV7 OS architecture</li>
                                     <li><span class="check dev">✓</span> <span class="stat-number" data-target="232">0</span> automated tests</li>
-                                    <li><span class="check dev">✓</span> Full timeline of iterations</li>
                                 </ul>
                             </div>
                             <div class="card info-card">
@@ -427,9 +454,19 @@ export class LandingApp extends BaseApp {
                                 <h2>The Methodology</h2>
                                 <ul>
                                     <li><span class="check ai">✓</span> Human + AI collaboration</li>
-                                    <li><span class="check ai">✓</span> Iterative development approach</li>
+                                    <li><span class="check ai">✓</span> Iterative development</li>
                                     <li><span class="check ai">✓</span> Learning by building</li>
                                     <li><span class="check ai">✓</span> Having fun first</li>
+                                </ul>
+                            </div>
+                            <div class="card info-card">
+                                <div class="card-icon">📊</div>
+                                <h2>The Documentation</h2>
+                                <ul>
+                                    <li><span class="check">✓</span> Full development timeline</li>
+                                    <li><span class="check">✓</span> <span class="stat-number" data-target="86">0</span> documented milestones</li>
+                                    <li><span class="check">✓</span> Architecture decisions explained</li>
+                                    <li><span class="check">✓</span> Open source & transparent</li>
                                 </ul>
                             </div>
                         </div>
