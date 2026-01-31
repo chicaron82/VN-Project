@@ -1,7 +1,11 @@
 /**
  * Sidebar Component (UV7 Control Center)
  * Handles rendering, toggling, and system stats logic for the desktop sidebar.
+ *
+ * Uses shared UV7GrabHandleRepositioner from V2 for smooth, professional grab handle behavior.
  */
+
+import { UV7GrabHandleRepositioner } from '../../../v2/ui/components/GrabHandle';
 
 interface SidebarElements {
     sidebar: HTMLElement | null;
@@ -15,15 +19,17 @@ interface SidebarElements {
 
 export class Sidebar {
     private el!: SidebarElements;
+    private grabHandle: UV7GrabHandleRepositioner | null = null;
 
     constructor() {
         console.log('📋 Sidebar: Starting initialization...');
         // Don't render - use existing HTML from index.html
         this.cacheElements();
+        this.initGrabHandle();
         this.initEvents();
 
         // Don't initialize system stats here - main.ts handles it
-        console.log('✅ Sidebar: Fully initialized');
+        console.log('✅ Sidebar: Fully initialized (VN-quality grab handle)');
     }
 
     cacheElements(): void {
@@ -38,69 +44,19 @@ export class Sidebar {
         };
     }
 
+    initGrabHandle(): void {
+        // Initialize VN-quality grab handle with smooth RAF-based dragging
+        this.grabHandle = new UV7GrabHandleRepositioner(this.el.toggle, {
+            storageKey: 'uv7-showcase-grab-handle',
+            headerSafeTop: 52,
+            bottomSafePad: 120,
+            onToggle: () => this.toggle()
+        });
+    }
+
     initEvents(): void {
-        // Toggle button - Draggable Logic
-        const toggle = this.el.toggle;
-        if (toggle) {
-            let isDragging = false;
-            let startY = 0;
-            let startTop = 0;
-            let hasMoved = false;
-
-            const onMouseDown = (e: MouseEvent | TouchEvent) => {
-                isDragging = true;
-                hasMoved = false;
-                toggle.classList.add('dragging');
-
-                const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-                startY = clientY;
-                startTop = parseInt(window.getComputedStyle(toggle).top, 10) || 0;
-
-                // Prevent text selection
-                e.preventDefault();
-            };
-
-            const onMouseMove = (e: MouseEvent | TouchEvent) => {
-                if (!isDragging) return;
-
-                const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-                const deltaY = clientY - startY;
-
-                // Mark as moved if drag exceeds threshold (avoid accidental clicks)
-                if (Math.abs(deltaY) > 5) hasMoved = true;
-
-                // Update position
-                let newTop = startTop + deltaY;
-
-                // Clamp to screen bounds (with some padding)
-                const maxTop = window.innerHeight - 80; // 80 = height + padding
-                newTop = Math.max(60, Math.min(newTop, maxTop));
-
-                toggle.style.top = `${newTop}px`;
-            };
-
-            const onMouseUp = () => {
-                if (!isDragging) return;
-
-                isDragging = false;
-                toggle.classList.remove('dragging');
-
-                // If it was just a click (didn't move much), toggle the sidebar
-                if (!hasMoved) {
-                    this.toggle();
-                }
-            };
-
-            // Mouse Events
-            toggle.addEventListener('mousedown', onMouseDown);
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-
-            // Touch Events
-            toggle.addEventListener('touchstart', onMouseDown, { passive: false });
-            document.addEventListener('touchmove', onMouseMove, { passive: false });
-            document.addEventListener('touchend', onMouseUp);
-        }
+        // Grab handle drag/tap/toggle is now handled by UV7GrabHandleRepositioner
+        // (300ms drag delay, double-tap side flip, RAF-based smoothness, haptic feedback)
 
         // Backdrop close
         this.el.backdrop?.addEventListener('click', () => {
