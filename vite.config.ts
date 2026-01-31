@@ -39,10 +39,12 @@ export default defineConfig({
     globals: true, // REQUIRED for test discovery to work
     environment: 'jsdom',
     setupFiles: ['./tests/setup.js'],
-    // Include ALL V2 tests wherever they are located
+    // Include ALL V2 tests + shell tests wherever they are located
     include: [
       'v2/**/*.test.ts',
-      'v2/**/*.spec.ts'
+      'v2/**/*.spec.ts',
+      'shell/**/*.test.ts',
+      'showcase/**/*.test.ts'
     ],
     exclude: [
       '**/node_modules/**',
