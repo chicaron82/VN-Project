@@ -1,0 +1,382 @@
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * BLOG-STYLE TIMELINE - PLAYGROUND JOURNAL
+ *
+ * Replaces traditional timeline markers with full-width blog cards.
+ * Features: AI avatars, vibe indicators, reading time, mini stats.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOG ENTRY CONTAINER
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-entry {
+    position: relative;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOG CARD
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 2rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.blog-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(165, 180, 252, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-card {
+        background: #fff;
+        border-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .blog-card:hover {
+        background: #fff;
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD HEADER - AI AVATAR + METADATA
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-card-header {
+        border-bottom-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* AI Avatar + Name */
+.blog-author-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.blog-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(165, 180, 252, 0.3);
+}
+
+.blog-author-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-author-name {
+        color: rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Metadata Bar */
+.blog-metadata {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    flex-wrap: wrap;
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-metadata {
+        color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+.blog-date {
+    font-weight: 500;
+}
+
+.blog-category {
+    padding: 0.25rem 0.5rem;
+    background: rgba(165, 180, 252, 0.1);
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #a5b4fc;
+}
+
+.blog-reading-time {
+    font-style: italic;
+}
+
+.blog-vibe {
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-vibe {
+        background: rgba(0, 0, 0, 0.05);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BLOG TITLE
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 1rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+@media (prefers-color-scheme: light) {
+    .blog-title {
+        color: rgba(0, 0, 0, 0.9);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MINI STATS PREVIEW
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-stats-preview {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+.stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #a5b4fc;
+}
+
+@media (prefers-color-scheme: light) {
+    .stat-pill {
+        background: rgba(99, 102, 241, 0.05);
+        color: #6366f1;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   READ MORE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-read-more {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.blog-read-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+.blog-read-more:active {
+    transform: translateY(0);
+}
+
+.blog-read-more .arrow {
+    transition: transform 0.2s ease;
+}
+
+.blog-entry.expanded .blog-read-more .arrow {
+    transform: rotate(180deg);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EXPANDED STATE
+   ═══════════════════════════════════════════════════════════════ */
+
+.blog-entry .timeline-details {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: all 0.4s ease;
+    margin-top: 0;
+}
+
+.blog-entry.expanded .timeline-details {
+    max-height: 5000px;
+    opacity: 1;
+    margin-top: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VISUAL FLAVORS - V1 / V2 / SHELL
+   ═══════════════════════════════════════════════════════════════ */
+
+/* V1: Raw/Chaotic Aesthetic */
+.blog-entry[data-type="chaos"] .blog-card,
+.blog-entry[data-type="v1"] .blog-card {
+    border-color: rgba(255, 0, 102, 0.3);
+    background: linear-gradient(135deg, rgba(255, 0, 102, 0.03) 0%, rgba(255, 102, 0, 0.03) 100%);
+}
+
+.blog-entry[data-type="chaos"] .blog-card:hover,
+.blog-entry[data-type="v1"] .blog-card:hover {
+    border-color: rgba(255, 0, 102, 0.5);
+    box-shadow: 0 8px 32px rgba(255, 0, 102, 0.2);
+}
+
+.blog-entry[data-type="chaos"] .blog-title,
+.blog-entry[data-type="v1"] .blog-title {
+    background: linear-gradient(135deg, #ff0066 0%, #ff6600 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* V2: Clean/Polished Gradient */
+.blog-entry[data-type="v2"] .blog-card,
+.blog-entry[data-type="polish"] .blog-card {
+    border-color: rgba(0, 255, 136, 0.3);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
+}
+
+.blog-entry[data-type="v2"] .blog-card:hover,
+.blog-entry[data-type="polish"] .blog-card:hover {
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+}
+
+.blog-entry[data-type="v2"] .blog-title,
+.blog-entry[data-type="polish"] .blog-title {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Shell: Architectural/System UI */
+.blog-entry[data-type="shell"] .blog-card,
+.blog-entry[data-type="milestone"] .blog-card {
+    border-color: rgba(0, 200, 255, 0.3);
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.03) 0%, rgba(0, 255, 136, 0.03) 100%);
+}
+
+.blog-entry[data-type="shell"] .blog-card:hover,
+.blog-entry[data-type="milestone"] .blog-card:hover {
+    border-color: rgba(0, 200, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 200, 255, 0.2);
+}
+
+.blog-entry[data-type="shell"] .blog-title,
+.blog-entry[data-type="milestone"] .blog-title {
+    background: linear-gradient(135deg, #00c8ff 0%, #00ff88 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .blog-card {
+        padding: 1.5rem;
+    }
+
+    .blog-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .blog-metadata {
+        font-size: 0.8rem;
+    }
+
+    .blog-stats-preview {
+        gap: 0.5rem;
+    }
+
+    .stat-pill {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SPOTLIGHT MODE (Search)
+   ═══════════════════════════════════════════════════════════════ */
+
+.timeline-phases.spotlight-mode .blog-entry {
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+
+.timeline-phases.spotlight-mode .blog-entry.dimmed {
+    opacity: 0.15;
+    filter: blur(2px) grayscale(100%);
+    pointer-events: none;
+    transform: scale(0.98);
+}
+
+.timeline-phases.spotlight-mode .blog-entry.focused {
+    opacity: 1;
+    filter: none;
+    transform: scale(1.01);
+    z-index: 10;
+}
