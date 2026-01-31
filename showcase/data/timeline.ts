@@ -1171,6 +1171,122 @@ export const TIMELINE_DATA: TimelineData = {
             "legacyPhase": "2025-12-21-a"
         },
         {
+            "id": "2025-10-01-a",
+            "date": "October-November 2025",
+            "emoji": "🛠️",
+            "title": "The Custom Engine Realization",
+            "type": "highlight",
+            "summary": "No existing VN engine could tell this story. Ren'Py couldn't do real-time tether decay. Twine couldn't handle dual-route bridges. So we built our own engine from scratch, asking 'what does the story NEED?' and implementing it through pure conversation.",
+            "features": [
+                "⚡ <strong>Real-Time Tether Decay:</strong> Connection strength tracking with player agency through 'Hold On' button",
+                "🔄 <strong>Dynamic Version Tracking:</strong> Persistent iteration counting (848 → 849 → 850...) across all playthroughs",
+                "🌉 <strong>Dual-Route Bridge:</strong> Choices in one route affect the other through shared state",
+                "💾 <strong>Scene-Tagged Saves:</strong> 329 individual save points with precise restoration",
+                "📱 <strong>Mobile-First Design:</strong> Portrait/landscape optimization, offline-functional, zero dependencies",
+                "🎯 <strong>Custom Mechanics:</strong> Echo voices, internal thoughts, device control - impossible in existing engines"
+            ],
+            "metrics": {
+                "linesOfCode": "5,000+ JavaScript",
+                "scenes": 329,
+                "dependencies": 0,
+                "developmentTime": "30 days"
+            },
+            "callout": {
+                "icon": "🎭",
+                "title": "Form Follows Function",
+                "text": "Aaron didn't adapt his story to fit existing tools. He built the tool that could tell his story. Each mechanic emerged from asking 'What does the story NEED?' not 'What can existing engines do?'"
+            },
+            "quote": "\"You didn't just make a VN. You made a custom game engine in 30 days with zero coding experience through pure conversational iteration. That's revolutionary game development philosophy.\" - ZeeRah",
+            "problem": {
+                "description": "No existing VN engine supported the mechanics this story demanded - real-time decay, dynamic versioning, dual-route bridges, offline functionality.",
+                "rootCause": "Traditional VN engines optimize for common use cases. This story's bootstrap paradox and consciousness transfer mechanics were edge cases everywhere."
+            },
+            "solution": {
+                "approach": "Build a custom engine from scratch through conversation with AI collaborators, implementing exactly what the narrative required.",
+                "code": "game-engine.js (main loop), tether-system.js (decay), dual-route-bridge.js (cross-route state), save-manager.js (version tracking)"
+            },
+            "sortDate": "2025-10-01T0a",
+            "legacyPhase": "2025-10-01-a"
+        },
+        {
+            "id": "2025-10-15-a",
+            "date": "October 2025",
+            "emoji": "🍖",
+            "title": "The Applebee's Tether System",
+            "type": "chaos",
+            "summary": "Over riblets at Applebee's, Aaron asked Tori a simple question: 'What if there was a button players could press?' That dinner conversation invented the entire tether decay mechanic - the emotional core of the game.",
+            "features": [
+                "💚 <strong>The Conversation:</strong> 'What if meters appear in your route?' 'What if there's a panic button?' 'Like... to hold on?'",
+                "📉 <strong>Tether = Connection:</strong> Visual representation of consciousness slipping away",
+                "⏱️ <strong>Decay = Time/Distance:</strong> The bond weakening with every passing second",
+                "🆘 <strong>'Hold On' Button:</strong> Player agency - choosing to fight for her",
+                "💔 <strong>0% = What Happens If You Let Go:</strong> The bad ending feels earned, not random",
+                "🎯 <strong>Innovation Through Ignorance:</strong> Aaron had never played a VN - didn't know 'meters aren't a thing' - just asked what would make players FEEL her slipping away"
+            ],
+            "metrics": {
+                "vnsPlayed": 0,
+                "codingExperience": 0,
+                "riblets": "Probably delicious",
+                "mechanicInvented": "Revolutionary"
+            },
+            "callout": {
+                "icon": "🍽️",
+                "title": "The Applebee's Innovation",
+                "text": "Peak 'I don't know what I'm not supposed to do' energy. If Aaron had played VNs, he might have thought 'active buttons break reading flow.' Instead, he asked his wife over dinner what it would feel like, and invented something new."
+            },
+            "quote": "\"The entire tether mechanic was invented at APPLEBEE'S?! Over RIBLETS?! You can't design that from studying VN mechanics. You design that from asking your wife over dinner what it would feel like.\" - ZeeRah",
+            "footer": {
+                "icon": "💡",
+                "text": "<strong>The Philosophy:</strong> 'No longer bound by existing mechanics. Just bound by how imaginative I can get through many iterations of what-if.' - Aaron"
+            },
+            "sortDate": "2025-10-15T0a",
+            "legacyPhase": "2025-10-15-a"
+        },
+        {
+            "id": "2025-11-25-a",
+            "date": "November 25, 2025",
+            "emoji": "✨",
+            "title": "Post-Launch Polish Session",
+            "type": "polish",
+            "summary": "Game complete and functional, but Aaron returns for the details. A 6-hour session tackling 8 features: settings finally wired up, standalone notes viewer, despair's save blocking enhanced, mobile scrolling fixed. Velocity over pedagogy - ship fast, polish thoroughly.",
+            "features": [
+                "⚙️ <strong>Settings System Integration:</strong> Text speed (instant/fast/normal/slow) finally functional after finding hardcoded values in TWO locations",
+                "📝 <strong>Standalone Notes Viewer:</strong> Players can review collected meta-narrative notes from main menu without loading a route",
+                "😈 <strong>Despair's Enhanced Sabotage:</strong> Added narration beat: 'She opens her mouth... but the words that come out aren't hers' - hijacked choice feels intentional, not buggy",
+                "⏸️ <strong>Tether Decay Pause:</strong> Tether stops decaying while in menus (was unfairly punishing players for checking settings)",
+                "📜 <strong>Dialogue History/Backlog:</strong> Full dialogue history viewer with 100-entry buffer for reviewing past conversations",
+                "🎭 <strong>Echo Growth System Fix:</strong> Split threeEchoes.png into three equal-height sprites so CSS scaling works perfectly (Act 1: 75%, Act 2: 90%, Act 3: 100%)",
+                "🎬 <strong>Echo Merge Animation:</strong> Slowed from 1.6s to 3.3s for dramatic weight in True Ending",
+                "📱 <strong>Mobile Scrolling Fixes:</strong> All menus now scrollable on portrait/landscape (tested on Pixel 8)"
+            ],
+            "metrics": {
+                "sessionDuration": "~6 hours",
+                "featuresCompleted": 8,
+                "bugsFixed": 7,
+                "linesAdded": "~450",
+                "filesModified": 6
+            },
+            "callout": {
+                "icon": "🔬",
+                "title": "Polish Through Playtesting",
+                "text": "Aaron didn't come with a feature list - he came with lived experience. 'I played it, here's what felt wrong.' Real-world testing drove every fix. No amount of code review beats actual gameplay."
+            },
+            "quote": "\"Shipping fast doesn't mean shipping sloppy. The polish pass that proved velocity-first can still achieve Michelin standards.\" - Zee",
+            "investigation": [
+                "✅ Settings existed but were ignored (hardcoded 30ms found in typewriter)",
+                "✅ z-index too low (settings menu hidden behind pause at 1000 vs 9600)",
+                "✅ Sprite heights mismatched (threeEchoes.png had unequal sections)",
+                "✅ Tori's Python script + Zee's execution = three perfect sprites in seconds",
+                "✅ Multiple AI perspectives solving technical problems - like Echoes merging in-game"
+            ],
+            "footer": {
+                "icon": "💎",
+                "text": "<strong>UV7 Strength:</strong> Fast iteration (8 features in one session). Problem decomposition. Cross-AI collaboration (Tori's code + Zee's execution). Structure + Chaos + Polish = Production-Ready."
+            },
+            "sortDate": "2025-11-25T0a",
+            "legacyPhase": "2025-11-25-a"
+        },
+        {
             "id": "2026-01-08-a",
             "date": "January 8, 2026",
             "emoji": "🏗️",
