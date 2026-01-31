@@ -388,6 +388,9 @@ export class TimelineRenderer {
             });
         }
 
+        // 2.5. Apply Page Theme based on active filter
+        this.applyPageTheme(this.activeFilter);
+
         // 3. Search (Spotlight)
         // ...
 
@@ -759,6 +762,33 @@ export class TimelineRenderer {
             genzee: '<em>Vibes are immaculate.</em> — Genzee'
         };
         return signatures[modelId] || '';
+    }
+
+    /**
+     * Apply page theme based on active filter
+     * Changes entire page color palette to match category
+     */
+    private applyPageTheme(filter: string): void {
+        const body = document.body;
+
+        // Remove all theme classes
+        body.classList.remove('theme-v1', 'theme-v2', 'theme-shell', 'theme-chaos', 'theme-polish', 'theme-milestone');
+
+        // Apply theme based on filter
+        const themeMap: Record<string, string> = {
+            'v1': 'theme-v1',
+            'v2': 'theme-v2',
+            'shell': 'theme-shell',
+            'chaos': 'theme-chaos',
+            'polish': 'theme-polish',
+            'milestone': 'theme-milestone'
+        };
+
+        const themeClass = themeMap[filter.toLowerCase()];
+        if (themeClass) {
+            body.classList.add(themeClass);
+            console.log(`🎨 [Timeline] Applied theme: ${themeClass}`);
+        }
     }
 
     private createEntryElement(entry: TimelineEntry): HTMLElement {

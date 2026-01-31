@@ -494,6 +494,119 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   PAGE THEMES - CATEGORY COLOR-CODING
+   When filtering by category, entire page shifts to match vibe
+   ═══════════════════════════════════════════════════════════════ */
+
+/* V1 / Chaos Theme - Red/Orange Fire */
+body.theme-v1,
+body.theme-chaos {
+    --theme-primary: #ff0066;
+    --theme-secondary: #ff6600;
+    --theme-glow: rgba(255, 0, 102, 0.3);
+    background: radial-gradient(circle at 50% 0%, rgba(255, 0, 102, 0.05) 0%, transparent 50%);
+}
+
+body.theme-v1 .blog-read-more,
+body.theme-chaos .blog-read-more {
+    background: linear-gradient(135deg, #ff0066 0%, #ff6600 100%);
+}
+
+body.theme-v1 .blog-read-more:hover,
+body.theme-chaos .blog-read-more:hover {
+    box-shadow: 0 4px 20px rgba(255, 0, 102, 0.4);
+}
+
+body.theme-v1 .blog-category,
+body.theme-chaos .blog-category {
+    background: rgba(255, 0, 102, 0.1);
+    color: #ff6699;
+}
+
+/* V2 / Polish Theme - Indigo/Purple Clean */
+body.theme-v2,
+body.theme-polish {
+    --theme-primary: #6366f1;
+    --theme-secondary: #8b5cf6;
+    --theme-glow: rgba(99, 102, 241, 0.3);
+    background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 50%);
+}
+
+body.theme-v2 .blog-read-more,
+body.theme-polish .blog-read-more {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+body.theme-v2 .blog-read-more:hover,
+body.theme-polish .blog-read-more:hover {
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+body.theme-v2 .blog-category,
+body.theme-polish .blog-category {
+    background: rgba(99, 102, 241, 0.1);
+    color: #a5b4fc;
+}
+
+/* Shell / Milestone Theme - Cyan/Green Architectural */
+body.theme-shell,
+body.theme-milestone {
+    --theme-primary: #00c8ff;
+    --theme-secondary: #00ff88;
+    --theme-glow: rgba(0, 200, 255, 0.3);
+    background: radial-gradient(circle at 50% 0%, rgba(0, 200, 255, 0.05) 0%, transparent 50%);
+}
+
+body.theme-shell .blog-read-more,
+body.theme-milestone .blog-read-more {
+    background: linear-gradient(135deg, #00c8ff 0%, #00ff88 100%);
+}
+
+body.theme-shell .blog-read-more:hover,
+body.theme-milestone .blog-read-more:hover {
+    box-shadow: 0 4px 20px rgba(0, 200, 255, 0.4);
+}
+
+body.theme-shell .blog-category,
+body.theme-milestone .blog-category {
+    background: rgba(0, 200, 255, 0.1);
+    color: #00d9ff;
+}
+
+/* Apply theme colors to all stat pills when theme is active */
+body.theme-v1 .stat-pill,
+body.theme-chaos .stat-pill {
+    background: rgba(255, 0, 102, 0.1);
+    border-color: rgba(255, 0, 102, 0.2);
+    color: #ff6699;
+}
+
+body.theme-v2 .stat-pill,
+body.theme-polish .stat-pill {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+}
+
+body.theme-shell .stat-pill,
+body.theme-milestone .stat-pill {
+    background: rgba(0, 200, 255, 0.1);
+    border-color: rgba(0, 200, 255, 0.2);
+    color: #00d9ff;
+}
+
+/* Theme transition for smooth color shifts */
+body {
+    transition: background 0.6s ease;
+}
+
+.blog-read-more,
+.blog-category,
+.stat-pill {
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SPOTLIGHT MODE (Search)
    ═══════════════════════════════════════════════════════════════ */
 
