@@ -748,6 +748,19 @@ export class TimelineRenderer {
         return icons[statKey] || '📊';
     }
 
+    /**
+     * Get contributor signature/catchphrase
+     */
+    private getContributorSignature(modelId: string): string {
+        const signatures: Record<string, string> = {
+            dizee: '<em>Built with precision.</em> — DiZee',
+            belle: '<em>Chef\'s kiss.</em> 💋 — Belle',
+            tori: '<em>Zero regressions.</em> — Tori',
+            genzee: '<em>Vibes are immaculate.</em> — Genzee'
+        };
+        return signatures[modelId] || '';
+    }
+
     private createEntryElement(entry: TimelineEntry): HTMLElement {
         const item = document.createElement('div');
         item.className = `blog-entry ${entry.type || ''}`;
@@ -962,6 +975,54 @@ export class TimelineRenderer {
                 </div>
             `;
             details.appendChild(judgeDiv);
+        }
+
+        // 8. Crew Attribution Block
+        if (entry.crewAttribution) {
+            hasDetails = true;
+            const crewBlock = document.createElement('div');
+            crewBlock.className = 'crew-attribution-block';
+
+            let crewHTML = '<h4 class="crew-title">🎬 Crew Contributions</h4><div class="crew-members">';
+            entry.crewAttribution.systems.forEach(member => {
+                crewHTML += `
+                    <div class="crew-member-card">
+                        <span class="crew-icon">${member.icon}</span>
+                        <div class="crew-info">
+                            <span class="crew-name">${member.name}</span>
+                            <span class="crew-contribution">${member.contribution}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            crewHTML += '</div>';
+
+            if (entry.crewAttribution.quote) {
+                crewHTML += `<blockquote class="crew-quote">"${entry.crewAttribution.quote}"</blockquote>`;
+            }
+
+            crewBlock.innerHTML = crewHTML;
+            details.appendChild(crewBlock);
+        }
+
+        // 9. Footer/Signature
+        if (entry.footer) {
+            hasDetails = true;
+            const footerBadge = document.createElement('div');
+            footerBadge.className = 'entry-footer-badge';
+            footerBadge.innerHTML = `<span class="footer-icon">${entry.footer.icon}</span> ${entry.footer.text}`;
+            details.appendChild(footerBadge);
+        }
+
+        // 10. Contributor Signature (AI catchphrase)
+        if (entry.modelId && hasDetails) {
+            const signature = this.getContributorSignature(entry.modelId);
+            if (signature) {
+                const sigDiv = document.createElement('div');
+                sigDiv.className = 'contributor-signature';
+                sigDiv.innerHTML = signature;
+                details.appendChild(sigDiv);
+            }
         }
 
         // Mini Stats Preview (shown when collapsed)

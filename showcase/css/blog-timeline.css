@@ -360,6 +360,140 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   CREW ATTRIBUTION BLOCK
+   ═══════════════════════════════════════════════════════════════ */
+
+.crew-attribution-block {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(165, 180, 252, 0.05);
+    border-left: 3px solid #a5b4fc;
+    border-radius: 8px;
+}
+
+.crew-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: #a5b4fc;
+}
+
+.crew-members {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.crew-member-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+}
+
+.crew-icon {
+    font-size: 1.5rem;
+}
+
+.crew-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.crew-name {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.crew-contribution {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.crew-quote {
+    margin: 1rem 0 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-left: 3px solid #a5b4fc;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+@media (prefers-color-scheme: light) {
+    .crew-attribution-block {
+        background: rgba(99, 102, 241, 0.05);
+    }
+
+    .crew-member-card {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    .crew-name {
+        color: rgba(0, 0, 0, 0.9);
+    }
+
+    .crew-contribution {
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .crew-quote {
+        background: rgba(0, 0, 0, 0.05);
+        color: rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER BADGE & CONTRIBUTOR SIGNATURE
+   ═══════════════════════════════════════════════════════════════ */
+
+.entry-footer-badge {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.1);
+    border-left: 3px solid #00ff88;
+    border-radius: 6px;
+    font-weight: 600;
+    color: #00ff88;
+}
+
+.footer-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.contributor-signature {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: right;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.contributor-signature em {
+    color: #a5b4fc;
+    font-weight: 500;
+}
+
+@media (prefers-color-scheme: light) {
+    .entry-footer-badge {
+        background: rgba(0, 255, 136, 0.1);
+    }
+
+    .contributor-signature {
+        border-top-color: rgba(0, 0, 0, 0.1);
+        color: rgba(0, 0, 0, 0.6);
+    }
+
+    .contributor-signature em {
+        color: #6366f1;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    SPOTLIGHT MODE (Search)
    ═══════════════════════════════════════════════════════════════ */
 
