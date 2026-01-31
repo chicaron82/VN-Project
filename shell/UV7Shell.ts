@@ -136,6 +136,9 @@ export class UV7Shell {
             this.system!.toggleSidebar();
         });
 
+        // Initialize Tori-gatchi Status Bridge (BEFORE ToriService so listener is ready)
+        this.initToriBridge();
+
         // Initialize Tori Service (Background Ghost Engine)
         this.toriService = new ToriService(this);
         this.toriService.init();
@@ -160,9 +163,6 @@ export class UV7Shell {
 
         // Initialize UV7 easter egg (7-tap on carrier branding)
         this.initEasterEgg();
-
-        // Initialize Tori-gatchi Status Bridge
-        this.initToriBridge();
 
         // Initialize Settings Icon
         this.initSettingsIcon();
@@ -239,8 +239,8 @@ export class UV7Shell {
             }
         });
 
-        // Initial check
-        this.updateToriStatus();
+        // Note: No initial updateToriStatus() call needed - ToriService.tick() will
+        // emit the status change event immediately after this bridge is set up
 
         console.log('[UV7Shell] Tori bridge initialized successfully');
     }
