@@ -99,15 +99,15 @@ export class WhoSection {
                                 </p>
                                 <div class="creator-stats">
                                     <div class="stat-item">
-                                        <span class="stat-number">50</span>
+                                        <span class="stat-number" data-target="50">0</span>
                                         <span class="stat-label">Days (V1)</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-number">82</span>
+                                        <span class="stat-number" data-target="82">0</span>
                                         <span class="stat-label">Phases (V2)</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-number">8</span>
+                                        <span class="stat-number" data-target="8">0</span>
                                         <span class="stat-label">AI Collaborators</span>
                                     </div>
                                 </div>
