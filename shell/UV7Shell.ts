@@ -92,7 +92,9 @@ export class UV7Shell {
         this.initialized = false;
         this.easterEggTaps = 0;
         this.easterEggTimeout = null;
-        this.recentApps = [];
+
+        // Load recent apps from localStorage
+        this.recentApps = this.loadRecentApps();
     }
 
     /**
@@ -925,6 +927,7 @@ export class UV7Shell {
         if (clearBtn) {
             clearBtn.addEventListener('click', () => {
                 this.recentApps = [];
+                this.saveRecentApps();
                 this.renderAppSwitcher();
             });
         }
@@ -935,6 +938,37 @@ export class UV7Shell {
                 this.closeAppSwitcher();
             }
         });
+    }
+
+    /**
+     * Load recent apps from localStorage
+     */
+    private loadRecentApps(): RecentApp[] {
+        try {
+            const stored = localStorage.getItem('uv7-recent-apps');
+            if (stored) {
+                const apps = JSON.parse(stored);
+                // Convert timestamp strings back to Date objects
+                return apps.map((app: any) => ({
+                    ...app,
+                    timestamp: new Date(app.timestamp)
+                }));
+            }
+        } catch (e) {
+            console.warn('[UV7Shell] Failed to load recent apps', e);
+        }
+        return [];
+    }
+
+    /**
+     * Save recent apps to localStorage
+     */
+    private saveRecentApps(): void {
+        try {
+            localStorage.setItem('uv7-recent-apps', JSON.stringify(this.recentApps));
+        } catch (e) {
+            console.warn('[UV7Shell] Failed to save recent apps', e);
+        }
     }
 
     /**
@@ -957,6 +991,9 @@ export class UV7Shell {
         if (this.recentApps.length > 6) {
             this.recentApps.pop();
         }
+
+        // Persist to localStorage
+        this.saveRecentApps();
     }
 
     /**
@@ -1089,6 +1126,7 @@ export class UV7Shell {
      */
     removeFromRecent(appId: string): void {
         this.recentApps = this.recentApps.filter(app => app.id !== appId);
+        this.saveRecentApps();
         this.renderAppSwitcher();
     }
 
