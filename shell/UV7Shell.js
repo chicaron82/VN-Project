@@ -17,7 +17,7 @@ import { GestureRouter } from './GestureRouter.js';
 import { Router } from './Router.js';
 import { shellAudio } from './audio/ShellAudio.js';
 import { UV7System } from './UV7System.js';
-import { GrabHandleController } from './GrabHandleController.js';
+import { GrabHandleController } from './GrabHandleController';
 import { ToriService } from './services/ToriService.js';
 
 export class UV7Shell {

@@ -5,8 +5,8 @@
  * ========================================
  *
  * Faithful port of V1's 633-line grab-handle-repositioner.js
- * Adapted for UV7 Shell (Vanilla JS)
- * 
+ * Now in TypeScript for type safety and consistency
+ *
  * Features:
  * - 300ms drag delay (prevents accidental drags while tapping)
  * - Tap-to-toggle sidebar (single tap opens/closes)
@@ -20,44 +20,53 @@
  * "Built with love. 💚🔥💀"
  */
 
+interface GrabHandlePosition {
+    top: number;
+    side: 'left' | 'right';
+}
+
 export class GrabHandleController {
+    private position: GrabHandlePosition;
+    private handle: HTMLElement | null;
+    private sidebar: HTMLElement | null;
+
+    // Drag state
+    private isDragging: boolean = false;
+    private dragStartX: number = 0;
+    private dragStartY: number = 0;
+    private currentX: number = 0;
+    private currentY: number = 0;
+    private isDragDelayActive: boolean = false;
+    private dragDelayTimer: number | null = null;
+    private wasDragging: boolean = false;
+
+    // RAF state
+    private rafPending: boolean = false;
+
+    // Tap state
+    private lastTapTime: number = 0;
+    private tapTimeout: number | null = null;
+    private isDoubleTapping: boolean = false;
+    private pendingTap: boolean = false;
+
+    // Touch/Mouse state
+    private usingTouch: boolean = false;
+    private touchPreventTimer: number | null = null;
+
+    // Horizontal flip state
+    private horizontalFlipPending: boolean = false;
+
+    // Constants
+    private readonly HOLD_DELAY = 300; // ms before drag starts
+    private readonly DOUBLE_TAP_DELAY = 300; // ms window for double-tap
+    private readonly FLIP_THRESHOLD = 50; // % of screen width
+    private readonly MIN_DRAG_DISTANCE = 5; // px to distinguish tap from drag
+
     constructor() {
         this.position = this.loadPosition();
 
         this.handle = document.getElementById('uv7-sidebar-toggle');
         this.sidebar = document.getElementById('uv7-sidebar');
-
-        // Drag state
-        this.isDragging = false;
-        this.dragStartX = 0;
-        this.dragStartY = 0;
-        this.currentX = 0;
-        this.currentY = 0;
-        this.isDragDelayActive = false;
-        this.dragDelayTimer = null;
-        this.wasDragging = false;
-
-        // RAF state
-        this.rafPending = false;
-
-        // Tap state
-        this.lastTapTime = 0;
-        this.tapTimeout = null;
-        this.isDoubleTapping = false;
-        this.pendingTap = false;
-
-        // Touch/Mouse state
-        this.usingTouch = false;
-        this.touchPreventTimer = null;
-
-        // Horizontal flip state
-        this.horizontalFlipPending = false;
-
-        // Constants
-        this.HOLD_DELAY = 300; // ms before drag starts
-        this.DOUBLE_TAP_DELAY = 300; // ms window for double-tap
-        this.FLIP_THRESHOLD = 50; // % of screen width
-        this.MIN_DRAG_DISTANCE = 5; // px to distinguish tap from drag
 
         if (!this.handle) {
             console.warn('[GrabHandle] Toggle button not found (is Sidebar initialized?)');
@@ -67,10 +76,10 @@ export class GrabHandleController {
         this.applyPosition();
         this.attachEvents();
 
-        console.log('[GrabHandle] ✅ Shell Controller Active', this.position);
+        console.log('[GrabHandle] ✅ Shell Controller Active (TypeScript)', this.position);
     }
 
-    attachEvents() {
+    private attachEvents(): void {
         if (!this.handle) return;
 
         // ========================================
@@ -97,7 +106,7 @@ export class GrabHandleController {
     // MOUSE HANDLERS
     // ========================================
 
-    handleMouseDown(e) {
+    private handleMouseDown(e: MouseEvent): void {
         // Only left click
         if (e.button !== 0) return;
 
@@ -125,7 +134,7 @@ export class GrabHandleController {
         e.preventDefault(); // Prevent text selection
     }
 
-    handleMouseMove(e) {
+    private handleMouseMove(e: MouseEvent): void {
         if (this.isDragDelayActive || !this.isDragging) {
             // Track position but don't drag yet
             this.currentX = e.clientX;
@@ -143,7 +152,7 @@ export class GrabHandleController {
         }
     }
 
-    handleMouseUp(e) {
+    private handleMouseUp(e: MouseEvent): void {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -191,7 +200,7 @@ export class GrabHandleController {
     // TOUCH HANDLERS
     // ========================================
 
-    handleTouchStart(e) {
+    private handleTouchStart(e: TouchEvent): void {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -218,7 +227,7 @@ export class GrabHandleController {
         }, this.HOLD_DELAY);
     }
 
-    handleTouchMove(e) {
+    private handleTouchMove(e: TouchEvent): void {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -241,7 +250,7 @@ export class GrabHandleController {
         }
     }
 
-    handleTouchEnd(e) {
+    private handleTouchEnd(e: TouchEvent): void {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -289,7 +298,7 @@ export class GrabHandleController {
     // TAP HANDLING
     // ========================================
 
-    handleTap() {
+    private handleTap(): void {
         const now = Date.now();
 
         // Check for double-tap
@@ -326,7 +335,7 @@ export class GrabHandleController {
     // CLICK INTERCEPTION
     // ========================================
 
-    handleClick(e) {
+    private handleClick(e: Event): void {
         // Prevent click if we just finished dragging
         if (this.wasDragging || this.isDoubleTapping) {
             e.preventDefault();
@@ -343,7 +352,7 @@ export class GrabHandleController {
     // DRAG LOGIC
     // ========================================
 
-    startDrag() {
+    private startDrag(): void {
         this.isDragging = true;
         if (this.handle) {
             this.handle.classList.add('dragging');
@@ -351,7 +360,7 @@ export class GrabHandleController {
         this.triggerHaptic('light');
     }
 
-    updateDragPosition() {
+    private updateDragPosition(): void {
         this.rafPending = false;
 
         if (!this.isDragging) return;
@@ -390,7 +399,7 @@ export class GrabHandleController {
         this.dragStartY = this.currentY;
     }
 
-    endDrag() {
+    private endDrag(): void {
         this.isDragging = false;
         if (this.handle) {
             this.handle.classList.remove('dragging');
@@ -405,7 +414,7 @@ export class GrabHandleController {
     // SIDEBAR INTEGRATION
     // ========================================
 
-    toggleSidebar() {
+    private toggleSidebar(): void {
         // Emit event to toggle sidebar
         window.dispatchEvent(new CustomEvent('uv7:sidebar-toggle', {
             detail: { source: 'grab-handle' }
@@ -413,7 +422,7 @@ export class GrabHandleController {
         console.log('[GrabHandle] 👆 Tap-to-toggle sidebar');
     }
 
-    flipSide() {
+    private flipSide(): void {
         this.position.side = this.position.side === 'left' ? 'right' : 'left';
         this.applyPosition();
         this.savePosition();
@@ -434,14 +443,14 @@ export class GrabHandleController {
     // POSITION MANAGEMENT
     // ========================================
 
-    clamp() {
+    private clamp(): void {
         // Constraints: Below status bar (top), above bottom usage area
         const min = 50; // Status bar height + buffer
         const max = window.innerHeight - 80; // Bottom margin for backlog button
         this.position.top = Math.max(min, Math.min(max, this.position.top));
     }
 
-    applyPosition() {
+    private applyPosition(): void {
         if (!this.handle) return;
 
         // Use transform for centering + top offset
@@ -462,11 +471,11 @@ export class GrabHandleController {
         }
     }
 
-    savePosition() {
+    private savePosition(): void {
         localStorage.setItem('uv7-grab-handle', JSON.stringify(this.position));
     }
 
-    loadPosition() {
+    private loadPosition(): GrabHandlePosition {
         try {
             const saved = localStorage.getItem('uv7-grab-handle');
             if (saved) return JSON.parse(saved);
@@ -481,7 +490,7 @@ export class GrabHandleController {
     // HAPTIC FEEDBACK
     // ========================================
 
-    triggerHaptic(type) {
+    private triggerHaptic(type: 'light' | 'medium' | 'heavy'): void {
         // Simple navigator.vibrate fallback
         if (navigator.vibrate) {
             switch (type) {
