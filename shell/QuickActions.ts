@@ -13,18 +13,24 @@
 
 /**
  * Quick action button definition
- * @typedef {Object} QuickAction
- * @property {string} id - Action identifier (data-action attribute)
- * @property {string} icon - Emoji icon
- * @property {string} label - Button label
- * @property {string} route - Hash route for navigation
  */
+export interface QuickAction {
+    id: string;
+    icon: string;
+    label: string;
+    route: string;
+}
+
+interface QuickActionOptions {
+    actions?: QuickAction[];
+    grid?: boolean;
+    fullWidth?: boolean;
+}
 
 /**
  * Available quick actions (app launch buttons)
- * @type {QuickAction[]}
  */
-export const QUICK_ACTIONS = [
+export const QUICK_ACTIONS: QuickAction[] = [
     {
         id: 'launch-v1',
         icon: '🎮',
@@ -53,13 +59,8 @@ export const QUICK_ACTIONS = [
 
 /**
  * Generate quick action buttons HTML
- * @param {Object} options - Configuration options
- * @param {QuickAction[]} options.actions - Actions to render (defaults to QUICK_ACTIONS)
- * @param {boolean} options.grid - Use grid layout (default: false, stacked)
- * @param {boolean} options.fullWidth - Make buttons full width (default: false)
- * @returns {string} HTML string
  */
-export function generateQuickActionButtons(options = {}) {
+export function generateQuickActionButtons(options: QuickActionOptions = {}): string {
     const {
         actions = QUICK_ACTIONS,
         grid = false,
@@ -91,10 +92,8 @@ export function generateQuickActionButtons(options = {}) {
 
 /**
  * Get quick action by ID
- * @param {string} id - Action identifier
- * @returns {QuickAction|undefined}
  */
-export function getQuickAction(id) {
+export function getQuickAction(id: string): QuickAction | undefined {
     return QUICK_ACTIONS.find(action => action.id === id);
 }
 

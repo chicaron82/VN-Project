@@ -9,15 +9,16 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { generateQuickActionButtons } from './QuickActions.js';
+import { generateQuickActionButtons } from './QuickActions';
+
+interface ShadeOptions {
+    isShell?: boolean;
+}
 
 /**
  * Generate the complete shade content HTML
- * @param {Object} options - Configuration options
- * @param {boolean} options.isShell - True if rendering in shell, false for standalone showcase
- * @returns {string} HTML string
  */
-export function generateShadeContent(options = {}) {
+export function generateShadeContent(options: ShadeOptions = {}): string {
     const { isShell = true } = options;
 
     return `
@@ -64,7 +65,7 @@ export function generateShadeContent(options = {}) {
 /**
  * Generate Quick Launch section (shell only)
  */
-function generateQuickLaunchSection() {
+function generateQuickLaunchSection(): string {
     return `
         <!-- Quick Launch -->
         <div class="shade-section">
@@ -77,7 +78,7 @@ function generateQuickLaunchSection() {
 /**
  * Generate System Info section
  */
-function generateSystemInfoSection(isShell) {
+function generateSystemInfoSection(isShell: boolean): string {
     const title = isShell ? 'UV7 OS Shell' : 'UV7 Showcase';
     const subtitle = isShell
         ? 'Single-Page Architecture • Version 848'
@@ -98,7 +99,7 @@ function generateSystemInfoSection(isShell) {
 /**
  * Generate Carrier Branding footer
  */
-function generateCarrierBranding() {
+function generateCarrierBranding(): string {
     return `
         <!-- Carrier Branding -->
         <div class="shade-section" style="margin-top: auto; padding-top: 2rem;">
@@ -112,10 +113,8 @@ function generateCarrierBranding() {
 
 /**
  * Generate complete shade structure (header + content)
- * @param {Object} options - Configuration options
- * @returns {string} Complete shade HTML
  */
-export function generateShadeStructure(options = {}) {
+export function generateShadeStructure(options: ShadeOptions = {}): string {
     const { isShell = true } = options;
     const title = isShell ? '🏠 UV7 OS Home' : '📖 Showcase Settings';
 

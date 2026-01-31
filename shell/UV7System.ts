@@ -1,15 +1,15 @@
 /**
  * ═══════════════════════════════════════════════════════════════
  * UV7 SYSTEM - UNIVERSAL CHROME CONTROLLER
- * 
+ *
  * Single source of truth for UV7 OS chrome (status bar, shade, sidebar).
  * Used by both UV7Shell (shell mode) and standalone apps.
- * 
+ *
  * PHILOSOPHY: "Shell Rules All"
  * - Shell creates chrome once
  * - Apps detect context and adapt
  * - Zero duplication, zero dual status bars
- * 
+ *
  * CREW CREDITS:
  * - Tori (Architecture vision: Single source of truth)
  * - Belle (Communication API design)
@@ -17,32 +17,59 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { generateShadeContent } from './ShadeTemplate.js';
-import { generateDefaultSidebarContent } from './SidebarTemplate.js';
+import { generateShadeContent } from './ShadeTemplate';
+import { generateDefaultSidebarContent } from './SidebarTemplate';
+
+interface UV7SystemOptions {
+    mode?: 'shell' | 'standalone';
+    appName?: string;
+    prefix?: string;
+}
+
+interface UV7SystemElements {
+    statusBar: HTMLElement | null;
+    statusContext: HTMLElement | null;
+    shade: HTMLElement | null;
+    sidebar: HTMLElement | null;
+    backdrop: HTMLElement | null;
+}
+
+interface StatusBarConfig {
+    context?: string;
+    breadcrumbPath?: string[];
+}
+
+interface EchoSettings {
+    enabled: boolean;
+    frequency: number;
+    pauseOnHover: boolean;
+}
+
+interface ToriSettings {
+    notifyHunger: boolean;
+    notifyLonely: boolean;
+    notifyCritical: boolean;
+}
 
 export class UV7System {
-    /**
-     * @param {Object} options - Configuration options
-     * @param {string} options.mode - 'shell' or 'standalone'
-     * @param {string} options.appName - App name for standalone mode
-     * @param {string} options.prefix - ID prefix ('shell' or 'showcase')
-     */
-    constructor(options = {}) {
+    private mode: 'shell' | 'standalone';
+    private appName: string;
+    private prefix: string;
+    private elements: UV7SystemElements;
+    private initialized: boolean;
+
+    constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
         this.appName = options.appName || 'UV7 OS';
         this.prefix = options.prefix || 'shell';
-
-        /** @type {Object} Cached DOM elements */
-        this.elements = {};
-
-        /** @type {boolean} Initialization state */
+        this.elements = {} as UV7SystemElements;
         this.initialized = false;
     }
 
     /**
      * Initialize the UV7 System chrome
      */
-    async init() {
+    async init(): Promise<void> {
         if (this.initialized) {
             console.warn('[UV7System] Already initialized');
             return;
@@ -74,7 +101,7 @@ export class UV7System {
     /**
      * Cache frequently used DOM elements
      */
-    cacheElements() {
+    private cacheElements(): void {
         this.elements = {
             statusBar: document.getElementById('uv7-status-bar'),
             statusContext: document.getElementById('uv7-context'),
@@ -87,7 +114,7 @@ export class UV7System {
     /**
      * Render Shade Content
      */
-    renderShade() {
+    private renderShade(): void {
         const shade = this.elements.shade;
         if (!shade) {
             console.error('[UV7System] Could not find shade element');
@@ -119,7 +146,7 @@ export class UV7System {
     /**
      * Render Sidebar Content
      */
-    renderSidebar() {
+    private renderSidebar(): void {
         const sidebar = this.elements.sidebar;
         if (!sidebar) {
             console.error('[UV7System] Could not find sidebar element');
@@ -135,7 +162,7 @@ export class UV7System {
     /**
      * Initialize Shade Controls (Close Button + Backdrop)
      */
-    initShadeControls() {
+    private initShadeControls(): void {
         // Wire up close button
         const closeBtn = document.querySelector('.shade-close');
         if (closeBtn) {
@@ -173,7 +200,7 @@ export class UV7System {
     /**
      * Initialize System Settings (Theme + Echo)
      */
-    initSettings() {
+    private initSettings(): void {
         this.initThemeSettings();
         this.initEchoSettings();
         this.initToriSettings();
@@ -182,7 +209,7 @@ export class UV7System {
     /**
      * Initialize Theme Settings
      */
-    initThemeSettings() {
+    private initThemeSettings(): void {
         console.log(`[UV7System] initThemeSettings() called with prefix: ${this.prefix}`);
         console.log(`[UV7System] Looking for: #${this.prefix}-theme-toggle and #${this.prefix}-theme-auto`);
 
@@ -276,7 +303,7 @@ export class UV7System {
     /**
      * Initialize Echo System Settings
      */
-    initEchoSettings() {
+    private initEchoSettings(): void {
         const echoContainer = document.getElementById('uv7-echo-settings-container');
         if (!echoContainer) return;
 
@@ -342,7 +369,7 @@ export class UV7System {
     /**
      * Initialize Tori-Gatchi Settings
      */
-    initToriSettings() {
+    private initToriSettings(): void {
         const toriContainer = document.getElementById('uv7-tori-settings-container');
         if (!toriContainer) return;
 
@@ -408,7 +435,7 @@ export class UV7System {
     /**
      * Initialize Message API for app communication
      */
-    initMessageAPI() {
+    private initMessageAPI(): void {
         window.addEventListener('message', (e) => {
             if (!e.data || !e.data.type) return;
 
@@ -429,7 +456,7 @@ export class UV7System {
      * Update status bar based on config
      * @param {Object} config - Status bar configuration
      */
-    updateStatusBar(config = {}) {
+    updateStatusBar(config: StatusBarConfig = {}): void {
         const { context, breadcrumbPath } = config;
 
         if (this.elements.statusContext) {
@@ -450,7 +477,7 @@ export class UV7System {
      * @param {string} type - Message type
      * @param {Object} data - Message data
      */
-    notifyIframes(type, data) {
+    private notifyIframes(type: string, data: any): void {
         const iframes = document.querySelectorAll('iframe');
         console.log(`[UV7System] notifyIframes called: type=${type}, iframes found=${iframes.length}`);
 
@@ -470,7 +497,7 @@ export class UV7System {
      * Show toast notification
      * @param {string} message - Toast message
      */
-    showToast(message) {
+    private showToast(message: string): void {
         const toast = document.createElement('div');
         toast.textContent = message;
         toast.style.cssText = `
@@ -497,32 +524,32 @@ export class UV7System {
     // SHADE/SIDEBAR CONTROLS
     // ═══════════════════════════════════════════════════════════════
 
-    openShade() {
+    openShade(): void {
         this.elements.shade?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
-    closeShade() {
+    closeShade(): void {
         this.elements.shade?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
 
-    toggleShade() {
+    toggleShade(): void {
         this.elements.shade?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
     }
 
-    openSidebar() {
+    openSidebar(): void {
         this.elements.sidebar?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
-    closeSidebar() {
+    closeSidebar(): void {
         this.elements.sidebar?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
 
-    toggleSidebar() {
+    toggleSidebar(): void {
         this.elements.sidebar?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
     }

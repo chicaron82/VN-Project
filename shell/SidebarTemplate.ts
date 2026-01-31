@@ -9,15 +9,16 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { generateQuickActionButtons } from './QuickActions.js';
+import { generateQuickActionButtons } from './QuickActions';
+
+interface SidebarOptions {
+    title?: string;
+}
 
 /**
  * Generate the default sidebar content HTML
- * @param {Object} options - Configuration options
- * @param {string} options.title - Sidebar title (default: '🏠 UV7 OS')
- * @returns {string} HTML string
  */
-export function generateDefaultSidebarContent(options = {}) {
+export function generateDefaultSidebarContent(options: SidebarOptions = {}): string {
     const { title = '🏠 UV7 OS' } = options;
 
     return `
@@ -35,10 +36,8 @@ export function generateDefaultSidebarContent(options = {}) {
 
 /**
  * Generate complete sidebar structure (for standalone contexts)
- * @param {Object} options - Configuration options
- * @returns {string} Complete sidebar HTML
  */
-export function generateSidebarStructure(options = {}) {
+export function generateSidebarStructure(options: SidebarOptions = {}): string {
     return `
         <div class="sidebar-header">
             <span class="sidebar-title">${options.title || '🏠 UV7 OS'}</span>
