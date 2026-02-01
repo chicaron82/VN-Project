@@ -47,9 +47,9 @@ export class FunMetricsDashboard {
             // Count by type
             const type = (entry.type || '').toLowerCase();
             if (type.includes('milestone')) metrics.milestones++;
-            if (type.includes('breakthrough')) metrics.breakthroughs++;
-            if (type === 'debug' || type.includes('debug')) metrics.debugSessions++;
-            if (type.includes('experiment') || entry.tags?.includes('experiment')) metrics.experiments++;
+            if (type.includes('breakthrough') || type === 'highlight') metrics.breakthroughs++;
+            if (type === 'debug' || type.includes('debug') || type === 'chaos' || type === 'critical-entry') metrics.debugSessions++;
+            if (type.includes('experiment') || type === 'order-entry' || entry.tags?.includes('experiment')) metrics.experiments++;
             if (type.includes('refactor') || type.includes('clean')) metrics.cleanRefactors++;
 
             // Track crew contributions

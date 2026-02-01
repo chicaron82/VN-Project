@@ -32,7 +32,7 @@ import { HomeSection } from '../components/HomeSection';
 import { JourneySection } from '../components/JourneySection';
 import { WorkflowSection } from '../components/WorkflowSection';
 import { SpotlightSection } from '../components/SpotlightSection';
-import { EvolutionSection } from '../components/EvolutionSection';
+import { EvolutionSection } from '../components/EvolutionSectionV2'; // V2: Deep-dive code comparison
 import { ExperimentSection } from '../components/ExperimentSection';
 import { WhoSection } from '../components/WhoSection';
 
