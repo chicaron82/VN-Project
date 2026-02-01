@@ -726,29 +726,6 @@ select.timeline-btn option {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Signal Timeline Animation --- HIDDEN (clutters blog-style layout) */
-.timeline-signal-track {
-    display: none;
-}
-
-.timeline-signal-pulse {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: 4px;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, #00ff88, transparent);
-    transform: translateX(-50%);
-    box-shadow: 0 0 15px #00ff88;
-    z-index: 1;
-    transition: top 0.1s linear;
-    opacity: 0;
-}
-
-.timeline-section:hover .timeline-signal-pulse {
-    opacity: 1;
-}
-
 /* --- Velocity Indicators --- */
 .velocity-heatmap {
     position: absolute;

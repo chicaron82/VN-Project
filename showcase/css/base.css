@@ -500,11 +500,6 @@ section h2 {
     padding: 2rem 0;
 }
 
-/* Vertical line - HIDDEN for blog-style layout */
-.timeline::before {
-    display: none;
-}
-
 .timeline-item {
     position: relative;
     margin-bottom: 3rem;
@@ -2369,10 +2364,6 @@ body.light-mode .achievements li strong {
 @media (max-width: 768px) {
 
     /* Timeline adjustments */
-    .timeline::before {
-        display: none;
-    }
-
     .timeline-marker {
         left: 20px;
     }
@@ -4147,11 +4138,6 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
 /* Timeline phases container */
 .timeline-phases {
     position: relative;
-}
-
-/* Vertical line REMOVED - clutters blog-style layout */
-.timeline-phases::before {
-    display: none;
 }
 
 /* Responsive pagination */
