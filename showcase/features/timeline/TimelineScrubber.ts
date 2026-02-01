@@ -29,6 +29,7 @@ export interface ScrubberEntry {
 
 export class TimelineScrubber {
     private container: HTMLElement | null;
+    private scrollContainer: HTMLElement | null;
     private scrubberEl: HTMLElement | null;
     private handle: HTMLElement | null;
     private tooltip: HTMLElement | null;
@@ -42,6 +43,8 @@ export class TimelineScrubber {
         containerSelector: string = '#timeline-container'
     ) {
         this.container = document.querySelector(containerSelector);
+        // Find the actual scrolling container (Journey panel)
+        this.scrollContainer = document.querySelector('[data-panel="journey"]') as HTMLElement;
         this.entries = [];
         this.scrubberEl = null;
         this.handle = null;
@@ -180,8 +183,10 @@ export class TimelineScrubber {
         // Click track to jump
         this.track.addEventListener('click', this.clickTrack.bind(this));
 
-        // Update handle on scroll
-        window.addEventListener('scroll', this.updateHandlePosition.bind(this), { passive: true });
+        // Update handle on scroll - use panel scroll, not window
+        if (this.scrollContainer) {
+            this.scrollContainer.addEventListener('scroll', this.updateHandlePosition.bind(this), { passive: true });
+        }
 
         // Initial position
         this.updateHandlePosition();
@@ -200,7 +205,7 @@ export class TimelineScrubber {
      * Drag handle
      */
     private drag(e: MouseEvent | TouchEvent): void {
-        if (!this.isDragging || !this.track || !this.handle) return;
+        if (!this.isDragging || !this.track || !this.handle || !this.scrollContainer) return;
 
         const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
         const rect = this.track.getBoundingClientRect();
@@ -220,15 +225,20 @@ export class TimelineScrubber {
                 this.tooltip.textContent = entry.title;
             }
 
-            // Scroll to entry (use auto for smooth dragging)
+            // Scroll to entry within the panel container
             if (this.animationFrame) {
                 cancelAnimationFrame(this.animationFrame);
             }
 
             this.animationFrame = requestAnimationFrame(() => {
-                entry.element.scrollIntoView({
-                    behavior: 'auto',
-                    block: 'center'
+                // Get entry position relative to scroll container
+                const entryRect = entry.element.getBoundingClientRect();
+                const containerRect = this.scrollContainer!.getBoundingClientRect();
+                const scrollOffset = entryRect.top - containerRect.top + this.scrollContainer!.scrollTop - 100;
+                
+                this.scrollContainer!.scrollTo({
+                    top: scrollOffset,
+                    behavior: 'auto'
                 });
             });
         }
@@ -264,11 +274,11 @@ export class TimelineScrubber {
      * Update handle position based on scroll
      */
     private updateHandlePosition(): void {
-        if (this.isDragging || !this.handle || !this.track) return;
+        if (this.isDragging || !this.handle || !this.track || !this.scrollContainer) return;
 
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollPercentage = docHeight > 0 ? scrollTop / docHeight : 0;
+        const scrollTop = this.scrollContainer.scrollTop;
+        const scrollHeight = this.scrollContainer.scrollHeight - this.scrollContainer.clientHeight;
+        const scrollPercentage = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
 
         const rect = this.track.getBoundingClientRect();
         this.handle.style.transform = `translateX(${scrollPercentage * rect.width}px)`;
@@ -286,12 +296,19 @@ export class TimelineScrubber {
      */
     private jumpToEntry(index: number): void {
         const entry = this.entries[index];
-        if (!entry) return;
+        if (!entry || !this.scrollContainer) return;
 
         console.log('🎯 [TimelineScrubber] Jumping to entry:', entry.title);
 
-        // Scroll to entry
-        timelineAnimations.scrollToElement(entry.element, 100);
+        // Scroll to entry within panel container
+        const entryRect = entry.element.getBoundingClientRect();
+        const containerRect = this.scrollContainer.getBoundingClientRect();
+        const scrollOffset = entryRect.top - containerRect.top + this.scrollContainer.scrollTop - 100;
+        
+        this.scrollContainer.scrollTo({
+            top: scrollOffset,
+            behavior: 'smooth'
+        });
     }
 
     /**
@@ -309,7 +326,9 @@ export class TimelineScrubber {
      */
     destroy(): void {
         this.scrubberEl?.remove();
-        window.removeEventListener('scroll', this.updateHandlePosition.bind(this));
+        if (this.scrollContainer) {
+            this.scrollContainer.removeEventListener('scroll', this.updateHandlePosition.bind(this));
+        }
         console.log('💥 [TimelineScrubber] Destroyed');
     }
 }

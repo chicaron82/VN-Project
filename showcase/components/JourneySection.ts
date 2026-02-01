@@ -1,23 +1,8 @@
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
-import { FunMetricsDashboard } from './FunMetricsDashboard';
-import { TIMELINE_DATA } from '../data/timeline';
 
 export class JourneySection {
     constructor() {
         this.render();
-        this.initMetricsDashboard();
-    }
-
-    private initMetricsDashboard(): void {
-        // Inject metrics dashboard after content loads
-        setTimeout(() => {
-            const container = document.getElementById('timeline-container');
-            if (container && container.parentElement) {
-                const dashboard = new FunMetricsDashboard(TIMELINE_DATA.entries);
-                const dashboardEl = dashboard.render();
-                container.parentElement.insertBefore(dashboardEl, container);
-            }
-        }, 500);
     }
 
     render(): void {

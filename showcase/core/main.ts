@@ -38,7 +38,7 @@ import { WhoSection } from '../components/WhoSection';
 
 // Import timeline enhancements
 import { TimelineAnimations } from '../features/timeline/TimelineAnimations';
-import { TimelineStats } from '../features/timeline/TimelineStats';
+
 import { TimelineDeepLink } from '../features/timeline/TimelineDeepLink';
 import { TimelineKeyboardNav } from '../features/timeline/TimelineKeyboardNav';
 import { TimelineHoverPreview } from '../features/timeline/TimelineHoverPreview';
@@ -146,9 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Note: TimelineRenderer creates its own scrubber and has search in toolbar
     // We only add keyboard nav and deep linking here
     new TimelineAnimations('.timeline-phases');
-    if (window.TIMELINE_DATA?.entries) {
-        new TimelineStats(window.TIMELINE_DATA.entries as any);
-    }
+
     const timelineDeepLink = new TimelineDeepLink();
     new TimelineKeyboardNav('.timeline-phases', '.timeline-search');
     new TimelineHoverPreview('.timeline-phases');

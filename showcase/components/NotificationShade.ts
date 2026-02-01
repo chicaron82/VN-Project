@@ -102,11 +102,11 @@ export class NotificationShade {
                     if (theme === 'light') {
                         document.body.classList.add('light-mode');
                         document.body.classList.remove('dark-mode');
-                        themeToggle.classList.add('active'); // Visually ON
+                        themeToggle.classList.remove('active'); // Visually OFF (Light Mode is default/unchecked)
                     } else {
                         document.body.classList.add('dark-mode');
                         document.body.classList.remove('light-mode');
-                        themeToggle.classList.remove('active'); // Visually OFF
+                        themeToggle.classList.add('active'); // Visually ON (Dark Mode checked)
                     }
                 }
             };

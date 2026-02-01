@@ -580,6 +580,25 @@
     cursor: pointer;
 }
 
+/* Compact indicator - magnifying glass + text */
+.timeline-toolbar-container.toolbar-compact::after {
+    content: '🔍 Search & Filter Timeline';
+    display: block;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    margin: 0 1rem;
+    transition: all 0.2s ease;
+}
+
+.timeline-toolbar-container.toolbar-compact:hover::after {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+}
+
 .timeline-toolbar-container.toolbar-compact:hover {
     background: linear-gradient(to bottom, rgba(11, 11, 15, 1) 0%, rgba(11, 11, 15, 0.9) 80%, transparent 100%);
 }
@@ -707,17 +726,9 @@ select.timeline-btn option {
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
 }
 
-/* --- Signal Timeline Animation --- */
+/* --- Signal Timeline Animation --- HIDDEN (clutters blog-style layout) */
 .timeline-signal-track {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 200px;
-    width: 2px;
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(-50%);
-    z-index: 0;
-    pointer-events: none;
+    display: none;
 }
 
 .timeline-signal-pulse {

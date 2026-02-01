@@ -4156,16 +4156,9 @@ body:not([data-timeline-expanded]) .timeline-item:nth-child(3)::after {
     position: relative;
 }
 
-/* Keep vertical line on phases container */
+/* Vertical line REMOVED - clutters blog-style layout */
 .timeline-phases::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, #3498db, #9b59b6);
-    border-radius: 2px;
+    display: none;
 }
 
 /* Responsive pagination */

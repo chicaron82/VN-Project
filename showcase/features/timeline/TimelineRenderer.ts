@@ -10,7 +10,7 @@
 import { TIMELINE_DATA, type TimelineEntry } from '../../data/timeline';
 import { V3_LAB_DATA } from '../../data/v3-lab-entries'; // Import V3 Data
 import { timelineAnimations } from './TimelineAnimations';
-import { TimelineStats } from './TimelineStats';
+import { FunMetricsDashboard } from '../../components/FunMetricsDashboard';
 import { TimelineScrubber } from './TimelineScrubber';
 import { TimelineSearch } from './TimelineSearch';
 import { initCrewNavigation } from './CrewNavigation';
@@ -35,7 +35,7 @@ export class TimelineRenderer {
     private entriesContainer: HTMLElement | null;
 
     // Phase 2: Stats dashboard
-    private timelineStats: TimelineStats | null;
+    private funMetricsDashboard: FunMetricsDashboard | null;
 
     // Phase 3: Timeline scrubber
     private timelineScrubber: TimelineScrubber | null;
@@ -69,7 +69,7 @@ export class TimelineRenderer {
         this.entriesContainer = null;
 
         // Phase 2: Stats dashboard
-        this.timelineStats = null;
+        this.funMetricsDashboard = null;
 
         // Phase 3: Timeline scrubber
         this.timelineScrubber = null;
@@ -237,20 +237,16 @@ export class TimelineRenderer {
         // Remove existing stats if any
         if (this.statsContainer) this.statsContainer.remove();
 
-        // Create stats instance with original entries
-        this.timelineStats = new TimelineStats(this.originalEntries);
-        const statsHTML = this.timelineStats.renderDashboard();
+        // New Fun Metrics Dashboard
+        this.funMetricsDashboard = new FunMetricsDashboard(this.originalEntries);
+        const dashboardEl = this.funMetricsDashboard.render();
 
         // Create container and inject HTML
         this.statsContainer = document.createElement('div');
-        this.statsContainer.innerHTML = statsHTML;
+        this.statsContainer.className = 'timeline-stats-wrapper';
+        this.statsContainer.appendChild(dashboardEl);
 
-        this.statsContainer.innerHTML = statsHTML;
-        // Also add class to ensure correct full-width styling
-        this.statsContainer.classList.add('timeline-stats-wrapper');
-
-        // Insert BEFORE the timeline container (outside of the timeline layout context)
-        // This ensures the vertical line doesn't run through the stats
+        // Insert BEFORE the timeline container
         if (this.container && this.container.parentNode) {
             this.container.parentNode.insertBefore(this.statsContainer, this.container);
         } else {
@@ -258,94 +254,10 @@ export class TimelineRenderer {
             this.container?.insertBefore(this.statsContainer, this.container.firstChild);
         }
 
-        // Add click handlers for category filtering
-        this.attachStatsClickHandlers();
-
-        // Trigger animated counters on intersection
-        this.animateStatsCounters();
-
-        console.log('📊 [Phase 2] Stats dashboard rendered');
+        console.log('📊 [Phase 2] Fun Stats dashboard rendered');
     }
 
-    private attachStatsClickHandlers(): void {
-        const statCards = this.statsContainer?.querySelectorAll('.stat-card');
 
-        statCards?.forEach(card => {
-            card.addEventListener('click', () => {
-                const category = (card as HTMLElement).dataset.category;
-                if (!category) return;
-
-                console.log(`📊 [Phase 2] Filtering by category: ${category}`);
-
-                // Filter timeline to show only this category
-                const matchingItems = Array.from(
-                    this.entriesContainer?.querySelectorAll(`.timeline-item[data-type="${category}"]`) || []
-                ) as HTMLElement[];
-
-                // Use Phase 1 animations for smooth filtering
-                timelineAnimations.filterWithStagger(matchingItems, 50);
-
-                // Update active state on stat cards
-                statCards.forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-
-                // Scroll to first matching item
-                if (matchingItems.length > 0) {
-                    setTimeout(() => {
-                        timelineAnimations.scrollToElement(matchingItems[0], 200);
-                    }, 600);
-                }
-            });
-        });
-
-        // Add "Show All" handler
-        const showAllBtn = this.statsContainer?.querySelector('.stats-show-all-btn');
-        showAllBtn?.addEventListener('click', () => {
-            console.log('📊 [Phase 2] Showing all timeline items');
-
-            // Reset filter and re-render timeline
-            this.activeFilter = 'all';
-            this.searchQuery = '';
-            this.renderTimeline();
-
-            // Remove active state from all stat cards
-            statCards?.forEach(c => c.classList.remove('active'));
-        });
-    }
-
-    private animateStatsCounters(): void {
-        // Animate stat counters from 0 to target value
-        const counters = this.statsContainer?.querySelectorAll('.stat-count');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counter = entry.target as HTMLElement;
-                    const target = parseInt(counter.dataset.count || '0');
-                    const duration = 1000; // 1 second
-                    const steps = 30;
-                    const increment = target / steps;
-                    const stepDuration = duration / steps;
-
-                    let current = 0;
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            counter.textContent = target.toString();
-                            clearInterval(timer);
-                        } else {
-                            counter.textContent = Math.floor(current).toString();
-                        }
-                    }, stepDuration);
-
-                    // Unobserve after animating
-                    observer.unobserve(counter);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        counters?.forEach(counter => observer.observe(counter));
-    }
 
     private async loadTimelineData(): Promise<void> {
         // Swap Data Source based on Active Mode
