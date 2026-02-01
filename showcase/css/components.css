@@ -1,3 +1,34 @@
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * UV7 SHOWCASE - COMPONENTS (5558 lines)
+ * ═══════════════════════════════════════════════════════════════
+ * 
+ * ⚠️  LARGE FILE - Use section index below for navigation
+ * 
+ * TABLE OF CONTENTS:
+ * ------------------
+ * Lines    1-275   │ Hero Section (hero-container, hero-content, stats, split-container)
+ * Lines  276-965   │ Timeline Component (phases, toolbar, search, spotlight, scrubber)
+ * Lines  966-1315  │ App Switcher Cards (preview cards, gradients, overlays)
+ * Lines 1316-1875  │ Code Comparison Modal (split-screen, slider, syntax highlighting)
+ * Lines 1876-2265  │ Hero Banners (premium section headers, parallax, particles)
+ * Lines 2266-2700  │ Spotlight Carousel (technical cards, navigation, modal)
+ * Lines 2701-3155  │ Cooking Metaphor (recipe vs ingredients comparison)
+ * Lines 3156-3485  │ Soma Journey (V1 vs V2 phase comparison)
+ * Lines 3486-4335  │ Experiment Design (V3 recipe cards, agent cards, matrix)
+ * Lines 4336-4715  │ Experiment Dashboard (scorecards, mode toggles, badges)
+ * Lines 4716-5095  │ Experiment Reflections (post-mortem, failure analysis)
+ * Lines 5096-5385  │ Experiment Mimic (chaos variable, origin story, analysis)
+ * Lines 5386-5558  │ Belle Path Comparison (V1/V2, self-assessment, trade-offs)
+ * 
+ * REFACTORING NOTES:
+ * ------------------
+ * - File identified as bloated in Phase 3 cleanup (Feb 2026)
+ * - Future work: Extract experiment-*.css and carousel.css into separate files
+ * - Navigation: Use Cmd/Ctrl+G to jump to line numbers
+ * - Each section is self-contained with its own media queries
+ */
+
 /* ═══════════════════════════════════════════════════════════════
    HERO SECTION
    Clean hero without comparison slider

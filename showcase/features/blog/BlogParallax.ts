@@ -91,13 +91,6 @@ export class BlogParallax {
                 const yOffset = distFromCenter * 15; // Max 15px shift
                 marker.style.transform = `translateY(${yOffset}px)`;
             }
-
-            // Optional: Content staggering
-            // const content = item.querySelector('.timeline-content') as HTMLElement;
-            // if (content) {
-            //     const yOffset = distFromCenter * -5; // Content moves slightly faster
-            //     content.style.transform = `translateY(${yOffset}px)`;
-            // }
         });
     }
 

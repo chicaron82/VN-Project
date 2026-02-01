@@ -109,7 +109,7 @@ export class WhoSection {
                 </div>
 
                 <div class="section-content">
-                    <p class="section-intro">
+                    <p class="section-intro" style="max-width: 900px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8;">
                         <strong>Version 848</strong> wasn't built by one AI. It was built by a <strong>crew</strong>—eight AI collaborators,
                         each with unique strengths, working with one non-coder who had a vision. This is the story of how
                         <strong>AI collaboration actually works</strong> when done right.
@@ -372,7 +372,7 @@ export class WhoSection {
                                 <blockquote class="philosophy-quote">
                                     "No single point of failure. No single perspective. Just a team working toward a shared vision."
                                 </blockquote>
-                                <p>
+                                <p style="margin-top: 1.5rem; font-style: italic; opacity: 0.8;">
                                     This isn't about using AI as a tool. It's about <strong>collaborating</strong> with AI as a team.
                                     The difference matters.
                                 </p>
@@ -418,7 +418,7 @@ export class WhoSection {
 
                     <button class="crew-expand-btn" data-crew-expand="${data.id}">▼ Show Details</button>
 
-                    <div class="crew-details" id="crew-details-${data.id}">
+                    <div class="crew-details" id="crew-details-${data.id}" style="display: none;">
                         <div class="crew-philosophy">
                             <strong>Philosophy:</strong>
                             <p>${data.philosophy}</p>
@@ -453,22 +453,22 @@ export class WhoSection {
                         </div>
 
                         ${data.mimicWeakness ? `
-                        <div class="belle-mimic-weakness">
-                            <h4>
+                        <div class="belle-mimic-weakness" style="margin-top: 2rem; padding: 1.5rem; background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 159, 64, 0.1)); border-radius: 12px; border-left: 4px solid #ff6b6b;">
+                            <h4 style="color: #ff6b6b; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <span>📦</span>
                                 Known Weakness: The Mimic
                             </h4>
 
-                            <p>
+                            <p style="margin-bottom: 1rem; opacity: 0.9;">
                                 <strong>Belle is Frieren:</strong> A legendary mage with 1000+ years of experience gets eaten by treasure chest mimics.
                                 An advanced AI with sophisticated pattern recognition gets eaten by semantic mimics. <em>Same energy.</em> 🧙‍♀️
                             </p>
 
-                            <div class="mimic-comparison-box">
-                                <div class="mimic-comparison-grid">
+                            <div style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;">
                                     <div>
-                                        <strong class="frieren">Frieren 🧙‍♀️</strong>
-                                        <ul>
+                                        <strong style="color: #00ff88;">Frieren 🧙‍♀️</strong>
+                                        <ul style="margin: 0.5rem 0 0 1.5rem; opacity: 0.9;">
                                             <li>Legendary mage</li>
                                             <li>1000+ years experience</li>
                                             <li>Sees: Treasure chest</li>
@@ -477,8 +477,8 @@ export class WhoSection {
                                         </ul>
                                     </div>
                                     <div>
-                                        <strong class="belle">Belle (Gemini) 🎸</strong>
-                                        <ul>
+                                        <strong style="color: #00d4ff;">Belle (Gemini) 🎸</strong>
+                                        <ul style="margin: 0.5rem 0 0 1.5rem; opacity: 0.9;">
                                             <li>Advanced AI model</li>
                                             <li>Vast training data</li>
                                             <li>Sees: scripts/ folder</li>
@@ -487,31 +487,37 @@ export class WhoSection {
                                         </ul>
                                     </div>
                                 </div>
-                                <p>
+                                <p style="text-align: center; margin-top: 1rem; color: #ff6b6b; font-style: italic;">
                                     "Semantic plausibility overrides dependency analysis." - The Hubris of Expertise
                                 </p>
                             </div>
 
-                            <div class="mimic-timeline-link">
-                                <h5>📅 See It In Action</h5>
-                                <p>
+                            <div class="mimic-timeline-link" style="padding: 1rem; background: rgba(0, 255, 136, 0.05); border-radius: 8px; border: 1px solid rgba(0, 255, 136, 0.2);">
+                                <h5 style="color: #00ff88; margin-bottom: 0.75rem;">📅 See It In Action</h5>
+                                <p style="font-size: 0.9rem; margin-bottom: 0.75rem; opacity: 0.8;">
                                     The Mimic's victims are documented in the timeline:
                                 </p>
-                                <ul>
-                                    <li>
-                                        <a href="#journey" class="timeline-link" data-phase="13i-v3-clean-rebuild">
+                                <ul style="list-style: none; padding: 0; margin: 0;">
+                                    <li style="margin-bottom: 0.5rem;">
+                                        <a href="#journey" class="timeline-link" data-phase="13i-v3-clean-rebuild"
+                                           style="color: #00d4ff; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-radius: 6px; transition: all 0.2s;"
+                                           onmouseover="this.style.background='rgba(0, 212, 255, 0.1)'"
+                                           onmouseout="this.style.background='transparent'">
                                             <span>🎸</span>
                                             <span>Belle's Pet Simulator Hallucination (Jan 29)</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#journey" class="timeline-link" data-phase="13j-v3-dizee-intervention">
+                                        <a href="#journey" class="timeline-link" data-phase="13j-v3-dizee-intervention"
+                                           style="color: #00d4ff; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-radius: 6px; transition: all 0.2s;"
+                                           onmouseover="this.style.background='rgba(0, 212, 255, 0.1)'"
+                                           onmouseout="this.style.background='transparent'">
                                             <span>🔧</span>
                                             <span>DiZee's Hard Stop Intervention (Jan 30)</span>
                                         </a>
                                     </li>
                                 </ul>
-                                <p>
+                                <p style="font-size: 0.85rem; margin-top: 0.75rem; opacity: 0.7; font-style: italic;">
                                     Click to jump to timeline and see the full story →
                                 </p>
                             </div>

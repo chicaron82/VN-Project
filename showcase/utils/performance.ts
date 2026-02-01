@@ -44,12 +44,6 @@ function initLazyLoading(): void {
 function deferNonCriticalScripts(): void {
     // This function can be used to load analytics, social widgets, etc.
     // after the page has fully loaded
-
-    // Example: Load analytics after page load
-    // const script = document.createElement('script');
-    // script.src = 'analytics.js';
-    // script.defer = true;
-    // document.body.appendChild(script);
 }
 
 // Initialize performance optimizations

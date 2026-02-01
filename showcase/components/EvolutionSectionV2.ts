@@ -7,8 +7,6 @@ import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
  * The Game Engine evolution from V1 chaos to V2 EventBus architecture
  */
 export class EvolutionSection {
-    private currentView: 'v1' | 'v2' = 'v1';
-
     constructor() {
         this.render();
         this.setupInteractions();
@@ -397,8 +395,6 @@ export class EvolutionSection {
                         this.animateCodeTransition(block as HTMLElement);
                     }
                 });
-
-                this.currentView = version as 'v1' | 'v2';
             });
         });
 
@@ -413,7 +409,7 @@ export class EvolutionSection {
     setupTooltips(markerSelector: string, tooltipSelector: string): void {
         const markers = document.querySelectorAll(markerSelector);
         markers.forEach(marker => {
-            marker.addEventListener('mouseenter', (e) => {
+            marker.addEventListener('mouseenter', () => {
                 const bugId = (marker as HTMLElement).getAttribute('data-bug-id');
                 const tooltip = document.querySelector(`${tooltipSelector}[data-tooltip-id="${bugId}"]`);
                 if (tooltip) {

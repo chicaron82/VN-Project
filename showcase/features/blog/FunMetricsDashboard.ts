@@ -5,7 +5,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import type { BlogEntry } from '../data/timeline/types';
+import type { BlogEntry } from '../../data/blog/types';
 
 export interface FunMetrics {
     totalDays: number;

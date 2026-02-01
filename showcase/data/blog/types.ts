@@ -165,6 +165,9 @@ export interface BlogEntry {
     };
 }
 
+// Alias for backward compatibility
+export type TimelineEntry = BlogEntry;
+
 export interface TimelineData {
     entries: BlogEntry[];
 }

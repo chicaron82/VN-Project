@@ -1,3 +1,38 @@
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * UV7 SHOWCASE - PAGE-SPECIFIC STYLES (2620 lines)
+ * ═══════════════════════════════════════════════════════════════
+ * 
+ * ⚠️  LARGE FILE - Use section index below for navigation
+ * 
+ * TABLE OF CONTENTS:
+ * ------------------
+ * Lines    1-485   │ Who Page (creator hero, crew grid, crew cards, philosophy, Belle's mimic)
+ * Lines  486-940   │ Evolution Page (V1→V2 comparison, VS divider, metrics, architecture diagrams)
+ * Lines  941-1550  │ Spotlight Bento (bento grid, 3D tilt, glassmorphism, gradient borders, scroll reveal)
+ * Lines 1551-1950  │ Content Features (dark mode, timeline search, GitHub links, toasts, share buttons)
+ * Lines 1951-2270  │ Workflow Methodology (collapsible sections, review flow, diversity benefits, trade-offs)
+ * Lines 2271-2385  │ Experiment Visual Contrast (positive/negative comparison, user feedback, failure tables)
+ * Lines 2386-2620  │ Home Page (Version 848, story cards, route grid, themes grid, meta-philosophical boxes)
+ * 
+ * SECTION OVERVIEW:
+ * -----------------
+ * - Home: Landing page intro, meta-narrative explanation
+ * - Journey: Timeline (not styled here - see blog.css)
+ * - Workflow: Development process showcase
+ * - Spotlight: Technical highlights bento grid
+ * - Evolution: V1 vs V2 comparison (deep-dive in evolution-v2.css)
+ * - Experiment: Interactive demos
+ * - Who: UV7 crew showcase and collaboration philosophy
+ * 
+ * REFACTORING NOTES:
+ * ------------------
+ * - File identified as bloated in Phase 3 cleanup (Feb 2026)
+ * - Extracted inline styles moved here as of Phase 1 cleanup
+ * - Future work: Extract page-specific files (who-page.css, evolution-page.css, etc.)
+ * - Navigation: Use Cmd/Ctrl+G to jump to line numbers
+ */
+
 /* ==========================================================================
    WHO ARE WE SECTION - BOUGIE EDITION
    ========================================================================== */
@@ -2136,4 +2171,467 @@ body.light-mode .web-node {
     background: #fff1f0;
     border-color: #ff4d4f;
     color: #a8071a;
+}/* ==========================================================================
+   HOME SECTION - VERSION 848
+   ========================================================================== */
+.home-section-container {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.home-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.home-subtitle {
+    font-size: 1.3rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary, #4a4a4a);
+    font-style: italic;
+}
+
+.home-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary, #4a4a4a);
+}
+
+.home-quote {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary, #1a1a1a);
+    font-style: italic;
+    text-align: center;
+    border-left: 2px solid var(--accent-blue, #4a9eff);
+    padding-left: 1rem;
+}
+
+.home-highlight-box {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    color: var(--text-secondary, #4a4a4a);
+    border-left: 3px solid rgba(0, 255, 136, 0.4);
+    padding-left: 1rem;
+}
+
+.story-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.story-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.route-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.route-card {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.route-card.ronnie {
+    border-left: 3px solid #ff6b9d;
+}
+
+.route-card.tori {
+    border-left: 3px solid #00ccff;
+}
+
+.route-card h4 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+}
+
+.route-card.ronnie h4 { color: #ff6b9d; }
+.route-card.tori h4 { color: #00ccff; }
+
+.route-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+.paradox-box {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 107, 157, 0.1);
+    border-radius: 6px;
+}
+
+.themes-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.theme-item {
+    display: flex;
+    gap: 1rem;
+    align-items: start;
+}
+
+.theme-icon {
+    font-size: 1.5rem;
+}
+
+.theme-content strong {
+    font-size: 1.1rem;
+    display: block;
+}
+
+.theme-content p {
+    margin: 0.25rem 0 0;
+    opacity: 0.85;
+}
+
+.meta-box {
+    background: rgba(22, 33, 62, 0.05);
+    border-left: 4px solid var(--accent-blue, #4a9eff);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+}
+
+.comparison-section {
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(102, 126, 234, 0.08));
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.comparison-header {
+    font-size: 1.3rem;
+    margin: 0 0 1.5rem;
+    text-align: center;
+    font-weight: 700;
+}
+
+.comparison-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .comparison-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.comparison-card {
+    background: rgba(0,0,0,0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 3px solid #999;
+}
+
+.comparison-card.v848 {
+    background: rgba(0, 255, 136, 0.1);
+    border-left: 3px solid #00ff88;
+}
+
+.comparison-card h4 {
+    margin: 0 0 1rem;
+    font-size: 1.05rem;
+    opacity: 0.9;
+}
+
+.comparison-card.v848 h4 {
+    color: #00ff88;
+}
+
+.comparison-list {
+    margin: 0;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    opacity: 0.85;
+}
+
+.comparison-details {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.v848-expanded-section {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border-left-width: 2px;
+    border-left-style: solid;
+}
+
+.v848-toggle-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 255, 136, 0.2);
+    border: 1px solid #00ff88;
+    border-radius: 6px;
+    color: #00ff88;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.v848-toggle-btn:hover {
+    background: rgba(0, 255, 136, 0.3);
+}
+
+.meta-philosophical-box {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.swipe-hint {
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.home-version-badge {
+    font-size: 0.5em;
+    opacity: 0.7;
+    vertical-align: super;
+}
+
+.home-section-wrapper {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.home-heading {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.home-info-box {
+    background: rgba(22, 33, 62, 0.05);
+    border-left: 4px solid var(--accent-blue, #4a9eff);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 4px;
+}
+
+.home-info-box p:first-child {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.home-info-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+    line-height: 1.8;
+}
+
+.home-info-box ul:first-child {
+    margin: 1rem 0 0;
+}
+
+.home-meta-gradient-box {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.home-meta-gradient-box p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin: 0;
+    color: var(--text-primary, #1a1a1a);
+    font-weight: 500;
+}
+
+.home-meta-gradient-box p + p {
+    margin-top: 1rem;
+}
+
+.home-navigation-hint {
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.home-navigation-hint p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-blue, #4a9eff);
+    margin-bottom: 1rem;
+}
+
+.home-navigation-hint p:last-child {
+    font-size: 0.95rem;
+    color: var(--text-tertiary, #6a6a6a);
+}
+
+/* ==========================================================================
+   WHO SECTION - ADDITIONAL STYLES
+   ========================================================================== */
+
+/* Section intro specific styling */
+.who-section .section-intro {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+/* Philosophy card footer text */
+.philosophy-content > p:last-child {
+    margin-top: 1.5rem;
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Crew details - hidden by default */
+.crew-details {
+    display: none;
+}
+
+/* Belle's Mimic Weakness Section */
+.belle-mimic-weakness {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 159, 64, 0.1));
+    border-radius: 12px;
+    border-left: 4px solid #ff6b6b;
+}
+
+.belle-mimic-weakness > h4 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.belle-mimic-weakness > p {
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.mimic-comparison-box {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.mimic-comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+
+.mimic-comparison-grid strong.frieren {
+    color: #00ff88;
+}
+
+.mimic-comparison-grid strong.belle {
+    color: #00d4ff;
+}
+
+.mimic-comparison-grid ul {
+    margin: 0.5rem 0 0 1.5rem;
+    opacity: 0.9;
+}
+
+.mimic-comparison-box > p {
+    text-align: center;
+    margin-top: 1rem;
+    color: #ff6b6b;
+    font-style: italic;
+}
+
+.mimic-timeline-link {
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.mimic-timeline-link h5 {
+    color: #00ff88;
+    margin-bottom: 0.75rem;
+}
+
+.mimic-timeline-link > p:first-of-type {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.8;
+}
+
+.mimic-timeline-link ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mimic-timeline-link li {
+    margin-bottom: 0.5rem;
+}
+
+.mimic-timeline-link li:last-child {
+    margin-bottom: 0;
+}
+
+.mimic-timeline-link a {
+    color: #00d4ff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.mimic-timeline-link a:hover {
+    background: rgba(0, 212, 255, 0.1);
+}
+
+.mimic-timeline-link > p:last-child {
+    font-size: 0.85rem;
+    margin-top: 0.75rem;
+    opacity: 0.7;
+    font-style: italic;
 }

@@ -19,13 +19,9 @@ import type { TimelineEntry } from '../../v2/ui/components/UV7OSConfig'; // Impo
 // Import blog components
 import { BlogRenderer } from '../features/blog/BlogRenderer';
 import { TabController } from './TabController';
-// SwipeController replaced by CSS scroll-snap
-// import { MagneticCursor } from '../components/MagneticCursor'; // Disabled to show timeline ripple effects
 import { initAppStateManager } from './AppStateManager';
 import { initShowcaseCarousel } from '../components/showcase-carousel';
 import { UV7EchoSystem } from '../features/UV7EchoSystem';
-// Remove initUV7OS since we'll create the instance directly
-// Remove initGrabHandle since UV7OS handles it automatically
 
 // Import section renderers
 import { HomeSection } from '../components/HomeSection';
@@ -109,7 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('⏭️ Skipping UV7 System (shell provides chrome)');
         console.log('⏭️ Skipping Sidebar/NotificationShade (shell provides context-aware sidebar)');
     } else {
-        // Only create UV7 System chrome (status bar, sidebar, etc.) in standalone mode
+        // =================================================================
+        // PHASE 1: CORE SYSTEM (only in standalone mode)
+        // =================================================================
+        // The UV7 System provides the status bar and event bus that other
+        // components depend on. Must initialize first in standalone mode.
+        
         const uv7System = createUV7System('showcase');
         window.uv7Runtime = {
             ...uv7System,
@@ -126,11 +127,17 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('✅ Sidebar and NotificationShade initialized');
     }
 
+    // =================================================================
+    // PHASE 2: NAVIGATION & CONTENT
+    // =================================================================
+    // TabController and section renderers must initialize before features
+    // that depend on the DOM structure (like BlogRenderer, deep linking, etc.)
+    
     // Initialize Tab Navigation
     const tabController = new TabController();
     window.tabController = tabController; // Expose for legacy compatibility
 
-    // Initialize section renderers
+    // Initialize section renderers (these inject HTML into mount points)
     new HomeSection();
     new JourneySection();
     new WorkflowSection();
@@ -143,9 +150,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inject footers AFTER sections render (DRY optimization)
     injectFooters();
 
-    // Initialize blog enhancements (MAXIMUM MICHELIN)
-    // Note: BlogRenderer creates its own scrubber and has search in toolbar
-    // We only add keyboard nav and deep linking here
+    // =================================================================
+    // PHASE 3: BLOG ENHANCEMENTS
+    // =================================================================
+    // Blog features depend on the Journey section's DOM being rendered.
+    // BlogRenderer must initialize BEFORE deep linking wire-up.
+    
     new BlogAnimations('.timeline-phases');
 
     const blogDeepLink = new BlogDeepLink();
@@ -192,6 +202,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const initialTab = tabController.getActiveTab();
     tabController.setActiveTab(initialTab);
 
+    // =================================================================
+    // PHASE 4: INTERACTION & NAVIGATION
+    // =================================================================
+    // Scroll-based navigation and visual effects that enhance user interactions.
+    
     // Use native CSS scroll-snap instead of SwipeController
     const tabPanelsContainer = document.querySelector('.tab-panels-container') as HTMLElement;
     if (tabPanelsContainer) {
@@ -225,7 +240,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initPremiumAnimations();
     console.log('✅ Visual effects initialized');
 
-    // Initialize utilities
+    // =================================================================
+    // PHASE 5: UTILITIES & OPTIMIZATION
+    // =================================================================
+    // Performance, analytics, and utility features that enhance the experience.
+    
     initPerformanceOptimizations();
     initLoadStats();
     initAnalytics();
@@ -233,7 +252,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initUXEnhancements();
     console.log('✅ Utilities initialized');
 
-    // Initialize App State Manager and App Switcher (only in standalone mode)
+    // =================================================================
+    // PHASE 6: APP INTEGRATION (standalone only)
+    // =================================================================
+    // App switcher and state management for multi-app navigation.
+    
     if (!isInShell) {
         initAppStateManager();
         console.log('✅ App State Manager initialized');
@@ -246,7 +269,12 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('⏭️ Skipping App Switcher (shell mode)');
     }
 
-    // Initialize UV7 OS (navigation system) - ALWAYS, even in shell mode
+    // =================================================================
+    // PHASE 7: UV7 OS (always, regardless of mode)
+    // =================================================================
+    // The UV7 OS navigation system that tracks timeline entries.
+    // Must initialize AFTER BlogRenderer has processed timeline data.
+    
     if (window.TIMELINE_DATA?.entries) {
         window.uv7os = new UV7OS('showcase', {
             entries: window.TIMELINE_DATA.entries as TimelineEntry[]
