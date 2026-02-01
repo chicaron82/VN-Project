@@ -95,15 +95,20 @@ export class TimelineScrubber {
             </div>
         `;
 
-        // Insert INSIDE the toolbar (filters), effectively merging them
-        const toolbar = this.container?.querySelector('.timeline-toolbar-container');
+        // Find toolbar - search in document, not just container
+        // Toolbar is inside #timeline-container which has class .timeline-phases
+        const toolbar = document.querySelector('#timeline-container .timeline-toolbar-container') 
+            || document.querySelector('.timeline-toolbar-container');
+            
         if (toolbar) {
             // Append to toolbar so they stick together as one unit
             toolbar.appendChild(scrubber);
             // Add a class to toolbar to indicate it now has a footer
             toolbar.classList.add('has-scrubber');
+            console.log('🎯 [TimelineScrubber] Appended to toolbar');
         } else {
             // Fallback: insert at the beginning if toolbar not found
+            console.warn('⚠️ [TimelineScrubber] Toolbar not found, inserting before container');
             this.container?.insertBefore(scrubber, this.container.firstChild);
         }
 
@@ -119,17 +124,20 @@ export class TimelineScrubber {
      * Collect timeline entries from DOM
      */
     private collectEntries(): void {
-        const items = document.querySelectorAll('.timeline-item');
+        // Support both old .timeline-item and new .blog-entry elements
+        const items = document.querySelectorAll('.blog-entry, .timeline-item');
         this.entries = Array.from(items).map(item => {
             const el = item as HTMLElement;
             return {
                 id: el.id || '',
-                date: el.querySelector('h3')?.textContent || '',
+                date: el.querySelector('.blog-date')?.textContent || el.querySelector('h3')?.textContent || '',
                 type: el.dataset.type || '',
-                title: el.querySelector('strong')?.textContent || '',
+                title: el.querySelector('.blog-title')?.textContent || el.querySelector('strong')?.textContent || '',
                 element: el
             };
         });
+        
+        console.log('📍 [TimelineScrubber] Collected', this.entries.length, 'entries');
     }
 
     /**
