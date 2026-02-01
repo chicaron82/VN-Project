@@ -16,16 +16,17 @@ export class EvolutionSection {
 
                 <div class="section-content">
                     <p class="section-intro">
-                        <strong>Version 848</strong> evolved from a rapid-fire prototype to a production-ready engine.
-                        Here's the side-by-side comparison of that transformation.
+                        <strong>How Fun Evolved From Chaos to Order:</strong> Version 848 V1 was beautiful chaos—50 days of creative energy
+                        building something magical but unmaintainable. V2 took that magic and gave it structure. This comparison isn't about
+                        "old vs new." It's about maturation: keeping the soul while building the foundation.
                     </p>
 
                     <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; text-align: center;">
-                        The Transformation Story
+                        The Evolution: V1 Chaos → V2 Harmony
                     </h3>
 
                     <p class="section-intro" style="max-width: 700px; margin: 0 auto 3rem; text-align: center; font-size: 1.1rem;">
-                        From spaghetti chaos to clean architecture. Here's how V2 fixed what V1 broke—and why it mattered.
+                        We didn't just refactor code. We preserved the fun while building for the future. Here's how.
                     </p>
 
                     <div class="comparison-grid">

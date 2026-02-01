@@ -31,9 +31,9 @@ export class ExperimentSection {
                 <!-- INTRO -->
                 <div class="experiment-intro">
                     <div class="experiment-question-callout">
-                        <strong>The Core Question:</strong> V1 was built through collaborative discovery ("ingredients approach").
-                        Can we distill that chaos into detailed recipes that preserve the "soul" (MSG flavoring)
-                        when executed by fresh agentic AI?
+                        <strong>Can We Replicate the Fun?</strong> V1 was built through collaborative discovery—organic, emergent, alive.
+                        The question: Can we reverse-engineer the "secret sauce"? Can we write recipes detailed enough that fresh AI models
+                        can recreate the magic? Or does the vibe die in translation?
                     </div>
 
                     <p>

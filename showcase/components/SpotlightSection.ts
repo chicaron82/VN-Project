@@ -16,8 +16,9 @@ export class SpotlightSection {
 
                 <div class="section-content">
                     <p class="section-intro">
-                        Deep dive into <strong>Version 848's</strong> most interesting technical achievements.
-                        From tether mechanics to save systems, here's what makes the engine tick.
+                        <strong>What We Made While Having Fun:</strong> The technical achievements that emerged from our collaborative journey.
+                        Each feature here represents a day (or week) of creative problem-solving. Momentum carousels, echo memory systems,
+                        cross-game communication—these aren't just code. They're proof that playful collaboration produces elegant solutions.
                     </p>
 
                     <!-- Bento Grid -->

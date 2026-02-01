@@ -13,6 +13,7 @@ import { timelineAnimations } from './TimelineAnimations';
 import { TimelineStats } from './TimelineStats';
 import { TimelineScrubber } from './TimelineScrubber';
 import { TimelineSearch } from './TimelineSearch';
+import { initCrewNavigation } from './CrewNavigation';
 
 export class TimelineRenderer {
     private container: HTMLElement | null;
@@ -581,6 +582,9 @@ export class TimelineRenderer {
             });
         });
 
+        // Initialize crew navigation (filters + breadcrumbs)
+        initCrewNavigation();
+
         // Phase 3: Refresh scrubber after timeline renders
         if (this.timelineScrubber) {
             this.timelineScrubber.refresh();
@@ -798,6 +802,10 @@ export class TimelineRenderer {
         // Add data-type attribute for CSS visual theming (V1/V2/Shell flavors)
         if (entry.type) {
             item.setAttribute('data-type', entry.type);
+        }
+        // Add modelId for crew filtering and breadcrumbs
+        if (entry.modelId) {
+            item.setAttribute('data-model-id', entry.modelId);
         }
 
         // Calculate reading time (rough estimate: 200 words/min)

@@ -110,9 +110,9 @@ export class WhoSection {
 
                 <div class="section-content">
                     <p class="section-intro" style="max-width: 900px; margin: 0 auto; font-size: 1.2rem; line-height: 1.8;">
-                        <strong>Version 848</strong> wasn't built by one AI. It was built by a <strong>crew</strong>—eight AI collaborators,
-                        each with unique strengths, working with one non-coder who had a vision. This is the story of how
-                        <strong>AI collaboration actually works</strong> when done right.
+                        <strong>The Nine Voices That Had Fun Together:</strong> Version 848 wasn't built by one entity. It was built by a crew—
+                        eight AI personalities and one human vision, each bringing different strengths. This is the story of how genuine
+                        collaboration produces something none of them could have built alone. Not command-and-control. Conversation and trust.
                     </p>
 
                     <!-- Creator Hero Card -->

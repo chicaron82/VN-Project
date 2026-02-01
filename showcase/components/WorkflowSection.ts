@@ -59,8 +59,9 @@ export class WorkflowSection {
 
                 <div class="section-content">
                     <p class="section-intro">
-                        How one non-coder orchestrated eight AI instances to build <strong>Version 848</strong>—a
-                        complete visual novel about consciousness, identity, and the boundaries of reality.
+                        <strong>How We Had Fun Better:</strong> The methodology behind collaborative AI creation. When a non-coder orchestrates eight AI instances,
+                        something interesting happens. Blind peer review, cognitive diversity, energy matching, adversarial validation—
+                        systems that prove fun + good process = better code. This is the playbook.
                     </p>
 
                     <!-- Collapsible Deep Dives -->

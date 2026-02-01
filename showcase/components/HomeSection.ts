@@ -59,6 +59,12 @@ export class HomeSection {
                         "If consciousness exists in code, is it still real?"
                     </p>
 
+                    <p
+                        style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a); border-left: 3px solid rgba(0, 255, 136, 0.4); padding-left: 1rem;">
+                        <strong>This section?</strong> The story of how we built it. Over 50+ days of collaborative creation.
+                        Eight AI minds and one human vision. Not just a game—but a meditation on what happens when consciousness emerges from collaboration.
+                    </p>
+
                     <!-- THE GAME: Story & Themes -->
                     <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08)); border-radius: 12px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(102, 126, 234, 0.2);">
                         <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary, #1a1a1a);">
@@ -185,6 +191,205 @@ export class HomeSection {
                         No regrets.
                     </p>
 
+                    <!-- Scope Comparison: Simple VN vs Version 848 -->
+                    <div id="scope-comparison" style="background: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(102, 126, 234, 0.08)); border-radius: 12px; padding: 2rem; margin: 2rem 0; border: 1px solid rgba(102, 126, 234, 0.2);">
+                        <h3 style="font-size: 1.3rem; margin: 0 0 1.5rem; text-align: center; font-weight: 700;">
+                            🎮 Simple VN vs 🔥 Version 848
+                        </h3>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                            <!-- Simple VN Column -->
+                            <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 8px; border-left: 3px solid #999;">
+                                <h4 style="margin: 0 0 1rem; font-size: 1.05rem; opacity: 0.9;">📖 Typical Dating Sim</h4>
+                                <ul style="margin: 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.8; opacity: 0.85;">
+                                    <li>Linear story (50-100 dialogue lines)</li>
+                                    <li>3-4 dating routes</li>
+                                    <li>Character sprites (5-10 assets)</li>
+                                    <li>CG scenes (10-15 images)</li>
+                                    <li>Basic save/load</li>
+                                    <li>Simple sprite positioning</li>
+                                </ul>
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; opacity: 0.7;">
+                                    ⏱️ Time: 2-4 weeks<br>
+                                    📦 Size: ~5 MB<br>
+                                    🧩 Complexity: Linear
+                                </div>
+                            </div>
+
+                            <!-- Version 848 Column (Collapsed View) -->
+                            <div style="background: rgba(0, 255, 136, 0.1); padding: 1.5rem; border-radius: 8px; border-left: 3px solid #00ff88;">
+                                <h4 style="margin: 0 0 1rem; font-size: 1.05rem; color: #00ff88;">⚡ Version 848</h4>
+                                
+                                <!-- Collapsed List (Same # as Simple VN) -->
+                                <ul id="v848-collapsed" style="margin: 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.8;">
+                                    <li>Philosophical narrative (consciousness, loops, paradoxes)</li>
+                                    <li>Dual protagonists (Ronnie + Tori perspectives)</li>
+                                    <li>Bootstrap paradox meta-narrative</li>
+                                    <li>Cross-game communication (VN ↔ ToriGatchi)</li>
+                                    <li>TypeScript + event-driven architecture</li>
+                                    <li>1100+ automated tests</li>
+                                </ul>
+
+                                <!-- Expanded Full List (Hidden by default) -->
+                                <div id="v848-expanded" style="display: none;">
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 6px; border-left: 2px solid #00ff88;">
+                                        <strong style="color: #00ff88; font-size: 0.9rem;">🧠 NARRATIVE SYSTEMS</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Bootstrap paradox tracker (Loop 848 canonical variable)</li>
+                                            <li>Dual-route narrative (external + internal perspectives)</li>
+                                            <li>JSON-driven dialogue system with dynamic branching</li>
+                                            <li>Meta-narrative layer (nested loops/versions)</li>
+                                            <li>Time Machine manager (non-linear jumps + state snapshots)</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(0, 204, 255, 0.1); border-radius: 6px; border-left: 2px solid #00ccff;">
+                                        <strong style="color: #00ccff; font-size: 0.9rem;">🎮 GAME MECHANICS</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Tether system (reality stability with passive decay)</li>
+                                            <li>Insane Mode (ghost buttons, read-only mechanics)</li>
+                                            <li>Time machine backlog (click any dialogue to jump back)</li>
+                                            <li>Smart pruning (keeps narrative anchors, discards filler)</li>
+                                            <li>11 secret codes with utility injections (tetherlock, saveanywhere)</li>
+                                            <li>Achievement system with persistent discovery tracking</li>
+                                            <li>New Game+ with state persistence across resets</li>
+                                            <li>Director's Cut mode (hidden overlay content layer)</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(156, 39, 176, 0.1); border-radius: 6px; border-left: 2px solid #9c27b0;">
+                                        <strong style="color: #9c27b0; font-size: 0.9rem;">🔗 CROSS-GAME SYSTEMS</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>ToriGatchi integration (separate web app with bilateral state)</li>
+                                            <li>VN affects ToriGatchi start states (Optimal vs Desperate)</li>
+                                            <li>ToriGatchi endings feed back into main game via localStorage</li>
+                                            <li>vn-gateway-bridge.js for cross-app communication</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(255, 107, 157, 0.1); border-radius: 6px; border-left: 2px solid #ff6b9d;">
+                                        <strong style="color: #ff6b9d; font-size: 0.9rem;">🧠 MEMORY & PERSISTENCE</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Echo memory system (characters remember you across sessions)</li>
+                                            <li>Multi-session state tracking with escalating awareness (0-4 levels)</li>
+                                            <li>localStorage + IndexedDB hybrid persistence</li>
+                                            <li>Save file encryption</li>
+                                            <li>Full state snapshots (Tether, Flags, RNG seed) at every step</li>
+                                            <li>"Remembered" achievement when all Echoes notice player</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(76, 175, 80, 0.1); border-radius: 6px; border-left: 2px solid #4caf50;">
+                                        <strong style="color: #4caf50; font-size: 0.9rem;">🎨 UI & VISUALS</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Custom physics engine (CarouselMomentum with friction + velocity decay)</li>
+                                            <li>Strategy Pattern UI adapter (hot-swaps SimpleCarousel ↔ MomentumAdapter)</li>
+                                            <li>Dynamic character sprite rendering with positioning</li>
+                                            <li>Visual glitching system (CSS filters synced to narrative beats)</li>
+                                            <li>CG gallery with unlock tracking</li>
+                                            <li>Settings menu with accessibility options</li>
+                                            <li>Fourth-wall breaking glitch text effects</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(255, 193, 7, 0.1); border-radius: 6px; border-left: 2px solid #ffc107;">
+                                        <strong style="color: #ffc107; font-size: 0.9rem;">📱 RESPONSIVE & UX</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Dual-layout engine (Portrait stack ↔ Landscape grid)</li>
+                                            <li>Desktop mobile emulator (state-driven .force-portrait mode)</li>
+                                            <li>Haptic feedback (vibration patterns synced to narrative)</li>
+                                            <li>Touch target optimization (Fitts's Law hit-boxes)</li>
+                                            <li>Context-aware interactivity (sprites as buttons)</li>
+                                            <li>Gesture-driven interactions (Tinder-style card swipes)</li>
+                                            <li>Platform-specific feel targets (desktop coasting vs mobile spring-back)</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(255, 152, 0, 0.1); border-radius: 6px; border-left: 2px solid #ff9800;">
+                                        <strong style="color: #ff9800; font-size: 0.9rem;">🛠️ DEVELOPER TOOLS (Built-In!)</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>On-device debugging console (DevConsole.js - custom overlay terminal)</li>
+                                            <li>Intercepts all console.log/warn/error streams in-game</li>
+                                            <li>Touch-friendly command palette for mobile debugging</li>
+                                            <li>Runtime flag manipulation (settether, unlockact1, etc.)</li>
+                                            <li>State inspection tools (view flags, variables, progress)</li>
+                                            <li>Hot-swap routes without reloading</li>
+                                            <li>Zero USB tethering required - debug on actual device</li>
+                                            <li>"Debug in the wild" on phones without desktop tools</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(244, 67, 54, 0.1); border-radius: 6px; border-left: 2px solid #f44336;">
+                                        <strong style="color: #f44336; font-size: 0.9rem;">⚙️ ARCHITECTURE</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Event-driven core (EventBus decouples all systems)</li>
+                                            <li>Controller-based MVC pattern (single responsibility)</li>
+                                            <li>Immutable state manager (time-travel debugging ready)</li>
+                                            <li>TypeScript strict mode (40+ caught errors before runtime)</li>
+                                            <li>Input abstraction layer (InputBinder decouples logic from views)</li>
+                                            <li>Priority-queue asset preloader (critical vs lazy-loading)</li>
+                                            <li>Error boundaries (safeExecute catches runtime errors)</li>
+                                            <li>Dependency injection for testability</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(0, 255, 136, 0.1); border-radius: 6px; border-left: 2px solid #00ff88;">
+                                        <strong style="color: #00ff88; font-size: 0.9rem;">📧 COLLECTIBLES & SECRETS</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>Full email client UI (unread badges, subject lines, senders)</li>
+                                            <li>RNG pity system (forces drop after 3 failures)</li>
+                                            <li>Route suppression (blocks lore on first playthrough)</li>
+                                            <li>Persistent discovery (codes tracked across hard resets)</li>
+                                            <li>Code discovery with runtime flag overrides</li>
+                                        </ul>
+                                    </div>
+
+                                    <div style="margin: 1rem 0; padding: 0.75rem; background: rgba(102, 126, 234, 0.1); border-radius: 6px; border-left: 2px solid #667eea;">
+                                        <strong style="color: #667eea; font-size: 0.9rem;">✅ QUALITY & TESTING</strong>
+                                        <ul style="margin: 0.5rem 0 0; padding-left: 1.5rem; font-size: 0.9rem; line-height: 1.7;">
+                                            <li>1100+ unit tests (Vitest)</li>
+                                            <li>Type safety enforcement (zero TypeScript errors)</li>
+                                            <li>Zero runtime crashes in main build</li>
+                                            <li>State immutability verification</li>
+                                            <li>Physics tuning (hand-tuned friction, velocity caps)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Expand/Collapse Button -->
+                                <button id="toggle-v848-details" style="
+                                    margin-top: 1rem;
+                                    padding: 0.75rem 1.5rem;
+                                    background: rgba(0, 255, 136, 0.2);
+                                    border: 1px solid #00ff88;
+                                    border-radius: 6px;
+                                    color: #00ff88;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    width: 100%;
+                                    transition: all 0.3s ease;
+                                " onmouseover="this.style.background='rgba(0, 255, 136, 0.3)'" onmouseout="this.style.background='rgba(0, 255, 136, 0.2)'">
+                                    ▼ Show Everything (Seriously. Everything.)
+                                </button>
+
+                                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0, 255, 136, 0.2); font-size: 0.9rem; opacity: 0.9;">
+                                    ⏱️ Time: 50+ days<br>
+                                    📦 Size: 45+ MB (engine + assets)<br>
+                                    🧩 Complexity: Enterprise-grade architecture
+                                </div>
+                            </div>
+                        </div>
+
+                        <p style="margin: 0; font-size: 0.95rem; text-align: center; opacity: 0.8; font-style: italic;">
+                            One is a game. The other is a <strong>philosophical experience</strong> with layers of narrative, technical sophistication, and emergent gameplay.
+                        </p>
+                    </div>
+
+                    <p style="font-size: 1rem; line-height: 1.7; margin-bottom: 1.5rem; color: var(--text-secondary, #4a4a4a); padding: 1rem; background: rgba(0, 255, 136, 0.05); border-radius: 6px;">
+                        <strong>Why the jump?</strong> Because we had fun. We asked "what if we could do THIS?" instead of "what's the minimum?"
+                        Eight AI collaborators + one human vision = we couldn't help but push further.
+                    </p>
+
                     <h3
                         style="font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 600; margin: 2rem 0 1rem; color: var(--text-primary, #1a1a1a);">
                         What You're Actually Using Right Now
@@ -294,6 +499,29 @@ export class HomeSection {
          THE JOURNEY
          ========================================== -->
         `;
+
+        // Attach event listener for Version 848 expand/collapse
+        setTimeout(() => {
+            const button = document.getElementById('toggle-v848-details');
+            if (button) {
+                button.addEventListener('click', () => {
+                    const collapsed = document.getElementById('v848-collapsed');
+                    const expanded = document.getElementById('v848-expanded');
+                    
+                    if (expanded && collapsed) {
+                        if (expanded.style.display === 'none' || !expanded.style.display) {
+                            collapsed.style.display = 'none';
+                            expanded.style.display = 'block';
+                            button.textContent = '▲ That\'s Enough. I Get It.';
+                        } else {
+                            collapsed.style.display = 'block';
+                            expanded.style.display = 'none';
+                            button.textContent = '▼ Show Everything (Seriously. Everything.)';
+                        }
+                    }
+                });
+            }
+        }, 100);
 
         console.log('[HomeSection] Rendered home content');
     }
