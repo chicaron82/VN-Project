@@ -481,6 +481,41 @@ export class BlogRenderer {
         }
     }
 
+    private loadMoreEntries(): void {
+        const previousCount = this.visibleCount - this.pageSize;
+        const newEntries = this.currentEntries.slice(previousCount, this.visibleCount);
+
+        // Append new entries to existing container (no re-render!)
+        newEntries.forEach(entry => {
+            const el = this.createEntryElement(entry);
+            this.entriesContainer?.appendChild(el);
+        });
+
+        // Update pagination controls
+        this.container?.querySelector('.timeline-pagination')?.remove();
+        if (this.paginationEnabled && this.visibleCount < this.currentEntries.length) {
+            this.renderPaginationControls();
+        }
+
+        // Apply animations to new entries only
+        const items = Array.from(this.entriesContainer?.querySelectorAll('.blog-entry') || []) as HTMLElement[];
+        const newItems = items.slice(previousCount);
+        if (newItems.length > 0) {
+            timelineAnimations.animateItems(newItems, 100, 50);
+        }
+
+        // Add click handlers to new entries
+        newItems.forEach(item => {
+            item.style.cursor = 'pointer';
+            item.addEventListener('click', () => {
+                timelineAnimations.scrollToElement(item, 100);
+            });
+        });
+
+        // Trigger Prism syntax highlight for new content
+        if (window.Prism) window.Prism.highlightAll();
+    }
+
     private renderPaginationControls(): void {
         const remainingCount = this.currentEntries.length - this.visibleCount;
 
@@ -500,10 +535,10 @@ export class BlogRenderer {
             </div>
         `;
 
-        // Show More button - load next 3
+        // Show More button - load next 3 WITHOUT re-rendering
         paginationDiv.querySelector('[data-action="show-more"]')?.addEventListener('click', () => {
             this.visibleCount += this.pageSize;
-            this.renderTimeline();
+            this.loadMoreEntries(); // Use new method instead of renderTimeline()
         });
 
         // Show All button - disable pagination
