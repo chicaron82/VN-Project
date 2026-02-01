@@ -434,7 +434,7 @@ export class HomeSection {
                         V2 rebuild: <span id="timeline-phase-count">78</span> documented phases. TypeScript migration.
                         EventBus architecture. State management. Test infrastructure. Every system redesigned with
                         intention.
-                        Check the <strong>Journey</strong> tab for the full timeline.
+                        Check the <strong>Journal</strong> tab for the full timeline.
                     </p>
 
                     <p class="home-text">

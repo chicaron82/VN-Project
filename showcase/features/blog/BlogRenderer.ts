@@ -24,9 +24,9 @@ export class BlogRenderer {
     private activeSort: string;
     private searchQuery: string;
 
-    // Pagination
-    private pageSize: number;
-    private currentPage: number;
+    // Pagination (incremental "Show More" style)
+    private pageSize: number; // How many to load per click
+    private visibleCount: number; // How many are currently visible
     private paginationEnabled: boolean;
 
     // Cache DOM elements
@@ -58,10 +58,10 @@ export class BlogRenderer {
         this.activeSort = document.body.dataset.viewMode || 'story';
         this.searchQuery = '';
 
-        // Pagination
-        this.pageSize = 3;
-        this.currentPage = 0;
-        this.paginationEnabled = false; // Disabled for search to work on all entries
+        // Pagination (incremental "Show More" style)
+        this.pageSize = 3; // Load 3 more each time
+        this.visibleCount = 3; // Start with 3 visible
+        this.paginationEnabled = true; // Enabled by default
 
         // Cache DOM elements
         this.toolbar = null;
@@ -359,15 +359,6 @@ export class BlogRenderer {
                         <span>🧪</span> V3 Lab
                     </button>
                 </div>
-                
-                <div class="toolbar-group">
-                    <button class="timeline-btn ${this.activeSort === 'story' ? 'active' : ''}" data-action="sort" data-value="story">
-                        <span>📜</span> Story
-                    </button>
-                    <button class="timeline-btn ${this.activeSort === 'dev' ? 'active' : ''}" data-action="sort" data-value="dev">
-                        <span>⚡</span> Dev Log
-                    </button>
-                </div>
 
                 <div class="toolbar-group">
                      <select class="timeline-btn" id="timeline-filter">
@@ -409,19 +400,6 @@ export class BlogRenderer {
             });
         });
 
-        this.toolbar.querySelectorAll('[data-action="sort"]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const target = e.currentTarget as HTMLElement;
-                const val = target.dataset.value;
-                if (val) {
-                    this.activeSort = val;
-                    this.renderToolbar(); // Re-render to update active state
-                    this.applyLogic();
-                    this.renderTimeline();
-                }
-            });
-        });
-
         const filterSelect = this.toolbar.querySelector('#timeline-filter') as HTMLSelectElement;
         if (filterSelect) {
             filterSelect.value = this.activeFilter; // Restore state
@@ -450,9 +428,9 @@ export class BlogRenderer {
         this.entriesContainer = document.createElement('div');
         this.entriesContainer.className = 'timeline-phases';
 
-        // Determine which entries to show based on pagination
+        // Determine which entries to show based on pagination (incremental)
         const entriesToShow = this.paginationEnabled
-            ? this.currentEntries.slice(this.currentPage * this.pageSize, (this.currentPage + 1) * this.pageSize)
+            ? this.currentEntries.slice(0, this.visibleCount)
             : this.currentEntries;
 
         entriesToShow.forEach(entry => {
@@ -462,8 +440,8 @@ export class BlogRenderer {
 
         this.container?.appendChild(this.entriesContainer);
 
-        // Add pagination controls if enabled
-        if (this.paginationEnabled && this.currentEntries.length > this.pageSize) {
+        // Add "Show More" button if there are more entries to load
+        if (this.paginationEnabled && this.visibleCount < this.currentEntries.length) {
             this.renderPaginationControls();
         }
 
@@ -504,69 +482,34 @@ export class BlogRenderer {
     }
 
     private renderPaginationControls(): void {
-        const totalPages = Math.ceil(this.currentEntries.length / this.pageSize);
-        const startEntry = this.currentPage * this.pageSize + 1;
-        const endEntry = Math.min((this.currentPage + 1) * this.pageSize, this.currentEntries.length);
+        const remainingCount = this.currentEntries.length - this.visibleCount;
 
         const paginationDiv = document.createElement('div');
         paginationDiv.className = 'timeline-pagination';
         paginationDiv.innerHTML = `
             <div class="pagination-info">
-                Showing ${startEntry}-${endEntry} of ${this.currentEntries.length} entries
+                Showing ${this.visibleCount} of ${this.currentEntries.length} entries
             </div>
             <div class="pagination-controls">
-                <button class="pagination-btn" data-action="prev" ${this.currentPage === 0 ? 'disabled' : ''}>
-                    ← Previous
+                <button class="pagination-btn" data-action="show-more">
+                    Show ${Math.min(this.pageSize, remainingCount)} More
                 </button>
-                <button class="pagination-btn view-all" data-action="toggle-all">
-                    View All
+                <button class="pagination-btn view-all" data-action="show-all">
+                    Show All (${remainingCount} more)
                 </button>
-                <button class="pagination-btn" data-action="next" ${this.currentPage >= totalPages - 1 ? 'disabled' : ''}>
-                    Next →
-                </button>
-            </div>
-            <div class="pagination-dots">
-                ${Array.from({ length: totalPages }, (_, i) =>
-            `<span class="pagination-dot ${i === this.currentPage ? 'active' : ''}" data-page="${i}"></span>`
-        ).join('')}
             </div>
         `;
 
-        // Event listeners
-        paginationDiv.querySelector('[data-action="prev"]')?.addEventListener('click', () => {
-            if (this.currentPage > 0) {
-                this.currentPage--;
-                this.renderTimeline();
-                this.scrollToTimeline();
-            }
-        });
-
-        paginationDiv.querySelector('[data-action="next"]')?.addEventListener('click', () => {
-            if (this.currentPage < totalPages - 1) {
-                this.currentPage++;
-                this.renderTimeline();
-                this.scrollToTimeline();
-            }
-        });
-
-        paginationDiv.querySelector('[data-action="toggle-all"]')?.addEventListener('click', () => {
-            this.paginationEnabled = !this.paginationEnabled;
-            this.currentPage = 0;
+        // Show More button - load next 3
+        paginationDiv.querySelector('[data-action="show-more"]')?.addEventListener('click', () => {
+            this.visibleCount += this.pageSize;
             this.renderTimeline();
-            if (this.paginationEnabled) {
-                this.scrollToTimeline();
-            }
         });
 
-        paginationDiv.querySelectorAll('.pagination-dot').forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                const page = parseInt((e.target as HTMLElement).dataset.page || '');
-                if (!isNaN(page)) {
-                    this.currentPage = page;
-                    this.renderTimeline();
-                    this.scrollToTimeline();
-                }
-            });
+        // Show All button - disable pagination
+        paginationDiv.querySelector('[data-action="show-all"]')?.addEventListener('click', () => {
+            this.paginationEnabled = false;
+            this.renderTimeline();
         });
 
         this.container?.appendChild(paginationDiv);

@@ -375,7 +375,7 @@ export class TabController {
     private getTabDisplayName(tabId: string): string {
         const names: Record<string, string> = {
             home: 'Home',
-            journey: 'Journey',
+            journey: 'Journal',
             workflow: 'Workflow',
             spotlight: 'Spotlight',
             evolution: 'Evolution',

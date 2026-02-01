@@ -430,7 +430,7 @@ export class AppStateManager {
     private formatTabName(tab?: string): string {
         const tabNames: Record<string, string> = {
             home: 'Home',
-            journey: 'Journey',
+            journey: 'Journal',
             workflow: 'Workflow',
             results: 'Results',
             spotlight: 'Spotlight',
