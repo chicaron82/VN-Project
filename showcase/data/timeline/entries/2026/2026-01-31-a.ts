@@ -44,19 +44,16 @@ export const entry: TimelineEntry = {
         ]
     },
     "quote": "Now when I add a new timeline entry, I just create a new file—no more scrolling through 3,500 lines. This is what real blogs do for a reason.",
-    "crew": {
-        "title": "Timeline Refactoring Team",
-        "members": [
-            {
-                "name": "Aaron (Architect)",
-                "icon": "🧠",
-                "contribution": "Identified the scalability issue and researched blog architecture patterns"
-            },
-            {
-                "name": "Claude Sonnet 4.5 (Implementation)",
-                "icon": "🤖",
-                "contribution": "Automated the refactoring: split 68 entries into individual files, created smart filename generation, preserved all data and types"
-            }
-        ]
-    }
+    "crew": [
+        {
+            "name": "Aaron (Architect)",
+            "icon": "🧠",
+            "contribution": "Identified the scalability issue and researched blog architecture patterns"
+        },
+        {
+            "name": "Claude Sonnet 4.5 (Implementation)",
+            "icon": "🤖",
+            "contribution": "Automated the refactoring: split 68 entries into individual files, created smart filename generation, preserved all data and types"
+        }
+    ]
 };
