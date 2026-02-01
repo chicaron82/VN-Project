@@ -1,7 +1,9 @@
 # UV7 Visual Novel - Claude Code Instructions
 
 ## Project Overview
+
 This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital consciousness, bootstrap paradoxes, and the nature of reality. The project has two codebases:
+
 - **V1**: Original JavaScript implementation in `system/` directory
 - **V2**: TypeScript rewrite in `v2/` directory
 
@@ -72,6 +74,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 ## V1→V2 Porting Methodology
 
 ### CRITICAL RULES - NO EXCEPTIONS
+
 1. **FAITHFUL TRANSCRIPTION ONLY** - Copy V1 logic exactly. Do NOT reimagine, refactor, or "improve" anything.
 2. **PRESERVE ALL FLAVOR** - Keep every comment, emoji, signature, and piece of lore from V1.
 3. **FOLLOW EXISTING PATTERNS** - Look at completed Phase 13 ports for exact patterns.
@@ -94,6 +97,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 7. **Commit** with detailed message
 
 ### What NOT to Do
+
 - ❌ Do NOT use external libraries for things V1 does manually
 - ❌ Do NOT create new CSS files (use inline styles)
 - ❌ Do NOT "modernize" or "improve" the approach
@@ -102,6 +106,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 - ❌ Do NOT add features V1 doesn't have
 
 ### Reference Files
+
 - `v2/controllers/EasterEggController.ts` - Inline-styled modal pattern
 - `v2/systems/BootstrapTracker.ts` - Display system integration
 - `v2/systems/DevCommentarySystem.ts` - EventBus event handling
@@ -109,6 +114,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 - `showcase/timeline-data.js` - Showcase entry format
 
 ### Commit Message Format
+
 ```
 feat(phase13X): [description]
 
@@ -124,6 +130,7 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 ## Phase 13 Progress (V1→V2 Ports)
+
 - ✅ Phase 13d: TetherSystem + DifficultyProfiles
 - ✅ Phase 13e: EasterEggController (2455→450 lines)
 - ✅ Phase 13f: BootstrapTracker Display System
@@ -131,7 +138,9 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 - ✅ Phase 13h: StatusNotificationController
 
 ## V1 Systems Directory
+
 Key files in `system/` that may need porting:
+
 - `game-engine.js` - Core game loop
 - `easter-egg-controller.js` - Hidden content (partially ported)
 - `bootstrap-tracker.js` - Timeline tracking (ported)
@@ -142,20 +151,26 @@ Key files in `system/` that may need porting:
 ## Architecture Notes
 
 ### EventBus Events
+
 Core events used across systems:
+
 - `secret_code:unlocked` - When player enters valid code
 - `tether:changed` - Tether level updates
 - `visual:cue` - Visual effect triggers
 - `ui:screen_change` - Navigation events
 
 ### State Management
+
 Use `StateManager` for persistent state:
+
 - `game.loopVersion` - Current attempt number (starts at 848)
 - `game.route` - Current route ('ronnie' or 'tori')
 - `game.difficulty` - Difficulty setting
 
 ### Debug Helpers
+
 Add to `window.uv7` for testing:
+
 ```typescript
 window.uv7 = {
     // System references
@@ -183,8 +198,47 @@ npm test -- SystemName.test.ts --run
 ```
 
 ## Lore Signatures
+
 Preserve these in comments:
+
 - 💚🔥💀 - The UV7 trinity
 - "Always. Always. Always." - Storm Dragon's signature
 - "Built with love." - Team mantra
 - "848 is sacred." - The loop number
+
+## Collaboration Rituals (The "No God Object" Rules)
+
+To prevent architectural debt and "shoehorning", we adhere to these rules:
+
+### 1. The "Stop Before Start" Protocol 🛑
+
+- **Never** dive straight into coding complex features.
+- **Always** propose the file structure and implementation plan first.
+- **Wait** for user confirmation if the plan involves creating new major components or modifying core architecture.
+
+### 2. The 300-Line Limit 📉
+
+- If a file approaches **300 lines**, we MUST pause.
+- We discuss: "Should this be split?"
+- **Default Answer:** Yes.
+- **Exception:** Legacy V1 ports (kept for historical accuracy).
+
+### 3. No Silent Shoehorning 👟
+
+- Do not blindly add logic to `main.ts`, `GameEngine`, or `TimelineRenderer` just to "make it work".
+- If a feature feels like it's "just one more function", it probably deserves its own class/module.
+- **Rule of Thumb:** If you have to scroll to find where to put it, it doesn't belong there.
+
+### 4. The "Tech Debt" Ticket 🎫
+
+- If we agree to "hack" or "quick fix" for velocity:
+  - We **MUST** add a `TODO: Refactor` comment in the code.
+  - We **MUST** add a cleanup task to `task.md`.
+  - We do not pretend it didn't happen.
+
+### 5. Architectural Review 🧱
+
+- After every major feature (or every 5 turns), we do a quick "Health Check".
+- "Did we create a God Object?"
+- "Is `main.ts` fatter?"
+- "Did we break the directory structure?"

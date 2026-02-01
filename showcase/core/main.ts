@@ -16,8 +16,8 @@ import { UV7AppSwitcher } from '../../v2/ui/components/UV7AppSwitcher';
 import { UV7OS } from '../../v2/ui/components/UV7OS';
 import type { TimelineEntry } from '../../v2/ui/components/UV7OSConfig'; // Import the class directly
 
-// Import showcase components
-import { TimelineRenderer } from '../features/timeline/TimelineRenderer';
+// Import blog components
+import { BlogRenderer } from '../features/blog/BlogRenderer';
 import { TabController } from './TabController';
 // SwipeController replaced by CSS scroll-snap
 // import { MagneticCursor } from '../components/MagneticCursor'; // Disabled to show timeline ripple effects
@@ -36,24 +36,25 @@ import { EvolutionSection } from '../components/EvolutionSectionV2'; // V2: Deep
 import { ExperimentSection } from '../components/ExperimentSection';
 import { WhoSection } from '../components/WhoSection';
 
-// Import timeline enhancements
-import { TimelineAnimations } from '../features/timeline/TimelineAnimations';
+// Import blog enhancements
+import { BlogAnimations } from '../features/blog/BlogAnimations';
 
-import { TimelineDeepLink } from '../features/timeline/TimelineDeepLink';
-import { TimelineKeyboardNav } from '../features/timeline/TimelineKeyboardNav';
-import { TimelineHoverPreview } from '../features/timeline/TimelineHoverPreview';
-import { TimelinePlayback } from '../features/timeline/TimelinePlayback';
-import { TimelineParallax } from '../features/timeline/TimelineParallax';
-import { TimelineBackgrounds } from '../features/timeline/TimelineBackgrounds';
-import { TimelineAudio } from '../features/timeline/TimelineAudio';
-import { TimelineHaptics } from '../features/timeline/TimelineHaptics';
-import { TimelineMeta } from '../features/timeline/TimelineMeta';
-import { TimelineHeatmap } from '../features/timeline/TimelineHeatmap';
-import { TimelineExport } from '../features/timeline/TimelineExport';
+import { BlogDeepLink } from '../features/blog/BlogDeepLink';
+import { BlogKeyboardNav } from '../features/blog/BlogKeyboardNav';
+import { BlogHoverPreview } from '../features/blog/BlogHoverPreview';
+import { BlogPlayback } from '../features/blog/BlogPlayback';
+import { BlogParallax } from '../features/blog/BlogParallax';
+import { BlogBackgrounds } from '../features/blog/BlogBackgrounds';
+import { BlogAudio } from '../features/blog/BlogAudio';
+import { BlogHaptics } from '../features/blog/BlogHaptics';
+import { BlogMeta } from '../features/blog/BlogMeta';
+import { BlogHeatmap } from '../features/blog/BlogHeatmap';
+import { BlogExport } from '../features/blog/BlogExport';
 
 // Import showcase UI components
 import { Sidebar } from '../components/Sidebar';
 import { NotificationShade } from '../components/NotificationShade';
+import { SystemStatsWidget } from '../components/SystemStatsWidget';
 
 // Import effects
 import { initTypingEffect } from '../effects/typing-effect';
@@ -142,26 +143,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inject footers AFTER sections render (DRY optimization)
     injectFooters();
 
-    // Initialize timeline enhancements (MAXIMUM MICHELIN)
-    // Note: TimelineRenderer creates its own scrubber and has search in toolbar
+    // Initialize blog enhancements (MAXIMUM MICHELIN)
+    // Note: BlogRenderer creates its own scrubber and has search in toolbar
     // We only add keyboard nav and deep linking here
-    new TimelineAnimations('.timeline-phases');
+    new BlogAnimations('.timeline-phases');
 
-    const timelineDeepLink = new TimelineDeepLink();
-    new TimelineKeyboardNav('.timeline-phases', '.timeline-search');
-    new TimelineHoverPreview('.timeline-phases');
-    new TimelinePlayback('.timeline-phases');
-    new TimelineParallax('.timeline-phases');
-    new TimelineBackgrounds('.timeline-phases');
-    new TimelineAudio('.timeline-phases');
-    new TimelineHaptics('.timeline-phases');
-    new TimelineMeta();
-    new TimelineHeatmap('.timeline-phases');
-    new TimelineExport('.timeline-phases');
-    console.log('✅ Timeline enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
+    const blogDeepLink = new BlogDeepLink();
+    new BlogKeyboardNav('.timeline-phases', '.timeline-search');
+    new BlogHoverPreview('.timeline-phases');
+    new BlogPlayback('.timeline-phases');
+    new BlogParallax('.timeline-phases');
+    new BlogBackgrounds('.timeline-phases');
+    new BlogAudio('.timeline-phases');
+    new BlogHaptics('.timeline-phases');
+    new BlogMeta();
+    new BlogHeatmap('.timeline-phases');
+    new BlogExport('.timeline-phases');
+    console.log('✅ Blog enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
 
     // Wire up deep linking to navigate on URL changes
-    timelineDeepLink.onNavigateChange((params) => {
+    blogDeepLink.onNavigateChange((params: any) => {
         console.log('🔗 [DeepLink] Navigating to:', params);
 
         // Navigate to entry if present
@@ -179,13 +180,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Note: Search and filter params would need integration with TimelineRenderer
+        // Note: Search and filter params would need integration with BlogRenderer
         // For now, deep linking only supports entry navigation
     });
 
-    // Initialize TimelineRenderer (Journey tab) - must be after JourneySection renders
-    new TimelineRenderer('#timeline-container');
-    console.log('✅ Timeline renderer initialized');
+    // Initialize BlogRenderer (Journey/Journal tab) - must be after JourneySection renders
+    new BlogRenderer('#timeline-container');
+    console.log('✅ Blog renderer initialized');
 
     // Manually trigger initial breadcrumb update to ensure it shows
     const initialTab = tabController.getActiveTab();
@@ -292,56 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize animated system stats - ALWAYS (sidebar widget)
     // Initialize animated system stats - ALWAYS (sidebar widget)
-    const cpuVal = document.getElementById('sys-cpu');
-    const cpuBar = document.getElementById('sys-cpu-bar');
-    const ramVal = document.getElementById('sys-ram');
-    const ramBar = document.getElementById('sys-ram-bar');
-
-    if (cpuVal && cpuBar && ramVal && ramBar) {
-        // Organic Random Walk State
-        let chaosLevel = 12;
-        let chaosTarget = 12;
-        let lastChaosUpdate = 0;
-
-        let bougieLevel = 88;
-        let bougieTarget = 92;
-        let lastBougieUpdate = 0;
-
-        const updateStats = (timestamp: number) => {
-            // Update targets occasionally (Chaos: jittery, Bougie: stable)
-            if (timestamp - lastChaosUpdate > 800 + Math.random() * 1000) {
-                // Chaos drifts between 5% and 45%, occasionally spiking
-                chaosTarget = Math.max(5, Math.min(45, chaosTarget + (Math.random() - 0.5) * 30));
-                lastChaosUpdate = timestamp;
-            }
-
-            if (timestamp - lastBougieUpdate > 2000 + Math.random() * 2000) {
-                // Bougie Factor stays high (85-99%) because we ARE that fancy 💅
-                bougieTarget = Math.max(85, Math.min(99, bougieTarget + (Math.random() - 0.5) * 10));
-                lastBougieUpdate = timestamp;
-            }
-
-            // Smooth interpolation (Lerp)
-            // Chaos moves snappier (0.05), Bougie moves elegantly slow (0.01)
-            chaosLevel += (chaosTarget - chaosLevel) * 0.05;
-            bougieLevel += (bougieTarget - bougieLevel) * 0.01;
-
-            // Render
-            const chaosDisplay = Math.round(chaosLevel);
-            const bougieDisplay = Math.round(bougieLevel);
-
-            cpuVal.textContent = `${chaosDisplay}%`;
-            cpuBar.style.width = `${chaosDisplay}%`;
-
-            ramVal.textContent = `${bougieDisplay}%`;
-            ramBar.style.width = `${bougieDisplay}%`;
-
-            requestAnimationFrame(updateStats);
-        };
-
-        requestAnimationFrame(updateStats);
-        console.log('✅ System stats animated (Mode: Organic Walk)');
-    }
+    new SystemStatsWidget();
 
     // Initialize UV7 Echo System (context-aware AI crew commentary)
     // Initialize UV7 Echo System (context-aware AI crew commentary)

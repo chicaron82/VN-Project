@@ -17,7 +17,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineAudio {
+export class BlogAudio {
     private ctx: AudioContext | null;
     private masterGain: GainNode | null;
     private isMuted: boolean;
@@ -35,7 +35,7 @@ export class TimelineAudio {
     private init(): void {
         this.createMuteToggle();
         this.attachListeners();
-        console.log('🔊 [TimelineAudio] Initialized (Click toggle to enable)');
+        console.log('🔊 [BlogAudio] Initialized (Click toggle to enable)');
     }
 
     /**
@@ -53,9 +53,9 @@ export class TimelineAudio {
 
             this.isEnabled = true;
             this.playPowerOn();
-            console.log('🔊 [TimelineAudio] Audio Engine Started');
+            console.log('🔊 [BlogAudio] Audio Engine Started');
         } catch (e) {
-            console.error('🔊 [TimelineAudio] Web Audio API not supported', e);
+            console.error('🔊 [BlogAudio] Web Audio API not supported', e);
         }
     }
 
@@ -245,6 +245,6 @@ export class TimelineAudio {
             this.ctx.close();
             this.ctx = null;
         }
-        console.log('🔊 [TimelineAudio] Destroyed');
+        console.log('🔊 [BlogAudio] Destroyed');
     }
 }

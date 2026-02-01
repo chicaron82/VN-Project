@@ -79,9 +79,9 @@ import { entry as entry1 } from './entries/2025/2025-10-15-a';
 import { entry as entry0 } from './entries/2025/2025-10-01-a';
 
 export * from './types';
-import type { TimelineEntry } from './types';
+import type { BlogEntry } from './types';
 
-export const timelineData: TimelineEntry[] = [
+export const timelineData: BlogEntry[] = [
     entry75,
     entry74,
     entry73,

@@ -76,7 +76,7 @@ export interface V3Stats {
     archInsights: number;
 }
 
-export interface TimelineEntry {
+export interface BlogEntry {
     id: string;
     date?: string;
     emoji?: string;
@@ -103,8 +103,8 @@ export interface TimelineEntry {
     };
     media?: TimelineMedia;
     codeComparison?: CodeComparison;
-    subEntries?: TimelineEntry[];
-    subPhases?: TimelineEntry[];
+    subEntries?: BlogEntry[];
+    subPhases?: BlogEntry[];
     lessons?: string[];
     crew?: CrewMember[];
     crewAttribution?: CrewAttribution;
@@ -166,5 +166,5 @@ export interface TimelineEntry {
 }
 
 export interface TimelineData {
-    entries: TimelineEntry[];
+    entries: BlogEntry[];
 }

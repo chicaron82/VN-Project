@@ -17,7 +17,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { timelineAnimations } from './TimelineAnimations';
+import { timelineAnimations } from './BlogAnimations';
 
 export interface ScrubberEntry {
     id: string;
@@ -27,7 +27,7 @@ export interface ScrubberEntry {
     element: HTMLElement;
 }
 
-export class TimelineScrubber {
+export class BlogScrubber {
     private container: HTMLElement | null;
     private scrollContainer: HTMLElement | null;
     private scrubberEl: HTMLElement | null;
@@ -71,7 +71,7 @@ export class TimelineScrubber {
         // Attach event handlers
         this.attachHandlers();
 
-        console.log('🎯 [TimelineScrubber] Initialized with', this.entries.length, 'entries');
+        console.log('🎯 [BlogScrubber] Initialized with', this.entries.length, 'entries');
     }
 
     /**
@@ -105,10 +105,10 @@ export class TimelineScrubber {
             toolbar.appendChild(scrubber);
             // Add a class to toolbar to indicate it now has a footer
             toolbar.classList.add('has-scrubber');
-            console.log('🎯 [TimelineScrubber] Appended to toolbar');
+            console.log('🎯 [BlogScrubber] Appended to toolbar');
         } else {
             // Fallback: insert at the beginning if toolbar not found
-            console.warn('⚠️ [TimelineScrubber] Toolbar not found, inserting before container');
+            console.warn('⚠️ [BlogScrubber] Toolbar not found, inserting before container');
             this.container?.insertBefore(scrubber, this.container.firstChild);
         }
 
@@ -137,7 +137,7 @@ export class TimelineScrubber {
             };
         });
         
-        console.log('📍 [TimelineScrubber] Collected', this.entries.length, 'entries');
+        console.log('📍 [BlogScrubber] Collected', this.entries.length, 'entries');
     }
 
     /**
@@ -169,7 +169,7 @@ export class TimelineScrubber {
             }
         });
 
-        console.log('🎨 [TimelineScrubber] Rendered', this.entries.length, 'segments');
+        console.log('🎨 [BlogScrubber] Rendered', this.entries.length, 'segments');
     }
 
     /**
@@ -306,7 +306,7 @@ export class TimelineScrubber {
         const entry = this.entries[index];
         if (!entry || !this.scrollContainer) return;
 
-        console.log('🎯 [TimelineScrubber] Jumping to entry:', entry.title);
+        console.log('🎯 [BlogScrubber] Jumping to entry:', entry.title);
 
         // Scroll to entry within panel container
         const entryRect = entry.element.getBoundingClientRect();
@@ -326,7 +326,7 @@ export class TimelineScrubber {
         this.collectEntries();
         this.renderSegments();
         this.updateHandlePosition();
-        console.log('🔄 [TimelineScrubber] Refreshed');
+        console.log('🔄 [BlogScrubber] Refreshed');
     }
 
     /**
@@ -337,7 +337,7 @@ export class TimelineScrubber {
         if (this.scrollContainer) {
             this.scrollContainer.removeEventListener('scroll', this.updateHandlePosition.bind(this));
         }
-        console.log('💥 [TimelineScrubber] Destroyed');
+        console.log('💥 [BlogScrubber] Destroyed');
     }
 }
 

@@ -33,7 +33,7 @@ export interface SearchResult {
     matches: string[];
 }
 
-export class TimelineSearch {
+export class BlogSearch {
     private entries: SearchableEntry[];
     private searchInput: HTMLInputElement | null;
     private suggestionsContainer: HTMLElement | null;
@@ -63,7 +63,7 @@ export class TimelineSearch {
         // Attach event handlers
         this.attachHandlers();
 
-        console.log('🔍 [TimelineSearch] Initialized with', this.entries.length, 'entries');
+        console.log('🔍 [BlogSearch] Initialized with', this.entries.length, 'entries');
     }
 
     /**
@@ -72,18 +72,18 @@ export class TimelineSearch {
     private indexEntries(timelineSelector: string): void {
         const timeline = document.querySelector(timelineSelector);
         if (!timeline) {
-            console.warn('🔍 [TimelineSearch] Timeline container not found:', timelineSelector);
+            console.warn('🔍 [BlogSearch] Timeline container not found:', timelineSelector);
             return;
         }
 
         const items = timeline.querySelectorAll('.timeline-item');
-        console.log('🔍 [TimelineSearch] Found', items.length, 'timeline items');
+        console.log('🔍 [BlogSearch] Found', items.length, 'timeline items');
 
         items.forEach((item) => {
             const element = item as HTMLElement;
             const id = element.id || element.dataset.id || '';
 
-            // TimelineRenderer structure: title is in <strong>, summary in <p>
+            // BlogRenderer structure: title is in <strong>, summary in <p>
             const titleElement = element.querySelector('strong');
             const title = titleElement?.textContent?.trim() || '';
 
@@ -125,7 +125,7 @@ export class TimelineSearch {
             });
         });
 
-        console.log('🔍 [TimelineSearch] Indexed', this.entries.length, 'entries');
+        console.log('🔍 [BlogSearch] Indexed', this.entries.length, 'entries');
     }
 
     /**
@@ -407,7 +407,7 @@ export class TimelineSearch {
             this.onResultSelect(entry);
         }
 
-        console.log('🎯 [TimelineSearch] Selected:', entry.title);
+        console.log('🎯 [BlogSearch] Selected:', entry.title);
     }
 
     /**
@@ -456,6 +456,6 @@ export class TimelineSearch {
     public refreshIndex(timelineSelector: string = '.timeline-phases'): void {
         this.entries = [];
         this.indexEntries(timelineSelector);
-        console.log('🔄 [TimelineSearch] Index refreshed');
+        console.log('🔄 [BlogSearch] Index refreshed');
     }
 }

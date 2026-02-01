@@ -15,7 +15,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineAnimations {
+export class BlogAnimations {
     private timeline: HTMLElement | null;
     private items: NodeListOf<HTMLElement> | null;
 
@@ -23,7 +23,7 @@ export class TimelineAnimations {
         this.timeline = document.querySelector(timelineSelector);
         this.items = this.timeline?.querySelectorAll('.timeline-item') || null;
 
-        console.log('🎬 [TimelineAnimations] Initialized', {
+        console.log('🎬 [BlogAnimations] Initialized', {
             timeline: !!this.timeline,
             itemCount: this.items?.length || 0
         });
@@ -34,7 +34,7 @@ export class TimelineAnimations {
      */
     refresh(): void {
         this.items = this.timeline?.querySelectorAll('.timeline-item') || null;
-        console.log('🔄 [TimelineAnimations] Refreshed', {
+        console.log('🔄 [BlogAnimations] Refreshed', {
             itemCount: this.items?.length || 0
         });
     }
@@ -81,7 +81,7 @@ export class TimelineAnimations {
             });
         }, 450);
 
-        console.log('✨ [TimelineAnimations] Filtered with stagger', {
+        console.log('✨ [BlogAnimations] Filtered with stagger', {
             matching: matchingItems.length,
             total: allItems.length
         });
@@ -112,7 +112,7 @@ export class TimelineAnimations {
         button.appendChild(ripple);
         setTimeout(() => ripple.remove(), 600);
 
-        console.log('💧 [TimelineAnimations] Ripple triggered', {
+        console.log('💧 [BlogAnimations] Ripple triggered', {
             button: button.className,
             position: { x, y },
             size,
@@ -128,7 +128,7 @@ export class TimelineAnimations {
     scrollToEntry(entryId: string, offset: number = 100): void {
         const entry = document.getElementById(entryId);
         if (!entry) {
-            console.warn('⚠️ [TimelineAnimations] Entry not found:', entryId);
+            console.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
             return;
         }
 
@@ -145,7 +145,7 @@ export class TimelineAnimations {
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('🎯 [TimelineAnimations] Scrolled to entry:', entryId);
+        console.log('🎯 [BlogAnimations] Scrolled to entry:', entryId);
     }
 
     /**
@@ -167,7 +167,7 @@ export class TimelineAnimations {
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('🎯 [TimelineAnimations] Scrolled to element');
+        console.log('🎯 [BlogAnimations] Scrolled to element');
     }
 
     /**
@@ -192,7 +192,7 @@ export class TimelineAnimations {
             }, delay + (index * duration));
         });
 
-        console.log('🎬 [TimelineAnimations] Animated items', {
+        console.log('🎬 [BlogAnimations] Animated items', {
             count: items.length,
             delay,
             duration
@@ -206,14 +206,14 @@ export class TimelineAnimations {
     highlightEntry(entryId: string): void {
         const entry = document.getElementById(entryId);
         if (!entry) {
-            console.warn('⚠️ [TimelineAnimations] Entry not found:', entryId);
+            console.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
             return;
         }
 
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('💫 [TimelineAnimations] Highlighted entry:', entryId);
+        console.log('💫 [BlogAnimations] Highlighted entry:', entryId);
     }
 
     /**
@@ -229,7 +229,7 @@ export class TimelineAnimations {
             button.addEventListener('click', this.handleRippleClick.bind(this));
         });
 
-        console.log('💧 [TimelineAnimations] Ripple enabled for buttons', {
+        console.log('💧 [BlogAnimations] Ripple enabled for buttons', {
             count: buttons.length
         });
     }
@@ -246,7 +246,7 @@ export class TimelineAnimations {
 /**
  * Create global instance
  */
-export const timelineAnimations = new TimelineAnimations();
+export const timelineAnimations = new BlogAnimations();
 
 /**
  * Built with love. "Always. Always. Always." - Storm Dragon

@@ -15,7 +15,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineParallax {
+export class BlogParallax {
     private items: HTMLElement[];
     private isEnabled: boolean;
     private requestId: number | null;
@@ -32,7 +32,7 @@ export class TimelineParallax {
         this.refreshItems();
         this.bindEvents();
         this.startLoop();
-        console.log('🌌 [TimelineParallax] Initialized');
+        console.log('🌌 [BlogParallax] Initialized');
     }
 
     private refreshItems(): void {
@@ -115,6 +115,6 @@ export class TimelineParallax {
             cancelAnimationFrame(this.requestId);
         }
         this.resetTransforms();
-        console.log('🌌 [TimelineParallax] Destroyed');
+        console.log('🌌 [BlogParallax] Destroyed');
     }
 }

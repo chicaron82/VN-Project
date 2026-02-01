@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 const ENTRIES_DIR = path.resolve(__dirname, '../showcase/data/timeline/entries');
 const OUTPUT_FILE = path.resolve(__dirname, '../showcase/data/timeline/index.ts');
 
-interface TimelineEntryFile {
+interface BlogEntryFile {
     path: string;
     filename: string;
     dateStr: string;
@@ -55,7 +55,7 @@ function generateIndex() {
     const files = getEntries(ENTRIES_DIR);
     console.log(`found ${files.length} entry files.`);
 
-    const entries: TimelineEntryFile[] = files.map((filePath, index) => {
+    const entries: BlogEntryFile[] = files.map((filePath, index) => {
         const filename = path.basename(filePath);
         // Extract date from filename (YYYY-MM-DD) for sorting
         // Filename format: YYYY-MM-DD-slug.ts
@@ -99,9 +99,9 @@ function generateIndex() {
 ${imports}
 
 export * from './types';
-import type { TimelineEntry } from './types';
+import type { BlogEntry } from './types';
 
-export const timelineData: TimelineEntry[] = [
+export const timelineData: BlogEntry[] = [
 ${arrayItems}
 ];
 

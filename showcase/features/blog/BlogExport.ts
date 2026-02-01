@@ -25,7 +25,7 @@ interface ExportEntry {
     crew: string[];
 }
 
-export class TimelineExport {
+export class BlogExport {
     private exportButton: HTMLElement | null;
 
     constructor(
@@ -38,7 +38,7 @@ export class TimelineExport {
 
     private init(): void {
         this.createExportButton();
-        console.log('💾 [TimelineExport] Initialized');
+        console.log('💾 [BlogExport] Initialized');
     }
 
     /**
@@ -186,7 +186,7 @@ export class TimelineExport {
         const json = JSON.stringify(data, null, 2);
         this.downloadFile(json, 'timeline-export.json', 'application/json');
 
-        console.log('💾 [TimelineExport] Exported', entries.length, 'entries as JSON');
+        console.log('💾 [BlogExport] Exported', entries.length, 'entries as JSON');
     }
 
     /**
@@ -228,7 +228,7 @@ export class TimelineExport {
 
         this.downloadFile(markdown, 'timeline-export.md', 'text/markdown');
 
-        console.log('💾 [TimelineExport] Exported', entries.length, 'entries as Markdown');
+        console.log('💾 [BlogExport] Exported', entries.length, 'entries as Markdown');
     }
 
     /**
@@ -255,6 +255,6 @@ export class TimelineExport {
             this.exportButton.closest('.export-container')?.remove();
             this.exportButton = null;
         }
-        console.log('💾 [TimelineExport] Destroyed');
+        console.log('💾 [BlogExport] Destroyed');
     }
 }

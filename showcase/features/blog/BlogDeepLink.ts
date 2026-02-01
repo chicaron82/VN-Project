@@ -23,7 +23,7 @@ export interface DeepLinkParams {
     search?: string;       // From query: ?search=tori
 }
 
-export class TimelineDeepLink {
+export class BlogDeepLink {
     private onNavigate?: (params: DeepLinkParams) => void;
 
     constructor() {
@@ -47,7 +47,7 @@ export class TimelineDeepLink {
             this.parseURL();
         });
 
-        console.log('🔗 [TimelineDeepLink] Initialized');
+        console.log('🔗 [BlogDeepLink] Initialized');
     }
 
     /**
@@ -57,7 +57,7 @@ export class TimelineDeepLink {
         const params = this.getParams();
 
         if (Object.keys(params).length > 0) {
-            console.log('🔗 [TimelineDeepLink] Navigating to:', params);
+            console.log('🔗 [BlogDeepLink] Navigating to:', params);
 
             if (this.onNavigate) {
                 this.onNavigate(params);
@@ -122,7 +122,7 @@ export class TimelineDeepLink {
         // Update URL without reload
         window.history.pushState({}, '', url.toString());
 
-        console.log('🔗 [TimelineDeepLink] URL updated:', url.toString());
+        console.log('🔗 [BlogDeepLink] URL updated:', url.toString());
     }
 
     /**
@@ -212,10 +212,10 @@ export class TimelineDeepLink {
     public async copyToClipboard(link: string): Promise<boolean> {
         try {
             await navigator.clipboard.writeText(link);
-            console.log('🔗 [TimelineDeepLink] Link copied:', link);
+            console.log('🔗 [BlogDeepLink] Link copied:', link);
             return true;
         } catch (err) {
-            console.error('🔗 [TimelineDeepLink] Failed to copy link:', err);
+            console.error('🔗 [BlogDeepLink] Failed to copy link:', err);
             return false;
         }
     }

@@ -15,7 +15,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineHaptics {
+export class BlogHaptics {
     private isSupported: boolean;
 
     constructor(private timelineSelector: string = '.timeline-phases') {
@@ -25,7 +25,7 @@ export class TimelineHaptics {
 
     private init(): void {
         this.attachListeners();
-        console.log('📳 [TimelineHaptics] Initialized', { supported: this.isSupported });
+        console.log('📳 [BlogHaptics] Initialized', { supported: this.isSupported });
     }
 
     /**
@@ -50,7 +50,7 @@ export class TimelineHaptics {
         // Hover feedback (Very subtle, maybe too much? Skipping for now to save battery)
 
         // Scrubber feedback (if we can hook into it)
-        // TimelineScrubber creates its own events, or we listen to 'input' on range sliders
+        // BlogScrubber creates its own events, or we listen to 'input' on range sliders
         const scrubber = document.querySelector('.timeline-scrubber input');
         if (scrubber) {
             scrubber.addEventListener('input', () => {
@@ -97,6 +97,6 @@ export class TimelineHaptics {
 
     public destroy(): void {
         // No persistent listeners to remove really, mostly global delegation
-        console.log('📳 [TimelineHaptics] Destroyed');
+        console.log('📳 [BlogHaptics] Destroyed');
     }
 }

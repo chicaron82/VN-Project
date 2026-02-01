@@ -23,7 +23,7 @@ export interface KeyboardShortcut {
     action: () => void;
 }
 
-export class TimelineKeyboardNav {
+export class BlogKeyboardNav {
     private shortcuts: Map<string, KeyboardShortcut>;
     private currentEntryIndex: number;
     private entries: HTMLElement[];
@@ -52,7 +52,7 @@ export class TimelineKeyboardNav {
         // Create help overlay
         this.createHelpOverlay();
 
-        console.log('⌨️ [TimelineKeyboardNav] Initialized with', this.entries.length, 'entries');
+        console.log('⌨️ [BlogKeyboardNav] Initialized with', this.entries.length, 'entries');
     }
 
     /**

@@ -23,7 +23,7 @@ interface DayActivity {
     entries: string[]; // Entry IDs
 }
 
-export class TimelineHeatmap {
+export class BlogHeatmap {
     private heatmapContainer: HTMLElement | null;
     private activityMap: Map<string, DayActivity>;
     private maxCount: number;
@@ -43,7 +43,7 @@ export class TimelineHeatmap {
     private init(): void {
         this.parseActivity();
         this.createHeatmap();
-        console.log('🔥 [TimelineHeatmap] Initialized with', this.activityMap.size, 'active days');
+        console.log('🔥 [BlogHeatmap] Initialized with', this.activityMap.size, 'active days');
     }
 
     /**
@@ -225,7 +225,7 @@ export class TimelineHeatmap {
      * Handle day click - filter timeline
      */
     private handleDayClick(date: string): void {
-        console.log('🔥 [TimelineHeatmap] Clicked date:', date);
+        console.log('🔥 [BlogHeatmap] Clicked date:', date);
 
         // Trigger callback if provided
         if (this.onDateClick) {
@@ -287,6 +287,6 @@ export class TimelineHeatmap {
             this.heatmapContainer.remove();
             this.heatmapContainer = null;
         }
-        console.log('🔥 [TimelineHeatmap] Destroyed');
+        console.log('🔥 [BlogHeatmap] Destroyed');
     }
 }

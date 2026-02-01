@@ -18,7 +18,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelinePlayback {
+export class BlogPlayback {
     private isPlaying: boolean;
     private currentIndex: number;
     private playbackSpeed: number; // Multiplier: 0.5x, 1x, 2x, 3x
@@ -50,7 +50,7 @@ export class TimelinePlayback {
         this.createControls();
         this.attachKeyboardShortcuts();
         this.attachHoverPause();
-        console.log('▶️ [TimelinePlayback] Initialized with', this.entries.length, 'entries');
+        console.log('▶️ [BlogPlayback] Initialized with', this.entries.length, 'entries');
     }
 
     /**
@@ -221,7 +221,7 @@ export class TimelinePlayback {
             }
         }, this.baseInterval / this.playbackSpeed);
 
-        console.log('▶️ [TimelinePlayback] Playing at', this.playbackSpeed + 'x speed');
+        console.log('▶️ [BlogPlayback] Playing at', this.playbackSpeed + 'x speed');
     }
 
     /**
@@ -237,7 +237,7 @@ export class TimelinePlayback {
             clearInterval(this.playbackInterval);
         }
 
-        console.log('⏸ [TimelinePlayback] Paused');
+        console.log('⏸ [BlogPlayback] Paused');
     }
 
     /**
@@ -296,7 +296,7 @@ export class TimelinePlayback {
             this.play();
         }
 
-        console.log('⚡ [TimelinePlayback] Speed set to', speed + 'x');
+        console.log('⚡ [BlogPlayback] Speed set to', speed + 'x');
     }
 
     /**
@@ -341,6 +341,6 @@ export class TimelinePlayback {
             this.controls.remove();
             this.controls = null;
         }
-        console.log('▶️ [TimelinePlayback] Destroyed');
+        console.log('▶️ [BlogPlayback] Destroyed');
     }
 }

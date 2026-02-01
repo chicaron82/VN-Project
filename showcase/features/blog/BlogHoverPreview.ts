@@ -17,7 +17,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineHoverPreview {
+export class BlogHoverPreview {
     private tooltip: HTMLElement | null;
     private currentTarget: HTMLElement | null;
     private hideTimeout?: number;
@@ -34,7 +34,7 @@ export class TimelineHoverPreview {
     private init(): void {
         this.createTooltip();
         this.attachListeners();
-        console.log('🎯 [TimelineHoverPreview] Initialized');
+        console.log('🎯 [BlogHoverPreview] Initialized');
     }
 
     /**
@@ -225,6 +225,6 @@ export class TimelineHoverPreview {
         if (this.hideTimeout) {
             clearTimeout(this.hideTimeout);
         }
-        console.log('🎯 [TimelineHoverPreview] Destroyed');
+        console.log('🎯 [BlogHoverPreview] Destroyed');
     }
 }

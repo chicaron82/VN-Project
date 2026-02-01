@@ -15,7 +15,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-export class TimelineMeta {
+export class BlogMeta {
     private defaultTitle: string;
 
     constructor() {
@@ -25,12 +25,12 @@ export class TimelineMeta {
 
     private init(): void {
         this.bindEvents();
-        console.log('📰 [TimelineMeta] Initialized');
+        console.log('📰 [BlogMeta] Initialized');
     }
 
     private bindEvents(): void {
         // Listen for internal deep link events
-        // Note: TimelineDeepLink might need to dispatch an event, or we can listen to hashchange
+        // Note: BlogDeepLink might need to dispatch an event, or we can listen to hashchange
         window.addEventListener('hashchange', () => this.handleHashChange());
 
         // Also check on load
@@ -71,6 +71,6 @@ export class TimelineMeta {
 
     public destroy(): void {
         this.restoreTitle();
-        console.log('📰 [TimelineMeta] Destroyed');
+        console.log('📰 [BlogMeta] Destroyed');
     }
 }

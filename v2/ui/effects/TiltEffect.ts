@@ -79,10 +79,10 @@ export class TiltEffect {
     private secondary: HTMLElement | null = null;
     private options: Required<TiltEffectOptions>;
 
-    constructor(targetSelector: string, options: TiltEffectOptions = {}) {
+    constructor(targetOrSelector: string | HTMLElement, options: TiltEffectOptions = {}) {
         // Default options
         this.options = {
-            container: options.container || targetSelector,
+            container: options.container || '', // Use empty string if not provided
             limits: options.limits ?? 15,
             perspective: options.perspective ?? 1000,
             scale: options.scale ?? 1.05,
@@ -93,16 +93,33 @@ export class TiltEffect {
             secondaryTranslateZ: options.secondaryTranslateZ ?? -50
         };
 
-        // Find elements
-        this.container = document.querySelector(this.options.container);
-        this.target = document.querySelector(targetSelector);
+        // Resolve target
+        if (typeof targetOrSelector === 'string') {
+            this.target = document.querySelector(targetOrSelector);
+            if (!this.target) {
+                console.warn(`[TiltEffect] Could not find target: ${targetOrSelector}`);
+                this.container = null; // Ensure initialization
+                return;
+            }
+        } else {
+            this.target = targetOrSelector;
+        }
 
+        // Resolve container
+        if (this.options.container) {
+            this.container = document.querySelector(this.options.container);
+        } else {
+            this.container = this.target; // Default to target itself
+            // Update options to reflect this for consistency (optional)
+        }
+
+        // Resolve secondary element if configured
         if (this.options.secondarySelector) {
             this.secondary = document.querySelector(this.options.secondarySelector);
         }
 
-        if (!this.container || !this.target) {
-            console.warn(`[TiltEffect] Could not find container or target: ${targetSelector}`);
+        if (!this.container) {
+            console.warn(`[TiltEffect] Could not find container`);
             return;
         }
 

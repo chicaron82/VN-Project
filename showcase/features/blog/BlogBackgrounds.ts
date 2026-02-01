@@ -22,7 +22,7 @@ const ERAS = {
     MICHELIN: 'radial-gradient(circle at 50% 50%, rgba(0, 255, 136, 0.15) 0%, rgba(0, 200, 100, 0.05) 50%, transparent 100%)' // V2 Green
 };
 
-export class TimelineBackgrounds {
+export class BlogBackgrounds {
     private container: HTMLElement | null;
     private background: HTMLElement | null;
     private observer: IntersectionObserver | null;
@@ -40,7 +40,7 @@ export class TimelineBackgrounds {
     private init(): void {
         this.createBackground();
         this.setupObserver();
-        console.log('🌈 [TimelineBackgrounds] Initialized');
+        console.log('🌈 [BlogBackgrounds] Initialized');
     }
 
     /**
@@ -141,6 +141,6 @@ export class TimelineBackgrounds {
             this.background.remove();
             this.background = null;
         }
-        console.log('🌈 [TimelineBackgrounds] Destroyed');
+        console.log('🌈 [BlogBackgrounds] Destroyed');
     }
 }

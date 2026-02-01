@@ -5,7 +5,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import type { TimelineEntry } from '../data/timeline/types';
+import type { BlogEntry } from '../data/timeline/types';
 
 export interface FunMetrics {
     totalDays: number;
@@ -20,9 +20,9 @@ export interface FunMetrics {
 }
 
 export class FunMetricsDashboard {
-    private entries: TimelineEntry[];
+    private entries: BlogEntry[];
 
-    constructor(entries: TimelineEntry[]) {
+    constructor(entries: BlogEntry[]) {
         this.entries = entries;
     }
 
