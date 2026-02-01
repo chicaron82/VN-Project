@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,12 +59,10 @@
 
         .gateway-static {
             height: 2px;
-            background: repeating-linear-gradient(
-                90deg,
-                #0ff 0px,
-                transparent 2px,
-                transparent 4px
-            );
+            background: repeating-linear-gradient(90deg,
+                    #0ff 0px,
+                    transparent 2px,
+                    transparent 4px);
             margin-bottom: 15px;
             opacity: 0.3;
         }
@@ -113,11 +112,27 @@
             opacity: 0.7;
         }
 
-        .echo-1 { color: #0f0; }
-        .echo-2 { color: #ff0; }
-        .echo-despair { color: #f00; }
-        .echo-despair.loud { font-weight: bold; animation: pulse 0.5s infinite; }
-        .echo-despair.overwhelming { font-size: 1.2em; font-weight: bold; }
+        .echo-1 {
+            color: #0f0;
+        }
+
+        .echo-2 {
+            color: #ff0;
+        }
+
+        .echo-despair {
+            color: #f00;
+        }
+
+        .echo-despair.loud {
+            font-weight: bold;
+            animation: pulse 0.5s infinite;
+        }
+
+        .echo-despair.overwhelming {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
 
         .gateway-choices {
             display: flex;
@@ -181,29 +196,67 @@
 
         /* Animations */
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         @keyframes glitchText {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            75% { transform: translateX(2px); }
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-2px);
+            }
+
+            75% {
+                transform: translateX(2px);
+            }
         }
 
         @keyframes corruptFlicker {
-            0%, 100% { opacity: 1; color: #f0f; }
-            50% { opacity: 0.7; color: #f00; }
+
+            0%,
+            100% {
+                opacity: 1;
+                color: #f0f;
+            }
+
+            50% {
+                opacity: 0.7;
+                color: #f00;
+            }
         }
 
         @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.3;
+            }
         }
 
         /* Glitch Levels */
@@ -230,10 +283,23 @@
         }
 
         @keyframes glitchShake {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, 2px); }
-            50% { transform: translate(2px, -2px); }
-            75% { transform: translate(-2px, -2px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(-2px, 2px);
+            }
+
+            50% {
+                transform: translate(2px, -2px);
+            }
+
+            75% {
+                transform: translate(-2px, -2px);
+            }
         }
 
         .fade-out {
@@ -241,8 +307,13 @@
         }
 
         @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
         }
 
         /* Corruption effects */
@@ -251,10 +322,23 @@
         }
 
         @keyframes buzzShake {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-1px, 1px); }
-            50% { transform: translate(1px, -1px); }
-            75% { transform: translate(-1px, -1px); }
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(-1px, 1px);
+            }
+
+            50% {
+                transform: translate(1px, -1px);
+            }
+
+            75% {
+                transform: translate(-1px, -1px);
+            }
         }
 
         .screen-tear {
@@ -262,15 +346,27 @@
         }
 
         @keyframes screenTear {
-            0% { clip-path: inset(0 0 0 0); }
-            50% { clip-path: inset(20% 0 20% 0); }
-            100% { clip-path: inset(0 0 0 0); }
+            0% {
+                clip-path: inset(0 0 0 0);
+            }
+
+            50% {
+                clip-path: inset(20% 0 20% 0);
+            }
+
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
         }
     </style>
 </head>
+
 <body>
     <!-- Gateway modal will be injected here by gateway.js -->
 
-    <script src="system/gateway.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Gateway modal will be injected here by script.js -->
+    <script type="module" src="script.js"></script>
 </body>
+
 </html>

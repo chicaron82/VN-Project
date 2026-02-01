@@ -29,7 +29,7 @@ class InputBinder {
         this.bindClick('btn-continue', () => this.game.continueGame());
         this.bindClick('btn-load-game-menu', () => this.game.showSaveLoadScreen('load'));
         this.bindClick('btn-open-notes', () => this.game.openStandaloneNotes());
-        this.bindClick('torigatchi-menu-btn', () => this.game.openTorigatchiIframe('Tori-Gatchi/index.html'));
+        this.bindClick('torigatchi-menu-btn', () => this.game.openTorigatchiIframe('../Tori-Gatchi/index.html'));
         this.bindClick('btn-settings', () => this.game.showSettings());
         this.bindClick('btn-credits', () => this.game.showCredits());
         this.bindClick('btn-meet-crew', () => this.game.showMeetTheCrew());

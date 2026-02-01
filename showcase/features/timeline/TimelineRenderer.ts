@@ -8,9 +8,9 @@
  */
 
 import { TIMELINE_DATA, type TimelineEntry } from '../../data/timeline';
-import { V3_LAB_DATA } from '../../data/v3-lab-entries'; // Import V3 Data
+import { V3_LAB_DATA } from '../../data/lab-entries'; // Import V3 Data
 import { timelineAnimations } from './TimelineAnimations';
-import { FunMetricsDashboard } from '../../components/FunMetricsDashboard';
+import { FunMetricsDashboard } from './FunMetricsDashboard';
 import { TimelineScrubber } from './TimelineScrubber';
 import { TimelineSearch } from './TimelineSearch';
 import { initCrewNavigation } from './CrewNavigation';

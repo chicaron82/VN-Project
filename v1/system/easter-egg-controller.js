@@ -60,7 +60,7 @@ class EasterEggController {
             }, { variant: 'error', width: '180px' });
 
             const toriBtn = OverlayManager.createButton('PLAY TORIGATCHI', () => {
-                window.open('https://chicaron82.github.io/torigatchi/', '_blank');
+                window.open('../Tori-Gatchi/index.html', '_blank');
             }, { variant: 'error', width: '180px' });
             toriBtn.style.marginTop = '10px';
             toriBtn.style.background = ThemeManager.getColor('error'); // Filled button
@@ -77,7 +77,7 @@ class EasterEggController {
             };
 
             const gatewayBtn = OverlayManager.createButton('CHICHARON\'S GATEWAY', () => {
-                window.open('https://chicaron82.github.io/torigatchi/', '_blank');
+                window.open('../labs/tori-gateway/index.html', '_blank');
             }, { variant: 'error', width: '180px' });
             gatewayBtn.style.marginTop = '10px';
 

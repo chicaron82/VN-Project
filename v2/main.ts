@@ -23,7 +23,7 @@ import { SwipeHandler } from '@core/SwipeHandler';
 import { MobileUXController } from '@controllers/MobileUXController';
 import { NotificationShade } from '@ui/components/NotificationShade';
 import { AchievementSystem } from '@systems/AchievementSystem';
-// AchievementToast removed - NotificationRail now handles achievement:unlocked
+
 import { TutorialController } from '@controllers/TutorialController';
 import { LoopController } from '@controllers/LoopController';
 import { EchoMemorySystem } from '@systems/EchoMemorySystem';
@@ -34,7 +34,7 @@ import { DirectorsCutController } from '@controllers/DirectorsCutController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { StatusNotificationController } from '@systems/StatusNotificationController';
 import { BootstrapTracker } from '@systems/BootstrapTracker';
-// AchievementToast import removed - see line 24
+
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
 import { RouteSelect } from '@ui/screens/RouteSelect';
@@ -46,7 +46,7 @@ import { StatusBar } from '@ui/components/StatusBar';
 import { Sidebar } from '@ui/components/Sidebar';
 import { NotesViewer } from '@ui/components/NotesViewer';
 import '@core/ErrorBoundary'; // Auto-initializes global error handler
-// import { LoadingOverlay } from '@ui/components/LoadingOverlay'; // Unused
+
 import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
 import '@ui/styles/error-boundary.css';
@@ -57,12 +57,12 @@ import '@ui/styles/save-load-modal.css'; // V2: Save/Load UI styles
 import '@ui/styles/backlog-ui.css'; // V2: Backlog UI styles
 import '@ui/styles/sidebar-v1-core.css'; // V1 Sidebar Parity
 import '@ui/styles/uv7-app-switcher.css'; // App Switcher Parity
-// UV7 OS App Switcher is initialized in StatusBar.ts
+
 
 import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { CrewScreen } from '@ui/screens/CrewScreen';
 import { SaveSystem } from '@systems/SaveSystem';
-// ToastNotification removed - using NotificationRail via EventBus instead
+
 import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
@@ -78,10 +78,7 @@ import toriAct1Data from '@content/routes/tori_act1.json';
 import toriAct2Data from '@content/routes/tori_act2.json';
 import toriAct3Data from '@content/routes/tori_act3.json';
 
-// Asset Imports
-// import logoImg from '../assets/UnitedVoices7.png'; // Unused
-// import introVideoParams from '../UnitedVoices7.mp4?url'; // Unused
-// import introVideo from '../UnitedVoices7.mp4'; // Unused
+
 
 // ============================================
 // Core Systems
