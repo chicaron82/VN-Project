@@ -1,6 +1,8 @@
 // Auto-generated index file for timeline entries
 // DO NOT EDIT MANUALLY - regenerate using npm run generate:timeline
 
+import { entry as entry79 } from './entries/2026/2026-02-02-showcase-reframe';
+import { entry as entry78 } from './entries/2025/2025-10-26-demon-lord';
 import { entry as entry77 } from './entries/2026/2026-02-01-b';
 import { entry as entry76 } from './entries/2026/2026-02-01-a';
 import { entry as entry75 } from './entries/2026/uv7-system-architecture';
@@ -84,6 +86,8 @@ export * from './types';
 import type { BlogEntry } from './types';
 
 export const timelineData: BlogEntry[] = [
+    entry79,
+    entry78,
     entry77,
     entry76,
     entry75,

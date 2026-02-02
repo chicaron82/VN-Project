@@ -58,10 +58,27 @@ export class WorkflowSection {
                 ${createBanner(BANNER_CONFIGS.workflow)}
 
                 <div class="section-content">
+                    <div class="workflow-intro-box">
+                        <h3>🍺 From Barback to Demon Lord: The Methodology</h3>
+                        <p>
+                            20+ years in hospitality taught me: learn the system, identify the real goal, redesign the workflow,
+                            execute efficiently. Pattern recognition and process optimization.
+                        </p>
+                        <p>
+                            Turns out those skills translate to AI orchestration at scale. I didn't learn "prompt engineering."
+                            I applied workflow optimization to intelligence coordination. Same principles, different medium.
+                        </p>
+                        <p class="workflow-insight">
+                            What emerged wasn't "best practices"—it was <strong>discovered systems</strong> from 50 days of
+                            experimentation. Blind peer review, cognitive diversity, energy matching, multi-AI routing.
+                            Not because I read about them. Because they worked.
+                        </p>
+                    </div>
+
                     <p class="section-intro">
-                        <strong>How We Had Fun Better:</strong> The methodology behind collaborative AI creation. When a non-coder orchestrates eight AI instances,
-                        something interesting happens. Blind peer review, cognitive diversity, energy matching, adversarial validation—
-                        systems that prove fun + good process = better code. This is the playbook.
+                        <strong>How We Actually Worked:</strong> When a non-coder orchestrates eight AI personalities through relationship
+                        building instead of prompt engineering, something interesting happens. This isn't theory—it's the playbook
+                        from building Version 848. Fun + good process = better code.
                     </p>
 
                     <!-- Collapsible Deep Dives -->

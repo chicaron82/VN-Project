@@ -15,10 +15,23 @@ export class SpotlightSection {
                 ${createBanner(BANNER_CONFIGS.spotlight)}
 
                 <div class="section-content">
+                    <div class="spotlight-context-box">
+                        <h3>🎯 Inside Version 848: Technical Deep Dive</h3>
+                        <p>
+                            These aren't showcase features—they're <strong>Version 848 game engine</strong> systems. The visual novel's
+                            actual technical achievements. Momentum carousels for character selection, echo memory tracking player history,
+                            cross-game communication between the VN and ToriGatchi.
+                        </p>
+                        <p class="spotlight-clarification">
+                            Each feature here represents a "what if" question that turned into production code. Not built because
+                            they're "best practices"—built because curiosity asked and the council delivered.
+                        </p>
+                    </div>
+
                     <p class="section-intro">
-                        <strong>What We Made While Having Fun:</strong> The technical achievements that emerged from our collaborative journey.
-                        Each feature here represents a day (or week) of creative problem-solving. Momentum carousels, echo memory systems,
-                        cross-game communication—these aren't just code. They're proof that playful collaboration produces elegant solutions.
+                        <strong>What We Built While Having Fun:</strong> The technical systems that make Version 848 work.
+                        Each feature emerged from collaborative problem-solving. These aren't just code—they're proof that
+                        playful collaboration produces elegant solutions.
                     </p>
 
                     <!-- Bento Grid -->

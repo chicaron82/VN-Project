@@ -22,6 +22,20 @@ export class EvolutionSection {
                 ${createBanner(BANNER_CONFIGS.evolution)}
 
                 <div class="section-content">
+                    <!-- Evolution Context -->
+                    <div class="evolution-context-box">
+                        <h3>🔄 Version 848: From Organic Chaos to Sustainable Harmony</h3>
+                        <p>
+                            This isn't a generic refactoring case study—this is <strong>Version 848's actual evolution</strong>.
+                            The visual novel game's codebase went from a 4000-line god class (V1) to a clean EventBus architecture (V2).
+                            Same soul, sustainable structure.
+                        </p>
+                        <p class="evolution-insight">
+                            V1 was built through "yes and" energy—TetherManager, SaveSystem, MenuController all tangled together
+                            because we were moving fast. V2 asked "what if we made it sustainable?" Same features, cleaner architecture.
+                        </p>
+                    </div>
+
                     <!-- The Breaking Point Story -->
                     <div class="evolution-story">
                         <div class="story-header">

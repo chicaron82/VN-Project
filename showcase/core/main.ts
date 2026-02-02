@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     // PHASE 3: BLOG ENHANCEMENTS
     // =================================================================
-    // Blog features depend on the Journey section's DOM being rendered.
+    // Blog features depend on the Journal section's DOM being rendered.
     // BlogRenderer must initialize BEFORE deep linking wire-up.
     
     new BlogAnimations('.timeline-phases');
@@ -199,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // For now, deep linking only supports entry navigation
     });
 
-    // Initialize BlogRenderer (Journey/Journal tab) - must be after JourneySection renders
+    // Initialize BlogRenderer (Journal tab) - must be after JourneySection renders
     new BlogRenderer('#timeline-container');
     console.log('✅ Blog renderer initialized');
 

@@ -34,7 +34,7 @@
 **V1 vs V2 Section:**
 - Layers 3-4: Keep current comparison but clarify it's about Version 848's codebase
 
-### **JOURNEY TAB** - The Timeline (Layers 3-4 detailed)
+### **JOURNAL TAB** - The Timeline (Layers 3-4 detailed)
 
 **Banner/Intro:**
 - Reference Layer 2: "Building Version 848: From First Commit to Final Polish"

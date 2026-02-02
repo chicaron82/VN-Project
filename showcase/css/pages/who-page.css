@@ -560,3 +560,59 @@
 .crew-card:nth-child(6) { animation-delay: 0.6s; }
 .crew-card:nth-child(7) { animation-delay: 0.7s; }
 .crew-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* ═══════════════════════════════════════════════════════════════
+   COUNCIL INTRO BOX - Demon Lord Framing
+   ═══════════════════════════════════════════════════════════════ */
+
+.council-intro-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    border-radius: 16px;
+    padding: 2.5rem;
+    margin: 3rem auto 4rem;
+    max-width: 900px;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.council-intro-box h3 {
+    font-size: 1.6rem;
+    margin: 0 0 1.5rem;
+    color: #00ff88;
+    font-weight: 600;
+}
+
+.council-intro-box p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.council-intro-box p:last-child {
+    margin-bottom: 0;
+}
+
+.council-quote {
+    font-style: italic;
+    font-size: 1.15rem;
+    border-left: 3px solid #00ff88;
+    padding-left: 1.5rem;
+    margin-top: 1.5rem;
+    color: #00ff88;
+}
+
+/* Philosophy Card Updates */
+.philosophy-insight {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: rgba(0, 255, 136, 0.08);
+    border-left: 3px solid #00ff88;
+    border-radius: 6px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .council-intro-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+}

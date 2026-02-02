@@ -241,6 +241,50 @@
     background: rgba(0, 255, 136, 0.3);
 }
 
+/* Simple VN Toggle Button (The Comedic One) */
+.simple-vn-toggle-btn {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid #ff6b6b;
+    border-radius: 6px;
+    color: #ff6b6b;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.simple-vn-toggle-btn:hover {
+    background: rgba(255, 107, 107, 0.3);
+}
+
+/* Simple VN Expanded Sections (Minimal Styling for Minimal Content) */
+.simple-vn-section {
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 2px solid rgba(255, 107, 107, 0.3);
+    margin: 1rem 0;
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+
+.simple-vn-section strong {
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.simple-vn-section ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
+
+.simple-vn-section li {
+    margin: 0.25rem 0;
+    opacity: 0.7;
+}
+
 .meta-philosophical-box {
     background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
     border-radius: 8px;
@@ -450,4 +494,81 @@
     text-align: center;
     opacity: 0.8;
     font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THE HOOK - Opening Quote & Timeline
+   ═══════════════════════════════════════════════════════════════ */
+
+.home-hook-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    border: 1px solid rgba(102, 126, 234, 0.3);
+}
+
+.home-hook-quote {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    font-style: italic;
+    margin: 0 0 1rem;
+    color: var(--text-primary, #1a1a1a);
+}
+
+.home-hook-subtext {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin: 0;
+    text-align: right;
+    font-style: italic;
+    color: var(--text-secondary, #4a4a4a);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   "WHAT IF" CASCADE
+   ═══════════════════════════════════════════════════════════════ */
+
+.what-if-cascade {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-blue, #4a9eff);
+}
+
+.what-if-item {
+    font-size: 1rem;
+    line-height: 1.8;
+    padding: 0.5rem 0;
+    color: var(--text-secondary, #4a4a4a);
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.what-if-item::before {
+    content: '↓';
+    position: absolute;
+    left: 0.25rem;
+    opacity: 0.4;
+    font-size: 0.9rem;
+}
+
+.what-if-item:last-child::before {
+    content: '★';
+    opacity: 0.6;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .home-hook-box {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+}
+
+[data-theme="dark"] .what-if-cascade {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .simple-vn-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-left-color: rgba(255, 107, 107, 0.4);
 }
