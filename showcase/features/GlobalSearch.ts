@@ -39,6 +39,7 @@ export class GlobalSearch {
         this.buildSearchIndex();
         this.createModal();
         this.setupKeyboardShortcuts();
+        this.setupTriggerButton();
         this.trackSearchAnalytics();
     }
 
@@ -157,6 +158,21 @@ export class GlobalSearch {
                 this.close();
             }
         });
+    }
+
+    /**
+     * Setup trigger button click handler
+     */
+    private setupTriggerButton(): void {
+        const trigger = document.getElementById('global-search-trigger');
+        if (trigger) {
+            trigger.addEventListener('click', () => {
+                this.open();
+            });
+            console.log('🔍 Search trigger button initialized');
+        } else {
+            console.warn('⚠️ Search trigger button not found');
+        }
     }
 
     /**
@@ -514,7 +530,12 @@ export class GlobalSearch {
 
         this.isOpen = true;
         this.modal?.classList.add('active');
-        this.input?.focus();
+
+        // Focus input after modal animation starts (needs small delay)
+        setTimeout(() => {
+            this.input?.focus();
+        }, 50);
+
         this.showRecentSearches();
 
         // Haptic feedback
