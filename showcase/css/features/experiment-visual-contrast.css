@@ -1,0 +1,142 @@
+/* ═══════════════════════════════════════════════════════════════
+   EXPERIMENT VISUAL CONTRAST
+   Positive/negative comparison, user feedback, failure tables
+   Source: pages.css lines 1951-2270
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ==========================================
+   VISUAL COMPARISON (PHASE 26e)
+   ========================================== */
+.experiment-visual-contrast {
+    margin: 4rem 0;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.experiment-visual-contrast h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.contrast-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.contrast-side {
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contrast-side h3 {
+    margin-top: 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid;
+    margin-bottom: 1rem;
+}
+
+.contrast-side.positive h3 {
+    color: #00ff88;
+    border-color: #00ff88;
+}
+
+.contrast-side.negative h3 {
+    color: #ff4444;
+    border-color: #ff4444;
+}
+
+.contrast-side ul {
+    padding-left: 1.25rem;
+    line-height: 1.6;
+}
+
+.contrast-side.positive li {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.contrast-side.negative li {
+    color: rgba(255, 100, 100, 0.9);
+}
+
+.user-feedback-quote {
+    background: rgba(102, 126, 234, 0.1);
+    border-left: 4px solid #667eea;
+    padding: 1.5rem;
+    font-style: italic;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+    color: #e0e0e0;
+}
+
+.contrast-analysis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.analysis-block {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.failure-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.failure-table th,
+.failure-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+}
+
+.failure-table th {
+    color: #888;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.contrast-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.gallery-item h4 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+.contrast-img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.contrast-img:hover {
+    transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+    .contrast-intro,
+    .contrast-analysis,
+    .contrast-gallery {
+        grid-template-columns: 1fr;
+    }
+}

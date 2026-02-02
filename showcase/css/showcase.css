@@ -44,14 +44,35 @@
 @import url('echo-system.css');
 
 /* ═══════════════════════════════════════════════════════════════
-   3. LAYOUT & PAGES
+   3. LAYOUT & PAGES (Modular Architecture)
    ═══════════════════════════════════════════════════════════════ */
 
-/* Component library: cards, buttons, badges, etc. */
-@import url('components.css');
+/* --- Component Modules --- */
+@import url('components/hero.css');
+@import url('components/timeline.css');
+@import url('components/app-switcher-cards.css');
+@import url('components/code-comparison-modal.css');
+@import url('components/hero-banners.css');
+@import url('components/spotlight-carousel.css');
+@import url('components/banner-quick-cards.css');
 
-/* Page-specific styles: Home, Journey, Who, etc. */
-@import url('pages.css');
+/* --- Feature Modules --- */
+@import url('features/cooking-metaphor.css');
+@import url('features/soma-journey.css');
+@import url('features/experiment-design.css');
+@import url('features/experiment-dashboard.css');
+@import url('features/experiment-reflections.css');
+@import url('features/experiment-mimic.css');
+@import url('features/belle-path-comparison.css');
+@import url('features/light-mode-overrides.css');
+@import url('features/experiment-visual-contrast.css');
+
+/* --- Page Modules --- */
+@import url('pages/who-page.css');
+@import url('pages/evolution-page.css');
+@import url('pages/spotlight-bento.css');
+@import url('pages/workflow-methodology.css');
+@import url('pages/home-page.css');
 
 /* Code comparison grid (Evolution section) */
 @import url('code-comparison.css');

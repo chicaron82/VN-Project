@@ -1,0 +1,147 @@
+/* ═══════════════════════════════════════════════════════════════
+   EXPERIMENT REFLECTIONS MODULE
+   Reflection cards, quotes, and lesson callouts
+   Source: components.css lines 4716-4843
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Special Reflection Sections */
+.reflection-failure {
+    border-left: 4px solid #ff4757;
+}
+
+.reflection-verdict {
+    border-left: 4px solid #ffd93d;
+}
+
+.reflection-quote {
+    font-size: 1.15rem;
+    font-style: italic;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+}
+
+.reflection-quote-critical {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-style: italic;
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 71, 87, 0.1) 0%, rgba(255, 107, 157, 0.1) 100%);
+    border: 2px solid #ff4757;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+
+.reflection-lesson {
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+    border: 2px solid var(--accent-primary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+/* Reflection Template */
+.reflection-template {
+    background: var(--card-bg);
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.reflection-template h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.reflection-template ol {
+    margin: 1.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.reflection-template li {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.template-note {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: var(--accent-secondary);
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+    font-style: italic;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .experiment-reflections {
+        padding: 1.5rem;
+    }
+
+    .reflection-card {
+        padding: 1.5rem;
+    }
+
+    .reflection-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .reflection-header h3 {
+        font-size: 1.3rem;
+    }
+
+    .reflection-quote {
+        font-size: 1rem;
+    }
+
+    .reflection-quote-critical {
+        font-size: 1.05rem;
+        padding: 1rem;
+    }
+
+    .reflection-section {
+        padding: 1rem;
+    }
+
+    .reflection-template {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .experiment-reflections {
+        padding: 1rem;
+        margin: 2rem 0;
+    }
+
+    .reflection-card {
+        padding: 1rem;
+    }
+
+    .reflection-icon {
+        font-size: 1.5rem;
+    }
+
+    .reflection-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .reflection-section h4 {
+        font-size: 1rem;
+    }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    .reflection-section code {
+        background: rgba(255, 255, 255, 0.1);
+    }
+}

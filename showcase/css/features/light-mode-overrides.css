@@ -1,0 +1,43 @@
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES
+   Explicit support for light theme
+   Source: components.css lines 5438-5487
+   ═══════════════════════════════════════════════════════════════ */
+
+body.light-mode .hero-title {
+    color: #1a1a1a;
+    text-shadow: none;
+    background: linear-gradient(135deg, #2980b9 0%, #27ae60 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-mode .hero-subtitle {
+    color: #666;
+}
+
+body.light-mode .hero-description {
+    color: #555;
+    font-weight: 500;
+}
+
+body.light-mode .stat-item {
+    background: #fff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .stat-item:hover {
+    background: #f8f9fa;
+    border-color: rgba(52, 152, 219, 0.4);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .stat-value {
+    color: #2980b9;
+}
+
+body.light-mode .stat-label {
+    color: #666;
+}

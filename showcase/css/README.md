@@ -18,11 +18,32 @@ showcase.css (master)
 │   └── echo-system.css    - Meta-narrative state indicators
 │
 ├── 3. LAYOUT & PAGES
-│   ├── components.css     - Reusable UI components (cards, buttons, badges)
-│   ├── pages.css          - Section-specific styles (Home, Who, etc.)
-│   ├── code-comparison.css - Side-by-side code diffs
-│   ├── evolution-v2.css   - Evolution section deep-dive
-│   └── blog.css           - Timeline/Journey base layout
+│   ├── COMPONENTS/ (modular)
+│   │   ├── hero.css                    - Hero sections
+│   │   ├── timeline.css                - Timeline component
+│   │   ├── app-switcher-cards.css      - Preview cards
+│   │   ├── code-comparison-modal.css   - Side-by-side diffs
+│   │   ├── hero-banners.css            - Section headers
+│   │   └── spotlight-carousel.css      - Tech carousel
+│   ├── PAGES/ (modular)
+│   │   ├── who-page.css                - Crew section
+│   │   ├── evolution-page.css          - V1→V2 comparison
+│   │   ├── spotlight-bento.css         - Feature grid
+│   │   ├── workflow-methodology.css    - Process section
+│   │   └── home-page.css               - Landing content
+│   ├── FEATURES/ (modular)
+│   │   ├── cooking-metaphor.css        - Recipe comparison
+│   │   ├── soma-journey.css            - V1/V2 phases
+│   │   ├── experiment-design.css       - V3 cards
+│   │   ├── experiment-dashboard.css    - Scorecards
+│   │   ├── experiment-reflections.css  - Post-mortem
+│   │   ├── experiment-mimic.css        - Chaos analysis
+│   │   ├── belle-path-comparison.css   - Self-assessment
+│   │   ├── content-features.css        - UI elements
+│   │   └── experiment-visual-contrast.css - Positive/negative
+│   ├── code-comparison.css - Legacy compat (deprecated)
+│   ├── evolution-v2.css   - Evolution deep-dive
+│   └── blog.css           - Timeline base layout
 │
 ├── 4. BLOG FEATURES (Timeline Enhancements)
 │   ├── blog-animations.css    - Fade-in, stagger, reveals
@@ -68,80 +89,12 @@ showcase.css (master)
 | 1000-2000 lines | 🔴 Bloated | Refactor into logical modules |
 | > 2000 lines | 💀 Critical | Immediate split required |
 
-**Current largest files:**
+**Current file structure:**
 - `base.css`: 5106 lines (acceptable - CSS variables + resets)
-- `components.css`: 5558 lines (🔴 bloated - see navigation guide below)
-- `pages.css`: 2620 lines (🔴 bloated - see navigation guide below)
-
-## Navigating Large Files
-
-### components.css (5558 lines) - Reusable UI Components
-
-**📖 Section Index:**
-
-| Lines | Section | Description |
-|-------|---------|-------------|
-| 1-275 | Hero Section | hero-container, hero-content, stats, split-container |
-| 276-965 | Timeline Component | phases, toolbar, search, spotlight, scrubber |
-| 966-1315 | App Switcher Cards | preview cards, gradients, overlays |
-| 1316-1875 | Code Comparison Modal | split-screen, slider, syntax highlighting |
-| 1876-2265 | Hero Banners | premium section headers, parallax, particles |
-| 2266-2700 | Spotlight Carousel | technical cards, navigation, modal |
-| 2701-3155 | Cooking Metaphor | recipe vs ingredients comparison |
-| 3156-3485 | Soma Journey | V1 vs V2 phase comparison |
-| 3486-4335 | Experiment Design | V3 recipe cards, agent cards, matrix |
-| 4336-4715 | Experiment Dashboard | scorecards, mode toggles, badges |
-| 4716-5095 | Experiment Reflections | post-mortem, failure analysis |
-| 5096-5385 | Experiment Mimic | chaos variable, origin story, analysis |
-| 5386-5558 | Belle Path Comparison | V1/V2, self-assessment, trade-offs |
-
-**🔧 How to Navigate:**
-- Use **Cmd/Ctrl+G** (Go to Line) in your editor
-- Search for section headers like `/* ═══ HERO SECTION ═══ */`
-- Each section is self-contained with its own media queries
-
-**📋 Recommended Splits (Future Work):**
-1. Extract `experiment-*.css` (lines 3486-5385) - 1900 lines of experiment-specific styles
-2. Extract `carousel.css` (lines 2266-2700) - 435 lines reusable component
-3. Extract `cooking-metaphor.css` (lines 2701-3155) - 455 lines feature-specific
-
-### pages.css (2620 lines) - Page-Specific Styles
-
-**📖 Section Index:**
-
-| Lines | Section | Description |
-|-------|---------|-------------|
-| 1-485 | Who Page | creator hero, crew grid, crew cards, philosophy, Belle's mimic |
-| 486-940 | Evolution Page | V1→V2 comparison, VS divider, metrics, architecture diagrams |
-| 941-1550 | Spotlight Bento | bento grid, 3D tilt, glassmorphism, gradient borders, scroll reveal |
-| 1551-1950 | Content Features | dark mode, timeline search, GitHub links, toasts, share buttons |
-| 1951-2270 | Workflow Methodology | collapsible sections, review flow, diversity benefits, trade-offs |
-| 2271-2385 | Experiment Visual Contrast | positive/negative comparison, user feedback, failure tables |
-| 2386-2620 | Home Page | Version 848, story cards, route grid, themes grid, meta-philosophical boxes |
-
-**🔧 How to Navigate:**
-- Use **Cmd/Ctrl+G** (Go to Line) in your editor
-- Search for section headers like `/* ═══ WHO PAGE ═══ */`
-- Each page section includes its own responsive styles
-
-**📋 Recommended Splits (Future Work):**
-1. Extract `pages/who-page.css` (lines 1-485) - 485 lines
-2. Extract `pages/evolution-page.css` (lines 486-940) - 455 lines  
-3. Extract `pages/spotlight-bento.css` (lines 941-1550) - 610 lines complex component
-4. Extract `pages/home-page.css` (lines 2386-2620) - 235 lines
-
-### Why Not Split Now?
-
-**Pragmatic Decision (Phase 3):**
-- Splitting into 20 files adds maintenance overhead
-- Current structure is navigable with table of contents
-- Each section is self-contained (media queries included)
-- Future extraction can happen incrementally as needed
-
-**When to Extract:**
-- When adding 500+ lines to a specific section
-- When section becomes reused across multiple pages
-- When working exclusively on one feature for extended period
+- ✅ **Modular architecture** - 20 files split by feature/component
+  - 6 component files (hero, timeline, cards, modals, banners, carousel)
+  - 5 page files (who, evolution, spotlight-bento, workflow, home)
+  - 9 feature files (cooking, soma, experiments, content, contrast)
 
 
 ## Import Performance
@@ -197,3 +150,12 @@ showcase.css (master)
 ## Questions?
 
 Check `showcase.css` for the canonical import order and file descriptions.
+TOC to components.css and pages.css (temporary navigation solution)
+- **Phase 5 (Feb 1, 2026):** **Proper modular architecture**
+  - Split components.css (5558 lines) → 6 component modules + 7 feature modules
+  - Split pages.css (2620 lines) → 5 page modules + 2 feature modules
+  - Created proper directory structure: `components/`, `pages/`, `features/`
+  - Updated showcase.css to import 20 modular files
+  - Backed up bloated files as `.backup`
+- **Before:** 2 bloated files (8178 lines total), 22 `<link>` tags in HTML
+- **After:** 20 modular files (avg 200-400 lines each), 1 `<link>` tag, proper separation of concern

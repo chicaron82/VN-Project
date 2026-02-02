@@ -1,0 +1,357 @@
+/**
+ * Cooking Metaphor
+ * Extracted from components.css (lines 2701-3155)
+ */
+
+/* ==========================================
+   COOKING METAPHOR SECTION
+   DiZee Implementation - Recipe vs Ingredients
+   ========================================== */
+
+.cooking-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .cooking-comparison {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.cooking-approach {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px solid;
+}
+
+.agentic-approach {
+    background: rgba(100, 100, 100, 0.05);
+    border-color: rgba(100, 100, 100, 0.3);
+}
+
+.uv7-approach {
+    background: rgba(0, 255, 136, 0.05);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.approach-header {
+    margin-bottom: 1.5rem;
+}
+
+.approach-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.approach-header h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.approach-tagline {
+    font-style: italic;
+    opacity: 0.8;
+    font-size: 1.1rem;
+}
+
+.example-prompt,
+.example-conversation {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+.example-prompt blockquote,
+.example-conversation blockquote {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1rem;
+    border-left: 3px solid currentColor;
+    opacity: 0.9;
+}
+
+.chat-exchange {
+    margin: 1rem 0;
+}
+
+.chat-line {
+    margin: 0.5rem 0;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+}
+
+.chat-line.user {
+    background: rgba(0, 255, 136, 0.1);
+    margin-left: 0;
+    margin-right: 2rem;
+}
+
+.chat-line.ai {
+    background: rgba(147, 51, 234, 0.1);
+    margin-left: 2rem;
+    margin-right: 0;
+}
+
+.invention-result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    border-left: 4px solid #00ff88;
+}
+
+.approach-result {
+    margin: 1.5rem 0;
+}
+
+.result-item {
+    padding: 0.5rem 0.75rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.result-item.good {
+    background: rgba(0, 255, 136, 0.1);
+    color: #00ff88;
+}
+
+.result-item.bad {
+    background: rgba(255, 100, 100, 0.1);
+    color: #ff6464;
+}
+
+.result-item.neutral {
+    background: rgba(255, 200, 0, 0.1);
+    color: #ffc800;
+}
+
+.approach-summary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.key-difference-callout {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(59, 130, 246, 0.1));
+    border-radius: 12px;
+    border: 2px solid rgba(0, 255, 136, 0.3);
+}
+
+.key-difference-callout h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.difference-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+@media (max-width: 600px) {
+    .difference-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.diff-item {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .diff-item {
+        background: rgba(0, 0, 0, 0.3);
+    }
+}
+
+.difference-insight {
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+.real-world-examples {
+    margin: 2rem 0;
+}
+
+.example-card {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background: rgba(0, 0, 0, 0.03);
+    border-radius: 10px;
+    border-left: 4px solid #00ff88;
+}
+
+@media (prefers-color-scheme: dark) {
+    .example-card {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}
+
+.example-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.example-icon {
+    font-size: 1.5rem;
+}
+
+.example-body {
+    margin-top: 1rem;
+}
+
+.example-wrong,
+.example-right {
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 6px;
+}
+
+.example-wrong {
+    background: rgba(255, 100, 100, 0.1);
+    border-left: 3px solid #ff6464;
+}
+
+.example-right {
+    background: rgba(0, 255, 136, 0.1);
+    border-left: 3px solid #00ff88;
+}
+
+.sous-chef-metaphor {
+    margin: 2rem 0;
+    padding: 2rem;
+    background: rgba(147, 51, 234, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(147, 51, 234, 0.3);
+}
+
+.sous-chef-metaphor h5 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.sous-chef-metaphor p {
+    margin: 0.75rem 0;
+}
+
+.msg-source {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(0, 255, 136, 0.15);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Philosophy Comparison Layout (Card 11: Soul of Iteration) */
+.tech-comparison-philosophy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.philosophy-side {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.philosophy-side h4 {
+    color: #667eea;
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.philosophy-side ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.philosophy-side li {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 8px 0;
+    padding-left: 25px;
+    position: relative;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.philosophy-side li::before {
+    content: "•";
+    position: absolute;
+    left: 8px;
+    color: #667eea;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.tech-insight {
+    margin-top: 20px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.1));
+    border-left: 4px solid #667eea;
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+.tech-insight strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+.tech-insight em {
+    color: #00ff88;
+    font-style: italic;
+    font-weight: 600;
+}
+
+/* Responsive: Stack on mobile */
+@media (max-width: 768px) {
+    .tech-comparison-philosophy {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .philosophy-side h4 {
+        font-size: 15px;
+    }
+
+    .philosophy-side li {
+        font-size: 13px;
+    }
+
+    .tech-insight {
+        padding: 15px;
+        font-size: 14px;
+    }
+}

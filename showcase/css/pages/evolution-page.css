@@ -1,0 +1,517 @@
+/* ═══════════════════════════════════════════════════════════════
+   EVOLUTION PAGE STYLES
+   V1→V2 comparison, VS divider, metrics, architecture diagrams
+   Source: pages.css lines 486-940
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ==========================================
+   EVOLUTION SECTION - MICHELIN TREATMENT
+   Enhanced V1→V2 comparison with premium polish
+   ========================================== */
+
+/* Section Backgrounds */
+.evolution-section {
+    background-color: var(--chaos-bg, #050505);
+    background-image: url('../media/banners/bg-evolution-split.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-blend-mode: overlay;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="light"] .evolution-section {
+    background-color: var(--order-bg, #f8f9fa);
+    background-image: none;
+    color: var(--order-text, #2c3e50);
+}
+
+/* Comparison Grid Enhancement */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin: 3rem 0;
+    position: relative;
+    z-index: 2;
+}
+
+/* VS Divider */
+.comparison-grid::before {
+    content: 'VS';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.1);
+    z-index: 1;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Comparison Columns */
+.comparison-column {
+    position: relative;
+    z-index: 2;
+}
+
+.comparison-column h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.col-chaos h3 {
+    border-color: var(--chaos-text, #ff6b6b);
+    color: var(--chaos-text, #ff6b6b);
+}
+
+.col-chaos h3::before {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-image: url('../media/textures/icon-chaos.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+.col-order h3 {
+    border-color: var(--order-text, #00ccff);
+    color: var(--order-text, #00ccff);
+}
+
+.col-order h3::before {
+    content: '';
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    background-image: url('../media/textures/icon-order.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+}
+
+/* Comparison Items */
+.comparison-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comparison-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.col-chaos .comparison-item {
+    border-left: 4px solid var(--chaos-text, #ff6b6b);
+}
+
+.col-order .comparison-item {
+    border-left: 4px solid var(--order-text, #00ccff);
+}
+
+.comparison-item h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.comparison-item p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.col-order .comparison-item p {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 400;
+}
+
+/* Code Snippets */
+.code-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 3rem 0;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.code-block {
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.code-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-header.v1 {
+    color: var(--chaos-text, #ff6b6b);
+}
+
+.code-header.v2 {
+    color: var(--order-text, #00ccff);
+}
+
+.code-content {
+    padding: 1rem;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+.code-content pre {
+    margin: 0;
+}
+
+/* Metrics Section */
+.evolution-metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 3rem 0;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.1em;
+    padding-right: 0.1em;
+    margin-right: -0.1em;
+}
+
+.metric-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.metric-change {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.metric-change.negative {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+/* Architecture Diagram */
+.architecture-diagram {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+}
+
+.architecture-title {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: #fff;
+}
+
+.architecture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+}
+
+.architecture-side {
+    position: relative;
+}
+
+.architecture-side h4 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2rem;
+}
+
+/* V1 Tangled Web */
+.tangled-web {
+    position: relative;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.web-node {
+    background: rgba(255, 107, 107, 0.2);
+    border: 2px solid #ff6b6b;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Tangled lines (SVG overlay) */
+.tangled-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.tangled-lines line {
+    stroke: rgba(255, 107, 107, 0.3);
+    stroke-width: 2;
+}
+
+/* V2 Clean Layers */
+.clean-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.layer {
+    background: rgba(0, 204, 255, 0.1);
+    border: 2px solid #00ccff;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.layer:hover {
+    background: rgba(0, 204, 255, 0.2);
+    transform: translateX(8px);
+}
+
+.layer-title {
+    font-weight: 700;
+    color: #00ccff;
+    margin-bottom: 0.5rem;
+}
+
+.layer-items {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Phase Links */
+.phase-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(102, 126, 234, 0.2);
+    border: 1px solid rgba(102, 126, 234, 0.5);
+    border-radius: 6px;
+    color: #667eea;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.phase-link:hover {
+    background: rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.phase-link::after {
+    display: none;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .comparison-grid,
+    .code-comparison,
+    .architecture-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .comparison-grid::before {
+        top: auto;
+        bottom: 50%;
+        transform: translate(-50%, 50%) rotate(90deg);
+    }
+
+    .evolution-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+/* Dark Mode Support */
+[data-theme="light"] .comparison-item {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .comparison-item h4 {
+    color: #333;
+}
+
+[data-theme="light"] .comparison-item p {
+    color: #666;
+}
+
+[data-theme="light"] .code-block {
+    background: #f5f5f5;
+}
+
+[data-theme="light"] .code-header {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .metric-card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .comparison-grid::before {
+    background: linear-gradient(135deg, #bbb, #999);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.3;
+}
+
+[data-theme="light"] .metric-label {
+    color: #555555;
+    font-weight: 600;
+}
+
+[data-theme="light"] .metric-change {
+    background: rgba(0, 180, 70, 0.15);
+    color: #008800;
+}
+
+[data-theme="light"] .metric-change.negative {
+    background: rgba(220, 50, 50, 0.15);
+    color: #cc0000;
+}
+
+/* Light Mode Overrides */
+body.light-mode .comparison-item {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .comparison-item p {
+    color: #555;
+    font-weight: 400;
+}
+
+body.light-mode .comparison-grid::before {
+    background: linear-gradient(135deg, #2980b9, #27ae60);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.2;
+}
+
+body.light-mode .code-comparison {
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .metric-card {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .metric-label {
+    color: #666;
+}
+
+body.light-mode .architecture-diagram {
+    background: rgba(0, 0, 0, 0.03);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .architecture-title {
+    color: #1a1a1a;
+}
+
+body.light-mode .architecture-side h4 {
+    color: #333;
+}
+
+body.light-mode .layer {
+    background: #e6f7ff;
+    border-color: #1890ff;
+}
+
+body.light-mode .layer-title {
+    color: #0050b3;
+}
+
+body.light-mode .layer-items {
+    color: #555;
+}
+
+body.light-mode .web-node {
+    background: #fff1f0;
+    border-color: #ff4d4f;
+    color: #a8071a;
+}

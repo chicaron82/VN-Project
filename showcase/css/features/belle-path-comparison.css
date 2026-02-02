@@ -1,0 +1,324 @@
+/* ═══════════════════════════════════════════════════════════════
+   BELLE'S PATH COMPARISON SECTION
+   V1 vs V2 comparison paths, self-assessment, trade-offs
+   Source: components.css lines 5120-5437
+   ═══════════════════════════════════════════════════════════════ */
+
+.reflection-comparison {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(78, 205, 196, 0.05) 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.reflection-comparison h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+    font-size: 1.4rem;
+}
+
+.comparison-intro {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+/* Comparison Paths */
+.comparison-paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.comparison-path {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.path-v1 {
+    border-color: #ff6b6b;
+}
+
+.path-v2 {
+    border-color: #4ecdc4;
+}
+
+.comparison-path h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.path-metaphor {
+    background: var(--accent-secondary);
+    padding: 1rem;
+    border-left: 3px solid var(--accent-primary);
+    border-radius: 4px;
+    margin: 1rem 0;
+    font-size: 0.95rem;
+}
+
+.path-difficulty {
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid #ffd700;
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+    font-weight: 600;
+}
+
+.path-challenges {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.path-challenges li {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+}
+
+.path-lessons {
+    background: var(--accent-secondary);
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.path-lessons ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1.5rem;
+}
+
+.path-lessons li {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+}
+
+/* Self-Assessment Table */
+.self-assessment {
+    margin: 2rem 0;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+}
+
+.self-assessment h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.assessment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.assessment-table th,
+.assessment-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.assessment-table th {
+    background: var(--accent-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.assessment-table td {
+    line-height: 1.5;
+}
+
+.grade-a {
+    color: #00ff88;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.grade-b {
+    color: #ffd93d;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.grade-c {
+    color: #ff4757;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Trade-offs Comparison Table */
+.path-comparison-table {
+    margin: 2rem 0;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+}
+
+.path-comparison-table h5 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--accent-primary);
+}
+
+.trade-offs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.trade-offs-table th,
+.trade-offs-table td {
+    padding: 0.8rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.trade-offs-table th {
+    background: var(--accent-secondary);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.trade-offs-table td {
+    line-height: 1.5;
+}
+
+.comparison-positive {
+    color: #00ff88;
+    font-weight: 600;
+}
+
+.comparison-negative {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Path Conclusion */
+.path-conclusion {
+    margin-top: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(78, 205, 196, 0.1) 100%);
+    border: 2px solid var(--accent-primary);
+    border-radius: 10px;
+}
+
+.conclusion-quote {
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-left: 4px solid var(--accent-primary);
+    border-radius: 6px;
+}
+
+.path-conclusion p {
+    line-height: 1.7;
+    margin: 1rem 0;
+}
+
+.final-verdict {
+    background: var(--accent-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #ffd93d;
+    margin-top: 1.5rem;
+    font-size: 1.05rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .reflection-comparison {
+        padding: 1.5rem;
+    }
+
+    .comparison-paths {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .comparison-path {
+        padding: 1rem;
+    }
+
+    .self-assessment,
+    .path-comparison-table {
+        padding: 1rem;
+    }
+
+    .assessment-table,
+    .trade-offs-table {
+        font-size: 0.9rem;
+    }
+
+    .assessment-table th,
+    .assessment-table td,
+    .trade-offs-table th,
+    .trade-offs-table td {
+        padding: 0.6rem 0.4rem;
+    }
+
+    .conclusion-quote {
+        font-size: 1.1rem;
+        padding: 1rem;
+    }
+
+    .path-conclusion {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .reflection-comparison {
+        padding: 1rem;
+    }
+
+    .comparison-path h5 {
+        font-size: 1rem;
+    }
+
+    .path-metaphor {
+        font-size: 0.85rem;
+        padding: 0.8rem;
+    }
+
+    .assessment-table,
+    .trade-offs-table {
+        font-size: 0.85rem;
+    }
+
+    /* Stack table cells on very small screens */
+    .assessment-table th:nth-child(3),
+    .assessment-table td:nth-child(3) {
+        display: block;
+        width: 100%;
+        padding-top: 0.3rem;
+    }
+
+    .conclusion-quote {
+        font-size: 1rem;
+    }
+}
+
+/* Dark Mode Table Adjustments */
+@media (prefers-color-scheme: dark) {
+
+    .assessment-table th,
+    .trade-offs-table th {
+        background: rgba(0, 255, 136, 0.1);
+    }
+}
