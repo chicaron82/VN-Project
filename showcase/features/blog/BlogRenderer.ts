@@ -96,6 +96,12 @@ export class BlogRenderer {
         // Phase 3: Initialize Timeline Scrubber (after timeline is rendered)
         this.timelineScrubber = new BlogScrubber('.timeline-phases');
 
+        // Hide scrubber by default (only shown when pagination is disabled)
+        const scrubber = document.querySelector('.timeline-scrubber-container') as HTMLElement;
+        if (scrubber) {
+            scrubber.style.display = this.paginationEnabled ? 'none' : 'block';
+        }
+
         // Setup Observers
         this.setupInteractions();
     }
@@ -312,42 +318,24 @@ export class BlogRenderer {
         this.toolbar = document.createElement('div');
         this.toolbar.className = 'timeline-toolbar-container';
 
-        // Extract Unique Dates for Filter
-        const dates = [...new Set(this.originalEntries.map(p => {
-            // Simplify date string "January 12, 2026 (Morning)" -> "Jan 12"
-            const match = p.date?.match(/([A-Z][a-z]+ \d+)/);
-            return match ? match[0] : (p.date || '');
-        }))];
-
-        // Extract Unique Tags for Filter
-        const tags = [...new Set(this.originalEntries.flatMap(p => p.tags || []))].sort();
-
-        // Build Filter Options with Groups
-        let filterOptions = `<optgroup label="Tracks & Phases">`;
-        filterOptions += tags.map(tag => `<option value="${tag}">${tag}</option>`).join('');
-        filterOptions += `</optgroup>`;
-
-        filterOptions += `<optgroup label="Dates">`;
-        filterOptions += dates.map(date => `<option value="${date}">${date}</option>`).join('');
-        filterOptions += `</optgroup>`;
-
+        // Clean pill-style mode toggle + expand/collapse button
         this.toolbar.innerHTML = `
             <div class="timeline-toolbar">
-                <div class="toolbar-group mode-toggle-group">
-                    <button class="timeline-btn ${this.activeMode === 'project' ? 'active' : ''}" data-action="mode" data-value="project">
-                        <span>📜</span> History
+                <div class="mode-toggle-pills">
+                    <button class="mode-pill ${this.activeMode === 'project' ? 'active' : ''}" data-action="mode" data-value="project">
+                        <span class="mode-icon">📜</span>
+                        <span class="mode-label">History</span>
                     </button>
-                    <button class="timeline-btn ${this.activeMode === 'v3-lab' ? 'active' : ''}" data-action="mode" data-value="v3-lab">
-                        <span>🧪</span> V3 Lab
+                    <button class="mode-pill ${this.activeMode === 'v3-lab' ? 'active' : ''}" data-action="mode" data-value="v3-lab">
+                        <span class="mode-icon">🧪</span>
+                        <span class="mode-label">V3 Lab</span>
                     </button>
                 </div>
 
-                <div class="toolbar-group">
-                     <select class="timeline-btn" id="timeline-filter">
-                        <option value="all">Show All</option>
-                        ${filterOptions}
-                     </select>
-                </div>
+                <button class="expand-toggle-btn" data-action="toggle-expand">
+                    <span class="expand-icon">${this.paginationEnabled ? '📖' : '📕'}</span>
+                    <span class="expand-label">${this.paginationEnabled ? 'Show All' : 'Show Less'}</span>
+                </button>
             </div>
         `;
 
@@ -358,7 +346,7 @@ export class BlogRenderer {
 
         // Mode Toggle
         this.toolbar.querySelectorAll('[data-action="mode"]').forEach(btn => {
-            btn.addEventListener('click', async (e) => { // Make async
+            btn.addEventListener('click', async (e) => {
                 const target = e.currentTarget as HTMLElement;
                 const mode = target.dataset.value as 'project' | 'v3-lab';
                 if (mode && this.activeMode !== mode) {
@@ -374,12 +362,27 @@ export class BlogRenderer {
             });
         });
 
-        const filterSelect = this.toolbar.querySelector('#timeline-filter') as HTMLSelectElement;
-        if (filterSelect) {
-            filterSelect.value = this.activeFilter; // Restore state
-            filterSelect.addEventListener('change', (e) => {
-                this.activeFilter = (e.target as HTMLSelectElement).value;
-                this.applyLogic();
+        // Expand/Collapse Toggle
+        const expandBtn = this.toolbar.querySelector('[data-action="toggle-expand"]');
+        if (expandBtn) {
+            expandBtn.addEventListener('click', () => {
+                this.paginationEnabled = !this.paginationEnabled;
+
+                if (!this.paginationEnabled) {
+                    // Show all entries
+                    this.visibleCount = this.currentEntries.length;
+                } else {
+                    // Reset to paginated view
+                    this.visibleCount = this.pageSize;
+                }
+
+                // Show/hide scrubber based on pagination state
+                const scrubber = document.querySelector('.timeline-scrubber-container') as HTMLElement;
+                if (scrubber) {
+                    scrubber.style.display = this.paginationEnabled ? 'none' : 'block';
+                }
+
+                this.renderToolbar(); // Update button text
                 this.renderTimeline();
             });
         }
