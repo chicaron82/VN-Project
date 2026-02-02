@@ -1,0 +1,166 @@
+/* ═══════════════════════════════════════════════════════════════
+   UV7 UNIFIED COLOR SYSTEM
+   Semantic color variables that work beautifully in both modes
+
+   Philosophy: Define colors by PURPOSE, not by value
+   Usage: All showcase sections use these variables
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+    /* ═══════════════════════════════════════════════════════════════
+       DARK MODE (Default)
+       Demon Lord energy with neon accents
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Base Backgrounds */
+    --bg-primary: #0a0a0a;           /* Main background */
+    --bg-secondary: #121212;         /* Elevated surfaces */
+    --bg-card: rgba(255, 255, 255, 0.03);  /* Card backgrounds */
+    --bg-card-hover: rgba(255, 255, 255, 0.06);
+
+    /* Text Colors */
+    --text-primary: #ffffff;         /* Primary text */
+    --text-secondary: rgba(255, 255, 255, 0.7);  /* Secondary text */
+    --text-tertiary: rgba(255, 255, 255, 0.5);   /* Disabled/subtle text */
+    --text-accent: #00ff88;          /* Accent text (UV7 green) */
+
+    /* Border & Dividers */
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-medium: rgba(255, 255, 255, 0.15);
+    --border-strong: rgba(255, 255, 255, 0.3);
+
+    /* Accent Colors */
+    --accent-primary: #00ff88;       /* UV7 green - primary actions */
+    --accent-purple: #667eea;        /* Purple - transformation theme */
+    --accent-pink: #ff6b9d;          /* Pink - passion/chaos */
+    --accent-cyan: #00ccff;          /* Cyan - technical/clarity */
+    --accent-orange: #ff9d5c;        /* Orange - methodology */
+
+    /* Gradient Backgrounds */
+    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.18), rgba(118, 75, 162, 0.18));
+    --gradient-green: linear-gradient(135deg, rgba(0, 255, 136, 0.08), rgba(0, 204, 255, 0.08));
+    --gradient-orange: linear-gradient(135deg, rgba(255, 157, 92, 0.08), rgba(255, 107, 107, 0.08));
+    --gradient-pink: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(102, 126, 234, 0.08));
+
+    /* Context Boxes (for important callouts) */
+    --context-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+    --context-border: rgba(102, 126, 234, 0.3);
+    --context-text: rgba(255, 255, 255, 0.9);
+
+    /* Interactive States */
+    --hover-overlay: rgba(255, 255, 255, 0.05);
+    --active-overlay: rgba(255, 255, 255, 0.1);
+    --focus-ring: rgba(0, 255, 136, 0.5);
+
+    /* Semantic Colors */
+    --success: #00ff88;
+    --warning: #ff9d5c;
+    --error: #ff6b6b;
+    --info: #00ccff;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE
+   Clean, readable, professional
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="light"] {
+    /* Base Backgrounds */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f2f5;
+
+    /* Text Colors */
+    --text-primary: #1a1a1a;
+    --text-secondary: rgba(26, 26, 26, 0.7);
+    --text-tertiary: rgba(26, 26, 26, 0.5);
+    --text-accent: #00b366;          /* Slightly darker green for contrast */
+
+    /* Border & Dividers */
+    --border-subtle: rgba(26, 26, 26, 0.08);
+    --border-medium: rgba(26, 26, 26, 0.15);
+    --border-strong: rgba(26, 26, 26, 0.3);
+
+    /* Accent Colors (slightly adjusted for light bg readability) */
+    --accent-primary: #00b366;
+    --accent-purple: #5a67d8;
+    --accent-pink: #e63e6d;
+    --accent-cyan: #0099cc;
+    --accent-orange: #d97706;
+
+    /* Gradient Backgrounds (more subtle in light mode) */
+    --gradient-purple: linear-gradient(135deg, rgba(102, 126, 234, 0.06), rgba(118, 75, 162, 0.06));
+    --gradient-purple-hover: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    --gradient-green: linear-gradient(135deg, rgba(0, 179, 102, 0.06), rgba(0, 153, 204, 0.06));
+    --gradient-orange: linear-gradient(135deg, rgba(217, 119, 6, 0.06), rgba(230, 62, 109, 0.06));
+    --gradient-pink: linear-gradient(135deg, rgba(230, 62, 109, 0.06), rgba(90, 103, 216, 0.06));
+
+    /* Context Boxes */
+    --context-bg: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+    --context-border: rgba(102, 126, 234, 0.25);
+    --context-text: rgba(26, 26, 26, 0.85);
+
+    /* Interactive States */
+    --hover-overlay: rgba(26, 26, 26, 0.05);
+    --active-overlay: rgba(26, 26, 26, 0.1);
+    --focus-ring: rgba(0, 179, 102, 0.5);
+
+    /* Semantic Colors */
+    --success: #00b366;
+    --warning: #d97706;
+    --error: #dc2626;
+    --info: #0099cc;
+
+    /* Shadows (softer in light mode) */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+    --shadow-glow: 0 0 20px rgba(0, 179, 102, 0.15);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   USAGE PATTERNS
+   Common combinations for specific UI elements
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Standard Card */
+.unified-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+}
+
+.unified-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-medium);
+}
+
+/* Context/Callout Box */
+.unified-context {
+    background: var(--context-bg);
+    border: 1px solid var(--context-border);
+    color: var(--context-text);
+}
+
+/* Accent Button */
+.unified-btn-accent {
+    background: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+.unified-btn-accent:hover {
+    filter: brightness(1.1);
+}
+
+/* Text Hierarchy */
+.unified-text-primary { color: var(--text-primary); }
+.unified-text-secondary { color: var(--text-secondary); }
+.unified-text-tertiary { color: var(--text-tertiary); }
+.unified-text-accent { color: var(--text-accent); }
