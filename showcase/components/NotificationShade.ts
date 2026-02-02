@@ -99,14 +99,14 @@ export class NotificationShade {
                     if (manualRow) manualRow.style.pointerEvents = 'auto';
 
                     // Apply manual override based on stored preference
-                    if (theme === 'light') {
-                        document.body.classList.add('light-mode');
-                        document.body.classList.remove('dark-mode');
-                        themeToggle.classList.remove('active'); // Visually OFF (Light Mode is default/unchecked)
-                    } else {
+                    if (theme === 'dark') {
                         document.body.classList.add('dark-mode');
                         document.body.classList.remove('light-mode');
                         themeToggle.classList.add('active'); // Visually ON (Dark Mode checked)
+                    } else {
+                        document.body.classList.add('light-mode');
+                        document.body.classList.remove('dark-mode');
+                        themeToggle.classList.remove('active'); // Visually OFF (Light Mode is default/unchecked)
                     }
                 }
             };

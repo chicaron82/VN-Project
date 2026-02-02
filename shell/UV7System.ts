@@ -254,13 +254,13 @@ export class UV7System {
                     manualRow.style.pointerEvents = 'auto';
                 }
                 // Apply manual override
-                if (theme === 'light') {
-                    document.body.classList.add('light-mode');
-                    document.body.classList.remove('dark-mode');
-                    themeToggle.classList.add('active');
-                } else {
+                if (theme === 'dark') {
                     document.body.classList.add('dark-mode');
                     document.body.classList.remove('light-mode');
+                    themeToggle.classList.add('active');
+                } else {
+                    document.body.classList.add('light-mode');
+                    document.body.classList.remove('dark-mode');
                     themeToggle.classList.remove('active');
                 }
             }
