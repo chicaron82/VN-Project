@@ -38,10 +38,10 @@ export function createBanner(config: BannerConfig): string {
 // Using absolute paths from base for proper Vite resolution
 export const BANNER_CONFIGS: Record<string, BannerConfig> = {
     journey: {
-        title: 'The Journey',
+        title: 'The Journal',
         subtitle: 'From organic chaos to structured harmony in record time',
         image: '/VN-Project/showcase/media/banners/banner-journey.png',
-        alt: 'Journey Banner',
+        alt: 'Journal Banner',
         section: 'journey'
     },
     workflow: {

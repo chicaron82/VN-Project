@@ -193,7 +193,7 @@ export class AppStateManager {
 
         switch (appId) {
             case 'showcase':
-                preview.badge = this.formatTabName(state.activeTab || 'Journey');
+                preview.badge = this.formatTabName(state.activeTab || 'journal');
                 preview.title = state.activeEntry
                     ? `Entry #${state.activeEntry}`
                     : (state.activeTab || 'Exploring');

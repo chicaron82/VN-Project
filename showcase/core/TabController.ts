@@ -318,7 +318,7 @@ export class TabController {
         if (win.uv7Runtime?.instance) {
             const names: Record<string, string> = {
                 home: 'UV7 OS',
-                journey: 'The Journey',
+                journey: 'The Journal',
                 workflow: 'Workflow',
                 spotlight: 'Tech Spotlight',
                 evolution: 'Evolution',
