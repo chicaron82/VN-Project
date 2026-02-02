@@ -78,10 +78,16 @@ export class BlogScrubber {
      * Create scrubber HTML structure
      */
     private createScrubber(): void {
+        // Create fixed container on right edge
+        const container = document.createElement('div');
+        container.className = 'timeline-scrubber-container';
+        // Hidden by default - BlogRenderer will show it when pagination is disabled
+        container.style.display = 'none';
+
         const scrubber = document.createElement('div');
         scrubber.className = 'timeline-scrubber';
         scrubber.innerHTML = `
-            <div class="scrubber-label">Timeline Overview</div>
+            <div class="scrubber-label">Timeline</div>
             <div class="scrubber-track">
                 <div class="scrubber-segments"></div>
                 <div class="scrubber-handle">
@@ -95,22 +101,12 @@ export class BlogScrubber {
             </div>
         `;
 
-        // Find toolbar - search in document, not just container
-        // Toolbar is inside #timeline-container which has class .timeline-phases
-        const toolbar = document.querySelector('#timeline-container .timeline-toolbar-container') 
-            || document.querySelector('.timeline-toolbar-container');
-            
-        if (toolbar) {
-            // Append to toolbar so they stick together as one unit
-            toolbar.appendChild(scrubber);
-            // Add a class to toolbar to indicate it now has a footer
-            toolbar.classList.add('has-scrubber');
-            console.log('🎯 [BlogScrubber] Appended to toolbar');
-        } else {
-            // Fallback: insert at the beginning if toolbar not found
-            console.warn('⚠️ [BlogScrubber] Toolbar not found, inserting before container');
-            this.container?.insertBefore(scrubber, this.container.firstChild);
-        }
+        // Append scrubber to container
+        container.appendChild(scrubber);
+
+        // Append to body so it's fixed on right edge, independent of toolbar
+        document.body.appendChild(container);
+        console.log('🎯 [BlogScrubber] Created fixed container on right edge');
 
         // Cache elements
         this.scrubberEl = scrubber;
@@ -215,13 +211,14 @@ export class BlogScrubber {
     private drag(e: MouseEvent | TouchEvent): void {
         if (!this.isDragging || !this.track || !this.handle || !this.scrollContainer) return;
 
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+        // Vertical scrubber - use Y coordinates instead of X
+        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
         const rect = this.track.getBoundingClientRect();
-        const x = clientX - rect.left;
-        const percentage = Math.max(0, Math.min(1, x / rect.width));
+        const y = clientY - rect.top;
+        const percentage = Math.max(0, Math.min(1, y / rect.height));
 
-        // Update handle position
-        this.handle.style.transform = `translateX(${percentage * rect.width}px)`;
+        // Update handle position (vertical movement)
+        this.handle.style.top = `${percentage * 100}%`;
 
         // Calculate which entry we're at
         const index = Math.floor(percentage * this.entries.length);
@@ -270,9 +267,10 @@ export class BlogScrubber {
 
         if (!this.track) return;
 
+        // Vertical scrubber - use Y coordinates
         const rect = this.track.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const percentage = Math.max(0, Math.min(1, x / rect.width));
+        const y = e.clientY - rect.top;
+        const percentage = Math.max(0, Math.min(1, y / rect.height));
         const index = Math.floor(percentage * this.entries.length);
 
         this.jumpToEntry(index);
@@ -288,8 +286,8 @@ export class BlogScrubber {
         const scrollHeight = this.scrollContainer.scrollHeight - this.scrollContainer.clientHeight;
         const scrollPercentage = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
 
-        const rect = this.track.getBoundingClientRect();
-        this.handle.style.transform = `translateX(${scrollPercentage * rect.width}px)`;
+        // Vertical scrubber - position handle using top percentage
+        this.handle.style.top = `${scrollPercentage * 100}%`;
 
         // Update tooltip with current entry
         const index = Math.floor(scrollPercentage * this.entries.length);

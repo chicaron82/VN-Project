@@ -15,56 +15,92 @@
     /* Vertical side scrubber - fixed to right edge */
     position: fixed;
     right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 100;
+    top: 120px; /* Below status bar */
+    bottom: 40px; /* Above bottom of viewport */
+    z-index: 10000;
 
     /* Hidden by default (shown when pagination disabled) */
     display: none;
 
-    padding: 1rem 0.5rem;
-    background: linear-gradient(to left, rgba(0, 0, 0, 0.8), transparent);
-    backdrop-filter: blur(10px);
-    border-radius: 12px 0 0 12px;
+    /* Compact, elegant sizing */
+    padding: 1rem;
+
+    /* Constrain height to viewport */
+    max-height: calc(100vh - 160px);
+    overflow: visible;
+
+    /* Subtle glassmorphic background */
+    background: linear-gradient(to left,
+        rgba(15, 15, 25, 0.85) 0%,
+        rgba(15, 15, 25, 0.6) 70%,
+        transparent 100%
+    );
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px 0 0 16px;
+    border-left: 1px solid rgba(0, 255, 136, 0.15);
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Ensure it's clickable */
+    pointer-events: all;
+}
+
+/* When visible, use flex to center content */
+.timeline-scrubber-container[style*="display: block"] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .timeline-scrubber {
     position: relative;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-height: 100%;
 }
 
 
 
 .scrubber-label {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
-    opacity: 0.6;
-    display: block;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     color: #00ff88;
     writing-mode: vertical-rl;
     transform: rotate(180deg);
     white-space: nowrap;
+    text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+    flex-shrink: 0;
 }
 
 /* Track Container - Vertical orientation */
 .scrubber-track {
     position: relative;
-    width: 8px;
-    height: 400px;
-    max-height: 60vh;
-    background: transparent;
-    border-radius: 4px;
+    width: 14px;
+    flex: 1;
+    min-height: 200px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 7px;
     overflow: visible;
     cursor: pointer;
-    margin: 0 auto;
-    filter: drop-shadow(2px 0 8px rgba(0, 255, 136, 0.1));
+
+    /* Subtle glow effect */
+    box-shadow:
+        inset 0 0 8px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(0, 255, 136, 0.1);
+
+    /* Ensure it's clickable */
+    pointer-events: all;
 }
 
 /* Segments Container - Vertical stack */
@@ -166,23 +202,26 @@
 /* Draggable Handle - Vertical orientation */
 .scrubber-handle {
     position: absolute;
-    left: -8px;
-    top: 0;
-    height: 3px;
-    width: calc(100% + 16px);
+    left: 50%;
+    top: 0%;
+    transform: translateX(-50%);
+
+    /* Larger, more visible handle */
+    height: 6px;
+    width: 32px;
+
     background: linear-gradient(90deg,
-            rgba(0, 255, 136, 0.3) 0%,
-            rgba(0, 255, 136, 1) 40%,
-            rgba(0, 255, 136, 1) 60%,
-            rgba(0, 255, 136, 0.3) 100%);
+            rgba(0, 255, 136, 0.5) 0%,
+            rgba(0, 255, 136, 1) 50%,
+            rgba(0, 255, 136, 0.5) 100%);
     box-shadow:
-        0 0 20px rgba(0, 255, 136, 0.6),
-        0 0 40px rgba(0, 255, 136, 0.3);
+        0 0 20px rgba(0, 255, 136, 0.8),
+        0 0 40px rgba(0, 255, 136, 0.4);
     cursor: grab;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: all;
     z-index: 10;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
 .scrubber-handle:hover {

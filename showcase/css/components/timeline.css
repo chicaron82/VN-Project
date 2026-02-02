@@ -23,10 +23,11 @@
     z-index: 90;
     margin-bottom: 2rem;
     padding: 1rem 0;
-    background: linear-gradient(to bottom, rgba(11, 11, 15, 0.7) 0%, rgba(11, 11, 15, 0.5) 60%, transparent 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    /* Removed opaque background gradient - toolbar buttons have their own backgrounds */
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: none;
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
                 opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
                 max-height 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -63,7 +64,7 @@
     padding: 0.75rem 1rem;
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.03);
+    background: transparent;
     border-radius: 8px;
     margin: 0 1rem;
     transition: all 0.2s ease;
@@ -71,11 +72,11 @@
 
 .timeline-toolbar-container.toolbar-compact:hover::after {
     color: #00ff88;
-    background: rgba(0, 255, 136, 0.1);
+    background: rgba(0, 255, 136, 0.05);
 }
 
 .timeline-toolbar-container.toolbar-compact:hover {
-    background: linear-gradient(to bottom, rgba(11, 11, 15, 1) 0%, rgba(11, 11, 15, 0.9) 80%, transparent 100%);
+    background: transparent;
 }
 
 .timeline-toolbar-container.toolbar-expanded {

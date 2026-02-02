@@ -212,9 +212,43 @@ To prevent architectural debt and "shoehorning", we adhere to these rules:
 
 ### 1. The "Stop Before Start" Protocol 🛑
 
+**BLOCKING REQUIREMENT: You MUST follow this for ANY non-trivial feature.**
+
 - **Never** dive straight into coding complex features.
 - **Always** propose the file structure and implementation plan first.
 - **Wait** for user confirmation if the plan involves creating new major components or modifying core architecture.
+
+**Template for Planning:**
+
+```markdown
+## Proposed Implementation: [Feature Name]
+
+**Files to Change:**
+- file1.ts - What changes and why
+- file2.css - What changes and why
+
+**Architecture:**
+- Component structure
+- Data flow
+- Event handling
+
+**Coordinate Systems (if applicable):**
+- Orientation: horizontal/vertical/radial
+- Coordinate references: X/Y, left/top, width/height
+- All places that need updating
+
+**Risks:**
+- Potential issues
+- Dependencies
+- Breaking changes
+
+Ready to proceed?
+```
+
+**When User Says "Let's cook" or "Allez cuisine":**
+
+- That means "I like the idea, but STILL propose a plan first"
+- Don't interpret excitement as "skip planning"
 
 ### 2. The 300-Line Limit 📉
 
