@@ -207,96 +207,46 @@ export class UV7System {
     }
 
     /**
-     * Initialize Theme Settings
+     * Initialize Theme Settings - Using shared ThemeManager (single source of truth!)
+     * All theme logic is now in shared/StatusBar/ThemeManager.ts
+     * This replaces 90+ lines of duplicate code
      */
     private initThemeSettings(): void {
         console.log(`[UV7System] initThemeSettings() called with prefix: ${this.prefix}`);
-        console.log(`[UV7System] Looking for: #${this.prefix}-theme-toggle and #${this.prefix}-theme-auto`);
 
         const themeToggle = document.getElementById(`${this.prefix}-theme-toggle`);
         const autoToggle = document.getElementById(`${this.prefix}-theme-auto`);
         const manualRow = document.getElementById(`${this.prefix}-manual-theme-row`);
 
-        console.log(`[UV7System] Theme toggle found:`, themeToggle);
-        console.log(`[UV7System] Auto toggle found:`, autoToggle);
-        console.log(`[UV7System] Manual row found:`, manualRow);
-
         if (!themeToggle || !autoToggle) {
-            console.error(`[UV7System] Theme toggles NOT found! themeToggle=${!!themeToggle}, autoToggle=${!!autoToggle}`);
-            console.error(`[UV7System] Shade content:`, document.getElementById('uv7-shade')?.innerHTML);
+            console.error(`[UV7System] Theme toggles NOT found!`);
             return;
         }
 
-        console.log('[UV7System] Theme toggles found successfully!');
-
-        // State defaults
-        const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false';
-        const currentTheme = localStorage.getItem('uv7-theme') || 'dark';
-
-        console.log(`[UV7System] Theme init: auto=${isAuto}, theme=${currentTheme}`);
-
-        // Helper to apply theme
-        const applyTheme = (auto, theme) => {
-            console.log(`[UV7System] Applying theme: auto=${auto}, theme=${theme}`);
-
-            if (auto) {
-                autoToggle.classList.add('active');
-                if (manualRow) {
-                    manualRow.style.opacity = '0.5';
-                    manualRow.style.pointerEvents = 'none';
+        // Import and use the shared ThemeManager
+        import('../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+            const themeManager = getThemeManager({
+                onThemeChange: (state) => {
+                    // Shell-specific: notify iframes when theme changes
+                    if (this.mode === 'shell') {
+                        this.notifyIframes('theme-change', {
+                            auto: state.auto,
+                            theme: state.mode
+                        });
+                    }
                 }
-                // Clear overrides so OS preference wins
-                document.body.classList.remove('light-mode', 'dark-mode');
-            } else {
-                autoToggle.classList.remove('active');
-                if (manualRow) {
-                    manualRow.style.opacity = '1';
-                    manualRow.style.pointerEvents = 'auto';
-                }
-                // Apply manual override
-                if (theme === 'dark') {
-                    document.body.classList.add('dark-mode');
-                    document.body.classList.remove('light-mode');
-                    themeToggle.classList.add('active');
-                } else {
-                    document.body.classList.add('light-mode');
-                    document.body.classList.remove('dark-mode');
-                    themeToggle.classList.remove('active');
-                }
-            }
+            });
 
-            // Dispatch event for components
-            window.dispatchEvent(new CustomEvent('uv7:theme-change', {
-                detail: { theme: auto ? 'auto' : theme }
-            }));
+            // Bind UI elements - ThemeManager handles ALL the logic
+            themeManager.bindUI({
+                toggle: themeToggle,
+                autoToggle: autoToggle,
+                manualRow: manualRow
+            });
 
-            // Notify iframes (shell mode only)
-            if (this.mode === 'shell') {
-                this.notifyIframes('theme-change', { auto, theme });
-            }
-        };
-
-        // Initialize theme
-        applyTheme(isAuto, currentTheme);
-
-        // Auto Toggle Handler
-        autoToggle.addEventListener('click', () => {
-            const newAutoState = !autoToggle.classList.contains('active');
-            localStorage.setItem('uv7-theme-auto', newAutoState ? 'true' : 'false');
-            const storedTheme = localStorage.getItem('uv7-theme') || 'dark';
-            applyTheme(newAutoState, storedTheme);
-            this.showToast(newAutoState ? '⚙️ Synced with System' : '🎨 Manual Mode Enabled');
-        });
-
-        // Manual Toggle Handler
-        themeToggle.addEventListener('click', () => {
-            if (autoToggle.classList.contains('active')) return;
-            const currentStored = localStorage.getItem('uv7-theme') || 'dark';
-            const newTheme = currentStored === 'light' ? 'dark' : 'light';
-            localStorage.setItem('uv7-theme', newTheme);
-            applyTheme(false, newTheme);
-            const icon = newTheme === 'dark' ? '🌙' : '☀️';
-            this.showToast(`${icon} Switched to ${newTheme === 'dark' ? 'Dark' : 'Light'} Mode`);
+            console.log('🎨 [UV7System] Theme controls bound to shared ThemeManager');
+        }).catch(err => {
+            console.warn('[UV7System] Could not load ThemeManager:', err);
         });
     }
 

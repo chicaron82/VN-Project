@@ -70,109 +70,28 @@ export class NotificationShade {
             });
         }
 
-        // 1. Theme Logic (Auto + Manual)
+        // 1. Theme Logic - Using shared ThemeManager (single source of truth!)
+        // All theme logic is now in shared/StatusBar/ThemeManager.ts
+        // This replaces 100+ lines of duplicate code
         const themeToggle = document.getElementById('showcase-theme-toggle');
         const autoToggle = document.getElementById('showcase-theme-auto');
         const manualRow = document.getElementById('manual-theme-row');
 
         if (themeToggle && autoToggle) {
-            // State defaults
-            const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false'; // Default to true
-            const currentTheme = localStorage.getItem('uv7-theme') || 'dark';
+            // Import and use the shared ThemeManager
+            import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+                const themeManager = getThemeManager();
 
-            console.log(`[Theme] Init: auto=${isAuto}, theme=${currentTheme}`);
+                // Bind UI elements - ThemeManager handles ALL the logic
+                themeManager.bindUI({
+                    toggle: themeToggle,
+                    autoToggle: autoToggle,
+                    manualRow: manualRow
+                });
 
-            // Helper to apply theme
-            const applyTheme = (auto: boolean, theme: string) => {
-                console.log(`[Theme] Applying: auto=${auto}, theme=${theme}`);
-                // Update Auto Toggle UI
-                if (auto) {
-                    autoToggle.classList.add('active');
-                    if (manualRow) manualRow.style.opacity = '0.5';
-                    if (manualRow) manualRow.style.pointerEvents = 'none';
-
-                    // Clear overrides so OS preference wins
-                    document.body.classList.remove('light-mode', 'dark-mode');
-                } else {
-                    autoToggle.classList.remove('active');
-                    if (manualRow) manualRow.style.opacity = '1';
-                    if (manualRow) manualRow.style.pointerEvents = 'auto';
-
-                    // Apply manual override based on stored preference
-                    if (theme === 'dark') {
-                        document.body.classList.add('dark-mode');
-                        document.body.classList.remove('light-mode');
-                        themeToggle.classList.add('active'); // Visually ON (Dark Mode checked)
-                    } else {
-                        document.body.classList.add('light-mode');
-                        document.body.classList.remove('dark-mode');
-                        themeToggle.classList.remove('active'); // Visually OFF (Light Mode is default/unchecked)
-                    }
-                }
-            };
-
-            // Init
-            applyTheme(isAuto, currentTheme);
-
-            // Listen for theme changes from shell (when showcase is iframe'd)
-            window.addEventListener('storage', (e) => {
-                if (e.key === 'uv7-theme-auto' || e.key === 'uv7-theme') {
-                    const newIsAuto = localStorage.getItem('uv7-theme-auto') !== 'false';
-                    const newTheme = localStorage.getItem('uv7-theme') || 'dark';
-                    console.log(`[Showcase Theme] Storage event: auto=${newIsAuto}, theme=${newTheme}`);
-                    applyTheme(newIsAuto, newTheme);
-                }
-            });
-
-            // Listen for postMessage from shell (when showcase is iframe'd)
-            window.addEventListener('message', (e) => {
-                if (e.data && e.data.type === 'theme-change') {
-                    const { auto, theme } = e.data;
-                    console.log(`[Showcase Theme] PostMessage from shell: auto=${auto}, theme=${theme}`);
-                    applyTheme(auto, theme);
-                }
-            });
-
-            // Auto Toggle Handler
-            autoToggle.addEventListener('click', () => {
-                const newAutoState = !autoToggle.classList.contains('active');
-                localStorage.setItem('uv7-theme-auto', newAutoState ? 'true' : 'false');
-
-                // If turning off auto, revert to currently stored manual theme
-                const storedTheme = localStorage.getItem('uv7-theme') || 'dark';
-                applyTheme(newAutoState, storedTheme);
-
-                // Toast
-                if ((window as any).contentFeatures?.showToast) {
-                    (window as any).contentFeatures.showToast(
-                        newAutoState ? '⚙️ Synced with System' : '🎨 Manual Mode Enabled',
-                        2000
-                    );
-                }
-                console.log(`[Theme] Auto mode: ${newAutoState ? 'ON' : 'OFF'}, Theme: ${storedTheme}`);
-            });
-
-            // Manual Toggle Handler
-            themeToggle.addEventListener('click', () => {
-                // Only works if Auto is OFF (though pointer-events should prevent this)
-                if (autoToggle.classList.contains('active')) return;
-
-                // Robust Toggle: Read from Storage, Flip, and Save
-                const currentStored = localStorage.getItem('uv7-theme') || 'dark';
-                const newTheme = currentStored === 'light' ? 'dark' : 'light';
-
-                localStorage.setItem('uv7-theme', newTheme);
-                applyTheme(false, newTheme);
-
-                // Toast
-                const icon = newTheme === 'dark' ? '🌙' : '☀️';
-                if ((window as any).contentFeatures?.showToast) {
-                    (window as any).contentFeatures.showToast(
-                        `${icon} Switched to ${newTheme === 'dark' ? 'Dark' : 'Light'} Mode`,
-                        2000
-                    );
-                }
-                console.log(`[Theme] Manual toggle: ${currentStored} → ${newTheme}`);
+                console.log('🎨 [NotificationShade] Theme controls bound to shared ThemeManager');
+            }).catch(err => {
+                console.warn('[NotificationShade] Could not load ThemeManager, falling back:', err);
             });
         }
 
