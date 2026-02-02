@@ -16,9 +16,9 @@
 
 /* Theme Toggle Button */
 .theme-toggle {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: var(--hover-overlay);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -28,41 +28,8 @@
 }
 
 .theme-toggle:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--active-overlay);
     transform: scale(1.1);
-}
-
-/* Light Mode Overrides */
-[data-theme="light"] {
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --text-primary: #2c3e50;
-    --text-secondary: #666;
-    --accent: #3498db;
-}
-
-[data-theme="light"] body {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-}
-
-[data-theme="light"] .journey-section,
-[data-theme="light"] .workflow-section,
-[data-theme="light"] .results-section {
-    background: var(--bg-secondary);
-}
-
-[data-theme="light"] .who-section {
-    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-    color: var(--text-primary);
-}
-
-[data-theme="light"] .timeline-content,
-[data-theme="light"] .card,
-[data-theme="light"] .technical-card {
-    background: #fff;
-    color: var(--text-primary);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* ==========================================
@@ -83,23 +50,23 @@
 #timeline-search-input {
     width: 100%;
     padding: 12px 40px 12px 16px;
-    border: 2px solid rgba(102, 126, 234, 0.3);
+    border: 2px solid var(--border-medium);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+    background: var(--bg-card);
+    color: var(--text-primary);
     font-size: 16px;
     transition: all 0.3s ease;
 }
 
 #timeline-search-input:focus {
     outline: none;
-    border-color: #667eea;
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    border-color: var(--accent-purple);
+    background: var(--bg-card-hover);
+    box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 #timeline-search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--text-tertiary);
 }
 
 #timeline-search-clear {
@@ -109,7 +76,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-size: 20px;
     cursor: pointer;
     padding: 4px 8px;
@@ -118,7 +85,7 @@
 }
 
 #timeline-search-clear:hover {
-    color: #fff;
+    color: var(--text-primary);
 }
 
 /* Filter Buttons */
@@ -130,30 +97,30 @@
 
 .filter-btn {
     padding: 8px 16px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 6px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
 }
 
 .filter-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: var(--bg-card-hover);
+    border-color: var(--border-medium);
 }
 
 .filter-btn.active {
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--gradient-purple);
     border-color: transparent;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .search-no-results {
     text-align: center;
     padding: 3rem 2rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--text-secondary);
     font-style: italic;
 }
 
@@ -167,10 +134,10 @@
     gap: 0.5rem;
     margin-top: 1rem;
     padding: 8px 16px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
     border-radius: 6px;
-    color: #00ff88;
+    color: var(--text-accent);
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
@@ -178,10 +145,10 @@
 }
 
 .github-source-link:hover {
-    background: rgba(0, 0, 0, 0.5);
-    border-color: #00ff88;
+    background: var(--bg-card-hover);
+    border-color: var(--text-accent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+    box-shadow: 0 4px 12px var(--shadow-glow);
 }
 
 .github-source-link::after {
@@ -197,11 +164,11 @@
     bottom: -100px;
     left: 50%;
     transform: translateX(-50%);
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
+    background: var(--gradient-purple);
+    color: var(--text-primary);
     padding: 12px 24px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
     z-index: 10001;
     font-weight: 600;
     transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -224,10 +191,10 @@
 
 .btn-share {
     padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: var(--bg-card);
+    border: 2px solid var(--border-medium);
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-primary);
     cursor: pointer;
     font-size: 16px;
     font-weight: 600;
@@ -237,10 +204,10 @@
 }
 
 .btn-share:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: var(--bg-card-hover);
+    border-color: var(--border-strong);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-md);
 }
 
 .btn-share:active {
@@ -256,21 +223,21 @@
     align-items: center;
     gap: 0.75rem;
     padding: 16px 32px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    background: var(--gradient-purple);
     border: none;
     border-radius: 50px;
-    color: #fff;
+    color: var(--text-primary);
     font-size: 18px;
     font-weight: 700;
     text-decoration: none;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: var(--shadow-lg);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     animation: cta-pulse 2s ease-in-out infinite;
 }
 
 .hero-cta:hover {
     transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.8);
     animation: none;
 }
 
@@ -279,8 +246,8 @@
 }
 
 @keyframes cta-pulse {
-    0%, 100% { box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4); }
-    50% { box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6); }
+    0%, 100% { box-shadow: var(--shadow-lg); }
+    50% { box-shadow: 0 12px 35px rgba(102, 126, 234, 0.8); }
 }
 
 /* ==========================================
@@ -293,15 +260,15 @@
 
 .methodology-expandable {
     margin-bottom: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-subtle);
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--bg-card);
 }
 
 .methodology-toggle {
     width: 100%;
-    background: rgba(102, 126, 234, 0.08);
+    background: transparent;
     border: none;
     padding: 1.25rem 1.5rem;
     display: flex;
@@ -312,7 +279,7 @@
 }
 
 .methodology-toggle:hover {
-    background: rgba(102, 126, 234, 0.15);
+    background: var(--hover-overlay);
 }
 
 .methodology-toggle h3 {
@@ -329,9 +296,9 @@
 
 .methodology-summary {
     padding: 1rem 1.5rem;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
     line-height: 1.6;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid var(--border-subtle);
     font-style: italic;
 }
 
@@ -345,7 +312,7 @@
 .methodology-content.expanded {
     max-height: 5000px;
     padding: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--border-subtle);
 }
 
 .methodology-intro,
@@ -369,10 +336,10 @@
 .diversity-benefit,
 .tradeoff-item,
 .code-example {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-card);
     padding: 1.25rem;
     border-radius: 8px;
-    border-left: 3px solid #667eea;
+    border-left: 3px solid var(--accent-purple);
 }
 
 .review-step h4,
@@ -381,7 +348,7 @@
 .code-example h5 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    color: var(--accent-blue, #4a9eff);
+    color: var(--accent-cyan);
 }
 
 .benefit-icon,
@@ -404,13 +371,13 @@
 }
 
 .approach-bad {
-    background: rgba(255, 60, 60, 0.1);
-    border-left: 3px solid #ff3c3c;
+    background: rgba(255, 107, 107, 0.08);
+    border-left: 3px solid var(--error);
 }
 
 .approach-good {
-    background: rgba(0, 255, 136, 0.1);
-    border-left: 3px solid #00ff88;
+    background: rgba(0, 255, 136, 0.08);
+    border-left: 3px solid var(--success);
 }
 
 .energy-insight,
@@ -418,16 +385,16 @@
 .freedom-factor,
 .creative-adaptation,
 .legacy-note {
-    background: rgba(102, 126, 234, 0.1);
+    background: var(--context-bg);
     padding: 1.25rem;
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid var(--accent-purple);
     margin: 1.5rem 0;
     line-height: 1.7;
 }
 
 .code-example pre {
-    background: rgba(0, 0, 0, 0.5);
+    background: var(--bg-primary);
     padding: 1rem;
     border-radius: 6px;
     overflow-x: auto;
@@ -437,7 +404,7 @@
 }
 
 .code-example code {
-    color: #00ff88;
+    color: var(--text-accent);
 }
 
 .diversity-benefits-grid {
@@ -486,18 +453,18 @@
    ========================================== */
 
 .workflow-intro-box {
-    background: linear-gradient(135deg, rgba(255, 152, 0, 0.12), rgba(255, 193, 7, 0.12));
+    background: var(--gradient-orange);
     border-radius: 16px;
     padding: 2.5rem;
     margin: 0 auto 3rem;
     max-width: 900px;
-    border: 1px solid rgba(255, 152, 0, 0.3);
+    border: 1px solid rgba(255, 157, 92, 0.3);
 }
 
 .workflow-intro-box h3 {
     font-size: 1.6rem;
     margin: 0 0 1.5rem;
-    color: #ffa726;
+    color: var(--accent-orange);
     font-weight: 600;
 }
 
@@ -505,7 +472,7 @@
     font-size: 1.1rem;
     line-height: 1.8;
     margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--context-text);
 }
 
 .workflow-intro-box p:last-child {
@@ -515,15 +482,10 @@
 .workflow-insight {
     font-style: italic;
     font-size: 1.15rem;
-    border-left: 3px solid #ffa726;
+    border-left: 3px solid var(--accent-orange);
     padding-left: 1.5rem;
     margin-top: 1.5rem;
-    color: #ffa726;
-}
-
-/* Dark mode adjustments */
-[data-theme="dark"] .workflow-intro-box {
-    background: linear-gradient(135deg, rgba(255, 152, 0, 0.15), rgba(255, 193, 7, 0.15));
+    color: var(--accent-orange);
 }
 
 /* ==========================================

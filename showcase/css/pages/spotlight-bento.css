@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
    SPOTLIGHT BENTO GRID - PREMIUM EDITION
    Glassmorphism + 3D Tilt + Animated Borders + Scroll Reveal
-   Source: pages.css lines 941-1550
+   Converted to unified color system
    ═══════════════════════════════════════════════════════════════ */
 
 /* Hide old carousel container if it exists */
@@ -49,10 +49,10 @@
     position: relative;
     padding: 2rem;
     border-radius: 16px;
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-card);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-subtle);
     transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-style: preserve-3d;
     overflow: hidden;
@@ -95,10 +95,10 @@
     border-radius: 16px;
     padding: 2px;
     background: linear-gradient(45deg,
-            #00ff88,
-            #00d4ff,
-            #00ff88,
-            #00d4ff);
+            var(--accent-primary),
+            var(--accent-cyan),
+            var(--accent-primary),
+            var(--accent-cyan));
     background-size: 300% 300%;
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
         linear-gradient(#fff 0 0);
@@ -123,10 +123,10 @@
 
 .spotlight-bento-grid .technical-card.featured::before {
     background: linear-gradient(45deg,
-            #00ff88,
-            #00d4ff,
-            #a855f7,
-            #00ff88);
+            var(--accent-primary),
+            var(--accent-cyan),
+            var(--accent-purple),
+            var(--accent-primary));
     background-size: 400% 400%;
 }
 
@@ -200,7 +200,7 @@
     flex: 1;
     font-size: 1.3rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--text-primary);
     margin: 0;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
@@ -213,14 +213,14 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     background: rgba(0, 255, 136, 0.15);
-    color: #00ff88;
+    color: var(--accent-primary);
     border: 1px solid rgba(0, 255, 136, 0.3);
     box-shadow: 0 2px 10px rgba(0, 255, 136, 0.2);
 }
 
 .spotlight-bento-grid .badge-live {
     background: rgba(0, 212, 255, 0.15);
-    color: #00d4ff;
+    color: var(--accent-cyan);
     border-color: rgba(0, 212, 255, 0.3);
     box-shadow: 0 2px 10px rgba(0, 212, 255, 0.2);
 }
@@ -231,14 +231,14 @@
 }
 
 .spotlight-bento-grid .tech-challenge {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-secondary);
     margin-bottom: 1rem;
     font-size: 0.95rem;
     line-height: 1.6;
 }
 
 .spotlight-bento-grid .tech-challenge strong {
-    color: #00ff88;
+    color: var(--accent-primary);
     font-weight: 600;
 }
 
@@ -252,7 +252,7 @@
     padding: 0.5rem 0;
     padding-left: 1.5rem;
     position: relative;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     line-height: 1.5;
     font-size: 0.9rem;
 }
@@ -261,7 +261,7 @@
     content: '→';
     position: absolute;
     left: 0;
-    color: #00ff88;
+    color: var(--accent-primary);
     font-weight: bold;
 }
 
@@ -271,7 +271,7 @@
     border-radius: 4px;
     font-family: 'Monaco', 'Consolas', monospace;
     font-size: 0.85rem;
-    color: #00d4ff;
+    color: var(--accent-cyan);
     border: 1px solid rgba(0, 212, 255, 0.2);
 }
 
@@ -303,11 +303,11 @@
     padding: 1.5rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
 }
 
 .philosophy-side h4 {
-    color: #00ff88;
+    color: var(--accent-primary);
     font-size: 1rem;
     margin-bottom: 0.75rem;
     display: flex;
@@ -319,18 +319,18 @@
     margin-top: 1.5rem;
     padding: 1.25rem;
     background: rgba(0, 255, 136, 0.05);
-    border-left: 3px solid #00ff88;
+    border-left: 3px solid var(--accent-primary);
     border-radius: 8px;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--text-secondary);
     line-height: 1.7;
 }
 
 .tech-insight strong {
-    color: #00ff88;
+    color: var(--accent-primary);
 }
 
 .tech-insight em {
-    color: #00d4ff;
+    color: var(--accent-cyan);
     font-style: italic;
 }
 
@@ -338,12 +338,12 @@
     margin: 1.5rem 0;
     padding: 1.25rem;
     background: rgba(255, 136, 0, 0.05);
-    border-left: 3px solid #ff8800;
+    border-left: 3px solid var(--accent-orange);
     border-radius: 8px;
 }
 
 .methodology-example h5 {
-    color: #ff8800;
+    color: var(--accent-orange);
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
     font-weight: 600;
@@ -356,7 +356,7 @@
 
 .methodology-note {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-tertiary);
     font-style: italic;
     margin-bottom: 0;
 }
@@ -365,12 +365,12 @@
     margin: 1.5rem 0;
     padding: 1.25rem;
     background: rgba(0, 212, 255, 0.05);
-    border-left: 3px solid #00d4ff;
+    border-left: 3px solid var(--accent-cyan);
     border-radius: 8px;
 }
 
 .conversation-approach h5 {
-    color: #00d4ff;
+    color: var(--accent-cyan);
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
     font-weight: 600;
@@ -388,11 +388,11 @@
     padding: 1rem;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-subtle);
 }
 
 .conversation-style strong {
-    color: #00d4ff;
+    color: var(--accent-cyan);
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -408,45 +408,12 @@
 }
 
 .energy-insight strong {
-    color: #ff69b4;
+    color: var(--accent-pink);
 }
 
 .energy-insight em {
-    color: #ff8800;
+    color: var(--accent-orange);
     font-style: italic;
-}
-
-/* ========================================
-   LIGHT MODE
-   ======================================== */
-
-[data-theme="light"] .spotlight-bento-grid .technical-card {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="light"] .spotlight-bento-grid .tech-header h3 {
-    color: #1a1a1a;
-}
-
-[data-theme="light"] .spotlight-bento-grid .tech-challenge {
-    color: rgba(0, 0, 0, 0.8);
-}
-
-[data-theme="light"] .spotlight-bento-grid .tech-fixes li {
-    color: rgba(0, 0, 0, 0.7);
-}
-
-[data-theme="light"] .spotlight-bento-grid .technical-card:hover {
-    box-shadow:
-        0 20px 60px rgba(0, 0, 0, 0.1),
-        0 0 40px rgba(0, 212, 255, 0.1),
-        inset 0 1px 0 rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="light"] .tech-insight {
-    background: rgba(0, 255, 136, 0.08);
-    color: rgba(0, 0, 0, 0.85);
 }
 
 /* ========================================
@@ -454,7 +421,7 @@
    ======================================== */
 
 .spotlight-context-box {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(0, 255, 136, 0.12));
+    background: var(--gradient-green);
     border-radius: 16px;
     padding: 2.5rem;
     margin: 0 auto 3rem;
@@ -465,7 +432,7 @@
 .spotlight-context-box h3 {
     font-size: 1.6rem;
     margin: 0 0 1.5rem;
-    color: #00d4ff;
+    color: var(--accent-cyan);
     font-weight: 600;
 }
 
@@ -473,7 +440,7 @@
     font-size: 1.1rem;
     line-height: 1.8;
     margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-secondary);
 }
 
 .spotlight-context-box p:last-child {
@@ -482,15 +449,10 @@
 
 .spotlight-clarification {
     font-style: italic;
-    border-left: 3px solid #00d4ff;
+    border-left: 3px solid var(--accent-cyan);
     padding-left: 1.5rem;
     margin-top: 1.5rem;
-    color: #00d4ff;
-}
-
-/* Dark mode adjustments */
-[data-theme="dark"] .spotlight-context-box {
-    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.15));
+    color: var(--accent-cyan);
 }
 
 /* ========================================
