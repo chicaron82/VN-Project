@@ -1,7 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   HOME PAGE STYLES
+   HOME PAGE STYLES - UNIFIED COLOR SYSTEM
    Version 848, story cards, route grid, themes grid, meta-philosophical boxes
-   Source: pages.css lines 2386-2638
+
+   Converted to use unified color system (showcase/css/colors.css)
+   All hardcoded colors replaced with semantic variables
    ═══════════════════════════════════════════════════════════════ */
 
 /* ==========================================================================
@@ -18,14 +20,14 @@
     font-size: 2rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
 }
 
 .home-subtitle {
     font-size: 1.3rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
     font-style: italic;
 }
 
@@ -33,17 +35,17 @@
     font-size: 1.1rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
 }
 
 .home-quote {
     font-size: 1.2rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
     font-style: italic;
     text-align: center;
-    border-left: 2px solid var(--accent-blue, #4a9eff);
+    border-left: 2px solid var(--accent-cyan);
     padding-left: 1rem;
 }
 
@@ -51,17 +53,17 @@
     font-size: 1.1rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    color: var(--text-secondary, #4a4a4a);
-    border-left: 3px solid rgba(0, 255, 136, 0.4);
+    color: var(--text-secondary);
+    border-left: 3px solid var(--accent-primary);
     padding-left: 1rem;
 }
 
 .story-card {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08), rgba(118, 75, 162, 0.08));
+    background: var(--gradient-purple);
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    border: 1px solid var(--border-medium);
 }
 
 .story-title {
@@ -69,7 +71,7 @@
     font-size: 1.6rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
 }
 
 .route-grid {
@@ -80,17 +82,17 @@
 }
 
 .route-card {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--bg-card);
     padding: 1.5rem;
     border-radius: 8px;
 }
 
 .route-card.ronnie {
-    border-left: 3px solid #ff6b9d;
+    border-left: 3px solid var(--accent-pink);
 }
 
 .route-card.tori {
-    border-left: 3px solid #00ccff;
+    border-left: 3px solid var(--accent-cyan);
 }
 
 .route-card h4 {
@@ -98,8 +100,8 @@
     font-size: 1.1rem;
 }
 
-.route-card.ronnie h4 { color: #ff6b9d; }
-.route-card.tori h4 { color: #00ccff; }
+.route-card.ronnie h4 { color: var(--accent-pink); }
+.route-card.tori h4 { color: var(--accent-cyan); }
 
 .route-card p {
     margin: 0;
@@ -113,7 +115,7 @@
     line-height: 1.7;
     margin-top: 1.5rem;
     padding: 1rem;
-    background: rgba(255, 107, 157, 0.1);
+    background: var(--gradient-pink);
     border-radius: 6px;
 }
 
@@ -143,19 +145,19 @@
 }
 
 .meta-box {
-    background: rgba(22, 33, 62, 0.05);
-    border-left: 4px solid var(--accent-blue, #4a9eff);
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-cyan);
     padding: 1.5rem;
     margin: 1.5rem 0;
     border-radius: 4px;
 }
 
 .comparison-section {
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.08), rgba(102, 126, 234, 0.08));
+    background: var(--gradient-pink);
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(102, 126, 234, 0.2);
+    border: 1px solid var(--border-medium);
 }
 
 .comparison-header {
@@ -179,15 +181,15 @@
 }
 
 .comparison-card {
-    background: rgba(0,0,0,0.2);
+    background: var(--bg-card);
     padding: 1.5rem;
     border-radius: 8px;
-    border-left: 3px solid #999;
+    border-left: 3px solid var(--border-strong);
 }
 
 .comparison-card.v848 {
-    background: rgba(0, 255, 136, 0.1);
-    border-left: 3px solid #00ff88;
+    background: var(--gradient-green);
+    border-left: 3px solid var(--accent-primary);
 }
 
 .comparison-card h4 {
@@ -197,7 +199,7 @@
 }
 
 .comparison-card.v848 h4 {
-    color: #00ff88;
+    color: var(--accent-primary);
 }
 
 .comparison-list {
@@ -210,7 +212,7 @@
 
 .comparison-details {
     padding-top: 1rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid var(--border-subtle);
     margin-top: 1rem;
     font-size: 0.9rem;
     opacity: 0.7;
@@ -227,10 +229,10 @@
 .v848-toggle-btn {
     margin-top: 1rem;
     padding: 0.75rem 1.5rem;
-    background: rgba(0, 255, 136, 0.2);
-    border: 1px solid #00ff88;
+    background: var(--gradient-green);
+    border: 1px solid var(--accent-primary);
     border-radius: 6px;
-    color: #00ff88;
+    color: var(--accent-primary);
     font-weight: 600;
     cursor: pointer;
     width: 100%;
@@ -238,17 +240,18 @@
 }
 
 .v848-toggle-btn:hover {
-    background: rgba(0, 255, 136, 0.3);
+    background: var(--gradient-purple-hover);
+    filter: brightness(1.2);
 }
 
 /* Simple VN Toggle Button (The Comedic One) */
 .simple-vn-toggle-btn {
     margin-top: 1rem;
     padding: 0.75rem 1.5rem;
-    background: rgba(255, 107, 107, 0.2);
-    border: 1px solid #ff6b6b;
+    background: var(--gradient-orange);
+    border: 1px solid var(--error);
     border-radius: 6px;
-    color: #ff6b6b;
+    color: var(--error);
     font-weight: 600;
     cursor: pointer;
     width: 100%;
@@ -256,20 +259,21 @@
 }
 
 .simple-vn-toggle-btn:hover {
-    background: rgba(255, 107, 107, 0.3);
+    background: var(--gradient-orange);
+    filter: brightness(1.2);
 }
 
 /* Simple VN Expanded Sections (Minimal Styling for Minimal Content) */
 .simple-vn-section {
-    background: rgba(255, 255, 255, 0.02);
-    border-left: 2px solid rgba(255, 107, 107, 0.3);
+    background: var(--bg-card);
+    border-left: 2px solid var(--error);
     margin: 1rem 0;
     padding: 0.75rem;
     border-radius: 6px;
 }
 
 .simple-vn-section strong {
-    color: #ff6b6b;
+    color: var(--error);
     font-size: 0.9rem;
     display: block;
     margin-bottom: 0.5rem;
@@ -286,11 +290,11 @@
 }
 
 .meta-philosophical-box {
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
+    background: var(--gradient-green);
     border-radius: 8px;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid var(--border-medium);
 }
 
 .swipe-hint {
@@ -315,12 +319,12 @@
     font-size: 1.5rem;
     font-weight: 600;
     margin: 2rem 0 1rem;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
 }
 
 .home-info-box {
-    background: rgba(22, 33, 62, 0.05);
-    border-left: 4px solid var(--accent-blue, #4a9eff);
+    background: var(--bg-card);
+    border-left: 4px solid var(--accent-cyan);
     padding: 1.5rem;
     margin: 1.5rem 0;
     border-radius: 4px;
@@ -343,18 +347,18 @@
 }
 
 .home-meta-gradient-box {
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
+    background: var(--gradient-green);
     border-radius: 8px;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(0, 255, 136, 0.2);
+    border: 1px solid var(--border-medium);
 }
 
 .home-meta-gradient-box p {
     font-size: 1.15rem;
     line-height: 1.8;
     margin: 0;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
     font-weight: 500;
 }
 
@@ -370,13 +374,13 @@
 .home-navigation-hint p:first-child {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--accent-blue, #4a9eff);
+    color: var(--accent-cyan);
     margin-bottom: 1rem;
 }
 
 .home-navigation-hint p:last-child {
     font-size: 0.95rem;
-    color: var(--text-tertiary, #6a6a6a);
+    color: var(--text-tertiary);
 }
 
 /* V848 Expanded System Sections */
@@ -398,76 +402,76 @@
     line-height: 1.7;
 }
 
-/* System section color variants */
+/* System section color variants - using unified accent colors */
 .v848-system-section.narrative {
-    background: rgba(0, 255, 136, 0.1);
-    border-left-color: #00ff88;
+    background: var(--gradient-green);
+    border-left-color: var(--accent-primary);
 }
 
-.v848-system-section.narrative strong { color: #00ff88; }
+.v848-system-section.narrative strong { color: var(--accent-primary); }
 
 .v848-system-section.mechanics {
-    background: rgba(0, 204, 255, 0.1);
-    border-left-color: #00ccff;
+    background: var(--gradient-green);
+    border-left-color: var(--accent-cyan);
 }
 
-.v848-system-section.mechanics strong { color: #00ccff; }
+.v848-system-section.mechanics strong { color: var(--accent-cyan); }
 
 .v848-system-section.cross-game {
-    background: rgba(156, 39, 176, 0.1);
-    border-left-color: #9c27b0;
+    background: var(--gradient-purple);
+    border-left-color: var(--accent-purple);
 }
 
-.v848-system-section.cross-game strong { color: #9c27b0; }
+.v848-system-section.cross-game strong { color: var(--accent-purple); }
 
 .v848-system-section.memory {
-    background: rgba(255, 107, 157, 0.1);
-    border-left-color: #ff6b9d;
+    background: var(--gradient-pink);
+    border-left-color: var(--accent-pink);
 }
 
-.v848-system-section.memory strong { color: #ff6b9d; }
+.v848-system-section.memory strong { color: var(--accent-pink); }
 
 .v848-system-section.ui {
-    background: rgba(76, 175, 80, 0.1);
-    border-left-color: #4caf50;
+    background: var(--gradient-green);
+    border-left-color: var(--success);
 }
 
-.v848-system-section.ui strong { color: #4caf50; }
+.v848-system-section.ui strong { color: var(--success); }
 
 .v848-system-section.responsive {
-    background: rgba(255, 193, 7, 0.1);
-    border-left-color: #ffc107;
+    background: var(--gradient-orange);
+    border-left-color: var(--warning);
 }
 
-.v848-system-section.responsive strong { color: #ffc107; }
+.v848-system-section.responsive strong { color: var(--warning); }
 
 .v848-system-section.devtools {
-    background: rgba(255, 152, 0, 0.1);
-    border-left-color: #ff9800;
+    background: var(--gradient-orange);
+    border-left-color: var(--accent-orange);
 }
 
-.v848-system-section.devtools strong { color: #ff9800; }
+.v848-system-section.devtools strong { color: var(--accent-orange); }
 
 .v848-system-section.architecture {
-    background: rgba(244, 67, 54, 0.1);
-    border-left-color: #f44336;
+    background: var(--gradient-pink);
+    border-left-color: var(--error);
 }
 
-.v848-system-section.architecture strong { color: #f44336; }
+.v848-system-section.architecture strong { color: var(--error); }
 
 .v848-system-section.collectibles {
-    background: rgba(0, 255, 136, 0.1);
-    border-left-color: #00ff88;
+    background: var(--gradient-green);
+    border-left-color: var(--accent-primary);
 }
 
-.v848-system-section.collectibles strong { color: #00ff88; }
+.v848-system-section.collectibles strong { color: var(--accent-primary); }
 
 .v848-system-section.testing {
-    background: rgba(102, 126, 234, 0.1);
-    border-left-color: #667eea;
+    background: var(--gradient-purple);
+    border-left-color: var(--accent-purple);
 }
 
-.v848-system-section.testing strong { color: #667eea; }
+.v848-system-section.testing strong { color: var(--accent-purple); }
 
 /* Story card text */
 .story-text {
@@ -481,9 +485,9 @@
     font-size: 1rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
     padding: 1rem;
-    background: rgba(0, 255, 136, 0.05);
+    background: var(--gradient-green);
     border-radius: 6px;
 }
 
@@ -501,11 +505,11 @@
    ═══════════════════════════════════════════════════════════════ */
 
 .home-hook-box {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.12));
+    background: var(--gradient-purple);
     border-radius: 12px;
     padding: 2rem;
     margin: 2rem 0;
-    border: 1px solid rgba(102, 126, 234, 0.3);
+    border: 1px solid var(--context-border);
 }
 
 .home-hook-quote {
@@ -513,7 +517,7 @@
     line-height: 1.8;
     font-style: italic;
     margin: 0 0 1rem;
-    color: var(--text-primary, #1a1a1a);
+    color: var(--text-primary);
 }
 
 .home-hook-subtext {
@@ -522,7 +526,7 @@
     margin: 0;
     text-align: right;
     font-style: italic;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -532,16 +536,16 @@
 .what-if-cascade {
     margin: 1.5rem 0;
     padding: 1.5rem;
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--bg-card);
     border-radius: 8px;
-    border-left: 3px solid var(--accent-blue, #4a9eff);
+    border-left: 3px solid var(--accent-cyan);
 }
 
 .what-if-item {
     font-size: 1rem;
     line-height: 1.8;
     padding: 0.5rem 0;
-    color: var(--text-secondary, #4a4a4a);
+    color: var(--text-secondary);
     position: relative;
     padding-left: 1.5rem;
 }
@@ -559,16 +563,4 @@
     opacity: 0.6;
 }
 
-/* Dark mode adjustments */
-[data-theme="dark"] .home-hook-box {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
-}
-
-[data-theme="dark"] .what-if-cascade {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="dark"] .simple-vn-section {
-    background: rgba(255, 255, 255, 0.03);
-    border-left-color: rgba(255, 107, 107, 0.4);
-}
+/* No more dark mode overrides - unified color system handles it! */
