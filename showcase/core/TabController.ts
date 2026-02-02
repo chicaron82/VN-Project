@@ -314,19 +314,36 @@ export class TabController {
     }
 
     private updateStatusBar(tabId: string): void {
+        const names: Record<string, string> = {
+            home: 'UV7 Showcase',
+            journey: 'The Journal',
+            workflow: 'Workflow',
+            spotlight: 'Tech Spotlight',
+            evolution: 'Evolution',
+            experiment: 'V3 Experiment',
+            who: 'The Crew'
+        };
+        const displayName = names[tabId] || tabId;
+
+        // Method 1: V2 StatusBar (standalone mode)
         const win = window as any;
-        if (win.uv7Runtime?.instance) {
-            const names: Record<string, string> = {
-                home: 'UV7 OS',
-                journey: 'The Journal',
-                workflow: 'Workflow',
-                spotlight: 'Tech Spotlight',
-                evolution: 'Evolution',
-                experiment: 'V3 Experiment',
-                who: 'The Crew'
-            };
-            win.uv7Runtime.instance.setPhase(names[tabId] || tabId);
+        if (win.uv7Runtime?.instance?.setPhase) {
+            win.uv7Runtime.instance.setPhase(displayName);
         }
+
+        // Method 2: Shell status bar context element
+        const contextEl = document.getElementById('uv7-context');
+        if (contextEl) {
+            contextEl.textContent = displayName;
+        }
+
+        // Method 3: System banner detail (showcase-specific)
+        const detailEl = document.getElementById('uv7-detail');
+        if (detailEl) {
+            detailEl.textContent = displayName;
+        }
+
+        // Update page title
         document.title = `UV7 • ${tabId.charAt(0).toUpperCase() + tabId.slice(1)}`;
     }
 

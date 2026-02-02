@@ -46,6 +46,7 @@ import { BlogHaptics } from '../features/blog/BlogHaptics';
 import { BlogMeta } from '../features/blog/BlogMeta';
 import { BlogHeatmap } from '../features/blog/BlogHeatmap';
 import { BlogExport } from '../features/blog/BlogExport';
+import { GlobalSearch } from '../features/GlobalSearch';
 
 // Import showcase UI components
 import { Sidebar } from '../components/Sidebar';
@@ -170,6 +171,10 @@ document.addEventListener('DOMContentLoaded', () => {
     new BlogHeatmap('.timeline-phases');
     new BlogExport('.timeline-phases');
     console.log('✅ Blog enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
+
+    // Initialize Global Search (replaces old blog-specific search)
+    new GlobalSearch();
+    console.log('✅ Global search initialized (Cmd/Ctrl+K to open)');
 
     // Wire up deep linking to navigate on URL changes
     blogDeepLink.onNavigateChange((params: any) => {
@@ -300,12 +305,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.location.href = '../index.html#/v2';
             } else if (action === 'go-home') {
                 window.location.href = '../index.html#/landing';
-            } else if (action === 'toggle-mode') {
-                // Trigger the status bar toggle button
-                const statusToggle = document.getElementById('status-story-dev-toggle');
-                if (statusToggle) {
-                    statusToggle.click();
-                }
+            } else if (action === 'toggle-theme') {
+                // Toggle theme using shared ThemeManager
+                import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+                    const themeManager = getThemeManager();
+                    themeManager.toggle();
+                });
             }
 
             // Close sidebar after any action
@@ -382,16 +387,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         case 'go-home':
                             window.parent.location.hash = '#/';
                             break;
-                        case 'toggle-mode':
-                            // Toggle story/dev mode
-                            const currentMode = document.body.classList.contains('story-mode') ? 'story' : 'dev';
-                            if (currentMode === 'story') {
-                                document.body.classList.remove('story-mode');
-                                document.body.classList.add('dev-mode');
-                            } else {
-                                document.body.classList.remove('dev-mode');
-                                document.body.classList.add('story-mode');
-                            }
+                        case 'toggle-theme':
+                            // Toggle theme using shared ThemeManager
+                            import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+                                const themeManager = getThemeManager();
+                                themeManager.toggle();
+                            });
                             break;
                     }
                     break;

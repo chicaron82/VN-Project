@@ -96,8 +96,8 @@
 /* Timeline scrubber: progress bar navigation */
 @import url('blog-scrubber.css');
 
-/* Search interface: filter timeline entries */
-@import url('blog-search.css');
+/* Global search: search everywhere (blog, sections, crew) */
+@import url('global-search.css');
 
 /* Hover preview: quick peek at entry content */
 @import url('blog-hover-preview.css');

@@ -2020,6 +2020,71 @@ body.uv7-shell-mode .tab-bar-container {
 }
 
 /* ========================================
+   GLOBAL SEARCH TRIGGER
+   ======================================== */
+
+.global-search-trigger {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+
+    color: rgba(255, 255, 255, 0.8);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    z-index: 10;
+}
+
+.global-search-trigger:hover {
+    background: rgba(0, 255, 136, 0.15);
+    border-color: rgba(0, 255, 136, 0.5);
+    transform: translateY(-50%) scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 255, 136, 0.2);
+}
+
+.global-search-trigger:active {
+    transform: translateY(-50%) scale(0.98);
+}
+
+.search-trigger-icon {
+    font-size: 16px;
+}
+
+.search-trigger-label {
+    display: none; /* Hidden by default on mobile */
+}
+
+.search-trigger-shortcut {
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@media (min-width: 640px) {
+    .search-trigger-label {
+        display: inline;
+    }
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 

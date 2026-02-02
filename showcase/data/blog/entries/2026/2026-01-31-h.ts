@@ -3,6 +3,7 @@ import { TimelineEntry } from '../../types';
 export const entry: TimelineEntry = {
     id: 'spring-cleaning-2026',
     date: 'Jan 31, 2026',
+    sortDate: '2026-01-31T20:00:00',
     title: 'Phase 4: Spring Cleaning & The Gateway',
     type: 'milestone',
     emoji: '🧹',

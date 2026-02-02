@@ -3,6 +3,7 @@ import { TimelineEntry } from '../../types';
 export const entry: TimelineEntry = {
     id: 'three-phase-cleanup-feb-2026',
     date: 'Feb 1, 2026',
+    sortDate: '2026-02-01T10:00:00',
     title: 'Phase 5: The Three-Phase Hygiene Protocol',
     type: 'milestone',
     emoji: '✨',

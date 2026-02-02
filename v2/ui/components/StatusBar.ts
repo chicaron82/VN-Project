@@ -739,46 +739,44 @@ export class StatusBar {
     }
 
     /**
-     * Set up story/dev mode toggle for Showcase
+     * Set up theme toggle for Showcase (converted from story/dev toggle)
      */
     private setupStoryDevToggle(): void {
         if (!this.storyDevToggleEl) return;
 
-        // Read initial mode from localStorage or body dataset
-        const savedMode = localStorage.getItem('uv7-dev-mode') || document.body.dataset.viewMode || 'story';
-        let isStoryMode = savedMode === 'story';
-        this.storyDevToggleEl.innerHTML = isStoryMode ? '📖 Story' : '🔧 Dev';
-        document.body.dataset.viewMode = isStoryMode ? 'story' : 'dev';
+        // Import and use shared ThemeManager
+        import('../../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+            const themeManager = getThemeManager();
+            const currentTheme = themeManager.getState().mode;
 
-        this.storyDevToggleEl.addEventListener('click', () => {
-            isStoryMode = !isStoryMode;
-            const newMode = isStoryMode ? 'story' : 'dev';
-            this.storyDevToggleEl.innerHTML = isStoryMode ? '📖 Story' : '🔧 Dev';
+            // Set initial button state
+            this.storyDevToggleEl.innerHTML = currentTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
 
-            // Update body dataset and localStorage
-            document.body.dataset.viewMode = newMode;
-            localStorage.setItem('uv7-dev-mode', newMode);
+            this.storyDevToggleEl.addEventListener('click', () => {
+                // Toggle theme
+                themeManager.toggle();
+                const newTheme = themeManager.getState().mode;
 
-            // Haptic feedback
-            if (navigator.vibrate) navigator.vibrate(10);
+                // Update button text
+                this.storyDevToggleEl.innerHTML = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
 
-            // Emit event for Showcase to handle
-            this.eventBus.emit('settings:changed', {
-                key: 'viewMode',
-                value: newMode
+                // Haptic feedback
+                if (navigator.vibrate) navigator.vibrate(10);
+
+                console.log(`🎨 Theme: ${newTheme}`);
             });
 
-            console.log(`📖 View mode: ${newMode}`);
-        });
-
-        // Micro-interaction on hover
-        this.storyDevToggleEl.addEventListener('mouseenter', () => {
-            this.storyDevToggleEl.style.transform = 'scale(1.05)';
-            this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.2)';
-        });
-        this.storyDevToggleEl.addEventListener('mouseleave', () => {
-            this.storyDevToggleEl.style.transform = '';
-            this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
+            // Micro-interaction on hover
+            this.storyDevToggleEl.addEventListener('mouseenter', () => {
+                this.storyDevToggleEl.style.transform = 'scale(1.05)';
+                this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.2)';
+            });
+            this.storyDevToggleEl.addEventListener('mouseleave', () => {
+                this.storyDevToggleEl.style.transform = '';
+                this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+        }).catch(err => {
+            console.warn('[StatusBar] Could not load ThemeManager for toggle:', err);
         });
     }
 
