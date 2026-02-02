@@ -25,6 +25,7 @@
 // Re-export everything
 export * from './types';
 export * from './ThemeManager';
+export * from './EchoSettingsManager';
 
 import { ThemeManager, getThemeManager } from './ThemeManager';
 import type { StatusBarConfig, ThemeState } from './types';

@@ -251,69 +251,52 @@ export class UV7System {
     }
 
     /**
-     * Initialize Echo System Settings
+     * Initialize Echo System Settings - Using shared EchoSettingsManager
+     * All echo logic is now in shared/StatusBar/EchoSettingsManager.ts
      */
     private initEchoSettings(): void {
         const echoContainer = document.getElementById('uv7-echo-settings-container');
         if (!echoContainer) return;
 
-        // Load saved settings
-        let echoSettings = { enabled: true, frequency: 10, pauseOnHover: true };
-        try {
-            const stored = localStorage.getItem('uv7-echo-settings');
-            if (stored) echoSettings = JSON.parse(stored);
-        } catch (e) {
-            console.warn('[UV7System] Failed to parse echo settings', e);
-        }
+        // Import shared manager to get current settings for initial render
+        import('../shared/StatusBar/EchoSettingsManager').then(({ getEchoSettingsManager }) => {
+            const echoManager = getEchoSettingsManager();
+            const settings = echoManager.getSettings();
 
-        // Render controls
-        echoContainer.innerHTML = `
-            <div class="echo-control-group">
-                <div class="echo-control-row">
-                    <label class="checkbox-wrapper">
-                        <input type="checkbox" id="${this.prefix}-echo-enabled" ${echoSettings.enabled ? 'checked' : ''}>
-                        Enable AI Crew Commentary
-                    </label>
+            // Render controls with current settings
+            echoContainer.innerHTML = `
+                <div class="echo-control-group">
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="${this.prefix}-echo-enabled" ${settings.enabled ? 'checked' : ''}>
+                            Enable AI Crew Commentary
+                        </label>
+                    </div>
+                    <div class="echo-control-row">
+                        <span class="setting-label" style="font-size: 0.85rem">Frequency: <span id="${this.prefix}-echo-freq-val">${settings.frequency}s</span></span>
+                        <input type="range" class="uv7-slider" id="${this.prefix}-echo-freq" min="5" max="20" step="1" value="${settings.frequency}">
+                    </div>
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="${this.prefix}-echo-hover" ${settings.pauseOnHover ? 'checked' : ''}>
+                            Pause on Hover
+                        </label>
+                    </div>
                 </div>
-                <div class="echo-control-row">
-                    <span class="setting-label" style="font-size: 0.85rem">Frequency: <span id="${this.prefix}-echo-freq-val">${echoSettings.frequency}s</span></span>
-                    <input type="range" class="uv7-slider" id="${this.prefix}-echo-freq" min="5" max="20" step="1" value="${echoSettings.frequency}">
-                </div>
-                <div class="echo-control-row">
-                    <label class="checkbox-wrapper">
-                        <input type="checkbox" id="${this.prefix}-echo-hover" ${echoSettings.pauseOnHover ? 'checked' : ''}>
-                        Pause on Hover
-                    </label>
-                </div>
-            </div>
-        `;
+            `;
 
-        // Bind events
-        const enabledCheck = document.getElementById(`${this.prefix}-echo-enabled`);
-        const freqSlider = document.getElementById(`${this.prefix}-echo-freq`);
-        const freqVal = document.getElementById(`${this.prefix}-echo-freq-val`);
-        const hoverCheck = document.getElementById(`${this.prefix}-echo-hover`);
+            // Bind to shared manager - it handles ALL the logic
+            echoManager.bindCheckboxUI({
+                enabledCheckbox: document.getElementById(`${this.prefix}-echo-enabled`) as HTMLInputElement,
+                frequencySlider: document.getElementById(`${this.prefix}-echo-freq`) as HTMLInputElement,
+                frequencyDisplay: document.getElementById(`${this.prefix}-echo-freq-val`),
+                hoverCheckbox: document.getElementById(`${this.prefix}-echo-hover`) as HTMLInputElement
+            });
 
-        const saveEchoSettings = () => {
-            const newSettings = {
-                enabled: enabledCheck.checked,
-                frequency: parseInt(freqSlider.value),
-                pauseOnHover: hoverCheck.checked
-            };
-            localStorage.setItem('uv7-echo-settings', JSON.stringify(newSettings));
-            window.dispatchEvent(new StorageEvent('storage', {
-                key: 'uv7-echo-settings',
-                newValue: JSON.stringify(newSettings)
-            }));
-        };
-
-        enabledCheck?.addEventListener('change', saveEchoSettings);
-        freqSlider?.addEventListener('input', (e) => {
-            freqVal.textContent = `${e.target.value}s`;
-            saveEchoSettings();
+            console.log('🔊 [UV7System] Echo controls bound to shared EchoSettingsManager');
+        }).catch(err => {
+            console.warn('[UV7System] Could not load EchoSettingsManager:', err);
         });
-        hoverCheck?.addEventListener('change', saveEchoSettings);
-        hoverCheck?.addEventListener('change', saveEchoSettings);
     }
 
     /**

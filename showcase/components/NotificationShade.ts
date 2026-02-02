@@ -95,56 +95,28 @@ export class NotificationShade {
             });
         }
 
-        // 2. Echo Settings
+        // 2. Echo Settings - Using shared EchoSettingsManager (single source of truth!)
+        // All echo logic is now in shared/StatusBar/EchoSettingsManager.ts
         const echoToggle = document.getElementById('showcase-echo-toggle');
         const echoFreq = document.getElementById('showcase-echo-freq') as HTMLInputElement;
         const echoFreqVal = document.getElementById('showcase-echo-freq-val');
         const echoHover = document.getElementById('showcase-echo-hover');
 
         if (echoToggle && echoFreq && echoHover) {
-            // Load state
-            let settings = { enabled: true, frequency: 10, pauseOnHover: true };
-            try {
-                const stored = localStorage.getItem('uv7-echo-settings');
-                if (stored) settings = JSON.parse(stored);
-            } catch (e) { }
+            import('../../shared/StatusBar/EchoSettingsManager').then(({ getEchoSettingsManager }) => {
+                const echoManager = getEchoSettingsManager();
 
-            // Apply to UI
-            if (settings.enabled) echoToggle.classList.add('active');
-            echoFreq.value = settings.frequency.toString();
-            if (echoFreqVal) echoFreqVal.textContent = `${settings.frequency}s`;
-            if (settings.pauseOnHover) echoHover.classList.add('active');
+                // Bind UI elements - EchoSettingsManager handles ALL the logic
+                echoManager.bindUI({
+                    enabledToggle: echoToggle,
+                    frequencySlider: echoFreq,
+                    frequencyDisplay: echoFreqVal,
+                    hoverToggle: echoHover
+                });
 
-            // Save Handler
-            const saveSettings = () => {
-                const newSettings = {
-                    enabled: echoToggle.classList.contains('active'),
-                    frequency: parseInt(echoFreq.value),
-                    pauseOnHover: echoHover.classList.contains('active')
-                };
-                localStorage.setItem('uv7-echo-settings', JSON.stringify(newSettings));
-                // Dispatch event for other components
-                window.dispatchEvent(new StorageEvent('storage', {
-                    key: 'uv7-echo-settings',
-                    newValue: JSON.stringify(newSettings)
-                }));
-            };
-
-            // Bind events
-            echoToggle.addEventListener('click', () => {
-                echoToggle.classList.toggle('active');
-                saveSettings();
-            });
-
-            echoHover.addEventListener('click', () => {
-                echoHover.classList.toggle('active');
-                saveSettings();
-            });
-
-            echoFreq.addEventListener('input', (e) => {
-                const val = (e.target as HTMLInputElement).value;
-                if (echoFreqVal) echoFreqVal.textContent = `${val}s`;
-                saveSettings();
+                console.log('🔊 [NotificationShade] Echo controls bound to shared EchoSettingsManager');
+            }).catch(err => {
+                console.warn('[NotificationShade] Could not load EchoSettingsManager:', err);
             });
         }
     }
