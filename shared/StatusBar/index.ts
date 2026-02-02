@@ -26,6 +26,7 @@
 export * from './types';
 export * from './ThemeManager';
 export * from './EchoSettingsManager';
+export * from './ToriSettingsManager';
 
 import { ThemeManager, getThemeManager } from './ThemeManager';
 import type { StatusBarConfig, ThemeState } from './types';

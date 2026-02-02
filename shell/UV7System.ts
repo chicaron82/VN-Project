@@ -300,69 +300,46 @@ export class UV7System {
     }
 
     /**
-     * Initialize Tori-Gatchi Settings
+     * Initialize Tori-Gatchi Settings - Using shared ToriSettingsManager
+     * All Tori logic is now in shared/StatusBar/ToriSettingsManager.ts
      */
     private initToriSettings(): void {
         const toriContainer = document.getElementById('uv7-tori-settings-container');
         if (!toriContainer) return;
 
-        // Load saved settings (Default: All active)
-        let toriSettings = { notifyHunger: true, notifyLonely: true, notifyCritical: true };
-        try {
-            const stored = localStorage.getItem('uv7-tori-settings');
-            if (stored) toriSettings = JSON.parse(stored);
-        } catch (e) {
-            console.warn('[UV7System] Failed to parse Tori settings', e);
-        }
+        // Import shared manager to get current settings for initial render
+        import('../shared/StatusBar/ToriSettingsManager').then(({ getToriSettingsManager }) => {
+            const toriManager = getToriSettingsManager();
+            const settings = toriManager.getSettings();
 
-        // Render controls
-        toriContainer.innerHTML = `
-            <div class="echo-control-group">
-                <div class="echo-control-row">
-                    <label class="checkbox-wrapper">
-                        <input type="checkbox" id="${this.prefix}-tori-hunger" ${toriSettings.notifyHunger ? 'checked' : ''}>
-                        Notify on Hunger
-                    </label>
+            // Render controls with current settings
+            toriContainer.innerHTML = `
+                <div class="echo-control-group">
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="${this.prefix}-tori-hunger" ${settings.notifyHunger ? 'checked' : ''}>
+                            Notify on Hunger
+                        </label>
+                    </div>
+                    <div class="echo-control-row">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="${this.prefix}-tori-lonely" ${settings.notifyLonely ? 'checked' : ''}>
+                            Notify on Loneliness
+                        </label>
+                    </div>
                 </div>
-                <div class="echo-control-row">
-                    <label class="checkbox-wrapper">
-                        <input type="checkbox" id="${this.prefix}-tori-lonely" ${toriSettings.notifyLonely ? 'checked' : ''}>
-                        Notify on Loneliness
-                    </label>
-                </div>
-                <!--
-                <div class="echo-control-row">
-                    <label class="checkbox-wrapper">
-                        <input type="checkbox" id="${this.prefix}-tori-critical" ${toriSettings.notifyCritical ? 'checked' : ''}>
-                        Critical Alerts Only
-                    </label>
-                </div>
-                -->
-            </div>
-        `;
+            `;
 
-        // Bind events
-        const hungerCheck = document.getElementById(`${this.prefix}-tori-hunger`);
-        const lonelyCheck = document.getElementById(`${this.prefix}-tori-lonely`);
-        // const criticalCheck = document.getElementById(`${this.prefix}-tori-critical`);
+            // Bind to shared manager - it handles ALL the logic
+            toriManager.bindUI({
+                hungerCheckbox: document.getElementById(`${this.prefix}-tori-hunger`) as HTMLInputElement,
+                lonelyCheckbox: document.getElementById(`${this.prefix}-tori-lonely`) as HTMLInputElement
+            });
 
-        const saveToriSettings = () => {
-            const newSettings = {
-                notifyHunger: hungerCheck.checked,
-                notifyLonely: lonelyCheck.checked,
-                notifyCritical: true // criticalCheck.checked
-            };
-            localStorage.setItem('uv7-tori-settings', JSON.stringify(newSettings));
-
-            // Dispatch event for Service
-            window.dispatchEvent(new CustomEvent('uv7:tori-settings-change', {
-                detail: newSettings
-            }));
-        };
-
-        hungerCheck?.addEventListener('change', saveToriSettings);
-        lonelyCheck?.addEventListener('change', saveToriSettings);
-        // criticalCheck?.addEventListener('change', saveToriSettings);
+            console.log('🐣 [UV7System] Tori controls bound to shared ToriSettingsManager');
+        }).catch(err => {
+            console.warn('[UV7System] Could not load ToriSettingsManager:', err);
+        });
     }
 
     /**
