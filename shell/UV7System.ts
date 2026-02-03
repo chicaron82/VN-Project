@@ -95,6 +95,7 @@ export class UV7System {
 
         // Initialize controls
         this.initShadeControls();
+        this.initSidebarToggle();
         this.initSettings();
 
         // Setup communication API
@@ -214,6 +215,21 @@ export class UV7System {
         }
 
         console.log('✅ [UV7System] Shade controls initialized');
+    }
+
+    /**
+     * Initialize Sidebar Toggle Button
+     */
+    private initSidebarToggle(): void {
+        const toggleBtn = document.getElementById('uv7-sidebar-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                this.toggleSidebar();
+            });
+            console.log('✅ [UV7System] Sidebar toggle initialized');
+        } else {
+            console.warn('[UV7System] Sidebar toggle button not found');
+        }
     }
 
     /**
