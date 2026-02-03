@@ -135,8 +135,23 @@ export function initShowcaseSidebarListeners(): void {
             } else if (action === 'go-landing') {
                 window.location.href = '../shell.html';
             } else if (action === 'toggle-theme') {
-                document.body.classList.toggle('dark-mode');
+                // Use shared ThemeManager for proper theme handling
+                import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+                    const themeManager = getThemeManager();
+                    themeManager.toggle();
+                }).catch(err => {
+                    console.warn('[ShowcaseSidebar] Could not load ThemeManager, falling back:', err);
+                    document.body.classList.toggle('dark-mode');
+                });
+                // Don't close sidebar for theme toggle
+                return;
             }
+
+            // Close sidebar after action (except theme toggle)
+            const sidebar = document.getElementById('uv7-sidebar');
+            const backdrop = document.getElementById('uv7-backdrop');
+            if (sidebar) sidebar.classList.remove('open');
+            if (backdrop) backdrop.classList.remove('visible');
         });
     });
 
@@ -148,6 +163,12 @@ export function initShowcaseSidebarListeners(): void {
             if (tabController && tab) {
                 tabController.setActiveTab(tab);
             }
+
+            // Close sidebar after navigation
+            const sidebar = document.getElementById('uv7-sidebar');
+            const backdrop = document.getElementById('uv7-backdrop');
+            if (sidebar) sidebar.classList.remove('open');
+            if (backdrop) backdrop.classList.remove('visible');
         });
     });
 }
