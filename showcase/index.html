@@ -124,168 +124,24 @@
         <span class="sys-right" id="uv7-detail">Build v3 • All Systems Nominal</span>
     </div>
 
-    <!-- Notification Shade (Portrait) -->
-    <!-- Notification Shade Component Mount -->
-    <div id="uv7-shade-mount"></div>
+    <!-- ═══════════════════════════════════════════════════════════════
+         UV7 CHROME MOUNT POINTS
+         Populated by UV7System.ts (single source of truth)
+         ═══════════════════════════════════════════════════════════════ -->
 
-    <!-- Sidebar (Landscape) -->
-    <div id="uv7-sidebar" class="uv7-sidebar">
-        <div class="sidebar-header">
-            <span class="sidebar-title">📖 SHOWCASE</span>
-        </div>
-        <div class="sidebar-content">
-            <!-- Quick Actions -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Quick Actions</div>
-                <div class="quick-actions-grid">
-                    <button class="quick-action" data-action="launch-v1">
-                        <span class="quick-action-icon">🎮</span>
-                        <span class="quick-action-label">V1 Game</span>
-                    </button>
-                    <button class="quick-action" data-action="launch-v2">
-                        <span class="quick-action-icon">⚡</span>
-                        <span class="quick-action-label">V2 Engine</span>
-                    </button>
-                    <button class="quick-action" data-action="go-home">
-                        <span class="quick-action-icon">🌐</span>
-                        <span class="quick-action-label">Showcase Home</span>
-                    </button>
-                    <button class="quick-action" data-action="go-landing">
-                        <span class="quick-action-icon">🏠</span>
-                        <span class="quick-action-label">Back to Landing</span>
-                    </button>
-                    <button class="quick-action" data-action="toggle-theme">
-                        <span class="quick-action-icon">🌙</span>
-                        <span class="quick-action-label">Toggle Theme</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- System Stats Widget -->
-            <div class="sidebar-section">
-                <div class="system-stats-widget">
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">CHAOS METER</span>
-                            <span class="stat-value" id="sys-cpu">12%</span>
-                        </div>
-                        <div class="stat-bar-track">
-                            <div class="stat-bar-fill" id="sys-cpu-bar" style="width: 12%"></div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">BOUGIE FACTOR</span>
-                            <span class="stat-value" id="sys-ram">64%</span>
-                        </div>
-                        <div class="stat-bar-track">
-                            <div class="stat-bar-fill" id="sys-ram-bar" style="width: 64%"></div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-info">
-                            <span class="stat-label">V2 ENGINE</span>
-                            <span class="stat-value status-online">ONLINE</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Section Navigation -->
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">🧭 Navigate</div>
-                <div class="section-nav-list">
-                    <button class="section-nav-item" data-tab="home">
-                        <span class="section-icon">🌐</span>
-                        <span class="section-label">Home</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="journey">
-                        <span class="section-icon">🗺️</span>
-                        <span class="section-label">Journal</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="workflow">
-                        <span class="section-icon">⚙️</span>
-                        <span class="section-label">Workflow</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="spotlight">
-                        <span class="section-icon">💡</span>
-                        <span class="section-label">Technical Spotlight</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="evolution">
-                        <span class="section-icon">🔄</span>
-                        <span class="section-label">The Evolution</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="experiment">
-                        <span class="section-icon">🧪</span>
-                        <span class="section-label">V3 Experiment</span>
-                    </button>
-                    <button class="section-nav-item" data-tab="who">
-                        <span class="section-icon">👥</span>
-                        <span class="section-label">Who Are We</span>
-                    </button>
-                </div>
-            </div>
-
-
-        </div>
-
-    </div>
-
-    <!-- UV7 Notification Shade (Settings Panel) -->
+    <!-- Notification Shade Mount -->
     <div id="uv7-shade" class="uv7-shade">
         <div class="shade-header">
             <span class="shade-title">⚙️ System Settings</span>
-            <span class="shade-close-btn" style="cursor: pointer;">✕</span>
+            <button class="shade-close" aria-label="Close">✕</button>
         </div>
-
-        <div class="shade-content">
-            <!-- Theme Settings -->
-            <div class="shade-section">
-                <div class="shade-section-title">Visuals</div>
-                <div class="shade-setting-row">
-                    <div>
-                        <span class="setting-label">Sync with System</span>
-                        <small class="setting-desc">Match device theme</small>
-                    </div>
-                    <div class="toggle-switch" id="showcase-theme-auto">
-                        <div class="toggle-knob"></div>
-                    </div>
-                </div>
-                <div class="shade-setting-row" id="manual-theme-row">
-                    <span class="setting-label">Dark Mode</span>
-                    <div class="toggle-switch" id="showcase-theme-toggle">
-                        <div class="toggle-knob"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Echo Settings -->
-            <div class="shade-section">
-                <div class="shade-section-title">AI Crew</div>
-                <div class="shade-setting-row">
-                    <span class="setting-label">Crew Commentary</span>
-                    <div class="toggle-switch" id="showcase-echo-toggle">
-                        <div class="toggle-knob"></div>
-                    </div>
-                </div>
-                <div class="shade-setting-control">
-                    <div class="setting-label-row">
-                        <span class="setting-label">Frequency</span>
-                        <span class="setting-value" id="showcase-echo-freq-val">10s</span>
-                    </div>
-                    <input type="range" class="uv7-slider" id="showcase-echo-freq" min="5" max="20" step="1">
-                </div>
-                <div class="shade-setting-row" style="margin-top: 10px;">
-                    <span class="setting-label">Pause on Hover</span>
-                    <div class="toggle-switch" id="showcase-echo-hover">
-                        <div class="toggle-knob"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="shade-content"></div>
     </div>
 
-    <!-- Sidebar Toggle (Landscape) -->
+    <!-- Sidebar Mount -->
+    <div id="uv7-sidebar" class="uv7-sidebar"></div>
+
+    <!-- Sidebar Toggle Button -->
     <button class="uv7-sidebar-toggle" id="uv7-sidebar-toggle" aria-label="Toggle sidebar">
         <span>☰</span>
     </button>
