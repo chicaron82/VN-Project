@@ -45,7 +45,8 @@
       "Bash(basename:*)",
       "Read(//c/Users/silve/Downloads/GitHub/VN-Project/**)",
       "Bash(if [ -f \"showcase/css/$file\" ])",
-      "Read(//c/**)"
+      "Read(//c/**)",
+      "Bash(lots of features... wait, THEY 'RE TAKING OVER MY COLUMN TOO?!\"\n\nPeak territorial expansion energy. 🐉\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
     ],
     "deny": [],
     "ask": []
