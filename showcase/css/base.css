@@ -5,17 +5,22 @@
 
 /* --- CORE VARIABLES --- */
 :root {
+    /* TYPOGRAPHY SYSTEM (Hybrid Approach) */
+    --header-font: 'Outfit', 'Inter', system-ui, sans-serif; /* Headers: personality */
+    --body-font: 'Inter', system-ui, -apple-system, sans-serif; /* Body: readability */
+    --code-font: 'Courier New', 'Monaco', 'Consolas', monospace; /* Code: technical */
+
     /* CHAOS PALETTE (V1) */
     --chaos-bg: #050505;
     --chaos-text: #00ff41;
     --chaos-accent: #ff00ff;
-    --chaos-font: 'Courier New', monospace;
+    --chaos-font: var(--code-font); /* Chaos uses code font for terminal vibe */
 
     /* ORDER PALETTE (V2) */
     --order-bg: #f8f9fa;
     --order-text: #2c3e50;
     --order-accent: #3498db;
-    --order-font: 'Inter', system-ui, -apple-system, sans-serif;
+    --order-font: var(--body-font); /* Order uses body font for clean readability */
 
     --transition-speed: 0.1s;
 }

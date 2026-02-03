@@ -217,7 +217,7 @@
 
 .code-content {
     padding: 1rem;
-    font-family: 'Courier Prime', monospace;
+    font-family: var(--code-font);
     font-size: 0.85rem;
     line-height: 1.5;
     overflow-x: auto;

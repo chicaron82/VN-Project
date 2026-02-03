@@ -262,7 +262,7 @@
 .crew-alias {
     font-size: 0.85rem;
     color: var(--accent-cyan);
-    font-family: monospace;
+    font-family: var(--code-font);
     letter-spacing: 0.5px;
     text-transform: uppercase;
     opacity: 0.8;
@@ -330,7 +330,7 @@
     top: -2rem;
     left: 2rem;
     font-size: 10rem;
-    font-family: serif;
+    font-family: var(--header-font);
     color: rgba(0, 255, 136, 0.1);
     line-height: 1;
 }
