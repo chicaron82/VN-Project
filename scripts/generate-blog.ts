@@ -7,8 +7,8 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ENTRIES_DIR = path.resolve(__dirname, '../showcase/data/timeline/entries');
-const OUTPUT_FILE = path.resolve(__dirname, '../showcase/data/timeline/index.ts');
+const ENTRIES_DIR = path.resolve(__dirname, '../showcase/data/blog/entries');
+const OUTPUT_FILE = path.resolve(__dirname, '../showcase/data/blog/index.ts');
 
 interface BlogEntryFile {
     path: string;

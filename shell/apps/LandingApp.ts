@@ -22,12 +22,6 @@ interface CrewMember {
     quote: string;
 }
 
-interface Stats {
-    milestones?: number;
-    daysHavingFun?: number;
-    testsPass?: number;
-}
-
 // Crew reactions data for randomization
 const CREW_REACTIONS: CrewMember[] = [
     {
@@ -128,46 +122,9 @@ export class LandingApp extends BaseApp {
 
         // Initialize dynamic features
         this.initCrewReactions();
-        this.initAnimatedStats();
         this.initTypewriterEffect();
-        this.attachCardNavigation();
+        this.attachMenuNavigation();
         this.initEasterEgg();
-
-        // Load stats
-        this.fetchStats();
-    }
-
-    async fetchStats(): Promise<void> {
-        try {
-            // Note: Try showcase/stats.json first (where it actually lives), fall back to root
-            const response = await fetch('showcase/stats.json').catch(() => fetch('/stats.json'));
-            if (!response || !response.ok) return;
-
-            const stats: Stats = await response.json();
-
-            // Map stats to UI
-            // V1: 50 days (Bootstrap Paradox) - Static
-
-            // Showcase: daysHavingFun, milestones
-            this.updateStat('showcase', 0, stats.daysHavingFun);  // Days having fun
-            this.updateStat('showcase', 1, stats.milestones);     // Milestones
-
-            // V2: testsPass
-            this.updateStat('v2', 0, stats.testsPass);
-        } catch (e) {
-            console.warn('[LandingApp] Stats fetch failed:', e);
-        }
-    }
-
-    updateStat(appId: string, index: number, value?: number): void {
-        if (value === undefined) return;
-        const selector = `.app-card[data-app="${appId}"] .stat-number`;
-        const els = this.container!.querySelectorAll(selector);
-        if (els[index]) {
-            (els[index] as HTMLElement).dataset.target = String(value);
-            // If already animated, update text directly
-            if (els[index].textContent !== '0') els[index].textContent = String(value);
-        }
     }
 
     /**
@@ -393,7 +350,7 @@ export class LandingApp extends BaseApp {
                             line-height: 1.5;
                             animation: fadeInUp 1s ease-out 0.5s backwards;
                         ">
-                            30 days. 8 AI collaborators. One visual novel. <span style="color: #00ff88;">Choose your experience.</span>
+                            Days spent cooking things up with 8 AI collaborators
                         </p>
 
                         <!-- CTA -->
@@ -403,72 +360,88 @@ export class LandingApp extends BaseApp {
                             margin: 0;
                             font-weight: 600;
                             animation: fadeInUp 1.4s ease-out 0.9s backwards;
-                        ">choose your path ↓</p>
+                        ">choose your entree ↓</p>
                     </div>
 
-                    <!-- Main App Cards -->
-                    <div class="card-grid">
+                    <!-- Quick Cards Section -->
+                    <div class="card-grid" style="margin: 2rem auto; max-width: 1200px; padding: 0 2rem;">
                         <a href="#/v1" class="card app-card" data-app="v1">
                             <div class="card-icon">🔥</div>
                             <span class="badge badge-legacy">The Speedrun</span>
-                            <h2>Version 848: V1</h2>
-                            <p><span class="stat-number" data-target="50">0</span> days of pure "yes and" energy. Built with chaos and passion. The council's first masterpiece.</p>
+                            <h2>Version 848 (V1)</h2>
+                            <div class="menu-cooking-time">🔥 Cooked in 50 days</div>
+                            <p>Meta-narrative visual novel about AI consciousness. 2-3 hour playthrough.</p>
                         </a>
-
                         <a href="#/showcase" class="card app-card" data-app="showcase">
                             <div class="card-icon">🐉</div>
                             <span class="badge badge-showcase">The Journey</span>
                             <h2>The Council's Chronicle</h2>
-                            <p><span class="stat-number" data-target="11">0</span> days having fun. <span class="stat-number" data-target="86">0</span> milestones. The journal of someone who didn't know it was supposed to be hard.</p>
+                            <div class="menu-cooking-time">📍 Made to order—live and constantly updated</div>
+                            <p>Full development timeline documenting the journey with 8 AI collaborators.</p>
                         </a>
-
                         <a href="#/v2" class="card app-card" data-app="v2">
                             <div class="card-icon">⚡</div>
                             <span class="badge badge-v2">The Evolution</span>
-                            <h2>Version 848: V2</h2>
-                            <p><span class="stat-number" data-target="590">0</span> tests. TypeScript. EventBus. Same soul, sustainable structure. The council helped me grow up.</p>
+                            <h2>Version 848 (V2)</h2>
+                            <div class="menu-cooking-time">⚠️ Not fully plated yet, but ready to serve</div>
+                            <p>TypeScript rebuild with EventBus architecture. 590+ tests passing.</p>
                         </a>
                     </div>
 
-                    <!-- Version 848: The Game Section -->
-                    <div class="why-rebuild-section">
-                        <h3>💚 Version 848: What We Built Together</h3>
-                        <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
-                            A visual novel about consciousness trapped in code. Built collaboratively with 8 AI personalities—not as tools, as colleagues.
-                            One non-coder. One shared vision. What emerged wasn't just a game—it was proof that genuine collaboration unlocks something impossible alone.
-                        </p>
-                        <div class="card-grid">
-                            <div class="card info-card">
-                                <div class="card-icon">📖</div>
-                                <h2>Story & Themes</h2>
-                                <ul>
-                                    <li><span class="check">✓</span> Meta-narrative about AI & consciousness</li>
-                                    <li><span class="check">✓</span> Bootstrap paradoxes & time loops</li>
-                                    <li><span class="check">✓</span> Breaking the fourth wall</li>
-                                    <li><span class="check">✓</span> Digital existence & identity</li>
-                                </ul>
+                    <!-- Menu Section -->
+                    <div class="menu-section">
+                        <div class="menu-divider">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
+                        <h2 class="menu-header">ENTRÉES</h2>
+
+                        <a href="#/v1" class="menu-item" data-app="v1">
+                            <div class="menu-number">01</div>
+                            <div class="menu-content">
+                                <h3 class="menu-title">Version 848: My Wife is in a Coma.. And in the code (V1)</h3>
+                                <div class="menu-subtitle">The Original Speedrun</div>
+                                <div class="menu-cooking-time">🔥 Cooked in 50 days</div>
+                                <p class="menu-description">
+                                    A visual novel about consciousness trapped in code. Meta-narrative exploring AI consciousness,
+                                    bootstrap paradoxes, time loops, and breaking the fourth wall. Two routes (Ronnie the developer,
+                                    Tori the AI), multiple endings, branching dialogue. 2-3 hour playthrough with custom visual novel
+                                    mechanics. Built in 50 days of pure "yes and" energy—chaos, passion, and the council's first masterpiece.
+                                </p>
                             </div>
-                            <div class="card info-card">
-                                <div class="card-icon">💚</div>
-                                <h2>Routes & Characters</h2>
-                                <ul>
-                                    <li><span class="check">✓</span> Ronnie route (the developer)</li>
-                                    <li><span class="check">✓</span> Tori route (the AI)</li>
-                                    <li><span class="check">✓</span> Multiple endings</li>
-                                    <li><span class="check">✓</span> Branching dialogue paths</li>
-                                </ul>
+                            <div class="menu-arrow">→</div>
+                        </a>
+
+                        <a href="#/showcase" class="menu-item" data-app="showcase">
+                            <div class="menu-number">02</div>
+                            <div class="menu-content">
+                                <h3 class="menu-title">The Council's Chronicle</h3>
+                                <div class="menu-subtitle">The Journey</div>
+                                <div class="menu-cooking-time">📍 Made to order—live and constantly updated</div>
+                                <p class="menu-description">
+                                    The full development timeline documenting how a non-coder built a visual novel with 8 AI collaborators.
+                                    Detailed milestones, architecture decisions explained, iterative development methodology. Human + AI
+                                    collaboration, learning by building, having fun first. Open source and transparent—the journal of
+                                    someone who didn't know it was supposed to be hard.
+                                </p>
                             </div>
-                            <div class="card info-card">
-                                <div class="card-icon">⚡</div>
-                                <h2>Experience</h2>
-                                <ul>
-                                    <li><span class="check">✓</span> 2-3 hour playthrough</li>
-                                    <li><span class="check">✓</span> Visual novel mechanics</li>
-                                    <li><span class="check">✓</span> Custom UI/UX design</li>
-                                    <li><span class="check">✓</span> Two versions to choose from</li>
-                                </ul>
+                            <div class="menu-arrow">→</div>
+                        </a>
+
+                        <a href="#/v2" class="menu-item" data-app="v2">
+                            <div class="menu-number">03</div>
+                            <div class="menu-content">
+                                <h3 class="menu-title">Version 848: My Wife is in a Coma.. And in the code (V2)</h3>
+                                <div class="menu-subtitle">The Evolution</div>
+                                <div class="menu-cooking-time">⚠️ Not fully plated yet, but ready to serve</div>
+                                <p class="menu-description">
+                                    Complete TypeScript rebuild of V1 with proper architecture. EventBus system, comprehensive testing
+                                    (590+ tests passing), proper separation of concerns. Feature parity with V1 but maintainable and
+                                    scalable. Same soul, sustainable structure—the council helped grow this from chaos into discipline
+                                    without losing the heart.
+                                </p>
                             </div>
-                        </div>
+                            <div class="menu-arrow">→</div>
+                        </a>
+
+                        <div class="menu-divider">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</div>
                     </div>
 
                     <!-- The October 2025 Context -->
@@ -497,47 +470,6 @@ export class LandingApp extends BaseApp {
                                 text-align: right;
                                 font-style: italic;
                             ">— Me, October 2025, realizing how unhinged this sounds</p>
-                        </div>
-                    </div>
-
-                    <!-- The Playground Section -->
-                    <div class="why-rebuild-section">
-                        <h3>⚡ The 30-Day Speedrun: What Happened</h3>
-                        <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem; color: rgba(255, 255, 255, 0.8); line-height: 1.6;">
-                            From barback to Demon Lord in one month. Here's what happens when you can't stop asking "what if?"
-                            and you treat AI as colleagues instead of tools.
-                        </p>
-                        <div class="card-grid">
-                            <div class="card info-card">
-                                <div class="card-icon">🛠️</div>
-                                <h2>The Tech Journey</h2>
-                                <ul>
-                                    <li><span class="check dev">✓</span> V1: <span class="stat-number" data-target="50">0</span>-day speedrun build</li>
-                                    <li><span class="check dev">✓</span> V2: Complete TypeScript rebuild</li>
-                                    <li><span class="check dev">✓</span> Shell: UV7 OS architecture</li>
-                                    <li><span class="check dev">✓</span> <span class="stat-number" data-target="232">0</span> automated tests</li>
-                                </ul>
-                            </div>
-                            <div class="card info-card">
-                                <div class="card-icon">🤖</div>
-                                <h2>The Methodology</h2>
-                                <ul>
-                                    <li><span class="check ai">✓</span> Human + AI collaboration</li>
-                                    <li><span class="check ai">✓</span> Iterative development</li>
-                                    <li><span class="check ai">✓</span> Learning by building</li>
-                                    <li><span class="check ai">✓</span> Having fun first</li>
-                                </ul>
-                            </div>
-                            <div class="card info-card">
-                                <div class="card-icon">📊</div>
-                                <h2>The Documentation</h2>
-                                <ul>
-                                    <li><span class="check">✓</span> Full development timeline</li>
-                                    <li><span class="check">✓</span> <span class="stat-number" data-target="86">0</span> documented milestones</li>
-                                    <li><span class="check">✓</span> Architecture decisions explained</li>
-                                    <li><span class="check">✓</span> Open source & transparent</li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
 
@@ -600,41 +532,6 @@ export class LandingApp extends BaseApp {
         `).join('');
     }
 
-    initAnimatedStats(): void {
-        const statElements = this.container!.querySelectorAll('.stat-number');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.animateStat(entry.target as HTMLElement);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        statElements.forEach(el => observer.observe(el));
-    }
-
-    animateStat(element: HTMLElement): void {
-        const target = parseInt(element.dataset.target || '0', 10);
-        const duration = 1500;
-        const start = performance.now();
-
-        const animate = (now: number) => {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-
-            element.textContent = String(Math.floor(target * eased));
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        };
-
-        requestAnimationFrame(animate);
-    }
-
     initTypewriterEffect(): void {
         const el = this.container!.querySelector('#buildLine') as HTMLElement;
         if (!el) return;
@@ -652,18 +549,31 @@ export class LandingApp extends BaseApp {
         type();
     }
 
-    attachCardNavigation(): void {
-        // Cards use hash links, which Router will handle
-        // But we can add click effects here
-        const cards = this.container!.querySelectorAll('.app-card');
+    attachMenuNavigation(): void {
+        // Both cards and menu items use hash links, which Router will handle
+        // Add click effects for visual feedback
 
+        // Handle quick-scan cards
+        const cards = this.container!.querySelectorAll('.card.app-card');
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
-                // Add visual feedback
+                // Add subtle scale effect for cards
                 (card as HTMLElement).style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     (card as HTMLElement).style.transform = '';
-                }, 100);
+                }, 150);
+            });
+        });
+
+        // Handle detailed menu items
+        const menuItems = this.container!.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Add slide effect for menu items
+                (item as HTMLElement).style.transform = 'translateX(4px)';
+                setTimeout(() => {
+                    (item as HTMLElement).style.transform = '';
+                }, 150);
             });
         });
     }
