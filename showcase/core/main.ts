@@ -49,8 +49,7 @@ import { BlogExport } from '../features/blog/BlogExport';
 import { GlobalSearch } from '../features/GlobalSearch';
 
 // Import showcase UI components
-import { Sidebar } from '../components/Sidebar';
-import { NotificationShade } from '../components/NotificationShade';
+// Sidebar and NotificationShade removed - now using UV7System
 import { SystemStatsWidget } from '../components/SystemStatsWidget';
 
 // Import effects
@@ -93,7 +92,7 @@ window.UV7System = {
 };
 
 // Initialize showcase components on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Initializing showcase components...');
 
     // Detect if we're running inside the unified shell (iframe)
@@ -109,31 +108,42 @@ document.addEventListener('DOMContentLoaded', () => {
         // =================================================================
         // PHASE 1: CORE SYSTEM (only in standalone mode)
         // =================================================================
-        // The UV7 System provides the status bar and event bus that other
-        // components depend on. Must initialize first in standalone mode.
-        
-        const uv7System = createUV7System('showcase');
+        // Initialize UV7System with showcase-specific sidebar
+
+        const { default: UV7System } = await import('../../shell/UV7System');
+        const { generateShowcaseSidebarContent, initShowcaseSidebarListeners } = await import('../ShowcaseSidebarTemplate');
+
+        const uv7System = new UV7System({
+            mode: 'standalone',
+            appName: 'Showcase',
+            prefix: 'showcase',
+            sidebarConfig: {
+                title: '📖 SHOWCASE',
+                content: generateShowcaseSidebarContent(),
+                init: initShowcaseSidebarListeners
+            }
+        });
+
+        await uv7System.init();
+        console.log('✅ UV7System initialized in standalone mode with showcase sidebar');
+
+        // Create legacy UV7 System for compatibility
+        const uv7SystemLegacy = createUV7System('showcase');
         window.uv7Runtime = {
-            ...uv7System,
-            instance: uv7System.statusBar // TabController expects this
+            ...uv7SystemLegacy,
+            instance: uv7SystemLegacy.statusBar // TabController expects this
         };
-
-        console.log('✅ UV7 System initialized');
-        console.log('✅ UV7 Status Bar mounted and visible');
-        uv7System.statusBar.show();
-
-        // Initialize UI Components (only in standalone mode)
-        new Sidebar();
-        new NotificationShade();
-        console.log('✅ Sidebar and NotificationShade initialized');
+        uv7SystemLegacy.statusBar.show();
+        console.log('✅ Legacy UV7 System initialized for compatibility');
     }
+
 
     // =================================================================
     // PHASE 2: NAVIGATION & CONTENT
     // =================================================================
     // TabController and section renderers must initialize before features
     // that depend on the DOM structure (like BlogRenderer, deep linking, etc.)
-    
+
     // Initialize Tab Navigation
     const tabController = new TabController();
     window.tabController = tabController; // Expose for legacy compatibility
@@ -156,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     // Blog features depend on the Journal section's DOM being rendered.
     // BlogRenderer must initialize BEFORE deep linking wire-up.
-    
+
     new BlogAnimations('.timeline-phases');
 
     const blogDeepLink = new BlogDeepLink();
@@ -211,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // PHASE 4: INTERACTION & NAVIGATION
     // =================================================================
     // Scroll-based navigation and visual effects that enhance user interactions.
-    
+
     // Use native CSS scroll-snap instead of SwipeController
     const tabPanelsContainer = document.querySelector('.tab-panels-container') as HTMLElement;
     if (tabPanelsContainer) {
@@ -249,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // PHASE 5: UTILITIES & OPTIMIZATION
     // =================================================================
     // Performance, analytics, and utility features that enhance the experience.
-    
+
     initPerformanceOptimizations();
     initLoadStats();
     initAnalytics();
@@ -261,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // PHASE 6: APP INTEGRATION (standalone only)
     // =================================================================
     // App switcher and state management for multi-app navigation.
-    
+
     if (!isInShell) {
         initAppStateManager();
         console.log('✅ App State Manager initialized');
@@ -279,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =================================================================
     // The UV7 OS navigation system that tracks timeline entries.
     // Must initialize AFTER BlogRenderer has processed timeline data.
-    
+
     if (window.TIMELINE_DATA?.entries) {
         window.uv7os = new UV7OS('showcase', {
             entries: window.TIMELINE_DATA.entries as TimelineEntry[]
