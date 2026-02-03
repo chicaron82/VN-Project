@@ -376,59 +376,62 @@ export class HomeSection {
                                         </ul>
                                     </div>
 
-                                    <!-- THE DOMINANCE MOVE -->
-                                    <div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(102, 126, 234, 0.15)); border-radius: 8px; border: 1px solid var(--accent-primary); text-align: center;">
-                                        <p style="font-style: italic; margin: 0; opacity: 0.9; font-size: 0.95rem;">
-                                            <strong>...well, I ran out of room on my side, so may as well use up this empty space over here...</strong>
-                                        </p>
-                                    </div>
+                                    <!-- THE OVERFLOW (Hidden until v848 expands) -->
+                                    <div id="v848-overflow" style="display: none;">
+                                        <!-- THE DOMINANCE MOVE -->
+                                        <div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(102, 126, 234, 0.15)); border-radius: 8px; border: 1px solid var(--accent-primary); text-align: center;">
+                                            <p style="font-style: italic; margin: 0; opacity: 0.9; font-size: 0.95rem;">
+                                                <strong>...well, I ran out of room on my side, so may as well use up this empty space over here...</strong>
+                                            </p>
+                                        </div>
 
-                                    <!-- MORE VERSION 848 FEATURES (Overflowing into Simple VN's column) -->
-                                    <div class="v848-system-section narrative" style="border-left-color: var(--accent-primary);">
-                                        <strong>⚡ EVEN MORE VERSION 848 FEATURES</strong>
-                                        <ul>
-                                            <li>Advanced state machine (400+ possible game states)</li>
-                                            <li>Custom physics engine with hand-tuned momentum curves</li>
-                                            <li>Multi-layered save system (quick/auto/manual slots)</li>
-                                            <li>Dynamic difficulty adjustment based on player patterns</li>
-                                            <li>Accessibility suite (font scaling, contrast modes, reduced motion)</li>
-                                            <li>Localization framework (i18n-ready for multiple languages)</li>
-                                            <li>Analytics engine (player choice heatmaps, completion metrics)</li>
-                                        </ul>
-                                    </div>
+                                        <!-- MORE VERSION 848 FEATURES (Overflowing into Simple VN's column) -->
+                                        <div class="v848-system-section narrative" style="border-left-color: var(--accent-primary);">
+                                            <strong>⚡ EVEN MORE VERSION 848 FEATURES</strong>
+                                            <ul>
+                                                <li>Advanced state machine (400+ possible game states)</li>
+                                                <li>Custom physics engine with hand-tuned momentum curves</li>
+                                                <li>Multi-layered save system (quick/auto/manual slots)</li>
+                                                <li>Dynamic difficulty adjustment based on player patterns</li>
+                                                <li>Accessibility suite (font scaling, contrast modes, reduced motion)</li>
+                                                <li>Localization framework (i18n-ready for multiple languages)</li>
+                                                <li>Analytics engine (player choice heatmaps, completion metrics)</li>
+                                            </ul>
+                                        </div>
 
-                                    <div class="v848-system-section mechanics" style="border-left-color: var(--accent-cyan);">
-                                        <strong>💾 ADVANCED PERSISTENCE</strong>
-                                        <ul>
-                                            <li>Cloud save support ready (cross-device sync architecture)</li>
-                                            <li>Automatic backup rotation (protects against corruption)</li>
-                                            <li>Save format versioning (migration system for updates)</li>
-                                            <li>Compression algorithms (efficient storage without quality loss)</li>
-                                            <li>Integrity validation (checksums prevent tampering)</li>
-                                        </ul>
-                                    </div>
+                                        <div class="v848-system-section mechanics" style="border-left-color: var(--accent-cyan);">
+                                            <strong>💾 ADVANCED PERSISTENCE</strong>
+                                            <ul>
+                                                <li>Cloud save support ready (cross-device sync architecture)</li>
+                                                <li>Automatic backup rotation (protects against corruption)</li>
+                                                <li>Save format versioning (migration system for updates)</li>
+                                                <li>Compression algorithms (efficient storage without quality loss)</li>
+                                                <li>Integrity validation (checksums prevent tampering)</li>
+                                            </ul>
+                                        </div>
 
-                                    <div class="v848-system-section ui" style="border-left-color: var(--accent-purple);">
-                                        <strong>🎭 POLISH & FEEL</strong>
-                                        <ul>
-                                            <li>300+ hand-crafted micro-animations</li>
-                                            <li>Custom easing functions (that *chef's kiss* feel)</li>
-                                            <li>Particle systems synchronized to narrative beats</li>
-                                            <li>Dynamic color grading based on scene emotional tone</li>
-                                            <li>Spatial audio design with positional effects</li>
-                                            <li>Haptic feedback patterns (mobile vibration choreography)</li>
-                                        </ul>
-                                    </div>
+                                        <div class="v848-system-section ui" style="border-left-color: var(--accent-purple);">
+                                            <strong>🎭 POLISH & FEEL</strong>
+                                            <ul>
+                                                <li>300+ hand-crafted micro-animations</li>
+                                                <li>Custom easing functions (that *chef's kiss* feel)</li>
+                                                <li>Particle systems synchronized to narrative beats</li>
+                                                <li>Dynamic color grading based on scene emotional tone</li>
+                                                <li>Spatial audio design with positional effects</li>
+                                                <li>Haptic feedback patterns (mobile vibration choreography)</li>
+                                            </ul>
+                                        </div>
 
-                                    <div class="v848-system-section testing" style="border-left-color: var(--accent-pink);">
-                                        <strong>🔬 PRODUCTION QUALITY</strong>
-                                        <ul>
-                                            <li>CI/CD pipeline with automated deployments</li>
-                                            <li>Performance monitoring (FPS tracking, memory profiling)</li>
-                                            <li>Error tracking with stack trace capture</li>
-                                            <li>A/B testing framework for narrative experiments</li>
-                                            <li>Beta testing infrastructure (staged rollouts)</li>
-                                        </ul>
+                                        <div class="v848-system-section testing" style="border-left-color: var(--accent-pink);">
+                                            <strong>🔬 PRODUCTION QUALITY</strong>
+                                            <ul>
+                                                <li>CI/CD pipeline with automated deployments</li>
+                                                <li>Performance monitoring (FPS tracking, memory profiling)</li>
+                                                <li>Error tracking with stack trace capture</li>
+                                                <li>A/B testing framework for narrative experiments</li>
+                                                <li>Beta testing infrastructure (staged rollouts)</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -752,16 +755,29 @@ export class HomeSection {
                 v848Button.addEventListener('click', () => {
                     const collapsed = document.getElementById('v848-collapsed');
                     const expanded = document.getElementById('v848-expanded');
+                    const overflow = document.getElementById('v848-overflow');
 
                     if (expanded && collapsed) {
                         if (expanded.style.display === 'none' || !expanded.style.display) {
+                            // Expand v848 side
                             collapsed.style.display = 'none';
                             expanded.style.display = 'block';
                             v848Button.textContent = '▲ That\'s Enough. I Get It.';
+
+                            // Reveal the overflow in Simple VN column (the dominance move!)
+                            if (overflow) {
+                                overflow.style.display = 'block';
+                            }
                         } else {
+                            // Collapse v848 side
                             collapsed.style.display = 'block';
                             expanded.style.display = 'none';
                             v848Button.textContent = '▼ Show Everything (Seriously. Everything.)';
+
+                            // Hide the overflow again
+                            if (overflow) {
+                                overflow.style.display = 'none';
+                            }
                         }
                     }
                 });
