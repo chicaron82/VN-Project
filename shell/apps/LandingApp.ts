@@ -360,17 +360,17 @@ export class LandingApp extends BaseApp {
 
                         <!-- The Ridiculously Long Anime Title -->
                         <h1 class="hero-headline" style="
-                            font-size: clamp(1.5rem, 5vw, 3rem);
+                            font-size: clamp(1.2rem, 3.5vw, 2.2rem);
                             font-weight: 900;
                             margin: 0 auto 1rem;
                             background: linear-gradient(135deg, #00ff88 0%, #667eea 100%);
                             -webkit-background-clip: text;
                             background-clip: text;
                             -webkit-text-fill-color: transparent;
-                            line-height: 1.3;
+                            line-height: 1.4;
                             animation: fadeInUp 0.8s ease-out 0.1s backwards;
-                            max-width: 1200px;
-                            padding: 0 1rem;
+                            max-width: 1000px;
+                            padding: 0 1.5rem;
                         ">I Named a Bunch of AI While Letting My Curiosity Run Wild. I Feel Like I've Levelled Them Up. Wait, Did I Just Become a Demon Lord?</h1>
 
                         <!-- Attribution -->
