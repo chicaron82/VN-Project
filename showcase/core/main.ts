@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Initialize UV7System with showcase-specific sidebar
 
         const { default: UV7System } = await import('../../shell/UV7System');
-        const { generateShowcaseSidebarContent, initShowcaseSidebarListeners } = await import('../ShowcaseSidebarTemplate');
+        const { generateShowcaseSidebarContent, initShowcaseSidebarListeners } = await import('../../shell/templates/ShowcaseSidebarTemplate');
 
         const uv7System = new UV7System({
             mode: 'standalone',

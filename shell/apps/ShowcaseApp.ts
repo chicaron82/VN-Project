@@ -10,7 +10,7 @@
 
 import { BaseApp, StatusBarConfig, SidebarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
-import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../../showcase/ShowcaseSidebarTemplate.js';
+import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
 
 interface ExtendedStatusBarConfig extends StatusBarConfig {
     showBreadcrumb?: boolean;
