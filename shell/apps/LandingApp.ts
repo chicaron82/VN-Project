@@ -360,6 +360,8 @@ export class LandingApp extends BaseApp {
 
                         <!-- The Ridiculously Long Anime Title -->
                         <h1 class="hero-headline" style="
+                            display: block !important;
+                            height: auto !important;
                             font-size: clamp(1.2rem, 3.5vw, 2.2rem);
                             font-weight: 900;
                             margin: 2rem auto 1rem;
