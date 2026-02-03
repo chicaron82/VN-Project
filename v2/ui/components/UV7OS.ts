@@ -334,9 +334,13 @@ export class UV7OS {
             this.elements.shadeClose.addEventListener('click', () => this.closeShade());
         }
 
-        // Sidebar toggle
-        if (this.elements.sidebarToggle) {
+        // Sidebar toggle - ONLY if UV7System isn't handling it
+        // In standalone showcase mode, UV7System handles the toggle
+        const isUV7SystemHandled = document.body.classList.contains('uv7-system-chrome');
+        if (this.elements.sidebarToggle && !isUV7SystemHandled) {
             this.elements.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
+        } else if (isUV7SystemHandled) {
+            console.log('[UV7OS] Sidebar toggle handled by UV7System, skipping');
         }
 
         // Sidebar home button - BELLE: Use view transition (showcase only)
@@ -381,11 +385,11 @@ export class UV7OS {
         let actionUrls: ActionUrls = {};
 
         // Get base path - robust detection for GitHub Pages
-        const basePath = (window.location.hostname.includes('github.io') || 
-                         window.location.pathname.includes('/VN-Project/')) ? '/VN-Project' : '';
-        
+        const basePath = (window.location.hostname.includes('github.io') ||
+            window.location.pathname.includes('/VN-Project/')) ? '/VN-Project' : '';
+
         console.log(`🔍 Base path detection: hostname=${window.location.hostname}, pathname=${window.location.pathname}, basePath=${basePath}`);
-        
+
         if (this.context === 'landing') {
             actionUrls = {
                 'launch-v1': `${basePath}/v1/index.html`,

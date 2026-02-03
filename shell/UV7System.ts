@@ -104,6 +104,9 @@ export class UV7System {
         this.initialized = true;
         console.log('[UV7System] Initialized successfully');
 
+        // Add class to body to signal UV7System is handling chrome
+        document.body.classList.add('uv7-system-chrome');
+
         // Dispatch ready event
         window.dispatchEvent(new CustomEvent('uv7:chrome-ready'));
     }
