@@ -20,10 +20,17 @@
 import { generateShadeContent } from './ShadeTemplate.js';
 import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 
+interface SidebarConfig {
+    title: string;
+    content: string;  // HTML string for sidebar content
+    init?: () => void; // Optional initialization function
+}
+
 interface UV7SystemOptions {
     mode?: 'shell' | 'standalone';
     appName?: string;
     prefix?: string;
+    sidebarConfig?: SidebarConfig;
 }
 
 interface UV7SystemElements {
@@ -57,11 +64,13 @@ export class UV7System {
     private prefix: string;
     private elements: UV7SystemElements;
     private initialized: boolean;
+    private sidebarConfig?: SidebarConfig;
 
     constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
         this.appName = options.appName || 'UV7 OS';
         this.prefix = options.prefix || 'shell';
+        this.sidebarConfig = options.sidebarConfig;
         this.elements = {} as UV7SystemElements;
         this.initialized = false;
     }
@@ -153,10 +162,20 @@ export class UV7System {
             return;
         }
 
-        // Inject default sidebar content
-        sidebar.innerHTML = generateDefaultSidebarContent({ title: `🏠 ${this.appName}` });
+        // Use app-specific sidebar if provided, otherwise use default
+        if (this.sidebarConfig) {
+            sidebar.innerHTML = this.sidebarConfig.content;
+            console.log('[UV7System] App-specific sidebar content rendered');
 
-        console.log('[UV7System] Sidebar content rendered');
+            // Call initialization function if provided
+            if (this.sidebarConfig.init) {
+                this.sidebarConfig.init();
+                console.log('[UV7System] Sidebar init function called');
+            }
+        } else {
+            sidebar.innerHTML = generateDefaultSidebarContent({ title: `🏠 ${this.appName}` });
+            console.log('[UV7System] Default sidebar content rendered');
+        }
     }
 
     /**
