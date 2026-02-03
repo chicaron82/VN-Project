@@ -717,6 +717,11 @@ export class BlogRenderer {
             details.appendChild(div);
         };
 
+        // Description (Main blog post body)
+        if (entry.description) {
+            addSection('blog-description', entry.description);
+        }
+
         if (entry.features) {
             hasDetails = true;
             const ul = document.createElement('ul');
