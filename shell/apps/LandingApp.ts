@@ -353,7 +353,7 @@ export class LandingApp extends BaseApp {
 
                 <div class="container">
                     <!-- Hero Section -->
-                    <div class="hero" style="text-align: center; padding: 6rem 2rem 4rem; position: relative; min-height: 50vh; display: flex; flex-direction: column; justify-content: center;">
+                    <div class="hero" style="text-align: center; padding: 4rem 2rem; position: relative;">
                         <div class="hero-watermark" aria-hidden="true">
                             <img src="assets/UnitedVoices7.png" alt="" />
                         </div>
@@ -362,13 +362,12 @@ export class LandingApp extends BaseApp {
                         <h1 class="hero-headline" style="
                             font-size: clamp(1.2rem, 3.5vw, 2.2rem);
                             font-weight: 900;
-                            margin: 0 auto 1rem;
+                            margin: 2rem auto 1rem;
                             background: linear-gradient(135deg, #00ff88 0%, #667eea 100%);
                             -webkit-background-clip: text;
                             background-clip: text;
                             -webkit-text-fill-color: transparent;
-                            line-height: 1.5;
-                            animation: fadeInUp 0.8s ease-out 0.1s backwards;
+                            line-height: 1.6;
                             max-width: 1000px;
                             padding: 0 1.5rem;
                         ">I Named a Bunch of AI While Letting My Curiosity Run Wild. I Feel Like I've Levelled Them Up. Wait, Did I Just Become a Demon Lord?</h1>
