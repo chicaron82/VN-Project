@@ -109,10 +109,24 @@ export class ShowcaseApp extends BaseApp {
                 await this.api?.statusBar.setTemporaryMessage('Loading showcase content...', 2000);
             }, 1000);
 
-            // Test action handler registration
-            this.api.onAction('showcase:test', () => {
-                console.log('🎉 [ShowcaseApp] Test action triggered!');
-                this.api?.toast.show('Test action works!', { icon: '🎉' });
+            // ═══════════════════════════════════════════════════════════════
+            // PHASE 2: Register action handlers for status bar actions
+            // ═══════════════════════════════════════════════════════════════
+            this.api.onAction('showcase:theme_toggle', () => {
+                console.log('🎨 [ShowcaseApp] Theme toggle action triggered!');
+                this.api?.toast.show('Theme toggle coming soon!', { icon: '🎨' });
+            });
+
+            this.api.onAction('showcase:share', () => {
+                console.log('📤 [ShowcaseApp] Share action triggered!');
+                this.api?.toast.success('Showcase link copied to clipboard!');
+            });
+
+            this.api.onAction('showcase:fullscreen', () => {
+                console.log('⛶ [ShowcaseApp] Fullscreen action triggered!');
+                this.api?.chrome.cinematic.set(true);
+                setTimeout(() => this.api?.chrome.cinematic.set(false), 3000);
+                this.api?.toast.show('Cinematic mode demo (3s)', { icon: '⛶' });
             });
         }
 
@@ -134,6 +148,39 @@ export class ShowcaseApp extends BaseApp {
         }
 
         console.log('[ShowcaseApp] Mounted showcase in iframe');
+    }
+
+    /**
+     * Get status bar spec with actions and theme (Phase 2 test)
+     */
+    getStatusBarSpec() {
+        return {
+            title: 'Showcase',
+            context: 'Interactive Demo',
+            actions: [
+                {
+                    id: 'showcase:theme_toggle',
+                    icon: '🎨',
+                    label: 'Theme'
+                },
+                {
+                    id: 'showcase:share',
+                    icon: '📤',
+                    label: 'Share'
+                },
+                {
+                    id: 'showcase:fullscreen',
+                    icon: '⛶',
+                    label: 'Fullscreen'
+                }
+            ],
+            theme: {
+                primaryColor: '#6366f1',
+                accentColor: '#818cf8',
+                fontFamily: 'Inter, sans-serif',
+                transitionDuration: 350
+            }
+        };
     }
 
     async unmount(): Promise<void> {

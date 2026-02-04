@@ -620,6 +620,9 @@ export class UV7System {
     applyStatusBarSpec(spec: StatusBarSpec): void {
         if (!this.elements.statusBar) return;
 
+        // Validate spec
+        this.validateStatusBarSpec(spec);
+
         // Update title/context
         const titleEl = this.elements.statusBar.querySelector('.status-title');
         const contextEl = this.elements.statusBar.querySelector('.status-context');
@@ -685,6 +688,114 @@ export class UV7System {
     }
 
     /**
+     * Apply sidebar specification with sections
+     */
+    applySidebarSpec(spec: SidebarSpec): void {
+        if (!this.elements.sidebar) return;
+
+        // If spec has sections, render declaratively
+        if (spec.sections) {
+            this.renderSidebarSections(spec.sections);
+        }
+        // Otherwise use content escape hatch
+        else if (spec.content) {
+            const contentEl = this.elements.sidebar.querySelector('.sidebar-content');
+            if (contentEl) {
+                if (typeof spec.content === 'string') {
+                    contentEl.innerHTML = spec.content;
+                } else {
+                    contentEl.innerHTML = '';
+                    contentEl.appendChild(spec.content);
+                }
+            }
+        }
+
+        // Run init if provided
+        if (spec.init) spec.init();
+    }
+
+    /**
+     * Render sidebar sections declaratively
+     */
+    private renderSidebarSections(sections: SidebarSection[]): void {
+        if (!this.elements.sidebar) return;
+
+        const contentEl = this.elements.sidebar.querySelector('.sidebar-content');
+        if (!contentEl) return;
+
+        contentEl.innerHTML = '';
+
+        sections.forEach(section => {
+            // Section title
+            if (section.title) {
+                const titleEl = document.createElement('h3');
+                titleEl.className = 'sidebar-section-title';
+                titleEl.textContent = section.title;
+                contentEl.appendChild(titleEl);
+            }
+
+            // Section items
+            section.items.forEach(item => {
+                if (item.type === 'divider') {
+                    const divider = document.createElement('hr');
+                    divider.className = 'sidebar-divider';
+                    contentEl.appendChild(divider);
+                } else if (item.type === 'button') {
+                    const button = document.createElement('button');
+                    button.className = 'sidebar-item sidebar-button';
+                    button.textContent = `${item.icon || ''} ${item.label || ''}`.trim();
+                    if (item.actionId) {
+                        button.addEventListener('click', () => this.handleActionClick(item.actionId!));
+                    }
+                    contentEl.appendChild(button);
+                } else if (item.type === 'link') {
+                    const link = document.createElement('a');
+                    link.className = 'sidebar-item sidebar-link';
+                    link.href = item.href || '#';
+                    link.textContent = `${item.icon || ''} ${item.label || ''}`.trim();
+                    contentEl.appendChild(link);
+                } else if (item.type === 'custom' && item.customContent) {
+                    contentEl.appendChild(item.customContent);
+                }
+            });
+        });
+
+        console.log(`[UV7System] Rendered ${sections.length} sidebar sections`);
+    }
+
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * SPEC VALIDATION
+     * ═══════════════════════════════════════════════════════════════
+     */
+
+    /**
+     * Validate StatusBarSpec
+     * Ensures action IDs are properly namespaced
+     */
+    private validateStatusBarSpec(spec: StatusBarSpec): void {
+        if (!spec.actions) return;
+
+        spec.actions.forEach(action => {
+            // Validate action ID format: 'app:action'
+            if (!action.id.match(/^[a-z0-9_]+:[a-z0-9_]+$/)) {
+                throw new Error(
+                    `[UV7System] Invalid action ID: "${action.id}". ` +
+                    `Must be namespaced format: "app:action" (lowercase, alphanumeric + underscore)`
+                );
+            }
+
+            // Validate required fields
+            if (!action.icon || !action.label) {
+                throw new Error(
+                    `[UV7System] Action "${action.id}" missing required fields (icon, label)`
+                );
+            }
+        });
+    }
+
+    /**
+
 
 
      * ═══════════════════════════════════════════════════════════════
