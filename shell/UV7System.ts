@@ -88,8 +88,11 @@ export interface SystemAPI {
         fadeIn(duration?: number): Promise<void>;
         hide(): void;
         show(): void;
-        enterCinematicMode(): void;
-        exitCinematicMode(): void;
+        cinematic: {
+            set(enabled: boolean): void;
+            enter(): void;
+            exit(): void;
+        };
     };
 
     // Sidebar Control
@@ -132,6 +135,8 @@ export class UV7System {
     // SystemAPI support
     private actionHandlers: Map<string, () => void>;
     private originalStatusContext: string | null;
+    private messageQueue: Array<{ msg: string; duration: number }>;
+    private isShowingMessage: boolean;
 
     constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
@@ -144,6 +149,8 @@ export class UV7System {
         // Initialize SystemAPI support
         this.actionHandlers = new Map();
         this.originalStatusContext = null;
+        this.messageQueue = [];
+        this.isShowingMessage = false;
     }
 
     /**
@@ -618,16 +625,11 @@ export class UV7System {
             // Status Bar namespace
             statusBar: {
                 setTemporaryMessage: async (msg: string, duration: number = 2000) => {
-                    if (!this.originalStatusContext && this.elements.statusContext) {
-                        this.originalStatusContext = this.elements.statusContext.textContent || '';
-                    }
-                    if (this.elements.statusContext) {
-                        this.elements.statusContext.textContent = msg;
-                    }
-                    await new Promise(resolve => setTimeout(resolve, duration));
-                    if (this.elements.statusContext && this.originalStatusContext) {
-                        this.elements.statusContext.textContent = this.originalStatusContext;
-                        this.originalStatusContext = null;
+                    // Add to queue
+                    this.messageQueue.push({ msg, duration });
+                    // Process queue if not already processing
+                    if (!this.isShowingMessage) {
+                        await this.processMessageQueue();
                     }
                 },
                 showProgress: (percent: number, label?: string) => {
@@ -672,13 +674,26 @@ export class UV7System {
                         if (el) el.style.display = '';
                     });
                 },
-                enterCinematicMode: () => {
-                    document.body.classList.add('cinematic-mode');
-                    api.chrome.hide();
-                },
-                exitCinematicMode: () => {
-                    document.body.classList.remove('cinematic-mode');
-                    api.chrome.show();
+
+                // Cinematic mode (nested namespace for cleaner API)
+                cinematic: {
+                    set: (enabled: boolean) => {
+                        if (enabled) {
+                            document.body.classList.add('cinematic-mode');
+                            api.chrome.hide();
+                        } else {
+                            document.body.classList.remove('cinematic-mode');
+                            api.chrome.show();
+                        }
+                    },
+                    enter: () => {
+                        document.body.classList.add('cinematic-mode');
+                        api.chrome.hide();
+                    },
+                    exit: () => {
+                        document.body.classList.remove('cinematic-mode');
+                        api.chrome.show();
+                    }
                 }
             },
 
