@@ -603,6 +603,7 @@ export class UV7System {
     }
 
 
+
     toggleSidebar(): void {
         const isOpen = this.elements.sidebar?.classList.contains('open');
         console.log(`🔄 [UV7System] toggleSidebar() called - current state: ${isOpen ? 'OPEN' : 'CLOSED'}`);
@@ -613,6 +614,38 @@ export class UV7System {
     }
 
     /**
+     * Process message queue (FIFO) for status bar temporary messages
+     * Ensures messages don't overlap and are shown in order
+     */
+    private async processMessageQueue(): Promise<void> {
+        while (this.messageQueue.length > 0) {
+            this.isShowingMessage = true;
+            const { msg, duration } = this.messageQueue.shift()!;
+
+            // Save original context on first message
+            if (!this.originalStatusContext && this.elements.statusContext) {
+                this.originalStatusContext = this.elements.statusContext.textContent || '';
+            }
+
+            // Show message
+            if (this.elements.statusContext) {
+                this.elements.statusContext.textContent = msg;
+            }
+
+            // Wait for duration
+            await new Promise(resolve => setTimeout(resolve, duration));
+
+            // Restore original context if queue is empty
+            if (this.messageQueue.length === 0 && this.elements.statusContext && this.originalStatusContext) {
+                this.elements.statusContext.textContent = this.originalStatusContext;
+                this.originalStatusContext = null;
+            }
+        }
+        this.isShowingMessage = false;
+    }
+
+    /**
+
      * ═══════════════════════════════════════════════════════════════
      * SYSTEM API - PUBLIC INTERFACE
      * 
