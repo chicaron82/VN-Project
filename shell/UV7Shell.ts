@@ -441,6 +441,10 @@ export class UV7Shell {
                 this.gestureRouter.registerApp(appId, app.gestureHandlers);
             }
 
+            // Expose SystemAPI to app (Belle's controlled API pattern)
+            app.api = this.system!.getAPI();
+            console.log(`[UV7Shell] SystemAPI exposed to ${appId}`);
+
             // Update status bar
             this.updateStatusBar(app.getStatusBarConfig());
 
