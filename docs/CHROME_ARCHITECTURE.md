@@ -575,22 +575,256 @@ class ShowcaseApp extends BaseApp {
 
 ---
 
-## 🤔 Open Questions
+## ✅ Solved Patterns (Belle's Contributions)
 
-1. **Function Serialization**: How to send `onClick` handlers via `postMessage`?
-   - **Option A**: Send action IDs, shell maps to functions
-   - **Option B**: Use `MessageChannel` for bidirectional communication
-   - **Option C**: Apps in iframes import shared action modules
+### 1. Action ID & Signal Pattern (Function Serialization SOLVED)
 
-2. **Spec Versioning**: How to handle spec evolution?
+**The Challenge**: Cannot send `onClick: () => this.doStuff()` via `postMessage`.
+
+**The Solution**: Treat chrome as a **Remote Control** - send action IDs, not functions.
+
+#### How It Works
+
+**Step 1: Apps declare action IDs in specs**
+
+```typescript
+interface StatusBarAction {
+    id: string;  // e.g., 'showcase:theme_toggle', 'v1:save_game'
+    icon: string;
+    label: string;
+    // NO onClick function!
+}
+
+// In app spec
+actions: [
+    { id: 'showcase:theme_toggle', icon: '🌙', label: 'Toggle Theme' },
+    { id: 'showcase:save_progress', icon: '💾', label: 'Save Progress' }
+]
+```
+
+**Step 2: Shell emits events when user clicks**
+
+```typescript
+// In UV7System when action button is clicked
+private handleActionClick(actionId: string): void {
+    // Emit event to app
+    window.dispatchEvent(new CustomEvent('uv7:action-triggered', {
+        detail: { actionId }
+    }));
+    
+    // For iframe apps, send via postMessage
+    if (this.currentAppIsIframe) {
+        this.currentAppIframe.contentWindow.postMessage({
+            type: 'uv7:action-triggered',
+            actionId
+        }, '*');
+    }
+}
+```
+
+**Step 3: Apps register action handlers (The "Router")**
+
+```typescript
+// In app initialization
+class ShowcaseApp extends BaseApp {
+    async mount(container: HTMLElement, params: Record<string, any>): Promise<void> {
+        await super.mount(container, params);
+        
+        // Register action handlers
+        this.api.onAction('showcase:theme_toggle', () => this.toggleTheme());
+        this.api.onAction('showcase:save_progress', () => this.saveProgress());
+    }
+}
+
+// SystemAPI includes:
+interface SystemAPI {
+    // ... other methods ...
+    
+    // Action handler registration
+    onAction(actionId: string, handler: () => void): void;
+    offAction(actionId: string): void;
+}
+```
+
+#### Benefits ✅
+
+- **Secure**: No `eval()`, no function serialization
+- **Decoupled**: Shell doesn't care what `'save_game'` does
+- **Bidirectional**: Works over `postMessage` seamlessly
+- **Namespaced**: Use `'appId:actionName'` to prevent collisions
+
+#### Updated Interfaces
+
+```typescript
+interface StatusBarSpec {
+    title: string;
+    context?: string;
+    showBreadcrumb?: boolean;
+    breadcrumbPath?: string[];
+    actions?: StatusBarAction[];  // Now uses action IDs!
+    mode?: 'normal' | 'cinematic' | 'minimal';
+    theme?: ChromeTheme;  // NEW: See Theme Injection below
+}
+
+interface StatusBarAction {
+    id: string;  // Namespaced: 'appId:actionName'
+    icon: string;
+    label: string;
+    // NO onClick - handled via onAction() registration
+}
+
+interface SidebarItem {
+    type: 'button' | 'link' | 'divider' | 'custom';
+    icon?: string;
+    label?: string;
+    actionId?: string;  // NEW: Instead of action: () => void
+    href?: string;
+    customContent?: HTMLElement;
+}
+```
+
+---
+
+### 2. Theme Injection (Seamless App Transitions)
+
+**The Vision**: The OS "chameleons" into the app it's running. When you load V1, the entire chrome morphs to V1's aesthetic. When you switch to V2, it smoothly transitions to V2's palette.
+
+**The Result**: Users feel like the entire computer has changed modes, not just the iframe.
+
+#### ChromeTheme Interface
+
+```typescript
+interface ChromeTheme {
+    // Core colors
+    primaryColor: string;    // e.g., "#ff0055" for V1, "#00ff88" for V2
+    accentColor: string;     // Secondary/highlight color
+    
+    // Typography
+    fontFamily?: string;     // "Courier New" vs "Inter"
+    
+    // Status bar appearance
+    statusBarVariant?: 'light' | 'dark' | 'auto';
+    
+    // Transition behavior
+    transitionDuration?: number;  // How fast to chameleon (ms), default 300
+}
+```
+
+#### Usage in Specs
+
+```typescript
+class V1App extends BaseApp {
+    getChromeSpecs(): ChromeSpecs {
+        return {
+            statusBar: {
+                title: 'V1 Game',
+                theme: {
+                    primaryColor: '#ff0055',
+                    accentColor: '#ff66aa',
+                    fontFamily: 'Courier New, monospace',
+                    statusBarVariant: 'dark',
+                    transitionDuration: 500  // Slower, dramatic transition
+                }
+            },
+            // ... sidebar, shade ...
+        };
+    }
+}
+
+class V2App extends BaseApp {
+    getChromeSpecs(): ChromeSpecs {
+        return {
+            statusBar: {
+                title: 'V2 Engine',
+                theme: {
+                    primaryColor: '#00ff88',
+                    accentColor: '#00ccff',
+                    fontFamily: 'Inter, sans-serif',
+                    statusBarVariant: 'dark',
+                    transitionDuration: 300  // Snappy, modern
+                }
+            },
+            // ... sidebar, shade ...
+        };
+    }
+}
+```
+
+#### Implementation in UV7System
+
+```typescript
+class UV7System {
+    private applyTheme(theme: ChromeTheme): void {
+        const duration = theme.transitionDuration || 300;
+        
+        // Set CSS custom properties with transition
+        document.documentElement.style.setProperty('--transition-duration', `${duration}ms`);
+        document.documentElement.style.setProperty('--chrome-primary', theme.primaryColor);
+        document.documentElement.style.setProperty('--chrome-accent', theme.accentColor);
+        
+        if (theme.fontFamily) {
+            document.documentElement.style.setProperty('--chrome-font', theme.fontFamily);
+        }
+        
+        // Apply variant class
+        if (theme.statusBarVariant) {
+            document.body.classList.remove('status-light', 'status-dark', 'status-auto');
+            document.body.classList.add(`status-${theme.statusBarVariant}`);
+        }
+    }
+}
+```
+
+#### CSS Support
+
+```css
+/* In shell.css or uv7-os.css */
+:root {
+    --transition-duration: 300ms;
+    --chrome-primary: #00ff88;
+    --chrome-accent: #00ccff;
+    --chrome-font: 'Inter', sans-serif;
+}
+
+#uv7-status-bar,
+#uv7-sidebar,
+#uv7-shade {
+    transition: 
+        background-color var(--transition-duration) ease,
+        color var(--transition-duration) ease,
+        border-color var(--transition-duration) ease;
+    
+    background-color: var(--chrome-primary);
+    font-family: var(--chrome-font);
+}
+
+/* Accent elements */
+.status-bar-action:hover,
+.sidebar-item:hover {
+    background-color: var(--chrome-accent);
+}
+```
+
+#### Benefits ✅
+
+- **Seamless Transitions**: No jarring color changes
+- **App Identity**: Each app feels unique
+- **User Delight**: The OS feels alive and responsive
+- **Easy to Implement**: Just CSS custom properties + transitions
+
+---
+
+## 🤔 Remaining Open Questions
+
+1. **Spec Versioning**: How to handle spec evolution?
    - Add `specVersion` field?
    - Maintain backward compatibility?
 
-3. **Performance**: Does message passing add noticeable latency?
+2. **Performance**: Does message passing add noticeable latency?
    - Benchmark chrome registration time
    - Consider caching rendered specs
 
-4. **TypeScript**: How to share types between app and shell?
+3. **TypeScript**: How to share types between app and shell?
    - Shared `types/` directory?
    - Publish as internal package?
 
