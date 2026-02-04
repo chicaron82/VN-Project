@@ -470,6 +470,7 @@
     from {
         opacity: 1;
     }
+
     to {
         opacity: 0;
     }
@@ -479,6 +480,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -487,4 +489,65 @@
 /* Prevent layout shift during transition */
 ::view-transition-group(root) {
     animation-duration: 300ms;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHROME THEME VARIABLES (Phase 2)
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+    --chrome-transition-duration: 300ms;
+    --chrome-primary: #6366f1;
+    --chrome-accent: #818cf8;
+    --chrome-font: 'Inter', sans-serif;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS BAR ACTIONS (Phase 2)
+   ═══════════════════════════════════════════════════════════════ */
+
+.status-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+    padding-right: 12px;
+}
+
+.status-action {
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-family: var(--chrome-font);
+    cursor: pointer;
+    transition: all var(--chrome-transition-duration) ease;
+    white-space: nowrap;
+}
+
+.status-action:hover {
+    background: var(--chrome-primary);
+    border-color: var(--chrome-accent);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.status-action:active {
+    transform: translateY(0);
+}
+
+/* Status bar modes */
+body.status-cinematic .status-bar {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.status-minimal .status-bar {
+    height: 32px;
+}
+
+body.status-minimal .status-actions {
+    display: none;
 }

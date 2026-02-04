@@ -609,6 +609,83 @@ export class UV7System {
     }
 
     /**
+     * ═══════════════════════════════════════════════════════════════
+     * DECLARATIVE SPEC RENDERING (Phase 2)
+     * ═══════════════════════════════════════════════════════════════
+     */
+
+    /**
+     * Apply status bar specification with actions and theme
+     */
+    applyStatusBarSpec(spec: StatusBarSpec): void {
+        if (!this.elements.statusBar) return;
+
+        // Update title/context
+        const titleEl = this.elements.statusBar.querySelector('.status-title');
+        const contextEl = this.elements.statusBar.querySelector('.status-context');
+        if (titleEl) titleEl.textContent = spec.title;
+        if (contextEl && spec.context) contextEl.textContent = spec.context;
+
+        // Render actions
+        if (spec.actions) this.renderStatusBarActions(spec.actions);
+
+        // Apply theme
+        if (spec.theme) this.applyTheme(spec.theme);
+
+        // Apply mode
+        if (spec.mode) {
+            document.body.classList.remove('status-normal', 'status-cinematic', 'status-minimal');
+            document.body.classList.add(`status-${spec.mode}`);
+        }
+    }
+
+    /**
+     * Render action buttons in status bar
+     */
+    private renderStatusBarActions(actions: StatusBarAction[]): void {
+        if (!this.elements.statusBar) return;
+
+        let actionsContainer = this.elements.statusBar.querySelector('.status-actions') as HTMLElement;
+        if (!actionsContainer) {
+            actionsContainer = document.createElement('div');
+            actionsContainer.className = 'status-actions';
+            this.elements.statusBar.appendChild(actionsContainer);
+        }
+
+        actionsContainer.innerHTML = '';
+        actions.forEach(action => {
+            const button = document.createElement('button');
+            button.className = 'status-action';
+            button.setAttribute('data-action-id', action.id);
+            button.setAttribute('aria-label', action.label);
+            button.textContent = `${action.icon} ${action.label}`;
+            button.addEventListener('click', () => this.handleActionClick(action.id));
+            actionsContainer.appendChild(button);
+        });
+
+        console.log(`[UV7System] Rendered ${actions.length} status bar actions`);
+    }
+
+    /**
+     * Apply chrome theme (Belle's Theme Injection pattern)
+     */
+    applyTheme(theme: ChromeTheme): void {
+        const duration = theme.transitionDuration || 300;
+        document.documentElement.style.setProperty('--chrome-transition-duration', `${duration}ms`);
+        document.documentElement.style.setProperty('--chrome-primary', theme.primaryColor);
+        document.documentElement.style.setProperty('--chrome-accent', theme.accentColor);
+        if (theme.fontFamily) {
+            document.documentElement.style.setProperty('--chrome-font', theme.fontFamily);
+        }
+        if (theme.statusBarVariant) {
+            document.body.classList.remove('status-light', 'status-dark', 'status-auto');
+            document.body.classList.add(`status-${theme.statusBarVariant}`);
+        }
+        console.log(`[UV7System] Applied theme: ${theme.primaryColor}`);
+    }
+
+    /**
+
 
      * ═══════════════════════════════════════════════════════════════
      * SYSTEM API - PUBLIC INTERFACE
