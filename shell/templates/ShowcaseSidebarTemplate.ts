@@ -136,7 +136,7 @@ export function initShowcaseSidebarListeners(): void {
                 window.location.href = '../shell.html';
             } else if (action === 'toggle-theme') {
                 // Use shared ThemeManager for proper theme handling
-                import('../../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
+                import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
                     const themeManager = getThemeManager();
                     themeManager.toggle();
                 }).catch(err => {
