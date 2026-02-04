@@ -443,3 +443,48 @@
 .tori-status:active {
     transform: scale(0.95);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   VIEW TRANSITIONS API - SMOOTH PAGE NAVIGATION
+   Belle's "No Flicker" Protocol
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Smooth crossfade for page transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: 300ms;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Old page fades out */
+::view-transition-old(root) {
+    animation-name: fade-out;
+}
+
+/* New page fades in */
+::view-transition-new(root) {
+    animation-name: fade-in;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Prevent layout shift during transition */
+::view-transition-group(root) {
+    animation-duration: 300ms;
+}
