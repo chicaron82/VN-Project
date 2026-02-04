@@ -516,7 +516,13 @@ export class UV7Shell {
         // Update sidebar content
         const sidebarContent = sidebar.querySelector('.sidebar-content');
         if (sidebarContent && content) {
-            sidebarContent.innerHTML = content;
+            // Handle both string and HTMLElement content
+            if (typeof content === 'string') {
+                sidebarContent.innerHTML = content;
+            } else {
+                sidebarContent.innerHTML = ''; // Clear existing
+                sidebarContent.appendChild(content);
+            }
 
             // Run initialization function if provided
             if (typeof init === 'function') {
