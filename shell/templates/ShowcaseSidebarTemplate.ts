@@ -9,6 +9,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { navigateWithTransition } from '../utils/NavigationHelper.js';
+
 /**
  * Generate showcase-specific sidebar content
  */
@@ -124,16 +126,16 @@ export function initShowcaseSidebarListeners(): void {
             const action = btn.getAttribute('data-action');
 
             if (action === 'launch-v1') {
-                window.location.href = '../index.html';
+                navigateWithTransition('../index.html');
             } else if (action === 'launch-v2') {
-                window.location.href = '../index.v2.html';
+                navigateWithTransition('../index.v2.html');
             } else if (action === 'go-home') {
                 const tabController = (window as any).tabController;
                 if (tabController) {
                     tabController.setActiveTab('home');
                 }
             } else if (action === 'go-landing') {
-                window.location.href = '../shell.html';
+                navigateWithTransition('../shell.html');
             } else if (action === 'toggle-theme') {
                 // Use shared ThemeManager for proper theme handling
                 import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
