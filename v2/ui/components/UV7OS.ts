@@ -350,12 +350,15 @@ export class UV7OS {
             });
         }
 
-        // Backdrop closes shade/sidebar
-        if (this.elements.backdrop) {
+        // Backdrop closes shade/sidebar - ONLY if UV7System isn't handling it
+        const isUV7SystemHandled = document.body.classList.contains('uv7-system-chrome');
+        if (this.elements.backdrop && !isUV7SystemHandled) {
             this.elements.backdrop.addEventListener('click', () => {
                 this.closeShade();
                 this.closeSidebar();
             });
+        } else if (isUV7SystemHandled) {
+            console.log('[UV7OS] Backdrop handled by UV7System, skipping');
         }
 
         // Quick actions

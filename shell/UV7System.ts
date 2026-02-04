@@ -201,20 +201,34 @@ export class UV7System {
 
         // Wire up backdrop
         if (this.elements.backdrop) {
-            // Remove old listener by cloning
-            const newBackdrop = this.elements.backdrop.cloneNode(true);
-            this.elements.backdrop.parentNode.replaceChild(newBackdrop, this.elements.backdrop);
-            this.elements.backdrop = newBackdrop;
+            // Remove old listeners by cloning
+            const newBackdrop = this.elements.backdrop.cloneNode(true) as HTMLElement;
+            const parent = this.elements.backdrop.parentNode;
+            if (parent) {
+                parent.replaceChild(newBackdrop, this.elements.backdrop);
+                this.elements.backdrop = newBackdrop;
 
-            this.elements.backdrop.addEventListener('click', () => {
-                console.log('🔘 [UV7System] Backdrop clicked');
-                if (this.elements.shade?.classList.contains('open')) {
-                    this.closeShade();
-                }
-                if (this.elements.sidebar?.classList.contains('open')) {
-                    this.closeSidebar();
-                }
-            });
+                this.elements.backdrop.addEventListener('click', () => {
+                    console.log('🔘 [UV7System] Backdrop clicked');
+                    if (this.elements.shade?.classList.contains('open')) {
+                        this.closeShade();
+                    }
+                    if (this.elements.sidebar?.classList.contains('open')) {
+                        this.closeSidebar();
+                    }
+                });
+            } else {
+                console.warn('[UV7System] Backdrop parent node not found, using existing element');
+                this.elements.backdrop.addEventListener('click', () => {
+                    console.log('🔘 [UV7System] Backdrop clicked');
+                    if (this.elements.shade?.classList.contains('open')) {
+                        this.closeShade();
+                    }
+                    if (this.elements.sidebar?.classList.contains('open')) {
+                        this.closeSidebar();
+                    }
+                });
+            }
         }
 
         console.log('✅ [UV7System] Shade controls initialized');
