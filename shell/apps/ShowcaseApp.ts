@@ -95,6 +95,28 @@ export class ShowcaseApp extends BaseApp {
             </div>
         `;
 
+        // ═══════════════════════════════════════════════════════════════
+        // SYSTEM API TEST - Demonstrating Belle's controlled API pattern
+        // ═══════════════════════════════════════════════════════════════
+        if (this.api) {
+            console.log('🎯 [ShowcaseApp] Testing SystemAPI...');
+
+            // Test toast notifications
+            setTimeout(() => this.api?.toast.success('Showcase loaded!'), 500);
+
+            // Test temporary status message
+            setTimeout(async () => {
+                await this.api?.statusBar.setTemporaryMessage('Loading showcase content...', 2000);
+            }, 1000);
+
+            // Test action handler registration
+            this.api.onAction('showcase:test', () => {
+                console.log('🎉 [ShowcaseApp] Test action triggered!');
+                this.api?.toast.show('Test action works!', { icon: '🎉' });
+            });
+        }
+
+
         // Send initial theme to iframe when it loads
         const iframe = container.querySelector('#showcase-iframe') as HTMLIFrameElement;
         if (iframe) {
