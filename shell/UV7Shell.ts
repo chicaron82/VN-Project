@@ -56,7 +56,7 @@ interface StatusBarConfig {
 
 interface SidebarConfig {
     title: string;
-    content: string;
+    content: string | HTMLElement;
     init?: () => void;
 }
 
@@ -310,10 +310,8 @@ export class UV7Shell {
      */
     private initGlobalAudio(): void {
         document.addEventListener('click', (e) => {
-            // Resume context on first interaction
-            if (shellAudio.ctx?.state === 'suspended') {
-                shellAudio.resume();
-            }
+            // Resume audio context on first interaction
+            shellAudio.resume();
 
             // Play sound for interactive elements
             const target = (e.target as HTMLElement).closest('button, a, .clickable, .app-card, .quick-action');
