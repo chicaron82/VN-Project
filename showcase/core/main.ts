@@ -104,6 +104,23 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.body.classList.add('in-shell-mode');
         console.log('⏭️ Skipping UV7 System (shell provides chrome)');
         console.log('⏭️ Skipping Sidebar/NotificationShade (shell provides context-aware sidebar)');
+
+        // Hide chrome elements since shell provides them
+        const chromeElements = [
+            '#uv7-sidebar',
+            '#uv7-sidebar-toggle',
+            '#uv7-shade',
+            '#uv7-backdrop',
+            '#uv7-status-bar'
+        ];
+
+        chromeElements.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                (el as HTMLElement).style.display = 'none';
+                console.log(`[Showcase] Hiding ${selector} (shell provides it)`);
+            }
+        });
     } else {
         // =================================================================
         // PHASE 1: CORE SYSTEM (only in standalone mode)
