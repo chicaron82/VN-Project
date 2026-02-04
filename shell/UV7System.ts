@@ -22,7 +22,7 @@ import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 
 interface SidebarConfig {
     title: string;
-    content: string;  // HTML string for sidebar content
+    content: string | HTMLElement;  // HTML string for sidebar content
     init?: () => void; // Optional initialization function
 }
 
@@ -168,7 +168,12 @@ export class UV7System {
 
         // Use app-specific sidebar if provided, otherwise use default
         if (this.sidebarConfig) {
-            sidebar.innerHTML = this.sidebarConfig.content;
+            if (typeof this.sidebarConfig.content === 'string') {
+                sidebar.innerHTML = this.sidebarConfig.content;
+            } else {
+                sidebar.innerHTML = ''; // Clear existing content
+                sidebar.appendChild(this.sidebarConfig.content);
+            }
             console.log('[UV7System] App-specific sidebar content rendered');
 
             // Call initialization function if provided
@@ -192,7 +197,9 @@ export class UV7System {
             console.log('✅ [UV7System] Shade close button found');
             closeBtn.addEventListener('click', (e) => {
                 console.log('🔘 [UV7System] Shade close button clicked');
-                e.stopPropagation();
+                // Resume context on first interaction
+                // Note: ctx is private, use resume() which handles state check internally
+                // shellAudio.resume(); // Assuming shellAudio is globally available or imported
                 this.closeShade();
             });
         } else {
