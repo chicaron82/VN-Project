@@ -8,6 +8,7 @@
  */
 
 import type { UV7Shell } from '../UV7Shell.js';
+import type { SystemAPI } from '../UV7System.js';
 
 export interface StatusBarConfig {
     title: string;
@@ -26,6 +27,7 @@ export interface GestureHandlers {
 
 export class BaseApp {
     shell: UV7Shell;
+    api: SystemAPI | null;  // Controlled API for chrome manipulation
     id: string;
     container: HTMLElement | null;
     mounted: boolean;
@@ -33,6 +35,7 @@ export class BaseApp {
 
     constructor(shell: UV7Shell) {
         this.shell = shell;
+        this.api = null;  // Set by shell after mount
         this.id = 'base';
         this.container = null;
         this.mounted = false;
