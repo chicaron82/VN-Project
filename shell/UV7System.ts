@@ -58,6 +58,69 @@ interface ToriSettings {
     notifyCritical: boolean;
 }
 
+/**
+ * ═══════════════════════════════════════════════════════════════
+ * SYSTEM API - CONTROLLED RUNTIME INTERFACE
+ * 
+ * Apps use this API instead of calling system methods directly.
+ * Provides controlled, documented interface for chrome manipulation.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+interface ToastOptions {
+    duration?: number;
+    icon?: string;
+    action?: { label: string; onClick: () => void };
+}
+
+export interface SystemAPI {
+    // Status Bar Runtime Control
+    statusBar: {
+        setTemporaryMessage(msg: string, duration?: number): Promise<void>;
+        showProgress(percent: number, label?: string): void;
+        clearProgress(): void;
+        pulse(duration?: number): void;
+    };
+
+    // Chrome Visibility & Transitions
+    chrome: {
+        fadeOut(duration?: number): Promise<void>;
+        fadeIn(duration?: number): Promise<void>;
+        hide(): void;
+        show(): void;
+        enterCinematicMode(): void;
+        exitCinematicMode(): void;
+    };
+
+    // Sidebar Control
+    sidebar: {
+        open(): void;
+        close(): void;
+        toggle(): void;
+        isOpen(): boolean;
+    };
+
+    // Shade Control
+    shade: {
+        open(): void;
+        close(): void;
+        toggle(): void;
+        isOpen(): boolean;
+    };
+
+    // Toast Notifications
+    toast: {
+        show(message: string, options?: ToastOptions): void;
+        success(message: string): void;
+        error(message: string): void;
+        warning(message: string): void;
+    };
+
+    // Action Handler Registration (Belle's Action ID Pattern)
+    onAction(actionId: string, handler: () => void): void;
+    offAction(actionId: string): void;
+}
+
 export class UV7System {
     private mode: 'shell' | 'standalone';
     private appName: string;
@@ -66,6 +129,10 @@ export class UV7System {
     private initialized: boolean;
     private sidebarConfig?: SidebarConfig;
 
+    // SystemAPI support
+    private actionHandlers: Map<string, () => void>;
+    private originalStatusContext: string | null;
+
     constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
         this.appName = options.appName || 'UV7 OS';
@@ -73,6 +140,10 @@ export class UV7System {
         this.sidebarConfig = options.sidebarConfig;
         this.elements = {} as UV7SystemElements;
         this.initialized = false;
+
+        // Initialize SystemAPI support
+        this.actionHandlers = new Map();
+        this.originalStatusContext = null;
     }
 
     /**
@@ -465,10 +536,12 @@ export class UV7System {
     /**
      * Show toast notification
      * @param {string} message - Toast message
+     * @param {string} icon - Optional icon to prepend
+     * @param {number} duration - Duration in ms (default 2000)
      */
-    private showToast(message: string): void {
+    private showToast(message: string, icon?: string, duration: number = 2000): void {
         const toast = document.createElement('div');
-        toast.textContent = message;
+        toast.textContent = icon ? `${icon} ${message}` : message;
         toast.style.cssText = `
             position: fixed;
             bottom: 100px;
@@ -482,11 +555,11 @@ export class UV7System {
             font-weight: 500;
             z-index: 99999;
             pointer-events: none;
-            animation: fadeInOut 2s ease-in-out;
+            animation: fadeInOut ${duration}ms ease-in-out;
         `;
 
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
+        setTimeout(() => toast.remove(), duration);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -522,6 +595,7 @@ export class UV7System {
         this.elements.backdrop?.classList.remove('visible');
     }
 
+
     toggleSidebar(): void {
         const isOpen = this.elements.sidebar?.classList.contains('open');
         console.log(`🔄 [UV7System] toggleSidebar() called - current state: ${isOpen ? 'OPEN' : 'CLOSED'}`);
@@ -530,6 +604,153 @@ export class UV7System {
         this.elements.backdrop?.classList.toggle('visible');
         console.log(`🔄 [UV7System] toggleSidebar() completed - new state: ${!isOpen ? 'OPEN' : 'CLOSED'}`);
     }
+
+    /**
+     * ═══════════════════════════════════════════════════════════════
+     * SYSTEM API - PUBLIC INTERFACE
+     * 
+     * Returns controlled API for apps to manipulate chrome.
+     * Replaces direct system method calls.
+     * ═══════════════════════════════════════════════════════════════
+     */
+    getAPI(): SystemAPI {
+        const api: SystemAPI = {
+            // Status Bar namespace
+            statusBar: {
+                setTemporaryMessage: async (msg: string, duration: number = 2000) => {
+                    if (!this.originalStatusContext && this.elements.statusContext) {
+                        this.originalStatusContext = this.elements.statusContext.textContent || '';
+                    }
+                    if (this.elements.statusContext) {
+                        this.elements.statusContext.textContent = msg;
+                    }
+                    await new Promise(resolve => setTimeout(resolve, duration));
+                    if (this.elements.statusContext && this.originalStatusContext) {
+                        this.elements.statusContext.textContent = this.originalStatusContext;
+                        this.originalStatusContext = null;
+                    }
+                },
+                showProgress: (percent: number, label?: string) => {
+                    console.log(`[SystemAPI] showProgress: ${percent}% ${label || ''}`);
+                },
+                clearProgress: () => {
+                    console.log('[SystemAPI] clearProgress');
+                },
+                pulse: (duration: number = 500) => {
+                    this.elements.statusBar?.classList.add('pulse');
+                    setTimeout(() => this.elements.statusBar?.classList.remove('pulse'), duration);
+                }
+            },
+
+            // Chrome namespace
+            chrome: {
+                fadeOut: async (duration: number = 300) => {
+                    [this.elements.statusBar, this.elements.sidebar, this.elements.shade].forEach(el => {
+                        if (el) {
+                            el.style.transition = `opacity ${duration}ms ease`;
+                            el.style.opacity = '0';
+                        }
+                    });
+                    await new Promise(resolve => setTimeout(resolve, duration));
+                },
+                fadeIn: async (duration: number = 300) => {
+                    [this.elements.statusBar, this.elements.sidebar, this.elements.shade].forEach(el => {
+                        if (el) {
+                            el.style.transition = `opacity ${duration}ms ease`;
+                            el.style.opacity = '1';
+                        }
+                    });
+                    await new Promise(resolve => setTimeout(resolve, duration));
+                },
+                hide: () => {
+                    [this.elements.statusBar, this.elements.sidebar, this.elements.shade].forEach(el => {
+                        if (el) el.style.display = 'none';
+                    });
+                },
+                show: () => {
+                    [this.elements.statusBar, this.elements.sidebar, this.elements.shade].forEach(el => {
+                        if (el) el.style.display = '';
+                    });
+                },
+                enterCinematicMode: () => {
+                    document.body.classList.add('cinematic-mode');
+                    api.chrome.hide();
+                },
+                exitCinematicMode: () => {
+                    document.body.classList.remove('cinematic-mode');
+                    api.chrome.show();
+                }
+            },
+
+            // Sidebar namespace
+            sidebar: {
+                open: () => this.openSidebar(),
+                close: () => this.closeSidebar(),
+                toggle: () => this.toggleSidebar(),
+                isOpen: () => this.elements.sidebar?.classList.contains('open') || false
+            },
+
+            // Shade namespace
+            shade: {
+                open: () => this.openShade(),
+                close: () => this.closeShade(),
+                toggle: () => {
+                    if (this.elements.shade?.classList.contains('open')) {
+                        this.closeShade();
+                    } else {
+                        this.openShade();
+                    }
+                },
+                isOpen: () => this.elements.shade?.classList.contains('open') || false
+            },
+
+            // Toast namespace
+            toast: {
+                show: (message: string, options?: ToastOptions) => {
+                    this.showToast(message, options?.icon, options?.duration);
+                },
+                success: (message: string) => {
+                    this.showToast(message, '✅', 2000);
+                },
+                error: (message: string) => {
+                    this.showToast(message, '❌', 3000);
+                },
+                warning: (message: string) => {
+                    this.showToast(message, '⚠️', 2500);
+                }
+            },
+
+            // Action handler registration (Belle's pattern)
+            onAction: (actionId: string, handler: () => void) => {
+                this.actionHandlers.set(actionId, handler);
+                console.log(`[SystemAPI] Registered action handler: ${actionId}`);
+            },
+            offAction: (actionId: string) => {
+                this.actionHandlers.delete(actionId);
+                console.log(`[SystemAPI] Unregistered action handler: ${actionId}`);
+            }
+        };
+
+        return api;
+    }
+
+    /**
+     * Handle action click - emit event for apps to handle
+     * Part of Belle's Action ID & Signal pattern
+     */
+    private handleActionClick(actionId: string): void {
+        console.log(`[UV7System] Action triggered: ${actionId}`);
+        const handler = this.actionHandlers.get(actionId);
+        if (handler) {
+            handler();
+        } else {
+            console.warn(`[UV7System] No handler registered for action: ${actionId}`);
+        }
+        window.dispatchEvent(new CustomEvent('uv7:action-triggered', {
+            detail: { actionId }
+        }));
+    }
 }
+
 
 export default UV7System;
