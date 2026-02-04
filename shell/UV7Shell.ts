@@ -133,10 +133,13 @@ export class UV7Shell {
         // Initialize Grab Handle Controller (V1 Parity)
         this.grabHandle = new GrabHandleController();
 
-        // Listen for controller toggle events
-        window.addEventListener('uv7:sidebar-toggle', () => {
-            this.system!.toggleSidebar();
-        });
+        // NOTE: GrabHandleController's toggle event is DISABLED
+        // UV7System.initSidebarToggle() handles the button click directly
+        // Listening to 'uv7:sidebar-toggle' here causes DOUBLE TOGGLE (open then close)
+        // 
+        // window.addEventListener('uv7:sidebar-toggle', () => {
+        //     this.system!.toggleSidebar();
+        // });
 
         // Initialize Tori-gatchi Status Bridge (BEFORE ToriService so listener is ready)
         this.initToriBridge();
