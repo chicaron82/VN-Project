@@ -135,7 +135,7 @@ export function initShowcaseSidebarListeners(): void {
                     tabController.setActiveTab('home');
                 }
             } else if (action === 'go-landing') {
-                navigateWithTransition('../shell.html');
+                navigateWithTransition('../index.html');
             } else if (action === 'toggle-theme') {
                 // Use shared ThemeManager for proper theme handling
                 import('../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
