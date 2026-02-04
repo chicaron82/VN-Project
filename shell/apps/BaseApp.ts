@@ -156,6 +156,56 @@ export class BaseApp {
     }
 
     /**
+     * Get status bar spec (Phase 2)
+     * 
+     * Optional method for apps to provide declarative status bar configuration
+     * with actions, theme, and mode. Replaces getStatusBarConfig().
+     * 
+     * @returns StatusBarSpec with title, context, actions, theme, and mode
+     * 
+     * @example
+     * getStatusBarSpec() {
+     *   return {
+     *     title: 'My App',
+     *     context: 'Ready',
+     *     actions: [
+     *       { id: 'myapp:settings', icon: '⚙️', label: 'Settings' }
+     *     ],
+     *     theme: {
+     *       primaryColor: '#6366f1',
+     *       accentColor: '#818cf8'
+     *     }
+     *   };
+     * }
+     */
+    getStatusBarSpec?(): any; // Using 'any' to avoid circular import
+
+    /**
+     * Get sidebar spec (Phase 2)
+     * 
+     * Optional method for apps to provide declarative sidebar configuration
+     * with sections, items, and action routing.
+     * 
+     * @returns SidebarSpec with sections array
+     * 
+     * @example
+     * getSidebarSpec() {
+     *   return {
+     *     sections: [
+     *       {
+     *         title: 'Navigation',
+     *         items: [
+     *           { type: 'button', icon: '🏠', label: 'Home', actionId: 'app:home' }
+     *         ]
+     *       }
+     *     ]
+     *   };
+     * }
+     */
+    getSidebarSpec?(): any; // Using 'any' to avoid circular import
+
+    /**
+
      * Get current app state for persistence
      */
     getState(): Record<string, any> {

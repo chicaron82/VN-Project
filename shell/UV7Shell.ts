@@ -445,11 +445,24 @@ export class UV7Shell {
             app.api = this.system!.getAPI();
             console.log(`[UV7Shell] SystemAPI exposed to ${appId}`);
 
-            // Update status bar
-            this.updateStatusBar(app.getStatusBarConfig());
+            // Apply chrome specs (Phase 2)
+            if (typeof app.getStatusBarSpec === 'function') {
+                const spec = app.getStatusBarSpec();
+                this.system!.applyStatusBarSpec(spec);
+                console.log(`[UV7Shell] Applied StatusBarSpec for ${appId}`);
+            } else {
+                // Fallback to old getStatusBarConfig() for backwards compatibility
+                this.updateStatusBar(app.getStatusBarConfig());
+            }
 
-            // Update sidebar
-            this.updateSidebar(app.getSidebarConfig());
+            if (typeof app.getSidebarSpec === 'function') {
+                const spec = app.getSidebarSpec();
+                this.system!.applySidebarSpec(spec);
+                console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
+            } else {
+                // Fallback to old getSidebarConfig() for backwards compatibility
+                this.updateSidebar(app.getSidebarConfig());
+            }
 
             // Store reference
             this.currentApp = app;
