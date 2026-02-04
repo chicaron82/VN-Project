@@ -20,10 +20,39 @@
 import { generateShadeContent } from './ShadeTemplate.js';
 import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 
+// Import shared types
+import type {
+    SystemAPI,
+    ToastOptions,
+    ChromeTheme,
+    StatusBarSpec,
+    StatusBarAction,
+    SidebarSpec,
+    SidebarSection,
+    SidebarItem,
+    ShadeSpec,
+    ShadeSection,
+    ShadeSetting,
+    ChromeSpecs
+} from '../types/chrome.js';
+
+// Re-export for backwards compatibility
+export type {
+    SystemAPI,
+    ToastOptions,
+    ChromeTheme,
+    StatusBarSpec,
+    StatusBarAction,
+    SidebarSpec,
+    ShadeSpec,
+    ChromeSpecs
+};
+
+// Local interfaces (not in shared types)
 interface SidebarConfig {
     title: string;
-    content: string | HTMLElement;  // HTML string for sidebar content
-    init?: () => void; // Optional initialization function
+    content: string | HTMLElement;
+    init?: () => void;
 }
 
 interface UV7SystemOptions {
@@ -58,71 +87,6 @@ interface ToriSettings {
     notifyCritical: boolean;
 }
 
-/**
- * ═══════════════════════════════════════════════════════════════
- * SYSTEM API - CONTROLLED RUNTIME INTERFACE
- * 
- * Apps use this API instead of calling system methods directly.
- * Provides controlled, documented interface for chrome manipulation.
- * ═══════════════════════════════════════════════════════════════
- */
-
-interface ToastOptions {
-    duration?: number;
-    icon?: string;
-    action?: { label: string; onClick: () => void };
-}
-
-export interface SystemAPI {
-    // Status Bar Runtime Control
-    statusBar: {
-        setTemporaryMessage(msg: string, duration?: number): Promise<void>;
-        showProgress(percent: number, label?: string): void;
-        clearProgress(): void;
-        pulse(duration?: number): void;
-    };
-
-    // Chrome Visibility & Transitions
-    chrome: {
-        fadeOut(duration?: number): Promise<void>;
-        fadeIn(duration?: number): Promise<void>;
-        hide(): void;
-        show(): void;
-        cinematic: {
-            set(enabled: boolean): void;
-            enter(): void;
-            exit(): void;
-        };
-    };
-
-    // Sidebar Control
-    sidebar: {
-        open(): void;
-        close(): void;
-        toggle(): void;
-        isOpen(): boolean;
-    };
-
-    // Shade Control
-    shade: {
-        open(): void;
-        close(): void;
-        toggle(): void;
-        isOpen(): boolean;
-    };
-
-    // Toast Notifications
-    toast: {
-        show(message: string, options?: ToastOptions): void;
-        success(message: string): void;
-        error(message: string): void;
-        warning(message: string): void;
-    };
-
-    // Action Handler Registration (Belle's Action ID Pattern)
-    onAction(actionId: string, handler: () => void): void;
-    offAction(actionId: string): void;
-}
 
 export class UV7System {
     private mode: 'shell' | 'standalone';

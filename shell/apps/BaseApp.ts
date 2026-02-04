@@ -8,7 +8,7 @@
  */
 
 import type { UV7Shell } from '../UV7Shell.js';
-import type { SystemAPI } from '../UV7System.js';
+import type { SystemAPI } from '../../types/chrome.js';
 
 export interface StatusBarConfig {
     title: string;
