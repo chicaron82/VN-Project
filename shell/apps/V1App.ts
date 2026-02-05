@@ -9,6 +9,7 @@
 
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
+import { ChromePresets } from '../../types/ChromePresets.js';
 
 export class V1App extends BaseApp {
     constructor(shell: UV7Shell) {
@@ -21,6 +22,11 @@ export class V1App extends BaseApp {
             title: 'Version 848 (V1)',
             context: 'V1 Game'
         };
+    }
+
+    getStatusBarSpec() {
+        // Use cinematic preset for immersive visual novel experience
+        return ChromePresets.cinematic('Version 848 (V1)');
     }
 
     async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
