@@ -36,8 +36,10 @@ export class ChromeDevTools {
     private maxLogEntries: number = 50;
 
     constructor() {
+        console.log('[ChromeDevTools] Initializing...');
         this.createPanel();
         this.attachKeyboardShortcut();
+        console.log('[ChromeDevTools] Initialized. Press Ctrl+` to toggle.');
     }
 
     /**
@@ -481,6 +483,7 @@ export class ChromeDevTools {
      * Toggle the DevTools panel
      */
     public toggle(): void {
+        console.log('[ChromeDevTools] Toggle called, isOpen:', this.isOpen);
         if (this.isOpen) {
             this.close();
         } else {
