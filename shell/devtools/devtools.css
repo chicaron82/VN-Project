@@ -279,3 +279,58 @@
 .devtools-content::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }
+
+/* Floating Toggle Button */
+.devtools-floating-toggle {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    z-index: 9999;
+    transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.devtools-floating-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+}
+
+.devtools-floating-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Hide on desktop if DevTools is open */
+.chrome-devtools.open~.devtools-floating-toggle {
+    opacity: 0.3;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .chrome-devtools {
+        width: 100%;
+        right: -100%;
+    }
+
+    .chrome-devtools.open {
+        right: 0;
+    }
+
+    .devtools-floating-toggle {
+        bottom: 70px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+}

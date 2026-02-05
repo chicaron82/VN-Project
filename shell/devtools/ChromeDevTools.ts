@@ -139,7 +139,21 @@ export class ChromeDevTools {
         `;
 
         document.body.appendChild(this.panel);
+        this.createFloatingToggle();
         this.attachEventListeners();
+    }
+
+    /**
+     * Create floating toggle button (for mobile)
+     */
+    private createFloatingToggle(): void {
+        const toggle = document.createElement('button');
+        toggle.id = 'devtools-floating-toggle';
+        toggle.className = 'devtools-floating-toggle';
+        toggle.innerHTML = '🛠️';
+        toggle.title = 'Toggle DevTools (Ctrl+`)';
+        toggle.addEventListener('click', () => this.toggle());
+        document.body.appendChild(toggle);
     }
 
     /**
