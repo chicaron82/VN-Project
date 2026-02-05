@@ -433,6 +433,11 @@ export class UV7Shell {
                 this.elements.viewport.innerHTML = '';
             }
 
+            // Expose SystemAPI to app BEFORE mount (Belle's controlled API pattern)
+            // This allows apps to register action handlers during mount()
+            app.api = this.system!.getAPI();
+            console.log(`[UV7Shell] SystemAPI exposed to ${appId}`);
+
             // Mount the app
             await app.mount(this.elements.viewport!, params);
 
@@ -440,10 +445,6 @@ export class UV7Shell {
             if (app.gestureHandlers) {
                 this.gestureRouter.registerApp(appId, app.gestureHandlers);
             }
-
-            // Expose SystemAPI to app (Belle's controlled API pattern)
-            app.api = this.system!.getAPI();
-            console.log(`[UV7Shell] SystemAPI exposed to ${appId}`);
 
             // Apply chrome specs (Phase 2)
             if (typeof app.getStatusBarSpec === 'function') {
