@@ -164,11 +164,11 @@ export class ChromeDevTools {
     }
 
     /**
-     * Attach keyboard shortcut (Ctrl+Shift+D)
+     * Attach keyboard shortcut (Ctrl+`)
      */
     private attachKeyboardShortcut(): void {
         document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'D') {
+            if (e.ctrlKey && e.key === '`') {
                 e.preventDefault();
                 this.toggle();
             }
