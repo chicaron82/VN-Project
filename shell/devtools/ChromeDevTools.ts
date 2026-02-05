@@ -154,6 +154,38 @@ export class ChromeDevTools {
         toggle.title = 'Toggle DevTools (Ctrl+`)';
         toggle.addEventListener('click', () => this.toggle());
         document.body.appendChild(toggle);
+
+        // Hide by default, show only if developer mode is enabled
+        this.updateFloatingToggleVisibility();
+    }
+
+    /**
+     * Update floating toggle visibility based on developer mode setting
+     */
+    private updateFloatingToggleVisibility(): void {
+        const toggle = document.getElementById('devtools-floating-toggle');
+        if (!toggle) return;
+
+        const developerMode = localStorage.getItem('uv7-developer-mode') === 'true';
+        toggle.style.display = developerMode ? 'flex' : 'none';
+    }
+
+    /**
+     * Enable developer mode (shows floating toggle)
+     */
+    public enableDeveloperMode(): void {
+        localStorage.setItem('uv7-developer-mode', 'true');
+        this.updateFloatingToggleVisibility();
+        console.log('[ChromeDevTools] Developer mode enabled');
+    }
+
+    /**
+     * Disable developer mode (hides floating toggle)
+     */
+    public disableDeveloperMode(): void {
+        localStorage.setItem('uv7-developer-mode', 'false');
+        this.updateFloatingToggleVisibility();
+        console.log('[ChromeDevTools] Developer mode disabled');
     }
 
     /**

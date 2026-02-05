@@ -42,6 +42,20 @@ export function generateShadeContent(options: ShadeOptions = {}): string {
             </div>
         </div>
 
+        <!-- Developer Settings -->
+        <div class="shade-section">
+            <div class="shade-section-title">Developer</div>
+            <div class="shade-setting-row">
+                <div>
+                    <span class="setting-label">Developer Mode</span>
+                    <small class="setting-desc">Show DevTools floating button</small>
+                </div>
+                <div class="toggle-switch" id="developer-mode-toggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+
         ${isShell ? generateQuickLaunchSection() : ''}
 
         <!-- Tori-Gatchi Settings -->
