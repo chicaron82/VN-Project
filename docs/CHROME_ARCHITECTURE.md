@@ -1323,6 +1323,97 @@ async mount(container: HTMLElement) {
 
 ---
 
+## 🛠️ Chrome DevTools Panel
+
+### Overview
+
+A comprehensive debugging panel for live inspection of the Chrome Architecture state. Provides real-time visibility into specs, actions, themes, and SystemAPI activity.
+
+### Features
+
+**4-Tab Interface:**
+
+1. **Specs Tab**
+   - Current `StatusBarSpec` (JSON view)
+   - Current `SidebarSpec` (JSON view)
+   - Cinematic mode status indicator
+
+2. **Actions Tab**
+   - List of registered action handlers
+   - Registration timestamps
+   - Trigger counts and last triggered times
+   - Test buttons for manual action triggering
+
+3. **Theme Tab**
+   - Current `ChromeTheme` object
+   - Live CSS custom properties table
+   - Real-time updates when theme changes
+
+4. **API Log Tab**
+   - Last 50 SystemAPI calls
+   - Timestamp, namespace, method, arguments
+   - Clear log functionality
+
+### Access Methods
+
+**Desktop:**
+
+- Keyboard shortcut: `Ctrl+`` (backtick key)
+- Works regardless of settings
+
+**Mobile & Desktop:**
+
+- Floating toggle button (🛠️) in bottom-right corner
+- Opt-in via shade settings (Developer Mode toggle)
+- Hidden by default for clean UI
+
+### Implementation
+
+**Files:**
+
+- `shell/devtools/ChromeDevTools.ts` - Main DevTools class (500 lines)
+- `shell/devtools/devtools.css` - Dark theme styling (330 lines)
+- `shell/devtools/developer-mode-toggle.ts` - Settings integration
+
+**Integration:**
+
+```typescript
+// UV7System constructor
+this.devTools = new ChromeDevTools();
+
+// Track specs
+this.devTools?.trackStatusBarSpec(spec);
+
+// Track themes
+this.devTools?.trackTheme(theme);
+
+// Track actions
+this.devTools?.trackActionTrigger(actionId);
+```
+
+**Settings:**
+
+- Developer Mode toggle in shade settings
+- Stored in `localStorage` as `uv7-developer-mode`
+- Controls floating button visibility
+
+### Design Decisions
+
+**Why Opt-In Floating Button?**
+
+- Developers get quick access when needed
+- End users see clean UI without clutter
+- Keyboard shortcut always available for power users
+
+**Why Separate from Browser DevTools?**
+
+- Chrome-specific state inspection
+- Real-time spec/theme tracking
+- Action handler debugging
+- Mobile-friendly interface
+
+---
+
 ## 📚 Related Documents
 
 - [UV7 Shell Architecture](./SHELL_ARCHITECTURE.md) *(to be created)*
@@ -1339,5 +1430,5 @@ This is a **living document**. As we implement and learn, we'll update this desi
 
 ---
 
-*Last Updated: 2026-02-04*  
+*Last Updated: 2026-02-04 (Added ChromeDevTools Panel)*  
 *Status: 🟢 Production Ready - All 3 Phases Complete*
