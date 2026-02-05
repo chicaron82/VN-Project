@@ -120,6 +120,7 @@ export class ChromePresets {
         accentColor: string;
         context?: string;
         actions?: StatusBarAction[];
+        customChrome?: boolean;
     }): StatusBarSpec {
         return {
             title: opts.title,
@@ -130,7 +131,8 @@ export class ChromePresets {
                 primaryColor: opts.primaryColor,
                 accentColor: opts.accentColor,
                 transitionDuration: 200 // Fast transitions for games
-            }
+            },
+            customChrome: opts.customChrome
         };
     }
 

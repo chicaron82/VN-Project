@@ -447,22 +447,44 @@ export class UV7Shell {
             }
 
             // Apply chrome specs (Phase 2)
+            // Apply StatusBarSpec (new architecture)
             if (typeof app.getStatusBarSpec === 'function') {
                 const spec = app.getStatusBarSpec();
                 this.system!.applyStatusBarSpec(spec);
                 console.log(`[UV7Shell] Applied StatusBarSpec for ${appId}`);
+
+                // Check if app manages its own chrome (sidebar/shade)
+                if (spec.customChrome) {
+                    console.log(`[UV7Shell] App ${appId} uses customChrome - skipping shell sidebar/shade`);
+                    // Hide shell's sidebar and shade
+                    const sidebar = document.getElementById('uv7-sidebar');
+                    const shade = document.getElementById('uv7-shade');
+                    if (sidebar) sidebar.style.display = 'none';
+                    if (shade) shade.style.display = 'none';
+                } else {
+                    // Apply sidebar/shade specs normally
+                    if (typeof app.getSidebarSpec === 'function') {
+                        const sidebarSpec = app.getSidebarSpec();
+                        this.system!.applySidebarSpec(sidebarSpec);
+                        console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
+                    } else {
+                        // Fallback to old getSidebarConfig() for backwards compatibility
+                        this.updateSidebar(app.getSidebarConfig());
+                    }
+                }
             } else {
                 // Fallback to old getStatusBarConfig() for backwards compatibility
                 this.updateStatusBar(app.getStatusBarConfig());
-            }
 
-            if (typeof app.getSidebarSpec === 'function') {
-                const spec = app.getSidebarSpec();
-                this.system!.applySidebarSpec(spec);
-                console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
-            } else {
-                // Fallback to old getSidebarConfig() for backwards compatibility
-                this.updateSidebar(app.getSidebarConfig());
+                // Also apply sidebar if available
+                if (typeof app.getSidebarSpec === 'function') {
+                    const spec = app.getSidebarSpec();
+                    this.system!.applySidebarSpec(spec);
+                    console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
+                } else {
+                    // Fallback to old getSidebarConfig()
+                    this.updateSidebar(app.getSidebarConfig());
+                }
             }
 
             // Store reference

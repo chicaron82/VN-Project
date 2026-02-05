@@ -48,6 +48,7 @@ export interface StatusBarSpec {
     actions?: StatusBarAction[];
     mode?: 'normal' | 'cinematic' | 'minimal';
     theme?: ChromeTheme;
+    customChrome?: boolean; // If true, app manages its own sidebar/shade
 }
 
 /**

@@ -29,7 +29,8 @@ export class V2App extends BaseApp {
             title: 'Version 848 (V2)',
             primaryColor: '#ff0055',
             accentColor: '#ff3377',
-            context: 'V2 Engine'
+            context: 'V2 Engine',
+            customChrome: true // V2 manages its own sidebar/shade
         });
     }
 
