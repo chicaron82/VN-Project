@@ -2,7 +2,7 @@
  * Developer Mode Toggle Handler
  * 
  * Wires up the developer mode toggle in the shade settings.
- * Uses MutationObserver to wait for the shade to be created.
+ * Uses custom events to communicate with ChromeDevTools.
  */
 
 function initDeveloperModeToggle() {
@@ -11,12 +11,11 @@ function initDeveloperModeToggle() {
         return; // Shade not created yet
     }
 
-    // Get UV7System instance (it's on window in shell mode)
-    const system = (window as any).uv7System;
-    if (!system || !system.devTools) {
-        console.warn('[DeveloperMode] UV7System or DevTools not found');
+    // Check if already initialized
+    if (toggle.hasAttribute('data-initialized')) {
         return;
     }
+    toggle.setAttribute('data-initialized', 'true');
 
     // Set initial state from localStorage
     const isEnabled = localStorage.getItem('uv7-developer-mode') === 'true';
@@ -29,15 +28,31 @@ function initDeveloperModeToggle() {
         const currentlyEnabled = toggle.classList.contains('active');
 
         if (currentlyEnabled) {
+            // Disable developer mode
             toggle.classList.remove('active');
-            system.devTools.disableDeveloperMode();
+            localStorage.setItem('uv7-developer-mode', 'false');
+
+            // Hide floating button
+            const floatingBtn = document.getElementById('devtools-floating-toggle');
+            if (floatingBtn) {
+                floatingBtn.style.display = 'none';
+            }
         } else {
+            // Enable developer mode
             toggle.classList.add('active');
-            system.devTools.enableDeveloperMode();
+            localStorage.setItem('uv7-developer-mode', 'true');
+
+            // Show floating button
+            const floatingBtn = document.getElementById('devtools-floating-toggle');
+            if (floatingBtn) {
+                floatingBtn.style.display = 'flex';
+            }
         }
+
+        console.log('[DeveloperMode] Toggle changed to:', !currentlyEnabled);
     });
 
-    console.log('[DeveloperMode] Toggle initialized');
+    console.log('[DeveloperMode] Toggle initialized, current state:', isEnabled);
 }
 
 // Try immediately
@@ -47,7 +62,6 @@ initDeveloperModeToggle();
 const observer = new MutationObserver(() => {
     if (document.getElementById('developer-mode-toggle')) {
         initDeveloperModeToggle();
-        observer.disconnect();
     }
 });
 
