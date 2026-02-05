@@ -11,6 +11,7 @@
 import { BaseApp, StatusBarConfig, SidebarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
+import { ChromePresets } from '../../types/ChromePresets.js';
 
 interface ExtendedStatusBarConfig extends StatusBarConfig {
     showBreadcrumb?: boolean;
@@ -151,28 +152,16 @@ export class ShowcaseApp extends BaseApp {
     }
 
     /**
-     * Get status bar spec with actions and theme (Phase 2 test)
+     * Get status bar spec with actions and theme (Phase 2 - using ChromePresets)
      */
     getStatusBarSpec() {
-        return {
+        return ChromePresets.standard({
             title: 'Showcase',
             context: 'Interactive Demo',
             actions: [
-                {
-                    id: 'showcase:theme_toggle',
-                    icon: '🎨',
-                    label: 'Theme'
-                },
-                {
-                    id: 'showcase:share',
-                    icon: '📤',
-                    label: 'Share'
-                },
-                {
-                    id: 'showcase:fullscreen',
-                    icon: '⛶',
-                    label: 'Fullscreen'
-                }
+                ChromePresets.action('showcase', 'theme_toggle', '🎨', 'Theme'),
+                ChromePresets.action('showcase', 'share', '📤', 'Share'),
+                ChromePresets.action('showcase', 'fullscreen', '⛶', 'Fullscreen')
             ],
             theme: {
                 primaryColor: '#6366f1',
@@ -180,7 +169,7 @@ export class ShowcaseApp extends BaseApp {
                 fontFamily: 'Inter, sans-serif',
                 transitionDuration: 350
             }
-        };
+        });
     }
 
     async unmount(): Promise<void> {
