@@ -19,6 +19,7 @@
 
 import { generateShadeContent } from './ShadeTemplate.js';
 import { generateDefaultSidebarContent } from './SidebarTemplate.js';
+import { ChromeDevTools } from './devtools/ChromeDevTools.js';
 
 // Import shared types
 import type {
@@ -102,6 +103,9 @@ export class UV7System {
     private messageQueue: Array<{ msg: string; duration: number }>;
     private isShowingMessage: boolean;
 
+    // DevTools (optional, dev mode only)
+    public devTools?: ChromeDevTools;
+
     constructor(options: UV7SystemOptions = {}) {
         this.mode = options.mode || 'shell';
         this.appName = options.appName || 'UV7 OS';
@@ -115,6 +119,9 @@ export class UV7System {
         this.originalStatusContext = null;
         this.messageQueue = [];
         this.isShowingMessage = false;
+
+        // Initialize DevTools
+        this.devTools = new ChromeDevTools();
     }
 
     /**
@@ -640,6 +647,9 @@ export class UV7System {
             document.body.classList.remove('status-normal', 'status-cinematic', 'status-minimal');
             document.body.classList.add(`status-${spec.mode}`);
         }
+
+        // Track in DevTools
+        this.devTools?.trackStatusBarSpec(spec);
     }
 
     /**
@@ -685,6 +695,9 @@ export class UV7System {
             document.body.classList.add(`status-${theme.statusBarVariant}`);
         }
         console.log(`[UV7System] Applied theme: ${theme.primaryColor}`);
+
+        // Track in DevTools
+        this.devTools?.trackTheme(theme);
     }
 
     /**
