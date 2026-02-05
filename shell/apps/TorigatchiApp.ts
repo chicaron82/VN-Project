@@ -8,6 +8,7 @@
 
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
+import { ChromePresets } from '../../types/ChromePresets.js';
 
 export class TorigatchiApp extends BaseApp {
     constructor(shell: UV7Shell) {
@@ -20,6 +21,15 @@ export class TorigatchiApp extends BaseApp {
             title: 'Tori-gatchi',
             context: 'Tori-gatchi 💖'
         };
+    }
+
+    getStatusBarSpec() {
+        return ChromePresets.game({
+            title: 'Tori-gatchi',
+            primaryColor: '#10b981',
+            accentColor: '#34d399',
+            context: 'Tori-gatchi 💖'
+        });
     }
 
     async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {

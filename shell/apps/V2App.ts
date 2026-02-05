@@ -9,6 +9,7 @@
 
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
+import { ChromePresets } from '../../types/ChromePresets.js';
 
 export class V2App extends BaseApp {
     constructor(shell: UV7Shell) {
@@ -21,6 +22,15 @@ export class V2App extends BaseApp {
             title: 'Version 848 (V2)',
             context: 'V2 Engine'
         };
+    }
+
+    getStatusBarSpec() {
+        return ChromePresets.game({
+            title: 'Version 848 (V2)',
+            primaryColor: '#ff0055',
+            accentColor: '#ff3377',
+            context: 'V2 Engine'
+        });
     }
 
     async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {

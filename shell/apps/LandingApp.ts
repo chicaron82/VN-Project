@@ -10,6 +10,7 @@
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { shellAudio } from '../audio/ShellAudio.js';
+import { ChromePresets } from '../../types/ChromePresets.js';
 
 interface CrewMember {
     name: string;
@@ -92,6 +93,10 @@ export class LandingApp extends BaseApp {
             title: 'UV7 Project Hub',
             context: 'Landing'
         };
+    }
+
+    getStatusBarSpec() {
+        return ChromePresets.minimal('UV7 Project Hub', 'Landing');
     }
 
     async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
