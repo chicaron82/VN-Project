@@ -415,6 +415,19 @@ export class UV7Shell {
             // Unmount current app
             if (this.currentApp) {
                 console.log(`[UV7Shell] Unmounting: ${this.currentApp.id}`);
+
+                // Check if current app uses customChrome - restore shell chrome if so
+                if (typeof this.currentApp.getStatusBarSpec === 'function') {
+                    const currentSpec = this.currentApp.getStatusBarSpec();
+                    if (currentSpec.customChrome) {
+                        console.log(`[UV7Shell] Restoring shell sidebar/shade after customChrome app`);
+                        const sidebar = document.getElementById('uv7-sidebar');
+                        const shade = document.getElementById('uv7-shade');
+                        if (sidebar) sidebar.style.display = '';
+                        if (shade) shade.style.display = '';
+                    }
+                }
+
                 await this.currentApp.unmount();
                 this.gestureRouter.unregisterApp(this.currentApp.id);
             }
