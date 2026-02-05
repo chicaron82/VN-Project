@@ -2,15 +2,13 @@
  * Developer Mode Toggle Handler
  * 
  * Wires up the developer mode toggle in the shade settings.
- * This is a standalone script that gets executed when the shade is opened.
+ * Uses MutationObserver to wait for the shade to be created.
  */
 
-// Wait for DOM to be ready
-setTimeout(() => {
+function initDeveloperModeToggle() {
     const toggle = document.getElementById('developer-mode-toggle');
     if (!toggle) {
-        console.warn('[DeveloperMode] Toggle not found');
-        return;
+        return; // Shade not created yet
     }
 
     // Get UV7System instance (it's on window in shell mode)
@@ -40,4 +38,20 @@ setTimeout(() => {
     });
 
     console.log('[DeveloperMode] Toggle initialized');
-}, 100);
+}
+
+// Try immediately
+initDeveloperModeToggle();
+
+// Also watch for shade to be created dynamically
+const observer = new MutationObserver(() => {
+    if (document.getElementById('developer-mode-toggle')) {
+        initDeveloperModeToggle();
+        observer.disconnect();
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
