@@ -8,8 +8,8 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { UV7System } from '../shell/UV7System.js';
-import type { StatusBarSpec, ChromeTheme } from '../types/chrome.js';
+import { UV7System } from '../UV7System.js';
+import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 
 describe('Chrome Performance Tests', () => {
     let system: UV7System;
@@ -45,7 +45,7 @@ describe('Chrome Performance Tests', () => {
             api.onAction('test:action', () => { called = true; });
 
             const start = performance.now();
-            system.handleActionClick('test:action');
+            system['handleActionClick']('test:action');
             const duration = performance.now() - start;
 
             expect(called).toBe(true);
@@ -65,7 +65,7 @@ describe('Chrome Performance Tests', () => {
             api.onAction('test:target', () => { called = true; });
 
             const start = performance.now();
-            system.handleActionClick('test:target');
+            system['handleActionClick']('test:target');
             const duration = performance.now() - start;
 
             expect(called).toBe(true);

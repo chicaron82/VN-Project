@@ -163,6 +163,25 @@ export interface BlogEntry {
         complexity: string;
         iterations: number;
     };
+
+    // Additional properties for detailed technical entries
+    technicalDetails?: {
+        title: string;
+        sections: Array<{
+            heading: string;
+            content: string;
+        }>;
+    };
+    commits?: Array<{
+        hash: string;
+        message: string;
+        files: string[];
+    }>;
+    nextSteps?: string[];
+    lessonsLearned?: string[];
+    relatedEntries?: string[];
+    status?: 'completed' | 'in-progress' | 'blocked' | 'planned';
+    blockedReason?: string;
 }
 
 // Alias for backward compatibility

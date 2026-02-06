@@ -30,10 +30,7 @@ import type {
     StatusBarAction,
     SidebarSpec,
     SidebarSection,
-    SidebarItem,
     ShadeSpec,
-    ShadeSection,
-    ShadeSetting,
     ChromeSpecs
 } from '../types/chrome.js';
 
@@ -76,17 +73,7 @@ interface StatusBarConfig {
     breadcrumbPath?: string[];
 }
 
-interface EchoSettings {
-    enabled: boolean;
-    frequency: number;
-    pauseOnHover: boolean;
-}
-
-interface ToriSettings {
-    notifyHunger: boolean;
-    notifyLonely: boolean;
-    notifyCritical: boolean;
-}
+// Echo and Tori settings interfaces are unused locally
 
 
 export class UV7System {
@@ -200,7 +187,9 @@ export class UV7System {
 
         // Inject content from template
         const isShell = this.mode === 'shell';
-        shadeContent.innerHTML = generateShadeContent({ isShell });
+        if (shadeContent) {
+            shadeContent.innerHTML = generateShadeContent({ isShell });
+        }
 
         console.log('[UV7System] Shade content rendered');
     }
@@ -244,7 +233,7 @@ export class UV7System {
         const closeBtn = document.querySelector('.shade-close');
         if (closeBtn) {
             console.log('✅ [UV7System] Shade close button found');
-            closeBtn.addEventListener('click', (e) => {
+            closeBtn.addEventListener('click', () => {
                 console.log('🔘 [UV7System] Shade close button clicked');
                 // Resume context on first interaction
                 // Note: ctx is private, use resume() which handles state check internally

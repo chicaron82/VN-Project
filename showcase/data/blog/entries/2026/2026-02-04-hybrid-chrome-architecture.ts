@@ -95,7 +95,7 @@ interface SystemAPI {
         clearProgress(): void;
         pulse(duration?: number): void;
     };
-    
+
     chrome: {
         fadeOut(duration?: number): Promise<void>;
         fadeIn(duration?: number): Promise<void>;
@@ -107,14 +107,14 @@ interface SystemAPI {
             exit(): void;
         };
     };
-    
-    sidebar: { open/close/toggle/isOpen };
-    shade: { open/close/toggle/isOpen };
-    toast: { show/success/error/warning };
-    
-    // Belle's Action ID Pattern
-    onAction(actionId: string, handler: () => void): void;
-    offAction(actionId: string): void;
+
+    sidebar: { open / close / toggle / isOpen };
+shade: { open / close / toggle / isOpen };
+toast: { show / success / error / warning };
+
+// Belle's Action ID Pattern
+onAction(actionId: string, handler: () => void): void;
+offAction(actionId: string): void;
 }
 \`\`\`
 
@@ -167,13 +167,13 @@ private messageQueue: Array<{ msg: string; duration: number }> = [];
 
 async processMessageQueue() {
     if (this.messageQueue.length === 0) return;
-    
+
     this.isShowingMessage = true;
     const { msg, duration } = this.messageQueue.shift()!;
-    
+
     // Show message, wait, restore, process next
     await new Promise(resolve => setTimeout(resolve, duration));
-    
+
     if (this.messageQueue.length > 0) {
         await this.processMessageQueue();
     }
@@ -186,7 +186,7 @@ async processMessageQueue() {
 
 ### Type Sharing
 
-Created \`types/chrome.ts\` to eliminate duplication:
+Created \`types / chrome.ts\` to eliminate duplication:
 
 \`\`\`typescript
 export interface StatusBarSpec {
@@ -245,15 +245,15 @@ Shell renders automatically:
 applyStatusBarSpec(spec: StatusBarSpec): void {
     // Validate spec
     this.validateStatusBarSpec(spec);
-    
+
     // Update title/context
     titleEl.textContent = spec.title;
-    
+
     // Render actions
-    if (spec.actions) this.renderStatusBarActions(spec.actions);
-    
+    if(spec.actions) this.renderStatusBarActions(spec.actions);
+
     // Apply theme
-    if (spec.theme) this.applyTheme(spec.theme);
+    if(spec.theme) this.applyTheme(spec.theme);
 }
 \`\`\`
 
@@ -264,11 +264,11 @@ Apps inject their brand into chrome:
 \`\`\`typescript
 applyTheme(theme: ChromeTheme): void {
     document.documentElement.style.setProperty(
-        '--chrome-primary', 
+        '--chrome-primary',
         theme.primaryColor
     );
     document.documentElement.style.setProperty(
-        '--chrome-accent', 
+        '--chrome-accent',
         theme.accentColor
     );
 }
@@ -277,13 +277,13 @@ applyTheme(theme: ChromeTheme): void {
 **CSS:**
 
 \`\`\`css
-.status-action {
+    .status - action {
     background: rgba(255, 255, 255, 0.05);
-    transition: all var(--chrome-transition-duration) ease;
+    transition: all var(--chrome - transition - duration) ease;
 }
 
-.status-action:hover {
-    background: var(--chrome-primary);
+.status - action:hover {
+    background: var(--chrome - primary);
     transform: translateY(-1px);
 }
 \`\`\`
@@ -368,7 +368,7 @@ class ShowcaseApp extends BaseApp {
 }
 \`\`\`
 
-**Live demo:** Navigate to \`/showcase\` and click the action buttons! 🎮
+**Live demo:** Navigate to \`/ showcase\` and click the action buttons! 🎮
 
 ## The Architecture
 
@@ -376,7 +376,7 @@ class ShowcaseApp extends BaseApp {
 ┌─────────────────────────────────────────────────────────┐
 │                      UV7 Shell                          │
 │  ┌───────────────────────────────────────────────────┐  │
-│  │         UV7System (Chrome Manager)                │  │
+│  │         UV7System(Chrome Manager)                │  │
 │  │  • applyStatusBarSpec()                           │  │
 │  │  • applyTheme()                                   │  │
 │  │  • handleActionClick()                            │  │
@@ -411,24 +411,24 @@ class ShowcaseApp extends BaseApp {
 
 ### UV7Shell Integration
 
-Wired up spec application in `UV7Shell.loadApp()`:
+Wired up spec application in \`UV7Shell.loadApp()\`:
 
 \`\`\`typescript
-async loadApp(appId: string, params: Record<string, any> = {}): Promise<void> {
+async loadApp(appId: string, params: Record<string, any> = {}): Promise < void> {
     // Expose SystemAPI BEFORE mount (so handlers can be registered)
     app.api = this.system!.getAPI();
-    
+
     // Mount the app
     await app.mount(this.elements.viewport!, params);
-    
+
     // Apply chrome specs (Phase 2)
-    if (typeof app.getStatusBarSpec === 'function') {
-        const spec = app.getStatusBarSpec();
-        this.system!.applyStatusBarSpec(spec);
-    } else {
-        // Fallback to old getStatusBarConfig() for backwards compatibility
-        this.updateStatusBar(app.getStatusBarConfig());
-    }
+    if(typeof app.getStatusBarSpec === 'function') {
+    const spec = app.getStatusBarSpec();
+    this.system!.applyStatusBarSpec(spec);
+} else {
+    // Fallback to old getStatusBarConfig() for backwards compatibility
+    this.updateStatusBar(app.getStatusBarConfig());
+}
 }
 \`\`\`
 
@@ -444,7 +444,7 @@ export abstract class BaseApp {
      * Optional: Return status bar spec for this app (Phase 2)
      */
     getStatusBarSpec?(): any;
-    
+
     /**
      * Optional: Return sidebar spec for this app (Phase 2)
      */
@@ -494,11 +494,11 @@ getStatusBarSpec() {
 \`\`\`
 
 **Presets available:**
-- `standard()` - Full-featured chrome
-- `minimal()` - Simple apps
-- `cinematic()` - Immersive experiences
-- `game()` - Game-optimized
-- `action()` - Action button helper
+- \`standard()\` - Full-featured chrome
+- \`minimal()\` - Simple apps
+- \`cinematic()\` - Immersive experiences
+- \`game()\` - Game-optimized
+- \`action()\` - Action button helper
 
 ### App Migration
 
@@ -549,7 +549,7 @@ ChromePresets.cinematic('Version 848 (V1)');
 
 ### Documentation
 
-Updated `CHROME_ARCHITECTURE.md` with:
+Updated \`CHROME_ARCHITECTURE.md\` with:
 - Phase 1-3 implementation details (+495 lines)
 - Usage examples for all presets
 - Migration guide from old API
@@ -592,7 +592,7 @@ Updated `CHROME_ARCHITECTURE.md` with:
             'Runtime validation with helpful errors saves debugging time',
             'CSS custom properties enable smooth theme transitions',
             'Declarative specs make chrome consistent across apps',
-            'Belle\\'s patterns(Action ID, Theme Injection) are production - ready'
+            "Belle's patterns (Action ID, Theme Injection) are production-ready"
         ],
             metrics: {
     'Phase 1 Commits': '3',
@@ -615,7 +615,7 @@ Updated `CHROME_ARCHITECTURE.md` with:
                                                                         'Development Time': '~5.5 hours',
                                                                             'Coffee Consumed': '☕☕☕☕☕'
 },
-quote: 'Belle\'s suggestion to use string IDs instead of functions was genius. No serialization issues, works across iframe boundaries, fully testable, and completely secure.',
+quote: "Belle's suggestion to use string IDs instead of functions was genius. No serialization issues, works across iframe boundaries, fully testable, and completely secure.",
     footer: {
     icon: '🎉',
         text: 'All 3 phases complete - hybrid chrome architecture shipped to production!'

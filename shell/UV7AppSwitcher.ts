@@ -50,7 +50,7 @@ interface UndoBackup {
     backup: Record<string, string>;
 }
 
-class UV7AppSwitcher {
+export class UV7AppSwitcher {
     private apps: AppDefinition[];
     private currentApp: AppId;
     private recentApps: AppId[];

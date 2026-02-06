@@ -7,7 +7,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import type { StatusBarSpec, SidebarSpec, ChromeTheme, StatusBarAction } from '../../types/chrome.js';
+import type { StatusBarSpec, SidebarSpec, ChromeTheme } from '../../types/chrome.js';
 
 export interface APICallLog {
     timestamp: number;

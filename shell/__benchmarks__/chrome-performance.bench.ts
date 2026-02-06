@@ -11,8 +11,8 @@
  */
 
 import { describe, bench, beforeEach } from 'vitest';
-import { UV7System } from '../shell/UV7System.js';
-import type { StatusBarSpec, ChromeTheme } from '../types/chrome.js';
+import { UV7System } from '../UV7System.js';
+import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 
 describe('Chrome Architecture Performance', () => {
     let system: UV7System;
@@ -35,35 +35,35 @@ describe('Chrome Architecture Performance', () => {
 
     describe('Action Routing', () => {
         bench('route single action (1 handler)', () => {
-            system.registerActionHandler('app:test', () => { });
-            system.handleActionClick('app:test');
+            system.getAPI().onAction('app:test', () => { });
+            system['handleActionClick']('app:test');
         });
 
         bench('route action from 10 handlers', () => {
             // Register 10 handlers
             for (let i = 0; i < 10; i++) {
-                system.registerActionHandler(`app:action${i}`, () => { });
+                system.getAPI().onAction(`app:action${i}`, () => { });
             }
             // Route the last one
-            system.handleActionClick('app:action9');
+            system['handleActionClick']('app:action9');
         });
 
         bench('route action from 100 handlers', () => {
             // Register 100 handlers
             for (let i = 0; i < 100; i++) {
-                system.registerActionHandler(`app:action${i}`, () => { });
+                system.getAPI().onAction(`app:action${i}`, () => { });
             }
             // Route the last one
-            system.handleActionClick('app:action99');
+            system['handleActionClick']('app:action99');
         });
 
         bench('route action from 1000 handlers', () => {
             // Register 1000 handlers
             for (let i = 0; i < 1000; i++) {
-                system.registerActionHandler(`app:action${i}`, () => { });
+                system.getAPI().onAction(`app:action${i}`, () => { });
             }
             // Route the last one
-            system.handleActionClick('app:action999');
+            system['handleActionClick']('app:action999');
         });
     });
 
@@ -131,13 +131,13 @@ describe('Chrome Architecture Performance', () => {
 
     describe('FIFO Message Queue', () => {
         bench('queue single message', async () => {
-            await system.setTemporaryMessage('Test message', 100);
+            await system.getAPI().statusBar.setTemporaryMessage('Test message', 100);
         });
 
         bench('queue 10 messages sequentially', async () => {
             const promises = [];
             for (let i = 0; i < 10; i++) {
-                promises.push(system.setTemporaryMessage(`Message ${i}`, 10));
+                promises.push(system.getAPI().statusBar.setTemporaryMessage(`Message ${i}`, 10));
             }
             await Promise.all(promises);
         });
@@ -145,7 +145,7 @@ describe('Chrome Architecture Performance', () => {
         bench('queue 100 messages sequentially', async () => {
             const promises = [];
             for (let i = 0; i < 100; i++) {
-                promises.push(system.setTemporaryMessage(`Message ${i}`, 1));
+                promises.push(system.getAPI().statusBar.setTemporaryMessage(`Message ${i}`, 1));
             }
             await Promise.all(promises);
         });
