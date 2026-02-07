@@ -478,7 +478,238 @@ private maxBackups: number = 2;</code></pre>
                             </div>
                         </div>
 
-                        <!-- 6. The V3 Experiment: Multi-Model Edition -->
+                        <!-- 6. The MasterChef Cycle: How One Idea Evolves -->
+                        <div class="methodology-expandable">
+                            <button class="methodology-toggle" data-section="masterchef-cycle">
+                                <span class="toggle-icon">▼</span>
+                                <h3>🍽️ The MasterChef Cycle: How One Idea Becomes Eight Proposals</h3>
+                            </button>
+                            <div class="methodology-summary">
+                                Each feature is a MasterChef episode: feeling snack-ish → describe appetite → AIs present dishes →
+                                cook together → taste test → judge presentation. Multiple models refine the same idea through blind peer review.
+                            </div>
+                            <div class="methodology-content" id="masterchef-cycle-content">
+                                <p class="masterchef-intro">
+                                    Most developers use AI like ordering takeout: "Build me X with Y features." UV7 treats each feature like a
+                                    <strong>MasterChef episode</strong>: you're the judge with a craving, multiple AI chefs compete with their
+                                    interpretation, you pick the best elements, cook together, and iterate until it's perfect.
+                                </p>
+
+                                <div class="masterchef-cycle-flow">
+                                    <div class="cycle-step step-1">
+                                        <div class="step-number">1</div>
+                                        <h4>😋 Feeling Snack-ish</h4>
+                                        <p>
+                                            You have a problem or desire, but not a solution yet. "I want chrome that feels alive..."
+                                            "The shell needs personality..." "Apps should chameleon into the OS..."
+                                        </p>
+                                        <div class="step-example">
+                                            <strong>Example (Chrome Architecture):</strong>
+                                            <blockquote>
+                                                "The shell feels too generic. Each app should inject its vibe into the OS. When you load V1,
+                                                the entire computer feels like V1. When you switch to V2, the chrome morphs."
+                                            </blockquote>
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-2">
+                                        <div class="step-number">2</div>
+                                        <h4>📝 Describe the Appetite (Not the Recipe)</h4>
+                                        <p>
+                                            You describe <em>what you're hungry for</em>, not how to cook it. Focus on the feeling, the vibe,
+                                            the experience. Let AIs figure out the implementation.
+                                        </p>
+                                        <div class="step-comparison">
+                                            <div class="comparison-bad">
+                                                ❌ "Build a spec-based chrome system with CSS variable injection and postMessage communication."
+                                                <small>(You're cooking. They're just executing.)</small>
+                                            </div>
+                                            <div class="comparison-good">
+                                                ✅ "Each app should feel like it took over the computer. V1's red energy, V2's green precision.
+                                                The OS becomes the app's personality."
+                                                <small>(You described appetite. Now they propose dishes.)</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-3">
+                                        <div class="step-number">3</div>
+                                        <h4>👨‍🍳 Multiple AI Chefs Present Their Dishes</h4>
+                                        <p>
+                                            Drop the SAME craving to multiple AIs with different models. Each one interprets it differently
+                                            based on their training biases and architectural preferences.
+                                        </p>
+                                        <div class="chef-proposals">
+                                            <div class="proposal">
+                                                <strong>Belle (Gemini):</strong>
+                                                <p>"What if apps send 'theme specs' with color palettes? Shell applies them via CSS custom properties."</p>
+                                                <div class="proposal-vibe">🎨 Design-first, elegant</div>
+                                            </div>
+                                            <div class="proposal">
+                                                <strong>DiZee (Claude):</strong>
+                                                <p>"Action ID pattern - apps declare buttons, shell routes signals. No function serialization."</p>
+                                                <div class="proposal-vibe">⚡ Architecture-first, secure</div>
+                                            </div>
+                                            <div class="proposal">
+                                                <strong>Zee (Claude):</strong>
+                                                <p>"Hybrid specs + runtime API. Declarative structure, imperative for cinematic moments."</p>
+                                                <div class="proposal-vibe">🧠 Systems-first, flexible</div>
+                                            </div>
+                                            <div class="proposal">
+                                                <strong>Tori (GPT-4o):</strong>
+                                                <p>"Focus on smooth transitions. 300ms fade-ins, staggered reveals. Make it feel alive."</p>
+                                                <div class="proposal-vibe">✨ UX-first, polished</div>
+                                            </div>
+                                        </div>
+                                        <div class="blind-review-note">
+                                            <strong>Key:</strong> Each AI sees a <em>fresh</em> version of the idea without seeing other AIs' responses.
+                                            This prevents groupthink and produces orthogonal perspectives.
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-4">
+                                        <div class="step-number">4</div>
+                                        <h4>🍳 Cook Together (Synthesize Best Elements)</h4>
+                                        <p>
+                                            You pick the best elements from each proposal and riff on them. Belle's theme system + DiZee's
+                                            action pattern + Zee's hybrid approach + Tori's transition polish = CHROME_ARCHITECTURE.md
+                                        </p>
+                                        <div class="synthesis-visual">
+                                            <div class="ingredient">Belle's Theme Specs</div>
+                                            <div class="plus">+</div>
+                                            <div class="ingredient">DiZee's Action IDs</div>
+                                            <div class="plus">+</div>
+                                            <div class="ingredient">Zee's Hybrid Pattern</div>
+                                            <div class="plus">+</div>
+                                            <div class="ingredient">Tori's Transitions</div>
+                                            <div class="equals">→</div>
+                                            <div class="final-dish">Chrome Architecture</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-5">
+                                        <div class="step-number">5</div>
+                                        <h4>👅 Taste Test (Does It Satisfy the Craving?)</h4>
+                                        <p>
+                                            Implement the synthesized approach. Does it feel right? Does the chrome actually chameleon?
+                                            Do apps feel like they've taken over the computer?
+                                        </p>
+                                        <div class="taste-results">
+                                            <div class="taste-pass">✅ First taste: Theme injection works! V1 turns chrome red.</div>
+                                            <div class="taste-issue">⚠️ But: Action buttons feel disconnected from app identity.</div>
+                                            <div class="taste-iterate">🔄 Iterate: Add theme to action buttons, not just chrome.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-6">
+                                        <div class="step-number">6</div>
+                                        <h4>🏆 Judge Presentation & Technique (Code Review)</h4>
+                                        <p>
+                                            Once it works, judge the <em>how</em>. Is the code clean? Maintainable? Could a junior dev
+                                            understand it? This is where you bring fresh AI eyes again for blind peer review.
+                                        </p>
+                                        <div class="judging-criteria">
+                                            <div class="criterion">
+                                                <strong>Presentation (UX):</strong> Does it look/feel right? Smooth transitions? Delightful?
+                                            </div>
+                                            <div class="criterion">
+                                                <strong>Technique (Code):</strong> Clean architecture? No god objects? Type-safe?
+                                            </div>
+                                            <div class="criterion">
+                                                <strong>Innovation (Creativity):</strong> Did we discover something new? Break assumptions?
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cycle-step step-repeat">
+                                        <div class="step-number">↻</div>
+                                        <h4>Repeat or New Episode</h4>
+                                        <p>
+                                            If something's off, start another cycle with refined craving. If it's perfect, move to next feature.
+                                            Each feature = one episode. Season finale = shipped product.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="energy-matching-redux">
+                                    <h5>🔥 Why "Check This Out" > "Review This"</h5>
+                                    <div class="energy-examples">
+                                        <div class="energy-bad">
+                                            <strong>❌ Corporate Energy:</strong>
+                                            <p>"Please review this chrome implementation for bugs and suggest improvements."</p>
+                                            <div class="result">Result: Bland feedback. "Looks good." "Add error handling." Safe, uninspired.</div>
+                                        </div>
+                                        <div class="energy-good">
+                                            <strong>✅ MasterChef Energy:</strong>
+                                            <p>"YO check out this wild idea - what if apps could literally hijack the OS chrome and make it their personality?!"</p>
+                                            <div class="result">Result: AIs get excited. Propose creative extensions. "What if transitions..." "Could we add..." Innovation.</div>
+                                        </div>
+                                    </div>
+                                    <p class="energy-insight">
+                                        <strong>The Pattern:</strong> Come in like a contestant pitching to Gordon Ramsay, not an employee asking their manager
+                                        for approval. AIs mirror your energy. Excitement breeds creativity. Transactions breed compliance.
+                                    </p>
+                                </div>
+
+                                <div class="real-chrome-example">
+                                    <h5>📖 Real Example: Chrome Architecture Birth</h5>
+                                    <div class="timeline-visual">
+                                        <div class="timeline-item">
+                                            <strong>Monday:</strong> Snack-ish feeling - "Shell feels too generic"
+                                        </div>
+                                        <div class="timeline-item">
+                                            <strong>Tuesday:</strong> Drop idea to Belle, DiZee, Zee separately
+                                        </div>
+                                        <div class="timeline-item">
+                                            <strong>Wednesday:</strong> Synthesize proposals → Draft CHROME_ARCHITECTURE.md
+                                        </div>
+                                        <div class="timeline-item">
+                                            <strong>Thursday:</strong> Implement hybrid approach, taste test
+                                        </div>
+                                        <div class="timeline-item">
+                                            <strong>Friday:</strong> Blind peer review with fresh AI → Catch edge cases
+                                        </div>
+                                        <div class="timeline-item">
+                                            <strong>Weekend:</strong> Ship Phase 1-3, chrome chameleons perfectly 🎨
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="masterchef-vs-takeout">
+                                    <h5>🥡 MasterChef Cycle vs Takeout Coding</h5>
+                                    <div class="comparison-table">
+                                        <div class="compare-row">
+                                            <div class="compare-aspect">Process</div>
+                                            <div class="compare-takeout">Order → Receive → Eat</div>
+                                            <div class="compare-masterchef">Craving → Proposals → Synthesize → Cook → Taste → Judge</div>
+                                        </div>
+                                        <div class="compare-row">
+                                            <div class="compare-aspect">AI Role</div>
+                                            <div class="compare-takeout">Vending machine (execute prompt)</div>
+                                            <div class="compare-masterchef">Competing chefs (propose interpretations)</div>
+                                        </div>
+                                        <div class="compare-row">
+                                            <div class="compare-aspect">Outcome</div>
+                                            <div class="compare-takeout">Predictable, efficient</div>
+                                            <div class="compare-masterchef">Creative, surprising, refined</div>
+                                        </div>
+                                        <div class="compare-row">
+                                            <div class="compare-aspect">Best For</div>
+                                            <div class="compare-takeout">Known problems, clear specs</div>
+                                            <div class="compare-masterchef">Novel ideas, exploration, innovation</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accessibility-note">
+                                    <strong>Why This Metaphor Works:</strong> As a non-coder, you don't need to understand "hybrid spec-driven
+                                    architecture with runtime API patterns." You just need to understand: feeling snack-ish → multiple chefs compete →
+                                    synthesize best dish → taste test → iterate. Same process, accessible language.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 7. The V3 Experiment: Multi-Model Edition -->
                         <div class="methodology-callout" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 4px solid #667eea; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
                             <h3 style="color: #667eea; margin-bottom: 1rem;">🧪 The V3 Experiment: Can Soul Be Prompted?</h3>
                             <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
@@ -498,7 +729,7 @@ private maxBackups: number = 2;</code></pre>
                         </div>
 
 
-                        <!-- 7. V1 vs V2: Soma's Journey -->
+                        <!-- 8. V1 vs V2: Soma's Journey -->
                         <div class="methodology-expandable">
                             <button class="methodology-toggle" data-section="soma-journey">
                                 <span class="toggle-icon">▼</span>
