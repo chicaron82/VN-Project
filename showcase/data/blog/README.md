@@ -103,10 +103,6 @@ A script can be created to:
 4. **Scalability**: Adding new entries doesn't make any single file unwieldy
 5. **Organization**: Chronological folder structure (2025/, 2026/)
 
-## Migration Note
-
-The original `timeline.ts` has been backed up to `timeline.ts.backup` in the parent directory. This can be removed once the refactoring is verified in production.
-
 ## Consuming Code
 
 The following files import from the timeline:
