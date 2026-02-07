@@ -152,7 +152,6 @@ parentDocument.body.appendChild(iframeElement); // ❌ Error!
         '**Test early:** Should have tested V2 in shell mode before implementing full flag system',
         '**Document blockers:** Important to capture architectural limitations for future work'
     ],
-    relatedEntries: ['hybrid-chrome-architecture-feb-2026'],
-    status: 'blocked',
-    blockedReason: 'V2 iframe architecture prevents custom chrome from appearing in parent DOM. Needs architectural decision on solution approach.'
+    relatedEntries: ['hybrid-chrome-architecture-feb-2026', 'v2-custom-chrome-solution-feb-2026'],
+    status: 'completed'
 };
