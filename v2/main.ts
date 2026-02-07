@@ -342,7 +342,7 @@ function showCredits() {
 // Gameplay
 // ============================================
 
-async function startGame(route: 'ronnie' | 'tori') {
+async function startGameplay(mode: 'ronnie' | 'tori' | 'prologue') {
     // Show loader
     eventBus.emit('loading:start', {});
 
@@ -351,7 +351,7 @@ async function startGame(route: 'ronnie' | 'tori') {
 
     clearScreen();
 
-    stateManager.set('currentRoute', route);
+    stateManager.set('currentRoute', mode === 'prologue' ? null : mode);
     stateManager.set('tetherLevel', 100);
     stateManager.set('history', []);
 
@@ -366,8 +366,10 @@ async function startGame(route: 'ronnie' | 'tori') {
             eventBus
         );
 
-        // TORI'S FIX: Trigger code rain AFTER effects layer exists
-        eventBus.emit('effect:code_rain', { duration: 1200 });
+        // TORI'S FIX: Trigger code rain AFTER effects layer exists (route games only)
+        if (mode !== 'prologue') {
+            eventBus.emit('effect:code_rain', { duration: 1200 });
+        }
 
         // Set up sprite controller viewport
         spriteController.setViewport(gameLayout.viewport);
@@ -419,101 +421,26 @@ async function startGame(route: 'ronnie' | 'tori') {
         }
     };
 
-    // Load first scene based on route
-    const firstSceneId = route === 'ronnie' ? 'ronnie_act1_prologueScene4' : 'scene1_coffee';
+    // Determine first scene based on mode
+    const firstSceneId = mode === 'ronnie'
+        ? 'ronnie_act1_prologueScene4'
+        : mode === 'tori'
+            ? 'scene1_coffee'
+            : 'scene1_streetBump';
 
-    // TORI'S FIX: Delay the initial scene load so the rain is actually seen
-    setTimeout(async () => {
+    if (mode === 'prologue') {
+        // Prologue loads immediately
         await gameEngine.loadScene(firstSceneId);
-        // Hide loader
         eventBus.emit('loading:end', {});
-        console.log(`[UV7 V2] Starting game: ${route} route`);
-    }, 900);
-}
-
-async function startPrologue() {
-    // Show loader
-    eventBus.emit('loading:start', {});
-
-    // Small delay to ensure loader is visible before blocking operations
-    await new Promise(r => setTimeout(r, 100));
-
-    clearScreen();
-
-    // Set temporary route as 'prologue'
-    stateManager.set('currentRoute', null);
-    stateManager.set('tetherLevel', 100);
-    stateManager.set('history', []);
-
-    // Create game layout
-    gameLayout = new GameLayout('app', eventBus);
-
-    // Create effects layer (attaches to DOM via constructor)
-    if (gameLayout) {
-        new VisualEffectsLayer(
-            gameLayout.viewport,
-            gameLayout.viewport,
-            eventBus
-        );
-
-        // Set up sprite controller viewport
-        spriteController.setViewport(gameLayout.viewport);
-
-        // Set up dialog controller to update UI
-        dialogController.onTextUpdate((text) => {
-            if (gameLayout) {
-                gameLayout.dialogText.textContent = text;
-            }
-        });
-
-        // Click on viewport advances dialog OR hides bubble
-        gameLayout.viewport.addEventListener('click', () => {
-            console.log('[CLICK] Viewport clicked', { bubbleVisible: dialogBubble.isVisible() });
-            // DIZEE: If bubble is visible, hide it and advance
-            if (dialogBubble.isVisible()) {
-                console.log('[CLICK] Hiding bubble and advancing scene');
-                dialogBubble.hide();
-                // For internal thoughts, manually trigger advance since DialogController isn't active
-                eventBus.emit('dialog:advance', {});
-            } else {
-                console.log('[CLICK] Calling dialogController.handleClick()');
-                dialogController.handleClick();
-            }
-        });
-
-        // Click on dialog box also advances (V1 parity)
-        gameLayout.dialogBox.addEventListener('click', () => {
-            console.log('[CLICK] Dialog box clicked', { bubbleVisible: dialogBubble.isVisible() });
-            if (dialogBubble.isVisible()) {
-                console.log('[CLICK] Hiding bubble and advancing scene');
-                dialogBubble.hide();
-                eventBus.emit('dialog:advance', {});
-            } else {
-                console.log('[CLICK] Calling dialogController.handleClick()');
-                dialogController.handleClick();
-            }
-        });
+        console.log('[UV7 V2] Starting prologue');
+    } else {
+        // Route games delay for code rain effect
+        setTimeout(async () => {
+            await gameEngine.loadScene(firstSceneId);
+            eventBus.emit('loading:end', {});
+            console.log(`[UV7 V2] Starting game: ${mode} route`);
+        }, 900);
     }
-
-    // Set up gameplay screen
-    currentScreen = {
-        unmount: () => {
-            const root = document.getElementById('app');
-            if (root) root.innerHTML = '';
-            gameLayout = null;
-            dialogController.destroy();
-            spriteController.hideAllSprites();
-        }
-    };
-
-    // Load first scene of prologue
-    const firstSceneId = 'scene1_streetBump'; // First scene in prologue.json
-    await gameEngine.loadScene(firstSceneId);
-
-    // Hide loader
-    eventBus.emit('loading:end', {});
-
-    console.log('[UV7 V2] Starting prologue');
 }
 
 function updateBackground(path: string | undefined) {
@@ -707,11 +634,11 @@ function setupEventHandlers() {
 
     // Gameplay
     eventBus.on('ui:start_game', (data) => {
-        startGame(data.route);
+        startGameplay(data.route);
     });
 
     eventBus.on('ui:start_prologue', () => {
-        startPrologue();
+        startGameplay('prologue');
     });
 
 
@@ -1007,7 +934,7 @@ async function init() {
             // Debug helpers
             showRoute: showRouteSelect,
             showMenu: showMainMenu,
-            startGame,
+            startGame: startGameplay,
             // Loop debug helpers
             breakLoop: () => loopController.break(),
             acceptLoop: () => loopController.accept(),
