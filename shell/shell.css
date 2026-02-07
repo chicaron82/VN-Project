@@ -22,6 +22,12 @@
     /* Apps handle their own scrolling (especially iframed apps) */
     background: var(--bg-primary, #0a0a0f);
     z-index: 1;
+    transition: top 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Full viewport for apps that manage their own chrome (customChrome: true) */
+.app-viewport.full-viewport {
+    top: 0;
 }
 
 .app-viewport.app-transitioning {

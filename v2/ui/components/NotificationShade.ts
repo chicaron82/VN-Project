@@ -24,6 +24,7 @@ export class NotificationShade {
     private container: HTMLElement;
     private isOpen: boolean = false;
     private isExpanded: boolean = false;
+    private isInShell: boolean;
     // DIZEE: Note preview state (V1 parity)
     private currentNotePreview: NotePreview | null = null;
     private notePreviewSection!: HTMLElement;
@@ -34,8 +35,9 @@ export class NotificationShade {
     private screenshotMode: boolean = false;
     private idleDelay: number = 3000;
 
-    constructor(eventBus: EventBus) {
+    constructor(eventBus: EventBus, isInShell: boolean = false) {
         this.eventBus = eventBus;
+        this.isInShell = isInShell;
         this.container = this.createDOM();
         document.body.appendChild(this.container);
 
@@ -163,9 +165,9 @@ export class NotificationShade {
                                 <span class="quick-action-icon">⛶</span>
                                 <span>Full</span>
                             </button>
-                            <button class="quick-action-btn" data-action="exit">
-                                <span class="quick-action-icon">🚪</span>
-                                <span>Exit</span>
+                            <button class="quick-action-btn" data-action="${this.isInShell ? 'exit-to-shell' : 'exit'}">
+                                <span class="quick-action-icon">${this.isInShell ? '🏠' : '🚪'}</span>
+                                <span>${this.isInShell ? 'Shell' : 'Exit'}</span>
                             </button>
                         </div>
 
@@ -221,9 +223,9 @@ export class NotificationShade {
                                     <span class="quick-action-icon">⛶</span>
                                     <span>Full</span>
                                 </button>
-                                <button class="quick-action-btn" data-action="exit">
-                                    <span class="quick-action-icon">🚪</span>
-                                    <span>Exit</span>
+                                <button class="quick-action-btn" data-action="${this.isInShell ? 'exit-to-shell' : 'exit'}">
+                                    <span class="quick-action-icon">${this.isInShell ? '🏠' : '🚪'}</span>
+                                    <span>${this.isInShell ? 'Shell' : 'Exit'}</span>
                                 </button>
                             </div>
                         </div>
@@ -308,6 +310,16 @@ export class NotificationShade {
         // V1 Parity: Keyboard shortcuts (lines 861-915)
         document.addEventListener('keydown', (e) => this.handleKeyboardShortcut(e));
 
+        // Quick action button click delegation
+        // TODO: Refactor - extract quick action handling to dedicated module
+        this.container.addEventListener('click', (e: Event) => {
+            const btn = (e.target as Element).closest('[data-action]') as HTMLElement;
+            if (!btn) return;
+            const action = btn.dataset.action;
+            if (!action) return;
+            this.handleQuickAction(action);
+        });
+
         // IMPROVEMENT OVER V1: Add touch listeners to entire shade for expansion gesture
         // ... (rest of touch logic) ...
 
@@ -327,6 +339,54 @@ export class NotificationShade {
         });
 
         // ...
+    }
+
+    /**
+     * Handle quick action button clicks via event delegation
+     */
+    private handleQuickAction(action: string): void {
+        if (navigator.vibrate) navigator.vibrate(20);
+
+        switch (action) {
+            case 'save':
+                this.eventBus.emit('ui:save_menu', {});
+                this.close();
+                break;
+            case 'load':
+                this.eventBus.emit('ui:load_menu', {});
+                this.close();
+                break;
+            case 'fullscreen':
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(err => console.warn(err));
+                } else {
+                    document.exitFullscreen();
+                }
+                break;
+            case 'exit':
+                this.eventBus.emit('ui:main_menu', {});
+                this.close();
+                break;
+            case 'exit-to-shell':
+                this.eventBus.emit('shell:exit', {});
+                this.close();
+                break;
+            case 'screenshot':
+                this.eventBus.emit('ui:hide_status_bar', {});
+                this.close();
+                break;
+            case 'notes':
+                this.eventBus.emit('ui:notes:open', {});
+                this.close();
+                break;
+            case 'settings':
+                this.eventBus.emit('settings:open', {});
+                this.close();
+                break;
+            case 'help':
+                console.log('Help requested from shade');
+                break;
+        }
     }
 
     // ...

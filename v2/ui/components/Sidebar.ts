@@ -11,6 +11,7 @@ export class Sidebar {
     private eventBus: EventBus;
     private stateManager: StateManager;
     private collectiblesSystem: CollectiblesSystem;
+    private isInShell: boolean;
 
     // iOS-style layer swipe elements (V1 Parity: lines 1431-1447)
     private sidebarLayers: HTMLElement | null = null;
@@ -23,10 +24,11 @@ export class Sidebar {
     private isLayerDragging: boolean = false;
     private isToolsRevealed: boolean = false;
 
-    constructor(eventBus: EventBus, stateManager: StateManager, collectiblesSystem: CollectiblesSystem) {
+    constructor(eventBus: EventBus, stateManager: StateManager, collectiblesSystem: CollectiblesSystem, isInShell: boolean = false) {
         this.eventBus = eventBus;
         this.stateManager = stateManager;
         this.collectiblesSystem = collectiblesSystem;
+        this.isInShell = isInShell;
         this.createDOM();
         this.setupEventListeners();
         this.initSidebarLayerSwipe();
@@ -76,9 +78,9 @@ export class Sidebar {
                             <span class="core-icon">❓</span>
                             <span class="core-label">HELP</span>
                         </button>
-                        <button class="core-action-btn" data-action="exit">
-                            <span class="core-icon">🚪</span>
-                            <span class="core-label">EXIT</span>
+                        <button class="core-action-btn" data-action="${this.isInShell ? 'exit-to-shell' : 'exit'}">
+                            <span class="core-icon">${this.isInShell ? '🏠' : '🚪'}</span>
+                            <span class="core-label">${this.isInShell ? 'TO SHELL' : 'EXIT'}</span>
                         </button>
                     </div>
                 </div>
@@ -521,6 +523,10 @@ export class Sidebar {
                 break;
             case 'exit':
                 this.eventBus.emit('ui:main_menu', {});
+                this.close();
+                break;
+            case 'exit-to-shell':
+                this.eventBus.emit('shell:exit', {});
                 this.close();
                 break;
             case 'screenshot':

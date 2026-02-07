@@ -198,42 +198,39 @@ const collectiblesSystem = new CollectiblesSystem(eventBus);
 // ============================================
 // Shell Detection
 // ============================================
-// Detect if running in shell mode (iframe) to avoid dual chrome
+// Detect if running in shell mode (iframe) — V2 always creates its own chrome
 const isInShell = window.parent !== window;
-console.log(`[V2] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
+console.log(`[V2] Running in ${isInShell ? 'SHELL (own chrome)' : 'STANDALONE'} mode`);
 
 // ============================================
 // Global UI Components
 // ============================================
 const _settingsModal = new SettingsModal(eventBus, settingsSystem);
 
-// Chrome components - only create in standalone mode
-// Shell provides StatusBar, Sidebar, NotificationShade
-let _statusBar: StatusBar | null = null;
-let _sidebar: Sidebar | null = null;
-let _notificationShade: NotificationShade | null = null;
+// Chrome components — always created (shell hides its chrome via customChrome flag)
+const _statusBar = new StatusBar(eventBus);
+const _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem, isInShell);
+const _notificationShade = new NotificationShade(eventBus, isInShell);
+console.log('[V2] Chrome created (StatusBar, Sidebar, NotificationShade)');
 
-if (!isInShell) {
-    _statusBar = new StatusBar(eventBus);
-    _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem);
-    _notificationShade = new NotificationShade(eventBus);
-    console.log('[V2] Standalone mode - chrome created');
-} else {
-    console.log('[V2] Shell mode - using shell chrome');
-}
+// Shell exit: send postMessage to parent when user wants to return to shell
+eventBus.on('shell:exit', () => {
+    if (isInShell) {
+        window.parent.postMessage({ type: 'v2:navigate:shell' }, '*');
+        console.log('[V2] Sent exit-to-shell message');
+    }
+});
 
 // Game-specific screens (always created)
 const _creditsScreen = new CreditsScreen(eventBus);
 const _crewScreen = new CrewScreen(eventBus);
 
-// TORI'S FIX: Initialize GrabHandleRepositioner AFTER Sidebar (if sidebar exists)
+// TORI'S FIX: Initialize GrabHandleRepositioner AFTER Sidebar
 import { GrabHandleRepositioner } from '@controllers/GrabHandleRepositioner';
 // Use setTimeout to ensure DOM is fully ready, just in case
-if (_sidebar) {
-    setTimeout(() => {
-        new GrabHandleRepositioner(eventBus);
-    }, 0);
-}
+setTimeout(() => {
+    new GrabHandleRepositioner(eventBus);
+}, 0);
 
 const _notesViewer = new NotesViewer(eventBus, collectiblesSystem);
 // ToastNotification removed - using NotificationRail via eventBus.emit('notification:show', ...)

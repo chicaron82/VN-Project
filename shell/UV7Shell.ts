@@ -420,11 +420,17 @@ export class UV7Shell {
                 if (typeof this.currentApp.getStatusBarSpec === 'function') {
                     const currentSpec = this.currentApp.getStatusBarSpec();
                     if (currentSpec.customChrome) {
-                        console.log(`[UV7Shell] Restoring shell sidebar/shade after customChrome app`);
-                        const sidebar = document.getElementById('uv7-sidebar');
-                        const shade = document.getElementById('uv7-shade');
-                        if (sidebar) sidebar.style.display = '';
-                        if (shade) shade.style.display = '';
+                        console.log(`[UV7Shell] Restoring all shell chrome after customChrome app`);
+                        // Restore all shell chrome
+                        if (this.elements.statusBar) this.elements.statusBar.style.display = '';
+                        if (this.elements.sidebar) this.elements.sidebar.style.display = '';
+                        if (this.elements.shade) this.elements.shade.style.display = '';
+
+                        // Restore viewport to below status bar
+                        this.elements.viewport?.classList.remove('full-viewport');
+
+                        // Re-enable shell gesture router
+                        this.gestureRouter.init();
                     }
                 }
 
@@ -466,14 +472,19 @@ export class UV7Shell {
                 this.system!.applyStatusBarSpec(spec);
                 console.log(`[UV7Shell] Applied StatusBarSpec for ${appId}`);
 
-                // Check if app manages its own chrome (sidebar/shade)
+                // Check if app manages its own chrome (sidebar/shade/statusbar)
                 if (spec.customChrome) {
-                    console.log(`[UV7Shell] App ${appId} uses customChrome - skipping shell sidebar/shade`);
-                    // Hide shell's sidebar and shade
-                    const sidebar = document.getElementById('uv7-sidebar');
-                    const shade = document.getElementById('uv7-shade');
-                    if (sidebar) sidebar.style.display = 'none';
-                    if (shade) shade.style.display = 'none';
+                    console.log(`[UV7Shell] App ${appId} uses customChrome - hiding all shell chrome`);
+                    // Hide all shell chrome: status bar, sidebar, shade
+                    if (this.elements.statusBar) this.elements.statusBar.style.display = 'none';
+                    if (this.elements.sidebar) this.elements.sidebar.style.display = 'none';
+                    if (this.elements.shade) this.elements.shade.style.display = 'none';
+
+                    // Expand viewport to full screen
+                    this.elements.viewport?.classList.add('full-viewport');
+
+                    // Disable shell gesture router to prevent conflicts with app gestures
+                    this.gestureRouter.destroy();
                 } else {
                     // Apply sidebar/shade specs normally
                     if (typeof app.getSidebarSpec === 'function') {

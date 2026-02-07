@@ -140,6 +140,9 @@ export type GameEvents = {
   'ui:menu:close_request': {};
   'ui:toast': { message: string, duration?: number };  // Toast notifications
 
+  // Shell integration events
+  'shell:exit': {};  // Request to navigate back to shell (when embedded in iframe)
+
   'save:quick': {};
   'load:quick': {};
 
