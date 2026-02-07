@@ -22,6 +22,7 @@ import { ToriService } from './services/ToriService.js';
 import type { BaseApp } from './apps/BaseApp.js';
 import { attachEasterEggTapHandler } from './utils/EasterEggHandler.js';
 import { AppSwitcherController } from './controllers/AppSwitcherController.js';
+import { ToriBridge } from './controllers/ToriBridge.js';
 
 interface AppLoader {
     (): Promise<{ default: new (shell: UV7Shell) => BaseApp }>;
@@ -64,6 +65,7 @@ export class UV7Shell {
     router: Router;
     system: UV7System | null;
     appSwitcher!: AppSwitcherController; // Extracted to AppSwitcherController.ts
+    toriBridge!: ToriBridge; // Extracted to ToriBridge.ts
     private grabHandle: GrabHandleController | null;
     private toriService: ToriService | null;
     private elements: ShellElements;
@@ -126,7 +128,9 @@ export class UV7Shell {
         // });
 
         // Initialize Tori-gatchi Status Bridge (BEFORE ToriService so listener is ready)
-        this.initToriBridge();
+        // Extracted to ToriBridge.ts
+        this.toriBridge = new ToriBridge(this);
+        this.toriBridge.init();
 
         // Initialize Tori Service (Background Ghost Engine)
         this.toriService = new ToriService(this);
@@ -180,115 +184,10 @@ export class UV7Shell {
         }
     }
 
-    /**
-     * Initialize Tori-gatchi Status Bridge
-     * Monitors localStorage for Tori's state and updates status bar
-     */
-    private initToriBridge(): void {
-        console.log('[UV7Shell] initToriBridge() called');
-
-        const statusRight = document.querySelector('.status-right');
-        if (!statusRight) {
-            console.error('[UV7Shell] .status-right not found! Cannot add Tori status');
-            return;
-        }
-
-        console.log('[UV7Shell] .status-right found, creating Tori status element');
-
-        // Create status item
-        const toriStatus = document.createElement('span');
-        toriStatus.id = 'tori-status';
-        toriStatus.className = 'tori-status'; // See shell.css
-        toriStatus.title = "Tori's Status";
-
-        // Add click to launch app
-        toriStatus.addEventListener('click', () => {
-            this.navigateTo('torigatchi');
-        });
-
-        // Insert before settings icon
-        const settingsIcon = document.getElementById('uv7-settings');
-        if (settingsIcon) {
-            console.log('[UV7Shell] Inserting Tori status before settings icon');
-            statusRight.insertBefore(toriStatus, settingsIcon);
-        } else {
-            console.warn('[UV7Shell] Settings icon not found, appending Tori status to end');
-            statusRight.appendChild(toriStatus);
-        }
-
-        // Listen for Tori status change events (event-based, not polling)
-        window.addEventListener('uv7:tori-status-changed', (e: Event) => {
-            const customEvent = e as CustomEvent;
-            this.updateToriStatus(customEvent.detail);
-        });
-
-        // Listen for storage events (if multiple tabs/windows)
-        window.addEventListener('storage', (e) => {
-            if (e.key === 'toriGatchiState') {
-                this.updateToriStatus();
-            }
-        });
-
-        // Note: No initial updateToriStatus() call needed - ToriService.tick() will
-        // emit the status change event immediately after this bridge is set up
-
-        console.log('[UV7Shell] Tori bridge initialized successfully');
-    }
-
-    /**
-     * Update Tori status display
-     * @param projectedState - Optional pre-calculated state from ToriService
-     */
-    private updateToriStatus(projectedState?: any): void {
-        const toriStatus = document.getElementById('tori-status');
-        if (!toriStatus) return;
-
-        try {
-            let state;
-
-            // Use provided state or fetch from localStorage
-            if (projectedState) {
-                state = projectedState;
-            } else {
-                const stateStr = localStorage.getItem('toriGatchiState');
-                if (!stateStr) {
-                    (toriStatus as HTMLElement).style.display = 'none';
-                    return;
-                }
-                state = JSON.parse(stateStr);
-            }
-
-            if (!state) return;
-
-            const { mood, hunger, love } = state;
-
-            // Determine icon and color based on mood
-            let icon = '🥚';
-            let color = '#fff';
-
-            // Mood Logic (Simplified from main.js)
-            if (mood === 'Hangry') { icon = '💢'; color = '#ff4d4d'; }
-            else if (mood === 'Sleepy') { icon = '💤'; color = '#a8b2d1'; }
-            else if (mood === 'Sad' || mood === 'Lonely') { icon = '😢'; color = '#7aa2f7'; }
-            else if (mood === 'Flirty') { icon = '😘'; color = '#f778ba'; }
-            else if (mood === 'Adored') { icon = '🥰'; color = '#bb9af7'; }
-            else if (mood === 'Happy') { icon = '😊'; color = '#9ece6a'; }
-            else if (mood === 'Grumpy') { icon = '😠'; color = '#e0af68'; }
-
-            // Show critical warnings
-            let text = mood;
-            if (hunger < 30) { text = `${mood} (Hungry)`; }
-            if (love < 30) { text = `${mood} (Lonely)`; }
-
-            toriStatus.innerHTML = `${icon} ${text}`;
-            (toriStatus as HTMLElement).style.color = color;
-            (toriStatus as HTMLElement).style.display = 'flex';
-
-        } catch (e) {
-            console.warn('[UV7Shell] Failed to parse Tori state', e);
-            (toriStatus as HTMLElement).style.display = 'none';
-        }
-    }
+    // ═══════════════════════════════════════════════════════════════
+    // TORI BRIDGE (Delegated to ToriBridge.ts)
+    // ═══════════════════════════════════════════════════════════════
+    // Status bar Tori indicator is now managed by ToriBridge controller
 
     /**
      * Initialize global audio feedback
