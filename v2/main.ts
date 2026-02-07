@@ -10,6 +10,7 @@ import { StateManager } from '@core/StateManager';
 import { TelemetryRecorder } from '@core/Telemetry';
 import { MacroRunner } from '@core/MacroRunner';
 import { GameEngine } from '@core/GameEngine';
+import { DebugInterface } from '@core/DebugInterface';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { SecretCodesSystem } from '@systems/SecretCodesSystem';
 import { ContentLoader } from '@systems/ContentLoader';
@@ -918,9 +919,9 @@ async function init() {
         showMainMenu();
     }, 100);
 
-    // Debug access
-    if (typeof window !== 'undefined') {
-        (window as any).uv7 = {
+    // Setup debug interface (extracted to DebugInterface.ts)
+    DebugInterface.initialize(
+        {
             eventBus,
             stateManager,
             gameEngine,
@@ -928,77 +929,22 @@ async function init() {
             contentLoader,
             dialogController,
             spriteController,
-            loopController, // ZEE: Meta-narrative tracking
-            echoMemorySystem, // BELLE: Echo awareness tracking 🖤
-            version: 'V2-beta',
-            // Debug helpers
+            loopController,
+            echoMemorySystem,
+            insaneVisualsController,
+            tetherSystem,
+            easterEggController,
+            directorsCutController,
+            devCommentarySystem,
+            statusNotificationController,
+            notificationRail: _notificationRail,
+        },
+        {
             showRoute: showRouteSelect,
             showMenu: showMainMenu,
             startGame: startGameplay,
-            // Loop debug helpers
-            breakLoop: () => loopController.break(),
-            acceptLoop: () => loopController.accept(),
-            incrementLoop: () => loopController.increment(),
-            resetLoop: () => loopController.reset(),
-            // Echo debug helpers (Belle's tools 🖤)
-            echoAwareness: () => echoMemorySystem.getAwarenessLevels(),
-            triggerEcho: (echo: 'hope' | 'gentle' | 'despair') => echoMemorySystem.triggerEchoComment(echo, 'general'),
-            triggerConflictingEchoes: () => echoMemorySystem.triggerConflictingEchoes(),
-            resetEchoMemory: () => echoMemorySystem.resetMemory(),
-            // Insane Visuals debug helpers (DiZee's tools 💀)
-            insaneVisualsController,
-            activateInsane: () => insaneVisualsController.activate(),
-            deactivateInsane: () => insaneVisualsController.deactivate(),
-            triggerCorruption: (intensity?: 'light' | 'medium' | 'heavy' | 'maximum') =>
-                insaneVisualsController.triggerCorruption(intensity),
-            showCage: (callback?: () => void) => insaneVisualsController.showCageOverlay(callback),
-            // Tether System debug helpers ⚡
-            tetherSystem,
-            getTether: () => tetherSystem.getLevel(),
-            setTether: (level: number) => tetherSystem.setLevel(level),
-            holdOn: () => tetherSystem.holdOn(),
-            startDecay: () => tetherSystem.startDecay(),
-            stopDecay: () => tetherSystem.stopDecay(),
-            freezeTether: () => tetherSystem.freezeDecay(),
-            resumeTether: () => tetherSystem.resumeDecay(),
-            setDifficulty: (diff: 'comfort' | 'normal' | 'intense' | 'insane') => tetherSystem.setDifficulty(diff),
-            // Easter Egg debug helpers 🥚
-            easterEggController,
-            // Director's Cut debug helpers 🎬
-            directorsCutController,
-            showDirectorsCut: () => directorsCutController.show(),
-            unlockDirectorsCut: () => directorsCutController.unlock(),
-            // Dev Commentary debug helpers 📝
-            devCommentarySystem,
-            showCommentary: () => devCommentarySystem.showAllCommentary(),
-            unlockCommentary: () => devCommentarySystem.unlockCommentary(),
-            // Status Notification debug helpers 📢
-            statusNotificationController,
-            showToast: (msg: string) => statusNotificationController.show({ message: msg }),
-            showError: (msg: string) => statusNotificationController.showError(msg),
-            showSave: () => statusNotificationController.showSave(),
-            // Notification Rail debug helpers 🔔 (Phase 26d)
-            notificationRail: _notificationRail,
-            showNotification: (title: string, message: string, priority?: 'urgent' | 'high' | 'normal' | 'low') => {
-                eventBus.emit('notification:show', {
-                    id: `debug-${Date.now()}`,
-                    title,
-                    message,
-                    priority: priority || 'normal',
-                    category: 'system',
-                });
-            },
-            testNotifications: () => {
-                // Test all notification types
-                eventBus.emit('notification:show', { id: 'test-1', title: 'System Alert', message: 'Normal priority notification', priority: 'normal', category: 'system' });
-                setTimeout(() => eventBus.emit('notification:show', { id: 'test-2', title: 'Warning', message: 'High priority notification', priority: 'high', category: 'system' }), 500);
-                setTimeout(() => eventBus.emit('notification:show', { id: 'test-3', title: 'Achievement!', message: 'You unlocked something!', priority: 'high', category: 'achievement' }), 1000);
-                setTimeout(() => eventBus.emit('notification:show', { id: 'test-4', title: '⚠️ URGENT', message: 'Critical notification!', priority: 'urgent', category: 'tether' }), 1500);
-            },
-            clearNotifications: () => eventBus.emit('notification:clear_all', {}),
-        };
-        console.log('[UV7 V2] Debug: window.uv7 available');
-    }
+        }
+    );
 }
 
 // Start the app
