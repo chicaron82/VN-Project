@@ -210,12 +210,7 @@ export class SkipButton {
         if (!this.element) return;
 
         const isUnlocked = this.dialogController?.isSkipUnlocked() ?? false;
-        // Note: hasReadContent can be used for more restrictive visibility
-        // const hasReadContent = this.dialogController?.hasReadContent() ?? false;
 
-        // Show button if skip is unlocked (V1 behavior: always show when unlocked)
-        // More restrictive: only show if there's read content
-        // For now, match V1: show when unlocked
         if (isUnlocked) {
             this.element.style.display = 'flex';
         } else {

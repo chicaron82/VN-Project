@@ -549,28 +549,18 @@ export class UV7System {
     }
 
     openSidebar(): void {
-        console.log('🔓 [UV7System] openSidebar() called');
-        console.trace('[UV7System] openSidebar stack trace');
         this.elements.sidebar?.classList.add('open');
         this.elements.backdrop?.classList.add('visible');
     }
 
     closeSidebar(): void {
-        console.log('🔒 [UV7System] closeSidebar() called');
-        console.trace('[UV7System] closeSidebar stack trace');
         this.elements.sidebar?.classList.remove('open');
         this.elements.backdrop?.classList.remove('visible');
     }
 
-
-
     toggleSidebar(): void {
-        const isOpen = this.elements.sidebar?.classList.contains('open');
-        console.log(`🔄 [UV7System] toggleSidebar() called - current state: ${isOpen ? 'OPEN' : 'CLOSED'}`);
-        console.trace('[UV7System] toggleSidebar stack trace');
         this.elements.sidebar?.classList.toggle('open');
         this.elements.backdrop?.classList.toggle('visible');
-        console.log(`🔄 [UV7System] toggleSidebar() completed - new state: ${!isOpen ? 'OPEN' : 'CLOSED'}`);
     }
 
     /**

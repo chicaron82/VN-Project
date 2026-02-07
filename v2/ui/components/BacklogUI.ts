@@ -53,10 +53,6 @@ export class BacklogUI {
             });
         }
 
-        // Close on background click (optional, maybe not for backlog if it covers full screen)
-        // this.container.addEventListener('click', (e) => {
-        //     if (e.target === this.container) this.close();
-        // });
     }
 
     public open(): void {

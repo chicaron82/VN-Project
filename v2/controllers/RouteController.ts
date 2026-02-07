@@ -91,11 +91,6 @@ export class RouteController {
         const firstScene = `${route}_start`; // e.g., 'ronnie_start'
         this.engine.loadScene(firstScene);
 
-        // V1 Logic: Increment loop version on route start if not first run
-        // This maintains the "Loop" narrative
-        // const currentVer = this.stateManager.get('loopVersion') || 848;
-        // logic to increment handled here or in engine? 
-        // Let's assume engine handles pure scene loading, route controller handles meta-data.
     }
 
     /**
