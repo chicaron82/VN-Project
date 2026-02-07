@@ -25,6 +25,7 @@ import {
 
 import { StatusBarGestures } from './StatusBarGestures';
 import { StatusBarAppSwitcherPreview } from './StatusBarAppSwitcherPreview';
+import { StatusBarMailSystem, UnreadNote } from './StatusBarMailSystem';
 
 // Re-export for backwards compatibility
 export type { UV7Context, StatusBarFeatures, ColorTint };
@@ -66,17 +67,7 @@ interface StatusBarConfig {
     };
 }
 
-/**
- * DIZEE: Unread note tracking (V1 parity)
- * Email-style notes with badge counter
- */
-interface UnreadNote {
-    id: string;
-    title: string;
-    sender: string;
-    content: string;
-    timestamp: number;
-}
+// UnreadNote interface moved to StatusBarMailSystem.ts
 
 const DEFAULT_CONFIG: StatusBarConfig = {
     loopVersion: 'v848',
@@ -129,9 +120,6 @@ export class StatusBar {
     private _currentPhase: string = ''; // Showcase phase tracking
     private idleTimer: ReturnType<typeof setTimeout> | null = null;
     private idleDelay: number = 3000;
-    // DIZEE: Unread notes tracking (V1 parity)
-    private unreadNotes: Map<string, UnreadNote> = new Map();
-    private hasShownFirstNoteTutorial: boolean = false;
 
     // Unsubscribe functions for cleanup
     private unsubscribers: (() => void)[] = [];
@@ -141,6 +129,9 @@ export class StatusBar {
 
     // App Switcher preview (extracted)
     private appSwitcherPreview!: StatusBarAppSwitcherPreview;
+
+    // Mail system (extracted)
+    private mailSystem!: StatusBarMailSystem;
 
     constructor(eventBus: EventBus, stateManager?: StateManager, config?: Partial<StatusBarConfig>) {
         this.eventBus = eventBus;
@@ -194,6 +185,14 @@ export class StatusBar {
             })
         );
         this.gestures.setup(this.features.enableGestures);
+
+        // Initialize mail system (extracted to StatusBarMailSystem.ts)
+        this.mailSystem = new StatusBarMailSystem(
+            this.mailEl,
+            this.unreadBadgeEl,
+            this.eventBus,
+            () => this.currentRoute
+        );
     }
 
     // ========================================
@@ -947,119 +946,50 @@ export class StatusBar {
     }
 
     // ========================================
-    // DIZEE: UNREAD NOTES SYSTEM (V1 Parity)
-    // Email-style mail icon with badge counter
+    // ========================================
+    // UNREAD NOTES SYSTEM (Extracted to StatusBarMailSystem.ts)
     // ========================================
 
     /**
-     * Add an unread note - shows mail icon with badge
-     * V1 Parity: notification-shade-controller.js addUnreadNote()
+     * Add an unread note - delegates to mail system
      */
     public addUnreadNote(id: string, title: string, sender: string, content: string = ''): void {
-        // Add to unread notes map
-        this.unreadNotes.set(id, {
-            id,
-            title,
-            sender,
-            content,
-            timestamp: Date.now()
-        });
-
-        // Update mail icon
-        this.updateMailIcon();
-
-        // Pulse the mail icon
-        this.pulseMail();
-
-        // V1 Parity: First note tutorial trigger
-        if (!this.hasShownFirstNoteTutorial && this.currentRoute === 'tori') {
-            this.hasShownFirstNoteTutorial = true;
-            // Emit tutorial event (if tutorial system is listening)
-            this.eventBus.emit('ui:notification', {
-                type: 'info',
-                message: 'Tap the mail icon to read notes'
-            });
-        }
-
-        console.log(`📬 New unread note: ${sender} - ${title}`);
+        this.mailSystem.addUnreadNote(id, title, sender, content);
     }
 
     /**
-     * Mark a note as read - removes from unread count
-     * V1 Parity: notification-shade-controller.js markNoteAsRead()
+     * Mark a note as read - delegates to mail system
      */
     public markNoteAsRead(id: string): void {
-        if (this.unreadNotes.has(id)) {
-            this.unreadNotes.delete(id);
-            this.updateMailIcon();
-            console.log(`📭 Note marked as read: ${id}`);
-        }
+        this.mailSystem.markNoteAsRead(id);
     }
 
     /**
-     * Mark all notes as read
+     * Mark all notes as read - delegates to mail system
      */
     public markAllNotesAsRead(): void {
-        this.unreadNotes.clear();
-        this.updateMailIcon();
-        console.log('📭 All notes marked as read');
+        this.mailSystem.markAllNotesAsRead();
     }
 
     /**
-     * Get unread count
+     * Get unread count - delegates to mail system
      */
     public getUnreadCount(): number {
-        return this.unreadNotes.size;
+        return this.mailSystem.getUnreadCount();
     }
 
     /**
-     * Get most recent unread note (for preview)
+     * Get most recent unread note - delegates to mail system
      */
     public getMostRecentUnread(): UnreadNote | null {
-        if (this.unreadNotes.size === 0) return null;
-
-        // Get most recent by timestamp
-        let mostRecent: UnreadNote | null = null;
-        this.unreadNotes.forEach((note) => {
-            if (!mostRecent || note.timestamp > mostRecent.timestamp) {
-                mostRecent = note;
-            }
-        });
-        return mostRecent;
+        return this.mailSystem.getMostRecentUnread();
     }
 
     /**
-     * Update mail icon visibility and badge count
-     * V1 Parity: notification-shade-controller.js updateMailIcon()
-     */
-    private updateMailIcon(): void {
-        const count = this.unreadNotes.size;
-
-        if (count > 0) {
-            // Show mail icon
-            this.mailEl.style.display = 'flex';
-            // Update badge
-            this.unreadBadgeEl.textContent = count > 9 ? '9+' : String(count);
-            this.unreadBadgeEl.style.display = 'flex';
-            // Add unread class for styling
-            this.mailEl.classList.add('has-unread');
-        } else {
-            // Hide mail icon when no unread
-            this.mailEl.style.display = 'none';
-            this.unreadBadgeEl.style.display = 'none';
-            this.mailEl.classList.remove('has-unread');
-        }
-    }
-
-    /**
-     * Pulse mail icon animation
+     * Pulse mail icon animation - delegates to mail system
      */
     public pulseMail(): void {
-        if (!this.mailEl) return;
-        this.mailEl.classList.add('pulse');
-        setTimeout(() => {
-            this.mailEl.classList.remove('pulse');
-        }, 600);
+        this.mailSystem.pulseMail();
     }
 
     /**
