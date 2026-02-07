@@ -1,4 +1,5 @@
 import { EventBus } from '../../core/EventBus';
+import { dispatchAction } from '../utils/ActionDispatcher';
 
 import { StateManager } from '../../core/StateManager';
 import { CollectiblesSystem } from '../../systems/CollectiblesSystem';
@@ -498,60 +499,7 @@ export class Sidebar {
      * V1 Parity: lines 1700-1732
      */
     private handleLayerAction(action: string): void {
-        console.log(`🎯 Layer action: ${action}`);
-
-        // V1 Parity: Haptic feedback on action
-        if (navigator.vibrate) navigator.vibrate(20);
-
-        switch (action) {
-            case 'save':
-                this.eventBus.emit('ui:save_menu', {});
-                this.close();
-                break;
-            case 'load':
-                this.eventBus.emit('ui:load_menu', {});
-                this.close();
-                break;
-            case 'fullscreen':
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        console.error(`Fullscreen error: ${err.message}`);
-                    });
-                } else {
-                    document.exitFullscreen();
-                }
-                break;
-            case 'exit':
-                this.eventBus.emit('ui:main_menu', {});
-                this.close();
-                break;
-            case 'exit-to-shell':
-                this.eventBus.emit('shell:exit', {});
-                this.close();
-                break;
-            case 'screenshot':
-                // Toggle screenshot mode via status bar
-                this.eventBus.emit('ui:hide_status_bar', {});
-                this.close();
-                break;
-            case 'notes':
-                this.eventBus.emit('ui:notes:open', {});
-                this.close();
-                break;
-            case 'settings':
-                this.eventBus.emit('settings:open', {});
-                this.close();
-                break;
-            case 'help':
-                // Show help - could emit a generic event or just log for now
-                console.log('📖 Help requested');
-                break;
-            case 'history':
-                this.eventBus.emit('ui:backlog:toggle', {});
-                this.close();
-                break;
-            default:
-                console.warn(`Unknown layer action: ${action}`);
-        }
+        console.log(`Layer action: ${action}`);
+        dispatchAction(action, this.eventBus, () => this.close());
     }
 }

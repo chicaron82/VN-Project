@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { dispatchAction } from '../utils/ActionDispatcher';
 
 /**
  * NotificationShade - Mobile Quick Action Menu (V1 Parity Port)
@@ -345,48 +346,7 @@ export class NotificationShade {
      * Handle quick action button clicks via event delegation
      */
     private handleQuickAction(action: string): void {
-        if (navigator.vibrate) navigator.vibrate(20);
-
-        switch (action) {
-            case 'save':
-                this.eventBus.emit('ui:save_menu', {});
-                this.close();
-                break;
-            case 'load':
-                this.eventBus.emit('ui:load_menu', {});
-                this.close();
-                break;
-            case 'fullscreen':
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => console.warn(err));
-                } else {
-                    document.exitFullscreen();
-                }
-                break;
-            case 'exit':
-                this.eventBus.emit('ui:main_menu', {});
-                this.close();
-                break;
-            case 'exit-to-shell':
-                this.eventBus.emit('shell:exit', {});
-                this.close();
-                break;
-            case 'screenshot':
-                this.eventBus.emit('ui:hide_status_bar', {});
-                this.close();
-                break;
-            case 'notes':
-                this.eventBus.emit('ui:notes:open', {});
-                this.close();
-                break;
-            case 'settings':
-                this.eventBus.emit('settings:open', {});
-                this.close();
-                break;
-            case 'help':
-                console.log('Help requested from shade');
-                break;
-        }
+        dispatchAction(action, this.eventBus, () => this.close());
     }
 
     // ...
