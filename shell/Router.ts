@@ -6,7 +6,7 @@
  * Uses hash-based routing (#/app/params) for simplicity.
  *
  * Routes:
- *   #/           → landing
+ *   #/           → showcase
  *   #/landing    → landing
  *   #/showcase   → showcase
  *   #/showcase/timeline/42 → showcase with params
@@ -37,7 +37,7 @@ export class Router {
 
         // Default app mappings
         this.routes = {
-            '': 'landing',
+            '': 'showcase',
             'landing': 'landing',
             'showcase': 'showcase',
             'v1': 'v1',
@@ -74,7 +74,7 @@ export class Router {
      * Parse the URL hash into app ID and parameters
      *
      * Converts hash URLs like:
-     * - `#/` → { appId: 'landing', params: {} }
+     * - `#/` → { appId: 'showcase', params: {} }
      * - `#/showcase` → { appId: 'showcase', params: {} }
      * - `#/showcase/phase/42` → { appId: 'showcase', params: { phase: '42' } }
      *
@@ -92,7 +92,7 @@ export class Router {
 
         // First segment is the app ID
         const appKey = segments[0] || '';
-        const appId = this.routes[appKey] || 'landing';
+        const appId = this.routes[appKey] || 'showcase';
 
         // Remaining segments are key/value pairs
         const params: Record<string, string> = {};

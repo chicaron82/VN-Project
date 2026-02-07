@@ -31,17 +31,17 @@ describe('Router', () => {
     });
 
     describe('parseHash', () => {
-        it('should parse empty hash to landing', () => {
+        it('should parse empty hash to showcase', () => {
             window.location.hash = '';
             const result = router.parseHash();
-            expect(result.appId).toBe('landing');
+            expect(result.appId).toBe('showcase');
             expect(result.params).toEqual({});
         });
 
-        it('should parse #/ to landing', () => {
+        it('should parse #/ to showcase', () => {
             window.location.hash = '#/';
             const result = router.parseHash();
-            expect(result.appId).toBe('landing');
+            expect(result.appId).toBe('showcase');
         });
 
         it('should parse #/showcase', () => {
@@ -89,10 +89,10 @@ describe('Router', () => {
             expect(result.params).toEqual({ search: 'Hello World' });
         });
 
-        it('should handle unknown app IDs by defaulting to landing', () => {
+        it('should handle unknown app IDs by defaulting to showcase', () => {
             window.location.hash = '#/unknown-app';
             const result = router.parseHash();
-            expect(result.appId).toBe('landing');
+            expect(result.appId).toBe('showcase');
         });
 
         it('should ignore odd parameter segments', () => {
@@ -131,9 +131,9 @@ describe('Router', () => {
             expect(router.getCurrentAppId()).toBe('v2');
         });
 
-        it('should return landing for empty hash', () => {
+        it('should return showcase for empty hash', () => {
             window.location.hash = '';
-            expect(router.getCurrentAppId()).toBe('landing');
+            expect(router.getCurrentAppId()).toBe('showcase');
         });
     });
 
@@ -157,11 +157,11 @@ describe('Router', () => {
             expect(mockShell.loadApp).toHaveBeenCalledWith('showcase', { phase: '42' });
         });
 
-        it('should handle landing route', () => {
+        it('should handle default route as showcase', () => {
             window.location.hash = '#/';
             router.handleRoute();
 
-            expect(mockShell.loadApp).toHaveBeenCalledWith('landing', {});
+            expect(mockShell.loadApp).toHaveBeenCalledWith('showcase', {});
         });
     });
 

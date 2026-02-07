@@ -151,6 +151,11 @@ export class TabController {
 
         // Emit state for app switcher
         this.emitStateForAppSwitcher();
+
+        // Emit section change for GentleNudges
+        window.dispatchEvent(new CustomEvent('uv7:section:changed', {
+            detail: { section: tabId }
+        }));
     }
 
     /**
