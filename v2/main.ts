@@ -37,10 +37,9 @@ import { StatusNotificationController } from '@systems/StatusNotificationControl
 import { BootstrapTracker } from '@systems/BootstrapTracker';
 import { InputController } from '@controllers/InputController';
 import { SystemEventHandlers } from '@controllers/SystemEventHandlers';
+import { NavigationController } from '@controllers/NavigationController';
 
 import { TipsOverlay } from '@ui/components/TipsOverlay';
-import { MainMenu } from '@ui/screens/MainMenu';
-import { RouteSelect } from '@ui/screens/RouteSelect';
 
 import { GameLayout } from '@ui/components/GameLayout';
 import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
@@ -279,8 +278,8 @@ console.log('UI initialized', {
 const app = document.getElementById('app');
 if (!app) throw new Error('No #app element found');
 
-type Screen = { unmount: () => void };
-let currentScreen: Screen | null = null;
+// Menu screens managed by NavigationController
+// Gameplay unmount handled by gameLayout cleanup
 let gameLayout: GameLayout | null = null;
 let isPaused = false;
 
@@ -288,14 +287,8 @@ let isPaused = false;
 // Screen Management
 // ============================================
 
-function clearScreen() {
-    if (currentScreen) {
-        currentScreen.unmount();
-        currentScreen = null;
-    }
-    // Clear app container
-    app!.innerHTML = '';
-}
+// Navigation Controller - Screen transitions (extracted to NavigationController.ts)
+const navigationController = new NavigationController(eventBus, loopController, app!);
 
 // ============================================
 // Boot Sequence
@@ -309,36 +302,10 @@ async function executeBootSequence(): Promise<void> {
 }
 
 
-function showMainMenu() {
-    clearScreen();
-    const menu = new MainMenu(eventBus);
-    // Wire LoopController for dynamic title/subtitle/footer updates
-    menu.setLoopController(loopController);
-    menu.mount(app!);
-    currentScreen = menu;
-    eventBus.emit('ui:show_status_bar', {});
-    console.log('[UV7 V2] Main Menu');
-}
-
-function showRouteSelect() {
-    clearScreen();
-    const routeSelect = new RouteSelect(eventBus);
-    routeSelect.mount(app!);
-    currentScreen = routeSelect;
-    console.log('[UV7 V2] Route Select');
-}
-
-
-
-function showCredits() {
-    // V2: CreditsScreen component handles its own display via EventBus
-    // The CreditsScreen listens for 'ui:show_credits' and manages everything internally
-    eventBus.emit('ui:show_credits', {});
-    console.log('[UV7 V2] Credits');
-}
-
-// showLoadMenu - Now handled by SaveLoadModal component
-// The modal is triggered via EventBus 'ui:load_menu' and 'ui:save_menu' events
+// Navigation helper functions (delegate to NavigationController)
+const clearScreen = () => navigationController.clearScreen();
+const showMainMenu = () => navigationController.showMainMenu();
+const showRouteSelect = () => navigationController.showRouteSelect();
 
 // ============================================
 // Gameplay
@@ -412,16 +379,7 @@ async function startGameplay(mode: 'ronnie' | 'tori' | 'prologue') {
         });
     }
 
-    // Set up gameplay screen
-    currentScreen = {
-        unmount: () => {
-            const root = document.getElementById('app');
-            if (root) root.innerHTML = '';
-            gameLayout = null;
-            dialogController.destroy();
-            spriteController.hideAllSprites();
-        }
-    };
+    // Gameplay unmount handled by clearScreen when returning to menu
 
     // Determine first scene based on mode
     const firstSceneId = mode === 'ronnie'
@@ -593,14 +551,8 @@ const systemEventHandlers = new SystemEventHandlers(
     showMainMenu
 );
 
-// Navigation event handlers (remain in main.ts for now - simple wiring)
-function setupNavigationHandlers() {
-    eventBus.on('ui:route_select', showRouteSelect);
-    eventBus.on('ui:main_menu', showMainMenu);
-    eventBus.on('ui:settings', () => eventBus.emit('settings:open', {}));
-    eventBus.on('ui:credits', showCredits);
-
-    // Gameplay start events
+// Setup gameplay start event handlers (navigation handlers are in NavigationController)
+function setupGameplayHandlers() {
     eventBus.on('ui:start_game', (data) => {
         startGameplay(data.route);
     });
@@ -632,7 +584,8 @@ async function init() {
     console.log('[UV7 V2] Route content loaded');
 
     // Set up event handlers (extracted to controllers)
-    setupNavigationHandlers();
+    navigationController.setupNavigationHandlers();
+    setupGameplayHandlers();
     inputController.setup();
     systemEventHandlers.setup();
 
