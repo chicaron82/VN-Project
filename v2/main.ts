@@ -35,6 +35,8 @@ import { DirectorsCutController } from '@controllers/DirectorsCutController';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { StatusNotificationController } from '@systems/StatusNotificationController';
 import { BootstrapTracker } from '@systems/BootstrapTracker';
+import { InputController } from '@controllers/InputController';
+import { SystemEventHandlers } from '@controllers/SystemEventHandlers';
 
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 import { MainMenu } from '@ui/screens/MainMenu';
@@ -64,7 +66,6 @@ import { CreditsScreen } from '@ui/screens/CreditsScreen';
 import { CrewScreen } from '@ui/screens/CrewScreen';
 import { SaveSystem } from '@systems/SaveSystem';
 
-import { GameConfig } from '@core/GameConfig';
 import { DialogBubble } from '@ui/components/DialogBubble'; // DIZEE: Internal thoughts
 import { SaveLoadModal } from '@ui/components/SaveLoadModal'; // V2: Save/Load UI
 import { BacklogUI } from '@ui/components/BacklogUI'; // V2: Backlog UI
@@ -565,280 +566,47 @@ function showChoices(choices: Array<{ text: string; next: string | null }>) {
 // Event Handlers
 // ============================================
 
-function setupEventHandlers() {
-    document.addEventListener('keydown', (e) => {
-        // Quick Save (F5)
-        if (e.key === 'F5') {
-            e.preventDefault();
-            const slot = GameConfig.SAVE.QUICKSAVE_SLOT || 9;
-            saveSystem.saveGame(slot, 'Quick Save').then(success => {
-                if (success) {
-                    eventBus.emit('notification:show', {
-                        id: 'quick-save',
-                        title: 'QUICK SAVE',
-                        message: 'Timeline preserved',
-                        icon: '💾',
-                        category: 'autosave',
-                        priority: 'normal',
-                        duration: 2000,
-                    });
-                } else {
-                    eventBus.emit('notification:show', {
-                        id: 'save-error',
-                        title: 'ERROR',
-                        message: 'Save failed',
-                        icon: '❌',
-                        category: 'system',
-                        priority: 'high',
-                    });
-                }
-            });
-        }
+// ========================================
+// Event Handlers (Extracted to Controllers)
+// ========================================
 
-        // Quick Load (F9)
-        if (e.key === 'F9') {
-            e.preventDefault();
-            const slot = GameConfig.SAVE.QUICKSAVE_SLOT || 9;
-            if (saveSystem.hasSlot(slot)) {
-                saveSystem.loadGame(slot).then(success => {
-                    if (success) {
-                        eventBus.emit('notification:show', {
-                            id: 'quick-load',
-                            title: 'QUICK LOAD',
-                            message: 'Timeline restored',
-                            icon: '🔄',
-                            category: 'system',
-                            priority: 'normal',
-                            duration: 2000,
-                        });
-                    }
-                });
-            } else {
-                eventBus.emit('notification:show', {
-                    id: 'no-save',
-                    title: 'NO SAVE',
-                    message: 'No quick save found',
-                    icon: '⚠️',
-                    category: 'system',
-                    priority: 'normal',
-                });
-            }
-        }
-    });
+// Input Controller - F5/F9 quick save/load, keyboard shortcuts, haptic feedback
+const inputController = new InputController(
+    eventBus,
+    saveSystem,
+    dialogController,
+    dialogBubble,
+    () => isPaused
+);
 
-    // Navigation
+// System Event Handlers - Game event listeners (scene:load, dialog:show, etc.)
+const systemEventHandlers = new SystemEventHandlers(
+    eventBus,
+    gameEngine,
+    dialogController,
+    spriteController,
+    dialogBubble,
+    () => gameLayout,
+    updateBackground,
+    updateSprites,
+    showChoices,
+    showMainMenu
+);
+
+// Navigation event handlers (remain in main.ts for now - simple wiring)
+function setupNavigationHandlers() {
     eventBus.on('ui:route_select', showRouteSelect);
     eventBus.on('ui:main_menu', showMainMenu);
     eventBus.on('ui:settings', () => eventBus.emit('settings:open', {}));
     eventBus.on('ui:credits', showCredits);
-    // ui:load_menu and ui:save_menu are now handled by SaveLoadModal component
 
-    // Gameplay
+    // Gameplay start events
     eventBus.on('ui:start_game', (data) => {
         startGameplay(data.route);
     });
 
     eventBus.on('ui:start_prologue', () => {
         startGameplay('prologue');
-    });
-
-
-
-    // Scene loading - update UI with scene data
-    eventBus.on('scene:load', ({ sceneId }) => {
-        const scene = gameEngine.getCurrentScene();
-        if (!scene || !gameLayout) return;
-
-        // DIZEE: Handle internal thoughts with bubble system
-        const isInternal = (scene as any).isInternal === true;
-
-        if (isInternal) {
-            // Hide standard dialogue UI for internal thoughts
-            gameLayout.dialogBox.style.display = 'none';
-
-            // TODO: Determine bubble position based on active sprite (reserved for future use)
-            // Currently bubble position is fixed at center
-
-            // Don't show bubble yet - wait for dialog:show event
-        } else {
-            // Show standard dialogue UI
-            gameLayout.dialogBox.style.display = 'block';
-            dialogBubble.hide(); // Clear any existing bubble
-
-            // Update character name
-            const speaker = scene.character || 'Narration';
-            gameLayout.dialogName.textContent = speaker;
-
-            // Color based on character
-            const speakerLower = speaker.toLowerCase();
-            if (speakerLower.includes('ronnie')) {
-                gameLayout.dialogName.style.color = '#0ff';
-            } else if (speakerLower.includes('tori')) {
-                gameLayout.dialogName.style.color = '#f0f';
-            } else if (speakerLower.includes('echo 1')) {
-                gameLayout.dialogName.style.color = '#88f';
-            } else if (speakerLower.includes('echo 2')) {
-                gameLayout.dialogName.style.color = '#8f8';
-            } else if (speakerLower.includes('despair')) {
-                gameLayout.dialogName.style.color = '#f88';
-            } else {
-                gameLayout.dialogName.style.color = '#fff';
-            }
-        }
-
-        // Update background if specified
-        if (scene.background) {
-            updateBackground(scene.background);
-        }
-
-        // Update sprites if specified
-        if (scene.sprites) {
-            updateSprites(scene.sprites);
-        }
-
-        // DIZEE: Handle scene effects (fadeSpritesSequence, etc.)
-        console.log('[DIZEE] Checking for effects:', { sceneId, hasEffects: !!(scene.effects), effects: scene.effects });
-        if (scene.effects && scene.effects.length > 0) {
-            scene.effects.forEach(effect => {
-                console.log('[DIZEE] Processing effect:', effect);
-                if (effect.type === 'fadeSpritesSequence') {
-                    console.log('[DIZEE] Triggering fadeSpritesSequence with 200ms delay');
-                    // Delay effect to ensure sprites are rendered
-                    setTimeout(() => {
-                        console.log('[DIZEE] Executing fadeSpritesSequence now');
-                        spriteController.fadeSpritesSequence(
-                            (effect as any).position || 'left',
-                            (effect as any).sprite1,
-                            (effect as any).sprite2,
-                            effect.duration || 4000
-                        );
-                    }, 200);
-                }
-            });
-        }
-
-        // Highlight active speaker (unless internal)
-        if (!isInternal) {
-            spriteController.highlightSpeaker(scene.character || 'Narration');
-        }
-
-        console.log(`[UV7 V2] Scene loaded: ${sceneId}${isInternal ? ' (internal)' : ''}`);
-    });
-
-    // Dialog display - use DialogController for typewriter OR bubble for internal
-    eventBus.on('dialog:show', ({ entry }) => {
-        if (!gameLayout) return;
-
-        const scene = gameEngine.getCurrentScene();
-        const isInternal = (scene as any)?.isInternal === true;
-
-        if (isInternal) {
-            // Show as floating thought bubble
-            let position: 'left' | 'center' | 'right' = 'center';
-            if (scene?.sprites) {
-                const spriteArray = Array.isArray(scene.sprites) ? scene.sprites : [scene.sprites];
-                const hasLeft = spriteArray.some(s => s.position === 'left' || (s as any).left);
-                const hasRight = spriteArray.some(s => s.position === 'right' || (s as any).right);
-
-                if (hasLeft && !hasRight) position = 'left';
-                else if (hasRight && !hasLeft) position = 'right';
-            }
-
-            dialogBubble.show({
-                text: entry.text,
-                position,
-                duration: 0 // Manual dismiss (advance with click/key)
-            });
-
-            // Still emit complete event so player can advance
-            setTimeout(() => {
-                eventBus.emit('dialog:complete', {});
-            }, 100);
-        } else {
-            // Standard dialogue box with typewriter
-            dialogController.show(entry.text);
-        }
-    });
-
-    // Dialog complete - check for choices
-    eventBus.on('dialog:complete', () => {
-        const scene = gameEngine.getCurrentScene();
-        if (scene?.choices && scene.choices.length > 0) {
-            eventBus.emit('choice:show', { choices: scene.choices });
-            showChoices(scene.choices);
-        }
-    });
-
-    // Scene complete - handle end of route
-    eventBus.on('scene:complete', ({ sceneId }) => {
-        console.log(`[UV7 V2] Route ended at: ${sceneId}`);
-        // For now, return to main menu after a delay
-        setTimeout(() => {
-            showMainMenu();
-        }, 2000);
-    });
-
-    // Tether changes
-    eventBus.on('tether:change', (data) => {
-        if (gameLayout) {
-            gameLayout.updateTether(data.level);
-        }
-    });
-
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
-        // Escape handled by KeyboardController.ts
-
-        // Space/Enter to advance dialog OR hide bubble
-        if ((e.key === ' ' || e.key === 'Enter') && gameLayout && !isPaused) {
-            console.log('[KEYPRESS] Space/Enter pressed', { bubbleVisible: dialogBubble.isVisible() });
-            // DIZEE: If bubble is visible, hide it first
-            if (dialogBubble.isVisible()) {
-                console.log('[KEYPRESS] Hiding bubble and advancing scene');
-                dialogBubble.hide();
-                // For internal thoughts, manually trigger advance since DialogController isn't active
-                eventBus.emit('dialog:advance', {});
-            } else {
-                console.log('[KEYPRESS] Calling dialogController.handleClick()');
-                dialogController.handleClick();
-            }
-        }
-    });
-
-    // Click feedback
-    eventBus.on('ui:click', () => {
-        if (navigator.vibrate) navigator.vibrate(10);
-    });
-
-    eventBus.on('ui:confirm', () => {
-        if (navigator.vibrate) navigator.vibrate([20, 30, 20]);
-    });
-
-    eventBus.on('ui:denied', () => {
-        if (navigator.vibrate) navigator.vibrate([50, 20, 50]);
-    });
-
-    // ========================================
-    // Echo Memory System - Comment Display
-    // Belle's meta-awareness notifications 🖤
-    // ========================================
-    eventBus.on('echo:comment', (data) => {
-        // Map echo type to priority (despair = urgent, others = normal)
-        const echoPriority: Record<string, 'urgent' | 'high' | 'normal'> = {
-            hope: 'normal',
-            gentle: 'normal',
-            despair: 'high'
-        };
-
-        eventBus.emit('notification:show', {
-            id: `echo-${data.echo}-${Date.now()}`,
-            title: `ECHO: ${data.echo.toUpperCase()}`,
-            message: data.message,
-            icon: data.icon,
-            category: 'system',
-            priority: echoPriority[data.echo] || 'normal',
-            duration: 4000,
-        });
     });
 }
 
@@ -863,8 +631,10 @@ async function init() {
     contentLoader.parseAndRegister(toriAct3Data as { scenes: any[] });
     console.log('[UV7 V2] Route content loaded');
 
-    // Set up event handlers
-    setupEventHandlers();
+    // Set up event handlers (extracted to controllers)
+    setupNavigationHandlers();
+    inputController.setup();
+    systemEventHandlers.setup();
 
     // Show splash screen
     await executeBootSequence();
