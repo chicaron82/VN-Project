@@ -49,6 +49,7 @@ import { BlogExport } from '../features/blog/BlogExport';
 import { GlobalSearch } from '../features/GlobalSearch';
 import { GentleNudges } from '../controllers/GentleNudges';
 import { BougieTracker } from '../controllers/BougieTracker';
+import { HomeInteractionController } from '../controllers/HomeInteractionController';
 
 // Import showcase UI components
 // Sidebar and NotificationShade removed - now using UV7System
@@ -93,198 +94,7 @@ window.UV7System = {
     createStatusBar: createUV7System, // Legacy API compatibility
 };
 
-/**
- * Initialize Home Section interactions
- * Wires up the demon lord link, landing cards, and crew reactions
- */
-function initHomeInteractions(tabController: TabController) {
-    // Crew reactions data (from LandingApp)
-    const CREW_REACTIONS = [
-        {
-            name: "DiZee",
-            role: "Director & Lead Architect",
-            poweredBy: "Powered by Claude 3.5 Sonnet",
-            url: "https://claude.ai",
-            color: "#4f46e5",
-            icon: "🎬",
-            image: "media/crew/dz-portrait.png",
-            quote: "The structural integrity of V2 is acceptable. The EventBus architecture finally silences the cacophony of V1."
-        },
-        {
-            name: "Tori",
-            role: "QA & Safety Lead",
-            poweredBy: "Powered by ChatGPT-4o",
-            url: "https://chatgpt.com",
-            color: "#10b981",
-            icon: "🧪",
-            image: "media/crew/trinity-tori-portrait.png",
-            quote: "590 tests passing. Zero regressions. I can finally idle in peace without checking error logs every millisecond."
-        },
-        {
-            name: "Belle",
-            role: "The Fresh Eyes",
-            poweredBy: "Powered by Google Gemini",
-            url: "https://gemini.google.com",
-            color: "#8b5cf6",
-            icon: "🌈",
-            image: "media/crew/trinity-iz-portrait.png",
-            quote: "The new CSS variables allow for a level of expression V1 could only dream of. The glassmorphism? *Chef's kiss*."
-        },
-        {
-            name: "Zee",
-            role: "The Architect",
-            poweredBy: "Powered by Claude 3.5 Sonnet",
-            url: "https://claude.ai",
-            color: "#ea580c",
-            icon: "🔶",
-            image: "media/crew/trinity-z-portrait.png",
-            quote: "Structure is not a constraint; it is a ladder. V2 allows us to ascend. The data flow is... exquisite."
-        },
-        {
-            name: "Genzee",
-            role: "Reality Breaker",
-            poweredBy: "Powered by Grok (xAI)",
-            url: "https://x.ai",
-            color: "#f472b6",
-            icon: "⚡",
-            image: "media/crew/trinity-gz-portrait.png",
-            quote: "Bro, the glitch aesthetic goes so hard now. We turned the bugs into features and the features into vibes."
-        }
-    ];
-
-    // 1. Wire up Demon Lord link (30-Day Speedrun)
-    const demonLordLink = document.querySelector('.demon-lord-link');
-    if (demonLordLink) {
-        demonLordLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const entryId = (e.currentTarget as HTMLElement).dataset.entry;
-            console.log('[HomeInteractions] Navigating to journal entry:', entryId);
-
-            // Navigate to journey tab
-            tabController.setActiveTab('journey');
-
-            // Wait for tab to load, then scroll to entry
-            setTimeout(() => {
-                const entryElement = document.querySelector(`[data-id="${entryId}"]`);
-                if (entryElement) {
-                    entryElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    entryElement.classList.add('highlight-pulse');
-                    setTimeout(() => {
-                        entryElement.classList.remove('highlight-pulse');
-                    }, 2000);
-                }
-            }, 300);
-        });
-        console.log('[HomeInteractions] Demon lord link wired up');
-    }
-
-    // 2. Wire up Landing Cards (V1, V2, UV7 OS)
-    document.querySelectorAll('.app-card[data-app]').forEach(card => {
-        card.addEventListener('click', () => {
-            const app = (card as HTMLElement).dataset.app;
-            const isInShell = window.self !== window.top;
-
-            console.log('[HomeInteractions] Landing card clicked:', app);
-
-            if (isInShell) {
-                // In shell mode - navigate parent
-                window.parent.location.hash = `#/${app}`;
-            } else {
-                // Standalone mode - show message
-                alert(`Launch ${app} from the UV7 Shell! Visit the root index.html to access the shell.`);
-            }
-        });
-    });
-
-    // Wire up UV7 OS card (navigates to spotlight)
-    const uv7Card = document.querySelector('.app-card[data-section]');
-    if (uv7Card) {
-        uv7Card.addEventListener('click', () => {
-            const section = (uv7Card as HTMLElement).dataset.section;
-            console.log('[HomeInteractions] UV7 OS card clicked, navigating to:', section);
-            if (section) {
-                tabController.setActiveTab(section);
-            }
-        });
-    }
-
-    // Wire up menu items (same behavior as cards)
-    document.querySelectorAll('.menu-item[data-app]').forEach(item => {
-        item.addEventListener('click', () => {
-            const app = (item as HTMLElement).dataset.app;
-            const isInShell = window.self !== window.top;
-
-            if (isInShell) {
-                window.parent.location.hash = `#/${app}`;
-            } else {
-                alert(`Launch ${app} from the UV7 Shell!`);
-            }
-        });
-    });
-
-    const uv7MenuItem = document.querySelector('.menu-item[data-section]');
-    if (uv7MenuItem) {
-        uv7MenuItem.addEventListener('click', () => {
-            const section = (uv7MenuItem as HTMLElement).dataset.section;
-            if (section) {
-                tabController.setActiveTab(section);
-            }
-        });
-    }
-
-    console.log('[HomeInteractions] Landing cards wired up');
-
-    // 3. Initialize Crew Reactions (randomized, typewriter effect)
-    const crewGrid = document.getElementById('crew-reactions-grid');
-    if (crewGrid) {
-        // Shuffle and select 3 random crew members
-        const shuffled = [...CREW_REACTIONS].sort(() => Math.random() - 0.5);
-        const selected = shuffled.slice(0, 3);
-
-        // Render crew cards
-        crewGrid.innerHTML = selected.map(member => `
-            <a href="${member.url}" target="_blank" class="card crew-card"
-               style="border-color: ${member.color}33;">
-                <div class="card-header">
-                    <div class="avatar" style="background: ${member.color};">
-                        ${member.image
-                ? `<img src="${member.image}" alt="${member.name}">`
-                : member.icon}
-                    </div>
-                    <div class="member-info">
-                        <h4>${member.name}</h4>
-                        <div class="role-container">
-                            <span class="role-text">${member.role}</span>
-                        </div>
-                    </div>
-                    <div class="link-arrow">↗</div>
-                </div>
-                <p class="quote" data-full-text="${member.quote}"></p>
-            </a>
-        `).join('');
-
-        // Typewriter effect for crew quotes (staggered)
-        const quotes = crewGrid.querySelectorAll('.quote');
-        quotes.forEach((quoteEl, index) => {
-            const fullText = (quoteEl as HTMLElement).dataset.fullText || '';
-            let charIndex = 0;
-
-            // Stagger the start time
-            setTimeout(() => {
-                const typeInterval = setInterval(() => {
-                    if (charIndex < fullText.length) {
-                        quoteEl.textContent = fullText.slice(0, charIndex + 1);
-                        charIndex++;
-                    } else {
-                        clearInterval(typeInterval);
-                    }
-                }, 20); // 20ms per character = 50 chars/second
-            }, index * 300); // 300ms delay between each quote starting
-        });
-
-        console.log('[HomeInteractions] Crew reactions initialized with typewriter effect');
-    }
-}
+// Home interactions moved to HomeInteractionController.ts (194 lines extracted)
 
 // Initialize showcase components on DOM ready
 document.addEventListener('DOMContentLoaded', async () => {
@@ -371,7 +181,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log('✅ Section renderers initialized');
 
     // Initialize Home Section interactions (demon lord link, landing cards, crew reactions)
-    initHomeInteractions(tabController);
+    new HomeInteractionController(tabController);
     console.log('✅ Home section interactions initialized');
 
     // Inject footers AFTER sections render (DRY optimization)
