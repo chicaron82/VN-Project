@@ -21,6 +21,7 @@ import { GrabHandleController } from './GrabHandleController.js';
 import { ToriService } from './services/ToriService.js';
 import type { BaseApp } from './apps/BaseApp.js';
 import { attachEasterEggTapHandler } from './utils/EasterEggHandler.js';
+import { AppSwitcherController } from './controllers/AppSwitcherController.js';
 
 interface AppLoader {
     (): Promise<{ default: new (shell: UV7Shell) => BaseApp }>;
@@ -35,17 +36,6 @@ interface ShellElements {
     backdrop: HTMLElement | null;
     appSwitcher: HTMLElement | null;
     appCardsGrid: HTMLElement | null;
-}
-
-interface AppConfig {
-    title: string;
-    icon: string;
-    description: string;
-}
-
-interface RecentApp extends AppConfig {
-    id: string;
-    timestamp: Date;
 }
 
 interface StatusBarConfig {
@@ -73,11 +63,11 @@ export class UV7Shell {
     gestureRouter: GestureRouter;
     router: Router;
     system: UV7System | null;
+    appSwitcher!: AppSwitcherController; // Extracted to AppSwitcherController.ts
     private grabHandle: GrabHandleController | null;
     private toriService: ToriService | null;
     private elements: ShellElements;
     private initialized: boolean;
-    private recentApps: RecentApp[];
 
     constructor() {
         this.currentApp = null;
@@ -89,9 +79,6 @@ export class UV7Shell {
         this.toriService = null;
         this.elements = {} as ShellElements;
         this.initialized = false;
-
-        // Load recent apps from localStorage
-        this.recentApps = this.loadRecentApps();
     }
 
     /**
@@ -160,8 +147,9 @@ export class UV7Shell {
         // Attach quick action listeners (initial setup)
         this.attachQuickActionListeners();
 
-        // Initialize App Switcher
-        this.initAppSwitcher();
+        // Initialize App Switcher (Extracted to AppSwitcherController.ts)
+        this.appSwitcher = new AppSwitcherController(this, this.elements);
+        this.appSwitcher.init();
 
         // Initialize UV7 easter egg (7-tap on carrier branding)
         this.initEasterEgg();
@@ -521,7 +509,7 @@ export class UV7Shell {
 
             // Add to recent apps if successful
             if (this.currentApp) {
-                this.addToRecentApps(appId);
+                this.appSwitcher.addToRecent(appId);
             }
         }
     }
@@ -833,240 +821,43 @@ export class UV7Shell {
     /**
      * Initialize App Switcher events
      */
-    private initAppSwitcher(): void {
-        // Status Logo toggles switcher (User request)
-        const logoBtn = document.querySelector('.status-logo');
-        if (logoBtn) {
-            // Remove old listeners by cloning
-            const newBtn = logoBtn.cloneNode(true);
-            logoBtn.parentNode!.replaceChild(newBtn, logoBtn);
-
-            newBtn.addEventListener('click', () => {
-                this.toggleAppSwitcher();
-            });
-        }
-
-        // Close button
-        const closeBtn = document.querySelector('.app-switcher-close');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.closeAppSwitcher());
-        }
-
-        // Clear all button
-        const clearBtn = document.getElementById('app-switcher-clear');
-        if (clearBtn) {
-            clearBtn.addEventListener('click', () => {
-                this.recentApps = [];
-                this.saveRecentApps();
-                this.renderAppSwitcher();
-            });
-        }
-
-        // ESC key to close
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && this.elements.appSwitcher?.classList.contains('open')) {
-                this.closeAppSwitcher();
-            }
-        });
-    }
-
-    /**
-     * Load recent apps from localStorage
-     */
-    private loadRecentApps(): RecentApp[] {
-        try {
-            const stored = localStorage.getItem('uv7-recent-apps');
-            if (stored) {
-                const apps = JSON.parse(stored);
-                // Convert timestamp strings back to Date objects and validate
-                return apps.map((app: any) => {
-                    // Ensure app has all required properties by merging with fresh config
-                    const config = this.getAppConfig(app.id || 'unknown');
-                    return {
-                        id: app.id || 'unknown',
-                        ...config,
-                        timestamp: app.timestamp ? new Date(app.timestamp) : new Date()
-                    };
-                }).filter((app: RecentApp) => app.id !== 'unknown');
-            }
-        } catch (e) {
-            console.warn('[UV7Shell] Failed to load recent apps', e);
-        }
-        return [];
-    }
-
-    /**
-     * Save recent apps to localStorage
-     */
-    private saveRecentApps(): void {
-        try {
-            localStorage.setItem('uv7-recent-apps', JSON.stringify(this.recentApps));
-        } catch (e) {
-            console.warn('[UV7Shell] Failed to save recent apps', e);
-        }
-    }
-
-    /**
-     * Add app to recent list
-     * @param appId
-     */
-    private addToRecentApps(appId: string): void {
-        // Remove if exists (to move to top)
-        this.recentApps = this.recentApps.filter(app => app.id !== appId);
-
-        // Add to front
-        const appConfig = this.getAppConfig(appId);
-        this.recentApps.unshift({
-            id: appId,
-            ...appConfig,
-            timestamp: new Date()
-        });
-
-        // Limit to 6 apps
-        if (this.recentApps.length > 6) {
-            this.recentApps.pop();
-        }
-
-        // Persist to localStorage
-        this.saveRecentApps();
-    }
-
-    /**
-     * Get static config for app (placeholder)
-     * @param appId
-     */
-    private getAppConfig(appId: string): AppConfig {
-        const configs: Record<string, AppConfig> = {
-            'landing': { title: 'Home', icon: '🏠', description: 'UV7 Landing Page' },
-            'showcase': { title: 'Showcase', icon: '📖', description: 'Design System & Docs' },
-            'v1': { title: 'V1 Game', icon: '🎮', description: 'The Original Chaos' },
-            'v2': { title: 'V2 Engine', icon: '⚡', description: 'Next-Gen Visual Novel' },
-            'torigatchi': { title: 'Tori-gatchi', icon: '💖', description: 'Virtual Pet Companion' }
-        };
-        return configs[appId] || { title: appId, icon: '📱', description: 'UV7 App' };
-    }
+    // ═══════════════════════════════════════════════════════════════
+    // APP SWITCHER (Delegated to AppSwitcherController.ts)
+    // ═══════════════════════════════════════════════════════════════
 
     /**
      * Toggle the app switcher overlay
-     *
-     * Shows the recent apps interface (similar to iOS/Android task switcher).
-     * Triggered by tapping the UV7 logo in the status bar.
-     *
-     * @example
-     * shell.toggleAppSwitcher();
      */
     toggleAppSwitcher(): void {
-        if (this.elements.appSwitcher?.classList.contains('open')) {
-            this.closeAppSwitcher();
-        } else {
-            this.openAppSwitcher();
-        }
+        this.appSwitcher.toggle();
     }
 
     /**
      * Open the app switcher
-     *
-     * Renders recent apps and displays the switcher overlay.
-     *
-     * @example
-     * shell.openAppSwitcher();
      */
     openAppSwitcher(): void {
-        this.renderAppSwitcher();
-        this.elements.appSwitcher?.classList.add('open');
-        this.elements.backdrop?.classList.add('visible'); // Optional: reuse backdrop or switcher has its own bg
+        this.appSwitcher.open();
     }
 
     /**
      * Close the app switcher
-     *
-     * Hides the app switcher overlay. Preserves backdrop if
-     * sidebar or shade is still open.
-     *
-     * @example
-     * shell.closeAppSwitcher();
      */
     closeAppSwitcher(): void {
-        this.elements.appSwitcher?.classList.remove('open');
-        // Don't hide backdrop if sidebar/shade is open
-        if (!this.elements.sidebar?.classList.contains('open') &&
-            !this.elements.shade?.classList.contains('open')) {
-            this.elements.backdrop?.classList.remove('visible');
-        }
+        this.appSwitcher.close();
     }
 
     /**
-     * Render the App Cards
+     * Render the app switcher
      */
     renderAppSwitcher(): void {
-        // Safe get grid
-        let grid = this.elements.appCardsGrid;
-        if (!grid) {
-            grid = document.getElementById('app-cards-grid');
-            this.elements.appCardsGrid = grid;
-        }
-        if (!grid) {
-            console.error('[UV7Shell] App Cards Grid not found in DOM');
-            return;
-        }
-
-        // Fallback: If empty, assume we are on home/showcase (since we are here)
-        if (this.recentApps.length === 0) {
-            this.addToRecentApps('showcase');
-        }
-
-        if (this.recentApps.length === 0) {
-            // Should be unreachable now, but keep as safety
-            grid.innerHTML = `
-                <div style="grid-column: 1/-1; text-align: center; padding: 4rem; opacity: 0.5;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
-                    <p>No recent apps</p>
-                </div>
-            `;
-            return;
-        }
-
-        grid.innerHTML = this.recentApps.map(app => `
-            <div class="app-card ${this.currentApp?.id === app.id ? 'active' : ''}" onclick="uv7Shell.navigateTo('${app.id}'); uv7Shell.closeAppSwitcher();">
-                <button class="app-card-close" onclick="event.stopPropagation(); uv7Shell.removeFromRecent('${app.id}')">✕</button>
-                <div class="quick-resume-badge">Quick Resume</div>
-                <div class="app-preview">
-                    <div class="app-preview-icon">${app.icon}</div>
-                </div>
-                <div class="app-info">
-                    <div class="app-name">
-                        <span class="app-title">${app.title}</span>
-                        ${this.currentApp?.id === app.id ? '<span class="app-badge active">Active</span>' : ''}
-                    </div>
-                    <div class="app-description">${app.description}</div>
-                    <div class="app-state">
-                        <span class="app-state-item time">${this.formatTime(app.timestamp)}</span>
-                        <span class="app-state-item">Ready</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        this.appSwitcher.render();
     }
 
     /**
-     * Remove an app from the recent apps list
-     *
-     * Removes the app from the switcher and re-renders the UI.
-     * Called when user clicks the X button on an app card.
-     *
-     * @param appId - The app identifier to remove
-     *
-     * @example
-     * shell.removeFromRecent('v1');
+     * Remove an app from recent apps list
      */
     removeFromRecent(appId: string): void {
-        this.recentApps = this.recentApps.filter(app => app.id !== appId);
-        this.saveRecentApps();
-        this.renderAppSwitcher();
-    }
-
-    private formatTime(date: Date): string {
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        this.appSwitcher.remove(appId);
     }
 }
 
