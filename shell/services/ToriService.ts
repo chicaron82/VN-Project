@@ -260,8 +260,8 @@ export class ToriService {
     private sendNotification(message: string, icon: string): void {
         console.log(`[ToriService] Notification: ${message}`);
 
-        // Use Shell Toast
-        this.shell.system.showToast(`${icon} ${message}`);
+        // Use Shell Toast via public API
+        this.shell.showToast(`${icon} ${message}`);
 
         this.lastNotificationTime = Date.now();
     }

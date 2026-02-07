@@ -589,30 +589,7 @@ export class LandingApp extends BaseApp {
     }
 
     showToast(message: string): void {
-        // Simple toast notification
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: #00ff88;
-            padding: 12px 24px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 10000;
-            pointer-events: none;
-            animation: fadeInOut 2s ease-in-out;
-        `;
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.remove();
-        }, 2000);
+        this.api?.toast.show(message);
     }
 }
 

@@ -712,40 +712,16 @@ export class UV7Shell {
     /**
      * Show a temporary toast notification
      *
-     * Displays a message at the bottom of the screen for 2 seconds
-     * with a fade-in/out animation. Used for system notifications
-     * and user feedback.
+     * Delegates to UV7System's toast implementation.
      *
      * @param message - The text to display in the toast
      *
      * @example
      * shell.showToast('Settings saved!');
-     * shell.showToast('💖 Tori is happy!');
+     * shell.showToast('Tori is happy!');
      */
     showToast(message: string): void {
-        const toast = document.createElement('div');
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.9);
-            color: #00ff88;
-            padding: 12px 24px;
-            border-radius: 24px;
-            font-size: 14px;
-            font-weight: 500;
-            z-index: 99999;
-            pointer-events: none;
-            animation: fadeInOut 2s ease-in-out;
-        `;
-
-        document.body.appendChild(toast);
-
-        setTimeout(() => {
-            toast.remove();
-        }, 2000);
+        this.system?.getAPI().toast.show(message);
     }
 
     /**
