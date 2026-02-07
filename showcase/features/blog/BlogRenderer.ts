@@ -797,12 +797,95 @@ export class BlogRenderer {
                 entry.theTimeline.map(t => `<li>${t}</li>`).join('') + '</ul>';
             details.appendChild(div);
         }
+        if (entry.highlights) {
+            hasDetails = true;
+            const ul = document.createElement('ul');
+            ul.className = 'update-list';
+            ul.innerHTML = '<h4 style="color: #888; margin-bottom: 0.5rem;">✨ Highlights</h4>';
+            entry.highlights.forEach(h => ul.innerHTML += `<li>${h}</li>`);
+            details.appendChild(ul);
+        }
+
         if (entry.callout) {
             addSection('v2-improvement-callout', `
                 <div class="callout-icon">${entry.callout.icon || '💡'}</div>
                 <div class="callout-content"><strong>${entry.callout.title || 'Insight:'}</strong> ${entry.callout.text}</div>
             `);
         }
+
+        if (entry.technicalDetails) {
+            hasDetails = true;
+            let html = `<h4 style="color: #888; margin-bottom: 1rem;">${entry.technicalDetails.title}</h4>`;
+            entry.technicalDetails.sections.forEach(section => {
+                html += `<div class="technical-section">`;
+                html += `<h5 style="color: #00ff88; margin-bottom: 0.5rem;">${section.heading}</h5>`;
+                html += this.markdownToHtml(section.content);
+                html += `</div>`;
+            });
+            addSection('technical-details-container', html);
+        }
+
+        if (entry.problem) {
+            hasDetails = true;
+            if (typeof entry.problem === 'string') {
+                addSection('problem-section', `<h4 style="color: #ef4444; margin-bottom: 0.5rem;">❌ Problem</h4><p>${entry.problem}</p>`);
+            } else {
+                addSection('problem-section', `
+                    <h4 style="color: #ef4444; margin-bottom: 0.5rem;">❌ Problem</h4>
+                    <p><strong>Description:</strong> ${entry.problem.description}</p>
+                    <p><strong>Root Cause:</strong> ${entry.problem.rootCause}</p>
+                `);
+            }
+        }
+
+        if (entry.solution) {
+            hasDetails = true;
+            if (typeof entry.solution === 'string') {
+                addSection('solution-section', `<h4 style="color: #00ff88; margin-bottom: 0.5rem;">✅ Solution</h4><p>${entry.solution}</p>`);
+            } else {
+                let html = `<h4 style="color: #00ff88; margin-bottom: 0.5rem;">✅ Solution</h4>`;
+                html += `<p>${entry.solution.approach}</p>`;
+                if (entry.solution.features) {
+                    html += '<ul class="update-list">';
+                    entry.solution.features.forEach(f => html += `<li>${this.markdownToHtml(f)}</li>`);
+                    html += '</ul>';
+                }
+                if (entry.solution.steps) {
+                    html += '<ol class="update-list">';
+                    entry.solution.steps.forEach(s => html += `<li>${this.markdownToHtml(s)}</li>`);
+                    html += '</ol>';
+                }
+                if (entry.solution.code) {
+                    html += `<pre><code>${entry.solution.code}</code></pre>`;
+                }
+                addSection('solution-section', html);
+            }
+        }
+
+        if (entry.lessonsLearned) {
+            hasDetails = true;
+            const ul = document.createElement('ul');
+            ul.className = 'update-list';
+            ul.innerHTML = '<h4 style="color: #00ff88; margin-bottom: 0.5rem;">📚 Lessons Learned</h4>';
+            entry.lessonsLearned.forEach(l => ul.innerHTML += `<li>${this.markdownToHtml(l)}</li>`);
+            details.appendChild(ul);
+        }
+
+        if (entry.commits) {
+            hasDetails = true;
+            let html = '<h4 style="color: #888; margin-bottom: 0.5rem;">💾 Commits</h4>';
+            entry.commits.forEach(commit => {
+                html += `<div class="commit-block" style="margin-bottom: 1rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 4px;">`;
+                html += `<div style="font-family: monospace; color: #00ff88; margin-bottom: 0.25rem;"><code>${commit.hash}</code></div>`;
+                html += `<div style="margin-bottom: 0.5rem;">${commit.message}</div>`;
+                if (commit.files && commit.files.length > 0) {
+                    html += `<div style="font-size: 0.85rem; color: #888;">Files: ${commit.files.join(', ')}</div>`;
+                }
+                html += `</div>`;
+            });
+            addSection('commits-section', html);
+        }
+
         if (entry.quote) addSection('timeline-entry-quote', `<blockquote>${entry.quote}</blockquote>`);
 
         if (entry.metrics) {

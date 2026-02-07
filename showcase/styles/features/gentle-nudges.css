@@ -1,0 +1,138 @@
+/**
+ * Gentle Nudges - Friendly course suggestions
+ *
+ * Like a sommelier's whisper, not a car salesman's shout.
+ */
+
+.gentle-nudge {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+
+    /* Frosted glass, like a fancy menu card */
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    padding: 1rem 2rem;
+
+    /* Subtle glow - we went full Michelin, remember? */
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 0 20px rgba(16, 185, 129, 0.3);
+
+    /* Smooth entrance */
+    animation: nudgeIn 0.5s ease forwards;
+    opacity: 0;
+
+    /* Typography */
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+
+    /* Ensure it's above everything */
+    z-index: 9999;
+
+    /* Smooth transitions */
+    transition: all 350ms ease;
+}
+
+@keyframes nudgeIn {
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes nudgeOut {
+    to {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+}
+
+/* Gentle pulse - like a heartbeat */
+.gentle-nudge::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 24px;
+    background: linear-gradient(45deg, #10b981, #3b82f6);
+    opacity: 0;
+    animation: gentlePulse 2s ease-in-out infinite;
+    z-index: -1;
+}
+
+@keyframes gentlePulse {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(1.05);
+    }
+}
+
+/* Elements within the nudge */
+.nudge-emoji {
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.nudge-text {
+    font-weight: 400;
+}
+
+.nudge-text strong {
+    font-weight: 600;
+    color: var(--accent-green);
+}
+
+.nudge-arrow {
+    display: inline-block;
+    margin-left: 0.5rem;
+    animation: arrowBounce 1s ease-in-out infinite;
+    color: var(--accent-green);
+}
+
+@keyframes arrowBounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(8px); }
+}
+
+/* Mobile - keep it compact */
+@media (max-width: 768px) {
+    .gentle-nudge {
+        bottom: 1rem;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.85rem;
+        max-width: 90%;
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+/* Dark mode - even more elegant */
+@media (prefers-color-scheme: dark) {
+    .gentle-nudge {
+        background: rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Reduced motion - respect accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .gentle-nudge,
+    .gentle-nudge::before,
+    .nudge-arrow {
+        animation: none;
+    }
+
+    .gentle-nudge {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}

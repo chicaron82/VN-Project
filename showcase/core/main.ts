@@ -276,7 +276,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize visual effects
     initTypingEffect();
-    // new MagneticCursor(); // Disabled to show timeline ripple effects
     initTilt('.hero-banner .hero-banner-image', {
         container: '.hero-banner',
         limits: 15,

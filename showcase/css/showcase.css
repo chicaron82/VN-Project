@@ -122,9 +122,6 @@
 /* Keyboard shortcuts: modal + key bindings */
 @import url('keyboard-shortcuts.css');
 
-/* Custom cursor effects (disabled by default) */
-@import url('cursor.css');
-
 /* Gentle nudges: scroll inactivity hints */
 @import url('gentle-nudges.css');
 

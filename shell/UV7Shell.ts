@@ -866,7 +866,7 @@ export class UV7Shell {
                     <div class="shell-error-icon">⚠️</div>
                     <h2>Failed to load ${appId}</h2>
                     <p>${error.message}</p>
-                    <button onclick="location.hash = '#/'">Return to Landing</button>
+                    <button onclick="location.hash = '#/'">Return to Home</button>
                 </div>
             `;
         }
@@ -1140,9 +1140,9 @@ export class UV7Shell {
             return;
         }
 
-        // Fallback: If empty, assume we are on Landing (since we are here)
+        // Fallback: If empty, assume we are on home/showcase (since we are here)
         if (this.recentApps.length === 0) {
-            this.addToRecentApps('landing');
+            this.addToRecentApps('showcase');
         }
 
         if (this.recentApps.length === 0) {

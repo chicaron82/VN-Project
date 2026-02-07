@@ -4,7 +4,7 @@ This directory contains the refactored timeline data for the UV7 Showcase, split
 
 ## Structure
 
-```
+```text
 timeline/
 ├── entries/
 │   ├── 2026/          # Timeline entries from 2026
@@ -54,7 +54,7 @@ export const entry: TimelineEntry = {
 };
 ```
 
-3. Add the import and entry to `index.ts`:
+1. Add the import and entry to `index.ts`:
 
 ```typescript
 // Add to imports section
@@ -72,6 +72,7 @@ export const timelineData: TimelineEntry[] = [
 ### Automated Method (Future)
 
 A script can be created to:
+
 - Parse a new entry from JSON
 - Generate the filename based on date and title
 - Create the `.ts` file
@@ -109,6 +110,7 @@ The original `timeline.ts` has been backed up to `timeline.ts.backup` in the par
 ## Consuming Code
 
 The following files import from the timeline:
+
 - `showcase/features/timeline/TimelineRenderer.ts`
 - `showcase/features/timeline/TimelineStats.ts`
 - `showcase/data/v3-lab-entries.ts`
