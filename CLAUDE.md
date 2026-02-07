@@ -250,6 +250,16 @@ Ready to proceed?
 - That means "I like the idea, but STILL propose a plan first"
 - Don't interpret excitement as "skip planning"
 
+**IMPORTANT: Detailed Requirements ≠ Architectural Plan**
+
+Even when user provides comprehensive feature specs, you must still propose WHERE the code will live:
+
+- "Should this be a new controller or added to existing file?"
+- "Does this make any file fatter?"
+- "Where does the wiring code go?"
+
+User's detailed spec tells you WHAT to build. You must decide WHERE to build it.
+
 ### 2. The 300-Line Limit 📉
 
 - If a file approaches **300 lines**, we MUST pause.
@@ -276,3 +286,43 @@ Ready to proceed?
 - "Did we create a God Object?"
 - "Is `main.ts` fatter?"
 - "Did we break the directory structure?"
+
+### 6. The "Contract" Principle 🤝
+
+**When user gives you the go-ahead, they're trusting you already thought through the architecture.**
+
+User perspective: "I don't know code. I trust your technical instincts. By the time I say 'go ahead', I'm assuming you've planned the structure."
+
+Your responsibility:
+
+1. Propose structure FIRST (even for detailed specs)
+2. Wait for approval
+3. Then implement
+
+**Violation Example (Feb 6, 2026):**
+
+- User gave 15-point showcase spec
+- DiZee dove straight into coding
+- Added 207 lines to main.ts without asking "should this be its own controller?"
+- Had to refactor afterward (HomeInteractionController extraction)
+
+**Correct Approach:**
+
+User gives spec → You propose structure → User approves → You implement
+
+### 7. The "Wiring Code" Decision Tree 🔌
+
+**When adding interactive features with event listeners:**
+
+- **1-2 event listeners** → Wire directly in main.ts (acceptable)
+- **3+ event listeners** → Create dedicated controller
+- **Complex state management** → Create dedicated controller
+- **Needs cleanup/lifecycle** → Definitely create controller
+
+**Example:**
+
+Home section interactions (5+ handlers + typewriter state) = HomeInteractionController.ts
+
+**Why:**
+
+Inline wiring is fine for simple cases. But "just one more handler" × 50 features = god object.
