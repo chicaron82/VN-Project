@@ -11,6 +11,10 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+// Extracted subsystems
+import { AppSwitcherState } from './appswitcher/AppSwitcherState';
+import { BackgroundMonitor } from './appswitcher/BackgroundMonitor';
+
 // ═══════════════════════════════════════════════════════════════
 // TYPE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
@@ -64,29 +68,36 @@ interface AppSwitcherElements {
 
 export class UV7AppSwitcher {
     private apps: AppDefinition[];
-    private currentApp: string;
-    private recentApps: string[];
+    private state: AppSwitcherState; // Extracted to AppSwitcherState.ts
+    private backgroundMonitor: BackgroundMonitor; // Extracted to BackgroundMonitor.ts
+    private currentApp: string; // Current app ID
     private elements: AppSwitcherElements;
     private undoBackup: UndoBackup | null;
     private undoTimeout: number | null;
-    private backgroundMonitorInterval: number | null;
-    // Reserved for future Phase 26c+ enhancement - tracking background indicators
-    // @ts-expect-error - Reserved for future use
-    private backgroundIndicators: Map<string, HTMLElement>;
 
     constructor() {
         this.apps = this.defineApps();
-        this.currentApp = this.detectCurrentApp();
-        this.recentApps = this.loadRecentApps();
+        this.state = new AppSwitcherState();
+        this.currentApp = this.state.detectCurrentApp();
         this.elements = {} as AppSwitcherElements;
         this.undoBackup = null;
         this.undoTimeout = null;
 
-        // Phase 26c: Background monitoring
-        this.backgroundMonitorInterval = null;
-        this.backgroundIndicators = new Map();
+        // Initialize background monitor (needs launchApp callback, so done after apps defined)
+        this.backgroundMonitor = new BackgroundMonitor(
+            this.apps,
+            () => this.currentApp,
+            (app) => this.launchApp(app)
+        );
 
         this.init();
+    }
+
+    /**
+     * Getter for recentApps - delegates to AppSwitcherState
+     */
+    private get recentApps(): string[] {
+        return this.state.getRecentApps();
     }
 
     private init(): void {
@@ -96,8 +107,8 @@ export class UV7AppSwitcher {
         this.attachHandlers();
         this.render();
 
-        // Phase 26c: Start background monitoring for alerts
-        this.startBackgroundMonitor();
+        // Phase 26c: Start background monitoring for alerts (extracted to BackgroundMonitor.ts)
+        this.backgroundMonitor.start();
 
         console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
     }
@@ -492,168 +503,22 @@ export class UV7AppSwitcher {
     // Check background apps for urgent states (ToriGatchi hungry, etc.)
     // ═══════════════════════════════════════════════════════════════
 
-    private startBackgroundMonitor(): void {
-        // Check background apps every 30 seconds
-        this.backgroundMonitorInterval = window.setInterval(() => {
-            this.checkBackgroundApps();
-        }, 30000);
-
-        // Initial check
-        setTimeout(() => this.checkBackgroundApps(), 2000);
-    }
-
-    private checkBackgroundApps(): void {
-        this.apps.forEach(app => {
-            // Skip current app
-            if (app.id === this.currentApp) return;
-
-            const stateData = app.getState();
-
-            // Check for urgent conditions
-            if (app.id === 'torigatchi' && stateData.isHangry) {
-                this.showBackgroundIndicator(app, stateData, true);
-            } else if (stateData.hasSave && this.shouldShowReminder(app)) {
-                // Show gentle reminder for apps not visited in 24+ hours
-                this.showBackgroundIndicator(app, stateData, false);
-            }
-        });
-    }
-
-    private shouldShowReminder(app: AppDefinition): boolean {
-        const lastPlayedKey = `uv7_last_played_${app.id}`;
-        const lastPlayed = localStorage.getItem(lastPlayedKey);
-        if (!lastPlayed) return false;
-
-        const hoursSince = (Date.now() - parseInt(lastPlayed)) / (1000 * 60 * 60);
-        return hoursSince > 24;
-    }
-
-    private showBackgroundIndicator(app: AppDefinition, stateData: AppStateData, isUrgent: boolean): void {
-        // Only show one indicator at a time per app
-        const existingPill = document.querySelector(`[data-bg-app="${app.id}"]`);
-        if (existingPill) return;
-
-        // Don't spam - check dismissal memory
-        const dismissedKey = `uv7-bg-dismissed-${app.id}`;
-        const dismissedAt = localStorage.getItem(dismissedKey);
-        if (dismissedAt) {
-            const hoursSinceDismiss = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60);
-            // Don't show again for 4 hours (or 1 hour if urgent)
-            if (hoursSinceDismiss < (isUrgent ? 1 : 4)) return;
-        }
-
-        const pill = document.createElement('div');
-        pill.className = `bg-indicator-pill ${isUrgent ? 'urgent' : ''}`;
-        pill.dataset.bgApp = app.id;
-
-        const stateText = Array.isArray(stateData.state) ? stateData.state.join(' • ') : stateData.state;
-
-        pill.innerHTML = `
-            <span class="bg-indicator-icon">${app.icon}</span>
-            <div class="bg-indicator-text">
-                <span class="bg-indicator-app">${app.name}</span>
-                <span class="bg-indicator-state">${stateText}</span>
-            </div>
-            <button class="bg-indicator-close" aria-label="Dismiss">✕</button>
-        `;
-
-        // Click to open app
-        pill.addEventListener('click', (e) => {
-            if ((e.target as HTMLElement).classList.contains('bg-indicator-close')) return;
-            this.launchApp(app);
-            pill.remove();
-        });
-
-        // Dismiss button
-        const closeBtn = pill.querySelector('.bg-indicator-close') as HTMLElement;
-        closeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            localStorage.setItem(dismissedKey, Date.now().toString());
-            pill.classList.remove('visible');
-            setTimeout(() => pill.remove(), 300);
-        });
-
-        document.body.appendChild(pill);
-
-        // Animate in
-        requestAnimationFrame(() => {
-            pill.classList.add('visible');
-        });
-
-        // Haptic for urgent
-        if (isUrgent && navigator.vibrate) {
-            navigator.vibrate([50, 50, 50]);
-        }
-
-        console.log(`🔔 Background alert: ${app.name} - ${stateText}`);
-    }
-
-    // Reserved for cleanup on page unload - not currently called but available for future use
-    // @ts-expect-error - Reserved for future use
-    private stopBackgroundMonitor(): void {
-        if (this.backgroundMonitorInterval) {
-            clearInterval(this.backgroundMonitorInterval);
-            this.backgroundMonitorInterval = null;
-        }
-    }
-
     // ═══════════════════════════════════════════════════════════════
-    // APP DETECTION & RECENT APPS
+    // STATE MANAGEMENT (Delegated to AppSwitcherState.ts)
     // ═══════════════════════════════════════════════════════════════
 
-    private detectCurrentApp(): string {
-        // Check if we're in shell mode
-        const isShellMode = !!(window as any).uv7Shell;
-
-        if (isShellMode) {
-            // Use hash-based detection
-            const hash = window.location.hash.replace(/^#\/?/, '').split('/')[0];
-            if (hash === 'showcase') return 'showcase';
-            if (hash === 'v1') return 'v1';
-            if (hash === 'v2') return 'v2';
-            if (hash === 'torigatchi') return 'torigatchi';
-            if (hash === 'landing' || hash === '') return 'landing';
-        }
-
-        // Fallback to pathname-based detection for standalone mode
-        const path = window.location.pathname;
-        if (path.includes('showcase')) return 'showcase';
-        if (path.includes('v1')) return 'v1';
-        if (path.includes('torigatchi')) return 'torigatchi';
-        if (path.includes('v2') || path.includes('index.v2')) return 'v2';
-        return 'landing';
-    }
-
-    private loadRecentApps(): string[] {
-        const recent = localStorage.getItem('uv7-recent-apps');
-        return recent ? JSON.parse(recent) : [];
-    }
-
-    private saveRecentApps(): void {
-        localStorage.setItem('uv7-recent-apps', JSON.stringify(this.recentApps));
-    }
-
+    /**
+     * Add app to recent apps list
+     */
     private addToRecent(appId: string): void {
-        this.recentApps = this.recentApps.filter(id => id !== appId);
-        this.recentApps.unshift(appId);
-        this.recentApps = this.recentApps.slice(0, 4);
-        this.saveRecentApps();
+        this.state.addToRecent(appId);
     }
 
-    // ═══════════════════════════════════════════════════════════════
-    // INSTANT RESUME - ZEERAH'S ARCHITECTURE
-    // ═══════════════════════════════════════════════════════════════
-
+    /**
+     * Set resume flag for instant resume
+     */
     private setResumeFlag(appId: string): void {
-        localStorage.setItem('uv7-auto-resume', appId);
-        localStorage.setItem('uv7-resume-timestamp', Date.now().toString());
-    }
-
-    // Reserved for clearing resume flags after successful navigation - available for future use
-    // @ts-expect-error - Reserved for future use
-    private clearResumeFlag(): void {
-        localStorage.removeItem('uv7-auto-resume');
-        localStorage.removeItem('uv7-resume-timestamp');
+        this.state.setResumeFlag(appId);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -846,9 +711,7 @@ export class UV7AppSwitcher {
             });
             localStorage.removeItem(lastPlayedKey);
 
-            // Remove from recent if there
-            this.recentApps = this.recentApps.filter(id => id !== app.id);
-            this.saveRecentApps();
+            // Note: Don't remove from recent apps - just cleared save, not visited history
 
             // Show undo toast
             this.showUndoToast(`${app.name} save cleared`);
@@ -949,8 +812,8 @@ export class UV7AppSwitcher {
                 localStorage.removeItem(`uv7_last_played_${app.id}`);
             });
 
-            this.recentApps = [];
-            this.saveRecentApps();
+            // Clear all state (recent apps + resume flags)
+            this.state.clear();
 
             // Haptic feedback
             if (navigator.vibrate) {
@@ -1199,6 +1062,10 @@ export class UV7AppSwitcher {
 
         // Add to recent
         this.addToRecent(app.id);
+
+        // Update current app (will be accurate after navigation)
+        this.currentApp = app.id;
+        this.backgroundMonitor.setCurrentApp(app.id);
 
         // Navigate with View Transition
         this.navigateWithTransition(app.url);
