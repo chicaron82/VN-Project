@@ -49,7 +49,7 @@ export interface CrewMember {
  */
 export interface CrewAttribution {
     systems: CrewMember[];
-    quote: string;
+    quote?: string;
 }
 
 /**

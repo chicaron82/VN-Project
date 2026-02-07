@@ -4,7 +4,7 @@
  * Shows before/after code comparison for timeline entries
  */
 
-import type { CodeComparison } from '../types';
+import type { CodeComparison } from '../data/blog/types';
 
 export class CodeComparisonModal {
     private isOpen: boolean;
@@ -270,5 +270,4 @@ export class CodeComparisonModal {
     }
 }
 
-// Create global instance
-window.codeComparisonModal = new CodeComparisonModal();
+

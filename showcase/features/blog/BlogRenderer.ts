@@ -712,6 +712,83 @@ export class BlogRenderer {
         }
     }
 
+    /**
+     * Render media carousel (images/video)
+     */
+    private renderMedia(entry: BlogEntry): HTMLElement | null {
+        if (!entry.media || !entry.media.carousel || entry.media.carousel.length === 0) return null;
+
+        const container = document.createElement('div');
+        container.className = 'blog-media-carousel';
+
+        entry.media.carousel.forEach(item => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'blog-media-item';
+
+            if (item.type === 'video') {
+                wrapper.innerHTML = `
+                    <video class="blog-media-image" controls>
+                        <source src="${item.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    ${item.caption ? `<div class="blog-media-caption">${item.caption}</div>` : ''}
+                `;
+            } else {
+                wrapper.innerHTML = `
+                    <img src="${item.url}" class="blog-media-image" alt="${item.caption || 'Blog image'}" loading="lazy" />
+                    ${item.caption ? `<div class="blog-media-caption">${item.caption}</div>` : ''}
+                `;
+            }
+
+            container.appendChild(wrapper);
+        });
+
+        return container;
+    }
+
+    /**
+     * Render code comparison card
+     */
+    private renderCodeComparison(entry: BlogEntry): HTMLElement | null {
+        if (!entry.codeComparison) return null;
+
+        const card = document.createElement('div');
+        card.className = 'blog-code-comparison-card';
+
+        const { before, after } = entry.codeComparison;
+
+        card.innerHTML = `
+            <div class="comparison-preview">
+                <div class="comparison-side">
+                    <div class="comparison-badge badge-before">BEFORE</div>
+                    <div class="comparison-filename">${before.title}</div>
+                </div>
+                <div class="comparison-arrow">→</div>
+                <div class="comparison-side">
+                    <div class="comparison-badge badge-after">AFTER</div>
+                    <div class="comparison-filename">${after.title}</div>
+                </div>
+            </div>
+            <button class="btn-compare">
+                <span>⚡ Compare Code</span>
+            </button>
+        `;
+
+        // Attach event listener
+        const btn = card.querySelector('.btn-compare');
+        btn?.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent card expansion if any
+            // Check if global modal exists
+            if ((window as any).codeComparisonModal) {
+                (window as any).codeComparisonModal.open(entry.codeComparison);
+            } else {
+                console.error('CodeComparisonModal not initialized');
+            }
+        });
+
+        return card;
+    }
+
     private createEntryElement(entry: BlogEntry): HTMLElement {
         const item = document.createElement('div');
         item.className = `blog-entry ${entry.type || ''}`;
@@ -754,6 +831,9 @@ export class BlogRenderer {
         let metaHTML = `<span class="blog-date">${entry.date}</span>`;
         if (entry.tags?.length) metaHTML += ` • <span class="blog-category">${entry.tags[0]}</span>`;
         metaHTML += ` • <span class="blog-reading-time">${readingTime} min read</span>`;
+        if (entry.linesOfCode) {
+            metaHTML += ` • <span class="blog-loc" title="Lines of Code">📝 ${entry.linesOfCode} LOC</span>`;
+        }
         metaHTML += ` • <span class="blog-vibe">${vibe.emoji} ${vibe.label}</span>`;
         metadata.innerHTML = metaHTML;
 
@@ -781,6 +861,21 @@ export class BlogRenderer {
             const htmlContent = this.markdownToHtml(entry.description);
             addSection('blog-description', htmlContent);
         }
+
+        // Media Carousel
+        const mediaEl = this.renderMedia(entry);
+        if (mediaEl) {
+            hasDetails = true;
+            details.appendChild(mediaEl);
+        }
+
+        // Code Comparison
+        const comparisonEl = this.renderCodeComparison(entry);
+        if (comparisonEl) {
+            hasDetails = true;
+            details.appendChild(comparisonEl);
+        }
+
 
         if (entry.features) {
             hasDetails = true;

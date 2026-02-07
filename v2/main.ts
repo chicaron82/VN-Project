@@ -38,10 +38,10 @@ import { BootstrapTracker } from '@systems/BootstrapTracker';
 import { InputController } from '@controllers/InputController';
 import { SystemEventHandlers } from '@controllers/SystemEventHandlers';
 import { NavigationController } from '@controllers/NavigationController';
+import { GameplayController } from '@controllers/GameplayController';
 
 import { TipsOverlay } from '@ui/components/TipsOverlay';
 
-import { GameLayout } from '@ui/components/GameLayout';
 import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
 import { SettingsModal } from '@ui/components/SettingsModal';
 import { StatusBar } from '@ui/components/StatusBar';
@@ -279,16 +279,26 @@ const app = document.getElementById('app');
 if (!app) throw new Error('No #app element found');
 
 // Menu screens managed by NavigationController
-// Gameplay unmount handled by gameLayout cleanup
-let gameLayout: GameLayout | null = null;
+// Gameplay managed by GameplayController
 let isPaused = false;
 
 // ============================================
-// Screen Management
+// Controllers
 // ============================================
 
 // Navigation Controller - Screen transitions (extracted to NavigationController.ts)
 const navigationController = new NavigationController(eventBus, loopController, app!);
+
+// Gameplay Controller - Game session management (extracted to GameplayController.ts)
+const gameplayController = new GameplayController(
+    eventBus,
+    stateManager,
+    gameEngine,
+    dialogController,
+    spriteController,
+    dialogBubble,
+    () => navigationController.clearScreen()
+);
 
 // ============================================
 // Boot Sequence
@@ -302,221 +312,13 @@ async function executeBootSequence(): Promise<void> {
 }
 
 
-// Navigation helper functions (delegate to NavigationController)
-const clearScreen = () => navigationController.clearScreen();
+// Helper functions - delegate to controllers
 const showMainMenu = () => navigationController.showMainMenu();
 const showRouteSelect = () => navigationController.showRouteSelect();
-
-// ============================================
-// Gameplay
-// ============================================
-
-async function startGameplay(mode: 'ronnie' | 'tori' | 'prologue') {
-    // Show loader
-    eventBus.emit('loading:start', {});
-
-    // Small delay to ensure loader is visible before blocking operations
-    await new Promise(r => setTimeout(r, 100));
-
-    clearScreen();
-
-    stateManager.set('currentRoute', mode === 'prologue' ? null : mode);
-    stateManager.set('tetherLevel', 100);
-    stateManager.set('history', []);
-
-    // Create game layout
-    gameLayout = new GameLayout('app', eventBus);
-
-    // Create effects layer (attaches to DOM via constructor)
-    if (gameLayout) {
-        new VisualEffectsLayer(
-            gameLayout.viewport,
-            gameLayout.viewport,
-            eventBus
-        );
-
-        // TORI'S FIX: Trigger code rain AFTER effects layer exists (route games only)
-        if (mode !== 'prologue') {
-            eventBus.emit('effect:code_rain', { duration: 1200 });
-        }
-
-        // Set up sprite controller viewport
-        spriteController.setViewport(gameLayout.viewport);
-
-        // Set up dialog controller to update UI
-        dialogController.onTextUpdate((text) => {
-            if (gameLayout) {
-                gameLayout.dialogText.textContent = text;
-            }
-        });
-
-        // Click on viewport advances dialog OR hides bubble
-        gameLayout.viewport.addEventListener('click', () => {
-            console.log('[CLICK] Viewport clicked', { bubbleVisible: dialogBubble.isVisible() });
-            // DIZEE: If bubble is visible, hide it and advance
-            if (dialogBubble.isVisible()) {
-                console.log('[CLICK] Hiding bubble and advancing scene');
-                dialogBubble.hide();
-                // For internal thoughts, manually trigger advance since DialogController isn't active
-                eventBus.emit('dialog:advance', {});
-            } else {
-                console.log('[CLICK] Calling dialogController.handleClick()');
-                dialogController.handleClick();
-            }
-        });
-
-        // Click on dialog box also advances (V1 parity)
-        gameLayout.dialogBox.addEventListener('click', () => {
-            console.log('[CLICK] Dialog box clicked', { bubbleVisible: dialogBubble.isVisible() });
-            if (dialogBubble.isVisible()) {
-                console.log('[CLICK] Hiding bubble and advancing scene');
-                dialogBubble.hide();
-                eventBus.emit('dialog:advance', {});
-            } else {
-                console.log('[CLICK] Calling dialogController.handleClick()');
-                dialogController.handleClick();
-            }
-        });
-    }
-
-    // Gameplay unmount handled by clearScreen when returning to menu
-
-    // Determine first scene based on mode
-    const firstSceneId = mode === 'ronnie'
-        ? 'ronnie_act1_prologueScene4'
-        : mode === 'tori'
-            ? 'scene1_coffee'
-            : 'scene1_streetBump';
-
-    if (mode === 'prologue') {
-        // Prologue loads immediately
-        await gameEngine.loadScene(firstSceneId);
-        eventBus.emit('loading:end', {});
-        console.log('[UV7 V2] Starting prologue');
-    } else {
-        // Route games delay for code rain effect
-        setTimeout(async () => {
-            await gameEngine.loadScene(firstSceneId);
-            eventBus.emit('loading:end', {});
-            console.log(`[UV7 V2] Starting game: ${mode} route`);
-        }, 900);
-    }
-}
-
-function updateBackground(path: string | undefined) {
-    if (!gameLayout || !path) return;
-    gameLayout.viewport.style.backgroundImage = `url(${path})`;
-    gameLayout.viewport.style.backgroundSize = 'cover';
-    gameLayout.viewport.style.backgroundPosition = 'center';
-}
-
-function updateSprites(sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) {
-    if (!gameLayout || !sprites) return;
-
-    // Check if this is an echo group scene
-    const hasEchoSprites = sprites.some(s =>
-        s.id?.includes('echo') || s.id?.includes('despair') ||
-        s.variant?.includes('echo') || s.variant?.includes('despair')
-    );
-
-    if (hasEchoSprites) {
-        // Use SpriteController for echo group
-        spriteController.displayEchoGroup();
-
-        // Check current act for growth stage
-        const currentScene = stateManager.get<string>('currentScene') ?? '';
-        if (currentScene.includes('act1') || currentScene.includes('Act1')) {
-            spriteController.setEchoGrowthStage('act1');
-        } else if (currentScene.includes('act2') || currentScene.includes('Act2')) {
-            spriteController.setEchoGrowthStage('act2');
-        } else if (currentScene.includes('act3') || currentScene.includes('Act3')) {
-            spriteController.setEchoGrowthStage('act3');
-        }
-    } else {
-        // Use SpriteController for standard sprites
-        for (const sprite of sprites) {
-            if (sprite.position === 'left' && sprite.variant) {
-                spriteController.showSprite('left', sprite.variant);
-            } else if (sprite.position === 'right' && sprite.variant) {
-                spriteController.showSprite('right', sprite.variant);
-            }
-        }
-    }
-}
-
-let choiceKeyHandler: ((e: KeyboardEvent) => void) | null = null;
-
-function showChoices(choices: Array<{ text: string; next: string | null }>) {
-    if (!gameLayout) return;
-
-    // Remove existing handler if any (safety)
-    if (choiceKeyHandler) {
-        document.removeEventListener('keydown', choiceKeyHandler);
-        choiceKeyHandler = null;
-    }
-
-    // Create choice container
-    const choiceContainer = document.createElement('div');
-    choiceContainer.id = 'choice-container';
-    choiceContainer.style.cssText = `
-        position: absolute;
-        bottom: 20%;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        z-index: 100;
-    `;
-
-    // Define cleanup function
-    const cleanup = () => {
-        if (choiceKeyHandler) {
-            document.removeEventListener('keydown', choiceKeyHandler);
-            choiceKeyHandler = null;
-        }
-        choiceContainer.remove();
-    };
-
-    choices.forEach((choice, index) => {
-        const btn = document.createElement('button');
-        btn.textContent = `${index + 1}. ${choice.text}`; // Add number prefix
-        btn.style.cssText = `
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #0ff;
-            color: #0ff;
-            padding: 1rem 2rem;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: left;
-        `;
-        btn.addEventListener('mouseenter', () => {
-            btn.style.background = 'rgba(0, 255, 255, 0.2)';
-        });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.background = 'rgba(0, 0, 0, 0.8)';
-        });
-        btn.addEventListener('click', () => {
-            cleanup();
-            gameEngine.selectChoice(index);
-        });
-        choiceContainer.appendChild(btn);
-    });
-
-    // Keyboard Handler
-    choiceKeyHandler = (e: KeyboardEvent) => {
-        const key = parseInt(e.key);
-        if (!isNaN(key) && key > 0 && key <= choices.length) {
-            cleanup();
-            gameEngine.selectChoice(key - 1);
-        }
-    };
-    document.addEventListener('keydown', choiceKeyHandler);
-
-    gameLayout.viewport.appendChild(choiceContainer);
-}
+const startGameplay = (mode: 'ronnie' | 'tori' | 'prologue') => gameplayController.startGameplay(mode);
+const updateBackground = (path: string | undefined) => gameplayController.updateBackground(path);
+const updateSprites = (sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) => gameplayController.updateSprites(sprites);
+const showChoices = (choices: Array<{ text: string; next: string | null }>) => gameplayController.showChoices(choices);
 
 
 
@@ -544,7 +346,7 @@ const systemEventHandlers = new SystemEventHandlers(
     dialogController,
     spriteController,
     dialogBubble,
-    () => gameLayout,
+    () => gameplayController.getGameLayout(),
     updateBackground,
     updateSprites,
     showChoices,

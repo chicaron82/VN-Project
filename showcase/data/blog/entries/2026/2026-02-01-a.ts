@@ -43,7 +43,7 @@ export const entry: TimelineEntry = {
             '**Phase 3 Detail:** Created showcase.css importing 22 files in logical order: Foundation (base, theme, unified-design) → System (UV7 chrome) → Layout & Pages → Blog Features → Effects & Polish. Added README explaining import hierarchy, file size guidelines, naming conventions.'
         ]
     },
-    lessons: [
+    lessonsLearned: [
         'Inline styles violate separation of concerns and make styling changes scattered',
         'Initialization order matters—document dependencies to prevent breakage',
         'CSS organization needs structure, not just listing—master stylesheet provides single entry point',
@@ -51,18 +51,20 @@ export const entry: TimelineEntry = {
         'Vite bundles @imports into single production file—no performance penalty',
         'File size guidelines help identify bloat: components.css (5558 lines), pages.css (2603 lines) need splitting'
     ],
-    crew: [
-        {
-            name: 'Claude Sonnet 4.5',
-            icon: '🤖',
-            contribution: 'Executed systematic 3-phase cleanup with detailed commit messages and comprehensive documentation'
-        },
-        {
-            name: 'Aaron (Architect)',
-            icon: '🧠',
-            contribution: 'Identified technical debt from codebase review and granted full autonomy for cleanup execution'
-        }
-    ],
+    crewAttribution: {
+        systems: [
+            {
+                name: 'Claude Sonnet 4.5',
+                icon: '🤖',
+                contribution: 'Executed systematic 3-phase cleanup with detailed commit messages and comprehensive documentation'
+            },
+            {
+                name: 'Aaron (Architect)',
+                icon: '🧠',
+                contribution: 'Identified technical debt from codebase review and granted full autonomy for cleanup execution'
+            }
+        ]
+    },
     footer: {
         icon: 'Code',
         text: 'showcase/css/README.md'

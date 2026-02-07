@@ -55,6 +55,7 @@ import { SystemBannerController } from '../controllers/SystemBannerController';
 // Import showcase UI components
 // Sidebar and NotificationShade removed - now using UV7System
 import { SystemStatsWidget } from '../components/SystemStatsWidget';
+import { CodeComparisonModal } from '../components/CodeComparisonModal';
 
 // Import effects
 import { initTypingEffect } from '../effects/typing-effect';
@@ -404,6 +405,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Showcase Carousel (Spotlight tab)
     initShowcaseCarousel();
     console.log('✅ Showcase carousel initialized');
+
+    // Initialize Code Comparison Modal
+    (window as any).codeComparisonModal = new CodeComparisonModal();
+    console.log('✅ Code Comparison Modal initialized');
 
     // Listen for messages from parent shell (when running in iframe)
     if (isInShell) {

@@ -557,67 +557,70 @@ Updated \`CHROME_ARCHITECTURE.md\` with:
 
 **Status:** All 3 phases complete! 🎉
     `,
-    crew: [
-        {
-            name: 'Tori',
-            icon: '🏗️',
-            contribution: 'Shell + Apps architecture pattern'
-        },
-        {
-            name: 'Belle',
-            icon: '🎯',
-            contribution: 'Action ID & Theme Injection patterns, architecture review'
-        },
-        {
-            name: 'Zee',
-            icon: '🧠',
-            contribution: 'Hybrid vs Full SPA wisdom'
-        },
-        {
-            name: 'DiZee',
-            icon: '⚡',
-            contribution: 'Implementation, FIFO queue, validation, testing'
-        },
-        {
-            name: 'Claude Sonnet 4.5',
-            icon: '🤖',
-            contribution: 'Architecture design, code implementation, documentation'
-        }
-    ],
-        lessons: [
-            'Hybrid architecture (specs + runtime API) beats pure declarative',
-            'Action ID pattern solves iframe serialization elegantly',
-            'FIFO queues prevent race conditions in async UI updates',
-            'Type sharing eliminates duplication and improves maintainability',
-            'Runtime validation with helpful errors saves debugging time',
-            'CSS custom properties enable smooth theme transitions',
-            'Declarative specs make chrome consistent across apps',
-            "Belle's patterns (Action ID, Theme Injection) are production-ready"
+    crewAttribution: {
+        systems: [
+            {
+                name: 'Tori',
+                icon: '🏗️',
+                contribution: 'Shell + Apps architecture pattern'
+            },
+            {
+                name: 'Belle',
+                icon: '🎯',
+                contribution: 'Action ID & Theme Injection patterns, architecture review'
+            },
+            {
+                name: 'Zee',
+                icon: '🧠',
+                contribution: 'Hybrid vs Full SPA wisdom'
+            },
+            {
+                name: 'DiZee',
+                icon: '⚡',
+                contribution: 'Implementation, FIFO queue, validation, testing'
+            },
+            {
+                name: 'Claude Sonnet 4.5',
+                icon: '🤖',
+                contribution: 'Architecture design, code implementation, documentation'
+            }
         ],
-            metrics: {
-    'Phase 1 Commits': '3',
+        quote: "Belle's suggestion to use string IDs instead of functions was genius. No serialization issues, works across iframe boundaries, fully testable, and completely secure."
+    },
+    lessonsLearned: [
+        'Hybrid architecture (specs + runtime API) beats pure declarative',
+        'Action ID pattern solves iframe serialization elegantly',
+        'FIFO queues prevent race conditions in async UI updates',
+        'Type sharing eliminates duplication and improves maintainability',
+        'Runtime validation with helpful errors saves debugging time',
+        'CSS custom properties enable smooth theme transitions',
+        'Declarative specs make chrome consistent across apps',
+        "Belle's patterns (Action ID, Theme Injection) are production-ready"
+    ],
+    metrics: {
+        'Phase 1 Commits': '3',
         'Phase 2 Commits': '5',
-            'Phase 3 Commits': '3',
-                'ChromePresets Commit': '1',
-                    'Documentation Commit': '1',
-                        'App Migration Commits': '2',
-                            'Total Commits': '15',
-                                'Files Created': '2 (types/chrome.ts, types/ChromePresets.ts)',
-                                    'Files Modified': '10',
-                                        'Lines Added': '~1,400',
-                                            'Lines Removed': '~65',
-                                                'Net Change': '+1,335 lines',
-                                                    'SystemAPI Namespaces': '5',
-                                                        'SystemAPI Methods': '20+',
-                                                            'ChromePresets Methods': '5',
-                                                                'Apps Migrated': '5/5 (100%)',
-                                                                    'TypeScript Errors': '0',
-                                                                        'Development Time': '~5.5 hours',
-                                                                            'Coffee Consumed': '☕☕☕☕☕'
-},
-quote: "Belle's suggestion to use string IDs instead of functions was genius. No serialization issues, works across iframe boundaries, fully testable, and completely secure.",
+        'Phase 3 Commits': '3',
+        'ChromePresets Commit': '1',
+        'Documentation Commit': '1',
+        'App Migration Commits': '2',
+        'Total Commits': '15',
+        'Files Created': '2 (types/chrome.ts, types/ChromePresets.ts)',
+        'Files Modified': '10',
+        'Lines Added': '~1,400',
+        'Lines Removed': '~65',
+        'Net Change': '+1,335 lines',
+        'SystemAPI Namespaces': '5',
+        'SystemAPI Methods': '20+',
+        'ChromePresets Methods': '5',
+        'Apps Migrated': '5/5 (100%)',
+        'TypeScript Errors': '0',
+        'Development Time': '~5.5 hours',
+        'Coffee Consumed': '☕☕☕☕☕'
+    },
+
     footer: {
-    icon: '🎉',
+        icon: '🎉',
         text: 'All 3 phases complete - hybrid chrome architecture shipped to production!'
-}
+    }
 };
