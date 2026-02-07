@@ -20,6 +20,13 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
+// Subsystem imports (extracted to dedicated modules)
+import { DevLogger } from './devsuite/DevLogger';
+import { DevPresets } from './devsuite/DevPresets';
+import { VariableWatch } from './devsuite/VariableWatch';
+import { BreakpointSystem } from './devsuite/BreakpointSystem';
+import { ConsoleInterceptor } from './devsuite/ConsoleInterceptor';
+
 // EventBus reserved for future integration
 // import { EventBus } from '@core/EventBus';
 
@@ -72,20 +79,21 @@ export interface HotReloadSystem {
  * @class DevSuite
  */
 export class DevSuite {
-    private game: GameInstance;
+    public game: GameInstance; // Public for subsystem access
     private isOpen: boolean = false;
     // @ts-expect-error - Used for state tracking (written but not read in V1)
     private isMinimized: boolean = false;
     private activeTab: string = 'debug';
 
     // State persistence
-    private state: DevSuiteState;
+    public state: DevSuiteState; // Public for subsystem access
 
-    // Sub-systems (initialized later - TODO: Implement these)
-    private logger: any = null;
-    private presets: any = null;
-    private watch: any = null;
-    private breakpoints: any = null;
+    // Sub-systems (extracted to dedicated modules)
+    private logger!: DevLogger;
+    private presets!: DevPresets;
+    private watch!: VariableWatch;
+    public breakpoints!: BreakpointSystem; // Public for DevLogger access
+    private consoleInterceptor!: ConsoleInterceptor;
 
     // DOM elements (cached after render)
     private overlay: HTMLElement | null = null;
@@ -129,13 +137,19 @@ export class DevSuite {
         this.setupKeyboardShortcuts();
         this.setupResizableDivider();
         this.startFPSMonitor();
-        this.interceptConsole();
 
-        // Initialize sub-systems
-        this.logger = new DevLogger(this);
-        this.presets = new DevPresets(this);
-        this.watch = new VariableWatch(this);
-        this.breakpoints = new BreakpointSystem(this);
+        // Initialize sub-systems (extracted to dedicated modules)
+        // Use 'as any' since DevSuite implements the interfaces implicitly
+        this.logger = new DevLogger(this as any);
+        this.presets = new DevPresets(this as any);
+        this.watch = new VariableWatch(this as any);
+        this.breakpoints = new BreakpointSystem(this as any);
+
+        // Initialize console interception
+        this.consoleInterceptor = new ConsoleInterceptor((message, type) => {
+            this.consoleLogEntry(message, type);
+        });
+        this.consoleInterceptor.start();
 
         console.log('🛠️ Dev Suite v2.0 initialized');
     }
@@ -143,48 +157,7 @@ export class DevSuite {
     // ========================================
     // CONSOLE INTERCEPTION
     // ========================================
-
-    private interceptConsole(): void {
-        // Save original console methods
-        const originalLog = console.log;
-        const originalWarn = console.warn;
-        const originalError = console.error;
-
-        const safeStringify = (obj: any): string => {
-            try {
-                return JSON.stringify(obj, null, 2);
-            } catch (e) {
-                return String(obj);
-            }
-        };
-
-        // Override console.log
-        console.log = (...args: any[]) => {
-            const message = args.map(arg =>
-                typeof arg === 'object' ? safeStringify(arg) : String(arg)
-            ).join(' ');
-            this.consoleLogEntry(message, 'log');
-            originalLog.apply(console, args);
-        };
-
-        // Override console.warn
-        console.warn = (...args: any[]) => {
-            const message = args.map(arg =>
-                typeof arg === 'object' ? safeStringify(arg) : String(arg)
-            ).join(' ');
-            this.consoleLogEntry('⚠️ ' + message, 'warn');
-            originalWarn.apply(console, args);
-        };
-
-        // Override console.error
-        console.error = (...args: any[]) => {
-            const message = args.map(arg =>
-                typeof arg === 'object' ? safeStringify(arg) : String(arg)
-            ).join(' ');
-            this.consoleLogEntry('❌ ' + message, 'error');
-            originalError.apply(console, args);
-        };
-    }
+    // Moved to ConsoleInterceptor.ts - initialized in init() above
 
     // ========================================
     // RENDER
@@ -1182,282 +1155,10 @@ export class DevSuite {
 
 // ========================================
 // SUB-SYSTEMS
-// V1 Parity: dev-suite.js lines 1109-1323
 // ========================================
-
-/**
- * DevLogger - Log collection and breakpoint checking
- * V1 Parity: dev-suite.js lines 1109-1126 (18 lines)
- */
-class DevLogger {
-    private suite: DevSuite;
-    private logs: ConsoleLogType[];
-    private maxLogs: number;
-
-    constructor(suite: DevSuite) {
-        this.suite = suite;
-        this.logs = [];
-        this.maxLogs = 500;
-    }
-
-    public log(type: string, message: string): void {
-        const timestamp = new Date().toLocaleTimeString();
-        this.logs.unshift({ timestamp, type, message });
-        if (this.logs.length > this.maxLogs) this.logs.pop();
-
-        // Check breakpoints
-        if (this.suite['breakpoints']) {
-            this.suite['breakpoints'].check(type, { message });
-        }
-    }
-}
-
-/**
- * DevPresets - Save/load game state presets
- * V1 Parity: dev-suite.js lines 1128-1236 (109 lines)
- */
-interface PresetData {
-    id: number;
-    name: string;
-    timestamp: number;
-    scene?: string;
-    route?: string;
-    routePoints?: Record<string, number>;
-    tether?: number;
-    flags?: Record<string, boolean>;
-}
-
-class DevPresets {
-    private suite: DevSuite;
-    private presets: PresetData[];
-
-    constructor(suite: DevSuite) {
-        this.suite = suite;
-        this.presets = this.loadFromStorage();
-    }
-
-    public savePreset(name: string): void {
-        const game = this.suite['game'];
-        const preset: PresetData = {
-            id: Date.now(),
-            name,
-            timestamp: Date.now(),
-            scene: game.currentScene,
-            route: game.currentRoute?.name,
-            routePoints: { ...(game.currentRoute as any)?.routePoints },
-            tether: (game.currentRoute as any)?.tetherSystem?.tetherLevel,
-            flags: { ...game.gameState?.flags },
-        };
-        this.presets.push(preset);
-        this.saveToStorage();
-        this.suite['consoleLogEntry'](`💾 Preset saved: ${name}`, 'success');
-    }
-
-    public loadPreset(id: number): void {
-        const preset = this.presets.find((p) => p.id === id);
-        if (!preset) return;
-
-        const game = this.suite['game'];
-        if (game.currentRoute) {
-            (game.currentRoute as any).routePoints = { ...preset.routePoints };
-            (game.currentRoute as any).tetherSystem?.setTether(preset.tether);
-        }
-        if (game.gameState) {
-            game.gameState.flags = { ...preset.flags };
-        }
-
-        if (preset.scene) {
-            this.suite['jumpToScene'](preset.scene);
-        }
-
-        this.suite['consoleLogEntry'](`💾 Preset loaded: ${preset.name}`, 'success');
-    }
-
-    public deletePreset(id: number): void {
-        this.presets = this.presets.filter((p) => p.id !== id);
-        this.saveToStorage();
-    }
-
-    public showModal(): void {
-        this.suite['consoleLogEntry']('💾 SAVED PRESETS:', 'system');
-        if (this.presets.length === 0) {
-            this.suite['consoleLogEntry']('  No presets saved', 'system');
-        } else {
-            this.presets.forEach((p) => {
-                this.suite['consoleLogEntry'](
-                    `  ${p.name} (${new Date(p.timestamp).toLocaleString()})`,
-                    'system'
-                );
-            });
-        }
-        this.suite['consoleLogEntry']('  Type: preset save <name> / preset load <name>', 'system');
-    }
-
-    private loadFromStorage(): PresetData[] {
-        try {
-            return JSON.parse(localStorage.getItem('devPresets') || '[]');
-        } catch {
-            return [];
-        }
-    }
-
-    private saveToStorage(): void {
-        localStorage.setItem('devPresets', JSON.stringify(this.presets));
-    }
-
-    // Export/Import for sharing
-    public exportPresets(): void {
-        const json = JSON.stringify(this.presets, null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `v848-dev-presets-${Date.now()}.json`;
-        a.click();
-        URL.revokeObjectURL(url);
-        this.suite['consoleLogEntry']('📤 Presets exported', 'success');
-    }
-
-    public importPresets(): void {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
-        input.onchange = (e) => {
-            const file = (e.target as HTMLInputElement).files?.[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    const imported = JSON.parse(event.target?.result as string);
-                    this.presets = [...this.presets, ...imported];
-                    this.saveToStorage();
-                    this.suite['consoleLogEntry'](`📥 Imported ${imported.length} presets`, 'success');
-                } catch (error) {
-                    this.suite['consoleLogEntry']('❌ Import failed: Invalid file', 'error');
-                }
-            };
-            reader.readAsText(file);
-        };
-        input.click();
-    }
-}
-
-/**
- * VariableWatch - Expression evaluation and formatting
- * V1 Parity: dev-suite.js lines 1238-1276 (39 lines)
- */
-interface WatchVariable {
-    expression: string;
-    id: number;
-}
-
-class VariableWatch {
-    private suite: DevSuite;
-    public watches: WatchVariable[];
-    // @ts-expect-error - Reserved for future auto-refresh implementation
-    private refreshInterval: number;
-
-    constructor(suite: DevSuite) {
-        this.suite = suite;
-        this.watches = suite['state'].watchVariables || [];
-        this.refreshInterval = 500;
-    }
-
-    public addWatch(expression: string): void {
-        this.watches.push({ expression, id: Date.now() });
-        this.suite['saveState']();
-    }
-
-    public remove(id: number): void {
-        this.watches = this.watches.filter((w) => w.id !== id);
-        this.suite['saveState']();
-    }
-
-    public evaluate(expression: string): any {
-        try {
-            // eslint-disable-next-line no-eval
-            return eval(expression);
-        } catch (e: any) {
-            return `Error: ${e.message}`;
-        }
-    }
-
-    public formatValue(val: any): string {
-        if (val === undefined) return 'undefined';
-        if (val === null) return 'null';
-        if (typeof val === 'object') {
-            try {
-                const str = JSON.stringify(val);
-                return str.length > 50 ? str.slice(0, 50) + '...' : str;
-            } catch {
-                return '[Object]';
-            }
-        }
-        return String(val);
-    }
-}
-
-/**
- * BreakpointSystem - Conditional breakpoints for debugging
- * V1 Parity: dev-suite.js lines 1278-1323 (46 lines)
- */
-interface BreakpointConfig {
-    choiceMade: boolean;
-    sceneTransition: boolean;
-    noteUnlocked: boolean;
-    tetherThreshold: {
-        enabled: boolean;
-        value: number;
-    };
-}
-
-class BreakpointSystem {
-    private suite: DevSuite;
-    private breakpoints: BreakpointConfig;
-
-    constructor(suite: DevSuite) {
-        this.suite = suite;
-        this.breakpoints = {
-            choiceMade: false,
-            sceneTransition: false,
-            noteUnlocked: false,
-            tetherThreshold: { enabled: false, value: 30 },
-        };
-    }
-
-    public toggle(type: string): void {
-        if (type === 'tetherThreshold') {
-            this.breakpoints.tetherThreshold.enabled = !this.breakpoints.tetherThreshold.enabled;
-        } else {
-            (this.breakpoints as any)[type] = !(this.breakpoints as any)[type];
-        }
-    }
-
-    public check(eventType: string, data: { message?: string }): void {
-        let shouldBreak = false;
-        let message = '';
-
-        if (eventType === 'choice' && this.breakpoints.choiceMade) {
-            shouldBreak = true;
-            message = `Choice made: ${data.message}`;
-        } else if (eventType === 'scene' && this.breakpoints.sceneTransition) {
-            shouldBreak = true;
-            message = data.message || '';
-        } else if (eventType === 'note' && this.breakpoints.noteUnlocked) {
-            shouldBreak = true;
-            message = data.message || '';
-        }
-
-        if (shouldBreak) {
-            this.triggerBreak(message);
-        }
-    }
-
-    private triggerBreak(message: string): void {
-        this.suite['game'].pauseManager?.request('breakpoint');
-        this.suite.open();
-        this.suite['switchTab']('logs');
-        this.suite['consoleLogEntry'](`🔴 BREAKPOINT: ${message}`, 'error');
-    }
-}
+// Extracted to dedicated modules in devsuite/ directory:
+// - DevLogger.ts
+// - DevPresets.ts
+// - VariableWatch.ts
+// - BreakpointSystem.ts
+// - ConsoleInterceptor.ts
