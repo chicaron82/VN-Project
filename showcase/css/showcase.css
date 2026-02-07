@@ -34,6 +34,9 @@
 /* UV7 System: status bar, app switcher, breadcrumbs */
 @import url('uv7-system.css');
 
+/* System banner: functional app status indicators */
+@import url('system-banner.css');
+
 /* Sidebar: landscape navigation panel */
 @import url('sidebar.css');
 
@@ -73,6 +76,7 @@
 @import url('pages/spotlight-bento.css');
 @import url('pages/workflow-methodology.css');
 @import url('pages/home-page.css');
+@import url('landing-page.css');
 
 /* Code comparison grid (Evolution section) */
 @import url('code-comparison.css');
@@ -120,6 +124,9 @@
 
 /* Custom cursor effects (disabled by default) */
 @import url('cursor.css');
+
+/* Gentle nudges: scroll inactivity hints */
+@import url('gentle-nudges.css');
 
 /* ═══════════════════════════════════════════════════════════════
    END OF SHOWCASE MASTER STYLESHEET

@@ -1,0 +1,386 @@
+/**
+ * System Banner Enhancements
+ *
+ * Functional app status indicators with CSS pulse dots
+ * Layout: [UV7 OS] [Apps: ●V1 ●V2 ●TG ●SHOWCASE]    [Breadcrumb]
+ * 💚🔥💀
+ */
+
+/* Apps Container - positioned on left after UV7 OS */
+.sys-apps {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Courier New', monospace;
+    font-size: 0.75rem;
+    margin-left: 1rem; /* Space after UV7 OS */
+}
+
+.sys-apps-label {
+    color: rgba(255, 255, 255, 0.5);
+    margin-right: 0.25rem;
+    font-weight: 600;
+}
+
+/* App Indicator Button */
+.sys-app-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: inherit;
+    color: var(--text-primary);
+}
+
+.sys-app-indicator:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+.sys-app-indicator:active {
+    transform: translateY(0);
+}
+
+/* App Label */
+.sys-app-label {
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    color: rgba(255, 255, 255, 0.8); /* High contrast on black banner */
+    text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATUS DOTS - CSS-only indicators
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Base dot styling */
+.sys-app-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+/* Red dot - Not loaded */
+.sys-app-indicator[data-status="not-loaded"] .sys-app-dot {
+    background: #ef4444; /* Red 500 */
+    box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+}
+
+.sys-app-indicator[data-status="not-loaded"] {
+    opacity: 0.6;
+}
+
+.sys-app-indicator[data-status="not-loaded"]:hover {
+    opacity: 1;
+}
+
+/* Green dot - Background (constant) */
+.sys-app-indicator[data-status="background"] .sys-app-dot {
+    background: #22c55e; /* Green 500 */
+    box-shadow: 0 0 4px rgba(34, 197, 94, 0.5);
+}
+
+/* Green dot - Active (pulsing) */
+.sys-app-indicator[data-status="active"] .sys-app-dot {
+    background: #22c55e; /* Green 500 */
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
+    animation: pulse-active 2s ease-in-out infinite;
+}
+
+.sys-app-indicator[data-status="active"] {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: rgba(34, 197, 94, 0.05);
+}
+
+.sys-app-indicator[data-status="active"]:hover {
+    border-color: rgba(34, 197, 94, 0.5);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+/* Yellow dot - Loading (pulsing faster) */
+.sys-app-dot.loading {
+    background: #eab308; /* Yellow 500 */
+    box-shadow: 0 0 8px rgba(234, 179, 8, 0.8);
+    animation: pulse-loading 0.8s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Active app pulse - slow and subtle */
+@keyframes pulse-active {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.2);
+    }
+}
+
+/* Loading pulse - faster and more pronounced */
+@keyframes pulse-loading {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(1.4);
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Mobile - Hide labels, show dots only */
+@media (max-width: 768px) {
+    .sys-apps-label {
+        display: none;
+    }
+
+    .sys-app-label {
+        display: none;
+    }
+
+    .sys-app-indicator {
+        padding: 0.35rem;
+        min-width: 2rem;
+        justify-content: center;
+    }
+
+    .sys-apps {
+        gap: 0.35rem;
+        margin-left: 0.5rem;
+    }
+}
+
+/* Extra small screens - minimal dots */
+@media (max-width: 480px) {
+    .sys-app-indicator {
+        padding: 0.25rem;
+        min-width: 1.75rem;
+        background: transparent;
+        border: none;
+    }
+
+    .sys-app-indicator:hover {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sys-apps {
+        gap: 0.25rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PREVIEW CARDS (Desktop Only)
+   ═══════════════════════════════════════════════════════════════ */
+
+.banner-preview-card {
+    position: fixed;
+    width: 240px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    z-index: 10000; /* Above system banner */
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6),
+                0 0 16px rgba(0, 255, 136, 0.2);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none; /* Don't block mouse events */
+}
+
+.banner-preview-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Header with icon, title, and status badge */
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.preview-title {
+    flex: 1;
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status badges */
+.preview-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.preview-badge-active {
+    background: rgba(0, 255, 136, 0.2);
+    color: #00ff88;
+    border: 1px solid rgba(0, 255, 136, 0.4);
+}
+
+.preview-badge-background {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.preview-badge-not-loaded {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* Hangry indicator (Torigatchi special) */
+.preview-hangry {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+    padding: 8px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 12px;
+    animation: hangry-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes hangry-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+/* App state display */
+.preview-state {
+    margin-bottom: 12px;
+}
+
+.preview-state-primary {
+    font-size: 16px;
+    font-weight: 700;
+    color: #00ff88;
+    margin-bottom: 4px;
+}
+
+.preview-state-secondary {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Progress bar */
+.preview-progress {
+    margin-bottom: 12px;
+}
+
+.preview-progress-bar {
+    font-family: monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #00ff88;
+    margin-bottom: 4px;
+}
+
+.preview-progress-text {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: right;
+}
+
+/* Timestamp */
+.preview-timestamp {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+}
+
+/* Not loaded message */
+.preview-not-loaded {
+    font-size: 11px;
+    color: rgba(239, 68, 68, 0.8);
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+/* Keyboard shortcut hint */
+.preview-keyboard {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Hide on mobile/touch devices */
+@media (max-width: 768px), (pointer: coarse) {
+    .banner-preview-card {
+        display: none !important;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME SUPPORT
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Dark mode refinements */
+@media (prefers-color-scheme: dark) {
+    .sys-app-indicator {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .sys-app-indicator:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* Light mode */
+@media (prefers-color-scheme: light) {
+    .sys-app-indicator {
+        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.08);
+        color: var(--text-primary);
+    }
+
+    .sys-app-indicator:hover {
+        background: rgba(0, 0, 0, 0.08);
+        border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    .sys-app-indicator[data-status="active"] {
+        border-color: rgba(34, 197, 94, 0.4);
+        background: rgba(34, 197, 94, 0.08);
+    }
+}

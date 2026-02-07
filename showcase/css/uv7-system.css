@@ -1538,11 +1538,16 @@ body.uv7-no-scroll {
     height: var(--uv7-banner-h, 16px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start; /* Keep left side grouped */
     padding: 0 16px;
     text-transform: uppercase;
     letter-spacing: 1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Push breadcrumb to right side */
+.system-banner .sys-right {
+    margin-left: auto;
 }
 
 /* Shell Mode: Adjust positioning when status bar is managed by parent shell */

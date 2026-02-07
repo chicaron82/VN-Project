@@ -50,6 +50,7 @@ import { GlobalSearch } from '../features/GlobalSearch';
 import { GentleNudges } from '../controllers/GentleNudges';
 import { BougieTracker } from '../controllers/BougieTracker';
 import { HomeInteractionController } from '../controllers/HomeInteractionController';
+import { SystemBannerController } from '../controllers/SystemBannerController';
 
 // Import showcase UI components
 // Sidebar and NotificationShade removed - now using UV7System
@@ -183,6 +184,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Home Section interactions (demon lord link, landing cards, crew reactions)
     new HomeInteractionController(tabController);
     console.log('✅ Home section interactions initialized');
+
+    // Initialize System Banner (functional app status indicators)
+    new SystemBannerController(tabController);
+    console.log('✅ System banner controller initialized');
 
     // Inject footers AFTER sections render (DRY optimization)
     injectFooters();
