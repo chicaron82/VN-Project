@@ -4,7 +4,7 @@ The original visual novel engine — a soulful, sprawling JavaScript codebase th
 
 ## Directory Structure
 
-```
+```text
 v1/
 ├── system/        # All game systems (~75 JS files, the "god class" era)
 ├── routes/        # Route data (JS-based dialogue sequences)
@@ -31,11 +31,11 @@ V2 exists because V1 needed architectural discipline — but V1's **timing value
 ## Key Files
 
 | File | Lines | Role |
-|------|-------|------|
+| --- | --- | --- |
 | `system/game-engine.js` | ~2K+ | Core game loop |
 | `system/scene-renderer.js` | — | Scene display |
 | `system/echo-memory-system.js` | — | Belle's meta-awareness |
 | `system/tether-system.js` | — | Connection mechanic |
 | `routes/tori-route-main.js` | — | Tori's full route data |
 
-*The soul lives here. 💚🔥💀*
+> *The soul lives here. 💚🔥💀*

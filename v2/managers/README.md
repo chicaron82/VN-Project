@@ -5,7 +5,7 @@ State-oriented managers that handle cross-cutting concerns.
 ## Managers
 
 | Manager | Purpose |
-|---------|---------|
+| --- | --- |
 | `AccessibilityManager.ts` | High contrast, font scaling, reduced motion, screen reader support |
 | `AutoSaveManager.ts` | Automatic save triggers and intervals |
 | `OverlayManager.ts` | Modal/overlay stacking and z-index management |

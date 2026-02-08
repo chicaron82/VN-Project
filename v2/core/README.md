@@ -5,7 +5,7 @@ Engine fundamentals — the architectural backbone of V2.
 ## Files
 
 | File | Purpose |
-|------|---------|
+| --- | --- |
 | `EventBus.ts` | Type-safe pub/sub event system — all systems communicate through here |
 | `StateManager.ts` | Reactive state management with subscriptions |
 | `GameEngine.ts` | Central coordinator, orchestrates systems and controllers |

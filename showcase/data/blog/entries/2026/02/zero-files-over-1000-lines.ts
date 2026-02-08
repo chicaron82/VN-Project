@@ -1,4 +1,4 @@
-import { TimelineEntry } from '../../types';
+import type { TimelineEntry } from '../../../types';
 
 export const entry: TimelineEntry = {
     id: 'zero-files-over-1000-lines-feb-2026',

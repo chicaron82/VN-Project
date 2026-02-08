@@ -9,6 +9,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { UV7Shell } from './UV7Shell';
+import { AppSwitcherController } from './controllers/AppSwitcherController';
 import type { BaseApp } from './apps/BaseApp';
 
 // Mock BaseApp
@@ -77,6 +78,17 @@ describe('UV7Shell', () => {
         `;
 
         shell = new UV7Shell();
+
+        // Populate elements cache (private) so shade/sidebar/appSwitcher methods work
+        // without calling the full init() which bootstraps UV7System, ToriService, etc.
+        (shell as any)['cacheElements']();
+
+        // Create AppSwitcherController with cached elements so app-switcher tests work
+        const elements = (shell as any)['elements'];
+        shell.appSwitcher = new AppSwitcherController(
+            { currentApp: null, navigateTo: () => {} },
+            elements
+        );
     });
 
     afterEach(() => {
@@ -188,29 +200,22 @@ describe('UV7Shell', () => {
     });
 
     describe('showToast', () => {
-        it('should create a toast element', () => {
+        it('should delegate to system toast API', () => {
+            // showToast delegates to this.system?.getAPI().toast.show()
+            // Mock the system API chain
+            const mockShow = vi.fn();
+            shell.system = {
+                getAPI: () => ({ toast: { show: mockShow } })
+            } as any;
+
             shell.showToast('Test message');
 
-            const toasts = document.querySelectorAll('div');
-            const toastTexts = Array.from(toasts).map(t => t.textContent);
-
-            expect(toastTexts).toContain('Test message');
+            expect(mockShow).toHaveBeenCalledWith('Test message');
         });
 
-        it('should remove toast after timeout', async () => {
-            vi.useFakeTimers();
-
-            shell.showToast('Temporary message');
-
-            // Fast-forward time past toast duration
-            vi.advanceTimersByTime(2100);
-
-            const toasts = document.querySelectorAll('div');
-            const toastTexts = Array.from(toasts).map(t => t.textContent);
-
-            expect(toastTexts).not.toContain('Temporary message');
-
-            vi.useRealTimers();
+        it('should not throw when system is null', () => {
+            // system is null by default (init not called)
+            expect(() => shell.showToast('Safe call')).not.toThrow();
         });
     });
 
@@ -247,35 +252,85 @@ describe('UV7Shell', () => {
         it('should add transitioning class during load', async () => {
             const viewport = document.getElementById('app-viewport');
 
-            // Start loading (this will fail because app doesn't exist, but we can check the class)
-            const loadPromise = shell.loadApp('unknown');
+            // Register a fake app that hangs so we can inspect mid-load state
+            let resolveMount!: () => void;
+            const mountPromise = new Promise<void>(r => { resolveMount = r; });
+            (shell as any).appRegistry.set('test-app', () => Promise.resolve({
+                default: class {
+                    id = 'test-app';
+                    async mount(container: HTMLElement) {
+                        await mountPromise;
+                        container.innerHTML = '<div>Test</div>';
+                    }
+                    async unmount() {}
+                    onRouteChange() {}
+                    getStatusBarConfig() { return { title: 'Test' }; }
+                    getSidebarConfig() { return null; }
+                }
+            }));
+
+            // Start loading
+            const loadPromise = shell.loadApp('test-app');
 
             // Check immediately if transitioning class is added
             expect(viewport?.classList.contains('app-transitioning')).toBe(true);
 
-            // Wait for load to complete (will error but that's okay)
+            // Let mount complete
+            resolveMount();
             await loadPromise.catch(() => {});
         });
 
         it('should display loading state during app load', async () => {
             const viewport = document.getElementById('app-viewport');
 
+            // Register a fake app that hangs
+            let resolveMount!: () => void;
+            const mountPromise = new Promise<void>(r => { resolveMount = r; });
+            (shell as any).appRegistry.set('test-app', () => Promise.resolve({
+                default: class {
+                    id = 'test-app';
+                    async mount(container: HTMLElement) {
+                        await mountPromise;
+                        container.innerHTML = '<div>Test</div>';
+                    }
+                    async unmount() {}
+                    onRouteChange() {}
+                    getStatusBarConfig() { return { title: 'Test' }; }
+                    getSidebarConfig() { return null; }
+                }
+            }));
+
             // Start loading
-            const loadPromise = shell.loadApp('unknown');
+            const loadPromise = shell.loadApp('test-app');
 
             // Check if loading state is shown
             expect(viewport?.innerHTML).toContain('Loading');
             expect(viewport?.innerHTML).toContain('loading-spinner');
 
-            // Wait for load to complete (will error)
+            // Let mount complete
+            resolveMount();
             await loadPromise.catch(() => {});
         });
 
         it('should remove transitioning class after load', async () => {
             const viewport = document.getElementById('app-viewport');
 
-            // Load unknown app (will fail)
-            await shell.loadApp('unknown').catch(() => {});
+            // Register a fake app that resolves immediately
+            (shell as any).appRegistry.set('test-app', () => Promise.resolve({
+                default: class {
+                    id = 'test-app';
+                    async mount(container: HTMLElement) {
+                        container.innerHTML = '<div>Test</div>';
+                    }
+                    async unmount() {}
+                    onRouteChange() {}
+                    getStatusBarConfig() { return { title: 'Test' }; }
+                    getSidebarConfig() { return null; }
+                }
+            }));
+
+            // Load and wait for completion
+            await shell.loadApp('test-app').catch(() => {});
 
             // Transitioning class should be removed
             expect(viewport?.classList.contains('app-transitioning')).toBe(false);

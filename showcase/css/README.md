@@ -4,7 +4,7 @@
 
 ## Import Hierarchy
 
-```
+```text
 showcase.css (master)
 ├── 1. FOUNDATION
 │   ├── base.css           - Variables, resets, typography
@@ -71,11 +71,13 @@ showcase.css (master)
 ## When to Create a New CSS File
 
 **DO create a new file if:**
+
 - Feature is self-contained (new blog enhancement, new section)
 - Styles exceed ~200 lines
 - Feature can be disabled independently
 
 **DON'T create a new file if:**
+
 - Adding to existing component
 - Less than 50 lines of styles
 - Tightly coupled to existing file
@@ -83,23 +85,24 @@ showcase.css (master)
 ## File Size Guidelines
 
 | Size | Status | Action |
-|------|--------|--------|
+| --- | --- | --- |
 | < 500 lines | ✅ Healthy | None needed |
 | 500-1000 lines | ⚠️ Large | Consider splitting by sub-feature |
 | 1000-2000 lines | 🔴 Bloated | Refactor into logical modules |
 | > 2000 lines | 💀 Critical | Immediate split required |
 
 **Current file structure:**
+
 - `base.css`: 5106 lines (acceptable - CSS variables + resets)
 - ✅ **Modular architecture** - 20 files split by feature/component
   - 6 component files (hero, timeline, cards, modals, banners, carousel)
   - 5 page files (who, evolution, spotlight-bento, workflow, home)
   - 9 feature files (cooking, soma, experiments, content, contrast)
 
-
 ## Import Performance
 
 **Current setup:**
+
 - `showcase.css` uses `@import` (22 files)
 - **Build optimization:** Vite concatenates imports into single bundle
 - **Dev mode:** Files load individually (easier debugging)
@@ -110,11 +113,13 @@ showcase.css (master)
 ## Naming Conventions
 
 ### Classes
+
 - **BEM-lite:** `.section-content`, `.crew-card`, `.crew-card__header`
 - **State:** `.is-active`, `.is-expanded`, `.has-error`
 - **Utility:** `.text-center`, `.mt-2`, `.hidden`
 
 ### CSS Variables
+
 - **Colors:** `--accent-blue`, `--text-primary`, `--bg-dark`
 - **Spacing:** `--spacing-xs`, `--spacing-md`, `--spacing-xl`
 - **Timing:** `--transition-speed`, `--animation-duration`
@@ -151,6 +156,7 @@ showcase.css (master)
 
 Check `showcase.css` for the canonical import order and file descriptions.
 TOC to components.css and pages.css (temporary navigation solution)
+
 - **Phase 5 (Feb 1, 2026):** **Proper modular architecture**
   - Split components.css (5558 lines) → 6 component modules + 7 feature modules
   - Split pages.css (2620 lines) → 5 page modules + 2 feature modules

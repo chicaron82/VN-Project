@@ -3,7 +3,7 @@
 Shared utility modules.
 
 | File | Purpose |
-|------|---------|
+| --- | --- |
 | `accessibility.ts` | Accessibility helper functions (ARIA, focus management) |
 | `DebugLogger.ts` | Structured debug logging with categories |
 

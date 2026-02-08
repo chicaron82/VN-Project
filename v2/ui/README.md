@@ -4,7 +4,7 @@ All visual components, screens, effects, and styles for V2.
 
 ## Structure
 
-```
+```text
 ui/
 ├── components/    # Reusable UI widgets (StatusBar, Sidebar, Shade, etc.)
 ├── screens/       # Full-screen views (MainMenu, RouteSelect, Credits, etc.)
@@ -19,7 +19,7 @@ ui/
 Core interactive widgets:
 
 | Component | Purpose |
-|-----------|---------|
+| --- | --- |
 | `GameLayout.ts` | Main game DOM structure |
 | `StatusBar.ts` | Top status bar (breadcrumbs, mail, app switcher preview) |
 | `Sidebar.ts` | Side navigation panel |
@@ -42,7 +42,7 @@ Core interactive widgets:
 ## Screens (`screens/`)
 
 | Screen | Purpose |
-|--------|---------|
+| --- | --- |
 | `MainMenu.ts` | Title screen |
 | `RouteSelect.ts` | Route picker (Tori/Ronnie) |
 | `CreditsScreen.ts` | Credits roll |

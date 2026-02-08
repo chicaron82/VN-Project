@@ -4,7 +4,7 @@ A Tamagotchi-style companion game featuring Tori. Runs as a standalone app and b
 
 ## Structure
 
-```
+```text
 Tori-Gatchi/
 ├── index.html     # Entry point
 ├── style.css      # Styles

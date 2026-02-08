@@ -4,7 +4,7 @@ The complete TypeScript rewrite of V1's visual novel engine. Built with Event-Dr
 
 ## Directory Structure
 
-```
+```text
 v2/
 ├── core/          # Engine fundamentals (EventBus, StateManager, GameEngine)
 ├── systems/       # Game logic systems (Save, Tether, Achievements, etc.)
@@ -41,4 +41,4 @@ npm run build        # TypeScript check + Vite build
 npm test -- --run    # Run all tests
 ```
 
-*848 is sacred. 💚🔥💀*
+> *848 is sacred. 💚🔥💀*

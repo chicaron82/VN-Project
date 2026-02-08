@@ -1,4 +1,4 @@
-import { TimelineEntry } from '../../types';
+import type { TimelineEntry } from '../../../types';
 
 export const entry: TimelineEntry = {
     id: 'v2-custom-chrome-solution-feb-2026',

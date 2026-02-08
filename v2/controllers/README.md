@@ -5,7 +5,7 @@ Controllers handle player interaction, scene flow, and UI coordination. Each del
 ## Controllers
 
 | Controller | Purpose |
-|------------|---------|
+| --- | --- |
 | `GameplayController.ts` | Core gameplay loop coordination |
 | `DialogController.ts` | Dialogue display, choices, typewriter effect |
 | `TypewriterController.ts` | Character-by-character text reveal |

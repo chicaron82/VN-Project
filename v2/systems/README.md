@@ -5,7 +5,7 @@ Game logic systems — each handles a specific domain, communicating via EventBu
 ## Systems
 
 | System | Purpose |
-|--------|---------|
+| --- | --- |
 | `AchievementSystem.ts` | 12 achievements with event-driven tracking |
 | `AchievementHooks.ts` | Wires game events to achievement triggers |
 | `AssetLoader.ts` | Image preloading with progress tracking |
@@ -38,7 +38,7 @@ Game logic systems — each handles a specific domain, communicating via EventBu
 Extracted modules for the developer tools panel:
 
 | Module | Purpose |
-|--------|---------|
+| --- | --- |
 | `DevSuiteConsole.ts` | In-game console |
 | `DevSuiteDOM.ts` | DOM inspection |
 | `DevSuiteGameTools.ts` | Game state manipulation |

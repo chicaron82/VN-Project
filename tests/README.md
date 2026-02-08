@@ -7,7 +7,7 @@ These test the original V1 `system/` implementations. V2 tests live co-located w
 ## Test Files
 
 | Test | System Under Test |
-|------|-------------------|
+| --- | --- |
 | `game-engine.test.js` | Core game loop |
 | `state-manager.test.js` | State management |
 | `save-manager.test.js` | Save/load persistence |

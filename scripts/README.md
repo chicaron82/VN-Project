@@ -3,7 +3,7 @@
 Build-time and utility scripts.
 
 | Script | Purpose |
-|--------|---------|
+| --- | --- |
 | `generate-stats.js` | Generates `showcase/stats.json` from codebase analysis |
 | `generate-blog.ts` | Generates blog entries for the showcase timeline |
 | `generate-lab-entries.ts` | Generates lab experiment entries |
