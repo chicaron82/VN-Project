@@ -115,6 +115,7 @@ export class DevSuiteConsole {
             },
             'eval': () => {
                 try {
+                    // eslint-disable-next-line no-eval -- DevSuite console intentionally supports eval for debugging
                     const result = eval(args.join(' '));
                     return String(result);
                 } catch (e: any) {

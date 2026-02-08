@@ -355,7 +355,7 @@ describe('Content Verification', () => {
         it('Ronnie Act 1 should form a connected chain', () => {
             const scenes = new Map(ronnieAct1Data.scenes.map((s: any) => [s.id, s]));
             let current = scenes.get('ronnie_act1_prologueScene4'); // Start of migrated Act 1
-            let visited = [];
+            const visited = [];
 
             while (current) {
                 visited.push(current.id);
@@ -385,7 +385,7 @@ describe('Content Verification', () => {
         it('Ronnie Act 2 should form a connected chain', () => {
             const scenes = new Map(ronnieAct2Data.scenes.map(s => [s.id, s]));
             let current = scenes.get('startAct2');
-            let visited = [];
+            const visited = [];
 
             while (current && current.nextSceneId) {
                 visited.push(current.id);
@@ -407,7 +407,7 @@ describe('Content Verification', () => {
             // Wait, looking at file view, there is no 'startAct3' scene, the method calls 'act3Beat2'.
             // So we start at 'act3Beat2'.
             let current = scenes.get('act3Beat2');
-            let visited = [];
+            const visited = [];
 
             while (current && current.nextSceneId) {
                 visited.push(current.id);
@@ -426,7 +426,7 @@ describe('Content Verification', () => {
 
             it('should verify True Route Ending chain', () => {
                 let current = scenes.get('trueRouteEnding');
-                let visited = [];
+                const visited = [];
                 while (current && current.nextSceneId) {
                     visited.push(current.id);
                     current = scenes.get(current.nextSceneId);
@@ -439,7 +439,7 @@ describe('Content Verification', () => {
 
             it('should verify Bad Route Ending chain', () => {
                 let current = scenes.get('badRouteEnding');
-                let visited = [];
+                const visited = [];
                 while (current && current.nextSceneId) {
                     visited.push(current.id);
                     current = scenes.get(current.nextSceneId);
@@ -453,7 +453,7 @@ describe('Content Verification', () => {
 
             it('should verify Digital Forever Ending chain', () => {
                 let current = scenes.get('digitalForeverEnding');
-                let visited = [];
+                const visited = [];
                 while (current && current.nextSceneId) {
                     visited.push(current.id);
                     current = scenes.get(current.nextSceneId);
@@ -470,7 +470,7 @@ describe('Content Verification', () => {
         it('should form a connected chain of scenes', () => {
             const scenes = new Map(epilogueData.scenes.map(s => [s.id, s]));
             let current = scenes.get('epilogue_start');
-            let visited = [];
+            const visited = [];
 
             while (current && current.nextSceneId) {
                 visited.push(current.id);

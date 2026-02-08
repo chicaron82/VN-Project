@@ -85,7 +85,7 @@ export class Router {
      */
     parseHash(): ParsedRoute {
         // Remove leading '#/' or '#'
-        let hash = location.hash.replace(/^#\/?/, '');
+        const hash = location.hash.replace(/^#\/?/, '');
 
         // Split into segments: app/key/value/key/value...
         const segments = hash.split('/').filter(Boolean);

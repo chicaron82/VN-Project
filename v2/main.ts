@@ -80,7 +80,7 @@ if (!app) throw new Error('No #app element found');
 
 // Menu screens managed by NavigationController
 // Gameplay managed by GameplayController
-let isPaused = false;
+const isPaused = false;
 
 // ============================================
 // Controllers

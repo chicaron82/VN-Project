@@ -14,7 +14,7 @@ import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 describe('Chrome Performance Tests', () => {
     let system: UV7System;
     let mockElements: any;
-    let performanceResults: Record<string, number> = {};
+    const performanceResults: Record<string, number> = {};
 
     beforeEach(() => {
         // Create actual DOM elements for realistic testing
