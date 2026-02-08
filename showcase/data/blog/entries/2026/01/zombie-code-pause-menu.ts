@@ -33,6 +33,6 @@ export const entry: TimelineEntry = {
                 "text": "Commenting out code 'just in case' achieves nothing. It can't run. It can't be referenced. But it CAN get accidentally ported 18 months later. Delete with confidence. Git preserves everything."
             },
             "quote": "\"We found 150 lines of pause code in save-load-ui.js. It was commented out. In the wrong file. From 18 months ago. And it still got ported to V2.\" 🧟",
-            "sortDate": "2026-01-20T0c",
+            "sortDate": "2026-01-20T12:00:00",
             "legacyPhase": "2026-01-20-c"
         };

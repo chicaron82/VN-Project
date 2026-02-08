@@ -31,6 +31,6 @@ export const entry: TimelineEntry = {
                 "icon": "💡",
                 "text": "<strong>The Philosophy:</strong> 'No longer bound by existing mechanics. Just bound by how imaginative I can get through many iterations of what-if.' - Aaron"
             },
-            "sortDate": "2025-10-15T0a",
+            "sortDate": "2025-10-15T08:00:00",
             "legacyPhase": "2025-10-15-a"
         };

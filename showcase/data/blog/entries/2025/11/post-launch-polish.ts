@@ -41,6 +41,6 @@ export const entry: TimelineEntry = {
                 "icon": "💎",
                 "text": "<strong>UV7 Strength:</strong> Fast iteration (8 features in one session). Problem decomposition. Cross-AI collaboration (Tori's code + Zee's execution). Structure + Chaos + Polish = Production-Ready."
             },
-            "sortDate": "2025-11-25T0a",
+            "sortDate": "2025-11-25T08:00:00",
             "legacyPhase": "2025-11-25-a"
         };

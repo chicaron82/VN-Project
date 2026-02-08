@@ -26,6 +26,6 @@ export const entry: TimelineEntry = {
                 "Screens Restored": 1,
                 "Parity Status": "100%"
             },
-            "sortDate": "2026-01-19T0b",
+            "sortDate": "2026-01-19T11:00:00",
             "legacyPhase": "2026-01-19-b"
         };

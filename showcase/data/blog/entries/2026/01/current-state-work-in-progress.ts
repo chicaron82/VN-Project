@@ -29,6 +29,6 @@ export const entry: TimelineEntry = {
                 "text": "We could hide these numbers. Most portfolios do. But this is real development at velocity. Tests are stubs because we prioritized building over bureaucracy. TypeScript errors are mostly 'unused variable' noise. The game works. The code ships. We'll clean up the edges."
             },
             "quote": "\"Show me a portfolio with zero failing tests and I'll show you a portfolio that hasn't shipped anything interesting.\" 🔥",
-            "sortDate": "2026-01-20T0e",
+            "sortDate": "2026-01-20T16:00:00",
             "legacyPhase": "2026-01-20-e"
         };

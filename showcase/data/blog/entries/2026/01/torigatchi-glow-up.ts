@@ -23,6 +23,6 @@ export const entry: TimelineEntry = {
                 "title": "Visual Harmony",
                 "text": "The Gateway now feels like a piece of high-end alien tech, properly reflecting its importance in the lore."
             },
-            "sortDate": "2026-01-19T0b",
+            "sortDate": "2026-01-19T10:00:00",
             "legacyPhase": "2026-01-19-b"
         };

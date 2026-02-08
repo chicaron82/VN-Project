@@ -24,6 +24,6 @@ export const entry: TimelineEntry = {
                 "title": "Aesthetic Upgrade",
                 "text": "It's not just about information anymore. It's about <strong>presentation</strong>. The landing page now feels like a premium product launch."
             },
-            "sortDate": "2026-01-19T0a",
+            "sortDate": "2026-01-19T08:00:00",
             "legacyPhase": "2026-01-19-a"
         };

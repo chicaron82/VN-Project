@@ -169,6 +169,6 @@ export const entry: TimelineEntry = {
                 "Inline styles eliminate CSS dependencies",
                 "Touch + Mouse + Click toggle = universal accessibility"
             ],
-            "sortDate": "2026-01-15T0b",
+            "sortDate": "2026-01-15T10:00:00",
             "legacyPhase": "2026-01-15-b"
         };

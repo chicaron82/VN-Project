@@ -78,6 +78,6 @@ export const entry: TimelineEntry = {
                 }
             ],
             "quote": "\"It's not too late...\" 🖤💚🔥💀",
-            "sortDate": "2026-01-16T0d",
+            "sortDate": "2026-01-16T14:00:00",
             "legacyPhase": "2026-01-16-d"
         };

@@ -48,6 +48,6 @@ export const entry: TimelineEntry = {
                 "text": "Legitimate question: did we write so many tests that we broke the test runner? Answer: Probably not, but the test suites fighting each other definitely didn't help. Vitest can SEE the files but can't discover the test blocks inside them. Classic."
             },
             "quote": "\"We had 590 passing tests. Then we had 1000 tests that wouldn't run. Now we have a great story about why shipping > testing.\" 💥",
-            "sortDate": "2026-01-20T0f",
+            "sortDate": "2026-01-20T18:00:00",
             "legacyPhase": "2026-01-20-f"
         };

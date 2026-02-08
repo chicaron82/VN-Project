@@ -32,6 +32,6 @@ export const entry: TimelineEntry = {
                     "📦 <strong>Build System:</strong> Updated bundle-for-deploy.js to copy assets"
                 ]
             },
-            "sortDate": "2026-01-13T0c",
+            "sortDate": "2026-01-13T12:00:00",
             "legacyPhase": "January 13-14, 2026-a"
         };

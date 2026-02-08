@@ -21,6 +21,6 @@ export const entry: TimelineEntry = {
                     }
                 ]
             },
-            "sortDate": "2025-12-21T0a",
+            "sortDate": "2025-12-21T08:00:00",
             "legacyPhase": "2025-12-21-a"
         };

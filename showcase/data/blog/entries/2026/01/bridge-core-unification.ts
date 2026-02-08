@@ -30,6 +30,6 @@ export const entry: TimelineEntry = {
                 "title": "The Unification",
                 "text": "It's not enough to look the same. It has to BE the same. True parity means shared DNA."
             },
-            "sortDate": "2026-01-18T0c",
+            "sortDate": "2026-01-18T12:00:00",
             "legacyPhase": "2026-01-18-c"
         };

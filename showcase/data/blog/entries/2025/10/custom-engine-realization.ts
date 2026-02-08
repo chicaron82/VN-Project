@@ -35,6 +35,6 @@ export const entry: TimelineEntry = {
                 "approach": "Build a custom engine from scratch through conversation with AI collaborators, implementing exactly what the narrative required.",
                 "code": "game-engine.js (main loop), tether-system.js (decay), dual-route-bridge.js (cross-route state), save-manager.js (version tracking)"
             },
-            "sortDate": "2025-10-01T0a",
+            "sortDate": "2025-10-01T08:00:00",
             "legacyPhase": "2025-10-01-a"
         };

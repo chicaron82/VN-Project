@@ -21,6 +21,6 @@ export const entry: TimelineEntry = {
                 "title": "The Invisible Gaps",
                 "text": "The scanner revealed that while features <em>looked</em> complete, critical data persistence logic for the meta-narrative was disconnected."
             },
-            "sortDate": "2026-01-18T0a",
+            "sortDate": "2026-01-18T08:00:00",
             "legacyPhase": "2026-01-18-a"
         };

@@ -24,6 +24,6 @@ export const entry: TimelineEntry = {
                 "title": "Narrative Bug Fixing",
                 "text": "Instead of delaying for new assets, we leaned into the story. Ronnie stopped working on Torigatchi when Tori contacted him. The missing files aren't bugs—they are evidence of his disappearance."
             },
-            "sortDate": "2026-01-19T0c",
+            "sortDate": "2026-01-19T12:00:00",
             "legacyPhase": "2026-01-19-c"
         };

@@ -148,6 +148,6 @@ export const entry: TimelineEntry = {
                 "Haptic hierarchy communicates action importance",
                 "State persistence across sessions improves UX continuity"
             ],
-            "sortDate": "2026-01-16T0a",
+            "sortDate": "2026-01-16T08:00:00",
             "legacyPhase": "2026-01-16-a"
         };

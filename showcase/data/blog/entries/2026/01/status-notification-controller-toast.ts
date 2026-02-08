@@ -34,6 +34,6 @@ export const entry: TimelineEntry = {
                     "code": "// V2: StatusNotificationController.ts\nexport class StatusNotificationController {\n  private queue: NotificationOptions[] = [];\n  private priorities: Record<PriorityLevel, number> = {\n    critical: 100, high: 75, normal: 50, low: 25\n  };\n  show({ type, icon, message, duration, priority }: NotificationOptions): void\n  showNote(sender: string, subject: string): void\n  // + 7 more convenience methods, EventBus integration\n}"
                 }
             },
-            "sortDate": "2026-01-14T0b",
+            "sortDate": "2026-01-14T10:00:00",
             "legacyPhase": "2026-01-14-b"
         };

@@ -12,6 +12,6 @@ export const entry: TimelineEntry = {
                 "✅ <strong>Intelligence-Respecting UX:</strong> Skip hints fade in only when needed",
                 "✅ <strong>100% Feature Parity:</strong> Every V1 feature now running on V2 engine"
             ],
-            "sortDate": "2026-01-12T3a",
+            "sortDate": "2026-01-12T12:00:00",
             "legacyPhase": "2026-01-12-a"
         };

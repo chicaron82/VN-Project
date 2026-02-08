@@ -79,6 +79,6 @@ export const entry: TimelineEntry = {
                 "Cross-app instant resume is the future of web navigation"
             ],
             "quote": "\"Unapologetically bougie. Every pixel, every gesture, every animation—premium.\" 💎",
-            "sortDate": "2026-01-16T0i",
+            "sortDate": "2026-01-16T23:00:00",
             "legacyPhase": "2026-01-16-i"
         };

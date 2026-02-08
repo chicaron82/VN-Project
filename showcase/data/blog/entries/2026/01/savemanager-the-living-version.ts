@@ -73,6 +73,6 @@ export const entry: TimelineEntry = {
                 ],
                 "quote": "\"Always. Always. Always.\" - The Living Version never forgets."
             },
-            "sortDate": "2026-01-16T0b",
+            "sortDate": "2026-01-16T10:00:00",
             "legacyPhase": "2026-01-16-b"
         };

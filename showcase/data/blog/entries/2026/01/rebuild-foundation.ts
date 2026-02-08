@@ -12,6 +12,6 @@ export const entry: TimelineEntry = {
                 "💾 <strong>StateManager:</strong> Reactive state management with subscriptions",
                 "📝 <strong>TypeScript:</strong> Strict mode enabled for 100% type safety"
             ],
-            "sortDate": "2026-01-08T0a",
+            "sortDate": "2026-01-08T08:00:00",
             "legacyPhase": "2026-01-08-a"
         };

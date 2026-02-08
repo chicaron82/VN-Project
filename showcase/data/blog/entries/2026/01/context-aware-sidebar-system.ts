@@ -53,6 +53,6 @@ export const entry: TimelineEntry = {
                 ],
                 "quote": "\"Context-aware, like the status bar. Built with love. 💚🔥💀\""
             },
-            "sortDate": "2026-01-26T0a",
+            "sortDate": "2026-01-26T08:00:00",
             "legacyPhase": "2026-01-26-a"
         };

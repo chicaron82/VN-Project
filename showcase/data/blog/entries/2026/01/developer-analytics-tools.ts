@@ -94,6 +94,6 @@ export const entry: TimelineEntry = {
                 }
             ],
             "quote": "\"Track everything. Optimize what matters.\" ⏱️",
-            "sortDate": "2026-01-16T0e",
+            "sortDate": "2026-01-16T16:00:00",
             "legacyPhase": "2026-01-16-e"
         };

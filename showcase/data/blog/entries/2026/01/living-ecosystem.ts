@@ -19,6 +19,6 @@ export const entry: TimelineEntry = {
                 "Bougie Level": "Maximum"
             },
             "quote": "\"The line between the game and the site has dissolved.\"",
-            "sortDate": "2026-01-18T0d",
+            "sortDate": "2026-01-18T14:00:00",
             "legacyPhase": "2026-01-18-d"
         };

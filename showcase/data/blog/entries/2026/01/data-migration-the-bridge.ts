@@ -16,6 +16,6 @@ export const entry: TimelineEntry = {
                 "approach": "Modified `BootstrapTracker.ts` to check for legacy keys on initialization and migrate data immediately.",
                 "code": "if (legacy) { this.timeline = JSON.parse(legacy); this.saveTimeline(); }"
             },
-            "sortDate": "2026-01-18T0b",
+            "sortDate": "2026-01-18T10:00:00",
             "legacyPhase": "2026-01-18-b"
         };

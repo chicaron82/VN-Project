@@ -145,6 +145,6 @@ export const entry: TimelineEntry = {
                 "INSANE mode restrictions are features, not limitations",
                 "848 is sacred - every loop matters 💚🔥💀"
             ],
-            "sortDate": "2026-01-15T0a",
+            "sortDate": "2026-01-15T08:00:00",
             "legacyPhase": "2026-01-15-a"
         };

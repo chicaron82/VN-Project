@@ -39,6 +39,6 @@ export const entry: TimelineEntry = {
                 "Safety nets (validation, error boundaries) are as important as features",
                 "Context is everything—even for background animations"
             ],
-            "sortDate": "2026-01-13T0a",
+            "sortDate": "2026-01-13T08:00:00",
             "legacyPhase": "2026-01-13-a"
         };

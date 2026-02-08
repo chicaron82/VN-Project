@@ -335,6 +335,6 @@ export const entry: TimelineEntry = {
                 "Tests validate behavior AND document intent",
                 "Debug helpers (window.uv7.breakLoop) accelerate development"
             ],
-            "sortDate": "2026-01-14T0a",
+            "sortDate": "2026-01-14T08:00:00",
             "legacyPhase": "2026-01-14-a"
         };

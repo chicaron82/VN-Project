@@ -12,6 +12,6 @@ export const entry: TimelineEntry = {
                 "filesChanged": 15,
                 "components": 12
             },
-            "sortDate": "2026-01-10T0a",
+            "sortDate": "2026-01-10T08:00:00",
             "legacyPhase": "2026-01-10-a"
         };

@@ -16,6 +16,6 @@ export const entry: TimelineEntry = {
                 "title": "Key Insight:",
                 "text": "It's not enough to be clean. It has to feel <strong>heavy</strong>. Every swipe needs momentum. Every animation needs purpose."
             },
-            "sortDate": "2026-01-11T0a",
+            "sortDate": "2026-01-11T08:00:00",
             "legacyPhase": "2026-01-11-a"
         };

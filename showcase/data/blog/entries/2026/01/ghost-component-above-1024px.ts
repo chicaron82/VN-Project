@@ -39,6 +39,6 @@ export const entry: TimelineEntry = {
                 "text": "<strong>The Lesson:</strong> The component lived at >1024px like a ghost in the machine. Invisible to mobile testing. Broken on desktop. Redundant everywhere. Sometimes the right move isn't fixing the bug - it's deleting the feature."
             },
             "quote": "\"I spent 45 minutes debugging NaN because an AI added a floating nav I never asked for that only appeared at >1024px width\" 👻",
-            "sortDate": "2026-01-20T0b",
+            "sortDate": "2026-01-20T10:00:00",
             "legacyPhase": "2026-01-20-b"
         };

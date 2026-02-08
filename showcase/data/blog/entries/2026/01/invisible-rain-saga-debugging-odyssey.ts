@@ -30,6 +30,6 @@ export const entry: TimelineEntry = {
                 "architecturalFlaw": "Critical",
                 "lessonPermanence": "Eternal"
             },
-            "sortDate": "2026-01-19T0a",
+            "sortDate": "2026-01-19T09:00:00",
             "legacyPhase": "2026-01-19-a"
         };

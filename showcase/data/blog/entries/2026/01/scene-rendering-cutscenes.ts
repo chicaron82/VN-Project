@@ -48,6 +48,6 @@ export const entry: TimelineEntry = {
                 }
             ],
             "quote": "\"Built with love.\" 🎬",
-            "sortDate": "2026-01-16T0c",
+            "sortDate": "2026-01-16T12:00:00",
             "legacyPhase": "2026-01-16-c"
         };

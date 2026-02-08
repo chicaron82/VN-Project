@@ -20,6 +20,6 @@ export const entry: TimelineEntry = {
                 "Immersion": "Maximum"
             },
             "quote": "\"We are officially Gold. 🏆\"",
-            "sortDate": "2026-01-18T0b",
+            "sortDate": "2026-01-18T11:00:00",
             "legacyPhase": "2026-01-18-b"
         };

@@ -40,6 +40,6 @@ export const entry: TimelineEntry = {
                 "Crew signatures honor collaboration and preserve context",
                 "848 isn't a version number—it's the heart of the entire project"
             ],
-            "sortDate": "2026-01-13T0b",
+            "sortDate": "2026-01-13T10:00:00",
             "legacyPhase": "2026-01-13-b"
         };

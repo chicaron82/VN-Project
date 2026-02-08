@@ -34,6 +34,6 @@ export const entry: TimelineEntry = {
                 "title": "Narrative Impact:",
                 "text": "Restored a piece of Tori's voice. The bubble isn't decoration. It's storytelling."
             },
-            "sortDate": "2026-01-12T4a",
+            "sortDate": "2026-01-12T14:00:00",
             "legacyPhase": "2026-01-12-b"
         };

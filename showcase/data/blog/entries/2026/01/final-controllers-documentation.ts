@@ -67,6 +67,6 @@ export const entry: TimelineEntry = {
                 "content": "After 25 phases, the V1→V2 TypeScript migration is virtually complete. Core gameplay: 100%. All major systems ported with enhanced type safety, EventBus integration, and modern architecture. Only optional features remain (screenshot-tool). This marks the end of the major porting effort."
             },
             "quote": "\"Built with love. Every statement matters.\" 💚🔥💀",
-            "sortDate": "2026-01-16T0h",
+            "sortDate": "2026-01-16T22:00:00",
             "legacyPhase": "2026-01-16-h"
         };

@@ -87,6 +87,6 @@ export const entry: TimelineEntry = {
                 "content": "Phase 26 unified the fragmented UI systems. StatusBar now adapts to any UV7 context via feature flags. NotificationRail replaced 4 overlapping notification systems with a single canonical implementation. Tech debt paid down, architecture cleaner."
             },
             "quote": "\"Every pixel, every gesture, every animation—premium.\" 💚🔥💀",
-            "sortDate": "2026-01-17T0a",
+            "sortDate": "2026-01-17T08:00:00",
             "legacyPhase": "2026-01-17-a"
         };

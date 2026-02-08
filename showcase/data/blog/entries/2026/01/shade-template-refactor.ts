@@ -63,6 +63,6 @@ export const entry: TimelineEntry = {
                 ],
                 "quote": "\"Good coding practices afterall. 💚🔥💀\""
             },
-            "sortDate": "2026-01-27T0a",
+            "sortDate": "2026-01-27T08:00:00",
             "legacyPhase": "2026-01-27-a"
         };

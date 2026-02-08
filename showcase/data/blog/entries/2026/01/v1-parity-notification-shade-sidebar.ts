@@ -29,6 +29,6 @@ export const entry: TimelineEntry = {
                 "Created workflow document to enforce this pattern",
                 "Following V1's exact architecture prevents reactive patching"
             ],
-            "sortDate": "2026-01-12T2a",
+            "sortDate": "2026-01-12T10:00:00",
             "legacyPhase": "January 12, 2026 (Afternoon)-a"
         };

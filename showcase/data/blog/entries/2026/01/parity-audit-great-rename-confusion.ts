@@ -27,6 +27,6 @@ export const entry: TimelineEntry = {
                 "text": "Created MIGRATION_MAP.md documenting V1→V2 renames. Examples: notification-shade-controller.js → NotificationShade.ts, collectibles-manager.js → CollectiblesSystem.ts, tether-system.js → TetherController.ts. Saves 2-3 hours per audit cycle."
             },
             "quote": "\"No, notification-shade-controller isn't missing. It's NotificationShade.ts. No, collectibles-manager isn't missing. It's CollectiblesSystem.ts. Yes, I've said this 19 times.\" 💀",
-            "sortDate": "2026-01-20T0d",
+            "sortDate": "2026-01-20T14:00:00",
             "legacyPhase": "2026-01-20-d"
         };

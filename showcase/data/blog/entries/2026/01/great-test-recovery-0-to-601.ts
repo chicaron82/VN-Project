@@ -49,6 +49,6 @@ export const entry: TimelineEntry = {
                 "text": "One config fix recovered 593 tests instantly. The 'missing' tests were never missing - they were just invisible to the runner. This is why test infrastructure matters as much as the tests themselves."
             },
             "quote": "\"We went from 'did we lose 590 tests?' to '601 tests passing' in one config change. The tests were there all along, just waiting to be discovered.\" 🧪",
-            "sortDate": "2026-01-20T0g",
+            "sortDate": "2026-01-20T20:00:00",
             "legacyPhase": "2026-01-20-g"
         };

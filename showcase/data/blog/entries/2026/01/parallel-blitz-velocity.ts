@@ -60,6 +60,6 @@ export const entry: TimelineEntry = {
                 "title": "The Parallel Paradigm:",
                 "text": "26 hours of work compressed into 1 hour. This is the future of development."
             },
-            "sortDate": "2026-01-12T5a",
+            "sortDate": "2026-01-12T16:00:00",
             "legacyPhase": "January 12, 2026 (Late Night)-a"
         };

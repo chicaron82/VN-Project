@@ -24,6 +24,6 @@ export const entry: TimelineEntry = {
                 "title": "Media Query Alignment",
                 "text": "JavaScript orientation detection MUST match CSS media queries exactly. Checking just `(orientation: portrait)` while CSS requires `(max-width: 768px) and (orientation: portrait)` creates edge cases on tablets."
             },
-            "sortDate": "2026-01-20T0a",
+            "sortDate": "2026-01-20T08:00:00",
             "legacyPhase": "2026-01-20-a"
         };

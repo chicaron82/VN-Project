@@ -24,6 +24,6 @@ export const entry: TimelineEntry = {
                 "title": "Universal Persistence",
                 "content": "Moving the grab handle on the Landing page saves the position to <code>localStorage</code>, so it stays put when you jump to the Showcase. One user preference, respected everywhere."
             },
-            "sortDate": "2026-01-18T0a",
+            "sortDate": "2026-01-18T09:00:00",
             "legacyPhase": "2026-01-18-a"
         };

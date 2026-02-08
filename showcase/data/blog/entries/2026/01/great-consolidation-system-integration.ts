@@ -17,6 +17,6 @@ export const entry: TimelineEntry = {
                 "✨ <strong>Vision Sequence:</strong> Fixed effect timing and rendering",
                 "🔧 <strong>Duplicate Cleanup:</strong> Eliminated 46 duplicate Scene IDs"
             ],
-            "sortDate": "2026-01-12T6a",
+            "sortDate": "2026-01-12T18:00:00",
             "legacyPhase": "January 12, 2026 (Midnight)-a"
         };

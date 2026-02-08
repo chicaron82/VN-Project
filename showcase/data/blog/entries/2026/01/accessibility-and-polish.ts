@@ -74,6 +74,6 @@ export const entry: TimelineEntry = {
                 }
             ],
             "quote": "\"Inclusive by design. Accessible by default.\" ♿",
-            "sortDate": "2026-01-16T0f",
+            "sortDate": "2026-01-16T18:00:00",
             "legacyPhase": "2026-01-16-f"
         };

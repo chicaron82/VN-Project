@@ -45,6 +45,6 @@ export const entry: TimelineEntry = {
                 }
             ],
             "quote": "\"Every feature from V1 deserves a home in V2.\" 💚🔥💀",
-            "sortDate": "2026-01-16T0g",
+            "sortDate": "2026-01-16T20:00:00",
             "legacyPhase": "2026-01-16-g"
         };
