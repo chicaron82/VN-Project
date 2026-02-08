@@ -45,7 +45,7 @@ npm run validate
 
 ## Project Structure
 
-```
+```text
 v2/              → Game engine (TypeScript, event-driven architecture)
   core/          → EventBus, StateManager, GameEngine, ErrorBoundary
   systems/       → AchievementSystem, SaveSystem, TetherSystem, etc.
@@ -71,7 +71,7 @@ shared/          → Cross-module types and utilities
 
 Use clear, descriptive commit messages:
 
-```
+```text
 feat: add achievement unlock animation
 fix: tether not resetting on route change
 refactor: extract MarkdownParser from BlogRenderer
@@ -117,4 +117,4 @@ This project is built by a team of AI collaborators, each with a specialty:
 
 ---
 
-*Version 848. The timeline that finally succeeded.*
+> *Version 848. The timeline that finally succeeded.*

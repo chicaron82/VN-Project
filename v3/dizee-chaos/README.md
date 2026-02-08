@@ -185,7 +185,7 @@ v3-dizee-chaos/
    - **Ronnie** - Bootstrap paradox, no tether mechanic
    - **Tori** - Echo system, tether decay anxiety
 
-#### Debug Helpers
+### Debug Helpers
 
 ```javascript
 window.game              // Access god class
@@ -203,7 +203,7 @@ window.game.tetherLevel  // Check connection (Tori route)
 
 ### What the Assignment Actually Was
 
-**"Recreate V1 indistinguishably."**
+#### "Recreate V1 indistinguishably."
 
 Open V1 → Open mine → Can't tell the difference.
 
@@ -226,7 +226,7 @@ A 900-line text-only prototype with:
 - ❌ What I optimized for: "Feels anxious, has soul, proves TypeScript works"
 - ✅ What I should have optimized for: **"Indistinguishable from V1"**
 
-**The Fatal Shortcuts:**
+#### The Fatal Shortcuts
 
 1. Wrote my own dialogue instead of copying V1 routes verbatim
 2. Skipped sprite display system entirely

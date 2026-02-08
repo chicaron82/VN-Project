@@ -89,62 +89,62 @@ export const Logger = {
   // ── Category loggers (debug level) ────────────────────────
   engine(...args: unknown[]): void {
     if (!shouldLog('debug', 'engine')) return;
-    console.log(formatPrefix('engine'), ...args);
+    console.info(formatPrefix('engine'), ...args);
   },
 
   scene(...args: unknown[]): void {
     if (!shouldLog('debug', 'scene')) return;
-    console.log(formatPrefix('scene'), ...args);
+    console.info(formatPrefix('scene'), ...args);
   },
 
   state(...args: unknown[]): void {
     if (!shouldLog('debug', 'state')) return;
-    console.log(formatPrefix('state'), ...args);
+    console.info(formatPrefix('state'), ...args);
   },
 
   save(...args: unknown[]): void {
     if (!shouldLog('debug', 'save')) return;
-    console.log(formatPrefix('save'), ...args);
+    console.info(formatPrefix('save'), ...args);
   },
 
   tether(...args: unknown[]): void {
     if (!shouldLog('debug', 'tether')) return;
-    console.log(formatPrefix('tether'), ...args);
+    console.info(formatPrefix('tether'), ...args);
   },
 
   input(...args: unknown[]): void {
     if (!shouldLog('debug', 'input')) return;
-    console.log(formatPrefix('input'), ...args);
+    console.info(formatPrefix('input'), ...args);
   },
 
   ui(...args: unknown[]): void {
     if (!shouldLog('debug', 'ui')) return;
-    console.log(formatPrefix('ui'), ...args);
+    console.info(formatPrefix('ui'), ...args);
   },
 
   effect(...args: unknown[]): void {
     if (!shouldLog('debug', 'effect')) return;
-    console.log(formatPrefix('effect'), ...args);
+    console.info(formatPrefix('effect'), ...args);
   },
 
   easter(...args: unknown[]): void {
     if (!shouldLog('debug', 'easter')) return;
-    console.log(formatPrefix('easter'), ...args);
+    console.info(formatPrefix('easter'), ...args);
   },
 
   achievement(...args: unknown[]): void {
     if (!shouldLog('debug', 'achievement')) return;
-    console.log(formatPrefix('achievement'), ...args);
+    console.info(formatPrefix('achievement'), ...args);
   },
 
   system(...args: unknown[]): void {
     if (!shouldLog('debug', 'system')) return;
-    console.log(formatPrefix('system'), ...args);
+    console.info(formatPrefix('system'), ...args);
   },
 
   perf(...args: unknown[]): void {
     if (!shouldLog('debug', 'perf')) return;
-    console.log(formatPrefix('perf'), ...args);
+    console.info(formatPrefix('perf'), ...args);
   },
 
   // ── Level loggers (always-on for warn/error) ──────────────
@@ -152,7 +152,7 @@ export const Logger = {
   /** General debug output — suppressed in production */
   debug(...args: unknown[]): void {
     if (!shouldLog('debug')) return;
-    console.log('[DEBUG]', ...args);
+    console.info('[DEBUG]', ...args);
   },
 
   /** Informational — important lifecycle events */

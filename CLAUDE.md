@@ -7,7 +7,7 @@ This is V848 Visual Novel (UV7) - a meta-narrative visual novel about digital co
 - **V1**: Original JavaScript implementation in `system/` directory
 - **V2**: TypeScript rewrite in `v2/` directory
 
-**848 is sacred. 💚🔥💀**
+## 💚 848 is sacred 💀
 
 ## V3 Experiment: Autonomous V1→V2 Conversion
 
@@ -115,7 +115,7 @@ V1's "soul" comes from its behavior (timing, dialogue, atmosphere), not its stru
 
 ### Commit Message Format
 
-```
+```text
 feat(phase13X): [description]
 
 [Detailed body explaining what was ported]
@@ -245,12 +245,12 @@ To prevent architectural debt and "shoehorning", we adhere to these rules:
 Ready to proceed?
 ```
 
-**When User Says "Let's cook" or "Allez cuisine":**
+#### When User Says "Let's cook" or "Allez cuisine"
 
 - That means "I like the idea, but STILL propose a plan first"
 - Don't interpret excitement as "skip planning"
 
-**IMPORTANT: Detailed Requirements ≠ Architectural Plan**
+#### IMPORTANT: Detailed Requirements ≠ Architectural Plan
 
 Even when user provides comprehensive feature specs, you must still propose WHERE the code will live:
 
