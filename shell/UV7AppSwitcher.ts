@@ -11,7 +11,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-type AppId = 'landing' | 'showcase' | 'v1' | 'v2' | 'torigatchi';
+type AppId = 'showcase' | 'v1' | 'v2' | 'torigatchi';
 
 interface AppStateData {
     state: string[];

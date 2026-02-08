@@ -111,7 +111,7 @@ export class BlogRenderer {
     }
 
     private setupInteractions(): void {
-        console.log('🍽️ Timeline interactions initialized');
+        console.info('🍽️ Timeline interactions initialized');
     }
 
     private renderStatsContainer(): void {
@@ -135,7 +135,7 @@ export class BlogRenderer {
             this.container?.insertBefore(this.statsContainer, this.container.firstChild);
         }
 
-        console.log('📊 [Phase 2] Fun Stats dashboard rendered');
+        console.info('📊 [Phase 2] Fun Stats dashboard rendered');
     }
 
 
@@ -151,7 +151,7 @@ export class BlogRenderer {
         });
 
         this.applyLogic();
-        console.log('📜 Loaded Project History');
+        console.info('📜 Loaded Project History');
     }
 
     // --- CORE LOGIC ---

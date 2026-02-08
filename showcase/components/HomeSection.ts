@@ -9,15 +9,196 @@
 
 export class HomeSection {
     constructor() {
-        this.render();
+        this.init();
     }
 
-    render(): void {
+    async init(): Promise<void> {
         const mount = document.getElementById('uv7-home-mount');
         console.log('[HomeSection] Mount point:', mount ? 'found' : 'NOT FOUND');
         if (!mount) return;
 
-        mount.innerHTML = `
+        // Check if we should play boot sequence
+        const hasBooted = sessionStorage.getItem('uv7_has_booted');
+
+        if (!hasBooted) {
+            // First visit - play boot sequence
+            await this.runBootSequence(mount);
+            sessionStorage.setItem('uv7_has_booted', 'true');
+        } else {
+            // Returning visitor - go straight to content
+            this.render(mount);
+        }
+    }
+
+    /**
+     * runBootSequence
+     * The "Wild Ass Information" BIOS startup - only plays on first visit
+     */
+    async runBootSequence(container: HTMLElement): Promise<void> {
+        // Init audio if available
+        if ((window as any).shellAudio) (window as any).shellAudio.init();
+
+        let skipped = false;
+
+        // Setup Boot DOM
+        container.innerHTML = `
+            <div class="boot-screen" style="
+                background: #000;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                padding: 2rem;
+                font-family: 'Courier New', monospace;
+                color: #00ff88;
+                overflow: hidden;
+                position: relative;
+                z-index: 9999;
+            ">
+                <div class="boot-logo" style="margin-bottom: 2rem; font-weight: bold; font-size: 1.2rem;">
+                    UV7 TERMINAL // v8.4.8
+                </div>
+                <div class="boot-log" id="boot-log"></div>
+                <div class="boot-skip-hint" id="boot-skip-hint" style="
+                    position: absolute;
+                    bottom: 2rem;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    color: rgba(0, 255, 136, 0.5);
+                    font-size: 0.9rem;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                    cursor: pointer;
+                ">Press any key or tap to skip</div>
+                <div class="scanline" style="
+                    position: absolute; top: 0; left: 0; width: 100%; height: 10px;
+                    background: rgba(0, 255, 136, 0.1);
+                    animation: scan 2s linear infinite;
+                    pointer-events: none;
+                "></div>
+            </div>
+            <style>
+                @keyframes scan { 0% { top: -10px; } 100% { top: 100%; } }
+                .log-line { margin-bottom: 4px; opacity: 0.8; }
+                .log-line.error { color: #ff4444; }
+                .log-line.warn { color: #ffaa00; }
+                .log-line.success { color: #00ff88; text-shadow: 0 0 5px rgba(0,255,136,0.5); }
+            </style>
+        `;
+
+        const log = container.querySelector('#boot-log')!;
+        const skipHint = container.querySelector('#boot-skip-hint') as HTMLElement;
+        const bootScreen = container.querySelector('.boot-screen') as HTMLElement;
+
+        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+        const addLog = (text: string, type = '') => {
+            if (skipped) return;
+            const div = document.createElement('div');
+            div.className = `log-line ${type}`;
+            div.textContent = `> ${text}`;
+            log.appendChild(div);
+            log.scrollTop = log.scrollHeight;
+            if ((window as any).shellAudio) (window as any).shellAudio.play(type === 'error' ? 'error' : 'click');
+        };
+
+        // Skip handler
+        const skip = () => {
+            if (skipped) return;
+            skipped = true;
+            bootScreen.style.opacity = '0';
+            bootScreen.style.transition = 'opacity 0.3s ease-out';
+            setTimeout(() => this.render(container), 300);
+        };
+
+        // Show skip hint after 2 seconds
+        setTimeout(() => {
+            if (!skipped && skipHint) {
+                skipHint.style.opacity = '1';
+            }
+        }, 2000);
+
+        // Skip on any key press or click
+        const keyHandler = () => skip();
+        const clickHandler = () => skip();
+
+        document.addEventListener('keydown', keyHandler, { once: true });
+        bootScreen.addEventListener('click', clickHandler, { once: true });
+
+        // Cleanup listeners
+        const cleanup = () => {
+            document.removeEventListener('keydown', keyHandler);
+            bootScreen.removeEventListener('click', clickHandler);
+        };
+
+        // The Boot Sequence
+        if ((window as any).shellAudio) (window as any).shellAudio.play('startup');
+
+        addLog('BIOS CHECK...', 'warn');
+        if (skipped) { cleanup(); return; }
+        await sleep(300);
+        addLog('CPU: UV7 Neural Core... OK', 'success');
+        if (skipped) { cleanup(); return; }
+        await sleep(150);
+        addLog('RAM: 848TB Infinite Loop... OK', 'success');
+        if (skipped) { cleanup(); return; }
+        await sleep(150);
+        addLog('GPU: Reality Engine v2... OK', 'success');
+        if (skipped) { cleanup(); return; }
+        await sleep(400);
+
+        addLog('Mounting File Systems...');
+        if (skipped) { cleanup(); return; }
+        await sleep(200);
+        addLog('/dev/v1/chaos ...... MOUNTED (Read Only)');
+        if (skipped) { cleanup(); return; }
+        await sleep(100);
+        addLog('/dev/v2/order ...... MOUNTED (Read/Write)');
+        if (skipped) { cleanup(); return; }
+        await sleep(100);
+        addLog('/dev/showcase ...... MOUNTED');
+        if (skipped) { cleanup(); return; }
+        await sleep(500);
+
+        addLog('Initializing Neural Link...');
+        if (skipped) { cleanup(); return; }
+        await sleep(300);
+        addLog('Connecting to Crew [DiZee, Tori, Belle, Zee]...');
+        if (skipped) { cleanup(); return; }
+        await sleep(600);
+        addLog('Handshake Established. Latency: 0ms', 'success');
+        if (skipped) { cleanup(); return; }
+        await sleep(400);
+
+        addLog('Loading Graphical Shell...');
+        if (skipped) { cleanup(); return; }
+        await sleep(800);
+
+        // Glitch Effect
+        addLog('EXECUTING STARTUP.BAT', 'warn');
+        if ((window as any).shellAudio) (window as any).shellAudio.play('glitch');
+
+        if (skipped) { cleanup(); return; }
+        bootScreen.style.filter = 'contrast(200%) brightness(200%)';
+        bootScreen.style.transform = 'skewX(10deg)';
+        await sleep(100);
+        if (skipped) { cleanup(); return; }
+        bootScreen.style.filter = 'none';
+        bootScreen.style.transform = 'none';
+        await sleep(50);
+        if (skipped) { cleanup(); return; }
+        bootScreen.style.opacity = '0';
+        bootScreen.style.transition = 'opacity 0.5s ease-out';
+
+        await sleep(500);
+
+        cleanup();
+        if (!skipped) {
+            this.render(container);
+        }
+    }
+
+    render(container: HTMLElement): void {
+        container.innerHTML = `
             <!-- HERO ZONE: The Demon Lord Title -->
             <div class="hero-banner home">
                 <div class="hero-banner-particles">
@@ -343,7 +524,7 @@ export class HomeSection {
         // Wire up the VN comparison toggles
         this.initVNComparisonToggles();
 
-        console.log('[HomeSection] Rendered new home content');
+        console.log('[HomeSection] Rendered home content');
     }
 
     /**

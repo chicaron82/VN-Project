@@ -159,20 +159,11 @@ export class StatusBarAppSwitcherPreview {
             if (currentPath.includes('showcase')) return 'showcase';
             if (currentPath.includes('v1')) return 'v1';
             if (currentPath.includes('v2') || currentPath.includes('index.v2')) return 'v2';
-            return 'landing';
+            return 'showcase';
         };
         const activeApp = detectCurrentApp();
 
         return [
-            {
-                name: 'Landing',
-                icon: '🏠',
-                state: (() => {
-                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
-                    return `VERSION ${loopVersion}`;
-                })(),
-                isActive: activeApp === 'landing'
-            },
             {
                 name: 'Showcase',
                 icon: '📖',

@@ -234,7 +234,6 @@ export class UV7Shell {
     private async registerApps(): Promise<void> {
         // Apps are registered lazily - we just define their IDs here
         // Actual module loading happens in loadApp()
-        this.appRegistry.set('landing', () => import('./apps/LandingApp.js'));
         this.appRegistry.set('showcase', () => import('./apps/ShowcaseApp.js'));
         this.appRegistry.set('torigatchi', () => import('./apps/TorigatchiApp.js'));
         this.appRegistry.set('v1', () => import('./apps/V1App.js'));

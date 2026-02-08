@@ -1,6 +1,6 @@
 # Shell — UV7 OS Wrapper
 
-The "operating system" layer that wraps V1, V2, Showcase, ToriGatchi, and Landing into a unified app-switching experience.
+The "operating system" layer that wraps V1, V2, Showcase, and ToriGatchi into a unified app-switching experience.
 
 ## Directory Structure
 
@@ -39,8 +39,7 @@ shell/
 | --- | --- | --- |
 | V1 | `V1App.ts` | Original JS visual novel |
 | V2 | `V2App.ts` | TypeScript remaster |
-| Showcase | `ShowcaseApp.ts` | Timeline/blog/portfolio |
+| Showcase | `ShowcaseApp.ts` | Timeline/blog/portfolio (default landing) |
 | ToriGatchi | `TorigatchiApp.ts` | Companion pet game |
-| Landing | `LandingApp.ts` | Landing page |
 
 > *848 is sacred. 💚🔥💀*

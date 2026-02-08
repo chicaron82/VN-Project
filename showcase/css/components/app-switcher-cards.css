@@ -62,11 +62,6 @@
     --preview-secondary: #764ba2;
 }
 
-.app-preview-card[data-app="landing"] {
-    --preview-primary: #f8f9fa;
-    --preview-secondary: #2c3e50;
-}
-
 .app-preview-card[data-app="torigatchi"] {
     --preview-primary: #00ff88;
     --preview-secondary: #1a1a2e;

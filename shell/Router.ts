@@ -6,8 +6,7 @@
  * Uses hash-based routing (#/app/params) for simplicity.
  *
  * Routes:
- *   #/           → showcase
- *   #/landing    → landing
+ *   #/           → showcase (home landing)
  *   #/showcase   → showcase
  *   #/showcase/timeline/42 → showcase with params
  *   #/v1         → v1 game
@@ -38,7 +37,6 @@ export class Router {
         // Default app mappings
         this.routes = {
             '': 'showcase',
-            'landing': 'landing',
             'showcase': 'showcase',
             'v1': 'v1',
             'v2': 'v2',
@@ -113,7 +111,7 @@ export class Router {
      * Updates the URL hash and triggers app loading.
      * Parameters are encoded as key/value pairs in the URL.
      *
-     * @param appId - The app to navigate to ('landing', 'showcase', 'v1', 'v2', 'torigatchi')
+     * @param appId - The app to navigate to ('showcase', 'v1', 'v2', 'torigatchi')
      * @param params - Optional key-value parameters for the app
      *
      * @example

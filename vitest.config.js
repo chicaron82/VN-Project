@@ -18,7 +18,7 @@ export default defineConfig({
         testTimeout: 5000,
         hookTimeout: 5000,
         setupFiles: ['./tests/setup.js'],
-        include: ['v2/**/*.test.ts', 'tests/**/*.test.ts', 'shell/**/*.test.ts', 'showcase/**/*.test.ts', 'landing/**/*.test.ts'],
+        include: ['v2/**/*.test.ts', 'tests/**/*.test.ts', 'shell/**/*.test.ts', 'showcase/**/*.test.ts'],
         exclude: [
             'node_modules/**',
             'timeline_847_failures/**',

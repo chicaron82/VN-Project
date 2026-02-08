@@ -949,15 +949,6 @@
         0 0 40px rgba(52, 152, 219, 0.1) !important;
 }
 
-/* LANDING NEUTRAL THEME */
-.app-card[data-app="landing"] .app-preview {
-    background: linear-gradient(135deg, rgba(248, 249, 250, 0.1), rgba(44, 62, 80, 0.2)) !important;
-}
-
-.app-card[data-app="landing"]:hover {
-    border-color: rgba(0, 204, 255, 0.4) !important;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    PHASE 26d: NOTIFICATION BADGES
    Shows new content count on app cards
