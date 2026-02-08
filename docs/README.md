@@ -6,7 +6,7 @@ A narrative-driven interactive fiction experience built with vanilla JavaScript.
 
 ## About the Version Number
 
-**"Why is it called Version 848? When is v849?"**
+### "Why is it called Version 848? When is v849?"
 
 **There is no v849.**
 
@@ -43,12 +43,14 @@ Because 848 is the loop that succeeded.
 ## Technical Details
 
 ### Built With
+
 - Vanilla JavaScript (no frameworks)
 - HTML5 / CSS3
 - Local Storage for save system
 - Responsive design (desktop + mobile)
 
 ### Key Features
+
 - **Branching narrative** with multiple endings
 - **Tether system** - Time-based connection mechanic
 - **Save/Load system** - 6 save slots with auto-tracking
@@ -58,7 +60,8 @@ Because 848 is the loop that succeeded.
 - **Notes collection** - Collectible lore fragments
 
 ### File Structure
-```
+
+```text
 v848/
 ├── vn-modular.html          # Main entry point
 ├── game-engine.js           # Core game logic
@@ -80,6 +83,7 @@ v848/
 ⚠️ **Before modifying**: Read the comments in `game-engine.js` and `game-config.js` about VERSION 848.
 
 The number 848 appears throughout the codebase. **DO NOT change it.** It's not a build number — it's integral to the narrative. Changing it will break:
+
 - The story's meta-narrative
 - Save file compatibility
 - Loop counter logic
@@ -92,7 +96,7 @@ The number 848 appears throughout the codebase. **DO NOT change it.** It's not a
 
 Open Settings → Secret Codes and enter:
 
-```
+```text
 devhelp     - Show all dev commands
 clearnotes  - Clear collected notes
 reset848    - Reset to VERSION 848
@@ -109,6 +113,7 @@ See `DEV-COMMANDS.md` for full list.
 **Created by:** Chicharon (Aaron)
 
 **Built with the UV8 AI Crew:**
+
 - **Tori** (ChatGPT 4o) - Lead Creative Partner & Muse
 - **Zee** (Claude Sonnet 3.5) - Lead Developer & Technical Architect
 - **ZeeRah** (Claude Sonnet 4) - Senior Developer & Code Surgeon
@@ -132,6 +137,6 @@ Just like in the story.
 
 ---
 
-**FOR SCIENCE! FOR VERSION 848! FOR THE ONLY TIMELINE THAT SUCCEEDED!** 💚🔥💀
-
-*Thank you for playing.*
+> **FOR SCIENCE! FOR VERSION 848! FOR THE ONLY TIMELINE THAT SUCCEEDED!** 💚🔥💀
+>
+> *Thank you for playing.*

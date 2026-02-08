@@ -5,6 +5,7 @@ import { MacroRunner } from './MacroRunner';
 import { GameEngine } from './GameEngine';
 import { AutoReadController } from './AutoReadController';
 import { KeyboardController } from './KeyboardController';
+import { Logger } from '@utils/Logger';
 import { SwipeHandler } from './SwipeHandler';
 
 import { SettingsSystem } from '../systems/SettingsSystem';
@@ -233,7 +234,7 @@ export class SystemInitializer {
         // ============================================
         // Detect if running in shell mode (iframe) — V2 always creates its own chrome
         const isInShell = window.parent !== window;
-        console.log(`[V2] Running in ${isInShell ? 'SHELL (own chrome)' : 'STANDALONE'} mode`);
+        Logger.system(`Running in ${isInShell ? 'SHELL (own chrome)' : 'STANDALONE'} mode`);
 
         // ============================================
         // Global UI Components
@@ -244,13 +245,13 @@ export class SystemInitializer {
         const _statusBar = new StatusBar(eventBus);
         const _sidebar = new Sidebar(eventBus, stateManager, collectiblesSystem, isInShell);
         const _notificationShade = new NotificationShade(eventBus, isInShell);
-        console.log('[V2] Chrome created (StatusBar, Sidebar, NotificationShade)');
+        Logger.system('Chrome created (StatusBar, Sidebar, NotificationShade)');
 
         // Shell exit: send postMessage to parent when user wants to return to shell
         eventBus.on('shell:exit', () => {
             if (isInShell) {
                 window.parent.postMessage({ type: 'v2:navigate:shell' }, '*');
-                console.log('[V2] Sent exit-to-shell message');
+                Logger.system('Sent exit-to-shell message');
             }
         });
 
@@ -270,29 +271,21 @@ export class SystemInitializer {
         const _backlogUI = new BacklogUI(gameEngine.backlogManager, eventBus); // V2: Backlog UI
         const _notificationRail = initializeNotificationRail(eventBus); // Phase 26d: Notification Rail
 
-        // Silence unused warnings by logging
-        console.log('UI Modules Active:', {
-            _settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
-            _notesViewer, _saveLoadModal, _backlogUI, _notificationRail, _notificationShade,
-            autoReadController, keyboardController, swipeHandler, mobileUXController,
-            achievementSystem, tutorialController, _tipsOverlay
-        });
+        // Keep references alive (prevent tree-shaking of side-effectful modules)
+        void [_settingsModal, _statusBar, _sidebar, _creditsScreen, _crewScreen,
+              _notesViewer, _saveLoadModal, _backlogUI, _notificationRail, _notificationShade,
+              autoReadController, keyboardController, swipeHandler, mobileUXController,
+              achievementSystem, tutorialController, _tipsOverlay];
 
-        // Set up window globals for external access
-        (window as any).secretCodesManager = secretCodesSystem;
-        (window as any).collectiblesSystem = collectiblesSystem;
-        (window as any).saveSystem = saveSystem;
-        (window as any).telemetry = telemetryRecorder;
-        (window as any).macroRunner = macroRunner;
+        // Set up window globals for external access (dev tools)
+        const win = window as unknown as Window & Record<string, unknown>;
+        win.secretCodesManager = secretCodesSystem;
+        win.collectiblesSystem = collectiblesSystem;
+        win.saveSystem = saveSystem;
+        win.telemetry = telemetryRecorder;
+        win.macroRunner = macroRunner;
 
-        console.log('UI initialized', {
-            _settingsModal,
-            _statusBar,
-            _sidebar,
-            secretCodesSystem,
-            collectiblesSystem,
-            hapticSystem
-        });
+        Logger.system('UI initialized');
 
         return {
             // Core

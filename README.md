@@ -1,15 +1,21 @@
 # Version 848: My Wife Is in a Coma... and in the Code
 
+[![Deploy](https://github.com/chicaron82/Version-848/actions/workflows/deploy.yml/badge.svg)](https://github.com/chicaron82/Version-848/actions/workflows/deploy.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.3-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Vitest](https://img.shields.io/badge/Tested_with-Vitest-6E9F18?logo=vitest&logoColor=white)](https://vitest.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A dual-perspective visual novel about love, consciousness, and the bootstrap paradox.
 
-Built with vanilla JavaScript, HTML5, and CSS3.  
+Built with TypeScript, Vite, and a custom event-driven architecture.
 Developed in collaboration with AI partners (UV7 Crew).
 
 ---
 
 ## 🎮 Play It
 
-**Live:** [chicaron82.github.io/Version-848](https://chicaron82.github.io/Version-848)  
+**Live:** [chicaron82.github.io/Version-848](https://chicaron82.github.io/Version-848)
 **ToriGatchi Gateway:** [chicaron82.github.io/ToriGatchi](https://chicaron82.github.io/ToriGatchi)
 
 ---
@@ -134,7 +140,7 @@ Ronnie's wife Tori is in a coma. In desperation, he uploads her consciousness in
 
 ## 📂 File Structure (V2)
 
-```
+```text
 /
 ├── index.html              # Entry point
 ├── vite.config.ts         # Build config
@@ -219,6 +225,26 @@ Enter these in the secret codes interface:
 
 ---
 
-**Version 848: The timeline that worked.**
+## 🧑‍💻 Development
 
-*Always. Always. Always.* 🖤❤️💍
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Run tests
+npm test
+
+# Type-check + lint + test (full validation)
+npm run validate
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full development workflow.
+
+---
+
+> **Version 848: The timeline that worked.**
+>
+> *Always. Always. Always.* 🖤❤️💍

@@ -1,6 +1,7 @@
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
 import { GameConfig } from './GameConfig';
+import { Logger } from '@utils/Logger';
 import { BootstrapTracker } from '@systems/BootstrapTracker';
 import { SecretCodesSystem } from '@systems/SecretCodesSystem';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
@@ -111,6 +112,14 @@ import { Scene, SceneId } from './types';
  * Refactored from V1's monolithic approach to use granular systems.
  *
  * Version 848: The timeline iteration that finally succeeded.
+ *
+ * @example
+ * ```ts
+ * const engine = new GameEngine(eventBus, stateManager);
+ * await engine.init();
+ * engine.registerScene(myScene);
+ * await engine.start();
+ * ```
  */
 export class GameEngine {
     private eventBus: EventBus;
@@ -149,7 +158,7 @@ export class GameEngine {
 
         // Listen for Time Travel (Backlog Jump)
         this.eventBus.on('state:restore', (data: { sceneId: string }) => {
-            console.log(`[GameEngine] Time Travel initiated to: ${data.sceneId}`);
+            Logger.engine(`Time Travel initiated to: ${data.sceneId}`);
             this.loadScene(data.sceneId);
         });
     }
@@ -164,11 +173,13 @@ export class GameEngine {
         // this.stateManager.load(); 
 
         this.isInitialized = true;
-        console.log(`🚀 GameEngine initialized (v${GameConfig.VERSION.CURRENT})`);
+        Logger.engine(`Initialized (v${GameConfig.VERSION.CURRENT})`);
     }
 
     /**
-     * Register a scene definition
+     * Register a scene definition with the engine.
+     *
+     * @param scene - Scene object with id, text, character, next, choices, etc.
      */
     registerScene(scene: Scene): void {
         if (this.scenes.has(scene.id)) {
@@ -178,12 +189,16 @@ export class GameEngine {
     }
 
     /**
-     * Load a specific scene
+     * Load and execute a scene by ID.
+     * Updates state, emits events, processes tether impacts and effects.
+     *
+     * @param sceneId - The unique identifier for the scene to load
+     * @throws Logs error and returns early if scene is not registered
      */
     async loadScene(sceneId: SceneId): Promise<void> {
         // DIZEE: Handle special scene IDs that trigger transitions
         if (sceneId === 'prologueComplete') {
-            console.log('[GameEngine] Prologue complete - showing route select');
+            Logger.engine('Prologue complete — showing route select');
             this.eventBus.emit('ui:route_select', {});
             return;
         }
@@ -242,11 +257,12 @@ export class GameEngine {
             }
         }
 
-        console.log(`[GameEngine] Loaded scene: ${sceneId}`);
+        Logger.scene(`Loaded: ${sceneId}`);
     }
 
     /**
-     * Advance to the next scene
+     * Advance to the next scene in the chain.
+     * Respects choice gates — will not auto-advance if choices are pending.
      */
     advanceScene(): void {
         if (!this.currentScene) {
@@ -257,7 +273,7 @@ export class GameEngine {
         // Check for choices first
         if (this.currentScene.choices && this.currentScene.choices.length > 0) {
             // Don't auto-advance - wait for choice selection
-            console.log('[GameEngine] Scene has choices, waiting for selection');
+            Logger.engine('Scene has choices, waiting for selection');
             return;
         }
 
@@ -268,13 +284,17 @@ export class GameEngine {
             this.loadScene(nextId);
         } else {
             // End of route/scene chain
-            console.log(`[GameEngine] Scene chain ended at: ${this.currentScene.id}`);
+            Logger.engine(`Scene chain ended at: ${this.currentScene.id}`);
             this.eventBus.emit('scene:complete', { sceneId: this.currentScene.id });
         }
     }
 
     /**
-     * Get the next scene ID from current scene
+     * Resolve the next scene ID from the current scene's `next` field.
+     * Supports both simple string IDs and conditional branching.
+     *
+     * @param scene - The current scene to resolve the next ID from
+     * @returns The next scene ID, or null if this is a terminal scene
      */
     private getNextSceneId(scene: Scene): SceneId | null {
         if (!scene.next) return null;
@@ -299,7 +319,10 @@ export class GameEngine {
     }
 
     /**
-     * Evaluate a condition string (e.g., "flags.metRonnie")
+     * Evaluate a condition string against game state.
+     *
+     * @param condition - Dot-notation path, e.g. 'flags.metRonnie'
+     * @returns Whether the condition evaluates to true
      */
     private evaluateCondition(condition: string): boolean {
         // Simple flag check: "flags.someFlagName"
@@ -312,7 +335,10 @@ export class GameEngine {
     }
 
     /**
-     * Handle choice selection
+     * Handle a player's choice selection.
+     * Applies tether costs, sets flags, and navigates to the chosen branch.
+     *
+     * @param choiceIndex - Zero-based index of the selected choice
      */
     selectChoice(choiceIndex: number): void {
         if (!this.currentScene?.choices) return;
@@ -356,7 +382,9 @@ export class GameEngine {
     }
 
     /**
-     * Get current scene (for UI)
+     * Get current scene (for UI rendering).
+     *
+     * @returns The currently loaded scene, or null if no scene is active
      */
     getCurrentScene(): Scene | null {
         return this.currentScene;
@@ -368,7 +396,7 @@ export class GameEngine {
     async start(): Promise<void> {
         if (!this.isInitialized) await this.init();
 
-        console.log('[GameEngine] Starting game with polished transition...');
+        Logger.engine('Starting game with polished transition...');
 
         // 1) Trigger code rain AFTER effects layer exists
         // Duration = 1200ms ensures it covers the load hitch

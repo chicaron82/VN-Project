@@ -97,8 +97,7 @@
 /* Stats dashboard: fun metrics, contribution graphs */
 @import url('blog-stats.css');
 
-/* Timeline scrubber: progress bar navigation */
-@import url('blog-scrubber.css');
+
 
 /* Global search: search everywhere (blog, sections, crew) */
 @import url('global-search.css');

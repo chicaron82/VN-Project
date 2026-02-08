@@ -156,7 +156,7 @@ export class StatusBarWiring {
 
         const unsubSettings = this.eventBus.on('settings:changed', (data) => {
             if (data.key === 'autoAdvance') {
-                cb.setAutoIndicator(data.value);
+                cb.setAutoIndicator(Boolean(data.value));
             }
         });
         this.unsubscribers.push(unsubSettings);

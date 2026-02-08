@@ -88,7 +88,7 @@ export type GameEvents = {
   // Settings & HUD events
   'settings:open': {};
   'settings:close': {};
-  'settings:changed': { key: string; value: any };
+  'settings:changed': { key: string; value: unknown };
   'ui:show_status_bar': {};
   'ui:hide_status_bar': {};
   'ui:status_update': { context: string; detail?: string };
@@ -271,7 +271,7 @@ interface EventHistoryEntry<T extends EventName = EventName> {
  */
 export class EventBus {
   private subscribers: Map<EventName, Set<EventCallback<EventName>>>;
-  private snoopers: Set<(event: EventName, data: any) => void>;
+  private snoopers: Set<(event: EventName, data: GameEvents[EventName]) => void>;
   private history: EventHistoryEntry[];
   private maxHistorySize: number;
   private historyEnabled: boolean;
@@ -288,7 +288,7 @@ export class EventBus {
    * Register a global event listener (snooper) that receives ALL events.
    * Used for Telemetry and Debugging.
    */
-  snoop(callback: (event: EventName, data: any) => void): () => void {
+  snoop(callback: (event: EventName, data: GameEvents[EventName]) => void): () => void {
     this.snoopers.add(callback);
     return () => this.snoopers.delete(callback);
   }

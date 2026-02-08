@@ -1,5 +1,6 @@
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * Telemetry Event Structure
@@ -10,9 +11,9 @@ export interface TelemetryEvent {
     timestamp: number;       // Absolute timestamp
     delta: number;           // Time since startRecording
     type: string;            // Event name
-    payload: any;            // Event data
-    stateHash?: string;      // Simple hash of state (for quick divergence check)
-    snapshot?: any;          // Full state snapshot (optional, heavy)
+    payload: Record<string, unknown>;  // Event data
+    stateHash?: string;                  // Simple hash of state (for quick divergence check)
+    snapshot?: Record<string, unknown>;  // Full state snapshot (optional, heavy)
 }
 
 /**
@@ -61,7 +62,7 @@ export class TelemetryRecorder {
         this.log = [];
         this.sequenceId = 0;
 
-        console.log('📼 Telemetry Recording Started');
+        Logger.system('Telemetry recording started');
 
         // Hook into EventBus
         this.cleanupSnooper = this.eventBus.snoop((event, data) => {
@@ -84,13 +85,13 @@ export class TelemetryRecorder {
             this.cleanupSnooper = null;
         }
 
-        console.log(`📼 Telemetry Recording Stopped (${this.log.length} events)`);
+        Logger.system(`Telemetry recording stopped (${this.log.length} events)`);
     }
 
     /**
      * Record a single event
      */
-    private recordEvent(type: string, payload: any): void {
+    private recordEvent(type: string, payload: Record<string, unknown>): void {
         const now = Date.now();
         const entry: TelemetryEvent = {
             id: this.sequenceId++,
@@ -146,6 +147,6 @@ export class TelemetryRecorder {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-        console.log(`💾 Telemetry saved to ${filename}`);
+        Logger.save(`Telemetry saved to ${filename}`);
     }
 }

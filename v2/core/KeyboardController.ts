@@ -1,4 +1,5 @@
 import { EventBus, EventName } from './EventBus';
+import type { GameEvents } from './EventBus';
 // import { GameConfig } from './GameConfig';
 
 export class KeyboardController {
@@ -125,12 +126,12 @@ export class KeyboardController {
         const el = document.getElementById(elementId);
         // Check display style AND visibility class if applicable
         if (el && (el.style.display !== 'none' && el.style.display !== '')) {
-            this.eventBus.emit(eventName as EventName, {} as any);
+            this.eventBus.emit(eventName as EventName, {} as GameEvents[EventName]);
             return true;
         }
         // Also check if class 'active' or 'visible' is used instead of display
         if (el && (el.classList.contains('visible') || el.classList.contains('active'))) {
-            this.eventBus.emit(eventName as EventName, {} as any);
+            this.eventBus.emit(eventName as EventName, {} as GameEvents[EventName]);
             return true;
         }
         return false;

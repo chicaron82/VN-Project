@@ -1,4 +1,5 @@
 import { EventBus } from './EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -107,7 +108,7 @@ export class StateManager {
     // Watchers
     this.watchers = new Map();
 
-    console.log('💚 StateManager initialized');
+    Logger.state('StateManager initialized');
   }
 
   /**
@@ -415,7 +416,7 @@ export class StateManager {
     // Clear localStorage
     localStorage.removeItem(this.persistenceKey);
 
-    console.log('🔄 State reset to defaults');
+    Logger.state('State reset to defaults');
   }
 
   // ════════════════════════════════════════════════════════════════
@@ -446,7 +447,7 @@ export class StateManager {
    */
   undo(): HistoryEntry | null {
     if (this.history.length === 0) {
-      console.log('⏪ No history to undo');
+      Logger.state('No history to undo');
       return null;
     }
 
@@ -460,7 +461,7 @@ export class StateManager {
     this.set(entry.path, entry.oldValue);
     this.historyEnabled = true;
 
-    console.log(`⏪ Undone: ${entry.path} restored`);
+    Logger.state(`Undone: ${entry.path} restored`);
     return entry;
   }
 
@@ -480,7 +481,7 @@ export class StateManager {
    */
   clearHistory(): void {
     this.history = [];
-    console.log('🗑️ State history cleared');
+    Logger.state('State history cleared');
   }
 
   // ════════════════════════════════════════════════════════════════
@@ -497,7 +498,7 @@ export class StateManager {
       state: this.deepClone(this.state)
     };
 
-    console.log(`📸 Snapshot created: ${snapshot.name}`);
+    Logger.state(`Snapshot created: ${snapshot.name}`);
     return snapshot;
   }
 
@@ -519,7 +520,7 @@ export class StateManager {
     this.state = this.deepClone(snapshot.state);
     this.isDirty = true;
 
-    console.log(`📸 Snapshot restored: ${snapshot.name}`);
+    Logger.state(`Snapshot restored: ${snapshot.name}`);
     return true;
   }
 
@@ -529,7 +530,7 @@ export class StateManager {
   quickSave(name: string = 'quicksave'): Snapshot {
     const snapshot = this.createSnapshot(name);
     this.quickSaves[name] = snapshot;
-    console.log(`💾 Quick save: ${name}`);
+    Logger.save(`Quick save: ${name}`);
     return snapshot;
   }
 

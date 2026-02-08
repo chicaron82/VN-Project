@@ -1,0 +1,7 @@
+dist/
+node_modules/
+v1/
+labs/
+*.min.js
+*.min.css
+coverage/
