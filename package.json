@@ -14,7 +14,7 @@
     "test:coverage": "vitest --coverage v2/__tests__",
     "test:coverage:v2": "vitest --coverage v2/__tests__",
     "stats": "node showcase/generate-stats.js",
-    "generate:timeline": "npx tsx scripts/generate-timeline.ts",
+    "generate:timeline": "npx tsx scripts/generate-blog.ts",
     "generate:lab-entries": "npx tsx scripts/generate-lab-entries.ts"
   },
   "devDependencies": {

@@ -13,7 +13,7 @@ const OUTPUT_FILE = path.resolve(__dirname, '../showcase/data/blog/index.ts');
 interface BlogEntryFile {
     path: string;
     filename: string;
-    dateStr: string;
+    sortDate: string;
     importPath: string;
     variableName: string;
 }
@@ -42,6 +42,23 @@ function getEntries(dir: string): string[] {
 }
 
 /**
+ * Extract sortDate from file content via regex
+ * Handles both TypeScript literal and JSON formats:
+ *   sortDate: '2026-02-07T21:00:00'       (TS literal)
+ *   sortDate: "2026-02-07T21:00:00"       (TS literal double-quote)
+ *   "sortDate": "2026-02-07T21:00:00"     (JSON)
+ */
+function extractSortDate(filePath: string): string {
+    try {
+        const content = fs.readFileSync(filePath, 'utf8');
+        const match = content.match(/["']?sortDate["']?\s*:\s*['"]([^'"]+)['"]/);
+        return match ? match[1] : '0000-00-00T00:00:00';
+    } catch {
+        return '0000-00-00T00:00:00';
+    }
+}
+
+/**
  * Generate the index.ts file content
  */
 function generateIndex() {
@@ -57,14 +74,13 @@ function generateIndex() {
 
     const entries: BlogEntryFile[] = files.map((filePath, index) => {
         const filename = path.basename(filePath);
-        // Extract date from filename (YYYY-MM-DD) for sorting
-        // Filename format: YYYY-MM-DD-slug.ts
-        const match = filename.match(/^(\d{4}-\d{2}-\d{2})/);
-        const dateStr = match ? match[1] : '0000-00-00';
+
+        // Extract sortDate from file content for accurate ordering
+        const sortDate = extractSortDate(filePath);
 
         // Create relative import path
         // path.relative returns something like '..\entries\2026\file.ts' on Windows
-        // We need './entries/2026/file' (forward slashes, no extension)
+        // We need './entries/2026/02/file' (forward slashes, no extension)
         let relPath = path.relative(path.dirname(OUTPUT_FILE), filePath);
         relPath = relPath.replace(/\\/g, '/').replace(/\.ts$/, '');
         if (!relPath.startsWith('.')) {
@@ -74,15 +90,19 @@ function generateIndex() {
         return {
             path: filePath,
             filename,
-            dateStr, // For sorting
+            sortDate,
             importPath: relPath,
             variableName: `entry${index}` // Simple unique alias
         };
     });
 
-    // Sort by filename descending (newest first)
-    // The filename starts with YYYY-MM-DD so string sort works perfectly
-    const sortedEntries = entries.sort((a, b) => b.filename.localeCompare(a.filename));
+    // Sort by sortDate descending (newest first)
+    const sortedEntries = entries.sort((a, b) => b.sortDate.localeCompare(a.sortDate));
+
+    // Reassign sequential variable names after sorting
+    sortedEntries.forEach((e, i) => {
+        e.variableName = `entry${i}`;
+    });
 
     // Generate File Content
     const imports = sortedEntries
