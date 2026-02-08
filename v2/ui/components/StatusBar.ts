@@ -2,12 +2,17 @@ import { EventBus } from '../../core/EventBus';
 import { StateManager } from '../../core/StateManager';
 
 // ========================================
-// EXTRACTED MODULES (Phase 26 Refactoring)
+// EXTRACTED MODULES (Phase 26 + Phase 27 Refactoring)
 // ========================================
-// Context detection and feature flags moved to StatusBarContext.ts
-// Breadcrumb logic moved to StatusBarBreadcrumbs.ts
-// Gesture system moved to StatusBarGestures.ts
-// Re-exported here for backwards compatibility
+// Context detection and feature flags → StatusBarContext.ts
+// Breadcrumb logic → StatusBarBreadcrumbs.ts
+// Gesture system → StatusBarGestures.ts
+// App Switcher preview → StatusBarAppSwitcherPreview.ts
+// Mail system → StatusBarMailSystem.ts
+// DOM creation → status-bar/StatusBarDOM.ts
+// Indicators → status-bar/StatusBarIndicators.ts
+// Modes (theming/screenshot/orientation) → status-bar/StatusBarModes.ts
+// Wiring (events/state/handlers) → status-bar/StatusBarWiring.ts
 
 import {
     UV7Context,
@@ -24,8 +29,12 @@ import {
 } from './StatusBarBreadcrumbs';
 
 import { StatusBarGestures } from './StatusBarGestures';
-import { StatusBarAppSwitcherPreview } from './StatusBarAppSwitcherPreview';
 import { StatusBarMailSystem, UnreadNote } from './StatusBarMailSystem';
+import { createStatusBarDOM } from './status-bar/StatusBarDOM';
+import { StatusBarIndicators } from './status-bar/StatusBarIndicators';
+import { StatusBarModes } from './status-bar/StatusBarModes';
+import { StatusBarWiring } from './status-bar/StatusBarWiring';
+import type { StatusBarElementRefs } from './status-bar/StatusBarDOM';
 
 // Re-export for backwards compatibility
 export type { UV7Context, StatusBarFeatures, ColorTint };
@@ -40,17 +49,11 @@ export type { BreadcrumbState } from './StatusBarBreadcrumbs';
  * Phase 26: One StatusBar to rule them all.
  * Context-aware, glassmorphic, breadcrumb-navigable.
  *
- * Displays game state information in a fixed top bar:
- * - Left: UV7 Logo (App Switcher), Loop version, Route/Context indicator
- * - Center: Breadcrumb navigation (v.848 → Ronnie → Act 2 → Scene 5)
- * - Right: Notes collected, Tether level (Tori only), Mail icon
- *
- * Features:
- * - Context detection (game vs showcase) - via StatusBarContext.ts
- * - Feature flags for per-context behavior - via StatusBarContext.ts
- * - Adaptive color tints per route/context
- * - Breadcrumb navigation - via StatusBarBreadcrumbs.ts
- * - Glassmorphism + micro-interactions
+ * Subsystems (extracted to status-bar/):
+ * - StatusBarDOM: HTML template + element caching
+ * - StatusBarIndicators: Route/notes/tether/act setters + pulse effects
+ * - StatusBarModes: Theming, screenshot mode, orientation
+ * - StatusBarWiring: EventBus/StateManager subscriptions, UI handlers
  *
  * 💚🔥💀 "Every pixel, every gesture, every animation—premium."
  */
@@ -61,92 +64,44 @@ export type { BreadcrumbState } from './StatusBarBreadcrumbs';
 
 interface StatusBarConfig {
     loopVersion: string;
-    totalNotes: {
-        ronnie: number;
-        tori: number;
-    };
+    totalNotes: { ronnie: number; tori: number };
 }
-
-// UnreadNote interface moved to StatusBarMailSystem.ts
 
 const DEFAULT_CONFIG: StatusBarConfig = {
     loopVersion: 'v848',
-    totalNotes: {
-        ronnie: 13,
-        tori: 16
-    }
+    totalNotes: { ronnie: 13, tori: 16 }
 };
 
 export class StatusBar {
-    private container!: HTMLElement;
     private eventBus: EventBus;
-    private stateManager: StateManager | null;
-    private config: StatusBarConfig;
-
-    // ========================================
-    // PHASE 26: Context & Features (BOUGIE EDITION)
-    // ========================================
     private context: UV7Context;
     private features: StatusBarFeatures;
-    private currentTint: ColorTint;
 
-    // Breadcrumb elements
-    private breadcrumbsEl!: HTMLElement;
+    // Element refs (shared across subsystems)
+    private refs!: StatusBarElementRefs;
+
+    // Breadcrumb state
     private currentBreadcrumbs: BreadcrumbSegment[] = [];
+    private _currentScene: string = '';
+    private _currentPhase: string = '';
 
-    // Element references
-    private loopEl!: HTMLElement;
-    private routeEl!: HTMLElement;
-    private actEl!: HTMLElement;
-    private autoEl!: HTMLElement;
-    private notesEl!: HTMLElement;
-    private tetherEl!: HTMLElement;
-    private tetherValueEl!: HTMLElement;
-    private tetherFillEl!: HTMLElement;
-    // DIZEE: Mail icon elements (V1 parity)
-    private mailEl!: HTMLElement;
-    private unreadBadgeEl!: HTMLElement;
-    // Phase 26: Showcase-specific elements
-    private phaseEl!: HTMLElement;
-    private storyDevToggleEl!: HTMLElement;
-    private settingsEl!: HTMLElement;
-
-    // State tracking
-    private currentRoute: 'ronnie' | 'tori' | 'menu' | 'prologue' = 'menu';
-    private notesCollected: number = 0;
-    private tetherLevel: number = 100;
-    private _currentAct: string = ''; // Prefixed to indicate reserved for future use
-    private _currentScene: string = ''; // For breadcrumbs
-    private _currentPhase: string = ''; // Showcase phase tracking
-    private idleTimer: ReturnType<typeof setTimeout> | null = null;
-    private idleDelay: number = 3000;
-
-    // Unsubscribe functions for cleanup
-    private unsubscribers: (() => void)[] = [];
-
-    // Gesture system (Phase 26b extraction)
+    // Subsystems
+    private indicators!: StatusBarIndicators;
+    private modes!: StatusBarModes;
+    private wiring!: StatusBarWiring;
     private gestures!: StatusBarGestures;
-
-    // App Switcher preview (extracted)
-    private appSwitcherPreview!: StatusBarAppSwitcherPreview;
-
-    // Mail system (extracted)
     private mailSystem!: StatusBarMailSystem;
 
     constructor(eventBus: EventBus, stateManager?: StateManager, config?: Partial<StatusBarConfig>) {
         this.eventBus = eventBus;
-        this.stateManager = stateManager || null;
-        this.config = { ...DEFAULT_CONFIG, ...config };
+        const resolvedConfig = { ...DEFAULT_CONFIG, ...config };
 
         // Phase 26: Detect context and get features
         this.context = detectContext();
         this.features = getFeatures(this.context);
 
         // Set initial tint based on context
-        // Game mode: neutral (CSS handles route colors via .ronnie-route/.tori-route)
-        // Showcase: orange dev tint
-        // Landing: purple UV7 tint
-        this.currentTint = this.context === 'showcase'
+        const initialTint = this.context === 'showcase'
             ? COLOR_TINTS.showcase
             : this.context === 'landing'
                 ? COLOR_TINTS.landing
@@ -154,178 +109,89 @@ export class StatusBar {
 
         console.log(`🎨 StatusBar initialized in ${this.context} context`);
 
-        this.createDOM();
-        this.setupEventListeners();
-        this.setupStateSubscriptions();
-        this.setupIdleTimer();
-        this.loadInitialState();
-        this.setupAppSwitcher();
+        // Create DOM and cache refs
+        this.refs = createStatusBarDOM(this.context, this.features, resolvedConfig);
+
+        // Initialize subsystems
+        this.indicators = new StatusBarIndicators(this.refs, resolvedConfig);
+        this.modes = new StatusBarModes(this.refs.container, eventBus, this.context, this.features, initialTint);
+
+        this.wiring = new StatusBarWiring(this.refs, eventBus, stateManager || null, {
+            setRoute: (route) => this.setRoute(route),
+            setNotesCollected: (count) => this.indicators.setNotesCollected(count),
+            setTetherLevel: (level) => this.indicators.setTetherLevel(level),
+            setAutoIndicator: (enabled) => this.indicators.setAutoIndicator(enabled),
+            setPaused: (paused) => this.setPaused(paused),
+            pulseNotes: () => this.indicators.pulseNotes(),
+            show: () => this.indicators.show(),
+            hide: () => this.indicators.hide(),
+            updateActFromScene: (sceneId) => this.indicators.updateActFromScene(sceneId),
+            updateBreadcrumbs: () => this.updateBreadcrumbs(),
+        });
+
+        // Wire up UI handlers
+        if (this.features.showMail) this.wiring.setupMailIconHandler();
+        if (this.features.showStoryDevToggle) this.wiring.setupStoryDevToggle();
+        if (this.features.showSettings) this.wiring.setupSettingsHandler();
+        if (this.features.showBreadcrumbs) this.updateBreadcrumbs();
+
+        // Wire up events, state, and initial load
+        this.wiring.setupEventListeners();
+        this.wiring.setupStateSubscriptions();
+        this.wiring.setupIdleTimer();
+        this.wiring.loadInitialState();
+        this.wiring.setupAppSwitcher();
 
         // Phase 26: Apply initial tint and glass effect
-        // In game mode and showcase, CSS handles background - don't apply inline tints
-        // Only landing page uses inline tints for the purple theme
         if (this.features.enableAdaptiveTint && this.context === 'landing') {
-            this.applyColorTint(this.currentTint);
+            this.modes.applyColorTint(initialTint);
         }
-        this.applyGlassEffect(this.features.glassIntensity);
+        this.modes.applyGlassEffect(this.features.glassIntensity);
 
-        // Phase 26b: Initialize gesture system (extracted to StatusBarGestures.ts)
+        // Phase 26b: Initialize gesture system
         this.gestures = new StatusBarGestures(
-            this.container,
+            this.refs.container,
             this.eventBus,
-            this.stateManager,
+            stateManager || null,
             {
-                toggleScreenshotMode: () => this.toggleScreenshotMode(),
-                pulseLoop: () => this.pulseLoop(),
+                toggleScreenshotMode: () => this.modes.toggleScreenshotMode(),
+                pulseLoop: () => this.indicators.pulseLoop(),
                 markAllNotesAsRead: () => this.markAllNotesAsRead(),
             },
             () => ({
-                tetherLevel: this.tetherLevel,
-                isScreenshotMode: this.isScreenshotMode,
+                tetherLevel: this.indicators.getTetherLevelValue(),
+                isScreenshotMode: this.modes.isInScreenshotMode(),
             })
         );
         this.gestures.setup(this.features.enableGestures);
 
-        // Initialize mail system (extracted to StatusBarMailSystem.ts)
+        // Initialize mail system
         this.mailSystem = new StatusBarMailSystem(
-            this.mailEl,
-            this.unreadBadgeEl,
+            this.refs.mailEl,
+            this.refs.unreadBadgeEl,
             this.eventBus,
-            () => this.currentRoute
+            () => this.indicators.getCurrentRoute()
         );
     }
 
     // ========================================
-    // PHASE 26: CONTEXT & TINT METHODS
+    // CONTEXT GETTERS
     // ========================================
 
-    /**
-     * Get current UV7 context
-     */
-    public getContext(): UV7Context {
-        return this.context;
-    }
-
-    /**
-     * Get current feature flags
-     */
-    public getFeatures(): StatusBarFeatures {
-        return this.features;
-    }
-
-    /**
-     * Apply color tint to status bar (adaptive theming)
-     */
-    private applyColorTint(tint: ColorTint): void {
-        if (!this.container) return;
-
-        this.container.style.setProperty('--status-accent', tint.primary);
-        this.container.style.setProperty('--status-glow', tint.glow);
-        this.container.style.background = tint.gradient;
-
-        // Subtle transition for smoothness
-        this.container.style.transition = 'background 0.5s ease, box-shadow 0.5s ease';
-        this.container.style.boxShadow = `0 2px 20px ${tint.glow}, inset 0 1px 0 rgba(255, 255, 255, 0.1)`;
-
-        this.currentTint = tint;
-    }
-
-    /**
-     * Apply glassmorphism effect based on intensity
-     */
-    private applyGlassEffect(intensity: 'subtle' | 'medium' | 'heavy'): void {
-        if (!this.container) return;
-
-        const blurValues = {
-            subtle: '8px',
-            medium: '12px',
-            heavy: '20px',
-        };
-
-        const saturateValues = {
-            subtle: '150%',
-            medium: '180%',
-            heavy: '200%',
-        };
-
-        this.container.style.backdropFilter = `blur(${blurValues[intensity]}) saturate(${saturateValues[intensity]})`;
-        // Webkit prefix for Safari
-        (this.container.style as any).webkitBackdropFilter = `blur(${blurValues[intensity]}) saturate(${saturateValues[intensity]})`;
-    }
-
-    /**
-     * Update tint based on current route/context
-     * Called when route changes
-     *
-     * GAME MODE: CSS class-based theming handles route colors (.ronnie-route, .tori-route)
-     * - Ronnie: cyan (#00ffff)
-     * - Tori: green (#00ff88)
-     *
-     * SHOWCASE/LANDING: Inline tints via applyColorTint()
-     */
-    private updateAdaptiveTint(): void {
-        if (!this.features.enableAdaptiveTint) return;
-
-        // In game context and showcase, let CSS handle theming
-        // Game: .ronnie-route and .tori-route classes in status-bar.css
-        // Showcase: Uses default CSS background (rgba(0, 0, 0, 0.85))
-        if (this.context === 'game' || this.context === 'showcase') {
-            // Clear any inline tint styles so CSS takes precedence
-            this.clearInlineTint();
-            return;
-        }
-
-        // Landing page: apply inline purple tint
-        if (this.context === 'landing') {
-            this.applyColorTint(COLOR_TINTS.landing);
-        }
-    }
-
-    /**
-     * Set paused state (visual indicator)
-     */
-    public setPaused(paused: boolean): void {
-        if (paused) {
-            this.routeEl.textContent = 'PAUSED';
-            this.routeEl.classList.add('paused-indicator');
-            this.routeEl.style.color = '#ff3c3c'; // Red for pause
-            this.routeEl.style.textShadow = '0 0 10px rgba(255, 60, 60, 0.5)';
-        } else {
-            // Restore route display
-            this.setRoute(this.currentRoute);
-            this.routeEl.classList.remove('paused-indicator');
-            this.routeEl.style.color = '';
-            this.routeEl.style.textShadow = '';
-        }
-    }
-
-    /**
-     * Clear inline tint styles (let CSS classes handle theming)
-     */
-    private clearInlineTint(): void {
-        if (!this.container) return;
-
-        // Remove inline styles so CSS classes take precedence
-        this.container.style.removeProperty('--status-accent');
-        this.container.style.removeProperty('--status-glow');
-        this.container.style.removeProperty('background');
-        this.container.style.removeProperty('box-shadow');
-    }
+    public getContext(): UV7Context { return this.context; }
+    public getFeatures(): StatusBarFeatures { return this.features; }
 
     // ========================================
-    // PHASE 26: BREADCRUMB METHODS
+    // BREADCRUMB METHODS (stays in orchestrator)
     // ========================================
 
-    /**
-     * Update breadcrumb navigation display
-     */
     private updateBreadcrumbs(): void {
-        if (!this.features.showBreadcrumbs || !this.breadcrumbsEl) return;
+        if (!this.features.showBreadcrumbs || !this.refs.breadcrumbsEl) return;
 
         const segments = buildBreadcrumbs(this.context, {
             loopVersion: 848,
-            route: this.currentRoute,
-            act: this._currentAct,
+            route: this.indicators.getCurrentRoute(),
+            act: this.indicators.getAct(),
             scene: this._currentScene,
             phase: this._currentPhase,
         });
@@ -334,33 +200,27 @@ export class StatusBar {
         this.renderBreadcrumbs();
     }
 
-    /**
-     * Render breadcrumb segments to DOM
-     */
     private renderBreadcrumbs(): void {
-        if (!this.breadcrumbsEl) return;
+        if (!this.refs.breadcrumbsEl) return;
 
-        this.breadcrumbsEl.innerHTML = '';
+        this.refs.breadcrumbsEl.innerHTML = '';
 
         this.currentBreadcrumbs.forEach((segment, index) => {
-            // Create segment element
             const segmentEl = document.createElement('span');
             segmentEl.className = `breadcrumb-segment ${segment.clickable ? 'clickable' : ''}`;
             segmentEl.textContent = segment.label;
             segmentEl.dataset.id = segment.id;
 
-            // Add click handler for clickable segments
             if (segment.clickable) {
                 segmentEl.addEventListener('click', () => {
                     this.handleBreadcrumbClick(segment);
                 });
             }
 
-            // Add micro-interaction on hover
             segmentEl.addEventListener('mouseenter', () => {
                 if (segment.clickable) {
                     segmentEl.style.transform = 'scale(1.05)';
-                    segmentEl.style.color = this.currentTint.primary;
+                    segmentEl.style.color = this.modes.getCurrentTint().primary;
                 }
             });
             segmentEl.addEventListener('mouseleave', () => {
@@ -368,815 +228,92 @@ export class StatusBar {
                 segmentEl.style.color = '';
             });
 
-            this.breadcrumbsEl.appendChild(segmentEl);
+            this.refs.breadcrumbsEl.appendChild(segmentEl);
 
-            // Add separator (except for last segment)
             if (index < this.currentBreadcrumbs.length - 1) {
                 const separator = document.createElement('span');
                 separator.className = 'breadcrumb-separator';
                 separator.textContent = ' › ';
                 separator.style.opacity = '0.5';
                 separator.style.margin = '0 4px';
-                this.breadcrumbsEl.appendChild(separator);
+                this.refs.breadcrumbsEl.appendChild(separator);
             }
         });
     }
 
-    /**
-     * Handle breadcrumb segment click
-     * Tori's recommendation: Emit events, don't do actions directly
-     */
     private handleBreadcrumbClick(segment: BreadcrumbSegment): void {
         console.log(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
-
-        // Emit event for controllers to handle navigation
         this.eventBus.emit('ui:screen_change', { screen: `breadcrumb:${segment.id}` });
-
-        // Haptic feedback
         if (navigator.vibrate) navigator.vibrate(10);
     }
 
-    /**
-     * Set current scene (for breadcrumb display)
-     */
+    // ========================================
+    // PUBLIC API (delegates to subsystems)
+    // ========================================
+
+    public setRoute(route: 'ronnie' | 'tori' | 'menu' | 'prologue'): void {
+        this.indicators.setRoute(route);
+        this.updateBreadcrumbs();
+        this.modes.updateAdaptiveTint();
+    }
+
     public setScene(sceneId: string): void {
         this._currentScene = sceneId;
         this.updateBreadcrumbs();
     }
 
-    /**
-     * Set current phase (showcase breadcrumbs)
-     */
     public setPhase(phase: string): void {
         this._currentPhase = phase;
         this.updateBreadcrumbs();
-
-        // Update phase indicator if present
-        if (this.phaseEl) {
-            this.phaseEl.textContent = `Phase ${phase}`;
-        }
+        if (this.refs.phaseEl) this.refs.phaseEl.textContent = `Phase ${phase}`;
     }
 
-    /**
-     * Set up UV7 App Switcher (extracted to StatusBarAppSwitcherPreview.ts)
-     */
-    private async setupAppSwitcher(): Promise<void> {
-        this.appSwitcherPreview = new StatusBarAppSwitcherPreview();
-        const logoTrigger = document.getElementById('uv7-logo-trigger');
-        await this.appSwitcherPreview.setup(logoTrigger);
-    }
-
-    /**
-     * Create the status bar DOM structure
-     * Phase 26: Feature-flag-based rendering for context-aware display
-     */
-    private createDOM(): void {
-        this.container = document.createElement('div');
-        this.container.id = 'status-bar';
-        this.container.className = 'uv7-status-bar';
-        this.container.dataset.context = this.context;
-
-        // Phase 26: Context-aware DOM structure
-        this.container.innerHTML = `
-            <!-- Left Section: Logo + Breadcrumbs + Story/Dev Toggle (all left-aligned) -->
-            <div class="status-section status-left" style="justify-content: flex-start; gap: 12px;">
-                <!-- UV7 OS Logo (App Switcher Trigger) -->
-                ${this.features.enableAppSwitcher ? `
-                <span id="uv7-logo-trigger" class="status-item uv7-logo-trigger" style="cursor: pointer;" title="UV7 OS - Tap to switch apps">
-                    <img src="/VN-Project/assets/UnitedVoices7.png" alt="UV7" style="height: 16px; width: auto; vertical-align: middle;">
-                </span>
-                ` : ''}
-                ${this.features.showBreadcrumbs ? `
-                <div id="status-breadcrumbs" class="status-item breadcrumbs" style="display: flex; align-items: center; gap: 4px; font-size: 11px;"></div>
-                ` : ''}
-                ${this.features.showStoryDevToggle ? `
-                <button id="status-story-dev-toggle" class="status-item story-dev-toggle" style="
-                    background: rgba(255, 255, 255, 0.1);
-                    border: 1px solid rgba(255, 255, 255, 0.2);
-                    border-radius: 4px;
-                    padding: 2px 8px;
-                    font-size: 10px;
-                    color: inherit;
-                    cursor: pointer;
-                    transition: all 0.2s ease;
-                " title="Toggle Story/Dev Mode">
-                    📖 Story
-                </button>
-                ` : ''}
-                ${this.features.showLoopVersion ? `
-                <span id="status-loop" class="status-item">${this.config.loopVersion}</span>
-                ` : ''}
-                ${this.features.showRoute ? `
-                <span id="status-route" class="status-item route-indicator">MENU</span>
-                ` : ''}
-                ${this.features.showPhaseIndicator ? `
-                <span id="status-phase" class="status-item phase-indicator">Showcase</span>
-                ` : ''}
-            </div>
-
-            <!-- Center Section: Act / Auto -->
-            <div class="status-section status-center">
-                <span id="status-act" class="status-item act-indicator" style="${this.features.showBreadcrumbs ? 'display: none;' : ''}"></span>
-                <span id="status-auto" class="status-item auto-indicator" style="display: none;">AUTO ▶</span>
-            </div>
-
-            <!-- Right Section: Mail + Notes + Tether -->
-            <div class="status-section status-right">
-                ${this.features.showMail ? `
-                <!-- DIZEE: Mail icon with unread badge (V1 parity) -->
-                <span id="status-mail" class="status-item mail-indicator" title="Unread Notes" style="display: none;">
-                    <span class="mail-icon">✉️</span>
-                    <span class="unread-badge" style="display: none;">0</span>
-                </span>
-                ` : ''}
-                ${this.features.showNotes ? `
-                <span id="status-notes" class="status-item notes-indicator" title="Collected Notes">
-                    <span class="notes-icon">&#x1F4E7;</span>
-                    <span class="notes-count">0/0</span>
-                </span>
-                ` : ''}
-                ${this.features.showTether ? `
-                <div id="status-tether" class="status-item tether-indicator">
-                    <div class="tether-lightning">
-                        <span class="tether-icon">&#x26A1;</span>
-                        <div class="tether-fill"></div>
-                    </div>
-                    <span id="status-tether-value" class="tether-value">100%</span>
-                </div>
-                ` : ''}
-                ${this.features.showSettings ? `
-                <span id="status-settings" class="status-item settings-indicator" title="System Settings" style="cursor: pointer; font-size: 16px;">
-                    ⚙️
-                </span>
-                ` : ''}
-            </div>
-        `;
-
-        // Cache element references (with null checks for feature-flagged elements)
-        this.loopEl = this.container.querySelector('#status-loop') || this.createPlaceholder();
-        this.routeEl = this.container.querySelector('#status-route') || this.createPlaceholder();
-        this.actEl = this.container.querySelector('#status-act') || this.createPlaceholder();
-        this.autoEl = this.container.querySelector('#status-auto') || this.createPlaceholder();
-        this.notesEl = this.container.querySelector('#status-notes') || this.createPlaceholder();
-        this.tetherEl = this.container.querySelector('#status-tether') || this.createPlaceholder();
-        this.tetherValueEl = this.container.querySelector('#status-tether-value') || this.createPlaceholder();
-        this.tetherFillEl = this.container.querySelector('.tether-fill') || this.createPlaceholder();
-        // DIZEE: Mail icon elements
-        this.mailEl = this.container.querySelector('#status-mail') || this.createPlaceholder();
-        this.unreadBadgeEl = this.container.querySelector('.unread-badge') || this.createPlaceholder();
-        // Phase 26: Breadcrumbs and showcase elements
-        this.breadcrumbsEl = this.container.querySelector('#status-breadcrumbs') || this.createPlaceholder();
-        this.phaseEl = this.container.querySelector('#status-phase') || this.createPlaceholder();
-        this.storyDevToggleEl = this.container.querySelector('#status-story-dev-toggle') || this.createPlaceholder();
-        this.settingsEl = this.container.querySelector('#status-settings') || this.createPlaceholder();
-
-        // Prepend to body
-        document.body.prepend(this.container);
-
-        // DIZEE: Set up mail icon click handler
-        if (this.features.showMail) {
-            this.setupMailIconHandler();
-        }
-
-        // Phase 26: Set up story/dev toggle
-        if (this.features.showStoryDevToggle) {
-            this.setupStoryDevToggle();
-        }
-
-        // Set up Settings Cog
-        if (this.features.showSettings) {
-            this.setupSettingsHandler();
-        }
-
-        // Phase 26: Initialize breadcrumbs if enabled
-        if (this.features.showBreadcrumbs) {
-            this.updateBreadcrumbs();
-        }
-    }
-
-    /**
-     * Create a placeholder element for feature-flagged missing elements
-     * Prevents null reference errors when elements are disabled
-     */
-    private createPlaceholder(): HTMLElement {
-        const placeholder = document.createElement('span');
-        placeholder.style.display = 'none';
-        return placeholder;
-    }
-
-    /**
-     * Set up theme toggle for Showcase (converted from story/dev toggle)
-     */
-    private setupStoryDevToggle(): void {
-        if (!this.storyDevToggleEl) return;
-
-        // Import and use shared ThemeManager
-        import('../../../shared/StatusBar/ThemeManager').then(({ getThemeManager }) => {
-            const themeManager = getThemeManager();
-            const currentTheme = themeManager.getState().mode;
-
-            // Set initial button state
-            this.storyDevToggleEl.innerHTML = currentTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
-
-            this.storyDevToggleEl.addEventListener('click', () => {
-                // Toggle theme
-                themeManager.toggle();
-                const newTheme = themeManager.getState().mode;
-
-                // Update button text
-                this.storyDevToggleEl.innerHTML = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
-
-                // Haptic feedback
-                if (navigator.vibrate) navigator.vibrate(10);
-
-                console.log(`🎨 Theme: ${newTheme}`);
-            });
-
-            // Micro-interaction on hover
-            this.storyDevToggleEl.addEventListener('mouseenter', () => {
-                this.storyDevToggleEl.style.transform = 'scale(1.05)';
-                this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.2)';
-            });
-            this.storyDevToggleEl.addEventListener('mouseleave', () => {
-                this.storyDevToggleEl.style.transform = '';
-                this.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
-            });
-        }).catch(err => {
-            console.warn('[StatusBar] Could not load ThemeManager for toggle:', err);
+    public setPaused(paused: boolean): void {
+        this.modes.setPaused(paused, this.refs.routeEl, () => {
+            this.indicators.setRoute(this.indicators.getCurrentRoute());
         });
     }
 
-    /**
-     * Set up Settings Cog handler
-     * Emits ui:settings:toggle for NotificationShade/Sidebar to handle
-     */
-    private setupSettingsHandler(): void {
-        this.settingsEl.addEventListener('click', () => {
-            console.log('⚙️ Settings Cog clicked');
+    public setNotesCollected(count: number): void { this.indicators.setNotesCollected(count); }
+    public setTetherLevel(level: number): void { this.indicators.setTetherLevel(level); }
+    public setAct(act: string): void { this.indicators.setAct(act); this.updateBreadcrumbs(); }
+    public setAutoIndicator(enabled: boolean): void { this.indicators.setAutoIndicator(enabled); }
+    public getAct(): string { return this.indicators.getAct(); }
+    public setLoopVersion(version: string): void { this.indicators.setLoopVersion(version); }
+    public show(): void { this.indicators.show(); }
+    public hide(): void { this.indicators.hide(); }
+    public pulseLoop(): void { this.indicators.pulseLoop(); }
+    public glitchLoop(): void { this.indicators.glitchLoop(); }
+    public pulseNotes(): void { this.indicators.pulseNotes(); }
+    public toggleScreenshotMode(): void { this.modes.toggleScreenshotMode(); }
+    public isInScreenshotMode(): boolean { return this.modes.isInScreenshotMode(); }
+    public setupOrientationHandler(): void { this.modes.setupOrientationHandler(); }
+    public removeOrientationHandler(): void { this.modes.removeOrientationHandler(); }
 
-            // Haptic feedback
-            if (navigator.vibrate) navigator.vibrate(10);
-
-            // Emit toggle event
-            this.eventBus.emit('ui:settings:toggle', {});
-
-            // Visual feedback
-            const currentRotation = this.settingsEl.style.transform === 'rotate(90deg)' ? 'rotate(180deg)' : 'rotate(90deg)';
-            this.settingsEl.style.transform = currentRotation;
-        });
-
-        // Hover effect
-        this.settingsEl.style.transition = 'transform 0.3s ease';
-    }
-
-    /**
-     * DIZEE: Set up mail icon click handler (V1 parity)
-     * Clicking the mail icon opens the sidebar to notes tab
-     */
-    private setupMailIconHandler(): void {
-        if (this.mailEl) {
-            this.mailEl.addEventListener('click', () => {
-                // V1 Parity: Haptic feedback
-                if (navigator.vibrate) navigator.vibrate(20);
-                // Open sidebar to notes
-                this.eventBus.emit('ui:sidebar:open', {});
-                this.eventBus.emit('ui:notes:open', {});
-            });
-        }
-    }
-
-    /**
-     * Set up EventBus listeners
-     */
-    private setupEventListeners(): void {
-        // Route change
-        const unsubRoute = this.eventBus.on('ui:route_changed', (data) => {
-            this.setRoute(data.route as 'ronnie' | 'tori' | 'menu' | 'prologue');
-        });
-        this.unsubscribers.push(unsubRoute);
-
-        // Note collected
-        const unsubNote = this.eventBus.on('note:collected', (data) => {
-            this.setNotesCollected(data.count);
-            this.pulseNotes();
-        });
-        this.unsubscribers.push(unsubNote);
-
-        // Tether change
-        const unsubTether = this.eventBus.on('tether:change', (data) => {
-            this.setTetherLevel(data.level);
-        });
-        this.unsubscribers.push(unsubTether);
-
-        // Scene load (for act indicator)
-        const unsubScene = this.eventBus.on('scene:load', (data) => {
-            this.updateActFromScene(data.sceneId);
-        });
-        this.unsubscribers.push(unsubScene);
-
-        // Show/hide status bar
-        const unsubShow = this.eventBus.on('ui:show_status_bar', () => this.show());
-        const unsubHide = this.eventBus.on('ui:hide_status_bar', () => this.hide());
-        this.unsubscribers.push(unsubShow, unsubHide);
-
-        // Status update (from Showcase/Bridge)
-        const unsubStatus = this.eventBus.on('ui:status_update', (data) => {
-            if (this.phaseEl) {
-                this.phaseEl.textContent = data.context;
-            } else if (this.routeEl) {
-                this.routeEl.textContent = data.context;
-            }
-        });
-        this.unsubscribers.push(unsubStatus);
-
-        // Auto-Advance toggle
-        const unsubSettings = this.eventBus.on('settings:changed', (data) => {
-            if (data.key === 'autoAdvance') {
-                this.setAutoIndicator(data.value);
-            }
-        });
-        this.unsubscribers.push(unsubSettings);
-        // Pause State Listeners (Sidebar/Shade)
-        const pauseHandler = () => this.setPaused(true);
-        const unpauseHandler = () => this.setPaused(false);
-
-        this.eventBus.on('ui:sidebar:opened', pauseHandler);
-        this.eventBus.on('ui:shade:opened', pauseHandler);
-        this.eventBus.on('ui:sidebar:closed', unpauseHandler);
-        this.eventBus.on('ui:shade:closed', unpauseHandler);
-
-        // Add to unsubscribers
-        this.unsubscribers.push(() => {
-            this.eventBus.off('ui:sidebar:opened', pauseHandler);
-            this.eventBus.off('ui:shade:opened', pauseHandler);
-            this.eventBus.off('ui:sidebar:closed', unpauseHandler);
-            this.eventBus.off('ui:shade:closed', unpauseHandler);
-        });
-    }
-
-    /**
-     * Set up StateManager subscriptions for reactive updates
-     */
-    private setupStateSubscriptions(): void {
-        if (!this.stateManager) return;
-
-        // Subscribe to tether level changes
-        const unsubTether = this.stateManager.subscribe('tether.level', (newLevel) => {
-            if (typeof newLevel === 'number') {
-                this.setTetherLevel(newLevel);
-            }
-        });
-        this.unsubscribers.push(unsubTether);
-
-        // Subscribe to route changes
-        const unsubRoute = this.stateManager.subscribe('game.currentRoute', (route) => {
-            if (typeof route === 'string') {
-                this.setRoute(route as 'ronnie' | 'tori' | 'menu' | 'prologue');
-            }
-        });
-        this.unsubscribers.push(unsubRoute);
-
-        // Subscribe to notes collected
-        const unsubNotes = this.stateManager.subscribe('notes.collected', (count) => {
-            if (typeof count === 'number') {
-                this.setNotesCollected(count);
-            }
-        });
-        this.unsubscribers.push(unsubNotes);
-    }
-
-    /**
-     * Load initial state from StateManager
-     */
-    private loadInitialState(): void {
-        if (!this.stateManager) return;
-
-        const route = this.stateManager.get<string>('game.currentRoute');
-        if (route) {
-            this.setRoute(route as 'ronnie' | 'tori' | 'menu' | 'prologue');
-        }
-
-        const tetherLevel = this.stateManager.get<number>('tether.level');
-        if (typeof tetherLevel === 'number') {
-            this.setTetherLevel(tetherLevel);
-        }
-
-        const notesCollected = this.stateManager.get<number>('notes.collected');
-        if (typeof notesCollected === 'number') {
-            this.setNotesCollected(notesCollected);
-        }
-
-        // Auto-Advance State
-        const autoAdvance = this.stateManager.get<boolean>('settings.autoAdvance');
-        this.setAutoIndicator(!!autoAdvance);
-    }
-
-    /**
-     * Set up idle timer for auto-dimming
-     */
-    private setupIdleTimer(): void {
-        const resetIdle = () => this.resetIdleTimer();
-        document.addEventListener('mousemove', resetIdle);
-        document.addEventListener('touchstart', resetIdle);
-        document.addEventListener('keydown', resetIdle);
-        this.resetIdleTimer();
-    }
-
-    /**
-     * Reset idle timer - shows status bar and starts countdown
-     */
-    private resetIdleTimer(): void {
-        if (this.idleTimer) {
-            clearTimeout(this.idleTimer);
-        }
-
-        this.container.classList.remove('idle');
-
-        this.idleTimer = setTimeout(() => {
-            this.container.classList.add('idle');
-        }, this.idleDelay);
-    }
-
-    // ========================================
-    // PUBLIC API
-    // ========================================
-
-    /**
-     * Set the current route
-     */
-    public setRoute(route: 'ronnie' | 'tori' | 'menu' | 'prologue'): void {
-        this.currentRoute = route;
-
-        // Update route text
-        const routeDisplayNames: Record<string, string> = {
-            'ronnie': 'RONNIE',
-            'tori': 'TORI',
-            'menu': 'MENU',
-            'prologue': 'PROLOGUE'
-        };
-        this.routeEl.textContent = routeDisplayNames[route] || route.toUpperCase();
-
-        // Update route-specific styling
-        this.container.classList.remove('ronnie-route', 'tori-route');
-        if (route === 'ronnie') {
-            this.container.classList.add('ronnie-route');
-        } else if (route === 'tori') {
-            this.container.classList.add('tori-route');
-        }
-
-        // Show/hide tether indicator based on route
-        this.updateTetherVisibility();
-
-        // Update notes total for route
-        this.updateNotesDisplay();
-
-        // Phase 26: Update breadcrumbs and adaptive tint
-        this.updateBreadcrumbs();
-        this.updateAdaptiveTint();
-    }
-
-    /**
-     * Set notes collected count
-     */
-    public setNotesCollected(count: number): void {
-        this.notesCollected = count;
-        this.updateNotesDisplay();
-    }
-
-    /**
-     * Set tether level (0-100)
-     */
-    public setTetherLevel(level: number): void {
-        this.tetherLevel = Math.max(0, Math.min(100, level));
-
-        // Update percentage text
-        this.tetherValueEl.textContent = `${Math.round(this.tetherLevel)}%`;
-
-        // Update fill height
-        this.tetherFillEl.style.height = `${this.tetherLevel}%`;
-
-        // Apply state classes
-        this.tetherEl.classList.remove('healthy', 'warning', 'critical');
-        if (this.tetherLevel < 20) {
-            this.tetherEl.classList.add('critical');
-        } else if (this.tetherLevel < 50) {
-            this.tetherEl.classList.add('warning');
-        } else {
-            this.tetherEl.classList.add('healthy');
-        }
-    }
-
-    /**
-     * Set the current act/scene indicator
-     */
-    public setAct(act: string): void {
-        this._currentAct = act;
-        this.actEl.textContent = act;
-        this.actEl.style.display = act ? 'inline' : 'none';
-
-        // Phase 26: Update breadcrumbs when act changes
-        this.updateBreadcrumbs();
-    }
-
-    public setAutoIndicator(enabled: boolean): void {
-        this.autoEl.style.display = enabled ? 'inline' : 'none';
-        if (enabled) {
-            this.autoEl.classList.add('pulse'); // Reuse pulse animation or add new
-        }
-    }
-
-    /**
-     * Get the current act
-     */
-    public getAct(): string {
-        return this._currentAct;
-    }
-
-    /**
-     * Update loop version display
-     */
-    public setLoopVersion(version: string): void {
-        this.loopEl.textContent = version;
-    }
-
-    /**
-     * Show the status bar
-     */
-    public show(): void {
-        this.container.classList.add('visible');
-    }
-
-    /**
-     * Hide the status bar
-     */
-    public hide(): void {
-        this.container.classList.remove('visible');
-    }
-
-    /**
-     * Pulse the loop number (for loop increment events)
-     */
-    public pulseLoop(): void {
-        this.loopEl.classList.add('pulse');
-        setTimeout(() => {
-            this.loopEl.classList.remove('pulse');
-        }, 600);
-    }
-
-    /**
-     * Glitch effect on loop number (Ronnie route)
-     */
-    public glitchLoop(): void {
-        if (this.currentRoute === 'ronnie') {
-            this.loopEl.classList.add('glitch');
-            setTimeout(() => {
-                this.loopEl.classList.remove('glitch');
-            }, 300);
-        }
-    }
-
-    /**
-     * Pulse the notes indicator (when note collected)
-     */
-    public pulseNotes(): void {
-        this.notesEl.classList.add('pulse');
-        setTimeout(() => {
-            this.notesEl.classList.remove('pulse');
-        }, 600);
-    }
-
-    // ========================================
-    // ========================================
-    // UNREAD NOTES SYSTEM (Extracted to StatusBarMailSystem.ts)
-    // ========================================
-
-    /**
-     * Add an unread note - delegates to mail system
-     */
+    // Mail delegation
     public addUnreadNote(id: string, title: string, sender: string, content: string = ''): void {
         this.mailSystem.addUnreadNote(id, title, sender, content);
     }
+    public markNoteAsRead(id: string): void { this.mailSystem.markNoteAsRead(id); }
+    public markAllNotesAsRead(): void { this.mailSystem.markAllNotesAsRead(); }
+    public getUnreadCount(): number { return this.mailSystem.getUnreadCount(); }
+    public getMostRecentUnread(): UnreadNote | null { return this.mailSystem.getMostRecentUnread(); }
+    public pulseMail(): void { this.mailSystem.pulseMail(); }
 
-    /**
-     * Mark a note as read - delegates to mail system
-     */
-    public markNoteAsRead(id: string): void {
-        this.mailSystem.markNoteAsRead(id);
-    }
+    // Gesture wrappers (backwards compatibility)
+    public setupGestures(): void { /* Initialized in constructor */ }
+    private cleanupGestures(): void { this.gestures?.cleanup(); }
 
-    /**
-     * Mark all notes as read - delegates to mail system
-     */
-    public markAllNotesAsRead(): void {
-        this.mailSystem.markAllNotesAsRead();
-    }
+    // ========================================
+    // CLEANUP
+    // ========================================
 
-    /**
-     * Get unread count - delegates to mail system
-     */
-    public getUnreadCount(): number {
-        return this.mailSystem.getUnreadCount();
-    }
-
-    /**
-     * Get most recent unread note - delegates to mail system
-     */
-    public getMostRecentUnread(): UnreadNote | null {
-        return this.mailSystem.getMostRecentUnread();
-    }
-
-    /**
-     * Pulse mail icon animation - delegates to mail system
-     */
-    public pulseMail(): void {
-        this.mailSystem.pulseMail();
-    }
-
-    /**
-     * Clean up and destroy the status bar
-     */
     public destroy(): void {
-        // Unsubscribe from all events
-        this.unsubscribers.forEach(unsub => unsub());
-        this.unsubscribers = [];
-
-        // Clear idle timer
-        if (this.idleTimer) {
-            clearTimeout(this.idleTimer);
-            this.idleTimer = null;
-        }
-
-        // Clean up app switcher preview
-        this.appSwitcherPreview?.cleanup();
-
-        // DIZEE: Clean up orientation handler
-        this.removeOrientationHandler();
-
-        // Phase 26b: Clean up gesture state
+        this.wiring.getUnsubscribers().forEach(unsub => unsub());
+        this.wiring.clearIdleTimer();
+        this.wiring.cleanupAppSwitcher();
+        this.modes.removeOrientationHandler();
         this.cleanupGestures();
-
-        // Remove from DOM
-        this.container.remove();
-    }
-
-    // ========================================
-    // PRIVATE HELPERS
-    // ========================================
-
-    /**
-     * Update notes display with current count and route-specific total
-     */
-    private updateNotesDisplay(): void {
-        const total = this.getTotalNotes();
-        const notesCountEl = this.notesEl.querySelector('.notes-count');
-        if (notesCountEl) {
-            notesCountEl.textContent = `${this.notesCollected}/${total}`;
-        }
-
-        // Hide notes in menu/prologue
-        const hideInRoutes = ['menu', 'prologue'];
-        this.notesEl.style.display = hideInRoutes.includes(this.currentRoute) ? 'none' : 'flex';
-    }
-
-    /**
-     * Get total notes for current route
-     */
-    private getTotalNotes(): number {
-        if (this.currentRoute === 'ronnie') {
-            return this.config.totalNotes.ronnie;
-        } else if (this.currentRoute === 'tori') {
-            return this.config.totalNotes.tori;
-        }
-        return 0;
-    }
-
-    /**
-     * Show/hide tether indicator based on route (only Tori has tether)
-     */
-    private updateTetherVisibility(): void {
-        this.tetherEl.style.display = this.currentRoute === 'tori' ? 'flex' : 'none';
-    }
-
-    /**
-     * Extract act from scene ID and update display
-     * Scene IDs follow pattern: act1_scene_name, act2_scene_name, etc.
-     */
-    private updateActFromScene(sceneId: string): void {
-        const actMatch = sceneId.match(/^(act\d+)/i);
-        if (actMatch && actMatch[1]) {
-            const actNumber = actMatch[1].replace('act', '');
-            this.setAct(`Act ${actNumber}`);
-        }
-    }
-
-    // ========================================
-    // DIZEE: SCREENSHOT MODE (V1 Parity)
-    // Hide all UI for clean screenshots
-    // ========================================
-
-    private isScreenshotMode: boolean = false;
-
-    /**
-     * Toggle screenshot mode - hides all UI
-     * V1 Parity: notification-shade-controller.js toggleScreenshotMode()
-     */
-    public toggleScreenshotMode(): void {
-        this.isScreenshotMode = !this.isScreenshotMode;
-
-        if (this.isScreenshotMode) {
-            // Hide all UI elements
-            document.body.classList.add('screenshot-mode');
-            this.container.style.display = 'none';
-
-            // Emit event for other components to hide
-            this.eventBus.emit('ui:hide_hud', {});
-
-            console.log('📸 Screenshot mode ON - All UI hidden');
-        } else {
-            // Restore UI
-            document.body.classList.remove('screenshot-mode');
-            if (this.container.classList.contains('visible')) {
-                this.container.style.display = 'flex';
-            }
-
-            // Emit event for other components to show
-            this.eventBus.emit('ui:show_status_bar', {});
-
-            console.log('📸 Screenshot mode OFF - UI restored');
-        }
-    }
-
-    /**
-     * Check if screenshot mode is active
-     */
-    public isInScreenshotMode(): boolean {
-        return this.isScreenshotMode;
-    }
-
-    // ========================================
-    // DIZEE: ORIENTATION HANDLER (V1 Parity)
-    // Handle portrait/landscape transitions
-    // ========================================
-
-    private orientationHandler: (() => void) | null = null;
-
-    /**
-     * Set up orientation change handler
-     * V1 Parity: Closes sidebar when rotating to portrait
-     */
-    public setupOrientationHandler(): void {
-        this.orientationHandler = () => {
-            const isPortrait = window.matchMedia('(orientation: portrait)').matches;
-            const isNarrow = window.innerWidth < 769;
-
-            if (isPortrait || isNarrow) {
-                // Portrait mode: Close sidebar
-                this.eventBus.emit('ui:sidebar:close', {});
-                console.log('📱 Portrait mode detected - Sidebar closed');
-            }
-
-            // Update any responsive state
-            this.container.classList.toggle('portrait', isPortrait);
-            this.container.classList.toggle('landscape', !isPortrait);
-        };
-
-        // Listen to orientation change
-        window.addEventListener('orientationchange', this.orientationHandler);
-        // Also listen to resize for desktop simulation
-        window.addEventListener('resize', this.orientationHandler);
-
-        // Initial check
-        this.orientationHandler();
-    }
-
-    /**
-     * Remove orientation handler (cleanup)
-     */
-    public removeOrientationHandler(): void {
-        if (this.orientationHandler) {
-            window.removeEventListener('orientationchange', this.orientationHandler);
-            window.removeEventListener('resize', this.orientationHandler);
-            this.orientationHandler = null;
-        }
-    }
-
-    // ========================================
-    // PHASE 26b: GESTURE SYSTEM (Extracted to StatusBarGestures.ts)
-    // ========================================
-
-    /**
-     * Public wrapper for backwards compatibility
-     * Actual implementation is in StatusBarGestures class
-     */
-    public setupGestures(): void {
-        // Gestures are now initialized in constructor via this.gestures.setup()
-        // This method kept for backwards compatibility
-    }
-
-    /**
-     * Clean up gesture state - delegates to gesture class
-     */
-    private cleanupGestures(): void {
-        this.gestures?.cleanup();
+        this.refs.container.remove();
     }
 }
