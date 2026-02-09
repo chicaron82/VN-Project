@@ -10,6 +10,8 @@
  * 💚🔥💀
  */
 
+import { Logger } from '@utils/Logger';
+
 interface AppStateData {
     state: string[];
     hasSave: boolean;
@@ -186,7 +188,7 @@ export class BannerPreviewCard {
                     };
                 }
             } catch (e) {
-                console.warn('Failed to parse V2 state:', e);
+                Logger.warn('Failed to parse V2 state:', e);
             }
         }
 
@@ -273,7 +275,7 @@ export class BannerPreviewCard {
                 isHangry
             };
         } catch (e) {
-            console.warn('Failed to parse Torigatchi state:', e);
+            Logger.warn('Failed to parse Torigatchi state:', e);
             return {
                 state: ['Error', 'Invalid State'],
                 hasSave: false
