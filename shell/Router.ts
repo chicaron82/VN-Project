@@ -17,6 +17,7 @@
  */
 
 import type { UV7Shell } from './UV7Shell.js';
+import { Logger } from '@utils/Logger';
 
 interface RouteMap {
     [key: string]: string;
@@ -54,7 +55,7 @@ export class Router {
         // Handle initial route
         this.handleRoute();
 
-        console.log('[Router] Initialized');
+        Logger.system('[Router] Initialized');
     }
 
     /**
@@ -63,7 +64,7 @@ export class Router {
     handleRoute(): void {
         const { appId, params } = this.parseHash();
 
-        console.log(`[Router] Navigating to: ${appId}`, params);
+        Logger.system(`[Router] Navigating to: ${appId}`, params);
 
         this.shell.loadApp(appId, params);
     }
