@@ -1,6 +1,7 @@
 // import { GameEngine } from './GameEngine'; // Unused
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
+import { Logger } from '@utils/Logger';
 
 export interface BacklogEntry {
     character: string;
@@ -139,7 +140,7 @@ export class BacklogManager {
      */
     public jumpToEntry(index: number): void {
         if (index < 0 || index >= this.history.length) {
-            console.warn(`[BacklogManager] Invalid jump index: ${index}`);
+            Logger.warn(`[BacklogManager] Invalid jump index: ${index}`);
             return;
         }
 
@@ -166,7 +167,7 @@ export class BacklogManager {
             return;
         }
 
-        console.log(`[BacklogManager] Jumping to past: ${entry.sceneId}`);
+        Logger.ui(`[BacklogManager] Jumping to past: ${entry.sceneId}`);
 
         // 3. Prepare State Restoration
         // Set flag for "Fixed Points" to know this is a jump
