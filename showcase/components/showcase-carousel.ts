@@ -4,6 +4,8 @@
  * Adapted from V1's CarouselMomentum engine
  */
 
+import { Logger } from '@utils/Logger';
+
 declare global {
     interface Window {
         spotlightCarousel?: SpotlightCarousel;
@@ -54,7 +56,7 @@ export class SpotlightCarousel {
             return;
         }
 
-        console.log('🎠 Initializing VN-Style Carousel...');
+        Logger.ui('🎠 Initializing VN-Style Carousel...');
 
         // Calculate card dimensions
         if (this.cards.length > 0) {
@@ -71,7 +73,7 @@ export class SpotlightCarousel {
         // Handle resize
         window.addEventListener('resize', () => this.handleResize());
 
-        console.log('✅ VN-Style Carousel initialized');
+        Logger.ui('✅ VN-Style Carousel initialized');
     }
 
     private attachEventListeners(): void {
