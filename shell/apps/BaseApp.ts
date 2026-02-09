@@ -9,6 +9,7 @@
 
 import type { UV7Shell } from '../UV7Shell.js';
 import type { SystemAPI } from '../../types/chrome.js';
+import { Logger } from '@utils/Logger';
 
 export interface StatusBarConfig {
     title: string;
@@ -62,7 +63,7 @@ export class BaseApp {
         this.mounted = true;
 
         // Subclasses should override this
-        console.log(`[${this.id}] Mounted`);
+        Logger.system(`[${this.id}] Mounted`);
     }
 
     /**
@@ -85,7 +86,7 @@ export class BaseApp {
         }
         this.mounted = false;
 
-        console.log(`[${this.id}] Unmounted`);
+        Logger.system(`[${this.id}] Unmounted`);
     }
 
     /**
