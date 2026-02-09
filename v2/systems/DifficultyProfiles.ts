@@ -23,6 +23,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 // ========================================
 // TYPES
 // ========================================
@@ -384,7 +386,7 @@ export function getUnlockedDifficulties(): DifficultyProfile[] {
  */
 export function unlockInsaneMode(): void {
     localStorage.setItem('insaneModeUnlocked', 'true');
-    console.log('💀 INSANE MODE UNLOCKED');
+    Logger.ui('💀 INSANE MODE UNLOCKED');
 }
 
 /**
