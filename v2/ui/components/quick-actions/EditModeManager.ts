@@ -16,6 +16,7 @@
 
 import type { QuickAction } from '../ExpandableQuickActions';
 import type { CustomLayout } from './QuickActionsState';
+import { Logger } from '@utils/Logger';
 
 /**
  * Callback contract for edit mode operations.
@@ -64,7 +65,7 @@ export class EditModeManager {
     }
 
     private enterEditMode(): void {
-        console.log('✏️ Edit mode enabled');
+        Logger.ui('✏️ Edit mode enabled');
 
         this.callbacks.setEditMode(true);
 
@@ -91,7 +92,7 @@ export class EditModeManager {
     }
 
     exitEditMode(): void {
-        console.log('✏️ Edit mode disabled');
+        Logger.ui('✏️ Edit mode disabled');
 
         this.callbacks.setEditMode(false);
         this.expandedView?.classList.remove('edit-mode');
@@ -257,7 +258,7 @@ export class EditModeManager {
             layout.actionOrder.splice(toIndex, 0, movedAction);
             this.callbacks.setCustomLayout(layout);
 
-            console.log(`🔄 Reordered: ${this.draggedActionId} → position ${toIndex}`);
+            Logger.ui(`🔄 Reordered: ${this.draggedActionId} → position ${toIndex}`);
             this.renderExpandedView();
             this.callbacks.triggerHaptic('medium');
         }
@@ -282,15 +283,15 @@ export class EditModeManager {
 
         if (index !== -1) {
             layout.favorites.splice(index, 1);
-            console.log(`☆ Removed from carousel: ${actionId} (${layout.favorites.length} in carousel)`);
+            Logger.ui(`☆ Removed from carousel: ${actionId} (${layout.favorites.length} in carousel)`);
             this.callbacks.triggerHaptic('light');
         } else {
             if (layout.favorites.length < 8) {
                 layout.favorites.push(actionId);
-                console.log(`⭐ Added to carousel: ${actionId} (${layout.favorites.length} in carousel)`);
+                Logger.ui(`⭐ Added to carousel: ${actionId} (${layout.favorites.length} in carousel)`);
                 this.callbacks.triggerHaptic('medium');
             } else {
-                console.warn('⚠️ Maximum 8 carousel actions (2 pages of 4)');
+                Logger.warn('⚠️ Maximum 8 carousel actions (2 pages of 4)');
                 return;
             }
         }
@@ -313,7 +314,7 @@ export class EditModeManager {
         this.renderExpandedView();
         this.callbacks.rebuildCarousel();
 
-        console.log('↺ Reset to defaults');
+        Logger.ui('↺ Reset to defaults');
         this.callbacks.triggerHaptic('heavy');
     }
 }

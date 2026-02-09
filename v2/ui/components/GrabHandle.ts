@@ -19,6 +19,8 @@
  * "Built with love. 💚🔥💀"
  */
 
+import { Logger } from '@utils/Logger';
+
 interface GrabHandleState {
     top: number;
     side: 'left' | 'right';
@@ -95,7 +97,7 @@ export class UV7GrabHandleRepositioner {
         this.apply();
         this.bind();
 
-        console.log('✅ UV7GrabHandleRepositioner V1 Parity Complete', this.state);
+        Logger.ui('✅ UV7GrabHandleRepositioner V1 Parity Complete', this.state);
     }
 
     private bind(): void {
@@ -434,14 +436,14 @@ export class UV7GrabHandleRepositioner {
         if (this.onToggle && typeof this.onToggle === 'function') {
             this.onToggle();
         }
-        console.log('[UV7GrabHandle] 👆 Tap-to-toggle sidebar');
+        Logger.ui('[UV7GrabHandle] 👆 Tap-to-toggle sidebar');
     }
 
     private flipSide(): void {
         this.state.side = this.state.side === 'left' ? 'right' : 'left';
         this.apply();
         this.save();
-        console.log('[UV7GrabHandle] 🔄 Flipped side ->', this.state.side);
+        Logger.ui('[UV7GrabHandle] 🔄 Flipped side ->', this.state.side);
     }
 
     // ========================================

@@ -12,6 +12,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 /**
  * Callback contract for action routing dependencies.
  */
@@ -40,7 +42,7 @@ export class ActionRouter {
     constructor(private deps: ActionRouterDeps) {}
 
     handleAction(action: string): void {
-        console.log(`🎯 Quick action: ${action}`);
+        Logger.ui(`🎯 Quick action: ${action}`);
 
         switch (action) {
             case 'save':
@@ -68,7 +70,7 @@ export class ActionRouter {
                 this.showHelp();
                 break;
             default:
-                console.warn(`Unknown action: ${action}`);
+                Logger.warn(`Unknown action: ${action}`);
         }
     }
 
@@ -78,7 +80,7 @@ export class ActionRouter {
 
         if (!current) {
             document.body.classList.add('screenshot-mode');
-            console.log('📸 Screenshot mode enabled - tap anywhere to exit');
+            Logger.ui('📸 Screenshot mode enabled - tap anywhere to exit');
 
             this.screenshotExitHandler = (e: Event) => {
                 e.preventDefault();
@@ -106,7 +108,7 @@ export class ActionRouter {
 
         this.deps.setScreenshotMode(false);
         document.body.classList.remove('screenshot-mode');
-        console.log('📸 Screenshot mode disabled');
+        Logger.ui('📸 Screenshot mode disabled');
     }
 
     private showHelp(): void {

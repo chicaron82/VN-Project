@@ -15,6 +15,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 /**
  * Callback contract for swipe events.
  * The orchestrator implements this interface.
@@ -188,7 +190,7 @@ export class SwipeDetector {
             const meetsVelocity = velocity > velocityThreshold;
 
             if (meetsThreshold || meetsVelocity) {
-                console.log('📱 Vertical swipe - expanding quick actions', {
+                Logger.ui('📱 Vertical swipe - expanding quick actions', {
                     deltaY,
                     velocity: velocity.toFixed(2),
                     method: meetsVelocity ? 'velocity' : 'threshold'
@@ -202,7 +204,7 @@ export class SwipeDetector {
 
         // Double-swipe shortcut
         if (timeSinceLastSwipe < this.doubleSwipeWindow && timeSinceLastSwipe > 50) {
-            console.log('📱 Double-swipe detected - quick expand!');
+            Logger.ui('📱 Double-swipe detected - quick expand!');
             if (!this.callbacks.isShadeOpen()) {
                 this.callbacks.openShade();
             }

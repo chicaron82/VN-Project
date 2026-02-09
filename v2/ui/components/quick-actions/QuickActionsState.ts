@@ -13,6 +13,7 @@
 // ========================================
 
 import type { QuickAction } from '../ExpandableQuickActions';
+import { Logger } from '@utils/Logger';
 
 export interface CustomLayout {
     actionOrder: string[];
@@ -60,7 +61,7 @@ export class QuickActionsStatePersistence {
                 };
             }
         } catch (error) {
-            console.warn('Failed to load quick actions state:', error);
+            Logger.warn('Failed to load quick actions state:', error);
         }
 
         return { currentPage: 0, customLayout: defaults };
@@ -78,7 +79,7 @@ export class QuickActionsStatePersistence {
             };
             localStorage.setItem('quickActionsState', JSON.stringify(state));
         } catch (error) {
-            console.warn('Failed to save quick actions state:', error);
+            Logger.warn('Failed to save quick actions state:', error);
         }
     }
 }
