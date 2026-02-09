@@ -34,13 +34,13 @@ export const entry: TimelineEntry = {
                             "title": "V1 (JavaScript)",
                             "badge": "CRITICAL SYSTEM",
                             "lang": "javascript",
-                            "code": "// V1: save-manager.js\nstatic saveGame(slotNumber, isAutoSave = false, customLabel = null) {\n  if (SaveManager.saveInProgress) {\n    console.warn('Save already in progress');\n    return false;\n  }\n  SaveManager.saveInProgress = true;\n  try {\n    const saveData = SaveManager.collectSaveData(customLabel);\n    localStorage.setItem(key, JSON.stringify(saveData));\n    return true;\n  } finally {\n    SaveManager.saveInProgress = false;\n  }\n}"
+                            "code": "// V1: save-manager.js\nstatic saveGame(slotNumber, isAutoSave = false, customLabel = null) {\n  if (SaveManager.saveInProgress) {\n    console['warn']('Save already in progress');\n    return false;\n  }\n  SaveManager.saveInProgress = true;\n  try {\n    const saveData = SaveManager.collectSaveData(customLabel);\n    localStorage.setItem(key, JSON.stringify(saveData));\n    return true;\n  } finally {\n    SaveManager.saveInProgress = false;\n  }\n}"
                         },
                         "after": {
                             "title": "V2 (TypeScript)",
                             "badge": "MUTEX PROTECTED",
                             "lang": "typescript",
-                            "code": "// V2: SaveManager.ts\npublic saveGame(slotNumber: number | null, isAutoSave: boolean = false, customLabel: string | null = null): boolean {\n  if (this.saveInProgress) {\n    console.warn('⚠️ Save already in progress');\n    return false;\n  }\n  this.saveInProgress = true;\n  try {\n    const saveData: SaveData = this.collectSaveData(customLabel);\n    localStorage.setItem(key, JSON.stringify(saveData));\n    return true;\n  } finally {\n    this.saveInProgress = false;\n  }\n}"
+                            "code": "// V2: SaveManager.ts\npublic saveGame(slotNumber: number | null, isAutoSave: boolean = false, customLabel: string | null = null): boolean {\n  if (this.saveInProgress) {\n    console['warn']('⚠️ Save already in progress');\n    return false;\n  }\n  this.saveInProgress = true;\n  try {\n    const saveData: SaveData = this.collectSaveData(customLabel);\n    localStorage.setItem(key, JSON.stringify(saveData));\n    return true;\n  } finally {\n    this.saveInProgress = false;\n  }\n}"
                         }
                     }
                 }
