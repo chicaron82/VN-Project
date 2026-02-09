@@ -30,6 +30,7 @@ export * from './ToriSettingsManager';
 
 import { ThemeManager, getThemeManager } from './ThemeManager';
 import type { StatusBarConfig, ThemeState } from './types';
+import { Logger } from '@utils/Logger';
 
 export class StatusBar {
     private config: StatusBarConfig;
@@ -43,7 +44,7 @@ export class StatusBar {
             onThemeChange: (state) => this.handleThemeChange(state)
         });
 
-        console.log(`📊 [StatusBar] Initialized for app: ${config.appId}`);
+        Logger.ui(`📊 [StatusBar] Initialized for app: ${config.appId}`);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -66,7 +67,7 @@ export class StatusBar {
 
     /** Handle theme changes */
     private handleThemeChange(state: ThemeState): void {
-        console.log(`[StatusBar:${this.config.appId}] Theme changed:`, state);
+        Logger.ui(`[StatusBar:${this.config.appId}] Theme changed:`, state);
 
         // Show toast
         if (!state.auto) {
