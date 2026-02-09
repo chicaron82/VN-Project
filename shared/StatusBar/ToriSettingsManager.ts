@@ -10,10 +10,12 @@
  *
  * Events:
  *   window.addEventListener('uv7:tori:changed', (e) => {
- *     console.log(e.detail);  // { notifyHunger: true, notifyLonely: false, notifyCritical: true }
+ *     Logger.system(e.detail);  // { notifyHunger: true, notifyLonely: false, notifyCritical: true }
  *   });
  * ═══════════════════════════════════════════════════════════════
  */
+
+import { Logger } from '@utils/Logger';
 
 export interface ToriSettings {
     notifyHunger: boolean;    // Notify when Tori is hungry
@@ -56,7 +58,7 @@ export class ToriSettingsManager {
         // Listen for storage changes (cross-tab sync)
         window.addEventListener('storage', this.handleStorageChange.bind(this));
 
-        console.log('🐣 [ToriSettingsManager] Initialized:', this.settings);
+        Logger.system('🐣 [ToriSettingsManager] Initialized:', this.settings);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -181,7 +183,7 @@ export class ToriSettingsManager {
                 };
             }
         } catch (e) {
-            console.warn('[ToriSettingsManager] Could not load settings:', e);
+            Logger.warn('[ToriSettingsManager] Could not load settings:', e);
         }
         return { ...this.config.defaults };
     }
@@ -191,7 +193,7 @@ export class ToriSettingsManager {
         try {
             localStorage.setItem(this.config.storageKey, JSON.stringify(this.settings));
         } catch (e) {
-            console.warn('[ToriSettingsManager] Could not save settings:', e);
+            Logger.warn('[ToriSettingsManager] Could not save settings:', e);
         }
     }
 
@@ -202,7 +204,7 @@ export class ToriSettingsManager {
     /** Handle storage events (cross-tab sync) */
     private handleStorageChange(e: StorageEvent): void {
         if (e.key === this.config.storageKey && e.newValue) {
-            console.log('[ToriSettingsManager] Storage change detected, syncing...');
+            Logger.system('[ToriSettingsManager] Storage change detected, syncing...');
             try {
                 const newSettings = JSON.parse(e.newValue);
                 this.settings = {
@@ -213,7 +215,7 @@ export class ToriSettingsManager {
                 this.updateUI();
                 this.emitChange();
             } catch (e) {
-                console.warn('[ToriSettingsManager] Could not parse storage event:', e);
+                Logger.warn('[ToriSettingsManager] Could not parse storage event:', e);
             }
         }
     }

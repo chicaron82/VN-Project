@@ -10,10 +10,12 @@
  *
  * Events:
  *   window.addEventListener('uv7:echo:changed', (e) => {
- *     console.log(e.detail);  // { enabled: true, frequency: 15, pauseOnHover: true }
+ *     Logger.system(e.detail);  // { enabled: true, frequency: 15, pauseOnHover: true }
  *   });
  * ═══════════════════════════════════════════════════════════════
  */
+
+import { Logger } from '@utils/Logger';
 
 export interface EchoSettings {
     enabled: boolean;
@@ -57,7 +59,7 @@ export class EchoSettingsManager {
         // Listen for storage changes (cross-tab sync)
         window.addEventListener('storage', this.handleStorageChange.bind(this));
 
-        console.log('🔊 [EchoSettingsManager] Initialized:', this.settings);
+        Logger.system('🔊 [EchoSettingsManager] Initialized:', this.settings);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -222,7 +224,7 @@ export class EchoSettingsManager {
                 };
             }
         } catch (e) {
-            console.warn('[EchoSettingsManager] Could not load settings:', e);
+            Logger.warn('[EchoSettingsManager] Could not load settings:', e);
         }
         return { ...this.config.defaults };
     }
@@ -232,7 +234,7 @@ export class EchoSettingsManager {
         try {
             localStorage.setItem(this.config.storageKey, JSON.stringify(this.settings));
         } catch (e) {
-            console.warn('[EchoSettingsManager] Could not save settings:', e);
+            Logger.warn('[EchoSettingsManager] Could not save settings:', e);
         }
     }
 
@@ -243,7 +245,7 @@ export class EchoSettingsManager {
     /** Handle storage events (cross-tab sync) */
     private handleStorageChange(e: StorageEvent): void {
         if (e.key === this.config.storageKey && e.newValue) {
-            console.log('[EchoSettingsManager] Storage change detected, syncing...');
+            Logger.system('[EchoSettingsManager] Storage change detected, syncing...');
             try {
                 const newSettings = JSON.parse(e.newValue);
                 this.settings = {
@@ -254,7 +256,7 @@ export class EchoSettingsManager {
                 this.updateUI();
                 this.emitChange();
             } catch (e) {
-                console.warn('[EchoSettingsManager] Could not parse storage event:', e);
+                Logger.warn('[EchoSettingsManager] Could not parse storage event:', e);
             }
         }
     }
