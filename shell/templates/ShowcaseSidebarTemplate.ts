@@ -10,6 +10,7 @@
  */
 
 import { navigateWithTransition } from '../utils/NavigationHelper.js';
+import { Logger } from '@utils/Logger';
 
 /**
  * Generate showcase-specific sidebar content
@@ -142,7 +143,7 @@ export function initShowcaseSidebarListeners(): void {
                     const themeManager = getThemeManager();
                     themeManager.toggle();
                 }).catch(err => {
-                    console.warn('[ShowcaseSidebar] Could not load ThemeManager, falling back:', err);
+                    Logger.warn('[ShowcaseSidebar] Could not load ThemeManager, falling back:', err);
                     document.body.classList.toggle('dark-mode');
                 });
                 // Don't close sidebar for theme toggle
