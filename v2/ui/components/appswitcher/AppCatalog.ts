@@ -61,22 +61,6 @@ export class AppCatalog {
 
         return [
             {
-                id: 'landing',
-                name: 'Landing',
-                icon: '🏠',
-                description: 'UV7 Project Hub',
-                url: isShellMode ? '#/landing' : '/VN-Project/',
-                color: 'rgba(0, 204, 255, 0.2)',
-                saveKeys: [],
-                getState: (): AppStateData => {
-                    const loopVersion = localStorage.getItem('uv7_loop_version') || '848';
-                    return {
-                        state: [`VERSION ${loopVersion}`, 'Home'],
-                        hasSave: false
-                    };
-                }
-            },
-            {
                 id: 'showcase',
                 name: 'Showcase',
                 icon: '📖',
