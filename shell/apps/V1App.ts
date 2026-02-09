@@ -10,6 +10,7 @@
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import { Logger } from '@utils/Logger';
 
 export class V1App extends BaseApp {
     constructor(shell: UV7Shell) {
@@ -43,7 +44,7 @@ export class V1App extends BaseApp {
             </div>
         `;
 
-        console.log('[V1App] Mounted V1 game in iframe');
+        Logger.system('[V1App] Mounted V1 game in iframe');
     }
 }
 
