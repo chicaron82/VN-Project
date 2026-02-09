@@ -2,6 +2,7 @@ import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
 import { HapticSystem } from '@systems/HapticSystem';
+import { Logger } from '@utils/Logger';
 
 export class TetherController {
     private stateManager: StateManager;
@@ -38,7 +39,7 @@ export class TetherController {
             this.applyDecay();
         }, intervalMs);
 
-        console.log('📉 Tether decay started');
+        Logger.ui('📉 Tether decay started');
     }
 
     /**
@@ -48,7 +49,7 @@ export class TetherController {
         if (this.decayInterval) {
             clearInterval(this.decayInterval);
             this.decayInterval = null;
-            console.log('🛑 Tether decay stopped');
+            Logger.ui('🛑 Tether decay stopped');
         }
     }
 
