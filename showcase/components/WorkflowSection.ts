@@ -1,4 +1,5 @@
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
+import { Logger } from '@utils/Logger';
 
 export class WorkflowSection {
     constructor() {
@@ -49,7 +50,7 @@ export class WorkflowSection {
 
     render(): void {
         const mount = document.getElementById('uv7-workflow-mount');
-        console.log('[WorkflowSection] Mount point:', mount ? 'found' : 'NOT FOUND');
+        Logger.ui('[WorkflowSection] Mount point:', mount ? 'found' : 'NOT FOUND');
         if (!mount) return;
 
         mount.innerHTML = `
