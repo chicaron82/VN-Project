@@ -6,6 +6,7 @@
 
 import type { EventBus } from '../core/EventBus';
 import type { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 export interface TutorialOptions {
     text?: string;
@@ -61,7 +62,7 @@ export class TutorialManager {
             if (completed[id]) this.shownTutorials.add(id);
         });
 
-        console.log('📚 TutorialManager initialized (event-driven mode)');
+        Logger.ui('📚 TutorialManager initialized (event-driven mode)');
     }
 
     /**
@@ -118,13 +119,13 @@ export class TutorialManager {
         if (this.hasShown(tutorialId)) return;
 
         if (!targetElement) {
-            console.warn('Tutorial: No target element for', tutorialId);
+            Logger.warn('Tutorial: No target element for', tutorialId);
             return;
         }
 
         const rect = targetElement.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) {
-            console.warn('Tutorial: Target element has no size for', tutorialId);
+            Logger.warn('Tutorial: Target element has no size for', tutorialId);
             return;
         }
 
@@ -144,7 +145,7 @@ export class TutorialManager {
         const hideDelay = options.autoHide || 4000;
         setTimeout(() => this.dismiss(), hideDelay);
 
-        console.log(`📚 Tutorial shown: ${tutorialId}`);
+        Logger.ui(`📚 Tutorial shown: ${tutorialId}`);
     }
 
     // ========================================
@@ -275,6 +276,6 @@ export class TutorialManager {
     public resetTutorials(): void {
         this.shownTutorials.clear();
         this.stateManager.set('tutorial.completed', {});
-        console.log('📚 All tutorials reset');
+        Logger.ui('📚 All tutorials reset');
     }
 }

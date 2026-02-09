@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TutorialManager } from './TutorialManager';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 describe('TutorialManager', () => {
     let manager: TutorialManager;
@@ -33,12 +34,12 @@ describe('TutorialManager', () => {
         });
 
         it('should log initialization message', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
             const newManager = new TutorialManager(eventBus, stateManager);
             newManager.init();
 
-            expect(consoleSpy).toHaveBeenCalledWith('📚 TutorialManager initialized (event-driven mode)');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('📚 TutorialManager initialized (event-driven mode)');
+            loggerSpy.mockRestore();
         });
 
         it('should load previously completed tutorials', () => {
@@ -146,23 +147,23 @@ describe('TutorialManager', () => {
         });
 
         it('should not show tutorial if no target element', () => {
-            const consoleSpy = vi.spyOn(console, 'warn');
+            const loggerSpy = vi.spyOn(Logger, 'warn');
 
             manager.showHandGesture('test_tutorial', null);
 
-            expect(consoleSpy).toHaveBeenCalledWith('Tutorial: No target element for', 'test_tutorial');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('Tutorial: No target element for', 'test_tutorial');
+            loggerSpy.mockRestore();
         });
 
         it('should not show tutorial if target has no size', () => {
-            const consoleSpy = vi.spyOn(console, 'warn');
+            const loggerSpy = vi.spyOn(Logger, 'warn');
             const zeroSizeElement = document.createElement('div');
             document.body.appendChild(zeroSizeElement);
 
             manager.showHandGesture('test_tutorial', zeroSizeElement);
 
-            expect(consoleSpy).toHaveBeenCalledWith('Tutorial: Target element has no size for', 'test_tutorial');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('Tutorial: Target element has no size for', 'test_tutorial');
+            loggerSpy.mockRestore();
             zeroSizeElement.remove();
         });
 
@@ -234,12 +235,12 @@ describe('TutorialManager', () => {
         });
 
         it('should log when tutorial is shown', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
 
             manager.showHandGesture('test_tutorial', targetElement);
 
-            expect(consoleSpy).toHaveBeenCalledWith('📚 Tutorial shown: test_tutorial');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('📚 Tutorial shown: test_tutorial');
+            loggerSpy.mockRestore();
         });
 
         it('should auto-hide after default delay (4000ms)', () => {
@@ -439,12 +440,12 @@ describe('TutorialManager', () => {
         });
 
         it('should log reset message', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
 
             manager.resetTutorials();
 
-            expect(consoleSpy).toHaveBeenCalledWith('📚 All tutorials reset');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('📚 All tutorials reset');
+            loggerSpy.mockRestore();
         });
     });
 });

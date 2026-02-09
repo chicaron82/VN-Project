@@ -24,6 +24,7 @@
 import { EventBus } from '../../core/EventBus';
 import { StateManager } from '../../core/StateManager';
 import { OverlayFactory } from './OverlayFactory';
+import { Logger } from '@utils/Logger';
 
 /**
  * KonamiSystem
@@ -43,7 +44,7 @@ export class KonamiSystem {
      * Full interactive D-pad and button interface for entering the Konami code
      */
     showControllerOverlay(): void {
-        console.log('🎮 Konami Controller: Opening interactive overlay');
+        Logger.ui('🎮 Konami Controller: Opening interactive overlay');
 
         const overlay = document.createElement('div');
         overlay.id = 'konami-controller-overlay';
@@ -264,7 +265,7 @@ export class KonamiSystem {
 
             // Check for completion
             if (sequence.length === targetSequence.length) {
-                console.log('🎮 KONAMI CODE ENTERED SUCCESSFULLY!');
+                Logger.ui('🎮 KONAMI CODE ENTERED SUCCESSFULLY!');
                 this.eventBus.emit('secret_code:unlocked', { code: 'konami', name: 'Konami Code' });
 
                 // Success animation
@@ -352,7 +353,7 @@ export class KonamiSystem {
      * Show Konami INSANE Escape - Emergency protocol for INSANE mode
      */
     showInsaneEscape(): void {
-        console.log('🎮 Konami Code: INSANE MODE ESCAPE OFFERED');
+        Logger.ui('🎮 Konami Code: INSANE MODE ESCAPE OFFERED');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'error', id: 'konami-insane-overlay' });
         box.style.maxWidth = '700px';
@@ -414,7 +415,7 @@ export class KonamiSystem {
             margin-bottom: 15px;
         `;
         escapeBtn.addEventListener('click', () => {
-            console.log('🎮 Player chose to escape INSANE mode');
+            Logger.ui('🎮 Player chose to escape INSANE mode');
             this.stateManager.set('game.difficulty', 'normal');
             localStorage.setItem('konamiInsaneUsedCount', '1');
             this.overlayFactory.closeOverlay(overlay);
@@ -444,7 +445,7 @@ export class KonamiSystem {
             text-align: left;
         `;
         stayBtn.addEventListener('click', () => {
-            console.log('🎮 Player chose to stay in INSANE mode - RESPECT');
+            Logger.ui('🎮 Player chose to stay in INSANE mode - RESPECT');
             this.overlayFactory.closeOverlay(overlay);
         });
 

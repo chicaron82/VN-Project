@@ -32,6 +32,8 @@
 // TYPE DEFINITIONS
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 interface GameReference {
     uiController: {
         getMainMenuTips(): string[];
@@ -66,7 +68,7 @@ export class TipsController {
         // Cache tip elements
         this.mainMenuTipElement = document.getElementById('main-menu-tip');
         this.routeSelectTipElement = document.getElementById('route-select-tip');
-        console.log('🖤 Rotating tips system initialized');
+        Logger.ui('🖤 Rotating tips system initialized');
     }
 
     // ========================================
@@ -112,14 +114,14 @@ export class TipsController {
             }, 800); // Match CSS transition duration
         }, 8000);
 
-        console.log('🔄 Main menu tip rotation started');
+        Logger.ui('🔄 Main menu tip rotation started');
     }
 
     public stopMainMenuRotation(): void {
         if (this.mainMenuTipInterval !== null) {
             clearInterval(this.mainMenuTipInterval);
             this.mainMenuTipInterval = null;
-            console.log('⏸️ Main menu tip rotation stopped');
+            Logger.ui('⏸️ Main menu tip rotation stopped');
         }
     }
 
@@ -154,14 +156,14 @@ export class TipsController {
             }, 800); // Match CSS transition duration
         }, 8000);
 
-        console.log('🔄 Route select tip rotation started');
+        Logger.ui('🔄 Route select tip rotation started');
     }
 
     public stopRouteSelectRotation(): void {
         if (this.routeSelectTipInterval !== null) {
             clearInterval(this.routeSelectTipInterval);
             this.routeSelectTipInterval = null;
-            console.log('⏸️ Route select tip rotation stopped');
+            Logger.ui('⏸️ Route select tip rotation stopped');
         }
     }
 }
