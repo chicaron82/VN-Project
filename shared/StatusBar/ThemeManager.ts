@@ -10,12 +10,13 @@
  *
  * Events:
  *   window.addEventListener('uv7:theme:changed', (e) => {
- *     console.log(e.detail);  // { mode: 'dark', auto: false }
+ *     Logger.ui(e.detail);  // { mode: 'dark', auto: false }
  *   });
  * ═══════════════════════════════════════════════════════════════
  */
 
 import type { ThemeMode, ThemeState, ThemeManagerConfig } from './types';
+import { Logger } from '@utils/Logger';
 
 export class ThemeManager {
     private state: ThemeState;
@@ -47,7 +48,7 @@ export class ThemeManager {
         // Listen for postMessage (iframe sync)
         window.addEventListener('message', this.handleMessage.bind(this));
 
-        console.log('🎨 [ThemeManager] Initialized:', this.state);
+        Logger.ui('🎨 [ThemeManager] Initialized:', this.state);
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -209,7 +210,7 @@ export class ThemeManager {
             localStorage.setItem(this.config.storageKey, this.state.mode);
             localStorage.setItem(this.config.autoStorageKey, this.state.auto ? 'true' : 'false');
         } catch (e) {
-            console.warn('[ThemeManager] Could not save to localStorage:', e);
+            Logger.warn('[ThemeManager] Could not save to localStorage:', e);
         }
     }
 
@@ -220,7 +221,7 @@ export class ThemeManager {
     /** Handle storage events (cross-tab sync) */
     private handleStorageChange(e: StorageEvent): void {
         if (e.key === this.config.storageKey || e.key === this.config.autoStorageKey) {
-            console.log('[ThemeManager] Storage change detected, syncing...');
+            Logger.ui('[ThemeManager] Storage change detected, syncing...');
             this.state = this.loadState();
             this.applyTheme();
             this.emitChange();
@@ -231,7 +232,7 @@ export class ThemeManager {
     private handleMessage(e: MessageEvent): void {
         if (e.data?.type === 'theme-change') {
             const { auto, theme } = e.data;
-            console.log('[ThemeManager] PostMessage received:', { auto, theme });
+            Logger.ui('[ThemeManager] PostMessage received:', { auto, theme });
             this.state = { mode: theme, auto };
             this.applyTheme();
             this.emitChange();

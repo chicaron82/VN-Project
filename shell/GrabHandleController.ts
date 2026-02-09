@@ -20,6 +20,8 @@
  * "Built with love. 💚🔥💀"
  */
 
+import { Logger } from '@utils/Logger';
+
 interface GrabHandlePosition {
     top: number;
     side: 'left' | 'right';
@@ -69,14 +71,14 @@ export class GrabHandleController {
         this.sidebar = document.getElementById('uv7-sidebar');
 
         if (!this.handle) {
-            console.warn('[GrabHandle] Toggle button not found (is Sidebar initialized?)');
+            Logger.warn('[GrabHandle] Toggle button not found (is Sidebar initialized?)');
             return;
         }
 
         this.applyPosition();
         this.attachEvents();
 
-        console.log('[GrabHandle] ✅ Shell Controller Active (TypeScript)', this.position);
+        Logger.ui('[GrabHandle] ✅ Shell Controller Active (TypeScript)', this.position);
     }
 
     private attachEvents(): void {
@@ -419,7 +421,7 @@ export class GrabHandleController {
         window.dispatchEvent(new CustomEvent('uv7:sidebar-toggle', {
             detail: { source: 'grab-handle' }
         }));
-        console.log('[GrabHandle] 👆 Tap-to-toggle sidebar');
+        Logger.ui('[GrabHandle] 👆 Tap-to-toggle sidebar');
     }
 
     private flipSide(): void {
@@ -436,7 +438,7 @@ export class GrabHandleController {
             }
         }
 
-        console.log('[GrabHandle] 🔄 Flipped side ->', this.position.side);
+        Logger.ui('[GrabHandle] 🔄 Flipped side ->', this.position.side);
     }
 
     // ========================================
@@ -480,7 +482,7 @@ export class GrabHandleController {
             const saved = localStorage.getItem('uv7-grab-handle');
             if (saved) return JSON.parse(saved);
         } catch (e) {
-            console.warn('[GrabHandle] Failed to load position', e);
+            Logger.warn('[GrabHandle] Failed to load position', e);
         }
         // Default position
         return { top: 120, side: 'left' };
