@@ -55,7 +55,7 @@ import { SystemBannerController } from '../controllers/SystemBannerController';
 // Import showcase UI components
 // Sidebar and NotificationShade removed - now using UV7System
 import { SystemStatsWidget } from '../components/SystemStatsWidget';
-import { CodeComparisonModal } from '../components/CodeComparisonModal';
+// CodeComparisonModal - LAZY LOADED on first button click (274 lines saved)
 
 // Import effects
 import { initTypingEffect } from '../effects/typing-effect';
@@ -407,9 +407,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     initShowcaseCarousel();
     Logger.system('✅ Showcase carousel initialized');
 
-    // Initialize Code Comparison Modal
-    (window as any).codeComparisonModal = new CodeComparisonModal();
-    Logger.system('✅ Code Comparison Modal initialized');
+    // Initialize Code Comparison Modal (LAZY LOADED)
+    // Create proxy that lazy loads on first method call
+    let modalInstance: any = null;
+    (window as any).codeComparisonModal = {
+        open: async (comparison: any) => {
+            if (!modalInstance) {
+                Logger.system('[Lazy Loading] CodeComparisonModal...');
+                const { CodeComparisonModal } = await import('../components/CodeComparisonModal');
+                modalInstance = new CodeComparisonModal();
+                Logger.system('✅ Code Comparison Modal loaded');
+            }
+            modalInstance.open(comparison);
+        }
+    };
+    Logger.system('✅ Code Comparison Modal proxy initialized (lazy)');
 
     // Listen for messages from parent shell (when running in iframe)
     if (isInShell) {
