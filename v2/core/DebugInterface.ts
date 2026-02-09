@@ -14,6 +14,7 @@ import { DirectorsCutController } from '../controllers/DirectorsCutController';
 import { DevCommentarySystem } from '../systems/DevCommentarySystem';
 import { StatusNotificationController } from '../systems/StatusNotificationController';
 import { NotificationRail } from '../ui/components/NotificationRail';
+import { Logger } from '@utils/Logger';
 
 /**
  * DebugInterface - window.uv7 debug helpers setup
@@ -187,6 +188,6 @@ export class DebugInterface {
             clearNotifications: () => systems.eventBus.emit('notification:clear_all', {}),
         };
 
-        console.log('[UV7 V2] Debug: window.uv7 available');
+        Logger.ui('[UV7 V2] Debug: window.uv7 available');
     }
 }
