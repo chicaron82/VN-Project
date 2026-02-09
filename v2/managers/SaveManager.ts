@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import type { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * SaveManager - Browser localStorage save/load system
@@ -130,7 +131,7 @@ export class SaveManager {
         this.eventBus = eventBus;
         this.stateManager = stateManager;
 
-        console.log('✅ SaveManager initialized');
+        Logger.save('✅ SaveManager initialized');
     }
 
     // ========================================
@@ -145,7 +146,7 @@ export class SaveManager {
     public saveGame(slotNumber: number | null, isAutoSave: boolean = false, customLabel: string | null = null): boolean {
         // Mutex: Prevent concurrent save operations
         if (this.saveInProgress) {
-            console.warn('⚠️ Save already in progress, ignoring duplicate request');
+            Logger.warn('⚠️ Save already in progress, ignoring duplicate request');
             return false;
         }
 
@@ -154,7 +155,7 @@ export class SaveManager {
         try {
             // Check if saves are blocked (Despair sabotage)
             if (this.savesBlocked) {
-                console.log('Save blocked by Despair Echo');
+                Logger.save('Save blocked by Despair Echo');
 
                 // EMOTIONAL FEEDBACK: Triple denial buzz + visual shake (MANUAL SAVES ONLY)
                 // DIZEE FIX: Don't buzz on auto-save attempts (too overwhelming)
@@ -179,7 +180,7 @@ export class SaveManager {
 
             try {
                 localStorage.setItem(key, JSON.stringify(saveData));
-                console.log(`Game saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
+                Logger.save(`Game saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
 
                 // DIZEE: Save note discovery data
                 this.saveNoteDiscovery(slotNumber, isAutoSave);
@@ -199,12 +200,12 @@ export class SaveManager {
 
                 return true;
             } catch (error) {
-                console.error('Save failed:', error);
+                Logger.error('Save failed:', error);
                 this.showSaveIndicator('Save failed!', true);
                 return false;
             }
         } catch (error) {
-            console.error('Unexpected error in saveGame:', error);
+            Logger.error('Unexpected error in saveGame:', error);
             return false;
         } finally {
             // Always release mutex
@@ -221,7 +222,7 @@ export class SaveManager {
 
         // Guard: Can't save without an active route
         if (!route) {
-            console.warn('💾 Cannot create save data: No active route');
+            Logger.warn('💾 Cannot create save data: No active route');
             return null;
         }
 
@@ -289,9 +290,9 @@ export class SaveManager {
 
         try {
             localStorage.setItem(key, JSON.stringify(discoveryData));
-            console.log(`📧 Note discovery saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
+            Logger.save(`📧 Note discovery saved to ${isAutoSave ? 'auto-save' : 'slot ' + slotNumber}`);
         } catch (e) {
-            console.error('Failed to save note discovery data:', e);
+            Logger.error('Failed to save note discovery data:', e);
         }
     }
 
@@ -308,7 +309,7 @@ export class SaveManager {
         try {
             return JSON.parse(saved);
         } catch (e) {
-            console.error('Failed to load note discovery data:', e);
+            Logger.error('Failed to load note discovery data:', e);
             return null;
         }
     }
@@ -328,7 +329,7 @@ export class SaveManager {
         try {
             const saveDataString = localStorage.getItem(key);
             if (!saveDataString) {
-                console.log('No save data found in slot:', slotNumber);
+                Logger.save('No save data found in slot:', slotNumber);
                 return null;
             }
 
@@ -336,7 +337,7 @@ export class SaveManager {
 
             // Validate save data
             if (!this.validateSaveData(saveData)) {
-                console.error('Invalid save data');
+                Logger.error('Invalid save data');
                 return null;
             }
 
@@ -347,7 +348,7 @@ export class SaveManager {
 
             return saveData;
         } catch (error) {
-            console.error('Load failed:', error);
+            Logger.error('Load failed:', error);
             return null;
         }
     }
@@ -372,7 +373,7 @@ export class SaveManager {
      * V1 Parity: Complete restoration of all systems
      */
     public restoreGameState(saveData: SaveData): void {
-        console.log('🔄 Restoring game state from save...');
+        Logger.save('🔄 Restoring game state from save...');
 
         // Restore loop version (LIVING VERSION)
         if (saveData.version) {
@@ -405,7 +406,7 @@ export class SaveManager {
         if (saveData.routeName === 'ronnie') {
             // Initialize Ronnie's route
             // Note: Route initialization will be handled by game engine
-            console.log('💙 Loading Ronnie route...');
+            Logger.save('💙 Loading Ronnie route...');
 
             // Show hold-on button if available
             if (this.game.holdOnButton) {
@@ -413,7 +414,7 @@ export class SaveManager {
             }
         } else {
             // Initialize Tori's route
-            console.log('🖤 Loading Tori route...');
+            Logger.save('🖤 Loading Tori route...');
         }
 
         // Get the route instance (will be set by game engine)
@@ -453,7 +454,7 @@ export class SaveManager {
             this.game.collectiblesManager.collectedNotes = new Set(discoveryData.collectedNotes);
         }
 
-        console.log('✅ Game state restored');
+        Logger.save('✅ Game state restored');
     }
 
     /**
@@ -461,7 +462,7 @@ export class SaveManager {
      * V1 Parity: Scene jumping functionality
      */
     private jumpToScene(route: RouteInstance, sceneId: string): void {
-        console.log(`🎬 Jumping to scene: ${sceneId}`);
+        Logger.save(`🎬 Jumping to scene: ${sceneId}`);
 
         // Robust scene ID validation
         // Check if scene exists as a method on the route
@@ -479,7 +480,7 @@ export class SaveManager {
                         (sceneFunction as () => void).call(route);
                     }
                 } catch (error) {
-                    console.error(`Failed to jump to scene ${sceneId}:`, error);
+                    Logger.error(`Failed to jump to scene ${sceneId}:`, error);
                     // Fallback: Start route from beginning
                     if (route.start && typeof route.start === 'function') {
                         route.start();
@@ -487,7 +488,7 @@ export class SaveManager {
                 }
             }
         } else {
-            console.warn(`Scene ${sceneId} not found on route, starting from beginning`);
+            Logger.warn(`Scene ${sceneId} not found on route, starting from beginning`);
             if (route.start && typeof route.start === 'function') {
                 route.start();
             }
@@ -560,7 +561,7 @@ export class SaveManager {
             const totalCollected = noteIds.length;
             const totalNotes = this.game.collectiblesManager.totalNotes;
             // UI update would be handled by collectibles manager
-            console.log(`📧 Restored ${totalCollected}/${totalNotes} notes`);
+            Logger.save(`📧 Restored ${totalCollected}/${totalNotes} notes`);
         }
     }
 
@@ -609,7 +610,7 @@ export class SaveManager {
     public deleteSave(slotNumber: number): void {
         localStorage.removeItem(this.savePrefix + slotNumber);
         localStorage.removeItem(`noteDiscovery_slot${slotNumber}`);
-        console.log(`🗑️ Deleted save slot ${slotNumber}`);
+        Logger.save(`🗑️ Deleted save slot ${slotNumber}`);
     }
 
     /**
@@ -707,7 +708,7 @@ export class SaveManager {
      */
     public blockSaves(): void {
         this.savesBlocked = true;
-        console.log('🚫 Saves blocked by Despair Echo');
+        Logger.save('🚫 Saves blocked by Despair Echo');
     }
 
     /**
@@ -715,7 +716,7 @@ export class SaveManager {
      */
     public unblockSaves(): void {
         this.savesBlocked = false;
-        console.log('✅ Saves unblocked');
+        Logger.save('✅ Saves unblocked');
     }
 
     // ========================================
