@@ -11,6 +11,7 @@ import { TIMELINE_DATA, type BlogEntry } from '../../data/blog';
 import { timelineAnimations } from './BlogAnimations';
 import { FunMetricsDashboard } from './FunMetricsDashboard';
 import { createEntryElement } from './EntryCardBuilder';
+import { Logger } from '@utils/Logger';
 
 export class BlogRenderer {
     private container: HTMLElement | null;
@@ -111,7 +112,7 @@ export class BlogRenderer {
     }
 
     private setupInteractions(): void {
-        console.info('🍽️ Timeline interactions initialized');
+        Logger.ui('🍽️ Timeline interactions initialized');
     }
 
     private renderStatsContainer(): void {
@@ -135,7 +136,7 @@ export class BlogRenderer {
             this.container?.insertBefore(this.statsContainer, this.container.firstChild);
         }
 
-        console.info('📊 [Phase 2] Fun Stats dashboard rendered');
+        Logger.ui('📊 [Phase 2] Fun Stats dashboard rendered');
     }
 
 
@@ -151,7 +152,7 @@ export class BlogRenderer {
         });
 
         this.applyLogic();
-        console.info('📜 Loaded Project History');
+        Logger.ui('📜 Loaded Project History');
     }
 
     // --- CORE LOGIC ---
