@@ -10,6 +10,8 @@
  * V2 uses EventBus - systems talk through events, not direct references.
  */
 
+import { Logger } from '@utils/Logger';
+
 /**
  * Game event type definitions
  * Extend this type as new events are added
@@ -357,7 +359,7 @@ export class EventBus {
       try {
         snooper(event, data);
       } catch (error) {
-        console.error('Error in event snooper:', error);
+        Logger.error('Error in event snooper:', error);
       }
     });
 
@@ -368,7 +370,7 @@ export class EventBus {
         try {
           callback(data);
         } catch (error) {
-          console.error(`Error in event callback for ${event}:`, error);
+          Logger.error(`Error in event callback for ${event}:`, error);
         }
       });
     }
