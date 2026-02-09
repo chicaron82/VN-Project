@@ -2,14 +2,19 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { DirectorsCutController } from './DirectorsCutController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 describe('DirectorsCutController', () => {
     let controller: DirectorsCutController;
     let eventBus: EventBus;
     let stateManager: StateManager;
+    let prevLoggerEnabled: boolean;
 
 
     beforeEach(() => {
+        prevLoggerEnabled = Logger.getConfig().enabled;
+        Logger.setEnabled(false);
+
         eventBus = new EventBus();
         stateManager = new StateManager(eventBus, {});
 
@@ -20,6 +25,8 @@ describe('DirectorsCutController', () => {
     });
 
     afterEach(() => {
+        Logger.setEnabled(prevLoggerEnabled);
+
         // Clean up any overlays
         document.querySelectorAll('#directors-cut-overlay').forEach(el => el.remove());
         // Clean up style tags
@@ -33,11 +40,11 @@ describe('DirectorsCutController', () => {
         });
 
         it('should log initialization message', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
             new DirectorsCutController(eventBus, stateManager);
 
-            expect(consoleSpy).toHaveBeenCalledWith('🎬 DirectorsCutController initialized');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('🎬 DirectorsCutController initialized');
+            loggerSpy.mockRestore();
         });
     });
 
@@ -59,22 +66,22 @@ describe('DirectorsCutController', () => {
         });
 
         it('should log when unlocking', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
 
             controller.unlock();
 
-            expect(consoleSpy).toHaveBeenCalledWith('🎬 Director\'s Cut unlocked');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('🎬 Director\'s Cut unlocked');
+            loggerSpy.mockRestore();
         });
     });
 
     describe('Show Director\'s Cut - Locked State', () => {
         it('should log warning when locked', () => {
-            const consoleSpy = vi.spyOn(console, 'warn');
+            const loggerSpy = vi.spyOn(Logger, 'warn');
             controller.show();
 
-            expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Director\'s Cut is locked'));
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('Director\'s Cut is locked'));
+            loggerSpy.mockRestore();
         });
 
         it('should not create overlay when locked', () => {
@@ -143,12 +150,12 @@ describe('DirectorsCutController', () => {
 
 
         it('should log when showing', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'ui');
 
             controller.show();
 
-            expect(consoleSpy).toHaveBeenCalledWith('🎬 Director\'s Cut shown');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('🎬 Director\'s Cut shown');
+            loggerSpy.mockRestore();
         });
 
         it('should not show multiple overlays simultaneously', () => {

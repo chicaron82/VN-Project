@@ -7,6 +7,7 @@
 import type { EventBus } from '../core/EventBus';
 import type { StateManager } from '../core/StateManager';
 import { GameConfig } from '../core/GameConfig';
+import { Logger } from '@utils/Logger';
 
 export interface CrewStatement {
     name: string;
@@ -32,7 +33,7 @@ export class DirectorsCutController {
     private escapeHandler: ((e: KeyboardEvent) => void) | null = null;
 
     constructor(_eventBus: EventBus, _stateManager: StateManager) {
-        console.log('🎬 DirectorsCutController initialized');
+        Logger.ui('🎬 DirectorsCutController initialized');
     }
 
     // ========================================
@@ -46,7 +47,7 @@ export class DirectorsCutController {
         // Check if unlocked
         const unlocked = localStorage.getItem('directorsCutUnlocked') === 'true';
         if (!unlocked) {
-            console.warn('🔒 Director\'s Cut is locked. Find the secret code to unlock it!');
+            Logger.warn('🔒 Director\'s Cut is locked. Find the secret code to unlock it!');
             return;
         }
 
@@ -107,7 +108,7 @@ export class DirectorsCutController {
         // Add to DOM
         document.body.appendChild(overlay);
 
-        console.log('🎬 Director\'s Cut shown');
+        Logger.ui('🎬 Director\'s Cut shown');
     }
 
     // ========================================
@@ -256,6 +257,6 @@ export class DirectorsCutController {
      */
     public unlock(): void {
         localStorage.setItem('directorsCutUnlocked', 'true');
-        console.log('🎬 Director\'s Cut unlocked');
+        Logger.ui('🎬 Director\'s Cut unlocked');
     }
 }
