@@ -1,6 +1,7 @@
 
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 export interface Achievement {
     id: string;
@@ -139,7 +140,7 @@ export class AchievementSystem {
                 });
             }
         } catch (e) {
-            console.error('Failed to load achievements', e);
+            Logger.error('Failed to load achievements', e);
         }
     }
 
@@ -147,7 +148,7 @@ export class AchievementSystem {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.achievements));
         } catch (e) {
-            console.error('Failed to save achievements', e);
+            Logger.error('Failed to save achievements', e);
         }
     }
 
@@ -160,7 +161,7 @@ export class AchievementSystem {
             achievement.unlockedAt = Date.now();
             this.saveAchievements();
 
-            console.log(`🏆 Achievement Unlocked: ${achievement.name}`);
+            Logger.achievement(`🏆 Achievement Unlocked: ${achievement.name}`);
 
             // Emit event for UI to pick up
             // Note: If calling from 'achievement:unlock' listener, this might loop if not careful.
@@ -188,27 +189,27 @@ export class AchievementSystem {
 
     public startRouteTimer() {
         // TODO: Implement Speed Runner timer logic
-        console.log('🏆 [AchievementSystem] startRouteTimer called');
+        Logger.achievement('🏆 [AchievementSystem] startRouteTimer called');
     }
 
     public checkArchivist() {
         // TODO: Implement Archivist check via CollectiblesSystem
-        console.log('🏆 [AchievementSystem] checkArchivist called');
+        Logger.achievement('🏆 [AchievementSystem] checkArchivist called');
     }
 
     public checkExplorer() {
         // TODO: Implement Explorer check via BacklogManager
-        console.log('🏆 [AchievementSystem] checkExplorer called');
+        Logger.achievement('🏆 [AchievementSystem] checkExplorer called');
     }
 
     public checkPetParent() {
         // TODO: Implement Pet Parent check via ToriGatchi
-        console.log('🏆 [AchievementSystem] checkPetParent called');
+        Logger.achievement('🏆 [AchievementSystem] checkPetParent called');
     }
 
     public checkTimeTravel(endingId: string) {
         // TODO: Implement Time Traveler / Endings checks
-        console.log(`🏆 [AchievementSystem] checkTimeTravel called for ${endingId}`);
+        Logger.achievement(`🏆 [AchievementSystem] checkTimeTravel called for ${endingId}`);
         // Basic check: Unlock ending achievement if exists
         this.unlock(endingId);
         this.unlock('time_traveler');
@@ -217,11 +218,11 @@ export class AchievementSystem {
 
     public checkSpeedRunner() {
         // TODO: Implement Speed Runner check
-        console.log('🏆 [AchievementSystem] checkSpeedRunner called');
+        Logger.achievement('🏆 [AchievementSystem] checkSpeedRunner called');
     }
 
     public checkInsane() {
         // TODO: Implement Insane check
-        console.log('🏆 [AchievementSystem] checkInsane called');
+        Logger.achievement('🏆 [AchievementSystem] checkInsane called');
     }
 }
