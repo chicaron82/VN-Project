@@ -174,7 +174,7 @@ export class StateManager {
    * 
    * @example
    * const unsubscribe = stateManager.subscribe('tether.level', (newLevel, oldLevel) => {
-   *   console.log(`Tether: ${oldLevel} → ${newLevel}`);
+  *   console['log'](`Tether: ${oldLevel} → ${newLevel}`);
    * });
    * 
    * // Later:
