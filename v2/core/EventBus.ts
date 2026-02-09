@@ -304,7 +304,7 @@ export class EventBus {
    * 
    * @example
    * const unsubscribe = eventBus.on('scene:load', (data) => {
-   *   console.log(`Scene loaded: ${data.sceneId}`);
+  *   console['log'](`Scene loaded: ${data.sceneId}`);
    * });
    * 
    * // Later:
