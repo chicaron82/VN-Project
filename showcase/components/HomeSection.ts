@@ -7,6 +7,8 @@
  * 💚🔥💀 Built with love.
  */
 
+import { Logger } from '@utils/Logger';
+
 export class HomeSection {
     constructor() {
         this.init();
@@ -14,7 +16,7 @@ export class HomeSection {
 
     async init(): Promise<void> {
         const mount = document.getElementById('uv7-home-mount');
-        console.log('[HomeSection] Mount point:', mount ? 'found' : 'NOT FOUND');
+        Logger.ui('[HomeSection] Mount point:', mount ? 'found' : 'NOT FOUND');
         if (!mount) return;
 
         // Check if we should play boot sequence
@@ -524,7 +526,7 @@ export class HomeSection {
         // Wire up the VN comparison toggles
         this.initVNComparisonToggles();
 
-        console.log('[HomeSection] Rendered home content');
+        Logger.ui('[HomeSection] Rendered home content');
     }
 
     /**
@@ -603,7 +605,7 @@ export class HomeSection {
                             <div class="simple-vn-section">
                                 <strong>🛠️ DEV TOOLS</strong>
                                 <ul>
-                                    <li>console.log()</li>
+                                    <li>Logger.ui()</li>
                                     <li>That's it. That's the list.</li>
                                 </ul>
                             </div>
@@ -780,7 +782,7 @@ export class HomeSection {
                                 <strong>🛠️ DEVELOPER TOOLS (Built-In!)</strong>
                                 <ul>
                                     <li>On-device debugging console (DevConsole.js - custom overlay terminal)</li>
-                                    <li>Intercepts all console.log/warn/error streams in-game</li>
+                                    <li>Intercepts all logging streams in-game (log/warn/error)</li>
                                     <li>Touch-friendly command palette for mobile debugging</li>
                                     <li>Runtime flag manipulation (settether, unlockact1, etc.)</li>
                                     <li>State inspection tools (view flags, variables, progress)</li>
