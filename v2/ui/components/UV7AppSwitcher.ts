@@ -21,6 +21,7 @@ import { AppCatalog } from './appswitcher/AppCatalog';
 import { AppSwitcherSaveManager } from './appswitcher/AppSwitcherSaveManager';
 import { AppCardRenderer } from './appswitcher/AppCardRenderer';
 import type { AppDefinition } from './appswitcher/AppCatalog';
+import { Logger } from '@utils/Logger';
 
 // ═══════════════════════════════════════════════════════════════
 // LOCAL TYPE DEFINITIONS
@@ -118,7 +119,7 @@ export class UV7AppSwitcher {
         // Phase 26c: Start background monitoring (extracted to BackgroundMonitor.ts)
         this.backgroundMonitor.start();
 
-        console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
+        Logger.ui('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
     }
 
     // ═══════════════════════════════════════════════════════════════

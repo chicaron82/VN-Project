@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 import '@ui/styles/main.css';
 
 export class GameLayout {
@@ -54,7 +55,7 @@ export class GameLayout {
             root.innerHTML = ''; // Clear loading/static content
             root.appendChild(this.container);
         } else {
-            console.error(`Root element #${containerId} not found`);
+            Logger.error(`Root element #${containerId} not found`);
         }
     }
 

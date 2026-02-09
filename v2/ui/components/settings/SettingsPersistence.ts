@@ -17,6 +17,7 @@
 
 import { EventBus } from '../../../core/EventBus';
 import { SettingsSystem } from '../../../systems/SettingsSystem';
+import { Logger } from '@utils/Logger';
 import type { GameSettings } from '../SettingsModal';
 
 /**
@@ -69,7 +70,7 @@ export class SettingsPersistence {
                 const parsed = JSON.parse(saved);
                 return { ...defaults, ...parsed };
             } catch (e) {
-                console.error('Failed to parse saved settings:', e);
+                Logger.error('Failed to parse saved settings:', e);
                 return { ...defaults };
             }
         }
