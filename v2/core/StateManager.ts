@@ -211,7 +211,7 @@ export class StateManager {
       localStorage.setItem(this.persistenceKey, serialized);
       this.isDirty = false;
     } catch (error) {
-      console.error('Failed to save state:', error);
+      Logger.error('Failed to save state:', error);
     }
   }
 
@@ -238,14 +238,14 @@ export class StateManager {
           try {
             callback(value, undefined);
           } catch (error) {
-            console.error(`Error in state subscription for ${path}:`, error);
+            Logger.error(`Error in state subscription for ${path}:`, error);
           }
         });
       });
 
       return true;
     } catch (error) {
-      console.error('Failed to load state:', error);
+      Logger.error('Failed to load state:', error);
       return false;
     }
   }
@@ -272,7 +272,7 @@ export class StateManager {
         try {
           callback(value, oldValue);
         } catch (error) {
-          console.error(`Error in state subscription for ${path}:`, error);
+          Logger.error(`Error in state subscription for ${path}:`, error);
         }
       });
     });
@@ -320,7 +320,7 @@ export class StateManager {
         try {
           callback(newValue, oldValue);
         } catch (error) {
-          console.error(`Error in state subscription for ${path}:`, error);
+          Logger.error(`Error in state subscription for ${path}:`, error);
         }
       });
     }
@@ -507,7 +507,7 @@ export class StateManager {
    */
   restoreSnapshot(snapshot: Snapshot): boolean {
     if (!snapshot || !snapshot.state) {
-      console.error('❌ Invalid snapshot');
+      Logger.error('❌ Invalid snapshot');
       return false;
     }
 
@@ -539,7 +539,7 @@ export class StateManager {
    */
   quickLoad(name: string = 'quicksave'): boolean {
     if (!this.quickSaves[name]) {
-      console.error(`❌ No quick save found: ${name}`);
+      Logger.error(`❌ No quick save found: ${name}`);
       return false;
     }
     return this.restoreSnapshot(this.quickSaves[name]);
@@ -591,11 +591,10 @@ export class StateManager {
   printDiff(snapshot1: Snapshot | Record<string, unknown>, snapshot2?: Snapshot | Record<string, unknown> | null): StateDiff[] {
     const diffs = this.diff(snapshot1, snapshot2);
     if (diffs.length === 0) {
-      console.log('✅ No differences found');
+      Logger.state('✅ No differences found');
       return diffs;
     }
-    console.log('📊 State Differences:');
-    console.table(diffs);
+    Logger.state('📊 State Differences:', diffs);
     return diffs;
   }
 
@@ -613,7 +612,7 @@ export class StateManager {
       state: this.deepClone(this.state)
     };
     const json = JSON.stringify(exportData, null, 2);
-    console.log('📤 State exported to JSON');
+    Logger.state('📤 State exported to JSON');
     return json;
   }
 
@@ -624,10 +623,10 @@ export class StateManager {
     try {
       const json = this.exportState();
       await navigator.clipboard.writeText(json);
-      console.log('📋 State copied to clipboard!');
+      Logger.state('📋 State copied to clipboard!');
       return true;
     } catch (error) {
-      console.error('❌ Failed to copy to clipboard:', error);
+      Logger.error('❌ Failed to copy to clipboard:', error);
       return false;
     }
   }
@@ -640,7 +639,7 @@ export class StateManager {
       const importData = JSON.parse(json) as { version?: number; timestamp?: number; state?: Record<string, unknown> };
 
       if (!importData.state) {
-        console.error('❌ Invalid import data: missing state');
+        Logger.error('❌ Invalid import data: missing state');
         return false;
       }
 
@@ -652,10 +651,10 @@ export class StateManager {
       this.state = this.deepClone(importData.state);
       this.isDirty = true;
 
-      console.log(`📥 State imported (from ${new Date(importData.timestamp || Date.now()).toLocaleString()})`);
+      Logger.state(`📥 State imported (from ${new Date(importData.timestamp || Date.now()).toLocaleString()})`);
       return true;
     } catch (error) {
-      console.error('❌ Failed to import state:', error);
+      Logger.error('❌ Failed to import state:', error);
       return false;
     }
   }
@@ -668,11 +667,11 @@ export class StateManager {
    * Watch a path and log all changes (for debugging)
    */
   watch(path: string): () => void {
-    console.log(`👀 Watching: ${path}`);
+    Logger.state(`👀 Watching: ${path}`);
 
     const unsubscribe = this.subscribe(path, (newValue, oldValue) => {
       const timestamp = new Date().toLocaleTimeString();
-      console.log(`📊 [${timestamp}] ${path}: ${JSON.stringify(oldValue)} → ${JSON.stringify(newValue)}`);
+      Logger.state(`📊 [${timestamp}] ${path}: ${JSON.stringify(oldValue)} → ${JSON.stringify(newValue)}`);
     });
 
     this.watchers.set(path, unsubscribe);
@@ -687,7 +686,7 @@ export class StateManager {
     if (unsub) {
       unsub();
       this.watchers.delete(path);
-      console.log(`🔇 Stopped watching: ${path}`);
+      Logger.state(`🔇 Stopped watching: ${path}`);
     }
   }
 
@@ -697,7 +696,7 @@ export class StateManager {
   unwatchAll(): void {
     this.watchers.forEach((unsub, path) => {
       unsub();
-      console.log(`🔇 Stopped watching: ${path}`);
+      Logger.state(`🔇 Stopped watching: ${path}`);
     });
     this.watchers.clear();
   }
@@ -708,9 +707,9 @@ export class StateManager {
   listWatchers(): string[] {
     const paths = [...this.watchers.keys()];
     if (paths.length === 0) {
-      console.log('👀 No active watchers');
+      Logger.state('👀 No active watchers');
     } else {
-      console.log('👀 Active watchers:', paths);
+      Logger.state('👀 Active watchers:', paths);
     }
     return paths;
   }
@@ -740,7 +739,7 @@ export class StateManager {
     if (lastKey !== undefined && lastKey in current) {
       delete current[lastKey];
       this.isDirty = true;
-      console.log(`🗑️ Deleted path: ${path}`);
+      Logger.state(`🗑️ Deleted path: ${path}`);
       return true;
     }
     return false;
@@ -782,7 +781,7 @@ export class StateManager {
   size(): number {
     const json = JSON.stringify(this.state);
     const bytes = new Blob([json]).size;
-    console.log(`📦 State size: ${bytes} bytes (${(bytes / 1024).toFixed(2)} KB)`);
+    Logger.state(`📦 State size: ${bytes} bytes (${(bytes / 1024).toFixed(2)} KB)`);
     return bytes;
   }
 
@@ -792,12 +791,12 @@ export class StateManager {
   merge(path: string, obj: Record<string, unknown>): boolean {
     const existing = (this.get(path) || {}) as Record<string, unknown>;
     if (typeof existing !== 'object' || typeof obj !== 'object') {
-      console.error('❌ merge() requires objects');
+      Logger.error('❌ merge() requires objects');
       return false;
     }
     const merged = { ...existing, ...obj };
     this.set(path, merged);
-    console.log(`🔀 Merged into ${path}`);
+    Logger.state(`🔀 Merged into ${path}`);
     return true;
   }
 
@@ -807,7 +806,7 @@ export class StateManager {
   increment(path: string, amount: number = 1): number {
     const current = (this.get(path) || 0) as number;
     if (typeof current !== 'number') {
-      console.error('❌ increment() requires numeric path');
+      Logger.error('❌ increment() requires numeric path');
       return current;
     }
     const newValue = current + amount;
@@ -834,7 +833,7 @@ export class StateManager {
       this.set(path, value);
       results[path] = true;
     }
-    console.log(`📦 Batch set ${Object.keys(pathValuePairs).length} values`);
+    Logger.state(`📦 Batch set ${Object.keys(pathValuePairs).length} values`);
     return results;
   }
 
@@ -879,7 +878,7 @@ export class StateManager {
       isDirty: this.isDirty
     };
 
-    console.log('📊 StateManager Stats:', stats);
+    Logger.state('📊 StateManager Stats:', stats);
     return stats;
   }
 
@@ -891,17 +890,17 @@ export class StateManager {
    * Print state tree to console
    */
   debug(): void {
-    console.log('🔍 Current State:');
-    console.log(JSON.stringify(this.state, null, 2));
+    Logger.state('🔍 Current State:');
+    Logger.state(JSON.stringify(this.state, null, 2));
   }
 
   /**
    * List all active subscriptions
    */
   listSubscriptions(): void {
-    console.log('👂 Active Subscriptions:');
+    Logger.state('👂 Active Subscriptions:');
     this.subscribers.forEach((subs, path) => {
-      console.log(`  ${path}: ${subs.size} subscriber(s)`);
+      Logger.state(`  ${path}: ${subs.size} subscriber(s)`);
     });
   }
 

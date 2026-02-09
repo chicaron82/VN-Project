@@ -1,6 +1,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { GameEngine } from '../core/GameEngine';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -102,7 +103,7 @@ export class TimeMachineSystem {
         // For assigning unique IDs
         this._nextId = 1;
 
-        console.log('⏰ Time Machine System initialized');
+        Logger.system('⏰ Time Machine System initialized');
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -164,13 +165,13 @@ export class TimeMachineSystem {
 
         // Don't save snapshots with no meaningful state (e.g., during initialization)
         if (!snapshot.routeId && !snapshot.sceneId) {
-            console.log(`⏰ Skipping snapshot (no route/scene): ${label || `#${snapshot.id}`}`);
+            Logger.state(`⏰ Skipping snapshot (no route/scene): ${label || `#${snapshot.id}`}`);
             return null;
         }
 
         this.entries.push(snapshot);
         this.pruneIfNeeded();
-        console.log(`⏰ Snapshot added: ${label || `#${snapshot.id}`} [${priority}]`);
+        Logger.state(`⏰ Snapshot added: ${label || `#${snapshot.id}`} [${priority}]`);
 
         // DIZEE: Show optional commentary hint for first entry
         if (this.entries.length === 1) {
@@ -241,13 +242,13 @@ export class TimeMachineSystem {
             // Rebuild entries (keeping anchors and high priority)
             this.entries = [...anchors, ...high, ...normal, ...low];
 
-            console.log(`⏰ Pruned ${removed.length} snapshots (smart strategy)`);
+            Logger.state(`⏰ Pruned ${removed.length} snapshots (smart strategy)`);
         } else {
             // Simple FIFO
             while (this.entries.length > this.maxEntries) {
                 const removed = this.entries.shift();
                 if (removed) {
-                    console.log(`⏰ Pruned snapshot #${removed.id} (FIFO)`);
+                    Logger.state(`⏰ Pruned snapshot #${removed.id} (FIFO)`);
                 }
             }
         }
@@ -279,21 +280,21 @@ export class TimeMachineSystem {
 
         entry.corrupted = true;
         entry.corruptionMode = mode;
-        console.log(`⚠️ Snapshot #${id} corrupted (${mode})`);
+        Logger.state(`⚠️ Snapshot #${id} corrupted (${mode})`);
     }
 
     public burnEntry(id: number): void {
         const entry = this.getEntryById(id);
         if (!entry) return;
         entry.burned = true;
-        console.log(`🔥 Snapshot #${id} burned - unreachable`);
+        Logger.state(`🔥 Snapshot #${id} burned - unreachable`);
     }
 
     public lockEntry(id: number): void {
         const entry = this.getEntryById(id);
         if (!entry) return;
         entry.locked = true;
-        console.log(`🔒 Snapshot #${id} locked`);
+        Logger.state(`🔒 Snapshot #${id} locked`);
     }
 
     /**
@@ -307,7 +308,7 @@ export class TimeMachineSystem {
                 count++;
             }
         });
-        console.log(`🔥 Burned ${count} snapshots`);
+        Logger.state(`🔥 Burned ${count} snapshots`);
     }
 
     /**
@@ -325,7 +326,7 @@ export class TimeMachineSystem {
                 count++;
             }
         });
-        console.log(`⚠️ Corrupted ${count} snapshots (${mode})`);
+        Logger.state(`⚠️ Corrupted ${count} snapshots (${mode})`);
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -392,13 +393,13 @@ export class TimeMachineSystem {
         const entry = this.getEntryById(entryId);
 
         if (!entry) {
-            console.warn(`⏰ Jump failed: Entry #${entryId} not found`);
+            Logger.warn(`⏰ Jump failed: Entry #${entryId} not found`);
             return false;
         }
 
         if (!this.canJumpTo(entry, { ignoreRules })) {
             const reason = this.getBlockReason(entry);
-            console.log(`⏰ Jump blocked: ${reason}`);
+            Logger.state(`⏰ Jump blocked: ${reason}`);
 
             // Sensory denial cue
             const gameFlags = this.stateManager.get('game.flags') as { insaneModeLocked?: boolean } | undefined;
@@ -419,7 +420,7 @@ export class TimeMachineSystem {
         }
 
         // Perform actual restore
-        console.log(`⏰ Jumping to snapshot #${entry.id}: ${entry.label || '(unlabeled)'}`);
+        Logger.state(`⏰ Jumping to snapshot #${entry.id}: ${entry.label || '(unlabeled)'}`);
         await this.restoreSnapshot(entry);
         return true;
     }
@@ -435,31 +436,31 @@ export class TimeMachineSystem {
         // 1) Tell the engine to load the right scene
         if (entry.sceneId) {
             this.engine.loadScene(entry.sceneId);
-            console.log(`⏰ Scene restored: ${entry.sceneId}`);
+            Logger.state(`⏰ Scene restored: ${entry.sceneId}`);
         }
 
         // 2) Restore tether
         if (typeof entry.tether === 'number') {
             this.stateManager.set('game.tether', entry.tether);
             this.eventBus.emit('tether:set', { value: entry.tether });
-            console.log(`⏰ Tether restored: ${entry.tether}`);
+            Logger.state(`⏰ Tether restored: ${entry.tether}`);
         }
 
         // 3) Restore flags
         if (entry.flags && Object.keys(entry.flags).length > 0) {
             this.stateManager.set('game.flags', entry.flags);
-            console.log('⏰ Flags restored');
+            Logger.state('⏰ Flags restored');
         }
 
         // 4) Restore visual state (background, sprites)
         if (entry.bgKey) {
             this.stateManager.set('game.currentBackground', entry.bgKey);
-            console.log(`⏰ Background restored: ${entry.bgKey}`);
+            Logger.state(`⏰ Background restored: ${entry.bgKey}`);
         }
 
         if (entry.spriteKey) {
             this.stateManager.set('game.currentSprite', entry.spriteKey);
-            console.log(`⏰ Sprite restored: ${entry.spriteKey}`);
+            Logger.state(`⏰ Sprite restored: ${entry.spriteKey}`);
         }
 
         // Emit state restore event
@@ -473,7 +474,7 @@ export class TimeMachineSystem {
         // Sensory feedback for successful jump
         this.eventBus.emit('visual:cue', { type: 'timelineGlitch', channel: 'narrative' });
 
-        console.log('⏰ Snapshot restoration complete');
+        Logger.state('⏰ Snapshot restoration complete');
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -484,10 +485,10 @@ export class TimeMachineSystem {
      * Print all entries to console for debugging
      */
     public inspect(): void {
-        console.group('⏰ TIME MACHINE INSPECTOR');
-        console.log(`Total entries: ${this.entries.length}/${this.maxEntries}`);
-        console.log(`Prune strategy: ${this.pruneStrategy}`);
-        console.log('');
+        Logger.debug('⏰ TIME MACHINE INSPECTOR');
+        Logger.debug(`Total entries: ${this.entries.length}/${this.maxEntries}`);
+        Logger.debug(`Prune strategy: ${this.pruneStrategy}`);
+        Logger.debug('');
 
         this.entries.forEach((entry) => {
             const flags: string[] = [];
@@ -496,17 +497,14 @@ export class TimeMachineSystem {
             if (entry.corrupted) flags.push(`⚠️ CORRUPTED (${entry.corruptionMode})`);
             if (entry.insaneBlocked) flags.push('💀 INSANE-BLOCKED');
 
-            console.group(`#${entry.id} [${entry.priority}] ${entry.label || '(unlabeled)'}`);
-            console.log(`Route: ${entry.routeId} | Scene: ${entry.sceneId} | Page: ${entry.pageIndex}`);
-            console.log(`Tether: ${entry.tether ?? 'N/A'}`);
-            console.log(`Created: ${new Date(entry.createdAt).toLocaleTimeString()}`);
+            Logger.debug(`#${entry.id} [${entry.priority}] ${entry.label || '(unlabeled)'}`);
+            Logger.debug(`Route: ${entry.routeId} | Scene: ${entry.sceneId} | Page: ${entry.pageIndex}`);
+            Logger.debug(`Tether: ${entry.tether ?? 'N/A'}`);
+            Logger.debug(`Created: ${new Date(entry.createdAt).toLocaleTimeString()}`);
             if (flags.length > 0) {
-                console.log(`Status: ${flags.join(', ')}`);
+                Logger.debug(`Status: ${flags.join(', ')}`);
             }
-            console.groupEnd();
         });
-
-        console.groupEnd();
     }
 
     /**
@@ -534,7 +532,7 @@ export class TimeMachineSystem {
     private showCommentaryHint(_sceneId: string): void {
         // Disabled - button creation moved to game-engine.js startRoute() method
         // The button is now correctly positioned inside the dialogue box
-        console.log('⏰ Commentary hint requested (handled by GameEngine)');
+        Logger.system('⏰ Commentary hint requested (handled by GameEngine)');
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -558,7 +556,7 @@ export class TimeMachineSystem {
         if (!data) return;
         this.entries = data.entries || [];
         this._nextId = data.nextId || 1;
-        console.log(`⏰ Restored ${this.entries.length} snapshots from save`);
+        Logger.save(`⏰ Restored ${this.entries.length} snapshots from save`);
     }
 
     /**
@@ -567,6 +565,6 @@ export class TimeMachineSystem {
     public clear(): void {
         this.entries = [];
         this._nextId = 1;
-        console.log('⏰ Time Machine cleared');
+        Logger.state('⏰ Time Machine cleared');
     }
 }
