@@ -102,31 +102,31 @@ export const PRIORITY_COLORS: Record<NotificationPriority, PriorityColorScheme> 
     urgent: {
         border: 'rgba(255, 68, 68, 0.8)',
         glow: 'rgba(255, 68, 68, 0.4)',
-        bg: 'rgba(255, 68, 68, 0.1)',
+        bg: 'linear-gradient(145deg, rgba(80, 20, 20, 0.95), rgba(40, 10, 10, 0.98))',
         text: '#ff4444'
     },
     high: {
-        border: 'rgba(255, 153, 51, 0.8)',
-        glow: 'rgba(255, 153, 51, 0.4)',
-        bg: 'rgba(255, 153, 51, 0.1)',
+        border: 'rgba(255, 165, 0, 0.7)',
+        glow: 'rgba(255, 165, 0, 0.3)',
+        bg: 'linear-gradient(145deg, rgba(60, 40, 10, 0.95), rgba(30, 20, 5, 0.98))',
         text: '#ff9933'
     },
     normal: {
-        border: 'rgba(102, 255, 204, 0.6)',
-        glow: 'rgba(102, 255, 204, 0.3)',
-        bg: 'rgba(102, 255, 204, 0.05)',
-        text: '#66ffcc'
+        border: 'rgba(0, 255, 255, 0.5)',
+        glow: 'rgba(0, 255, 255, 0.2)',
+        bg: 'linear-gradient(145deg, rgba(26, 26, 46, 0.95), rgba(15, 15, 26, 0.98))',
+        text: '#00ffff'
     },
     low: {
-        border: 'rgba(153, 204, 255, 0.5)',
-        glow: 'rgba(153, 204, 255, 0.2)',
-        bg: 'rgba(153, 204, 255, 0.05)',
+        border: 'rgba(255, 255, 255, 0.3)',
+        glow: 'rgba(255, 255, 255, 0.1)',
+        bg: 'linear-gradient(145deg, rgba(30, 30, 40, 0.9), rgba(20, 20, 30, 0.95))',
         text: '#99ccff'
     },
     critical: {
         border: 'rgba(255, 0, 0, 0.9)',
         glow: 'rgba(255, 0, 0, 0.6)',
-        bg: 'rgba(255, 0, 0, 0.15)',
+        bg: 'linear-gradient(145deg, rgba(100, 10, 10, 0.95), rgba(50, 5, 5, 0.98))',
         text: '#ff0000'
     }
 };
