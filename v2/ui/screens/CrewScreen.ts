@@ -10,6 +10,7 @@
  */
 
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 import '@ui/styles/crew-screen.css';
 
 // Asset imports (Vite will bundle these correctly)
@@ -117,7 +118,7 @@ export class CrewScreen {
         this.setupEventListeners();
         this.bindRuntimeEvents();
 
-        console.log('👥 CrewScreen initialized');
+        Logger.ui('👥 CrewScreen initialized');
     }
 
     /**
@@ -239,7 +240,7 @@ export class CrewScreen {
     public show(): void {
         if (this.isVisible) return;
 
-        console.log('[CrewScreen] Showing crew gallery');
+        Logger.ui('[CrewScreen] Showing crew gallery');
         this.isVisible = true;
         this.currentIndex = 1;
 
@@ -322,7 +323,7 @@ export class CrewScreen {
     public close(): void {
         if (!this.isVisible) return;
 
-        console.log('[CrewScreen] Closing crew gallery');
+        Logger.ui('[CrewScreen] Closing crew gallery');
         this.isVisible = false;
 
         // Hide container
