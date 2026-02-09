@@ -1,6 +1,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { Logger } from '@utils/Logger';
+import type { NotificationPriority } from '@core/NotificationSystem/NotificationCore';
 
 /**
  * ========================================
@@ -8,10 +9,14 @@ import { Logger } from '@utils/Logger';
  * Unified notification system for status bar
  * DIZEE Implementation
  * ========================================
+ *
+ * Uses CSS classes for styling (not inline styles like NotificationRail)
+ * Priority system aligned with NotificationCore for consistency
  */
 
 type NotificationType = 'note' | 'save' | 'warning' | 'error' | 'skip' | 'tutorial' | 'info';
-type PriorityLevel = 'critical' | 'high' | 'normal' | 'low';
+// Use unified priority type (critical → urgent for consistency)
+type PriorityLevel = NotificationPriority;
 
 interface NotificationOptions {
     type?: NotificationType;
@@ -37,8 +42,10 @@ export class StatusNotificationController {
     private isEnabled: boolean = false; // Disabled until game actually starts
 
     // Priority weights (higher = more important)
+    // Aligned with NotificationCore priority system
     private priorities: Record<PriorityLevel, number> = {
-        critical: 100,  // Errors, tether death
+        urgent: 100,    // Errors, tether death (formerly 'critical')
+        critical: 100,  // Alias for backward compatibility
         high: 75,       // Despair blocks, warnings
         normal: 50,     // Notes, saves
         low: 25         // Tutorial tips
