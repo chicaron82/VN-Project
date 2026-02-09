@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
+import { Logger } from '@utils/Logger';
 
 /**
  * AssetLoader
@@ -29,7 +30,7 @@ export class AssetLoader {
             loaded++;
             this.eventBus.emit('loading:progress', { current: loaded, total, file: url });
         }).catch(err => {
-            console.warn(`Failed to preload: ${url}`, err);
+            Logger.warn(`Failed to preload: ${url}`, err);
             // Still count as loaded to avoid hanging
             loaded++;
             this.eventBus.emit('loading:progress', { current: loaded, total, file: url });
