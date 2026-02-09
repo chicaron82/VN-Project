@@ -8,6 +8,8 @@
  * 848 is sacred. 💚🔥💀
  */
 
+import { Logger } from '@utils/Logger';
+
 interface ConfirmationOptions {
     title: string;
     message: string;
@@ -177,7 +179,7 @@ export class ConfirmationDialog {
         // V1 Parity: Haptic feedback
         if (navigator.vibrate) navigator.vibrate(10);
 
-        console.log(`❓ Confirmation dialog: ${title}`);
+        Logger.ui(`❓ Confirmation dialog: ${title}`);
     }
 
     /**

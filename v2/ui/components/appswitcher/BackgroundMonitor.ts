@@ -11,6 +11,8 @@
  * - Click to launch app from notification
  */
 
+import { Logger } from '@utils/Logger';
+
 interface MonitoredApp {
     id: string;
     name: string;
@@ -162,6 +164,6 @@ export class BackgroundMonitor {
             navigator.vibrate([50, 50, 50]);
         }
 
-        console.log(`🔔 Background alert: ${app.name} - ${stateText}`);
+        Logger.ui(`🔔 Background alert: ${app.name} - ${stateText}`);
     }
 }

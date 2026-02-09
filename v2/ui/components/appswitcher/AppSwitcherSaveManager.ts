@@ -8,6 +8,7 @@
 
 import type { AppDefinition, UndoBackup } from './AppCatalog';
 import type { AppSwitcherState } from './AppSwitcherState';
+import { Logger } from '@utils/Logger';
 
 export interface SaveManagerElements {
     undoToast: HTMLElement | null;
@@ -130,7 +131,7 @@ export class AppSwitcherSaveManager {
         // Re-render
         this.callbacks.onAfterClear();
 
-        console.log(`✅ Restored ${app.name} save data`);
+        Logger.ui(`✅ Restored ${app.name} save data`);
     }
 
     confirmClearSave(app: AppDefinition, card: HTMLElement): void {
