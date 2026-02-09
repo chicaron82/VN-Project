@@ -21,6 +21,7 @@ import type {
     TimelineEntry
 } from './UV7OSConfig';
 import { UV7_CREW } from './UV7OSConfig';
+import { Logger } from '@utils/Logger';
 
 // ═══════════════════════════════════════════════════════════════
 // GLOBAL TYPES FOR EXTERNAL DEPENDENCIES
@@ -146,7 +147,7 @@ export class UV7OS {
             });
         }
 
-        console.log(`🚀 UV7 OS (${this.context}) initialized`);
+        Logger.ui(`🚀 UV7 OS (${this.context}) initialized`);
     }
 
     private initAppSwitcher(): void {
@@ -154,9 +155,9 @@ export class UV7OS {
             if (!window.uv7AppSwitcher) {
                 window.uv7AppSwitcher = new UV7AppSwitcher();
             }
-            console.log('📱 UV7 App Switcher linked');
+            Logger.ui('📱 UV7 App Switcher linked');
         } else {
-            console.warn('⚠️ UV7AppSwitcher not loaded');
+            Logger.warn('⚠️ UV7AppSwitcher not loaded');
         }
     }
 
@@ -340,7 +341,7 @@ export class UV7OS {
         if (this.elements.sidebarToggle && !isUV7SystemHandled) {
             this.elements.sidebarToggle.addEventListener('click', () => this.toggleSidebar());
         } else if (isUV7SystemHandled) {
-            console.log('[UV7OS] Sidebar toggle handled by UV7System, skipping');
+            Logger.ui('[UV7OS] Sidebar toggle handled by UV7System, skipping');
         }
 
         // Sidebar home button - BELLE: Use view transition (showcase only)
@@ -357,7 +358,7 @@ export class UV7OS {
                 this.closeSidebar();
             });
         } else if (isUV7SystemHandled) {
-            console.log('[UV7OS] Backdrop handled by UV7System, skipping');
+            Logger.ui('[UV7OS] Backdrop handled by UV7System, skipping');
         }
 
         // Quick actions
@@ -390,7 +391,7 @@ export class UV7OS {
         const basePath = (window.location.hostname.includes('github.io') ||
             window.location.pathname.includes('/VN-Project/')) ? '/VN-Project' : '';
 
-        console.log(`🔍 Base path detection: hostname=${window.location.hostname}, pathname=${window.location.pathname}, basePath=${basePath}`);
+        Logger.system(`🔍 Base path detection: hostname=${window.location.hostname}, pathname=${window.location.pathname}, basePath=${basePath}`);
 
         if (this.context === 'landing') {
             actionUrls = {
@@ -441,11 +442,11 @@ export class UV7OS {
     private enableSeamlessTransitions(): void {
         // Check if browser supports View Transitions
         if (!(document as any).startViewTransition) {
-            console.log('📺 View Transitions not supported - using standard navigation');
+            Logger.ui('📺 View Transitions not supported - using standard navigation');
             return;
         }
 
-        console.log('✨ View Transitions enabled - seamless navigation active');
+        Logger.ui('✨ View Transitions enabled - seamless navigation active');
 
         // Intercept all link and action clicks
         window.addEventListener('click', (e) => {
@@ -587,16 +588,16 @@ export class UV7OS {
     }
 
     toggleSidebar(): void {
-        console.log('[UV7OS] toggleSidebar() called');
+        Logger.ui('[UV7OS] toggleSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
-        console.log('[UV7OS] sidebar element:', sidebar);
+        Logger.ui('[UV7OS] sidebar element:', sidebar);
         if (!sidebar) {
-            console.error('[UV7OS] Sidebar element not found!');
+            Logger.error('[UV7OS] Sidebar element not found!');
             return;
         }
 
         const isOpen = sidebar.classList.contains('open');
-        console.log('[UV7OS] sidebar isOpen:', isOpen);
+        Logger.ui('[UV7OS] sidebar isOpen:', isOpen);
         if (isOpen) {
             this.closeSidebar();
         } else {
@@ -605,16 +606,16 @@ export class UV7OS {
     }
 
     private openSidebar(): void {
-        console.log('[UV7OS] openSidebar() called');
+        Logger.ui('[UV7OS] openSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
         const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
 
         if (!sidebar) {
-            console.error('[UV7OS] openSidebar: sidebar not found');
+            Logger.error('[UV7OS] openSidebar: sidebar not found');
             return;
         }
 
-        console.log('[UV7OS] Adding open class to sidebar');
+        Logger.ui('[UV7OS] Adding open class to sidebar');
         sidebar.classList.add('open');
         if (backdrop) backdrop.classList.add('visible');
         if (this.context === 'showcase') {
@@ -623,7 +624,7 @@ export class UV7OS {
     }
 
     private closeSidebar(): void {
-        console.log('[UV7OS] closeSidebar() called');
+        Logger.ui('[UV7OS] closeSidebar() called');
         const sidebar = this.elements.sidebar || document.getElementById('uv7-sidebar');
         const backdrop = this.elements.backdrop || document.getElementById('uv7-backdrop');
 
@@ -809,7 +810,7 @@ export class UV7OS {
             });
         }
 
-        console.log('✨ The 8th Voice has awakened');
+        Logger.system('✨ The 8th Voice has awakened');
     }
 
     private showCrewGreeting(_brand: HTMLElement): void {

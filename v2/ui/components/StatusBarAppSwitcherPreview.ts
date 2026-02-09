@@ -7,6 +7,8 @@
  * Extracted from StatusBar.ts (~200 lines → dedicated module)
  */
 
+import { Logger } from '@utils/Logger';
+
 interface AppState {
     name: string;
     icon: string;
@@ -23,7 +25,7 @@ export class StatusBarAppSwitcherPreview {
      */
     public async setup(logoTrigger: HTMLElement | null): Promise<void> {
         if (!logoTrigger) {
-            console.warn('⚠️ UV7 logo trigger not found for App Switcher');
+            Logger.warn('⚠️ UV7 logo trigger not found for App Switcher');
             return;
         }
 
@@ -39,9 +41,9 @@ export class StatusBarAppSwitcherPreview {
             // DIZEE: Mini-preview on hover (UV7 OS enhancement)
             this.setupPreviewTooltip(logoTrigger);
 
-            console.log('🚀 UV7 App Switcher ready (V2)');
+            Logger.ui('🚀 UV7 App Switcher ready (V2)');
         } catch (error) {
-            console.warn('⚠️ UV7 App Switcher failed to load:', error);
+            Logger.warn('⚠️ UV7 App Switcher failed to load:', error);
         }
     }
 

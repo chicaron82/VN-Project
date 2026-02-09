@@ -1,5 +1,6 @@
 import { EventBus } from '../../core/EventBus';
 import { dispatchAction } from '../utils/ActionDispatcher';
+import { Logger } from '@utils/Logger';
 
 import { StateManager } from '../../core/StateManager';
 import { CollectiblesSystem } from '../../systems/CollectiblesSystem';
@@ -256,7 +257,7 @@ export class Sidebar {
         this.secondaryLayer = this.container.querySelector('.secondary-layer');
 
         if (!this.sidebarLayers || !this.primaryLayer) {
-            console.warn('⚠️ Sidebar layers not found');
+            Logger.warn('⚠️ Sidebar layers not found');
             return;
         }
 
@@ -288,7 +289,7 @@ export class Sidebar {
             });
         });
 
-        console.log('✅ Sidebar layer swipe initialized (touch + mouse + click toggle)');
+        Logger.ui('✅ Sidebar layer swipe initialized (touch + mouse + click toggle)');
     }
 
     /**
@@ -475,7 +476,7 @@ export class Sidebar {
         // V1 Parity: Haptic feedback
         if (navigator.vibrate) navigator.vibrate(20);
 
-        console.log('🔧 Tools layer revealed');
+        Logger.ui('🔧 Tools layer revealed');
     }
 
     /**
@@ -491,7 +492,7 @@ export class Sidebar {
         // V1 Parity: Haptic feedback
         if (navigator.vibrate) navigator.vibrate(10);
 
-        console.log('⚡ Core layer restored');
+        Logger.ui('⚡ Core layer restored');
     }
 
     /**
@@ -499,7 +500,7 @@ export class Sidebar {
      * V1 Parity: lines 1700-1732
      */
     private handleLayerAction(action: string): void {
-        console.log(`Layer action: ${action}`);
+        Logger.ui(`Layer action: ${action}`);
         dispatchAction(action, this.eventBus, () => this.close());
     }
 }

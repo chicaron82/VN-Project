@@ -24,6 +24,7 @@ import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
 import { BootstrapTracker } from '@systems/BootstrapTracker';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
+import { Logger } from '@utils/Logger';
 
 interface CodeDefinition {
     name: string;
@@ -99,7 +100,7 @@ export class SecretCodesSystem {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...this.discoveredCodes]));
         } catch (e) {
-            console.error('Failed to save discovered codes', e);
+            Logger.error('Failed to save discovered codes', e);
         }
     }
 
@@ -113,7 +114,7 @@ export class SecretCodesSystem {
                 description: 'Enter the legendary code. Some knowledge transcends timelines.',
                 icon: '🎮',
                 reward: () => {
-                    console.log('🎮 Konami Code - Opening interactive controller');
+                    Logger.system('🎮 Konami Code - Opening interactive controller');
                     this.stateManager.set('game.easterEggs.konami', true);
                     this.eventBus.emit('easter_egg:konami_controller', {});
                 }
@@ -123,7 +124,7 @@ export class SecretCodesSystem {
                 description: 'Two versions of Tori. Choose your peace.',
                 icon: '🚪',
                 reward: () => {
-                    console.log('🚪 Torigatchi - Opening external link');
+                    Logger.system('🚪 Torigatchi - Opening external link');
                     this.eventBus.emit('easter_egg:torigatchi', {});
                 }
             },
@@ -132,7 +133,7 @@ export class SecretCodesSystem {
                 description: 'The inspiration that started it all.',
                 icon: '💜',
                 reward: () => {
-                    console.log('💜 Ronniegatchi - The original inspiration');
+                    Logger.system('💜 Ronniegatchi - The original inspiration');
                     this.eventBus.emit('easter_egg:ronniegatchi', {});
                 }
             },
@@ -141,7 +142,7 @@ export class SecretCodesSystem {
                 description: '"Always. Always. Always." - Every time it appears.',
                 icon: '💚',
                 reward: () => {
-                    console.log('💚 Always3 - Storm Dragon compilation');
+                    Logger.system('💚 Always3 - Storm Dragon compilation');
                     this.eventBus.emit('easter_egg:always', {});
                 }
             },
@@ -151,7 +152,7 @@ export class SecretCodesSystem {
                 icon: '🎬',
                 reward: () => {
                     localStorage.setItem('directorsCutUnlocked', 'true');
-                    console.log('🎬 Directors Cut Unlocked');
+                    Logger.system('🎬 Directors Cut Unlocked');
                     this.eventBus.emit('easter_egg:uv7crew', {});
                 }
             },
@@ -164,7 +165,7 @@ export class SecretCodesSystem {
                         this.devCommentarySystem.unlockCommentary();
                         this.devCommentarySystem.showAllCommentary();
                     }
-                    console.log('🎙️ Dev Commentary Unlocked');
+                    Logger.system('🎙️ Dev Commentary Unlocked');
                 }
             },
             'bootstrap': {
@@ -172,7 +173,7 @@ export class SecretCodesSystem {
                 description: 'Visualize every attempt that led here.',
                 icon: '🔄',
                 reward: () => {
-                    console.log('🔄 Bootstrap Timeline - Opening timeline modal');
+                    Logger.system('🔄 Bootstrap Timeline - Opening timeline modal');
                     this.bootstrapTracker.showTimelineModal();
                 }
             },
@@ -181,7 +182,7 @@ export class SecretCodesSystem {
                 description: 'Compilation of all echo voice lines.',
                 icon: '👻',
                 reward: () => {
-                    console.log('👻 Echo - Voice compilation');
+                    Logger.system('👻 Echo - Voice compilation');
                     this.eventBus.emit('easter_egg:echo', {});
                 }
             },
@@ -191,7 +192,7 @@ export class SecretCodesSystem {
                 icon: '🔢',
                 reward: () => {
                     const attempt = this.bootstrapTracker.getCurrentAttempt();
-                    console.log(`🔢 True Attempt Number: ${attempt}`);
+                    Logger.system(`🔢 True Attempt Number: ${attempt}`);
                     this.eventBus.emit('easter_egg:848', { attempt });
                 }
             },
@@ -200,7 +201,7 @@ export class SecretCodesSystem {
                 description: 'Recognition for the one who built this world.',
                 icon: '🖤',
                 reward: () => {
-                    console.log('🖤 DiZee - Architect revealed');
+                    Logger.system('🖤 DiZee - Architect revealed');
                     this.eventBus.emit('easter_egg:dizee', {});
                 }
             },
@@ -215,7 +216,7 @@ export class SecretCodesSystem {
                 reward: () => {
                     this.stateManager.set('game.echoInterruptionsDisabled', true);
                     localStorage.setItem('echoInterruptionsDisabled', 'true');
-                    console.log('🔇 ECHOBREAK - Echo interruptions disabled');
+                    Logger.system('🔇 ECHOBREAK - Echo interruptions disabled');
                     this.showUnlockOverlay('ECHOBREAK ACTIVATED', 'Echo interruptions disabled.\n\nThe observers fall silent.', 'success');
                 }
             },
@@ -225,7 +226,7 @@ export class SecretCodesSystem {
                 icon: '🔗',
                 reward: () => {
                     this.eventBus.emit('tether:freeze', {});
-                    console.log('🔗 TETHERLOCK - Tether decay frozen');
+                    Logger.system('🔗 TETHERLOCK - Tether decay frozen');
                     this.showUnlockOverlay('TETHERLOCK ACTIVATED', 'Tether decay frozen.\n\nConnection stabilized.', 'success');
                 }
             },
@@ -236,7 +237,7 @@ export class SecretCodesSystem {
                 reward: () => {
                     this.stateManager.set('game.act1SavesEnabled', true);
                     localStorage.setItem('act1SavesEnabled', 'true');
-                    console.log('⚡ SAVEANYWHERE - Act 1 saves unlocked');
+                    Logger.system('⚡ SAVEANYWHERE - Act 1 saves unlocked');
                     this.showUnlockOverlay('CAGE BREAKER ACTIVATED', "Act 1 save restriction removed.\n\nDespair's cage broken.", 'success');
                 }
             },
@@ -250,7 +251,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     this.bootstrapTracker.reset();
-                    console.log('💚 DEV: Reset to VERSION 848. Refresh page.');
+                    Logger.system('💚 DEV: Reset to VERSION 848. Refresh page.');
                 }
             },
             'reset849': {
@@ -258,7 +259,7 @@ export class SecretCodesSystem {
                 description: 'Dev Command: Set to VERSION 849',
                 isDev: true,
                 reward: () => {
-                    console.log('💚 DEV: Set to VERSION 849. Refresh page.');
+                    Logger.system('💚 DEV: Set to VERSION 849. Refresh page.');
                 }
             },
             'nuke': {
@@ -268,7 +269,7 @@ export class SecretCodesSystem {
                 reward: () => {
                     if (confirm('⚠️ This will clear ALL save data. Continue?')) {
                         localStorage.clear();
-                        console.log('💚 DEV: All data cleared! Refresh for fresh start.');
+                        Logger.system('💚 DEV: All data cleared! Refresh for fresh start.');
                         window.location.reload();
                     }
                 }
@@ -280,7 +281,7 @@ export class SecretCodesSystem {
                 reward: () => {
                     if (confirm('⚠️ This will clear ALL save data. Continue?')) {
                         localStorage.clear();
-                        console.log('💚 DEV: All data cleared!');
+                        Logger.system('💚 DEV: All data cleared!');
                     }
                 }
             },
@@ -290,7 +291,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     this.eventBus.emit('tether:freeze', {});
-                    console.log('💚 DEV: Tether decay FROZEN!');
+                    Logger.system('💚 DEV: Tether decay FROZEN!');
                 }
             },
             'resumetether': {
@@ -299,7 +300,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     this.eventBus.emit('tether:resume', {});
-                    console.log('💚 DEV: Tether decay RESUMED!');
+                    Logger.system('💚 DEV: Tether decay RESUMED!');
                 }
             },
             'settethermax': {
@@ -308,7 +309,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     this.eventBus.emit('tether:set', { value: 100 });
-                    console.log('💚 DEV: Tether set to MAXIMUM (100)!');
+                    Logger.system('💚 DEV: Tether set to MAXIMUM (100)!');
                 }
             },
             'settether50': {
@@ -317,7 +318,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     this.eventBus.emit('tether:set', { value: 50 });
-                    console.log('💚 DEV: Tether set to 50 (warning zone).');
+                    Logger.system('💚 DEV: Tether set to 50 (warning zone).');
                 }
             },
             'unlockskip': {
@@ -327,7 +328,7 @@ export class SecretCodesSystem {
                 reward: () => {
                     this.stateManager.set('game.skipUnlocked', true);
                     localStorage.setItem('skipUnlocked', 'true');
-                    console.log('💚 DEV: Skip feature unlocked!');
+                    Logger.system('💚 DEV: Skip feature unlocked!');
                 }
             },
             'skipintro': {
@@ -336,7 +337,7 @@ export class SecretCodesSystem {
                 isDev: true,
                 reward: () => {
                     localStorage.setItem('skipPrologueUnlocked', 'true');
-                    console.log('💚 DEV: Skip Prologue unlocked!');
+                    Logger.system('💚 DEV: Skip Prologue unlocked!');
                 }
             },
             'revealcodes': {
@@ -351,7 +352,7 @@ export class SecretCodesSystem {
                     ];
                     allCodes.forEach(c => this.discoveredCodes.add(c));
                     this.saveDiscoveredCodes();
-                    console.log('💚 DEV: All codes revealed!');
+                    Logger.system('💚 DEV: All codes revealed!');
                 }
             },
             'devhelp': {
@@ -373,7 +374,7 @@ skipintro - Unlock skip prologue
 revealcodes - Discover all codes
 devhelp - Show this help
                     `.trim();
-                    console.log('💚 DEV COMMANDS:\n' + helpText);
+                    Logger.system('💚 DEV COMMANDS:\n' + helpText);
                 }
             }
         };
@@ -466,7 +467,7 @@ devhelp - Show this help
      * Re-trigger a code's reward (for clicking discovered codes in UI)
      */
     public showCodeInfo(code: string): void {
-        console.log(`🔓 Re-triggering reward for code: ${code}`);
+        Logger.system(`🔓 Re-triggering reward for code: ${code}`);
         const normalized = code.toLowerCase();
         const codeDef = this.codes[normalized];
         if (codeDef) {
@@ -548,7 +549,7 @@ devhelp - Show this help
             }, 3000);
         }
 
-        console.log(`⚠️ Invalid code: ${response}`);
+        Logger.warn(`⚠️ Invalid code: ${response}`);
     }
 
     /**
@@ -638,6 +639,6 @@ devhelp - Show this help
         windowWithUV7.uv7.revealCodes = () => this.codes['revealcodes']?.reward();
         windowWithUV7.uv7.getDiscoveredCodes = () => Array.from(this.discoveredCodes);
 
-        console.log('🔓 SecretCodesSystem debug helpers exposed to window.uv7');
+        Logger.system('🔓 SecretCodesSystem debug helpers exposed to window.uv7');
     }
 }
