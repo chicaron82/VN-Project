@@ -23,6 +23,7 @@ import type { BaseApp } from './apps/BaseApp.js';
 import { attachEasterEggTapHandler } from './utils/EasterEggHandler.js';
 import { AppSwitcherController } from './controllers/AppSwitcherController.js';
 import { ToriBridge } from './controllers/ToriBridge.js';
+import { Logger } from '@utils/Logger';
 
 interface AppLoader {
     (): Promise<{ default: new (shell: UV7Shell) => BaseApp }>;
@@ -103,7 +104,7 @@ export class UV7Shell {
     async init(): Promise<void> {
         if (this.initialized) return;
 
-        console.log('[UV7Shell] Initializing...');
+        Logger.system('[UV7Shell] Initializing...');
 
         // Cache DOM elements
         this.cacheElements();
@@ -162,7 +163,7 @@ export class UV7Shell {
         this.initSettingsIcon();
 
         this.initialized = true;
-        console.log('[UV7Shell] Initialized successfully');
+        Logger.system('[UV7Shell] Initialized successfully');
     }
 
     /**
@@ -179,8 +180,7 @@ export class UV7Shell {
                 this.system!.openShade();
             });
 
-            // Console log to confirm wiring
-            console.log('[UV7Shell] Settings icon wired to Notification Shade');
+            Logger.system('[UV7Shell] Settings icon wired to Notification Shade');
         }
     }
 
@@ -224,7 +224,7 @@ export class UV7Shell {
         };
 
         if (!this.elements.viewport) {
-            console.error('[UV7Shell] Could not find #app-viewport element!');
+            Logger.error('[UV7Shell] Could not find #app-viewport element!');
         }
     }
 
@@ -239,7 +239,7 @@ export class UV7Shell {
         this.appRegistry.set('v1', () => import('./apps/V1App.js'));
         this.appRegistry.set('v2', () => import('./apps/V2App.js'));
 
-        console.log('[UV7Shell] Registered apps:', [...this.appRegistry.keys()]);
+        Logger.system('[UV7Shell] Registered apps:', [...this.appRegistry.keys()]);
     }
 
     /**
@@ -266,17 +266,17 @@ export class UV7Shell {
      * await shell.loadApp('showcase', { phase: '42' });
      */
     async loadApp(appId: string, params: Record<string, any> = {}): Promise<void> {
-        console.log(`[UV7Shell] Loading app: ${appId}`, params);
+        Logger.system(`[UV7Shell] Loading app: ${appId}`, params);
 
         // Check if app exists
         if (!this.appRegistry.has(appId)) {
-            console.error(`[UV7Shell] Unknown app: ${appId}`);
+            Logger.error(`[UV7Shell] Unknown app: ${appId}`);
             return;
         }
 
         // Skip if already loaded
         if (this.currentApp?.id === appId) {
-            console.log(`[UV7Shell] App ${appId} already loaded, updating params`);
+            Logger.system(`[UV7Shell] App ${appId} already loaded, updating params`);
             this.currentApp.onRouteChange?.(params);
             return;
         }
@@ -297,13 +297,13 @@ export class UV7Shell {
         try {
             // Unmount current app
             if (this.currentApp) {
-                console.log(`[UV7Shell] Unmounting: ${this.currentApp.id}`);
+                Logger.system(`[UV7Shell] Unmounting: ${this.currentApp.id}`);
 
                 // Check if current app uses customChrome - restore shell chrome if so
                 if (typeof this.currentApp.getStatusBarSpec === 'function') {
                     const currentSpec = this.currentApp.getStatusBarSpec();
                     if (currentSpec.customChrome) {
-                        console.log(`[UV7Shell] Restoring all shell chrome after customChrome app`);
+                        Logger.system(`[UV7Shell] Restoring all shell chrome after customChrome app`);
                         // Restore all shell chrome
                         if (this.elements.statusBar) this.elements.statusBar.style.display = '';
                         if (this.elements.sidebar) this.elements.sidebar.style.display = '';
@@ -338,7 +338,7 @@ export class UV7Shell {
             // Expose SystemAPI to app BEFORE mount (Belle's controlled API pattern)
             // This allows apps to register action handlers during mount()
             app.api = this.system!.getAPI();
-            console.log(`[UV7Shell] SystemAPI exposed to ${appId}`);
+            Logger.system(`[UV7Shell] SystemAPI exposed to ${appId}`);
 
             // Mount the app
             await app.mount(this.elements.viewport!, params);
@@ -353,11 +353,11 @@ export class UV7Shell {
             if (typeof app.getStatusBarSpec === 'function') {
                 const spec = app.getStatusBarSpec();
                 this.system!.applyStatusBarSpec(spec);
-                console.log(`[UV7Shell] Applied StatusBarSpec for ${appId}`);
+                Logger.system(`[UV7Shell] Applied StatusBarSpec for ${appId}`);
 
                 // Check if app manages its own chrome (sidebar/shade/statusbar)
                 if (spec.customChrome) {
-                    console.log(`[UV7Shell] App ${appId} uses customChrome - hiding all shell chrome`);
+                    Logger.system(`[UV7Shell] App ${appId} uses customChrome - hiding all shell chrome`);
                     // Hide all shell chrome: status bar, sidebar, shade
                     if (this.elements.statusBar) this.elements.statusBar.style.display = 'none';
                     if (this.elements.sidebar) this.elements.sidebar.style.display = 'none';
@@ -373,7 +373,7 @@ export class UV7Shell {
                     if (typeof app.getSidebarSpec === 'function') {
                         const sidebarSpec = app.getSidebarSpec();
                         this.system!.applySidebarSpec(sidebarSpec);
-                        console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
+                        Logger.system(`[UV7Shell] Applied SidebarSpec for ${appId}`);
                     } else {
                         // Fallback to old getSidebarConfig() for backwards compatibility
                         this.updateSidebar(app.getSidebarConfig());
@@ -387,7 +387,7 @@ export class UV7Shell {
                 if (typeof app.getSidebarSpec === 'function') {
                     const spec = app.getSidebarSpec();
                     this.system!.applySidebarSpec(spec);
-                    console.log(`[UV7Shell] Applied SidebarSpec for ${appId}`);
+                    Logger.system(`[UV7Shell] Applied SidebarSpec for ${appId}`);
                 } else {
                     // Fallback to old getSidebarConfig()
                     this.updateSidebar(app.getSidebarConfig());
@@ -397,10 +397,10 @@ export class UV7Shell {
             // Store reference
             this.currentApp = app;
 
-            console.log(`[UV7Shell] App ${appId} mounted successfully`);
+            Logger.system(`[UV7Shell] App ${appId} mounted successfully`);
 
         } catch (error) {
-            console.error(`[UV7Shell] Failed to load app ${appId}:`, error);
+            Logger.error(`[UV7Shell] Failed to load app ${appId}:`, error);
             this.showErrorState(appId, error as Error);
         } finally {
             this.elements.viewport?.classList.remove('app-transitioning');
@@ -475,9 +475,9 @@ export class UV7Shell {
             if (typeof init === 'function') {
                 try {
                     init();
-                    console.log('[UV7Shell] Sidebar init function executed');
+                    Logger.system('[UV7Shell] Sidebar init function executed');
                 } catch (error) {
-                    console.error('[UV7Shell] Sidebar init function failed:', error);
+                    Logger.error('[UV7Shell] Sidebar init function failed:', error);
                 }
             }
         }
