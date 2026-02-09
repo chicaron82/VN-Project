@@ -15,6 +15,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 // Define era colors
 const ERAS = {
     CHAOS: 'radial-gradient(circle at 50% 50%, rgba(255, 60, 0, 0.15) 0%, rgba(255, 0, 80, 0.05) 50%, transparent 100%)', // V1 Red/Pink
@@ -40,7 +42,7 @@ export class BlogBackgrounds {
     private init(): void {
         this.createBackground();
         this.setupObserver();
-        console.log('🌈 [BlogBackgrounds] Initialized');
+        Logger.ui('🌈 [BlogBackgrounds] Initialized');
     }
 
     /**
@@ -141,6 +143,6 @@ export class BlogBackgrounds {
             this.background.remove();
             this.background = null;
         }
-        console.log('🌈 [BlogBackgrounds] Destroyed');
+        Logger.ui('🌈 [BlogBackgrounds] Destroyed');
     }
 }
