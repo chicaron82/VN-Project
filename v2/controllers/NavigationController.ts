@@ -2,6 +2,7 @@ import { EventBus } from '../core/EventBus';
 import { MainMenu } from '../ui/screens/MainMenu';
 import { RouteSelect } from '../ui/screens/RouteSelect';
 import { LoopController } from './LoopController';
+import { Logger } from '@utils/Logger';
 
 type Screen = { unmount: () => void };
 
@@ -59,7 +60,7 @@ export class NavigationController {
         menu.mount(this.app);
         this.currentScreen = menu;
         this.eventBus.emit('ui:show_status_bar', {});
-        console.log('[UV7 V2] Main Menu');
+        Logger.ui('[UV7 V2] Main Menu');
     }
 
     /**
@@ -70,7 +71,7 @@ export class NavigationController {
         const routeSelect = new RouteSelect(this.eventBus);
         routeSelect.mount(this.app);
         this.currentScreen = routeSelect;
-        console.log('[UV7 V2] Route Select');
+        Logger.ui('[UV7 V2] Route Select');
     }
 
     /**
@@ -79,7 +80,7 @@ export class NavigationController {
      */
     public showCredits(): void {
         this.eventBus.emit('ui:show_credits', {});
-        console.log('[UV7 V2] Credits');
+        Logger.ui('[UV7 V2] Credits');
     }
 
     /**
