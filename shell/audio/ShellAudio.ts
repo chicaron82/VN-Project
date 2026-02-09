@@ -14,6 +14,8 @@
 type SoundEffect = 'boop' | 'click' | 'hover' | 'error' | 'glitch' | 'startup';
 type OscillatorType = 'sine' | 'triangle' | 'sawtooth' | 'square';
 
+import { Logger } from '@utils/Logger';
+
 declare global {
     interface Window {
         shellAudio: ShellAudio;
@@ -48,9 +50,9 @@ export class ShellAudio {
             this.masterGain.gain.value = 0.15; // Keep it subtle by default
             this.masterGain.connect(this.ctx.destination);
             this.initialized = true;
-            console.log('[ShellAudio] Initialized');
+            Logger.system('[ShellAudio] Initialized');
         } catch (e) {
-            console.warn('[ShellAudio] Web Audio API not supported', e);
+            Logger.warn('[ShellAudio] Web Audio API not supported', e);
         }
     }
 
