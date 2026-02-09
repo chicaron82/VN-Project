@@ -31,6 +31,7 @@
 
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // TYPES
@@ -212,9 +213,9 @@ export class EchoMemorySystem {
         // Set up event listeners
         this.setupEventListeners();
 
-        console.log('👁️ Echo Memory System initialized');
-        console.log(`   Total loops: ${this.memory.totalLoops}`);
-        console.log(`   Echo awareness - Hope: ${this.memory.echoAwareness.hope}, Gentle: ${this.memory.echoAwareness.gentle}, Despair: ${this.memory.echoAwareness.despair}`);
+        Logger.state('👁️ Echo Memory System initialized');
+        Logger.state(`   Total loops: ${this.memory.totalLoops}`);
+        Logger.state(`   Echo awareness - Hope: ${this.memory.echoAwareness.hope}, Gentle: ${this.memory.echoAwareness.gentle}, Despair: ${this.memory.echoAwareness.despair}`);
     }
 
     // ========================================
@@ -421,10 +422,10 @@ export class EchoMemorySystem {
                 const data = JSON.parse(saved) as Partial<EchoMemory>;
                 // Merge with defaults (in case new fields added)
                 this.memory = { ...this.memory, ...data };
-                console.log('👁️ Echo memory loaded from persistent storage');
+                Logger.state('👁️ Echo memory loaded from persistent storage');
             }
         } catch (error) {
-            console.warn('⚠️ Failed to load echo memory:', error);
+            Logger.warn('⚠️ Failed to load echo memory:', error);
         }
     }
 
@@ -435,7 +436,7 @@ export class EchoMemorySystem {
         try {
             localStorage.setItem(EchoMemorySystem.STORAGE_KEY, JSON.stringify(this.memory));
         } catch (error) {
-            console.warn('⚠️ Failed to save echo memory:', error);
+            Logger.warn('⚠️ Failed to save echo memory:', error);
         }
     }
 
@@ -501,7 +502,7 @@ export class EchoMemorySystem {
             awareness: { ...this.memory.echoAwareness }
         });
 
-        console.log(`👁️ Loop recorded. Total: ${this.memory.totalLoops}`);
+        Logger.state(`👁️ Loop recorded. Total: ${this.memory.totalLoops}`);
     }
 
     /**
@@ -520,7 +521,7 @@ export class EchoMemorySystem {
         this.saveMemory();
         this.syncToStateManager();
 
-        console.log(`👁️ Route completion: ${routeName} (${endingType})`);
+        Logger.state(`👁️ Route completion: ${routeName} (${endingType})`);
     }
 
     /**
@@ -594,7 +595,7 @@ export class EchoMemorySystem {
             this.triggerEchoComment('despair', 'repeatedDeath', sceneId);
         }
 
-        console.log(`👁️ Death recorded at ${sceneId} (${deathType}). Total: tether=${this.memory.tetherDeaths}, despair=${this.memory.despairDeaths}`);
+        Logger.state(`👁️ Death recorded at ${sceneId} (${deathType}). Total: tether=${this.memory.tetherDeaths}, despair=${this.memory.despairDeaths}`);
     }
 
     /**
@@ -643,7 +644,7 @@ export class EchoMemorySystem {
             this.triggerEchoComment('gentle', 'longPause', choiceId);
         }
 
-        console.log(`👁️ Long pause recorded at ${choiceId}`);
+        Logger.state(`👁️ Long pause recorded at ${choiceId}`);
     }
 
     /**
@@ -669,7 +670,7 @@ export class EchoMemorySystem {
                 this.triggerEchoComment('gentle', 'saveScum');
             }
 
-            console.log(`👁️ Save scum detected. Count: ${this.memory.saveScumCount}`);
+            Logger.state(`👁️ Save scum detected. Count: ${this.memory.saveScumCount}`);
         }
 
         this.memory.lastLoadTime = now;
@@ -754,7 +755,7 @@ export class EchoMemorySystem {
 
         this.eventBus.emit('echo:comment', payload);
 
-        console.log(`👁️ Echo comment (${echo}, lvl ${awareness}): ${message}`);
+        Logger.state(`👁️ Echo comment (${echo}, lvl ${awareness}): ${message}`);
 
         // Check achievement
         this.checkRememberedAchievement();
@@ -780,7 +781,7 @@ export class EchoMemorySystem {
         setTimeout(() => this.triggerEchoComment('despair', 'general'), 3000);
         setTimeout(() => this.triggerEchoComment('gentle', 'general'), 6000);
 
-        console.log('👁️ Conflicting echoes triggered');
+        Logger.state('👁️ Conflicting echoes triggered');
     }
 
     // ========================================
@@ -806,7 +807,7 @@ export class EchoMemorySystem {
             // Unlock achievement via event
             this.eventBus.emit('achievement:unlock', { id: 'remembered' });
 
-            console.log('🏆 Achievement unlocked: REMEMBERED');
+            Logger.achievement('🏆 Achievement unlocked: REMEMBERED');
         }
     }
 
@@ -880,7 +881,7 @@ export class EchoMemorySystem {
 
         this.eventBus.emit('echo:reset', {});
 
-        console.log('👁️ Echo memory reset');
+        Logger.state('👁️ Echo memory reset');
     }
 
     /**
@@ -893,7 +894,7 @@ export class EchoMemorySystem {
         this.saveMemory();
         this.syncToStateManager();
 
-        console.log(`🔧 ${echo} awareness set to ${level}`);
+        Logger.state(`🔧 ${echo} awareness set to ${level}`);
     }
 
     /**
@@ -906,6 +907,6 @@ export class EchoMemorySystem {
         this.saveMemory();
         this.syncToStateManager();
 
-        console.log(`🔧 Total loops set to ${this.memory.totalLoops}`);
+        Logger.state(`🔧 Total loops set to ${this.memory.totalLoops}`);
     }
 }
