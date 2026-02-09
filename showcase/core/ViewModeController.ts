@@ -3,6 +3,9 @@
  * ViewModeController.ts
  * Toggles between "Story Mode" and "Dev Mode".
  */
+
+import { Logger } from '@utils/Logger';
+
 export function initViewMode(): void {
 
     function setViewMode(mode: string): void {
@@ -22,7 +25,7 @@ export function initViewMode(): void {
             }
         });
 
-        console.log(`[ViewMode] Switched to ${mode}`);
+        Logger.ui(`[ViewMode] Switched to ${mode}`);
     }
 
     function toggleViewMode(): void {
@@ -33,7 +36,7 @@ export function initViewMode(): void {
 
     // Initialize state
     const savedMode = localStorage.getItem('uv7-view-mode') || 'story';
-    console.log(`[ViewMode] Initializing verification. Saved: ${savedMode}`);
+    Logger.ui(`[ViewMode] Initializing verification. Saved: ${savedMode}`);
     setViewMode(savedMode);
 
     // --- Event Bindings ---
