@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { HapticSystem } from './HapticSystem';
 import { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
+import { Logger } from '@utils/Logger';
 
 describe('HapticSystem', () => {
     let hapticSystem: HapticSystem;
@@ -78,20 +79,20 @@ describe('HapticSystem', () => {
 
     describe('V1 Parity Features', () => {
         it('should accept description parameter in trigger()', () => {
-            const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+            const loggerSpy = vi.spyOn(Logger, 'effect').mockImplementation(() => {});
 
             // Enable debug mode for logging
             (GameConfig as any).DEBUG_MODE = true;
 
             hapticSystem.trigger('LIGHT', 'Test haptic description');
 
-            expect(consoleSpy).toHaveBeenCalledWith(
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.stringContaining('Test haptic description'),
                 expect.anything()
             );
 
             (GameConfig as any).DEBUG_MODE = false;
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
 
         it('should provide triggerHaptic() alias for V1 compatibility', () => {
@@ -176,18 +177,18 @@ describe('HapticSystem', () => {
         });
 
         it('should warn when unknown sensory cue is triggered', () => {
-            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const loggerSpy = vi.spyOn(Logger, 'warn').mockImplementation(() => {});
             (GameConfig as any).DEBUG_MODE = true;
 
             // Cast to any to bypass TypeScript type checking
             (hapticSystem as any).triggerSensory('UNKNOWN_CUE');
 
-            expect(consoleSpy).toHaveBeenCalledWith(
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.stringContaining('Unknown sensory cue')
             );
 
             (GameConfig as any).DEBUG_MODE = false;
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
 
         it('should include timestamp in sensory log entries', () => {

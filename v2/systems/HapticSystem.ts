@@ -7,6 +7,7 @@
 
 import { GameConfig, HapticPatternName, SensoryCueName } from '@core/GameConfig';
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 export interface HapticOptions {
     channel?: 'ui' | 'narrative' | 'critical';
@@ -60,7 +61,7 @@ export class HapticSystem {
     constructor(eventBus: EventBus, settings: SettingsProvider) {
         this.eventBus = eventBus;
         this.settings = settings;
-        console.log('📳 HapticSystem initialized');
+        Logger.system('📳 HapticSystem initialized');
     }
 
     // ========================================
@@ -160,7 +161,7 @@ export class HapticSystem {
         // Debounce anti-spam
         const now = performance.now();
         if (!force && (now - this.lastHapticTime) < this.hapticCooldownMs) {
-            if (GameConfig.DEBUG_MODE) console.log(`🚫 Haptic debounced: ${patternName}`);
+            if (GameConfig.DEBUG_MODE) Logger.debug(`🚫 Haptic debounced: ${patternName}`);
             return;
         }
         this.lastHapticTime = now;
@@ -179,7 +180,10 @@ export class HapticSystem {
         this.logSensory(patternName, channel, finalPattern, description);
 
         if (GameConfig.DEBUG_MODE) {
-            console.log(`📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}] - ${description}`, finalPattern);
+            Logger.effect(
+                `📳 Haptic: ${patternName} [channel=${channel}, comfort=${comfort}] - ${description}`,
+                finalPattern
+            );
         }
     }
 
@@ -208,7 +212,7 @@ export class HapticSystem {
         const meta = GameConfig.SENSORY_CUES[cueType];
         if (!meta) {
             if (GameConfig.DEBUG_MODE) {
-                console.warn(`⚠️ Unknown sensory cue: ${cueType}`);
+                Logger.warn(`⚠️ Unknown sensory cue: ${cueType}`);
             }
             return;
         }
@@ -237,7 +241,9 @@ export class HapticSystem {
         }
 
         if (GameConfig.DEBUG_MODE) {
-            console.log(`🎯 Sensory: ${cueType} [channel=${channel}] visual=${visualType || 'none'} haptic=${basePattern || 'none'}`);
+            Logger.effect(
+                `🎯 Sensory: ${cueType} [channel=${channel}] visual=${visualType || 'none'} haptic=${basePattern || 'none'}`
+            );
         }
     }
 
