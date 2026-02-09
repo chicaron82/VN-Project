@@ -12,6 +12,7 @@
 
 import type { EventBus } from '../../core/EventBus';
 import type { DialogController } from '../../controllers/DialogController';
+import { Logger } from '@utils/Logger';
 
 export interface SkipButtonConfig {
     /** Position relative to dialog box */
@@ -196,7 +197,7 @@ export class SkipButton {
      */
     private toggle(): void {
         if (!this.dialogController?.isSkipUnlocked()) {
-            console.log('[SkipButton] Skip not unlocked yet');
+            Logger.ui('[SkipButton] Skip not unlocked yet');
             return;
         }
 
@@ -312,6 +313,6 @@ export class SkipButton {
         this.element = null;
         this.dialogController = null;
 
-        console.log('[SkipButton] Destroyed');
+        Logger.ui('[SkipButton] Destroyed');
     }
 }
