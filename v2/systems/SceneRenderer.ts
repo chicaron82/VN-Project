@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import type { TypewriterController } from '@controllers/TypewriterController';
+import { Logger } from '@utils/Logger';
 
 /**
  * SceneRenderer - Scene Rendering System
@@ -97,7 +98,7 @@ export class SceneRenderer {
         this.game = game;
         this.eventBus = eventBus;
 
-        console.log('🎬 SceneRenderer initialized');
+        Logger.scene('🎬 SceneRenderer initialized');
     }
 
     // ========================================

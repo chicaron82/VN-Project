@@ -251,7 +251,7 @@ export class InputBinder {
             });
         } else {
             // Debug log mostly for dev, maybe silence in prod
-            // console.warn(`⚠️ InputBinder: Element #${id} not found`);
+            // Logger.warn(`⚠️ InputBinder: Element #${id} not found`);
         }
     }
 }

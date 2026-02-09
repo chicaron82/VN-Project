@@ -1,3 +1,5 @@
+import { Logger } from '@utils/Logger';
+
 // ═══════════════════════════════════════════════════════════════
 // APP CATALOG
 // App definitions, state readers, progress calculation
@@ -162,7 +164,7 @@ export class AppCatalog {
                                 };
                             }
                         } catch (e) {
-                            console.warn('Failed to parse V2 state:', e);
+                            Logger.warn('Failed to parse V2 state:', e);
                         }
                     }
 
