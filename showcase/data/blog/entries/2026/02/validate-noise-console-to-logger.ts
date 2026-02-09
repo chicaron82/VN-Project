@@ -2,13 +2,13 @@ import type { TimelineEntry } from '../../../types';
 
 export const entry: TimelineEntry = {
     id: 'validate-noise-console-to-logger-feb-2026',
-    date: 'Feb 8, 2026',
-    sortDate: '2026-02-08T12:00:00',
+    date: 'Feb 9, 2026',
+    sortDate: '2026-02-09T12:00:00',
     title: 'Chef Loop: Silencing validate spam (console → Logger)',
     type: 'hygiene',
     emoji: '🧼',
     tags: ['Logging', 'Testing', 'Hygiene', 'V2', 'Refactor'],
-    summary: 'A focused hygiene session: migrate high-chatter runtime console logs to the centralized v2 Logger so `npm run validate` stays green and the output gets quieter. Small batches, behavior-preserving diffs, validate after each batch.',
+    summary: 'A focused hygiene session: migrate high-chatter runtime console logs to the centralized v2 Logger so `npm run validate` stays green and the output gets quieter. Small batches, behavior-preserving diffs, validate after each batch — and the console audit ends at 0 runtime matches.',
 
     problem: {
         description: 'Validation runs were noisy because many runtime modules printed directly to console during tests (timers, auto-save, accessibility, collectibles, bootstrap timeline, etc.). The noise made it harder to spot real failures.',
@@ -16,14 +16,15 @@ export const entry: TimelineEntry = {
     },
 
     solution: {
-        approach: 'Incrementally migrate `console.*` to `Logger.*` (category-based) to keep behavior the same while letting test runs suppress/centralize logging.',
+        approach: 'Incrementally migrate `console.*` to `Logger.*` (category-based) to keep behavior the same while letting test runs suppress/centralize logging. Verify progress with both `npm run validate` and the runtime console audit script.',
         features: [
             'Converted loud modules to Logger categories (`system`, `input`, `ui`, `save`, plus `warn`/`error`)'
         ],
         steps: [
             'Target the worst offenders visible in validate output',
             'Replace `console.*` with `Logger.*` (no functional changes)',
-            'Run `npm run validate` to confirm 117/117 files and 1170/1170 tests still pass'
+            'Run `npm run validate` to confirm 117/117 files and 1170/1170 tests still pass',
+            'Run `node scripts/console-audit.mjs` until runtime matches reach 0'
         ]
     },
 
@@ -32,31 +33,47 @@ export const entry: TimelineEntry = {
         'Migrated AccessibilityManager preference/init logs to Logger',
         'Migrated AutoSaveManager save/backup lifecycle logs to Logger',
         'Migrated BootstrapTracker / PauseManager / CollectiblesSystem / InputBinder / SaveLoadModal logs to Logger',
-        'Re-ran `npm run validate` after batches: still green (1170 tests)'
+        'Migrated remaining V2 UI stragglers (AppSwitcher + dialogs + GameLayout/settings)',
+        'Re-ran `npm run validate` after batches: still green (1170 tests)',
+        'Console audit: runtime matches (excluding tests) reached 0'
     ],
 
     metrics: {
         'Validate': 'Green (1170 tests)',
-        'Strategy': 'Small batch → validate → proceed'
+        'Console audit': '0 runtime matches (excluding tests)',
+        'Strategy': 'Small batch → validate → proceed → audit'
     },
 
     nextSteps: [
-        'Continue targeting remaining validate spam in UI components (UV7OS, Sidebar, StatusBar preview, SecretCodesSystem) while avoiding tests that assert on console output.'
+        'Keep new runtime logs going through `v2/utils/Logger.ts` so the audit stays at 0.'
     ],
 
     commits: [
         {
-            hash: '7b1a265',
-            message: 'chore(logging): migrate noisy v2 console output to Logger',
+            hash: 'fb95bd0',
+            message: 'chore(logging): batch migrate v2 console usage',
             files: [
-                'v2/core/AutoReadController.ts',
-                'v2/managers/AccessibilityManager.ts',
-                'v2/managers/AutoSaveManager.ts',
-                'v2/systems/CollectiblesSystem.ts',
                 'v2/systems/InputBinder.ts',
-                'v2/systems/BootstrapTracker.ts',
-                'v2/managers/PauseManager.ts',
-                'v2/ui/components/SaveLoadModal.ts'
+                'v2/systems/SceneRenderer.ts',
+                'v2/ui/components/appswitcher/AppCatalog.ts'
+            ]
+        },
+        {
+            hash: '0e5bacc',
+            message: 'chore(logging): migrate v2 appswitcher+dialog logs',
+            files: [
+                'v2/ui/components/ConfirmationDialog.ts',
+                'v2/ui/components/appswitcher/AppSwitcherSaveManager.ts',
+                'v2/ui/components/appswitcher/BackgroundMonitor.ts'
+            ]
+        },
+        {
+            hash: '36806e3',
+            message: 'chore(logging): remove remaining v2 runtime console',
+            files: [
+                'v2/ui/components/GameLayout.ts',
+                'v2/ui/components/UV7AppSwitcher.ts',
+                'v2/ui/components/settings/SettingsPersistence.ts'
             ]
         }
     ],
