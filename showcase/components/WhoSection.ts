@@ -10,6 +10,8 @@
  * 💚🔥💀
  */
 
+import { Logger } from '@utils/Logger';
+
 export class WhoSection {
     constructor() {
         this.render();
@@ -59,7 +61,7 @@ export class WhoSection {
     private filterTimelineByCrewMember(crewMember: string | undefined): void {
         // This would integrate with the Journey/Timeline tab
         // For now, just log the intent
-        console.log(`Filter timeline by: ${crewMember}`);
+        Logger.ui(`Filter timeline by: ${crewMember}`);
         // Could emit event: window.dispatchEvent(new CustomEvent('filter-timeline', { detail: { crew: crewMember } }));
     }
 
@@ -83,7 +85,7 @@ export class WhoSection {
                     phaseElement.classList.remove('highlight-pulse');
                 }, 2000);
             } else {
-                console.log(`Timeline phase not found: ${phaseId}`);
+                Logger.warn(`Timeline phase not found: ${phaseId}`);
             }
         }, 300);
     }
