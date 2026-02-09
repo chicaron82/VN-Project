@@ -8,6 +8,7 @@
  */
 
 import type { StatusBarSpec, SidebarSpec, ChromeTheme } from '../../types/chrome.js';
+import { Logger } from '@utils/Logger';
 
 export interface APICallLog {
     timestamp: number;
@@ -36,10 +37,10 @@ export class ChromeDevTools {
     private maxLogEntries: number = 50;
 
     constructor() {
-        console.log('[ChromeDevTools] Initializing...');
+        Logger.system('[ChromeDevTools] Initializing...');
         this.createPanel();
         this.attachKeyboardShortcut();
-        console.log('[ChromeDevTools] Initialized. Press Ctrl+` to toggle.');
+        Logger.system('[ChromeDevTools] Initialized. Press Ctrl+` to toggle.');
     }
 
     /**
@@ -176,7 +177,7 @@ export class ChromeDevTools {
     public enableDeveloperMode(): void {
         localStorage.setItem('uv7-developer-mode', 'true');
         this.updateFloatingToggleVisibility();
-        console.log('[ChromeDevTools] Developer mode enabled');
+        Logger.system('[ChromeDevTools] Developer mode enabled');
     }
 
     /**
@@ -185,7 +186,7 @@ export class ChromeDevTools {
     public disableDeveloperMode(): void {
         localStorage.setItem('uv7-developer-mode', 'false');
         this.updateFloatingToggleVisibility();
-        console.log('[ChromeDevTools] Developer mode disabled');
+        Logger.system('[ChromeDevTools] Developer mode disabled');
     }
 
     /**
@@ -337,7 +338,7 @@ export class ChromeDevTools {
                 btn.addEventListener('click', (e) => {
                     const actionId = (e.target as HTMLElement).dataset.actionId;
                     if (actionId) {
-                        console.log(`[DevTools] Testing action: ${actionId}`);
+                        Logger.system(`[DevTools] Testing action: ${actionId}`);
                         // Trigger the action (would need access to UV7System)
                     }
                 });
@@ -529,7 +530,7 @@ export class ChromeDevTools {
      * Toggle the DevTools panel
      */
     public toggle(): void {
-        console.log('[ChromeDevTools] Toggle called, isOpen:', this.isOpen);
+        Logger.system('[ChromeDevTools] Toggle called, isOpen:', this.isOpen);
         if (this.isOpen) {
             this.close();
         } else {

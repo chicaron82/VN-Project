@@ -17,6 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export interface KeyboardShortcut {
     key: string;
     description: string;
@@ -52,7 +54,7 @@ export class BlogKeyboardNav {
         // Create help overlay
         this.createHelpOverlay();
 
-        console.log('⌨️ [BlogKeyboardNav] Initialized with', this.entries.length, 'entries');
+        Logger.ui('⌨️ [BlogKeyboardNav] Initialized with', this.entries.length, 'entries');
     }
 
     /**
@@ -177,7 +179,7 @@ export class BlogKeyboardNav {
             entry.classList.remove('highlight-pulse');
         }, 2000);
 
-        console.log('⌨️ [KeyboardNav] Navigated to entry', this.currentEntryIndex + 1, '/', this.entries.length);
+        Logger.ui('⌨️ [KeyboardNav] Navigated to entry', this.currentEntryIndex + 1, '/', this.entries.length);
     }
 
     /**
@@ -186,7 +188,7 @@ export class BlogKeyboardNav {
     private focusSearch(): void {
         if (this.searchInput) {
             this.searchInput.focus();
-            console.log('⌨️ [KeyboardNav] Search focused');
+            Logger.ui('⌨️ [KeyboardNav] Search focused');
         }
     }
 
@@ -197,7 +199,7 @@ export class BlogKeyboardNav {
         if (this.searchInput) {
             this.searchInput.value = '';
             this.searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-            console.log('⌨️ [KeyboardNav] Search cleared');
+            Logger.ui('⌨️ [KeyboardNav] Search cleared');
         }
     }
 
@@ -260,7 +262,7 @@ export class BlogKeyboardNav {
     private showHelp(): void {
         if (this.helpOverlay) {
             this.helpOverlay.classList.add('visible');
-            console.log('⌨️ [KeyboardNav] Help shown');
+            Logger.ui('⌨️ [KeyboardNav] Help shown');
         }
     }
 
@@ -270,7 +272,7 @@ export class BlogKeyboardNav {
     private hideHelp(): void {
         if (this.helpOverlay) {
             this.helpOverlay.classList.remove('visible');
-            console.log('⌨️ [KeyboardNav] Help hidden');
+            Logger.ui('⌨️ [KeyboardNav] Help hidden');
         }
     }
 
