@@ -19,6 +19,7 @@
 
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // TYPES
@@ -59,7 +60,7 @@ export class DevCommentarySystem {
 
         this.setupEventListeners();
 
-        console.log('📝 DevCommentarySystem initialized');
+        Logger.system('📝 DevCommentarySystem initialized');
     }
 
     // ========================================
@@ -108,7 +109,7 @@ export class DevCommentarySystem {
         localStorage.setItem('devCommentaryUnlocked', 'true');
         this.stateManager.set('secrets.devCommentaryUnlocked', true);
 
-        console.log('📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.');
+        Logger.ui('📝 Dev Commentary unlocked! Use window.uv7.showCommentary() to view all entries.');
 
         // Show unlock toast
         this.eventBus.emit('achievement:unlocked', {
@@ -147,7 +148,7 @@ export class DevCommentarySystem {
     public showCommentary(sceneId: string): void {
         const data = this.getCommentary(sceneId);
         if (!data) {
-            console.warn(`No commentary found for scene: ${sceneId}`);
+            Logger.warn(`No commentary found for scene: ${sceneId}`);
             return;
         }
 
@@ -159,7 +160,7 @@ export class DevCommentarySystem {
      */
     public showAllCommentary(): void {
         if (!this.isUnlocked()) {
-            console.warn('Dev Commentary is locked. Unlock with CHICHARON code.');
+            Logger.warn('Dev Commentary is locked. Unlock with CHICHARON code.');
             return;
         }
 
@@ -520,6 +521,6 @@ export class DevCommentarySystem {
             this.activeOverlay = null;
         }
 
-        console.log('📝 DevCommentarySystem destroyed');
+        Logger.system('📝 DevCommentarySystem destroyed');
     }
 }

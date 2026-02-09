@@ -11,6 +11,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { DevCommentarySystem } from './DevCommentarySystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 describe('DevCommentarySystem', () => {
     let eventBus: EventBus;
@@ -248,19 +249,19 @@ describe('DevCommentarySystem', () => {
         });
 
         it('should warn when showing commentary for invalid scene', () => {
-            const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const loggerSpy = vi.spyOn(Logger, 'warn');
 
             system.showCommentary('invalid_scene');
 
-            expect(consoleSpy).toHaveBeenCalledWith(
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.stringContaining('No commentary found for scene')
             );
 
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
 
         it('should warn when showing all commentary while locked', () => {
-            const consoleSpy = vi.spyOn(console, 'warn');
+            const loggerSpy = vi.spyOn(Logger, 'warn');
 
             // Clear localStorage to ensure system starts locked
             localStorage.clear();
@@ -272,12 +273,12 @@ describe('DevCommentarySystem', () => {
 
             lockedSystem.showAllCommentary();
 
-            expect(consoleSpy).toHaveBeenCalledWith(
+            expect(loggerSpy).toHaveBeenCalledWith(
                 expect.stringContaining('Dev Commentary is locked')
             );
 
             lockedSystem.destroy();
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
     });
 

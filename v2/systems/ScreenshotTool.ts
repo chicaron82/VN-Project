@@ -1,4 +1,5 @@
 import { DevSuite } from './DevSuite';
+import { Logger } from '@utils/Logger';
 
 /**
  * ScreenshotTool - Capture game state
@@ -33,7 +34,7 @@ export class ScreenshotTool {
             a.click();
             URL.revokeObjectURL(url);
 
-            console.log(`📸 Screenshot saved: ${filename}`);
+            Logger.ui(`📸 Screenshot saved: ${filename}`);
         });
     }
 
@@ -48,17 +49,17 @@ export class ScreenshotTool {
                     new ClipboardItem({ 'image/png': blob })
                 ]);
                 alert('Screenshot copied to clipboard!');
-                console.log('📸 Screenshot copied to clipboard');
+                Logger.ui('📸 Screenshot copied to clipboard');
             });
         } catch (error) {
-            console.error('Failed to copy to clipboard:', error);
+            Logger.error('Failed to copy to clipboard:', error);
             alert('Failed to copy to clipboard. Try downloading instead.');
         }
     }
 
     private async captureScreen(): Promise<HTMLCanvasElement | null> {
         if (this.isCapturing) {
-            console.warn('Screenshot already in progress');
+            Logger.warn('Screenshot already in progress');
             return null;
         }
 
@@ -70,7 +71,7 @@ export class ScreenshotTool {
             // which draws a black screen with text.
             return await this.createPlaceholderCapture();
         } catch (error) {
-            console.error('Screenshot failed:', error);
+            Logger.error('Screenshot failed:', error);
             alert('Screenshot failed. See console for details.');
             return null;
         } finally {

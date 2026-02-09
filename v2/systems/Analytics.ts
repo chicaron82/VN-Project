@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -86,7 +87,7 @@ export class Analytics {
         this.loadEvents();
         this.trackSession();
         this.setupEventListeners();
-        console.log('📊 Analytics initialized (privacy-respecting, local-only)');
+        Logger.system('📊 Analytics initialized (privacy-respecting, local-only)');
     }
 
     private setupEventListeners(): void {
@@ -277,7 +278,7 @@ ${Object.entries(stats.mostVisitedScenes).map(([k, v]) => `  ${k}: ${v} visits`)
         a.download = `v848-analytics-${Date.now()}.txt`;
         a.click();
         URL.revokeObjectURL(url);
-        console.log('📊 Analytics report downloaded');
+        Logger.system('📊 Analytics report downloaded');
     }
 
     // ========================================
@@ -321,7 +322,7 @@ ${Object.entries(stats.mostVisitedScenes).map(([k, v]) => `  ${k}: ${v} visits`)
                 this.events = JSON.parse(saved) as AnalyticsEvent[];
             }
         } catch (e) {
-            console.warn('Failed to load analytics events');
+            Logger.warn('Failed to load analytics events');
         }
     }
 
@@ -329,13 +330,13 @@ ${Object.entries(stats.mostVisitedScenes).map(([k, v]) => `  ${k}: ${v} visits`)
         try {
             localStorage.setItem('analytics_events', JSON.stringify(this.events));
         } catch (e) {
-            console.warn('Failed to save analytics events');
+            Logger.warn('Failed to save analytics events');
         }
     }
 
     public clearEvents(): void {
         this.events = [];
         localStorage.removeItem('analytics_events');
-        console.log('📊 Analytics cleared');
+        Logger.system('📊 Analytics cleared');
     }
 }
