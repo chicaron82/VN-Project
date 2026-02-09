@@ -17,6 +17,7 @@
 
 import type { TabController } from '../core/TabController';
 import { BannerPreviewCard } from './BannerPreviewCard';
+import { Logger } from '@utils/Logger';
 
 interface AppConfig {
     id: string;
@@ -85,7 +86,7 @@ export class SystemBannerController {
     private init(): void {
         this.bannerElement = document.querySelector('.system-banner');
         if (!this.bannerElement) {
-            console.warn('SystemBannerController: .system-banner element not found');
+            Logger.warn('SystemBannerController: .system-banner element not found');
             return;
         }
 

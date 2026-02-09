@@ -3,6 +3,8 @@
  * Handles image lazy loading and deferred script execution
  */
 
+import { Logger } from '@utils/Logger';
+
 // Lazy Loading for Images
 function initLazyLoading(): void {
     // Check for native lazy loading support
@@ -58,7 +60,7 @@ export function initPerformanceOptimizations(): void {
         deferNonCriticalScripts();
     }
 
-    console.log('✅ Performance optimizations initialized');
+    Logger.system('✅ Performance optimizations initialized');
 }
 
 // Export individual functions for manual use

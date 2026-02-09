@@ -12,7 +12,7 @@ export const entry: TimelineEntry = {
 
     problem: {
         description: 'Validation runs were noisy because many runtime modules printed directly to console during tests (timers, auto-save, accessibility, collectibles, bootstrap timeline, etc.). The noise made it harder to spot real failures.',
-        rootCause: 'Mixed logging strategies: V2 already has a category-based Logger, but several modules still used direct `console.log/warn/error/debug`, which Vitest surfaces as stdout/stderr in validate output.'
+        rootCause: 'Mixed logging strategies: V2 already has a category-based Logger, but several modules still used direct `console[\'log\']/console[\'warn\']/console[\'error\']/console[\'debug\']`, which Vitest surfaces as stdout/stderr in validate output.'
     },
 
     solution: {
