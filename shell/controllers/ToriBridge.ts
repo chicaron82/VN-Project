@@ -10,6 +10,8 @@
  * - Click-to-launch integration
  */
 
+import { Logger } from '@utils/Logger';
+
 interface ShellInterface {
     navigateTo(appId: string): void;
 }
@@ -27,15 +29,15 @@ export class ToriBridge {
      * Monitors localStorage for Tori's state and updates status bar
      */
     public init(): void {
-        console.log('[ToriBridge] init() called');
+        Logger.system('[ToriBridge] init() called');
 
         const statusRight = document.querySelector('.status-right');
         if (!statusRight) {
-            console.error('[ToriBridge] .status-right not found! Cannot add Tori status');
+            Logger.error('[ToriBridge] .status-right not found! Cannot add Tori status');
             return;
         }
 
-        console.log('[ToriBridge] .status-right found, creating Tori status element');
+        Logger.system('[ToriBridge] .status-right found, creating Tori status element');
 
         // Create status item
         const toriStatus = document.createElement('span');
@@ -52,10 +54,10 @@ export class ToriBridge {
         // Insert before settings icon
         const settingsIcon = document.getElementById('uv7-settings');
         if (settingsIcon) {
-            console.log('[ToriBridge] Inserting Tori status before settings icon');
+            Logger.system('[ToriBridge] Inserting Tori status before settings icon');
             statusRight.insertBefore(toriStatus, settingsIcon);
         } else {
-            console.warn('[ToriBridge] Settings icon not found, appending Tori status to end');
+            Logger.warn('[ToriBridge] Settings icon not found, appending Tori status to end');
             statusRight.appendChild(toriStatus);
         }
 
@@ -75,7 +77,7 @@ export class ToriBridge {
         // Note: No initial update() call needed - ToriService.tick() will
         // emit the status change event immediately after this bridge is set up
 
-        console.log('[ToriBridge] Initialized successfully');
+        Logger.system('[ToriBridge] Initialized successfully');
     }
 
     /**
@@ -84,7 +86,7 @@ export class ToriBridge {
      */
     public update(projectedState?: any): void {
         if (!this.toriStatusElement) {
-            console.warn('[ToriBridge] update() called but status element not initialized');
+            Logger.warn('[ToriBridge] update() called but status element not initialized');
             return;
         }
 
@@ -102,7 +104,7 @@ export class ToriBridge {
             try {
                 state = JSON.parse(stateJson);
             } catch (e) {
-                console.error('[ToriBridge] Failed to parse Tori state', e);
+                Logger.error('[ToriBridge] Failed to parse Tori state', e);
                 return;
             }
         }

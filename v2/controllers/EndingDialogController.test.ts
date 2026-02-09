@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { EndingDialogController } from './EndingDialogController';
 import { EventBus } from '../core/EventBus';
+import { Logger } from '@utils/Logger';
 
 describe('EndingDialogController', () => {
     let controller: EndingDialogController;
@@ -81,22 +82,22 @@ describe('EndingDialogController', () => {
         });
 
         it('should log when dialog is shown', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const uiSpy = vi.spyOn(Logger, 'ui');
 
             controller.show('test_ending');
 
-            expect(consoleSpy).toHaveBeenCalledWith('📋 Ending dialog shown (ending type: test_ending)');
-            consoleSpy.mockRestore();
+            expect(uiSpy).toHaveBeenCalledWith('📋 Ending dialog shown (ending type: test_ending)');
+            uiSpy.mockRestore();
         });
 
         it('should log when dialog is hidden', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const uiSpy = vi.spyOn(Logger, 'ui');
 
             controller.show();
             controller.hide();
 
-            expect(consoleSpy).toHaveBeenCalledWith('📋 Ending dialog hidden');
-            consoleSpy.mockRestore();
+            expect(uiSpy).toHaveBeenCalledWith('📋 Ending dialog hidden');
+            uiSpy.mockRestore();
         });
     });
 
@@ -323,14 +324,14 @@ describe('EndingDialogController', () => {
 
     describe('Error Handling', () => {
         it('should log error if buttons are missing', () => {
-            const consoleSpy = vi.spyOn(console, 'error');
+            const errorSpy = vi.spyOn(Logger, 'error');
 
             mockRetryBtn.remove();
 
             controller.show();
 
-            expect(consoleSpy).toHaveBeenCalledWith('Ending dialog buttons not found');
-            consoleSpy.mockRestore();
+            expect(errorSpy).toHaveBeenCalledWith('Ending dialog buttons not found');
+            errorSpy.mockRestore();
         });
     });
 
@@ -350,12 +351,12 @@ describe('EndingDialogController', () => {
         });
 
         it('should log destroy message', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const uiSpy = vi.spyOn(Logger, 'ui');
 
             controller.destroy();
 
-            expect(consoleSpy).toHaveBeenCalledWith('💥 EndingDialogController destroyed');
-            consoleSpy.mockRestore();
+            expect(uiSpy).toHaveBeenCalledWith('💥 EndingDialogController destroyed');
+            uiSpy.mockRestore();
         });
     });
 });

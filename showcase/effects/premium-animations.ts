@@ -4,6 +4,8 @@
  * 60fps guaranteed, reduced motion support
  */
 
+import { Logger } from '@utils/Logger';
+
 // Configuration
 interface AnimationConfig {
     reducedMotion: boolean;
@@ -72,7 +74,7 @@ function initScrollAnimations(): void {
         observer.observe(el);
     });
 
-    console.log('✨ Scroll animations initialized');
+    Logger.effect('✨ Scroll animations initialized');
 }
 
 // ==========================================
@@ -106,7 +108,7 @@ function initParallax(): void {
         }
     });
 
-    console.log('🌊 Parallax effects initialized');
+    Logger.effect('🌊 Parallax effects initialized');
 }
 
 // ==========================================
@@ -148,7 +150,7 @@ function initAnimatedCounters(): void {
 
     counters.forEach(counter => counterObserver.observe(counter));
 
-    console.log('🔢 Animated counters initialized');
+    Logger.effect('🔢 Animated counters initialized');
 }
 
 // ==========================================
@@ -188,7 +190,7 @@ function initRippleEffects(): void {
         button.addEventListener('click', createRipple as EventListener);
     });
 
-    console.log('💧 Ripple effects initialized');
+    Logger.effect('💧 Ripple effects initialized');
 }
 
 // ==========================================
@@ -221,7 +223,7 @@ function initTimelineMarkers(): void {
         });
     });
 
-    console.log('📍 Timeline markers enhanced');
+    Logger.effect('📍 Timeline markers enhanced');
 }
 
 // ==========================================
@@ -244,7 +246,7 @@ function initCardHovers(): void {
         });
     });
 
-    console.log('🎴 Card hovers enhanced');
+    Logger.effect('🎴 Card hovers enhanced');
 }
 
 // ==========================================
@@ -271,7 +273,7 @@ function initSmoothScroll(): void {
         });
     });
 
-    console.log('🎯 Smooth scroll initialized');
+    Logger.effect('🎯 Smooth scroll initialized');
 }
 
 // ==========================================
@@ -289,7 +291,7 @@ export function initPremiumAnimations(): void {
 }
 
 function init(): void {
-    console.log('💎 Initializing premium animations...');
+    Logger.effect('💎 Initializing premium animations...');
 
     // Initialize all features
     initScrollAnimations();
@@ -300,7 +302,7 @@ function init(): void {
     initCardHovers();
     initSmoothScroll();
 
-    console.log('✨ Premium animations ready!');
+    Logger.effect('✨ Premium animations ready!');
 }
 
 // Export for manual control if needed

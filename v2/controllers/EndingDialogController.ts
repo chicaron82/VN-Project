@@ -5,6 +5,7 @@
 // ========================================
 
 import type { EventBus } from '../core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * EndingDialogController
@@ -36,7 +37,7 @@ export class EndingDialogController {
     public show(endingType: string | null = null): void {
         const dialog = document.getElementById('ending-dialog');
         if (!dialog) {
-            console.error('Ending dialog element not found');
+            Logger.error('Ending dialog element not found');
             return;
         }
 
@@ -53,7 +54,7 @@ export class EndingDialogController {
         // Focus first option
         this.focusOption(0);
 
-        console.log(`📋 Ending dialog shown (ending type: ${endingType})`);
+        Logger.ui(`📋 Ending dialog shown (ending type: ${endingType})`);
     }
 
     public hide(): void {
@@ -68,7 +69,7 @@ export class EndingDialogController {
             this.endingDialogKeyHandler = null;
         }
 
-        console.log('📋 Ending dialog hidden');
+        Logger.ui('📋 Ending dialog hidden');
     }
 
     // ========================================
@@ -81,7 +82,7 @@ export class EndingDialogController {
         const exitBtn = document.getElementById('ending-exit');
 
         if (!retryBtn || !acceptBtn || !exitBtn) {
-            console.error('Ending dialog buttons not found');
+            Logger.error('Ending dialog buttons not found');
             return;
         }
 
@@ -97,7 +98,7 @@ export class EndingDialogController {
         // YES - Try Again (immediate restart)
         newRetryBtn.addEventListener('click', () => {
             this.hide();
-            console.log('🔄 Player chose: TRY AGAIN - Restarting game...');
+            Logger.ui('🔄 Player chose: TRY AGAIN - Restarting game...');
 
             // Emit event for game engine to handle restart
             this.eventBus.emit('ending:retry', {
@@ -108,7 +109,7 @@ export class EndingDialogController {
         // NO - Accept This Ending (credits THEN menu)
         newAcceptBtn.addEventListener('click', () => {
             this.hide();
-            console.log('🎬 Player chose: ACCEPT ENDING - Playing credits...');
+            Logger.ui('🎬 Player chose: ACCEPT ENDING - Playing credits...');
 
             // Emit event for game engine to show credits
             this.eventBus.emit('ending:accept', {
@@ -119,7 +120,7 @@ export class EndingDialogController {
         // EXIT - Return to Main Menu (skip credits)
         newExitBtn.addEventListener('click', () => {
             this.hide();
-            console.log('🏠 Player chose: RETURN TO MENU - Skipping credits...');
+            Logger.ui('🏠 Player chose: RETURN TO MENU - Skipping credits...');
 
             // Emit event for game engine to return to menu
             this.eventBus.emit('ending:exit', {
@@ -207,6 +208,6 @@ export class EndingDialogController {
     public destroy(): void {
         this.hide();
         this.endingDialogButtons = null;
-        console.log('💥 EndingDialogController destroyed');
+        Logger.ui('💥 EndingDialogController destroyed');
     }
 }
