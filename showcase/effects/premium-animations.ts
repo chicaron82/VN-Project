@@ -17,6 +17,9 @@ const config: AnimationConfig = {
     isMobile: window.innerWidth < 768
 };
 
+// Cleanup functions registry
+const cleanupFunctions: Array<() => void> = [];
+
 declare global {
     interface Window {
         premiumAnimations?: {
@@ -81,7 +84,7 @@ function initScrollAnimations(): void {
 // 2. PARALLAX EFFECTS
 // ==========================================
 
-function initParallax(): void {
+function initParallax(): (() => void) | void {
     if (config.reducedMotion || config.isMobile) return;
 
     const parallaxElements = document.querySelectorAll<HTMLElement>('[data-parallax]');
@@ -101,14 +104,21 @@ function initParallax(): void {
         ticking = false;
     }
 
-    window.addEventListener('scroll', () => {
+    const scrollHandler = () => {
         if (!ticking) {
             window.requestAnimationFrame(updateParallax);
             ticking = true;
         }
-    });
+    };
+
+    window.addEventListener('scroll', scrollHandler, { passive: true });
 
     Logger.effect('🌊 Parallax effects initialized');
+
+    // Return cleanup function
+    return () => {
+        window.removeEventListener('scroll', scrollHandler);
+    };
 }
 
 // ==========================================
@@ -293,9 +303,12 @@ export function initPremiumAnimations(): void {
 function init(): void {
     Logger.effect('💎 Initializing premium animations...');
 
-    // Initialize all features
+    // Initialize all features and collect cleanup functions
     initScrollAnimations();
-    initParallax();
+
+    const parallaxCleanup = initParallax();
+    if (parallaxCleanup) cleanupFunctions.push(parallaxCleanup);
+
     initAnimatedCounters();
     initRippleEffects();
     initTimelineMarkers();
@@ -303,6 +316,15 @@ function init(): void {
     initSmoothScroll();
 
     Logger.effect('✨ Premium animations ready!');
+}
+
+/**
+ * Cleanup function to remove all event listeners and observers
+ */
+export function cleanupPremiumAnimations(): void {
+    cleanupFunctions.forEach(fn => fn());
+    cleanupFunctions.length = 0; // Clear array
+    Logger.effect('[PremiumAnimations] Cleaned up all listeners');
 }
 
 // Export for manual control if needed
@@ -313,7 +335,8 @@ export const premiumAnimations = {
     initRippleEffects,
     initTimelineMarkers,
     initCardHovers,
-    initSmoothScroll
+    initSmoothScroll,
+    cleanup: cleanupPremiumAnimations
 };
 
 // Expose globally for legacy compatibility

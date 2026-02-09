@@ -33,6 +33,8 @@ export class BlogRenderer {
     // Signal Animation
     private signalPulse: HTMLElement | null;
     private scrollTimeout?: number;
+    private scrollListener?: () => void;
+    private rafId?: number;
 
     constructor(containerSelector: string) {
         this.container = document.querySelector(containerSelector);
@@ -92,29 +94,41 @@ export class BlogRenderer {
             track.appendChild(this.signalPulse);
             this.container?.appendChild(track);
 
-            // Connect signal to scroll
-            window.addEventListener('scroll', () => {
+            // Connect signal to scroll with requestAnimationFrame optimization
+            this.scrollListener = () => {
                 if (!this.signalPulse || !this.container) return;
 
-                // Simple calculation to move pulse visually based on viewport center
-                // relative to the container
-                const rect = this.container.getBoundingClientRect();
-                const viewportCenter = window.innerHeight / 2;
-                const relativeTop = viewportCenter - rect.top;
+                // Cancel previous frame if still pending
+                if (this.rafId) {
+                    cancelAnimationFrame(this.rafId);
+                }
 
-                // Clamp
-                const clampedTop = Math.max(0, Math.min(relativeTop, rect.height));
+                // Use requestAnimationFrame for smooth 60fps updates
+                this.rafId = requestAnimationFrame(() => {
+                    if (!this.signalPulse || !this.container) return;
 
-                this.signalPulse.style.top = `${clampedTop}px`;
-                this.signalPulse.style.opacity = '1';
+                    // Simple calculation to move pulse visually based on viewport center
+                    // relative to the container
+                    const rect = this.container.getBoundingClientRect();
+                    const viewportCenter = window.innerHeight / 2;
+                    const relativeTop = viewportCenter - rect.top;
 
-                clearTimeout(this.scrollTimeout);
-                this.scrollTimeout = window.setTimeout(() => {
-                    if (this.signalPulse) {
-                        this.signalPulse.style.opacity = '0.5';
-                    }
-                }, 1000);
-            }, { passive: true });
+                    // Clamp
+                    const clampedTop = Math.max(0, Math.min(relativeTop, rect.height));
+
+                    this.signalPulse.style.top = `${clampedTop}px`;
+                    this.signalPulse.style.opacity = '1';
+
+                    clearTimeout(this.scrollTimeout);
+                    this.scrollTimeout = window.setTimeout(() => {
+                        if (this.signalPulse) {
+                            this.signalPulse.style.opacity = '0.5';
+                        }
+                    }, 1000);
+                });
+            };
+
+            window.addEventListener('scroll', this.scrollListener, { passive: true });
         }
     }
 
@@ -295,5 +309,30 @@ export class BlogRenderer {
 
     private createEntryElement(entry: BlogEntry): HTMLElement {
         return createEntryElement(entry);
+    }
+
+    // --- CLEANUP ---
+
+    /**
+     * Cleanup method to remove event listeners and prevent memory leaks
+     * Call this when navigating away from the timeline
+     */
+    cleanup(): void {
+        // Remove scroll listener
+        if (this.scrollListener) {
+            window.removeEventListener('scroll', this.scrollListener);
+        }
+
+        // Cancel pending animation frame
+        if (this.rafId) {
+            cancelAnimationFrame(this.rafId);
+        }
+
+        // Clear timeout
+        if (this.scrollTimeout) {
+            clearTimeout(this.scrollTimeout);
+        }
+
+        Logger.ui('[BlogRenderer] Cleaned up event listeners');
     }
 }

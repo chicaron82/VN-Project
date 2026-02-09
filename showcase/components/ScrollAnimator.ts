@@ -2,8 +2,10 @@
 /**
  * ScrollAnimator.ts
  * Handles IntersectionObservers for fade-ins, timeline items, and stats animations.
+ *
+ * Returns a cleanup function to remove all observers and event listeners.
  */
-export function initScrollAnimations(): void {
+export function initScrollAnimations(): () => void {
 
     // 1. General Section Fade-In
     const sectionObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
@@ -158,13 +160,13 @@ export function initScrollAnimations(): void {
             scrollProgress.setAttribute('data-section', currentSection);
         };
 
-        window.addEventListener('scroll', updateScrollProgress);
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
         updateScrollProgress(); // Initial call
     }
 
     // 6. Phase Nav active state
     // Just run this on scroll
-    window.addEventListener('scroll', updateActivePhase);
+    window.addEventListener('scroll', updateActivePhase, { passive: true });
     setTimeout(updateActivePhase, 100);
 
     // 7. Clickable Cards (Navigation)
@@ -175,6 +177,20 @@ export function initScrollAnimations(): void {
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
+
+    // Return cleanup function to remove all observers and listeners
+    return () => {
+        sectionObserver.disconnect();
+        timelineObserver.disconnect();
+        countObserver.disconnect();
+        metricObserver.disconnect();
+
+        if (scrollProgress && updateScrollProgress) {
+            window.removeEventListener('scroll', updateScrollProgress);
+        }
+
+        window.removeEventListener('scroll', updateActivePhase);
+    };
 }
 
 function animateCountUp(element: HTMLElement, target: number, duration: number = 2000): void {

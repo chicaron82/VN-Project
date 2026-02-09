@@ -22,6 +22,8 @@ export class GentleNudges {
     private readonly MEMORY_KEY = 'uv7-suggestions-shown'; // Remember what we've suggested
     private currentSection: string = 'home';
     private nudgeElement: HTMLElement | null = null;
+    private scrollListener?: () => void;
+    private sectionChangedListener?: (e: Event) => void;
 
     // Our menu of gentle suggestions
     private suggestions: CourseSuggestion[] = [
@@ -69,14 +71,16 @@ export class GentleNudges {
 
     private init(): void {
         // Listen for guest activity
-        window.addEventListener('scroll', () => this.resetSuggestionTimer(), { passive: true });
+        this.scrollListener = () => this.resetSuggestionTimer();
+        window.addEventListener('scroll', this.scrollListener, { passive: true });
 
         // Listen for course changes
-        window.addEventListener('uv7:section:changed', (e: Event) => {
+        this.sectionChangedListener = (e: Event) => {
             const customEvent = e as CustomEvent;
             this.currentSection = customEvent.detail.section;
             this.resetSuggestionTimer();
-        });
+        };
+        window.addEventListener('uv7:section:changed', this.sectionChangedListener);
 
         // Clear nudge on any interaction (guest is active)
         ['click', 'touchstart', 'keydown'].forEach(event => {
@@ -197,5 +201,32 @@ export class GentleNudges {
 
         // Clear after 4 seconds
         setTimeout(() => this.clearNudge(), this.SUGGESTION_DURATION);
+    }
+
+    /**
+     * Cleanup method to remove event listeners
+     */
+    cleanup(): void {
+        // Remove scroll listener
+        if (this.scrollListener) {
+            window.removeEventListener('scroll', this.scrollListener);
+        }
+
+        // Remove section changed listener
+        if (this.sectionChangedListener) {
+            window.removeEventListener('uv7:section:changed', this.sectionChangedListener);
+        }
+
+        // Clear any pending timers
+        if (this.suggestionTimer) {
+            clearTimeout(this.suggestionTimer);
+            this.suggestionTimer = null;
+        }
+
+        // Remove nudge element
+        if (this.nudgeElement) {
+            this.nudgeElement.remove();
+            this.nudgeElement = null;
+        }
     }
 }
