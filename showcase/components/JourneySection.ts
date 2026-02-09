@@ -1,4 +1,5 @@
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
+import { Logger } from '@utils/Logger';
 
 export class JourneySection {
     constructor() {
@@ -7,7 +8,7 @@ export class JourneySection {
 
     render(): void {
         const mount = document.getElementById('uv7-journey-mount');
-        console.log('[JourneySection] Mount point:', mount ? 'found' : 'NOT FOUND');
+        Logger.ui('[JourneySection] Mount point:', mount ? 'found' : 'NOT FOUND');
         if (!mount) return;
 
         mount.innerHTML = `
