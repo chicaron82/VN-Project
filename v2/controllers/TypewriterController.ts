@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import type { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * TypewriterController - Character-by-character text rendering
@@ -63,7 +64,7 @@ export class TypewriterController {
             }
         });
 
-        console.log('✅ TypewriterController initialized');
+        Logger.ui('✅ TypewriterController initialized');
     }
 
     private loadInitialSettings() {
@@ -76,7 +77,7 @@ export class TypewriterController {
                 }
             }
         } catch (e) {
-            console.warn('TypewriterController: Failed to load settings', e);
+            Logger.warn('TypewriterController: Failed to load settings', e);
         }
     }
 
@@ -198,7 +199,7 @@ export class TypewriterController {
     private displayPage(element: HTMLElement): void {
         const currentPage = this.dialoguePages[this.currentDialoguePage] || '';
         if (!currentPage) {
-            console.warn('No current page to display');
+            Logger.warn('No current page to display');
             return;
         }
         const speed = this.getSpeed();
@@ -493,6 +494,6 @@ export class TypewriterController {
         this.dialoguePages = [];
         this.currentDialoguePage = 0;
 
-        console.log('🗑️ TypewriterController destroyed');
+        Logger.ui('🗑️ TypewriterController destroyed');
     }
 }

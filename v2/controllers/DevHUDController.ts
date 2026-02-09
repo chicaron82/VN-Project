@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -94,7 +95,7 @@ export class DevHUDController {
         this.updateInterval = null;
         this.eventBus = eventBus;
 
-        console.log('🔧 DevHUDController initialized');
+        Logger.ui('🔧 DevHUDController initialized');
     }
 
     // ========================================
@@ -109,7 +110,7 @@ export class DevHUDController {
     public toggle(): void {
         const hud = this.game.uiController?.devHud;
         if (!hud) {
-            console.warn('Dev HUD not found in DOM');
+            Logger.warn('Dev HUD not found in DOM');
             return;
         }
 
@@ -123,7 +124,7 @@ export class DevHUDController {
                 this.update();
             }, 500); // Update every 500ms
 
-            console.log('🔧 Dev HUD enabled');
+            Logger.ui('🔧 Dev HUD enabled');
         } else {
             hud.style.display = 'none';
             this.active = false;
@@ -134,7 +135,7 @@ export class DevHUDController {
                 this.updateInterval = null;
             }
 
-            console.log('🔧 Dev HUD disabled');
+            Logger.ui('🔧 Dev HUD disabled');
         }
     }
 

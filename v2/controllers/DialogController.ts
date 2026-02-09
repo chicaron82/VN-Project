@@ -1,6 +1,7 @@
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 export interface DialogState {
     fullText: string;
@@ -379,7 +380,7 @@ export class DialogController {
      */
     toggleSkip(): void {
         if (!this.skipState.skipUnlocked) {
-            console.log('[DialogController] Skip not unlocked');
+            Logger.ui('[DialogController] Skip not unlocked');
             return;
         }
 
@@ -397,7 +398,7 @@ export class DialogController {
             this.eventBus.emit('skip:active', { isSkipping: active });
 
             if (active) {
-                console.log('[DialogController] Skip mode activated');
+                Logger.ui('[DialogController] Skip mode activated');
 
                 // If currently typing and content is read, the speed will auto-adjust
                 // If not typing, emit event to potentially auto-advance
@@ -405,7 +406,7 @@ export class DialogController {
                     this.eventBus.emit('dialog:skipping', {});
                 }
             } else {
-                console.log('[DialogController] Skip mode deactivated');
+                Logger.ui('[DialogController] Skip mode deactivated');
             }
         }
     }
@@ -438,7 +439,7 @@ export class DialogController {
             localStorage.setItem('skipUnlocked', 'true');
         }
 
-        console.log('[DialogController] Skip feature unlocked!');
+        Logger.ui('[DialogController] Skip feature unlocked!');
     }
 
     /**
