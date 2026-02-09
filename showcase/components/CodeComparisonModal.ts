@@ -5,6 +5,7 @@
  */
 
 import type { CodeComparison } from '../data/blog/types';
+import { Logger } from '@utils/Logger';
 
 export class CodeComparisonModal {
     private isOpen: boolean;
@@ -151,7 +152,7 @@ export class CodeComparisonModal {
 
     open(data: CodeComparison): void {
         if (!data || !data.before || !data.after) {
-            console.error('Invalid code comparison data');
+            Logger.error('Invalid code comparison data');
             return;
         }
 
@@ -174,7 +175,7 @@ export class CodeComparisonModal {
         // Focus the slider for keyboard access
         setTimeout(() => this.slider.focus(), 100);
 
-        console.log('[CodeComparisonModal] Opened successfully');
+        Logger.ui('[CodeComparisonModal] Opened successfully');
     }
 
     close(): void {
@@ -188,7 +189,7 @@ export class CodeComparisonModal {
             this.previouslyFocusedElement.focus();
         }
 
-        console.log('[CodeComparisonModal] Closed');
+        Logger.ui('[CodeComparisonModal] Closed');
     }
 
     updateContent(data: CodeComparison): void {
