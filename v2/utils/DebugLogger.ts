@@ -27,6 +27,8 @@
  * ════════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 // ========================================
 // TYPE DEFINITIONS
 // ========================================
@@ -68,7 +70,7 @@ export class DebugLogger {
         if (GameConfig.DEBUG[categoryFlag] === false) return;
 
         // Log with category prefix
-        console.log(`[${category.toUpperCase()}]`, ...args);
+        Logger.debug(`[${category.toUpperCase()}]`, ...args);
     }
 
     // ========================================
@@ -125,20 +127,20 @@ export class DebugLogger {
      * Error logging (always enabled)
      */
     public static error(...args: any[]): void {
-        console.error('[ERROR]', ...args);
+        Logger.error(...args);
     }
 
     /**
      * Warning logging (always enabled)
      */
     public static warn(...args: any[]): void {
-        console.warn('[WARN]', ...args);
+        Logger.warn(...args);
     }
 
     /**
      * Info logging (always enabled)
      */
     public static info(...args: any[]): void {
-        console.info('[INFO]', ...args);
+        Logger.info(...args);
     }
 }
