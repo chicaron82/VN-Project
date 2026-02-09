@@ -1,6 +1,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { GameEngine } from '../core/GameEngine';
+import { Logger } from '../utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -45,7 +46,7 @@ export class SceneProgressionController {
         this.loadState();
         this.setupEventListeners();
 
-        console.log('🎯 SceneProgressionController initialized');
+        Logger.system('🎯 SceneProgressionController initialized');
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -69,7 +70,7 @@ export class SceneProgressionController {
         this.stateManager.set('game.loopVersion', this.loopVersion);
         this.stateManager.set('game.loopStatus', this.loopStatus);
 
-        console.log(`📊 Loop VERSION ${this.loopVersion}, status: ${this.loopStatus}`);
+        Logger.system(`📊 Loop VERSION ${this.loopVersion}, status: ${this.loopStatus}`);
     }
 
     private saveState(): void {
@@ -106,7 +107,7 @@ export class SceneProgressionController {
 
         // Check if skip prologue is unlocked AND enabled in settings
         if (this.skipPrologueUnlocked && settings?.autoSkipPrologue) {
-            console.log('⏭️ Auto-skip prologue enabled - jumping to route selection');
+            Logger.scene('⏭️ Auto-skip prologue enabled - jumping to route selection');
             this.skipToRouteSelection();
             return;
         }
@@ -121,7 +122,7 @@ export class SceneProgressionController {
                 return;
             } else {
                 // Prompt already seen - respect Settings toggle (defaults to OFF)
-                console.log('⏭️ Skip prompt dismissed previously - playing prologue');
+                Logger.scene('⏭️ Skip prompt dismissed previously - playing prologue');
                 this.startPrologueNormally();
                 return;
             }
@@ -149,7 +150,7 @@ export class SceneProgressionController {
         // Load prologue scene
         this.engine.loadScene('prologue_start');
 
-        console.log('📖 Starting prologue...');
+        Logger.scene('📖 Starting prologue...');
     }
 
     /**
@@ -166,7 +167,7 @@ export class SceneProgressionController {
     public skipToRouteSelection(): void {
         this.stateManager.set('game.flags.prologueSkipped', true);
         this.eventBus.emit('ui:show_route_select', {});
-        console.log('⏭️ Skipped to route selection');
+        Logger.scene('⏭️ Skipped to route selection');
     }
 
     /**
@@ -195,7 +196,7 @@ export class SceneProgressionController {
             return;
         }
 
-        console.log(`🚀 Starting route: ${routeName}`);
+        Logger.scene(`🚀 Starting route: ${routeName}`);
 
         this.currentRoute = routeName;
         this.stateManager.set('game.currentRoute', routeName);
@@ -205,7 +206,7 @@ export class SceneProgressionController {
         if (this.loopStatus === 'succeeded' || this.loopStatus === 'accepted') {
             const previousStatus = this.loopStatus;
             this.incrementVersion();
-            console.log(`🔄 New attempt after ${previousStatus} - VERSION ${this.loopVersion}`);
+            Logger.system(`🔄 New attempt after ${previousStatus} - VERSION ${this.loopVersion}`);
         }
 
         // Check for Insane Mode
@@ -213,7 +214,7 @@ export class SceneProgressionController {
         if (insaneLocked) {
             this.stateManager.set('game.flags.insaneModeActive', true);
             this.stateManager.set('game.flags.insaneModeLocked', true);
-            console.log('💀 Insane Mode restored from localStorage');
+            Logger.system('💀 Insane Mode restored from localStorage');
 
             // Trigger visual corruption
             this.eventBus.emit('effect:glitch', { intensity: 0.3 });
@@ -228,7 +229,7 @@ export class SceneProgressionController {
             const firstScene = `${routeName}_start`;
             this.engine.loadScene(firstScene);
 
-            console.log(`✅ Route ${routeName} started`);
+            Logger.scene(`✅ Route ${routeName} started`);
         });
     }
 
@@ -250,7 +251,7 @@ export class SceneProgressionController {
             status: this.loopStatus
         });
 
-        console.log(`📈 Loop VERSION incremented to ${this.loopVersion}`);
+        Logger.system(`📈 Loop VERSION incremented to ${this.loopVersion}`);
         return this.loopVersion;
     }
 
@@ -263,8 +264,8 @@ export class SceneProgressionController {
         this.loopStatus = status;
         this.saveState();
 
-        console.log(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
-        console.log(`💡 Refresh page to see changes!`);
+        Logger.system(`🔧 DEV: Version reset to ${this.loopVersion}, status: ${this.loopStatus}`);
+        Logger.system('💡 Refresh page to see changes!');
 
         return this.loopVersion;
     }
@@ -275,7 +276,7 @@ export class SceneProgressionController {
     public setLoopStatus(status: LoopStatus): void {
         this.loopStatus = status;
         this.saveState();
-        console.log(`📊 Loop status set to: ${status}`);
+        Logger.system(`📊 Loop status set to: ${status}`);
     }
 
     /**
@@ -305,7 +306,7 @@ export class SceneProgressionController {
         localStorage.setItem('ronnieNotesUnlocked', 'true');
         localStorage.setItem('ronnieTabUnlocked', 'true');
 
-        console.log('📝 Ronnie notes system unlocked! Notes viewer now active for replays.');
+        Logger.system('📝 Ronnie notes system unlocked! Notes viewer now active for replays.');
 
         // Emit event for UI to update
         this.eventBus.emit('notes:ronnie_unlocked', {});
@@ -392,6 +393,6 @@ export class SceneProgressionController {
     public lockInsaneMode(): void {
         localStorage.setItem('insaneModeLocked', 'true');
         this.stateManager.set('game.flags.insaneModeLocked', true);
-        console.log('💀 Insane Mode LOCKED. No turning back.');
+        Logger.system('💀 Insane Mode LOCKED. No turning back.');
     }
 }

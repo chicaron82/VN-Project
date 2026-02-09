@@ -25,6 +25,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { GameConfig } from '../core/GameConfig';
+import { Logger } from '../utils/Logger';
 
 // ========================================
 // TYPES
@@ -94,7 +95,7 @@ export class LoopController {
         // Listen for game events that affect loop state
         this.setupEventListeners();
 
-        console.log(`🔄 LoopController initialized - VERSION ${this.loopVersion} (${this.loopStatus})`);
+        Logger.system(`🔄 LoopController initialized - VERSION ${this.loopVersion} (${this.loopStatus})`);
     }
 
     // ========================================
@@ -122,9 +123,9 @@ export class LoopController {
                 this.loopStatus = savedStatus as LoopStatus;
             }
 
-            console.log(`📂 Loop state loaded: v${this.loopVersion} (${this.loopStatus})`);
+            Logger.system(`📂 Loop state loaded: v${this.loopVersion} (${this.loopStatus})`);
         } catch (error) {
-            console.warn('⚠️ Failed to load loop state from storage:', error);
+            Logger.warn('⚠️ Failed to load loop state from storage:', error);
             // Fall back to defaults (already set in property initializers)
         }
     }
@@ -137,7 +138,7 @@ export class LoopController {
             localStorage.setItem(LoopController.STORAGE_KEY_VERSION, this.loopVersion.toString());
             localStorage.setItem(LoopController.STORAGE_KEY_STATUS, this.loopStatus);
         } catch (error) {
-            console.warn('⚠️ Failed to save loop state to storage:', error);
+            Logger.warn('⚠️ Failed to save loop state to storage:', error);
         }
     }
 
@@ -189,7 +190,7 @@ export class LoopController {
         // Emit event for UI updates
         this.eventBus.emit('loop:updated', this.getState());
 
-        console.log(`🔄 Loop incremented to VERSION ${this.loopVersion}`);
+        Logger.system(`🔄 Loop incremented to VERSION ${this.loopVersion}`);
 
         return this.loopVersion;
     }
@@ -209,7 +210,7 @@ export class LoopController {
         this.eventBus.emit('loop:updated', this.getState());
         this.eventBus.emit('loop:broken', this.getState());
 
-        console.log(`✨ Loop broken! VERSION ${this.loopVersion} SUCCEEDED`);
+        Logger.system(`✨ Loop broken! VERSION ${this.loopVersion} SUCCEEDED`);
     }
 
     /**
@@ -227,7 +228,7 @@ export class LoopController {
         this.eventBus.emit('loop:updated', this.getState());
         this.eventBus.emit('loop:accepted', this.getState());
 
-        console.log(`💫 Ending accepted. VERSION ${this.loopVersion} locked.`);
+        Logger.system(`💫 Ending accepted. VERSION ${this.loopVersion} locked.`);
     }
 
     // ========================================
@@ -259,7 +260,7 @@ export class LoopController {
     private updateMainTitle(): void {
         const mainMenuTitle = document.querySelector('#main-menu-content h1');
         if (!mainMenuTitle) {
-            console.warn('⚠️ Main menu title element not found');
+            Logger.warn('⚠️ Main menu title element not found');
             return;
         }
 
@@ -315,8 +316,8 @@ export class LoopController {
         const footer = document.querySelector('.menu-footer') as HTMLElement | null;
 
         if (!subtitle || !footer) {
-            if (!subtitle) console.warn('⚠️ .subtitle element not found in DOM');
-            if (!footer) console.warn('⚠️ .menu-footer element not found in DOM');
+            if (!subtitle) Logger.warn('⚠️ .subtitle element not found in DOM');
+            if (!footer) Logger.warn('⚠️ .menu-footer element not found in DOM');
             return;
         }
 
@@ -331,7 +332,7 @@ export class LoopController {
             footer.textContent = `[Version ${this.loopVersion} - The loop that closed]`;
             footer.classList.add('succeeded');
 
-            console.log('✨ Main menu updated: TRUE ENDING state');
+            Logger.system('✨ Main menu updated: TRUE ENDING state');
 
         } else if (this.loopStatus === 'accepted') {
             // ========================================
@@ -341,7 +342,7 @@ export class LoopController {
             footer.textContent = `[Version ${this.loopVersion} - Digital permanence achieved]`;
             footer.classList.add('succeeded'); // Same glow as true ending
 
-            console.log('💫 Main menu updated: DIGITAL FOREVER state');
+            Logger.system('💫 Main menu updated: DIGITAL FOREVER state');
 
         } else if (this.loopVersion > GameConfig.VERSION.DEFAULT_START) {
             // ========================================
@@ -351,7 +352,7 @@ export class LoopController {
             footer.textContent = `[Version ${this.loopVersion} - Attempt in progress]`;
             footer.classList.add('failed');
 
-            console.log(`🔄 Main menu updated: FAILED state (v${this.loopVersion})`);
+            Logger.system(`🔄 Main menu updated: FAILED state (v${this.loopVersion})`);
 
         } else {
             // ========================================
@@ -360,7 +361,7 @@ export class LoopController {
             subtitle.textContent = 'My Wife Is in a Coma... and in the Code';
             footer.textContent = `[Version ${this.loopVersion} - 847 previous failures]`;
 
-            console.log('📍 Main menu updated: DEFAULT state (v848)');
+            Logger.system('📍 Main menu updated: DEFAULT state (v848)');
         }
     }
 
@@ -438,7 +439,7 @@ export class LoopController {
         this.eventBus.emit('loop:updated', this.getState());
         this.eventBus.emit('loop:reset', this.getState());
 
-        console.log('🔄 Loop state reset to v848 (attempting)');
+        Logger.system('🔄 Loop state reset to v848 (attempting)');
     }
 
     /**
@@ -453,6 +454,6 @@ export class LoopController {
 
         this.eventBus.emit('loop:updated', this.getState());
 
-        console.log(`🔧 Loop version set to ${this.loopVersion}`);
+        Logger.system(`🔧 Loop version set to ${this.loopVersion}`);
     }
 }

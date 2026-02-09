@@ -1,6 +1,7 @@
 
 import { EventBus } from './EventBus';
 import { SettingsSystem } from '../systems/SettingsSystem';
+import { Logger } from '../utils/Logger';
 
 /**
  * SwipeHandler - Mobile Touch Gesture Manager
@@ -28,7 +29,7 @@ export class SwipeHandler {
         this.element.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
         this.element.addEventListener('touchend', (e) => this.handleTouchEnd(e));
 
-        console.log('[SwipeHandler] Initialized on', this.element);
+        Logger.input('[SwipeHandler] Initialized on', this.element);
     }
 
     private handleTouchStart(e: TouchEvent): void {
@@ -44,7 +45,7 @@ export class SwipeHandler {
             target.closest('.slider') ||
             target.closest('code') ||
             target.closest('.scroll-container')) {
-            console.log('[SwipeHandler] Swipe ignored - interactive target');
+            Logger.input('[SwipeHandler] Swipe ignored - interactive target');
             return;
         }
 
@@ -76,11 +77,11 @@ export class SwipeHandler {
             if (Math.abs(distX) >= minDistance && Math.abs(distY) <= restraint) {
                 if (distX < 0) {
                     // Left Swipe
-                    console.log('[SwipeHandler] Swipe Left detected');
+                    Logger.input('[SwipeHandler] Swipe Left detected');
                     this.eventBus.emit('input:swipe_left', {});
                 } else {
                     // Right Swipe
-                    console.log('[SwipeHandler] Swipe Right detected');
+                    Logger.input('[SwipeHandler] Swipe Right detected');
                     this.eventBus.emit('input:swipe_right', {});
                 }
             }
@@ -88,16 +89,16 @@ export class SwipeHandler {
             else if (Math.abs(distY) >= minDistance && Math.abs(distX) <= restraint) {
                 if (distY < 0) {
                     // Up Swipe
-                    console.log('[SwipeHandler] Swipe Up detected');
+                    Logger.input('[SwipeHandler] Swipe Up detected');
                     this.eventBus.emit('input:swipe_up', {});
                 } else {
                     // Down Swipe
                     // TORI'S FIX: Only trigger if started near top
                     if (this.touchStartY < 80) {
-                        console.log('[SwipeHandler] Swipe Down detected (from top edge)');
+                        Logger.input('[SwipeHandler] Swipe Down detected (from top edge)');
                         this.eventBus.emit('input:swipe_down', {});
                     } else {
-                        console.log('[SwipeHandler] Swipe Down ignored (not from top)');
+                        Logger.input('[SwipeHandler] Swipe Down ignored (not from top)');
                     }
                 }
             }

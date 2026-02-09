@@ -37,6 +37,8 @@ interface GameReference {
     mainMenu?: HTMLElement;
 }
 
+import { Logger } from '../utils/Logger';
+
 export class CrewController {
     private game: GameReference;
 
@@ -46,7 +48,7 @@ export class CrewController {
 
     constructor(game: GameReference) {
         this.game = game;
-        console.log('👥 CrewController initialized');
+        Logger.system('👥 CrewController initialized');
     }
 
     // ========================================
@@ -59,7 +61,7 @@ export class CrewController {
     public show(): void {
         const crewScreen = document.getElementById('crew-screen');
         if (!crewScreen) {
-            console.error('Crew screen element not found');
+            Logger.error('Crew screen element not found');
             return;
         }
 

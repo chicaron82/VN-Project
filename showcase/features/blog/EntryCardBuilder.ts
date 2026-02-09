@@ -149,8 +149,8 @@ export function renderCodeComparison(entry: BlogEntry): HTMLElement | null {
     btn?.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent card expansion if any
         // Check if global modal exists
-        if ((window as any).codeComparisonModal) {
-            (window as any).codeComparisonModal.open(entry.codeComparison);
+        if (window.codeComparisonModal) {
+            window.codeComparisonModal.open(entry.codeComparison);
         } else {
             console.error('CodeComparisonModal not initialized');
         }
@@ -224,7 +224,7 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
     let hasDetails = false;
 
     // Helper to append generic HTML
-    const addSection = (className: string, html: string) => {
+    const addSection = (className: string, html: string): void => {
         hasDetails = true;
         const div = document.createElement('div');
         div.className = className;

@@ -16,6 +16,16 @@ describe('Chrome Performance Tests', () => {
     let mockElements: any;
     const performanceResults: Record<string, number> = {};
 
+    function measureAvgMs(fn: () => void, iterations: number = 200, warmup: number = 20): number {
+        for (let i = 0; i < warmup; i++) fn();
+
+        const start = performance.now();
+        for (let i = 0; i < iterations; i++) fn();
+        const total = performance.now() - start;
+
+        return total / iterations;
+    }
+
     beforeEach(() => {
         // Create actual DOM elements for realistic testing
         const statusBar = document.createElement('div');
@@ -44,9 +54,7 @@ describe('Chrome Performance Tests', () => {
 
             api.onAction('test:action', () => { called = true; });
 
-            const start = performance.now();
-            system['handleActionClick']('test:action');
-            const duration = performance.now() - start;
+            const duration = measureAvgMs(() => system['handleActionClick']('test:action'));
 
             expect(called).toBe(true);
             expect(duration).toBeLessThan(2);
@@ -64,9 +72,7 @@ describe('Chrome Performance Tests', () => {
             let called = false;
             api.onAction('test:target', () => { called = true; });
 
-            const start = performance.now();
-            system['handleActionClick']('test:target');
-            const duration = performance.now() - start;
+            const duration = measureAvgMs(() => system['handleActionClick']('test:target'));
 
             expect(called).toBe(true);
             expect(duration).toBeLessThan(2);

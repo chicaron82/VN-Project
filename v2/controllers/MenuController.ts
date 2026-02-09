@@ -1,5 +1,6 @@
 import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 import { RetryScreen } from '@ui/screens/RetryScreen';
 // import { RouteSelect } from '@ui/screens/RouteSelect';
@@ -58,7 +59,7 @@ export class MenuController {
         }
 
         this.eventBus.emit('ui:screen_change', { screen });
-        console.log(`🖥️ UI Screen: ${screen}`);
+        Logger.ui(`🖥️ UI Screen: ${screen}`);
     }
 
     /**

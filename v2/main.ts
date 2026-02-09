@@ -13,6 +13,7 @@ import { SystemEventHandlers } from '@controllers/SystemEventHandlers';
 import { NavigationController } from '@controllers/NavigationController';
 import { GameplayController } from '@controllers/GameplayController';
 import '@core/ErrorBoundary'; // Auto-initializes global error handler
+import { Logger } from '@utils/Logger';
 
 import '@ui/styles/main.css';
 import '@ui/styles/notes-viewer.css';
@@ -169,13 +170,13 @@ function setupGameplayHandlers() {
 // ============================================
 
 async function init() {
-    console.log('[UV7 V2] Starting...');
+    Logger.system('[UV7 V2] Starting...');
 
     // Initialize game engine
     await gameEngine.init();
 
     // Load all route content
-    console.log('[UV7 V2] Loading route content...');
+    Logger.system('[UV7 V2] Loading route content...');
     contentLoader.parseAndRegister(prologueData as { scenes: any[] });
     contentLoader.parseAndRegister(ronnieAct1Data as { scenes: any[] });
     contentLoader.parseAndRegister(ronnieAct2Data as { scenes: any[] });
@@ -183,7 +184,7 @@ async function init() {
     contentLoader.parseAndRegister(toriAct1Data as { scenes: any[] });
     contentLoader.parseAndRegister(toriAct2Data as { scenes: any[] });
     contentLoader.parseAndRegister(toriAct3Data as { scenes: any[] });
-    console.log('[UV7 V2] Route content loaded');
+    Logger.system('[UV7 V2] Route content loaded');
 
     // Set up event handlers (extracted to controllers)
     navigationController.setupNavigationHandlers();
@@ -200,7 +201,7 @@ async function init() {
     // ═══════════════════════════════════════════════════════════════
     const resumeFlag = localStorage.getItem('uv7-auto-resume');
     if (resumeFlag === 'v2') {
-        console.log('[UV7 V2] 🚀 Instant Resume detected from App Switcher');
+        Logger.system('[UV7 V2] 🚀 Instant Resume detected from App Switcher');
         localStorage.removeItem('uv7-auto-resume');
         localStorage.removeItem('uv7-resume-timestamp');
 
@@ -211,7 +212,7 @@ async function init() {
             const success = await saveSystem.loadAutoSave();
 
             if (success) {
-                console.log('[UV7 V2] ✅ Instant Resume successful - skipping menu');
+                Logger.system('[UV7 V2] ✅ Instant Resume successful - skipping menu');
                 eventBus.emit('notification:show', {
                     id: 'quick-resume',
                     title: '⚡ QUICK RESUME',
@@ -224,10 +225,10 @@ async function init() {
                 // Don't show main menu - game is already loaded via SaveSystem
                 return;
             } else {
-                console.warn('[UV7 V2] ⚠️ Instant Resume failed - showing menu');
+                Logger.warn('[UV7 V2] ⚠️ Instant Resume failed - showing menu');
             }
         } else {
-            console.log('[UV7 V2] No save found for Instant Resume - showing menu');
+            Logger.system('[UV7 V2] No save found for Instant Resume - showing menu');
         }
     }
 
@@ -273,4 +274,4 @@ async function init() {
 }
 
 // Start the app
-init().catch(console.error);
+init().catch((error) => Logger.error('[UV7 V2] Init failed', error));

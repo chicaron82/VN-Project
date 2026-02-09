@@ -2,6 +2,7 @@ import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
 import { GameState } from '@core/types';
+import { Logger } from '@utils/Logger';
 
 export interface SaveMetadata {
     slotId: number;
@@ -67,7 +68,7 @@ export class SaveSystem {
     init() {
         this.setupAutoSaveListeners();
         this.startIntervalAutoSave();
-        console.log('[SaveSystem] Initialized with auto-save (30s throttle, 5min interval)');
+        Logger.save('Initialized with auto-save (30s throttle, 5min interval)');
     }
 
     /**
@@ -128,7 +129,7 @@ export class SaveSystem {
      */
     private markDirty(reason: string): void {
         this.isDirty = true;
-        console.log(`[SaveSystem] State marked dirty: ${reason}`);
+        Logger.save(`State marked dirty: ${reason}`);
     }
 
     /**
@@ -154,7 +155,7 @@ export class SaveSystem {
         }
 
         if (!this.canAutoSave()) {
-            console.log(`[SaveSystem] Auto-save throttled (reason: ${reason})`);
+            Logger.save(`Auto-save throttled (reason: ${reason})`);
             return;
         }
 
@@ -170,7 +171,7 @@ export class SaveSystem {
         this.isSaving = true;
         this.eventBus.emit('autosave:start', { reason });
 
-        console.log(`[SaveSystem] Auto-saving (reason: ${reason}, scene: ${sceneId})`);
+        Logger.save(`Auto-saving (reason: ${reason}, scene: ${sceneId})`);
 
         try {
             // Rotate backup: copy primary to backup before saving
@@ -185,7 +186,7 @@ export class SaveSystem {
             if (success) {
                 this.lastAutoSaveTime = Date.now();
                 this.isDirty = false;
-                console.log('[SaveSystem] Auto-save completed successfully');
+                Logger.save('Auto-save completed successfully');
             }
 
             this.eventBus.emit('autosave:complete', {
@@ -196,7 +197,7 @@ export class SaveSystem {
             return success;
 
         } catch (error) {
-            console.error('[SaveSystem] Auto-save failed:', error);
+            Logger.error('[SaveSystem] Auto-save failed:', error);
             this.eventBus.emit('autosave:complete', {
                 success: false,
                 slot: this.autoSaveConfig.primarySlot
@@ -220,10 +221,10 @@ export class SaveSystem {
             const primaryData = localStorage.getItem(primaryKey);
             if (primaryData) {
                 localStorage.setItem(backupKey, primaryData);
-                console.log('[SaveSystem] Backup rotated');
+                Logger.save('Backup rotated');
             }
         } catch (error) {
-            console.warn('[SaveSystem] Backup rotation failed:', error);
+            Logger.warn('[SaveSystem] Backup rotation failed:', error);
         }
     }
 
@@ -271,7 +272,7 @@ export class SaveSystem {
      */
     public setAutoSaveEnabled(enabled: boolean): void {
         this.autoSaveConfig.enabled = enabled;
-        console.log(`[SaveSystem] Auto-save ${enabled ? 'enabled' : 'disabled'}`);
+        Logger.save(`Auto-save ${enabled ? 'enabled' : 'disabled'}`);
     }
 
     /**
@@ -340,11 +341,11 @@ export class SaveSystem {
             if (slotId > 0) {
                 this.eventBus.emit('save:complete', { slot: slotId });
             }
-            console.log(`[SaveSystem] Saved to slot ${slotId}`);
+            Logger.save(`Saved to slot ${slotId}`);
             return true;
 
         } catch (e) {
-            console.error('[SaveSystem] Save failed', e);
+            Logger.error('[SaveSystem] Save failed', e);
             return false;
         }
     }
@@ -358,7 +359,7 @@ export class SaveSystem {
             const raw = localStorage.getItem(key);
 
             if (!raw) {
-                console.warn(`[SaveSystem] No save found in slot ${slotId}`);
+                Logger.warn(`[SaveSystem] No save found in slot ${slotId}`);
                 return false;
             }
 
@@ -366,7 +367,7 @@ export class SaveSystem {
 
             // Version Check
             if (saveSlot.metadata.version !== GameConfig.SAVE.VERSION) {
-                console.warn(`[SaveSystem] Version mismatch: Save v${saveSlot.metadata.version} vs Game v${GameConfig.SAVE.VERSION}`);
+                Logger.warn(`[SaveSystem] Version mismatch: Save v${saveSlot.metadata.version} vs Game v${GameConfig.SAVE.VERSION}`);
                 // Add migration logic here in future
             }
 
@@ -376,15 +377,15 @@ export class SaveSystem {
 
                 // Restore state using setAll (replaces entire state)
                 this.stateManager.setAll(restored as unknown as Record<string, unknown>);
-                console.log(`[SaveSystem] Loaded from slot ${slotId}`);
+                Logger.save(`Loaded from slot ${slotId}`);
                 return true;
             } else {
-                console.error(`[SaveSystem] Load failed: Invalid game state in slot ${slotId}`, saveSlot.data);
+                Logger.error(`[SaveSystem] Load failed: Invalid game state in slot ${slotId}`, saveSlot.data);
                 return false;
             }
 
         } catch (e) {
-            console.error('[SaveSystem] Load failed', e);
+            Logger.error('[SaveSystem] Load failed', e);
             return false;
         }
     }

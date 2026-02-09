@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import type { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 // SaveManager will be ported in a future phase
 // For now, we'll use a minimal interface
@@ -90,7 +91,7 @@ export class AutoSaveManager {
         // Listen for events that should trigger auto-save
         this.setupEventListeners();
 
-        console.log('✅ AutoSaveManager initialized');
+        Logger.save('✅ AutoSaveManager initialized');
     }
 
     // ========================================
@@ -178,7 +179,7 @@ export class AutoSaveManager {
      */
     public start(): void {
         if (!this.enabled) {
-            console.log('⏸️ Auto-save disabled');
+            Logger.save('⏸️ Auto-save disabled');
             return;
         }
 
@@ -192,7 +193,7 @@ export class AutoSaveManager {
             }
         }, this.intervalDuration);
 
-        console.log(`🔄 Auto-save started (interval: ${this.intervalDuration / 1000}s)`);
+        Logger.save(`🔄 Auto-save started (interval: ${this.intervalDuration / 1000}s)`);
     }
 
     /**
@@ -228,7 +229,7 @@ export class AutoSaveManager {
      */
     public async triggerAutoSave(reason: string = 'manual'): Promise<boolean> {
         if (!this.enabled) {
-            console.log('⏸️ Auto-save disabled, skipping');
+            Logger.save('⏸️ Auto-save disabled, skipping');
             return false;
         }
 
@@ -236,11 +237,11 @@ export class AutoSaveManager {
         const now = Date.now();
         const timeSinceLastSave = now - this.lastSaveTime;
         if (timeSinceLastSave < this.minSaveInterval) {
-            console.log(`⏱️ Auto-save throttled (${timeSinceLastSave}ms < ${this.minSaveInterval}ms)`);
+            Logger.save(`⏱️ Auto-save throttled (${timeSinceLastSave}ms < ${this.minSaveInterval}ms)`);
             return false;
         }
 
-        console.log(`💾 Triggering auto-save (reason: ${reason})`);
+        Logger.save(`💾 Triggering auto-save (reason: ${reason})`);
 
         try {
             // ZEE'S BACKUP SYSTEM: Create backup before saving 🖤
@@ -256,11 +257,11 @@ export class AutoSaveManager {
             // Show success indicator
             this.updateIndicator('Saved!', 'success');
 
-            console.log('✅ Auto-save completed');
+            Logger.save('✅ Auto-save completed');
             return true;
 
         } catch (error) {
-            console.error('❌ Auto-save failed:', error);
+            Logger.error('❌ Auto-save failed:', error);
 
             // TORI'S RECOVERY: Attempt to restore from backup 💚🔥
             await this.restoreFromBackup();
@@ -277,7 +278,7 @@ export class AutoSaveManager {
      * V1 Parity: lines 196-205
      */
     public async forceSave(reason: string = 'force'): Promise<boolean> {
-        console.log(`💾 Force saving (reason: ${reason})`);
+        Logger.save(`💾 Force saving (reason: ${reason})`);
 
         // Temporarily disable throttle
         const originalMinInterval = this.minSaveInterval;
@@ -324,10 +325,10 @@ export class AutoSaveManager {
             // Save backups to localStorage
             this.saveBackups();
 
-            console.log(`💾 Backup created (${this.backups.length}/${this.maxBackups})`);
+            Logger.save(`💾 Backup created (${this.backups.length}/${this.maxBackups})`);
 
         } catch (error) {
-            console.error('❌ Backup creation failed:', error);
+            Logger.error('❌ Backup creation failed:', error);
         }
     }
 
@@ -337,7 +338,7 @@ export class AutoSaveManager {
      */
     private async restoreFromBackup(): Promise<boolean> {
         if (this.backups.length === 0) {
-            console.warn('⚠️ No backups available for recovery');
+            Logger.warn('⚠️ No backups available for recovery');
             return false;
         }
 
@@ -345,23 +346,23 @@ export class AutoSaveManager {
             // Get most recent backup
             const backup = this.backups[this.backups.length - 1];
             if (!backup) {
-                console.warn('⚠️ Backup is undefined');
+                Logger.warn('⚠️ Backup is undefined');
                 return false;
             }
 
-            console.log(`🔄 Restoring from backup (${new Date(backup.timestamp).toLocaleString()})`);
+            Logger.save(`🔄 Restoring from backup (${new Date(backup.timestamp).toLocaleString()})`);
 
             // Parse and restore data
             const data = JSON.parse(backup.data);
             this.stateManager.importState(data);
 
-            console.log('✅ Backup restored successfully');
+            Logger.save('✅ Backup restored successfully');
             this.updateIndicator('Backup restored', 'success');
 
             return true;
 
         } catch (error) {
-            console.error('❌ Backup restoration failed:', error);
+            Logger.error('❌ Backup restoration failed:', error);
             return false;
         }
     }
@@ -373,7 +374,7 @@ export class AutoSaveManager {
         try {
             localStorage.setItem(this.backupKey, JSON.stringify(this.backups));
         } catch (error) {
-            console.error('❌ Failed to save backups to localStorage:', error);
+            Logger.error('❌ Failed to save backups to localStorage:', error);
         }
     }
 
@@ -385,10 +386,10 @@ export class AutoSaveManager {
             const stored = localStorage.getItem(this.backupKey);
             if (stored) {
                 this.backups = JSON.parse(stored);
-                console.log(`💾 Loaded ${this.backups.length} backup(s)`);
+                Logger.save(`💾 Loaded ${this.backups.length} backup(s)`);
             }
         } catch (error) {
-            console.error('❌ Failed to load backups:', error);
+            Logger.error('❌ Failed to load backups:', error);
             this.backups = [];
         }
     }
@@ -399,7 +400,7 @@ export class AutoSaveManager {
     public clearBackups(): void {
         this.backups = [];
         localStorage.removeItem(this.backupKey);
-        console.log('🗑️ Backups cleared');
+        Logger.save('🗑️ Backups cleared');
     }
 
     // ========================================
@@ -502,6 +503,6 @@ export class AutoSaveManager {
             this.indicator = null;
         }
 
-        console.log('🗑️ AutoSaveManager destroyed');
+        Logger.save('🗑️ AutoSaveManager destroyed');
     }
 }

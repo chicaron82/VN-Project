@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -56,7 +57,7 @@ export class PauseManager {
         this.reasons = new Set<string>();
         this.listeners = [];
 
-        console.log('⏸️ PauseManager initialized');
+        Logger.system('⏸️ PauseManager initialized');
     }
 
     // ========================================
@@ -69,7 +70,7 @@ export class PauseManager {
      */
     public request(reason: string): void {
         if (!reason) {
-            console.warn('PauseManager: request() called without a reason');
+            Logger.warn('PauseManager: request() called without a reason');
             return;
         }
 
@@ -77,14 +78,14 @@ export class PauseManager {
         this.reasons.add(reason);
 
         if (!wasPaused && this.isPaused) {
-            console.log(`⏸️ Game PAUSED (reason: ${reason})`);
+            Logger.system(`⏸️ Game PAUSED (reason: ${reason})`);
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
             // @ts-expect-error - pause:requested event will be added to GameEvents in future phase
             this.eventBus.emit('pause:requested', { reason });
         } else if (wasPaused) {
-            console.log(`⏸️ Additional pause reason: ${reason} (total: ${this.reasons.size})`);
+            Logger.system(`⏸️ Additional pause reason: ${reason} (total: ${this.reasons.size})`);
         }
     }
 
@@ -94,12 +95,12 @@ export class PauseManager {
      */
     public release(reason: string): void {
         if (!reason) {
-            console.warn('PauseManager: release() called without a reason');
+            Logger.warn('PauseManager: release() called without a reason');
             return;
         }
 
         if (!this.reasons.has(reason)) {
-            console.warn(`PauseManager: Tried to release unknown reason: ${reason}`);
+            Logger.warn(`PauseManager: Tried to release unknown reason: ${reason}`);
             return;
         }
 
@@ -107,14 +108,14 @@ export class PauseManager {
         this.reasons.delete(reason);
 
         if (wasPaused && !this.isPaused) {
-            console.log(`▶️ Game RESUMED (released: ${reason})`);
+            Logger.system(`▶️ Game RESUMED (released: ${reason})`);
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
             // @ts-expect-error - pause:released event will be added to GameEvents in future phase
             this.eventBus.emit('pause:released', { reason });
         } else if (this.isPaused) {
-            console.log(`⏸️ Released: ${reason} (still paused, remaining: ${[...this.reasons].join(', ')})`);
+            Logger.system(`⏸️ Released: ${reason} (still paused, remaining: ${[...this.reasons].join(', ')})`);
         }
     }
 
@@ -128,7 +129,7 @@ export class PauseManager {
         this.reasons.clear();
 
         if (hadReasons) {
-            console.log(`▶️ Game FORCE RESUMED (cleared: ${reasons.join(', ')})`);
+            Logger.system(`▶️ Game FORCE RESUMED (cleared: ${reasons.join(', ')})`);
             this._notifyListeners();
 
             // Emit EventBus event for V2 coordination
@@ -198,7 +199,7 @@ export class PauseManager {
             try {
                 cb(state);
             } catch (e) {
-                console.error('PauseManager listener error:', e);
+                Logger.error('PauseManager listener error:', e);
             }
         });
     }

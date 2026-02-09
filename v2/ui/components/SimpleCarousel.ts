@@ -6,6 +6,7 @@
 
 import { EventBus } from '@core/EventBus';
 import type { CarouselItem } from './MenuCarousel';
+import { Logger } from '@utils/Logger';
 
 export class SimpleCarousel {
     private eventBus: EventBus;
@@ -48,7 +49,7 @@ export class SimpleCarousel {
         this.track = this.container.querySelector('.carousel-track') as HTMLElement;
         this.dotsContainer = this.container.querySelector('.carousel-dots') as HTMLElement;
 
-        console.log('📱 Simple Carousel (Portrait) initialized - Tinder Mode');
+        Logger.ui('📱 Simple Carousel (Portrait) initialized - Tinder Mode');
     }
 
     init() {
@@ -67,7 +68,7 @@ export class SimpleCarousel {
         // Show tutorial on first use
         this.showTutorialIfFirstTime();
 
-        console.log(`✅ Simple Carousel ready with ${this.items.length} cards (Tinder Mode)`);
+        Logger.ui(`✅ Simple Carousel ready with ${this.items.length} cards (Tinder Mode)`);
     }
 
     private initEventListeners() {
@@ -480,7 +481,7 @@ export class SimpleCarousel {
         });
 
         this.container.appendChild(this.tutorialOverlay);
-        console.log('👆 Tutorial overlay shown');
+        Logger.ui('👆 Tutorial overlay shown');
     }
 
     private dismissTutorial() {
@@ -494,7 +495,7 @@ export class SimpleCarousel {
             }, 300);
 
             localStorage.setItem('carouselTutorialDismissed', 'true');
-            console.log('👆 Tutorial dismissed');
+            Logger.ui('👆 Tutorial dismissed');
         }
     }
 
@@ -504,6 +505,6 @@ export class SimpleCarousel {
 
     public destroy() {
         this.dismissTutorial();
-        console.log('📱 Simple Carousel destroyed');
+        Logger.ui('📱 Simple Carousel destroyed');
     }
 }

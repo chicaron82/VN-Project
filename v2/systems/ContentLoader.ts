@@ -1,5 +1,6 @@
 import { Scene } from '@core/types';
 import { GameEngine } from '@core/GameEngine';
+import { Logger } from '@utils/Logger';
 
 export class ContentLoader {
     private engine: GameEngine;
@@ -8,7 +9,7 @@ export class ContentLoader {
         this.engine = engine;
     }
 
-    private routeCache: Map<string, any> = new Map();
+    private routeCache: Map<string, unknown> = new Map();
 
     /**
      * Load a route file (JSON)
@@ -42,7 +43,7 @@ export class ContentLoader {
 
             this.parseAndRegister(data);
         } catch (e) {
-            console.error('Failed to load route:', e);
+            Logger.error('Failed to load route:', e);
             throw e;
         }
     }
@@ -57,13 +58,15 @@ export class ContentLoader {
     /**
      * Parse raw JSON data and register scenes
      */
-    parseAndRegister(data: { scenes: any[] }) {
-        if (!data.scenes || !Array.isArray(data.scenes)) {
-            console.error('Invalid route data format: missing scenes array');
+    parseAndRegister(data: unknown): void {
+        const scenes = (data as { scenes?: unknown })?.scenes;
+        if (!Array.isArray(scenes)) {
+            Logger.error('Invalid route data format: missing scenes array');
             return;
         }
 
-        data.scenes.forEach(sceneData => {
+        scenes.forEach((sceneDataUnknown) => {
+            const sceneData = sceneDataUnknown as Record<string, any>;
             // Convert JSON sprites format { left: "path", right: "path" }
             // to SpriteConfig[] format
             let sprites: Scene['sprites'] = undefined;

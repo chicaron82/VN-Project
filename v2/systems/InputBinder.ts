@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -94,7 +95,7 @@ export class InputBinder {
         this.game = game;
         this.eventBus = eventBus;
 
-        console.log('🔌 InputBinder initialized');
+        Logger.input('🔌 InputBinder initialized');
     }
 
     // ========================================
@@ -111,7 +112,7 @@ export class InputBinder {
         this.bindSaveLoad();
         this.bindExtras();
 
-        console.log('✅ All UI events bound successfully');
+        Logger.input('✅ All UI events bound successfully');
     }
 
     // ========================================

@@ -6,6 +6,7 @@ import { SpriteController } from './SpriteController';
 import { DialogBubble } from '../ui/components/DialogBubble';
 import { GameLayout } from '../ui/components/GameLayout';
 import { VisualEffectsLayer } from '../ui/components/VisualEffectsLayer';
+import { Logger } from '../utils/Logger';
 
 /**
  * GameplayController - Gameplay session management and UI updates
@@ -99,28 +100,28 @@ export class GameplayController {
 
             // Click on viewport advances dialog OR hides bubble
             this.gameLayout.viewport.addEventListener('click', () => {
-                console.log('[CLICK] Viewport clicked', { bubbleVisible: this.dialogBubble.isVisible() });
+                Logger.input('[CLICK] Viewport clicked', { bubbleVisible: this.dialogBubble.isVisible() });
                 // DIZEE: If bubble is visible, hide it and advance
                 if (this.dialogBubble.isVisible()) {
-                    console.log('[CLICK] Hiding bubble and advancing scene');
+                    Logger.input('[CLICK] Hiding bubble and advancing scene');
                     this.dialogBubble.hide();
                     // For internal thoughts, manually trigger advance since DialogController isn't active
                     this.eventBus.emit('dialog:advance', {});
                 } else {
-                    console.log('[CLICK] Calling dialogController.handleClick()');
+                    Logger.input('[CLICK] Calling dialogController.handleClick()');
                     this.dialogController.handleClick();
                 }
             });
 
             // Click on dialog box also advances (V1 parity)
             this.gameLayout.dialogBox.addEventListener('click', () => {
-                console.log('[CLICK] Dialog box clicked', { bubbleVisible: this.dialogBubble.isVisible() });
+                Logger.input('[CLICK] Dialog box clicked', { bubbleVisible: this.dialogBubble.isVisible() });
                 if (this.dialogBubble.isVisible()) {
-                    console.log('[CLICK] Hiding bubble and advancing scene');
+                    Logger.input('[CLICK] Hiding bubble and advancing scene');
                     this.dialogBubble.hide();
                     this.eventBus.emit('dialog:advance', {});
                 } else {
-                    console.log('[CLICK] Calling dialogController.handleClick()');
+                    Logger.input('[CLICK] Calling dialogController.handleClick()');
                     this.dialogController.handleClick();
                 }
             });
@@ -139,13 +140,13 @@ export class GameplayController {
             // Prologue loads immediately
             await this.gameEngine.loadScene(firstSceneId);
             this.eventBus.emit('loading:end', {});
-            console.log('[UV7 V2] Starting prologue');
+            Logger.system('[UV7 V2] Starting prologue');
         } else {
             // Route games delay for code rain effect
             setTimeout(async () => {
                 await this.gameEngine.loadScene(firstSceneId);
                 this.eventBus.emit('loading:end', {});
-                console.log(`[UV7 V2] Starting game: ${mode} route`);
+                Logger.system(`[UV7 V2] Starting game: ${mode} route`);
             }, 900);
         }
     }

@@ -1,6 +1,7 @@
 import { EventBus } from '@core/EventBus';
 import { CarouselMomentum } from './CarouselMomentum';
 import { SimpleCarousel } from './SimpleCarousel';
+import { Logger } from '@utils/Logger';
 import '@ui/styles/main.css';
 
 // Type shim for global window object
@@ -135,7 +136,7 @@ export class MenuCarousel {
         this.container.querySelector('.carousel-prev')?.addEventListener('click', () => this.prev());
         this.container.querySelector('.carousel-next')?.addEventListener('click', () => this.next());
 
-        console.log('🎠 MenuCarousel Manager initialized - Hybrid Mode');
+        Logger.ui('🎠 MenuCarousel Manager initialized - Hybrid Mode');
     }
 
     mount(parent: HTMLElement) {
@@ -165,7 +166,7 @@ export class MenuCarousel {
 
         // Only switch if different
         if (desiredEngine !== currentEngineName) {
-            console.log(`🔄 Switching Carousel Mode: ${currentEngineName || 'None'} -> ${desiredEngine}`);
+            Logger.ui(`🔄 Switching Carousel Mode: ${currentEngineName || 'None'} -> ${desiredEngine}`);
 
             // Destroy current
             if (this.activeEngine) {

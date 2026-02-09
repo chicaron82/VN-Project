@@ -1,5 +1,6 @@
 import { EventBus } from '../../core/EventBus';
 import { StateManager } from '../../core/StateManager';
+import { Logger } from '../../utils/Logger';
 
 // ========================================
 // EXTRACTED MODULES (Phase 26 + Phase 27 Refactoring)
@@ -107,7 +108,7 @@ export class StatusBar {
                 ? COLOR_TINTS.landing
                 : COLOR_TINTS.neutral;
 
-        console.log(`🎨 StatusBar initialized in ${this.context} context`);
+        Logger.ui(`🎨 StatusBar initialized in ${this.context} context`);
 
         // Create DOM and cache refs
         this.refs = createStatusBarDOM(this.context, this.features, resolvedConfig);
@@ -242,7 +243,7 @@ export class StatusBar {
     }
 
     private handleBreadcrumbClick(segment: BreadcrumbSegment): void {
-        console.log(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
+        Logger.ui(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
         this.eventBus.emit('ui:screen_change', { screen: `breadcrumb:${segment.id}` });
         if (navigator.vibrate) navigator.vibrate(10);
     }

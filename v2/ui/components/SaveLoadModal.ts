@@ -13,6 +13,7 @@
 import { EventBus } from '../../core/EventBus';
 import { SaveSystem, SaveMetadata } from '../../systems/SaveSystem';
 import { StateManager } from '../../core/StateManager';
+import { Logger } from '../../utils/Logger';
 import '../../ui/styles/save-load-modal.css';
 
 export type SaveLoadMode = 'save' | 'load';
@@ -328,7 +329,7 @@ export class SaveLoadModal {
         this.renderSlots();
         this.container.style.display = 'flex';
 
-        console.debug('[SaveLoadModal] Opened in', mode, 'mode');
+        Logger.ui('[SaveLoadModal] Opened in', mode, 'mode');
     }
 
     public close() {
@@ -336,7 +337,7 @@ export class SaveLoadModal {
         this.isOpen = false;
         this.container.style.display = 'none';
         this.closeConfirmDialog();
-        console.debug('[SaveLoadModal] Closed');
+        Logger.ui('[SaveLoadModal] Closed');
     }
 
     public isVisible(): boolean {

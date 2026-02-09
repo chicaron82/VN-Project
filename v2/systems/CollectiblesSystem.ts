@@ -1,5 +1,6 @@
 import { EventBus } from '../core/EventBus';
 import { NoteData } from '../core/types';
+import { Logger } from '../utils/Logger';
 
 // Import raw JSON content
 import toriNotes from '../content/notes/tori_notes.json';
@@ -156,7 +157,7 @@ export class CollectiblesSystem {
             };
         });
 
-        console.log(`[CollectiblesSystem] Initialized with ${Object.keys(this.allNotes).length} notes`);
+        Logger.system(`[CollectiblesSystem] Initialized with ${Object.keys(this.allNotes).length} notes`);
     }
 
     private setupListeners() {
@@ -171,7 +172,7 @@ export class CollectiblesSystem {
      */
     public unlockNote(noteId: string) {
         if (!this.allNotes[noteId]) {
-            console.warn(`[CollectiblesSystem] Cannot unlock unknown note: ${noteId}`);
+            Logger.warn(`[CollectiblesSystem] Cannot unlock unknown note: ${noteId}`);
             return;
         }
 
@@ -197,7 +198,7 @@ export class CollectiblesSystem {
             count: this.collectedNotes.size
         });
 
-        console.log(`[CollectiblesSystem] Unlocked note: ${noteId}`);
+        Logger.system(`[CollectiblesSystem] Unlocked note: ${noteId}`);
     }
 
     /**
@@ -318,14 +319,14 @@ export class CollectiblesSystem {
                 this.codeDrops = state.codeDrops || {};
                 return; // Loaded successfully
             } catch (e) {
-                console.error('[CollectiblesSystem] Failed to load state', e);
+                Logger.error('[CollectiblesSystem] Failed to load state', e);
             }
         }
 
         // Check for V1 Data (Migration)
         const v1Collected = localStorage.getItem('vn_collected_notes');
         if (v1Collected) {
-            console.log('🔄 [CollectiblesSystem] Migrating V1 Collectibles...');
+            Logger.system('🔄 [CollectiblesSystem] Migrating V1 Collectibles...');
             try {
                 // Migrate collected notes
                 const collected = JSON.parse(v1Collected);
@@ -356,7 +357,7 @@ export class CollectiblesSystem {
                 this.saveState();
 
             } catch (e) {
-                console.warn('Failed to migrate V1 collectibles:', e);
+                Logger.warn('Failed to migrate V1 collectibles:', e);
             }
         }
     }
@@ -403,7 +404,7 @@ export class CollectiblesSystem {
             // Emit code discovery event (name defaults to code for now)
             this.eventBus.emit('secret_code:unlocked', { code: guaranteedCode, name: guaranteedCode.toUpperCase() });
 
-            console.log(`✅ [CollectiblesSystem] Guaranteed code drop: ${guaranteedCode}`);
+            Logger.system(`✅ [CollectiblesSystem] Guaranteed code drop: ${guaranteedCode}`);
             return drop;
         }
 
@@ -421,7 +422,7 @@ export class CollectiblesSystem {
 
         if (viewCount >= CollectiblesSystem.PITY_THRESHOLD) {
             shouldDrop = true;
-            console.log(`🎁 [CollectiblesSystem] Pity triggered for ${noteId} after ${viewCount} views`);
+            Logger.system(`🎁 [CollectiblesSystem] Pity triggered for ${noteId} after ${viewCount} views`);
         } else {
             // Normal RNG check
             shouldDrop = Math.random() < metadata.dropChance;
@@ -449,14 +450,14 @@ export class CollectiblesSystem {
                 this.eventBus.emit('secret_code:unlocked', { code: droppedCode, name: droppedCode.toUpperCase() });
             }
 
-            console.log(`🎲 [CollectiblesSystem] RNG code drop: ${droppedCode} from ${noteId}`);
+            Logger.system(`🎲 [CollectiblesSystem] RNG code drop: ${droppedCode} from ${noteId}`);
             return drop;
         } else {
             const drop: CodeDrop = { hasCode: false, code: null, timestamp: Date.now(), wasGuaranteed: false };
             this.codeDrops[noteId] = drop;
             this.saveState();
 
-            console.log(`❌ [CollectiblesSystem] No drop from ${noteId} (${timesViewed}/${CollectiblesSystem.PITY_THRESHOLD} views)`);
+            Logger.system(`❌ [CollectiblesSystem] No drop from ${noteId} (${timesViewed}/${CollectiblesSystem.PITY_THRESHOLD} views)`);
             return drop;
         }
     }
@@ -487,7 +488,7 @@ export class CollectiblesSystem {
      */
     public setRoute(route: 'tori' | 'ronnie' | null): void {
         this.currentRoute = route;
-        console.log(`[CollectiblesSystem] Route set to: ${route}`);
+        Logger.system(`[CollectiblesSystem] Route set to: ${route}`);
     }
 
     /**
@@ -495,7 +496,7 @@ export class CollectiblesSystem {
      */
     public setDifficulty(difficulty: 'easy' | 'normal' | 'intense' | 'insane'): void {
         this.currentDifficulty = difficulty;
-        console.log(`[CollectiblesSystem] Difficulty set to: ${difficulty}`);
+        Logger.system(`[CollectiblesSystem] Difficulty set to: ${difficulty}`);
     }
 
     /**
@@ -627,7 +628,7 @@ export class CollectiblesSystem {
         this.revealedCodes = {};
         this.codeDrops = {};
         this.saveState();
-        console.log('[CollectiblesSystem] State reset');
+        Logger.system('[CollectiblesSystem] State reset');
     }
 
     /**

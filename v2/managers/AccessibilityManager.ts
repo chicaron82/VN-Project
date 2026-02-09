@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -84,7 +85,7 @@ export class AccessibilityManager {
         this.detectUserPreferences();
         this.setupKeyboardNav();
         this.loadTextSizePreference();
-        console.log('♿ Accessibility Manager initialized');
+        Logger.system('♿ Accessibility Manager initialized');
     }
 
     // ========================================
@@ -236,7 +237,7 @@ export class AccessibilityManager {
 
         if (this.reducedMotion) {
             document.body.classList.add('reduce-motion');
-            console.log('♿ Reduced motion enabled');
+            Logger.system('♿ Reduced motion enabled');
         }
 
         // Listen for changes
@@ -251,7 +252,7 @@ export class AccessibilityManager {
 
         if (this.highContrastMode) {
             document.body.classList.add('high-contrast');
-            console.log('♿ High contrast mode enabled');
+            Logger.system('♿ High contrast mode enabled');
         }
 
         prefersHighContrast.addEventListener('change', (e) => {
@@ -283,7 +284,7 @@ export class AccessibilityManager {
 
         // Save preference
         localStorage.setItem('accessibility_textSize', size);
-        console.log(`♿ Text size set to ${size} (${this.textSizeMultiplier}x)`);
+        Logger.system(`♿ Text size set to ${size} (${this.textSizeMultiplier}x)`);
     }
 
     private loadTextSizePreference(): void {
@@ -308,7 +309,7 @@ export class AccessibilityManager {
 
         // Save preference
         localStorage.setItem('accessibility_highContrast', String(this.highContrastMode));
-        console.log(`♿ High contrast mode ${this.highContrastMode ? 'enabled' : 'disabled'}`);
+        Logger.system(`♿ High contrast mode ${this.highContrastMode ? 'enabled' : 'disabled'}`);
 
         return this.highContrastMode;
     }

@@ -1,5 +1,6 @@
 import { EventBus } from './EventBus';
 import { SettingsSystem } from '../systems/SettingsSystem';
+import { Logger } from '../utils/Logger';
 
 export class AutoReadController {
     private eventBus: EventBus;
@@ -53,9 +54,9 @@ export class AutoReadController {
 
         this.cancelTimer();
 
-        console.log(`[AutoRead] Starting timer: ${delay}ms`);
+        Logger.system(`[AutoRead] Starting timer: ${delay}ms`);
         this.timer = window.setTimeout(() => {
-            console.log('[AutoRead] Timer fired - advancing');
+            Logger.system('[AutoRead] Timer fired - advancing');
             this.eventBus.emit('dialog:advance', { source: 'auto-read' });
         }, delay);
     }

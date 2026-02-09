@@ -3,6 +3,7 @@ import { SaveSystem } from '../systems/SaveSystem';
 import { GameConfig } from '../core/GameConfig';
 import { DialogController } from './DialogController';
 import { DialogBubble } from '../ui/components/DialogBubble';
+import { Logger } from '../utils/Logger';
 
 /**
  * InputController - Keyboard shortcuts and user input handling
@@ -118,18 +119,18 @@ export class InputController {
         document.addEventListener('keydown', (e) => {
             // Space/Enter to advance dialog OR hide bubble
             if ((e.key === ' ' || e.key === 'Enter') && !this.isPausedGetter()) {
-                console.log('[KEYPRESS] Space/Enter pressed', {
+                Logger.input('[KEYPRESS] Space/Enter pressed', {
                     bubbleVisible: this.dialogBubble.isVisible(),
                 });
 
                 // DIZEE: If bubble is visible, hide it first
                 if (this.dialogBubble.isVisible()) {
-                    console.log('[KEYPRESS] Hiding bubble and advancing scene');
+                    Logger.input('[KEYPRESS] Hiding bubble and advancing scene');
                     this.dialogBubble.hide();
                     // For internal thoughts, manually trigger advance since DialogController isn't active
                     this.eventBus.emit('dialog:advance', {});
                 } else {
-                    console.log('[KEYPRESS] Calling dialogController.handleClick()');
+                    Logger.input('[KEYPRESS] Calling dialogController.handleClick()');
                     this.dialogController.handleClick();
                 }
             }

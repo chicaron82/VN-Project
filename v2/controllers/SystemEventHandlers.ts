@@ -4,6 +4,7 @@ import { DialogController } from './DialogController';
 import { SpriteController } from './SpriteController';
 import { DialogBubble } from '../ui/components/DialogBubble';
 import type { GameLayout } from '../ui/components/GameLayout';
+import { Logger } from '@utils/Logger';
 
 /**
  * SystemEventHandlers - Game event listeners setup
@@ -119,19 +120,19 @@ export class SystemEventHandlers {
             }
 
             // DIZEE: Handle scene effects (fadeSpritesSequence, etc.)
-            console.log('[DIZEE] Checking for effects:', {
+            Logger.effect('Checking for effects:', {
                 sceneId,
                 hasEffects: !!scene.effects,
                 effects: scene.effects,
             });
             if (scene.effects && scene.effects.length > 0) {
                 scene.effects.forEach((effect) => {
-                    console.log('[DIZEE] Processing effect:', effect);
+                    Logger.effect('Processing effect:', effect);
                     if (effect.type === 'fadeSpritesSequence') {
-                        console.log('[DIZEE] Triggering fadeSpritesSequence with 200ms delay');
+                        Logger.effect('Triggering fadeSpritesSequence with 200ms delay');
                         // Delay effect to ensure sprites are rendered
                         setTimeout(() => {
-                            console.log('[DIZEE] Executing fadeSpritesSequence now');
+                            Logger.effect('Executing fadeSpritesSequence now');
                             this.spriteController.fadeSpritesSequence(
                                 (effect as any).position || 'left',
                                 (effect as any).sprite1,
@@ -148,12 +149,12 @@ export class SystemEventHandlers {
                 this.spriteController.highlightSpeaker(scene.character || 'Narration');
             }
 
-            console.log(`[UV7 V2] Scene loaded: ${sceneId}${isInternal ? ' (internal)' : ''}`);
+            Logger.scene(`Scene loaded: ${sceneId}${isInternal ? ' (internal)' : ''}`);
         });
 
         // Scene complete - handle end of route
         this.eventBus.on('scene:complete', ({ sceneId }) => {
-            console.log(`[UV7 V2] Route ended at: ${sceneId}`);
+            Logger.scene(`Route ended at: ${sceneId}`);
             // For now, return to main menu after a delay
             setTimeout(() => {
                 this.showMainMenu();

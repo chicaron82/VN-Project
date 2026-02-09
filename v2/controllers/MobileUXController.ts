@@ -1,5 +1,6 @@
 
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 
 /**
@@ -23,7 +24,7 @@ export class MobileUXController {
         this.setupListeners();
         this.setupScrollIndicators();
 
-        console.log('[MobileUX] Controller initialized');
+        Logger.system('[MobileUX] Controller initialized');
     }
 
     private setupListeners(): void {
@@ -64,7 +65,7 @@ export class MobileUXController {
         if (!this.isGameplayActive()) return;
 
         // Swipe Right -> Advance Dialog
-        console.log('[MobileUX] Action: Advance');
+        Logger.input('[MobileUX] Action: Advance');
         this.eventBus.emit('dialog:advance', { source: 'swipe' });
     }
 
@@ -76,7 +77,7 @@ export class MobileUXController {
         if (!this.isGameplayActive()) return;
 
         // Swipe Left -> Open Backlog
-        console.log('[MobileUX] Action: Backlog');
+        Logger.input('[MobileUX] Action: Backlog');
         this.eventBus.emit('ui:backlog:toggle', {});
     }
 
@@ -89,7 +90,7 @@ export class MobileUXController {
         if (!this.isGameplayActive()) return;
 
         // Swipe Up -> Hide UI (Screenshot Mode)
-        console.log('[MobileUX] Action: Hide UI');
+        Logger.input('[MobileUX] Action: Hide UI');
         this.eventBus.emit('ui:hide_status_bar', {});
         // Also hide dialog box if accessible
         document.querySelector('.dialog-box')?.classList.toggle('hidden');
@@ -116,11 +117,11 @@ export class MobileUXController {
 
         if (isLandscape) {
             // Landscape: Open sidebar (V2 behavior)
-            console.log('[MobileUX] Action: Open Sidebar (landscape)');
+            Logger.input('[MobileUX] Action: Open Sidebar (landscape)');
             this.eventBus.emit('ui:sidebar:toggle', {});
         } else {
             // Portrait: Let NotificationShade handle it (V1 behavior)
-            console.log('[MobileUX] Action: NotificationShade (portrait) - passing through');
+            Logger.input('[MobileUX] Action: NotificationShade (portrait) - passing through');
         }
     }
 
@@ -144,7 +145,7 @@ export class MobileUXController {
     private toggleFullscreen(): void {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
-                console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+                Logger.warn(`Error attempting to enable fullscreen: ${err.message}`);
             });
         } else {
             if (document.exitFullscreen) {
@@ -175,7 +176,7 @@ export class MobileUXController {
         const gameView = document.getElementById('game-view');
         if (gameView) {
             this.mutationObserver.observe(gameView, { childList: true, subtree: true });
-            console.log('[MobileUX] Scroll indicators observer active');
+            Logger.ui('[MobileUX] Scroll indicators observer active');
         }
     }
 
@@ -201,7 +202,7 @@ export class MobileUXController {
                         indicator.style.opacity = isAtBottom ? '0' : '1';
                     });
 
-                    console.log('[MobileUX] Scroll indicator added to bubble');
+                    Logger.ui('[MobileUX] Scroll indicator added to bubble');
                 }
             }
         };

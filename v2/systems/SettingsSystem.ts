@@ -1,5 +1,6 @@
 import { StateManager } from '@core/StateManager';
 import { GameConfig } from '@core/GameConfig';
+import { Logger } from '@utils/Logger';
 
 export interface GameSettings {
     textSpeed: number; // ms per char
@@ -137,7 +138,7 @@ export class SettingsSystem {
                 const legacySwipe = localStorage.getItem('swipe_settings');
                 if (legacySwipe) {
                     try {
-                        console.log('🔄 Migrating V1 Swipe Settings...');
+                        Logger.system('🔄 Migrating V1 Swipe Settings...');
                         const parsed = JSON.parse(legacySwipe);
                         settings.swipeSettings = {
                             minDistance: parsed.minDist || 35,
@@ -146,14 +147,14 @@ export class SettingsSystem {
                         };
                         // Note: V1 invertX/Y not migrated as V2 handles direction differently
                     } catch (e) {
-                        console.warn('Failed to migrate swipe settings', e);
+                        Logger.warn('Failed to migrate swipe settings', e);
                     }
                 }
             }
 
             return settings;
         } catch (e) {
-            console.warn('Failed to load settings', e);
+            Logger.warn('Failed to load settings', e);
             return {};
         }
     }
@@ -164,7 +165,7 @@ export class SettingsSystem {
             const current = this.stateManager.get('settings');
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(current));
         } catch (e) {
-            console.warn('Failed to save settings', e);
+            Logger.warn('Failed to save settings', e);
         }
     }
 }

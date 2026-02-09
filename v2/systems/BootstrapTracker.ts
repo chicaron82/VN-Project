@@ -1,5 +1,6 @@
 
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 export interface BootstrapAttempt {
     number: number;
@@ -44,8 +45,8 @@ export class BootstrapTracker {
         // Sync current attempt to state manager for easy access
         this.stateManager.set('game.loopVersion', this.timeline.currentAttempt);
 
-        console.log('📜 Bootstrap tracker initialized');
-        console.log(`Current attempt: #${this.timeline.currentAttempt}`);
+        Logger.system('📜 Bootstrap tracker initialized');
+        Logger.system(`Current attempt: #${this.timeline.currentAttempt}`);
     }
 
     private loadTimeline(): BootstrapTimeline {
@@ -59,7 +60,7 @@ export class BootstrapTracker {
             // Check for V1 Data (Migration)
             const legacy = localStorage.getItem('bootstrapTimeline');
             if (legacy) {
-                console.log('🔄 Migrating V1 Bootstrap Timeline to V2...');
+                Logger.system('🔄 Migrating V1 Bootstrap Timeline to V2...');
                 const parsed = JSON.parse(legacy);
                 // Save immediately to new key
                 this.timeline = parsed;
@@ -70,7 +71,7 @@ export class BootstrapTracker {
             }
 
         } catch (e) {
-            console.warn('Failed to load bootstrap timeline:', e);
+            Logger.warn('Failed to load bootstrap timeline:', e);
         }
 
         return this.createDefaultTimeline();
@@ -96,7 +97,7 @@ export class BootstrapTracker {
             // Sync state
             this.stateManager.set('game.loopVersion', this.timeline.currentAttempt);
         } catch (e) {
-            console.error('Failed to save bootstrap timeline:', e);
+            Logger.error('Failed to save bootstrap timeline:', e);
         }
     }
 
@@ -128,7 +129,7 @@ export class BootstrapTracker {
         this.timeline.currentAttempt++;
 
         this.saveTimeline();
-        console.log(`📝 Recorded attempt #${attempt.number}: ${result} - ${reason}`);
+        Logger.system(`📝 Recorded attempt #${attempt.number}: ${result} - ${reason}`);
     }
 
     /**
@@ -239,7 +240,7 @@ export class BootstrapTracker {
         };
         document.addEventListener('keydown', escHandler);
 
-        console.log('📜 Bootstrap timeline modal opened');
+        Logger.ui('📜 Bootstrap timeline modal opened');
     }
 
     /**

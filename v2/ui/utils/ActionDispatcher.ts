@@ -9,6 +9,7 @@
  */
 
 import type { EventBus } from '../../core/EventBus';
+import { Logger } from '../../utils/Logger';
 
 /**
  * Dispatch a UI quick action through the EventBus.
@@ -36,7 +37,7 @@ export function dispatchAction(
         case 'fullscreen':
             if (!document.fullscreenElement) {
                 document.documentElement.requestFullscreen().catch(err => {
-                    console.warn(`Fullscreen error: ${err.message}`);
+                    Logger.warn(`Fullscreen error: ${err.message}`);
                 });
             } else {
                 document.exitFullscreen();
@@ -67,9 +68,9 @@ export function dispatchAction(
             onClose();
             break;
         case 'help':
-            console.log('Help requested');
+            Logger.ui('Help requested');
             break;
         default:
-            console.warn(`Unknown action: ${action}`);
+            Logger.warn(`Unknown action: ${action}`);
     }
 }
