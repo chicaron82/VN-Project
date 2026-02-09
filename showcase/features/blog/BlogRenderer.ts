@@ -58,18 +58,25 @@ export class BlogRenderer {
     }
 
     async init(): Promise<void> {
-        if (!this.container) return;
+        if (!this.container) {
+            Logger.error('[BlogRenderer] Container not found!');
+            return;
+        }
+
+        Logger.ui('[BlogRenderer] Initializing with container:', this.container);
 
         // Inject Signal Track
         this.createSignalTrack();
 
         // Load Data
         await this.loadTimelineData();
+        Logger.ui('[BlogRenderer] Loaded', this.currentEntries.length, 'entries');
 
         // Phase 2: Render Stats Dashboard
         this.renderStatsContainer();
 
         this.renderTimeline();
+        Logger.ui('[BlogRenderer] Rendered timeline');
 
         // Setup Observers
         this.setupInteractions();

@@ -32,7 +32,7 @@ function getEntries(dir: string): string[] {
         if (stat && stat.isDirectory()) {
             results = results.concat(getEntries(filePath));
         } else {
-            if (file.endsWith('.ts') && !file.endsWith('.d.ts')) {
+            if (file.endsWith('.ts') && !file.endsWith('.d.ts') && file !== 'types.ts') {
                 results.push(filePath);
             }
         }

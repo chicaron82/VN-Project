@@ -37,7 +37,7 @@ export class BlogAudio {
     private init(): void {
         this.createMuteToggle();
         this.attachListeners();
-        Logger.audio('🔊 [BlogAudio] Initialized (Click toggle to enable)');
+        Logger.ui('🔊 [BlogAudio] Initialized (Click toggle to enable)');
     }
 
     /**
