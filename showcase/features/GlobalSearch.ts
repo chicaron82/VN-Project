@@ -9,6 +9,7 @@
 
 import { TIMELINE_DATA, type BlogEntry } from '../data/blog';
 import { UV7_CREW } from '../../v2/ui/components/UV7OSConfig';
+import { Logger } from '@utils/Logger';
 
 interface SearchResult {
     type: 'blog' | 'section' | 'crew';
@@ -95,7 +96,7 @@ export class GlobalSearch {
             });
         });
 
-        console.log(`🔍 Search index built: ${this.searchIndex.length} items`);
+        Logger.ui(`🔍 Search index built: ${this.searchIndex.length} items`);
     }
 
     /**
@@ -169,9 +170,9 @@ export class GlobalSearch {
             trigger.addEventListener('click', () => {
                 this.open();
             });
-            console.log('🔍 Search trigger button initialized');
+            Logger.ui('🔍 Search trigger button initialized');
         } else {
-            console.warn('⚠️ Search trigger button not found');
+            Logger.warn('⚠️ Search trigger button not found');
         }
     }
 
@@ -506,7 +507,7 @@ export class GlobalSearch {
 
         // Achievement unlocked at 100 searches
         if (this.searchCount === 100) {
-            console.log('🏆 Achievement unlocked: Power Searcher (100 searches)');
+            Logger.achievement('🏆 Achievement unlocked: Power Searcher (100 searches)');
         }
     }
 
