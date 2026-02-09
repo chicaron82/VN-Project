@@ -15,6 +15,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogHaptics {
     private isSupported: boolean;
 
@@ -25,7 +27,7 @@ export class BlogHaptics {
 
     private init(): void {
         this.attachListeners();
-        console.log('📳 [BlogHaptics] Initialized', { supported: this.isSupported });
+        Logger.ui('📳 [BlogHaptics] Initialized', { supported: this.isSupported });
     }
 
     /**
@@ -97,6 +99,6 @@ export class BlogHaptics {
 
     public destroy(): void {
         // No persistent listeners to remove really, mostly global delegation
-        console.log('📳 [BlogHaptics] Destroyed');
+        Logger.ui('📳 [BlogHaptics] Destroyed');
     }
 }
