@@ -1,4 +1,5 @@
 import { DevSuite } from './DevSuite';
+import { Logger } from '@utils/Logger';
 
 /**
  * HotReloadSystem - System Reload Logic
@@ -50,12 +51,12 @@ export class HotReloadSystem {
     }
 
     private reloadApplication(): void {
-        console.log('🔄 Hot Reload: Triggering full refresh...');
+        Logger.system('🔄 Hot Reload: Triggering full refresh...');
         window.location.reload();
     }
 
     private reloadCurrentRoute(): void {
-        console.log('🔄 Hot Reload: Simulating route reload...');
+        Logger.system('🔄 Hot Reload: Simulating route reload...');
         // In Vite, HMR handles this safely.
         // We just notify the user that HMR is listening.
         alert('Vite HMR is active.\nSave a file to trigger instant hot reload.');
@@ -65,13 +66,13 @@ export class HotReloadSystem {
         // V1 cleared internal module maps.
         // V2 can clear local storage debugging flags if needed, 
         // but for now we just log it as the browser handles the cache.
-        console.log('🗑️ Cache cleared (Browser Cache)');
+        Logger.system('🗑️ Cache cleared (Browser Cache)');
         // Maybe clear some temp flags?
         alert('Cache cleared!');
     }
 
     private showModules(): void {
-        console.log('📦 Active Modules: Managed by Vite Dev Server');
+        Logger.system('📦 Active Modules: Managed by Vite Dev Server');
         alert('See browser console for HMR logs.');
     }
 }

@@ -1,5 +1,6 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -54,7 +55,7 @@ export class VisualCueSystem {
 
         this.setupEventListeners();
 
-        console.log('✨ Visual Cue System initialized');
+        Logger.system('✨ Visual Cue System initialized');
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -164,12 +165,12 @@ export class VisualCueSystem {
                 break;
 
             default:
-                console.warn(`⚠️ Unknown visual cue type: ${cueType}`);
+                Logger.warn(`⚠️ Unknown visual cue type: ${cueType}`);
                 this.activeEffects.delete(cueType);
                 return;
         }
 
-        console.log(`✨ Visual cue triggered: ${cueType}`);
+        Logger.effect(`✨ Visual cue triggered: ${cueType}`);
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -544,6 +545,6 @@ export class VisualCueSystem {
 
     public cleanup(): void {
         this.activeEffects.clear();
-        console.log('✨ Visual Cue System cleaned up');
+        Logger.system('✨ Visual Cue System cleaned up');
     }
 }

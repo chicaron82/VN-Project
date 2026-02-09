@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { VisualCueSystem } from './VisualCueSystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -142,7 +143,7 @@ describe('VisualCueSystem', () => {
         });
 
         it('should warn on unknown cue types', () => {
-            const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+            const warnSpy = vi.spyOn(Logger, 'warn').mockImplementation(() => {});
 
             // @ts-expect-error Testing unknown cue type
             visualCueSystem.trigger('unknownCue');
