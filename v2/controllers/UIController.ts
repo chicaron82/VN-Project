@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { OverlayManager } from '../managers/OverlayManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -72,7 +73,7 @@ export class UIController {
         this.eventBus = eventBus;
         this.overlayManager = overlayManager;
 
-        console.log('🎮 UIController initialized');
+        Logger.ui('🎮 UIController initialized');
     }
 
     // ========================================
@@ -166,7 +167,7 @@ export class UIController {
         });
         this.overlayManager.show(overlay);
 
-        console.log(`📋 Confirm dialog shown: ${title}`);
+        Logger.ui(`📋 Confirm dialog shown: ${title}`);
     }
 
     // ========================================
@@ -181,7 +182,7 @@ export class UIController {
         });
         this.overlayManager.show(overlay);
 
-        console.log(`⚠️ Warning overlay shown: ${title}`);
+        Logger.ui(`⚠️ Warning overlay shown: ${title}`);
     }
 
     // ========================================
