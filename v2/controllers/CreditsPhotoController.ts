@@ -28,6 +28,8 @@
  * ════════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 // ========================================
 // TYPE DEFINITIONS
 // ========================================
@@ -99,7 +101,7 @@ export class CreditsPhotoController {
 
         // Bad ending gets no photos (punishment through absence)
         if (endingType === 'bad' || endingType === 'none') {
-            console.log('🚫 Bad ending - no photos (punishment)');
+            Logger.scene('🚫 Bad ending - no photos (punishment)');
             return [];
         }
 
@@ -121,11 +123,11 @@ export class CreditsPhotoController {
         // Always use finale
         const photo4 = pool.finale;
 
-        console.log(`📸 Selected photos for ${endingType}:`);
-        console.log(`   Opening: ${photo1!.split('/').pop()}`);
-        console.log(`   Middle 1: ${photo2!.split('/').pop()}`);
-        console.log(`   Middle 2: ${photo3!.split('/').pop()}`);
-        console.log(`   Finale: ${photo4.split('/').pop()} ⭐`);
+        Logger.scene(`📸 Selected photos for ${endingType}:`);
+        Logger.scene(`   Opening: ${photo1!.split('/').pop()}`);
+        Logger.scene(`   Middle 1: ${photo2!.split('/').pop()}`);
+        Logger.scene(`   Middle 2: ${photo3!.split('/').pop()}`);
+        Logger.scene(`   Finale: ${photo4.split('/').pop()} ⭐`);
 
         return [photo1!, photo2!, photo3!, photo4];
     }

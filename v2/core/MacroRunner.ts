@@ -1,6 +1,7 @@
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
 import { TelemetryRecorder } from './Telemetry';
+import { Logger } from '@utils/Logger';
 
 interface MacroStep {
     id: string;
@@ -35,26 +36,26 @@ export class MacroRunner {
         if (this.isRunning) return;
         this.isRunning = true;
 
-        console.log(`🤖 MacroRunner: Loading ${macroUrl}...`);
+        Logger.system(`🤖 MacroRunner: Loading ${macroUrl}...`);
 
         try {
             const response = await fetch(macroUrl);
             const steps: MacroStep[] = await response.json();
 
-            console.log(`🤖 MacroRunner: Starting execution (${steps.length} steps)`);
+            Logger.system(`🤖 MacroRunner: Starting execution (${steps.length} steps)`);
             this.telemetry.start();
 
             for (const step of steps) {
-                console.log(`➡️ Step: ${step.id} (${step.desc || step.action})`);
+                Logger.system(`➡️ Step: ${step.id} (${step.desc || step.action})`);
                 await this.executeStep(step);
             }
 
-            console.log('✅ MacroRunner: Execution Complete');
+            Logger.system('✅ MacroRunner: Execution Complete');
             this.telemetry.stop();
             this.telemetry.download();
 
         } catch (error) {
-            console.error('❌ MacroRunner Failed:', error);
+            Logger.error('❌ MacroRunner Failed:', error);
             this.telemetry.stop();
         } finally {
             this.isRunning = false;
@@ -112,7 +113,7 @@ export class MacroRunner {
         if (el) {
             el.click();
         } else {
-            console.warn(`⚠️ Macro: Element ${selector} not found`);
+            Logger.warn(`⚠️ Macro: Element ${selector} not found`);
         }
     }
 
