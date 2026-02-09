@@ -9,6 +9,7 @@
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import { Logger } from '@utils/Logger';
 
 export class TorigatchiApp extends BaseApp {
     constructor(shell: UV7Shell) {
@@ -46,7 +47,7 @@ export class TorigatchiApp extends BaseApp {
             </div>
         `;
 
-        console.log('[TorigatchiApp] Mounted Tori-gatchi in iframe');
+        Logger.system('[TorigatchiApp] Mounted Tori-gatchi in iframe');
     }
 }
 
