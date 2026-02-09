@@ -1,4 +1,5 @@
 import { EventBus } from '../core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * BackButtonManager
@@ -22,7 +23,7 @@ export class BackButtonManager {
     public init(): void {
         this.setupListeners();
         this.pushBaseState();
-        console.log('[BackButtonManager] Initialized');
+        Logger.system('[BackButtonManager] Initialized');
     }
 
     private setupListeners(): void {
@@ -54,7 +55,7 @@ export class BackButtonManager {
         this.historyStatePushed = true;
         this.isInternalNavigation = false;
 
-        console.log(`[BackButtonManager] Pushed state for ${context}`);
+        Logger.system(`[BackButtonManager] Pushed state for ${context}`);
     }
 
     /**
@@ -77,7 +78,7 @@ export class BackButtonManager {
             this.historyStatePushed = false;
 
             // Now close whatever UI was open
-            console.log('[BackButtonManager] Intercepted Back -> Closing all Overlays');
+            Logger.system('[BackButtonManager] Intercepted Back -> Closing all Overlays');
             this.closeAllOverlays();
             return;
         }
@@ -87,7 +88,7 @@ export class BackButtonManager {
 
         if (!this.exitToastVisible) {
             // First press: Show Toast and push state back immediately to prevent exit
-            console.log('[BackButtonManager] Base state back press -> Show Exit Warning');
+            Logger.system('[BackButtonManager] Base state back press -> Show Exit Warning');
 
             this.showExitToast();
 
@@ -101,7 +102,7 @@ export class BackButtonManager {
 
         } else {
             // Second press within time limit: Let them go.
-            console.log('[BackButtonManager] Exit confirmed. Goodbye!');
+            Logger.system('[BackButtonManager] Exit confirmed. Goodbye!');
             // No action needed, browser will navigate back naturally (since we just popped the state we re-pushed)
             // wait, if we re-pushed state above, we need to let this one pass.
             // Actually, if we re-pushed, this popstate event IS the second press popping that new state.
@@ -143,7 +144,7 @@ export class BackButtonManager {
             history.back();
             this.historyStatePushed = false;
             this.isInternalNavigation = false;
-            console.log('[BackButtonManager] Manual close -> Synced History');
+            Logger.system('[BackButtonManager] Manual close -> Synced History');
         }
     }
 

@@ -1,5 +1,6 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * ========================================
@@ -57,7 +58,7 @@ export class StatusNotificationController {
         // Setup click handler
         this.setupClickHandler();
 
-        console.log('📢 StatusNotificationController initialized (disabled until game starts)');
+        Logger.ui('📢 StatusNotificationController initialized (disabled until game starts)');
     }
 
     /**
@@ -65,7 +66,7 @@ export class StatusNotificationController {
      */
     enable(): void {
         this.isEnabled = true;
-        console.log('📢 Notifications enabled');
+        Logger.ui('📢 Notifications enabled');
     }
 
     /**
@@ -75,7 +76,7 @@ export class StatusNotificationController {
         this.isEnabled = false;
         this.hide(true); // Force hide any showing notification
         this.queue = []; // Clear queue
-        console.log('📢 Notifications disabled');
+        Logger.ui('📢 Notifications disabled');
     }
 
     private setupClickHandler(): void {
@@ -109,7 +110,7 @@ export class StatusNotificationController {
     show({ type = 'info', icon = 'ℹ️', message, duration = 2000, pulse = false, priority = 'normal', interactive = false }: NotificationOptions): void {
         // Don't show notifications if disabled (during init/loading/menu)
         if (!this.isEnabled) {
-            console.log(`📢 Notification blocked (disabled): ${message}`);
+            Logger.ui(`📢 Notification blocked (disabled): ${message}`);
             return;
         }
 
@@ -120,7 +121,7 @@ export class StatusNotificationController {
 
             if (newWeight > currentWeight) {
                 // Critical message interrupts current
-                console.log(`🚨 Priority interrupt: ${priority} > ${this.currentPriority}`);
+                Logger.ui(`🚨 Priority interrupt: ${priority} > ${this.currentPriority}`);
                 this.hide(true); // Force hide without queue processing
             } else {
                 // Queue normally
@@ -188,7 +189,7 @@ export class StatusNotificationController {
             const lowPriorityIndex = this.queue.findIndex(item => item.priority === 'low');
             if (lowPriorityIndex !== -1) {
                 this.queue.splice(lowPriorityIndex, 1);
-                console.log('📉 Dropped low-priority message from full queue');
+                Logger.ui('📉 Dropped low-priority message from full queue');
             }
         }
     }

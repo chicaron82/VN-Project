@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { StatusNotificationController } from './StatusNotificationController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 describe('StatusNotificationController', () => {
     let controller: StatusNotificationController;
@@ -77,9 +78,9 @@ describe('StatusNotificationController', () => {
     // ========================================
 
     it('should block notifications when disabled', () => {
-        const consoleSpy = vi.spyOn(console, 'log');
+        const loggerSpy = vi.spyOn(Logger, 'ui');
         controller.show({ message: 'Test' });
-        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('blocked (disabled)'));
+        expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('blocked (disabled)'));
     });
 
     it('should show notification when enabled', () => {
@@ -197,7 +198,7 @@ describe('StatusNotificationController', () => {
     });
 
     it('should drop low-priority messages when queue is full', () => {
-        const consoleSpy = vi.spyOn(console, 'log');
+        const loggerSpy = vi.spyOn(Logger, 'ui');
         controller.enable();
         controller.show({ message: 'First', duration: 5000 });
 
@@ -205,7 +206,7 @@ describe('StatusNotificationController', () => {
             controller.show({ message: `Low ${i}`, duration: 1000, priority: 'low' });
         }
 
-        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('Dropped low-priority'));
+        expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('Dropped low-priority'));
     });
 
     // ========================================
