@@ -28,6 +28,8 @@
  * ════════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 // ========================================
 // TYPE DEFINITIONS
 // ========================================
@@ -62,7 +64,7 @@ export class FullscreenController {
 
     constructor(game: GameReference) {
         this.game = game;
-        console.log('📺 FullscreenController initialized');
+        Logger.ui('📺 FullscreenController initialized');
     }
 
     // ========================================
