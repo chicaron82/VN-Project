@@ -4,6 +4,8 @@
  * Restored feature from V1 SOLID refactor
  */
 
+import { Logger } from '@utils/Logger';
+
 import type { EventBus } from '../../core/EventBus';
 
 export interface DialogBubbleConfig {
@@ -59,7 +61,7 @@ export class DialogBubble {
             }, duration);
         }
 
-        console.log(`[DialogBubble] Shown: "${text.substring(0, 30)}..." at ${position}`);
+        Logger.ui(`[DialogBubble] Shown: "${text.substring(0, 30)}..." at ${position}`);
     }
 
     /**
@@ -76,7 +78,7 @@ export class DialogBubble {
         if (this.element && this.element.parentNode) {
             this.element.remove();
             this.eventBus.emit('dialog:bubble:hidden', {});
-            console.log('[DialogBubble] Hidden');
+            Logger.ui('[DialogBubble] Hidden');
         }
 
         this.element = null;
@@ -118,6 +120,6 @@ export class DialogBubble {
      */
     destroy(): void {
         this.hide();
-        console.log('[DialogBubble] Destroyed');
+        Logger.ui('[DialogBubble] Destroyed');
     }
 }
