@@ -35,6 +35,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { GameConfig } from '../core/GameConfig';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // TYPES
@@ -117,7 +118,7 @@ export class InsaneVisualsController {
         // Set up event listeners
         this.setupEventListeners();
 
-        console.log('💀 InsaneVisualsController initialized');
+        Logger.effect('💀 InsaneVisualsController initialized');
     }
 
     // ========================================
@@ -185,7 +186,7 @@ export class InsaneVisualsController {
         this.isActive = true;
         this.state = 'active';
 
-        console.log('💀 INSANE MODE: Activating visual corruption');
+        Logger.effect('💀 INSANE MODE: Activating visual corruption');
 
         // Refresh element cache
         this.cacheElements();
@@ -201,7 +202,7 @@ export class InsaneVisualsController {
         // Emit activation event
         this.eventBus.emit('insane:activated', {});
 
-        console.log('💀 INSANE MODE: Visual corruption active');
+        Logger.effect('💀 INSANE MODE: Visual corruption active');
     }
 
     /**
@@ -214,7 +215,7 @@ export class InsaneVisualsController {
         this.isActive = false;
         this.state = 'inactive';
 
-        console.log('💚 INSANE MODE: Deactivating visual corruption');
+        Logger.effect('💚 INSANE MODE: Deactivating visual corruption');
 
         // Clear all active timers
         this.clearAllTimers();
@@ -246,7 +247,7 @@ export class InsaneVisualsController {
         // Emit deactivation event
         this.eventBus.emit('insane:deactivated', {});
 
-        console.log('💚 INSANE MODE: Visual corruption deactivated');
+        Logger.effect('💚 INSANE MODE: Visual corruption deactivated');
     }
 
     // ========================================
@@ -265,7 +266,7 @@ export class InsaneVisualsController {
      * @param callback - Called after overlay disappears
      */
     public showCageOverlay(callback?: () => void): void {
-        console.log('💀 INSANE MODE: Showing cage overlay');
+        Logger.effect('💀 INSANE MODE: Showing cage overlay');
 
         // Try to find existing overlay or create one
         let overlay = this.cageOverlay || document.getElementById('insane-cage-overlay');
@@ -368,12 +369,12 @@ export class InsaneVisualsController {
      */
     public triggerCorruption(intensity: CorruptionIntensity = 'heavy'): void {
         if (!this.isActive) {
-            console.log('⚠️ Cannot trigger corruption - INSANE mode not active');
+            Logger.warn('⚠️ Cannot trigger corruption - INSANE mode not active');
             return;
         }
 
         this.state = 'corrupting';
-        console.log(`💀 INSANE MODE: Triggering visual corruption (${intensity})`);
+        Logger.effect(`💀 INSANE MODE: Triggering visual corruption (${intensity})`);
 
         // Refresh element cache
         this.cacheElements();
@@ -545,6 +546,6 @@ export class InsaneVisualsController {
             this.cageOverlay.remove();
         }
 
-        console.log('💀 InsaneVisualsController destroyed');
+        Logger.effect('💀 InsaneVisualsController destroyed');
     }
 }
