@@ -4,6 +4,7 @@
  * Handles section jumping, quick actions, view transitions, and app switcher.
  * Context-aware routing for showcase vs landing.
  *
+import './UV7OSGlobals'; // Global type augmentations
  * "BELLE: The visual persistence of the status bar is non-negotiable." - The Navigator
  */
 
