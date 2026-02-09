@@ -9,6 +9,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 /**
  * Navigate to a URL with a smooth View Transition animation
  * @param url - The URL to navigate to
@@ -17,7 +19,7 @@
 export function navigateWithTransition(url: string, fallbackDelay: number = 0): void {
     // Check if browser supports View Transitions
     if (!(document as any).startViewTransition) {
-        console.log('[NavigationHelper] View Transitions not supported - using standard navigation');
+        Logger.system('[NavigationHelper] View Transitions not supported - using standard navigation');
 
         if (fallbackDelay > 0) {
             setTimeout(() => {
@@ -29,7 +31,7 @@ export function navigateWithTransition(url: string, fallbackDelay: number = 0): 
         return;
     }
 
-    console.log(`[NavigationHelper] Navigating to ${url} with View Transition`);
+    Logger.system(`[NavigationHelper] Navigating to ${url} with View Transition`);
 
     // Start the view transition
     (document as any).startViewTransition(() => {
