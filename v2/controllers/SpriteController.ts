@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * SpriteController
@@ -189,7 +190,7 @@ export class SpriteController {
         // Apply current growth stage
         this.setEchoGrowthStage(this.state.echoGrowthStage);
 
-        console.log('[SpriteController] Echo group displayed');
+        Logger.ui('[SpriteController] Echo group displayed');
     }
 
     /**
@@ -224,7 +225,7 @@ export class SpriteController {
 
         const echoGroup = this.viewport.querySelector('#echo-group');
         if (!echoGroup) {
-            console.log('[SpriteController] Echo growth stage stored, will apply when echoes display');
+            Logger.ui('[SpriteController] Echo growth stage stored, will apply when echoes display');
             return;
         }
 
@@ -246,21 +247,21 @@ export class SpriteController {
                     echo1.style.height = '65%';
                     echo2.style.height = '70%';
                     despair.style.height = '100%';
-                    console.log('[SpriteController] Echo growth: Act 1 (Despair dominates)');
+                    Logger.ui('[SpriteController] Echo growth: Act 1 (Despair dominates)');
                     break;
                 case 'act2':
                     // Hope rising - more balanced
                     echo1.style.height = '80%';
                     echo2.style.height = '85%';
                     despair.style.height = '95%';
-                    console.log('[SpriteController] Echo growth: Act 2 (Hope rising)');
+                    Logger.ui('[SpriteController] Echo growth: Act 2 (Hope rising)');
                     break;
                 case 'act3':
                     // Balance achieved - all equal
                     echo1.style.height = '100%';
                     echo2.style.height = '100%';
                     despair.style.height = '100%';
-                    console.log('[SpriteController] Echo growth: Act 3 (Balance achieved)');
+                    Logger.ui('[SpriteController] Echo growth: Act 3 (Balance achieved)');
                     break;
             }
         }
@@ -301,12 +302,12 @@ export class SpriteController {
         const despair = this.viewport.querySelector('#despair-sprite') as HTMLElement;
 
         if (!echoGroup || !echo1 || !echo2 || !despair) {
-            console.log('[SpriteController] Echo merge: sprites not found, skipping animation');
+            Logger.ui('[SpriteController] Echo merge: sprites not found, skipping animation');
             callback?.();
             return;
         }
 
-        console.log('[SpriteController] Starting echo merge sequence...');
+        Logger.ui('[SpriteController] Starting echo merge sequence...');
 
         // Emit merge start event
         this.eventBus.emit('effect:echo_merge_start', {});
@@ -357,14 +358,14 @@ export class SpriteController {
 
             this.state.right = this.ECHO_SPRITES.tori;
 
-            console.log('[SpriteController] Echo merge visual complete, holding moment...');
+            Logger.ui('[SpriteController] Echo merge visual complete, holding moment...');
 
             // Emit merge complete event
             this.eventBus.emit('effect:echo_merge_complete', {});
 
             // Phase 5: Hold for 2.5 seconds to let the moment breathe
             setTimeout(() => {
-                console.log('[SpriteController] Echo merge sequence complete!');
+                Logger.ui('[SpriteController] Echo merge sequence complete!');
                 callback?.();
             }, 2500);
 
@@ -487,19 +488,19 @@ export class SpriteController {
      */
     fadeSpritesSequence(position: 'left' | 'right', sprite1: string, sprite2: string, duration: number = 4000): void {
         if (!this.viewport) {
-            console.error('[SpriteController] fadeSpritesSequence: No viewport');
+            Logger.error('[SpriteController] fadeSpritesSequence: No viewport');
             return;
         }
 
         const container = this.viewport.querySelector(`.sprite-${position}`) as HTMLElement;
         if (!container) {
-            console.error(`[SpriteController] fadeSpritesSequence: No sprite container found for position ${position}`);
-            console.log('[SpriteController] Available sprites:', this.viewport.querySelectorAll('.character-sprite'));
+            Logger.error(`[SpriteController] fadeSpritesSequence: No sprite container found for position ${position}`);
+            Logger.ui('[SpriteController] Available sprites:', this.viewport.querySelectorAll('.character-sprite'));
             return;
         }
 
-        console.log(`[SpriteController] Starting fade sequence at ${position}: ${sprite1} -> ${sprite2} -> ${sprite1}`);
-        console.log(`[SpriteController] Current container state:`, {
+        Logger.ui(`[SpriteController] Starting fade sequence at ${position}: ${sprite1} -> ${sprite2} -> ${sprite1}`);
+        Logger.ui(`[SpriteController] Current container state:`, {
             display: container.style.display,
             opacity: container.style.opacity,
             backgroundImage: container.style.backgroundImage
@@ -511,31 +512,31 @@ export class SpriteController {
         container.style.opacity = '1';
 
         const timing = duration / 4; // Split into 4 phases
-        console.log(`[SpriteController] Timing per phase: ${timing}ms`);
+        Logger.ui(`[SpriteController] Timing per phase: ${timing}ms`);
 
         // Phase 1: Fade out sprite1
         setTimeout(() => {
-            console.log('[SpriteController] Phase 1: Fading out sprite1');
+            Logger.ui('[SpriteController] Phase 1: Fading out sprite1');
             container.style.transition = 'opacity 0.8s ease';
             container.style.opacity = '0.2';
         }, timing);
 
         // Phase 2: Switch to sprite2 (Old Man) at lowest opacity
         setTimeout(() => {
-            console.log('[SpriteController] Phase 2: Switching to sprite2 (Old Man)');
+            Logger.ui('[SpriteController] Phase 2: Switching to sprite2 (Old Man)');
             container.style.backgroundImage = `url('${sprite2}')`;
             container.style.opacity = '1';
         }, timing * 1.8);
 
         // Phase 3: Hold Old Man briefly, then fade
         setTimeout(() => {
-            console.log('[SpriteController] Phase 3: Fading out sprite2');
+            Logger.ui('[SpriteController] Phase 3: Fading out sprite2');
             container.style.opacity = '0.2';
         }, timing * 2.8);
 
         // Phase 4: Switch back to sprite1 (young Ronnie) and restore visibility
         setTimeout(() => {
-            console.log('[SpriteController] Phase 4: Switching back to sprite1 (young Ronnie)');
+            Logger.ui('[SpriteController] Phase 4: Switching back to sprite1 (young Ronnie)');
             container.style.backgroundImage = `url('${sprite1}')`;
             container.style.opacity = '1';
             container.style.transition = 'opacity 0.6s ease';
