@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loadRealStats } from './load-stats';
+import { Logger } from '@utils/Logger';
 
 // Mock fetch
 global.fetch = vi.fn();
@@ -60,10 +61,10 @@ describe('loadRealStats', () => {
             ok: false
         });
 
-        const consoleSpy = vi.spyOn(console, 'warn');
+        const warnSpy = vi.spyOn(Logger, 'warn');
         await loadRealStats();
 
-        expect(consoleSpy).toHaveBeenCalledWith(expect.stringContaining('stats.json not found'));
+        expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('stats.json not found'));
     });
 
     it('should handle clean test run (0 failures)', async () => {

@@ -3,6 +3,8 @@
  * Fetches stats.json and updates the showcase
  */
 
+import { Logger } from '@utils/Logger';
+
 interface Stats {
     testsPass?: number;
     testsFail?: number;
@@ -26,12 +28,12 @@ async function loadRealStats(): Promise<void> {
     try {
         const response = await fetch('stats.json');
         if (!response.ok) {
-            console.warn('📊 stats.json not found, using hardcoded values');
+            Logger.warn('📊 stats.json not found, using hardcoded values');
             return;
         }
 
         const stats: Stats = await response.json();
-        console.log('📊 Loaded real stats:', stats);
+        Logger.ui('📊 Loaded real stats:', stats);
 
         // Expose globally
         window.UV7Stats = stats;
@@ -118,9 +120,9 @@ async function loadRealStats(): Promise<void> {
             window.premiumAnimations.initAnimatedCounters();
         }
 
-        console.log('✅ Stats updated successfully');
+        Logger.ui('✅ Stats updated successfully');
     } catch (error) {
-        console.error('❌ Failed to load stats:', error);
+        Logger.error('❌ Failed to load stats:', error);
     }
 }
 
