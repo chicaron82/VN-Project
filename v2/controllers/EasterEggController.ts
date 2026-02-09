@@ -26,6 +26,7 @@ import { OverlayFactory } from './easterEggs/OverlayFactory';
 import { StaticOverlays } from './easterEggs/StaticOverlays';
 import { KonamiSystem } from './easterEggs/KonamiSystem';
 import { UV7FamilySystem } from './easterEggs/UV7FamilySystem';
+import { Logger } from '@utils/Logger';
 
 export type { OverlayVariant, OverlayConfig } from './easterEggs/OverlayFactory';
 
@@ -56,7 +57,7 @@ export class EasterEggController {
             this.handleCodeUnlock(data.code);
         });
 
-        console.log('🥚 EasterEggController initialized');
+        Logger.system('🥚 EasterEggController initialized');
     }
 
     /**
@@ -66,7 +67,7 @@ export class EasterEggController {
     private handleCodeUnlock(code: string): void {
         const normalizedCode = code.toLowerCase().trim();
 
-        console.log(`🥚 Easter egg triggered: ${normalizedCode}`);
+        Logger.system(`🥚 Easter egg triggered: ${normalizedCode}`);
 
         switch (normalizedCode) {
             case 'uv7crew':    this.staticOverlays.showUV7CrewBios(); break;
@@ -76,7 +77,7 @@ export class EasterEggController {
             case 'always3':    this.staticOverlays.showAlwaysCompilation(); break;
             case 'torigatchi': this.staticOverlays.showTorigatchiEasterEgg(); break;
             case 'dizee':      this.staticOverlays.showDizeeEasterEgg(); break;
-            default:           console.warn(`🥚 No handler for easter egg: ${normalizedCode}`);
+            default:           Logger.warn(`🥚 No handler for easter egg: ${normalizedCode}`);
         }
     }
 
@@ -95,6 +96,6 @@ export class EasterEggController {
 
     public destroy(): void {
         this.overlayFactory.destroyAll();
-        console.log('🥚 EasterEggController destroyed');
+        Logger.system('🥚 EasterEggController destroyed');
     }
 }

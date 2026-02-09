@@ -11,6 +11,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { EasterEggController } from './EasterEggController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
+import { Logger } from '@utils/Logger';
 
 // Mock window.open
 const mockWindowOpen = vi.fn();
@@ -41,13 +42,13 @@ describe('EasterEggController', () => {
         });
 
         it('should listen for secret_code:unlocked events', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'system').mockImplementation(() => {});
 
             eventBus.emit('secret_code:unlocked', { code: 'uv7crew', name: 'UV7 Crew' });
 
-            expect(consoleSpy).toHaveBeenCalledWith('🥚 Easter egg triggered: uv7crew');
+            expect(loggerSpy).toHaveBeenCalledWith('🥚 Easter egg triggered: uv7crew');
 
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
     });
 
@@ -218,13 +219,13 @@ describe('EasterEggController', () => {
 
     describe('Unknown Codes', () => {
         it('should log warning for unknown easter egg code', () => {
-            const consoleSpy = vi.spyOn(console, 'warn');
+            const loggerSpy = vi.spyOn(Logger, 'warn').mockImplementation(() => {});
 
             eventBus.emit('secret_code:unlocked', { code: 'unknown', name: 'Unknown' });
 
-            expect(consoleSpy).toHaveBeenCalledWith('🥚 No handler for easter egg: unknown');
+            expect(loggerSpy).toHaveBeenCalledWith('🥚 No handler for easter egg: unknown');
 
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
 
         it('should not create overlay for unknown code', () => {
