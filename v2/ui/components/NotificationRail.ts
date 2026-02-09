@@ -1,4 +1,5 @@
 import { EventBus } from '../../core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * NotificationRail - Premium Inline Notification System
@@ -113,7 +114,7 @@ export class NotificationRail {
         this.setupEventListeners();
         this.injectStyles();
 
-        console.log('🔔 NotificationRail initialized (Phase 26d)');
+        Logger.ui('🔔 NotificationRail initialized (Phase 26d)');
     }
 
     // ========================================
@@ -579,7 +580,7 @@ export class NotificationRail {
         // Emit event for tracking
         this.eventBus.emit('notification:shown', { id: config.id, category: config.category });
 
-        console.log(`🔔 Notification shown: ${config.title} [${config.priority}]`);
+        Logger.ui(`🔔 Notification shown: ${config.title} [${config.priority}]`);
     }
 
     /**
@@ -651,7 +652,7 @@ export class NotificationRail {
             }, index * 50);
         });
 
-        console.log('🧹 All notifications cleared');
+        Logger.ui('🧹 All notifications cleared');
     }
 
     /**
@@ -691,7 +692,7 @@ export class NotificationRail {
         // Remove DOM
         this.container.remove();
 
-        console.log('🔔 NotificationRail destroyed');
+        Logger.ui('🔔 NotificationRail destroyed');
     }
 
     // ========================================

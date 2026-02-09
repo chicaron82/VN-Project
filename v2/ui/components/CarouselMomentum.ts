@@ -3,6 +3,9 @@
  * Custom physics-based carousel for Version 848
  * Ported to V2 TypeScript
  */
+
+import { Logger } from '@utils/Logger';
+
 export interface CarouselMomentumConfig {
     container: HTMLElement;
     cards: HTMLElement[];
@@ -78,12 +81,12 @@ export class CarouselMomentum {
 
     public init() {
         if (!this.container || this.cards.length === 0) {
-            console.error('CarouselMomentum: Invalid container or cards');
+            Logger.error('CarouselMomentum: Invalid container or cards');
             return;
         }
 
-        console.log('🎠 Initializing CarouselMomentum...');
-        console.log('✅ CarouselMomentum initialized');
+        Logger.ui('🎠 Initializing CarouselMomentum...');
+        Logger.ui('✅ CarouselMomentum initialized');
 
         // Touch
         this.container.addEventListener('touchstart', (e) => this.handleTouchStart(e as TouchEvent), { passive: false });
@@ -128,7 +131,7 @@ export class CarouselMomentum {
                 return;
             }
 
-            console.log(`🎠 Card width changed: ${oldCardWidth}px → ${newCardWidth}px`);
+            Logger.ui(`🎠 Card width changed: ${oldCardWidth}px → ${newCardWidth}px`);
 
             const cardSpacing = oldCardWidth + this.cardGap;
             const currentCardIndex = Math.round(-this.position / cardSpacing);
@@ -142,7 +145,7 @@ export class CarouselMomentum {
             this.updatePosition(true);
             this.updateCardOpacity();
 
-            console.log(`🎠 Repositioned to card ${currentCardIndex} with new dimensions`);
+            Logger.ui(`🎠 Repositioned to card ${currentCardIndex} with new dimensions`);
         }
     }
 
@@ -360,7 +363,7 @@ export class CarouselMomentum {
         const clampedIndex = ((targetIndex % this.cards.length) + this.cards.length) % this.cards.length;
         const targetPosition = -clampedIndex * cardSpacing;
 
-        console.log(`🎯 Snap: velocity=${this.velocity.toFixed(1)}, skip=${cardSkip} cards, target=${clampedIndex}`);
+        Logger.ui(`🎯 Snap: velocity=${this.velocity.toFixed(1)}, skip=${cardSkip} cards, target=${clampedIndex}`);
 
         this.isSnapping = true;
         const startPosition = this.position;
@@ -394,7 +397,7 @@ export class CarouselMomentum {
                     this.onCardChange(this.currentIndex);
                 }
 
-                console.log(`🎯 Snapped to card ${this.currentIndex}`);
+                Logger.ui(`🎯 Snapped to card ${this.currentIndex}`);
             }
         };
         snapAnimation();
@@ -436,7 +439,7 @@ export class CarouselMomentum {
                     this.onCardChange(this.currentIndex);
                 }
 
-                console.log(`🎯 Snapped to card ${this.currentIndex}`);
+                Logger.ui(`🎯 Snapped to card ${this.currentIndex}`);
             }
         };
         snapAnimation();
@@ -461,11 +464,11 @@ export class CarouselMomentum {
                 if (positionInCards > middleEnd + buffer) {
                     this.position += this.totalCardsWidth;
                     const after = -this.position / cardSpacing;
-                    console.log(`⏩ Teleported left: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
+                    Logger.ui(`⏩ Teleported left: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
                 } else if (positionInCards < middleStart - buffer) {
                     this.position -= this.totalCardsWidth;
                     const after = -this.position / cardSpacing;
-                    console.log(`⏪ Teleported right: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
+                    Logger.ui(`⏪ Teleported right: posInCards ${positionInCards.toFixed(1)} → ${after.toFixed(1)}`);
                 }
             }
             this.container.style.transform = `translateX(${centerOffset + this.position}px)`;
@@ -514,6 +517,6 @@ export class CarouselMomentum {
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
         if (this.resizeObserver) this.resizeObserver.disconnect();
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
-        console.log('🎠 CarouselMomentum destroyed');
+        Logger.ui('🎠 CarouselMomentum destroyed');
     }
 }

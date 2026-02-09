@@ -23,6 +23,7 @@ import { EditModeManager } from './quick-actions/EditModeManager';
 import { ActionRouter } from './quick-actions/ActionRouter';
 import { QuickActionsStatePersistence } from './quick-actions/QuickActionsState';
 import type { CustomLayout } from './quick-actions/QuickActionsState';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // TYPES & INTERFACES
@@ -112,7 +113,7 @@ export class ExpandableQuickActions {
         // Setup action delegation
         this.setupActionDelegation();
 
-        console.log('✅ ExpandableQuickActions initialized (MICHELIN MODE)');
+        Logger.ui('✅ ExpandableQuickActions initialized (MICHELIN MODE)');
     }
 
     // ========================================
@@ -203,7 +204,7 @@ export class ExpandableQuickActions {
         this.currentPage++;
         this.snapToPage(this.currentPage);
         this.triggerHaptic('light');
-        console.log(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
+        Logger.ui(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
     }
 
     private previousPage(): void {
@@ -211,7 +212,7 @@ export class ExpandableQuickActions {
         this.currentPage--;
         this.snapToPage(this.currentPage);
         this.triggerHaptic('light');
-        console.log(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
+        Logger.ui(`📄 Page ${this.currentPage + 1}/${this.totalPages}`);
     }
 
     private snapToPage(page: number): void {
@@ -244,7 +245,7 @@ export class ExpandableQuickActions {
         if (this.expandHint) this.expandHint.style.opacity = '0';
 
         this.triggerHaptic('medium');
-        console.log('📊 Quick actions expanded');
+        Logger.ui('📊 Quick actions expanded');
     }
 
     public collapse(): void {
@@ -261,7 +262,7 @@ export class ExpandableQuickActions {
         if (this.expandHint) this.expandHint.style.opacity = '1';
 
         this.triggerHaptic('light');
-        console.log('📱 Quick actions collapsed');
+        Logger.ui('📱 Quick actions collapsed');
     }
 
     // ========================================
@@ -296,7 +297,7 @@ export class ExpandableQuickActions {
             `).join('');
         }
 
-        console.log('🔄 Carousel rebuilt with custom layout');
+        Logger.ui('🔄 Carousel rebuilt with custom layout');
     }
 
     // ========================================
@@ -308,7 +309,7 @@ export class ExpandableQuickActions {
         this.currentPage = state.currentPage;
         this.customLayout = state.customLayout;
         this.snapToPage(this.currentPage);
-        console.log(`💾 Loaded state: Page ${this.currentPage + 1}`);
+        Logger.ui(`💾 Loaded state: Page ${this.currentPage + 1}`);
     }
 
     private saveState(): void {
