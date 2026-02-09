@@ -1,5 +1,6 @@
 
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
+import { Logger } from '@utils/Logger';
 
 /**
  * ═══════════════════════════════════════════════════════════════
@@ -19,7 +20,7 @@ export class ExperimentSection {
     private render(): void {
         const mount = document.getElementById('uv7-experiment-mount');
         if (!mount) {
-            console.error('[ExperimentSection] Mount point not found');
+            Logger.error('[ExperimentSection] Mount point not found');
             return;
         }
 
