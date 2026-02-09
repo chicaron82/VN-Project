@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -86,7 +87,7 @@ export class ErrorHandler {
             event.preventDefault();
         });
 
-        console.log('✅ Global error handlers initialized');
+        Logger.system('✅ Global error handlers initialized');
     }
 
     // ========================================
@@ -98,11 +99,11 @@ export class ErrorHandler {
         this.errorCount++;
 
         // Log error for debugging
-        console.error(`[${context}]`, error);
+        Logger.error(`[${context}]`, error);
 
         // Prevent error spam
         if (this.errorCount > this.maxErrors) {
-            console.warn('⚠️ Too many errors, suppressing further error UI');
+            Logger.warn('⚠️ Too many errors, suppressing further error UI');
             return;
         }
 
@@ -307,7 +308,7 @@ export class ErrorHandler {
 
             localStorage.setItem('error_log', JSON.stringify(errors));
         } catch (e) {
-            console.error('Failed to log error:', e);
+            Logger.error('Failed to log error:', e);
         }
     }
 
@@ -322,7 +323,7 @@ export class ErrorHandler {
      */
     public clearErrorLog(): void {
         localStorage.removeItem('error_log');
-        console.log('✅ Error log cleared');
+        Logger.system('✅ Error log cleared');
     }
 
     /**

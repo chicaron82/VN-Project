@@ -11,6 +11,8 @@
  * - Auto-save attempt before showing modal
  */
 
+import { Logger } from '@utils/Logger';
+
 export interface ErrorLogEntry {
     timestamp: string;
     message: string;
@@ -45,19 +47,19 @@ export class ErrorBoundary {
     private init(): void {
         // Catch unhandled promise rejections
         window.addEventListener('unhandledrejection', (event) => {
-            console.error('Unhandled Promise Rejection:', event.reason);
+            Logger.error('Unhandled Promise Rejection:', event.reason);
             this.handleError(event.reason, 'Unhandled Promise Rejection');
             event.preventDefault();
         });
 
         // Catch uncaught errors
         window.addEventListener('error', (event) => {
-            console.error('Uncaught Error:', event.error);
+            Logger.error('Uncaught Error:', event.error);
             this.handleError(event.error || event.message, 'Uncaught Error');
             event.preventDefault();
         });
 
-        console.log('[ErrorBoundary] Global error handlers initialized');
+        Logger.system('[ErrorBoundary] Global error handlers initialized');
     }
 
     /**
@@ -72,14 +74,14 @@ export class ErrorBoundary {
         }
 
         // Log to console
-        console.error(`[ErrorBoundary ${this.errorCount}/${this.maxErrors}]`, error);
+        Logger.error(`[ErrorBoundary ${this.errorCount}/${this.maxErrors}]`, error);
 
         // Log to history
         this.logError(error, context);
 
         // Prevent error spam
         if (this.errorCount > this.maxErrors) {
-            console.warn('[ErrorBoundary] Too many errors, suppressing further error UI');
+            Logger.warn('[ErrorBoundary] Too many errors, suppressing further error UI');
             return;
         }
 
@@ -99,11 +101,11 @@ export class ErrorBoundary {
             const saveSystem = (window as any).saveSystem;
             if (saveSystem && typeof saveSystem.forceAutoSave === 'function') {
                 saveSystem.forceAutoSave().catch(() => {
-                    console.warn('[ErrorBoundary] Emergency auto-save failed');
+                    Logger.warn('[ErrorBoundary] Emergency auto-save failed');
                 });
             }
         } catch (e) {
-            console.warn('[ErrorBoundary] Could not attempt emergency save:', e);
+            Logger.warn('[ErrorBoundary] Could not attempt emergency save:', e);
         }
     }
 
@@ -264,7 +266,7 @@ export class ErrorBoundary {
      * Attempt to recover without reloading
      */
     private attemptRecovery(): void {
-        console.log('[ErrorBoundary] Attempting recovery...');
+        Logger.system('[ErrorBoundary] Attempting recovery...');
 
         // Clear error state
         this.errorCount = 0;
@@ -286,10 +288,10 @@ export class ErrorBoundary {
                 uv7.eventBus.emit('game:reset_view', {});
             }
         } catch (e) {
-            console.warn('[ErrorBoundary] Recovery event failed:', e);
+            Logger.warn('[ErrorBoundary] Recovery event failed:', e);
         }
 
-        console.log('[ErrorBoundary] Recovery attempted - error count reset');
+        Logger.system('[ErrorBoundary] Recovery attempted - error count reset');
     }
 
     /**
@@ -326,7 +328,7 @@ export class ErrorBoundary {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.errorHistory));
         } catch (e) {
             // localStorage might be full or unavailable
-            console.warn('[ErrorBoundary] Could not save error history:', e);
+            Logger.warn('[ErrorBoundary] Could not save error history:', e);
         }
     }
 
@@ -361,7 +363,7 @@ export class ErrorBoundary {
         } catch (e) {
             // Ignore
         }
-        console.log('[ErrorBoundary] Error log cleared');
+        Logger.system('[ErrorBoundary] Error log cleared');
     }
 
     /**
