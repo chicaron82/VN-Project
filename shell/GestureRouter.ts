@@ -22,6 +22,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 import type { UV7Shell } from './UV7Shell.js';
 
 type Direction = 'horizontal' | 'vertical' | null;
@@ -97,7 +99,7 @@ export class GestureRouter {
         document.addEventListener('touchmove', this.handleTouchMove, { capture: true, passive: false });
         document.addEventListener('touchend', this.handleTouchEnd, { capture: true, passive: false });
 
-        console.log('[GestureRouter] Initialized');
+        Logger.ui('[GestureRouter] Initialized');
     }
 
     /**
@@ -129,7 +131,7 @@ export class GestureRouter {
     registerApp(appId: string, handlers: GestureHandlers): void {
         this.appHandlers.set(appId, handlers);
         this.activeAppId = appId;
-        console.log(`[GestureRouter] Registered handlers for: ${appId}`);
+        Logger.ui(`[GestureRouter] Registered handlers for: ${appId}`);
     }
 
     /**
@@ -154,7 +156,7 @@ export class GestureRouter {
         if (this.activeAppId === appId) {
             this.activeAppId = null;
         }
-        console.log(`[GestureRouter] Unregistered handlers for: ${appId}`);
+        Logger.ui(`[GestureRouter] Unregistered handlers for: ${appId}`);
     }
 
     /**
