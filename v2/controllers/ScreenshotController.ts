@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -50,7 +51,7 @@ export class ScreenshotController {
     constructor(game: GameReference, _eventBus?: EventBus) {
         this.game = game;
 
-        console.log('📸 ScreenshotController initialized');
+        Logger.ui('📸 ScreenshotController initialized');
     }
 
     // ========================================
@@ -120,7 +121,7 @@ export class ScreenshotController {
         this.showStatusIndicator();
 
         this.game?.state?.set('ui.hidden', true);
-        console.log('📸 Screenshot mode ON - dialogue platform visible, status bar showing context');
+        Logger.ui('📸 Screenshot mode ON - dialogue platform visible, status bar showing context');
     }
 
     // ========================================
@@ -160,7 +161,7 @@ export class ScreenshotController {
         this.hideStatusIndicator();
 
         this.game?.state?.set('ui.hidden', false);
-        console.log('📸 Screenshot mode OFF - full UI restored');
+        Logger.ui('📸 Screenshot mode OFF - full UI restored');
     }
 
     // ========================================
