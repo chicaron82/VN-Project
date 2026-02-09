@@ -8,6 +8,7 @@
 
 import type { BlogEntry } from '../../data/blog';
 import { markdownToHtml } from './MarkdownParser';
+import { Logger } from '@utils/Logger';
 
 // --- Utility Lookups (Pure Functions) ---
 
@@ -152,7 +153,7 @@ export function renderCodeComparison(entry: BlogEntry): HTMLElement | null {
         if (window.codeComparisonModal) {
             window.codeComparisonModal.open(entry.codeComparison);
         } else {
-            console.error('CodeComparisonModal not initialized');
+            Logger.error('CodeComparisonModal not initialized');
         }
     });
 
@@ -175,7 +176,7 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
     const template = document.getElementById('timeline-card-template') as HTMLTemplateElement;
     // Fallback for safety (or tests)
     if (!template) {
-        console.error('Timeline template missing');
+        Logger.error('Timeline template missing');
         return item;
     }
 
