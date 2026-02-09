@@ -18,6 +18,7 @@
 
 import { StateManager } from '../../core/StateManager';
 import { OverlayFactory } from './OverlayFactory';
+import { Logger } from '@utils/Logger';
 
 /**
  * StaticOverlays
@@ -35,7 +36,7 @@ export class StaticOverlays {
      * UV7 Crew Bios - Meet the crew behind the game
      */
     showUV7CrewBios(): void {
-        console.log('🎬 UV7 CREW BIOS EASTER EGG');
+        Logger.easter('🎬 UV7 CREW BIOS EASTER EGG');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'success', id: 'uv7-crew-overlay' });
 
@@ -64,7 +65,7 @@ export class StaticOverlays {
      * Loop Timeline - Visualize the bootstrap paradox
      */
     showLoopTimeline(): void {
-        console.log('🔄 LOOP TIMELINE EASTER EGG');
+        Logger.easter('🔄 LOOP TIMELINE EASTER EGG');
 
         const loopVersion = this.stateManager.get<number>('game.loopVersion') ?? 848;
 
@@ -96,7 +97,7 @@ export class StaticOverlays {
      * True Attempt Number - Show actual loop count
      */
     showTrueAttemptNumber(): void {
-        console.log('🔢 TRUE ATTEMPT NUMBER EASTER EGG');
+        Logger.easter('🔢 TRUE ATTEMPT NUMBER EASTER EGG');
 
         const loopVersion = this.stateManager.get<number>('game.loopVersion') ?? 848;
 
@@ -123,7 +124,7 @@ export class StaticOverlays {
      * Echo Compilation - All echo voice lines
      */
     showEchoCompilation(): void {
-        console.log('👻 ECHO COMPILATION EASTER EGG');
+        Logger.easter('👻 ECHO COMPILATION EASTER EGG');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'default', id: 'echo-compilation-overlay' });
 
@@ -147,7 +148,7 @@ export class StaticOverlays {
      * Always Compilation - Storm Dragon's signature
      */
     showAlwaysCompilation(): void {
-        console.log('💚 ALWAYS3 EASTER EGG');
+        Logger.easter('💚 ALWAYS3 EASTER EGG');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'success', id: 'always-overlay' });
 
@@ -178,7 +179,7 @@ export class StaticOverlays {
      * Torigatchi Easter Egg - Link to external project
      */
     showTorigatchiEasterEgg(): void {
-        console.log('🥚 TORIGATCHI EASTER EGG');
+        Logger.easter('🥚 TORIGATCHI EASTER EGG');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'error', id: 'torigatchi-overlay' });
 
@@ -209,7 +210,7 @@ export class StaticOverlays {
      * DiZee Easter Egg - Architect's signature
      */
     showDizeeEasterEgg(): void {
-        console.log('🖤 DIZEE EASTER EGG');
+        Logger.easter('🖤 DIZEE EASTER EGG');
 
         const { overlay, box } = this.overlayFactory.createOverlay({ variant: 'default', id: 'dizee-overlay' });
 

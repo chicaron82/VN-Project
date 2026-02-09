@@ -1,6 +1,7 @@
 import { GameEngine } from '@core/GameEngine';
 import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 export type RouteId = 'prologue' | 'ronnie' | 'tori';
 export type EndingId = 'ronnie_good' | 'ronnie_bad' | 'ronnie_true' | 'digital_forever' | 'tori_good' | 'tori_bad' | 'true';
@@ -104,7 +105,7 @@ export class RouteController {
         const current = (this.stateManager.get(key) as number) || 0;
         this.stateManager.set(key, current + amount);
 
-        console.log(`✨ Added ${amount} points to ${currentRoute} (Total: ${current + amount})`);
+        Logger.state(`✨ Added ${amount} points to ${currentRoute} (Total: ${current + amount})`);
     }
 
     /**
@@ -132,18 +133,18 @@ export class RouteController {
      * Triggers Endings, Epilogues, or Loop Resets
      */
     handleSceneEnd(lastSceneId: string): void {
-        console.log(`🎬 Scene Ended: ${lastSceneId}`);
+        Logger.scene(`🎬 Scene Ended: ${lastSceneId}`);
 
         // 1. True Route -> Epilogue
         if (lastSceneId === 'trueRoute_final') {
-            console.log('🌟 True Ending reached. Formatting reality... [Loading Epilogue]');
+            Logger.scene('🌟 True Ending reached. Formatting reality... [Loading Epilogue]');
             this.engine.loadScene('epilogue_start');
             return;
         }
 
         // 2. Epilogue End -> Credits
         if (lastSceneId === 'epilogue_knowing') {
-            console.log('🏁 Epilogue Complete. Rolling credits...');
+            Logger.scene('🏁 Epilogue Complete. Rolling credits...');
             // In V2, we might have a dedicated credits state or scene.
             // For now, let's emit an event or return to main menu
             this.eventBus.emit('ui:show_credits', {});
@@ -156,7 +157,7 @@ export class RouteController {
 
         // 3. Bad Endings -> Loop Retry (V1 Loop Init Screen)
         if (lastSceneId === 'badRoute_retry' || lastSceneId === 'digitalForever_retry') {
-            console.log('💔 Bad Ending reached. Initializing Loop Reset...');
+            Logger.scene('💔 Bad Ending reached. Initializing Loop Reset...');
 
             // Increment Loop Version
             const currentVer = this.stateManager.get<number>('game.loopVersion') ?? 848;
@@ -181,10 +182,10 @@ export class RouteController {
     handleRetryChoice(choice: 'restart_route' | 'change_perspective', route?: RouteId): void {
         if (choice === 'restart_route') {
             const targetRoute = route || this.stateManager.get<string>('currentRoute') as RouteId || 'ronnie';
-            console.log(`🔄 Restarting Route: ${targetRoute}`);
+            Logger.state(`🔄 Restarting Route: ${targetRoute}`);
             this.selectRoute(targetRoute);
         } else if (choice === 'change_perspective') {
-            console.log('👀 Switching Perspective (Route Select)');
+            Logger.state('👀 Switching Perspective (Route Select)');
             this.skipToRouteSelection();
         }
     }
