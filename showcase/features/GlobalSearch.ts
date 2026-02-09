@@ -8,17 +8,29 @@
  */
 
 import { TIMELINE_DATA, type BlogEntry } from '../data/blog';
-import { UV7_CREW } from '../../v2/ui/components/UV7OSConfig';
+import { UV7_CREW, type CrewMember } from '../../v2/ui/components/UV7OSConfig';
 import { Logger } from '@utils/Logger';
 
-interface SearchResult {
-    type: 'blog' | 'section' | 'crew';
+interface SectionData {
+    id: string;
+    title: string;
+    icon: string;
+    description: string;
+}
+
+interface SearchResultBase {
     title: string;
     subtitle: string;
     icon: string;
-    data: any;
     score: number; // For ranking
+    titleHighlight?: string;
+    subtitleHighlight?: string;
 }
+
+type SearchResult =
+    | (SearchResultBase & { type: 'blog'; data: BlogEntry })
+    | (SearchResultBase & { type: 'section'; data: SectionData })
+    | (SearchResultBase & { type: 'crew'; data: CrewMember });
 
 export class GlobalSearch {
     private modal: HTMLElement | null = null;
@@ -225,7 +237,12 @@ export class GlobalSearch {
                     if (daysSince < 7) score += 20; // Boost recent entries
                 }
 
-                return { ...item, score, titleMatch, subtitleMatch };
+                return {
+                    ...item,
+                    score,
+                    titleHighlight: titleMatch.matched ? this.highlightMatches(item.title, titleMatch.indices) : item.title,
+                    subtitleHighlight: subtitleMatch.matched ? this.highlightMatches(item.subtitle, subtitleMatch.indices) : item.subtitle
+                };
             })
             .filter(item => item.score > 0)
             .sort((a, b) => b.score - a.score)
@@ -298,8 +315,8 @@ export class GlobalSearch {
                     <div class="search-result ${isSelected ? 'selected' : ''}" data-index="${index}">
                         <span class="result-icon">${result.icon}</span>
                         <div class="result-content">
-                            <div class="result-title">${result.title}</div>
-                            <div class="result-subtitle">${result.subtitle}</div>
+                            <div class="result-title">${result.titleHighlight || result.title}</div>
+                            <div class="result-subtitle">${result.subtitleHighlight || result.subtitle}</div>
                         </div>
                         ${categoryBadge}
                     </div>
@@ -356,7 +373,7 @@ export class GlobalSearch {
 
         this.resultsContainer.innerHTML = `
             <div class="search-section-title">Recent searches</div>
-            ${this.searchHistory.map((query, index) => `
+            ${this.searchHistory.map((query) => `
                 <div class="search-result recent-search" data-query="${query}">
                     <span class="result-icon">🕐</span>
                     <div class="result-content">
