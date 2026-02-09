@@ -153,3 +153,7 @@ test-results.json
 test-results.txt
 tsc_error.log
 *.log.txt
+
+# Local console-audit artifacts
+.console-count.json
+.console-audit.json
