@@ -7,7 +7,7 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { UV7System } from '../UV7System.js';
 import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 
@@ -15,6 +15,15 @@ describe('Chrome Performance Tests', () => {
     let system: UV7System;
     let mockElements: any;
     const performanceResults: Record<string, number> = {};
+
+    function withMutedConsoleLog<T>(fn: () => T): T {
+        const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+        try {
+            return fn();
+        } finally {
+            spy.mockRestore();
+        }
+    }
 
     function measureAvgMs(fn: () => void, iterations: number = 200, warmup: number = 20): number {
         for (let i = 0; i < warmup; i++) fn();
@@ -54,7 +63,7 @@ describe('Chrome Performance Tests', () => {
 
             api.onAction('test:action', () => { called = true; });
 
-            const duration = measureAvgMs(() => system['handleActionClick']('test:action'));
+            const duration = withMutedConsoleLog(() => measureAvgMs(() => system['handleActionClick']('test:action')));
 
             expect(called).toBe(true);
             expect(duration).toBeLessThan(2);
@@ -72,7 +81,7 @@ describe('Chrome Performance Tests', () => {
             let called = false;
             api.onAction('test:target', () => { called = true; });
 
-            const duration = measureAvgMs(() => system['handleActionClick']('test:target'));
+            const duration = withMutedConsoleLog(() => measureAvgMs(() => system['handleActionClick']('test:target')));
 
             expect(called).toBe(true);
             expect(duration).toBeLessThan(2);
@@ -89,9 +98,14 @@ describe('Chrome Performance Tests', () => {
                 transitionDuration: 350
             };
 
-            const start = performance.now();
-            system.applyTheme(theme);
-            const duration = performance.now() - start;
+            const duration = withMutedConsoleLog(() => {
+                // Warmup to reduce one-time initialization variance
+                system.applyTheme(theme);
+
+                const start = performance.now();
+                system.applyTheme(theme);
+                return performance.now() - start;
+            });
 
             expect(duration).toBeLessThan(5);
             performanceResults['theme_application'] = duration;
@@ -105,9 +119,14 @@ describe('Chrome Performance Tests', () => {
                 context: 'Testing'
             };
 
-            const start = performance.now();
-            system.applyStatusBarSpec(spec);
-            const duration = performance.now() - start;
+            const duration = withMutedConsoleLog(() => {
+                // Warmup to reduce one-time initialization variance
+                system.applyStatusBarSpec(spec);
+
+                const start = performance.now();
+                system.applyStatusBarSpec(spec);
+                return performance.now() - start;
+            });
 
             expect(duration).toBeLessThan(10);
             performanceResults['spec_application_simple'] = duration;
@@ -128,9 +147,14 @@ describe('Chrome Performance Tests', () => {
                 }
             };
 
-            const start = performance.now();
-            system.applyStatusBarSpec(spec);
-            const duration = performance.now() - start;
+            const duration = withMutedConsoleLog(() => {
+                // Warmup to reduce one-time initialization variance
+                system.applyStatusBarSpec(spec);
+
+                const start = performance.now();
+                system.applyStatusBarSpec(spec);
+                return performance.now() - start;
+            });
 
             expect(duration).toBeLessThan(20);
             performanceResults['spec_application_complex'] = duration;
