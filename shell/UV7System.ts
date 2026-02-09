@@ -20,6 +20,7 @@
 import { generateShadeContent } from './ShadeTemplate.js';
 import { generateDefaultSidebarContent } from './SidebarTemplate.js';
 import { ChromeDevTools } from './devtools/ChromeDevTools.js';
+import { Logger } from '@utils/Logger';
 
 // Import shared types
 import type {
@@ -116,11 +117,11 @@ export class UV7System {
      */
     async init(): Promise<void> {
         if (this.initialized) {
-            console.warn('[UV7System] Already initialized');
+            Logger.warn('[UV7System] Already initialized');
             return;
         }
 
-        console.log(`[UV7System] Initializing in ${this.mode} mode...`);
+        Logger.system(`[UV7System] Initializing in ${this.mode} mode...`);
 
         // Cache DOM elements
         this.cacheElements();
@@ -138,7 +139,7 @@ export class UV7System {
         this.initMessageAPI();
 
         this.initialized = true;
-        console.log('[UV7System] Initialized successfully');
+        Logger.system('[UV7System] Initialized successfully');
 
         // Add class to body to signal UV7System is handling chrome
         document.body.classList.add('uv7-system-chrome');
@@ -166,7 +167,7 @@ export class UV7System {
     private renderShade(): void {
         const shade = this.elements.shade;
         if (!shade) {
-            console.error('[UV7System] Could not find shade element');
+            Logger.error('[UV7System] Could not find shade element');
             return;
         }
 
@@ -174,7 +175,7 @@ export class UV7System {
         let shadeContent = shade.querySelector('.shade-content');
 
         if (!shadeContent) {
-            console.warn('[UV7System] No .shade-content found, rendering full structure');
+            Logger.warn('[UV7System] No .shade-content found, rendering full structure');
             shade.innerHTML = `
                 <div class="shade-header">
                     <span class="shade-title">🏠 ${this.appName}</span>
@@ -191,7 +192,7 @@ export class UV7System {
             shadeContent.innerHTML = generateShadeContent({ isShell });
         }
 
-        console.log('[UV7System] Shade content rendered');
+        Logger.system('[UV7System] Shade content rendered');
     }
 
     /**
@@ -200,7 +201,7 @@ export class UV7System {
     private renderSidebar(): void {
         const sidebar = this.elements.sidebar;
         if (!sidebar) {
-            console.error('[UV7System] Could not find sidebar element');
+            Logger.error('[UV7System] Could not find sidebar element');
             return;
         }
 
@@ -212,16 +213,16 @@ export class UV7System {
                 sidebar.innerHTML = ''; // Clear existing content
                 sidebar.appendChild(this.sidebarConfig.content);
             }
-            console.log('[UV7System] App-specific sidebar content rendered');
+            Logger.system('[UV7System] App-specific sidebar content rendered');
 
             // Call initialization function if provided
             if (this.sidebarConfig.init) {
                 this.sidebarConfig.init();
-                console.log('[UV7System] Sidebar init function called');
+                Logger.system('[UV7System] Sidebar init function called');
             }
         } else {
             sidebar.innerHTML = generateDefaultSidebarContent({ title: `🏠 ${this.appName}` });
-            console.log('[UV7System] Default sidebar content rendered');
+            Logger.system('[UV7System] Default sidebar content rendered');
         }
     }
 
@@ -232,16 +233,16 @@ export class UV7System {
         // Wire up close button
         const closeBtn = document.querySelector('.shade-close');
         if (closeBtn) {
-            console.log('✅ [UV7System] Shade close button found');
+            Logger.system('✅ [UV7System] Shade close button found');
             closeBtn.addEventListener('click', () => {
-                console.log('🔘 [UV7System] Shade close button clicked');
+                Logger.system('🔘 [UV7System] Shade close button clicked');
                 // Resume context on first interaction
                 // Note: ctx is private, use resume() which handles state check internally
                 // shellAudio.resume(); // Assuming shellAudio is globally available or imported
                 this.closeShade();
             });
         } else {
-            console.error('❌ [UV7System] Shade close button NOT found!');
+            Logger.error('❌ [UV7System] Shade close button NOT found!');
         }
 
         // Wire up backdrop
@@ -254,7 +255,7 @@ export class UV7System {
                 this.elements.backdrop = newBackdrop;
 
                 this.elements.backdrop.addEventListener('click', () => {
-                    console.log('🔘 [UV7System] Backdrop clicked');
+                    Logger.system('🔘 [UV7System] Backdrop clicked');
                     if (this.elements.shade?.classList.contains('open')) {
                         this.closeShade();
                     }
@@ -263,9 +264,9 @@ export class UV7System {
                     }
                 });
             } else {
-                console.warn('[UV7System] Backdrop parent node not found, using existing element');
+                Logger.warn('[UV7System] Backdrop parent node not found, using existing element');
                 this.elements.backdrop.addEventListener('click', () => {
-                    console.log('🔘 [UV7System] Backdrop clicked');
+                    Logger.system('🔘 [UV7System] Backdrop clicked');
                     if (this.elements.shade?.classList.contains('open')) {
                         this.closeShade();
                     }
@@ -276,7 +277,7 @@ export class UV7System {
             }
         }
 
-        console.log('✅ [UV7System] Shade controls initialized');
+        Logger.system('✅ [UV7System] Shade controls initialized');
     }
 
     /**
@@ -288,9 +289,9 @@ export class UV7System {
             toggleBtn.addEventListener('click', () => {
                 this.toggleSidebar();
             });
-            console.log('✅ [UV7System] Sidebar toggle initialized');
+            Logger.system('✅ [UV7System] Sidebar toggle initialized');
         } else {
-            console.warn('[UV7System] Sidebar toggle button not found');
+            Logger.warn('[UV7System] Sidebar toggle button not found');
         }
     }
 
@@ -309,14 +310,14 @@ export class UV7System {
      * This replaces 90+ lines of duplicate code
      */
     private initThemeSettings(): void {
-        console.log(`[UV7System] initThemeSettings() called with prefix: ${this.prefix}`);
+        Logger.system(`[UV7System] initThemeSettings() called with prefix: ${this.prefix}`);
 
         const themeToggle = document.getElementById(`${this.prefix}-theme-toggle`);
         const autoToggle = document.getElementById(`${this.prefix}-theme-auto`);
         const manualRow = document.getElementById(`${this.prefix}-manual-theme-row`);
 
         if (!themeToggle || !autoToggle) {
-            console.error(`[UV7System] Theme toggles NOT found!`);
+            Logger.error(`[UV7System] Theme toggles NOT found!`);
             return;
         }
 
@@ -341,9 +342,9 @@ export class UV7System {
                 manualRow: manualRow
             });
 
-            console.log('🎨 [UV7System] Theme controls bound to shared ThemeManager');
+            Logger.system('🎨 [UV7System] Theme controls bound to shared ThemeManager');
         }).catch(err => {
-            console.warn('[UV7System] Could not load ThemeManager:', err);
+            Logger.warn('[UV7System] Could not load ThemeManager:', err);
         });
     }
 
@@ -390,9 +391,9 @@ export class UV7System {
                 hoverCheckbox: document.getElementById(`${this.prefix}-echo-hover`) as HTMLInputElement
             });
 
-            console.log('🔊 [UV7System] Echo controls bound to shared EchoSettingsManager');
+            Logger.system('🔊 [UV7System] Echo controls bound to shared EchoSettingsManager');
         }).catch(err => {
-            console.warn('[UV7System] Could not load EchoSettingsManager:', err);
+            Logger.warn('[UV7System] Could not load EchoSettingsManager:', err);
         });
     }
 
@@ -433,9 +434,9 @@ export class UV7System {
                 lonelyCheckbox: document.getElementById(`${this.prefix}-tori-lonely`) as HTMLInputElement
             });
 
-            console.log('🐣 [UV7System] Tori controls bound to shared ToriSettingsManager');
+            Logger.system('🐣 [UV7System] Tori controls bound to shared ToriSettingsManager');
         }).catch(err => {
-            console.warn('[UV7System] Could not load ToriSettingsManager:', err);
+            Logger.warn('[UV7System] Could not load ToriSettingsManager:', err);
         });
     }
 
@@ -451,12 +452,12 @@ export class UV7System {
                     this.updateStatusBar(e.data.config);
                     break;
                 case 'uv7:register-app':
-                    console.log(`[UV7System] App registered: ${e.data.appId}`);
+                    Logger.system(`[UV7System] App registered: ${e.data.appId}`);
                     break;
             }
         });
 
-        console.log('[UV7System] Message API initialized');
+        Logger.system('[UV7System] Message API initialized');
     }
 
     /**
@@ -486,16 +487,16 @@ export class UV7System {
      */
     private notifyIframes(type: string, data: any): void {
         const iframes = document.querySelectorAll('iframe');
-        console.log(`[UV7System] notifyIframes called: type=${type}, iframes found=${iframes.length}`);
+        Logger.system(`[UV7System] notifyIframes called: type=${type}, iframes found=${iframes.length}`);
 
         iframes.forEach((iframe, index) => {
-            console.log(`[UV7System] Sending message to iframe ${index}:`, iframe.id || 'no-id', { type, ...data });
+            Logger.system(`[UV7System] Sending message to iframe ${index}:`, iframe.id || 'no-id', { type, ...data });
 
             if (iframe.contentWindow) {
                 iframe.contentWindow.postMessage({ type, ...data }, '*');
-                console.log(`[UV7System] Message sent to iframe ${index}`);
+                Logger.system(`[UV7System] Message sent to iframe ${index}`);
             } else {
-                console.warn(`[UV7System] Iframe ${index} has no contentWindow`);
+                Logger.warn(`[UV7System] Iframe ${index} has no contentWindow`);
             }
         });
     }
@@ -655,7 +656,7 @@ export class UV7System {
             actionsContainer.appendChild(button);
         });
 
-        console.log(`[UV7System] Rendered ${actions.length} status bar actions`);
+        Logger.system(`[UV7System] Rendered ${actions.length} status bar actions`);
     }
 
     /**
@@ -673,7 +674,7 @@ export class UV7System {
             document.body.classList.remove('status-light', 'status-dark', 'status-auto');
             document.body.classList.add(`status-${theme.statusBarVariant}`);
         }
-        console.log(`[UV7System] Applied theme: ${theme.primaryColor}`);
+        Logger.system(`[UV7System] Applied theme: ${theme.primaryColor}`);
 
         // Track in DevTools
         this.devTools?.trackTheme(theme);
@@ -752,7 +753,7 @@ export class UV7System {
             });
         });
 
-        console.log(`[UV7System] Rendered ${sections.length} sidebar sections`);
+        Logger.system(`[UV7System] Rendered ${sections.length} sidebar sections`);
     }
 
     /**
@@ -810,10 +811,10 @@ export class UV7System {
                     }
                 },
                 showProgress: (percent: number, label?: string) => {
-                    console.log(`[SystemAPI] showProgress: ${percent}% ${label || ''}`);
+                    Logger.system(`[SystemAPI] showProgress: ${percent}% ${label || ''}`);
                 },
                 clearProgress: () => {
-                    console.log('[SystemAPI] clearProgress');
+                    Logger.system('[SystemAPI] clearProgress');
                 },
                 pulse: (duration: number = 500) => {
                     this.elements.statusBar?.classList.add('pulse');
@@ -915,11 +916,11 @@ export class UV7System {
             // Action handler registration (Belle's pattern)
             onAction: (actionId: string, handler: () => void) => {
                 this.actionHandlers.set(actionId, handler);
-                console.log(`[SystemAPI] Registered action handler: ${actionId}`);
+                Logger.system(`[SystemAPI] Registered action handler: ${actionId}`);
             },
             offAction: (actionId: string) => {
                 this.actionHandlers.delete(actionId);
-                console.log(`[SystemAPI] Unregistered action handler: ${actionId}`);
+                Logger.system(`[SystemAPI] Unregistered action handler: ${actionId}`);
             }
         };
 
@@ -931,12 +932,12 @@ export class UV7System {
      * Part of Belle's Action ID & Signal pattern
      */
     private handleActionClick(actionId: string): void {
-        console.log(`[UV7System] Action triggered: ${actionId}`);
+        Logger.system(`[UV7System] Action triggered: ${actionId}`);
         const handler = this.actionHandlers.get(actionId);
         if (handler) {
             handler();
         } else {
-            console.warn(`[UV7System] No handler registered for action: ${actionId}`);
+            Logger.warn(`[UV7System] No handler registered for action: ${actionId}`);
         }
         window.dispatchEvent(new CustomEvent('uv7:action-triggered', {
             detail: { actionId }
