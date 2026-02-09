@@ -17,6 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 interface DayActivity {
     date: string; // YYYY-MM-DD
     count: number;
@@ -43,7 +45,7 @@ export class BlogHeatmap {
     private init(): void {
         this.parseActivity();
         this.createHeatmap();
-        console.log('🔥 [BlogHeatmap] Initialized with', this.activityMap.size, 'active days');
+        Logger.ui('🔥 [BlogHeatmap] Initialized with', this.activityMap.size, 'active days');
     }
 
     /**
@@ -225,7 +227,7 @@ export class BlogHeatmap {
      * Handle day click - filter timeline
      */
     private handleDayClick(date: string): void {
-        console.log('🔥 [BlogHeatmap] Clicked date:', date);
+        Logger.ui('🔥 [BlogHeatmap] Clicked date:', date);
 
         // Trigger callback if provided
         if (this.onDateClick) {
@@ -287,6 +289,6 @@ export class BlogHeatmap {
             this.heatmapContainer.remove();
             this.heatmapContainer = null;
         }
-        console.log('🔥 [BlogHeatmap] Destroyed');
+        Logger.ui('🔥 [BlogHeatmap] Destroyed');
     }
 }
