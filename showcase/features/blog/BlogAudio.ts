@@ -17,6 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogAudio {
     private ctx: AudioContext | null;
     private masterGain: GainNode | null;
@@ -35,7 +37,7 @@ export class BlogAudio {
     private init(): void {
         this.createMuteToggle();
         this.attachListeners();
-        console.log('🔊 [BlogAudio] Initialized (Click toggle to enable)');
+        Logger.audio('🔊 [BlogAudio] Initialized (Click toggle to enable)');
     }
 
     /**
@@ -53,9 +55,9 @@ export class BlogAudio {
 
             this.isEnabled = true;
             this.playPowerOn();
-            console.log('🔊 [BlogAudio] Audio Engine Started');
+            Logger.audio('🔊 [BlogAudio] Audio Engine Started');
         } catch (e) {
-            console.error('🔊 [BlogAudio] Web Audio API not supported', e);
+            Logger.error('🔊 [BlogAudio] Web Audio API not supported', e);
         }
     }
 
@@ -245,6 +247,6 @@ export class BlogAudio {
             this.ctx.close();
             this.ctx = null;
         }
-        console.log('🔊 [BlogAudio] Destroyed');
+        Logger.audio('🔊 [BlogAudio] Destroyed');
     }
 }
