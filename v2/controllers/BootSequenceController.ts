@@ -2,6 +2,7 @@
 import { EventBus } from '@core/EventBus';
 import { GameEngine } from '@core/GameEngine';
 import { LoadingOverlay } from '@ui/components/LoadingOverlay';
+import { Logger } from '@utils/Logger';
 
 // We need to handle asset imports. In main.ts they were imported directly.
 // We can pass them in, or import them here if they are global assets.
@@ -90,7 +91,7 @@ export class BootSequenceController {
 
             // Fallback if video fails
             video.onerror = () => {
-                console.warn('Video failed to load, switching to static logo fallback');
+                Logger.warn('Video failed to load, switching to static logo fallback');
                 if (logoSection) logoSection.classList.add('fallback-mode');
             };
 
@@ -141,7 +142,7 @@ export class BootSequenceController {
 
             // V1 Parity: If skipped, fuck it - bail immediately with code rain
             if (wasSkipped) {
-                console.log('🌧️ Boot skipped - triggering immediate code rain transition');
+                Logger.ui('🌧️ Boot skipped - triggering immediate code rain transition');
 
                 // Instant removal, no fade
                 splashContainer.remove();
