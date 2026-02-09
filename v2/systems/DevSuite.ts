@@ -32,6 +32,7 @@ import { DevSuiteDOM } from './devsuite/DevSuiteDOM';
 import { DevSuiteConsole } from './devsuite/DevSuiteConsole';
 import { DevSuiteGameTools } from './devsuite/DevSuiteGameTools';
 import { DevSuiteTabRenderer } from './devsuite/DevSuiteTabRenderer';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // TYPES
@@ -203,7 +204,7 @@ export class DevSuite {
         // 8. Initial tab render
         this.tabRenderer.switchTab(this.state.lastActiveTab || 'debug');
 
-        console.log('🛠️ Dev Suite v2.0 initialized');
+        Logger.ui('🛠️ Dev Suite v2.0 initialized');
     }
 
     // ========================================
@@ -226,7 +227,7 @@ export class DevSuite {
         this.isMinimized = false;
         els.consoleInput?.focus();
         this.tabRenderer.refreshCurrentTab();
-        console.log('🛠️ Dev Suite opened');
+        Logger.ui('🛠️ Dev Suite opened');
     }
 
     public close(): void {
@@ -236,7 +237,7 @@ export class DevSuite {
         this.isOpen = false;
         this.isMinimized = false;
         this.saveState();
-        console.log('🛠️ Dev Suite closed');
+        Logger.ui('🛠️ Dev Suite closed');
     }
 
     public minimize(): void {
@@ -244,7 +245,7 @@ export class DevSuite {
         els.overlay?.classList.add('hidden');
         els.floatBtn?.classList.remove('hidden');
         this.isMinimized = true;
-        console.log('🛠️ Dev Suite minimized');
+        Logger.ui('🛠️ Dev Suite minimized');
     }
 
     public maximize(): void {
@@ -254,7 +255,7 @@ export class DevSuite {
         this.isMinimized = false;
         els.consoleInput?.focus();
         this.tabRenderer.refreshCurrentTab();
-        console.log('🛠️ Dev Suite maximized');
+        Logger.ui('🛠️ Dev Suite maximized');
     }
 
     // ========================================
@@ -286,7 +287,7 @@ export class DevSuite {
             try {
                 return JSON.parse(saved);
             } catch (e) {
-                console.warn('Failed to load dev suite state');
+                Logger.warn('Failed to load dev suite state');
             }
         }
         return {
