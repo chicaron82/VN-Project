@@ -17,6 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogHoverPreview {
     private tooltip: HTMLElement | null;
     private currentTarget: HTMLElement | null;
@@ -34,7 +36,7 @@ export class BlogHoverPreview {
     private init(): void {
         this.createTooltip();
         this.attachListeners();
-        console.log('🎯 [BlogHoverPreview] Initialized');
+        Logger.ui('🎯 [BlogHoverPreview] Initialized');
     }
 
     /**
@@ -225,6 +227,6 @@ export class BlogHoverPreview {
         if (this.hideTimeout) {
             clearTimeout(this.hideTimeout);
         }
-        console.log('🎯 [BlogHoverPreview] Destroyed');
+        Logger.ui('🎯 [BlogHoverPreview] Destroyed');
     }
 }
