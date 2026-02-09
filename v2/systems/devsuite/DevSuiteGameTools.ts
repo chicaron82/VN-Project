@@ -10,6 +10,7 @@
 import type { GameInstance, ScreenshotTool, HotReloadSystem } from '../DevSuite';
 import type { DevLogger, ConsoleLogType } from './DevLogger';
 import type { DevPresets } from './DevPresets';
+import { Logger } from '@utils/Logger';
 
 export interface DevSuiteGameToolsDeps {
     game: GameInstance;
@@ -180,7 +181,7 @@ export class DevSuiteGameTools {
         }
 
         await this.screenshotTool!.download().catch(err => {
-            console.error('Screenshot failed', err);
+            Logger.error('Screenshot failed', err);
         });
     }
 
