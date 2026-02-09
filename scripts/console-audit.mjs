@@ -30,6 +30,9 @@ const CONSOLE_REGEX = /\bconsole\.(log|warn|error|info|debug|group|groupCollapse
 const DEFAULT_ALLOWLIST = new Set([
   // Logger legitimately uses console.* internally
   path.normalize('v2/utils/Logger.ts'),
+
+  // Intentionally overrides console.* for DevSuite capture
+  path.normalize('v2/systems/devsuite/ConsoleInterceptor.ts'),
 ]);
 
 function isExcludedFile(filePath) {
