@@ -11,6 +11,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 type AppId = 'showcase' | 'v1' | 'v2' | 'torigatchi';
 
 interface AppStateData {
@@ -85,7 +87,7 @@ export class UV7AppSwitcher {
         // Phase 26c: Start background monitoring for alerts
         this.startBackgroundMonitor();
 
-        console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
+        Logger.ui('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -344,7 +346,7 @@ export class UV7AppSwitcher {
                                 };
                             }
                         } catch (e) {
-                            console.warn('Failed to parse V2 state:', e);
+                            Logger.warn('Failed to parse V2 state:', e);
                         }
                     }
 
@@ -568,7 +570,7 @@ export class UV7AppSwitcher {
             navigator.vibrate([50, 50, 50]);
         }
 
-        console.log(`🔔 Background alert: ${app.name} - ${stateText}`);
+        Logger.ui(`🔔 Background alert: ${app.name} - ${stateText}`);
     }
 
     stopBackgroundMonitor(): void {
@@ -868,7 +870,7 @@ export class UV7AppSwitcher {
         // Re-render
         this.render();
 
-        console.log(`✅ Restored ${app.name} save data`);
+        Logger.ui(`✅ Restored ${app.name} save data`);
     }
 
     confirmClearSave(app: AppDefinition, card: HTMLElement): void {
