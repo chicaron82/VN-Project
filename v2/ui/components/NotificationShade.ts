@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { dispatchAction } from '../utils/ActionDispatcher';
+import { Logger } from '@utils/Logger';
 
 /**
  * NotificationShade - Mobile Quick Action Menu (V1 Parity Port)
@@ -451,7 +452,7 @@ export class NotificationShade {
     // @ts-ignore - Reserved for future fullscreen feature
     private _toggleFullscreen(): void {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => console.warn(err));
+            document.documentElement.requestFullscreen().catch(err => Logger.warn(err));
         } else {
             if (document.exitFullscreen) document.exitFullscreen();
         }
@@ -518,7 +519,7 @@ export class NotificationShade {
             this.notePreviewSection.classList.add('visible');
         }
 
-        console.log(`📝 Note preview shown: ${sender} - ${title}`);
+        Logger.ui(`📝 Note preview shown: ${sender} - ${title}`);
     }
 
     /**
@@ -536,7 +537,7 @@ export class NotificationShade {
             }, 300);
         }
 
-        console.log('📝 Note preview hidden');
+        Logger.ui('📝 Note preview hidden');
     }
 
     /**
@@ -592,7 +593,7 @@ export class NotificationShade {
                     // Quick save
                     this.eventBus.emit('ui:save_menu', {});
                     this.close();
-                    console.log('💾 Quick save (Ctrl+S)');
+                    Logger.ui('💾 Quick save (Ctrl+S)');
                 }
                 break;
 
@@ -602,7 +603,7 @@ export class NotificationShade {
                     // Quick load
                     this.eventBus.emit('ui:load_menu', {});
                     this.close();
-                    console.log('📂 Load menu (Ctrl+L)');
+                    Logger.ui('📂 Load menu (Ctrl+L)');
                 }
                 break;
 
@@ -611,11 +612,11 @@ export class NotificationShade {
                     e.preventDefault();
                     // Toggle fullscreen
                     if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(err => console.warn(err));
-                        console.log('⛶ Fullscreen enabled (Ctrl+F)');
+                        document.documentElement.requestFullscreen().catch(err => Logger.warn(err));
+                        Logger.ui('⛶ Fullscreen enabled (Ctrl+F)');
                     } else {
                         document.exitFullscreen();
-                        console.log('⛶ Fullscreen disabled (Ctrl+F)');
+                        Logger.ui('⛶ Fullscreen disabled (Ctrl+F)');
                     }
                 }
                 break;
@@ -626,7 +627,7 @@ export class NotificationShade {
                     // Return to menu
                     this.eventBus.emit('ui:main_menu', {});
                     this.close();
-                    console.log('🚪 Return to menu (Ctrl+M)');
+                    Logger.ui('🚪 Return to menu (Ctrl+M)');
                 }
                 break;
         }
@@ -648,10 +649,10 @@ export class NotificationShade {
                 const state = JSON.parse(saved);
                 this.screenshotMode = state.screenshotMode || false;
                 this.idleDelay = state.idleDelay || 3000;
-                console.log('💾 Loaded notification shade state');
+                Logger.ui('💾 Loaded notification shade state');
             }
         } catch (error) {
-            console.warn('Failed to load notification shade state:', error);
+            Logger.warn('Failed to load notification shade state:', error);
         }
     }
 
@@ -667,9 +668,9 @@ export class NotificationShade {
                 timestamp: Date.now()
             };
             localStorage.setItem('notificationShadeState', JSON.stringify(state));
-            console.log('💾 Saved notification shade state');
+            Logger.ui('💾 Saved notification shade state');
         } catch (error) {
-            console.warn('Failed to save notification shade state:', error);
+            Logger.warn('Failed to save notification shade state:', error);
         }
     }
 
@@ -685,13 +686,13 @@ export class NotificationShade {
             this.container.style.display = 'none';
             document.body.classList.add('screenshot-mode');
             this.eventBus.emit('ui:hide_status_bar', {});
-            console.log('📸 Screenshot mode: ON');
+            Logger.ui('📸 Screenshot mode: ON');
         } else {
             // Restore UI elements
             this.container.style.display = '';
             document.body.classList.remove('screenshot-mode');
             this.eventBus.emit('ui:show_status_bar', {});
-            console.log('📸 Screenshot mode: OFF');
+            Logger.ui('📸 Screenshot mode: OFF');
         }
 
         // Save state
@@ -747,7 +748,7 @@ export class NotificationShade {
         }
 
         emergencyBtn.style.display = 'flex';
-        console.warn('🚨 Emergency fallback menu activated');
+        Logger.warn('🚨 Emergency fallback menu activated');
     }
 
     /**

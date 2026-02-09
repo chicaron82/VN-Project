@@ -10,6 +10,7 @@
 import type { EventBus } from '../../../core/EventBus';
 import type { UV7Context, StatusBarFeatures, ColorTint } from '../StatusBarContext';
 import { COLOR_TINTS } from '../StatusBarContext';
+import { Logger } from '@utils/Logger';
 
 /**
  * StatusBarModes
@@ -138,14 +139,14 @@ export class StatusBarModes {
             document.body.classList.add('screenshot-mode');
             this.container.style.display = 'none';
             this.eventBus.emit('ui:hide_hud', {});
-            console.log('📸 Screenshot mode ON - All UI hidden');
+            Logger.ui('📸 Screenshot mode ON - All UI hidden');
         } else {
             document.body.classList.remove('screenshot-mode');
             if (this.container.classList.contains('visible')) {
                 this.container.style.display = 'flex';
             }
             this.eventBus.emit('ui:show_status_bar', {});
-            console.log('📸 Screenshot mode OFF - UI restored');
+            Logger.ui('📸 Screenshot mode OFF - UI restored');
         }
     }
 
@@ -168,7 +169,7 @@ export class StatusBarModes {
 
             if (isPortrait || isNarrow) {
                 this.eventBus.emit('ui:sidebar:close', {});
-                console.log('📱 Portrait mode detected - Sidebar closed');
+                Logger.ui('📱 Portrait mode detected - Sidebar closed');
             }
 
             this.container.classList.toggle('portrait', isPortrait);

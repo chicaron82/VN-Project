@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * StatusBarMailSystem - Unread notes tracking with badge counter
@@ -67,7 +68,7 @@ export class StatusBarMailSystem {
             });
         }
 
-        console.log(`📬 New unread note: ${sender} - ${title}`);
+        Logger.ui(`📬 New unread note: ${sender} - ${title}`);
     }
 
     /**
@@ -78,7 +79,7 @@ export class StatusBarMailSystem {
         if (this.unreadNotes.has(id)) {
             this.unreadNotes.delete(id);
             this.updateMailIcon();
-            console.log(`📭 Note marked as read: ${id}`);
+            Logger.ui(`📭 Note marked as read: ${id}`);
         }
     }
 
@@ -88,7 +89,7 @@ export class StatusBarMailSystem {
     public markAllNotesAsRead(): void {
         this.unreadNotes.clear();
         this.updateMailIcon();
-        console.log('📭 All notes marked as read');
+        Logger.ui('📭 All notes marked as read');
     }
 
     /**

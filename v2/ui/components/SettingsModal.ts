@@ -15,6 +15,7 @@ import { SettingsSystem } from '../../systems/SettingsSystem';
 import { createSettingsDOM } from './settings/SettingsTemplate';
 import { wireSettingsEvents } from './settings/SettingsEventWiring';
 import { SettingsPersistence } from './settings/SettingsPersistence';
+import { Logger } from '@utils/Logger';
 
 /**
  * Settings configuration interface
@@ -224,7 +225,7 @@ export class SettingsModal {
     private toggleFullscreen(): void {
         if (!document.fullscreenElement) {
             document.documentElement.requestFullscreen().catch(err => {
-                console.error(`Error attempting to enable fullscreen mode: ${err.message}`);
+                Logger.error(`Error attempting to enable fullscreen mode: ${err.message}`);
             });
         } else {
             document.exitFullscreen();
@@ -268,7 +269,7 @@ export class SettingsModal {
             (window as any).secretCodesManager.updateCodesUI();
         }
 
-        console.debug('Settings opened. Active tab:', this.currentTab);
+        Logger.debug('Settings opened. Active tab:', this.currentTab);
     }
 
     public close(emitEvent: boolean = true): void {

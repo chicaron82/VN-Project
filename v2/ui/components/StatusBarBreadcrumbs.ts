@@ -11,6 +11,7 @@
 
 import { UV7Context, ColorTint } from './StatusBarContext';
 import { EventBus } from '../../core/EventBus';
+import { Logger } from '@utils/Logger';
 
 // ========================================
 // BREADCRUMB TYPES
@@ -198,7 +199,7 @@ export class BreadcrumbRenderer {
      * Tori's recommendation: Emit events, don't do actions directly
      */
     private handleClick(segment: BreadcrumbSegment): void {
-        console.log(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
+        Logger.ui(`🍞 Breadcrumb clicked: ${segment.id} (${segment.label})`);
 
         // Emit event for controllers to handle navigation
         this.eventBus.emit('ui:screen_change', { screen: `breadcrumb:${segment.id}` });

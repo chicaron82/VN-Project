@@ -11,6 +11,7 @@ import type { EventBus } from '../../../core/EventBus';
 import type { StateManager } from '../../../core/StateManager';
 import type { StatusBarElementRefs } from './StatusBarDOM';
 import { StatusBarAppSwitcherPreview } from '../StatusBarAppSwitcherPreview';
+import { Logger } from '@utils/Logger';
 
 /**
  * Callback contract for wiring to communicate with the orchestrator.
@@ -68,7 +69,7 @@ export class StatusBarWiring {
                 const newTheme = themeManager.getState().mode;
                 this.refs.storyDevToggleEl.innerHTML = newTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
                 if (navigator.vibrate) navigator.vibrate(10);
-                console.log(`🎨 Theme: ${newTheme}`);
+                Logger.ui(`🎨 Theme: ${newTheme}`);
             });
 
             this.refs.storyDevToggleEl.addEventListener('mouseenter', () => {
@@ -80,7 +81,7 @@ export class StatusBarWiring {
                 this.refs.storyDevToggleEl.style.background = 'rgba(255, 255, 255, 0.1)';
             });
         }).catch(err => {
-            console.warn('[StatusBar] Could not load ThemeManager for toggle:', err);
+            Logger.warn('[StatusBar] Could not load ThemeManager for toggle:', err);
         });
     }
 
@@ -89,7 +90,7 @@ export class StatusBarWiring {
      */
     setupSettingsHandler(): void {
         this.refs.settingsEl.addEventListener('click', () => {
-            console.log('⚙️ Settings Cog clicked');
+            Logger.ui('⚙️ Settings Cog clicked');
             if (navigator.vibrate) navigator.vibrate(10);
             this.eventBus.emit('ui:settings:toggle', {});
 

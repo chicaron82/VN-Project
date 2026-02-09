@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';
+import { Logger } from '@utils/Logger';
 
 /**
  * StatusBarGestures - Touch gesture handling for status bar
@@ -78,7 +79,7 @@ export class StatusBarGestures {
             this.setupLogoLongPress(logoTrigger as HTMLElement);
         }
 
-        console.log('👆 StatusBar gestures initialized');
+        Logger.ui('👆 StatusBar gestures initialized');
     }
 
     /**
@@ -174,7 +175,7 @@ export class StatusBarGestures {
      * Handle swipe down on status bar - show quick actions
      */
     private handleSwipeDown(): void {
-        console.log('👇 Swipe down detected - showing quick actions');
+        Logger.ui('👇 Swipe down detected - showing quick actions');
 
         // Haptic feedback
         if (navigator.vibrate) navigator.vibrate(15);
@@ -203,9 +204,9 @@ export class StatusBarGestures {
                     const { initializeAppSwitcher } = await import('./UV7AppSwitcher');
                     const appSwitcher = await initializeAppSwitcher();
                     appSwitcher.toggle();
-                    console.log('🚀 Long-press → App Switcher opened');
+                    Logger.ui('🚀 Long-press → App Switcher opened');
                 } catch (error) {
-                    console.warn('⚠️ App Switcher failed:', error);
+                    Logger.warn('⚠️ App Switcher failed:', error);
                 }
             }, this.LONG_PRESS_DELAY);
         }, { passive: true });
@@ -416,7 +417,7 @@ export class StatusBarGestures {
                         const appSwitcher = await initializeAppSwitcher();
                         appSwitcher.toggle();
                     } catch (e) {
-                        console.warn('App Switcher failed:', e);
+                        Logger.warn('App Switcher failed:', e);
                     }
                 }
             },
@@ -443,7 +444,7 @@ export class StatusBarGestures {
      * Show quick actions menu (swipe down or long-press)
      */
     private showQuickActionsMenu(x: number, y: number): void {
-        console.log('⚡ Quick Actions triggered at', x, y);
+        Logger.ui('⚡ Quick Actions triggered at', x, y);
 
         // For now, toggle the notification shade
         // In future, could show a mini quick-actions panel
