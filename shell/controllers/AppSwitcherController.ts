@@ -10,6 +10,8 @@
  * - Event handler wiring
  */
 
+import { Logger } from '@utils/Logger';
+
 interface AppConfig {
     title: string;
     icon: string;
@@ -105,7 +107,7 @@ export class AppSwitcherController {
                 }).filter((app: RecentApp) => app.id !== 'unknown');
             }
         } catch (e) {
-            console.warn('[AppSwitcherController] Failed to load recent apps', e);
+            Logger.warn('[AppSwitcherController] Failed to load recent apps', e);
         }
         return [];
     }
@@ -117,7 +119,7 @@ export class AppSwitcherController {
         try {
             localStorage.setItem('uv7-recent-apps', JSON.stringify(this.recentApps));
         } catch (e) {
-            console.warn('[AppSwitcherController] Failed to save recent apps', e);
+            Logger.warn('[AppSwitcherController] Failed to save recent apps', e);
         }
     }
 
@@ -202,7 +204,7 @@ export class AppSwitcherController {
             this.elements.appCardsGrid = grid;
         }
         if (!grid) {
-            console.error('[AppSwitcherController] App Cards Grid not found in DOM');
+            Logger.error('[AppSwitcherController] App Cards Grid not found in DOM');
             return;
         }
 
