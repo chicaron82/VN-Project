@@ -25,6 +25,8 @@
     "baseUrl": ".",
     "paths": {
       "@core/*": ["./v2/core/*"],
+      "@types": ["./v2/types"],
+      "@types/*": ["./v2/types/*"],
       "@systems/*": ["./v2/systems/*"],
       "@controllers/*": ["./v2/controllers/*"],
       "@ui/*": ["./v2/ui/*"],

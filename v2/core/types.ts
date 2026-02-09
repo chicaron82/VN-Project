@@ -1,100 +1,38 @@
-import { GameConfig } from './GameConfig';
-
 /**
- * Shared Type Definitions
+ * ════════════════════════════════════════════════════════════════
+ * CORE TYPES - LEGACY RE-EXPORT
+ * Backward compatibility layer
+ * ════════════════════════════════════════════════════════════════
+ *
+ * This file re-exports types from the centralized v2/types directory
+ * for backward compatibility with existing imports.
+ *
+ * NEW CODE SHOULD IMPORT FROM:
+ * ```typescript
+ * import type { Scene, GameState } from '@types';
+ * ```
+ *
+ * This file maintains compatibility for:
+ * ```typescript
+ * import type { Scene } from '../core/types';
+ * ```
+ *
+ * 💚🔥💀
  */
 
-// Basic IDs
-export type SceneId = string;
-export type CharacterId = keyof typeof GameConfig.ASSETS.sprites | 'narrator';
-export type BackgroundId = keyof typeof GameConfig.ASSETS.backgrounds;
-
-// Dialog
-export interface DialogEntry {
-    speaker: CharacterId;
-    text: string;
-    emotion?: string; // e.g. 'happy', 'sad' - maps to sprite variants
-    // Add more as needed (e.g. voice file if we ever add audio, but we won't)
-}
-
-// Choices
-export interface Choice {
-    text: string;
-    next: SceneId | null; // null = end of route or special handling
-    condition?: string; // Logic string (e.g. flags.has('foo')) - parsed by engine
-    tetherCost?: number; // Cost to choose this option
-    flags?: FlagChange[];
-}
-
-// Scene
-export interface Scene {
-    id: SceneId;
-    type?: string; // e.g. 'dialog', 'narration'
-    background?: BackgroundId;
-    music?: never; // Explicitly forbid music (V1 design)
-
-    sprites?: SpriteConfig[];
-
-    // Dialog/Narration specific
-    character?: string;
-    text?: string;
-    internal?: string; // Internal monologue/direction
-
-    dialog?: DialogEntry[];
-    choices?: Choice[];
-
-    effects?: SceneEffect[];
-    tetherImpact?: number; // Modify tether on entry
-
-    next?: SceneId | ConditionalNext;
-    flags?: FlagChange[];
-}
-
-export interface SpriteConfig {
-    id: string; // Character identifier (flexible for JSON content)
-    variant?: string; // Full path to sprite image
-    position?: 'left' | 'center' | 'right';
-    classes?: string[]; // CSS classes for animations
-}
-
-export interface SceneEffect {
-    type: string; // e.g. 'glitch', 'shake'
-    duration?: number;
-    timing?: 'start' | 'end';
-}
-
-export interface ConditionalNext {
-    default: SceneId;
-    conditions: Array<{
-        if: string;
-        then: SceneId;
-    }>;
-}
-
-export interface FlagChange {
-    flag: string;
-    value: boolean;
-}
-
-// Flag Map
-export type FlagMap = Map<string, boolean>;
-
-// Game State
-export interface GameState {
-    currentScene: SceneId;
-    currentRoute: string | null;
-    tetherLevel: number;
-    flags: Record<string, boolean>; // Record easier for JSON serialization than Map
-    history: SceneId[];
-    playtime: number;
-}
-
-// Collectibles
-export interface NoteData {
-    id: string;
-    type: 'z' | 'cz' | 'zr' | 'gz' | 'iz' | 'pz' | 'special';
-    title: string;
-    content: string;
-    sender: string; // Derived helper
-    unlockCondition?: string; // Optional
-}
+// Re-export all game types from centralized location
+export type {
+    SceneId,
+    CharacterId,
+    BackgroundId,
+    DialogEntry,
+    Choice,
+    FlagChange,
+    ConditionalNext,
+    SpriteConfig,
+    SceneEffect,
+    Scene,
+    FlagMap,
+    GameState,
+    NoteData,
+} from '../types/game';
