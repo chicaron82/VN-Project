@@ -183,7 +183,7 @@ export class GameEngine {
      */
     registerScene(scene: Scene): void {
         if (this.scenes.has(scene.id)) {
-            console.warn(`Scene ${scene.id} already registered. Overwriting.`);
+            Logger.warn(`Scene ${scene.id} already registered. Overwriting.`);
         }
         this.scenes.set(scene.id, scene);
     }
@@ -206,7 +206,7 @@ export class GameEngine {
         const scene = this.scenes.get(sceneId);
 
         if (!scene) {
-            console.error(`❌ Scene not found: ${sceneId}`);
+            Logger.error(`❌ Scene not found: ${sceneId}`);
             // Fallback or error handling
             return;
         }
@@ -266,7 +266,7 @@ export class GameEngine {
      */
     advanceScene(): void {
         if (!this.currentScene) {
-            console.warn('[GameEngine] No current scene to advance from');
+            Logger.warn('[GameEngine] No current scene to advance from');
             return;
         }
 
