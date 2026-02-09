@@ -3,6 +3,8 @@
  * Simple event tracking and performance metrics
  */
 
+import { Logger } from '@utils/Logger';
+
 interface AnalyticsEvent {
     category: string;
     action: string;
@@ -45,7 +47,7 @@ const analytics: Analytics = {
         };
 
         this.events.push(event);
-        console.log('📊 Analytics:', event);
+        Logger.system('📊 Analytics:', event);
 
         // In production, send to analytics service
         // Example: Google Analytics, Plausible, etc.
@@ -171,9 +173,9 @@ function monitorPerformance(): void {
                 const loadTime = Math.round(navEntry.loadEventEnd || navEntry.duration);
                 const domReady = Math.round(navEntry.domContentLoadedEventEnd);
 
-                console.log('⚡ Performance Metrics:');
-                console.log(`  Load Time: ${loadTime}ms`);
-                console.log(`  DOM Ready: ${domReady}ms`);
+                Logger.perf('⚡ Performance Metrics:');
+                Logger.perf(`  Load Time: ${loadTime}ms`);
+                Logger.perf(`  DOM Ready: ${domReady}ms`);
 
                 analytics.track('Performance', 'Page Load', 'Load Time', loadTime);
 
@@ -199,7 +201,7 @@ function monitorPerformance(): void {
                 const lcpObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     const lastEntry = entries[entries.length - 1] as any;
-                    console.log(`📊 LCP: ${lastEntry.renderTime || lastEntry.loadTime}ms`);
+                    Logger.perf(`📊 LCP: ${lastEntry.renderTime || lastEntry.loadTime}ms`);
                     analytics.track('Performance', 'LCP', 'Largest Contentful Paint',
                         Math.round(lastEntry.renderTime || lastEntry.loadTime));
                 });
@@ -213,7 +215,7 @@ function monitorPerformance(): void {
                 const fidObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
                     entries.forEach((entry: any) => {
-                        console.log(`📊 FID: ${entry.processingStart - entry.startTime}ms`);
+                        Logger.perf(`📊 FID: ${entry.processingStart - entry.startTime}ms`);
                         analytics.track('Performance', 'FID', 'First Input Delay',
                             Math.round(entry.processingStart - entry.startTime));
                     });
@@ -232,12 +234,12 @@ function monitorPerformance(): void {
 
 function initErrorTracking(): void {
     window.addEventListener('error', (e) => {
-        console.error('❌ Error:', e.message, e.filename, e.lineno);
+        Logger.error('❌ Error:', e.message, e.filename, e.lineno);
         analytics.track('Error', 'JavaScript Error', e.message);
     });
 
     window.addEventListener('unhandledrejection', (e) => {
-        console.error('❌ Unhandled Promise Rejection:', e.reason);
+        Logger.error('❌ Unhandled Promise Rejection:', e.reason);
         analytics.track('Error', 'Promise Rejection', String(e.reason));
     });
 }
@@ -256,14 +258,14 @@ export function initAnalytics(): void {
 }
 
 function init(): void {
-    console.log('📊 Initializing analytics & monitoring...');
+    Logger.system('📊 Initializing analytics & monitoring...');
 
     initScrollTracking();
     initInteractionTracking();
     monitorPerformance();
     initErrorTracking();
 
-    console.log('✅ Analytics & monitoring active');
+    Logger.system('✅ Analytics & monitoring active');
 }
 
 // Export analytics for manual use

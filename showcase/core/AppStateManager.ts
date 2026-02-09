@@ -16,6 +16,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 interface AppTheme {
     primary: string;
     secondary: string;
@@ -122,7 +124,7 @@ export class AppStateManager {
             this.flushPendingState();
         });
 
-        console.log('📦 AppStateManager v2.0 initialized');
+        Logger.state('📦 AppStateManager v2.0 initialized');
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -136,7 +138,7 @@ export class AppStateManager {
         const { appId, state, preview } = detail;
 
         if (!appId) {
-            console.warn('[AppStateManager] Missing appId in state change');
+            Logger.warn('[AppStateManager] Missing appId in state change');
             return;
         }
 
@@ -259,13 +261,13 @@ export class AppStateManager {
 
             // Version check - migrate if needed
             if (parsed._version !== this.VERSION) {
-                console.log('[AppStateManager] Migrating state from version', parsed._version);
+                Logger.state('[AppStateManager] Migrating state from version', parsed._version);
                 return this.migrateState(parsed);
             }
 
             return parsed.apps || {};
         } catch (e) {
-            console.error('[AppStateManager] Failed to load states:', e);
+            Logger.error('[AppStateManager] Failed to load states:', e);
             return {};
         }
     }
@@ -285,7 +287,7 @@ export class AppStateManager {
                     (allStates[a].lastVisited || 0) - (allStates[b].lastVisited || 0)
                 );
                 delete allStates[sorted[0]];
-                console.log(`[AppStateManager] LRU evicted: ${sorted[0]}`);
+                Logger.state(`[AppStateManager] LRU evicted: ${sorted[0]}`);
             }
 
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify({
@@ -294,7 +296,7 @@ export class AppStateManager {
             }));
 
         } catch (e) {
-            console.error('[AppStateManager] Failed to save state:', e);
+            Logger.error('[AppStateManager] Failed to save state:', e);
         }
     }
 
@@ -318,7 +320,7 @@ export class AppStateManager {
             apps: allStates
         }));
 
-        console.log(`[AppStateManager] Cleared state for: ${appId}`);
+        Logger.state(`[AppStateManager] Cleared state for: ${appId}`);
     }
 
     /**
@@ -326,7 +328,7 @@ export class AppStateManager {
      */
     private migrateState(oldState: any): Record<string, AppState> {
         // V0 -> V1: Just restructure
-        console.log('[AppStateManager] Migration complete');
+        Logger.state('[AppStateManager] Migration complete');
         return oldState.apps || {};
     }
 
@@ -381,11 +383,11 @@ export class AppStateManager {
     restoreState(appId: string): Record<string, any> | null {
         const appState = this.getAppState(appId);
         if (!appState) {
-            console.log(`[AppStateManager] No saved state for: ${appId}`);
+            Logger.state(`[AppStateManager] No saved state for: ${appId}`);
             return null;
         }
 
-        console.log(`[AppStateManager] Restoring state for: ${appId}`, appState.state);
+        Logger.state(`[AppStateManager] Restoring state for: ${appId}`, appState.state);
         return appState.state;
     }
 

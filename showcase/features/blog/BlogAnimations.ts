@@ -15,6 +15,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogAnimations {
     private timeline: HTMLElement | null;
     private items: NodeListOf<HTMLElement> | null;
@@ -23,7 +25,7 @@ export class BlogAnimations {
         this.timeline = document.querySelector(timelineSelector);
         this.items = this.timeline?.querySelectorAll('.timeline-item') || null;
 
-        console.log('🎬 [BlogAnimations] Initialized', {
+        Logger.ui('🎬 [BlogAnimations] Initialized', {
             timeline: !!this.timeline,
             itemCount: this.items?.length || 0
         });
@@ -34,7 +36,7 @@ export class BlogAnimations {
      */
     refresh(): void {
         this.items = this.timeline?.querySelectorAll('.timeline-item') || null;
-        console.log('🔄 [BlogAnimations] Refreshed', {
+        Logger.ui('🔄 [BlogAnimations] Refreshed', {
             itemCount: this.items?.length || 0
         });
     }
@@ -81,7 +83,7 @@ export class BlogAnimations {
             });
         }, 450);
 
-        console.log('✨ [BlogAnimations] Filtered with stagger', {
+        Logger.ui('✨ [BlogAnimations] Filtered with stagger', {
             matching: matchingItems.length,
             total: allItems.length
         });
@@ -112,7 +114,7 @@ export class BlogAnimations {
         button.appendChild(ripple);
         setTimeout(() => ripple.remove(), 600);
 
-        console.log('💧 [BlogAnimations] Ripple triggered', {
+        Logger.ui('💧 [BlogAnimations] Ripple triggered', {
             button: button.className,
             position: { x, y },
             size,
@@ -128,7 +130,7 @@ export class BlogAnimations {
     scrollToEntry(entryId: string, offset: number = 100): void {
         const entry = document.getElementById(entryId);
         if (!entry) {
-            console.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
+            Logger.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
             return;
         }
 
@@ -145,7 +147,7 @@ export class BlogAnimations {
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('🎯 [BlogAnimations] Scrolled to entry:', entryId);
+        Logger.ui('🎯 [BlogAnimations] Scrolled to entry:', entryId);
     }
 
     /**
@@ -167,7 +169,7 @@ export class BlogAnimations {
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('🎯 [BlogAnimations] Scrolled to element');
+        Logger.ui('🎯 [BlogAnimations] Scrolled to element');
     }
 
     /**
@@ -192,7 +194,7 @@ export class BlogAnimations {
             }, delay + (index * duration));
         });
 
-        console.log('🎬 [BlogAnimations] Animated items', {
+        Logger.ui('🎬 [BlogAnimations] Animated items', {
             count: items.length,
             delay,
             duration
@@ -206,14 +208,14 @@ export class BlogAnimations {
     highlightEntry(entryId: string): void {
         const entry = document.getElementById(entryId);
         if (!entry) {
-            console.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
+            Logger.warn('⚠️ [BlogAnimations] Entry not found:', entryId);
             return;
         }
 
         entry.classList.add('highlight-pulse');
         setTimeout(() => entry.classList.remove('highlight-pulse'), 2000);
 
-        console.log('💫 [BlogAnimations] Highlighted entry:', entryId);
+        Logger.ui('💫 [BlogAnimations] Highlighted entry:', entryId);
     }
 
     /**
@@ -229,7 +231,7 @@ export class BlogAnimations {
             button.addEventListener('click', this.handleRippleClick.bind(this));
         });
 
-        console.log('💧 [BlogAnimations] Ripple enabled for buttons', {
+        Logger.ui('💧 [BlogAnimations] Ripple enabled for buttons', {
             count: buttons.length
         });
     }

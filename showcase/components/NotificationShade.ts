@@ -3,6 +3,8 @@
  * Handles rendering, swipe gestures, and interactions for the mobile shade.
  */
 
+import { Logger } from '@utils/Logger';
+
 interface ShadeElements {
     shade: HTMLElement | null;
     closeBtn: HTMLElement | null;
@@ -21,7 +23,7 @@ export class NotificationShade {
         this.touchEndY = 0;
         this.minSwipeDistance = 50;
 
-        console.log('🔔 NotificationShade: Starting initialization...');
+        Logger.ui('🔔 NotificationShade: Starting initialization...');
 
         // Removed cleanup logic - we now have a permanent #uv7-shade element
 
@@ -29,7 +31,7 @@ export class NotificationShade {
         this.initEvents();
         this.initSettings();
         this.initSwipeHandler();
-        console.log('✅ NotificationShade: Fully initialized');
+        Logger.ui('✅ NotificationShade: Fully initialized');
     }
 
     cacheElements(): void {
@@ -46,24 +48,24 @@ export class NotificationShade {
     // ===========================================
 
     private initSettings(): void {
-        console.log('🔧 [NotificationShade] Initializing settings...');
+        Logger.ui('🔧 [NotificationShade] Initializing settings...');
 
         // Wire up close button with debugging
         if (this.el.closeBtn) {
-            console.log('✅ [NotificationShade] Close button found:', this.el.closeBtn);
+            Logger.ui('✅ [NotificationShade] Close button found:', this.el.closeBtn);
             this.el.closeBtn.addEventListener('click', (e) => {
-                console.log('🔘 [NotificationShade] Close button clicked!');
+                Logger.ui('🔘 [NotificationShade] Close button clicked!');
                 e.stopPropagation(); // Prevent event bubbling
                 this.close();
             });
         } else {
-            console.error('❌ [NotificationShade] Close button NOT found! Selector: .shade-close-btn');
+            Logger.warn('❌ [NotificationShade] Close button NOT found! Selector: .shade-close-btn');
         }
 
         // Also close on backdrop click if shade is open
         if (this.el.backdrop) {
             this.el.backdrop.addEventListener('click', () => {
-                console.log('🔘 [NotificationShade] Backdrop clicked');
+                Logger.ui('🔘 [NotificationShade] Backdrop clicked');
                 if (this.el.shade?.style.display !== 'none') {
                     this.close();
                 }
@@ -89,9 +91,9 @@ export class NotificationShade {
                     manualRow: manualRow
                 });
 
-                console.log('🎨 [NotificationShade] Theme controls bound to shared ThemeManager');
+                Logger.ui('🎨 [NotificationShade] Theme controls bound to shared ThemeManager');
             }).catch(err => {
-                console.warn('[NotificationShade] Could not load ThemeManager, falling back:', err);
+                Logger.warn('[NotificationShade] Could not load ThemeManager, falling back:', err);
             });
         }
 
@@ -114,9 +116,9 @@ export class NotificationShade {
                     hoverToggle: echoHover
                 });
 
-                console.log('🔊 [NotificationShade] Echo controls bound to shared EchoSettingsManager');
+                Logger.ui('🔊 [NotificationShade] Echo controls bound to shared EchoSettingsManager');
             }).catch(err => {
-                console.warn('[NotificationShade] Could not load EchoSettingsManager:', err);
+                Logger.warn('[NotificationShade] Could not load EchoSettingsManager:', err);
             });
         }
     }
