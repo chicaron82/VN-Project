@@ -40,6 +40,7 @@
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 import { GameConfig } from '../core/GameConfig';
+import { Logger } from '@utils/Logger';
 import {
     DifficultyId,
     DifficultyProfile,
@@ -155,8 +156,8 @@ export class TetherSystem {
         // Sync initial state
         this.syncToStateManager();
 
-        console.log('⚡ TetherSystem initialized');
-        console.log(`   Difficulty: ${this.profile.name} | Cap: ${this.tetherCap}% | Decay: ${this.decayRateBase}`);
+        Logger.tether('⚡ TetherSystem initialized');
+        Logger.tether(`   Difficulty: ${this.profile.name} | Cap: ${this.tetherCap}% | Decay: ${this.decayRateBase}`);
     }
 
     // ========================================
@@ -196,8 +197,8 @@ export class TetherSystem {
         // Sync to state manager
         this.stateManager.set('settings.tetherDifficulty', difficultyId);
 
-        console.log(`⚙️ Tether difficulty set to ${this.profile.name}`);
-        console.log(`   Decay: ${this.decayRateBase} | Cap: ${this.tetherCap}% | Hold On: ${this.holdOnBoost}`);
+        Logger.tether(`⚙️ Tether difficulty set to ${this.profile.name}`);
+        Logger.tether(`   Decay: ${this.decayRateBase} | Cap: ${this.tetherCap}% | Hold On: ${this.holdOnBoost}`);
 
         // If INSANE mode, activate insane visuals
         if (difficultyId === 'insane') {
@@ -284,7 +285,7 @@ export class TetherSystem {
 
         // Log for debugging
         if (reason) {
-            console.log(`⚡ Tether: ${this.level.toFixed(1)}% (${reason})`);
+            Logger.tether(`⚡ Tether: ${this.level.toFixed(1)}% (${reason})`);
         }
 
         return this.level;
@@ -312,7 +313,7 @@ export class TetherSystem {
             this.updateDisplay();
             this.syncToStateManager();
 
-            console.log(`⚡ Tether set to ${targetLevel}%`);
+            Logger.tether(`⚡ Tether set to ${targetLevel}%`);
 
             // Check for death
             if (this.level <= 0) {
@@ -324,7 +325,7 @@ export class TetherSystem {
 
         // ANIMATED DROP - Player watches it drain
         // Used by INSANE mode cage scene
-        console.log(`💀 INSANE MODE: Animating tether drop from ${this.level}% to ${targetLevel}%`);
+        Logger.tether(`💀 INSANE MODE: Animating tether drop from ${this.level}% to ${targetLevel}%`);
 
         const startLevel = this.level;
         const difference = targetLevel - startLevel;
@@ -346,7 +347,7 @@ export class TetherSystem {
                 this.syncToStateManager();
                 clearInterval(animationInterval);
 
-                console.log(`💀 Tether drop complete: ${targetLevel}%`);
+                Logger.tether(`💀 Tether drop complete: ${targetLevel}%`);
 
                 // Check for death
                 if (this.level <= 0) {
@@ -374,7 +375,7 @@ export class TetherSystem {
 
         // Comfort mode has no decay
         if (this.profile.decayRates.base === 0) {
-            console.log('⚡ Tether decay skipped (Comfort mode)');
+            Logger.tether('⚡ Tether decay skipped (Comfort mode)');
             return;
         }
 
@@ -382,7 +383,7 @@ export class TetherSystem {
             this.applyDecay();
         }, this.DECAY_INTERVAL_MS);
 
-        console.log('⚡ Tether decay started');
+        Logger.tether('⚡ Tether decay started');
     }
 
     /**
@@ -392,7 +393,7 @@ export class TetherSystem {
         if (this.decayTimer) {
             clearInterval(this.decayTimer);
             this.decayTimer = null;
-            console.log('⚡ Tether decay stopped');
+            Logger.tether('⚡ Tether decay stopped');
         }
 
         // Clear cooldown timer if active
@@ -437,7 +438,7 @@ export class TetherSystem {
      */
     public freezeDecay(): void {
         this.decayFrozen = true;
-        console.log('💚 DEV: Tether decay frozen');
+        Logger.tether('💚 DEV: Tether decay frozen');
     }
 
     /**
@@ -445,7 +446,7 @@ export class TetherSystem {
      */
     public resumeDecay(): void {
         this.decayFrozen = false;
-        console.log('💚 DEV: Tether decay resumed');
+        Logger.tether('💚 DEV: Tether decay resumed');
     }
 
     /**
@@ -468,13 +469,13 @@ export class TetherSystem {
     public holdOn(): boolean {
         // Check if Hold On is disabled (INSANE mode)
         if (!this.profile.holdOn.enabled) {
-            console.log('💀 INSANE MODE: Hold On disabled');
+            Logger.tether('💀 INSANE MODE: Hold On disabled');
             return false;
         }
 
         // Check cooldown
         if (this.holdOnCooldown) {
-            console.log('⚡ Hold On on cooldown');
+            Logger.tether('⚡ Hold On on cooldown');
             return false;
         }
 
@@ -533,7 +534,7 @@ export class TetherSystem {
             this.holdOnCooldownTimer = null;
         }
 
-        console.log('⚡ Hold On ready');
+        Logger.tether('⚡ Hold On ready');
     }
 
     /**
@@ -636,7 +637,7 @@ export class TetherSystem {
     public updateEchoMood(echoId: 'echo1' | 'echo2' | 'despair', mood: string): void {
         if (this.echoes[echoId]) {
             this.echoes[echoId].mood = mood;
-            console.log(`⚡ Echo ${echoId} mood updated: ${mood}`);
+            Logger.tether(`⚡ Echo ${echoId} mood updated: ${mood}`);
         }
     }
 
@@ -656,7 +657,7 @@ export class TetherSystem {
      * Emits death event for route handler to process
      */
     private onTetherDeath(): void {
-        console.log('💀 Tether death triggered');
+        Logger.tether('💀 Tether death triggered');
 
         // Record death for echo memory
         this.eventBus.emit('tether:death', {});
@@ -694,7 +695,7 @@ export class TetherSystem {
         this.stopDecay();
         this.startDecay();
 
-        console.log('⚡ Tether system reset');
+        Logger.tether('⚡ Tether system reset');
     }
 
     /**
@@ -725,7 +726,7 @@ export class TetherSystem {
         // Update display
         this.updateDisplay();
 
-        console.log('⚡ Tether system state restored');
+        Logger.tether('⚡ Tether system state restored');
 
         // Check for death after restore
         if (this.level <= 0) {
@@ -749,6 +750,6 @@ export class TetherSystem {
             this.holdOnCooldownTimer = null;
         }
 
-        console.log('⚡ TetherSystem destroyed');
+        Logger.tether('⚡ TetherSystem destroyed');
     }
 }

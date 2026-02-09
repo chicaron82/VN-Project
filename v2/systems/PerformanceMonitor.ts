@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -51,7 +52,7 @@ export class PerformanceMonitor {
      */
     public static initialize(eventBus: EventBus): void {
         PerformanceMonitor.eventBus = eventBus;
-        console.log('⏱️ PerformanceMonitor initialized');
+        Logger.perf('⏱️ PerformanceMonitor initialized');
     }
 
     // ========================================
@@ -68,11 +69,11 @@ export class PerformanceMonitor {
             try {
                 performance.mark(label);
             } catch (error) {
-                console.warn(`⚠️ PerformanceMonitor: Failed to mark "${label}"`, error);
+                Logger.warn(`⚠️ PerformanceMonitor: Failed to mark "${label}"`, error);
             }
         } else {
             // Fallback: Performance API not available
-            console.warn('⚠️ PerformanceMonitor: Performance API not available');
+            Logger.warn('⚠️ PerformanceMonitor: Performance API not available');
         }
     }
 
@@ -90,7 +91,7 @@ export class PerformanceMonitor {
      */
     public static measure(name: string, startMark: string, endMark: string): number | null {
         if (typeof performance === 'undefined' || !performance.measure) {
-            console.warn('⚠️ PerformanceMonitor: Performance API not available');
+            Logger.warn('⚠️ PerformanceMonitor: Performance API not available');
             return null;
         }
 
@@ -100,22 +101,22 @@ export class PerformanceMonitor {
             // Retrieve the measurement
             const measures = performance.getEntriesByName(name);
             if (measures.length === 0) {
-                console.warn(`⚠️ PerformanceMonitor: No measure found for "${name}"`);
+                Logger.warn(`⚠️ PerformanceMonitor: No measure found for "${name}"`);
                 return null;
             }
 
             const measure = measures[measures.length - 1];
             if (!measure) {
-                console.warn(`⚠️ PerformanceMonitor: Measure is undefined for "${name}"`);
+                Logger.warn(`⚠️ PerformanceMonitor: Measure is undefined for "${name}"`);
                 return null;
             }
 
             const duration = measure.duration;
-            console.log(`⏱️ ${name}: ${duration.toFixed(2)}ms`);
+            Logger.perf(`⏱️ ${name}: ${duration.toFixed(2)}ms`);
 
             return duration;
         } catch (error) {
-            console.warn(`⚠️ PerformanceMonitor: Failed to measure "${name}"`, error);
+            Logger.warn(`⚠️ PerformanceMonitor: Failed to measure "${name}"`, error);
             return null;
         }
     }
@@ -133,12 +134,12 @@ export class PerformanceMonitor {
             try {
                 performance.clearMarks();
                 performance.clearMeasures();
-                console.log('🧹 PerformanceMonitor: Cleared all marks and measures');
+                Logger.perf('🧹 PerformanceMonitor: Cleared all marks and measures');
             } catch (error) {
-                console.warn('⚠️ PerformanceMonitor: Failed to clear entries', error);
+                Logger.warn('⚠️ PerformanceMonitor: Failed to clear entries', error);
             }
         } else {
-            console.warn('⚠️ PerformanceMonitor: Performance API not available');
+            Logger.warn('⚠️ PerformanceMonitor: Performance API not available');
         }
     }
 
@@ -153,7 +154,7 @@ export class PerformanceMonitor {
      */
     public static getEntries(): PerformanceMonitorEntry[] {
         if (typeof performance === 'undefined' || !performance.getEntries) {
-            console.warn('⚠️ PerformanceMonitor: Performance API not available');
+            Logger.warn('⚠️ PerformanceMonitor: Performance API not available');
             return [];
         }
 
@@ -166,7 +167,7 @@ export class PerformanceMonitor {
                 duration: entry.duration,
             }));
         } catch (error) {
-            console.warn('⚠️ PerformanceMonitor: Failed to get entries', error);
+            Logger.warn('⚠️ PerformanceMonitor: Failed to get entries', error);
             return [];
         }
     }
@@ -181,31 +182,31 @@ export class PerformanceMonitor {
      */
     public static logSummary(): void {
         if (typeof performance === 'undefined' || !performance.getEntries) {
-            console.warn('⚠️ PerformanceMonitor: Performance API not available');
+            Logger.warn('⚠️ PerformanceMonitor: Performance API not available');
             return;
         }
 
         try {
             const entries = performance.getEntries();
 
-            console.log('⏱️ ═══════════════════════════════════════');
-            console.log('⏱️ PERFORMANCE SUMMARY');
-            console.log('⏱️ ═══════════════════════════════════════');
+            Logger.perf('⏱️ ═══════════════════════════════════════');
+            Logger.perf('⏱️ PERFORMANCE SUMMARY');
+            Logger.perf('⏱️ ═══════════════════════════════════════');
 
             // Filter and display measures only
             const measures = entries.filter((entry) => entry.entryType === 'measure');
 
             if (measures.length === 0) {
-                console.log('⏱️ No measurements recorded');
+                Logger.perf('⏱️ No measurements recorded');
             } else {
                 measures.forEach((entry) => {
-                    console.log(`  ${entry.name}: ${entry.duration.toFixed(2)}ms`);
+                    Logger.perf(`  ${entry.name}: ${entry.duration.toFixed(2)}ms`);
                 });
             }
 
-            console.log('⏱️ ═══════════════════════════════════════');
+            Logger.perf('⏱️ ═══════════════════════════════════════');
         } catch (error) {
-            console.warn('⚠️ PerformanceMonitor: Failed to log summary', error);
+            Logger.warn('⚠️ PerformanceMonitor: Failed to log summary', error);
         }
     }
 }
