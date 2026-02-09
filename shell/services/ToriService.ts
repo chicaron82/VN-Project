@@ -8,6 +8,7 @@
  */
 
 import type { UV7Shell } from '../UV7Shell.js';
+import { Logger } from '@utils/Logger';
 
 interface ToriState {
     love: number;
@@ -73,7 +74,7 @@ export class ToriService {
      * // Status bar updates automatically via events
      */
     init(): void {
-        console.log('[ToriService] Initializing ghost engine...');
+        Logger.system('[ToriService] Initializing ghost engine...');
 
         // Load settings
         this.loadSettings();
@@ -81,7 +82,7 @@ export class ToriService {
         // Listen for settings changes
         window.addEventListener('uv7:tori-settings-change', (e: Event) => {
             const customEvent = e as CustomEvent<ToriSettings>;
-            console.log('[ToriService] Settings updated:', customEvent.detail);
+            Logger.system('[ToriService] Settings updated:', customEvent.detail);
             this.settings = customEvent.detail;
         });
 
@@ -103,7 +104,7 @@ export class ToriService {
         // Start loop (checks every minute)
         setInterval(() => this.tick(), 60000);
 
-        console.log('[ToriService] Background service running');
+        Logger.system('[ToriService] Background service running');
     }
 
     /**
@@ -123,7 +124,7 @@ export class ToriService {
                 detail: projected
             }));
         } catch (e) {
-            console.warn('[ToriService] Failed to parse state on change', e);
+            Logger.warn('[ToriService] Failed to parse state on change', e);
         }
     }
 
@@ -132,7 +133,7 @@ export class ToriService {
             const stored = localStorage.getItem('uv7-tori-settings');
             if (stored) this.settings = JSON.parse(stored);
         } catch (e) {
-            console.warn('[ToriService] Failed to load settings', e);
+            Logger.warn('[ToriService] Failed to load settings', e);
         }
     }
 
@@ -182,7 +183,7 @@ export class ToriService {
             // when it next launches. We just peek to see if we SHOULD warn the user.
 
         } catch (e) {
-            console.warn('[ToriService] Simulation error', e);
+            Logger.warn('[ToriService] Simulation error', e);
         }
     }
 
@@ -258,7 +259,7 @@ export class ToriService {
     }
 
     private sendNotification(message: string, icon: string): void {
-        console.log(`[ToriService] Notification: ${message}`);
+        Logger.system(`[ToriService] Notification: ${message}`);
 
         // Use Shell Toast via public API
         this.shell.showToast(`${icon} ${message}`);

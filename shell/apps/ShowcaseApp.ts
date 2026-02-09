@@ -12,6 +12,7 @@ import { BaseApp, StatusBarConfig, SidebarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import { Logger } from '@utils/Logger';
 
 interface ExtendedStatusBarConfig extends StatusBarConfig {
     showBreadcrumb?: boolean;
@@ -76,7 +77,7 @@ export class ShowcaseApp extends BaseApp {
                 }
                 window.showcaseAnimations.push(animInterval);
 
-                console.log('[ShowcaseApp] Sidebar initialized with shared template');
+                Logger.ui('[ShowcaseApp] Sidebar initialized with shared template');
             }
         };
     }
@@ -100,7 +101,7 @@ export class ShowcaseApp extends BaseApp {
         // SYSTEM API TEST - Demonstrating Belle's controlled API pattern
         // ═══════════════════════════════════════════════════════════════
         if (this.api) {
-            console.log('🎯 [ShowcaseApp] Testing SystemAPI...');
+            Logger.system('🎯 [ShowcaseApp] Testing SystemAPI...');
 
             // Test toast notifications
             setTimeout(() => this.api?.toast.success('Showcase loaded!'), 500);
@@ -114,17 +115,17 @@ export class ShowcaseApp extends BaseApp {
             // PHASE 2: Register action handlers for status bar actions
             // ═══════════════════════════════════════════════════════════════
             this.api.onAction('showcase:theme_toggle', () => {
-                console.log('🎨 [ShowcaseApp] Theme toggle action triggered!');
+                Logger.ui('🎨 [ShowcaseApp] Theme toggle action triggered!');
                 this.api?.toast.show('Theme toggle coming soon!', { icon: '🎨' });
             });
 
             this.api.onAction('showcase:share', () => {
-                console.log('📤 [ShowcaseApp] Share action triggered!');
+                Logger.ui('📤 [ShowcaseApp] Share action triggered!');
                 this.api?.toast.success('Showcase link copied to clipboard!');
             });
 
             this.api.onAction('showcase:fullscreen', () => {
-                console.log('⛶ [ShowcaseApp] Fullscreen action triggered!');
+                Logger.ui('⛶ [ShowcaseApp] Fullscreen action triggered!');
                 this.api?.chrome.cinematic.set(true);
                 setTimeout(() => this.api?.chrome.cinematic.set(false), 3000);
                 this.api?.toast.show('Cinematic mode demo (3s)', { icon: '⛶' });
@@ -136,7 +137,7 @@ export class ShowcaseApp extends BaseApp {
         const iframe = container.querySelector('#showcase-iframe') as HTMLIFrameElement;
         if (iframe) {
             iframe.addEventListener('load', () => {
-                console.log('[ShowcaseApp] Iframe loaded, sending initial theme');
+                Logger.system('[ShowcaseApp] Iframe loaded, sending initial theme');
                 const isAuto = localStorage.getItem('uv7-theme-auto') !== 'false';
                 const theme = localStorage.getItem('uv7-theme') || 'dark';
 
@@ -148,7 +149,7 @@ export class ShowcaseApp extends BaseApp {
             });
         }
 
-        console.log('[ShowcaseApp] Mounted showcase in iframe');
+        Logger.system('[ShowcaseApp] Mounted showcase in iframe');
     }
 
     /**

@@ -7,6 +7,8 @@
  * "They're watching. They're always watching." - The Crew
  */
 
+import { Logger } from '@utils/Logger';
+
 interface EchoSettings {
     enabled: boolean;
     frequency: number; // seconds between messages (5-20)
@@ -91,7 +93,7 @@ export class UV7EchoSystem {
         this.detailElement = document.getElementById('uv7-detail');
 
         if (!this.bannerElement) {
-            console.warn('[EchoSystem] System banner not found');
+            Logger.warn('[EchoSystem] System banner not found');
             return;
         }
 
@@ -114,12 +116,12 @@ export class UV7EchoSystem {
             }
         });
 
-        console.log('✅ UV7 Echo System initialized (Managed by Shell Settings)');
+        Logger.system('✅ UV7 Echo System initialized (Managed by Shell Settings)');
     }
 
     private reloadSettings(): void {
         this.settings = this.loadSettings();
-        console.log('[EchoSystem] Settings reloaded', this.settings);
+        Logger.system('[EchoSystem] Settings reloaded', this.settings);
 
         if (this.settings.enabled) {
             if (!this.interval) this.start();
@@ -187,7 +189,7 @@ export class UV7EchoSystem {
         if (sectionDisplay) sectionDisplay.textContent = section;
         if (msgCount) msgCount.textContent = String(this.getSectionMessages().length);
 
-        console.log(`[EchoSystem] Section changed: ${section}`);
+        Logger.system(`[EchoSystem] Section changed: ${section}`);
     }
 
     private getSectionMessages(): EchoMessage[] {
@@ -230,7 +232,7 @@ export class UV7EchoSystem {
             this.showNextMessage();
         }, this.settings.frequency * 1000);
 
-        console.log(`[EchoSystem] Started (${this.settings.frequency}s interval)`);
+        Logger.system(`[EchoSystem] Started (${this.settings.frequency}s interval)`);
     }
 
     public stop(): void {
@@ -238,7 +240,7 @@ export class UV7EchoSystem {
             clearInterval(this.interval);
             this.interval = null;
         }
-        console.log('[EchoSystem] Stopped');
+        Logger.system('[EchoSystem] Stopped');
     }
 
     private restart(): void {
@@ -286,7 +288,7 @@ export class UV7EchoSystem {
             try {
                 return JSON.parse(stored);
             } catch (e) {
-                console.warn('[EchoSystem] Failed to parse stored settings');
+                Logger.warn('[EchoSystem] Failed to parse stored settings');
             }
         }
 
