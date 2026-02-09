@@ -3,6 +3,8 @@
  * Share functionality, dark mode, timeline search
  */
 
+import { Logger } from '@utils/Logger';
+
 declare global {
     interface Window {
         shareTwitter?: () => void;
@@ -43,12 +45,12 @@ function initShareButtons(): void {
         navigator.clipboard.writeText(url).then(() => {
             showToast('Link copied to clipboard! 🔗');
         }).catch(err => {
-            console.error('Failed to copy:', err);
+            Logger.error('Failed to copy:', err);
             showToast('Failed to copy link');
         });
     };
 
-    console.log('🔗 Share functionality initialized');
+    Logger.ui('🔗 Share functionality initialized');
 }
 
 // ==========================================
@@ -119,7 +121,7 @@ function addGitHubLinks(): void {
         }
     });
 
-    console.log('📂 GitHub source links added');
+    Logger.ui('📂 GitHub source links added');
 }
 
 // ==========================================
@@ -136,14 +138,14 @@ export function initContentFeatures(): void {
 }
 
 function init(): void {
-    console.log('🎯 Initializing content features...');
+    Logger.ui('🎯 Initializing content features...');
 
     initShareButtons();
     // Dark mode -> NotificationShade
     // Search -> TimelineRenderer
     addGitHubLinks();
 
-    console.log('✨ Content features ready!');
+    Logger.ui('✨ Content features ready!');
 }
 
 // Export for manual use

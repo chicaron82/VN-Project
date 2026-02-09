@@ -17,6 +17,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export interface DeepLinkParams {
     entryId?: string;      // From hash: #phase-13i
     filter?: string;       // From query: ?filter=game
@@ -47,7 +49,7 @@ export class BlogDeepLink {
             this.parseURL();
         });
 
-        console.log('🔗 [BlogDeepLink] Initialized');
+        Logger.ui('🔗 [BlogDeepLink] Initialized');
     }
 
     /**
@@ -57,7 +59,7 @@ export class BlogDeepLink {
         const params = this.getParams();
 
         if (Object.keys(params).length > 0) {
-            console.log('🔗 [BlogDeepLink] Navigating to:', params);
+            Logger.ui('🔗 [BlogDeepLink] Navigating to:', params);
 
             if (this.onNavigate) {
                 this.onNavigate(params);
@@ -122,7 +124,7 @@ export class BlogDeepLink {
         // Update URL without reload
         window.history.pushState({}, '', url.toString());
 
-        console.log('🔗 [BlogDeepLink] URL updated:', url.toString());
+        Logger.ui('🔗 [BlogDeepLink] URL updated:', url.toString());
     }
 
     /**
@@ -212,10 +214,10 @@ export class BlogDeepLink {
     public async copyToClipboard(link: string): Promise<boolean> {
         try {
             await navigator.clipboard.writeText(link);
-            console.log('🔗 [BlogDeepLink] Link copied:', link);
+            Logger.ui('🔗 [BlogDeepLink] Link copied:', link);
             return true;
         } catch (err) {
-            console.error('🔗 [BlogDeepLink] Failed to copy link:', err);
+            Logger.error('🔗 [BlogDeepLink] Failed to copy link:', err);
             return false;
         }
     }

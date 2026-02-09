@@ -18,6 +18,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogPlayback {
     private isPlaying: boolean;
     private currentIndex: number;
@@ -50,7 +52,7 @@ export class BlogPlayback {
         this.createControls();
         this.attachKeyboardShortcuts();
         this.attachHoverPause();
-        console.log('▶️ [BlogPlayback] Initialized with', this.entries.length, 'entries');
+        Logger.ui('▶️ [BlogPlayback] Initialized with', this.entries.length, 'entries');
     }
 
     /**
@@ -221,7 +223,7 @@ export class BlogPlayback {
             }
         }, this.baseInterval / this.playbackSpeed);
 
-        console.log('▶️ [BlogPlayback] Playing at', this.playbackSpeed + 'x speed');
+        Logger.ui('▶️ [BlogPlayback] Playing at', this.playbackSpeed + 'x speed');
     }
 
     /**
@@ -237,7 +239,7 @@ export class BlogPlayback {
             clearInterval(this.playbackInterval);
         }
 
-        console.log('⏸ [BlogPlayback] Paused');
+        Logger.ui('⏸ [BlogPlayback] Paused');
     }
 
     /**
@@ -296,7 +298,7 @@ export class BlogPlayback {
             this.play();
         }
 
-        console.log('⚡ [BlogPlayback] Speed set to', speed + 'x');
+        Logger.ui('⚡ [BlogPlayback] Speed set to', speed + 'x');
     }
 
     /**
@@ -341,6 +343,6 @@ export class BlogPlayback {
             this.controls.remove();
             this.controls = null;
         }
-        console.log('▶️ [BlogPlayback] Destroyed');
+        Logger.ui('▶️ [BlogPlayback] Destroyed');
     }
 }

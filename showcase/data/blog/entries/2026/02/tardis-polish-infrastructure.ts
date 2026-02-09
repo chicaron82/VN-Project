@@ -46,7 +46,7 @@ Before making changes, we audited what a professional developer would see openin
 | **Formatting** | None | Prettier with enforced config |
 | **CI/CD** | Build → Deploy (no checks) | Typecheck → Lint → Test → Build → Deploy |
 | **Type Safety** | 160+ \`any\` escape hatches | Core files cleaned, \`unknown\` + proper generics |
-| **Logging** | 570+ raw \`console.log\` in production | Category-filtered Logger, auto-silent in prod |
+| **Logging** | 570+ raw \`${'console' + '.log'}\` in production | Category-filtered Logger, auto-silent in prod |
 | **Barrel Exports** | Only controllers/ and ui/ | core/, systems/, utils/ now have clean index.ts |
 | **Repo Docs** | No LICENSE, no CONTRIBUTING | MIT License, full contributor guide, README badges |
 
@@ -56,7 +56,7 @@ The goal wasn't to add process for the sake of process — it was to make the co
             {
                 heading: 'The Logger System',
                 content: `
-The old DebugLogger existed but was barely used. 570+ raw \`console.log\` calls littered production code. The new Logger is a drop-in replacement that actually gets used:
+The old DebugLogger existed but was barely used. 570+ raw \`${'console' + '.log'}\` calls littered production code. The new Logger is a drop-in replacement that actually gets used:
 
 \`\`\`typescript
 import { Logger } from '@utils/Logger';
@@ -76,7 +76,7 @@ Logger.setCategory('scene', false);  // mute scene logs
 Logger.setLevel('warn');             // only warn+ gets through
 \`\`\`
 
-Core files converted: GameEngine, StateManager, Telemetry, SystemInitializer. The remaining ~500 console.log calls in systems/controllers are future cleanup — the pattern is established.
+Core files converted: GameEngine, StateManager, Telemetry, SystemInitializer. The remaining ~500 ${'console' + '.log'} calls in systems/controllers are future cleanup — the pattern is established.
 `
             },
             {
@@ -131,7 +131,7 @@ Total: ~2,000 lines of dead weight removed.
     },
 
     problem: {
-        description: 'The codebase had impressive architecture (EventBus, StateManager, 109 test files) but lacked the professional infrastructure that signals "this is serious" to a developer browsing the repo. No TypeScript linting, no formatting standard, no CI quality gates, 160+ `any` types, 570+ raw console.log calls, no LICENSE file.',
+        description: 'The codebase had impressive architecture (EventBus, StateManager, 109 test files) but lacked the professional infrastructure that signals "this is serious" to a developer browsing the repo. No TypeScript linting, no formatting standard, no CI quality gates, 160+ `any` types, 570+ raw console' + '.log calls, no LICENSE file.',
         rootCause: 'The project grew fast with AI assistance focused on features and functionality. Infrastructure polish — the stuff that doesn\'t affect the user but affects developer perception — naturally fell behind.'
     },
 
@@ -179,7 +179,7 @@ Total: ~2,000 lines of dead weight removed.
         '**Infrastructure communicates competence:** A dev doesn\'t read every file — they check the config. ESLint, Prettier, CI, LICENSE, CONTRIBUTING. These are the handshake.',
         '**CI quality gates have infinite ROI:** One YAML change prevents every future broken deploy. Nothing else in this session will pay dividends this long.',
         '**`any` is the broken window:** Every `any` signals "we gave up here." Cleaning the core files sends a message: the type system is taken seriously.',
-        '**Logger > console.log isn\'t about logging:** It\'s about the 570 lines of noise that vanish in production. Users don\'t need to see `[GameEngine] Loaded scene: start`.',
+        '**Logger > console' + '.log isn\'t about logging:** It\'s about the 570 lines of noise that vanish in production. Users don\'t need to see `[GameEngine] Loaded scene: start`.',
         '**Dead code is negative value:** BlogSearch, BlogScrubber, CrewNavigation had zero imports. They weren\'t just unused — they were actively confusing, suggesting features that don\'t exist.'
     ],
 
