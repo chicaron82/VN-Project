@@ -153,9 +153,6 @@ export class BlogHeatmap {
         const daysDiff = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
         const weeksNeeded = Math.ceil(daysDiff / 7) + 1;
 
-        // Create grid (7 rows for days of week, columns for weeks)
-        const gridHTML: string[] = [];
-
         for (let week = 0; week < weeksNeeded; week++) {
             const weekColumn = document.createElement('div');
             weekColumn.className = 'heatmap-week';
