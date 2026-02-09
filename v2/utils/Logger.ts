@@ -51,7 +51,7 @@ const LOG_LEVELS: Record<LogLevel, number> = {
 // ── Default configuration ─────────────────────────────────────
 
 const config: LoggerConfig = {
-  enabled: import.meta.env?.DEV ?? true,
+  enabled: (import.meta.env?.DEV ?? true) && import.meta.env?.MODE !== 'test',
   level: 'debug',
   categories: {
     engine: true,
