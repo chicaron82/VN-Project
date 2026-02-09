@@ -4,6 +4,7 @@
 // Velocity-based with rubber-band edges
 // ========================================
 
+import { Logger } from '@utils/Logger';
 import type { TabController } from './TabController';
 
 /**
@@ -36,7 +37,7 @@ export class SwipeController {
         this.container = container;
 
         this.setupListeners();
-        console.log('✅ SwipeController initialized');
+        Logger.ui('✅ SwipeController initialized');
     }
 
     private setupListeners(): void {
@@ -144,11 +145,11 @@ export class SwipeController {
             if (deltaX > 0) {
                 // Swipe right → Previous tab
                 this.tabController.previousTab();
-                console.log('👈 Swipe right - previous tab');
+                Logger.ui('👈 Swipe right - previous tab');
             } else {
                 // Swipe left → Next tab
                 this.tabController.nextTab();
-                console.log('👉 Swipe left - next tab');
+                Logger.ui('👉 Swipe left - next tab');
             }
         } else {
             // Snap back to current tab
