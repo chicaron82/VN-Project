@@ -11,6 +11,7 @@
 import { BaseApp, StatusBarConfig } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import { Logger } from '@utils/Logger';
 
 export class V2App extends BaseApp {
     private messageHandler: ((event: MessageEvent) => void) | null = null;
@@ -57,13 +58,13 @@ export class V2App extends BaseApp {
             if (event.origin !== window.location.origin) return;
 
             if (event.data?.type === 'v2:navigate:shell') {
-                console.log('[V2App] Received exit-to-shell request from V2');
+                Logger.system('[V2App] Received exit-to-shell request from V2');
                 window.location.hash = '#/showcase';
             }
         };
         window.addEventListener('message', this.messageHandler);
 
-        console.log('[V2App] Mounted V2 game in iframe (V2 manages its own chrome)');
+        Logger.system('[V2App] Mounted V2 game in iframe (V2 manages its own chrome)');
     }
 
     async unmount(): Promise<void> {
