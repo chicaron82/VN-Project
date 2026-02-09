@@ -16,6 +16,8 @@
  * "Built with love. 💚🔥💀"
  */
 
+import { Logger } from '@utils/Logger';
+
 class AnimatedStats {
     private stats: NodeListOf<Element>;
     private bars: NodeListOf<Element>;
@@ -99,5 +101,5 @@ class AnimatedStats {
  */
 export function initAnimatedStats(): void {
     new AnimatedStats();
-    console.log('✅ AnimatedStats initialized');
+    Logger.effect('✅ AnimatedStats initialized');
 }

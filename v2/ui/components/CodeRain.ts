@@ -8,6 +8,8 @@
  * Logic transcribed faithfully from V1 effects-controller.js
  */
 
+import { Logger } from '@utils/Logger';
+
 export class CodeRain {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -45,7 +47,7 @@ export class CodeRain {
      */
     public start(color: string = '#00ffff'): void {
         this.resize(); // Ensure correct size before starting
-        console.log(`🌧️ Code Rain starting. Canvas size: ${this.canvas.width}x${this.canvas.height}`);
+        Logger.effect(`🌧️ Code Rain starting. Canvas size: ${this.canvas.width}x${this.canvas.height}`);
         this.stop(); // Clear any existing loop
 
         // V1 Logic: Faster on portrait to fill screen
@@ -84,7 +86,7 @@ export class CodeRain {
         // V1 Interval: 33ms (~30fps)
         this.intervalId = window.setInterval(draw, 33);
 
-        console.log('🌧️ Code Rain started');
+        Logger.effect('🌧️ Code Rain started');
     }
 
     public stop(): void {

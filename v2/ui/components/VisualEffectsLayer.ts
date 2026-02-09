@@ -1,5 +1,6 @@
 import { EventBus } from '@core/EventBus';
 import '@ui/styles/animations.css';
+import { Logger } from '@utils/Logger';
 import { CodeRain } from './CodeRain';
 
 export class VisualEffectsLayer {
@@ -62,7 +63,7 @@ export class VisualEffectsLayer {
 
     private triggerCodeRain(duration: number, color?: string) {
         // Faithful V1 Port: Matrix code rain
-        console.log(`🌧️ Code Rain triggered for ${duration}ms`);
+        Logger.effect(`🌧️ Code Rain triggered for ${duration}ms`);
 
         const container = document.createElement('div');
         container.className = 'effect-code-rain';
@@ -92,7 +93,7 @@ export class VisualEffectsLayer {
             rainColor = computedStyle.getPropertyValue('--theme-primary').trim() || '#00ffff';
         }
 
-        console.log(`🌧️ Code Rain using color: ${rainColor}`);
+    Logger.effect(`🌧️ Code Rain using color: ${rainColor}`);
 
         // Initialize rain
         const rain = new CodeRain(container);

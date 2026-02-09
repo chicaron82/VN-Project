@@ -17,6 +17,8 @@
  * "Built with love. 💚🔥💀"
  */
 
+import { Logger } from '@utils/Logger';
+
 export interface TiltEffectOptions {
     /**
      * Container selector (where mouse move is tracked)
@@ -97,7 +99,7 @@ export class TiltEffect {
         if (typeof targetOrSelector === 'string') {
             this.target = document.querySelector(targetOrSelector);
             if (!this.target) {
-                console.warn(`[TiltEffect] Could not find target: ${targetOrSelector}`);
+                Logger.warn(`[TiltEffect] Could not find target: ${targetOrSelector}`);
                 this.container = null; // Ensure initialization
                 return;
             }
@@ -119,7 +121,7 @@ export class TiltEffect {
         }
 
         if (!this.container) {
-            console.warn(`[TiltEffect] Could not find container`);
+            Logger.warn('[TiltEffect] Could not find container');
             return;
         }
 
@@ -136,7 +138,7 @@ export class TiltEffect {
         this.container.addEventListener('mousemove', (e: MouseEvent) => this.handleMouseMove(e));
         this.container.addEventListener('mouseleave', () => this.handleMouseLeave());
 
-        console.log(`✅ TiltEffect initialized for ${this.target.className || 'element'}`);
+        Logger.effect(`✅ TiltEffect initialized for ${this.target.className || 'element'}`);
     }
 
     private handleMouseMove(e: MouseEvent): void {
@@ -205,7 +207,7 @@ export class TiltEffect {
 export function initTilt(targetSelector: string, options?: TiltEffectOptions): TiltEffect | null {
     const element = document.querySelector(targetSelector);
     if (!element) {
-        console.warn(`[initTilt] Element not found: ${targetSelector}`);
+        Logger.warn(`[initTilt] Element not found: ${targetSelector}`);
         return null;
     }
 
