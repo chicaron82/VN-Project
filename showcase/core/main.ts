@@ -70,12 +70,13 @@ import { initAnalytics } from '../utils/analytics';
 import { initContentFeatures } from '../utils/content-features';
 import { initUXEnhancements } from '../../v2/ui/utils/UXEnhancements';
 import { injectFooters } from '../components/FooterInjector';
+import { Logger } from '@utils/Logger';
 
-console.log('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
+Logger.system('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
 // Create UV7 System (same factory pattern as ShowcaseBridge)
 function createUV7System(context: string = 'showcase') {
-    console.log(`🏗️ Creating UV7 System for ${context}`);
+    Logger.system(`🏗️ Creating UV7 System for ${context}`);
 
     const eventBus = new EventBus();
     const statusBar = new StatusBar(eventBus, undefined, {});
@@ -100,17 +101,17 @@ window.UV7System = {
 
 // Initialize showcase components on DOM ready
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Initializing showcase components...');
+    Logger.system('🚀 Initializing showcase components...');
 
     // Detect if we're running inside the unified shell (iframe)
     const isInShell = window.self !== window.top;
-    console.log(`[Showcase] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
+    Logger.system(`[Showcase] Running in ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 
     // Add class to body for shell-specific styling
     if (isInShell) {
         document.body.classList.add('in-shell-mode');
-        console.log('⏭️ Skipping UV7 System (shell provides chrome)');
-        console.log('⏭️ Skipping Sidebar/NotificationShade (shell provides context-aware sidebar)');
+        Logger.system('⏭️ Skipping UV7 System (shell provides chrome)');
+        Logger.system('⏭️ Skipping Sidebar/NotificationShade (shell provides context-aware sidebar)');
 
         // Hide chrome elements since shell provides them
         const chromeElements = [
@@ -125,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const el = document.querySelector(selector);
             if (el) {
                 (el as HTMLElement).style.display = 'none';
-                console.log(`[Showcase] Hiding ${selector} (shell provides it)`);
+                Logger.system(`[Showcase] Hiding ${selector} (shell provides it)`);
             }
         });
     } else {
@@ -149,7 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         await uv7System.init();
-        console.log('✅ UV7System initialized in standalone mode with showcase sidebar');
+        Logger.system('✅ UV7System initialized in standalone mode with showcase sidebar');
 
         // Create legacy UV7 System for compatibility
         const uv7SystemLegacy = createUV7System('showcase');
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             instance: uv7SystemLegacy.statusBar // TabController expects this
         };
         uv7SystemLegacy.statusBar.show();
-        console.log('✅ Legacy UV7 System initialized for compatibility');
+        Logger.system('✅ Legacy UV7 System initialized for compatibility');
     }
 
 
@@ -180,15 +181,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     new EvolutionSection();
     new ExperimentSection();
     new WhoSection();
-    console.log('✅ Section renderers initialized');
+    Logger.system('✅ Section renderers initialized');
 
     // Initialize Home Section interactions (demon lord link, landing cards, crew reactions)
     new HomeInteractionController(tabController);
-    console.log('✅ Home section interactions initialized');
+    Logger.system('✅ Home section interactions initialized');
 
     // Initialize System Banner (functional app status indicators)
     new SystemBannerController(tabController);
-    console.log('✅ System banner controller initialized');
+    Logger.system('✅ System banner controller initialized');
 
     // Inject footers AFTER sections render (DRY optimization)
     injectFooters();
@@ -212,15 +213,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     new BlogMeta();
     new BlogHeatmap('.timeline-phases');
     new BlogExport('.timeline-phases');
-    console.log('✅ Blog enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
+    Logger.system('✅ Blog enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
 
     // Initialize Global Search (replaces old blog-specific search)
     new GlobalSearch();
-    console.log('✅ Global search initialized (Cmd/Ctrl+K to open)');
+    Logger.system('✅ Global search initialized (Cmd/Ctrl+K to open)');
 
     // Wire up deep linking to navigate on URL changes
     blogDeepLink.onNavigateChange((params: any) => {
-        console.log('🔗 [DeepLink] Navigating to:', params);
+        Logger.system('🔗 [DeepLink] Navigating to:', params);
 
         // Navigate to entry if present
         if (params.entryId) {
@@ -243,7 +244,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize BlogRenderer (Journal tab) - must be after JourneySection renders
     new BlogRenderer('#timeline-container');
-    console.log('✅ Blog renderer initialized');
+    Logger.system('✅ Blog renderer initialized');
 
     // Manually trigger initial breadcrumb update to ensure it shows
     const initialTab = tabController.getActiveTab();
@@ -272,7 +273,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }, 150);
         });
-        console.log('✅ Scroll-snap navigation initialized');
+        Logger.system('✅ Scroll-snap navigation initialized');
     }
 
     // Initialize visual effects
@@ -284,7 +285,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     initAnimatedStats();
     initPremiumAnimations();
-    console.log('✅ Visual effects initialized');
+    Logger.system('✅ Visual effects initialized');
 
     // =================================================================
     // PHASE 5: UTILITIES & OPTIMIZATION
@@ -296,7 +297,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initAnalytics();
     initContentFeatures();
     initUXEnhancements();
-    console.log('✅ Utilities initialized');
+    Logger.system('✅ Utilities initialized');
 
     // Initialize Gentle Nudges (scroll inactivity hints)
     const gentleNudges = new GentleNudges();
@@ -313,14 +314,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!isInShell) {
         initAppStateManager();
-        console.log('✅ App State Manager initialized');
+        Logger.system('✅ App State Manager initialized');
 
         // Initialize UV7 App Switcher (proper TypeScript version)
         const appSwitcher = new UV7AppSwitcher();
         window.uv7AppSwitcher = appSwitcher;
-        console.log('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
+        Logger.system('🚀 UV7 App Switcher (BOUGIE EDITION) initialized');
     } else {
-        console.log('⏭️ Skipping App Switcher (shell mode)');
+        Logger.system('⏭️ Skipping App Switcher (shell mode)');
     }
 
     // =================================================================
@@ -333,11 +334,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.uv7os = new UV7OS('showcase', {
             entries: window.TIMELINE_DATA.entries as TimelineEntry[]
         });
-        console.log('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
+        Logger.system('✅ UV7 OS initialized with', window.TIMELINE_DATA.entries.length, 'timeline entries');
     } else {
         // Fallback: create without timeline data (silent)
         window.uv7os = new UV7OS('showcase');
-        console.log('✅ UV7 OS initialized (no timeline data)');
+        Logger.system('✅ UV7 OS initialized (no timeline data)');
     }
 
     // Grab handle is initialized by UV7OS automatically
@@ -380,7 +381,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize UV7 Echo System (context-aware AI crew commentary)
     // Initialize UV7 Echo System (context-aware AI crew commentary)
     new UV7EchoSystem();
-    console.log('✅ AI Crew echo system initialized');
+    Logger.system('✅ AI Crew echo system initialized');
 
     // Initialize sidebar section navigation - ALWAYS
     const sectionNavItems = document.querySelectorAll('.section-nav-item[data-tab]');
@@ -400,15 +401,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     });
-    console.log('✅ Sidebar section navigation initialized');
+    Logger.system('✅ Sidebar section navigation initialized');
 
     // Initialize Showcase Carousel (Spotlight tab)
     initShowcaseCarousel();
-    console.log('✅ Showcase carousel initialized');
+    Logger.system('✅ Showcase carousel initialized');
 
     // Initialize Code Comparison Modal
     (window as any).codeComparisonModal = new CodeComparisonModal();
-    console.log('✅ Code Comparison Modal initialized');
+    Logger.system('✅ Code Comparison Modal initialized');
 
     // Listen for messages from parent shell (when running in iframe)
     if (isInShell) {
@@ -422,14 +423,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case 'navigate-tab':
                     // Navigate to the specified tab
                     if (tab && window.tabController) {
-                        console.log(`[Showcase] Navigating to tab: ${tab}`);
+                        Logger.system(`[Showcase] Navigating to tab: ${tab}`);
                         window.tabController.navigateToTab(tab);
                     }
                     break;
 
                 case 'quick-action':
                     // Handle quick actions
-                    console.log(`[Showcase] Handling quick action: ${action}`);
+                    Logger.system(`[Showcase] Handling quick action: ${action}`);
                     switch (action) {
                         case 'launch-v1':
                             window.parent.location.hash = '#/v1';
@@ -452,7 +453,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 case 'echo-settings':
                     // Trigger echo settings
-                    console.log('[Showcase] Opening Echo settings');
+                    Logger.system('[Showcase] Opening Echo settings');
                     const echoBtn = document.getElementById('echo-settings-trigger');
                     if (echoBtn) {
                         echoBtn.click();
@@ -462,29 +463,29 @@ document.addEventListener('DOMContentLoaded', async () => {
                 case 'theme-change':
                     // Apply theme changes from shell
                     const { auto, theme } = event.data;
-                    console.log(`[Showcase] Received theme change from shell: auto=${auto}, theme=${theme}`);
+                    Logger.system(`[Showcase] Received theme change from shell: auto=${auto}, theme=${theme}`);
 
                     if (auto) {
                         // Clear overrides, let system preference win
                         document.body.classList.remove('light-mode', 'dark-mode');
-                        console.log('[Showcase] Applied auto theme (cleared overrides)');
+                        Logger.system('[Showcase] Applied auto theme (cleared overrides)');
                     } else {
                         // Apply manual theme
                         if (theme === 'light') {
                             document.body.classList.add('light-mode');
                             document.body.classList.remove('dark-mode');
-                            console.log('[Showcase] Applied light mode');
+                            Logger.system('[Showcase] Applied light mode');
                         } else {
                             document.body.classList.add('dark-mode');
                             document.body.classList.remove('light-mode');
-                            console.log('[Showcase] Applied dark mode');
+                            Logger.system('[Showcase] Applied dark mode');
                         }
                     }
                     break;
             }
         });
-        console.log('✅ Parent message listener initialized');
+        Logger.system('✅ Parent message listener initialized');
     }
 
-    console.log(`✅ Showcase fully initialized - ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
+    Logger.system(`✅ Showcase fully initialized - ${isInShell ? 'SHELL' : 'STANDALONE'} mode`);
 });
