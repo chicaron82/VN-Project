@@ -4,6 +4,8 @@
  * 
  * Logic extracted from main.ts
  */
+
+import { Logger } from '@utils/Logger';
 export class SystemStatsWidget {
     private cpuVal: HTMLElement | null;
     private cpuBar: HTMLElement | null;
@@ -29,9 +31,9 @@ export class SystemStatsWidget {
         if (this.cpuVal && this.cpuBar && this.ramVal && this.ramBar) {
             this.isRunning = true;
             requestAnimationFrame(this.updateStats.bind(this));
-            console.log('✅ SystemStatsWidget initialized (Mode: Organic Walk)');
+            Logger.ui('✅ SystemStatsWidget initialized (Mode: Organic Walk)');
         } else {
-            console.warn('⚠️ SystemStatsWidget: DOM elements not found');
+            Logger.warn('⚠️ SystemStatsWidget: DOM elements not found');
         }
     }
 
