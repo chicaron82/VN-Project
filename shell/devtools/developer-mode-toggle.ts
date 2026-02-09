@@ -5,6 +5,8 @@
  * Uses custom events to communicate with ChromeDevTools.
  */
 
+import { Logger } from '@utils/Logger';
+
 function initDeveloperModeToggle() {
     const toggle = document.getElementById('developer-mode-toggle');
     if (!toggle) {
@@ -49,10 +51,10 @@ function initDeveloperModeToggle() {
             }
         }
 
-        console.log('[DeveloperMode] Toggle changed to:', !currentlyEnabled);
+        Logger.system('[DeveloperMode] Toggle changed to:', !currentlyEnabled);
     });
 
-    console.log('[DeveloperMode] Toggle initialized, current state:', isEnabled);
+    Logger.system('[DeveloperMode] Toggle initialized, current state:', isEnabled);
 }
 
 // Try immediately
