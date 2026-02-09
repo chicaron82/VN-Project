@@ -1,4 +1,5 @@
 import { EventBus } from '@core/EventBus';
+import { Logger } from '@utils/Logger';
 
 /**
  * ════════════════════════════════════════════════════════════════
@@ -75,7 +76,7 @@ export class AchievementHooks {
         this.achievementManager = achievementSystem;
 
         this.hookAchievementTriggers();
-        console.log('🏆 Achievement hooks initialized');
+        Logger.achievement('🏆 Achievement hooks initialized');
     }
 
     // ========================================
@@ -87,7 +88,7 @@ export class AchievementHooks {
      */
     private hookAchievementTriggers(): void {
         if (!this.game || !this.achievementManager) {
-            console.warn('Game or achievement manager not ready');
+            Logger.warn('Game or achievement manager not ready');
             return;
         }
 
@@ -102,7 +103,7 @@ export class AchievementHooks {
             game.startRoute = function (routeName: string) {
                 // Start timer for Speed Runner achievement
                 achievementMgr.startRouteTimer();
-                console.log('🏃 Achievement: Route timer started');
+                Logger.achievement('🏃 Achievement: Route timer started');
 
                 // Call original
                 return originalStartRoute(routeName);
@@ -140,7 +141,7 @@ export class AchievementHooks {
                 return originalShow();
             };
         } else {
-            console.log('⚠️ Backlog manager not ready yet, will hook later');
+            Logger.warn('⚠️ Backlog manager not ready yet, will hook later');
         }
 
         // ========================================
@@ -156,7 +157,7 @@ export class AchievementHooks {
             }
         }, 5000);
 
-        console.log('🏆 Achievement hooks installed successfully');
+        Logger.achievement('🏆 Achievement hooks installed successfully');
     }
 
     // ========================================
@@ -176,7 +177,7 @@ export class AchievementHooks {
         achievementMgr.checkSpeedRunner();
         achievementMgr.checkInsane();
 
-        console.log(`🏆 Checked achievements for ending: ${endingId}`);
+        Logger.achievement(`🏆 Checked achievements for ending: ${endingId}`);
     }
 
     // ========================================
@@ -232,7 +233,7 @@ if (typeof window !== 'undefined') {
                 hooks.init(game, achievementManager);
                 (window as any).achievementHooks = hooks;
 
-                console.log('Achievement system fully initialized');
+                Logger.achievement('Achievement system fully initialized');
             }
         }, 100);
     });

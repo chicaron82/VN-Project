@@ -20,6 +20,8 @@
  * 848 is sacred. 💚🔥💀
  */
 
+import { Logger } from '@utils/Logger';
+
 // ========================================
 // THEME DEFINITIONS
 // V1 Parity: theme-manager.js lines 20-124
@@ -190,7 +192,7 @@ export class ThemeManager {
         this.applyTheme('menu');
         this.initialized = true;
 
-        console.log('🎨 ThemeManager initialized');
+        Logger.ui('🎨 ThemeManager initialized');
     }
 
     // ========================================
@@ -204,7 +206,7 @@ export class ThemeManager {
      */
     public setPreferenceMode(mode: ThemeMode): void {
         if (!Object.values(MODES).includes(mode)) {
-            console.warn(`ThemeManager: Invalid mode "${mode}"`);
+            Logger.warn(`ThemeManager: Invalid mode "${mode}"`);
             return;
         }
 
@@ -230,7 +232,7 @@ export class ThemeManager {
             this.applyTheme(themeName);
         }
 
-        console.log(`🎨 Theme preference set to: ${mode.toUpperCase()}`);
+        Logger.ui(`🎨 Theme preference set to: ${mode.toUpperCase()}`);
     }
 
     /**
@@ -296,9 +298,9 @@ export class ThemeManager {
         const themeName = themeMap[endingType];
         if (themeName) {
             this.applyTheme(themeName);
-            console.log(`🏆 Ending theme applied: ${endingType}`);
+            Logger.ui(`🏆 Ending theme applied: ${endingType}`);
         } else {
-            console.warn(`ThemeManager: Unknown ending type "${endingType}"`);
+            Logger.warn(`ThemeManager: Unknown ending type "${endingType}"`);
         }
     }
 
@@ -314,7 +316,7 @@ export class ThemeManager {
     public applyTheme(themeName: ThemeName): void {
         const theme = THEMES[themeName];
         if (!theme) {
-            console.warn(`ThemeManager: Unknown theme "${themeName}"`);
+            Logger.warn(`ThemeManager: Unknown theme "${themeName}"`);
             return;
         }
 
@@ -341,7 +343,7 @@ export class ThemeManager {
         document.body.classList.add(`theme-${themeName}`);
 
         this.currentTheme = themeName;
-        console.log(`🎨 Theme applied: ${theme.name} ${theme.emoji}`);
+        Logger.ui(`🎨 Theme applied: ${theme.name} ${theme.emoji}`);
     }
 
     // ========================================
