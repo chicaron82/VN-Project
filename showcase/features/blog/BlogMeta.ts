@@ -14,6 +14,7 @@
  * 848 is sacred. 💚🔥💀
  * ═══════════════════════════════════════════════════════════════
  */
+import { Logger } from '@utils/Logger';
 
 export class BlogMeta {
     private defaultTitle: string;
@@ -25,7 +26,7 @@ export class BlogMeta {
 
     private init(): void {
         this.bindEvents();
-        console.log('📰 [BlogMeta] Initialized');
+        Logger.ui('📰 [BlogMeta] Initialized');
     }
 
     private bindEvents(): void {
@@ -71,6 +72,6 @@ export class BlogMeta {
 
     public destroy(): void {
         this.restoreTitle();
-        console.log('📰 [BlogMeta] Destroyed');
+        Logger.ui('📰 [BlogMeta] Destroyed');
     }
 }
