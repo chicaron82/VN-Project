@@ -6,6 +6,7 @@
  */
 
 import { UV7GrabHandleRepositioner } from '../../v2/ui/components/GrabHandle';
+import { Logger } from '@utils/Logger';
 
 interface SidebarElements {
     sidebar: HTMLElement | null;
@@ -22,14 +23,14 @@ export class Sidebar {
     private grabHandle: UV7GrabHandleRepositioner | null = null;
 
     constructor() {
-        console.log('📋 Sidebar: Starting initialization...');
+        Logger.ui('📋 Sidebar: Starting initialization...');
         // Don't render - use existing HTML from index.html
         this.cacheElements();
         this.initGrabHandle();
         this.initEvents();
 
         // Don't initialize system stats here - main.ts handles it
-        console.log('✅ Sidebar: Fully initialized (VN-quality grab handle)');
+        Logger.ui('✅ Sidebar: Fully initialized (VN-quality grab handle)');
     }
 
     cacheElements(): void {
