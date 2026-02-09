@@ -17,6 +17,7 @@
 
 import { EventBus } from '../../core/EventBus';
 import { OverlayFactory } from './OverlayFactory';
+import { Logger } from '@utils/Logger';
 
 /**
  * UV7FamilySystem
@@ -77,7 +78,7 @@ export class UV7FamilySystem {
         const config = this.UV7_FAMILY[member];
         if (!config) return;
 
-        console.log(`🎨 UV7 Family Easter Egg: ${config.name}`);
+        Logger.ui(`🎨 UV7 Family Easter Egg: ${config.name}`);
 
         // Track discovery
         this.trackDiscovery(member);
@@ -97,7 +98,7 @@ export class UV7FamilySystem {
         if (!discovered.includes(member)) {
             discovered.push(member);
             localStorage.setItem('uv7_discovered', JSON.stringify(discovered));
-            console.log(`✨ ${member} discovered! (${discovered.length}/6 family members found)`);
+            Logger.ui(`✨ ${member} discovered! (${discovered.length}/6 family members found)`);
         }
     }
 
@@ -150,7 +151,7 @@ export class UV7FamilySystem {
      * Show Ronniegatchi Inspiration - The original inspiration display
      */
     showRonniegatchiInspiration(): void {
-        console.log('💜 RONNIEGATCHI INSPIRATION');
+        Logger.ui('💜 RONNIEGATCHI INSPIRATION');
 
         const overlay = document.createElement('div');
         overlay.id = 'ronniegatchi-inspiration-overlay';
