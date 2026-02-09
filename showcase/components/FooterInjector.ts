@@ -5,10 +5,12 @@
  * DRY Efficiency: Reduces ~180 lines of duplicated HTML to 1 template
  */
 
+import { Logger } from '@utils/Logger';
+
 export function injectFooters(): void {
     const template = document.getElementById('footer-template') as HTMLTemplateElement;
     if (!template) {
-        console.warn('[FooterInjector] Footer template not found');
+        Logger.warn('[FooterInjector] Footer template not found');
         return;
     }
 
@@ -21,5 +23,5 @@ export function injectFooters(): void {
         placeholder.replaceWith(footerClone);
     });
 
-    console.log(`✅ [FooterInjector] Injected ${placeholders.length} footers`);
+    Logger.ui(`✅ [FooterInjector] Injected ${placeholders.length} footers`);
 }
