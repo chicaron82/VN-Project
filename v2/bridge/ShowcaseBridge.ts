@@ -4,7 +4,9 @@ import { NotificationRail } from '../ui/components/NotificationRail';
 // Import legacy-compatible Context definitions
 import { UV7Context } from '../ui/components/StatusBarContext';
 
-console.log('🌉 UV7 System Bridge initializing...');
+import { Logger } from '@utils/Logger';
+
+Logger.system('🌉 UV7 System Bridge initializing...');
 
 // Create a global namespace for UV7 System components
 const UV7System = {
@@ -14,7 +16,7 @@ const UV7System = {
 
     // Factory to easily create a standalone status bar
     createStatusBar: (_containerId: string, context: UV7Context = 'showcase') => {
-        console.log(`🏗️ Creating StatusBar for ${context}`);
+        Logger.system(`🏗️ Creating StatusBar for ${context}`);
 
         // 1. Setup Event Bus (communication backbone)
         const eventBus = new EventBus();
@@ -39,4 +41,4 @@ const UV7System = {
 // Expose to window
 (window as any).UV7System = UV7System;
 
-console.log('✅ UV7 System Bridge ready.');
+Logger.system('✅ UV7 System Bridge ready.');
