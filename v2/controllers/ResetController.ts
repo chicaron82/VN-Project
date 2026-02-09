@@ -175,7 +175,11 @@ export class ResetController {
             console.log('❌ Nuclear reset cancelled');
             overlay.style.animation = 'fadeOut 0.3s ease-out';
             setTimeout(() => {
-                document.body.removeChild(overlay);
+                try {
+                    overlay.remove();
+                } catch (_error) {
+                    // Ignore (e.g. test environment torn down)
+                }
             }, 300);
         };
 
@@ -212,7 +216,7 @@ export class ResetController {
             console.log('💥 NUCLEAR RESET INITIATED...');
 
             // Remove overlay
-            document.body.removeChild(overlay);
+            overlay.remove();
 
             // Clear ALL localStorage
             localStorage.clear();
@@ -222,7 +226,12 @@ export class ResetController {
 
             // Reload page
             setTimeout(() => {
-                location.reload();
+                if (typeof window === 'undefined') return;
+                try {
+                    window.location.reload();
+                } catch (_error) {
+                    // Ignore (e.g. test environment torn down)
+                }
             }, 500);
         };
 
