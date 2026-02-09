@@ -4,6 +4,8 @@
 // UV7 OS-style navigation with anchor links
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 /**
  * TabController
  *
@@ -57,7 +59,7 @@ export class TabController {
         // Update indicator on window resize
         window.addEventListener('resize', () => this.updateIndicator());
 
-        console.log('✅ TabController initialized (swipe mode)');
+        Logger.ui('✅ TabController initialized (swipe mode)');
     }
 
     // ========================================
@@ -90,7 +92,7 @@ export class TabController {
         // Skip scroll-spy if we're using swipe mode
         // (Swipe controller will handle state updates)
         if (this.container?.classList.contains('swipe-enabled')) {
-            console.log('⏭️ Skipping scroll-spy (swipe mode active)');
+            Logger.ui('⏭️ Skipping scroll-spy (swipe mode active)');
             return;
         }
 
@@ -117,7 +119,7 @@ export class TabController {
             if (mostVisible && mostVisible.isIntersecting) {
                 const tabId = (mostVisible.target as HTMLElement).dataset.panel;
                 if (tabId && tabId !== this.activeTab) {
-                    console.log(`[ScrollSpy] Detected section: ${tabId} (ratio: ${mostVisible.intersectionRatio})`);
+                    Logger.ui(`[ScrollSpy] Detected section: ${tabId} (ratio: ${mostVisible.intersectionRatio})`);
                     this.setActiveTab(tabId);
                 }
             }
@@ -135,7 +137,7 @@ export class TabController {
     setActiveTab(tabId: string): void {
         if (!this.tabs.includes(tabId)) return;
 
-        console.log(`[TabController] setActiveTab: ${this.activeTab} → ${tabId}`);
+        Logger.ui(`[TabController] setActiveTab: ${this.activeTab} → ${tabId}`);
 
         this.activeTab = tabId;
 
