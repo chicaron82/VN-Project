@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { UV7OS } from './UV7OS';
 
 // Mock DOM
@@ -14,7 +13,8 @@ const mockElement = {
     appendChild: vi.fn(),
     querySelector: vi.fn().mockImplementation(() => mockElement),
     querySelectorAll: vi.fn().mockReturnValue([]),
-    dataset: {}
+    dataset: {},
+    getBoundingClientRect: vi.fn().mockReturnValue({ top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0 })
 };
 (global as any).document.getElementById = vi.fn().mockReturnValue(mockElement);
 (global as any).document.querySelector = vi.fn().mockReturnValue(mockElement);
@@ -33,12 +33,15 @@ if (global.document && global.document.body) {
 
 (global as any).window = {
     addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
     setInterval: vi.fn(),
     setTimeout: vi.fn(),
     clearTimeout: vi.fn(),
     location: { hostname: 'localhost', pathname: '/', origin: 'http://localhost' },
     innerWidth: 1000,
-    innerHeight: 500
+    innerHeight: 500,
+    pageYOffset: 0,
+    scrollTo: vi.fn()
 };
 
 // Mock localStorage
@@ -90,6 +93,66 @@ describe('UV7OS', () => {
             mockElement.classList.contains.mockReturnValue(true);
             os.toggleSidebar();
             expect(mockElement.classList.remove).toHaveBeenCalledWith('open');
+        });
+    });
+
+    describe('Public API (Orchestrator Pattern)', () => {
+        it('should expose toggleSidebar method', () => {
+            const os = new UV7OS('landing', {});
+            expect(typeof os.toggleSidebar).toBe('function');
+        });
+
+        it('should expose jumpToSection method', () => {
+            const os = new UV7OS('showcase', {});
+            expect(typeof os.jumpToSection).toBe('function');
+        });
+
+        it('should expose showBootToastPublic method', () => {
+            const os = new UV7OS('landing', {});
+            expect(typeof os.showBootToastPublic).toBe('function');
+        });
+
+        it('should expose cleanup method', () => {
+            const os = new UV7OS('showcase', {});
+            expect(typeof os.cleanup).toBe('function');
+        });
+    });
+
+    describe('Module Integration', () => {
+        it('should initialize all modules for showcase context', () => {
+            const entries = [{ id: 'test-1', title: 'Test Entry' }];
+            const os = new UV7OS('showcase', { entries });
+
+            // Should not throw during module initialization
+            expect(os).toBeDefined();
+        });
+
+        it('should initialize all modules for landing context', () => {
+            const os = new UV7OS('landing', {});
+
+            // Should not throw during module initialization
+            expect(os).toBeDefined();
+        });
+
+        it('should handle cleanup without errors', () => {
+            const os = new UV7OS('showcase', {});
+            expect(() => os.cleanup()).not.toThrow();
+        });
+    });
+
+    describe('Backward Compatibility', () => {
+        it('should maintain same interface as pre-refactor version', () => {
+            const os = new UV7OS('showcase', {});
+
+            // Critical public methods must exist
+            expect(os.toggleSidebar).toBeDefined();
+            expect(os.jumpToSection).toBeDefined();
+            expect(os.showBootToastPublic).toBeDefined();
+
+            // Should be callable
+            expect(() => os.toggleSidebar()).not.toThrow();
+            expect(() => os.jumpToSection('test-section')).not.toThrow();
+            expect(() => os.showBootToastPublic()).not.toThrow();
         });
     });
 });
