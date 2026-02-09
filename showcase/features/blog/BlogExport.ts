@@ -16,6 +16,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 interface ExportEntry {
     id: string;
     date: string;
@@ -38,7 +40,7 @@ export class BlogExport {
 
     private init(): void {
         this.createExportButton();
-        console.log('💾 [BlogExport] Initialized');
+        Logger.ui('💾 [BlogExport] Initialized');
     }
 
     /**
@@ -186,7 +188,7 @@ export class BlogExport {
         const json = JSON.stringify(data, null, 2);
         this.downloadFile(json, 'timeline-export.json', 'application/json');
 
-        console.log('💾 [BlogExport] Exported', entries.length, 'entries as JSON');
+        Logger.ui('💾 [BlogExport] Exported', entries.length, 'entries as JSON');
     }
 
     /**
@@ -228,7 +230,7 @@ export class BlogExport {
 
         this.downloadFile(markdown, 'timeline-export.md', 'text/markdown');
 
-        console.log('💾 [BlogExport] Exported', entries.length, 'entries as Markdown');
+        Logger.ui('💾 [BlogExport] Exported', entries.length, 'entries as Markdown');
     }
 
     /**
@@ -255,6 +257,6 @@ export class BlogExport {
             this.exportButton.closest('.export-container')?.remove();
             this.exportButton = null;
         }
-        console.log('💾 [BlogExport] Destroyed');
+        Logger.ui('💾 [BlogExport] Destroyed');
     }
 }
