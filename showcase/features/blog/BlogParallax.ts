@@ -15,6 +15,8 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
+import { Logger } from '@utils/Logger';
+
 export class BlogParallax {
     private items: HTMLElement[];
     private isEnabled: boolean;
@@ -32,7 +34,7 @@ export class BlogParallax {
         this.refreshItems();
         this.bindEvents();
         this.startLoop();
-        console.log('🌌 [BlogParallax] Initialized');
+        Logger.ui('🌌 [BlogParallax] Initialized');
     }
 
     private refreshItems(): void {
@@ -108,6 +110,6 @@ export class BlogParallax {
             cancelAnimationFrame(this.requestId);
         }
         this.resetTransforms();
-        console.log('🌌 [BlogParallax] Destroyed');
+        Logger.ui('🌌 [BlogParallax] Destroyed');
     }
 }
