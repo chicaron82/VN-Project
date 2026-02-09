@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ResetController } from './ResetController';
+import { Logger } from '@utils/Logger';
 
 describe('ResetController', () => {
     let controller: ResetController;
@@ -30,12 +31,12 @@ describe('ResetController', () => {
         });
 
         it('should log initialization message', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'system').mockImplementation(() => {});
 
             new ResetController();
 
-            expect(consoleSpy).toHaveBeenCalledWith('💥 ResetController initialized');
-            consoleSpy.mockRestore();
+            expect(loggerSpy).toHaveBeenCalledWith('💥 ResetController initialized');
+            loggerSpy.mockRestore();
         });
     });
 
@@ -184,7 +185,7 @@ describe('ResetController', () => {
         });
 
         it('should log nuclear reset messages', () => {
-            const consoleSpy = vi.spyOn(console, 'log');
+            const loggerSpy = vi.spyOn(Logger, 'system').mockImplementation(() => {});
 
             controller.nuclearReset();
 
@@ -193,11 +194,11 @@ describe('ResetController', () => {
 
             confirmBtn.click();
 
-            expect(consoleSpy).toHaveBeenCalledWith('💥 NUCLEAR RESET INITIATED...');
-            expect(consoleSpy).toHaveBeenCalledWith('💥 All localStorage cleared');
-            expect(consoleSpy).toHaveBeenCalledWith('💥 Reloading page to factory state...');
+            expect(loggerSpy).toHaveBeenCalledWith('💥 NUCLEAR RESET INITIATED...');
+            expect(loggerSpy).toHaveBeenCalledWith('💥 All localStorage cleared');
+            expect(loggerSpy).toHaveBeenCalledWith('💥 Reloading page to factory state...');
 
-            consoleSpy.mockRestore();
+            loggerSpy.mockRestore();
         });
     });
 

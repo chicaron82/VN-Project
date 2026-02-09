@@ -17,6 +17,8 @@
 // "Built with love. Nuclear option available." 💚🔥💀
 // ========================================
 
+import { Logger } from '@utils/Logger';
+
 /**
  * ResetController
  *
@@ -25,7 +27,7 @@
  */
 export class ResetController {
     constructor() {
-        console.log('💥 ResetController initialized');
+        Logger.system('💥 ResetController initialized');
     }
 
     // ========================================
@@ -172,7 +174,7 @@ export class ResetController {
         };
 
         cancelBtn.onclick = () => {
-            console.log('❌ Nuclear reset cancelled');
+            Logger.system('❌ Nuclear reset cancelled');
             overlay.style.animation = 'fadeOut 0.3s ease-out';
             setTimeout(() => {
                 try {
@@ -213,7 +215,7 @@ export class ResetController {
         };
 
         confirmBtn.onclick = () => {
-            console.log('💥 NUCLEAR RESET INITIATED...');
+            Logger.system('💥 NUCLEAR RESET INITIATED...');
 
             // Remove overlay
             overlay.remove();
@@ -221,8 +223,8 @@ export class ResetController {
             // Clear ALL localStorage
             localStorage.clear();
 
-            console.log('💥 All localStorage cleared');
-            console.log('💥 Reloading page to factory state...');
+            Logger.system('💥 All localStorage cleared');
+            Logger.system('💥 Reloading page to factory state...');
 
             // Reload page
             setTimeout(() => {
@@ -246,7 +248,7 @@ export class ResetController {
         overlay.appendChild(box);
         document.body.appendChild(overlay);
 
-        console.log('⚠️ Nuclear reset confirmation dialog displayed');
+        Logger.system('⚠️ Nuclear reset confirmation dialog displayed');
         return true;
     }
 }

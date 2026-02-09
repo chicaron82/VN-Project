@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { Logger } from '@utils/Logger';
 import { ResetController } from './ResetController';
 
 describe('Debug ResetController Styles', () => {
@@ -12,17 +13,17 @@ describe('Debug ResetController Styles', () => {
         const cancelBtn = Array.from(buttons).find(btn => btn.textContent === 'CANCEL') as HTMLButtonElement;
         const confirmBtn = Array.from(buttons).find(btn => btn.textContent === 'RESET ALL') as HTMLButtonElement;
 
-        console.log('=== OVERLAY cssText ===');
-        console.log(overlay.style.cssText);
-        console.log('');
-        console.log('=== BOX cssText ===');
-        console.log(box.style.cssText);
-        console.log('');
-        console.log('=== CANCEL BUTTON cssText ===');
-        console.log(cancelBtn.style.cssText);
-        console.log('');
-        console.log('=== CONFIRM BUTTON cssText ===');
-        console.log(confirmBtn.style.cssText);
+        Logger.debug('=== OVERLAY cssText ===');
+        Logger.debug(overlay.style.cssText);
+        Logger.debug('');
+        Logger.debug('=== BOX cssText ===');
+        Logger.debug(box.style.cssText);
+        Logger.debug('');
+        Logger.debug('=== CANCEL BUTTON cssText ===');
+        Logger.debug(cancelBtn.style.cssText);
+        Logger.debug('');
+        Logger.debug('=== CONFIRM BUTTON cssText ===');
+        Logger.debug(confirmBtn.style.cssText);
 
         expect(true).toBe(true); // Always pass, just want to see the output
     });
