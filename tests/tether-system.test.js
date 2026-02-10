@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TetherSystem } from '../system/tether-system.js';
 
 // Mock difficulty profiles

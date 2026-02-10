@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { NotificationShade } from './NotificationShade';
 
 // Mock mockElement to support querySelector returning another mock

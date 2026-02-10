@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { loadRealStats } from './load-stats';
 import { Logger } from '@utils/Logger';
 

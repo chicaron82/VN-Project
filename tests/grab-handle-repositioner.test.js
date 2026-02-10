@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { GrabHandleRepositioner } from '../system/grab-handle-repositioner.js';
 
 // Mock localStorage

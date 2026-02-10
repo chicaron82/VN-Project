@@ -7,7 +7,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { BootstrapTracker } from './BootstrapTracker';
 import { StateManager } from '../core/StateManager';
 

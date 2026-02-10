@@ -7,7 +7,6 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { UV7System } from '../UV7System.js';
 import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 

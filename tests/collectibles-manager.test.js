@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { CollectiblesManager } from '../system/collectibles-manager.js';
 
 // Mock global functions that CollectiblesManager depends on

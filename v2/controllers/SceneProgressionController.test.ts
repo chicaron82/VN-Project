@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SceneProgressionController } from './SceneProgressionController';
 import { StateManager } from '../core/StateManager';
 import { GameEngine } from '../core/GameEngine';

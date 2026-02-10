@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AssetLoader } from './AssetLoader';
 import { EventBus } from '@core/EventBus';
 

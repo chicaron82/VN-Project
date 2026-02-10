@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { MenuController } from './MenuController';
 import { EffectsController } from './EffectsController';
 import { StateManager } from '@core/StateManager';

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { EndingDialogController } from './EndingDialogController';
 import { EventBus } from '../core/EventBus';
 import { Logger } from '@utils/Logger';

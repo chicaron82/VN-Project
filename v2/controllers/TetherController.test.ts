@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { TetherController } from './TetherController';
 import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';

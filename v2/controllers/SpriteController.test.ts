@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { SpriteController } from './SpriteController';
 import { StateManager } from '../core/StateManager';
 

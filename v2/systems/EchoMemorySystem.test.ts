@@ -11,7 +11,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { EchoMemorySystem } from './EchoMemorySystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

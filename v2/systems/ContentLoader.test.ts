@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ContentLoader } from '@systems/ContentLoader';
 import { GameEngine } from '@core/GameEngine';
 

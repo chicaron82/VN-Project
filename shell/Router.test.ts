@@ -7,7 +7,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Router } from './Router';
 
 // Mock UV7Shell

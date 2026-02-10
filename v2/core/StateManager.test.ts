@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { StateManager } from './StateManager';
 
 describe('StateManager', () => {

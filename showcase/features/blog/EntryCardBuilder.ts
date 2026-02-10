@@ -6,9 +6,10 @@
  * All functions take data in and return DOM elements out.
  */
 
-import type { BlogEntry } from '../../data/blog';
+import type { BlogEntry, CodeSnippet, Lesson, MetricGroup, QuoteDetail } from '../../data/blog';
 import { markdownToHtml } from './MarkdownParser';
 import { Logger } from '@utils/Logger';
+import { type CodeComparison } from '../../data/blog/types';
 
 // --- Utility Lookups (Pure Functions) ---
 
@@ -128,16 +129,25 @@ export function renderCodeComparison(entry: BlogEntry): HTMLElement | null {
 
     const { before, after } = entry.codeComparison;
 
+    const beforeSnippet: CodeSnippet = typeof before === 'string'
+        ? { title: 'v1', badge: 'LEGACY', lang: 'typescript', code: before }
+        : before;
+
+    const afterSnippet: CodeSnippet = typeof after === 'string'
+        ? { title: 'v2', badge: 'CLEAN', lang: 'typescript', code: after }
+        : after;
+
     card.innerHTML = `
+        ${entry.codeComparison.title ? `<div class="comparison-title">${entry.codeComparison.title}</div>` : ''}
         <div class="comparison-preview">
             <div class="comparison-side">
-                <div class="comparison-badge badge-before">BEFORE</div>
-                <div class="comparison-filename">${before.title}</div>
+                <div class="comparison-badge badge-before">${beforeSnippet.badge}</div>
+                <div class="comparison-filename">${beforeSnippet.title}</div>
             </div>
             <div class="comparison-arrow">→</div>
             <div class="comparison-side">
-                <div class="comparison-badge badge-after">AFTER</div>
-                <div class="comparison-filename">${after.title}</div>
+                <div class="comparison-badge badge-after">${afterSnippet.badge}</div>
+                <div class="comparison-filename">${afterSnippet.title}</div>
             </div>
         </div>
         <button class="btn-compare">
@@ -145,13 +155,20 @@ export function renderCodeComparison(entry: BlogEntry): HTMLElement | null {
         </button>
     `;
 
+    // Wrap for modal if strings were passed
+    const comparisonForModal: CodeComparison = {
+        ...entry.codeComparison,
+        before: beforeSnippet,
+        after: afterSnippet
+    };
+
     // Attach event listener
     const btn = card.querySelector('.btn-compare');
     btn?.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent card expansion if any
         // Check if global modal exists
         if (window.codeComparisonModal) {
-            window.codeComparisonModal.open(entry.codeComparison);
+            window.codeComparisonModal.open(comparisonForModal);
         } else {
             Logger.error('CodeComparisonModal not initialized');
         }
@@ -343,6 +360,17 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
         lessonsList.forEach(l => {
             if (typeof l === 'string') {
                 ul.innerHTML += `<li>${markdownToHtml(l)}</li>`;
+            } else if (l && typeof l === 'object') {
+                const lessonObj = l as Lesson;
+                ul.innerHTML += `<li style="margin-bottom: 0.75rem;">
+                    <div style="display: flex; gap: 0.5rem; align-items: baseline;">
+                        <span class="lesson-icon">${lessonObj.icon || '🎯'}</span>
+                        <div>
+                            <strong style="color: #00ff88;">${lessonObj.title}</strong><br/>
+                            <span style="font-size: 0.9rem; color: #ccc;">${markdownToHtml(lessonObj.lesson)}</span>
+                        </div>
+                    </div>
+                </li>`;
             }
         });
         details.appendChild(ul);
@@ -363,20 +391,49 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
         addSection('commits-section', html);
     }
 
-    if (entry.quote) addSection('timeline-entry-quote', `<blockquote>${entry.quote}</blockquote>`);
+    if (entry.quote) {
+        if (typeof entry.quote === 'string') {
+            addSection('timeline-entry-quote', `<blockquote>${entry.quote}</blockquote>`);
+        } else if (entry.quote) {
+            const q = entry.quote as QuoteDetail;
+            addSection('timeline-entry-quote', `
+                <blockquote class="rich-quote">
+                    <div class="quote-text">${q.text}</div>
+                    <cite class="quote-attribution">
+                        <span class="quote-author">${q.author}</span>
+                        ${q.context ? `<span class="quote-context">${q.context}</span>` : ''}
+                    </cite>
+                </blockquote>
+            `);
+        }
+    }
 
     if (entry.metrics) {
         hasDetails = true;
+        const container = document.createElement('div');
+        container.className = 'metrics-container dev-only';
+
+        let metricsData: Record<string, string | number> = {};
+        if (entry.metrics && 'stats' in entry.metrics && Array.isArray(entry.metrics.stats)) {
+            // Group format
+            const group = entry.metrics as MetricGroup;
+            container.innerHTML = `<h4 style="color: #888; margin-bottom: 0.75rem;">📊 ${group.title}</h4>`;
+            group.stats.forEach(s => metricsData[s.label] = s.value);
+        } else if (entry.metrics) {
+            metricsData = entry.metrics as Record<string, string | number>;
+        }
+
         const grid = document.createElement('div');
-        grid.className = 'stats-mini-grid dev-only';
-        grid.innerHTML = Object.entries(entry.metrics).map(([k, v]) => `
+        grid.className = 'stats-mini-grid';
+        grid.innerHTML = Object.entries(metricsData).map(([k, v]) => `
             <div class="stat-mini"><span class="stat-num">${v}</span><span class="stat-desc">${k.replace(/([A-Z])/g, ' $1').trim()}</span></div>
         `).join('');
-        details.appendChild(grid);
+        container.appendChild(grid);
+        details.appendChild(container);
 
         // Mini Stats Preview (collapsed view)
         const preview = fragment.querySelector('.blog-stats-preview')!;
-        preview.innerHTML = Object.entries(entry.metrics).slice(0, 3).map(([k, v]) =>
+        preview.innerHTML = Object.entries(metricsData).slice(0, 3).map(([k, v]) =>
             `<span class="stat-pill">${getStatIcon(k)} ${v}</span>`
         ).join('');
     }
@@ -412,6 +469,13 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
         );
     }
     if (entry.footer) addSection('entry-footer-badge', `<span class="footer-icon">${entry.footer.icon}</span> ${entry.footer.text}`);
+
+    if (entry.futureWork && entry.futureWork.length > 0) {
+        hasDetails = true;
+        let html = '<h4 style="color: #00ff88; margin-bottom: 0.5rem; margin-top: 1rem;">🚀 Future Work</h4>';
+        html += '<ul class="update-list">' + entry.futureWork.map(w => `<li>${markdownToHtml(w)}</li>`).join('') + '</ul>';
+        addSection('future-work-section', html);
+    }
 
     if (entry.modelId && hasDetails) {
         const sig = getContributorSignature(entry.modelId);

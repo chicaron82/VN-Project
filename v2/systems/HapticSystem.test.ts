@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { HapticSystem } from './HapticSystem';
 import { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';

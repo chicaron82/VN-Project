@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { DevHUDController, GameInstance } from './DevHUDController';
 
 // Mock DOM

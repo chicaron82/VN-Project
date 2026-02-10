@@ -1,4 +1,3 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { VisualEffectsLayer } from './VisualEffectsLayer';
 import { EventBus } from '@core/EventBus';
 

@@ -5,7 +5,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LoopController, LoopStatus } from './LoopController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

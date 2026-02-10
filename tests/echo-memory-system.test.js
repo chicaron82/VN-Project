@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { EchoMemorySystem } from '../system/echo-memory-system.js';
 
 describe('EchoMemorySystem', () => {

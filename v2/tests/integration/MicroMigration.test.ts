@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { GameEngine } from '@core/GameEngine';
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';

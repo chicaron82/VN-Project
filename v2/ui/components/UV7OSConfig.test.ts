@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { UV7OSConfig } from './UV7OSConfig';
 
 describe('UV7OSConfig', () => {

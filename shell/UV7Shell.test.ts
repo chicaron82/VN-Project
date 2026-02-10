@@ -7,7 +7,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { UV7Shell } from './UV7Shell';
 import { AppSwitcherController } from './controllers/AppSwitcherController';
 import type { BaseApp } from './apps/BaseApp';

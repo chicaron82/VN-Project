@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { NotificationShadeController } from '../system/notification-shade-controller.js';
 
 describe('NotificationShadeController', () => {

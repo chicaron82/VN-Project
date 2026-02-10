@@ -12,7 +12,6 @@
 // the real code that ships to production!
 // ========================================
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { SceneProgressionController } from '../system/scene-progression-controller.js';
 
 

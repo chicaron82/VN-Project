@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TutorialManager } from './TutorialManager';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

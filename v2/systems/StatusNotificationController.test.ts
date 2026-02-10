@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { StatusNotificationController } from './StatusNotificationController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

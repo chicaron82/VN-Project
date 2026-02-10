@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { AchievementManager } from '../system/achievement-manager.js';
 
 describe('AchievementManager', () => {

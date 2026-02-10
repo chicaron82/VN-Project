@@ -1,5 +1,4 @@
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { AchievementSystem } from '@systems/AchievementSystem';
 import { EventBus } from '@core/EventBus';
 import { StateManager } from '@core/StateManager';

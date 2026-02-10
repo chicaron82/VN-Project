@@ -3,7 +3,6 @@
  * Verifies test infrastructure works
  */
 
-import { describe, it, expect } from 'vitest';
 
 describe('Simple Test', () => {
     it('should pass', () => {

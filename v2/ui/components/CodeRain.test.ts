@@ -1,4 +1,3 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { CodeRain } from './CodeRain';
 
 const mockHTMLElement = {} as any;

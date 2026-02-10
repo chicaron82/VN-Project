@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { DialogController } from './DialogController';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { EventBus } from '@core/EventBus';

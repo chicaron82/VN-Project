@@ -7,7 +7,6 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TetherSystem } from './TetherSystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

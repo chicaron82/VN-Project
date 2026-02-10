@@ -1,4 +1,3 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { BacklogManager } from './BacklogManager';
 import { StateManager } from './StateManager';
 

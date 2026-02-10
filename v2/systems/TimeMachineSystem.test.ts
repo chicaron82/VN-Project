@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { TimeMachineSystem } from './TimeMachineSystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';

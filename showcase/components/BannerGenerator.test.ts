@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
 
 describe('BannerGenerator', () => {

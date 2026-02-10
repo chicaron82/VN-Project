@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { GameConfig } from './GameConfig';
 
 describe('GameConfig', () => {

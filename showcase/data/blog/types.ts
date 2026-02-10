@@ -31,8 +31,9 @@ export interface CodeSnippet {
  * Before/after code comparison
  */
 export interface CodeComparison {
-    before: CodeSnippet;
-    after: CodeSnippet;
+    title?: string;
+    before: string | CodeSnippet;
+    after: string | CodeSnippet;
 }
 
 /**
@@ -42,6 +43,40 @@ export interface CrewMember {
     name: string;
     contribution: string;
     icon: string;
+}
+
+/**
+ * Lesson or insight with icon and title
+ */
+export interface Lesson {
+    icon?: string;
+    title: string;
+    lesson: string;
+}
+
+/**
+ * Single metric stat
+ */
+export interface MetricStat {
+    label: string;
+    value: string | number;
+}
+
+/**
+ * Group of metrics with a title
+ */
+export interface MetricGroup {
+    title: string;
+    stats: MetricStat[];
+}
+
+/**
+ * Detailed quote with context
+ */
+export interface QuoteDetail {
+    text: string;
+    author: string;
+    context?: string;
 }
 
 /**
@@ -105,10 +140,10 @@ export interface BlogEntry {
     codeComparison?: CodeComparison;
     subEntries?: BlogEntry[];
     subPhases?: BlogEntry[];
-    lessons?: string[];
+    lessons?: (string | Lesson)[];
     crew?: CrewMember[];
     crewAttribution?: CrewAttribution;
-    metrics?: Record<string, string | number>;
+    metrics?: Record<string, string | number> | MetricGroup;
     callout?: {
         icon?: string;
         title: string;
@@ -120,7 +155,7 @@ export interface BlogEntry {
         icon: string;
         text: string;
     };
-    quote?: string;
+    quote?: string | QuoteDetail;
     legacyPhase?: string;
 
     // V3 Lab Specific
@@ -178,8 +213,9 @@ export interface BlogEntry {
         files: string[];
     }>;
     nextSteps?: string[];
-    lessonsLearned?: string[];
+    lessonsLearned?: (string | Lesson)[];
     relatedEntries?: string[];
+    futureWork?: string[];
     status?: 'completed' | 'in-progress' | 'blocked' | 'planned';
     blockedReason?: string;
 }

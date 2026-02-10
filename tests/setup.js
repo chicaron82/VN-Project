@@ -1,7 +1,6 @@
 // Test setup file
 // Runs before each test suite
 
-import { vi } from 'vitest';
 import { Logger } from '../v2/utils/Logger';
 
 // Keep test output readable by default.

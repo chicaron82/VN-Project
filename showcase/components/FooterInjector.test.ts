@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { injectFooters } from './FooterInjector';
 
 describe('FooterInjector', () => {

@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { SettingsSystem } from '@systems/SettingsSystem';
 import { StateManager } from '@core/StateManager';
 

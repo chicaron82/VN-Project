@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { VisualCueSystem } from './VisualCueSystem';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
