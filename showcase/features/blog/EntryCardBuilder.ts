@@ -334,12 +334,17 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
         }
     }
 
-    if (entry.lessonsLearned) {
+    const lessonsList = entry.lessonsLearned || entry.lessons;
+    if (lessonsList && lessonsList.length > 0) {
         hasDetails = true;
         const ul = document.createElement('ul');
         ul.className = 'update-list';
         ul.innerHTML = '<h4 style="color: #00ff88; margin-bottom: 0.5rem;">📚 Lessons Learned</h4>';
-        entry.lessonsLearned.forEach(l => ul.innerHTML += `<li>${markdownToHtml(l)}</li>`);
+        lessonsList.forEach(l => {
+            if (typeof l === 'string') {
+                ul.innerHTML += `<li>${markdownToHtml(l)}</li>`;
+            }
+        });
         details.appendChild(ul);
     }
 

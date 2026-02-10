@@ -17,8 +17,9 @@ export function escapeHtml(text: string): string {
  * Simple markdown to HTML converter
  * Handles basic markdown syntax without external dependencies
  */
-export function markdownToHtml(markdown: string): string {
-    let html = markdown;
+export function markdownToHtml(markdown: unknown): string {
+    if (typeof markdown !== 'string' || !markdown) return '';
+    let html: string = markdown;
 
     // Code blocks (```language ... ```)
     html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (_match, lang, code) => {
