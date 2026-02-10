@@ -1,5 +1,5 @@
-import { BacklogManager } from '../../core/BacklogManager';
-import { EventBus } from '../../core/EventBus';
+import type { BacklogManager } from '../../core/BacklogManager';
+import type { EventBus } from '../../core/EventBus';
 
 export class BacklogUI {
     private container!: HTMLElement;

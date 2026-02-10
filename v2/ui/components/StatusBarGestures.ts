@@ -1,5 +1,5 @@
-import { EventBus } from '@core/EventBus';
-import { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -314,7 +314,7 @@ export class StatusBarGestures {
         });
 
         // Close on click outside
-        const closeHandler = (e: MouseEvent) => {
+        const closeHandler = (e: MouseEvent): void => {
             if (!menu.contains(e.target as Node)) {
                 this.hideContextMenu();
                 document.removeEventListener('click', closeHandler);

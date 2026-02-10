@@ -10,9 +10,9 @@
  * - Mobile responsive with 2x2 grid layout
  */
 
-import { EventBus } from '../../core/EventBus';
-import { SaveSystem, SaveMetadata } from '../../systems/SaveSystem';
-import { StateManager } from '../../core/StateManager';
+import type { EventBus } from '../../core/EventBus';
+import type { SaveSystem, SaveMetadata } from '../../systems/SaveSystem';
+import type { StateManager } from '../../core/StateManager';
 import { Logger } from '../../utils/Logger';
 import '../../ui/styles/save-load-modal.css';
 
@@ -43,7 +43,7 @@ export class SaveLoadModal {
         this.eventBus.on('ui:save_load:close', () => this.close());
     }
 
-    private createDOM() {
+    private createDOM(): void {
         this.container = document.createElement('div');
         this.container.id = 'save-load-modal';
         this.container.className = 'save-load-modal';
@@ -68,7 +68,7 @@ export class SaveLoadModal {
         document.body.appendChild(this.container);
     }
 
-    private setupEventListeners() {
+    private setupEventListeners(): void {
         // Close button
         this.container.querySelector('#btn-close-save-load')?.addEventListener('click', () => this.close());
         this.container.querySelector('#btn-save-load-back')?.addEventListener('click', () => this.close());
@@ -89,7 +89,7 @@ export class SaveLoadModal {
         });
     }
 
-    private renderSlots() {
+    private renderSlots(): void {
         const grid = this.container.querySelector('#save-slots-grid');
         if (!grid) return;
 
@@ -201,7 +201,7 @@ export class SaveLoadModal {
         return card;
     }
 
-    private async handleSlotAction(action: string, slotId: number) {
+    private async handleSlotAction(action: string, slotId: number): Promise<void> {
         switch (action) {
             case 'load':
                 await this.loadFromSlot(slotId);
@@ -215,7 +215,7 @@ export class SaveLoadModal {
         }
     }
 
-    private async loadFromSlot(slotId: number) {
+    private async loadFromSlot(slotId: number): Promise<void> {
         const success = await this.saveSystem.loadGame(slotId);
         if (success) {
             this.eventBus.emit('load:complete', { slot: slotId });
@@ -231,7 +231,7 @@ export class SaveLoadModal {
         }
     }
 
-    private async saveToSlot(slotId: number) {
+    private async saveToSlot(slotId: number): Promise<void> {
         const currentScene = this.stateManager.get<string>('currentScene') || 'Unknown';
         const currentRoute = this.stateManager.get<string>('currentRoute') || 'Unknown';
         const summary = `${currentRoute.charAt(0).toUpperCase() + currentRoute.slice(1)} - ${currentScene}`;
@@ -246,7 +246,7 @@ export class SaveLoadModal {
         }
     }
 
-    private showDeleteConfirmation(slotId: number) {
+    private showDeleteConfirmation(slotId: number): void {
         // Create confirmation dialog
         this.confirmDialog = document.createElement('div');
         this.confirmDialog.className = 'save-load-confirm-overlay';
@@ -275,20 +275,20 @@ export class SaveLoadModal {
         });
     }
 
-    private closeConfirmDialog() {
+    private closeConfirmDialog(): void {
         if (this.confirmDialog) {
             this.confirmDialog.remove();
             this.confirmDialog = null;
         }
     }
 
-    private deleteSlot(slotId: number) {
+    private deleteSlot(slotId: number): void {
         this.saveSystem.deleteSlot(slotId);
         this.showFeedback(`Slot ${slotId} deleted.`, 'success');
         this.renderSlots(); // Refresh slots display
     }
 
-    private showFeedback(message: string, type: 'success' | 'error') {
+    private showFeedback(message: string, type: 'success' | 'error'): void {
         // Create temporary feedback element
         const feedback = document.createElement('div');
         feedback.className = `save-load-feedback ${type}`;
@@ -312,7 +312,7 @@ export class SaveLoadModal {
         return div.innerHTML;
     }
 
-    public open(mode: SaveLoadMode = 'load') {
+    public open(mode: SaveLoadMode = 'load'): void {
         this.mode = mode;
         this.isOpen = true;
 
@@ -332,7 +332,7 @@ export class SaveLoadModal {
         Logger.ui('[SaveLoadModal] Opened in', mode, 'mode');
     }
 
-    public close() {
+    public close(): void {
         if (!this.isOpen) return;
         this.isOpen = false;
         this.container.style.display = 'none';

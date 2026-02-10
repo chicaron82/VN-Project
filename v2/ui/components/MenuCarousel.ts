@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { CarouselMomentum } from './CarouselMomentum';
 import { SimpleCarousel } from './SimpleCarousel';
 import { Logger } from '@utils/Logger';
@@ -7,7 +7,10 @@ import '@ui/styles/main.css';
 // Type shim for global window object
 declare global {
     interface Window {
-        secretCodesManager?: any; // Avoiding full import cycle, just needs to exist
+        secretCodesManager?: {
+            updateCodesUI: () => void;
+            hasDiscoveredCode: (code: string) => boolean;
+        };
     }
 }
 
@@ -38,7 +41,7 @@ export class MenuCarousel {
     // Active engine (either SimpleCarousel or CarouselMomentum)
     private activeEngine: SimpleCarousel | CarouselMomentum | null = null;
     private currentIndex: number = 1; // Start at Index 1 (Start Story)
-    private resizeTimeout: any = null;
+    private resizeTimeout: ReturnType<typeof setTimeout> | null = null;
     private resizeListener: (() => void) | null = null;
 
     constructor(eventBus: EventBus) {
@@ -139,7 +142,7 @@ export class MenuCarousel {
         Logger.ui('🎠 MenuCarousel Manager initialized - Hybrid Mode');
     }
 
-    mount(parent: HTMLElement) {
+    public mount(parent: HTMLElement): void {
         parent.appendChild(this.container);
         this.setupHybridMode();
 
@@ -148,7 +151,7 @@ export class MenuCarousel {
         window.addEventListener('resize', this.resizeListener);
     }
 
-    unmount() {
+    public unmount(): void {
         if (this.resizeListener) {
             window.removeEventListener('resize', this.resizeListener);
         }
@@ -159,7 +162,7 @@ export class MenuCarousel {
         this.container.remove();
     }
 
-    private setupHybridMode() {
+    private setupHybridMode(): void {
         const isPortrait = window.innerWidth < 768;
         const desiredEngine = isPortrait ? 'SimpleCarousel' : 'CarouselMomentum';
         const currentEngineName = this.activeEngine ? this.activeEngine.constructor.name : null;
@@ -182,19 +185,19 @@ export class MenuCarousel {
         }
     }
 
-    private initSimpleMode() {
+    private initSimpleMode(): void {
         // SimpleCarousel handles its own rendering
         this.activeEngine = new SimpleCarousel(this.eventBus, this.items, this.container);
         this.activeEngine.init();
     }
 
-    private initMomentumMode() {
+    private initMomentumMode(): void {
         this.container.className = 'menu-carousel momentum-mode';
         this.renderItemsForMomentum();
         this.initMomentumEngine();
     }
 
-    private renderItemsForMomentum() {
+    private renderItemsForMomentum(): void {
         this.track.innerHTML = '';
 
         // Render 3x Cloned set (Left, Middle, Right) for infinite scroll
@@ -224,7 +227,7 @@ export class MenuCarousel {
                 `;
 
                 card.onclick = () => {
-                    if (this.activeEngine && (this.activeEngine as any).isDragging) return;
+                    if (this.activeEngine && this.activeEngine.getIsDragging()) return;
                     this.eventBus.emit('ui:click', {});
                     item.action();
                 };
@@ -236,7 +239,7 @@ export class MenuCarousel {
         this.updateDots(this.currentIndex);
     }
 
-    private initMomentumEngine() {
+    private initMomentumEngine(): void {
         const cardElements = Array.from(this.track.querySelectorAll('.carousel-card')) as HTMLElement[];
         if (cardElements.length === 0) return;
 
@@ -265,7 +268,7 @@ export class MenuCarousel {
         this.activeEngine.moveToCard(targetIndex, true);
     }
 
-    private updateDots(activeIndex: number) {
+    private updateDots(activeIndex: number): void {
         this.dotsContainer.innerHTML = '';
         this.items.forEach((_, index) => {
             const dot = document.createElement('button');
@@ -285,14 +288,14 @@ export class MenuCarousel {
         });
     }
 
-    private handleResize() {
+    private handleResize(): void {
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(() => {
             this.setupHybridMode();
         }, 100);
     }
 
-    prev() {
+    public prev(): void {
         if (this.activeEngine) {
             this.eventBus.emit('ui:click', {});
             if (this.activeEngine instanceof CarouselMomentum) {
@@ -302,7 +305,7 @@ export class MenuCarousel {
         }
     }
 
-    next() {
+    public next(): void {
         if (this.activeEngine) {
             this.eventBus.emit('ui:click', {});
             if (this.activeEngine instanceof CarouselMomentum) {

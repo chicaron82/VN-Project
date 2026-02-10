@@ -28,8 +28,9 @@ export function detectContext(): UV7Context {
     }
 
     // Window global fallback
-    if ((window as any).__UV7_CONTEXT__) {
-        return (window as any).__UV7_CONTEXT__ as UV7Context;
+    const windowContext = (window as unknown as { __UV7_CONTEXT__?: string }).__UV7_CONTEXT__;
+    if (windowContext && ['game', 'showcase', 'landing'].includes(windowContext)) {
+        return windowContext as UV7Context;
     }
 
     // Pathname fallback (safety net)

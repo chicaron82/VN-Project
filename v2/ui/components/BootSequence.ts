@@ -1,4 +1,5 @@
-import { GameEngine } from '../../core/GameEngine';
+import type { GameEngine } from '../../core/GameEngine';
+import type { StateManager } from '../../core/StateManager';
 
 /**
  * System files to display during boot sequence
@@ -62,15 +63,11 @@ export class BootSequence {
     private logoRevealCallback: (percent: number) => void;
 
     // UI References
-    // @ts-ignore
-    private currentLine: HTMLElement | null = null;
     private linesContainer: HTMLElement | undefined;
     private visibleLines: HTMLElement[] = [];
 
     // State
     private isSkipping: boolean = false;
-    // @ts-ignore
-    private currentProgress: number = 0;
     private readonly MAX_VISIBLE_LINES = 3;
 
     constructor(
@@ -111,12 +108,11 @@ export class BootSequence {
         }
     }
 
-    private updateProgress(percent: number) {
-        this.currentProgress = percent;
+    private updateProgress(percent: number): void {
         this.logoRevealCallback(percent);
     }
 
-    private showHeader() {
+    private showHeader(): void {
         const versionNumber = this.game.bootstrapTracker.getCurrentAttempt();
         const header = document.createElement('div');
         header.className = 'boot-header';
@@ -138,7 +134,7 @@ export class BootSequence {
         progressStart: number = 0,
         progressEnd: number = 100,
         _hapticIntensity: 'soft' | 'medium' | 'heavy' = 'soft'
-    ) {
+    ): Promise<void> {
         if (this.isSkipping) {
             this.showCategoryInstant(categoryName, files);
             this.updateProgress(progressEnd);
@@ -179,14 +175,15 @@ export class BootSequence {
             if (file.conditional === 'torigatchi') return localStorage.getItem('torigatchiUnlocked');
             if (file.conditional === 'insane') {
                 // Check insane mode flag via game state if possible, or fallback
-                const flags = this.game['stateManager'].get<any>('flags');
-                return flags?.insaneModeLocked;
+                const stateManager = (this.game as unknown as { stateManager: StateManager }).stateManager;
+                const flags = stateManager.get<Record<string, boolean>>('flags');
+                return !!flags?.insaneModeLocked;
             }
             return false;
         });
     }
 
-    private async loadFile(file: FileEntry, baseSpeed: number) {
+    private async loadFile(file: FileEntry, baseSpeed: number): Promise<void> {
         const fileDiv = document.createElement('div');
         fileDiv.className = 'boot-file';
         fileDiv.style.color = file.color;
@@ -202,7 +199,6 @@ export class BootSequence {
         `;
 
         if (this.linesContainer) this.linesContainer.appendChild(fileDiv);
-        this.currentLine = fileDiv;
         this.addVisibleLine(fileDiv);
 
         const progressBar = fileDiv.querySelector('.boot-progress-bar') as HTMLElement;
@@ -253,7 +249,7 @@ export class BootSequence {
         }
     }
 
-    private addVisibleLine(element: HTMLElement) {
+    private addVisibleLine(element: HTMLElement): void {
         this.visibleLines.push(element);
         if (this.visibleLines.length > this.MAX_VISIBLE_LINES) {
             const oldest = this.visibleLines.shift();
@@ -266,7 +262,7 @@ export class BootSequence {
         }
     }
 
-    private async animateProgress(element: HTMLElement, from: number, to: number, speed: number) {
+    private async animateProgress(element: HTMLElement, from: number, to: number, speed: number): Promise<void> {
         if (this.isSkipping) {
             element.style.width = `${to}%`;
             return;
@@ -287,7 +283,7 @@ export class BootSequence {
         }
     }
 
-    private async showEasterEggs(progressStart: number, progressEnd: number) {
+    private async showEasterEggs(progressStart: number, progressEnd: number): Promise<void> {
         const validEggs = this.filterFiles(SYSTEM_FILES.easterEggs);
         if (validEggs.length === 0) {
             this.updateProgress(progressEnd);
@@ -304,7 +300,7 @@ export class BootSequence {
         }
     }
 
-    private async showBootStats() {
+    private async showBootStats(): Promise<void> {
         // Quick fade if not skipping
         if (!this.isSkipping) {
             await this.delay(300);
@@ -338,7 +334,7 @@ export class BootSequence {
         }
     }
 
-    private getDynamicStats() {
+    private getDynamicStats(): { memory: string; timelines: string; paradox: string; paradoxColor: string; } {
         // Since we are in V2, we can just ask BootstrapTracker directly if we want
         // But for parity validation, let's look at attempts
         const history = this.game.bootstrapTracker.getHistory();
@@ -352,11 +348,11 @@ export class BootSequence {
         };
     }
 
-    private async showBootComplete() {
+    private async showBootComplete(): Promise<void> {
         await this.delay(300);
     }
 
-    private showCategoryInstant(categoryName: string, files: FileEntry[]) {
+    private showCategoryInstant(categoryName: string, files: FileEntry[]): void {
         const categoryDiv = document.createElement('div');
         categoryDiv.className = 'boot-category';
         categoryDiv.textContent = `→ ${categoryName}`;
@@ -377,12 +373,12 @@ export class BootSequence {
         });
     }
 
-    public skip() {
+    public skip(): void {
         this.isSkipping = true;
         this.updateProgress(100);
     }
 
-    private delay(ms: number) {
+    private delay(ms: number): Promise<void> {
         // Skip delays instantly when skipping
         if (this.isSkipping) {
             return Promise.resolve();

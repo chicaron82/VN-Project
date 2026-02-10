@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import '@ui/styles/loading-overlay.css';
 
 export class LoadingOverlay {
@@ -30,12 +30,12 @@ export class LoadingOverlay {
         this.initListeners();
     }
 
-    private initListeners() {
+    private initListeners(): void {
         this.eventBus.on('loading:start', () => this.show());
         this.eventBus.on('loading:end', () => this.hide());
     }
 
-    public show() {
+    public show(): void {
         if (this.isVisible) return;
 
         this.isVisible = true;
@@ -44,7 +44,7 @@ export class LoadingOverlay {
         this.container.classList.add('visible');
     }
 
-    public hide() {
+    public hide(): void {
         if (!this.isVisible) return;
 
         const elapsed = Date.now() - this.showTime;

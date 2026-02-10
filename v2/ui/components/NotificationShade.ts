@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { dispatchAction } from '../utils/ActionDispatcher';
 import { Logger } from '@utils/Logger';
 
@@ -415,82 +415,9 @@ export class NotificationShade {
         if (navigator.vibrate) navigator.vibrate(10);
     }
 
-    // @ts-ignore - Reserved for future pagination feature
-    private _nextPage(): void {
-        this.setPage(1);
-    }
-
-    // @ts-ignore - Reserved for future pagination feature
-    private _prevPage(): void {
-        this.setPage(0);
-    }
-
-    private setPage(pageIndex: number): void {
-        const track = this.container.querySelector('.quick-actions-track') as HTMLElement;
-        const dots = this.container.querySelectorAll('.quick-actions-dots .dot');
-
-        if (track) {
-            // this._currentQuickActionPage = pageIndex;
-            // V1 uses percentage: -50% for page 1 (track is 200% wide, each page is 50%)
-            track.style.transform = `translateX(-${pageIndex * 50}%)`;
-
-            dots.forEach((dot, index) => {
-                if (index === pageIndex) dot.classList.add('active');
-                else dot.classList.remove('active');
-            });
-
-            // V1 Parity: Haptic feedback on page change
-            if (navigator.vibrate) navigator.vibrate(10);
-        }
-    }
-
     public toggle(): void {
         if (this.isOpen) this.close();
         else this.open();
-    }
-
-    // @ts-ignore - Reserved for future fullscreen feature
-    private _toggleFullscreen(): void {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => Logger.warn(err));
-        } else {
-            if (document.exitFullscreen) document.exitFullscreen();
-        }
-        this.close();
-    }
-
-    // @ts-ignore - Reserved for future route display feature
-    private _updateRouteDisplay(route: string): void {
-        const el = this.container.querySelector('#shade-route');
-        if (el) el.textContent = route.toUpperCase();
-
-        // Apply route theming
-        this.container.classList.remove('ronnie-route', 'tori-route');
-        if (route.includes('ronnie')) this.container.classList.add('ronnie-route');
-        if (route.includes('tori')) this.container.classList.add('tori-route');
-
-        // Toggle tether visibility
-        const tetherRow = this.container.querySelector('#shade-tether-item') as HTMLElement;
-        if (tetherRow) {
-            tetherRow.style.display = route.includes('tori') ? 'flex' : 'none';
-        }
-    }
-
-    // @ts-ignore - Reserved for future tether display feature
-    private _updateTetherDisplay(level: number): void {
-        const el = this.container.querySelector('#shade-tether-value');
-        if (el) {
-            el.textContent = `${Math.round(level)}%`;
-            if (level < 20) el.classList.add('critical');
-            else el.classList.remove('critical');
-        }
-    }
-
-    // @ts-ignore - Reserved for future notes display feature
-    private _updateNotesDisplay(count: number): void {
-        const el = this.container.querySelector('#shade-notes');
-        // TODO: Get total from config or state
-        if (el) el.textContent = `${count}/??`;
     }
 
     // ========================================

@@ -4,7 +4,7 @@
  * Ported from V1 with exact flavour values
  */
 
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import type { CarouselItem } from './MenuCarousel';
 import { Logger } from '@utils/Logger';
 
@@ -52,7 +52,7 @@ export class SimpleCarousel {
         Logger.ui('📱 Simple Carousel (Portrait) initialized - Tinder Mode');
     }
 
-    init() {
+    public init(): void {
         // Set dynamic threshold based on viewport
         this.DISTANCE_THRESHOLD = window.innerWidth * 0.35; // 35% of screen width
 
@@ -71,7 +71,7 @@ export class SimpleCarousel {
         Logger.ui(`✅ Simple Carousel ready with ${this.items.length} cards (Tinder Mode)`);
     }
 
-    private initEventListeners() {
+    private initEventListeners(): void {
         this.track.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: true });
         this.track.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false });
         this.track.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: true });
@@ -80,7 +80,7 @@ export class SimpleCarousel {
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
     }
 
-    private renderCardStack() {
+    private renderCardStack(): void {
         this.track.innerHTML = '';
 
         // Render 3 cards: prev (hidden), current, next
@@ -178,7 +178,7 @@ export class SimpleCarousel {
         return cardDiv;
     }
 
-    private handleTouchStart(e: TouchEvent) {
+    private handleTouchStart(e: TouchEvent): void {
         if (this.isAnimating) return;
         if (!e.touches || e.touches.length === 0) return;
 
@@ -199,7 +199,7 @@ export class SimpleCarousel {
         }
     }
 
-    private handleTouchMove(e: TouchEvent) {
+    private handleTouchMove(e: TouchEvent): void {
         if (!e.touches || e.touches.length === 0) return;
         const touch = e.touches[0];
         if (!touch) return;
@@ -234,7 +234,7 @@ export class SimpleCarousel {
         }
     }
 
-    private handleTouchEnd(_e: TouchEvent) {
+    private handleTouchEnd(_e: TouchEvent): void {
         if (!this.isDragging) return;
 
         const deltaX = this.currentX - this.startX;
@@ -261,7 +261,7 @@ export class SimpleCarousel {
         this.swipeDirection = null;
     }
 
-    private handleKeyboard(e: KeyboardEvent) {
+    private handleKeyboard(e: KeyboardEvent): void {
         // Only handle if carousel is visible
         if (!this.container || this.container.style.display === 'none') return;
 
@@ -282,7 +282,7 @@ export class SimpleCarousel {
         }
     }
 
-    private updateCardDrag(deltaX: number) {
+    private updateCardDrag(deltaX: number): void {
         const currentCard = this.getCurrentCardElement();
         const nextCard = this.getNextCardElement();
         if (!currentCard || !nextCard) return;
@@ -309,7 +309,7 @@ export class SimpleCarousel {
         nextCard.style.opacity = nextOpacity.toString();
     }
 
-    private updateConfirmDrag(deltaY: number) {
+    private updateConfirmDrag(deltaY: number): void {
         const currentCard = this.getCurrentCardElement();
         if (!currentCard) return;
 
@@ -328,7 +328,7 @@ export class SimpleCarousel {
         currentCard.style.boxShadow = `0 0 ${glowIntensity}px rgba(0, 255, 255, ${dragProgress})`;
     }
 
-    private commitSwipe(direction: 'right' | 'left', velocityX: number = 0) {
+    private commitSwipe(direction: 'right' | 'left', velocityX: number = 0): void {
         this.isAnimating = true;
         const currentCard = this.getCurrentCardElement();
         if (!currentCard) return;
@@ -364,7 +364,7 @@ export class SimpleCarousel {
         }, 300);
     }
 
-    private springBack() {
+    private springBack(): void {
         const currentCard = this.getCurrentCardElement();
         const nextCard = this.getNextCardElement();
         if (!currentCard || !nextCard) return;
@@ -381,7 +381,7 @@ export class SimpleCarousel {
         nextCard.style.opacity = '0.7';
     }
 
-    private confirmCurrentCard() {
+    private confirmCurrentCard(): void {
         this.isAnimating = true;
         const currentCard = this.getCurrentCardElement();
         if (!currentCard) return;
@@ -405,17 +405,17 @@ export class SimpleCarousel {
         }, 200);
     }
 
-    private next() {
+    private next(): void {
         this.currentIndex = (this.currentIndex + 1) % this.items.length;
         this.updateDots();
     }
 
-    private prev() {
+    private prev(): void {
         this.currentIndex = (this.currentIndex - 1 + this.items.length) % this.items.length;
         this.updateDots();
     }
 
-    private goToCard(index: number) {
+    private goToCard(index: number): void {
         if (index === this.currentIndex) return;
         this.currentIndex = index;
         this.renderCardStack();
@@ -438,7 +438,7 @@ export class SimpleCarousel {
         return this.track.querySelector('[data-stack-position="2"]');
     }
 
-    private updateDots() {
+    private updateDots(): void {
         const dots = this.dotsContainer.querySelectorAll('.carousel-dot');
         dots.forEach((dot, index) => {
             if (index === this.currentIndex) {
@@ -449,7 +449,7 @@ export class SimpleCarousel {
         });
     }
 
-    private showTutorialIfFirstTime() {
+    private showTutorialIfFirstTime(): void {
         const tutorialDismissed = localStorage.getItem('carouselTutorialDismissed') === 'true';
         if (tutorialDismissed) return;
 
@@ -484,7 +484,7 @@ export class SimpleCarousel {
         Logger.ui('👆 Tutorial overlay shown');
     }
 
-    private dismissTutorial() {
+    private dismissTutorial(): void {
         if (this.tutorialOverlay) {
             this.tutorialOverlay.classList.add('dismissing');
             setTimeout(() => {
@@ -503,7 +503,11 @@ export class SimpleCarousel {
         return this.currentIndex;
     }
 
-    public destroy() {
+    public getIsDragging(): boolean {
+        return this.isDragging;
+    }
+
+    public destroy(): void {
         this.dismissTutorial();
         Logger.ui('📱 Simple Carousel destroyed');
     }

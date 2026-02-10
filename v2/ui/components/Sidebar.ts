@@ -1,9 +1,9 @@
-import { EventBus } from '../../core/EventBus';
+import type { EventBus } from '../../core/EventBus';
 import { dispatchAction } from '../utils/ActionDispatcher';
 import { Logger } from '@utils/Logger';
 
-import { StateManager } from '../../core/StateManager';
-import { CollectiblesSystem } from '../../systems/CollectiblesSystem';
+import type { StateManager } from '../../core/StateManager';
+import type { CollectiblesSystem } from '../../systems/CollectiblesSystem';
 
 export class Sidebar {
     private container!: HTMLElement;
@@ -36,7 +36,7 @@ export class Sidebar {
         this.initSidebarLayerSwipe();
     }
 
-    private createDOM() {
+    private createDOM(): void {
         // Toggle Button (Grab Handle)
         this.toggleBtn = document.createElement('div');
         this.toggleBtn.className = 'sidebar-toggle';
@@ -146,12 +146,12 @@ export class Sidebar {
         `;
         document.body.appendChild(this.container);
     }
-    private setupEventListeners() {
+    private setupEventListeners(): void {
         // EventBus listeners
         this.eventBus.on('ui:sidebar:open', () => this.open());
         this.eventBus.on('ui:sidebar:close', () => this.close());
         this.eventBus.on('ui:sidebar:toggle', () => this.toggle());
-        (this.eventBus as any).on('ui:sidebar_toggle', () => this.toggle()); // V1 Parity: GrabHandle tap-to-toggle
+        (this.eventBus as never as EventBus).on('ui:sidebar_toggle' as never, () => this.toggle()); // V1 Parity: GrabHandle tap-to-toggle
 
         // Toggle click
         this.toggleBtn.addEventListener('click', () => this.toggle());

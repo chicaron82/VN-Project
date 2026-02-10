@@ -1,5 +1,5 @@
 import { BacklogUI } from './BacklogUI';
-import { BacklogManager } from '../../core/BacklogManager';
+import type { BacklogManager } from '../../core/BacklogManager';
 
 // Mock DOM
 const mockElement = {

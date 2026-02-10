@@ -10,12 +10,22 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import { EventBus } from '../../core/EventBus';
-import { SettingsSystem } from '../../systems/SettingsSystem';
+import type { EventBus } from '../../core/EventBus';
+import type { SettingsSystem } from '../../systems/SettingsSystem';
 import { createSettingsDOM } from './settings/SettingsTemplate';
 import { wireSettingsEvents } from './settings/SettingsEventWiring';
 import { SettingsPersistence } from './settings/SettingsPersistence';
 import { Logger } from '@utils/Logger';
+
+// Type shim for global window object
+declare global {
+    interface Window {
+        secretCodesManager?: {
+            updateCodesUI: () => void;
+            hasDiscoveredCode: (code: string) => boolean;
+        };
+    }
+}
 
 /**
  * Settings configuration interface
@@ -265,8 +275,8 @@ export class SettingsModal {
         this.persistence.applySettingsToUI(this.container, this.settings);
         this.persistence.applyAllSettings(this.settings);
 
-        if ((window as any).secretCodesManager) {
-            (window as any).secretCodesManager.updateCodesUI();
+        if (window.secretCodesManager) {
+            window.secretCodesManager.updateCodesUI();
         }
 
         Logger.debug('Settings opened. Active tab:', this.currentTab);

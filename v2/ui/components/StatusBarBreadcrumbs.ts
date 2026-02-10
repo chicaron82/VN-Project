@@ -9,8 +9,8 @@
  * 💚🔥💀
  */
 
-import { UV7Context, ColorTint } from './StatusBarContext';
-import { EventBus } from '../../core/EventBus';
+import type { UV7Context, ColorTint } from './StatusBarContext';
+import type { EventBus } from '../../core/EventBus';
 import { Logger } from '@utils/Logger';
 
 // ========================================

@@ -1,9 +1,11 @@
-import { EventBus } from '../../core/EventBus';
+import type { EventBus, GameEvents } from '../../core/EventBus';
 import { Logger } from '@utils/Logger';
-import {
+import type {
     NotificationPriority,
     NotificationCategory as CoreNotificationCategory,
     NotificationConfig as CoreNotificationConfig,
+} from '@core/NotificationSystem/NotificationCore';
+import {
     PRIORITY_COLORS,
     DEFAULT_DURATIONS
 } from '@core/NotificationSystem/NotificationCore';
@@ -377,7 +379,7 @@ export class NotificationRail {
 
     private setupEventListeners(): void {
         // Listen for notification requests
-        const unsubNotify = this.eventBus.on('notification:show', (data) => {
+        const unsubNotify = this.eventBus.on('notification:show', (data: GameEvents['notification:show']) => {
             this.show({
                 id: data.id || `notif-${Date.now()}`,
                 title: data.title || 'Notification',
@@ -396,7 +398,7 @@ export class NotificationRail {
         this.unsubscribers.push(unsubNotify);
 
         // Listen for notification dismissal requests
-        const unsubDismiss = this.eventBus.on('notification:dismiss', (data) => {
+        const unsubDismiss = this.eventBus.on('notification:dismiss', (data: GameEvents['notification:dismiss']) => {
             if (data.id) {
                 this.dismiss(data.id);
             }
@@ -419,7 +421,7 @@ export class NotificationRail {
      */
     private setupAppSpecificListeners(): void {
         // ToriGatchi hunger warning
-        const unsubHunger = this.eventBus.on('torigatchi:hunger_warning', (data) => {
+        const unsubHunger = this.eventBus.on('torigatchi:hunger_warning', (data: GameEvents['torigatchi:hunger_warning']) => {
             this.show({
                 id: 'torigatchi-hunger',
                 title: 'ToriGatchi is Hungry!',
@@ -431,7 +433,7 @@ export class NotificationRail {
                 duration: 0, // Persistent until addressed
                 actionLabel: 'Feed Now',
                 actionCallback: () => {
-                    this.eventBus.emit('app:launch', { appId: 'torigatchi' });
+                    this.eventBus.emit('app:launch', { appId: 'torigatchi' } as never);
                 },
                 appId: 'torigatchi',
                 dismissible: true,

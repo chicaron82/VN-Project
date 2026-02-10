@@ -1,5 +1,5 @@
-import { EventBus } from '../../core/EventBus';
-import { StateManager } from '../../core/StateManager';
+import type { EventBus } from '../../core/EventBus';
+import type { StateManager } from '../../core/StateManager';
 import { Logger } from '../../utils/Logger';
 
 // ========================================
@@ -15,22 +15,27 @@ import { Logger } from '../../utils/Logger';
 // Modes (theming/screenshot/orientation) → status-bar/StatusBarModes.ts
 // Wiring (events/state/handlers) → status-bar/StatusBarWiring.ts
 
-import {
+import type {
     UV7Context,
     StatusBarFeatures,
     ColorTint,
+} from './StatusBarContext';
+import {
     COLOR_TINTS,
     detectContext,
     getFeatures,
 } from './StatusBarContext';
 
-import {
+import type {
     BreadcrumbSegment,
+} from './StatusBarBreadcrumbs';
+import {
     buildBreadcrumbs,
 } from './StatusBarBreadcrumbs';
 
 import { StatusBarGestures } from './StatusBarGestures';
-import { StatusBarMailSystem, UnreadNote } from './StatusBarMailSystem';
+import { StatusBarMailSystem } from './StatusBarMailSystem';
+import type { UnreadNote } from './StatusBarMailSystem';
 import { createStatusBarDOM } from './status-bar/StatusBarDOM';
 import { StatusBarIndicators } from './status-bar/StatusBarIndicators';
 import { StatusBarModes } from './status-bar/StatusBarModes';

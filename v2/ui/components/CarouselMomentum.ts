@@ -10,7 +10,7 @@ export interface CarouselMomentumConfig {
     container: HTMLElement;
     cards: HTMLElement[];
     onCardChange?: (index: number) => void;
-    game?: any; // Optional game instance
+    game?: unknown; // Optional game instance
     viewport?: HTMLElement;
     totalCards?: number;
     enableKeyboard?: boolean;
@@ -26,8 +26,6 @@ export class CarouselMomentum {
     private container: HTMLElement;
     private cards: HTMLElement[];
     private onCardChange: ((index: number) => void) | null;
-    // @ts-ignore
-    private game: any;
     private viewport: HTMLElement | null;
     private totalCards: number;
     private enableKeyboard: boolean;
@@ -51,19 +49,17 @@ export class CarouselMomentum {
     private isPotentialDrag: boolean = false;
     private isSnapping: boolean = false;
     private startX: number = 0;
-    // @ts-ignore
     private startY: number = 0;
     private lastX: number = 0;
     private lastTime: number = 0;
     private animationFrame: number | null = null;
     private resizeObserver: ResizeObserver | null = null;
-    private resizeTimeout: any = null;
+    private resizeTimeout: ReturnType<typeof setTimeout> | null = null;
 
     constructor(config: CarouselMomentumConfig) {
         this.container = config.container;
         this.cards = config.cards || [];
         this.onCardChange = config.onCardChange || null;
-        this.game = config.game || null;
         this.viewport = config.viewport || null;
         this.totalCards = config.totalCards || (this.cards.length / 3);
         this.enableKeyboard = config.enableKeyboard !== false;
@@ -79,7 +75,7 @@ export class CarouselMomentum {
         this.init();
     }
 
-    public init() {
+    public init(): void {
         if (!this.container || this.cards.length === 0) {
             Logger.error('CarouselMomentum: Invalid container or cards');
             return;
@@ -120,7 +116,7 @@ export class CarouselMomentum {
         }
     }
 
-    private handleResize() {
+    private handleResize(): void {
         if (this.cards.length > 0) {
             const oldCardWidth = this.cardWidth;
             const firstCard = this.cards[0];
@@ -149,13 +145,14 @@ export class CarouselMomentum {
         }
     }
 
-    private handleTouchStart(e: TouchEvent) {
+    private handleTouchStart(e: TouchEvent): void {
         this.isDragging = false;
         this.isPotentialDrag = true;
         this.velocity = 0;
 
         if (e.touches.length === 0) return;
-        const touch: any = e.touches[0];
+        const touch = e.touches[0];
+        if (!touch) return;
 
         this.startX = touch.clientX;
         this.startY = touch.clientY;
@@ -170,9 +167,10 @@ export class CarouselMomentum {
         this.isSnapping = false;
     }
 
-    private handleTouchMove(e: TouchEvent) {
+    private handleTouchMove(e: TouchEvent): void {
         if (e.touches.length === 0) return;
-        const touch: any = e.touches[0];
+        const touch = e.touches[0];
+        if (!touch) return;
 
         if (this.isPotentialDrag && !this.isDragging) {
             const deltaX = Math.abs(touch.clientX - this.startX);
@@ -214,7 +212,7 @@ export class CarouselMomentum {
         this.updateCardOpacity();
     }
 
-    private handleTouchEnd(e: TouchEvent) {
+    private handleTouchEnd(e: TouchEvent): void {
         const wasDragging = this.isDragging;
         this.isDragging = false;
         this.isPotentialDrag = false;
@@ -232,7 +230,7 @@ export class CarouselMomentum {
         }
     }
 
-    private handleMouseStart(e: MouseEvent) {
+    private handleMouseStart(e: MouseEvent): void {
         const target = e.target as HTMLElement;
         const isCard = target.closest('.carousel-card');
         const isButton = target.tagName === 'BUTTON' || target.closest('button');
@@ -255,7 +253,7 @@ export class CarouselMomentum {
         this.isSnapping = false;
     }
 
-    private handleMouseMove(e: MouseEvent) {
+    private handleMouseMove(e: MouseEvent): void {
         if (this.isPotentialDrag && !this.isDragging) {
             const deltaX = Math.abs(e.clientX - this.startX);
             if (deltaX > 5) {
@@ -288,7 +286,7 @@ export class CarouselMomentum {
         e.preventDefault();
     }
 
-    private handleMouseEnd(_e: MouseEvent) {
+    private handleMouseEnd(_e: MouseEvent): void {
         const wasDragging = this.isDragging;
         this.isDragging = false;
         this.isPotentialDrag = false;
@@ -304,7 +302,7 @@ export class CarouselMomentum {
         }
     }
 
-    private handleKeyboard(e: KeyboardEvent) {
+    private handleKeyboard(e: KeyboardEvent): void {
         if (!this.container || this.container.style.display === 'none') return;
 
         if (e.key === 'ArrowLeft') {
@@ -336,8 +334,8 @@ export class CarouselMomentum {
         return this.cards[centeredIndex] || null;
     }
 
-    private applyMomentum() {
-        const animate = () => {
+    private applyMomentum(): void {
+        const animate = (): void => {
             this.velocity *= this.friction;
             this.position += this.velocity;
             this.updatePosition();
@@ -352,7 +350,7 @@ export class CarouselMomentum {
         animate();
     }
 
-    private snapToCard() {
+    private snapToCard(): void {
         const cardSpacing = this.cardWidth + this.cardGap;
         const velocityFactor = Math.abs(this.velocity) / 8;
         const cardSkip = Math.floor(velocityFactor);
@@ -370,7 +368,7 @@ export class CarouselMomentum {
         const startTime = performance.now();
         const duration = 400;
 
-        const snapAnimation = () => {
+        const snapAnimation = (): void => {
             const elapsed = performance.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
@@ -403,7 +401,7 @@ export class CarouselMomentum {
         snapAnimation();
     }
 
-    public snapToSpecificCard(targetIndex: number) {
+    public snapToSpecificCard(targetIndex: number): void {
         const cardSpacing = this.cardWidth + this.cardGap;
         const targetPosition = -targetIndex * cardSpacing;
 
@@ -412,7 +410,7 @@ export class CarouselMomentum {
         const startTime = performance.now();
         const duration = 400;
 
-        const snapAnimation = () => {
+        const snapAnimation = (): void => {
             const elapsed = performance.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const eased = 1 - Math.pow(1 - progress, 3);
@@ -445,7 +443,7 @@ export class CarouselMomentum {
         snapAnimation();
     }
 
-    private updatePosition(skipTeleport = false) {
+    private updatePosition(skipTeleport = false): void {
         let centerOffset = 0;
         if (this.viewport) {
             const viewportWidth = this.viewport.offsetWidth || window.innerWidth;
@@ -475,7 +473,7 @@ export class CarouselMomentum {
         }
     }
 
-    private updateCardOpacity() {
+    private updateCardOpacity(): void {
         const cardSpacing = this.cardWidth + this.cardGap;
         this.cards.forEach((card, index) => {
             const cardPosition = (index * cardSpacing) + this.position;
@@ -491,7 +489,7 @@ export class CarouselMomentum {
         });
     }
 
-    public moveToCard(index: number, instant = false) {
+    public moveToCard(index: number, instant = false): void {
         const clampedIndex = ((index % this.cards.length) + this.cards.length) % this.cards.length;
         if (clampedIndex === this.currentIndex && !instant) return;
 
@@ -509,11 +507,15 @@ export class CarouselMomentum {
         }
     }
 
-    public getCurrentCard() {
+    public getCurrentCard(): number {
         return this.currentIndex;
     }
 
-    public destroy() {
+    public getIsDragging(): boolean {
+        return this.isDragging;
+    }
+
+    public destroy(): void {
         if (this.animationFrame) cancelAnimationFrame(this.animationFrame);
         if (this.resizeObserver) this.resizeObserver.disconnect();
         if (this.resizeTimeout) clearTimeout(this.resizeTimeout);

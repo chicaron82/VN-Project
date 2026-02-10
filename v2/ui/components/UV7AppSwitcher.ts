@@ -23,6 +23,15 @@ import { AppCardRenderer } from './appswitcher/AppCardRenderer';
 import type { AppDefinition } from './appswitcher/AppCatalog';
 import { Logger } from '@utils/Logger';
 
+// Type shim for global window and document objects
+declare global {
+    interface Window {
+        uv7Shell?: boolean;
+        UV7AppSwitcher?: typeof UV7AppSwitcher;
+        uv7AppSwitcher?: UV7AppSwitcher;
+    }
+}
+
 // ═══════════════════════════════════════════════════════════════
 // LOCAL TYPE DEFINITIONS
 // ═══════════════════════════════════════════════════════════════
@@ -264,17 +273,18 @@ export class UV7AppSwitcher {
         this.close();
 
         setTimeout(() => {
-            const isShellMode = !!(window as any).uv7Shell;
+            const isShellMode = !!window.uv7Shell;
 
             if (isShellMode && url.startsWith('#')) {
                 window.location.hash = url;
             } else {
-                if (!(document as any).startViewTransition) {
+                const transitionedDoc = (document as unknown as { startViewTransition?: (cb: () => void) => void });
+                if (!transitionedDoc.startViewTransition) {
                     window.location.href = url;
                     return;
                 }
 
-                (document as any).startViewTransition(() => {
+                transitionedDoc.startViewTransition(() => {
                     window.location.href = url;
                 });
             }
@@ -311,7 +321,7 @@ export class UV7AppSwitcher {
 
 // Export for use in UV7 OS (maintaining global compatibility for now)
 if (typeof window !== 'undefined') {
-    (window as any).UV7AppSwitcher = UV7AppSwitcher;
+    window.UV7AppSwitcher = UV7AppSwitcher;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -323,12 +333,12 @@ if (typeof window !== 'undefined') {
  * Returns the singleton instance for the current page
  */
 export async function initializeAppSwitcher(): Promise<UV7AppSwitcher> {
-    if ((window as any).uv7AppSwitcher) {
-        return (window as any).uv7AppSwitcher;
+    if (window.uv7AppSwitcher) {
+        return window.uv7AppSwitcher;
     }
 
     const appSwitcher = new UV7AppSwitcher();
-    (window as any).uv7AppSwitcher = appSwitcher;
+    window.uv7AppSwitcher = appSwitcher;
 
     return appSwitcher;
 }

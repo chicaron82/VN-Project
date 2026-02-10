@@ -1,6 +1,6 @@
-import { EventBus } from '../../core/EventBus';
-import { NoteData } from '../../core/types';
-import { CollectiblesSystem } from '../../systems/CollectiblesSystem';
+import type { EventBus } from '../../core/EventBus';
+import type { NoteData } from '../../core/types';
+import type { CollectiblesSystem } from '../../systems/CollectiblesSystem';
 
 /**
  * Note type icon mapping
@@ -54,7 +54,7 @@ export class NotesViewer {
         this.setupListeners();
     }
 
-    private render() {
+    private render(): void {
         const existing = document.getElementById('notes-viewer-overlay');
         if (existing) existing.remove();
 
@@ -95,7 +95,7 @@ export class NotesViewer {
     /**
      * Render toast notification container
      */
-    private renderToastContainer() {
+    private renderToastContainer(): void {
         const existing = document.getElementById('notes-toast-container');
         if (existing) existing.remove();
 
@@ -105,7 +105,7 @@ export class NotesViewer {
         document.body.appendChild(this.toastContainer);
     }
 
-    private setupListeners() {
+    private setupListeners(): void {
         // Close button
         this.overlay.querySelector('#notes-close-btn')?.addEventListener('click', () => {
             this.hide();
@@ -152,7 +152,7 @@ export class NotesViewer {
     /**
      * Queue a toast notification (prevents stacking)
      */
-    private queueToast(noteId: string, title: string, type: string) {
+    private queueToast(noteId: string, title: string, type: string): void {
         const icon = NOTE_TYPE_ICONS[type] || '📧';
         this.toastQueue.push({ icon, title, noteId });
 
@@ -164,7 +164,7 @@ export class NotesViewer {
     /**
      * Show the next toast in queue
      */
-    private showNextToast() {
+    private showNextToast(): void {
         if (this.toastQueue.length === 0) {
             this.isShowingToast = false;
             return;
@@ -183,7 +183,7 @@ export class NotesViewer {
         this.toastContainer.appendChild(toastEl);
 
         // Emit event for external tracking
-        this.eventBus.emit('note:toast' as any, { noteId: toast.noteId, title: toast.title });
+        this.eventBus.emit('note:toast' as never, { noteId: toast.noteId, title: toast.title } as never);
 
         // Trigger animation
         requestAnimationFrame(() => {
@@ -200,7 +200,7 @@ export class NotesViewer {
         }, 3000);
     }
 
-    public show() {
+    public show(): void {
         this.refreshList();
         this.overlay.style.display = 'block';
         // Force reflow for fade in
@@ -208,7 +208,7 @@ export class NotesViewer {
         this.overlay.classList.add('visible');
     }
 
-    public hide() {
+    public hide(): void {
         this.overlay.classList.remove('visible');
         setTimeout(() => {
             this.overlay.style.display = 'none';
@@ -216,7 +216,7 @@ export class NotesViewer {
         }, 300);
     }
 
-    private refreshList() {
+    private refreshList(): void {
         this.notesList.innerHTML = '';
         const notes = this.collectiblesSystem.getNotes();
 
@@ -295,7 +295,7 @@ export class NotesViewer {
     // NOTE OVERLAY SYSTEM (V1 PARITY)
     // ========================================
 
-    private renderNoteOverlay() {
+    private renderNoteOverlay(): void {
         this.noteOverlay = document.createElement('div');
         this.noteOverlay.className = 'note-overlay';
         this.noteOverlay.innerHTML = `
@@ -332,7 +332,7 @@ export class NotesViewer {
         });
     }
 
-    private openNoteOverlay(note: NoteData) {
+    private openNoteOverlay(note: NoteData): void {
         this.activeNoteId = note.id;
         this.collectiblesSystem.markAsRead(note.id);
 
@@ -383,7 +383,7 @@ export class NotesViewer {
      * Process RNG code drop system
      * After viewing a note 3 times, 30% chance to reveal hidden code
      */
-    private processCodeDrop(noteId: string, viewCount: number, codeDropArea: Element) {
+    private processCodeDrop(noteId: string, viewCount: number, codeDropArea: Element): void {
         // Check if code already revealed for this note
         const revealedCode = this.collectiblesSystem.getRevealedCode(noteId);
 
@@ -422,7 +422,7 @@ export class NotesViewer {
                     codeDropArea.classList.add('has-code');
 
                     // Emit code revealed event
-                    this.eventBus.emit('code:revealed' as any, { noteId, code });
+                    this.eventBus.emit('code:revealed' as never, { noteId, code } as never);
 
                     // Show toast for code reveal
                     this.showCodeRevealToast(code);
@@ -477,7 +477,7 @@ export class NotesViewer {
     /**
      * Show special toast for code reveal
      */
-    private showCodeRevealToast(code: string) {
+    private showCodeRevealToast(code: string): void {
         const toastEl = document.createElement('div');
         toastEl.className = 'note-toast code-toast';
         toastEl.innerHTML = `
@@ -499,11 +499,11 @@ export class NotesViewer {
         }, 4000); // Longer duration for code reveals
     }
 
-    private closeNoteOverlay() {
+    private closeNoteOverlay(): void {
         this.noteOverlay.classList.remove('visible');
     }
 
-    private navigateNote(direction: 'prev' | 'next') {
+    private navigateNote(direction: 'prev' | 'next'): void {
         if (!this.activeNoteId) return;
 
         const currentIndex = this.allNoteIds.indexOf(this.activeNoteId);
@@ -520,7 +520,7 @@ export class NotesViewer {
         }
     }
 
-    private updateNavigationButtons() {
+    private updateNavigationButtons(): void {
         if (!this.activeNoteId) return;
 
         const currentIndex = this.allNoteIds.indexOf(this.activeNoteId);
