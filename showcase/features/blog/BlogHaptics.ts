@@ -92,7 +92,7 @@ export class BlogHaptics {
 
         try {
             navigator.vibrate(vibPattern);
-        } catch (e) {
+        } catch {
             // Ignore errors (e.g. if user interaction requirement not met)
         }
     }

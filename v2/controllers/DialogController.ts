@@ -1,6 +1,6 @@
-import { SettingsSystem } from '@systems/SettingsSystem';
-import { EventBus } from '@core/EventBus';
-import { StateManager } from '@core/StateManager';
+import type { SettingsSystem } from '@systems/SettingsSystem';
+import type { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
 export interface DialogState {
@@ -43,7 +43,7 @@ export class DialogController {
 
     private pages: string[] = [];
     private charIndex: number = 0;
-    private timer: any = null;
+    private timer: ReturnType<typeof setTimeout> | null = null;
     private onUpdate: ((text: string) => void) | null = null;
 
     // Typewriter settings
@@ -106,7 +106,7 @@ export class DialogController {
         });
 
         // Listen for scene changes to track read state
-        this.eventBus.on('scene:load', (data) => {
+        this.eventBus.on('scene:load', (data: { sceneId: string }) => {
             this.currentSceneId = data.sceneId;
             this.currentDialogueIndex = 0;
         });
@@ -115,7 +115,7 @@ export class DialogController {
     /**
      * Set callback for text updates (avoids EventBus spam)
      */
-    onTextUpdate(callback: (text: string) => void) {
+    onTextUpdate(callback: (text: string) => void): void {
         this.onUpdate = callback;
     }
 
@@ -125,7 +125,7 @@ export class DialogController {
      * @param reset - Whether to reset pagination (default: true)
      * @param sceneId - Optional scene ID for read tracking
      */
-    show(text: string, reset: boolean = true, sceneId?: string) {
+    show(text: string, reset: boolean = true, sceneId?: string): void {
         // Update scene context if provided
         if (sceneId && sceneId !== this.currentSceneId) {
             this.currentSceneId = sceneId;
@@ -163,7 +163,7 @@ export class DialogController {
         return [text];
     }
 
-    private startTypingPage(pageIndex: number) {
+    private startTypingPage(pageIndex: number): void {
         this.state.fullText = this.pages[pageIndex] ?? '';
         this.state.currentText = '';
         this.state.isTyping = true;
@@ -174,7 +174,7 @@ export class DialogController {
         this.tick();
     }
 
-    private tick() {
+    private tick(): void {
         if (!this.state.isTyping) return;
 
         if (this.charIndex < this.state.fullText.length) {
@@ -196,7 +196,7 @@ export class DialogController {
         }
     }
 
-    private complete() {
+    private complete(): void {
         this.state.currentText = this.state.fullText;
         this.state.isTyping = false;
         this.state.isComplete = true;
@@ -227,7 +227,7 @@ export class DialogController {
         }
     }
 
-    private clearTimer() {
+    private clearTimer(): void {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
@@ -452,7 +452,7 @@ export class DialogController {
     /**
      * Skip typing (finish immediately)
      */
-    skip() {
+    skip(): void {
         if (this.state.isTyping) {
             this.complete();
         }
@@ -461,7 +461,7 @@ export class DialogController {
     /**
      * Handle user click (Advance or Skip)
      */
-    handleClick() {
+    handleClick(): void {
         if (this.state.isTyping) {
             this.skip();
         } else {
@@ -476,7 +476,7 @@ export class DialogController {
         }
     }
 
-    destroy() {
+    destroy(): void {
         this.clearTimer();
     }
 }

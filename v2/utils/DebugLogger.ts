@@ -59,7 +59,7 @@ export class DebugLogger {
     /**
      * Log with category filtering
      */
-    private static log(category: string, ...args: any[]): void {
+    private static log(category: string, ...args: unknown[]): void {
         // Check if DEBUG is enabled
         if (typeof GameConfig === 'undefined' || !GameConfig.DEBUG.enabled) return;
 
@@ -80,42 +80,42 @@ export class DebugLogger {
     /**
      * Scene changes logging
      */
-    public static scene(...args: any[]): void {
+    public static scene(...args: unknown[]): void {
         this.log('sceneChanges', ...args);
     }
 
     /**
      * State changes logging
      */
-    public static state(...args: any[]): void {
+    public static state(...args: unknown[]): void {
         this.log('stateChanges', ...args);
     }
 
     /**
      * Tether updates logging
      */
-    public static tether(...args: any[]): void {
+    public static tether(...args: unknown[]): void {
         this.log('tetherUpdates', ...args);
     }
 
     /**
      * Save/load logging
      */
-    public static save(...args: any[]): void {
+    public static save(...args: unknown[]): void {
         this.log('saveLoad', ...args);
     }
 
     /**
      * Sensory feedback logging
      */
-    public static sensory(...args: any[]): void {
+    public static sensory(...args: unknown[]): void {
         this.log('sensoryFeedback', ...args);
     }
 
     /**
      * Easter egg logging
      */
-    public static easter(...args: any[]): void {
+    public static easter(...args: unknown[]): void {
         this.log('easterEggs', ...args);
     }
 
@@ -126,21 +126,21 @@ export class DebugLogger {
     /**
      * Error logging (always enabled)
      */
-    public static error(...args: any[]): void {
+    public static error(...args: unknown[]): void {
         Logger.error(...args);
     }
 
     /**
      * Warning logging (always enabled)
      */
-    public static warn(...args: any[]): void {
+    public static warn(...args: unknown[]): void {
         Logger.warn(...args);
     }
 
     /**
      * Info logging (always enabled)
      */
-    public static info(...args: any[]): void {
+    public static info(...args: unknown[]): void {
         Logger.info(...args);
     }
 }

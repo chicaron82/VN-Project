@@ -47,7 +47,7 @@ export class BlogAudio {
         if (this.ctx) return;
 
         try {
-            const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+            const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
             this.ctx = new AudioContextClass();
             this.masterGain = this.ctx.createGain();
             this.masterGain.connect(this.ctx.destination);

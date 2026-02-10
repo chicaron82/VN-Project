@@ -251,7 +251,7 @@ export class SystemBannerController {
             // Check if app is loaded in background (iframe exists)
             const iframe = window.parent.document.querySelector(`iframe[data-app="${appId}"]`);
             return iframe ? 'background' : 'not-loaded';
-        } catch (e) {
+        } catch {
             // Cross-origin restriction, assume not loaded
             return 'not-loaded';
         }

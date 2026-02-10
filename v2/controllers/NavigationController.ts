@@ -1,7 +1,7 @@
-import { EventBus } from '../core/EventBus';
+import type { EventBus } from '../core/EventBus';
 import { MainMenu } from '../ui/screens/MainMenu';
 import { RouteSelect } from '../ui/screens/RouteSelect';
-import { LoopController } from './LoopController';
+import type { LoopController } from './LoopController';
 import { Logger } from '@utils/Logger';
 
 type Screen = { unmount: () => void };

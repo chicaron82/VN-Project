@@ -1,7 +1,7 @@
 import { PauseManager } from './PauseManager';
 
 // Mock EventBus
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

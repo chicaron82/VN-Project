@@ -12,7 +12,7 @@ import { AppSwitcherController } from './controllers/AppSwitcherController';
 import type { BaseApp } from './apps/BaseApp';
 
 // Mock BaseApp
-class MockApp implements Partial<BaseApp> {
+class _MockApp implements Partial<BaseApp> {
     shell: UV7Shell;
     id: string = 'mock';
     container: HTMLElement | null = null;
@@ -23,7 +23,7 @@ class MockApp implements Partial<BaseApp> {
         this.shell = shell;
     }
 
-    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
+    async mount(container: HTMLElement, _params: Record<string, string> = {}): Promise<void> {
         this.container = container;
         this.mounted = true;
         container.innerHTML = '<div>Mock App Content</div>';
@@ -36,7 +36,7 @@ class MockApp implements Partial<BaseApp> {
         this.mounted = false;
     }
 
-    onRouteChange(params: Record<string, any>): void {
+    onRouteChange(_params: Record<string, string>): void {
         // Mock implementation
     }
 
@@ -52,7 +52,7 @@ class MockApp implements Partial<BaseApp> {
         return {};
     }
 
-    restoreState(state: Record<string, any>): void {
+    restoreState(_state: Record<string, unknown>): void {
         // Mock implementation
     }
 }

@@ -39,7 +39,7 @@ export interface ActionRouterDeps {
 export class ActionRouter {
     private screenshotExitHandler: ((e: Event) => void) | null = null;
 
-    constructor(private deps: ActionRouterDeps) {}
+    constructor(private deps: ActionRouterDeps) { }
 
     handleAction(action: string): void {
         Logger.ui(`🎯 Quick action: ${action}`);
@@ -176,7 +176,7 @@ export class ActionRouter {
 
         document.body.appendChild(overlay);
 
-        const closeHelp = () => {
+        const closeHelp = (): void => {
             overlay.classList.add('closing');
             setTimeout(() => overlay.remove(), 200);
         };

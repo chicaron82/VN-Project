@@ -1,4 +1,4 @@
-import { EventBus, EventName } from './EventBus';
+import type { EventBus, EventName } from './EventBus';
 import type { GameEvents } from './EventBus';
 // import { GameConfig } from './GameConfig';
 

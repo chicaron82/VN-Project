@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import '@ui/styles/main.css';
 
 export class RetryScreen {
@@ -32,7 +32,7 @@ export class RetryScreen {
         this.bindEvents();
     }
 
-    public show(data: { currentRoute: string, loopVersion: number }) {
+    public show(data: { currentRoute: string, loopVersion: number }): void {
         this.currentRoute = data.currentRoute;
         this.loopVersion = data.loopVersion;
         this.render(); // Re-render with new data
@@ -42,11 +42,11 @@ export class RetryScreen {
         this.eventBus.emit('effect:code_rain', { duration: 2000 });
     }
 
-    public hide() {
+    public hide(): void {
         this.container.style.display = 'none';
     }
 
-    private render() {
+    private render(): void {
         this.container.innerHTML = `
             <div id="retry-content" style="text-align: center; gap: 20px; display: flex; flex-direction: column;">
                 <h1 style="font-size: 3rem; text-shadow: 0 0 10px #0f0;">LOOP INITIALIZATION</h1>
@@ -98,15 +98,15 @@ export class RetryScreen {
         });
     }
 
-    private bindEvents() {
+    private bindEvents(): void {
         // Initial binding if needed, but render handles it
     }
 
-    mount(parent: HTMLElement) {
+    mount(parent: HTMLElement): void {
         parent.appendChild(this.container);
     }
 
-    unmount() {
+    unmount(): void {
         this.container.remove();
     }
 }

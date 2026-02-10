@@ -19,7 +19,7 @@
  * "Built with love. 💚🔥💀"
  */
 
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 type GrabPosition = {
@@ -84,7 +84,7 @@ export class GrabHandleRepositioner {
         Logger.ui('[GrabHandle] ✅ V1 Parity Complete - All features active', this.position);
     }
 
-    private attachEvents() {
+    private attachEvents(): void {
         if (!this.handle) return;
 
         // ========================================
@@ -111,7 +111,7 @@ export class GrabHandleRepositioner {
     // MOUSE HANDLERS
     // ========================================
 
-    private handleMouseDown(e: MouseEvent) {
+    private handleMouseDown(e: MouseEvent): void {
         // Only left click
         if (e.button !== 0) return;
 
@@ -140,7 +140,7 @@ export class GrabHandleRepositioner {
         e.preventDefault(); // Prevent text selection
     }
 
-    private handleMouseMove(e: MouseEvent) {
+    private handleMouseMove(e: MouseEvent): void {
         if (this.isDragDelayActive || !this.isDragging) {
             // Track position but don't drag yet
             this.currentX = e.clientX;
@@ -158,7 +158,7 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private handleMouseUp(e: MouseEvent) {
+    private handleMouseUp(e: MouseEvent): void {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -206,7 +206,7 @@ export class GrabHandleRepositioner {
     // TOUCH HANDLERS
     // ========================================
 
-    private handleTouchStart(e: TouchEvent) {
+    private handleTouchStart(e: TouchEvent): void {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -234,7 +234,7 @@ export class GrabHandleRepositioner {
         }, this.HOLD_DELAY);
     }
 
-    private handleTouchMove(e: TouchEvent) {
+    private handleTouchMove(e: TouchEvent): void {
         const touch = e.touches[0];
         if (!touch) return;
 
@@ -257,7 +257,7 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private handleTouchEnd(e: TouchEvent) {
+    private handleTouchEnd(e: TouchEvent): void {
         // Clear drag delay timer
         if (this.dragDelayTimer) {
             clearTimeout(this.dragDelayTimer);
@@ -305,7 +305,7 @@ export class GrabHandleRepositioner {
     // TAP HANDLING
     // ========================================
 
-    private handleTap() {
+    private handleTap(): void {
         const now = Date.now();
 
         // Check for double-tap
@@ -342,7 +342,7 @@ export class GrabHandleRepositioner {
     // CLICK INTERCEPTION
     // ========================================
 
-    private handleClick(e: MouseEvent) {
+    private handleClick(e: MouseEvent): void {
         // Prevent click if we just finished dragging
         if (this.wasDragging || this.isDoubleTapping) {
             e.preventDefault();
@@ -354,7 +354,7 @@ export class GrabHandleRepositioner {
     // DRAG LOGIC
     // ========================================
 
-    private startDrag() {
+    private startDrag(): void {
         this.isDragging = true;
         if (this.handle) {
             this.handle.classList.add('dragging');
@@ -362,7 +362,7 @@ export class GrabHandleRepositioner {
         this.triggerHaptic('light');
     }
 
-    private updateDragPosition() {
+    private updateDragPosition(): void {
         this.rafPending = false;
 
         if (!this.isDragging) return;
@@ -401,7 +401,7 @@ export class GrabHandleRepositioner {
         this.dragStartY = this.currentY;
     }
 
-    private endDrag() {
+    private endDrag(): void {
         this.isDragging = false;
         if (this.handle) {
             this.handle.classList.remove('dragging');
@@ -416,13 +416,14 @@ export class GrabHandleRepositioner {
     // SIDEBAR INTEGRATION
     // ========================================
 
-    private toggleSidebar() {
+    private toggleSidebar(): void {
         // Emit event to toggle sidebar
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- event not in typed GameEvents map
         (this.eventBus as any).emit('ui:sidebar_toggle', {});
         Logger.ui('[GrabHandle] 👆 Tap-to-toggle sidebar');
     }
 
-    private flipSide() {
+    private flipSide(): void {
         this.position.side = this.position.side === 'left' ? 'right' : 'left';
         this.applyPosition();
         this.savePosition();
@@ -443,14 +444,14 @@ export class GrabHandleRepositioner {
     // POSITION MANAGEMENT
     // ========================================
 
-    private clamp() {
+    private clamp(): void {
         // Constraints: Below status bar (top), above bottom usage area
         const min = 50; // Status bar height + buffer
         const max = window.innerHeight - 80; // Bottom margin for backlog button
         this.position.top = Math.max(min, Math.min(max, this.position.top));
     }
 
-    private applyPosition() {
+    private applyPosition(): void {
         if (!this.handle) return;
 
         // Use transform for centering + top offset
@@ -470,7 +471,7 @@ export class GrabHandleRepositioner {
         }
     }
 
-    private savePosition() {
+    private savePosition(): void {
         localStorage.setItem('uv7-grab-handle', JSON.stringify(this.position));
     }
 
@@ -489,8 +490,9 @@ export class GrabHandleRepositioner {
     // HAPTIC FEEDBACK
     // ========================================
 
-    private triggerHaptic(type: 'light' | 'medium' | 'heavy') {
+    private triggerHaptic(type: 'light' | 'medium' | 'heavy'): void {
         // Emit haptic event for HapticSystem to handle
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- event not in typed GameEvents map
         (this.eventBus as any).emit('haptic:trigger', { type });
 
         // Fallback vibration for browsers without HapticSystem

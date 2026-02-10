@@ -15,7 +15,7 @@ import {
     unlockInsaneMode,
     isInsaneModeUnlocked,
     getDifficultyDisplayInfo,
-    DifficultyId
+    DifficultyId as _DifficultyId
 } from './DifficultyProfiles';
 
 describe('DifficultyProfiles', () => {

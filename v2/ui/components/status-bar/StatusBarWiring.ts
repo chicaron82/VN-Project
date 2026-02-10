@@ -46,7 +46,7 @@ export class StatusBarWiring {
         private eventBus: EventBus,
         private stateManager: StateManager | null,
         private callbacks: StatusBarWiringCallbacks
-    ) {}
+    ) { }
 
     // ========================================
     // UI HANDLER SETUP
@@ -162,8 +162,8 @@ export class StatusBarWiring {
         });
         this.unsubscribers.push(unsubSettings);
 
-        const pauseHandler = () => cb.setPaused(true);
-        const unpauseHandler = () => cb.setPaused(false);
+        const pauseHandler = (): void => cb.setPaused(true);
+        const unpauseHandler = (): void => cb.setPaused(false);
 
         this.eventBus.on('ui:sidebar:opened', pauseHandler);
         this.eventBus.on('ui:shade:opened', pauseHandler);
@@ -229,7 +229,7 @@ export class StatusBarWiring {
     // ========================================
 
     setupIdleTimer(): void {
-        const resetIdle = () => this.resetIdleTimer();
+        const resetIdle = (): void => this.resetIdleTimer();
         document.addEventListener('mousemove', resetIdle);
         document.addEventListener('touchstart', resetIdle);
         document.addEventListener('keydown', resetIdle);

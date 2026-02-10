@@ -1,5 +1,5 @@
 
-import { DevCommentarySystem } from '@systems/DevCommentarySystem';
+import type { DevCommentarySystem } from '@systems/DevCommentarySystem';
 
 
 export class DirectorsCutScreen {

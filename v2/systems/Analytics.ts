@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -321,7 +321,7 @@ ${Object.entries(stats.mostVisitedScenes).map(([k, v]) => `  ${k}: ${v} visits`)
             if (saved) {
                 this.events = JSON.parse(saved) as AnalyticsEvent[];
             }
-        } catch (e) {
+        } catch {
             Logger.warn('Failed to load analytics events');
         }
     }
@@ -329,7 +329,7 @@ ${Object.entries(stats.mostVisitedScenes).map(([k, v]) => `  ${k}: ${v} visits`)
     private saveEvents(): void {
         try {
             localStorage.setItem('analytics_events', JSON.stringify(this.events));
-        } catch (e) {
+        } catch {
             Logger.warn('Failed to save analytics events');
         }
     }

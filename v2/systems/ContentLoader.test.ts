@@ -1,5 +1,5 @@
 import { ContentLoader } from '@systems/ContentLoader';
-import { GameEngine } from '@core/GameEngine';
+import type { GameEngine } from '@core/GameEngine';
 
 describe('ContentLoader', () => {
     let engine: GameEngine;

@@ -14,7 +14,7 @@ export interface APICallLog {
     timestamp: number;
     namespace: string;
     method: string;
-    args: any[];
+    args: unknown[];
 }
 
 export interface ActionHandlerInfo {
@@ -489,7 +489,7 @@ export class ChromeDevTools {
     /**
      * PUBLIC API - Track API call
      */
-    public trackAPICall(namespace: string, method: string, args: any[]): void {
+    public trackAPICall(namespace: string, method: string, args: unknown[]): void {
         this.apiCallLog.push({
             timestamp: Date.now(),
             namespace,

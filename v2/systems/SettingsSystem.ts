@@ -1,4 +1,4 @@
-import { StateManager } from '@core/StateManager';
+import type { StateManager } from '@core/StateManager';
 import { GameConfig } from '@core/GameConfig';
 import { Logger } from '@utils/Logger';
 

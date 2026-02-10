@@ -66,7 +66,7 @@ class AnimatedStats {
         const start = 0;
         const startTime = performance.now();
 
-        const update = (currentTime: number) => {
+        const update = (currentTime: number): void => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
 

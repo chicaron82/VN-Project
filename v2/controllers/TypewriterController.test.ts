@@ -1,5 +1,5 @@
 import { TypewriterController } from './TypewriterController';
-import { StateManager } from '../core/StateManager';
+import type { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {

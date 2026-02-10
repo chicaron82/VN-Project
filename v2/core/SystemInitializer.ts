@@ -43,7 +43,8 @@ import { CrewScreen } from '../ui/screens/CrewScreen';
 import { DialogBubble } from '../ui/components/DialogBubble';
 import { SaveLoadModal } from '../ui/components/SaveLoadModal';
 import { BacklogUI } from '../ui/components/BacklogUI';
-import { initializeNotificationRail, NotificationRail } from '../ui/components/NotificationRail';
+import type { NotificationRail } from '../ui/components/NotificationRail';
+import { initializeNotificationRail } from '../ui/components/NotificationRail';
 
 /**
  * SystemInitializer - Bootstrap all V2 systems and UI components
@@ -278,7 +279,8 @@ export class SystemInitializer {
               achievementSystem, tutorialController, _tipsOverlay];
 
         // Set up window globals for external access (dev tools)
-        const win = window as unknown as Window & Record<string, unknown>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const win = window as any;
         win.secretCodesManager = secretCodesSystem;
         win.collectiblesSystem = collectiblesSystem;
         win.saveSystem = saveSystem;

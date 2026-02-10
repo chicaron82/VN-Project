@@ -1,5 +1,5 @@
-import { EventBus } from '../core/EventBus';
-import { NoteData } from '../core/types';
+import type { EventBus } from '../core/EventBus';
+import type { NoteData } from '../core/types';
 import { Logger } from '../utils/Logger';
 
 // Import raw JSON content
@@ -135,32 +135,32 @@ export class CollectiblesSystem {
         this.setupListeners();
     }
 
-    private initializeNotes() {
+    private initializeNotes(): void {
         // Merge notes from all sources
         // We augment the raw JSON with the 'id' and 'sender' fields
 
         // Process Tori notes
-        Object.entries(toriNotes).forEach(([id, data]: [string, any]) => {
+        Object.entries(toriNotes).forEach(([id, data]: [string, Record<string, unknown>]) => {
             this.allNotes[id] = {
                 id,
                 ...data,
-                sender: this.getSenderName(data.type)
-            };
+                sender: this.getSenderName(data.type as string)
+            } as NoteData;
         });
 
         // Process Ronnie notes
-        Object.entries(ronnieNotes).forEach(([id, data]: [string, any]) => {
+        Object.entries(ronnieNotes).forEach(([id, data]: [string, Record<string, unknown>]) => {
             this.allNotes[id] = {
                 id,
                 ...data,
-                sender: this.getSenderName(data.type)
-            };
+                sender: this.getSenderName(data.type as string)
+            } as NoteData;
         });
 
         Logger.system(`[CollectiblesSystem] Initialized with ${Object.keys(this.allNotes).length} notes`);
     }
 
-    private setupListeners() {
+    private setupListeners(): void {
         // Listen for unlock events (could be triggered by scenes)
         // For now, we'll expose a global method or rely on direct calls if needed,
         // but ideally we listen for an event.
@@ -170,7 +170,7 @@ export class CollectiblesSystem {
     /**
      * Unlock a note by ID
      */
-    public unlockNote(noteId: string) {
+    public unlockNote(noteId: string): void {
         if (!this.allNotes[noteId]) {
             Logger.warn(`[CollectiblesSystem] Cannot unlock unknown note: ${noteId}`);
             return;
@@ -204,7 +204,7 @@ export class CollectiblesSystem {
     /**
      * Mark a note as read
      */
-    public markAsRead(noteId: string) {
+    public markAsRead(noteId: string): void {
         if (this.collectedNotes.has(noteId) && !this.readNotes.has(noteId)) {
             this.readNotes.add(noteId);
             this.saveState();
@@ -212,8 +212,8 @@ export class CollectiblesSystem {
         }
     }
 
-    public getNotes() {
-        return Array.from(this.collectedNotes).map(id => this.allNotes[id]);
+    public getNotes(): NoteData[] {
+        return Array.from(this.collectedNotes).map(id => this.allNotes[id]).filter((n): n is NoteData => n !== undefined);
     }
 
     public isRead(noteId: string): boolean {
@@ -293,7 +293,7 @@ export class CollectiblesSystem {
         }
     }
 
-    private saveState() {
+    private saveState(): void {
         const state: CollectiblesState = {
             collected: Array.from(this.collectedNotes),
             read: Array.from(this.readNotes),
@@ -305,7 +305,7 @@ export class CollectiblesSystem {
         localStorage.setItem('uv7_collectibles', JSON.stringify(state));
     }
 
-    private loadState() {
+    private loadState(): void {
         // Check for V2 Data
         const raw = localStorage.getItem('uv7_collectibles');
         if (raw) {
@@ -318,8 +318,8 @@ export class CollectiblesSystem {
                 this.revealedCodes = state.revealedCodes || {};
                 this.codeDrops = state.codeDrops || {};
                 return; // Loaded successfully
-            } catch (e) {
-                Logger.error('[CollectiblesSystem] Failed to load state', e);
+            } catch (_e) {
+                Logger.error('[CollectiblesSystem] Failed to load state', _e);
             }
         }
 
@@ -356,8 +356,8 @@ export class CollectiblesSystem {
                 // Save to V2 immediately
                 this.saveState();
 
-            } catch (e) {
-                Logger.warn('Failed to migrate V1 collectibles:', e);
+            } catch (_e) {
+                Logger.warn('Failed to migrate V1 collectibles:', _e);
             }
         }
     }

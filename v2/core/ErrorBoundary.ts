@@ -98,14 +98,15 @@ export class ErrorBoundary {
     private attemptEmergencySave(): void {
         try {
             // Try to access saveSystem from window (if available)
-            const saveSystem = (window as any).saveSystem;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const saveSystem = (window as any).saveSystem as { forceAutoSave?: () => Promise<void> } | undefined;
             if (saveSystem && typeof saveSystem.forceAutoSave === 'function') {
                 saveSystem.forceAutoSave().catch(() => {
                     Logger.warn('[ErrorBoundary] Emergency auto-save failed');
                 });
             }
-        } catch (e) {
-            Logger.warn('[ErrorBoundary] Could not attempt emergency save:', e);
+        } catch (_e) {
+            Logger.warn('[ErrorBoundary] Could not attempt emergency save:', _e);
         }
     }
 
@@ -170,8 +171,8 @@ export class ErrorBoundary {
         if (typeof error === 'string') {
             return error;
         }
-        if (error && typeof (error as any).message === 'string') {
-            return (error as any).message;
+        if (error && typeof (error as Record<string, unknown>).message === 'string') {
+            return (error as Record<string, unknown>).message as string;
         }
         return String(error);
     }
@@ -181,11 +182,12 @@ export class ErrorBoundary {
      */
     private getCurrentScene(): string {
         try {
-            const uv7 = (window as any).uv7;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const uv7 = (window as any).uv7 as { stateManager?: { get(key: string): string | undefined } } | undefined;
             if (uv7 && uv7.stateManager) {
                 return uv7.stateManager.get('currentScene') || 'unknown';
             }
-        } catch (e) {
+        } catch {
             // Ignore
         }
         return 'unknown';
@@ -282,13 +284,14 @@ export class ErrorBoundary {
 
         // Try to resume game if possible
         try {
-            const uv7 = (window as any).uv7;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const uv7 = (window as any).uv7 as { eventBus?: { emit(event: string, data: Record<string, unknown>): void } } | undefined;
             if (uv7 && uv7.eventBus) {
                 // Emit reset event to try to restore view
                 uv7.eventBus.emit('game:reset_view', {});
             }
-        } catch (e) {
-            Logger.warn('[ErrorBoundary] Recovery event failed:', e);
+        } catch (_e) {
+            Logger.warn('[ErrorBoundary] Recovery event failed:', _e);
         }
 
         Logger.system('[ErrorBoundary] Recovery attempted - error count reset');
@@ -326,9 +329,9 @@ export class ErrorBoundary {
     private saveErrorHistory(): void {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.errorHistory));
-        } catch (e) {
+        } catch (_e) {
             // localStorage might be full or unavailable
-            Logger.warn('[ErrorBoundary] Could not save error history:', e);
+            Logger.warn('[ErrorBoundary] Could not save error history:', _e);
         }
     }
 
@@ -341,7 +344,7 @@ export class ErrorBoundary {
             if (stored) {
                 this.errorHistory = JSON.parse(stored);
             }
-        } catch (e) {
+        } catch {
             this.errorHistory = [];
         }
     }
@@ -360,7 +363,7 @@ export class ErrorBoundary {
         this.errorHistory = [];
         try {
             localStorage.removeItem(this.STORAGE_KEY);
-        } catch (e) {
+        } catch {
             // Ignore
         }
         Logger.system('[ErrorBoundary] Error log cleared');

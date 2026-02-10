@@ -1,7 +1,7 @@
 import { UV7AppSwitcher } from './UV7AppSwitcher';
 
 // Mock DOM
-const mockElement = {
+const _mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),

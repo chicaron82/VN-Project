@@ -1,7 +1,7 @@
 import { EffectsController } from './EffectsController';
 
 // Mock EventBus
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

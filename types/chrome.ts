@@ -88,9 +88,9 @@ export interface ShadeSetting {
     type: 'toggle' | 'slider' | 'select' | 'custom';
     id: string;
     label: string;
-    value?: any;
-    onChange?: (value: any) => void;
-    options?: { label: string; value: any }[];
+    value?: string | number | boolean;
+    onChange?: (value: string | number | boolean) => void;
+    options?: { label: string; value: string | number | boolean }[];
     customContent?: HTMLElement;
 }
 

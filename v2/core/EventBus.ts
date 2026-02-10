@@ -37,7 +37,7 @@ export type GameEvents = {
   'tether:death': {};
   'ui:screen_change': { screen: string };
   'game:reset_view': {};
-  'effect:code_rain': { duration: number };
+  'effect:code_rain': { duration: number; color?: string };
   'effect:glitch': { intensity: number };
   'effect:shake': { intensity: string };
   'effect:flash': { color: string; duration: number };
@@ -323,9 +323,9 @@ export class EventBus {
 
     // Return unsubscribe function
     return () => {
-      const callbacks = this.subscribers.get(event);
-      if (callbacks) {
-        callbacks.delete(callback as EventCallback<EventName>);
+      const existingCallbacks = this.subscribers.get(event);
+      if (existingCallbacks) {
+        existingCallbacks.delete(callback as EventCallback<EventName>);
       }
     };
   }

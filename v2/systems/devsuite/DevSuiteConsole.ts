@@ -14,8 +14,8 @@ export interface DevSuiteConsoleCallbacks {
     setTether(value: number): void;
     jumpToScene(sceneId: string): void;
     switchTab(tab: string): void;
-    getRoutePoints(): any;
-    getFlags(): any;
+    getRoutePoints(): Record<string, number> | undefined;
+    getFlags(): Record<string, boolean> | undefined;
 }
 
 /**
@@ -118,8 +118,8 @@ export class DevSuiteConsole {
                     // eslint-disable-next-line no-eval -- DevSuite console intentionally supports eval for debugging
                     const result = eval(args.join(' '));
                     return String(result);
-                } catch (e: any) {
-                    return `Error: ${e.message}`;
+                } catch (e: unknown) {
+                    return `Error: ${(e as Error).message}`;
                 }
             }
         };

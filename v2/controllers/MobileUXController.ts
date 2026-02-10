@@ -1,5 +1,5 @@
 
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 
@@ -144,8 +144,8 @@ export class MobileUXController {
 
     private toggleFullscreen(): void {
         if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                Logger.warn(`Error attempting to enable fullscreen: ${err.message}`);
+            document.documentElement.requestFullscreen().catch((err: unknown) => {
+                Logger.warn(`Error attempting to enable fullscreen: ${(err as Error).message}`);
             });
         } else {
             if (document.exitFullscreen) {
@@ -185,7 +185,7 @@ export class MobileUXController {
      * @param bubble - The bubble element to check
      */
     private addScrollIndicator(bubble: HTMLElement): void {
-        const checkScrollable = () => {
+        const checkScrollable = (): void => {
             if (bubble.scrollHeight > bubble.clientHeight) {
                 bubble.classList.add('has-scroll');
 

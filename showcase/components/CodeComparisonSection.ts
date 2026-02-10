@@ -482,7 +482,7 @@ export class GameEngine {
 
     private animateNumber(element: HTMLElement, start: number, end: number, duration: number): void {
         const startTime = performance.now();
-        const animate = (currentTime: number) => {
+        const animate = (currentTime: number): void => {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const eased = this.easeOutExpo(progress);

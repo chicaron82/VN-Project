@@ -1,4 +1,4 @@
-import { UV7OSConfig } from './UV7OSConfig';
+import { UV7OSConfig as _UV7OSConfig } from './UV7OSConfig';
 
 describe('UV7OSConfig', () => {
     beforeEach(() => {

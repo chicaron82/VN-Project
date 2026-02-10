@@ -1,4 +1,4 @@
-import { ThemeManager } from './ThemeManager';
+import type { ThemeManager } from './ThemeManager';
 
 /**
  * OverlayManager - Themed Overlay Factory
@@ -708,7 +708,7 @@ export class OverlayManager {
         }
 
         // Close function
-        const close = () => {
+        const close = (): void => {
             overlay.style.opacity = '0';
             setTimeout(() => overlay.remove(), 300);
         };

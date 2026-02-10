@@ -1,5 +1,5 @@
 import { SpriteController } from './SpriteController';
-import { StateManager } from '../core/StateManager';
+import type { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {

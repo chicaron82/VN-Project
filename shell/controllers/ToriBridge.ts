@@ -84,7 +84,7 @@ export class ToriBridge {
      * Update Tori status display
      * @param projectedState - Optional pre-computed state from ToriService
      */
-    public update(projectedState?: any): void {
+    public update(projectedState?: { lastFed?: string; level?: number }): void {
         if (!this.toriStatusElement) {
             Logger.warn('[ToriBridge] update() called but status element not initialized');
             return;

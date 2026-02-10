@@ -437,7 +437,7 @@ export class UV7AppSwitcher {
         return Math.min(100, Math.round(base + actProgress));
     }
 
-    calculateV2Progress(state: any): number {
+    calculateV2Progress(state: { game?: { currentRoute?: string; currentAct?: number; currentSceneIndex?: number } }): number {
         if (!state?.game) return 0;
         const route = state.game.currentRoute;
         const act = state.game.currentAct || 1;
@@ -1093,12 +1093,13 @@ export class UV7AppSwitcher {
         this.close();
 
         setTimeout(() => {
-            if (!(document as any).startViewTransition) {
+            const doc = document as Document & { startViewTransition?: (callback: () => void) => void };
+            if (!doc.startViewTransition) {
                 window.location.href = url;
                 return;
             }
 
-            (document as any).startViewTransition(() => {
+            doc.startViewTransition(() => {
                 window.location.href = url;
             });
         }, 150);

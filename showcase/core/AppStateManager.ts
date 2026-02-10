@@ -37,13 +37,13 @@ interface AppState {
     appId: string;
     version: number;
     lastVisited: number;
-    state: Record<string, any>;
+    state: Record<string, unknown>;
     preview: Preview;
 }
 
 interface StateChangeDetail {
     appId: string;
-    state?: Record<string, any>;
+    state?: Record<string, unknown>;
     preview?: Partial<Preview>;
 }
 
@@ -54,7 +54,7 @@ declare global {
             entries: Array<{
                 id?: string;
                 sortDate?: string;
-                [key: string]: any;
+                [key: string]: unknown;
             }>;
         };
     }
@@ -161,7 +161,7 @@ export class AppStateManager {
     /**
      * Generate preview metadata for a card
      */
-    private generatePreview(appId: string, state?: Record<string, any>, customPreview?: Partial<Preview>): Preview {
+    private generatePreview(appId: string, state?: Record<string, unknown>, customPreview?: Partial<Preview>): Preview {
         const theme = this.appThemes[appId] || this.appThemes.landing;
 
         // Use custom preview if provided, otherwise generate
@@ -183,7 +183,7 @@ export class AppStateManager {
     /**
      * Auto-generate preview from state
      */
-    private autoGeneratePreview(appId: string, state: Record<string, any> = {}, theme: AppTheme): Preview {
+    private autoGeneratePreview(appId: string, state: Record<string, unknown> = {}, theme: AppTheme): Preview {
         const preview: Preview = {
             type: 'gradient',
             gradient: [theme.primary, theme.secondary],
@@ -326,7 +326,7 @@ export class AppStateManager {
     /**
      * Handle state migration between versions
      */
-    private migrateState(oldState: any): Record<string, AppState> {
+    private migrateState(oldState: { apps?: Record<string, AppState> }): Record<string, AppState> {
         // V0 -> V1: Just restructure
         Logger.state('[AppStateManager] Migration complete');
         return oldState.apps || {};
@@ -380,7 +380,7 @@ export class AppStateManager {
     /**
      * Restore app state (called on app load)
      */
-    restoreState(appId: string): Record<string, any> | null {
+    restoreState(appId: string): Record<string, unknown> | null {
         const appState = this.getAppState(appId);
         if (!appState) {
             Logger.state(`[AppStateManager] No saved state for: ${appId}`);

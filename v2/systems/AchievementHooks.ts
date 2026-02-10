@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -36,12 +36,12 @@ import { Logger } from '@utils/Logger';
 // ========================================
 
 interface GameReference {
-    startRoute?(routeName: string): any;
+    startRoute?(routeName: string): unknown;
     collectiblesManager?: {
-        unlockNote(noteId: string): any;
+        unlockNote(noteId: string): unknown;
     };
     backlogManager?: {
-        show(): any;
+        show(): unknown;
     };
 }
 
@@ -200,9 +200,18 @@ export class AchievementHooks {
 // ========================================
 
 // Global helper function for V1 compatibility
+interface AchievementGlobals {
+    checkEndingAchievements?: (endingId: string) => void;
+    achievementHooks?: AchievementHooks;
+    achievementManager?: AchievementSystemType;
+    achievementViewer?: { show(): void };
+    game?: GameReference;
+}
+
 if (typeof window !== 'undefined') {
-    (window as any).checkEndingAchievements = function (endingId: string) {
-        const hooks = (window as any).achievementHooks as AchievementHooks;
+    const win = window as typeof window & AchievementGlobals;
+    win.checkEndingAchievements = function (endingId: string): void {
+        const hooks = win.achievementHooks;
         if (hooks) {
             hooks.checkEndingAchievements(endingId);
         }
@@ -211,8 +220,8 @@ if (typeof window !== 'undefined') {
     // Auto-initialize
     window.addEventListener('DOMContentLoaded', () => {
         const checkReady = setInterval(() => {
-            const achievementManager = (window as any).achievementManager;
-            const game = (window as any).game;
+            const achievementManager = win.achievementManager;
+            const game = win.game;
 
             if (achievementManager && game) {
                 clearInterval(checkReady);
@@ -221,7 +230,7 @@ if (typeof window !== 'undefined') {
                 const achievementsBtn = document.getElementById('btn-achievements');
                 if (achievementsBtn) {
                     achievementsBtn.addEventListener('click', () => {
-                        const viewer = (window as any).achievementViewer;
+                        const viewer = win.achievementViewer;
                         if (viewer) {
                             viewer.show();
                         }
@@ -231,7 +240,7 @@ if (typeof window !== 'undefined') {
                 // Initialize hooks
                 const hooks = new AchievementHooks();
                 hooks.init(game, achievementManager);
-                (window as any).achievementHooks = hooks;
+                win.achievementHooks = hooks;
 
                 Logger.achievement('Achievement system fully initialized');
             }

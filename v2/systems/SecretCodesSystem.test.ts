@@ -1,6 +1,6 @@
 import { SecretCodesSystem } from './SecretCodesSystem';
-import { StateManager } from '../core/StateManager';
-import { BootstrapTracker } from './BootstrapTracker';
+import type { StateManager } from '../core/StateManager';
+import type { BootstrapTracker } from './BootstrapTracker';
 
 // Mock DOM
 

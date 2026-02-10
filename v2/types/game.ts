@@ -13,7 +13,7 @@
  * 💚🔥💀
  */
 
-import { GameConfig } from '../core/GameConfig';
+import type { GameConfig } from '../core/GameConfig';
 
 // ==========================================
 // BASIC IDS & REFERENCES

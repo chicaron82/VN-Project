@@ -17,8 +17,8 @@
 // - DevCommentarySystem, ported with love
 // ========================================
 
-import { EventBus } from '@core/EventBus';
-import { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
 // ========================================
@@ -76,17 +76,19 @@ export class DevCommentarySystem {
         });
 
         // Listen for commentary display requests
-        this.eventBus.on('commentary:show' as any, (data: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- commentary events not yet in GameEvents type
+        this.eventBus.on('commentary:show' as any, (data: { sceneId: string }) => {
             this.showCommentary(data.sceneId);
         });
 
         // Listen for full commentary viewer request
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- commentary events not yet in GameEvents type
         this.eventBus.on('commentary:showAll' as any, () => {
             this.showAllCommentary();
         });
 
         // Auto-notify when scene loads if commentary is available
-        this.eventBus.on('scene:load', (data: any) => {
+        this.eventBus.on('scene:load', (data: { sceneId: string }) => {
             if (this.isUnlocked() && this.getCommentary(data.sceneId)) {
                 this.eventBus.emit('visual:cue', {
                     type: 'commentary_available',
@@ -273,7 +275,7 @@ export class DevCommentarySystem {
         });
 
         // ESC key to close
-        const escHandler = (e: KeyboardEvent) => {
+        const escHandler = (e: KeyboardEvent): void => {
             if (e.key === 'Escape') {
                 this.closeOverlay(overlay);
                 document.removeEventListener('keydown', escHandler);
@@ -376,7 +378,7 @@ export class DevCommentarySystem {
         });
 
         // ESC key to close
-        const escHandler = (e: KeyboardEvent) => {
+        const escHandler = (e: KeyboardEvent): void => {
             if (e.key === 'Escape') {
                 this.closeOverlay(overlay);
                 document.removeEventListener('keydown', escHandler);

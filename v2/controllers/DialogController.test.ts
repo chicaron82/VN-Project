@@ -1,5 +1,5 @@
 import { DialogController } from './DialogController';
-import { SettingsSystem } from '@systems/SettingsSystem';
+import type { SettingsSystem } from '@systems/SettingsSystem';
 import { EventBus } from '@core/EventBus';
 
 describe('DialogController', () => {
@@ -11,7 +11,7 @@ describe('DialogController', () => {
         vi.useFakeTimers();
 
         // Mocks
-        const stateManagerMock = { get: () => 30 } as any;
+        const _stateManagerMock = { get: () => 30 } as any;
         settings = { get: () => 30 } as any;
         eventBus = new EventBus();
 

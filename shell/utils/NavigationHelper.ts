@@ -18,7 +18,8 @@ import { Logger } from '@utils/Logger';
  */
 export function navigateWithTransition(url: string, fallbackDelay: number = 0): void {
     // Check if browser supports View Transitions
-    if (!(document as any).startViewTransition) {
+    const doc = document as Document & { startViewTransition?: (callback: () => void) => void };
+    if (!doc.startViewTransition) {
         Logger.system('[NavigationHelper] View Transitions not supported - using standard navigation');
 
         if (fallbackDelay > 0) {
@@ -34,7 +35,7 @@ export function navigateWithTransition(url: string, fallbackDelay: number = 0): 
     Logger.system(`[NavigationHelper] Navigating to ${url} with View Transition`);
 
     // Start the view transition
-    (document as any).startViewTransition(() => {
+    doc.startViewTransition(() => {
         // This callback runs after the old state is captured
         // but before the new state is rendered
         window.location.href = url;
@@ -45,7 +46,7 @@ export function navigateWithTransition(url: string, fallbackDelay: number = 0): 
  * Check if View Transitions API is supported
  */
 export function isViewTransitionsSupported(): boolean {
-    return !!(document as any).startViewTransition;
+    return !!(document as Document & { startViewTransition?: unknown }).startViewTransition;
 }
 
 export default {

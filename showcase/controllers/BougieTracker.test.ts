@@ -52,7 +52,7 @@ describe('BougieTracker', () => {
         vi.advanceTimersByTime(100); // init
 
         const el = document.getElementById('bougie-timer');
-        const firstText = el?.textContent;
+        const _firstText = el?.textContent;
 
         vi.advanceTimersByTime(1000); // 1 second tick
         const secondText = el?.textContent;

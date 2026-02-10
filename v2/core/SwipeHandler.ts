@@ -1,6 +1,6 @@
 
-import { EventBus } from './EventBus';
-import { SettingsSystem } from '../systems/SettingsSystem';
+import type { EventBus } from './EventBus';
+import type { SettingsSystem } from '../systems/SettingsSystem';
 import { Logger } from '../utils/Logger';
 
 /**

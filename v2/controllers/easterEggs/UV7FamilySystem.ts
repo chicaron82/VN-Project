@@ -15,8 +15,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import { EventBus } from '../../core/EventBus';
-import { OverlayFactory } from './OverlayFactory';
+import type { EventBus } from '../../core/EventBus';
+import type { OverlayFactory } from './OverlayFactory';
 import { Logger } from '@utils/Logger';
 
 /**

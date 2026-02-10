@@ -1,7 +1,7 @@
 import { TetherController } from './TetherController';
 import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
-import { HapticSystem } from '@systems/HapticSystem';
+import type { HapticSystem } from '@systems/HapticSystem';
 import { GameConfig } from '@core/GameConfig';
 
 describe('TetherController', () => {

@@ -1,6 +1,6 @@
 
-import { EventBus } from '@core/EventBus';
-import { GameEngine } from '@core/GameEngine';
+import type { EventBus } from '@core/EventBus';
+import type { GameEngine } from '@core/GameEngine';
 import { LoadingOverlay } from '@ui/components/LoadingOverlay';
 import { Logger } from '@utils/Logger';
 
@@ -119,7 +119,7 @@ export class BootSequenceController {
             );
 
             // Bind Skip Button
-            const handleSkip = () => {
+            const handleSkip = (): void => {
                 wasSkipped = true; // Mark as skipped
                 boot.skip();
                 // On skip, show full video immediately
@@ -130,7 +130,7 @@ export class BootSequenceController {
             skipButton.addEventListener('click', handleSkip);
 
             // Bind Keyboard Skip
-            const keyHandler = (e: KeyboardEvent) => {
+            const keyHandler = (e: KeyboardEvent): void => {
                 if (e.key === ' ' || e.key === 'Enter') {
                     handleSkip();
                     document.removeEventListener('keydown', keyHandler);

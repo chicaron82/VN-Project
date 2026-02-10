@@ -297,7 +297,8 @@ export class DevSuiteTabRenderer {
         const scenes: { act: number; scene: string }[] = [];
 
         for (let actNum = 1; actNum <= 4; actNum++) {
-            const act = route[`act${actNum}`];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const act = route[`act${actNum}`] as any;
             if (act) {
                 // DIZEE FIX: Class methods are not enumerable, so Object.keys() fails.
                 // We must inspect the prototype to find scene methods.
@@ -461,7 +462,7 @@ export class DevSuiteTabRenderer {
                 </div>
                 <div class="watch-list" id="watch-list">
                     ${watches.length === 0 ? '<span class="muted">No watches added</span>' :
-                watches.map((w: any) => `
+                watches.map((w: { expression: string; id: number }) => `
                             <div class="watch-item">
                                 <span class="watch-expr">${w.expression}</span>
                                 <span class="watch-value">→ ${this.deps.watch.formatValue(this.deps.watch.evaluate(w.expression))}</span>

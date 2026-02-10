@@ -7,6 +7,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { AppDefinition, AppStateData } from './AppCatalog';
+import type { TimelineEntry } from '../UV7OSConfig';
 
 export interface AppCardElements {
     recentSection: HTMLElement | null;
@@ -34,7 +35,7 @@ export class AppCardRenderer {
         private apps: AppDefinition[],
         private elements: AppCardElements,
         private callbacks: AppCardRendererCallbacks
-    ) {}
+    ) { }
 
     // ═══════════════════════════════════════════════════════════════
     // RENDERING - THE BOUGIE CARD LAYOUT
@@ -71,7 +72,7 @@ export class AppCardRenderer {
 
     private createAppCard(app: AppDefinition, isRecent: boolean): HTMLElement {
         // Phase 26d: Check if we should use v2.0 preview cards
-        const usePreviewCards = typeof (window as any).UV7AppStateManager !== 'undefined';
+        const usePreviewCards = typeof window.UV7AppStateManager !== 'undefined';
 
         const card = document.createElement('div');
         const stateData = app.getState();
@@ -84,8 +85,8 @@ export class AppCardRenderer {
 
         // Phase 26d: Get enhanced preview from AppStateManager if available
         let preview: { badge?: string; title?: string; subtitle?: string } | null = null;
-        if (usePreviewCards && (window as any).UV7AppStateManager) {
-            const savedState = (window as any).UV7AppStateManager.getAppState(app.id);
+        if (usePreviewCards && window.UV7AppStateManager) {
+            const savedState = window.UV7AppStateManager.getAppState(app.id);
             if (savedState && savedState.preview) {
                 preview = savedState.preview;
             }
@@ -153,8 +154,8 @@ export class AppCardRenderer {
             if ((e.target as HTMLElement).classList.contains('app-card-close')) return;
 
             // Phase 26d: Set instant resume flag if we have saved state
-            if (usePreviewCards && (window as any).UV7AppStateManager) {
-                const savedState = (window as any).UV7AppStateManager.getAppState(app.id);
+            if (usePreviewCards && window.UV7AppStateManager) {
+                const savedState = window.UV7AppStateManager.getAppState(app.id);
                 if (savedState) {
                     localStorage.setItem('uv7-instant-resume', JSON.stringify({
                         appId: app.id,
@@ -240,9 +241,9 @@ export class AppCardRenderer {
 
         switch (app.id) {
             case 'showcase':
-                if (typeof (window as any).TIMELINE_DATA !== 'undefined' && (window as any).TIMELINE_DATA?.entries) {
-                    return (window as any).TIMELINE_DATA.entries.filter((entry: any) => {
-                        const entryDate = new Date(entry.sortDate || entry.date).getTime();
+                if (typeof window.TIMELINE_DATA !== 'undefined' && window.TIMELINE_DATA?.entries) {
+                    return window.TIMELINE_DATA.entries.filter((entry: TimelineEntry) => {
+                        const entryDate = new Date((entry.sortDate || entry.date) as string).getTime();
                         return entryDate > lastVisitTime;
                     }).length;
                 }

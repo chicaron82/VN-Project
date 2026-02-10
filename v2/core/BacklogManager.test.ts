@@ -1,5 +1,5 @@
 import { BacklogManager } from './BacklogManager';
-import { StateManager } from './StateManager';
+import type { StateManager } from './StateManager';
 
 // Mock EventBus
 const mockEventBus = {

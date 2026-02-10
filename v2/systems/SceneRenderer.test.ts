@@ -1,7 +1,7 @@
 import { SceneRenderer } from './SceneRenderer';
 
 // Mock DOM
-const mockElement = {
+const _mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
@@ -12,7 +12,7 @@ const mockElement = {
 };
 
 // Mock EventBus
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

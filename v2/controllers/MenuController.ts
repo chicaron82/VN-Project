@@ -1,5 +1,5 @@
-import { StateManager } from '@core/StateManager';
-import { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 import { RetryScreen } from '@ui/screens/RetryScreen';
@@ -24,8 +24,8 @@ export class MenuController {
         this.bindEvents();
     }
 
-    private bindEvents() {
-        this.eventBus.on('ui:show_retry_screen', (data: any) => {
+    private bindEvents(): void {
+        this.eventBus.on('ui:show_retry_screen', (data: { currentRoute: string; loopVersion: number }) => {
             this.retryScreen.show({
                 currentRoute: data.currentRoute,
                 loopVersion: data.loopVersion
@@ -39,7 +39,7 @@ export class MenuController {
         });
     }
 
-    showMenu(screen: MenuScreen) {
+    showMenu(screen: MenuScreen): void {
         this.stateManager.set('ui.activeScreen', screen);
 
         // V1 Logic: Cleanup when entering main menu
@@ -65,17 +65,17 @@ export class MenuController {
     /**
      * Submit a secret code from the UI
      */
-    submitCode(code: string) {
+    submitCode(code: string): void {
         this.eventBus.emit('ui:code_submit', { code });
     }
 
     /**
      * Helper to show specific screens
      */
-    showMainMenu() { this.showMenu('main'); }
-    showRouteSelect() { this.showMenu('route_select'); }
-    showPauseMenu() { this.showMenu('pause'); }
-    hidePauseMenu() {
+    showMainMenu(): void { this.showMenu('main'); }
+    showRouteSelect(): void { this.showMenu('route_select'); }
+    showPauseMenu(): void { this.showMenu('pause'); }
+    hidePauseMenu(): void {
         // Resume game view (assuming 'none' means overlay handles it or back to 'none' overlay)
         this.showMenu('none');
     }
@@ -83,7 +83,7 @@ export class MenuController {
     /**
      * Reset game view state (V1 logic)
      */
-    private resetGameView() {
+    private resetGameView(): void {
         // V1 MenuController.showMainMenu() cleared sprites, backgrounds etc.
         // Here we just set state flags, UI layer will react.
         this.stateManager.set('game.currentRoute', 'none');

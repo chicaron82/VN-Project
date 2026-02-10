@@ -48,7 +48,7 @@ export interface ActionUrls {
 export interface TimelineEntry {
     id: string;
     title?: string;
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 export interface UV7OSOptions {

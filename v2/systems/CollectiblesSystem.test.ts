@@ -1,16 +1,16 @@
 import { CollectiblesSystem } from './CollectiblesSystem';
 
 // Mock localStorage
-const localStorageMock = {
+const _localStorageMock = {
     getItem: vi.fn(),
     setItem: vi.fn(),
     removeItem: vi.fn(),
     clear: vi.fn()
 };
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+Object.defineProperty(window, 'localStorage', { value: _localStorageMock });
 
 // Mock EventBus
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

@@ -39,7 +39,7 @@ export class CodeRain {
     }
 
     // Bound function for event listener removal
-    private boundResize = () => this.resize();
+    private boundResize = (): void => this.resize();
 
     /**
      * Start the rain loop
@@ -55,7 +55,7 @@ export class CodeRain {
         const dropSpeed = isPortrait ? 3 : 2;
         const fontSize = 14;
 
-        const draw = () => {
+        const draw = (): void => {
             // Fade effect (trail)
             this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

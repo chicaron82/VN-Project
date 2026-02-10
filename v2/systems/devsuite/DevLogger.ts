@@ -18,7 +18,7 @@ export interface ConsoleLogType {
 }
 
 export interface DevSuiteInterface {
-    breakpoints?: any;
+    breakpoints?: { check(type: string, data: { message?: string }): void };
 }
 
 export class DevLogger {

@@ -167,7 +167,7 @@ export class ConfirmationDialog {
         });
 
         // Escape to cancel
-        const escHandler = (e: KeyboardEvent) => {
+        const escHandler = (e: KeyboardEvent): void => {
             if (e.key === 'Escape') {
                 this.close();
                 if (onCancel) onCancel();

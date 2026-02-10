@@ -1,4 +1,4 @@
-import { DevSuite } from './DevSuite';
+import type { DevSuite } from './DevSuite';
 import { Logger } from '@utils/Logger';
 
 /**

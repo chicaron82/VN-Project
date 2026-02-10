@@ -5,7 +5,7 @@
  * 848 is sacred. 💚🔥💀
  */
 
-import { LoopController, LoopStatus } from './LoopController';
+import { LoopController } from './LoopController';
 import { EventBus } from '../core/EventBus';
 import { StateManager } from '../core/StateManager';
 

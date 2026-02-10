@@ -26,7 +26,7 @@ declare global {
 
     // Confetti system
     uv7Confetti?: {
-      trigger: (options?: any) => void;
+      trigger: (options?: Record<string, unknown>) => void;
     };
 
     // Social sharing functions
@@ -71,29 +71,47 @@ declare global {
     };
 
     // App state manager
-    UV7AppStateManager?: any; // TODO: Type this properly
+    UV7AppStateManager?: unknown; // TODO: Type this properly
 
     // Game state (for code examples)
-    gameState?: any;
+    gameState?: Record<string, unknown>;
 
     // Showcase analytics
-    showcaseAnalytics?: any;
+    showcaseAnalytics?: {
+      events: Array<{ category: string; action: string; label?: string; value?: number; timestamp: string }>;
+      track(category: string, action: string, label?: string, value?: number): void;
+      trackSectionView(sectionName: string): void;
+      trackCarouselInteraction(cardTitle: string): void;
+      trackButtonClick(buttonName: string): void;
+      trackTimelineExpand(phaseName: string): void;
+      trackSearch(query: string): void;
+      trackShare(platform: string): void;
+    };
 
     // Load stats utility
-    UV7Stats?: any;
+    UV7Stats?: Record<string, unknown>;
     loadRealStats?: () => void;
 
     // Content features
-    contentFeatures?: any;
+    contentFeatures?: { showToast?: (message: string, duration?: number) => void; [key: string]: unknown };
 
     // Premium animations
-    premiumAnimations?: any;
+    premiumAnimations?: {
+      initScrollAnimations: () => void;
+      initParallax: () => void;
+      initAnimatedCounters: () => void;
+      initRippleEffects: () => void;
+      initTimelineMarkers: () => void;
+      initCardHovers: () => void;
+      initSmoothScroll: () => void;
+      cleanup: () => void;
+    };
 
     // Spotlight carousel
-    spotlightCarousel?: any;
+    spotlightCarousel?: unknown;
 
     // App switcher
-    UV7AppSwitcher?: any;
+    UV7AppSwitcher?: unknown;
 
     // Note: TIMELINE_DATA is declared in AppStateManager.ts
   }

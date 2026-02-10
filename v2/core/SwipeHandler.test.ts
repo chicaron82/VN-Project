@@ -1,5 +1,5 @@
 import { SwipeHandler } from './SwipeHandler';
-import { SettingsSystem } from '../systems/SettingsSystem';
+import type { SettingsSystem } from '../systems/SettingsSystem';
 
 // Mock Element
 const mockElement = {

@@ -1,7 +1,7 @@
 import { Analytics } from './Analytics';
 
 // Mock DOM
-const mockElement = {
+const _mockElement = {
     classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
@@ -12,16 +12,16 @@ const mockElement = {
 };
 
 // Mock localStorage
-const localStorageMock = {
+const _localStorageMock = {
     getItem: vi.fn(),
     setItem: vi.fn(),
     removeItem: vi.fn(),
     clear: vi.fn()
 };
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+Object.defineProperty(window, 'localStorage', { value: _localStorageMock });
 
 // Mock EventBus
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

@@ -8,7 +8,7 @@
  */
 
 import type { UV7Shell } from '../UV7Shell.js';
-import type { SystemAPI } from '../../types/chrome.js';
+import type { SystemAPI, StatusBarSpec, SidebarSpec } from '../../types/chrome.js';
 import { Logger } from '@utils/Logger';
 
 export interface StatusBarConfig {
@@ -23,7 +23,7 @@ export interface SidebarConfig {
 }
 
 export interface GestureHandlers {
-    [key: string]: (event: any) => void;
+    [key: string]: (event: TouchEvent | MouseEvent) => void;
 }
 
 export class BaseApp {
@@ -58,7 +58,7 @@ export class BaseApp {
      *   container.innerHTML = '<div>My App</div>';
      * }
      */
-    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
+    async mount(container: HTMLElement, _params: Record<string, string> = {}): Promise<void> {
         this.container = container;
         this.mounted = true;
 
@@ -104,7 +104,7 @@ export class BaseApp {
      *   }
      * }
      */
-    onRouteChange(params: Record<string, any>): void {
+    onRouteChange(_params: Record<string, string>): void {
         // Subclasses can override for deep linking
     }
 
@@ -179,7 +179,7 @@ export class BaseApp {
      *   };
      * }
      */
-    getStatusBarSpec?(): any; // Using 'any' to avoid circular import
+    getStatusBarSpec?(): StatusBarSpec;
 
     /**
      * Get sidebar spec (Phase 2)
@@ -203,13 +203,13 @@ export class BaseApp {
      *   };
      * }
      */
-    getSidebarSpec?(): any; // Using 'any' to avoid circular import
+    getSidebarSpec?(): SidebarSpec;
 
     /**
 
      * Get current app state for persistence
      */
-    getState(): Record<string, any> {
+    getState(): Record<string, unknown> {
         return {};
     }
 
@@ -217,7 +217,7 @@ export class BaseApp {
      * Restore app from saved state
      * @param state
      */
-    restoreState(state: Record<string, any>): void {
+    restoreState(_state: Record<string, unknown>): void {
         // Subclasses implement
     }
 }

@@ -1,7 +1,7 @@
 import { GameEngine } from './GameEngine';
 import { EventBus } from './EventBus';
 import { StateManager } from './StateManager';
-import { Scene } from './types';
+import type { Scene } from './types';
 
 describe('GameEngine', () => {
     let engine: GameEngine;

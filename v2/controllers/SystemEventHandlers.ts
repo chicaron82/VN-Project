@@ -1,10 +1,20 @@
-import { EventBus } from '../core/EventBus';
-import { GameEngine } from '../core/GameEngine';
-import { DialogController } from './DialogController';
-import { SpriteController } from './SpriteController';
-import { DialogBubble } from '../ui/components/DialogBubble';
+import type { EventBus } from '../core/EventBus';
+import type { GameEngine } from '../core/GameEngine';
+import type { DialogController } from './DialogController';
+import type { SpriteController } from './SpriteController';
+import type { DialogBubble } from '../ui/components/DialogBubble';
 import type { GameLayout } from '../ui/components/GameLayout';
 import { Logger } from '@utils/Logger';
+
+/** Extended scene interface for runtime properties not in the base Scene type */
+interface ExtendedScene {
+    isInternal?: boolean;
+    position?: string;
+    sprite1?: string;
+    sprite2?: string;
+    left?: boolean;
+    right?: boolean;
+}
 
 /**
  * SystemEventHandlers - Game event listeners setup
@@ -28,8 +38,8 @@ export class SystemEventHandlers {
     private dialogBubble: DialogBubble;
     private getGameLayout: () => GameLayout | null;
     private updateBackground: (bg: string) => void;
-    private updateSprites: (sprites: any) => void;
-    private showChoices: (choices: any[]) => void;
+    private updateSprites: (sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) => void;
+    private showChoices: (choices: Array<{ text: string; next: string | null }>) => void;
     private showMainMenu: () => void;
 
     constructor(
@@ -40,8 +50,8 @@ export class SystemEventHandlers {
         dialogBubble: DialogBubble,
         getGameLayout: () => GameLayout | null,
         updateBackground: (bg: string) => void,
-        updateSprites: (sprites: any) => void,
-        showChoices: (choices: any[]) => void,
+        updateSprites: (sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) => void,
+        showChoices: (choices: Array<{ text: string; next: string | null }>) => void,
         showMainMenu: () => void
     ) {
         this.eventBus = eventBus;
@@ -77,7 +87,7 @@ export class SystemEventHandlers {
             if (!scene || !gameLayout) return;
 
             // DIZEE: Handle internal thoughts with bubble system
-            const isInternal = (scene as any).isInternal === true;
+            const isInternal = (scene as unknown as ExtendedScene).isInternal === true;
 
             if (isInternal) {
                 // Hide standard dialogue UI for internal thoughts
@@ -134,9 +144,9 @@ export class SystemEventHandlers {
                         setTimeout(() => {
                             Logger.effect('Executing fadeSpritesSequence now');
                             this.spriteController.fadeSpritesSequence(
-                                (effect as any).position || 'left',
-                                (effect as any).sprite1,
-                                (effect as any).sprite2,
+                                ((effect as unknown as ExtendedScene).position || 'left') as 'left' | 'right',
+                                (effect as unknown as ExtendedScene).sprite1 || '',
+                                (effect as unknown as ExtendedScene).sprite2 || '',
                                 effect.duration || 4000
                             );
                         }, 200);
@@ -172,7 +182,7 @@ export class SystemEventHandlers {
             if (!gameLayout) return;
 
             const scene = this.gameEngine.getCurrentScene();
-            const isInternal = (scene as any)?.isInternal === true;
+            const isInternal = (scene as unknown as ExtendedScene | undefined)?.isInternal === true;
 
             if (isInternal) {
                 // Show as floating thought bubble
@@ -180,10 +190,10 @@ export class SystemEventHandlers {
                 if (scene?.sprites) {
                     const spriteArray = Array.isArray(scene.sprites) ? scene.sprites : [scene.sprites];
                     const hasLeft = spriteArray.some(
-                        (s) => s.position === 'left' || (s as any).left
+                        (s) => s.position === 'left' || (s as unknown as ExtendedScene).left
                     );
                     const hasRight = spriteArray.some(
-                        (s) => s.position === 'right' || (s as any).right
+                        (s) => s.position === 'right' || (s as unknown as ExtendedScene).right
                     );
 
                     if (hasLeft && !hasRight) position = 'left';

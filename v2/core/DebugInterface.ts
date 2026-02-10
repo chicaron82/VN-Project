@@ -1,19 +1,19 @@
-import { EventBus } from './EventBus';
-import { StateManager } from './StateManager';
-import { GameEngine } from './GameEngine';
-import { SettingsSystem } from '../systems/SettingsSystem';
-import { ContentLoader } from '../systems/ContentLoader';
-import { DialogController } from '../controllers/DialogController';
-import { SpriteController } from '../controllers/SpriteController';
-import { LoopController } from '../controllers/LoopController';
-import { EchoMemorySystem } from '../systems/EchoMemorySystem';
-import { InsaneVisualsController } from '../controllers/InsaneVisualsController';
-import { TetherSystem } from '../systems/TetherSystem';
-import { EasterEggController } from '../controllers/EasterEggController';
-import { DirectorsCutController } from '../controllers/DirectorsCutController';
-import { DevCommentarySystem } from '../systems/DevCommentarySystem';
-import { StatusNotificationController } from '../systems/StatusNotificationController';
-import { NotificationRail } from '../ui/components/NotificationRail';
+import type { EventBus } from './EventBus';
+import type { StateManager } from './StateManager';
+import type { GameEngine } from './GameEngine';
+import type { SettingsSystem } from '../systems/SettingsSystem';
+import type { ContentLoader } from '../systems/ContentLoader';
+import type { DialogController } from '../controllers/DialogController';
+import type { SpriteController } from '../controllers/SpriteController';
+import type { LoopController } from '../controllers/LoopController';
+import type { EchoMemorySystem } from '../systems/EchoMemorySystem';
+import type { InsaneVisualsController } from '../controllers/InsaneVisualsController';
+import type { TetherSystem } from '../systems/TetherSystem';
+import type { EasterEggController } from '../controllers/EasterEggController';
+import type { DirectorsCutController } from '../controllers/DirectorsCutController';
+import type { DevCommentarySystem } from '../systems/DevCommentarySystem';
+import type { StatusNotificationController } from '../systems/StatusNotificationController';
+import type { NotificationRail } from '../ui/components/NotificationRail';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -57,7 +57,8 @@ export class DebugInterface {
     static initialize(systems: DebugSystems, helpers: DebugHelpers): void {
         if (typeof window === 'undefined') return;
 
-        (window as any).uv7 = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+(window as any).uv7 = {
             // Core systems
             eventBus: systems.eventBus,
             stateManager: systems.stateManager,

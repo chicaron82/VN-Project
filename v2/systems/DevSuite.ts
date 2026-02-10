@@ -24,6 +24,7 @@
 import { DevLogger } from './devsuite/DevLogger';
 import { DevPresets } from './devsuite/DevPresets';
 import { VariableWatch } from './devsuite/VariableWatch';
+import type { WatchVariable } from './devsuite/VariableWatch';
 import { BreakpointSystem } from './devsuite/BreakpointSystem';
 import { ConsoleInterceptor } from './devsuite/ConsoleInterceptor';
 
@@ -38,20 +39,36 @@ import { Logger } from '@utils/Logger';
 // TYPES
 // ========================================
 
-export interface GameInstance {
-    currentRoute?: any;
+/** Represents the V1 game's route object with known properties */
+export interface GameRoute {
+    name?: string;
+    routePoints?: Record<string, number>;
+    tetherSystem?: { tetherLevel?: number; setTether?(value: number): void };
+    [key: string]: unknown; // Act accessors like act1, act2, etc.
+}
+
+/** Represents the V1 game's state object */
+export interface GameState {
+    flags?: Record<string, boolean>;
+    sprites?: { left: string | null; right: string | null };
     currentScene?: string;
-    gameState?: any;
+    [key: string]: unknown;
+}
+
+export interface GameInstance {
+    currentRoute?: GameRoute;
+    currentScene?: string;
+    gameState?: GameState;
     autoAdvance?: boolean;
     stopAtChoice?: boolean;
-    tutorialManager?: any;
-    pauseManager?: any;
+    tutorialManager?: { shownTutorials?: Set<string>; [key: string]: unknown };
+    pauseManager?: { request?(reason: string): void; [key: string]: unknown };
 }
 
 export interface DevSuiteState {
     lastActiveTab: string;
     consoleDividerPosition: number;
-    watchVariables: any[];
+    watchVariables: WatchVariable[];
     consoleHistory: string[];
 }
 
@@ -123,9 +140,13 @@ export class DevSuite {
         const els = this.dom.getElements();
 
         // 2. Initialize existing sub-systems
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- subsystem interfaces use duck typing
         this.logger = new DevLogger(this as any);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- subsystem interfaces use duck typing
         this.presets = new DevPresets(this as any);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- subsystem interfaces use duck typing
         this.watch = new VariableWatch(this as any);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- subsystem interfaces use duck typing
         this.breakpoints = new BreakpointSystem(this as any);
 
         // 3. Console (lazy callbacks to gameTools/tabRenderer are safe - resolved at call time)
@@ -286,7 +307,7 @@ export class DevSuite {
         if (saved) {
             try {
                 return JSON.parse(saved);
-            } catch (e) {
+            } catch {
                 Logger.warn('Failed to load dev suite state');
             }
         }

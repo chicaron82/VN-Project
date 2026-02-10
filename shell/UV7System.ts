@@ -485,7 +485,7 @@ export class UV7System {
      * @param {string} type - Message type
      * @param {Object} data - Message data
      */
-    private notifyIframes(type: string, data: any): void {
+    private notifyIframes(type: string, data: Record<string, unknown>): void {
         const iframes = document.querySelectorAll('iframe');
         Logger.system(`[UV7System] notifyIframes called: type=${type}, iframes found=${iframes.length}`);
 

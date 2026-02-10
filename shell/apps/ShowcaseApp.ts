@@ -8,10 +8,12 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp, StatusBarConfig, SidebarConfig } from './BaseApp.js';
+import type { StatusBarConfig, SidebarConfig } from './BaseApp.js';
+import { BaseApp } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { generateShowcaseSidebarContent, initShowcaseSidebarListeners } from '../templates/ShowcaseSidebarTemplate.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import type { StatusBarSpec } from '../../types/chrome.js';
 import { Logger } from '@utils/Logger';
 
 interface ExtendedStatusBarConfig extends StatusBarConfig {
@@ -49,7 +51,7 @@ export class ShowcaseApp extends BaseApp {
                 initShowcaseSidebarListeners();
 
                 // Animate system stats (CHAOS METER & BOUGIE FACTOR)
-                const animateStats = () => {
+                const animateStats = (): void => {
                     const cpuEl = document.getElementById('sys-cpu');
                     const cpuBar = document.getElementById('sys-cpu-bar') as HTMLElement;
                     const ramEl = document.getElementById('sys-ram');
@@ -82,7 +84,7 @@ export class ShowcaseApp extends BaseApp {
         };
     }
 
-    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
+    async mount(container: HTMLElement, params: Record<string, string> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load current showcase in an iframe
@@ -155,7 +157,7 @@ export class ShowcaseApp extends BaseApp {
     /**
      * Get status bar spec with actions and theme (Phase 2 - using ChromePresets)
      */
-    getStatusBarSpec() {
+    getStatusBarSpec(): StatusBarSpec {
         return ChromePresets.standard({
             title: 'Showcase',
             context: 'Interactive Demo',

@@ -30,12 +30,12 @@ export class BackgroundMonitor {
     private apps: MonitoredApp[];
     private currentApp: string;
     private monitorInterval: number | null = null;
-    private launchAppCallback: (app: any) => void;
+    private launchAppCallback: (app: MonitoredApp) => void;
 
     constructor(
         apps: MonitoredApp[],
         getCurrentApp: () => string,
-        launchAppCallback: (app: any) => void
+        launchAppCallback: (app: MonitoredApp) => void
     ) {
         this.apps = apps;
         this.currentApp = getCurrentApp();

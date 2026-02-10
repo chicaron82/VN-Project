@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import '@ui/styles/main.css';
 
 export class RouteSelect {
@@ -46,7 +46,7 @@ export class RouteSelect {
         this.bindEvents();
     }
 
-    private bindEvents() {
+    private bindEvents(): void {
         // Toggle Buttons
         const toggles = this.container.querySelectorAll('.toggle-option');
         toggles.forEach(btn => {
@@ -84,7 +84,7 @@ export class RouteSelect {
         });
     }
 
-    private selectRoute(route: 'ronnie' | 'tori') {
+    private selectRoute(route: 'ronnie' | 'tori'): void {
         this.selectedRoute = route;
         this.eventBus.emit('ui:click', {});
 
@@ -125,11 +125,11 @@ export class RouteSelect {
         }
     }
 
-    mount(parent: HTMLElement) {
+    mount(parent: HTMLElement): void {
         parent.appendChild(this.container);
     }
 
-    unmount() {
+    unmount(): void {
         this.container.remove();
     }
 }

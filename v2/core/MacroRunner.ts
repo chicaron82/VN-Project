@@ -1,6 +1,6 @@
-import { EventBus } from './EventBus';
-import { StateManager } from './StateManager';
-import { TelemetryRecorder } from './Telemetry';
+import type { EventBus } from './EventBus';
+import type { StateManager } from './StateManager';
+import type { TelemetryRecorder } from './Telemetry';
 import { Logger } from '@utils/Logger';
 
 interface MacroStep {
@@ -32,7 +32,7 @@ export class MacroRunner {
         this.isRunning = false;
     }
 
-    async run(macroUrl: string) {
+    async run(macroUrl: string): Promise<void> {
         if (this.isRunning) return;
         this.isRunning = true;
 
@@ -72,12 +72,13 @@ export class MacroRunner {
                 await this.click(step.selector!);
                 break;
 
-            case 'click_viewport':
+            case 'click_viewport': {
                 // V2 specific: Viewport is usually #game-layout-viewport or just body click
                 // We can simulate a click on the dialog box
                 const dialogBox = document.getElementById('dialog-box') || document.body;
                 dialogBox.click();
                 break;
+            }
 
             case 'click_route_start':
                 // V2: Might need to trigger EventBus event nicely if UI isn't easily clickable
@@ -119,7 +120,7 @@ export class MacroRunner {
 
     private waitForText(text: string): Promise<void> {
         return new Promise(resolve => {
-            const check = () => {
+            const check = (): void => {
                 if (document.body.innerText.includes(text)) {
                     resolve();
                 } else {
@@ -133,7 +134,7 @@ export class MacroRunner {
     private waitForScene(sceneId: string): Promise<void> {
         return new Promise(resolve => {
             // V2 State Check
-            const check = () => {
+            const check = (): void => {
                 const current = this.stateManager.get('game.currentScene');
                 if (current === sceneId) {
                     resolve();

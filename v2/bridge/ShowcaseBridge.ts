@@ -2,7 +2,7 @@ import { EventBus } from '../core/EventBus';
 import { StatusBar } from '../ui/components/StatusBar';
 import { NotificationRail } from '../ui/components/NotificationRail';
 // Import legacy-compatible Context definitions
-import { UV7Context } from '../ui/components/StatusBarContext';
+import type { UV7Context } from '../ui/components/StatusBarContext';
 
 import { Logger } from '@utils/Logger';
 
@@ -39,6 +39,7 @@ const UV7System = {
 };
 
 // Expose to window
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).UV7System = UV7System;
 
 Logger.system('✅ UV7 System Bridge ready.');

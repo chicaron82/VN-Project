@@ -179,7 +179,7 @@ export class ResetController {
             setTimeout(() => {
                 try {
                     overlay.remove();
-                } catch (_error) {
+                } catch {
                     // Ignore (e.g. test environment torn down)
                 }
             }, 300);
@@ -231,7 +231,7 @@ export class ResetController {
                 if (typeof window === 'undefined') return;
                 try {
                     window.location.reload();
-                } catch (_error) {
+                } catch {
                     // Ignore (e.g. test environment torn down)
                 }
             }, 500);

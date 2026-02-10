@@ -1,4 +1,5 @@
-import { DevHUDController, GameInstance } from './DevHUDController';
+import type { GameInstance } from './DevHUDController';
+import { DevHUDController } from './DevHUDController';
 
 // Mock DOM
 const mockElement = {

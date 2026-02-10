@@ -1,6 +1,6 @@
 // import { GameEngine } from './GameEngine'; // Unused
-import { EventBus } from './EventBus';
-import { StateManager } from './StateManager';
+import type { EventBus } from './EventBus';
+import type { StateManager } from './StateManager';
 import { Logger } from '@utils/Logger';
 
 export interface BacklogEntry {
@@ -50,7 +50,7 @@ export class BacklogManager {
     }
 
     private subscribeToEvents(): void {
-        this.eventBus.on('dialog:show', (data: any) => {
+        this.eventBus.on('dialog:show', (data: { entry?: { character: string; text: string; voice?: string } }) => {
             if (data.entry) {
                 this.addEntry(data.entry);
             }

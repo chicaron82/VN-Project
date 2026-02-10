@@ -7,7 +7,7 @@
 
 import { Logger } from '@utils/Logger';
 
-function initDeveloperModeToggle() {
+function initDeveloperModeToggle(): void {
     const toggle = document.getElementById('developer-mode-toggle');
     if (!toggle) {
         return; // Shade not created yet

@@ -1,4 +1,5 @@
-import { DevSuite, GameInstance } from './DevSuite';
+import type { GameInstance } from './DevSuite';
+import { DevSuite } from './DevSuite';
 
 // Mock DOM
 const mockElement = {

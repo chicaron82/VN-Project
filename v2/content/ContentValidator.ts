@@ -6,7 +6,7 @@
  */
 export class ContentValidator {
 
-    static validateScene(data: any): { valid: boolean; errors: string[] } {
+    static validateScene(data: Record<string, unknown>): { valid: boolean; errors: string[] } {
         const errors: string[] = [];
 
         if (!data) {
@@ -29,7 +29,7 @@ export class ContentValidator {
 
         // Validate Dialog entries if present
         if (Array.isArray(data.dialog)) {
-            data.dialog.forEach((entry: any, index: number) => {
+            (data.dialog as Record<string, unknown>[]).forEach((entry: Record<string, unknown>, index: number) => {
                 if (!entry.speaker || typeof entry.speaker !== 'string') {
                     errors.push(`Dialog[${index}] missing speaker`);
                 }
@@ -41,7 +41,7 @@ export class ContentValidator {
 
         // Validate Choices if present
         if (Array.isArray(data.choices)) {
-            data.choices.forEach((choice: any, index: number) => {
+            (data.choices as Record<string, unknown>[]).forEach((choice: Record<string, unknown>, index: number) => {
                 if (!choice.text || typeof choice.text !== 'string') {
                     errors.push(`Choice[${index}] missing text`);
                 }

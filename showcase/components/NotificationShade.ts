@@ -124,8 +124,8 @@ export class NotificationShade {
     }
 
     initEvents(): void {
-        const setupEventBusListener = () => {
-            const runtime = (window as any).uv7Runtime;
+        const setupEventBusListener = (): void => {
+            const runtime = window.uv7Runtime;
             if (runtime && runtime.eventBus) {
                 // Settings Toggle (from cog)
                 runtime.eventBus.on('ui:settings:toggle', () => {

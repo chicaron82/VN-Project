@@ -1,5 +1,5 @@
-import { EventBus } from './EventBus';
-import { StateManager } from './StateManager';
+import type { EventBus } from './EventBus';
+import type { StateManager } from './StateManager';
 import { Logger } from '@utils/Logger';
 
 /**

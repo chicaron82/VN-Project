@@ -117,7 +117,7 @@ export class WhoSection {
         if (!phaseId) return;
 
         // Navigate to Journey tab
-        const tabController = (window as any).tabController;
+        const tabController = window.tabController;
         if (tabController) {
             tabController.navigateToTab('journey');
         }

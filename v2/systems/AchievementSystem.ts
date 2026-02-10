@@ -1,6 +1,6 @@
 
-import { EventBus } from '@core/EventBus';
-import { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
 export interface Achievement {
@@ -17,7 +17,7 @@ export class AchievementSystem {
     private achievements: Record<string, Achievement>;
     private readonly STORAGE_KEY = 'uv7_achievements';
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+     
     constructor(eventBus: EventBus, _stateManager: StateManager) {
         this.eventBus = eventBus;
         // _stateManager reserved for future state-based achievements
@@ -27,7 +27,7 @@ export class AchievementSystem {
         this.bindEvents();
     }
 
-    private bindEvents() {
+    private bindEvents(): void {
         // Listen for events that might trigger achievements
         this.eventBus.on('achievement:unlock', (data) => {
             // Re-emit visual cue or handle strictly if called externally
@@ -127,7 +127,7 @@ export class AchievementSystem {
         return initialized;
     }
 
-    private loadAchievements() {
+    private loadAchievements(): void {
         try {
             const saved = localStorage.getItem(this.STORAGE_KEY);
             if (saved) {
@@ -139,20 +139,20 @@ export class AchievementSystem {
                     }
                 });
             }
-        } catch (e) {
-            Logger.error('Failed to load achievements', e);
+        } catch (_e) {
+            Logger.error('Failed to load achievements', _e);
         }
     }
 
-    private saveAchievements() {
+    private saveAchievements(): void {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.achievements));
-        } catch (e) {
-            Logger.error('Failed to save achievements', e);
+        } catch (_e) {
+            Logger.error('Failed to save achievements', _e);
         }
     }
 
-    public unlock(id: string) {
+    public unlock(id: string): void {
         const achievement = this.achievements[id];
         if (!achievement) return;
 
@@ -187,27 +187,27 @@ export class AchievementSystem {
     // ACHIEVEMENT CHECK STUBS (Legacy Hooks Support)
     // ========================================
 
-    public startRouteTimer() {
+    public startRouteTimer(): void {
         // TODO: Implement Speed Runner timer logic
         Logger.achievement('🏆 [AchievementSystem] startRouteTimer called');
     }
 
-    public checkArchivist() {
+    public checkArchivist(): void {
         // TODO: Implement Archivist check via CollectiblesSystem
         Logger.achievement('🏆 [AchievementSystem] checkArchivist called');
     }
 
-    public checkExplorer() {
+    public checkExplorer(): void {
         // TODO: Implement Explorer check via BacklogManager
         Logger.achievement('🏆 [AchievementSystem] checkExplorer called');
     }
 
-    public checkPetParent() {
+    public checkPetParent(): void {
         // TODO: Implement Pet Parent check via ToriGatchi
         Logger.achievement('🏆 [AchievementSystem] checkPetParent called');
     }
 
-    public checkTimeTravel(endingId: string) {
+    public checkTimeTravel(endingId: string): void {
         // TODO: Implement Time Traveler / Endings checks
         Logger.achievement(`🏆 [AchievementSystem] checkTimeTravel called for ${endingId}`);
         // Basic check: Unlock ending achievement if exists
@@ -216,12 +216,12 @@ export class AchievementSystem {
         // Check completionist...?
     }
 
-    public checkSpeedRunner() {
+    public checkSpeedRunner(): void {
         // TODO: Implement Speed Runner check
         Logger.achievement('🏆 [AchievementSystem] checkSpeedRunner called');
     }
 
-    public checkInsane() {
+    public checkInsane(): void {
         // TODO: Implement Insane check
         Logger.achievement('🏆 [AchievementSystem] checkInsane called');
     }

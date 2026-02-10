@@ -255,8 +255,8 @@ export class EchoSettingsManager {
                 };
                 this.updateUI();
                 this.emitChange();
-            } catch (e) {
-                Logger.warn('[EchoSettingsManager] Could not parse storage event:', e);
+            } catch (parseError) {
+                Logger.warn('[EchoSettingsManager] Could not parse storage event:', parseError);
             }
         }
     }

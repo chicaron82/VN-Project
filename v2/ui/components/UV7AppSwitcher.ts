@@ -72,9 +72,10 @@ export class UV7AppSwitcher {
         this.elements = {} as AppSwitcherElements;
 
         this.backgroundMonitor = new BackgroundMonitor(
-            this.apps,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            this.apps as any,
             () => this.currentApp,
-            (app) => this.launchApp(app)
+            (app) => this.launchApp(app as unknown as AppDefinition)
         );
 
         this.init();

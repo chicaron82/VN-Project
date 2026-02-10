@@ -8,9 +8,11 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp, StatusBarConfig } from './BaseApp.js';
+import type { StatusBarConfig } from './BaseApp.js';
+import { BaseApp } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import type { StatusBarSpec } from '../../types/chrome.js';
 import { Logger } from '@utils/Logger';
 
 export class V2App extends BaseApp {
@@ -28,7 +30,7 @@ export class V2App extends BaseApp {
         };
     }
 
-    getStatusBarSpec() {
+    getStatusBarSpec(): StatusBarSpec {
         return ChromePresets.game({
             title: 'Version 848 (V2)',
             primaryColor: '#ff0055',
@@ -38,7 +40,7 @@ export class V2App extends BaseApp {
         });
     }
 
-    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
+    async mount(container: HTMLElement, params: Record<string, string> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load V2 game in an iframe — V2 creates its own chrome inside

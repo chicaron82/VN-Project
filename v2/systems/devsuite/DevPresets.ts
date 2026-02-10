@@ -24,7 +24,7 @@ export interface PresetData {
 }
 
 export interface DevSuiteInterface {
-    game: any;
+    game: Record<string, unknown>;
     consoleLogEntry(message: string, type: string): void;
     jumpToScene(sceneId: string): void;
 }
@@ -43,15 +43,16 @@ export class DevPresets {
      * Save current game state as a preset
      */
     public savePreset(name: string): void {
-        const game = this.suite.game;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const game = this.suite.game as any;
         const preset: PresetData = {
             id: Date.now(),
             name,
             timestamp: Date.now(),
             scene: game.currentScene,
             route: game.currentRoute?.name,
-            routePoints: { ...(game.currentRoute as any)?.routePoints },
-            tether: (game.currentRoute as any)?.tetherSystem?.tetherLevel,
+            routePoints: { ...game.currentRoute?.routePoints },
+            tether: game.currentRoute?.tetherSystem?.tetherLevel,
             flags: { ...game.gameState?.flags },
         };
         this.presets.push(preset);
@@ -69,12 +70,13 @@ export class DevPresets {
             return;
         }
 
-        const game = this.suite.game;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const game = this.suite.game as any;
 
         // Restore route points and tether
         if (game.currentRoute) {
-            (game.currentRoute as any).routePoints = { ...preset.routePoints };
-            (game.currentRoute as any).tetherSystem?.setTether(preset.tether);
+            game.currentRoute.routePoints = { ...preset.routePoints };
+            game.currentRoute.tetherSystem?.setTether?.(preset.tether);
         }
 
         // Restore flags
@@ -195,7 +197,7 @@ export class DevPresets {
                     this.presets = [...this.presets, ...imported];
                     this.saveToStorage();
                     this.suite.consoleLogEntry(`📥 Imported ${imported.length} presets`, 'success');
-                } catch (error) {
+                } catch {
                     this.suite.consoleLogEntry('❌ Import failed: Invalid file', 'error');
                 }
             };

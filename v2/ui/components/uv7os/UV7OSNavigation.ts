@@ -32,7 +32,7 @@ export class UV7OSNavigation {
     constructor(
         private elements: UV7OSElements,
         private deps: UV7OSNavigationDependencies
-    ) {}
+    ) { }
 
     /**
      * Attach section navigation handlers (showcase only)
@@ -141,7 +141,8 @@ export class UV7OSNavigation {
      */
     enableSeamlessTransitions(): void {
         // Check if browser supports View Transitions
-        if (!(document as any).startViewTransition) {
+        const doc = document as unknown as { startViewTransition?: (cb: () => void) => void };
+        if (!doc.startViewTransition) {
             Logger.ui('📺 View Transitions not supported - using standard navigation');
             return;
         }
@@ -192,13 +193,13 @@ export class UV7OSNavigation {
      */
     private navigateWithTransition(url: string): void {
         // Fallback for browsers without View Transitions
-        if (!(document as any).startViewTransition) {
+        if (!document.startViewTransition) {
             window.location.href = url;
             return;
         }
 
         // Start the view transition
-        (document as any).startViewTransition(() => {
+        document.startViewTransition(() => {
             // This callback runs after the old state is captured
             // but before the new state is rendered
             window.location.href = url;

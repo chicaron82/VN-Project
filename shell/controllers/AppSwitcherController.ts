@@ -96,7 +96,7 @@ export class AppSwitcherController {
             if (stored) {
                 const apps = JSON.parse(stored);
                 // Convert timestamp strings back to Date objects and validate
-                return apps.map((app: any) => {
+                return apps.map((app: { id?: string; timestamp?: string }) => {
                     // Ensure app has all required properties by merging with fresh config
                     const config = this.getAppConfig(app.id || 'unknown');
                     return {

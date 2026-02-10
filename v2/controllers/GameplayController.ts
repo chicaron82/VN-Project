@@ -1,9 +1,9 @@
-import { EventBus } from '../core/EventBus';
-import { StateManager } from '../core/StateManager';
-import { GameEngine } from '../core/GameEngine';
-import { DialogController } from './DialogController';
-import { SpriteController } from './SpriteController';
-import { DialogBubble } from '../ui/components/DialogBubble';
+import type { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
+import type { GameEngine } from '../core/GameEngine';
+import type { DialogController } from './DialogController';
+import type { SpriteController } from './SpriteController';
+import type { DialogBubble } from '../ui/components/DialogBubble';
 import { GameLayout } from '../ui/components/GameLayout';
 import { VisualEffectsLayer } from '../ui/components/VisualEffectsLayer';
 import { Logger } from '../utils/Logger';
@@ -225,7 +225,7 @@ export class GameplayController {
         `;
 
         // Define cleanup function
-        const cleanup = () => {
+        const cleanup = (): void => {
             if (this.choiceKeyHandler) {
                 document.removeEventListener('keydown', this.choiceKeyHandler);
                 this.choiceKeyHandler = null;

@@ -138,7 +138,7 @@ export function initScrollAnimations(): () => void {
     // 5. Scroll Progress Bar with Section-Aware Colors
     const scrollProgress = document.getElementById('scroll-progress');
     if (scrollProgress) {
-        const updateScrollProgress = () => {
+        const updateScrollProgress = (): void => {
             const scrollTop = window.scrollY;
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
             const scrollPercent = (scrollTop / docHeight) * 100;

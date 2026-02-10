@@ -1,4 +1,4 @@
-import { EventBus } from './EventBus';
+import type { EventBus } from './EventBus';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -190,9 +190,9 @@ export class StateManager {
 
     // Return unsubscribe function
     return () => {
-      const callbacks = this.subscribers.get(path);
-      if (callbacks) {
-        callbacks.delete(callback);
+      const subs = this.subscribers.get(path);
+      if (subs) {
+        subs.delete(callback);
       }
     };
   }

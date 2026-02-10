@@ -214,8 +214,8 @@ export class ToriSettingsManager {
                 };
                 this.updateUI();
                 this.emitChange();
-            } catch (e) {
-                Logger.warn('[ToriSettingsManager] Could not parse storage event:', e);
+            } catch (parseError) {
+                Logger.warn('[ToriSettingsManager] Could not parse storage event:', parseError);
             }
         }
     }

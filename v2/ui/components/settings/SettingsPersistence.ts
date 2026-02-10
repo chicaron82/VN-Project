@@ -15,8 +15,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import { EventBus } from '../../../core/EventBus';
-import { SettingsSystem } from '../../../systems/SettingsSystem';
+import type { EventBus } from '../../../core/EventBus';
+import type { SettingsSystem } from '../../../systems/SettingsSystem';
 import { Logger } from '@utils/Logger';
 import type { GameSettings } from '../SettingsModal';
 
@@ -32,13 +32,13 @@ export class SettingsPersistence {
     constructor(
         private eventBus: EventBus,
         private settingsSystem: SettingsSystem | null
-    ) {}
+    ) { }
 
     // ========================================
     // SAVE / LOAD
     // ========================================
 
-    saveSettingDebounced(key: string, value: any): void {
+    saveSettingDebounced(key: string, value: unknown): void {
         if (this.saveDebounceTimer) {
             clearTimeout(this.saveDebounceTimer);
         }
@@ -47,7 +47,7 @@ export class SettingsPersistence {
         }, 300);
     }
 
-    private saveSetting(key: string, value: any): void {
+    private saveSetting(key: string, value: unknown): void {
         // Save to localStorage
         const current = JSON.parse(localStorage.getItem('gameSettings') || '{}');
         current[key] = value;

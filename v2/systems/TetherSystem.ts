@@ -37,13 +37,14 @@
 // - TetherSystem, ported with love by the UV7 crew
 // ========================================
 
-import { EventBus } from '../core/EventBus';
-import { StateManager } from '../core/StateManager';
+import type { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
 import { GameConfig } from '../core/GameConfig';
 import { Logger } from '@utils/Logger';
-import {
+import type {
     DifficultyId,
-    DifficultyProfile,
+    DifficultyProfile} from './DifficultyProfiles';
+import {
     getDifficultyProfile
 } from './DifficultyProfiles';
 

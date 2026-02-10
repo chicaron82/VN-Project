@@ -202,7 +202,7 @@ export class BannerPreviewCard {
     /**
      * Calculate V2 progress percentage
      */
-    private calculateV2Progress(state: any): number {
+    private calculateV2Progress(state: { tether?: { level?: number } }): number {
         const tether = state?.tether?.level;
         if (typeof tether === 'number') {
             return Math.round(tether);
@@ -290,7 +290,7 @@ export class BannerPreviewCard {
         if (!this.cardElement) return;
 
         const { appName, appIcon, status, keyboardShortcut } = config;
-        const { state, hasSave, lastPlayed, progress, isHangry } = stateData;
+        const { state, hasSave: _hasSave, lastPlayed, progress, isHangry } = stateData;
 
         // Status badge
         let statusBadge = '';
@@ -364,7 +364,7 @@ export class BannerPreviewCard {
 
         const anchorRect = anchorElement.getBoundingClientRect();
         const cardWidth = 240; // Fixed width from CSS
-        const cardHeight = 200; // Approximate height
+        const _cardHeight = 200; // Approximate height
         const gap = 8; // Gap between anchor and card
 
         // Calculate position below anchor

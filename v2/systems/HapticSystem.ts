@@ -5,8 +5,9 @@
 // Enhanced V2 port with full V1 parity
 // ========================================
 
-import { GameConfig, HapticPatternName, SensoryCueName } from '@core/GameConfig';
-import { EventBus } from '@core/EventBus';
+import type { HapticPatternName, SensoryCueName } from '@core/GameConfig';
+import { GameConfig } from '@core/GameConfig';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 export interface HapticOptions {
@@ -236,7 +237,7 @@ export class HapticSystem {
             this.trigger(
                 basePattern as HapticPatternName,
                 description || `Sensory cue: ${cueType}`,
-                { channel: channel as any, force: forceTrigger }
+                { channel: channel as HapticOptions['channel'], force: forceTrigger }
             );
         }
 

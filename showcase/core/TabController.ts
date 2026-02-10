@@ -333,9 +333,9 @@ export class TabController {
         const displayName = names[tabId] || tabId;
 
         // Method 1: V2 StatusBar (standalone mode)
-        const win = window as any;
-        if (win.uv7Runtime?.instance?.setPhase) {
-            win.uv7Runtime.instance.setPhase(displayName);
+        const runtime = window.uv7Runtime;
+        if (runtime?.instance && 'setPhase' in runtime.instance) {
+            (runtime.instance as { setPhase: (name: string) => void }).setPhase(displayName);
         }
 
         // Method 2: Shell status bar context element

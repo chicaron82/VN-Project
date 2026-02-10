@@ -9,6 +9,11 @@
 
 import { Logger } from '@utils/Logger';
 
+interface ShellAudio {
+    init(): void;
+    play(sound: string): void;
+}
+
 export class HomeSection {
     constructor() {
         this.init();
@@ -38,7 +43,8 @@ export class HomeSection {
      */
     async runBootSequence(container: HTMLElement): Promise<void> {
         // Init audio if available
-        if ((window as any).shellAudio) (window as any).shellAudio.init();
+        const shellAudio = (window as unknown as { shellAudio?: ShellAudio }).shellAudio;
+        if (shellAudio) shellAudio.init();
 
         let skipped = false;
 
@@ -92,19 +98,19 @@ export class HomeSection {
         const skipHint = container.querySelector('#boot-skip-hint') as HTMLElement;
         const bootScreen = container.querySelector('.boot-screen') as HTMLElement;
 
-        const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-        const addLog = (text: string, type = '') => {
+        const sleep = (ms: number): Promise<unknown> => new Promise(r => setTimeout(r, ms));
+        const addLog = (text: string, type = ''): void => {
             if (skipped) return;
             const div = document.createElement('div');
             div.className = `log-line ${type}`;
             div.textContent = `> ${text}`;
             log.appendChild(div);
             log.scrollTop = log.scrollHeight;
-            if ((window as any).shellAudio) (window as any).shellAudio.play(type === 'error' ? 'error' : 'click');
+            if (shellAudio) shellAudio.play(type === 'error' ? 'error' : 'click');
         };
 
         // Skip handler
-        const skip = () => {
+        const skip = (): void => {
             if (skipped) return;
             skipped = true;
             bootScreen.style.opacity = '0';
@@ -120,20 +126,20 @@ export class HomeSection {
         }, 2000);
 
         // Skip on any key press or click
-        const keyHandler = () => skip();
-        const clickHandler = () => skip();
+        const keyHandler = (): void => skip();
+        const clickHandler = (): void => skip();
 
         document.addEventListener('keydown', keyHandler, { once: true });
         bootScreen.addEventListener('click', clickHandler, { once: true });
 
         // Cleanup listeners
-        const cleanup = () => {
+        const cleanup = (): void => {
             document.removeEventListener('keydown', keyHandler);
             bootScreen.removeEventListener('click', clickHandler);
         };
 
         // The Boot Sequence
-        if ((window as any).shellAudio) (window as any).shellAudio.play('startup');
+        if (shellAudio) shellAudio.play('startup');
 
         addLog('BIOS CHECK...', 'warn');
         if (skipped) { cleanup(); return; }
@@ -177,7 +183,7 @@ export class HomeSection {
 
         // Glitch Effect
         addLog('EXECUTING STARTUP.BAT', 'warn');
-        if ((window as any).shellAudio) (window as any).shellAudio.play('glitch');
+        if (shellAudio) shellAudio.play('glitch');
 
         if (skipped) { cleanup(); return; }
         bootScreen.style.filter = 'contrast(200%) brightness(200%)';

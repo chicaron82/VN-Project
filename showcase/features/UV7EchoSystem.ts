@@ -287,7 +287,7 @@ export class UV7EchoSystem {
         if (stored) {
             try {
                 return JSON.parse(stored);
-            } catch (e) {
+            } catch {
                 Logger.warn('[EchoSystem] Failed to parse stored settings');
             }
         }

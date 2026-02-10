@@ -1,5 +1,5 @@
-import { EventBus } from '@core/EventBus';
-import { OverlayManager } from '../managers/OverlayManager';
+import type { EventBus } from '@core/EventBus';
+import type { OverlayManager } from '../managers/OverlayManager';
 import { Logger } from '@utils/Logger';
 
 /**

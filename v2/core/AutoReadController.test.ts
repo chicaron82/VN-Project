@@ -1,5 +1,5 @@
 import { AutoReadController } from './AutoReadController';
-import { SettingsSystem } from '../systems/SettingsSystem';
+import type { SettingsSystem } from '../systems/SettingsSystem';
 
 // Mock EventBus
 const mockEventBus = {

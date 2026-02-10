@@ -1,5 +1,5 @@
-import { EventBus } from './EventBus';
-import { StateManager } from './StateManager';
+import type { EventBus } from './EventBus';
+import type { StateManager } from './StateManager';
 import { GameConfig } from './GameConfig';
 import { Logger } from '@utils/Logger';
 import { BootstrapTracker } from '@systems/BootstrapTracker';
@@ -7,7 +7,7 @@ import { SecretCodesSystem } from '@systems/SecretCodesSystem';
 import { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { AchievementSystem } from '@systems/AchievementSystem';
 import { BacklogManager } from './BacklogManager';
-import { Scene, SceneId } from './types';
+import type { Scene, SceneId } from './types';
 
 /**
  * ════════════════════════════════════════════════════════════════

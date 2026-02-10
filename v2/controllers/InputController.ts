@@ -1,8 +1,8 @@
-import { EventBus } from '../core/EventBus';
-import { SaveSystem } from '../systems/SaveSystem';
+import type { EventBus } from '../core/EventBus';
+import type { SaveSystem } from '../systems/SaveSystem';
 import { GameConfig } from '../core/GameConfig';
-import { DialogController } from './DialogController';
-import { DialogBubble } from '../ui/components/DialogBubble';
+import type { DialogController } from './DialogController';
+import type { DialogBubble } from '../ui/components/DialogBubble';
 import { Logger } from '../utils/Logger';
 
 /**

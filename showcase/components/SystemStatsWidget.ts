@@ -37,7 +37,7 @@ export class SystemStatsWidget {
         }
     }
 
-    private updateStats(timestamp: number) {
+    private updateStats(timestamp: number): void {
         if (!this.isRunning) return;
 
         // Update targets occasionally (Chaos: jittery, Bougie: stable)

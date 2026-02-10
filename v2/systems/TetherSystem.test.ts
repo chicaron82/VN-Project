@@ -396,7 +396,7 @@ describe('TetherSystem', () => {
             system.destroy();
 
             // Verify timers are cleared by checking no state changes
-            const level = system.getLevel();
+            const _level = system.getLevel();
             vi.advanceTimersByTime(10000);
 
             // Level should not have changed (decay stopped)

@@ -7,14 +7,14 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import type { GameInstance, ScreenshotTool, HotReloadSystem } from '../DevSuite';
+import type { GameInstance, ScreenshotTool, HotReloadSystem, DevSuite } from '../DevSuite';
 import type { DevLogger, ConsoleLogType } from './DevLogger';
 import type { DevPresets } from './DevPresets';
 import { Logger } from '@utils/Logger';
 
 export interface DevSuiteGameToolsDeps {
     game: GameInstance;
-    devSuiteRef: any; // For ScreenshotTool/HotReloadSystem constructors (uses 'this as any' pattern)
+    devSuiteRef: DevSuite; // For ScreenshotTool/HotReloadSystem constructors
     logger: DevLogger;
     presets: DevPresets;
     consoleLogEntry(text: string, type?: string): void;
@@ -45,7 +45,7 @@ export class DevSuiteGameTools {
 
     setTether(value: number): void {
         if (this.deps.game.currentRoute?.tetherSystem) {
-            this.deps.game.currentRoute.tetherSystem.setTether(value);
+            this.deps.game.currentRoute.tetherSystem.setTether?.(value);
             this.deps.consoleLogEntry(`✓ Tether set to ${value}%`, 'success');
             this.deps.refreshCurrentTab();
         } else {
@@ -96,7 +96,8 @@ export class DevSuiteGameTools {
         }
 
         for (let a = 1; a <= 4; a++) {
-            const act = route[`act${a}`];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const act = route[`act${a}`] as any;
             if (act && typeof act[sceneId] === 'function') {
                 act[sceneId]();
                 this.deps.consoleLogEntry(`✓ Jumped to ${sceneId}`, 'success');
@@ -141,7 +142,7 @@ export class DevSuiteGameTools {
     // ========================================
 
     startFPSMonitor(): void {
-        const updateFPS = () => {
+        const updateFPS = (): void => {
             this.fpsFrames++;
             const now = performance.now();
             if (now - this.fpsLastTime >= 1000) {
@@ -162,7 +163,7 @@ export class DevSuiteGameTools {
     }
 
     getMemoryUsage(): string {
-        const perf = performance as any;
+        const perf = performance as Performance & { memory?: { usedJSHeapSize: number } };
         if (perf.memory) {
             const mb = Math.round(perf.memory.usedJSHeapSize / 1048576);
             return `${mb}MB`;

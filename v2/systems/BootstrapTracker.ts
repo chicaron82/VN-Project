@@ -1,5 +1,5 @@
 
-import { StateManager } from '@core/StateManager';
+import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
 export interface BootstrapAttempt {
@@ -70,8 +70,8 @@ export class BootstrapTracker {
                 return parsed;
             }
 
-        } catch (e) {
-            Logger.warn('Failed to load bootstrap timeline:', e);
+        } catch (_e) {
+            Logger.warn('Failed to load bootstrap timeline:', _e);
         }
 
         return this.createDefaultTimeline();
@@ -96,8 +96,8 @@ export class BootstrapTracker {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.timeline));
             // Sync state
             this.stateManager.set('game.loopVersion', this.timeline.currentAttempt);
-        } catch (e) {
-            Logger.error('Failed to save bootstrap timeline:', e);
+        } catch (_e) {
+            Logger.error('Failed to save bootstrap timeline:', _e);
         }
     }
 
@@ -232,7 +232,7 @@ export class BootstrapTracker {
         });
 
         // Close on ESC
-        const escHandler = (e: KeyboardEvent) => {
+        const escHandler = (e: KeyboardEvent): void => {
             if (e.key === 'Escape') {
                 this.closeModal(overlay);
                 document.removeEventListener('keydown', escHandler);

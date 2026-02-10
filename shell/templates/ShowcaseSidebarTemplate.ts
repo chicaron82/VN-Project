@@ -131,7 +131,7 @@ export function initShowcaseSidebarListeners(): void {
             } else if (action === 'launch-v2') {
                 navigateWithTransition('../index.v2.html');
             } else if (action === 'go-home') {
-                const tabController = (window as any).tabController;
+                const tabController = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
                 if (tabController) {
                     tabController.setActiveTab('home');
                 }
@@ -162,9 +162,9 @@ export function initShowcaseSidebarListeners(): void {
     document.querySelectorAll('.section-nav-item').forEach((btn) => {
         btn.addEventListener('click', () => {
             const tab = btn.getAttribute('data-tab');
-            const tabController = (window as any).tabController;
-            if (tabController && tab) {
-                tabController.setActiveTab(tab);
+            const tabCtrl = (window as unknown as { tabController?: { setActiveTab: (tab: string) => void } }).tabController;
+            if (tabCtrl && tab) {
+                tabCtrl.setActiveTab(tab);
             }
 
             // Close sidebar after navigation

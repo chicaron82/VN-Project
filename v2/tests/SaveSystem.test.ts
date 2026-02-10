@@ -1,6 +1,6 @@
 import { SaveSystem } from '../systems/SaveSystem';
-import { StateManager } from '../core/StateManager';
-import { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
+import type { EventBus } from '../core/EventBus';
 import { GameConfig } from '../core/GameConfig';
 
 describe('SaveSystem', () => {

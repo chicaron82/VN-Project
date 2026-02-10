@@ -1,5 +1,5 @@
 import { BootSequenceController } from './BootSequenceController';
-import { GameEngine } from '@core/GameEngine';
+import type { GameEngine } from '@core/GameEngine';
 
 // Mock DOM
 const mockElement = {

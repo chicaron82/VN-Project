@@ -1,4 +1,4 @@
-import { TimelineEntry } from '../../timeline/types';
+import type { TimelineEntry } from '../../timeline/types';
 
 export const entry: TimelineEntry = {
     "id": "v3-lab-experiment-verdict",

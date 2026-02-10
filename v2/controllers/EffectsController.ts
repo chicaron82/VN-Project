@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 
 export class EffectsController {
     private eventBus: EventBus;
@@ -11,7 +11,7 @@ export class EffectsController {
      * Trigger the "Code Rain" transition
      * Used when entering a route
      */
-    triggerCodeRain(duration: number = 1500) {
+    triggerCodeRain(duration: number = 1500): void {
         this.eventBus.emit('effect:code_rain', { duration });
     }
 
@@ -19,21 +19,21 @@ export class EffectsController {
      * Trigger a screen glitch
      * @param intensity 0-1
      */
-    triggerGlitch(intensity: number = 0.5) {
+    triggerGlitch(intensity: number = 0.5): void {
         this.eventBus.emit('effect:glitch', { intensity });
     }
 
     /**
      * Trigger screen shake
      */
-    triggerShake(intensity: 'light' | 'medium' | 'heavy') {
+    triggerShake(intensity: 'light' | 'medium' | 'heavy'): void {
         this.eventBus.emit('effect:shake', { intensity });
     }
 
     /**
      * Trigger Flash
      */
-    triggerFlash(color: string = 'white', duration: number = 100) {
+    triggerFlash(color: string = 'white', duration: number = 100): void {
         this.eventBus.emit('effect:flash', { color, duration });
     }
 }

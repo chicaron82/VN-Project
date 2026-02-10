@@ -1,7 +1,7 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { MenuCarousel } from '@ui/components/MenuCarousel';
-import { LoopController } from '@controllers/LoopController';
-import { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
+import type { LoopController } from '@controllers/LoopController';
+import type { VisualEffectsLayer } from '@ui/components/VisualEffectsLayer';
 import '@ui/styles/main.css';
 import desktopBg from '../../../assets/desktopVersion.webp';
 
@@ -102,7 +102,7 @@ export class MainMenu {
         }
     }
 
-    mount(parent: HTMLElement) {
+    mount(parent: HTMLElement): void {
         parent.appendChild(this.container);
         const content = this.container.querySelector('#main-menu-content') as HTMLElement;
         this.carousel.mount(content);
@@ -113,7 +113,7 @@ export class MainMenu {
         }
     }
 
-    unmount() {
+    unmount(): void {
         this.carousel.unmount();
         this.container.remove();
     }

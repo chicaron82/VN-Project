@@ -1,5 +1,5 @@
 import { TutorialController } from './TutorialController';
-import { StateManager } from '../core/StateManager';
+import type { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {

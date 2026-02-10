@@ -1,6 +1,6 @@
 import { SceneProgressionController } from './SceneProgressionController';
-import { StateManager } from '../core/StateManager';
-import { GameEngine } from '../core/GameEngine';
+import type { StateManager } from '../core/StateManager';
+import type { GameEngine } from '../core/GameEngine';
 
 // Mock localStorage
 const localStorageMock = {

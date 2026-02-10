@@ -1,4 +1,4 @@
-import { StatusBarContext } from './StatusBarContext';
+import { StatusBarContext as _StatusBarContext } from './StatusBarContext';
 
 describe('StatusBarContext', () => {
     beforeEach(() => {

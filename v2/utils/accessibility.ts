@@ -35,8 +35,8 @@
 
 interface GameReference {
     state?: {
-        get(key: string): any;
-        set(key: string, value: any): void;
+        get(key: string): unknown;
+        set(key: string, value: unknown): void;
     };
 }
 
@@ -182,13 +182,16 @@ export class AccessibilityManager {
 
 // Global assignment for V1 compatibility
 if (typeof window !== 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).AccessibilityManager = AccessibilityManager;
 
     window.addEventListener('DOMContentLoaded', () => {
         // Wait for game to be initialized
         const checkGame = setInterval(() => {
-            const game = (window as any).game;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const game = (window as any).game as GameReference | undefined;
             if (game) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (window as any).accessibilityManager = new AccessibilityManager(game);
                 clearInterval(checkGame);
             }

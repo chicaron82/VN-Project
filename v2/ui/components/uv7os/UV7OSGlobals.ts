@@ -11,7 +11,19 @@ import type { TimelineEntry } from '../UV7OSConfig';
 declare global {
     interface Window {
         uv7os?: UV7OS;
+        // @ts-ignore - Avoid conflict with class declaration below
         uv7AppSwitcher?: UV7AppSwitcher;
+        uv7Shell?: boolean;
+        UV7AppStateManager?: {
+            getAppState(appId: string): {
+                state: unknown;
+                preview?: {
+                    badge?: string;
+                    title?: string;
+                    subtitle?: string;
+                };
+            } | null;
+        };
         tabController?: {
             navigateToTab: (tabId: string) => void;
             getActiveTab(): string;
@@ -37,4 +49,4 @@ declare global {
 }
 
 // Ensure this file is treated as a module
-export {};
+export { };

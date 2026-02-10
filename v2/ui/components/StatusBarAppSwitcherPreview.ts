@@ -157,7 +157,7 @@ export class StatusBarAppSwitcherPreview {
      */
     private getAppStates(): AppState[] {
         const currentPath = window.location.pathname;
-        const detectCurrentApp = () => {
+        const detectCurrentApp = (): string => {
             if (currentPath.includes('showcase')) return 'showcase';
             if (currentPath.includes('v1')) return 'v1';
             if (currentPath.includes('v2') || currentPath.includes('index.v2')) return 'v2';
@@ -199,7 +199,7 @@ export class StatusBarAppSwitcherPreview {
                                 return `${route.charAt(0).toUpperCase() + route.slice(1)} ⚡${Math.round(tether)}%`;
                             }
                             return route.charAt(0).toUpperCase() + route.slice(1);
-                        } catch (_e) {
+                        } catch {
                             // Fallback if parse fails
                         }
                     }

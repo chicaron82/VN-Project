@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import type { StateManager } from '@core/StateManager';
 import { Logger } from '@utils/Logger';
 
@@ -67,7 +67,7 @@ export class TypewriterController {
         Logger.ui('✅ TypewriterController initialized');
     }
 
-    private loadInitialSettings() {
+    private loadInitialSettings(): void {
         try {
             const saved = localStorage.getItem('gameSettings');
             if (saved) {
@@ -234,7 +234,7 @@ export class TypewriterController {
         }
 
         // Use requestAnimationFrame for smoother rendering
-        const typeNextChar = (currentTime: number) => {
+        const typeNextChar = (currentTime: number): void => {
             const elapsed = currentTime - lastFrameTime;
 
             // Only type next character if enough time has passed

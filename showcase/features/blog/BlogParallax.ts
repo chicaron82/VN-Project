@@ -62,7 +62,7 @@ export class BlogParallax {
     }
 
     private startLoop(): void {
-        const update = () => {
+        const update = (): void => {
             if (this.isEnabled && this.items.length > 0) {
                 this.updateParallax();
             }

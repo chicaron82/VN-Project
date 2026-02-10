@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus, GameEvents } from '@core/EventBus';
 import '@ui/styles/animations.css';
 import { Logger } from '@utils/Logger';
 import { CodeRain } from './CodeRain';
@@ -16,14 +16,14 @@ export class VisualEffectsLayer {
         this.bindEvents();
     }
 
-    private bindEvents() {
-        this.eventBus.on('effect:glitch', (data) => this.triggerGlitch(data.intensity));
-        this.eventBus.on('effect:shake', (data) => this.triggerShake(data.intensity));
-        this.eventBus.on('effect:flash', (data) => this.triggerFlash(data.color, data.duration));
-        this.eventBus.on('effect:code_rain', (data: { duration: number; color?: string }) => this.triggerCodeRain(data.duration, data.color));
+    private bindEvents(): void {
+        this.eventBus.on('effect:glitch', (data: GameEvents['effect:glitch']) => this.triggerGlitch(data.intensity));
+        this.eventBus.on('effect:shake', (data: GameEvents['effect:shake']) => this.triggerShake(data.intensity));
+        this.eventBus.on('effect:flash', (data: GameEvents['effect:flash']) => this.triggerFlash(data.color, data.duration));
+        this.eventBus.on('effect:code_rain', (data: GameEvents['effect:code_rain']) => this.triggerCodeRain(data.duration, data.color));
     }
 
-    private triggerGlitch(intensity: number) {
+    private triggerGlitch(intensity: number): void {
         // Simple CSS class toggle for now. 
         // V1 had complex canvas glitches, V2 Start with CSS.
         this.container.classList.add('effect-glitch');
@@ -35,7 +35,7 @@ export class VisualEffectsLayer {
         }, duration);
     }
 
-    private triggerShake(intensity: string) {
+    private triggerShake(intensity: string): void {
         // Map string to class
         const className = intensity === 'heavy' ? 'effect-shake-heavy' : 'effect-shake-medium';
 
@@ -47,7 +47,7 @@ export class VisualEffectsLayer {
         }, 800);
     }
 
-    private triggerFlash(color: string, duration: number) {
+    private triggerFlash(color: string, duration: number): void {
         const flashOverlay = document.createElement('div');
         flashOverlay.className = 'effect-flash-overlay';
         flashOverlay.style.background = color;
@@ -61,7 +61,7 @@ export class VisualEffectsLayer {
         }, duration + 50);
     }
 
-    private triggerCodeRain(duration: number, color?: string) {
+    private triggerCodeRain(duration: number, color?: string): void {
         // Faithful V1 Port: Matrix code rain
         Logger.effect(`🌧️ Code Rain triggered for ${duration}ms`);
 
@@ -93,7 +93,7 @@ export class VisualEffectsLayer {
             rainColor = computedStyle.getPropertyValue('--theme-primary').trim() || '#00ffff';
         }
 
-    Logger.effect(`🌧️ Code Rain using color: ${rainColor}`);
+        Logger.effect(`🌧️ Code Rain using color: ${rainColor}`);
 
         // Initialize rain
         const rain = new CodeRain(container);

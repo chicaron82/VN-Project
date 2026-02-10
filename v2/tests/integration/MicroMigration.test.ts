@@ -4,7 +4,7 @@ import { StateManager } from '@core/StateManager';
 import { HapticSystem } from '@systems/HapticSystem';
 import { SaveSystem } from '@systems/SaveSystem';
 import { SettingsSystem } from '@systems/SettingsSystem';
-import { Scene } from '@core/types';
+import type { Scene } from '@core/types';
 import migrationScene from '../../content/routes/micro_migration_scene.json';
 
 describe('Micro-Migration Integration', () => {

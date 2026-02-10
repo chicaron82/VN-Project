@@ -16,8 +16,8 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import { StateManager } from '../../core/StateManager';
-import { OverlayFactory } from './OverlayFactory';
+import type { StateManager } from '../../core/StateManager';
+import type { OverlayFactory } from './OverlayFactory';
 import { Logger } from '@utils/Logger';
 
 /**

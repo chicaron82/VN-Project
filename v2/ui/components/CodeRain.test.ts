@@ -1,6 +1,6 @@
 import { CodeRain } from './CodeRain';
 
-const mockHTMLElement = {} as any;
+const _mockHTMLElement = {} as unknown;
 
 describe('CodeRain', () => {
     let container: HTMLElement;
@@ -57,7 +57,7 @@ describe('CodeRain', () => {
     });
 
     it('should handle resize', () => {
-        const rain = new CodeRain(container);
+        const _rain = new CodeRain(container);
 
         // Trigger resize
         window.dispatchEvent(new Event('resize'));

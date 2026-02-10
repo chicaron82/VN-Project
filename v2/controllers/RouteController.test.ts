@@ -1,5 +1,5 @@
 import { RouteController } from './RouteController';
-import { GameEngine } from '@core/GameEngine';
+import type { GameEngine } from '@core/GameEngine';
 import { StateManager } from '@core/StateManager';
 import { EventBus } from '@core/EventBus';
 

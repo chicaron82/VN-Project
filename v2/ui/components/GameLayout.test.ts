@@ -1,9 +1,9 @@
 import { GameLayout } from './GameLayout';
 import { EventBus } from '@core/EventBus';
 
-const mockstring = {} as any;
+const _mockstring = {} as any;
 
-const mockEventBus = {
+const _mockEventBus = {
     on: vi.fn(),
     off: vi.fn(),
     emit: vi.fn()

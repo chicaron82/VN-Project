@@ -16,7 +16,11 @@ import type { StatusBarSpec, ChromeTheme } from '../../types/chrome.js';
 
 describe('Chrome Architecture Performance', () => {
     let system: UV7System;
-    let mockElements: any;
+    let mockElements: {
+        statusBar: { title: HTMLElement; context: HTMLElement; actions: HTMLElement };
+        sidebar: HTMLElement;
+        shade: HTMLElement;
+    };
 
     beforeEach(() => {
         // Create mock DOM elements
@@ -30,7 +34,7 @@ describe('Chrome Architecture Performance', () => {
             shade: document.createElement('div')
         };
 
-        system = new UV7System(mockElements as any);
+        system = new UV7System(mockElements as unknown as ConstructorParameters<typeof UV7System>[0]);
     });
 
     describe('Action Routing', () => {

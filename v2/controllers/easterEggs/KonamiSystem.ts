@@ -21,9 +21,9 @@
 // 848 is sacred. 💚🔥💀
 // ========================================
 
-import { EventBus } from '../../core/EventBus';
-import { StateManager } from '../../core/StateManager';
-import { OverlayFactory } from './OverlayFactory';
+import type { EventBus } from '../../core/EventBus';
+import type { StateManager } from '../../core/StateManager';
+import type { OverlayFactory } from './OverlayFactory';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -142,7 +142,7 @@ export class KonamiSystem {
             { pos: '2/1/3/2', dir: 'down', symbol: '↓' }
         ];
 
-        const createDpadButton = (config: { pos: string; dir: string; symbol: string }) => {
+        const createDpadButton = (config: { pos: string; dir: string; symbol: string }): HTMLButtonElement => {
             const btn = document.createElement('button');
             btn.style.cssText = `
                 grid-area: ${config.pos};
@@ -236,7 +236,7 @@ export class KonamiSystem {
         });
 
         // Input handler
-        const handleInput = (input: string) => {
+        const handleInput = (input: string): void => {
             sequence.push(input);
 
             // Update progress dots
@@ -280,7 +280,7 @@ export class KonamiSystem {
         };
 
         // Keyboard support
-        const keyHandler = (e: KeyboardEvent) => {
+        const keyHandler = (e: KeyboardEvent): void => {
             const keyMap: Record<string, string> = {
                 'ArrowUp': 'up',
                 'ArrowDown': 'down',
@@ -303,7 +303,7 @@ export class KonamiSystem {
         document.addEventListener('keydown', keyHandler);
 
         // Close handler
-        const closeOverlay = () => {
+        const closeOverlay = (): void => {
             document.removeEventListener('keydown', keyHandler);
             overlay.style.opacity = '0';
             setTimeout(() => {

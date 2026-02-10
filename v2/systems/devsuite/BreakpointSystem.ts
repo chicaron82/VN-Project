@@ -21,7 +21,7 @@ export interface BreakpointConfig {
 }
 
 export interface DevSuiteInterface {
-    game: any;
+    game: Record<string, unknown>;
     open(): void;
     switchTab(tab: string): void;
     consoleLogEntry(message: string, type: string): void;
@@ -55,7 +55,9 @@ export class BreakpointSystem {
         if (type === 'tetherThreshold') {
             this.breakpoints.tetherThreshold.enabled = !this.breakpoints.tetherThreshold.enabled;
         } else {
-            (this.breakpoints as any)[type] = !(this.breakpoints as any)[type];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const bp = this.breakpoints as any;
+            bp[type] = !bp[type];
         }
     }
 
@@ -93,7 +95,8 @@ export class BreakpointSystem {
      * Trigger breakpoint: pause game and open logs
      */
     private triggerBreak(message: string): void {
-        this.suite.game.pauseManager?.request('breakpoint');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (this.suite.game as any).pauseManager?.request('breakpoint');
         this.suite.open();
         this.suite.switchTab('logs');
         this.suite.consoleLogEntry(`🔴 BREAKPOINT: ${message}`, 'error');

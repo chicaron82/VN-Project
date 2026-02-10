@@ -24,18 +24,21 @@ export class ConsoleInterceptor {
     constructor(logCallback: LogCallback) {
         this.logCallback = logCallback;
         // Save original console methods immediately
+        // eslint-disable-next-line no-console
         this.originalLog = console.log.bind(console);
+         
         this.originalWarn = console.warn.bind(console);
+         
         this.originalError = console.error.bind(console);
     }
 
     /**
      * Safely stringify objects for console display
      */
-    private safeStringify(obj: any): string {
+    private safeStringify(obj: unknown): string {
         try {
             return JSON.stringify(obj, null, 2);
-        } catch (e) {
+        } catch {
             return String(obj);
         }
     }
@@ -43,7 +46,7 @@ export class ConsoleInterceptor {
     /**
      * Format console arguments to string
      */
-    private formatArgs(args: any[]): string {
+    private formatArgs(args: unknown[]): string {
         return args.map(arg =>
             typeof arg === 'object' ? this.safeStringify(arg) : String(arg)
         ).join(' ');
@@ -57,21 +60,24 @@ export class ConsoleInterceptor {
         this.isActive = true;
 
         // Override console.log
-        console.log = (...args: any[]) => {
+        // eslint-disable-next-line no-console
+        console.log = (...args: unknown[]) => {
             const message = this.formatArgs(args);
             this.logCallback(message, 'log');
             this.originalLog.apply(console, args);
         };
 
         // Override console.warn
-        console.warn = (...args: any[]) => {
+         
+        console.warn = (...args: unknown[]) => {
             const message = this.formatArgs(args);
             this.logCallback('⚠️ ' + message, 'warn');
             this.originalWarn.apply(console, args);
         };
 
         // Override console.error
-        console.error = (...args: any[]) => {
+         
+        console.error = (...args: unknown[]) => {
             const message = this.formatArgs(args);
             this.logCallback('❌ ' + message, 'error');
             this.originalError.apply(console, args);
@@ -85,8 +91,11 @@ export class ConsoleInterceptor {
         if (!this.isActive) return;
         this.isActive = false;
 
+        // eslint-disable-next-line no-console
         console.log = this.originalLog;
+         
         console.warn = this.originalWarn;
+         
         console.error = this.originalError;
     }
 

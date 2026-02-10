@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 /**
@@ -119,8 +119,7 @@ export class ErrorHandler {
     // V1 Parity: error-handler.js lines 64-86
     // ========================================
 
-    // @ts-expect-error - context parameter reserved for future logging
-    private showErrorUI(error: Error | string | unknown, context: string): void {
+    private showErrorUI(error: Error | string | unknown, _context: string): void {
         // Create or get error overlay
         let errorOverlay = document.getElementById('error-overlay');
 
@@ -307,8 +306,8 @@ export class ErrorHandler {
             }
 
             localStorage.setItem('error_log', JSON.stringify(errors));
-        } catch (e) {
-            Logger.error('Failed to log error:', e);
+        } catch (_e) {
+            Logger.error('Failed to log error:', _e);
         }
     }
 
@@ -333,7 +332,7 @@ export class ErrorHandler {
     public getErrorLog(): ErrorLog[] {
         try {
             return JSON.parse(localStorage.getItem('error_log') || '[]') as ErrorLog[];
-        } catch (e) {
+        } catch {
             return [];
         }
     }

@@ -17,7 +17,7 @@ export interface WatchVariable {
 }
 
 export interface DevSuiteInterface {
-    state: any;
+    state: { watchVariables?: WatchVariable[] };
     saveState(): void;
 }
 
@@ -68,12 +68,12 @@ export class VariableWatch {
      * Evaluate a watch expression
      * SECURITY: Only use in controlled dev environment!
      */
-    public evaluate(expression: string): any {
+    public evaluate(expression: string): unknown {
         try {
             // eslint-disable-next-line no-eval
             return eval(expression);
-        } catch (e: any) {
-            return `Error: ${e.message}`;
+        } catch (e: unknown) {
+            return `Error: ${(e as Error).message}`;
         }
     }
 
@@ -81,7 +81,7 @@ export class VariableWatch {
      * Format a value for display
      * Truncates long objects/arrays to 50 chars
      */
-    public formatValue(val: any): string {
+    public formatValue(val: unknown): string {
         if (val === undefined) return 'undefined';
         if (val === null) return 'null';
         if (typeof val === 'object') {

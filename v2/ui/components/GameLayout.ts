@@ -1,4 +1,4 @@
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 import '@ui/styles/main.css';
 
@@ -65,7 +65,7 @@ export class GameLayout {
      * StatusBar component via EventBus ('tether:changed' event).
      * Kept for backward compatibility.
      */
-    updateTether(_level: number) {
+    updateTether(_level: number): void {
         // DEPRECATED: Tether updates now handled by unified StatusBar via EventBus
         // The TetherController emits 'tether:changed' events that StatusBar listens to
         return;

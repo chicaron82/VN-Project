@@ -1,5 +1,5 @@
-import { Scene } from '@core/types';
-import { GameEngine } from '@core/GameEngine';
+import type { Scene } from '@core/types';
+import type { GameEngine } from '@core/GameEngine';
 import { Logger } from '@utils/Logger';
 
 export class ContentLoader {
@@ -66,6 +66,7 @@ export class ContentLoader {
         }
 
         scenes.forEach((sceneDataUnknown) => {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const sceneData = sceneDataUnknown as Record<string, any>;
             // Convert JSON sprites format { left: "path", right: "path" }
             // to SpriteConfig[] format
@@ -101,7 +102,8 @@ export class ContentLoader {
                 sprites,
                 // Map nextSceneId to next
                 next: sceneData.nextSceneId || sceneData.next,
-                choices: sceneData.choices?.map((c: any) => ({
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                choices: (sceneData.choices as any[] | undefined)?.map((c: any) => ({
                     text: c.text,
                     next: c.nextSceneId || c.next,
                     condition: c.validation || c.condition,

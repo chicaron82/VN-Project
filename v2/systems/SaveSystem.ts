@@ -1,7 +1,7 @@
-import { StateManager } from '@core/StateManager';
-import { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
-import { GameState } from '@core/types';
+import type { GameState } from '@core/types';
 import { Logger } from '@utils/Logger';
 
 export interface SaveMetadata {
@@ -65,7 +65,7 @@ export class SaveSystem {
         this.eventBus = eventBus;
     }
 
-    init() {
+    init(): void {
         this.setupAutoSaveListeners();
         this.startIntervalAutoSave();
         Logger.save('Initialized with auto-save (30s throttle, 5min interval)');
@@ -344,8 +344,8 @@ export class SaveSystem {
             Logger.save(`Saved to slot ${slotId}`);
             return true;
 
-        } catch (e) {
-            Logger.error('[SaveSystem] Save failed', e);
+        } catch (_e) {
+            Logger.error('[SaveSystem] Save failed', _e);
             return false;
         }
     }
@@ -384,8 +384,8 @@ export class SaveSystem {
                 return false;
             }
 
-        } catch (e) {
-            Logger.error('[SaveSystem] Load failed', e);
+        } catch (_e) {
+            Logger.error('[SaveSystem] Load failed', _e);
             return false;
         }
     }
@@ -416,7 +416,7 @@ export class SaveSystem {
         try {
             const slot: SaveSlot = JSON.parse(raw);
             return slot.metadata;
-        } catch (e) {
+        } catch {
             return null; // Corrupt
         }
     }
@@ -435,12 +435,13 @@ export class SaveSystem {
         return !!this.getSlotMetadata(slotId);
     }
 
-    private isValidGameState(data: any): data is GameState {
+    private isValidGameState(data: unknown): data is GameState {
+        const d = data as Record<string, unknown>;
         return (
-            data &&
-            typeof data.currentScene === 'string' &&
-            typeof data.tetherLevel === 'number' &&
-            typeof data.flags === 'object'
+            !!data &&
+            typeof d.currentScene === 'string' &&
+            typeof d.tetherLevel === 'number' &&
+            typeof d.flags === 'object'
         );
     }
 

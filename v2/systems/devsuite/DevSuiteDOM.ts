@@ -211,13 +211,13 @@ export class DevSuiteDOM {
         const { overlay, consolePanel, divider } = this.elements;
         let isResizing = false;
 
-        const startResize = (e: MouseEvent | TouchEvent) => {
+        const startResize = (e: MouseEvent | TouchEvent): void => {
             isResizing = true;
             divider?.classList.add('resizing');
             e.preventDefault();
         };
 
-        const resize = (e: MouseEvent | TouchEvent) => {
+        const resize = (e: MouseEvent | TouchEvent): void => {
             if (!isResizing) return;
 
             const clientX = (e as TouchEvent).touches
@@ -235,7 +235,7 @@ export class DevSuiteDOM {
             cb.onResize(clampedWidth);
         };
 
-        const stopResize = () => {
+        const stopResize = (): void => {
             if (isResizing) {
                 isResizing = false;
                 divider?.classList.remove('resizing');

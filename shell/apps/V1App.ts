@@ -7,9 +7,11 @@
  * ═══════════════════════════════════════════════════════════════
  */
 
-import { BaseApp, StatusBarConfig } from './BaseApp.js';
+import type { StatusBarConfig } from './BaseApp.js';
+import { BaseApp } from './BaseApp.js';
 import type { UV7Shell } from '../UV7Shell.js';
 import { ChromePresets } from '../../types/ChromePresets.js';
+import type { StatusBarSpec } from '../../types/chrome.js';
 import { Logger } from '@utils/Logger';
 
 export class V1App extends BaseApp {
@@ -25,12 +27,12 @@ export class V1App extends BaseApp {
         };
     }
 
-    getStatusBarSpec() {
+    getStatusBarSpec(): StatusBarSpec {
         // Use cinematic preset for immersive visual novel experience
         return ChromePresets.cinematic('Version 848 (V1)');
     }
 
-    async mount(container: HTMLElement, params: Record<string, any> = {}): Promise<void> {
+    async mount(container: HTMLElement, params: Record<string, string> = {}): Promise<void> {
         await super.mount(container, params);
 
         // Load V1 game in an iframe for isolation

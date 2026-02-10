@@ -1,7 +1,7 @@
-import { StateManager } from '@core/StateManager';
-import { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
 import { GameConfig } from '@core/GameConfig';
-import { HapticSystem } from '@systems/HapticSystem';
+import type { HapticSystem } from '@systems/HapticSystem';
 import { Logger } from '@utils/Logger';
 
 export class TetherController {
@@ -9,7 +9,7 @@ export class TetherController {
     private eventBus: EventBus;
     private haptic: HapticSystem;
 
-    private decayInterval: any = null;
+    private decayInterval: ReturnType<typeof setInterval> | null = null;
     private decayFrozen: boolean = false;
 
     // V1 Constants (can be moved to GameConfig if not already there, but keeping logic close)
@@ -25,7 +25,7 @@ export class TetherController {
     /**
      * Start passive decay loop
      */
-    startDecay() {
+    startDecay(): void {
         if (this.decayInterval) return;
 
         // Safety: ensure tether state exists
@@ -45,7 +45,7 @@ export class TetherController {
     /**
      * Stop passive decay
      */
-    stopDecay() {
+    stopDecay(): void {
         if (this.decayInterval) {
             clearInterval(this.decayInterval);
             this.decayInterval = null;
@@ -56,7 +56,7 @@ export class TetherController {
     /**
      * Apply single decay tick
      */
-    applyDecay() {
+    applyDecay(): void {
         if (this.decayFrozen) return;
 
         const currentLevel = this.stateManager.get('game.tetherLevel') as number;
@@ -91,7 +91,7 @@ export class TetherController {
     /**
      * Player Action: Hold On
      */
-    holdOn() {
+    holdOn(): void {
         const currentLevel = this.stateManager.get('game.tetherLevel') as number;
         if (currentLevel <= 0) return;
 
@@ -107,18 +107,18 @@ export class TetherController {
         this.eventBus.emit('tether:boost', { amount: this.HOLD_ON_BOOST });
     }
 
-    private handleTetherDeath() {
+    private handleTetherDeath(): void {
         this.stopDecay();
         this.eventBus.emit('tether:death', {});
         // RouteController or GameEngine should listen to this to trigger Game Over
     }
 
     // Dev helpers
-    freezeDecay(frozen: boolean) {
+    freezeDecay(frozen: boolean): void {
         this.decayFrozen = frozen;
     }
 
-    destroy() {
+    destroy(): void {
         this.stopDecay();
     }
 }

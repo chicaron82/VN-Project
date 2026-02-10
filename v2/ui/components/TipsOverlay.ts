@@ -1,5 +1,5 @@
 
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 
 /**
  * TipsOverlay - Revolving tips for the Main Menu
@@ -8,7 +8,7 @@ export class TipsOverlay {
     private eventBus: EventBus;
     private container: HTMLElement | null = null;
     private tipElement: HTMLElement | null = null;
-    private interval: any = null;
+    private interval: ReturnType<typeof setInterval> | null = null;
     private currentTipIndex: number = 0;
 
     private readonly TIPS = [

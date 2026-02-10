@@ -331,7 +331,7 @@ export class ExpandableQuickActions {
 
         try {
             navigator.vibrate(patterns[type] || patterns.light);
-        } catch (_error) {
+        } catch {
             // Silently fail
         }
     }

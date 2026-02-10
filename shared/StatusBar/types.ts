@@ -29,7 +29,7 @@ export interface SettingDefinition {
     id: string;
     label: string;
     type: 'toggle' | 'slider' | 'select';
-    defaultValue: any;
+    defaultValue: string | number | boolean;
     /** For sliders */
     min?: number;
     max?: number;
@@ -63,5 +63,5 @@ export interface StatusBarEvents {
     'theme:changed': ThemeState;
     'settings:opened': void;
     'settings:closed': void;
-    'setting:changed': { id: string; value: any };
+    'setting:changed': { id: string; value: string | number | boolean };
 }

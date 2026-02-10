@@ -200,13 +200,13 @@ function monitorPerformance(): void {
             try {
                 const lcpObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
-                    const lastEntry = entries[entries.length - 1] as any;
+                    const lastEntry = entries[entries.length - 1] as PerformanceEntry & { renderTime?: number; loadTime?: number };
                     Logger.perf(`📊 LCP: ${lastEntry.renderTime || lastEntry.loadTime}ms`);
                     analytics.track('Performance', 'LCP', 'Largest Contentful Paint',
-                        Math.round(lastEntry.renderTime || lastEntry.loadTime));
+                        Math.round(lastEntry.renderTime || lastEntry.loadTime || 0));
                 });
                 lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
-            } catch (e) {
+            } catch {
                 // LCP not supported
             }
 
@@ -214,14 +214,14 @@ function monitorPerformance(): void {
             try {
                 const fidObserver = new PerformanceObserver((list) => {
                     const entries = list.getEntries();
-                    entries.forEach((entry: any) => {
-                        Logger.perf(`📊 FID: ${entry.processingStart - entry.startTime}ms`);
+                    entries.forEach((entry: PerformanceEntry & { processingStart?: number }) => {
+                        Logger.perf(`📊 FID: ${(entry.processingStart || 0) - entry.startTime}ms`);
                         analytics.track('Performance', 'FID', 'First Input Delay',
-                            Math.round(entry.processingStart - entry.startTime));
+                            Math.round((entry.processingStart || 0) - entry.startTime));
                     });
                 });
                 fidObserver.observe({ entryTypes: ['first-input'] });
-            } catch (e) {
+            } catch {
                 // FID not supported
             }
         }

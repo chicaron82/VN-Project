@@ -1,5 +1,5 @@
-import { EventBus } from '../core/EventBus';
-import { StateManager } from '../core/StateManager';
+import type { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
 import { Logger } from '@utils/Logger';
 import type { NotificationPriority } from '@core/NotificationSystem/NotificationCore';
 
@@ -436,7 +436,7 @@ export class StatusNotificationController {
             });
 
             // Button handlers
-            const closeOverlay = (result: boolean) => {
+            const closeOverlay = (result: boolean): void => {
                 overlay.style.opacity = '0';
                 const modal = overlay.querySelector('.uv7-confirm-modal') as HTMLElement;
                 if (modal) modal.style.transform = 'scale(0.9)';
@@ -455,7 +455,7 @@ export class StatusNotificationController {
             confirmBtn?.addEventListener('click', () => closeOverlay(true));
 
             // Escape key to cancel
-            const escHandler = (e: KeyboardEvent) => {
+            const escHandler = (e: KeyboardEvent): void => {
                 if (e.key === 'Escape') {
                     document.removeEventListener('keydown', escHandler);
                     closeOverlay(false);

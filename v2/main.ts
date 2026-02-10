@@ -67,9 +67,9 @@ const {
 
 declare global {
     interface Window {
-        game: any;
-        collectiblesSystem: any;
-        saveSystem: any;
+        game: unknown;
+        collectiblesSystem: unknown;
+        saveSystem: unknown;
     }
 }
 
@@ -81,7 +81,7 @@ if (!app) throw new Error('No #app element found');
 
 // Menu screens managed by NavigationController
 // Gameplay managed by GameplayController
-const isPaused = false;
+const _isPaused = false;
 
 // ============================================
 // Controllers
@@ -114,12 +114,12 @@ async function executeBootSequence(): Promise<void> {
 
 
 // Helper functions - delegate to controllers
-const showMainMenu = () => navigationController.showMainMenu();
-const showRouteSelect = () => navigationController.showRouteSelect();
-const startGameplay = (mode: 'ronnie' | 'tori' | 'prologue') => gameplayController.startGameplay(mode);
-const updateBackground = (path: string | undefined) => gameplayController.updateBackground(path);
-const updateSprites = (sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined) => gameplayController.updateSprites(sprites);
-const showChoices = (choices: Array<{ text: string; next: string | null }>) => gameplayController.showChoices(choices);
+const showMainMenu = (): void => navigationController.showMainMenu();
+const showRouteSelect = (): void => navigationController.showRouteSelect();
+const startGameplay = (mode: 'ronnie' | 'tori' | 'prologue'): Promise<void> => gameplayController.startGameplay(mode);
+const updateBackground = (path: string | undefined): void => gameplayController.updateBackground(path);
+const updateSprites = (sprites: Array<{ position?: string; variant?: string; id?: string }> | undefined): void => gameplayController.updateSprites(sprites);
+const showChoices = (choices: Array<{ text: string; next: string | null }>): void => gameplayController.showChoices(choices);
 
 
 
@@ -137,7 +137,7 @@ const inputController = new InputController(
     saveSystem,
     dialogController,
     dialogBubble,
-    () => isPaused
+    () => _isPaused
 );
 
 // System Event Handlers - Game event listeners (scene:load, dialog:show, etc.)
@@ -155,8 +155,8 @@ const systemEventHandlers = new SystemEventHandlers(
 );
 
 // Setup gameplay start event handlers (navigation handlers are in NavigationController)
-function setupGameplayHandlers() {
-    eventBus.on('ui:start_game', (data) => {
+function setupGameplayHandlers(): void {
+    eventBus.on('ui:start_game', (data: { route: 'ronnie' | 'tori' | 'prologue' }) => {
         startGameplay(data.route);
     });
 
@@ -169,7 +169,7 @@ function setupGameplayHandlers() {
 // Initialize
 // ============================================
 
-async function init() {
+async function init(): Promise<void> {
     Logger.system('[UV7 V2] Starting...');
 
     // Initialize game engine
@@ -177,13 +177,13 @@ async function init() {
 
     // Load all route content
     Logger.system('[UV7 V2] Loading route content...');
-    contentLoader.parseAndRegister(prologueData as { scenes: any[] });
-    contentLoader.parseAndRegister(ronnieAct1Data as { scenes: any[] });
-    contentLoader.parseAndRegister(ronnieAct2Data as { scenes: any[] });
-    contentLoader.parseAndRegister(ronnieAct3Data as { scenes: any[] });
-    contentLoader.parseAndRegister(toriAct1Data as { scenes: any[] });
-    contentLoader.parseAndRegister(toriAct2Data as { scenes: any[] });
-    contentLoader.parseAndRegister(toriAct3Data as { scenes: any[] });
+    contentLoader.parseAndRegister(prologueData as unknown);
+    contentLoader.parseAndRegister(ronnieAct1Data as unknown);
+    contentLoader.parseAndRegister(ronnieAct2Data as unknown);
+    contentLoader.parseAndRegister(ronnieAct3Data as unknown);
+    contentLoader.parseAndRegister(toriAct1Data as unknown);
+    contentLoader.parseAndRegister(toriAct2Data as unknown);
+    contentLoader.parseAndRegister(toriAct3Data as unknown);
     Logger.system('[UV7 V2] Route content loaded');
 
     // Set up event handlers (extracted to controllers)

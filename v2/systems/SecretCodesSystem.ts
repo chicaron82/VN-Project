@@ -20,10 +20,10 @@
  * ════════════════════════════════════════════════════════════════
  */
 
-import { EventBus } from '@core/EventBus';
-import { StateManager } from '@core/StateManager';
-import { BootstrapTracker } from '@systems/BootstrapTracker';
-import { DevCommentarySystem } from '@systems/DevCommentarySystem';
+import type { EventBus } from '@core/EventBus';
+import type { StateManager } from '@core/StateManager';
+import type { BootstrapTracker } from '@systems/BootstrapTracker';
+import type { DevCommentarySystem } from '@systems/DevCommentarySystem';
 import { Logger } from '@utils/Logger';
 
 interface CodeDefinition {
@@ -99,8 +99,8 @@ export class SecretCodesSystem {
     private saveDiscoveredCodes(): void {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify([...this.discoveredCodes]));
-        } catch (e) {
-            Logger.error('Failed to save discovered codes', e);
+        } catch (_e) {
+            Logger.error('Failed to save discovered codes', _e);
         }
     }
 
@@ -613,7 +613,7 @@ devhelp - Show this help
 
         // Close handler
         const closeBtn = overlay.querySelector('button');
-        const closeOverlay = () => {
+        const closeOverlay = (): void => {
             overlay.style.opacity = '0';
             setTimeout(() => overlay.remove(), 300);
         };

@@ -36,7 +36,7 @@ function initSliderHint(): void {
     }
 
     // Remove hint on first interaction
-    const removeHint = () => {
+    const removeHint = (): void => {
         knob.classList.remove('hint');
         sessionStorage.setItem('uv7-slider-interacted', 'true');
 

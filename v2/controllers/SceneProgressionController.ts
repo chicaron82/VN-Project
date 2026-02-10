@@ -1,6 +1,6 @@
-import { EventBus } from '../core/EventBus';
-import { StateManager } from '../core/StateManager';
-import { GameEngine } from '../core/GameEngine';
+import type { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
+import type { GameEngine } from '../core/GameEngine';
 import { Logger } from '../utils/Logger';
 
 /**

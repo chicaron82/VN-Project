@@ -1,4 +1,4 @@
-import { EventBus } from '../core/EventBus';
+import type { EventBus } from '../core/EventBus';
 import { Logger } from '@utils/Logger';
 
 /**

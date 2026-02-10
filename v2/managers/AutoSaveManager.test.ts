@@ -1,5 +1,5 @@
 import { AutoSaveManager } from './AutoSaveManager';
-import { StateManager } from '../core/StateManager';
+import type { StateManager } from '../core/StateManager';
 
 // Mock DOM
 const mockElement = {

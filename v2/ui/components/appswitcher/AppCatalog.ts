@@ -57,7 +57,7 @@ export class AppCatalog {
      * Build the full app list. Detects shell mode at call time.
      */
     createApps(): AppDefinition[] {
-        const isShellMode = !!(window as any).uv7Shell;
+        const isShellMode = !!window.uv7Shell;
 
         return [
             {
@@ -239,11 +239,12 @@ export class AppCatalog {
         return Math.min(100, Math.round(base + actProgress));
     }
 
-    private calculateV2Progress(state: any): number {
-        if (!state?.game) return 0;
-        const route = state.game.currentRoute;
-        const act = state.game.currentAct || 1;
-        const sceneIndex = state.game.currentSceneIndex || 0;
+    private calculateV2Progress(state: unknown): number {
+        const s = state as { game?: { currentRoute?: string; currentAct?: number; currentSceneIndex?: number } };
+        if (!s?.game) return 0;
+        const route = s.game.currentRoute;
+        const act = s.game.currentAct || 1;
+        const sceneIndex = s.game.currentSceneIndex || 0;
 
         // Rough estimate based on route + act + scene
         const routeProgress: Record<string, number> = { tori: 0, ronnie: 33, true: 66 };

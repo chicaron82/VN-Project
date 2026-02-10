@@ -9,7 +9,7 @@
  * Ported from V1's crew-controller.js
  */
 
-import { EventBus } from '@core/EventBus';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 import '@ui/styles/crew-screen.css';
 

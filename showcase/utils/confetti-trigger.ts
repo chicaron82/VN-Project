@@ -69,7 +69,7 @@ class ConfettiSystem {
         particle.style.opacity = '1';
         particle.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
 
-        this.container.appendChild(particle);
+        this.container!.appendChild(particle);
 
         // Animate frame
         requestAnimationFrame(() => {
@@ -90,14 +90,14 @@ window.uv7Confetti = new ConfettiSystem();
 document.addEventListener('DOMContentLoaded', () => {
     const launchBtns = document.querySelectorAll('a[href*="index.v2.html"]');
     launchBtns.forEach(btn => {
-        btn.addEventListener('mouseenter', (e) => {
+        btn.addEventListener('mouseenter', (_e) => {
             // Little mini burst on hover for fun
-            const rect = btn.getBoundingClientRect();
+            const _rect = btn.getBoundingClientRect();
             // Only fire occasionally to not be annoying? Nah, let's be bougie.
             // keeping it subtle.
         });
 
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', (_e) => {
             const rect = btn.getBoundingClientRect();
             window.uv7Confetti.fire(rect.left + rect.width / 2, rect.top + rect.height / 2);
         });

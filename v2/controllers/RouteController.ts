@@ -1,6 +1,6 @@
-import { GameEngine } from '@core/GameEngine';
-import { StateManager } from '@core/StateManager';
-import { EventBus } from '@core/EventBus';
+import type { GameEngine } from '@core/GameEngine';
+import type { StateManager } from '@core/StateManager';
+import type { EventBus } from '@core/EventBus';
 import { Logger } from '@utils/Logger';
 
 export type RouteId = 'prologue' | 'ronnie' | 'tori';
@@ -25,7 +25,7 @@ export class RouteController {
         this.stateManager = stateManager;
         this.eventBus = eventBus;
 
-        this.eventBus.on('ui:retry_choice', (data: any) => {
+        this.eventBus.on('ui:retry_choice', (data: { choice: 'restart_route' | 'change_perspective'; route?: 'ronnie' | 'tori' }) => {
             this.handleRetryChoice(data.choice, data.route);
         });
     }
@@ -42,7 +42,7 @@ export class RouteController {
      * Start the story (Prologue or Skip)
      */
     startStory(): void {
-        const settings = this.stateManager.get('settings') as any; // Cast to any or helper interface
+        const settings = this.stateManager.get('settings') as Record<string, unknown> | undefined;
         const skipUnlocked = localStorage.getItem('skipPrologueUnlocked') === 'true';
         const autoSkip = settings?.autoSkipPrologue === true;
 

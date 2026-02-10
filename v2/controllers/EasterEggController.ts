@@ -20,8 +20,8 @@
 // - EasterEggController, ported with love
 // ========================================
 
-import { EventBus } from '../core/EventBus';
-import { StateManager } from '../core/StateManager';
+import type { EventBus } from '../core/EventBus';
+import type { StateManager } from '../core/StateManager';
 import { OverlayFactory } from './easterEggs/OverlayFactory';
 import { StaticOverlays } from './easterEggs/StaticOverlays';
 import { KonamiSystem } from './easterEggs/KonamiSystem';

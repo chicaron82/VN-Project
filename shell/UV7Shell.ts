@@ -265,7 +265,7 @@ export class UV7Shell {
      * // Direct call (advanced)
      * await shell.loadApp('showcase', { phase: '42' });
      */
-    async loadApp(appId: string, params: Record<string, any> = {}): Promise<void> {
+    async loadApp(appId: string, params: Record<string, string> = {}): Promise<void> {
         Logger.system(`[UV7Shell] Loading app: ${appId}`, params);
 
         // Check if app exists
@@ -641,7 +641,7 @@ export class UV7Shell {
      * shell.navigateTo('showcase');
      * shell.navigateTo('showcase', { phase: '42' });
      */
-    navigateTo(appId: string, params: Record<string, any> = {}): void {
+    navigateTo(appId: string, params: Record<string, string> = {}): void {
         this.router.navigate(appId, params);
     }
 

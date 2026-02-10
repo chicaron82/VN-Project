@@ -94,7 +94,6 @@ import { entry as entry89 } from './entries/2025/11/post-launch-polish';
 import { entry as entry90 } from './entries/2025/10/demon-lord-naming';
 import { entry as entry91 } from './entries/2025/10/applebees-tether-system';
 import { entry as entry92 } from './entries/2025/10/custom-engine-realization';
-import { entry as entry93 } from './entries/2026/02/tale-of-two-cozees';
 
 export * from './types';
 import type { BlogEntry } from './types';
@@ -192,8 +191,7 @@ export const timelineData: BlogEntry[] = [
     entry89,
     entry90,
     entry91,
-    entry92,
-    entry93
+    entry92
 ];
 
 export const TIMELINE_DATA = {

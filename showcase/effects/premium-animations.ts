@@ -104,7 +104,7 @@ function initParallax(): (() => void) | void {
         ticking = false;
     }
 
-    const scrollHandler = () => {
+    const scrollHandler = (): void => {
         if (!ticking) {
             window.requestAnimationFrame(updateParallax);
             ticking = true;

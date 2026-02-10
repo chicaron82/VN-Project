@@ -14,7 +14,7 @@ export function initTypingEffect(): void {
     let i = 0;
     const speed = 50; // ms per char
 
-    function typeWriter() {
+    function typeWriter(): void {
         if (i < originalText.length) {
             subtitle.textContent += originalText.charAt(i);
             i++;

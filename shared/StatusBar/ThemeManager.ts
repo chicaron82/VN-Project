@@ -256,7 +256,7 @@ export class ThemeManager {
 
     /** Show a toast notification (if available) */
     showToast(message: string): void {
-        const contentFeatures = (window as any).contentFeatures;
+        const contentFeatures = (window as unknown as { contentFeatures?: { showToast?: (message: string, duration?: number) => void } }).contentFeatures;
         if (contentFeatures?.showToast) {
             contentFeatures.showToast(message, 2000);
         }

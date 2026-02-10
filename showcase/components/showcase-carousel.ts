@@ -275,7 +275,7 @@ export class SpotlightCarousel {
         e.preventDefault();
     }
 
-    private handleMouseEnd(e: MouseEvent): void {
+    private handleMouseEnd(_e: MouseEvent): void {
         const wasDragging = this.isDragging;
         this.isDragging = false;
         this.isPotentialDrag = false;
@@ -324,7 +324,7 @@ export class SpotlightCarousel {
     // ========================================
 
     private applyMomentum(): void {
-        const animate = () => {
+        const animate = (): void => {
             this.velocity *= this.friction;
             this.position += this.velocity;
             this.clampPosition(); // Enforce hard boundaries
@@ -387,7 +387,7 @@ export class SpotlightCarousel {
             const startTime = performance.now();
             const duration = 400;
 
-            const snapAnimation = () => {
+            const snapAnimation = (): void => {
                 const elapsed = performance.now() - startTime;
                 const progress = Math.min(elapsed / duration, 1);
                 const eased = 1 - Math.pow(1 - progress, 3);

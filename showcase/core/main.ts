@@ -75,7 +75,7 @@ import { Logger } from '@utils/Logger';
 Logger.system('%c[SHOWCASE] Initializing...', 'background: #00ff88; color: black; font-weight: bold; padding: 4px;');
 
 // Create UV7 System (same factory pattern as ShowcaseBridge)
-function createUV7System(context: string = 'showcase') {
+function createUV7System(context: string = 'showcase'): { eventBus: EventBus; statusBar: StatusBar; notificationRail: NotificationRail } {
     Logger.system(`🏗️ Creating UV7 System for ${context}`);
 
     const eventBus = new EventBus();
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     Logger.system('✅ Global search initialized (Cmd/Ctrl+K to open)');
 
     // Wire up deep linking to navigate on URL changes
-    blogDeepLink.onNavigateChange((params: any) => {
+    blogDeepLink.onNavigateChange((params: { entryId?: string; search?: string; filter?: string }) => {
         Logger.system('🔗 [DeepLink] Navigating to:', params);
 
         // Navigate to entry if present
@@ -301,11 +301,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize Gentle Nudges (scroll inactivity hints)
     const gentleNudges = new GentleNudges();
-    (window as any).gentleNudges = gentleNudges; // Expose for debugging
+    (window as unknown as { gentleNudges: GentleNudges }).gentleNudges = gentleNudges; // Expose for debugging
 
     // Initialize Bougie Tracker (time since last bougie enhancement)
     const bougieTracker = new BougieTracker();
-    (window as any).bougieTracker = bougieTracker; // Expose for debugging
+    (window as unknown as { bougieTracker: BougieTracker }).bougieTracker = bougieTracker; // Expose for debugging
 
     // =================================================================
     // PHASE 6: APP INTEGRATION (standalone only)
@@ -409,9 +409,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize Code Comparison Modal (LAZY LOADED)
     // Create proxy that lazy loads on first method call
-    let modalInstance: any = null;
-    (window as any).codeComparisonModal = {
-        open: async (comparison: any) => {
+    let modalInstance: { open: (comparison: unknown) => void } | null = null;
+    (window as unknown as { codeComparisonModal: { open: (comparison: unknown) => void } }).codeComparisonModal = {
+        open: async (comparison: unknown) => {
             if (!modalInstance) {
                 Logger.system('[Lazy Loading] CodeComparisonModal...');
                 const { CodeComparisonModal } = await import('../components/CodeComparisonModal');

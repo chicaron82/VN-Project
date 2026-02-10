@@ -277,11 +277,11 @@ export function createConfirmation(
  */
 export function createNotificationBatch(
     messages: string[],
-    baseConfig: Partial<Omit<RailNotificationConfig, 'id' | 'message' | 'priority'>> & { priority?: string } = {}
+    baseConfig: Partial<Omit<RailNotificationConfig, 'id' | 'message' | 'priority'>> & { priority?: NotificationPriority } = {}
 ): RailNotificationConfig[] {
     return messages.map(message => createRailNotification({
         ...baseConfig,
         message,
-        priority: (baseConfig.priority as any) || 'normal'
+        priority: baseConfig.priority || 'normal'
     }));
 }
