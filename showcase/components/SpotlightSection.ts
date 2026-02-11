@@ -207,6 +207,53 @@ export class SpotlightSection {
                                 </div>
                             </div>
                     </div>
+
+                    <!-- BY THE NUMBERS: Project Metrics -->
+                    <div class="metrics-showcase" style="margin-top: 4rem; padding: 2rem; background: linear-gradient(135deg, rgba(0, 255, 136, 0.05), rgba(102, 126, 234, 0.05)); border-radius: 12px; border: 1px solid rgba(0, 255, 136, 0.2);">
+                        <h2 style="font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">📊 By the Numbers</h2>
+
+                        <div class="metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.5rem;">1,306</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Automated Tests Passing</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">V2 Rebuild</div>
+                            </div>
+
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.5rem;">90+</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Development Days</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">50 days V1 + 40+ days V2</div>
+                            </div>
+
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-purple); margin-bottom: 0.5rem;">78</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Documented Phases</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">V2 Architecture Evolution</div>
+                            </div>
+
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-pink); margin-bottom: 0.5rem;">8</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">AI Collaborators</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">DiZee, Tori, Belle, Zee, Ronnie, +3</div>
+                            </div>
+
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary); margin-bottom: 0.5rem;">75K+</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Lines of Code</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">V1 JavaScript (69 files)</div>
+                            </div>
+
+                            <div class="metric-card" style="background: rgba(0, 0, 0, 0.3); padding: 1.5rem; border-radius: 8px; text-align: center;">
+                                <div class="metric-value" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 0.5rem;">2-3hrs</div>
+                                <div class="metric-label" style="font-size: 0.95rem; opacity: 0.8;">Playthrough Time</div>
+                                <div class="metric-sublabel" style="font-size: 0.85rem; opacity: 0.6; margin-top: 0.25rem;">Full visual novel experience</div>
+                            </div>
+                        </div>
+
+                        <p style="text-align: center; opacity: 0.7; font-size: 0.95rem; font-style: italic;">
+                            Built by someone who didn't know it was supposed to be hard.
+                        </p>
+                    </div>
                 </div>
 
                 <!-- Modal Overlay -->
