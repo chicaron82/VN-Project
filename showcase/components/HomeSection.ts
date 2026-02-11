@@ -244,13 +244,6 @@ export class HomeSection {
                 <div class="entrees-zone">
                 <h2 class="entrees-header">New Entrees Served</h2>
 
-                <!-- 30-Day Speedrun Link -->
-                <a href="#" class="demon-lord-link" data-entry="2025-10-26-demon-lord" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1.05rem; color: rgba(0, 255, 136, 0.9); text-decoration: none; margin: 0 auto 2rem; padding: 0.75rem 1.5rem; border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 8px; transition: all 0.3s ease; max-width: fit-content;">
-                    <span class="link-icon">📖</span>
-                    <span>The 30-Day Speedrun: Or, How I Accidentally Became a Demon Lord</span>
-                    <span class="link-arrow">→</span>
-                </a>
-
                 <!-- Quick Scan Cards -->
                 <div class="card-grid" style="margin: 2rem auto; max-width: 1200px;">
                     <div class="card app-card" data-app="v1">
@@ -295,6 +288,11 @@ export class HomeSection {
                                 Tori the AI), multiple endings, branching dialogue. 2-3 hour playthrough with custom visual novel
                                 mechanics. Built in 50 days of pure "yes and" energy—chaos, passion, and the council's first masterpiece.
                             </p>
+                            <a href="#" class="demon-lord-link" data-entry="2025-10-26-demon-lord" style="display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; color: rgba(0, 255, 136, 0.9); text-decoration: none; margin: 1rem 0 0; padding: 0.65rem 1.25rem; border: 1px solid rgba(0, 255, 136, 0.3); border-radius: 6px; transition: all 0.3s ease; width: fit-content;">
+                                <span class="link-icon">📖</span>
+                                <span>Read: The 30-Day Speedrun — Or, How I Accidentally Became a Demon Lord</span>
+                                <span class="link-arrow">→</span>
+                            </a>
                         </div>
                         <div class="menu-arrow">→</div>
                     </div>
