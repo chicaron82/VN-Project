@@ -8,6 +8,11 @@
    DiZee Implementation - Can Soul Be Prompted?
    ========================================== */
 
+.content-section {
+    background: var(--bg-primary);
+    padding: 2rem 0;
+}
+
 .experiment-intro {
     font-size: 1.1rem;
     line-height: 1.7;
