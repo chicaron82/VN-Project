@@ -2,16 +2,7 @@ import { CarouselMomentum } from './CarouselMomentum';
 
 const mockCarouselMomentumConfig = {} as any;
 
-// Mock DOM
-const _mockElement = {
-    classList: { add: vi.fn(), remove: vi.fn(), toggle: vi.fn() },
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    setAttribute: vi.fn(),
-    style: {},
-    innerHTML: '',
-    textContent: ''
-};
+// CarouselMomentum.test.ts
 
 describe('CarouselMomentum', () => {
     let instance: CarouselMomentum;

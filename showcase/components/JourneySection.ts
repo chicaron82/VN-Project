@@ -31,7 +31,7 @@ export class JourneySection {
                         </p>
 
                         <div class="journey-what-built">
-                            <p><strong>What I built in one month:</strong></p>
+                            <p><strong>Where my curiosity led me in a few months:</strong></p>
                             <ul>
                                 <li>✅ Relationship simulator (12 days)</li>
                                 <li>✅ Complete visual novel with unorthodox mechanics</li>

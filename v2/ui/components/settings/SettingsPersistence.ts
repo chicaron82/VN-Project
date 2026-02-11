@@ -54,9 +54,8 @@ export class SettingsPersistence {
         localStorage.setItem('gameSettings', JSON.stringify(current));
 
         // Save to SettingsSystem if available
-        if (this.settingsSystem) {
-            // @ts-ignore - dynamic key access
-            this.settingsSystem.set(key, value);
+        if (this.settingsSystem && typeof (this.settingsSystem as unknown as { set: Function }).set === 'function') {
+            (this.settingsSystem as unknown as { set: (k: string, v: unknown) => void }).set(key, value);
         }
 
         // Emit settings:changed event

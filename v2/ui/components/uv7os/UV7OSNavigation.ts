@@ -199,7 +199,8 @@ export class UV7OSNavigation {
         }
 
         // Start the view transition
-        document.startViewTransition(() => {
+        const doc = document as unknown as { startViewTransition: (cb: () => void) => void };
+        doc.startViewTransition(() => {
             // This callback runs after the old state is captured
             // but before the new state is rendered
             window.location.href = url;
