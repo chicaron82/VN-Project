@@ -20,8 +20,10 @@
     "lint:fix": "eslint --fix v2/ showcase/ shared/ shell/",
     "format": "prettier --write \"v2/**/*.ts\" \"showcase/**/*.ts\" \"shared/**/*.ts\" \"shell/**/*.ts\"",
     "format:check": "prettier --check \"v2/**/*.ts\" \"showcase/**/*.ts\" \"shared/**/*.ts\" \"shell/**/*.ts\"",
+    "lint:md": "markdownlint-cli2 \"**/*.md\" \"#node_modules\"",
+    "lint:md:fix": "markdownlint-cli2 --fix \"**/*.md\" \"#node_modules\"",
     "typecheck": "tsc --project tsconfig.v2.json --noEmit",
-    "validate": "npm run typecheck && npm run lint && npm run test"
+    "validate": "npm run typecheck && npm run lint && npm run lint:md && npm run test"
   },
   "devDependencies": {
     "@types/node": "^25.0.6",
@@ -33,6 +35,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "jsdom": "^27.4.0",
+    "markdownlint-cli2": "^0.20.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
     "vite": "^7.3.1",

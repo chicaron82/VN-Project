@@ -1744,6 +1744,12 @@ body.uv7-shell-mode .tab-bar-container {
     display: none;
 }
 
+/* Phase 26e: Swipe optimization */
+.tab-panels-container.dragging {
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
+}
+
 .tab-panels-container {
     -ms-overflow-style: none;
     /* IE and Edge */

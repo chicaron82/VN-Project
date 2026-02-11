@@ -24,6 +24,8 @@ export class TabController {
     private progressIndicator: HTMLElement | null;
     private container: HTMLElement | null;
     private observer?: IntersectionObserver;
+    private isProgrammaticScroll: boolean = false;
+    private scrollTimeout?: number;
 
     constructor() {
         this.tabs = [
@@ -115,8 +117,8 @@ export class TabController {
                 }
             });
 
-            // Only update if we found a visible section
-            if (mostVisible && mostVisible.isIntersecting) {
+            // Only update if we found a visible section AND we're not currently doing a programmatic jump
+            if (mostVisible && mostVisible.isIntersecting && !this.isProgrammaticScroll) {
                 const tabId = (mostVisible.target as HTMLElement).dataset.panel;
                 if (tabId && tabId !== this.activeTab) {
                     Logger.ui(`[ScrollSpy] Detected section: ${tabId} (ratio: ${mostVisible.intersectionRatio})`);
@@ -134,10 +136,16 @@ export class TabController {
     /**
      * Set active tab (called by scroll-spy, no scrolling)
      */
-    setActiveTab(tabId: string): void {
+    setActiveTab(tabId: string, isFromClick: boolean = false): void {
         if (!this.tabs.includes(tabId)) return;
 
-        Logger.ui(`[TabController] setActiveTab: ${this.activeTab} → ${tabId}`);
+        // If this is a click, we're doing a programmatic scroll
+        if (isFromClick) {
+            this.isProgrammaticScroll = true;
+            if (this.scrollTimeout) window.clearTimeout(this.scrollTimeout);
+        }
+
+        Logger.ui(`[TabController] setActiveTab: ${this.activeTab} → ${tabId}${isFromClick ? ' (programmatic)' : ''}`);
 
         this.activeTab = tabId;
 
@@ -158,6 +166,14 @@ export class TabController {
         window.dispatchEvent(new CustomEvent('uv7:section:changed', {
             detail: { section: tabId }
         }));
+
+        // Reset the programmatic flag after animation duration (~600ms for smooth scroll)
+        if (isFromClick) {
+            this.scrollTimeout = window.setTimeout(() => {
+                this.isProgrammaticScroll = false;
+                Logger.ui('[TabController] Programmatic scroll guard released');
+            }, 650);
+        }
     }
 
     /**
@@ -177,9 +193,11 @@ export class TabController {
 
         // Scroll to the active panel
         if (this.container) {
-            const scrollPosition = currentIndex * window.innerWidth;
+            const panelWidth = this.container.clientWidth || window.innerWidth;
+            const scrollPosition = currentIndex * panelWidth;
+            
             this.container.scrollTo({
-                left: scrollPosition,
+                left: Math.round(scrollPosition),
                 behavior: 'smooth'
             });
         }
@@ -241,7 +259,7 @@ export class TabController {
         if (!this.tabs.includes(tabId)) return;
 
         // In swipe mode, just switch to that tab (no scrolling)
-        this.setActiveTab(tabId);
+        this.setActiveTab(tabId, true);
 
         // Scroll container back to top when switching tabs
         window.scrollTo({ top: 0, behavior: 'instant' });

@@ -21,8 +21,6 @@ export class SwipeController {
     private touchStartX: number = 0;
     private touchStartY: number = 0;
     private touchStartTime: number = 0;
-    private lastTouchX: number = 0;
-    private lastTouchTime: number = 0;
     private isDragging: boolean = false;
     private currentTranslate: number = 0;
 
@@ -60,14 +58,13 @@ export class SwipeController {
         this.touchStartX = touch.clientX;
         this.touchStartY = touch.clientY;
         this.touchStartTime = Date.now();
-        this.lastTouchX = touch.clientX;
-        this.lastTouchTime = Date.now();
         this.isDragging = false;
-        
+
         // Start from current panel position
         const currentIndex = this.tabController.getCurrentTabIndex();
-        this.currentTranslate = -currentIndex * window.innerWidth;
-        
+        const panelWidth = this.container.clientWidth || window.innerWidth;
+        this.currentTranslate = -currentIndex * panelWidth;
+
         // Add dragging class to disable CSS transitions
         this.container.classList.add('dragging');
     }
@@ -90,15 +87,12 @@ export class SwipeController {
 
             this.isDragging = true;
 
-            // Track velocity
-            this.lastTouchX = touch.clientX;
-            this.lastTouchTime = Date.now();
-
             // Calculate translate position
             const currentIndex = this.tabController.getCurrentTabIndex();
             const totalTabs = this.tabController.getTotalTabs();
-            const baseTranslate = -currentIndex * window.innerWidth;
-            
+            const panelWidth = this.container.clientWidth || window.innerWidth;
+            const baseTranslate = -currentIndex * panelWidth;
+
             // Apply rubber-band effect at edges
             const atStart = currentIndex === 0 && deltaX > 0;
             const atEnd = currentIndex === totalTabs - 1 && deltaX < 0;
@@ -154,7 +148,8 @@ export class SwipeController {
         } else {
             // Snap back to current tab
             const currentIndex = this.tabController.getCurrentTabIndex();
-            this.container.style.transform = `translateX(${-currentIndex * window.innerWidth}px)`;
+            const panelWidth = this.container.clientWidth || window.innerWidth;
+            this.container.style.transform = `translateX(${-currentIndex * panelWidth}px)`;
         }
 
         this.reset();
@@ -167,8 +162,6 @@ export class SwipeController {
         this.touchStartX = 0;
         this.touchStartY = 0;
         this.touchStartTime = 0;
-        this.lastTouchX = 0;
-        this.lastTouchTime = 0;
         this.isDragging = false;
         this.currentTranslate = 0;
     }

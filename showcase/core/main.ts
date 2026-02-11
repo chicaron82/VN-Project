@@ -22,6 +22,7 @@ import { TabController } from './TabController';
 import { initAppStateManager } from './AppStateManager';
 import { initShowcaseCarousel } from '../components/showcase-carousel';
 import { UV7EchoSystem } from '../features/UV7EchoSystem';
+import type { CodeComparison, CodeComparisonModal as ICodeComparisonModal } from '../types/types';
 
 // Import section renderers
 import { HomeSection } from '../components/HomeSection';
@@ -263,7 +264,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             clearTimeout(scrollTimeout);
             scrollTimeout = window.setTimeout(() => {
                 const scrollLeft = tabPanelsContainer.scrollLeft;
-                const panelWidth = window.innerWidth;
+                const panelWidth = tabPanelsContainer.clientWidth || window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / panelWidth);
                 const tabs = ['home', 'journey', 'workflow', 'spotlight', 'evolution', 'experiment', 'who'];
                 const expectedTab = tabs[currentIndex];
@@ -271,7 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {
                     tabController.setActiveTab(expectedTab);
                 }
-            }, 150);
+            }, 100); // Reduced from 150 for snappier response
         });
         Logger.system('✅ Scroll-snap navigation initialized');
     }
@@ -409,18 +410,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize Code Comparison Modal (LAZY LOADED)
     // Create proxy that lazy loads on first method call
-    let modalInstance: { open: (comparison: unknown) => void } | null = null;
-    (window as unknown as { codeComparisonModal: { open: (comparison: unknown) => void } }).codeComparisonModal = {
-        open: async (comparison: unknown) => {
-            if (!modalInstance) {
-                Logger.system('[Lazy Loading] CodeComparisonModal...');
-                const { CodeComparisonModal } = await import('../components/CodeComparisonModal');
-                modalInstance = new CodeComparisonModal();
-                Logger.system('✅ Code Comparison Modal loaded');
-            }
-            modalInstance.open(comparison);
+    let modalInstance: { open: (comparison: CodeComparison) => void } | null = null;
+    (window as Window).codeComparisonModal = {
+        open: (comparison: CodeComparison) => {
+            (async () => {
+                if (!modalInstance) {
+                    Logger.system('[Lazy Loading] CodeComparisonModal...');
+                    const { CodeComparisonModal } = await import('../components/CodeComparisonModal');
+                    modalInstance = new CodeComparisonModal() as unknown as { open: (comparison: CodeComparison) => void };
+                    Logger.system('✅ Code Comparison Modal loaded');
+                }
+                if (modalInstance) {
+                    modalInstance.open(comparison);
+                }
+            })();
+        },
+        close: () => {
+            // No-op for proxy
         }
-    };
+    } as ICodeComparisonModal;
     Logger.system('✅ Code Comparison Modal proxy initialized (lazy)');
 
     // Listen for messages from parent shell (when running in iframe)
