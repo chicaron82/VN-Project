@@ -24,7 +24,7 @@ import { initShowcaseCarousel } from '../components/showcase-carousel';
 import { UV7EchoSystem } from '../features/UV7EchoSystem';
 
 // Import section renderers
-import { HomeSection } from '../components/HomeSection.refactored';
+import { HomeSection } from '../components/HomeSection';
 import { JourneySection } from '../components/JourneySection';
 import { WorkflowSection } from '../components/WorkflowSection.refactored';
 import { SpotlightSection } from '../components/SpotlightSection';
