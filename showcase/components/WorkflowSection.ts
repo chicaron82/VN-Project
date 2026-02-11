@@ -710,27 +710,7 @@ private maxBackups: number = 2;</code></pre>
                             </div>
                         </div>
 
-                        <!-- 7. The V3 Experiment: Multi-Model Edition -->
-                        <div class="methodology-callout" style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); border-left: 4px solid #667eea; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
-                            <h3 style="color: #667eea; margin-bottom: 1rem;">🧪 The V3 Experiment: Can Soul Be Prompted?</h3>
-                            <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1rem;">
-                                After building V1 through ingredients-based collaboration and refining it to V2, we asked the ultimate question:
-                                <strong>Can the soul of V1 be captured in a prompt?</strong> And do different AI models interpret the same recipe differently?
-                            </p>
-                            <p style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 1.5rem;">
-                                Four AI models (Claude, Gemini, GPT-4o, Grok) × Two recipes (Chaos vs Structure) = 8 parallel autonomous builds.
-                                Zero human intervention. 10-way comparison (V1 + V2 + 8 V3 variants). Measuring whether model architecture affects
-                                interpretation of identical specifications.
-                            </p>
-                            <div style="text-align: center;">
-                                <p style="font-size: 1.2rem; font-weight: 600; color: #667eea;">
-                                    → See the <strong>Experiment</strong> tab for the full methodology, research questions, and current status
-                                </p>
-                            </div>
-                        </div>
-
-
-                        <!-- 8. V1 vs V2: Soma's Journey -->
+                        <!-- 7. V1 vs V2: Soma's Journey -->
                         <div class="methodology-expandable">
                             <button class="methodology-toggle" data-section="soma-journey">
                                 <span class="toggle-icon">▼</span>
