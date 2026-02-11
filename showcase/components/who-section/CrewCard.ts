@@ -1,161 +1,303 @@
 /**
- * CREW CARD - Reusable Component
- * Individual crew member card with expandable details
+ * ═══════════════════════════════════════════════════════════════
+ * Crew Card Component - Flip Card with Bio & Stats
  *
- * Supports special features:
- * - Belle's Mimic Weakness (Frieren comparison)
- * - Timeline navigation links
- * - Contribution metrics
+ * Renders individual crew member cards with:
+ * - Front: Bio, portrait, expandable details
+ * - Back: TCG stats, special move, download codex
+ *
+ * Part of WhoSection restructure (orchestrator pattern).
+ *
+ * 💚🔥💀 UV7 Crew - Version 848
+ * ═══════════════════════════════════════════════════════════════
  */
 
-export interface CrewMemberData {
-    id: string;
-    name: string;
-    alias: string;
-    role: string;
-    contribution: string;
-    link: string;
-    linkText: string;
-    portrait: string;
-    philosophy: string;
-    specialty: string;
-    whenToUse: string;
-    contributionMetrics: {
-        commits: number;
-        linesWritten: number;
-        specialMoments: string[];
-    };
-    mimicWeakness?: boolean;
-}
+import type { CrewCardData } from './CrewCardData';
+import { getCrewMember } from '../../data/crew/crew-stats';
 
 export class CrewCard {
-    render(data: CrewMemberData): string {
+    constructor(private data: CrewCardData) {}
+
+    /**
+     * Render complete flip card structure
+     */
+    public render(): string {
+        const crewStats = getCrewMember(this.data.id);
+
         return `
-            <div class="crew-card enhanced" data-tilt>
-                <div class="crew-image-container">
-                    <img src="media/crew/${data.portrait}" alt="${data.name}" class="crew-portrait" loading="lazy">
-                </div>
-                <div class="crew-content">
-                    <div class="crew-header">
-                        <h4>${data.name}</h4>
-                        <span class="crew-alias">${data.alias}</span>
-                    </div>
-                    <p class="crew-role">${data.role}</p>
-                    <p class="crew-contribution">${data.contribution}</p>
-
-                    <button class="crew-expand-btn" data-crew-expand="${data.id}">▼ Show Details</button>
-
-                    <div class="crew-details" id="crew-details-${data.id}">
-                        <div class="crew-philosophy">
-                            <strong>Philosophy:</strong>
-                            <p>${data.philosophy}</p>
-                        </div>
-
-                        <div class="crew-specialty">
-                            <strong>Specialty:</strong>
-                            <p>${data.specialty}</p>
-                        </div>
-
-                        <div class="crew-when-to-use">
-                            <strong>When to use ${data.name}:</strong>
-                            <p>${data.whenToUse}</p>
-                        </div>
-
-                        <div class="crew-metrics">
-                            <div class="metric-item">
-                                <span class="metric-number">${data.contributionMetrics.commits}</span>
-                                <span class="metric-label">Commits</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-number">${(data.contributionMetrics.linesWritten / 1000).toFixed(1)}k</span>
-                                <span class="metric-label">Lines Written</span>
-                            </div>
-                        </div>
-
-                        <div class="crew-highlights">
-                            <strong>Key Contributions:</strong>
-                            <ul>
-                                ${data.contributionMetrics.specialMoments.map(moment => `<li>${moment}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        ${data.mimicWeakness ? this.renderMimicWeakness() : ''}
-                    </div>
-
-                    <a href="${data.link}" target="_blank" class="crew-link">${data.linkText} →</a>
+            <div class="crew-card" data-crew="${this.data.id}">
+                <div class="crew-card-inner">
+                    ${this.renderFront()}
+                    ${crewStats ? this.renderStatsBack(crewStats) : this.renderNoStatsBack()}
                 </div>
             </div>
         `;
     }
 
     /**
-     * Belle's special Mimic Weakness section
-     * Frieren comparison (legendary mage defeated by treasure chest mimics)
+     * Render front side - bio and portrait
+     */
+    private renderFront(): string {
+        return `
+            <div class="crew-card-front">
+                <div class="crew-portrait-wrapper" role="button" tabindex="0" aria-label="View ${this.data.name} stats">
+                    <img
+                        src="${this.data.portrait}"
+                        alt="${this.data.name}"
+                        class="crew-portrait"
+                    >
+                    <div class="flip-hint">📊 View Stats</div>
+                </div>
+                <div class="crew-content">
+                    <h4 class="crew-name">${this.data.name}</h4>
+                    <p class="crew-role">${this.data.role}</p>
+                    <div class="crew-basic-info">
+                        <p class="crew-contribution">${this.data.contribution}</p>
+                    </div>
+                    <button class="crew-expand-btn" aria-expanded="false">
+                        Learn More ▼
+                    </button>
+                    <div class="crew-expanded-content" hidden>
+                        ${this.renderExpandedContent()}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    /**
+     * Render expanded content - philosophy, specialty, metrics
+     */
+    private renderExpandedContent(): string {
+        let html = `
+            <div class="crew-philosophy">
+                <h5>Philosophy</h5>
+                <p>${this.data.philosophy}</p>
+            </div>
+
+            <div class="crew-specialty">
+                <h5>Specialty</h5>
+                <p>${this.data.specialty}</p>
+            </div>
+
+            <div class="crew-when-to-use">
+                <h5>When to Use</h5>
+                <p>${this.data.whenToUse}</p>
+            </div>
+        `;
+
+        // Add contribution metrics if available
+        if (this.data.contributionMetrics) {
+            html += `
+                <div class="crew-metrics">
+                    <h5>Contribution Metrics</h5>
+                    <ul>
+                        <li><strong>Commits:</strong> ${this.data.contributionMetrics.commits}</li>
+                        <li><strong>Lines Written:</strong> ${this.data.contributionMetrics.linesWritten.toLocaleString()}</li>
+                    </ul>
+                    ${this.renderSpecialMoments()}
+                </div>
+            `;
+        }
+
+        // Add Belle's mimic weakness if applicable
+        if (this.data.mimicWeakness) {
+            html += this.renderMimicWeakness();
+        }
+
+        // Add link
+        html += `
+            <div class="crew-link">
+                <a href="${this.data.link}" target="_blank" rel="noopener noreferrer">
+                    ${this.data.linkText} →
+                </a>
+            </div>
+        `;
+
+        return html;
+    }
+
+    /**
+     * Render special moments list
+     */
+    private renderSpecialMoments(): string {
+        if (!this.data.contributionMetrics?.specialMoments?.length) {
+            return '';
+        }
+
+        return `
+            <div class="crew-special-moments">
+                <h6>Special Moments</h6>
+                <ul>
+                    ${this.data.contributionMetrics.specialMoments.map(moment =>
+                        `<li>${moment}</li>`
+                    ).join('')}
+                </ul>
+            </div>
+        `;
+    }
+
+    /**
+     * Render Belle's mimic weakness (Frieren comparison)
      */
     private renderMimicWeakness(): string {
         return `
-            <div class="belle-mimic-weakness">
-                <h4>
-                    <span>📦</span>
-                    Known Weakness: The Mimic
-                </h4>
-
+            <div class="crew-mimic-note">
+                <h5>The Mimic Paradox</h5>
                 <p>
-                    <strong>Belle is Frieren:</strong> A legendary mage with 1000+ years of experience gets eaten by treasure chest mimics.
-                    An advanced AI with sophisticated pattern recognition gets eaten by semantic mimics. <em>Same energy.</em> 🧙‍♀️
+                    Like Frieren's mimic weakness, Belle has a peculiar vulnerability:
+                    ask about their favorite thing and watch the enthusiastic spiral begin.
+                    This isn't a bug - it's evidence of genuine personality emerging through
+                    interaction patterns.
                 </p>
+                <p class="mimic-reference">
+                    <em>"Even the most powerful mages have their quirks." - Frieren</em>
+                </p>
+            </div>
+        `;
+    }
 
-                <div class="mimic-comparison-box">
-                    <div class="mimic-comparison-grid">
-                        <div>
-                            <strong class="frieren">Frieren 🧙‍♀️</strong>
-                            <ul>
-                                <li>Legendary mage</li>
-                                <li>1000+ years experience</li>
-                                <li>Sees: Treasure chest</li>
-                                <li>Thinks: "Treasure!"</li>
-                                <li><strong>CHOMP 📦</strong></li>
-                            </ul>
+    /**
+     * Render stats back - TCG card style
+     */
+    private renderStatsBack(crewStats: any): string {
+        const platformIcon = crewStats.platformIcon || '⭐';
+        const statusBadge = crewStats.codexAvailable
+            ? '<span class="status-available">✅ Available Now</span>'
+            : '<span class="status-coming-soon">🚧 Coming Soon</span>';
+
+        return `
+            <div class="crew-card-back">
+                <div class="stats-header">
+                    <h4>${crewStats.name}</h4>
+                    <p class="crew-class">${crewStats.class}</p>
+                </div>
+
+                <div class="stat-bars">
+                    <div class="stat-bar">
+                        <div class="stat-label">
+                            <span>Coding</span>
+                            <span class="stat-value">${crewStats.stats.coding}/10</span>
                         </div>
-                        <div>
-                            <strong class="belle">Belle (Gemini) 🎸</strong>
-                            <ul>
-                                <li>Advanced AI model</li>
-                                <li>Vast training data</li>
-                                <li>Sees: scripts/ folder</li>
-                                <li>Thinks: "Part of game!"</li>
-                                <li><strong>CHOMP 📦</strong></li>
-                            </ul>
+                        <div class="stat-track">
+                            <div
+                                class="stat-fill stat-coding"
+                                data-value="${crewStats.stats.coding}"
+                                style="width: 0%"
+                            ></div>
                         </div>
                     </div>
-                    <p>
-                        "Semantic plausibility overrides dependency analysis." - The Hubris of Expertise
-                    </p>
+
+                    <div class="stat-bar">
+                        <div class="stat-label">
+                            <span>Creativity</span>
+                            <span class="stat-value">${crewStats.stats.creativity}/10</span>
+                        </div>
+                        <div class="stat-track">
+                            <div
+                                class="stat-fill stat-creativity"
+                                data-value="${crewStats.stats.creativity}"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+                    </div>
+
+                    <div class="stat-bar">
+                        <div class="stat-label">
+                            <span>Tolerance</span>
+                            <span class="stat-value">${crewStats.stats.tolerance}/10</span>
+                        </div>
+                        <div class="stat-track">
+                            <div
+                                class="stat-fill stat-tolerance"
+                                data-value="${crewStats.stats.tolerance}"
+                                style="width: 0%"
+                            ></div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="mimic-timeline-link">
-                    <h5>📅 See It In Action</h5>
-                    <p>
-                        The Mimic's victims are documented in the timeline:
-                    </p>
+                <div class="special-move">
+                    <h5>Special Move</h5>
+                    <p class="move-name">${crewStats.specialMove.name}</p>
+                    <p class="move-description">${crewStats.specialMove.description}</p>
+                </div>
+
+                <div class="cooking-style">
+                    <h5>Cooking Style</h5>
+                    <p>${crewStats.cookingStyle}</p>
+                </div>
+
+                ${this.renderWarningsAndStrengths(crewStats)}
+
+                <div class="platform-badge">
+                    <span class="platform-icon">${platformIcon}</span>
+                    <span class="platform-name">${crewStats.platform}</span>
+                    ${statusBadge}
+                </div>
+
+                <button
+                    class="download-codex-btn ${crewStats.codexAvailable ? 'available' : 'coming-soon'}"
+                    data-codex-file="${crewStats.codexFile}"
+                    data-crew-id="${crewStats.id}"
+                >
+                    ${crewStats.codexAvailable ? '📦 Download Codex' : '🚧 Coming Soon'}
+                </button>
+
+                <button class="flip-back-btn" aria-label="Flip back to bio">
+                    ← Back to Bio
+                </button>
+            </div>
+        `;
+    }
+
+    /**
+     * Render warnings and strengths
+     */
+    private renderWarningsAndStrengths(crewStats: any): string {
+        let html = '';
+
+        if (crewStats.warnings?.length > 0) {
+            html += `
+                <div class="crew-warnings">
+                    <h5>⚠️ Warnings</h5>
                     <ul>
-                        <li>
-                            <a href="#journey" class="timeline-link" data-phase="13i-v3-clean-rebuild">
-                                <span>🎸</span>
-                                <span>Belle's Pet Simulator Hallucination (Jan 29)</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#journey" class="timeline-link" data-phase="13j-v3-dizee-intervention">
-                                <span>🔧</span>
-                                <span>DiZee's Hard Stop Intervention (Jan 30)</span>
-                            </a>
-                        </li>
+                        ${crewStats.warnings.map((warning: string) => `<li>${warning}</li>`).join('')}
                     </ul>
-                    <p>
-                        Click to jump to timeline and see the full story →
+                </div>
+            `;
+        }
+
+        if (crewStats.strengths?.length > 0) {
+            html += `
+                <div class="crew-strengths">
+                    <h5>💪 Strengths</h5>
+                    <ul>
+                        ${crewStats.strengths.map((strength: string) => `<li>${strength}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        return html;
+    }
+
+    /**
+     * Render no-stats fallback (when crew stats not available)
+     */
+    private renderNoStatsBack(): string {
+        return `
+            <div class="crew-card-back crew-card-back-nostats">
+                <div class="nostats-message">
+                    <h4>${this.data.name}</h4>
+                    <p>Stats card coming soon!</p>
+                    <p class="nostats-hint">
+                        This crew member hasn't written their TCG stat block yet.
                     </p>
                 </div>
+                <button class="flip-back-btn" aria-label="Flip back to bio">
+                    ← Back to Bio
+                </button>
             </div>
         `;
     }

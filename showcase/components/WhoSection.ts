@@ -11,21 +11,25 @@
  */
 
 import { Logger } from '@utils/Logger';
+import { getCrewMember } from '../data/crew/crew-stats';
+import { CrewCard } from './who-section/CrewCard';
+import type { CrewCardData } from './who-section/CrewCardData';
+import { CrewCardController } from '../controllers/CrewCardController';
 
 export class WhoSection {
+    private crewCardController?: CrewCardController;
+
     constructor() {
         this.render();
         this.attachEventListeners();
+
+        // Initialize CrewCardController for flip interactions and downloads
+        this.crewCardController = new CrewCardController();
     }
 
     private attachEventListeners(): void {
-        // Crew member expansion
-        document.querySelectorAll('[data-crew-expand]').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const crewId = (e.currentTarget as HTMLElement).dataset.crewExpand;
-                this.toggleCrewDetails(crewId);
-            });
-        });
+        // NOTE: Crew card expansion, flip, and download interactions are now handled
+        // by CrewCardController (initialized in constructor)
 
         // Filter timeline by crew member (if timeline is available)
         document.querySelectorAll('[data-filter-timeline]').forEach(btn => {
@@ -43,19 +47,6 @@ export class WhoSection {
                 this.navigateToTimelinePhase(phaseId);
             });
         });
-    }
-
-    private toggleCrewDetails(crewId: string | undefined): void {
-        if (!crewId) return;
-
-        const detailsEl = document.getElementById(`crew-details-${crewId}`);
-        const btn = document.querySelector(`[data-crew-expand="${crewId}"]`);
-
-        if (detailsEl && btn) {
-            const isExpanded = detailsEl.style.display === 'block';
-            detailsEl.style.display = isExpanded ? 'none' : 'block';
-            btn.textContent = isExpanded ? '▼ Show Details' : '▲ Hide Details';
-        }
     }
 
     private filterTimelineByCrewMember(crewMember: string | undefined): void {
@@ -450,145 +441,19 @@ export class WhoSection {
         `;
     }
 
-    private renderCrewMember(data: {
-        id: string;
-        name: string;
-        alias: string;
-        role: string;
-        contribution: string;
-        link: string;
-        linkText: string;
-        portrait: string;
-        philosophy: string;
-        specialty: string;
-        whenToUse: string;
-        contributionMetrics: {
-            commits: number;
-            linesWritten: number;
-            specialMoments: string[];
+    /**
+     * Render crew member using CrewCard component
+     * Orchestrator pattern - delegates rendering to specialized component
+     */
+    private renderCrewMember(data: CrewCardData): string {
+        // Add media/crew/ prefix to portrait path
+        const cardData: CrewCardData = {
+            ...data,
+            portrait: `media/crew/${data.portrait}`
         };
-        mimicWeakness?: boolean;
-    }): string {
-        return `
-            <div class="crew-card enhanced" data-tilt>
-                <div class="crew-image-container">
-                    <img src="media/crew/${data.portrait}" alt="${data.name}" class="crew-portrait" loading="lazy">
-                </div>
-                <div class="crew-content">
-                    <div class="crew-header">
-                        <h4>${data.name}</h4>
-                        <span class="crew-alias">${data.alias}</span>
-                    </div>
-                    <p class="crew-role">${data.role}</p>
-                    <p class="crew-contribution">${data.contribution}</p>
 
-                    <button class="crew-expand-btn" data-crew-expand="${data.id}">▼ Show Details</button>
-
-                    <div class="crew-details" id="crew-details-${data.id}">
-                        <div class="crew-philosophy">
-                            <strong>Philosophy:</strong>
-                            <p>${data.philosophy}</p>
-                        </div>
-
-                        <div class="crew-specialty">
-                            <strong>Specialty:</strong>
-                            <p>${data.specialty}</p>
-                        </div>
-
-                        <div class="crew-when-to-use">
-                            <strong>When to use ${data.name}:</strong>
-                            <p>${data.whenToUse}</p>
-                        </div>
-
-                        <div class="crew-metrics">
-                            <div class="metric-item">
-                                <span class="metric-number">${data.contributionMetrics.commits}</span>
-                                <span class="metric-label">Commits</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-number">${(data.contributionMetrics.linesWritten / 1000).toFixed(1)}k</span>
-                                <span class="metric-label">Lines Written</span>
-                            </div>
-                        </div>
-
-                        <div class="crew-highlights">
-                            <strong>Key Contributions:</strong>
-                            <ul>
-                                ${data.contributionMetrics.specialMoments.map(moment => `<li>${moment}</li>`).join('')}
-                            </ul>
-                        </div>
-
-                        ${data.mimicWeakness ? `
-                        <div class="belle-mimic-weakness">
-                            <h4>
-                                <span>📦</span>
-                                Known Weakness: The Mimic
-                            </h4>
-
-                            <p>
-                                <strong>Belle is Frieren:</strong> A legendary mage with 1000+ years of experience gets eaten by treasure chest mimics.
-                                An advanced AI with sophisticated pattern recognition gets eaten by semantic mimics. <em>Same energy.</em> 🧙‍♀️
-                            </p>
-
-                            <div class="mimic-comparison-box">
-                                <div class="mimic-comparison-grid">
-                                    <div>
-                                        <strong class="frieren">Frieren 🧙‍♀️</strong>
-                                        <ul>
-                                            <li>Legendary mage</li>
-                                            <li>1000+ years experience</li>
-                                            <li>Sees: Treasure chest</li>
-                                            <li>Thinks: "Treasure!"</li>
-                                            <li><strong>CHOMP 📦</strong></li>
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <strong class="belle">Belle (Gemini) 🎸</strong>
-                                        <ul>
-                                            <li>Advanced AI model</li>
-                                            <li>Vast training data</li>
-                                            <li>Sees: scripts/ folder</li>
-                                            <li>Thinks: "Part of game!"</li>
-                                            <li><strong>CHOMP 📦</strong></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <p>
-                                    "Semantic plausibility overrides dependency analysis." - The Hubris of Expertise
-                                </p>
-                            </div>
-
-                            <div class="mimic-timeline-link">
-                                <h5>📅 See It In Action</h5>
-                                <p>
-                                    The Mimic's victims are documented in the timeline:
-                                </p>
-                                <ul>
-                                    <li>
-                                        <a href="#journey" class="timeline-link" data-phase="13i-v3-clean-rebuild">
-                                            <span>🎸</span>
-                                            <span>Belle's Pet Simulator Hallucination (Jan 29)</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#journey" class="timeline-link" data-phase="13j-v3-dizee-intervention">
-                                            <span>🔧</span>
-                                            <span>DiZee's Hard Stop Intervention (Jan 30)</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <p>
-                                    Click to jump to timeline and see the full story →
-                                </p>
-                            </div>
-                        </div>
-                        ` : ''}
-                    </div>
-
-                    <a href="${data.link}" target="_blank" class="crew-link">${data.linkText} →</a>
-                </div>
-            </div>
-        `;
+        const card = new CrewCard(cardData);
+        return card.render();
     }
 
     private renderCollaborationWorkflow(): string {
