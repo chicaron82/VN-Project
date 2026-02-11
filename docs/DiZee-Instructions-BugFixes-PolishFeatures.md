@@ -1,6 +1,7 @@
 # DiZee Instructions: Bug Fixes + Polish Features
 
 ## OVERVIEW
+
 Critical bug fixes plus two high-impact polish features: haptic feedback system (mobile immersion) and slow-motion typewriter (emotional weight). All bug fixes are production-critical. Both new features are progressive enhancements with toggles/opt-in design.
 
 **Priority:** HIGH - Bug fixes block polish completion, new features significantly enhance mobile experience
@@ -16,6 +17,7 @@ Critical bug fixes plus two high-impact polish features: haptic feedback system 
 **Root Cause:** Z-index conflict with other overlays
 
 **Fix:**
+
 ```css
 /* In styles.css - find .notes-viewer or #notes-viewer */
 
@@ -32,6 +34,7 @@ Critical bug fixes plus two high-impact polish features: haptic feedback system 
 ```
 
 **Test:**
+
 1. Open notes viewer from main menu
 2. Open notes viewer during gameplay
 3. **Expected:** Notes appear on top, clickable, readable
@@ -58,6 +61,7 @@ showCredits(trueEnding = false) {
 ```
 
 **REPLACE WITH:**
+
 ```javascript
 showCredits(trueEnding = false) {
     const creditsScreen = document.getElementById('credits-screen');
@@ -77,6 +81,7 @@ showCredits(trueEnding = false) {
 ```
 
 **Test:**
+
 1. Complete any ending
 2. **Expected:** Credits fade in smoothly over 1.5 seconds
 
@@ -104,6 +109,7 @@ closeCredits() {
 ```
 
 **REPLACE WITH:**
+
 ```javascript
 closeCredits() {
     const creditsScreen = document.getElementById('credits-screen');
@@ -133,6 +139,7 @@ closeCredits() {
 ```
 
 **Test:**
+
 1. Watch credits to completion
 2. Click "BACK TO MENU" or credits finish
 3. **Expected:** Smooth fade out → fade in to menu
@@ -148,6 +155,7 @@ closeCredits() {
 **FIND:** Contact overlay CSS in `styles.css`
 
 **ADD/MODIFY:**
+
 ```css
 /* Contact Overlay Container */
 #contact-overlay,
@@ -207,6 +215,7 @@ closeCredits() {
 ```
 
 **Test:**
+
 1. Open contact overlay on desktop
 2. Open contact overlay on mobile portrait
 3. Open contact overlay on mobile landscape
@@ -223,6 +232,7 @@ closeCredits() {
 **FIND:** NUKE command handler in dev commands section
 
 **CURRENT CODE (approximately):**
+
 ```javascript
 if (code === 'NUKE') {
     const confirm = window.confirm('WARNING: This will delete ALL save data, reset version to 848, and clear all unlocks. This cannot be undone. Proceed?');
@@ -235,6 +245,7 @@ if (code === 'NUKE') {
 ```
 
 **REPLACE WITH:**
+
 ```javascript
 if (code === 'NUKE') {
     this.showConfirmDialog(
@@ -274,6 +285,7 @@ if (code === 'NUKE') {
 The game already has `#confirm-dialog` in the HTML. Just need to ensure `showConfirmDialog()` method exists and works.
 
 **IF METHOD DOESN'T EXIST, ADD:**
+
 ```javascript
 // In game-engine.js
 
@@ -320,6 +332,7 @@ showConfirmDialog(title, message, onConfirm, showCancel = true) {
 ```
 
 **Test:**
+
 1. Open dev console, enter code: `NUKE`
 2. **Expected:** Custom overlay appears (not browser alert)
 3. Click cancel → dialog closes, nothing happens
@@ -334,6 +347,7 @@ showConfirmDialog(title, message, onConfirm, showCancel = true) {
 **Action:** Search and replace all browser alerts with custom overlays
 
 **SEARCH FOR:**
+
 ```javascript
 // Search entire codebase
 window.alert
@@ -345,17 +359,20 @@ prompt(
 ```
 
 **REPLACE WITH:**
+
 - `alert()` → `this.showMessage(title, message)`
 - `confirm()` → `this.showConfirmDialog(title, message, onConfirm)`
 - `prompt()` → Custom input overlay (if any exist)
 
 **LIKELY LOCATIONS:**
+
 - Dev command handlers
 - Error handling
 - Save/load operations
 - Debug messages
 
 **Create helper method for simple messages:**
+
 ```javascript
 // In game-engine.js
 
@@ -365,6 +382,7 @@ showMessage(title, message) {
 ```
 
 **Test:**
+
 1. Search codebase for any remaining alerts
 2. Test dev commands, error scenarios
 3. **Expected:** No browser alert popups anywhere
@@ -378,6 +396,7 @@ showMessage(title, message) {
 Add vibration feedback for key story moments on mobile devices. Enhances immersion by making emotional beats PHYSICAL. Progressive enhancement - works on Android, limited iPhone support, fully optional with toggle.
 
 **Key Moments:**
+
 1. **Heartbeat rhythm** (Act 3 climax) - Lub-dub pattern
 2. **Tether critical** (below 30%) - Warning pulse
 3. **Vessel hopping** (BUZZ. BUZZ.) - Transfer shock
@@ -390,6 +409,7 @@ Add vibration feedback for key story moments on mobile devices. Enhances immersi
 **FILE:** `system/settings-manager.js`
 
 **ADD TO CONSTRUCTOR:**
+
 ```javascript
 constructor(game) {
     this.game = game;
@@ -404,6 +424,7 @@ constructor(game) {
 ```
 
 **ADD GETTER/SETTER:**
+
 ```javascript
 // Haptic Feedback
 getHapticEnabled() {
@@ -429,6 +450,7 @@ setHapticEnabled(enabled) {
 **FILE:** `system/game-engine.js`
 
 **ADD TO CONSTRUCTOR:**
+
 ```javascript
 constructor() {
     // ... existing properties ...
@@ -445,6 +467,7 @@ constructor() {
 ```
 
 **ADD METHOD:**
+
 ```javascript
 // ========================================
 // HAPTIC FEEDBACK SYSTEM
@@ -483,6 +506,7 @@ triggerHaptic(pattern, description = '') {
 **FIND:** Settings menu content
 
 **ADD THIS OPTION:**
+
 ```html
 <!-- Haptic Feedback Toggle -->
 <div class="setting-row">
@@ -501,6 +525,7 @@ triggerHaptic(pattern, description = '') {
 ```
 
 **CSS FOR TOGGLE (if not already styled):**
+
 ```css
 /* Setting row layout */
 .setting-row {
@@ -587,6 +612,7 @@ input:checked + .toggle-slider:before {
 **FILE:** `system/settings-manager.js` or `system/game-engine.js`
 
 **ADD TO SETTINGS INITIALIZATION:**
+
 ```javascript
 // Bind haptic feedback toggle
 const hapticToggle = document.getElementById('haptic-toggle');
@@ -612,6 +638,7 @@ if (hapticToggle) {
 **FIND:** `trueRoute_anchor()` method - where Ronnie places device in Tori's hand
 
 **ADD:**
+
 ```javascript
 trueRoute_anchor() {
     this.game.displayScene({
@@ -642,6 +669,7 @@ trueRoute_anchor() {
 **FIND:** `updateTether()` method where tether level changes
 
 **ADD:**
+
 ```javascript
 updateTether(amount, source = 'passive') {
     const previousLevel = this.tetherLevel;
@@ -668,6 +696,7 @@ updateTether(amount, source = 'passive') {
 **FIND:** Scenes where Tori jumps between devices (BUZZ moments)
 
 **EXAMPLE:**
+
 ```javascript
 vesselTransferScene() {
     this.game.displayScene({
@@ -698,6 +727,7 @@ vesselTransferScene() {
 **FIND:** `trueRoute_race()` or similar - where hospital monitors are screaming
 
 **ADD:**
+
 ```javascript
 trueRoute_race() {
     this.game.displayScene({
@@ -749,12 +779,14 @@ trueRoute_race() {
 ### TESTING CHECKLIST
 
 #### Test 1: Settings Toggle
+
 1. Open settings, find Haptic Feedback toggle
 2. Toggle ON → hear/feel test vibration
 3. Toggle OFF → no vibration
 4. **Expected:** Setting persists across page refresh
 
 #### Test 2: Android Device Testing
+
 1. Enable haptic in settings on Android phone
 2. Play through Tori's route to tether critical moment
 3. **Expected:** Short pulse when tether hits 30%
@@ -762,23 +794,27 @@ trueRoute_race() {
 5. **Expected:** Double pulse on BUZZ. BUZZ. moments
 
 #### Test 3: Heartbeat Climax
+
 1. Enable haptics
 2. Play Ronnie's route to Act 3 true ending path
 3. Reach "Follow the heartbeat" scene
 4. **Expected:** Rhythmic lub-dub vibration pattern
 
 #### Test 4: Hospital Emergency
+
 1. Enable haptics
 2. Reach hospital mad dash scene
 3. **Expected:** Sustained chaotic vibration during crisis
 
 #### Test 5: iPhone/Unsupported Device
+
 1. Try enabling haptics on iPhone
 2. **Expected:** Toggle works but vibrations may not trigger (known limitation)
 3. Console should log "Haptic not supported" messages
 4. Game continues working normally
 
 #### Test 6: Disabled State
+
 1. Disable haptics in settings
 2. Play through all key scenes
 3. **Expected:** No vibrations occur anywhere
@@ -793,6 +829,7 @@ trueRoute_race() {
 Add dramatically slowed typewriter speed for key revelation moments. Creates tension and emotional weight by forcing player to experience critical realizations in REAL TIME.
 
 **Example moments:**
+
 - "It's... my... body."
 - "I... can't... remember..."
 - "The... Old Man... is... me."
@@ -806,6 +843,7 @@ Add dramatically slowed typewriter speed for key revelation moments. Creates ten
 **FIND:** `typewriterText()` method
 
 **CURRENT CODE (approximately):**
+
 ```javascript
 typewriterText(element, text, callback, internalTextLength = 0) {
     this.typewriterActive = true;
@@ -878,6 +916,7 @@ if (scene.dialogue) {
 ```
 
 **CHANGE TO:**
+
 ```javascript
 // Handle dialogue with typewriter effect
 if (scene.dialogue) {
@@ -950,6 +989,7 @@ oldManRevelation() {
 ✅ **Despair Echo takeover** - "Give... up..." (when she gains control)
 
 **DON'T OVERUSE:**
+
 - Not every emotional scene needs slow-mo
 - Reserve for MAJOR revelations only
 - 3-5 uses across entire game maximum
@@ -960,20 +1000,24 @@ oldManRevelation() {
 ### TESTING CHECKLIST
 
 #### Test 1: Normal Speed (Baseline)
+
 1. Play any regular scene
 2. **Expected:** Typewriter speed feels normal (30ms per char)
 
 #### Test 2: Slow Reveal Scene
+
 1. Play scene with `slowReveal: true`
 2. **Expected:** Dramatically slower typing (150ms per char)
 3. Creates tension, forces player to experience revelation in real-time
 
 #### Test 3: Skip Behavior
+
 1. Play slow reveal scene
 2. Click/tap during typing
 3. **Expected:** Skips to full text (same behavior as normal speed)
 
 #### Test 4: Multiple Slow Scenes
+
 1. Play through all slow reveal moments
 2. **Expected:** Impact remains strong, doesn't feel repetitive
 3. If feels overused, remove some
@@ -982,7 +1026,8 @@ oldManRevelation() {
 
 ## IMPLEMENTATION PRIORITY
 
-### CRITICAL (Must fix before polish completion):
+### CRITICAL (Must fix before polish completion)
+
 1. ✅ Stand-alone notes z-index
 2. ✅ Credits fade-in
 3. ✅ Credits fade-out
@@ -990,30 +1035,34 @@ oldManRevelation() {
 5. ✅ NUKE overlay (no browser alerts)
 6. ✅ Audit browser alerts
 
-### HIGH IMPACT (Significant UX improvement):
+### HIGH IMPACT (Significant UX improvement)
+
 7. ✅ Haptic feedback system (mobile immersion)
-8. ✅ Slow-motion typewriter (emotional weight)
+2. ✅ Slow-motion typewriter (emotional weight)
 
 ---
 
 ## FILES TO MODIFY
 
-### Bug Fixes:
+### Bug Fixes
+
 1. **styles.css** - Z-index fixes, contact overlay scrolling
 2. **game-engine.js** - Credits transitions, confirmation system, alert audit
 3. **Dev commands** - NUKE overlay implementation
 
-### Haptic System:
-4. **settings-manager.js** - Haptic toggle setting
-5. **game-engine.js** - triggerHaptic() helper method, constructor
-6. **index.html** - Haptic toggle UI
-7. **ronnie-route-act3.js** - Heartbeat, hospital alarms
-8. **tether-system.js** - Critical warning
-9. **tori-route-*.js** - Vessel hopping scenes
+### Haptic System
 
-### Slow-Motion Typewriter:
+4. **settings-manager.js** - Haptic toggle setting
+2. **game-engine.js** - triggerHaptic() helper method, constructor
+3. **index.html** - Haptic toggle UI
+4. **ronnie-route-act3.js** - Heartbeat, hospital alarms
+5. **tether-system.js** - Critical warning
+6. **tori-route-*.js** - Vessel hopping scenes
+
+### Slow-Motion Typewriter
+
 10. **game-engine.js** - typewriterText() method modification
-11. **Route files** - Add slowReveal: true to 3-5 key scenes
+2. **Route files** - Add slowReveal: true to 3-5 key scenes
 
 ---
 

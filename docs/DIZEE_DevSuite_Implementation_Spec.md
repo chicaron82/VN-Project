@@ -1,4 +1,5 @@
 # DiZee Handoff: Dev Suite v2.0 Implementation
+
 ## From Zee + ZeeRah + CoZee + DiZee Collab 💚🖤
 
 ---
@@ -14,6 +15,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 ## LAYOUT STRUCTURE
 
 ### Landscape (Tablet/Desktop)
+
 ```
 ┌──────────────────────────────────────────────────────────┐
 │ 🛠️ DEV SUITE v2.0    [📸][💾][⌨️][🔄]           [-][X] │
@@ -32,6 +34,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 ```
 
 **Header Toolbar Quick Actions:**
+
 - 📸 Screenshot - Capture current game state
 - 💾 Save/Load Presets - Quick state snapshots
 - ⌨️ Show Keyboard Shortcuts
@@ -40,6 +43,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 - [X] Close suite
 
 ### Portrait (Mobile)
+
 ```
 ┌─────────────────────────┐
 │ 🛠️ DEV SUITE        [X] │
@@ -66,6 +70,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 **Purpose:** Live system stats at a glance
 
 **Contents:**
+
 ```
 ┌─────────────┬─────────────┐
 │ FPS: 60     │ MEM: 47MB   │  <- Two stat boxes
@@ -90,6 +95,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 ```
 
 **Data Sources:**
+
 - FPS: `requestAnimationFrame` counter or existing perf monitor
 - Memory: `performance.memory.usedJSHeapSize` (Chrome only, fallback to "N/A")
 - Scene: `game.currentScene` or `game.sceneId`
@@ -104,6 +110,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 **Purpose:** Inspect and modify game state live
 
 **Contents:**
+
 ```
 ┌─────────────────────────────────────┐
 │ ROUTE POINTS                        │
@@ -128,11 +135,13 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 ```
 
 **Interactive:**
+
 - [±] buttons open small modal to increment/decrement route points
 - Clicking locked note could force-unlock it
 - Clicking completed tutorial could reset it
 
 **Data Sources:**
+
 - Route points: `game.currentRoute.routePoints`
 - Notes: `game.currentRoute.collectiblesManager` or localStorage
 - Tutorials: `game.tutorialManager.shownTutorials`
@@ -144,6 +153,7 @@ Transform the existing `OPENCONSOLE` dev console into a full **Dev Suite** with 
 **Purpose:** Skip to any scene for testing
 
 **Contents:**
+
 ```
 ┌─────────────────────────────────────┐
 │ 🔍 [Search scenes...              ] │
@@ -163,12 +173,14 @@ Coverage: 67% (24/36 scenes visited)
 ```
 
 **Features:**
+
 - Search filters list in real-time
 - Sections collapsible by route/act
 - Jump button calls scene method directly
 - Track visited scenes in sessionStorage for coverage
 
 **Implementation:**
+
 ```javascript
 // Scene registry - build from route files or maintain separate list
 const sceneRegistry = {
@@ -192,6 +204,7 @@ jumpToScene(sceneId) {
 **Purpose:** Quick manipulation for testing scenarios
 
 **Contents:**
+
 ```
 ┌─────────────────────────────────────┐
 │ TETHER SIMULATOR                    │
@@ -272,6 +285,7 @@ async hotReload() {
 **Purpose:** History of everything that happened
 
 **Contents:**
+
 ```
 ┌─────────────────────────────────────┐
 │ [All][Choices][State][Scenes][Err] │  <- Filter buttons
@@ -290,6 +304,7 @@ async hotReload() {
 ```
 
 **Implementation:**
+
 ```javascript
 class DevLogger {
   constructor() {
@@ -320,11 +335,13 @@ class DevLogger {
 Keep existing console functionality. It stays visible regardless of which tab is active.
 
 **Existing Commands to Preserve:**
+
 - All 17+ existing commands
 - Input history (up/down arrows)
 - Output display
 
 **New Commands to Add:**
+
 ```
 devsuite        - Toggle dev suite (alias for OPENCONSOLE)
 tab <name>      - Switch to tab (debug/state/scenes/testing/logs)
@@ -360,6 +377,7 @@ exportlogs      - Copy logs to clipboard
 ## CSS NOTES
 
 **Color Palette (match existing dev console):**
+
 - Background: `#0a0a0a` / `rgba(0,0,0,0.95)`
 - Border: `#0ff` (cyan)
 - Text primary: `#fff`
@@ -372,7 +390,8 @@ exportlogs      - Copy logs to clipboard
 
 **Font:** Keep `'Courier New', monospace`
 
-**Responsive Breakpoint:** 
+**Responsive Breakpoint:**
+
 - `@media (orientation: landscape)` → side-by-side
 - `@media (orientation: portrait)` → stacked
 
@@ -383,6 +402,7 @@ exportlogs      - Copy logs to clipboard
 ### ⌨️ Keyboard Shortcuts
 
 **Global (when Dev Suite is open):**
+
 ```
 Ctrl+Shift+D  - Toggle Dev Suite
 Ctrl+Shift+1  - Switch to Debug tab
@@ -398,6 +418,7 @@ Escape        - Close suite / Close modal
 ```
 
 **Implementation:**
+
 ```javascript
 document.addEventListener('keydown', (e) => {
   if (e.ctrlKey && e.shiftKey) {
@@ -424,6 +445,7 @@ document.addEventListener('keydown', (e) => {
 **Purpose:** Instantly jump to specific testing scenarios
 
 **UI (in Testing Tab or separate Presets modal):**
+
 ```
 ┌─────────────────────────────────────┐
 │ DEV PRESETS                         │
@@ -439,6 +461,7 @@ document.addEventListener('keydown', (e) => {
 ```
 
 **What Gets Saved:**
+
 - Current scene/act
 - Route points (bad, true, digitalForever)
 - Tether level
@@ -447,6 +470,7 @@ document.addEventListener('keydown', (e) => {
 - Tutorial completion state
 
 **Implementation:**
+
 ```javascript
 class DevPresets {
   constructor() {
@@ -500,6 +524,7 @@ class DevPresets {
 **Purpose:** Pin and monitor specific variables in real-time
 
 **UI:**
+
 ```
 ┌─────────────────────────────────────┐
 │ 👁️ WATCH VARIABLES                 │
@@ -516,6 +541,7 @@ class DevPresets {
 ```
 
 **Features:**
+
 - Add any JavaScript expression
 - Live updates (configurable refresh rate)
 - Objects displayed as expandable JSON
@@ -523,6 +549,7 @@ class DevPresets {
 - Expressions persist across sessions
 
 **Implementation:**
+
 ```javascript
 class VariableWatch {
   constructor() {
@@ -578,6 +605,7 @@ class VariableWatch {
 **Purpose:** Pause game execution when specific events occur
 
 **UI (in Testing Tab):**
+
 ```
 ┌─────────────────────────────────────┐
 │ BREAKPOINTS                         │
@@ -593,12 +621,14 @@ class VariableWatch {
 ```
 
 **When Breakpoint Hits:**
+
 - Game pauses
 - Dev Suite opens (if minimized)
 - Console shows: `🔴 BREAKPOINT: Tether dropped below 30% (currently 27%)`
 - Logs tab highlights the event
 
 **Implementation:**
+
 ```javascript
 class BreakpointSystem {
   constructor() {
@@ -661,6 +691,7 @@ class BreakpointSystem {
 **Purpose:** Capture game state for bug reports/documentation
 
 **Implementation:**
+
 ```javascript
 async captureScreenshot() {
   // Use html2canvas or native canvas
@@ -717,6 +748,7 @@ devSuite.on('close', () => saveSuiteState(devSuite.getState()));
 ### 🖱️ Drag-to-Resize Divider
 
 **Implementation:**
+
 ```javascript
 class ResizableDivider {
   constructor(dividerEl, leftPanel, rightPanel) {
@@ -767,6 +799,7 @@ class ResizableDivider {
 ```
 
 **CSS:**
+
 ```css
 .dev-suite-divider {
   width: 4px;
@@ -786,6 +819,7 @@ class ResizableDivider {
 ### Console Enhancements
 
 **Autocomplete:**
+
 ```javascript
 // In console input handler
 input.addEventListener('input', (e) => {
@@ -808,6 +842,7 @@ function getMatchingCommands(partial) {
 ```
 
 **Multi-line Input (Shift+Enter):**
+
 ```javascript
 input.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && e.shiftKey) {
@@ -838,6 +873,7 @@ if (code === 'OPENCONSOLE') {
 ## PRIORITY ORDER
 
 **Phase 1: Core Shell**
+
 1. Layout shell - Header, tabs, console panel, responsive switch
 2. Minimize button functionality
 3. Drag-to-resize divider
@@ -865,6 +901,7 @@ if (code === 'OPENCONSOLE') {
 ## TESTING CHECKLIST
 
 **Core Functionality:**
+
 - [ ] `OPENCONSOLE` opens Dev Suite
 - [ ] Landscape: tabs left, console right
 - [ ] Portrait: tabs top (dropdown), console bottom
@@ -873,6 +910,7 @@ if (code === 'OPENCONSOLE') {
 - [ ] Suite doesn't break game state
 
 **Minimize & Resize (Chicharon/DiZee):**
+
 - [ ] Minimize button [-] works
 - [ ] Float button appears when minimized
 - [ ] Float button opens suite when clicked
@@ -880,12 +918,14 @@ if (code === 'OPENCONSOLE') {
 - [ ] Divider position persists after close
 
 **Keyboard Shortcuts (DiZee):**
+
 - [ ] Ctrl+Shift+D toggles suite
 - [ ] Ctrl+Shift+1-6 switches tabs
 - [ ] Ctrl+Shift+C focuses console
 - [ ] Ctrl+Shift+M minimizes
 
 **Tabs:**
+
 - [ ] Each tab renders correct content
 - [ ] Console input works while on any tab
 - [ ] Debug tab shows live FPS/tether
@@ -897,6 +937,7 @@ if (code === 'OPENCONSOLE') {
 - [ ] Watch tab monitors variables live
 
 **Power Features (DiZee):**
+
 - [ ] Dev Presets: Save current state
 - [ ] Dev Presets: Load saved state
 - [ ] Breakpoints: Pause on tether threshold
@@ -904,12 +945,14 @@ if (code === 'OPENCONSOLE') {
 - [ ] Screenshot tool captures game
 
 **Console Enhancements:**
+
 - [ ] Autocomplete shows suggestions
 - [ ] Tab completes command
 - [ ] Shift+Enter inserts newline
 - [ ] History navigation with arrows
 
 **Persistence:**
+
 - [ ] Last active tab remembered
 - [ ] Divider position saved
 - [ ] Watch variables persist

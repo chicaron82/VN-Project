@@ -87,7 +87,7 @@ VN-Project/:1472 UV7 Splash: Loading ready signal received
 VN-Project/:1463 UV7 Splash: tryComplete (loading complete) - videoReady: false, loadingReady: true
 VN-Project/:1638 UV7 Splash: Safety timeout reached
 VN-Project/:1463 UV7 Splash: tryComplete (safety timeout) - videoReady: true, loadingReady: true
-VN-Project/:1508 UV7 Splash: Completing splash sequence... 
+VN-Project/:1508 UV7 Splash: Completing splash sequence...
 
 the splash screen loading doesn't simulate the loading properly. i'm at home on wifi so it loads fast. which i think it recognizes. but i think it should simulate the loading and be completed when the animation is done.
 

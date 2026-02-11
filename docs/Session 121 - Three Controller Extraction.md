@@ -11,6 +11,7 @@
 Session 121 accomplished **THREE major extractions** in a single session, removing 621 lines from GameEngine and creating three focused, testable controllers. This continues the SOLID refactoring pattern established in Sessions 119-120.
 
 ### Success Metrics
+
 - ✅ **621 lines extracted** from GameEngine
 - ✅ **14 methods** replaced with delegation stubs
 - ✅ **3 new controllers** created
@@ -56,15 +57,16 @@ Session 121 accomplished **THREE major extractions** in a single session, removi
 
 #### Tip Rotation Delegation (7)
 
-4. **`initRotatingTips()`** - Delegates to TipsController
-5. **`getMainMenuTips()`** - Delegates to TipsController
-6. **`getRouteSelectTips()`** - Delegates to TipsController
-7. **`startMainMenuTipRotation()`** - Delegates to TipsController
-8. **`stopMainMenuTipRotation()`** - Delegates to SceneProgressionController
-9. **`startRouteSelectTipRotation()`** - Delegates to TipsController
-10. **`stopRouteSelectTipRotation()`** - Delegates to SceneProgressionController
+1. **`initRotatingTips()`** - Delegates to TipsController
+2. **`getMainMenuTips()`** - Delegates to TipsController
+3. **`getRouteSelectTips()`** - Delegates to TipsController
+4. **`startMainMenuTipRotation()`** - Delegates to TipsController
+5. **`stopMainMenuTipRotation()`** - Delegates to SceneProgressionController
+6. **`startRouteSelectTipRotation()`** - Delegates to TipsController
+7. **`stopRouteSelectTipRotation()`** - Delegates to SceneProgressionController
 
 ### Architecture Notes
+
 - Acts as a **facade** for menu-related operations
 - Delegates tip rotation to TipsController (already extracted)
 - Handles MenuCarousel integration
@@ -101,6 +103,7 @@ Session 121 accomplished **THREE major extractions** in a single session, removi
    - **Red overlay pulse**: Creates temporary overlay div (1s duration, auto-remove)
 
 ### Architecture Notes
+
 - **Pure visual effects** - no business logic, no state management
 - All effects are CSS class manipulation and DOM timing
 - Self-contained animations with cleanup
@@ -130,6 +133,7 @@ Session 121 accomplished **THREE major extractions** in a single session, removi
    - Uses monospace font (Courier New) for terminal aesthetic
 
 ### Architecture Notes
+
 - Heavy DOM manipulation (194 lines of pure UI construction)
 - Self-contained modal with no external dependencies
 - Inline styling for maximum control

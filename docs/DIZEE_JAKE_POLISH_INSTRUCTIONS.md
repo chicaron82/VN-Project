@@ -1,4 +1,5 @@
 # DiZee Instructions: "Impress Jake" Code Polish
+
 **Professional Code Quality Improvements**
 **ZeeRah's Implementation Specs** 💚🔥💀
 
@@ -17,15 +18,18 @@ Four code polish tasks that make the codebase look professional and well-archite
 ## TASK 1: README.MD AT ROOT ⭐⭐⭐
 
 ### PRIORITY: HIGHEST
+
 ### EFFORT: 15 minutes
+
 ### FILE: New file `README.md` at root
 
-### GOAL:
+### GOAL
+
 Create concise, professional README that explains architecture at a glance.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 **FILE:** `README.md` (create at project root)
 
@@ -148,6 +152,7 @@ Codes are split into:
 ## 📂 File Structure
 
 ```
+
 /
 ├── index.html              # Entry point
 ├── styles.css              # Global styles (153KB, consolidated)
@@ -181,6 +186,7 @@ Codes are split into:
     ├── /sprites
     ├── /credits-photos
     └── /audio
+
 ```
 
 ---
@@ -236,7 +242,8 @@ Feel free to explore the code and learn from the architecture.
 
 ---
 
-### NOTES:
+### NOTES
+
 - Professional but personal
 - Technical without being dry
 - Shows architecture clearly
@@ -248,19 +255,23 @@ Feel free to explore the code and learn from the architecture.
 ## TASK 2: JSDOC HEADERS ON MAIN CLASSES ⭐⭐
 
 ### PRIORITY: HIGH
+
 ### EFFORT: 30 minutes
+
 ### FILES: Main system files
 
-### GOAL:
+### GOAL
+
 Add JSDoc-style headers to main classes so Jake can quickly understand responsibilities.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 #### game-engine.js
 
 **ADD before `class GameEngine {`:**
+
 ```javascript
 /**
  * GameEngine
@@ -292,6 +303,7 @@ class GameEngine {
 #### settings-manager.js
 
 **ADD before `class SettingsManager {`:**
+
 ```javascript
 /**
  * SettingsManager
@@ -326,6 +338,7 @@ class SettingsManager {
 #### save-manager.js
 
 **ADD before `class SaveManager {`:**
+
 ```javascript
 /**
  * SaveManager
@@ -361,6 +374,7 @@ class SaveManager {
 #### tether-system.js
 
 **ADD before `class TetherSystem {`:**
+
 ```javascript
 /**
  * TetherSystem
@@ -400,6 +414,7 @@ class TetherSystem {
 #### secret-codes-manager.js
 
 **ADD before `class SecretCodesManager {`:**
+
 ```javascript
 /**
  * SecretCodesManager
@@ -442,6 +457,7 @@ class SecretCodesManager {
 #### collectibles-manager.js
 
 **ADD before `class CollectiblesManager {`:**
+
 ```javascript
 /**
  * CollectiblesManager
@@ -478,9 +494,10 @@ class CollectiblesManager {
 
 ---
 
-### ALSO ADD TO ROUTE FILES:
+### ALSO ADD TO ROUTE FILES
 
 **tori-route-act1.js:**
+
 ```javascript
 /**
  * ToriRoute - Act 1
@@ -504,6 +521,7 @@ class CollectiblesManager {
 ```
 
 **ronnie-route-act1.js:**
+
 ```javascript
 /**
  * RonnieRoute - Act 1
@@ -531,15 +549,18 @@ class CollectiblesManager {
 ## TASK 3: DEV HUD BEHIND SECRET CODE ⭐⭐⭐
 
 ### PRIORITY: HIGH
+
 ### EFFORT: 2 hours
+
 ### FILES: `system/secret-codes-manager.js`, `index.html`, `styles.css`
 
-### GOAL:
+### GOAL
+
 Create hidden debug HUD toggled by secret dev code. Shows current game state at a glance. Impresses Jake, useful for you.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 #### Step 1: Add Dev HUD HTML
 
@@ -815,7 +836,8 @@ updateDevHUD() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Enter secret code `devhud`
 2. HUD appears in top-right
 3. Shows current route, act, scene, page
@@ -831,15 +853,18 @@ updateDevHUD() {
 ## TASK 4: CENTRALIZE REMAINING MAGIC NUMBERS ⭐
 
 ### PRIORITY: MEDIUM
+
 ### EFFORT: 1 hour
+
 ### FILE: `system/game-config.js`
 
-### GOAL:
+### GOAL
+
 Move remaining hardcoded values into GameConfig for easy tuning.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 **FILE:** `system/game-config.js`
 
@@ -921,6 +946,7 @@ const GAME_CONFIG = {
 **Then reference these throughout code:**
 
 **Example - Haptics:**
+
 ```javascript
 // BEFORE:
 navigator.vibrate(50);
@@ -930,6 +956,7 @@ navigator.vibrate(GAME_CONFIG.HAPTICS.MEDIUM);
 ```
 
 **Example - Animations:**
+
 ```javascript
 // BEFORE:
 setTimeout(() => { ... }, 600);
@@ -942,33 +969,38 @@ setTimeout(() => { ... }, GAME_CONFIG.ANIMATIONS.SLIDE_IN);
 
 ## IMPLEMENTATION ORDER
 
-### Weekend 1 (2-3 hours):
+### Weekend 1 (2-3 hours)
+
 1. ✅ README.md (15 min)
 2. ✅ JSDoc headers (30 min)
 3. ✅ Dev HUD setup (2 hours)
 
-### Weekend 2 (1-2 hours):
+### Weekend 2 (1-2 hours)
+
 4. ✅ Centralize config (1 hour)
-5. ✅ Test everything
+2. ✅ Test everything
 
 ---
 
 ## TESTING CHECKLIST
 
-### README:
+### README
+
 - [ ] Placed at project root
 - [ ] Markdown renders correctly
 - [ ] All links work
 - [ ] Architecture section clear
 - [ ] Credits complete
 
-### JSDoc:
+### JSDoc
+
 - [ ] All main classes documented
 - [ ] Responsibilities clear
 - [ ] Key features listed
 - [ ] Consistent formatting
 
-### Dev HUD:
+### Dev HUD
+
 - [ ] Toggled via `devhud` code
 - [ ] Shows current route
 - [ ] Shows current act
@@ -982,7 +1014,8 @@ setTimeout(() => { ... }, GAME_CONFIG.ANIMATIONS.SLIDE_IN);
 - [ ] Close button works
 - [ ] Mobile responsive
 
-### Config:
+### Config
+
 - [ ] Haptic patterns centralized
 - [ ] Glitch settings centralized
 - [ ] Animation timings centralized
@@ -995,24 +1028,28 @@ setTimeout(() => { ... }, GAME_CONFIG.ANIMATIONS.SLIDE_IN);
 ## NOTES FOR DIZEE
 
 **README Tips:**
+
 - Keep it concise but complete
 - Jake will read this first
 - Shows you think about architecture
 - Professional tone, personal voice
 
 **JSDoc Tips:**
+
 - Focus on responsibilities
 - List key features
 - Keep it brief (5-10 lines max)
 - Consistency matters
 
 **Dev HUD Tips:**
+
 - Super useful for both you and Jake
 - Shows system thinking
 - Updates should be smooth
 - Mobile positioning matters
 
 **Config Centralization:**
+
 - Makes tuning easy
 - Shows thoughtful organization
 - Jake will notice clean config

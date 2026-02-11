@@ -1,21 +1,26 @@
 # TIME MACHINE BUG FIX
+
 **ZeeRah's Bug Report** 💚🔥💀🐛
 
 ---
 
 ## BUG: Time Machine Shows "[object Object]" Error
 
-### SYMPTOM:
+### SYMPTOM
+
 When using time machine (backlog time travel), console shows:
+
 ```
 Scene "[object Object]" not found. Falling back to displayCurrentPage.
 ```
 
-### ROOT CAUSE:
+### ROOT CAUSE
+
 **FILE:** `system/settings-manager.js`
 **LINE:** 686
 
 **The problem:**
+
 ```javascript
 addEntry(character, dialogue, isDistorted = false) {
     // ...
@@ -30,6 +35,7 @@ addEntry(character, dialogue, isDistorted = false) {
 `this.game.currentScene` stores the full scene OBJECT, not the scene ID string.
 
 When jumpToScene() receives it:
+
 ```javascript
 jumpToScene(sceneId, pageIndex) {
     // sceneId is [object Object]
@@ -40,7 +46,7 @@ jumpToScene(sceneId, pageIndex) {
 
 ---
 
-## THE FIX:
+## THE FIX
 
 ### Option 1: Store Scene ID String (RECOMMENDED)
 
@@ -48,6 +54,7 @@ jumpToScene(sceneId, pageIndex) {
 **LINE:** 686
 
 **CHANGE FROM:**
+
 ```javascript
 addEntry(character, dialogue, isDistorted = false) {
     // ...
@@ -66,6 +73,7 @@ addEntry(character, dialogue, isDistorted = false) {
 ```
 
 **CHANGE TO:**
+
 ```javascript
 addEntry(character, dialogue, isDistorted = false) {
     // ...
@@ -104,6 +112,7 @@ addEntry(character, dialogue, isDistorted = false) {
 **LINE:** ~980
 
 **Add defensive check:**
+
 ```javascript
 jumpToScene(sceneId, pageIndex) {
     // Handle if sceneId is an object instead of string
@@ -133,11 +142,12 @@ jumpToScene(sceneId, pageIndex) {
 
 ---
 
-## RECOMMENDED APPROACH:
+## RECOMMENDED APPROACH
 
 **Use Option 1 (fix at source)**
 
 **Why:**
+
 - Fixes root cause
 - Prevents issue from spreading
 - Backlog entries store correct data type
@@ -147,7 +157,7 @@ jumpToScene(sceneId, pageIndex) {
 
 ---
 
-## TESTING:
+## TESTING
 
 After fix:
 
@@ -160,11 +170,12 @@ After fix:
 
 ---
 
-## ADDITIONAL CHECK:
+## ADDITIONAL CHECK
 
 **Might also need to check what `this.game.currentScene` actually is!**
 
 Search game-engine.js for where `currentScene` is set:
+
 ```bash
 grep -n "this.currentScene =" system/game-engine.js
 ```
@@ -173,11 +184,12 @@ If it's being set to a scene object somewhere, that's the real root cause.
 
 ---
 
-## PRIORITY:
+## PRIORITY
 
 **MEDIUM** - Time machine works, just shows warning
 
 **Impact:**
+
 - Doesn't break gameplay
 - Just shows console warning
 - Falls back to displayCurrentPage

@@ -1,9 +1,11 @@
 # DiZee Implementation Instructions: Insane Mode Flag Restoration
 
 ## PROBLEM
+
 When user commits to Insane Mode in settings, the `insaneModeActive` flag gets set in `gameState.flags`. However, when the story starts, `gameState` gets reinitialized with empty flags, wiping the Insane Mode activation.
 
 **Result:**
+
 - Hold On button correctly hidden ✅
 - Tether difficulty set to 'insane' ✅
 - BUT `gameState.flags.insaneModeActive` = undefined ❌
@@ -11,14 +13,17 @@ When user commits to Insane Mode in settings, the `insaneModeActive` flag gets s
 - Time Machine doesn't lock to read-only ❌
 
 ## SOLUTION
+
 When `startRoute()` is called, check localStorage for `insaneModeLocked` flag and restore Insane Mode flags to `gameState` BEFORE initializing the route.
 
 ---
 
 ## FILE TO MODIFY
+
 `system/game-engine.js`
 
 ## FUNCTION TO MODIFY
+
 `startRoute(routeName)` - approximately line 1089
 
 ---
@@ -28,6 +33,7 @@ When `startRoute()` is called, check localStorage for `insaneModeLocked` flag an
 ### Step 1: Locate the startRoute() function
 
 Find this function signature:
+
 ```javascript
 startRoute(routeName) {
     // Clear sprites before starting route (redundant safety check)
@@ -68,6 +74,7 @@ startRoute(routeName) {
 ### Step 3: Verify placement
 
 Make sure the new code block is:
+
 - ✅ AFTER `this.clearAllSprites();` (line 1091)
 - ✅ BEFORE `const routeSelect = document.getElementById('route-select');` (line 1094)
 - ✅ Properly indented to match the function body
@@ -86,6 +93,7 @@ Make sure the new code block is:
 ## TESTING CHECKLIST
 
 ### Test 1: Insane Mode Activation
+
 1. Main Menu → Settings
 2. Click skull button (💀)
 3. Warning overlay appears
@@ -97,6 +105,7 @@ Make sure the new code block is:
 9. **Expected result:** `true` (not undefined)
 
 ### Test 2: Visual Corruption Effects
+
 1. Start Tori's route in Insane Mode
 2. **Expected effects during gameplay:**
    - Screen shake during intense moments
@@ -106,6 +115,7 @@ Make sure the new code block is:
    - Console logs: "💀 INSANE MODE: Triggering visual corruption effects"
 
 ### Test 3: Time Machine Read-Only Lock
+
 1. Play Tori's route in Insane Mode
 2. Reach Act 2 (Time Machine unlocks)
 3. Click Time Machine button
@@ -116,13 +126,16 @@ Make sure the new code block is:
    - "Timeline locked. Observe only." message
 
 ### Test 4: Hold On Button (Already Working)
+
 1. Start Tori's route in Insane Mode
 2. **Expected:** Hold On button NOT visible
 3. Tether decays rapidly to 66% cap
 4. No way to manually restore tether
 
 ### Test 5: Console Logs
+
 When starting a route in Insane Mode, console should show:
+
 ```
 💀 Insane Mode restored from localStorage
 💀 INSANE MODE: Triggering visual corruption effects
@@ -132,14 +145,16 @@ When starting a route in Insane Mode, console should show:
 
 ## CRITICAL REQUIREMENTS
 
-### DO NOT:
+### DO NOT
+
 - ❌ Modify any other part of startRoute() function
 - ❌ Change the route initialization logic (lines 1140-1152)
 - ❌ Add browser alerts or prompts
 - ❌ Touch the sprite clearing or cleanup code
 - ❌ Modify the ESC hint or dialogue frame setup
 
-### DO:
+### DO
+
 - ✅ Add code exactly where specified (after clearAllSprites, before routeSelect)
 - ✅ Use proper indentation (match surrounding code)
 - ✅ Include console.log for debugging
@@ -151,16 +166,19 @@ When starting a route in Insane Mode, console should show:
 ## EDGE CASES HANDLED
 
 **Case 1: User hasn't committed to Insane Mode**
+
 - `insaneLocked` = false
 - Code block doesn't execute
 - Normal gameplay proceeds
 
 **Case 2: User committed but then loads a save from before Insane Mode**
+
 - Save system will restore correct gameState
 - localStorage flag may persist but save overrides it
 - This is expected behavior
 
 **Case 3: gameState.flags doesn't exist yet**
+
 - Code creates empty object first: `if (!this.gameState.flags)`
 - Then sets flags safely
 
@@ -169,12 +187,14 @@ When starting a route in Insane Mode, console should show:
 ## EXPECTED OUTCOME
 
 **Before Fix:**
+
 - Insane Mode "activates" but flags don't persist
 - No visual corruption
 - Time Machine fully functional
 - Game plays like normal difficulty with hidden Hold On button
 
 **After Fix:**
+
 - Insane Mode flags properly restored on route start
 - Visual corruption effects trigger throughout gameplay
 - Time Machine locked to read-only in Act 2+

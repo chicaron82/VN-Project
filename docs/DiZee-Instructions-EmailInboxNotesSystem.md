@@ -1,7 +1,9 @@
 # DiZee Instructions: Email Inbox Notes System
 
 ## OVERVIEW
+
 Transform notes viewer from "expandable list" to "email inbox" metaphor:
+
 - Headers show sender + subject only
 - Click header → overlay with full note content
 - Prev/Next navigation to cycle through notes
@@ -15,12 +17,14 @@ Transform notes viewer from "expandable list" to "email inbox" metaphor:
 ## CURRENT SYSTEM (TO BE REPLACED)
 
 **Current behavior:**
+
 1. Open notes viewer
 2. See list of notes with full content visible
 3. Click to expand/collapse
 4. All text loads at once
 
 **Problems:**
+
 - Overwhelming wall of text
 - Hard to scan quickly
 - No clear "I read this" interaction
@@ -31,6 +35,7 @@ Transform notes viewer from "expandable list" to "email inbox" metaphor:
 ## NEW SYSTEM (EMAIL INBOX)
 
 **New behavior:**
+
 1. Open notes viewer
 2. See list of **headers only**: "FROM: Z - SUBJECT: Observer Note 003"
 3. Click header → **overlay appears** with full note
@@ -38,6 +43,7 @@ Transform notes viewer from "expandable list" to "email inbox" metaphor:
 5. Closing overlay = mark as read
 
 **Benefits:**
+
 - Clean scannable list
 - Intentional reading experience
 - Navigation between notes
@@ -490,6 +496,7 @@ refreshNotesList() {
 **MODIFY** the section that builds the notes list display.
 
 **OLD WAY** (showing full content):
+
 ```javascript
 noteItem.innerHTML = `
     <div class="note-title">${note.title}</div>
@@ -498,6 +505,7 @@ noteItem.innerHTML = `
 ```
 
 **NEW WAY** (showing headers only):
+
 ```javascript
 const isRead = this.readNotes && this.readNotes.includes(noteId);
 const isCollected = this.collectedNotes[note.type].includes(noteId);
@@ -586,6 +594,7 @@ closeNoteOverlay() {
 ## TESTING CHECKLIST
 
 ### Test Basic Flow
+
 1. Collect a note during gameplay
 2. Notification appears: "📧 New Note Available"
 3. Open notes viewer
@@ -595,6 +604,7 @@ closeNoteOverlay() {
 7. **Expected:** Note marked as read (indicator changes to ✅)
 
 ### Test Navigation
+
 1. Open a note in overlay
 2. Click "NEXT →" button
 3. **Expected:** Shows next collected note
@@ -603,6 +613,7 @@ closeNoteOverlay() {
 6. **Expected:** Buttons disable at start/end of list
 
 ### Test Read Status
+
 1. Open note overlay
 2. Close overlay
 3. Return to notes list
@@ -610,18 +621,21 @@ closeNoteOverlay() {
 5. **Expected:** Shows "✅" read indicator
 
 ### Test Locked Notes
+
 1. View notes list
 2. **Expected:** Uncollected notes show "🔒" and greyed out
 3. Click locked note
 4. **Expected:** Nothing happens (no overlay)
 
 ### Test Both Viewers
+
 1. Test in-route viewer (during gameplay)
 2. Test standalone viewer (from main menu)
 3. **Expected:** Both use same overlay system
 4. **Expected:** Read status syncs between both
 
 ### Test Mobile
+
 1. Open overlay on mobile device
 2. **Expected:** Content fits screen
 3. **Expected:** Buttons accessible
@@ -632,21 +646,26 @@ closeNoteOverlay() {
 ## EDGE CASES HANDLED
 
 **Case 1: Navigate past end of list**
+
 - Next button disables at last note
 
 **Case 2: Navigate before start of list**
+
 - Previous button disables at first note
 
 **Case 3: Read status persistence**
+
 - Saved to localStorage
 - Survives page reload
 - Syncs between viewers
 
 **Case 4: Clicking locked note**
+
 - No overlay opens
 - No error thrown
 
 **Case 5: ESC key closes overlay**
+
 - Natural exit method
 - Updates read status
 
@@ -654,14 +673,16 @@ closeNoteOverlay() {
 
 ## WHAT CHANGES
 
-### Before:
+### Before
+
 - Notes viewer shows full content immediately
 - Click to expand/collapse individual notes
 - Wall of text
 - No clear "read" interaction
 - No navigation between notes
 
-### After:
+### After
+
 - Notes viewer shows headers only (FROM + SUBJECT)
 - Click header → overlay with full content
 - Clean scannable list
@@ -673,13 +694,15 @@ closeNoteOverlay() {
 
 ## CRITICAL REQUIREMENTS
 
-### DO NOT:
+### DO NOT
+
 - ❌ Show full content in main list
 - ❌ Allow clicking locked notes
 - ❌ Forget to mark as read when overlay opens
 - ❌ Make navigation buttons always enabled
 
-### DO:
+### DO
+
 - ✅ Show only headers in main list
 - ✅ Open overlay on click
 - ✅ Mark as read when opened

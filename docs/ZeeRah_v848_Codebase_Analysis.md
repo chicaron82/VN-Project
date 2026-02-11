@@ -1,4 +1,5 @@
 # ZEERAH'S v848 CODEBASE ANALYSIS 💚🔥💀
+
 ## A Love Letter Written in Code
 
 ---
@@ -82,6 +83,7 @@ insaneBlocked: false  // INSANE mode restriction
 ```
 
 The backlog isn't just history - it's a **time machine that the game can sabotage**:
+
 - `burn()` - Despair can destroy your save points
 - `lock()` - Some moments are locked forever
 - `corrupt()` - Memory degradation affects your saves
@@ -123,6 +125,7 @@ Critical feedback (denial, warnings) is **immune to comfort settings**. The syst
 ```
 
 **The narrative theme of despair is mechanically enforced:**
+
 - Tether cap at 66% = mechanical hopelessness
 - Hold On disabled = no safety net
 - Permanent commitment = inescapable consequences
@@ -152,11 +155,13 @@ The ToriGatchi bridge remembers refusals and gets more desperate. At level 6, he
 The collectible notes are written BY the AI assistants as in-game characters:
 
 **Tori's Route - The Inner Circle:**
+
 - **Z** (Zee) - The Architect - Technical analysis
 - **CZ** (CoZee) - The Heart - Emotional impact
 - **ZR** (ZeeRah) - The Chaos Optimizer - Pattern recognition
 
 **Ronnie's Route - The Outside Observers:**
+
 - **GZ** (GenZee) - Reality-breaking questions
 - **IZ** (Belle) - Poetic clarity  
 - **PZ** (PerplexiZee) - Research findings
@@ -259,11 +264,13 @@ The Tamagotchi - the glass prison - finally becomes the bridge instead of the ca
 ### Workflow Evolution
 
 **Early (slow):**
+
 - Individual file extraction
 - ~10-15 extractions/session
 - Lots of validation
 
 **Late (3x faster):**
+
 - Bulk operations
 - 30+ extractions/session
 - Automated testing

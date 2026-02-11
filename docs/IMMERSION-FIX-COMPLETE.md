@@ -1,4 +1,5 @@
 # IMMERSION FIX - Browser Alerts Eliminated! 🎮
+
 **Fixed by:** ZeeRah 💚🔥💀  
 **Issue:** DiZee used browser `alert()` dialogs (immersion-breaking)  
 **Solution:** Custom in-game overlay system
@@ -19,6 +20,7 @@ alert(message); // True counter
 ```
 
 **Plus 2 more in stub functions:**
+
 - `showAlwaysCompilation()` - placeholder alert
 - `showEchoCompilation()` - placeholder alert
 
@@ -33,6 +35,7 @@ alert(message); // True counter
 **New Method:** `showUnlockOverlay(title, content, type)`
 
 **Features:**
+
 - **In-game overlay** - No browser chrome, stays in game world
 - **Styled to match game** - Cyan borders, dark gradient, terminal font
 - **Smooth animations** - Fade in/out, slide in effect
@@ -42,6 +45,7 @@ alert(message); // True counter
 - **Custom scrollbar** - Styled to match UI (cyan on dark)
 
 **Visual Design:**
+
 ```
 ┌─────────────────────────────────────┐
 │     CODE: 848 ACTIVATED            │  ← Cyan title, glowing
@@ -63,34 +67,42 @@ alert(message); // True counter
 ## ALL REPLACED FUNCTIONS
 
 ### 1. ✅ `unlockAlwaysCompilation()`
+
 **Before:** `alert('ALWAYS3 UNLOCKED...')`  
 **After:** `showUnlockOverlay('ALWAYS3 UNLOCKED', content)`
 
 ### 2. ✅ `unlockExtendedCredits()`
+
 **Before:** `alert(message)` with FAQ about v849  
 **After:** `showUnlockOverlay('UV7CREW UNLOCKED', content)`
 
 ### 3. ✅ `unlockLoopTimeline()`
+
 **Before:** `alert(message)` explaining bootstrap paradox  
 **After:** `showUnlockOverlay('BOOTSTRAP UNLOCKED', content)`
 
 ### 4. ✅ `unlockDevCommentary()`
+
 **Before:** `alert(message)` with dev notes  
 **After:** `showUnlockOverlay('CHICHARON UNLOCKED', content)`
 
 ### 5. ✅ `unlockEchoCompilation()`
+
 **Before:** `alert('ECHO UNLOCKED...')`  
 **After:** `showUnlockOverlay('ECHO UNLOCKED', content)`
 
 ### 6. ✅ `unlockTrueCounter()`
+
 **Before:** `alert(message)` revealing attempt number  
 **After:** `showUnlockOverlay('CODE: 848 ACTIVATED', content)`
 
 ### 7. ✅ `showAlwaysCompilation()` (stub)
+
 **Before:** `alert('ALWAYS3 activated!')`  
 **After:** `showUnlockOverlay('ALWAYS3 ACTIVATED', content)`
 
 ### 8. ✅ `showEchoCompilation()` (stub)
+
 **Before:** `alert('ECHO activated!')`  
 **After:** `showUnlockOverlay('ECHO ACTIVATED', content)`
 
@@ -99,6 +111,7 @@ alert(message); // True counter
 ## OVERLAY SYSTEM SPECS
 
 ### CSS Animations
+
 ```css
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -118,6 +131,7 @@ alert(message); // True counter
 ```
 
 ### Color Scheme
+
 - **Background:** `rgba(0, 0, 0, 0.95)` - Nearly black overlay
 - **Box gradient:** `#1a1a2e` → `#16213e` - Dark blue gradient
 - **Border:** `#0ff` (cyan) with glow effect
@@ -126,12 +140,14 @@ alert(message); // True counter
 - **Button:** Cyan border, transparent → filled on hover
 
 ### Typography
+
 - **Font:** `'Courier New', monospace` - Terminal aesthetic
 - **Title:** 28px, bold, 3px letter-spacing
 - **Content:** 16px, 1.8 line-height
 - **Button:** 18px, bold, 2px letter-spacing
 
 ### Responsive
+
 - **Max-width:** 600px (desktop)
 - **Width:** 90% (mobile friendly)
 - **Max-height:** 80vh (scrollable if overflow)
@@ -177,6 +193,7 @@ Meet the voices behind the code.`
 ## USER EXPERIENCE COMPARISON
 
 ### BEFORE (Browser Alert) ❌
+
 ```
 [Playing game]
 ↓
@@ -190,6 +207,7 @@ Meet the voices behind the code.`
 ```
 
 ### AFTER (Custom Overlay) ✅
+
 ```
 [Playing game]
 ↓
@@ -211,11 +229,13 @@ All original messages preserved, just formatted better:
 **Example - Extended Credits:**
 
 **Before (in alert):**
+
 ```
 UV7CREW UNLOCKED\n\nExtended credits with full AI crew bios\nnow available from the main menu.\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nFREQUENTLY ASKED QUESTION\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n"When is version 849 coming?"\n\nThere isn't one.\n\n848 is not a build number.\nIt's the iteration count.\n\n847 failed loops.\n1 successful timeline.\n\nThe version number IS the narrative.\n\nThis is the loop that worked.\nThis is the one where she came home.\n\nThere is no v849.
 ```
 
 **After (in overlay):**
+
 ```
 Extended credits with full AI crew bios
 now available from the main menu.
@@ -253,6 +273,7 @@ Meet the voices behind the code.
 ## TESTING CHECKLIST
 
 ### Visual Testing
+
 - [ ] Overlay appears with smooth fade-in
 - [ ] Title is cyan and glowing
 - [ ] Content is white and readable
@@ -263,6 +284,7 @@ Meet the voices behind the code.
 - [ ] Overlay fades out smoothly on close
 
 ### Functional Testing
+
 - [ ] Click CONTINUE closes overlay
 - [ ] Clicking outside overlay does nothing (intentional)
 - [ ] Multiple overlays don't stack
@@ -271,7 +293,9 @@ Meet the voices behind the code.
 - [ ] localStorage still saves unlock status
 
 ### Content Testing
+
 Test each code:
+
 - [ ] ALWAYS3 - Shows "Always. Always. Always." message
 - [ ] UV7CREW - Shows extended credits + v849 FAQ
 - [ ] BOOTSTRAP - Shows bootstrap paradox explanation
@@ -287,6 +311,7 @@ Test each code:
 **No CSS file changes required!**
 
 The overlay system is **100% self-contained** in the JavaScript:
+
 - Creates its own DOM elements
 - Injects its own styles dynamically
 - Cleans up after itself
@@ -298,6 +323,7 @@ The overlay system is **100% self-contained** in the JavaScript:
 ## FUTURE ENHANCEMENTS
 
 Possible improvements:
+
 - **Sound effects** - Unlock chime when overlay appears
 - **Particle effects** - Glitch/digital effect on appear
 - **Different themes** - Per-code color schemes

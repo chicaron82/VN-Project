@@ -1,6 +1,7 @@
 # Nuclear Reset - Complete Testing Reset Tool 💥
 
 ## PURPOSE
+
 Complete factory reset for testing unlock systems. Clears **EVERYTHING** back to brand new state.
 
 ---
@@ -8,11 +9,13 @@ Complete factory reset for testing unlock systems. Clears **EVERYTHING** back to
 ## USAGE
 
 ### Desktop (Console)
+
 ```javascript
 game.nuclearReset()
 ```
 
 ### Mobile (Secret Code)
+
 ```
 Settings → Secret Codes → NUKE → Redeem
 ```
@@ -21,7 +24,8 @@ Settings → Secret Codes → NUKE → Redeem
 
 ## WHAT IT DOES
 
-### Clears ALL:
+### Clears ALL
+
 - ✅ All unlocks (INSANE mode, skip prologue, Ronnie notes system)
 - ✅ All collected notes
 - ✅ All secret codes discovered
@@ -32,7 +36,8 @@ Settings → Secret Codes → NUKE → Redeem
 - ✅ Completion flags
 - ✅ **Everything in localStorage**
 
-### After Reset:
+### After Reset
+
 - Page automatically reloads
 - Game is **100% factory fresh**
 - Like a brand new player opening it for the first time
@@ -42,6 +47,7 @@ Settings → Secret Codes → NUKE → Redeem
 ## CONFIRMATION DIALOG
 
 **Immersive Red Warning Overlay:**
+
 ```
 ⚠️ NUCLEAR RESET ⚠️
 
@@ -83,6 +89,7 @@ Continue with nuclear reset?
 ## USE CASES
 
 ### Testing INSANE Mode Unlock
+
 ```
 1. game.nuclearReset() or NUKE code
 2. Complete any ending on Intense difficulty
@@ -91,6 +98,7 @@ Continue with nuclear reset?
 ```
 
 ### Testing Skip Prologue
+
 ```
 1. game.nuclearReset() or NUKE code
 2. Complete any ending
@@ -100,6 +108,7 @@ Continue with nuclear reset?
 ```
 
 ### Testing Ronnie Notes System
+
 ```
 1. game.nuclearReset() or NUKE code
 2. Complete any Ronnie ending
@@ -108,6 +117,7 @@ Continue with nuclear reset?
 ```
 
 ### Testing First-Time Player Experience
+
 ```
 1. game.nuclearReset() or NUKE code
 2. Play through as if new player
@@ -120,21 +130,25 @@ Continue with nuclear reset?
 ## COMPARISON TO OTHER COMMANDS
 
 ### `localStorage.clear()` (Manual)
+
 - **Same result as nuclear reset**
 - But doesn't auto-reload
 - Desktop console only
 
 ### `game.resetVersion(848)`
+
 - **Only changes version number**
 - Does NOT clear unlocks/progress
 - Not a true reset
 
 ### `game.clearNotes()`
+
 - **Only clears collected notes**
 - Keeps everything else
 - Partial reset
 
 ### `game.nuclearReset()` / `NUKE`
+
 - **Clears EVERYTHING**
 - Auto-reloads page
 - True factory reset
@@ -159,12 +173,14 @@ game.nuclearReset()
 ## SECRET CODE ENTRY
 
 **Code Details:**
+
 - **Code:** `NUKE`
 - **Name:** Nuclear Reset
 - **Description:** 💥 DEV TOOL: Clears ALL progress, unlocks, and settings. Factory reset for testing.
 - **Reward:** Executes `nuclearReset()` method
 
 **How to Access:**
+
 1. Complete any ending (unlocks Secret Codes section)
 2. OR use console: `game.devConsole('unlock')`
 3. Settings → Secret Codes tab
@@ -176,17 +192,20 @@ game.nuclearReset()
 ## SAFETY FEATURES
 
 ### Confirmation Required
+
 - Shows detailed warning of what will be deleted
 - Lists ALL items that will be cleared
 - Requires explicit "RESET ALL" button click
 - Can cancel anytime
 
 ### No Accidental Triggers
+
 - Secret code must be typed exactly: `NUKE`
 - Confirmation overlay prevents mis-clicks
 - Console command requires explicit call
 
 ### Console Logging
+
 ```
 ⚠️ Nuclear reset confirmation dialog displayed
 💥 NUCLEAR RESET INITIATED...
@@ -199,6 +218,7 @@ game.nuclearReset()
 ## IMPLEMENTATION DETAILS
 
 ### Location
+
 `c:\Users\silve\Downloads\v848\system\game-engine.js`
 
 **Method:** `nuclearReset()` (line 2349-2543)
@@ -206,6 +226,7 @@ game.nuclearReset()
 **Dev Commands Help:** Line 2414-2418
 
 ### Technology
+
 - Dynamic DOM creation
 - Inline CSS styling (cyberpunk aesthetic)
 - Red warning theme (danger indicator)
@@ -213,6 +234,7 @@ game.nuclearReset()
 - Auto-reload after execution
 
 ### Mobile Optimizations
+
 - Touch-friendly buttons (min-width: 140px)
 - Responsive sizing (max-width: 500px, width: 90%)
 - No browser confirm() - uses immersive overlay
@@ -225,6 +247,7 @@ game.nuclearReset()
 **To verify it works:**
 
 1. **Setup test state:**
+
    ```javascript
    game.unlockSkipPrologue();
    localStorage.setItem('insaneModeUnlocked', 'true');
@@ -232,11 +255,13 @@ game.nuclearReset()
    ```
 
 2. **Execute reset:**
+
    ```javascript
    game.nuclearReset(); // or use NUKE code
    ```
 
 3. **Verify after reload:**
+
    ```javascript
    console.log(localStorage.getItem('skipPrologueUnlocked')); // null
    console.log(localStorage.getItem('insaneModeUnlocked')); // null

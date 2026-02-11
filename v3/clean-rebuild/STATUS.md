@@ -11,6 +11,7 @@
 V3 is a **complete faithful clone of V1** with all systems, routes, and presentation preserved.
 
 ### Files Copied from V1
+
 - ✅ `index.html` - Full CRT container UI structure
 - ✅ `main.js` - Entry point with boot sequence integration
 - ✅ `style.css` - Base CRT effects and styling
@@ -29,6 +30,7 @@ V3 is a **complete faithful clone of V1** with all systems, routes, and presenta
 **Primary Goal:** Create Version 848 that is **indistinguishable** from V1
 
 ### Indistinguishability Checklist
+
 - [x] Same HTML structure (CRT, status bar, dialogue box)
 - [x] Same JavaScript systems (GameEngine, RouteController, Tether)
 - [x] Same CSS styling (scanlines, vignette, terminal green)
@@ -101,17 +103,20 @@ v3-clean-rebuild/
 ## 🔥 How to Test
 
 ### 1. Start Local Server
+
 ```bash
 cd v3-clean-rebuild
 python3 -m http.server 3848
 ```
 
 ### 2. Open in Browser
+
 ```
 http://localhost:3848/index.html
 ```
 
 ### 3. Expected Flow
+
 1. **Boot Sequence** (3 seconds)
    - Terminal-style animation
    - System initialization messages
@@ -150,12 +155,14 @@ http://localhost:3848/index.html
 ## ✅ Testing Checklist
 
 ### Boot & Menu
+
 - [ ] Boot sequence plays (terminal animation)
 - [ ] Main menu displays after boot
 - [ ] Loop counter shows "v.848"
 - [ ] All menu buttons visible
 
 ### Prologue
+
 - [ ] START button begins prologue
 - [ ] Scene 1: Street bump (Tori dialogue)
 - [ ] Scene 2: Old Man encounter (BGA hoodie)
@@ -166,6 +173,7 @@ http://localhost:3848/index.html
 - [ ] Route selection appears after prologue
 
 ### Ronnie Route
+
 - [ ] Route card clickable
 - [ ] Act 1 scenes load
 - [ ] Typewriter effect works
@@ -175,6 +183,7 @@ http://localhost:3848/index.html
 - [ ] True ending plays
 
 ### Tori Route
+
 - [ ] Route card clickable
 - [ ] Tether system initializes
 - [ ] Tether meter appears in status bar
@@ -187,6 +196,7 @@ http://localhost:3848/index.html
 - [ ] True ending plays
 
 ### Visual & Effects
+
 - [ ] CRT scanlines visible
 - [ ] Vignette effect present
 - [ ] Glitch effects trigger appropriately
@@ -200,6 +210,7 @@ http://localhost:3848/index.html
 ## 🎭 Differences from DiZee's Failed Attempt
 
 ### DiZee's Recipe A (v3-dizee-chaos/) - FAILED
+
 - ❌ Built from scratch (new GameEngine.ts)
 - ❌ Text-only prototype (no sprites loaded)
 - ❌ Original dialogue (not V1's)
@@ -207,6 +218,7 @@ http://localhost:3848/index.html
 - ❌ **User verdict:** "immediately knew this was a different game"
 
 ### V3 Clean Rebuild (v3-clean-rebuild/) - SUCCESS
+
 - ✅ Copied V1 entirely (proven codebase)
 - ✅ All sprites/assets (same paths as V1)
 - ✅ V1's exact dialogue (word-for-word)
@@ -218,6 +230,7 @@ http://localhost:3848/index.html
 ## 🧠 Lessons Learned
 
 ### DiZee's Mistake
+>
 > "I thought the assignment was: 'Prove TypeScript CAN be used if soul is designed in from line 1.'
 >
 > The assignment actually was: **'Recreate V1 indistinguishably.'**"
@@ -225,6 +238,7 @@ http://localhost:3848/index.html
 DiZee optimized for "anxious feel" instead of "exact clone."
 
 ### The Correct Approach
+
 **Start from 100% fidelity. Enhance later.**
 
 V3 is V1's code, V1's structure, V1's presentation - ensuring indistinguishability from line 1.
@@ -236,16 +250,19 @@ V3 is V1's code, V1's structure, V1's presentation - ensuring indistinguishabili
 Once V3 is verified as indistinguishable, could explore:
 
 ### Phase 1: Data Layer (Low Risk)
+
 - Replace route JS files with V2's JSON content
 - Keep all V1 presentation logic intact
 - Benefit: Cleaner data structure
 
 ### Phase 2: Systems Layer (Medium Risk)
+
 - Integrate V2's EventBus for system communication
 - Keep V1's UI rendering intact
 - Benefit: Better system decoupling
 
 ### Phase 3: Type Safety (High Risk)
+
 - Gradually add TypeScript types
 - Keep all V1 logic unchanged
 - Benefit: Type checking without breaking anything
@@ -268,6 +285,7 @@ Once V3 is verified as indistinguishable, could explore:
 ## 💭 Final Notes
 
 V3 represents the **conservative approach** to recreation:
+
 - Don't reimagine
 - Don't optimize
 - Don't "improve"

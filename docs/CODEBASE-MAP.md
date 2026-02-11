@@ -23,6 +23,7 @@ VN-Project/
 ## 🎮 Core Systems (`/system`)
 
 ### Game Loop & Management
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `game-engine.js` | ~8,900 | **Main orchestrator** - Scene flow, typewriter, manager wiring |
@@ -32,6 +33,7 @@ VN-Project/
 | `scene-renderer.js` | ~500 | Sprite display, dialogue, choices rendering |
 
 ### Save & Persistence
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `save-manager.js` | ~350 | 3 manual slots + auto-save, localStorage |
@@ -39,6 +41,7 @@ VN-Project/
 | `auto-save-manager.js` | ~150 | Automatic save triggers |
 
 ### Tori Route Mechanics
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `tether-system.js` | ~750 | Connection decay, Hold On button, death handler |
@@ -46,6 +49,7 @@ VN-Project/
 | `collectibles-manager.js` | ~500 | Notes, timestamps, unlocks |
 
 ### UI Controllers
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `notification-shade-controller.js` | ~600 | iOS-style pull-down shade, quick actions |
@@ -57,6 +61,7 @@ VN-Project/
 | `tips-controller.js` | ~200 | Rotating tips on main menu |
 
 ### Player Progress
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `achievement-manager.js` | ~350 | 12 achievements, notifications |
@@ -65,6 +70,7 @@ VN-Project/
 | `loop-controller.js` | ~150 | Version 848 counter, bootstrap paradox |
 
 ### Accessibility & UX
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `accessibility-manager.js` | ~300 | WCAG compliance, screen readers |
@@ -74,6 +80,7 @@ VN-Project/
 | `pause-manager.js` | ~150 | Pause state management |
 
 ### Visual & Effects
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `cutscene-engine.js` | ~300 | Frame-by-frame animations |
@@ -84,6 +91,7 @@ VN-Project/
 | `insane-visuals-controller.js` | ~250 | INSANE mode visual distortions |
 
 ### Developer Tools
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `dev-console.js` | ~200 | Runtime debugging (`~` key) |
@@ -95,6 +103,7 @@ VN-Project/
 | `logger.js` | ~100 | Logging utilities |
 
 ### Specialized Systems
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `time-machine-manager.js` | ~300 | Backlog with full state restoration |
@@ -113,6 +122,7 @@ VN-Project/
 | `bootstrap-tracker.js` | ~100 | System initialization tracking |
 
 ### Input & Bindings
+
 | File | Lines | Purpose |
 |------|-------|---------|
 | `input-binder.js` | ~200 | Decoupled event binding |
@@ -159,11 +169,13 @@ VN-Project/
 ## 🎨 Styles (`/css`)
 
 ### Core Styles
+
 - `styles.css` - **Main consolidated stylesheet** (~10K lines)
 - `game.css` - Game view, dialogue box, sprites
 - `ui.css` - Menus, buttons, overlays
 
 ### Feature-Specific
+
 - `accessibility.css` - WCAG compliance, focus indicators, skip links
 - `mobile-polish.css` - Touch targets, swipe indicators, responsive
 - `notification-shade.css` - Pull-down shade, quick actions
@@ -173,6 +185,7 @@ VN-Project/
 - `dev-commentary.css` - Commentary UI
 
 ### Specialized
+
 - `insane-mode.css` - INSANE difficulty visual effects
 - `tether-warnings.css` - Tether level color coding
 - `note-timestamps.css` - Email inbox timestamps
@@ -186,16 +199,19 @@ VN-Project/
 ## 📚 Documentation (`/docs`)
 
 ### Architecture
+
 - `ARCHITECTURE.md` - **System design, patterns, philosophy**
 - `CODEBASE-MAP.md` - This file - Quick reference
 
 ### Features
+
 - `ECHO_MEMORY_TESTING.md` - Echo system testing guide
 - `SECRET_CODES_GUIDE.md` - All secret codes and effects
 - `ACHIEVEMENT-INTEGRATION.md` - Achievement system docs
 - `DEV-COMMANDS.md` - Developer command reference
 
 ### Development
+
 - `UPDATES_*.md` - Feature changelogs
 - `MAKING_OF_*.md` - Development journal
 - `DiZee-Instructions-*.md` - AI collaboration workflows
@@ -221,12 +237,14 @@ VN-Project/
 ### "Where is...?"
 
 **Tether System**
+
 - Logic: `system/tether-system.js`
 - UI: `system/ui-controller.js` (tether bar)
 - Styles: `css/tether-warnings.css`
 - Tests: `tests/tether-system.test.js`
 
 **Echo Memory System**
+
 - Core: `system/echo-memory-system.js`
 - Hooks: `scene-progression-controller.js`, `tether-system.js`, `save-manager.js`, `scene-renderer.js`, `standalone-notes-viewer.js`
 - Despair Hijack: `routes/tori-route-act2.js:65`
@@ -234,41 +252,48 @@ VN-Project/
 - Testing: `docs/ECHO_MEMORY_TESTING.md`
 
 **Achievements**
+
 - Manager: `system/achievement-manager.js`
 - Hooks: `system/achievement-hooks.js`
 - UI: `ui/achievement-viewer.js`
 - Notifications: `css/achievement-notifications.css`
 
 **Carousels**
+
 - Main Menu: `ui/menu-carousel.js` (hybrid manager)
 - Portrait: `ui/simple-carousel.js`
 - Landscape: `ui/momentum-adapter.js` + `ui/carousel-momentum.js`
 - Quick Actions: `system/expandable-quick-actions.js`
 
 **Notifications**
+
 - Status Bar: `system/status-notification-controller.js`
 - Shade: `system/notification-shade-controller.js`
 - Styles: `css/status-notifications.css`, `css/notification-shade.css`
 
 **Save System**
+
 - Manager: `system/save-manager.js`
 - Auto-Save: `system/auto-save-manager.js`
 - UI: `ui/save-load-ui.js`
 - Slots: localStorage (`vn_save_slot_*`, `vn_autosave`)
 
 **Accessibility**
+
 - Manager: `system/accessibility-manager.js`
 - Mobile UX: `system/mobile-ux.js`
 - Keyboard: `system/keyboard-controller.js`
 - Styles: `css/accessibility.css`, `css/aria-fixes.css`
 
 **Developer Tools**
+
 - Console: `system/dev-console.js` (`~` key)
 - Suite: `system/dev-suite.js`
 - Commentary: `system/dev-commentary.js` (code: `chicharon`)
 - Secret Codes: `system/secret-codes-manager.js`
 
 **Story Content**
+
 - Tori Route: `routes/tori-route-*.js` (4 files)
 - Ronnie Route: `routes/ronnie-route-*.js` (3 files)
 - Prologue: `routes/shared-prologue.js`
@@ -279,7 +304,9 @@ VN-Project/
 ## 🏗️ Architecture Patterns
 
 ### Dependency Injection
+
 All managers receive `game` reference in constructor:
+
 ```javascript
 constructor(game) {
     this.game = game;
@@ -288,16 +315,19 @@ constructor(game) {
 ```
 
 ### Event-Driven
+
 - StateManager subscriptions for reactive updates
 - Custom events for cross-system communication
 - Pub/sub pattern for loosely coupled features
 
 ### Strategy Pattern
+
 - Carousel system switches between mobile/desktop implementations
 - Difficulty profiles swap tether parameters
 - Route-specific handlers for deaths, choices
 
 ### Factory Pattern
+
 - Scene objects created dynamically
 - Achievement definitions centralized
 - Notification types with shared interface
@@ -307,6 +337,7 @@ constructor(game) {
 ## 📊 Code Statistics
 
 **By Category**:
+
 - **Core Engine**: 33,000 lines (system files)
 - **Story Content**: 7,400 lines (routes)
 - **UI Components**: 3,500 lines (ui)
@@ -315,6 +346,7 @@ constructor(game) {
 - **Docs**: 20+ markdown files
 
 **Largest Files**:
+
 1. `game-engine.js` - 8,900 lines
 2. `styles.css` - 10,000 lines
 3. `tori-route-act1.js` - 1,400 lines
@@ -322,6 +354,7 @@ constructor(game) {
 5. `carousel-momentum.js` - 800 lines
 
 **Most Complex Systems**:
+
 1. GameEngine - Scene flow, typewriter, manager coordination
 2. TetherSystem - Decay, warnings, difficulty modes
 3. StateManager - Reactive subscriptions, persistence
@@ -333,17 +366,20 @@ constructor(game) {
 ## 🚀 Quick Start Guide
 
 ### Running Locally
+
 1. Open `index.html` in browser (no build required)
 2. Check console for `🚀 ES Modules loaded successfully!`
 3. Game initializes automatically
 
 ### Development Workflow
+
 1. Edit files in `/system`, `/routes`, or `/ui`
 2. Refresh browser to see changes
 3. Use `~` key to open dev console
 4. Check `DEBUG_MODE` in `game-config.js` for verbose logging
 
 ### Testing
+
 ```bash
 npm test              # Run all tests
 npm run test:watch    # Watch mode
@@ -351,6 +387,7 @@ npm run test:ui       # Visual test UI
 ```
 
 ### Building for Production
+
 ```powershell
 .\build.ps1          # Minifies to /dist folder
 ```
@@ -360,12 +397,14 @@ npm run test:ui       # Visual test UI
 ## 🔗 Cross-References
 
 **State Management**:
+
 - Definition: `system/state-manager.ts`
 - Usage: All managers access via `this.game.stateManager`
 - Tests: `tests/state-manager.test.js`
 - Docs: `ARCHITECTURE.md` § 3
 
 **Echo System Integration**:
+
 - Core: `system/echo-memory-system.js`
 - Hook 1: `system/scene-progression-controller.js:180` (recordLoop)
 - Hook 2: `system/tether-system.js:666` (recordDeath)
@@ -375,6 +414,7 @@ npm run test:ui       # Visual test UI
 - Hook 6: `routes/tori-route-act2.js:65` (Despair hijack)
 
 **Carousel System**:
+
 - Manager: `ui/menu-carousel.js`
 - Mobile: `ui/simple-carousel.js`
 - Desktop: `ui/momentum-adapter.js` → `ui/carousel-momentum.js`

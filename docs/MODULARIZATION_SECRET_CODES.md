@@ -14,6 +14,7 @@ Extracted all secret codes, dev commands, and code management logic into a dedic
 ### `system/secret-codes-manager.js`
 
 **Contains:**
+
 - All dev commands (clearnotes, nuke, freezetether, settether50, etc.)
 - All secret codes (torigatchi, bootstrap, echo, dizee, etc.)
 - Code discovery tracking
@@ -27,20 +28,25 @@ Extracted all secret codes, dev commands, and code management logic into a dedic
 ## Files Modified
 
 ### 1. `index.html`
+
 - **Line 831:** Added `<script src="system/secret-codes-manager.js"></script>`
 - Load order: After game-config, before settings-manager
 
 ### 2. `system/game-engine.js`
+
 - **Line 173:** Added `this.secretCodesManager = new SecretCodesManager(this);`
 - **Lines 4735-4738:** Replaced 280+ lines of code with simple delegation:
+
   ```javascript
   redeemSecretCode(code) {
       return this.secretCodesManager.redeemCode(code);
   }
   ```
+
 - **Lines 4740-5017:** Moved old implementation to `_oldRedeemSecretCode_DEPRECATED()` for reference
 
 ### 3. `system/settings-manager.js`
+
 - **Line 31-35:** Removed `discoveredCodes` tracking (now in SecretCodesManager)
 - **Lines 677-698:** Replaced all code methods with delegation wrappers
 - **Lines 611-652:** Removed old `updateCodesUI()` implementation
@@ -75,6 +81,7 @@ trySecretCode(code)              // Check secret codes
 ## All Dev Commands
 
 ### General
+
 - `clearnotes` - Clear all collected notes
 - `reset848` - Reset to VERSION 848
 - `reset849` - Set to VERSION 849
@@ -89,12 +96,14 @@ trySecretCode(code)              // Check secret codes
 - `devhelp` - Show all commands
 
 ### Tether Control
+
 - `freezetether` - Stop tether decay
 - `resumetether` - Resume tether decay
 - `settethermax` - Set tether to 100
 - `settether50` - Set tether to 50
 
 ### Testing
+
 - `unlockact1saves` - Enable saves in Act 1
 - `enableinsane` - Enable Insane Mode
 - `disableinsane` - Disable Insane Mode
@@ -104,6 +113,7 @@ trySecretCode(code)              // Check secret codes
 ## All Secret Codes
 
 ### Lore Codes
+
 - `torigatchi` - The Reverse Door
 - `always3` - Storm Dragon Signature
 - `uv7crew` - Director's Cut
@@ -114,6 +124,7 @@ trySecretCode(code)              // Check secret codes
 - `dizee` - The Architect's Signature
 
 ### Utility Codes
+
 - `echobreak` - Disable Echo interruptions
 - `tetherlock` - Freeze tether at current level
 - `saveanywhere` - Bypass Act 1 save restriction
@@ -123,23 +134,27 @@ trySecretCode(code)              // Check secret codes
 ## Benefits
 
 ### Organization
+
 ✅ All codes in one file
 ✅ Easy to find and add new codes
 ✅ Separated concerns (dev vs lore codes)
 ✅ Clear code categories
 
 ### Maintainability
+
 ✅ Single source of truth
 ✅ No scattered code logic
 ✅ Easy to test individual codes
 ✅ Better for mobile dev testing
 
 ### Performance
+
 ✅ Reduced game-engine.js size (~5% smaller)
 ✅ Cleaner initialization
 ✅ Faster code lookup
 
 ### Development
+
 ✅ Quick access to dev commands
 ✅ Easy to add seasonal codes
 ✅ Simple to disable/enable features
@@ -150,6 +165,7 @@ trySecretCode(code)              // Check secret codes
 ## Backwards Compatibility
 
 All existing code continues to work:
+
 - `game.redeemSecretCode()` → delegates to manager
 - `settingsManager.submitSecretCode()` → delegates to manager
 - `settingsManager.hasDiscoveredCode()` → delegates to manager

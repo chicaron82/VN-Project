@@ -1,6 +1,7 @@
 # DiZee Instructions: Rotating Tips - Main Menu & Route Select
 
 ## OVERVIEW
+
 Add rotating tips to main menu and route select screens that cycle every 8-10 seconds. This provides ambient discovery of game features (especially secret codes) without hand-holding. Tips appear in areas players see repeatedly, planting seeds for observant players while preserving treasure hunt design.
 
 **Design philosophy:** Non-intrusive ambient exposure. Players who pay attention will notice codes exist. Players who don't care won't be bothered. Discovery preserved, accessibility improved.
@@ -9,11 +10,13 @@ Add rotating tips to main menu and route select screens that cycle every 8-10 se
 
 ## WHAT CHANGES
 
-### MAIN MENU:
+### MAIN MENU
+
 **BEFORE:** Static version counter footer only
 **AFTER:** Version counter footer + rotating tip below it
 
-### ROUTE SELECT:
+### ROUTE SELECT
+
 **BEFORE:** No footer text
 **AFTER:** Rotating tip at bottom of screen
 
@@ -26,6 +29,7 @@ Add rotating tips to main menu and route select screens that cycle every 8-10 se
 ### LOCATION: Inside `#main-menu-content` (we already added `.menu-footer` for version counter)
 
 **FIND THIS SECTION:**
+
 ```html
 <div id="main-menu-content">
     <h1>VERSION 848</h1>
@@ -66,6 +70,7 @@ Add rotating tips to main menu and route select screens that cycle every 8-10 se
 ### LOCATION: Inside `#route-select-content` (bottom of the container, after back button)
 
 **FIND THIS SECTION:**
+
 ```html
 <div id="route-select-content">
     <div id="route-select-title">
@@ -198,6 +203,7 @@ Add rotating tips to main menu and route select screens that cycle every 8-10 se
 ### LOCATION: Add new properties to constructor (around line 50-100)
 
 **FIND THE CONSTRUCTOR:**
+
 ```javascript
 constructor() {
     // DOM Elements
@@ -207,6 +213,7 @@ constructor() {
 ```
 
 **ADD THESE PROPERTIES:**
+
 ```javascript
 constructor() {
     // DOM Elements
@@ -378,11 +385,13 @@ init() {
 There should be multiple places. **ADD tip rotation start** after each one:
 
 **Example locations:**
+
 1. After loading screen completes
 2. After returning from game to menu
 3. After credits close
 
 **PATTERN TO ADD:**
+
 ```javascript
 this.mainMenu.style.display = 'flex';
 this.mainMenu.style.opacity = '1';
@@ -497,21 +506,24 @@ backToMenu() {
 
 ## HOW IT WORKS
 
-### MAIN MENU:
+### MAIN MENU
+
 1. Player sees main menu
 2. Tip rotation starts automatically
 3. Every 8 seconds: fade out → change text → fade in
 4. Tips loop through pool of 10
 5. When menu hidden: rotation stops (performance)
 
-### ROUTE SELECT:
+### ROUTE SELECT
+
 1. Player sees route selection screen
 2. Tip rotation starts automatically
 3. Every 8 seconds: fade out → change text → fade in
 4. Tips loop through pool of 7
 5. When screen hidden: rotation stops
 
-### TRANSITIONS:
+### TRANSITIONS
+
 - Smooth 0.8s fade between tips
 - No jarring text changes
 - Ambient, non-intrusive
@@ -520,7 +532,8 @@ backToMenu() {
 
 ## TIP CONTENT STRATEGY
 
-### MAIN MENU TIPS (Discovery-focused):
+### MAIN MENU TIPS (Discovery-focused)
+
 - 3 tips about secret codes (ambient exposure)
 - 2 tips about dual-route design
 - 2 tips about endings/choices
@@ -528,7 +541,8 @@ backToMenu() {
 - 1 tip about keyboard controls
 - 1 Tori signature phrase (emotional)
 
-### ROUTE SELECT TIPS (Route-specific):
+### ROUTE SELECT TIPS (Route-specific)
+
 - 3 tips about cross-route secrets
 - 2 tips about route-specific mechanics
 - 2 tips about narrative design
@@ -540,6 +554,7 @@ backToMenu() {
 ## TESTING CHECKLIST
 
 ### Test 1: Main Menu Tip Rotation
+
 1. Open game to main menu
 2. Wait 8 seconds
 3. **Expected:** Tip fades out, new tip appears
@@ -547,6 +562,7 @@ backToMenu() {
 5. **Expected:** Tips loop back to first tip
 
 ### Test 2: Route Select Tip Rotation
+
 1. Start story → reach route select
 2. Wait 8 seconds
 3. **Expected:** Tip fades out, new tip appears
@@ -554,6 +570,7 @@ backToMenu() {
 5. **Expected:** Tips loop back to first tip
 
 ### Test 3: Rotation Stops on Transition
+
 1. Watch main menu tips rotate
 2. Click "START STORY"
 3. **Expected:** Tip rotation stops when menu hidden
@@ -561,6 +578,7 @@ backToMenu() {
 5. **Expected:** Tip rotation restarts
 
 ### Test 4: No Overlap Between Screens
+
 1. Start tip rotation on main menu
 2. Go to route select
 3. **Expected:** Main menu tips stop, route select tips start
@@ -568,12 +586,14 @@ backToMenu() {
 5. **Expected:** Route select tips stop, main menu tips restart
 
 ### Test 5: Mobile Responsiveness
+
 1. Test on mobile portrait
 2. **Expected:** Tips readable, proper spacing, no overflow
 3. Test on mobile landscape
 4. **Expected:** Tips still visible and readable
 
 ### Test 6: Performance
+
 1. Leave main menu open for 5+ minutes
 2. **Expected:** No memory leaks, smooth transitions
 3. Check browser console for errors
@@ -584,21 +604,25 @@ backToMenu() {
 ## EDGE CASES HANDLED
 
 **Case 1: Elements not found**
+
 - Methods check if elements exist before operating
 - Console logs warning if missing
 - Game doesn't crash
 
 **Case 2: User rapidly navigates screens**
+
 - Each transition properly stops previous rotation
 - No orphaned intervals
 - Clean state management
 
 **Case 3: Browser tab inactive**
+
 - setInterval continues but doesn't cause issues
 - Tips update when tab regains focus
 - No performance impact
 
 **Case 4: Multiple game instances** (unlikely but possible)
+
 - Each instance manages own intervals
 - No cross-contamination
 

@@ -1,4 +1,5 @@
 # Session Notes: Sensory System 2.0 & Time Machine Manager
+
 **Date:** December 11, 2025
 **Version:** 848
 **Built by:** UV7 Crew (Tori's Architecture + DZ's Implementation)
@@ -34,6 +35,7 @@ The Time Machine Manager replaces scattered backlog arrays with a centralized sn
 ### Files Created/Modified
 
 #### New Files
+
 - `system/time-machine-manager.js` (420 lines)
   - Core snapshot system
   - Smart pruning logic
@@ -46,6 +48,7 @@ The Time Machine Manager replaces scattered backlog arrays with a centralized sn
   - Examples and migration notes
 
 #### Modified Files
+
 - `system/game-engine.js`
   - Lines 365-369: TimeMachine initialization
   - Lines 1760-1880: Helper methods for snapshots
@@ -69,6 +72,7 @@ The Time Machine Manager replaces scattered backlog arrays with a centralized sn
 ### Key Implementation Details
 
 **Snapshot Structure:**
+
 ```javascript
 {
     id: 1,
@@ -93,12 +97,14 @@ The Time Machine Manager replaces scattered backlog arrays with a centralized sn
 ```
 
 **Smart Pruning Logic:**
+
 1. Never prune: Anchors (endings, major beats)
 2. Prune last: High priority
 3. Prune second: Normal priority (FIFO)
 4. Prune first: Low priority
 
 **Insane Mode Rules:**
+
 - Only last 2 snapshots are accessible
 - Creates "the past is slipping away" feeling
 - Harsh denial feedback when blocked
@@ -106,6 +112,7 @@ The Time Machine Manager replaces scattered backlog arrays with a centralized sn
 ### Usage Examples
 
 **Recording Snapshots:**
+
 ```javascript
 // Every scene transition
 this.game.timeMachine.addCurrentState();
@@ -116,6 +123,7 @@ this.game.timeMachine.addCurrentState('Ronnie Act 2 Start', 'high');
 ```
 
 **Narrative Manipulation:**
+
 ```javascript
 // Make moment unreachable
 const lastEntry = this.game.timeMachine.getLatestEntry();
@@ -132,6 +140,7 @@ this.game.timeMachine.lockEntry(entryId);
 ```
 
 **Dev Console Commands:**
+
 ```
 > tm
 ⏰ TIME MACHINE INSPECTOR
@@ -154,6 +163,7 @@ Total: 45/200 | Strategy: smart | Insane: Inactive
 ### What It Does
 
 Upgrades the sensory feedback system with:
+
 - Central metadata map for all haptic + visual cues
 - Channel-based scaling (ui, narrative, critical)
 - Comfort intensity driving both visuals AND haptics
@@ -174,6 +184,7 @@ Upgrades the sensory feedback system with:
 #### `system/game-engine.js`
 
 **Lines 201-282: SENSORY_CUES Metadata Map**
+
 ```javascript
 const SENSORY_CUES = {
     // UI Interactions (scale with comfort)
@@ -235,6 +246,7 @@ const SENSORY_CUES = {
 ```
 
 **Lines 404-408: Debounce & Debug Fields**
+
 ```javascript
 this.lastHapticTime = 0;
 this.hapticCooldownMs = 80;  // Anti-spam cooldown
@@ -243,6 +255,7 @@ this.maxSensoryLog = 20;     // Keep last 20 events
 ```
 
 **Lines 1465-1571: Upgraded triggerHaptic**
+
 - Added `getHapticPatterns()` method
 - Added `scaleHapticPattern(pattern, comfortLevel)` method
 - Implemented debounce check (80ms cooldown)
@@ -251,6 +264,7 @@ this.maxSensoryLog = 20;     // Keep last 20 events
 - Added `logSensory()` debug logger
 
 **Lines 1573-1607: Metadata-Driven triggerSensoryFeedback**
+
 ```javascript
 triggerSensoryFeedback(cueType, target = null, description = '') {
     const meta = SENSORY_CUES[cueType];
@@ -273,16 +287,19 @@ triggerSensoryFeedback(cueType, target = null, description = '') {
 #### `system/visual-cue-manager.js`
 
 **Updated getScale(channel)** - Lines 20-39
+
 - Now accepts channel parameter
 - Critical channel NEVER scales (always 1.0)
 - Other channels respect comfort intensity
 - Updated scale values: Gentle 0.6x, Amped 1.35x
 
 **Updated trigger(cueType, target, { channel })** - Lines 45-54
+
 - Accepts channel in options object
 - Stores channel for individual effect methods
 
 **Updated Visual Effects:**
+
 - **Narrative cues** (toriHop, tetherPull, timelineGlitch, codeRipple):
   - Duration scales with comfort
   - Particle distance scales with comfort
@@ -297,17 +314,20 @@ triggerSensoryFeedback(cueType, target = null, description = '') {
   - Glow intensity scales with comfort
 
 **Updated createRipple(target, scale)** - Lines 399-421
+
 - Accepts scale parameter
 - Size, margin, duration all scale
 
 #### `system/dev-console.js`
 
 **Lines 183: Added to Help**
+
 ```
 sensory           - Show last 20 sensory events
 ```
 
 **Lines 433-469: Sensory Debug Command**
+
 ```
 > sensory
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -332,11 +352,13 @@ Current comfort: Normal | Insane mode: Inactive
 #### `ui/carousel-momentum.js`
 
 **Lines 14: Added Game Reference**
+
 ```javascript
 this.game = config.game || null;  // Optional game instance
 ```
 
 **Lines 270-276: Replaced Raw Vibrate**
+
 ```javascript
 // Haptic feedback on snap (light pulse via sensory system)
 if (this.game && this.game.triggerSensoryFeedback) {
@@ -350,6 +372,7 @@ if (this.game && this.game.triggerSensoryFeedback) {
 #### `ui/menu-carousel.js`
 
 **Line 82: Pass Game to CarouselMomentum**
+
 ```javascript
 game: this.game,  // Pass game instance for haptic feedback
 ```
@@ -357,18 +380,21 @@ game: this.game,  // Pass game instance for haptic feedback
 ### Channel System Explained
 
 **UI Channel** (`ui`)
+
 - User interface interactions
 - Button presses, menu selections, carousel snaps
 - Scales with comfort intensity
 - Examples: buttonPress, menuSelect, cardSnap
 
 **Narrative Channel** (`narrative`)
+
 - Story moments and character actions
 - Tori body hops, tether pulls, timeline glitches
 - Scales with comfort intensity
 - Examples: toriHop, tamaPull, timelineGlitch, codeRipple
 
 **Critical Channel** (`critical`)
+
 - Denials, warnings, harsh feedback
 - NEVER scales - always full intensity
 - Preserves emotional impact
@@ -387,11 +413,13 @@ game: this.game,  // Pass game instance for haptic feedback
 ### Debounce Behavior
 
 **Anti-Spam Protection:**
+
 - 80ms cooldown between haptic triggers
 - Prevents rapid-fire button mashing from overwhelming device
 - Can be bypassed with `{ force: true }` option
 
 **Example:**
+
 ```javascript
 // Rapid calls within 80ms
 game.triggerHaptic('light', 'Button 1');  // ✅ Triggers
@@ -406,6 +434,7 @@ game.triggerHaptic('denied', 'Critical denial', { force: true });  // ✅ Always
 ### Migration Notes
 
 **Before (scattered raw calls):**
+
 ```javascript
 // Menu carousel
 if (navigator.vibrate) {
@@ -424,6 +453,7 @@ if (navigator.vibrate) {
 ```
 
 **After (unified sensory system):**
+
 ```javascript
 // Menu carousel
 this.game.triggerSensoryFeedback('cardSnap', targetElement, 'Carousel snap');
@@ -436,6 +466,7 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 ```
 
 **Benefits:**
+
 - One call handles both haptic + visual
 - Automatic comfort scaling
 - Debounce protection
@@ -449,6 +480,7 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 ### Time Machine Testing
 
 **Console Commands:**
+
 ```
 > tm
 > jump 5
@@ -456,6 +488,7 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 ```
 
 **What to Check:**
+
 - [ ] Snapshots created on scene transitions
 - [ ] Smart pruning at 200 entries
 - [ ] Insane mode blocks jumps beyond last 2
@@ -465,11 +498,13 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 ### Sensory System Testing
 
 **Console Commands:**
+
 ```
 > sensory
 ```
 
 **What to Check:**
+
 - [ ] Comfort slider affects haptic intensity
 - [ ] Comfort slider affects visual duration
 - [ ] Critical cues never scale (test denial)
@@ -478,6 +513,7 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 - [ ] Carousel snap uses sensory system
 
 **Test Scenarios:**
+
 1. Set comfort to Gentle → Test button press → Should feel lighter
 2. Set comfort to Amped → Test button press → Should feel stronger
 3. Test denied cue → Should always feel full strength
@@ -509,12 +545,14 @@ this.game.triggerSensoryFeedback('denied', targetElement, 'Locked content');
 ## Code Size Impact
 
 **Lines of Code Added:**
+
 - `time-machine-manager.js`: +420 lines
 - `game-engine.js`: +180 lines (helpers + metadata)
 - `dev-console.js`: +50 lines (commands)
 - `TIME-MACHINE-USAGE.md`: +380 lines (docs)
 
 **Lines of Code Modified:**
+
 - `visual-cue-manager.js`: ~100 lines (channel support)
 - `carousel-momentum.js`: ~10 lines (sensory integration)
 - `menu-carousel.js`: ~5 lines (pass game reference)
@@ -581,6 +619,7 @@ centerOffset = (ViewportWidth / 2) - (CardWidth / 2)
 ```
 
 Forces the active card to sit precisely in the middle of the container, regardless of device:
+
 - ✅ Phone (small viewport)
 - ✅ Tablet (medium viewport)
 - ✅ Ultrawide monitor (massive viewport)
@@ -615,6 +654,7 @@ Instead of starting at Index 0 (first clone card on far left), the engine now in
 ## Future Enhancements
 
 ### Time Machine
+
 - [ ] Persistence to localStorage/save files
 - [ ] UI backlog menu (replace old system)
 - [ ] Route-specific `goToScene()` implementations
@@ -622,6 +662,7 @@ Instead of starting at Index 0 (first clone card on far left), the engine now in
 - [ ] Timeline branching visualization
 
 ### Sensory System
+
 - [ ] Custom vibration patterns per comfort level
 - [ ] User-definable haptic profiles
 - [ ] Visual intensity scaling beyond duration
@@ -641,6 +682,7 @@ Instead of starting at Index 0 (first clone card on far left), the engine now in
 **Coffee Consumed:** Probably too much ☕
 
 ### What Got Done
+
 - ✅ Time Machine Manager with smart pruning
 - ✅ Sensory System 2.0 with channel-based scaling
 - ✅ Dev console commands (tm, jump, sensory)

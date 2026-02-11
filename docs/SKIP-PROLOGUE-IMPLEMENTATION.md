@@ -3,6 +3,7 @@
 ## ✅ WHAT'S BEEN IMPLEMENTED
 
 ### 1. Core System (game-engine.js)
+
 - **Unlock tracking**: `skipPrologueUnlocked` localStorage flag
 - **Auto-skip setting**: `autoSkipPrologue` in settings (disabled until unlocked)
 - **Smart routing**:
@@ -11,7 +12,9 @@
   - If locked → plays prologue normally
 
 ### 2. Beautiful In-Game Prompt
+
 **Meta-narrative messaging:**
+
 ```
 "You've walked this path before.
 
@@ -28,14 +31,18 @@ Skip to the choice that matters?"
 - Mobile-responsive buttons
 
 ### 3. Mobile Dev Command
+
 **Secret Code**: `SKIPINTRO`
+
 - Enter in Settings → Secret Codes tab
 - Unlocks skip prologue immediately
 - Shows confirmation: "Prologue skip unlocked. Jump straight to route selection."
 - Perfect for mobile testing!
 
 ### 4. Settings Toggle (NEEDS HTML IMPLEMENTATION)
+
 **Auto-Skip Prologue Toggle**:
+
 - Will be in Settings → Gameplay tab
 - Disabled + grayed out until unlocked
 - Shows "Feature hasn't been earned yet" if clicked while locked
@@ -46,14 +53,16 @@ Skip to the choice that matters?"
 
 ## 🎮 HOW IT WORKS
 
-### First Playthrough:
+### First Playthrough
+
 ```
 START STORY → Prologue plays → Route selection → Complete ending
                ↓
           Skip unlocked!
 ```
 
-### After Any Ending (Prompt Mode):
+### After Any Ending (Prompt Mode)
+
 ```
 START STORY → Prompt appears:
 
@@ -63,7 +72,8 @@ START STORY → Prompt appears:
               [JUMP AHEAD]       → Route selection
 ```
 
-### With Auto-Skip Enabled:
+### With Auto-Skip Enabled
+
 ```
 START STORY → Route selection (instant)
 ```
@@ -73,16 +83,19 @@ START STORY → Route selection (instant)
 ## 🔓 UNLOCK METHODS
 
 ### 1. Normal Unlock (Auto)
+
 - Complete ANY ending (Ronnie or Tori, any outcome)
 - Skip automatically unlocked
 - Persists in localStorage
 
 ### 2. Dev Command (Mobile)
+
 ```
 Settings → Secret Codes → Type: SKIPINTRO → Redeem
 ```
 
 ### 3. Console (Desktop)
+
 ```javascript
 game.unlockSkipPrologue()
 // Returns: ✅ Skip Prologue unlocked! Available on next START STORY.
@@ -93,13 +106,16 @@ game.unlockSkipPrologue()
 ## 📁 FILES MODIFIED
 
 ### system/game-engine.js
+
 **Lines 158-159**: Skip prologue unlock tracking
+
 ```javascript
 // Skip prologue system (unlocked after completing any ending)
 this.skipPrologueUnlocked = localStorage.getItem('skipPrologueUnlocked') === 'true';
 ```
 
 **Lines 705-754**: Smart `startStory()` routing
+
 ```javascript
 startStory() {
     // Check auto-skip
@@ -120,11 +136,13 @@ startStory() {
 ```
 
 **Lines 801-995**: Skip prologue system
+
 - `showSkipProloguePrompt()` - Beautiful in-game prompt
 - `skipToRouteSelection()` - Jumps to route select
 - `unlockSkipPrologue()` - Dev command handler
 
 **Lines 3773-3777**: Secret code integration
+
 ```javascript
 'SKIPINTRO': {
     name: 'Skip Prologue',
@@ -134,7 +152,9 @@ startStory() {
 ```
 
 ### system/settings-manager.js
+
 **Line 15**: Auto-skip setting added
+
 ```javascript
 autoSkipPrologue: false,  // Auto-skip prologue when unlocked
 ```
@@ -144,6 +164,7 @@ autoSkipPrologue: false,  // Auto-skip prologue when unlocked
 ## ⚠️ STILL NEEDED (Manual Implementation Required)
 
 ### HTML Settings Toggle
+
 You need to add this to vn-modular.html in the Settings → Gameplay tab:
 
 ```html
@@ -161,6 +182,7 @@ You need to add this to vn-modular.html in the Settings → Gameplay tab:
 ```
 
 ### JavaScript Setup (settings-manager.js)
+
 Add this to `setupUI()` method (around line 78, after auto-advance):
 
 ```javascript
@@ -199,6 +221,7 @@ if (autoSkipPrologueToggle && autoSkipPrologueStatus) {
 ```
 
 ### Settings Handler Method (settings-manager.js)
+
 Add this method after `setAutoAdvance()`:
 
 ```javascript
@@ -217,6 +240,7 @@ setAutoSkipPrologue(enabled) {
 ```
 
 ### Auto-Unlock on Ending
+
 Add this to EVERY ending function in routes (both Ronnie and Tori):
 
 ```javascript
@@ -229,6 +253,7 @@ if (!this.game.skipPrologueUnlocked) {
 ```
 
 **Locations to add:**
+
 - ronnie-route-act3.js - All endings
 - tori-route-endings.js - All endings
 
@@ -237,6 +262,7 @@ if (!this.game.skipPrologueUnlocked) {
 ## 🧪 TESTING CHECKLIST
 
 ### Desktop Testing
+
 - [ ] Console: `game.unlockSkipPrologue()` works
 - [ ] START STORY → Prompt appears
 - [ ] Click "EXPERIENCE AGAIN" → Normal prologue
@@ -246,6 +272,7 @@ if (!this.game.skipPrologueUnlocked) {
 - [ ] Disable auto-skip → START STORY → Prompt returns
 
 ### Mobile Testing
+
 - [ ] Settings → Secret Codes → `SKIPINTRO` → Works
 - [ ] Prompt displays correctly on mobile
 - [ ] Buttons tap properly
@@ -253,6 +280,7 @@ if (!this.game.skipPrologueUnlocked) {
 - [ ] Auto-skip works on mobile
 
 ### Integration Testing
+
 - [ ] Complete any ending → Skip unlocks
 - [ ] localStorage persists across sessions
 - [ ] Prompt styling matches game aesthetic
@@ -260,6 +288,7 @@ if (!this.game.skipPrologueUnlocked) {
 - [ ] Works with both routes (Ronnie & Tori)
 
 ### Edge Cases
+
 - [ ] Locked toggle shows "hasn't been earned" message
 - [ ] Unlock via code, then refresh → Still unlocked
 - [ ] Auto-skip ON → Route select → Back to menu → START STORY → Still skips
@@ -269,28 +298,33 @@ if (!this.game.skipPrologueUnlocked) {
 
 ## 📊 CONSOLE OUTPUTS
 
-### On Unlock (via ending):
+### On Unlock (via ending)
+
 ```
 ✅ Skip Prologue unlocked! Available on next START STORY.
 ```
 
-### On Unlock (via console):
+### On Unlock (via console)
+
 ```
 💚 Skip Prologue unlocked! Use "START STORY" to see the prompt.
 ```
 
-### On Unlock (via code):
+### On Unlock (via code)
+
 ```
 UNLOCKED: Skip Prologue
 Prologue skip unlocked. Jump straight to route selection.
 ```
 
-### When Skipping:
+### When Skipping
+
 ```
 ⏭️ Skipping prologue, jumping to route selection
 ```
 
-### When Auto-Skip Active:
+### When Auto-Skip Active
+
 ```
 ⏭️ Auto-skip prologue enabled - jumping to route selection
 ```
@@ -300,6 +334,7 @@ Prologue skip unlocked. Jump straight to route selection.
 ## 💚 NARRATIVE TIE-INS
 
 The prompt messaging ties into the 848 meta-narrative:
+
 - "You've walked this path before" → References the 847 failed loops
 - "The device remembers" → The bootstrap paradox device
 - "Skip to the choice that matters?" → The route selection IS the pivotal choice

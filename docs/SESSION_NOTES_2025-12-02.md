@@ -1,6 +1,7 @@
 # Development Session Notes - December 3, 2025
 
 ## Session Overview
+
 Continuation session focusing on credits system redesign and menu reorganization.
 
 ---
@@ -12,6 +13,7 @@ Continuation session focusing on credits system redesign and menu reorganization
 **Goal:** Split credits into three distinct sections showcasing AI collaboration
 
 #### A. New Scrolling Credits (`showCredits()`)
+
 - **Location:** `game-engine.js` lines 2027-2152
 - **Description:** Traditional movie-style scrolling credits
 - **Features:**
@@ -20,6 +22,7 @@ Continuation session focusing on credits system redesign and menu reorganization
   - 2-second fade transition to main menu
   - SKIP button for immediate exit
 - **Content:**
+
   ```
   VERSION 848
   A Visual Novel
@@ -33,6 +36,7 @@ Continuation session focusing on credits system redesign and menu reorganization
   ```
 
 #### B. Meet the Crew (`showMeetTheCrew()`)
+
 - **Location:** `game-engine.js` lines 2154-2174
 - **Description:** Renamed from original `showCredits()`
 - **Features:**
@@ -42,6 +46,7 @@ Continuation session focusing on credits system redesign and menu reorganization
   - Supports true ending version number display
 
 #### C. Director's Cut (`showDirectorsCut()`)
+
 - **Location:** `game-engine.js` lines 2266-2372
 - **Description:** Extended crew statements about development experience
 - **Unlock:** UV7CREW secret code
@@ -65,12 +70,14 @@ Continuation session focusing on credits system redesign and menu reorganization
 **Location:** `game-engine.js` lines 3838-3845
 
 **Changes:**
+
 - Updated code reward from `showUV7CrewBios()` to unlock system
 - Sets `directorsCutUnlocked` in localStorage
 - Shows unlock notification: "🎬 DIRECTOR'S CUT UNLOCKED"
 - Directs player to check main menu
 
 **Code Definition:**
+
 ```javascript
 'uv7crew': {
     name: 'Director\'s Cut',
@@ -91,6 +98,7 @@ Continuation session focusing on credits system redesign and menu reorganization
 **Location:** `index.html` lines 104-121
 
 **New Layout (4x4 + Contact):**
+
 ```
 Left Column:          Right Column:
 [START STORY]         [SETTINGS]
@@ -102,6 +110,7 @@ Left Column:          Right Column:
 ```
 
 **Changes:**
+
 - Moved NOTES from right to left column
 - Added MEET THE CREW button (right column)
 - Added DIRECTOR'S CUT button (right column)
@@ -112,12 +121,14 @@ Left Column:          Right Column:
 ### 4. Bug Fixes
 
 #### A. Director's Cut Error Fix
+
 - **Issue:** `this.showNotification is not a function`
 - **Location:** `game-engine.js` line 2270
 - **Fix:** Changed to `this.showUnlockOverlay()` which exists
 - **Result:** Proper locked message displays when code not redeemed
 
 #### B. Credits Auto-Return Implementation
+
 - **Issue:** Credits wouldn't automatically return to main menu
 - **Multiple Iterations:**
   1. Initial attempt: `setTimeout` with fixed duration
@@ -133,7 +144,8 @@ Left Column:          Right Column:
 
 ## File Modifications Summary
 
-### Modified Files:
+### Modified Files
+
 1. **c:\Users\silve\Downloads\v848\system\game-engine.js**
    - Lines 2027-2152: New scrolling credits
    - Lines 2154-2174: Renamed to showMeetTheCrew
@@ -143,7 +155,8 @@ Left Column:          Right Column:
 2. **c:\Users\silve\Downloads\v848\index.html**
    - Lines 104-121: Menu button reorganization
 
-### No Changes Required:
+### No Changes Required
+
 - `collectibles-manager.js` - UV7CREW code already in notes
 - `styles.css` - No styling changes needed (inline styles used)
 
@@ -152,6 +165,7 @@ Left Column:          Right Column:
 ## User-Adjustable Parameters
 
 ### Credits Timing
+
 - **Scroll Duration:** Line 2052 in `game-engine.js`
   - Current: `25s`
   - Adjust for faster/slower scroll
@@ -165,6 +179,7 @@ Left Column:          Right Column:
   - Adjust fade-out speed
 
 ### Director's Cut Content
+
 - **Location:** Lines 2300-2346 in `game-engine.js`
 - All crew statements are in `innerHTML` string
 - Fully editable without breaking functionality
@@ -186,13 +201,15 @@ Left Column:          Right Column:
 
 ## Notes for Future Sessions
 
-### Potential Enhancements:
+### Potential Enhancements
+
 1. Add background music to scrolling credits
 2. Add crew portraits to Director's Cut statements
 3. Create unlock animation for Director's Cut
 4. Add share/screenshot functionality for crew statements
 
-### Known Behaviors:
+### Known Behaviors
+
 - Credits duration can be fine-tuned by adjusting line 2052 and 2147
 - Director's Cut uses scrollable overlay for longer content
 - All three credit views accessible from main menu
@@ -226,6 +243,7 @@ The Director's Cut statements are intentionally written from the AI assistants' 
 ## End of Session Notes
 
 **Next Steps:**
+
 - User will fine-tune timing values
 - User may edit crew statement content
 - Ready for player testing

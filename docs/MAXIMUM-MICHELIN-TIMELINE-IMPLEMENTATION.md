@@ -1613,6 +1613,7 @@ const search = new TimelineSearch('.timeline', '#timeline-search');
 **[CONTINUED IN NEXT FILE - This is getting long!]**
 
 **Phases 5-15 will include:**
+
 - Keyboard Navigation (j/k, shortcuts)
 - Deep Linking (share specific entries)
 - Hover Previews (quick context)
@@ -1626,6 +1627,7 @@ const search = new TimelineSearch('.timeline', '#timeline-search');
 - Open Graph Sharing (rich previews)
 
 **Implementation estimate:**
+
 - Core features (Phases 1-6): 8-10 hours
 - Advanced features (Phases 7-11): 6-8 hours
 - Polish features (Phases 12-15): 4-6 hours

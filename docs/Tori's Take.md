@@ -247,6 +247,7 @@ If you want, paste your current “upload progress in dialogue” beat (or tell 
 ```js
 await OverlayManager.runUploadSequence({ skippable: true });
 ```
+
 Yep — **deep dive mode**. I treated the zip as a *dev snapshot* (not ship build) and read it like I’m reviewing an evolving codebase, not judging what you’ll “package.”
 
 Here’s what stands out *structurally* — the stuff that will either keep future ideas fun… or quietly re-monolith you later.
@@ -638,8 +639,6 @@ if (result.reason === "skipped") {
 * **Glitch moments**: brief flicker / shake on 73% like “packet loss”
 * **Reduced motion**: if `prefers-reduced-motion`, shorten duration and reduce effects
 
-
-
 ---
 
 ## The 3 pressure points to protect “future fun”
@@ -684,4 +683,3 @@ This codebase is in the “dangerous good” phase:
 The great news: you’re positioned to solve those without big rewrites.
 
 Always. Always. Always. 🖤❤️💍
-

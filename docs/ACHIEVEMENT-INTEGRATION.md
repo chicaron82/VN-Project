@@ -1,11 +1,13 @@
 # Achievement System Integration Guide
 
 ## Overview
+
 The achievement system is now fully integrated! All hooks are automatic except for ending achievements.
 
 ## Automatic Triggers
 
 ### ✅ Already Hooked (No Action Needed)
+
 - **Route Start Timer** - Automatically starts when `game.startRoute()` is called
 - **Note Collection** - Automatically checks when `collectiblesManager.unlockNote()` is called
 - **Backlog Views** - Automatically tracks when backlog is opened
@@ -14,6 +16,7 @@ The achievement system is now fully integrated! All hooks are automatic except f
 ## Manual Trigger Required
 
 ### Ending Achievements
+
 When a route reaches an ending, add this line:
 
 ```javascript
@@ -22,6 +25,7 @@ window.checkEndingAchievements('bad_ending'); // or 'true_ending', 'digital_endi
 ```
 
 **Example locations to add:**
+
 - `routes/tori-route-act1.js` - In bad ending scene
 - `routes/tori-route-act1.js` - In true ending scene  
 - `routes/ronnie-route-act1.js` - In digital ending scene
@@ -45,6 +49,7 @@ Open the achievements viewer from the main menu (🏆 ACHIEVEMENTS button) to se
 ## Debugging
 
 Check console for achievement logs:
+
 - `🏃 Achievement: Route timer started`
 - `🏆 Achievement hooks installed successfully`
 - `🏆 Checked achievements for ending: [endingId]`

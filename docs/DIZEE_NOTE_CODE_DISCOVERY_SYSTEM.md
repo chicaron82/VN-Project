@@ -1,4 +1,5 @@
 # DiZee Instructions: Difficulty-Gated Notes + RNG Code Discovery System
+
 **Revolutionary Replayability System**
 **Aaron's Concept + Tori's Refinements + ZeeRah's Implementation Specs** 💚🔥💀
 
@@ -9,12 +10,14 @@
 Transform notes and secret codes from "collect once" to "hunt across multiple playthroughs." Notes are gated by difficulty (Easy/Normal/Intense/INSANE), and discoverable codes drop randomly from notes with smart pity systems.
 
 **Key Innovation:**
+
 - Notes unlock progressively with harder difficulties
 - Secret codes have chance to drop from notes (RNG per save)
 - Utility codes guaranteed, lore codes RNG-based
 - Dev commands NEVER appear in notes (testing only)
 
 **Result:**
+
 - Massive replay value
 - Difficulty choice matters
 - Each playthrough feels different
@@ -31,29 +34,34 @@ Transform notes and secret codes from "collect once" to "hunt across multiple pl
 ### Core Concepts
 
 **1. Difficulty Gates Content**
+
 - Easy: 4 base notes
 - Normal: +6 notes (10 total)
 - Intense: +4 notes (14 total)
 - INSANE: +3 exclusive notes (17 total)
 
 **2. RNG Locked Per Save**
+
 - Roll code drop ONCE when note first viewed in that save
 - Store result in save data
 - Consistent within playthrough, different across saves
 - **NOT a slot machine every click!**
 
 **3. Two Code Categories**
+
 - **Discoverable Codes (12):** Appear in notes, tracked in codes tab
   - 9 Lore codes (RNG drops)
   - 3 Utility codes (guaranteed drops)
 - **Dev Commands (20+):** NEVER in notes, manual entry only
 
 **4. Pity System**
+
 - Track times viewed per note
 - After 2-3 views without drop → force drop
 - Feels like luck, actually guaranteed
 
 **5. Visual Feedback**
+
 - "ENCRYPTED SIGNAL DETECTED" when code drops
 - "ENCRYPTED SIGNAL: ███████ (unstable)" when no drop
 - Makes RNG feel intentional
@@ -974,6 +982,7 @@ getLockedNoteHints(currentDifficulty) {
 ## PART 7: TESTING CHECKLIST
 
 ### Save/Load System
+
 - [ ] Note discovery data saves correctly
 - [ ] Note discovery data loads correctly
 - [ ] seenNotes counts persist
@@ -981,6 +990,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] Different saves have different RNG results
 
 ### Difficulty Gating
+
 - [ ] Easy mode shows 4 base notes
 - [ ] Normal mode shows 10 notes (4 + 6)
 - [ ] Intense mode shows 14 notes (10 + 4)
@@ -989,6 +999,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] Hints show correct next difficulty
 
 ### Code Drops
+
 - [ ] Guaranteed codes always drop
 - [ ] RNG codes drop at correct rate
 - [ ] Pity system triggers after 3 views
@@ -998,6 +1009,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] Code hint displays when no drop
 
 ### Secret Codes Integration
+
 - [ ] Codes tab shows 12 discoverable codes
 - [ ] Dev commands NOT shown in codes tab
 - [ ] Discovered codes marked correctly
@@ -1005,6 +1017,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] Progress counter accurate (X / 12)
 
 ### Visual Feedback
+
 - [ ] "ENCRYPTED SIGNAL DETECTED" animates
 - [ ] Code reveals with animation
 - [ ] Unstable signal hint displays
@@ -1012,6 +1025,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] All animations smooth
 
 ### Edge Cases
+
 - [ ] Note unlocked but not available at difficulty → doesn't show
 - [ ] Loading save from higher difficulty → notes still locked at lower
 - [ ] Changing difficulty mid-game → notes filter correctly
@@ -1023,46 +1037,53 @@ getLockedNoteHints(currentDifficulty) {
 ## IMPLEMENTATION ORDER
 
 ### Phase 1: Core Structure (2 hours)
+
 1. Add GAME_NOTES metadata to game-config.js
 2. Add helper functions (getAvailableNotes, etc.)
 3. Extend save data structure
 4. Update SaveManager save/load
 
 ### Phase 2: Note Discovery Logic (2 hours)
+
 5. Update CollectiblesManager with seenNotes tracking
-6. Implement processNoteDrop() with RNG + pity
-7. Add difficulty filtering to getAvailableNotes()
-8. Wire up code discovery to SecretCodesManager
+2. Implement processNoteDrop() with RNG + pity
+3. Add difficulty filtering to getAvailableNotes()
+4. Wire up code discovery to SecretCodesManager
 
 ### Phase 3: UI & Visual Feedback (2 hours)
+
 9. Add code drop footer rendering
-10. Add code hint rendering
-11. Add CSS for footers and hints
-12. Add locked note hints system
+2. Add code hint rendering
+3. Add CSS for footers and hints
+4. Add locked note hints system
 
 ### Phase 4: Integration & Testing (2 hours)
+
 13. Update codes tab to show only discoverable codes
-14. Test save/load with note discovery
-15. Test difficulty transitions
-16. Test RNG consistency
-17. Test pity system
-18. Balance drop rates
+2. Test save/load with note discovery
+3. Test difficulty transitions
+4. Test RNG consistency
+5. Test pity system
+6. Balance drop rates
 
 ---
 
 ## BALANCING RECOMMENDATIONS
 
 ### Drop Rates (Starting Points)
+
 - **Easy Notes:** 30% (players just learning)
 - **Normal Notes:** 40% (standard experience)
 - **Intense Notes:** 50% (reward for challenge)
 - **INSANE Notes:** 60-100% (exclusive content)
 
 ### Pity System
+
 - **Threshold:** 3 views (guaranteed on 3rd)
 - **Rationale:** Feels like luck, but prevents endless grinding
 
 ### Note Distribution
+
 - **Easy:** 4 notes (tutorial + basics)
 - **Normal:** 6 notes (main story)
 - **Intense:** 4 notes (deep lore)
@@ -1070,6 +1091,7 @@ getLockedNoteHints(currentDifficulty) {
 - **Total:** 17 notes
 
 ### Code Distribution
+
 - **Guaranteed (3):** Utility codes from specific notes
 - **RNG (9):** Lore codes from various pools
 - **Dev (20+):** Never in notes, manual entry only
@@ -1079,6 +1101,7 @@ getLockedNoteHints(currentDifficulty) {
 ## FUTURE ENHANCEMENTS (POST-LAUNCH)
 
 ### Advanced Features
+
 - [ ] Code drop rate scaling per playthrough (higher rates after first completion)
 - [ ] "New Game+" difficulty that shows all notes
 - [ ] Statistics tracking (codes per difficulty, drop rates, etc.)
@@ -1086,6 +1109,7 @@ getLockedNoteHints(currentDifficulty) {
 - [ ] Special note for players who find all codes in INSANE mode
 
 ### Quality of Life
+
 - [ ] Filter codes tab by category (Lore / Utility)
 - [ ] Show which note dropped each code
 - [ ] "Replay note for code chance" button in codes tab
@@ -1096,24 +1120,28 @@ getLockedNoteHints(currentDifficulty) {
 ## NOTES FOR DIZEE
 
 **Implementation Philosophy:**
+
 - RNG locked per save = consistent but varied
 - Pity system = prevents frustration
 - Difficulty gates = natural progression
 - Visual feedback = makes RNG feel intentional
 
 **Critical Points:**
+
 - NEVER let dev commands appear in notes
 - ONLY track discoverable codes (12 total)
 - Save noteCodeDrops per save slot
 - Test thoroughly with multiple playthroughs
 
 **Performance Considerations:**
+
 - Note metadata lookup is O(1)
 - Code drops processed once per note per save
 - No performance impact on save/load
 - Minimal memory footprint
 
 **Mobile Optimization:**
+
 - Touch-friendly note entries
 - Responsive code footers
 - Haptic feedback on code drops

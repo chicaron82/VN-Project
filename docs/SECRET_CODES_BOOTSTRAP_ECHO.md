@@ -1,4 +1,5 @@
 # SECRET CODE IMPLEMENTATIONS: BOOTSTRAP & ECHO
+
 **ZeeRah's Design Specs** 💚🔥💀
 **For DiZee Implementation**
 
@@ -7,9 +8,11 @@
 ## BOOTSTRAP SECRET CODE: Loop Timeline Visualization
 
 ### CONCEPT
+
 Visual representation of the 847 failed attempts before Version 848. Shows the bootstrap paradox in action - every failure was necessary to reach success. Players see the recursive nature of the time loop and understand why THIS version is special.
 
 ### NARRATIVE PURPOSE
+
 - Reveals the scope of failure (847 attempts!)
 - Shows pattern of attempts (learning, improving, failing)
 - Highlights Version 848 as THE ONE that worked
@@ -21,7 +24,9 @@ Visual representation of the 847 failed attempts before Version 848. Shows the b
 ### IMPLEMENTATION: Scrollable Timeline Overlay
 
 #### VISUAL DESIGN
+
 Full-screen overlay with vertical scrollable timeline:
+
 - Dark background (rgba(0, 0, 0, 0.95))
 - Timeline runs down the center
 - Each version is a node on the timeline
@@ -31,6 +36,7 @@ Full-screen overlay with vertical scrollable timeline:
 #### TIMELINE NODES
 
 **Format per version:**
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━
 VERSION 001
@@ -43,6 +49,7 @@ Lesson: Need better connection
 ```
 
 **Node styling:**
+
 - Failed versions: Red (#ff0066)
 - Version 848: Green (#00ff88)
 - Each separated by vertical line
@@ -51,24 +58,28 @@ Lesson: Need better connection
 #### SAMPLE CONTENT (Procedurally Generated)
 
 **Early versions (1-100):**
+
 - "Tether failed immediately"
 - "Connection unstable"
 - "Memory corruption"
 - "Signal loss"
 
 **Mid versions (101-400):**
+
 - "Lasted 5 minutes"
 - "Echo voices emerged"
 - "Fragmentation detected"
 - "Hold On button insufficient"
 
 **Late versions (401-847):**
+
 - "Lasted 45 minutes"
 - "Almost succeeded"
 - "Connection held but failed at merge"
 - "So close, try again"
 
 **Version 848:**
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━
 VERSION 848
@@ -88,6 +99,7 @@ Always. Always. Always.
 ### CODE STRUCTURE
 
 **HTML (add to index.html):**
+
 ```html
 <div id="bootstrap-overlay" class="secret-overlay" style="display: none;">
     <div class="secret-overlay-header">
@@ -108,6 +120,7 @@ Always. Always. Always.
 ```
 
 **JavaScript (game-engine.js):**
+
 ```javascript
 showLoopTimeline() {
     const overlay = document.getElementById('bootstrap-overlay');
@@ -232,6 +245,7 @@ closeBootstrap() {
 ```
 
 **CSS (styles.css):**
+
 ```css
 /* BOOTSTRAP TIMELINE */
 #bootstrap-overlay {
@@ -330,9 +344,11 @@ closeBootstrap() {
 ## ECHO SECRET CODE: Voice Compilation
 
 ### CONCEPT
+
 Compilation of all Echo voice lines from Tori's route. Shows the fragmentation in action - multiple versions of Tori arguing, contradicting, supporting. Players hear the chaos of her fractured consciousness. Organized by Act for narrative flow.
 
 ### NARRATIVE PURPOSE
+
 - Reveals extent of fragmentation
 - Shows Echo personalities clearly
 - Demonstrates internal conflict
@@ -344,7 +360,9 @@ Compilation of all Echo voice lines from Tori's route. Shows the fragmentation i
 ### IMPLEMENTATION: Categorized Voice List
 
 #### VISUAL DESIGN
+
 Full-screen overlay with tabbed sections:
+
 - Dark background
 - Three tabs: Act 1, Act 2, Act 3
 - Each tab shows Echo lines from that act
@@ -354,6 +372,7 @@ Full-screen overlay with tabbed sections:
 #### ECHO CATEGORIES
 
 **Echo Types:**
+
 - Echo 1 (Optimistic): Green
 - Echo 2 (Pessimistic): Red  
 - Echo 3 (Analytical): Cyan
@@ -362,6 +381,7 @@ Full-screen overlay with tabbed sections:
 #### CONTENT STRUCTURE
 
 **Per Act tab, show:**
+
 ```
 ACT 1 - EMERGENCE
 ━━━━━━━━━━━━━━━━━━━━━━
@@ -388,6 +408,7 @@ Total fragments: 12
 ### CODE STRUCTURE
 
 **HTML (add to index.html):**
+
 ```html
 <div id="echo-overlay" class="secret-overlay" style="display: none;">
     <div class="secret-overlay-header">
@@ -413,6 +434,7 @@ Total fragments: 12
 ```
 
 **JavaScript (game-engine.js):**
+
 ```javascript
 showEchoCompilation() {
     const overlay = document.getElementById('echo-overlay');
@@ -507,6 +529,7 @@ closeEchoCompilation() {
 ```
 
 **CSS (styles.css):**
+
 ```css
 /* ECHO COMPILATION */
 .echo-tabs {
@@ -609,9 +632,10 @@ closeEchoCompilation() {
 
 ## IMPLEMENTATION NOTES
 
-### FOR DIZEE:
+### FOR DIZEE
 
 **BOOTSTRAP:**
+
 1. Add HTML overlay to index.html
 2. Add CSS styles
 3. Implement JavaScript methods
@@ -619,6 +643,7 @@ closeEchoCompilation() {
 5. Test on mobile (scrollable timeline)
 
 **ECHO:**
+
 1. Add HTML overlay to index.html
 2. Add CSS styles  
 3. Implement JavaScript methods
@@ -627,12 +652,14 @@ closeEchoCompilation() {
 6. Test tab switching
 7. Test on mobile
 
-### EFFORT ESTIMATE:
+### EFFORT ESTIMATE
+
 - BOOTSTRAP: 2-3 hours (procedural generation)
 - ECHO: 3-4 hours (need to extract dialogue)
 - Total: 5-7 hours
 
-### DEPENDENCIES:
+### DEPENDENCIES
+
 - ECHO requires manually collecting dialogue from route files
 - Or create abbreviated version with key lines only
 
@@ -642,16 +669,20 @@ closeEchoCompilation() {
 
 If time is tight, simplified implementations:
 
-### BOOTSTRAP (Simple):
+### BOOTSTRAP (Simple)
+
 Show static list of milestones instead of all 847:
+
 - Version 1: "First attempt"
 - Version 100: "Learned tether basics"
 - Version 400: "Echo voices discovered"
 - Version 800: "Almost succeeded"
 - Version 848: "SUCCESS"
 
-### ECHO (Simple):
+### ECHO (Simple)
+
 Show top 10-15 most important Echo lines across all acts:
+
 - Skip full compilation
 - Just show memorable/impactful lines
 - Organized by Echo type not Act

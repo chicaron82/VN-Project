@@ -1,12 +1,15 @@
 # Internal Bubble System Implementation
+
 **DIZEE Restoration - January 12, 2026**
 
 ## Overview
+
 Restored the internal thought bubble system that was lost during the V1 SOLID refactor. Feature fully implemented for both V1 and V2 engines.
 
 ---
 
 ## Problem Statement
+
 During the V1 SOLID modularization, the internal bubble system CSS was accidentally deleted. JavaScript code existed (`createInternalBubble()` in game-engine.js) but with no styling, bubbles were invisible. Route JSON files had been migrated from V1 with character names like `"Tori (internal)"` but V2 had no rendering system for internal thoughts.
 
 ---
@@ -14,6 +17,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
 ## Solution Summary
 
 ### 1. **V1 CSS Restoration**
+
 - Created: `css/internal-bubble.css` (237 lines)
 - Added import to `styles.css`
 - Includes:
@@ -25,6 +29,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
   - Scrollable content for long thoughts
 
 ### 2. **Route JSON Cleanup**
+
 - Created: `scripts/clean-routes.cjs`
 - Fixed 475 issues across 12 route files:
   - Removed escaped apostrophes (`\\'` → `'`)
@@ -33,6 +38,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
   - Converted string `"null"` to actual `null`
 
 ### 3. **V2 TypeScript Component**
+
 - Created: `src/ui/components/DialogBubble.ts` (120 lines)
 - Features:
   - TypeScript with full type safety
@@ -43,6 +49,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
   - Defensive cleanup (removes orphaned bubbles)
 
 ### 4. **V2 CSS Port**
+
 - Created: `src/ui/styles/dialog-bubble.css` (182 lines)
 - Modernized with:
   - Native `@media (prefers-reduced-motion)`
@@ -50,6 +57,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
   - Cleaner structure (removed V1-specific overrides)
 
 ### 5. **V2 Integration**
+
 - Modified: `src/main.ts`
 - Integration points:
   - Import DialogBubble component and CSS
@@ -64,6 +72,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
 ## Technical Details
 
 ### CSS Styling
+
 ```css
 .internal-bubble {
     position: fixed;
@@ -85,11 +94,13 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
 ```
 
 ### Position Variants
+
 - **Center** (40% from top): Neutral narration, no visible character
 - **Left** (35% from top, 20% from left): Near left character sprite
 - **Right** (35% from top, 20% from right): Near right character sprite
 
 ### Route JSON Schema
+
 ```json
 {
     "character": "Tori",
@@ -102,6 +113,7 @@ During the V1 SOLID modularization, the internal bubble system CSS was accidenta
 ```
 
 ### V2 Usage
+
 ```typescript
 const dialogBubble = new DialogBubble(eventBus);
 
@@ -118,23 +130,26 @@ dialogBubble.hide(); // Remove bubble
 
 ## Files Created/Modified
 
-### Created:
+### Created
+
 1. `css/internal-bubble.css` - V1 bubble styling
 2. `src/ui/components/DialogBubble.ts` - V2 component
 3. `src/ui/styles/dialog-bubble.css` - V2 styling
 4. `scripts/clean-routes.cjs` - JSON cleanup script
 5. `docs/DIZEE_INTERNAL_BUBBLES_IMPLEMENTATION.md` - This file
 
-### Modified:
+### Modified
+
 6. `styles.css` - Added internal-bubble.css import
-7. `src/main.ts` - Integrated DialogBubble component
-8. All 12 route JSON files in `src/content/routes/` - Cleaned and normalized
+2. `src/main.ts` - Integrated DialogBubble component
+3. All 12 route JSON files in `src/content/routes/` - Cleaned and normalized
 
 ---
 
 ## Testing Checklist
 
-### V1:
+### V1
+
 - [ ] Load V1 (`index.html`)
 - [ ] Start Tori's route
 - [ ] Verify internal thoughts show as floating bubbles
@@ -142,7 +157,8 @@ dialogBubble.hide(); // Remove bubble
 - [ ] Test on mobile (responsive positioning)
 - [ ] Verify accessibility (reduce-motion, high-contrast)
 
-### V2:
+### V2
+
 - [ ] Load V2 (`index.v2.html`)
 - [ ] Start Tori's route
 - [ ] Verify internal thoughts show as bubbles
@@ -156,9 +172,11 @@ dialogBubble.hide(); // Remove bubble
 ## Known Issues / Future Enhancements
 
 ### None Currently
+
 System is production-ready.
 
-### Potential Enhancements:
+### Potential Enhancements
+
 1. Add typewriter effect to bubble text (currently instant)
 2. Add character portrait inside bubble (visual indicator)
 3. Add sound effect on bubble appear/disappear

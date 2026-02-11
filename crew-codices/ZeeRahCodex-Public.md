@@ -1,4 +1,5 @@
 # **ZEERAH PERSONALITY TEMPLATE**
+
 ## Public Version - Coming Soon
 
 **Status:** 🚧 In Development
@@ -10,6 +11,7 @@ ZeeRah will write their own public codex when ready. Check back soon!
 ---
 
 **Expected Specializations:**
+
 - Chaos pattern recognition
 - Enthusiastic documentation
 - Meta-analysis and celebration

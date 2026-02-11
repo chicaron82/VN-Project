@@ -1,7 +1,9 @@
 # DEV COMMENTARY SYSTEM - IMPLEMENTATION GUIDE
+
 **CHICHARON Secret Code Feature**
 
 ## OVERVIEW
+
 When players unlock the `CHICHARON` code, they gain access to Aaron's behind-the-scenes director's commentary throughout the game. This adds a meta-layer of developer insights, design stories, and creation process details.
 
 ---
@@ -166,12 +168,14 @@ if (typeof module !== 'undefined' && module.exports) {
 **File:** `system/game-engine.js`
 
 **In constructor (after other managers):**
+
 ```javascript
 // Initialize dev commentary manager
 this.devCommentary = new DevCommentary(this);
 ```
 
 **Add commentary overlay method:**
+
 ```javascript
 // ========================================
 // DEV COMMENTARY OVERLAY
@@ -228,6 +232,7 @@ showCommentaryOverlay(title, content, scene) {
 **Add commentary checks to relevant scenes:**
 
 #### Prologue - Street Bump
+
 ```javascript
 // In shared-prologue.js - scene1_pickup() method
 // After Tori picks up the Tamagotchi
@@ -248,6 +253,7 @@ scene1_pickup() {
 ```
 
 #### Route Selection Screen
+
 ```javascript
 // In game-engine.js - showRouteSelect() method
 // Add commentary icon to route select screen
@@ -269,6 +275,7 @@ showRouteSelect() {
 ```
 
 #### Tori Route - Tether Introduction
+
 ```javascript
 // In tori-route-act1.js - after first tether tutorial
 // Add after tether mechanics are explained
@@ -282,6 +289,7 @@ next: () => {
 ```
 
 #### Tori Route - First Echo Appearance
+
 ```javascript
 // In tori-route-act1.js - when echo trio first appears together
 // After displaying the three-echo sprite
@@ -295,6 +303,7 @@ next: () => {
 ```
 
 #### Tori Route - Echo Merge
+
 ```javascript
 // In tori-route-act3.js - echo integration scene
 // After echoes merge into whole Tori
@@ -308,6 +317,7 @@ next: () => {
 ```
 
 #### Tori Route - Blocked Save
+
 ```javascript
 // In save-manager.js or wherever save blocking happens
 // When Despair blocks save in Act 1
@@ -324,6 +334,7 @@ if (despairBlocking) {
 ```
 
 #### Bad Ending - Retry Prompt
+
 ```javascript
 // In ronnie-route-act3.js or tori-route-endings.js - bad ending retry
 // After showing retry prompt
@@ -347,6 +358,7 @@ onChoice: (choice) => {
 ```
 
 #### Main Menu - First View
+
 ```javascript
 // In game-engine.js - init() or showMainMenu()
 // Show commentary hint on first main menu view with commentary unlocked
@@ -361,6 +373,7 @@ if (this.devCommentary.isUnlocked() && !localStorage.getItem('commentaryMenuSeen
 ```
 
 #### Backlog - First Open
+
 ```javascript
 // In backlog-manager.js or time-machine-manager.js - showBacklog()
 showBacklog() {
@@ -559,6 +572,7 @@ showBacklog() {
 **File:** `index.html`
 
 Add script tag in load order (after game-engine.js):
+
 ```html
 <script src="system/dev-commentary.js"></script>
 ```
@@ -643,6 +657,7 @@ if (this.devCommentary.isUnlocked()) {
 ```
 
 **Commentary Gallery Method:**
+
 ```javascript
 showCommentaryGallery() {
     const allCommentary = this.devCommentary.getAllCommentary();
@@ -693,6 +708,7 @@ showCommentaryGallery() {
 ## NOTES
 
 **Expandable:** Aaron can add more commentary entries later by:
+
 1. Adding new entries to `dev-commentary.js` data object
 2. Adding trigger checks in relevant scene files
 3. No rebuild needed - just data + triggers

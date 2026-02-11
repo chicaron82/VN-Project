@@ -25,10 +25,12 @@ This document supersedes the previous parity audit with a comprehensive, file-le
 These features are required before V2 can replace V1:
 
 ### 1. **Save/Load UI with Slots** 🔴
+
 **V1**: `system/save-manager.js` (lines 99-250)
 **Impact**: Players can't manage saves
 **Status**: Core save system exists, needs UI slots (3 manual + 1 auto)
 **Requirements**:
+
 - Save slot UI with thumbnails
 - Delete confirmation modal
 - Custom save labels/descriptions
@@ -36,20 +38,24 @@ These features are required before V2 can replace V1:
 **Estimate**: 4 hours
 
 ### 2. **Auto-Save Visual Indicator** 🔴
+
 **V1**: `system/auto-save-manager.js` (lines 58-68)
 **Impact**: No feedback when game auto-saves
 **Status**: Auto-save works, missing visual feedback
 **Requirements**:
+
 - 💾 animation in corner when saving
 - Throttling (30s minimum between saves)
 - Dual backup slots for recovery
 **Estimate**: 2 hours
 
 ### 3. **Skip System (Read Text)** 🔴
+
 **V1**: `system/typewriter-controller.js` (lines 48-52) + skip button
 **Impact**: Players forced to re-read dialogue
 **Status**: Completely missing
 **Requirements**:
+
 - Skip already-read text (6x speed)
 - Skip button in UI
 - Visual indicator (>> or ⏭️)
@@ -57,10 +63,12 @@ These features are required before V2 can replace V1:
 **Estimate**: 4 hours
 
 ### 4. **Settings Modal UI** 🔴
+
 **V1**: `system/settings-manager.js` (59KB) + `css/settings.css`
 **Impact**: No way to adjust preferences
 **Status**: Settings system exists, missing all UI controls
 **Requirements**:
+
 - Text speed slider (Slow/Normal/Fast/Instant)
 - Comfort intensity (0=Gentle → 3=INSANE)
 - Auto-advance toggle + delay
@@ -74,10 +82,12 @@ These features are required before V2 can replace V1:
 **Estimate**: 6 hours
 
 ### 5. **Error Boundary Modal** 🔴
+
 **V1**: `system/error-handler.js` (251 lines)
 **Impact**: White screen of death on errors
 **Status**: Basic ErrorBoundary.ts exists, needs user-facing UI
 **Requirements**:
+
 - Red error modal with friendly message
 - "RELOAD PAGE" / "TRY TO CONTINUE" buttons
 - Error logging (last 10 errors)
@@ -85,10 +95,12 @@ These features are required before V2 can replace V1:
 **Estimate**: 3 hours
 
 ### 6. **Credits Screen** 🟡
+
 **V1**: `system/credits-controller.js` (29KB)
 **Impact**: No team acknowledgment
 **Status**: Partial CreditsScreen.ts, missing features
 **Requirements**:
+
 - Auto-scrolling credits
 - Crew photos carousel
 - Character sprites in background
@@ -97,10 +109,12 @@ These features are required before V2 can replace V1:
 **Estimate**: 2 hours
 
 ### 7. **Notes Viewer Features** 🟡
+
 **V1**: `system/collectibles-manager.js` (73KB)
 **Impact**: Limited note interaction
 **Status**: Basic NotesViewer.ts exists, missing features
 **Requirements**:
+
 - RNG code drops (3rd view with pity system)
 - Difficulty-gated notes
 - Note unlock toast notifications
@@ -109,10 +123,12 @@ These features are required before V2 can replace V1:
 **Estimate**: 3 hours
 
 ### 8. **Status Bar Indicators** 🟡
+
 **V1**: `system/notification-shade-controller.js` (status bar section)
 **Impact**: No progress tracking visible
 **Status**: Basic StatusBar.ts exists, missing indicators
 **Requirements**:
+
 - Loop version counter (v848)
 - Route name display
 - Notes collected count (3/12)
@@ -129,11 +145,13 @@ These features are required before V2 can replace V1:
 ### **PHASE 10A: Core Gameplay Features (High Priority)**
 
 #### Backlog/History System 🟡
+
 **V1**: `system/time-machine-manager.js` (416 lines) + `system/backlog.css`
 **Impact**: No way to review past dialogue
 **Estimate**: 6 hours
 
 **Features**:
+
 - Last 100 dialogue entries stored
 - Scrollable backlog panel with timestamps
 - Click dialogue to jump back (time machine)
@@ -143,22 +161,26 @@ These features are required before V2 can replace V1:
 - Keyboard shortcut (B or Tab?)
 
 #### Auto-Advance Mode 🟡
+
 **V1**: `system/settings-manager.js` (lines 280-350)
 **Impact**: No hands-free reading
 **Estimate**: 2 hours
 
 **Features**:
+
 - Toggle in settings
 - Configurable delay (1-10 seconds)
 - Visual indicator when active (►)
 - Pause on choices
 
 #### Keyboard Navigation System 🟡
+
 **V1**: `system/keyboard-controller.js` (global nav) + `system/accessibility.js`
 **Impact**: Limited accessibility
 **Estimate**: 4 hours
 
 **Features**:
+
 - ESC key priority hierarchy (10 levels)
 - Number keys 1-9 for choices
 - Arrow keys for choice navigation
@@ -173,11 +195,13 @@ These features are required before V2 can replace V1:
 ### **PHASE 10B: Mobile & Touch UX (Medium Priority)**
 
 #### Swipe Gesture System 🟡
+
 **V1**: `system/swipe-handler.js` (20KB) + `system/mobile-ux.js`
 **Impact**: Mobile UX feels incomplete
 **Estimate**: 5 hours
 
 **Features**:
+
 - Swipe right = advance dialogue
 - Swipe left = open backlog
 - Swipe up = hide UI (screenshot mode)
@@ -186,22 +210,26 @@ These features are required before V2 can replace V1:
 - Visual feedback during swipe
 
 #### Double-Tap Fullscreen 🟡
+
 **V1**: `system/mobile-ux.js` (lines 56-81)
 **Impact**: No easy fullscreen on mobile
 **Estimate**: 2 hours
 
 **Features**:
+
 - Double-tap viewport to toggle fullscreen
 - Cross-browser API (webkit/moz/ms prefixes)
 - Visual indicator when in fullscreen
 - ESC to exit
 
 #### Notification Shade System 🟡
+
 **V1**: `system/notification-shade-controller.js` (61KB)
 **Impact**: Mobile lacks quick actions
 **Estimate**: 8 hours
 
 **Features**:
+
 - Swipe-down notification shade (mobile)
 - Quick actions grid (save/load/settings/exit)
 - Expandable quick actions (2 pages)
@@ -210,11 +238,13 @@ These features are required before V2 can replace V1:
 - Desktop sidebar variant
 
 #### Scroll Indicators (Mobile) 🟢
+
 **V1**: `system/mobile-ux.js` (lines 118-160)
 **Impact**: Users don't know to scroll
 **Estimate**: 1 hour
 
 **Features**:
+
 - Animated ↓ indicator
 - Auto-hide when scrolled to bottom
 - For dialogue box + backlog
@@ -226,11 +256,13 @@ These features are required before V2 can replace V1:
 ### **PHASE 10C: Content & Narrative Features (Medium Priority)**
 
 #### Tutorial System 🟡
+
 **V1**: `system/tutorial-manager.js` (213 lines)
 **Impact**: Poor first-time UX
 **Estimate**: 4 hours
 
 **Features**:
+
 - Event-driven hand gesture tutorials (👆 animated)
 - Contextual tooltips with smart positioning
 - Tutorial tracking (prevent repeats)
@@ -238,11 +270,13 @@ These features are required before V2 can replace V1:
 - First-time flow guidance
 
 #### Achievement Unlock UI 🟡
+
 **V1**: `system/achievement-manager.js` (section 2)
 **Impact**: No celebration for unlocks
 **Estimate**: 2 hours
 
 **Features**:
+
 - Toast notification on unlock
 - Achievement details modal
 - Achievement list screen (all badges)
@@ -250,11 +284,13 @@ These features are required before V2 can replace V1:
 - Completion percentage
 
 #### Tips System 🟢
+
 **V1**: `system/tips-controller.js`
 **Impact**: No helpful hints
 **Estimate**: 1 hour
 
 **Features**:
+
 - Random tips in main menu footer
 - Tip rotation every 8 seconds
 - Context-aware tips
@@ -266,22 +302,26 @@ These features are required before V2 can replace V1:
 ### **PHASE 11: Advanced Features (Lower Priority)**
 
 #### Echo Memory System 🟢
+
 **V1**: `system/echo-memory-system.js` (20KB)
 **Impact**: Less dynamic dialogue
 **Estimate**: 6 hours
 
 **Features**:
+
 - Meta-narrative tracking (Belle's awareness)
 - Records saves/loads/choices across playthroughs
 - Persistent relationship tracking
 - Loop counter integration
 
 #### Visual Cue Manager 🟢
+
 **V1**: `system/visual-cue-manager.js` (451 lines) + `system/insane-visuals-controller.js`
 **Impact**: Less immersive experience
 **Estimate**: 8 hours
 
 **Features**:
+
 - Intensity scaling (Gentle/Normal/Amped/INSANE)
 - Glitch effects (RGB split, screen shake)
 - Denial cues (triple haptic buzz)
@@ -292,22 +332,26 @@ These features are required before V2 can replace V1:
 - Integration with haptic feedback
 
 #### Theme Manager 🟢
+
 **V1**: `system/theme-manager.js` (366 lines)
 **Impact**: No dark/light mode
 **Estimate**: 4 hours
 
 **Features**:
+
 - Route-specific themes (Tori vs Ronnie)
 - Dark/light mode toggle
 - Custom color schemes
 - CSS variable management
 
 #### Difficulty Profiles 🟢
+
 **V1**: `system/difficulty-profiles.js`
 **Impact**: No gameplay variety
 **Estimate**: 5 hours
 
 **Features**:
+
 - Multiple difficulty presets
 - Custom difficulty settings
 - Per-route difficulty persistence
@@ -321,11 +365,13 @@ These features are required before V2 can replace V1:
 ### **PHASE 12: Developer Tools (Optional)**
 
 #### Dev Suite 🟢
+
 **V1**: `system/dev-suite.js` (49KB)
 **Impact**: Harder to debug
 **Estimate**: 8 hours
 
 **Features**:
+
 - State inspector with live editing
 - Flag editor (set/unset any flag)
 - Jump to scene teleporter
@@ -334,11 +380,13 @@ These features are required before V2 can replace V1:
 - Console integration
 
 #### Dev HUD 🟢
+
 **V1**: `system/dev-hud-controller.js`
 **Impact**: No real-time debugging
 **Estimate**: 3 hours
 
 **Features**:
+
 - FPS counter
 - State values overlay
 - Sensory event log
@@ -346,21 +394,25 @@ These features are required before V2 can replace V1:
 - Toggle with ` (backtick)
 
 #### Hot Reload System 🟢
+
 **V1**: `system/hot-reload-system.js`
 **Impact**: Slower development
 **Estimate**: 4 hours
 
 **Features**:
+
 - Hot reload styles without refresh
 - Content JSON hot reload
 - State preservation during reload
 
 #### Performance Monitor 🟢
+
 **V1**: `system/performance-monitor.js`
 **Impact**: Performance issues harder to spot
 **Estimate**: 3 hours
 
 **Features**:
+
 - FPS tracking
 - Memory usage monitoring
 - Bottleneck detection
@@ -442,26 +494,31 @@ These features are required before V2 can replace V1:
 ## 🎯 RECOMMENDED PHASING
 
 ### **Immediate (Phase 9 - Launch Blockers)**
+
 **Goal**: V2 can replace V1 for all users
 **Time**: ~26 hours
 **Features**: 8 critical features above
 
 ### **Sprint 1 (Phase 10A - Core Gameplay)**
+
 **Goal**: Feature parity with V1 core experience
 **Time**: ~12 hours
 **Features**: Backlog, auto-advance, keyboard nav
 
 ### **Sprint 2 (Phase 10B - Mobile Polish)**
+
 **Goal**: Mobile UX matches V1
 **Time**: ~16 hours
 **Features**: Swipe gestures, notification shade, fullscreen
 
 ### **Sprint 3 (Phase 10C - Content Features)**
+
 **Goal**: Content systems complete
 **Time**: ~7 hours
 **Features**: Tutorials, achievements, tips
 
 ### **Future (Phase 11-12 - Advanced)**
+
 **Goal**: Full V1 parity + enhancements
 **Time**: ~41 hours
 **Features**: Echo memory, visual cues, themes, dev tools
@@ -471,6 +528,7 @@ These features are required before V2 can replace V1:
 ## 📦 FEATURE COMPLEXITY BREAKDOWN
 
 ### **Simple (1-2 hours each)**
+
 - Scroll indicators
 - Tips system
 - Screenshot mode toggle
@@ -480,6 +538,7 @@ These features are required before V2 can replace V1:
 - Act 1 save restriction
 
 ### **Medium (3-5 hours each)**
+
 - Auto-save indicator
 - Save labeling
 - Achievement UI
@@ -491,6 +550,7 @@ These features are required before V2 can replace V1:
 - Screen reader support
 
 ### **Complex (6-10 hours each)**
+
 - Save/Load UI with slots
 - Skip system
 - Settings modal UI
@@ -532,6 +592,7 @@ Before marking V2 as "feature complete," verify:
 **Total Estimated Effort**: ~120 hours for 100% parity
 
 **Breakdown**:
+
 - 🔴 **Phase 9 (Launch Blockers)**: 26 hours
 - 🟡 **Phase 10 (High Priority)**: 35 hours
 - 🟢 **Phase 11-12 (Nice-to-Have)**: 59 hours

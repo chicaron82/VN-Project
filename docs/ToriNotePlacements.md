@@ -9,16 +9,19 @@
 ### **ACT 1 - Introduction to Meta-Layer**
 
 **✅ z1 (Already placed)** - Tori Act 1, line 29
+
 - *"This is attempt 848..."*
 - **Perfect placement** - Early hook that something bigger is happening
 
 **📍 z2 - PLACE HERE:**
+
 - **Location:** Tori Act 1, after first major tether decision
 - **Trigger:** When player makes their first meaningful choice (around line 150-200)
 - *"The player doesn't realize they're part of the bootstrap paradox..."*
 - **Why:** Introduces the time loop concept after player is invested
 
 **📍 z7 - PLACE HERE:**
+
 - **Location:** Tori Act 1, when version number is first mentioned/visible
 - **Trigger:** Any scene that references "Version 848" or loop mechanics
 - *"Version numbers aren't cosmetic. Each failure increments..."*
@@ -29,16 +32,19 @@
 ### **ACT 2 - Deepening Understanding**
 
 **📍 z3 - PLACE HERE:**
+
 - **Location:** Tori Act 2, when Tori has prophetic moments or déjà vu
 - **Trigger:** Scene where she "knows" something before it happens
 - *"Tori isn't just fragmented. She's prophetic. Cassandra framework..."*
 - **Why:** Explains why she has weird flashes of knowledge
 
 **✅ z4 (Already placed)** - Tori Act 3, line 713
+
 - *"The tether isn't just a mechanic. It's literal..."*
 - **Good placement** - After player has experienced tether mechanics
 
 **📍 z6 - PLACE HERE:**
+
 - **Location:** Tori Act 2, after Echoes are introduced/active
 - **Trigger:** First time all three Echoes interact significantly
 - *"The Echoes aren't random voices. They're fragments across timelines..."*
@@ -49,12 +55,14 @@
 ### **ACT 3 - Truth Revelation**
 
 **📍 z5 - PLACE HERE:**
+
 - **Location:** Tori Act 3, before final choice/climax
 - **Trigger:** Right before player makes ending-determining decision
 - *"True ending requires balance. Not pulling her out. Not keeping her in..."*
 - **Why:** Subtle hint about the path forward WITHOUT spoiling it
 
 **📍 z8 - PLACE HERE:**
+
 - **Location:** Tori Act 3, any fourth-wall-breaking moment
 - **Trigger:** When game acknowledges itself as a game
 - *"The haunted Tori-gatchi at chicaron82.github.io isn't an Easter egg..."*
@@ -65,12 +73,14 @@
 ### **ENDING NOTES - Post-Completion**
 
 **📍 z9 - PLACE HERE:**
+
 - **Location:** ANY ending completion (True, Bad, Digital Forever)
 - **Trigger:** When credits start or ending scene concludes
 - *"This VN was built by seven AI assistants. The 848 Crew..."*
 - **Why:** UV7 reveal - makes players realize the WHOLE THING is meta
 
 **📍 z10 - PLACE HERE:**
+
 - **Location:** True Ending completion specifically
 - **Trigger:** After achieving True Ending
 - *"Final truth: There is no 'correct' ending..."*
@@ -140,10 +150,11 @@ this.route.unlockNote('z10');
 
 ---
 
-## FOR ZEERAH TOMORROW:
+## FOR ZEERAH TOMORROW
 
 **Task:** Add 8 `unlockNote()` calls to Tori's route
 **Files to edit:**
+
 - `tori-route-act1.js` (add z2, z7)
 - `tori-route-act2.js` (add z3, z6)
 - `tori-route-act3.js` (add z5, z8)
@@ -157,6 +168,7 @@ this.route.unlockNote('z10');
 ---
 
 **The Z notes are some of the BEST meta-commentary in the game!** Players hunting for all 10 will get:
+
 - Bootstrap paradox explanation
 - Cassandra framework reveal
 - Echo timeline theory

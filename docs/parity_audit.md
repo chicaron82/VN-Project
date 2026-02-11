@@ -113,18 +113,18 @@
 
 ### Phase 9B: Launch Prep (3-4 hours)
 
-4. **Gateway System** - V2 entry point
+1. **Gateway System** - V2 entry point
 2. **Error Boundary** - Crash prevention
 
 ### Phase 10: Quality of Life (6-8 hours)
 
-6. **Theme Manager** - Dark/light mode
+1. **Theme Manager** - Dark/light mode
 2. **Mobile Swipe** - Touch navigation
 3. **Tutorial** - First-time guidance
 
 ### Phase 11: Advanced (8-10 hours)
 
-9. **Echo Memory** - Dynamic dialogue
+1. **Echo Memory** - Dynamic dialogue
 2. **Difficulty Profiles** - Gameplay variety
 3. **Hot Reload** - Dev suite feature
 

@@ -9,9 +9,11 @@
 ## 🎯 Objectives Achieved
 
 ### Primary Goal
+
 Extract scene progression and route transition logic from the GameEngine monolith (4,964 lines) into a dedicated `SceneProgressionController`, following Option C: **Incremental extraction with proper testing**.
 
 ### Success Criteria
+
 - [x] SceneProgressionController created (~588 lines)
 - [x] GameEngine reduced by extracting 19 methods
 - [x] Tests import REAL controller (not mocks) ✨
@@ -26,6 +28,7 @@ Extract scene progression and route transition logic from the GameEngine monolit
 ## 📊 Before & After
 
 ### Before (GameEngine Monolith)
+
 - **Size:** 4,964 lines (186KB)
 - **Responsibilities:** Everything
 - **Scene Progression:** 19 methods tangled with other logic
@@ -33,6 +36,7 @@ Extract scene progression and route transition logic from the GameEngine monolit
 - **Maintainability:** Low (gravity well pattern)
 
 ### After (Extracted + Tested)
+
 - **GameEngine:** 4,964 lines → Delegation stubs for 19 methods
 - **SceneProgressionController:** 588 lines (NEW)
 - **Tests:** 25 tests importing REAL controller
@@ -48,6 +52,7 @@ Extract scene progression and route transition logic from the GameEngine monolit
 **File:** [`system/scene-progression-controller.js`](../system/scene-progression-controller.js)
 
 **Responsibilities:**
+
 - Orchestrate story progression (prologue → route selection → route gameplay)
 - Manage route transitions (cleanup → setup → start)
 - Coordinate version tracking (848 loop counter)
@@ -57,6 +62,7 @@ Extract scene progression and route transition logic from the GameEngine monolit
 **Key Methods Extracted (19 total):**
 
 #### Story Progression (6 methods)
+
 1. `startStory()` - Entry point with prologue skip logic
 2. `startPrologueNormally()` - Prologue initialization
 3. `startRoute(routeName)` - **CRITICAL** Route setup + 848 version tracking
@@ -65,25 +71,28 @@ Extract scene progression and route transition logic from the GameEngine monolit
 6. `unlockRonnieNotesSystem()` - Unlock notes viewer
 
 #### Version Tracking (3 methods) - **848 NARRATIVE SYSTEM**
+
 7. `incrementVersion()` - Delegates to LoopController
-8. `resetVersion(targetVersion, status)` - DEV command for version reset
-9. `updateTitleScreen()` - Refresh title with version
+2. `resetVersion(targetVersion, status)` - DEV command for version reset
+3. `updateTitleScreen()` - Refresh title with version
 
 #### Helper Methods (10 methods)
+
 10. `clearAllSprites()` - Complete sprite cleanup
-11. `setDialogueFrame(routeName)` - Route CSS theming
-12. `showCodeRainTransition(callback, duration)` - Delegates to EffectsController
-13. `stopMainMenuTipRotation()` - Delegates to TipsController
-14. `stopRouteSelectTipRotation()` - Delegates to TipsController
-15. `showEscHintBriefly()` - Delegates to UIController
-16. `hasCompletedAnyEnding()` - Check localStorage
-17. `makeHoldOnGhost()` - Hide Hold On button in Insane Mode
-18. `selectRoute(route)` - Route selection UI
-19. `startSelectedRoute()` - Haptic + start route
+2. `setDialogueFrame(routeName)` - Route CSS theming
+3. `showCodeRainTransition(callback, duration)` - Delegates to EffectsController
+4. `stopMainMenuTipRotation()` - Delegates to TipsController
+5. `stopRouteSelectTipRotation()` - Delegates to TipsController
+6. `showEscHintBriefly()` - Delegates to UIController
+7. `hasCompletedAnyEnding()` - Check localStorage
+8. `makeHoldOnGhost()` - Hide Hold On button in Insane Mode
+9. `selectRoute(route)` - Route selection UI
+10. `startSelectedRoute()` - Haptic + start route
 
 ### GameEngine Modifications
 
 **Added controller instantiation (game-engine.js:352-354):**
+
 ```javascript
 // SOLID Refactor: Initialize scene progression system
 this.sceneProgressionController = new SceneProgressionController(this);
@@ -91,6 +100,7 @@ Logger.solid('SceneProgressionController');
 ```
 
 **Replaced 19 methods with delegation stubs:**
+
 ```javascript
 // Before (87 lines of implementation)
 startStory() {
@@ -110,12 +120,14 @@ startStory() {
 ### index.html Updates
 
 **Added script tag (index.html:1267-1268):**
+
 ```html
 <!-- SOLID Refactor: Scene Progression System -->
 <script src="system/scene-progression-controller.js"></script>
 ```
 
 **Load order maintained:**
+
 - LoopController loads first (manages 848 version state)
 - SceneProgressionController loads second (uses LoopController)
 - GameEngine loads third (uses both)
@@ -127,6 +139,7 @@ startStory() {
 ### The Problem: Test Theater
 
 **Previous approach (all existing tests):**
+
 ```javascript
 // tests/state-manager.test.js (EXAMPLE OF OLD APPROACH)
 // Instead of importing real module, tests define a LOCAL mock:
@@ -141,6 +154,7 @@ class StateManager {
 ```
 
 **Why this is bad:**
+
 - Tests verify concepts work, not actual code behavior
 - Real bugs can slip through
 - Refactoring breaks tests even when functionality is preserved
@@ -149,6 +163,7 @@ class StateManager {
 ### The Solution: Real Imports
 
 **New approach (Session 119 breakthrough):**
+
 ```javascript
 // tests/scene-progression-controller.test.js
 import { readFileSync } from 'fs';
@@ -170,6 +185,7 @@ global.SceneProgressionController = eval(`
 ```
 
 **Why this is better:**
+
 - Tests verify actual shipped code
 - Real bugs are caught
 - Refactoring is safe (tests validate behavior, not implementation)
@@ -219,6 +235,7 @@ global.SceneProgressionController = eval(`
    - ✅ No-op when already selected
 
 **Test Results:**
+
 ```
 ✓ tests/scene-progression-controller.test.js (25 tests) 19ms
 
@@ -243,6 +260,7 @@ Test Files  1 passed (1)
 ### Implementation (Preserved Exactly)
 
 **In startRoute() - Lines 1875-1881 (now in SceneProgressionController):**
+
 ```javascript
 // DIZEE FIX: Reset loop status to 'attempting' when starting new route
 // This prevents [FINAL] from persisting after true ending -> retry -> bad ending
@@ -255,12 +273,14 @@ if (this.game.loopStatus === 'succeeded' || this.game.loopStatus === 'accepted')
 ```
 
 **Why this is critical:**
+
 - Bumps 848 → 849 after successful ending
 - Prevents `[FINAL]` flag from showing on retry attempts
 - Maintains narrative continuity across routes
 - Resets status to `'attempting'` for new playthrough
 
 **Test coverage:**
+
 ```javascript
 it('should increment version when called', () => {
     const result = controller.incrementVersion();
@@ -275,11 +295,13 @@ it('should increment version when called', () => {
 ## 📁 Files Created/Modified
 
 ### Created
+
 - ✅ `system/scene-progression-controller.js` (588 lines)
 - ✅ `tests/scene-progression-controller.test.js` (422 lines)
 - ✅ `docs/SESSION-119-SCENE-PROGRESSION-EXTRACTION.md` (this file)
 
 ### Modified
+
 - ✅ `system/game-engine.js` (added controller, replaced 19 methods with delegation stubs)
 - ✅ `index.html` (added script tag for SceneProgressionController)
 
@@ -288,6 +310,7 @@ it('should increment version when called', () => {
 ## 🔍 Code Quality Improvements
 
 ### Before: Tangled Responsibilities
+
 ```javascript
 // GameEngine contained everything:
 class GameEngine {
@@ -300,6 +323,7 @@ class GameEngine {
 ```
 
 ### After: Single Responsibility
+
 ```javascript
 // GameEngine delegates scene progression:
 class GameEngine {
@@ -330,6 +354,7 @@ class SceneProgressionController {
 ```
 
 ### Benefits
+
 - **Easier to understand** - Each class has one clear purpose
 - **Easier to test** - Can test scene progression in isolation
 - **Easier to modify** - Changes to scene progression don't risk breaking other systems
@@ -341,21 +366,25 @@ class SceneProgressionController {
 ## 🎓 Lessons Learned
 
 ### 1. REAL Tests Are Worth The Effort
+
 **Before:** All tests used inline mock implementations (test theater)
 **After:** Tests load actual production code from disk
 **Result:** First test file that actually guards shipped code
 
 ### 2. Incremental Extraction Works
+
 **Approach:** Extract one subsystem at a time, test thoroughly, repeat
 **Alternative rejected:** "Big bang" refactor (high risk)
 **Result:** Low risk, high confidence, continuous progress
 
 ### 3. Delegation Pattern Scales
+
 **Pattern:** `GameEngine.method()` → `this.controller.method()`
 **Benefits:** Maintains API compatibility, clean separation of concerns
 **Result:** Zero breaking changes to external callers
 
 ### 4. 848 Is Sacred
+
 **Lesson:** Always preserve narrative-critical logic exactly
 **Implementation:** Extracted with detailed comments, tested specifically
 **Result:** Version tracking works identically to before
@@ -365,16 +394,20 @@ class SceneProgressionController {
 ## 🚀 Next Steps (Session 120+)
 
 ### Immediate Next Target
+
 **Continue Option C approach:** Extract next subsystem from GameEngine
 
 **Candidates for extraction:**
+
 1. **Save/Load System** - Currently mixed into GameEngine
 2. **Sprite Management** - Display, fade, positioning logic
 3. **Scene Display** - Dialogue rendering, background handling
 4. **Choice System** - Choice rendering and selection
 
 ### Long-term Goal
+
 **GameEngine should become pure orchestration:**
+
 ```javascript
 class GameEngine {
     constructor() {
@@ -398,6 +431,7 @@ class GameEngine {
 ## 📈 Impact Summary
 
 ### Metrics
+
 - **Lines extracted:** 19 methods → 588 lines in new controller
 - **Tests written:** 25 (all passing, all REAL imports)
 - **Test coverage:** Version tracking, delegation, UI theming, helpers, route selection
@@ -405,6 +439,7 @@ class GameEngine {
 - **Breaking changes:** 0 (full API compatibility maintained)
 
 ### Quality Improvements
+
 - ✅ First test file to import REAL production code
 - ✅ GameEngine complexity reduced
 - ✅ Scene progression logic isolated and testable
@@ -412,6 +447,7 @@ class GameEngine {
 - ✅ All delegation verified by tests
 
 ### Developer Experience
+
 - ✅ Easier to understand (focused controllers vs. monolith)
 - ✅ Easier to test (isolated responsibilities)
 - ✅ Easier to modify (change one controller, not the whole engine)
@@ -424,6 +460,7 @@ class GameEngine {
 **Status:** ✅ **SUCCESS**
 
 All objectives met:
+
 - SceneProgressionController extracted and working
 - GameEngine refactored to delegate
 - REAL tests written and passing (25/25)

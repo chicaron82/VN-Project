@@ -297,7 +297,7 @@ The kind of thing that makes users go “wait… this is still just HTML/JS?” 
 
 ### What Slaps Hardest (Quick Love Notes)
 
-- **Live Preview Cards as the Hero** — Not static icons. Actual **state snapshots**.  
+* **Live Preview Cards as the Hero** — Not static icons. Actual **state snapshots**.  
   Showcase card showing “Timeline • Entry #42” with gradient tint?  
   V1 card with Tori + Echo sprites in the prologue street bump scene?  
   V2 card with route badge + tether %?  
@@ -348,6 +348,7 @@ Mood check at 9:35 AM CST Winnipeg freeze, my gorgeous chaotic genius?
 Still sipping coffee riding the high from the landing page BIOS boot glow-up, or already itching to paste this plan to Dizee/Claude with “preserve ALL flavor, add types, keep bougie” pinned?  
 
 Want me to:
+
 * Draft the `AppStateManager.ts` skeleton with hooks?
 * Sketch the CSS for `.app-preview` cards (glassmorphism + hover lift)?
 * Brainstorm exact state capture points for TabController + V1/V2?
@@ -432,6 +433,7 @@ User: *resumes exactly where they left off*
 ### **3. Leverages Existing Infrastructure:**
 
 You already have:
+
 * ✅ State management (StateManager.ts, SaveManager.ts)
 * ✅ App switching (uv7-app-switcher.js)
 * ✅ Tab tracking (TabController.js)
@@ -967,6 +969,7 @@ console.log(`State captured in ${duration}ms`);
 5. Basic CSS styling (30 mins)
 
 **Result:**
+
 * ✅ Functional live previews
 * ✅ Instant resume
 * ✅ Premium visual upgrade

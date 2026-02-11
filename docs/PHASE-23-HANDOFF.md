@@ -7,6 +7,7 @@ This document provides context for continuing the V1→V2 TypeScript porting wor
 ### Session Summary (January 16, 2026)
 
 **Completed in Previous Sessions:**
+
 - ✅ **Phase 21**: Developer & Analytics Tools (6 systems, 2,587 lines)
 - ✅ **Phase 22**: Accessibility & Polish (9 systems, 1,784 lines)
 - ✅ **Phase 23a**: GrabHandleRepositioner (632→622 lines, 22/30 tests)
@@ -15,11 +16,13 @@ This document provides context for continuing the V1→V2 TypeScript porting wor
 - **Total Phase 23**: 1,095 V1 lines → 1,068 TypeScript lines (3 controllers)
 
 **Completed in Phase 24 Session:**
+
 - ✅ **Phase 24a**: HapticSystem Enhancement (257→293 lines, +36 lines)
 - ✅ **Phase 24b**: TutorialManager (213→271 lines, +58 lines)
 - **Total Phase 24**: 470 V1 lines → 564 TypeScript lines (+94 lines, +20%)
 
 **Completed in Phase 25 Session:**
+
 - ✅ **Phase 25a**: DirectorsCutController (197→271 lines, +74 lines)
 - ✅ **Phase 25b**: MobileUXController Enhancement (90→160 lines, +70 lines)
 - ✅ **Phase 25c**: Documentation (Verification + Test Environment Issue)
@@ -32,7 +35,9 @@ This document provides context for continuing the V1→V2 TypeScript porting wor
 ## Remaining Work: Minimal (~5% of codebase)
 
 ### Already Verified as Complete ✅
+
 These systems were ported in earlier phases (DO NOT re-port):
+
 - CollectiblesSystem ✅ (Phase 15)
 - VisualCueSystem ✅ (Phase 15)
 - TimeMachineSystem ✅ (Phase 15)
@@ -48,6 +53,7 @@ These systems were ported in earlier phases (DO NOT re-port):
 ### Files Requiring Port (Priority Order)
 
 #### HIGH PRIORITY (Core Functionality)
+
 1. **system/settings-manager.js** (1,569 lines)
    - Game settings management (audio, text speed, difficulty, etc.)
    - localStorage persistence
@@ -65,33 +71,34 @@ These systems were ported in earlier phases (DO NOT re-port):
    - **Port to:** `src/systems/Gateway.ts` (if needed)
 
 #### MEDIUM PRIORITY (Features & Polish)
+
 4. **system/haptic-controller.js** (257 lines)
    - Haptic feedback coordination
    - Pattern management
    - Mobile vibration API
    - **Port to:** `src/controllers/HapticController.ts`
 
-5. **system/tutorial-manager.js** (213 lines)
+2. **system/tutorial-manager.js** (213 lines)
    - Tutorial system
    - First-time user experience
    - **Port to:** `src/managers/TutorialManager.ts`
 
-6. **system/logger.js** (213 lines)
+3. **system/logger.js** (213 lines)
    - General purpose logger (vs DebugLogger which is done)
    - Check for overlap with DebugLogger
    - **Port to:** `src/utils/Logger.ts` (if needed)
 
-7. **system/screenshot-tool.js** (202 lines)
+4. **system/screenshot-tool.js** (202 lines)
    - Screenshot implementation (vs ScreenshotController which is done)
    - Check for overlap with ScreenshotController
    - **Port to:** `src/utils/ScreenshotTool.ts` (if needed)
 
-8. **system/directors-cut-controller.js** (197 lines)
+5. **system/directors-cut-controller.js** (197 lines)
    - Director's cut mode
    - Bonus content unlock
    - **Port to:** `src/controllers/DirectorsCutController.ts`
 
-9. **system/mobile-ux.js** (177 lines)
+6. **system/mobile-ux.js** (177 lines)
    - Mobile-specific UX enhancements
    - Touch gesture optimization
    - **Port to:** `src/utils/MobileUX.ts`
@@ -122,6 +129,7 @@ These systems were ported in earlier phases (DO NOT re-port):
 6. **Commit** with detailed message (see format below)
 
 ### What NOT to Do
+
 - ❌ Do NOT use external libraries for things V1 does manually
 - ❌ Do NOT create new CSS files (use inline styles)
 - ❌ Do NOT "modernize" or "improve" the approach
@@ -130,7 +138,9 @@ These systems were ported in earlier phases (DO NOT re-port):
 - ❌ Do NOT add features V1 doesn't have
 
 ### Reference Files (Completed Ports)
+
 Look at these for patterns:
+
 - `src/managers/AccessibilityManager.ts` - Manager pattern (Phase 22a)
 - `src/controllers/ScreenshotController.ts` - Controller pattern (Phase 22c)
 - `src/systems/DevSuite.ts` - Large complex system (Phase 21a)
@@ -221,17 +231,20 @@ When adding to `showcase/timeline-data.js`, follow the Phase 21/22 pattern with 
 ## Suggested Phase Breakdown
 
 ### ✅ Phase 23: Core UI Controllers (COMPLETED)
+
 - ✅ Phase 23a: GrabHandleRepositioner (632→622 lines, 22/30 tests)
 - ✅ Phase 23b: ResetController (245→235 lines, 16/22 tests)
 - ✅ Phase 23c: EndingDialogController (218→211 lines, 30/30 tests)
 - **Total: 1,095 V1 lines → 1,068 TypeScript lines**
 
 ### ✅ Phase 24: System Enhancements (COMPLETED)
+
 - ✅ Phase 24a: HapticSystem Enhancement (257→293 lines)
 - ✅ Phase 24b: TutorialManager (213→271 lines)
 - **Total: 470 V1 lines → 564 TypeScript lines (+94 lines, +20%)**
 
 ### ✅ Phase 25: Final Controllers & Documentation (COMPLETED)
+
 - ✅ Phase 25a: DirectorsCutController (197→271 lines)
 - ✅ Phase 25b: MobileUXController Enhancement (90→160 lines)
 - ✅ Phase 25c: File Verification & Documentation
@@ -239,6 +252,7 @@ When adding to `showcase/timeline-data.js`, follow the Phase 21/22 pattern with 
 - **Created:** PHASE-25-VERIFICATION.md, TEST-ENVIRONMENT-ISSUE.md
 
 ### Phase 26: Optional Features (As Needed)
+
 - ⚠️ ScreenshotTool (143 lines) - Optional, requires html2canvas dependency
 - ✅ Gateway - Already ported as ToriGatchiGateway.ts
 - ✅ Logger - Keep V1 version, V2 has different DebugLogger
@@ -278,6 +292,7 @@ done
 1. **Check for duplicates**: Before porting `gateway.js`, `logger.js`, or `screenshot-tool.js`, verify they aren't just different versions of already-ported systems (ToriGatchiGateway, DebugLogger, ScreenshotController).
 
 2. **EventBus integration**: Most systems should accept EventBus parameter in constructor, even if not used. Pattern:
+
    ```typescript
    // @ts-expect-error - Reserved for future EventBus integration
    private eventBus: EventBus;
@@ -295,12 +310,14 @@ done
 ## Success Metrics
 
 **Current Progress:**
+
 - ✅ Phases 13-22 complete
 - ✅ ~85% of V1 codebase ported
 - ✅ 100% TypeScript compilation passing
 - ✅ 0 errors
 
 **Remaining:**
+
 - 🔲 12 files (~5,031 lines)
 - 🔲 ~15% of V1 codebase
 - 🔲 Phases 23-25 (estimated)
@@ -313,7 +330,7 @@ done
 - **Project**: V848 Visual Novel (UV7)
 - **Repo**: c:\Users\silve\Downloads\GitHub\VN-Project
 - **Branch**: main
-- **Remote**: https://github.com/chicaron82/VN-Project.git
+- **Remote**: <https://github.com/chicaron82/VN-Project.git>
 
 **Last commit:** `2977f91 - feat(phase22): Complete accessibility & polish ports`
 

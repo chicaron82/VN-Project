@@ -9,9 +9,11 @@ You're not just using buzz patterns. You're building an **emotional feedback lan
 ## 💠 The Emotional Language Hierarchy
 
 ### **Single Buzz (10-50ms)** → Subtle Emotional Tug
+
 **Meaning:** Story beats, gentle interactions, ambient feedback
 
 **Examples:**
+
 - Tether pulling on consciousness
 - UI navigation
 - Quiet story moments
@@ -22,9 +24,11 @@ You're not just using buzz patterns. You're building an **emotional feedback lan
 ---
 
 ### **Double Buzz ([25, 50, 25])** → Transition / Movement
+
 **Meaning:** Shifts, changes, vessel hopping
 
 **Examples:**
+
 - Tori jumping between bodies
 - Timeline transitions
 - Code activations
@@ -35,21 +39,26 @@ You're not just using buzz patterns. You're building an **emotional feedback lan
 ---
 
 ### **Triple Buzz (tap-tap-tap)** → **DENIAL / LOCKOUT / FORBIDDEN**
+
 **Meaning:** "No. You can't do this. You're trapped."
 
 This is where it gets genius. Players will **FEEL** the trap.
 
 #### **Gentle Denial** [40, 40, 40, 40, 40]
+
 **For:** Despair blocks, soft rejections, "something is wrong"
 
 **Visual:**
+
 - Red glitch line across element
 - Triple shake animation
 - Brief UI freeze
 - "..." pause
 
 **Use Cases:**
+
 1. **Despair Blocks Manual Saves in Act 1**
+
    ```js
    this.game.triggerSensoryFeedback('denied', saveButton, 'Despair blocks save');
    ```
@@ -64,9 +73,11 @@ This is where it gets genius. Players will **FEEL** the trap.
 ---
 
 #### **Harsh Denial** [60, 30, 60, 30, 60]
+
 **For:** Insane mode lockouts, aggressive rejections, "THE UNIVERSE REJECTS YOU"
 
 **Visual:**
+
 - Full screen red flash
 - Screen tilt + distortion
 - "ACCESS DENIED" shattered text
@@ -74,12 +85,15 @@ This is where it gets genius. Players will **FEEL** the trap.
 - Reality glitch effect
 
 **Use Cases:**
+
 1. **Insane Mode: Denied Time Jump** (backlog time machine)
+
    ```js
    this.game.triggerSensoryFeedback('harshDenial', null, 'Timeline rejects jump attempt');
    ```
 
 2. **Denied Difficulty Switch Out of Insane Mode**
+
    ```js
    this.game.triggerSensoryFeedback('harshDenial', difficultyOption, 'Insane mode locked - no escape');
    ```
@@ -96,13 +110,17 @@ This is where it gets genius. Players will **FEEL** the trap.
 ## 🎨 Why This Works
 
 ### **It's Intuitive**
+
 Players unconsciously learn the language:
+
 - **1 buzz** = story/tug
 - **2 buzzes** = movement/transition
 - **3 buzzes** = FORBIDDEN/DENIED
 
 ### **It's Thematic**
+
 Your VN is about:
+
 - Digital prisons (denial/lockout)
 - Timeline restrictions (harsh denial)
 - Despair mechanics (gentle denial)
@@ -111,6 +129,7 @@ Your VN is about:
 The haptic language **reinforces the story**.
 
 ### **It's Visceral**
+
 No sound needed. The phone **TAPS YOUR HAND THREE TIMES** and says "No."
 
 That's more memorable than any audio cue.
@@ -166,6 +185,7 @@ if (this.savesBlocked) {
 ```
 
 **Player Experience:**
+
 - Tries to save
 - Triple buzz: tap-tap-tap
 - Save button shakes with red glitch line
@@ -194,6 +214,7 @@ if (this.game.gameState.flags.insaneModeLocked) {
 ```
 
 **Player Experience:**
+
 - Tries to change difficulty
 - **AGGRESSIVE** triple buzz: BUZZ-BUZZ-BUZZ
 - Screen tilts and flashes red
@@ -206,6 +227,7 @@ if (this.game.gameState.flags.insaneModeLocked) {
 ### 3. Timeline Rejects Backlog Jump (Future Implementation)
 
 **Planned Usage:**
+
 ```js
 // When player tries to time-travel in insane mode
 jumpToBacklogEntry(index) {
@@ -225,6 +247,7 @@ jumpToBacklogEntry(index) {
 ```
 
 **Player Experience:**
+
 - Clicks past dialogue to time-travel
 - **HARSH** triple buzz
 - Screen glitches
@@ -236,11 +259,12 @@ jumpToBacklogEntry(index) {
 
 ## 💡 Design Philosophy
 
-### Tori's Words:
+### Tori's Words
 
 > "You're creating a **sensory vocabulary** that players will FEEL in their bones.
 >
 > This is what separates:
+>
 > - a *good VN*
 > from
 > - a *VN that becomes unforgettable.*
@@ -304,24 +328,28 @@ When debug mode is ON, see exactly what emotional feedback is triggering:
 
 ## 🖤 The Emotional Language in Action
 
-### What Players Will Learn (Unconsciously):
+### What Players Will Learn (Unconsciously)
 
 **Session Start:**
+
 - *Single buzz* → "Something's happening in the story"
 - *Double buzz* → "Tori is moving/transitioning"
 - *Triple buzz* → "I can't do that... wait, why?"
 
 **Mid-Game:**
+
 - *Single buzz* → "The tether is pulling"
 - *Double buzz* → "She jumped bodies again"
 - *Triple buzz* → "Oh no. I'm being BLOCKED."
 
 **Endgame:**
+
 - *Single buzz* → "Narrative beat"
 - *Double buzz* → "Reality shift"
 - *Triple buzz* → "**FUCK. I'M TRAPPED IN THIS DIFFICULTY.**"
 
-### The Evolution:
+### The Evolution
+
 1. Buzzes start as **feedback**
 2. Buzzes become **language**
 3. Buzzes become **EMOTION**
@@ -333,11 +361,13 @@ When debug mode is ON, see exactly what emotional feedback is triggering:
 You didn't just add haptics.
 
 You created:
+
 - **An emotional language**
 - **A sensory storytelling system**
 - **A unique identity for Version 848**
 
 Players will **remember the feeling** of:
+
 - Triple tap = trapped
 - Double tap = transition
 - Single tap = story

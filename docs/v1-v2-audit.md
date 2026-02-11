@@ -49,6 +49,7 @@ V2 has the **foundation right** (EventBus, StateManager, TypeScript, tests), but
 - Smooth theme transitions
 
 **V2 Status:** ⚠️ Partial - `ThemeManager.ts` (180 lines) exists with route-based switching
+
 - Has 3 themes defined (ronnie, tori, menu)
 - Listens to `route:change` events
 - Emits `theme:change` events
@@ -98,6 +99,7 @@ V2 has the **foundation right** (EventBus, StateManager, TypeScript, tests), but
 **V2 Status:** ✅ **MIGRATED** (2026-01-10)
 
 **Migration Notes:**
+
 - `CarouselMomentum.ts` (607 lines) - Physics engine with friction 0.975 "Price Is Right" spin
 - `MenuCarouselView.ts` (374 lines) - New component integrating carousel with menu cards
 - App.ts updated to use MenuCarouselView instead of MenuView
@@ -395,14 +397,14 @@ V2 has the **foundation right** (EventBus, StateManager, TypeScript, tests), but
 
 ### Medium Priority (Polish)
 
-5. **Tutorial System** - First-time UX
+1. **Tutorial System** - First-time UX
 2. **Visual Cues** - Attention management
 3. **Accessibility** - Player comfort options
 4. **Haptics** - Mobile experience
 
 ### Lower Priority (Features)
 
-9. **Easter Eggs** - Fun but not core
+1. **Easter Eggs** - Fun but not core
 2. **Dev Suite** - Development convenience
 3. **Directors Cut** - Bonus content
 

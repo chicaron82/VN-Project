@@ -9,37 +9,43 @@
 
 ## ✅ Task 1: Secret Code Input UX - COMPLETE
 
-### What Was Implemented:
+### What Was Implemented
 
 **1. HTML - Success Indicator**
+
 - **File:** [index.html:430-434](../index.html#L430-L434)
 - Added `#code-success-indicator` with sparkle (✨) and "CODE REGISTERED" text
 
 **2. CSS - Animations**
+
 - **File:** [styles.css:4565-4615](../styles.css#L4565-L4615)
 - `@keyframes sparkle` - Rotating scale animation
 - `@keyframes fadeInUp` - Text reveal animation
 - Positioned absolutely for overlay effect
 
 **3. JavaScript - Invalid Response Pool**
+
 - **File:** [secret-codes-manager.js:12-26](../system/secret-codes-manager.js#L12-L26)
 - Array of 10 flavored invalid responses
 - Tracks last response to avoid consecutive repeats
 - Responses feel in-world ("No signal on that frequency", "Echo not found", etc.)
 
 **4. JavaScript - Success/Fail Logic**
+
 - **File:** [secret-codes-manager.js:85-102](../system/secret-codes-manager.js#L85-L102)
 - Modified `submitCode()` to call `showCodeSuccess()` on valid codes
 - Triggers haptic feedback if enabled
 - Shows flavored response on invalid codes
 
 **5. JavaScript - Helper Methods**
+
 - **File:** [secret-codes-manager.js:485-529](../system/secret-codes-manager.js#L485-L529)
 - `showCodeSuccess()` - Shows sparkle for 1 second
 - `triggerCodeHaptic()` - Vibration pattern [50, 50, 100]
 - `showInvalidCodeResponse()` - Random flavored message, clears after 3s
 
 **6. JavaScript - Bug Fix: Discovered Codes Display**
+
 - **File:** [secret-codes-manager.js:64](../system/secret-codes-manager.js#L64)
 - Added `updateCodesUI()` call to `discoverCode()` method
 - **File:** [secret-codes-manager.js:450-461](../system/secret-codes-manager.js#L450-L461)
@@ -48,7 +54,8 @@
 - **File:** [index.html:441](../index.html#L441)
 - Updated total count from 7 to 11 codes
 
-### Testing Status:
+### Testing Status
+
 - ✅ Sparkle animation shows on valid code
 - ✅ "CODE REGISTERED" appears with fade-in
 - ✅ Invalid codes show varied responses
@@ -60,21 +67,24 @@
 
 ## ✅ Task 2: Inbox Unread Badge - IN PROGRESS
 
-### What Was Implemented:
+### What Was Implemented
 
 **1. HTML - Badge Element**
+
 - **File:** [index.html:204](../index.html#L204)
 - Added `#unread-badge` to notes button
 - Data attribute `data-count` for conditional visibility
 
 **2. CSS - Badge Styles**
+
 - **File:** [styles.css:4617-4672](../styles.css#L4617-L4672)
 - Red badge with pulsing glow animation
 - Positioned top-right of notes button
 - Auto-hides when `data-count="0"`
 - New mail slide animation
 
-### Still Needed:
+### Still Needed
+
 1. Add tracking logic to CollectiblesManager
 2. Update badge on note collection
 3. Mark notes as read when opened
@@ -173,6 +183,7 @@ unlockNote(noteId) {
 **Estimated Time:** 1.5 hours
 
 **What Needs To Be Done:**
+
 1. Add "CODES" tab to standalone notes viewer
 2. List all codes (discovered + locked)
 3. Show progress counter (X / 12)
@@ -187,6 +198,7 @@ unlockNote(noteId) {
 **Estimated Time:** 1.5 hours
 
 **What Needs To Be Done:**
+
 1. Add haptic helper to game-engine.js
 2. Define pattern library (light, medium, strong, double, triple, etc.)
 3. Apply throughout codebase:
@@ -206,6 +218,7 @@ unlockNote(noteId) {
 **Estimated Time:** 30 minutes
 
 **What Needs To Be Done:**
+
 1. Add toggle to settings HTML
 2. Track setting in SettingsManager
 3. Add CSS class `body.reduce-glitch`
@@ -216,15 +229,18 @@ unlockNote(noteId) {
 ## 📊 Progress Summary
 
 **Weekend 1 Target (4-6 hours):**
+
 - ✅ Task 1: Secret Code UX (2 hours) - COMPLETE
 - 🔄 Task 2: Inbox Badge (1 hour) - HTML/CSS done, JS tracking needed
 - ⏳ Task 3: Codes Tab (1.5 hours) - Not started
 
 **Weekend 2 Target (4-6 hours):**
+
 - ⏳ Task 4: Haptics (1.5 hours) - Not started
 - ⏳ Task 5: Glitch Toggle (30 min) - Not started
 
 **Current Status:**
+
 - Time Spent: ~1.5 hours
 - Tasks Complete: 1/5
 - Tasks In Progress: 1/5
@@ -235,6 +251,7 @@ unlockNote(noteId) {
 ## 🎯 Next Steps
 
 **To Complete Task 2 (Inbox Badge):**
+
 1. Open `system/collectibles-manager.js`
 2. Add read tracking properties to constructor
 3. Add methods listed above
@@ -242,6 +259,7 @@ unlockNote(noteId) {
 5. Call `animateNewMail()` in `unlockNote()`
 
 **To Start Task 3 (Codes Tab):**
+
 1. Open standalone-notes-viewer.js
 2. Add "CODES" tab to HTML template
 3. Create `renderCodesTab()` method
@@ -253,12 +271,14 @@ unlockNote(noteId) {
 ## 💡 Notes
 
 **Style Consistency:**
+
 - All animations use existing timing patterns
 - Colors match game palette
 - Font families consistent (Courier New for code)
 - Haptic patterns non-blocking
 
 **Mobile Testing Needed:**
+
 - Badge visibility on small screens
 - Touch targets for buttons
 - Haptic feedback on Android/iOS

@@ -17,6 +17,7 @@ npm install html2canvas
 ```
 
 Then import in your code:
+
 ```javascript
 import html2canvas from 'html2canvas';
 ```

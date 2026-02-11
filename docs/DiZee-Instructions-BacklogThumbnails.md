@@ -1,6 +1,7 @@
 # DiZee Instructions: Backlog Scene Thumbnails
 
 ## OVERVIEW
+
 Add tiny background thumbnails to backlog entries for visual reference. Helps players remember context when time-traveling through dialogue history. Thumbnails show which location/background each moment occurred in, making navigation more intuitive and memory-based.
 
 **Design philosophy:** Visual memory aids for time travel. Players don't need to read every entry - they can scan thumbnails and recognize "oh that's the hospital scene" or "that's the apartment scene." Improves UX for the backlog's primary use case: jumping back to specific moments.
@@ -10,6 +11,7 @@ Add tiny background thumbnails to backlog entries for visual reference. Helps pl
 ## CURRENT STATE
 
 **Backlog system exists** and works:
+
 - 100 entry history
 - Click to jump back to that moment
 - Restores game state, sprites, tether level
@@ -26,6 +28,7 @@ Add tiny background thumbnails to backlog entries for visual reference. Helps pl
 Each backlog entry shows a small thumbnail of the scene background.
 
 **Example entry:**
+
 ```
 ┌────────────────────────────────────┐
 │ [thumbnail] Ronnie: "I'll find    │
@@ -44,6 +47,7 @@ Thumbnail = miniature version of scene background (hospital.png, apartment.png, 
 ### CHALLENGE: Background tracking
 
 Backlog entries currently store:
+
 - Character name
 - Dialogue text  
 - Internal thought
@@ -137,6 +141,7 @@ constructor() {
 **FIND:** Where backlog entries are created (search for `addToBacklog` or backlog push logic)
 
 **Example current structure:**
+
 ```javascript
 this.backlogEntries.push({
     character: scene.character,
@@ -169,6 +174,7 @@ this.backlogEntries.push({
 **FIND:** Backlog display/render method (search for where backlog entries are shown to player)
 
 **Current rendering** (approximately):
+
 ```javascript
 backlogEntries.forEach((entry, index) => {
     const entryDiv = document.createElement('div');
@@ -319,7 +325,8 @@ backlogEntries.forEach((entry, index) => {
 
 ## VISUAL LAYOUT
 
-### DESKTOP:
+### DESKTOP
+
 ```
 ┌─────────────────────────────────────────┐
 │ ┌──────┐  Ronnie                        │
@@ -334,7 +341,8 @@ backlogEntries.forEach((entry, index) => {
 └─────────────────────────────────────────┘
 ```
 
-### MOBILE:
+### MOBILE
+
 ```
 ┌───────────────────────────┐
 │ ┌────┐  Ronnie            │
@@ -366,21 +374,25 @@ backlogEntries.forEach((entry, index) => {
 ## EDGE CASES HANDLED
 
 **Case 1: No background specified in scene**
+
 - Entry uses `this.currentBackground` (last known background)
 - Prevents "undefined" or blank thumbnails
 - Scenes without explicit backgrounds inherit previous location
 
 **Case 2: Background image fails to load**
+
 - CSS `background-size: cover` handles missing images gracefully
 - Shows empty gray box (not ideal but doesn't break layout)
 - Could add fallback background-color if needed
 
 **Case 3: Very long backlog (100 entries)**
+
 - Thumbnails add ~100 small image loads
 - Performance: Modern browsers handle this fine (thumbnails are tiny)
 - Memory: Each thumbnail is just CSS background (minimal overhead)
 
 **Case 4: Save/Load with backlog**
+
 - Background field is part of backlog entry data structure
 - Saves/loads correctly with rest of backlog state
 - No special handling needed
@@ -389,18 +401,21 @@ backlogEntries.forEach((entry, index) => {
 
 ## PERFORMANCE CONSIDERATIONS
 
-### IMAGE LOADING:
+### IMAGE LOADING
+
 - Thumbnails reuse existing background images (already loaded)
 - No additional assets needed
 - Browser caches backgrounds from gameplay
 - CSS `background-image` = lightweight
 
-### RENDERING:
+### RENDERING
+
 - 100 backlog entries × 80px thumbnails = minimal DOM impact
 - Flexbox layout handles responsively
 - Scroll container already exists (no new scrolling logic)
 
-### MEMORY:
+### MEMORY
+
 - Background URLs stored as strings in backlog array
 - Each entry adds ~50 bytes (background URL)
 - 100 entries × 50 bytes = 5KB additional memory
@@ -411,23 +426,27 @@ backlogEntries.forEach((entry, index) => {
 ## TESTING CHECKLIST
 
 ### Test 1: Thumbnail Display
+
 1. Play through 10+ scenes with different backgrounds
 2. Open backlog
 3. **Expected:** Each entry shows correct background thumbnail
 4. Thumbnails should visually match the scenes
 
 ### Test 2: Background Inheritance
+
 1. Play scene with explicit background (e.g., hospital.png)
 2. Play scene WITHOUT explicit background (just dialogue)
 3. Open backlog
 4. **Expected:** Second entry shows hospital thumbnail (inherited)
 
 ### Test 3: Time Travel with Thumbnails
+
 1. Open backlog
 2. Click entry with thumbnail
 3. **Expected:** Jump back restores that scene WITH correct background visible
 
 ### Test 4: Save/Load Preservation
+
 1. Play through scenes, build backlog
 2. Save game
 3. Refresh page, load game
@@ -435,12 +454,14 @@ backlogEntries.forEach((entry, index) => {
 5. **Expected:** Thumbnails still display correctly
 
 ### Test 5: Mobile Responsiveness
+
 1. View backlog on mobile portrait
 2. **Expected:** Thumbnails scaled down (50px × 40px), text readable, no overflow
 3. View backlog on mobile landscape
 4. **Expected:** Thumbnails visible, layout intact
 
 ### Test 6: Performance Check
+
 1. Play through 100+ scenes (max backlog)
 2. Open backlog (loads all 100 thumbnails)
 3. **Expected:** Smooth scrolling, no lag, thumbnails render quickly
@@ -452,6 +473,7 @@ backlogEntries.forEach((entry, index) => {
 ## OPTIONAL ENHANCEMENTS
 
 ### Enhancement 1: Fade-in animation for thumbnails
+
 ```css
 .backlog-thumbnail {
     animation: fadeIn 0.3s ease;
@@ -464,6 +486,7 @@ backlogEntries.forEach((entry, index) => {
 ```
 
 ### Enhancement 2: Hover effect on thumbnails
+
 ```css
 .backlog-entry:hover .backlog-thumbnail {
     opacity: 1;
@@ -473,6 +496,7 @@ backlogEntries.forEach((entry, index) => {
 ```
 
 ### Enhancement 3: Fallback icon for missing backgrounds
+
 ```css
 .backlog-thumbnail {
     background-color: rgba(0, 255, 255, 0.1);
@@ -530,6 +554,7 @@ Backlog thumbnails transform dialogue history from text-only list into visually 
 ---
 
 **DiZee, this completes the feedback stack. Five tasks total:**
+
 1. Dynamic version counter ✅
 2. Post-credits messages ✅  
 3. Rotating tips ✅

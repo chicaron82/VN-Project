@@ -7,28 +7,33 @@ The secret codes input in Settings now accepts **both** player secret codes AND 
 ## Available Dev Commands
 
 ### Testing & Debugging
+
 - `clearnotes` - Clear all collected notes (useful for testing note collection)
 - `reset848` - Reset loop version to 848 (default/fresh state)
 - `reset849` - Set loop version to 849 (first retry)
 - `clearall` - Clear ALL localStorage data (asks for confirmation)
 
 ### Feature Unlocking
+
 - `unlockskip` - Unlock the skip dialogue feature immediately
 - `skipintro` - Unlock the skip prologue feature (jump straight to routes)
 - `unlockcodes` - Unlock the secret codes section in settings
 - `unlockact1saves` - Enable saves in Act 1 (normally locked until Tori's route)
 
 ### Ending States
+
 - `succeeding` - Set game to SUCCEEDED state (True Ending - gold VERSION text)
 - `accepting` - Set game to ACCEPTED state (Digital Forever - cyan ETERNAL text)
 
 ### Tether Control (Tori's Route)
+
 - `freezetether` - Stop tether decay completely (for testing/accessibility)
 - `resumetether` - Resume tether decay
 - `settethermax` - Set tether to 100 (maximum)
 - `settether50` - Set tether to 50 (warning zone for testing)
 
 ### Discovery
+
 - `revealcodes` - Reveal all 7 secret codes in the settings UI
 - `devhelp` - Show list of all dev commands
 
@@ -53,11 +58,13 @@ The secret codes input in Settings now accepts **both** player secret codes AND 
 The tether control commands (`freezetether`, `resumetether`) serve dual purposes:
 
 **For Development:**
+
 - Test Tori's route scenes without time pressure
 - Debug specific dialogue branches
 - Screenshot scenes for documentation
 
 **For Players:**
+
 - Players with slower reading speeds can freeze tether to enjoy the story
 - Those who want to experience Tori's route without stress
 - Content creators who want to showcase scenes without rushing
@@ -77,6 +84,7 @@ The tether control commands (`freezetether`, `resumetether`) serve dual purposes
 ## Regular Secret Codes (for reference)
 
 These are the player-facing codes that count as discoveries:
+
 - `torigatchi` - The Reverse Door
 - `always3` - Storm Dragon Signature
 - `uv7crew` - Meet the 848 Crew (includes the v849 FAQ!)
@@ -96,6 +104,7 @@ Version 848 is NOT a build number — it's the **loop iteration count**.
 - There is no v849 — this is the loop that worked
 
 **Where players discover this:**
+
 1. `848` code - Full dramatic reveal with overlay
 2. `bootstrap` code - Timeline visualization + explanation
 3. `uv7crew` code - FAQ section addressing "When is v849?"

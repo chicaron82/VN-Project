@@ -7,6 +7,7 @@
 ## Summary
 
 Out of 4 files verified:
+
 - ✅ **1 file** - Already fully ported (skip)
 - ✅ **1 file** - Different purpose systems (keep both)
 - ⚠️ **1 file** - No V2 implementation (fresh port if needed)
@@ -24,6 +25,7 @@ Out of 4 files verified:
 **V2 File:** src/systems/ToriGatchiGateway.ts (existing)
 
 **Analysis:**
+
 - V2 ToriGatchiGateway is a **complete port** with excellent V1 parity
 - All mechanics preserved:
   - Feed, play, clean actions
@@ -46,6 +48,7 @@ Out of 4 files verified:
 **Status:** ✅ DIFFERENT SYSTEMS - KEEP BOTH
 
 **V1 File:** system/logger.js (67 lines)
+
 - Purpose: General-purpose logging utility
 - Features:
   - 4 log levels (DEBUG, INFO, WARN, ERROR)
@@ -55,6 +58,7 @@ Out of 4 files verified:
   - Used across V1 systems
 
 **V2 File:** src/utils/DebugLogger.ts (existing)
+
 - Purpose: GameConfig-dependent debug logging
 - Features:
   - GameConfig.DEBUG_MODE flag dependency
@@ -64,6 +68,7 @@ Out of 4 files verified:
 
 **Analysis:**
 These are **completely different systems** serving different purposes:
+
 - V1 Logger: Standalone, localStorage-based, general utility
 - V2 DebugLogger: GameConfig-dependent, specific use case
 
@@ -79,6 +84,7 @@ These are **completely different systems** serving different purposes:
 **V2 File:** None
 
 **Features in V1:**
+
 - html2canvas integration for screenshot capture
 - PNG download functionality
 - Clipboard copy support
@@ -86,11 +92,13 @@ These are **completely different systems** serving different purposes:
 - DOM element temporary hiding during capture
 
 **Analysis:**
+
 - V2 has **no screenshot functionality** at all
 - Would require fresh port if screenshot feature is desired
 - Depends on html2canvas library (not currently in V2 dependencies)
 
 **Decision:**
+
 - Not critical for core gameplay
 - Can be ported later if screenshot functionality is requested
 - Would be a nice-to-have feature but not blocking V2 completion
@@ -105,17 +113,20 @@ These are **completely different systems** serving different purposes:
 **V2 File:** src/controllers/MobileUXController.ts (existing, 90 lines)
 
 **V1 Features:**
+
 1. ✅ Swipe gesture handling (RIGHT: advance, LEFT: backlog, UP: hide UI)
 2. ✅ Double-tap fullscreen
 3. ⚠️ Scroll indicators for internal thought bubbles (MISSING in V2)
 
 **V2 Status Before Enhancement:**
+
 - ✅ EventBus-based swipe handling (cleaner than V1)
 - ✅ Double-tap fullscreen (same as V1)
 - ❌ No scroll indicators
 - ✅ Comment noted "Scroll indicators (future)"
 
 **Action Taken:**
+
 - ✅ Enhanced V2 with scroll indicator support from V1 lines 118-160
 - ✅ Added MutationObserver for .internal-bubble detection
 - ✅ Added dynamic scroll indicator (↓) creation
@@ -128,23 +139,27 @@ These are **completely different systems** serving different purposes:
 
 ## Impact on Phase 25 Plan
 
-### Original Plan:
+### Original Plan
+
 Port all 5 small files as Phase 25(a-g):
+
 1. directors-cut-controller.js
 2. mobile-ux.js
 3. gateway.js
 4. logger.js
 5. screenshot-tool.js
 
-### Actual Execution:
+### Actual Execution
 
 **Phase 25a:** ✅ Port DirectorsCutController (197→271 lines)
+
 - Fresh TypeScript port
 - Inline-styled overlay
 - 7 crew statements with full V1 parity
 - Integrated into main.ts
 
 **Phase 25b:** ✅ Enhance MobileUXController (90→160 lines)
+
 - Added scroll indicators from V1
 - MutationObserver pattern
 - Full V1 parity achieved
@@ -152,6 +167,7 @@ Port all 5 small files as Phase 25(a-g):
 **Phase 25c:** ✅ Document verification results (this file)
 
 **Skipped:**
+
 - ❌ gateway.js - Already ported as ToriGatchiGateway.ts
 - ❌ logger.js - Different system, keep both
 - ⚠️ screenshot-tool.js - Not critical, can port later if needed
@@ -162,11 +178,13 @@ Port all 5 small files as Phase 25(a-g):
 
 After Phase 25 completion, remaining V1 files to consider:
 
-### Never Ported (Low Priority):
+### Never Ported (Low Priority)
+
 - `screenshot-tool.js` (143 lines) - Optional feature
 - Various test files (already have V2 test suite)
 
-### Already Ported:
+### Already Ported
+
 - All core systems ✅
 - All controllers ✅
 - All UI components ✅
@@ -177,6 +195,7 @@ After Phase 25 completion, remaining V1 files to consider:
 ## Statistics
 
 **Phase 25 Completion:**
+
 - Files ported: 2 (DirectorsCutController, MobileUXController enhancement)
 - Lines added: ~150 (DirectorsCutController: 271, MobileUXController: +70)
 - Files analyzed: 4 (gateway, logger, screenshot, mobile-ux)
@@ -185,6 +204,7 @@ After Phase 25 completion, remaining V1 files to consider:
 - Optional features: 1 (screenshot-tool)
 
 **Overall V1→V2 Progress:**
+
 - Estimated completion: **~95%**
 - Core gameplay: **100%**
 - Optional features: **~90%** (screenshot-tool pending)

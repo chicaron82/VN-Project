@@ -1,14 +1,17 @@
 # Asset Optimization Guide
 
 ## Problem
+
 `menumobile.png` is 2.6MB, causing slow loads and retry loops on mobile/slow connections.
 
 ## Solution: Free Online Tools
 
 ### Option 1: TinyPNG (Recommended)
-**URL:** https://tinypng.com/
+
+**URL:** <https://tinypng.com/>
 
 **Steps:**
+
 1. Go to tinypng.com
 2. Drag and drop `menumobile.png`
 3. Wait for compression (usually 60-80% reduction)
@@ -20,9 +23,11 @@
 ---
 
 ### Option 2: Squoosh (Google's Tool)
-**URL:** https://squoosh.app/
+
+**URL:** <https://squoosh.app/>
 
 **Steps:**
+
 1. Go to squoosh.app
 2. Upload `menumobile.png`
 3. Select compression format:
@@ -36,9 +41,11 @@
 ---
 
 ### Option 3: Compress PNG (Batch Processing)
-**URL:** https://compresspng.com/
+
+**URL:** <https://compresspng.com/>
 
 **Steps:**
+
 1. Go to compresspng.com
 2. Upload multiple PNGs at once
 3. Download compressed ZIP
@@ -59,6 +66,7 @@
 ## After Optimization
 
 ### Test Loading
+
 1. Clear browser cache (Ctrl+Shift+Delete)
 2. Reload page
 3. Check DevTools Network tab
@@ -66,6 +74,7 @@
 5. Confirm faster load time
 
 ### Commit Changes
+
 ```bash
 git add assets/
 git commit -m "Optimize assets: compress menumobile.png and other large images"
@@ -78,12 +87,14 @@ git push
 
 If you want to use WebP (best compression), update CSS:
 
-### Before:
+### Before
+
 ```css
 background-image: url('assets/menumobile.png');
 ```
 
-### After:
+### After
+
 ```css
 background-image: url('assets/menumobile.webp');
 background-image: image-set(
@@ -93,6 +104,7 @@ background-image: image-set(
 ```
 
 This gives you:
+
 - WebP for modern browsers (~70% smaller)
 - PNG fallback for older browsers
 

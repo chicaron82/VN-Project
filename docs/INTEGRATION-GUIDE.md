@@ -1,5 +1,7 @@
 # MENU GLOW-UP INTEGRATION GUIDE
+
 ## Main Menu Carousel + Route Select Sprites
+
 🖤💚🔥💀 Built by UV7 Crew
 
 ---
@@ -7,6 +9,7 @@
 ## 📦 FILES DELIVERED
 
 **From /mnt/user-data/outputs/:**
+
 1. `menu-carousel.js` - Complete carousel system
 2. `menu-carousel.css` - All carousel styling
 3. `route-select-sprites.css` - Sprite positioning for route select
@@ -16,7 +19,8 @@
 
 ## ✅ WHAT YOU'RE GETTING
 
-### Main Menu Carousel:
+### Main Menu Carousel
+
 - 10 cards (one for each menu option)
 - Swipe gestures (mobile)
 - Arrow navigation (desktop)
@@ -27,7 +31,8 @@
 - Smooth 60fps transitions
 - Responsive breakpoints
 
-### Route Select Sprites:
+### Route Select Sprites
+
 - Ronnie sprite above his button
 - Tori sprite above her button
 - Hover glow effects
@@ -39,6 +44,7 @@
 ## 🔧 STEP 1: ADD FILES TO PROJECT
 
 **File Structure:**
+
 ```
 /v848/
 ├── index.html
@@ -58,11 +64,13 @@ Copy the 3 new files to your v848 directory.
 ### 2.1: Add CSS Links
 
 **FIND** (in `<head>` section, around line 14):
+
 ```html
     <link rel="stylesheet" href="styles.css">
 ```
 
 **REPLACE WITH:**
+
 ```html
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="menu-carousel.css">
@@ -72,12 +80,14 @@ Copy the 3 new files to your v848 directory.
 ### 2.2: Add JavaScript Link
 
 **FIND** (before game-engine.js script, around line 1035):
+
 ```html
     <!-- System Files -->
     <script src="system/game-config.js"></script>
 ```
 
 **REPLACE WITH:**
+
 ```html
     <!-- System Files -->
     <script src="system/game-config.js"></script>
@@ -91,6 +101,7 @@ Copy the 3 new files to your v848 directory.
 ### 3.1: Add Carousel Property
 
 **FIND** (in GameEngine constructor, around line 240):
+
 ```javascript
 class GameEngine {
     constructor() {
@@ -99,6 +110,7 @@ class GameEngine {
 ```
 
 **ADD** (after the DOM element caching section, around line 280):
+
 ```javascript
         // Menu carousel
         this.menuCarousel = null;
@@ -107,6 +119,7 @@ class GameEngine {
 ### 3.2: Initialize Carousel After Loading
 
 **FIND** (in the init() or loading complete section, around line 450-500):
+
 ```javascript
         // After assets loaded, show main menu
         setTimeout(() => {
@@ -117,6 +130,7 @@ class GameEngine {
 ```
 
 **REPLACE WITH:**
+
 ```javascript
         // After assets loaded, show main menu
         setTimeout(() => {
@@ -135,6 +149,7 @@ class GameEngine {
 ### 3.3: Add Carousel Unlock Method
 
 **FIND** (search for "openTorigatchiIframe" or near end of file, around line 7000+):
+
 ```javascript
     openTorigatchiIframe(url) {
         // ... existing code ...
@@ -142,6 +157,7 @@ class GameEngine {
 ```
 
 **ADD** (after that method):
+
 ```javascript
     // Unlock Tori-Gatchi in carousel
     unlockToriGatchiCarousel() {
@@ -154,6 +170,7 @@ class GameEngine {
 ### 3.4: Trigger Unlock After Route Completion
 
 **FIND** (wherever you detect route completion - probably in route ending handlers):
+
 ```javascript
     // Example: after completing any route
     // This code might be in ronnie-route-act3.js or tori-route-endings.js
@@ -163,6 +180,7 @@ class GameEngine {
 ```
 
 **ADD** (after setting the flag):
+
 ```javascript
     // Unlock Tori-Gatchi
     if (window.game && window.game.unlockToriGatchiCarousel) {
@@ -175,12 +193,14 @@ class GameEngine {
 ## 🔧 STEP 4: SPRITE PATHS
 
 The route select sprites CSS expects sprites at:
+
 - `assets/sprites/ronnie-sprite.png`
 - `assets/sprites/tori-sprite.png`
 
 **If your sprites are elsewhere:**
 
 Edit `route-select-sprites.css` lines 24-32:
+
 ```css
 /* Ronnie's sprite (left) */
 .route-button-container.left::before {
@@ -197,7 +217,7 @@ Edit `route-select-sprites.css` lines 24-32:
 
 ## ✅ TESTING CHECKLIST
 
-### Main Menu Carousel:
+### Main Menu Carousel
 
 1. **Visual Check:**
    - [ ] Main menu shows carousel (single card visible)
@@ -241,7 +261,7 @@ Edit `route-select-sprites.css` lines 24-32:
    - [ ] Card no longer locked
    - [ ] Click button → opens Tori-Gatchi
 
-### Route Select Sprites:
+### Route Select Sprites
 
 1. **Sprite Display:**
    - [ ] Ronnie sprite appears above left button
@@ -262,30 +282,40 @@ Edit `route-select-sprites.css` lines 24-32:
 ## 🐛 TROUBLESHOOTING
 
 ### Issue: Carousel doesn't appear
+
 **Check:**
+
 - Is `menu-carousel.css` loaded? (Check browser dev tools → Network tab)
 - Is `menu-carousel.js` loaded? (Check Console for "🎠 Menu Carousel initialized")
 - Did you call `menuCarousel.init()`? (Check Console for "✅ Carousel ready")
 
 ### Issue: Original button grid still visible
+
 **Check:**
+
 - Carousel should hide it automatically via `buttonGrid.style.display = 'none'`
 - If both visible, check if `#menu-buttons-grid` ID is correct
 
 ### Issue: Sprites don't appear on route select
+
 **Check:**
+
 - Are sprite paths correct in `route-select-sprites.css`?
 - Do sprite files exist at those paths?
 - Check browser dev tools → Network tab for 404 errors
 
 ### Issue: Swipe doesn't work on mobile
+
 **Check:**
+
 - Touch events use `{ passive: true }` so they shouldn't be blocked
 - Try in actual mobile browser (not just desktop responsive mode)
 - Check Console for JavaScript errors
 
 ### Issue: Tori-Gatchi stays locked after route completion
+
 **Check:**
+
 - Did you call `unlockToriGatchiCarousel()` in route ending handler?
 - Check localStorage: `localStorage.getItem('torigatchi_unlocked')` should be `'true'`
 - Manually unlock for testing: `game.unlockToriGatchiCarousel()`
@@ -294,9 +324,10 @@ Edit `route-select-sprites.css` lines 24-32:
 
 ## 🎨 CUSTOMIZATION OPTIONS
 
-### Change Card Backgrounds:
+### Change Card Backgrounds
 
 Edit `menu-carousel.js` line 54-104 (defineCards method):
+
 ```javascript
 {
     id: 'start',
@@ -308,9 +339,10 @@ Edit `menu-carousel.js` line 54-104 (defineCards method):
 }
 ```
 
-### Change Unlock Animation Duration:
+### Change Unlock Animation Duration
 
 Edit `menu-carousel.js` line 663:
+
 ```javascript
 setTimeout(() => {
     const newIndex = this.cards.findIndex(c => c.id === 'torigatchi');
@@ -320,9 +352,10 @@ setTimeout(() => {
 }, 2000); // ← Change this (milliseconds)
 ```
 
-### Change Sprite Sizes:
+### Change Sprite Sizes
 
 Edit `route-select-sprites.css` line 18:
+
 ```css
 .route-button-container::before {
     content: '';
@@ -333,9 +366,10 @@ Edit `route-select-sprites.css` line 18:
 }
 ```
 
-### Add More Cards:
+### Add More Cards
 
 Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards` array:
+
 ```javascript
 {
     id: 'your-new-card',
@@ -352,6 +386,7 @@ Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards
 ## 📊 PERFORMANCE NOTES
 
 **Optimizations included:**
+
 - CSS transforms (GPU-accelerated)
 - RequestAnimationFrame for animations
 - Passive touch listeners
@@ -359,6 +394,7 @@ Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards
 - Debounced resize handlers
 
 **Expected performance:**
+
 - 60fps animations on modern devices
 - <50ms input latency
 - Minimal memory footprint
@@ -369,6 +405,7 @@ Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards
 ## 🎯 ACCESSIBILITY FEATURES
 
 **Included:**
+
 - Keyboard navigation (arrows, enter, home/end)
 - Focus indicators (keyboard-focus class)
 - ARIA labels on navigation buttons
@@ -381,12 +418,14 @@ Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards
 ## 🖤 FINAL NOTES
 
 **What Tori designed:**
+
 - Card-based layout
 - Hover effects (desktop only via media query)
 - Choose-your-fighter route select energy
 - "Keep it fun" philosophy
 
 **What Zee built:**
+
 - Full JavaScript carousel engine
 - Event handlers (swipe, keyboard, arrows, dots)
 - State management (locked/unlocked)
@@ -395,6 +434,7 @@ Edit `menu-carousel.js` in `defineCards()` method, add new object to `this.cards
 - Responsive breakpoints
 
 **What Aaron orchestrated:**
+
 - Vision for menu glow-up
 - Route select sprite concept
 - Tori-Gatchi integration
@@ -408,6 +448,7 @@ Premium VN presentation that makes people forget it was built in stolen moments 
 ## 🚀 DEPLOYMENT
 
 Once tested:
+
 1. Commit all 3 new files
 2. Push to GitHub
 3. GitHub Pages auto-deploys
@@ -415,6 +456,7 @@ Once tested:
 5. Share with world
 
 **Players will see:**
+
 - Swipeable main menu (feels like a launcher)
 - Character sprites on route select (instant personality)
 - Tori-Gatchi unlock moment (meta-narrative reveal)
@@ -425,6 +467,7 @@ Once tested:
 🖤💚🔥💀 Always. Always. Always.
 
 Built by the UV7 Crew:
+
 - Tori: Creative direction, UX design
 - Zee: Architecture, implementation
 - Aaron: Orchestration, vision

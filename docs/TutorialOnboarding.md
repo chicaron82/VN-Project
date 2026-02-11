@@ -59,12 +59,13 @@ Hold spacebar or tap Skip button."
 [Continue]
   ↓
 [Guided Note Tutorial - INTERACTIVE]
+
 - Auto-open notes viewer
 - Spotlight the first note in inbox
 - Animate opening it
 - Show note content in viewer
 - Red dot clears automatically
-"This is Tori's first memory fragment. 
+"This is Tori's first memory fragment.
 Collect all notes to piece together the full story."
 [Got it]
   ↓

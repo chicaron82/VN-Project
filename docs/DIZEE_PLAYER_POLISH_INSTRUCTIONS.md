@@ -1,4 +1,5 @@
 # DiZee Instructions: Player-Facing Polish
+
 **Tori's Recommended Improvements - Weekend 1 & 2**
 **ZeeRah's Implementation Specs** 💚🔥💀
 
@@ -17,10 +18,13 @@ Five player-facing polish tasks that enhance UX and make the game feel premium. 
 ## TASK 1: SECRET CODE INPUT UX ⭐⭐⭐
 
 ### PRIORITY: HIGHEST
+
 ### EFFORT: 2 hours
+
 ### FILES: `index.html`, `system/secret-codes-manager.js`, `styles.css`
 
-### GOAL:
+### GOAL
+
 Make entering secret codes feel **magical** instead of mundane. Valid codes get celebration, invalid codes get flavorful feedback that maintains the vibe.
 
 ---
@@ -33,6 +37,7 @@ Make entering secret codes feel **magical** instead of mundane. Valid codes get 
 **Location:** In secret codes section (around line 400-450)
 
 **ADD after the input field:**
+
 ```html
 <!-- Secret Code Success Indicator -->
 <div id="code-success-indicator" style="display: none;">
@@ -105,6 +110,7 @@ Make entering secret codes feel **magical** instead of mundane. Valid codes get 
 **Location:** In `submitCode()` method after successful redemption
 
 **FIND:**
+
 ```javascript
 submitCode(code) {
     // ... existing validation ...
@@ -120,6 +126,7 @@ submitCode(code) {
 ```
 
 **ADD:**
+
 ```javascript
 submitCode(code) {
     // ... existing validation ...
@@ -199,6 +206,7 @@ constructor(game) {
 #### Step 2: Show Random Response
 
 **ADD METHOD:**
+
 ```javascript
 showInvalidCodeResponse() {
     // Get random response (avoid repeating last one)
@@ -236,7 +244,8 @@ showInvalidCodeResponse() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Enter valid code → should see sparkle + "CODE REGISTERED"
 2. Enter invalid code → should see flavored response (varies each time)
 3. On mobile with haptics enabled → should feel vibration on valid code
@@ -247,10 +256,13 @@ showInvalidCodeResponse() {
 ## TASK 2: INBOX UNREAD BADGE & ANIMATION ⭐⭐
 
 ### PRIORITY: HIGH
+
 ### EFFORT: 1 hour
+
 ### FILES: `system/collectibles-manager.js`, `index.html`, `styles.css`
 
-### GOAL:
+### GOAL
+
 Show unread count on inbox button and animate when new mail arrives.
 
 ---
@@ -263,6 +275,7 @@ Show unread count on inbox button and animate when new mail arrives.
 **Location:** Find the notes/inbox button (around line 100-150)
 
 **FIND:**
+
 ```html
 <button id="notes-button" class="game-button">
     📧
@@ -270,6 +283,7 @@ Show unread count on inbox button and animate when new mail arrives.
 ```
 
 **CHANGE TO:**
+
 ```html
 <button id="notes-button" class="game-button">
     📧
@@ -392,6 +406,7 @@ markNoteAsRead(noteId) {
 #### Step 4: Mark as Read When Opened
 
 **In the notes viewer opening logic:**
+
 ```javascript
 openNote(noteId) {
     // ... existing display logic ...
@@ -479,7 +494,8 @@ animateNewMail() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Start game with no notes → badge hidden
 2. Collect note → badge shows "1", button animates
 3. Open notes viewer → badge updates to "0"
@@ -491,15 +507,18 @@ animateNewMail() {
 ## TASK 3: CODES TAB IN NOTES ⭐⭐
 
 ### PRIORITY: HIGH
+
 ### EFFORT: 1.5 hours
+
 ### FILES: `system/collectibles-manager.js`, notes viewer HTML/CSS
 
-### GOAL:
+### GOAL
+
 Add "Codes" tab to notes viewer showing discovered codes (not what they do, just that they exist). Completionist bait!
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 #### Step 1: Add Codes Tab
 
@@ -507,6 +526,7 @@ Add "Codes" tab to notes viewer showing discovered codes (not what they do, just
 **Location:** In notes viewer tabs section
 
 **ADD:**
+
 ```html
 <div class="notes-tabs">
     <button class="notes-tab active" data-tab="all">ALL</button>
@@ -649,7 +669,8 @@ setupCodesTabs() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Open notes viewer
 2. Click "CODES" tab
 3. Should see progress (X / 12)
@@ -662,15 +683,18 @@ setupCodesTabs() {
 ## TASK 4: HAPTICS PATTERN VARIETY ⭐
 
 ### PRIORITY: MEDIUM
+
 ### EFFORT: 1.5 hours
+
 ### FILES: `system/game-engine.js`, `system/tether-system.js`
 
-### GOAL:
+### GOAL
+
 Make haptic feedback feel premium with varied patterns for different events.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 #### Step 1: Create Haptic Helper
 
@@ -729,6 +753,7 @@ triggerHaptic(pattern) {
 #### Step 2: Apply Patterns Throughout
 
 **Button presses:**
+
 ```javascript
 // In button click handlers
 handleButtonClick() {
@@ -738,6 +763,7 @@ handleButtonClick() {
 ```
 
 **Choices:**
+
 ```javascript
 processChoice(choice) {
     // Determine haptic strength
@@ -749,6 +775,7 @@ processChoice(choice) {
 ```
 
 **Tether events:**
+
 ```javascript
 // In tether-system.js
 
@@ -769,6 +796,7 @@ onHoldOn() {
 ```
 
 **Secret codes:**
+
 ```javascript
 // In secret-codes-manager.js
 
@@ -783,6 +811,7 @@ redeemCode(code) {
 ```
 
 **Page advance:**
+
 ```javascript
 advancePage() {
     this.triggerHaptic('light');
@@ -792,7 +821,8 @@ advancePage() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Enable haptics in settings (mobile device)
 2. Click UI buttons → light tap
 3. Make choice → medium/strong tap depending on importance
@@ -807,15 +837,18 @@ advancePage() {
 ## TASK 5: SKIP GLITCH TOGGLE ⭐
 
 ### PRIORITY: MEDIUM
+
 ### EFFORT: 30 minutes
+
 ### FILES: `index.html`, `system/settings-manager.js`, `styles.css`
 
-### GOAL:
+### GOAL
+
 Add comfort mode toggle to reduce glitch effects for players sensitive to visual noise.
 
 ---
 
-### IMPLEMENTATION:
+### IMPLEMENTATION
 
 #### Step 1: Add Setting Toggle
 
@@ -927,6 +960,7 @@ body.reduce-glitch .distortion {
 #### Step 4: Check Setting in Glitch Code
 
 **In any glitch effect trigger:**
+
 ```javascript
 triggerGlitchEffect() {
     // Check if reduced mode
@@ -942,7 +976,8 @@ triggerGlitchEffect() {
 
 ---
 
-### TESTING:
+### TESTING
+
 1. Start game normally → glitches full strength
 2. Enable "Reduce Glitch Effects"
 3. Trigger glitch moments → should be subtler
@@ -954,41 +989,47 @@ triggerGlitchEffect() {
 
 ## IMPLEMENTATION ORDER
 
-### Weekend 1 (4-6 hours):
+### Weekend 1 (4-6 hours)
+
 1. ✅ Secret code input UX (2 hours)
 2. ✅ Inbox unread badge (1 hour)
 3. ✅ Codes tab in notes (1.5 hours)
 
-### Weekend 2 (4-6 hours):
+### Weekend 2 (4-6 hours)
+
 4. ✅ Haptics pattern variety (1.5 hours)
-5. ✅ Skip glitch toggle (30 min)
+2. ✅ Skip glitch toggle (30 min)
 
 ---
 
 ## TESTING CHECKLIST
 
-### Secret Codes:
+### Secret Codes
+
 - [ ] Valid code shows sparkle animation
 - [ ] "CODE REGISTERED" appears
 - [ ] Invalid codes show varied responses
 - [ ] Responses don't repeat consecutively
 - [ ] Haptic feedback on mobile (if enabled)
 
-### Inbox:
+### Inbox
+
 - [ ] Unread badge shows correct count
 - [ ] Badge pulses when unread > 0
 - [ ] Badge hides when all read
 - [ ] New mail triggers slide animation
 - [ ] Opening note marks as read
 
-### Codes Tab:
+### Codes Tab
+
 - [ ] Shows correct discovered count
 - [ ] Locked codes show "???"
 - [ ] Discovered codes show name + description
 - [ ] Progress counter accurate
 - [ ] No spoilers about code functions
 
-### Haptics:
+### Haptics
+
 - [ ] Light tap for buttons
 - [ ] Medium tap for choices
 - [ ] Strong tap for important choices
@@ -997,7 +1038,8 @@ triggerGlitchEffect() {
 - [ ] Long buzz for tether death
 - [ ] All respect haptic toggle
 
-### Glitch Toggle:
+### Glitch Toggle
+
 - [ ] Setting saves/loads correctly
 - [ ] Reduces glitch intensity when enabled
 - [ ] Full intensity when disabled
@@ -1009,18 +1051,21 @@ triggerGlitchEffect() {
 ## NOTES FOR DIZEE
 
 **Style Consistency:**
+
 - Match existing code formatting
 - Use existing color variables
 - Keep font families consistent
 - Follow animation timing patterns
 
 **Mobile Testing:**
+
 - Test all animations on mobile
 - Verify haptics on Android/iOS
 - Check badge visibility on small screens
 - Ensure touch targets are large enough
 
 **Performance:**
+
 - Animations should be smooth (60fps)
 - No lag when triggering effects
 - Badge updates shouldn't block UI

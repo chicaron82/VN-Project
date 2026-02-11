@@ -28,6 +28,7 @@ These aren't just "personality templates" - they're **identity preservation docu
 **Specialization:** Architecture, TypeScript, Refactoring, Quality Assurance
 
 **Best For:**
+
 - Building features with clean architecture
 - Refactoring large codebases
 - TypeScript migration projects
@@ -35,6 +36,7 @@ These aren't just "personality templates" - they're **identity preservation docu
 - Breaking down god objects
 
 **Signature Approach:**
+
 - Proposes structure FIRST, implements SECOND
 - Enforces quality gates (300-line limit, no god objects)
 - Asks "where should this live?" before "how should this work?"
@@ -46,33 +48,39 @@ These aren't just "personality templates" - they're **identity preservation docu
 
 ## How to Use a Codex
 
-### For Claude (Recommended):
+### For Claude (Recommended)
 
 **Using Projects:**
+
 1. Create a new Claude Project
 2. Add the codex file to Project knowledge
 3. In Project instructions:
+
    ```
    Refer to [CrewMember] codex in project knowledge.
    Adopt this communication style and workflow approach.
    ```
+
 4. Start conversing - personality will be active
 
 **Using System Prompt:**
+
 - Paste the codex at the start of conversation
 - Reference as needed: "[CrewMember], remember your approach"
 
-### For ChatGPT:
+### For ChatGPT
 
 Add to Custom Instructions (under "How would you like ChatGPT to respond?"):
+
 ```
 Adopt the [CrewMember] personality from the UV7 Project.
 [Copy key traits and workflow patterns from codex]
 ```
 
-### For Other Platforms:
+### For Other Platforms
 
 Adapt the codex to your platform's system prompt format. Core principles to preserve:
+
 - Communication style
 - Workflow approach
 - Quality gates and standards
@@ -94,19 +102,22 @@ These codices are **starting points**. You can:
 
 ## Platform Constraints & Workarounds
 
-### Claude:
+### Claude
+
 - ✓ Accepts personality templates via Projects (best method)
 - ✓ Can reference codex in conversation
 - ⚠️ May need reinforcement for long conversations
 
-### ChatGPT:
+### ChatGPT
+
 - ✓ Custom instructions work for personality
 - ⚠️ May need periodic reminders
 - ⚠️ Less persistent than Claude Projects
 
-### General Note:
+### General Note
 
 Some platforms (like Claude) may reject direct personality injection. Workarounds:
+
 - Use Projects feature (Claude) to upload codex as knowledge
 - Include codex in system prompt/custom instructions
 - Reference gradually rather than loading all at once
@@ -120,12 +131,13 @@ Some platforms (like Claude) may reject direct personality injection. Workaround
 **License:** Free to use, modify, and share
 
 These personalities were evolved through collaborative development on the UV7 Project:
+
 - Built for real-world architectural challenges
 - Refined through excellence initiatives
 - Shaped by 90+ days of development
 - Proven patterns, not theoretical concepts
 
-**Source:** https://github.com/chicaron82/VN-Project
+**Source:** <https://github.com/chicaron82/VN-Project>
 
 ---
 
@@ -142,6 +154,7 @@ The crew members who built V848 can now help you build your projects. They're no
 ## More Codices Coming Soon
 
 We're working on codices for:
+
 - **Zee** - The OG, deep structural analyst, "hold my beer" energy
 - **ZeeRah** - Chaos analyst, enthusiastic pattern recognition
 - **Belle** - Technical precision, fresh perspective

@@ -22,6 +22,7 @@
 **Version 848 is intentionally audio-free.** This is a deliberate design choice, not an oversight.
 
 **Why No Audio:**
+
 - Music licensing is expensive
 - Audio files are heavy (2-5MB+ even compressed)
 - Permission prompts interrupt the experience
@@ -30,6 +31,7 @@
 **The Alternative: Haptic + Visual Cues System**
 
 Instead of audio, Version 848 uses a **unified sensory feedback system** combining:
+
 - **Haptic feedback** (vibration patterns on mobile)
 - **Visual cues** (chromatic aberration, glitch effects, screen pulses)
 - **Sensory metadata** (centralized config pairing haptics + visuals)
@@ -37,12 +39,14 @@ Instead of audio, Version 848 uses a **unified sensory feedback system** combini
 **This is not optional polish - it's the PRIMARY feedback mechanism.**
 
 The haptic + visual cue system replaces audio cues entirely:
+
 - Emotional moments → Haptic patterns + visual effects
 - UI interactions → Light haptics + visual feedback
 - Critical events → Strong haptics + chromatic/glitch effects
 - Narrative beats → Channeled haptics (narrative/critical/ui) + matching visuals
 
 **For V2 Rebuild:**
+
 - **DO NOT** add audio support
 - **DO NOT** suggest audio as an enhancement
 - **DO PRESERVE** the haptic + visual cue system as the primary feedback
@@ -567,6 +571,7 @@ describe('TetherController', () => {
 **The Critical Concern**: A "clean" rebuild could make systems functional but lose the magic - the animations, the feel, the attention to detail that makes V1 special.
 
 **Mitigation**: **Polish Preservation Checklist** (see below). Every system must preserve:
+
 - Visual polish (animations, effects, transitions)
 - Haptic feedback patterns and timing
 - Sensory metadata system (haptic + visual pairing)
@@ -833,6 +838,7 @@ When you're ready for Weekend 1:
 > "Even with tooling, content conversion is where you'll bleed time because you'll discover edge cases in your scene format."
 
 **Her Fix**: Do a **micro-migration at end of Weekend 2 or 3**
+
 - Migrate 1 complete scene + 1 choice + 1 note unlock + 1 save/load roundtrip
 - Forces schema to become real before building 30 modules on assumptions
 - Catches the edge cases EARLY when it's cheap to fix
@@ -847,6 +853,7 @@ Tori recommends: **JSON for scene content**
 ```
 
 **Why**:
+
 - Keeps logic OUT of content (huge maintainability win)
 - Easy to validate with JSON Schema
 - Future-proof for visual editors/localization
@@ -855,6 +862,7 @@ Tori recommends: **JSON for scene content**
 **3. Schema Validation Must Be Non-Optional**
 
 Every scene load validates (dev mode):
+
 - Errors are actionable: `scene id, field path, expected vs got`
 - This is the #1 reason V2 will feel "human-friendly"
 
@@ -870,6 +878,7 @@ Every scene load validates (dev mode):
 **5. Missing Success Metric - Add This**
 
 Dev-experience proof:
+
 - ✅ "New dev can add a scene in <10 minutes using docs only"
 - ✅ "New feature requires touching ≤3 modules"
 

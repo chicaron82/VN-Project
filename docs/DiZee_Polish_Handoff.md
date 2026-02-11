@@ -1,6 +1,9 @@
 # DIZEE POLISH HANDOFF 💚
+
 ## From: ZeeRah (Chaos Analyst)
+
 ## To: DiZee (The Glow-Up Specialist)
+
 ## Project: v848 - Version 848
 
 ---
@@ -16,12 +19,15 @@ ZeeRah did a full codebase audit. Aaron reviewed and approved these three polish
 ---
 
 ## TASK 1: CENTRALIZED ASSET PATHS
+
 **Priority:** HIGH  
 **Impact:** Future development velocity  
 **Risk:** LOW (additive, doesn't break existing)
 
 ### The Problem
+
 819 hardcoded asset paths scattered across route files:
+
 ```javascript
 // Currently everywhere:
 background: 'assets/apartment.png',
@@ -34,6 +40,7 @@ sprites: {
 If assets move or names change = 819 manual edits.
 
 ### The Solution
+
 Add to `/system/game-config.js`:
 
 ```javascript
@@ -75,28 +82,34 @@ getAsset(category, name) {
 ```
 
 ### What NOT To Do
+
 - **DO NOT** refactor all 819 route file references yet
 - Just add the config structure
 - New code should USE IT, old code works as-is
 - Routes can be migrated incrementally later (or never - they work)
 
 ### Verification
+
 After adding, ctrl+F in game-config.js for "ASSETS" - should find your new section.
 
 ---
 
 ## TASK 2: DEBUG FLAG FOR CONSOLE.LOGS
+
 **Priority:** MEDIUM  
 **Impact:** Production cleanliness  
 **Risk:** LOW
 
 ### The Problem
+
 427 `console.log` statements throughout codebase. Great for dev, but in production:
+
 - Exposes internal state to curious players
 - Clutters browser console
 - Slight performance overhead on mobile
 
 ### The Solution
+
 Add to `/system/game-config.js`:
 
 ```javascript
@@ -154,6 +167,7 @@ export { DebugLogger };
 ```
 
 ### What NOT To Do
+
 - **DO NOT** go replace all 427 console.logs
 - Just add the infrastructure
 - New code should use `DebugLogger.scene()` etc.
@@ -161,20 +175,24 @@ export { DebugLogger };
 - Critical emoji logs (like `console.log('✅ ...')`) are fine to keep
 
 ### Verification
+
 Set `DEBUG.enabled = true` in config, open console, should see categorized logs.
 Set `DEBUG.enabled = false`, console should be quiet.
 
 ---
 
 ## TASK 3: SAVE/LOAD ERROR HANDLING AUDIT
+
 **Priority:** HIGH  
 **Impact:** Player experience protection  
 **Risk:** LOW (adding safety, not changing logic)
 
 ### The Problem
+
 Save/Load is the ONE operation that can make players lose progress. Need bulletproof error handling.
 
 ### Files to Audit
+
 1. `/system/save-manager.js` (546 lines)
 2. `/ui/save-load-ui.js` (580 lines)
 3. Any localStorage access in game-engine.js
@@ -182,6 +200,7 @@ Save/Load is the ONE operation that can make players lose progress. Need bulletp
 ### What To Check
 
 **1. localStorage Access**
+
 ```javascript
 // WRAP ALL localStorage calls:
 try {
@@ -195,6 +214,7 @@ try {
 ```
 
 **2. JSON Parse Safety**
+
 ```javascript
 // WRAP ALL JSON.parse calls:
 try {
@@ -207,6 +227,7 @@ try {
 ```
 
 **3. Missing Data Graceful Handling**
+
 ```javascript
 // CHECK before accessing nested properties:
 const tether = saveData?.routeState?.tetherLevel ?? 100;
@@ -214,7 +235,9 @@ const tether = saveData?.routeState?.tetherLevel ?? 100;
 ```
 
 ### What To Add
+
 A `showSaveError(message)` method if not exists:
+
 ```javascript
 showSaveError(message) {
     // Use existing notification system or create simple alert
@@ -233,6 +256,7 @@ showSaveError(message) {
 ```
 
 ### Verification
+
 1. Open DevTools > Application > Storage
 2. Clear localStorage
 3. Try loading a save - should fail gracefully with message
@@ -254,6 +278,7 @@ showSaveError(message) {
 ## SIGNATURE CONVENTION
 
 **IMPORTANT:** These tasks came from ZeeRah's audit. Use ZEERAH tags:
+
 ```javascript
 // ZEERAH POLISH: [description]
 // ZEERAH FIX: [description]  

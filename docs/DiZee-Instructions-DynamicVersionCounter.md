@@ -1,6 +1,7 @@
 # DiZee Instructions: Dynamic Version Counter Implementation
 
 ## OVERVIEW
+
 Add dynamic text to main menu that changes based on loop status (succeeded/failed/attempting). Makes version number feel weighted and reactive to player's journey through attempts.
 
 **Design philosophy:** Version number isn't cosmetic - it's narrative. Each ending should update the menu to reflect what that version means.
@@ -14,6 +15,7 @@ Add dynamic text to main menu that changes based on loop status (succeeded/faile
 ### LOCATION: Inside `#main-menu-content` div (around line 100-120)
 
 **FIND THIS SECTION:**
+
 ```html
 <div id="main-menu-content">
     <h1>VERSION 848</h1>
@@ -102,6 +104,7 @@ Add dynamic text to main menu that changes based on loop status (succeeded/faile
 ### LOCATION: Find the `updateTitleScreen()` method (around line 2270-2290)
 
 **CURRENT CODE (approximately):**
+
 ```javascript
 updateTitleScreen() {
     // Update browser tab title
@@ -197,12 +200,14 @@ updateTitleScreen() {
 
 ## WHAT CHANGES
 
-### BEFORE:
+### BEFORE
+
 - Version number in title
 - Static subtitle that never changes
 - No visual indication of success/failure
 
-### AFTER:
+### AFTER
+
 - Version number in title (same)
 - **Subtitle changes based on ending achieved:**
   - Default: "My Wife Is in a Coma... and in the Code"
@@ -221,6 +226,7 @@ updateTitleScreen() {
 ## TESTING CHECKLIST
 
 ### Test 1: Fresh Start
+
 1. Clear localStorage (or open incognito)
 2. Load main menu
 3. **Expected:**
@@ -230,6 +236,7 @@ updateTitleScreen() {
    - Footer color: Faint white/gray
 
 ### Test 2: After True Ending
+
 1. Complete True Ending (body anchor path)
 2. Return to main menu
 3. **Expected:**
@@ -239,6 +246,7 @@ updateTitleScreen() {
    - Footer color: Soft cyan/green glow
 
 ### Test 3: After Bad Ending
+
 1. Complete Bad Ending (upload path)
 2. Version increments to 849
 3. Return to main menu
@@ -249,6 +257,7 @@ updateTitleScreen() {
    - Footer color: Soft red tint
 
 ### Test 4: After Digital Forever
+
 1. Complete Digital Forever ending (merge path)
 2. Return to main menu
 3. **Expected:**
@@ -258,6 +267,7 @@ updateTitleScreen() {
    - Footer color: Soft cyan/green glow
 
 ### Test 5: Mobile Responsiveness
+
 1. Test on mobile portrait (narrow screen)
 2. **Expected:**
    - Footer text smaller but readable
@@ -265,6 +275,7 @@ updateTitleScreen() {
    - Proper spacing above/below
 
 ### Test 6: Dev Command Reset
+
 1. Use console command: `game.resetVersion(848)`
 2. Refresh page
 3. **Expected:**
@@ -275,20 +286,24 @@ updateTitleScreen() {
 ## EDGE CASES HANDLED
 
 **Case 1: Elements not found in DOM**
+
 - Console warning logged
 - Game doesn't crash
 - Only affects menu text (doesn't break gameplay)
 
 **Case 2: Version increments multiple times**
+
 - Footer text adapts: "Version 850 - Attempt in progress"
 - Always shows current version number
 
 **Case 3: Player completes multiple endings**
+
 - Most recent `loopStatus` determines display
 - True Ending always shows "succeeded" state
 - Bad Ending increments version but can be reset with dev command
 
 **Case 4: Page refresh during gameplay**
+
 - `updateTitleScreen()` is called on game init
 - Always reflects current localStorage state
 - No stale text

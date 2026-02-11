@@ -1,4 +1,5 @@
 # 🔐 SECRET CODES & EASTER EGGS DOCUMENTATION
+>
 > **Version:** 848 Release Candidate
 > **Status:** Live & Active
 
@@ -7,6 +8,7 @@ This document outlines all player-discoverable secret codes, gameplay modifiers,
 ---
 
 ## 🔓 Lore Codes (Story Rewards)
+
 *These codes reveal backstory, lore insights, or special content. They are entered in the **Settings > Secret Codes** menu.*
 
 | Code | Reward Name | Effect / Description | Status |
@@ -24,6 +26,7 @@ This document outlines all player-discoverable secret codes, gameplay modifiers,
 ---
 
 ## ⚡ Utility Codes (Gameplay Modifiers)
+
 *These codes bypass specific game restrictions or modify mechanics. They are persistent once unlocked.*
 
 | Code | Reward Name | Effect / Description | Status |
@@ -35,6 +38,7 @@ This document outlines all player-discoverable secret codes, gameplay modifiers,
 ---
 
 ## 🎮 Hidden Interactions & Shortcuts
+
 *Triggers that do not use the standard code input field.*
 
 | Trigger | Name | Effect | Status |
@@ -45,6 +49,7 @@ This document outlines all player-discoverable secret codes, gameplay modifiers,
 ---
 
 ## 🔧 Dev / Debug Commands (Hidden)
+
 *For development and testing purposes only. Not intended for players.*
 
 - **`openconsole`**: Force open mobile debug console.
@@ -53,4 +58,3 @@ This document outlines all player-discoverable secret codes, gameplay modifiers,
 - **`unlockskip`**: unlocking the "Skip" button functionality.
 - **`revealcodes`**: Instantly unlocks/reveals all codes in the UI list.
 - **`nuke`**: **HARD RESET.** Wipes all localStorage and progress.
-

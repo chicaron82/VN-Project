@@ -19,6 +19,7 @@
 ## 1. Vertical Repositioning (Drag Up/Down)
 
 ### Desktop (Mouse)
+
 - [x] **Press and hold** grab handle for 300ms
 - [x] Handle shows dragging state (cyan glow, scales to 1.1x)
 - [x] **Drag up** toward top of screen
@@ -31,6 +32,7 @@
 - [x] **Release** - position saved
 
 ### Mobile/Touch
+
 - [x] **Press and hold** grab handle for 300ms
 - [x] Handle vibrates (if device supports haptic)
 - [x] **Drag finger up/down**
@@ -39,6 +41,7 @@
 - [ ] Constraints work (10%-90% range enforced)
 
 ### Persistence
+
 - [x] Reposition handle to 75% from top
 - [x] **Refresh page** (F5 or Ctrl+R)
 - [x] Handle returns to 75% position (localStorage working)
@@ -48,6 +51,7 @@
 ## 2. Side Flipping - Double-Tap Method
 
 ### Left → Right
+
 - [x] Handle starts on **left** side
 - [x] **Tap** grab handle once
 - [x] **Tap** again within 300ms (quick double-tap)
@@ -57,6 +61,7 @@
 - [ ] Sidebar toggle still works from right side
 
 ### Right → Left
+
 - [x] Handle currently on **right** side
 - [x] **Double-tap** grab handle
 - [x] Handle flips back to **left** side
@@ -64,6 +69,7 @@
 - [x] Heavy haptic feedback
 
 ### Timing Test
+
 - [ ] **Tap** once
 - [ ] **Wait 400ms** (longer than 300ms window)
 - [ ] **Tap** again
@@ -75,6 +81,7 @@
 ## 3. Side Flipping - Horizontal Drag Method
 
 ### Drag Left → Right
+
 - [x] Handle on **left** side
 - [x] **Press and hold** for 300ms
 - [x] **Drag horizontally toward right** side of screen
@@ -85,6 +92,7 @@
 - [x] Heavy haptic feedback
 
 ### Drag Right → Left
+
 - [x] Handle on **right** side
 - [x] **Press and hold** for 300ms
 - [x] **Drag horizontally toward left** side
@@ -93,6 +101,7 @@
 - [x] Handle flips to **left** side
 
 ### Below Threshold
+
 - [x] **Drag horizontally** but only 30% of screen width
 - [x] Green glow does NOT appear
 - [x] **Release**
@@ -104,6 +113,7 @@
 ## 4. Sidebar Integration
 
 ### Left Side Behavior
+
 - [ ] Handle on **left**, sidebar collapsed
 - [ ] **Click** grab handle (normal click, not drag)
 - [ ] Sidebar slides out from **left** edge
@@ -114,6 +124,7 @@
 - [ ] Handle returns to left edge (left: 0)
 
 ### Right Side Behavior
+
 - [ ] Flip handle to **right** side
 - [ ] **Click** grab handle
 - [ ] Sidebar slides out from **right** edge
@@ -129,6 +140,7 @@
 ## 5. Drag Direction Detection
 
 ### Horizontal vs Vertical Priority
+
 - [ ] **Drag diagonally** (more horizontal than vertical movement)
 - [ ] System detects **horizontal** drag
 - [ ] Crossing threshold logic applies (green glow if > 50%)
@@ -141,18 +153,21 @@
 ## 6. Visual Feedback States
 
 ### Normal State
+
 - [x] Cursor: `grab` (open hand icon)
 - [x] Background: Subtle cyan (rgba(0, 255, 255, 0.1))
 - [x] Border: 1px cyan outline
 - [x] Border radius: Rounded on edge away from screen edge
 
 ### Hover State (Desktop)
+
 - [x] Cursor: `grab`
 - [x] Background brightens slightly
 - [x] Width expands from 40px → 45px
 - [x] Smooth transition
 
 ### Dragging State
+
 - [x] Cursor: `grabbing` (closed hand icon)
 - [x] Background: Brighter cyan (rgba(0, 255, 255, 0.3))
 - [x] Border: Thicker/brighter cyan
@@ -162,6 +177,7 @@
 - [x] Transition: `none` (instant position updates)
 
 ### Crossing Threshold (Horizontal Drag)
+
 - [ ] Background: **Green** (rgba(0, 255, 0, 0.3))
 - [ ] Border: Green (rgba(0, 255, 0, 0.8))
 - [ ] Box shadow: Bright green glow (0 0 30px green)
@@ -173,6 +189,7 @@
 ## 7. Persistence & Reset
 
 ### localStorage Saving
+
 - [x] Reposition handle to 25% from top, right side
 - [x] Verify `grabHandlePosition` key exists
 - [x] Value contains `{"topPercent":25,"side":"right","timestamp":...}`
@@ -180,6 +197,7 @@
 - [x] Handle returns to 25% from top, right side
 
 ### Reset to Default (via DevTools)
+
 - [ ] Open browser console (F12)
 - [ ] Type: `game.grabHandleRepositioner.resetToDefault()`
 - [ ] Press Enter
@@ -191,6 +209,7 @@
 ## 8. Edge Cases & Error Handling
 
 ### Missing Elements
+
 - [ ] Open DevTools → Elements
 - [ ] Delete `#sidebar-toggle` element from DOM
 - [ ] **Refresh page**
@@ -198,6 +217,7 @@
 - [ ] Repositioner fails gracefully (console warning only)
 
 ### Invalid localStorage
+
 - [ ] Open DevTools → Application → localStorage
 - [ ] Edit `grabHandlePosition` to invalid JSON: `"broken{json"`
 - [ ] **Refresh page**
@@ -205,6 +225,7 @@
 - [ ] No JavaScript errors
 
 ### Extreme Viewport Sizes
+
 - [ ] **Resize browser** to very narrow (400px width)
 - [ ] Horizontal drag threshold still at 50% (200px)
 - [ ] Flipping works correctly
@@ -213,6 +234,7 @@
 - [ ] Flipping still works
 
 ### Mobile Landscape
+
 - [x] Rotate mobile device to landscape
 - [x] Grab handle repositioning still works
 - [x] Touch events function correctly
@@ -225,14 +247,17 @@
 **Note:** Requires physical mobile device with vibration support
 
 ### Light Haptic
+
 - [x] Reposition handle vertically and **release**
 - [x] Feel **short single vibration** (10ms)
 
 ### Medium Haptic
+
 - [x] **Press and hold** to start drag
 - [x] Feel **medium vibration** (20ms) when drag starts
 
 ### Heavy Haptic (Double-Pulse)
+
 - [x] **Double-tap** to flip sides
 - [x] Feel **double-pulse** pattern: buzz-pause-buzz (30ms, 10ms, 30ms)
 - [x] OR **Drag horizontally** past threshold and release
@@ -243,18 +268,21 @@
 ## 10. Performance & Responsiveness
 
 ### Smooth Dragging
+
 - [x] Drag handle up/down rapidly
 - [ ] Position updates smoothly without lag
 - [ ] No jittering or stuttering
 - [ ] Frame rate stays smooth (≥30 FPS)
 
 ### Quick Flipping
+
 - [ ] Flip side via double-tap 5 times rapidly
 - [ ] Each flip completes before next starts
 - [ ] No race conditions or visual glitches
 - [ ] Animations don't overlap
 
 ### Prevent Click When Dragging
+
 - [ ] **Press and hold** grab handle
 - [ ] **Drag** slightly (vertical or horizontal)
 - [ ] **Release**
@@ -266,27 +294,32 @@
 ## 11. Cross-Browser Testing
 
 ### Chrome/Edge (Chromium)
+
 - [x] All features work
 - [ ] Haptic API available
 - [x] Smooth animations
 
 ### Firefox
+
 - [ ] All features work
 - [ ] Haptic API may not be available (expected)
 - [ ] Visual feedback still works
 
 ### Safari (Desktop)
+
 - [ ] All features work
 - [ ] Check border-radius rendering
 - [ ] Transform animations smooth
 
 ### Safari (iOS)
+
 - [ ] Touch events work
 - [ ] Haptic feedback works
 - [ ] Double-tap detection accurate
 - [ ] No scroll interference
 
 ### Chrome (Android)
+
 - [x] Touch events work
 - [x] Haptic feedback works
 - [x] Horizontal drag threshold detection
@@ -297,12 +330,14 @@
 ## 12. Accessibility
 
 ### Keyboard Navigation
+
 - [ ] **Tab** to grab handle
 - [ ] Handle receives focus (outline visible)
 - [ ] **Enter** or **Space** opens/closes sidebar
 - [ ] **Arrow keys** - (Not implemented, expected behavior)
 
 ### Screen Reader
+
 - [ ] Focus grab handle
 - [ ] Screen reader announces element (e.g., "Sidebar toggle button")
 - [ ] State changes announced when sidebar opens/closes
@@ -316,17 +351,20 @@
 **Failed:** _____
 **Blocked:** _____
 
-### Critical Issues Found:
+### Critical Issues Found
+
 1. ____________________________________________
 2. ____________________________________________
 3. ____________________________________________
 
-### Minor Issues Found:
+### Minor Issues Found
+
 1. ____________________________________________
 2. ____________________________________________
 3. ____________________________________________
 
-### Notes:
+### Notes
+
 _________________________________________________
 _________________________________________________
 _________________________________________________

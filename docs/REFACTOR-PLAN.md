@@ -26,22 +26,26 @@ Phase 26 revealed accumulated technical debt: multiple notification systems doin
 ### Migration Steps
 
 #### Step 1: Remove AchievementToast
+
 - NotificationRail already handles `achievement:unlocked` with better UI
 - Remove import and instantiation from main.ts
 - Delete `AchievementToast.ts`
 
 #### Step 2: Migrate ToastNotification callers to NotificationRail
+
 - Search for `toastNotification.show()` calls in main.ts
 - Replace with `eventBus.emit('notification:show', {...})`
 - Remove ToastNotification import and instantiation
 - Keep `ToastNotification.ts` for now (might be used elsewhere)
 
 #### Step 3: Deprecate StatusNotificationController
+
 - The `showConfirmation()` method is valuable - move to a `ConfirmationDialog` utility
 - Status bar toast functionality → NotificationRail
 - Keep enabled/disabled state management concept
 
 #### Step 4: Add backwards-compatible convenience methods
+
 - Add `showSave()`, `showError()`, etc. to NotificationRail
 - Or create a thin `NotificationManager` wrapper
 

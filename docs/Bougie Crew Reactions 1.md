@@ -753,25 +753,29 @@ onTouchMove = (e) => {
 
 ### **Phase 1: Basic Tracking (2 hours)**
 
-- ✅ Touch event listeners
+* ✅ Touch event listeners
+
 * ✅ Indicator follows finger
 * ✅ Threshold-based commit/cancel
 
 ### **Phase 2: Content Panning (2 hours)**
 
-- ✅ Panels slide with swipe
+* ✅ Panels slide with swipe
+
 * ✅ Preview next/prev content
 * ✅ Snap to position on release
 
 ### **Phase 3: Spring Physics (1 hour)**
 
-- ✅ Bouncy easing on release
+* ✅ Bouncy easing on release
+
 * ✅ Velocity-based momentum
 * ✅ Premium feel
 
 ### **Phase 4: Polish (1 hour)**
 
-- ✅ Edge case handling (first/last tab)
+* ✅ Edge case handling (first/last tab)
+
 * ✅ Performance optimization
 * ✅ Accessibility (keyboard still works)
 
@@ -798,6 +802,7 @@ onTouchMove = (e) => {
 **You're ~40% there.**
 
 **Just need to add:**
+
 * Real-time indicator tracking
 * Content panning
 * Spring physics
@@ -848,12 +853,14 @@ if (newIndex < 0 || newIndex >= this.tabs.length) {
 **Absolutely.**
 
 **You have:**
+
 * ✅ Existing swipe detection
 * ✅ Tab state management
 * ✅ Panel system
 * ✅ CSS transforms ready
 
 **You need:**
+
 * 6 hours of implementation
 * Touch event refinement
 * Real-time indicator tracking
@@ -908,6 +915,7 @@ if (newIndex < 0 || newIndex >= this.tabs.length) {
 **Want me to write the complete `TabSwipeController.js` implementation?**
 
 I can give you the full file with:
+
 * Touch tracking
 * Indicator animation
 * Content panning

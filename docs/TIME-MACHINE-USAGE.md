@@ -22,7 +22,9 @@ this.timeMachine = new TimeMachineManager(this, {
 ## Core Concepts
 
 ### 1. **Snapshots**
+
 A snapshot captures a moment in time:
+
 - Route/Scene/Page position
 - Tether value
 - Flags (story state)
@@ -30,14 +32,18 @@ A snapshot captures a moment in time:
 - Narrative metadata (corrupted, burned, locked, etc.)
 
 ### 2. **Priorities**
+
 Snapshots have priorities for smart pruning:
+
 - `'low'` - Pruned first when backlog fills
 - `'normal'` - Standard priority (default)
 - `'high'` - Kept during pruning
 - `'anchor'` - Never pruned (endings, major beats)
 
 ### 3. **Narrative States**
+
 Snapshots can be marked with special states:
+
 - **Corrupted**: Despair/Echo tainted (shows glitch UI)
 - **Burned**: Unreachable - "you can never return"
 - **Locked**: Hard block - never jumpable
@@ -50,12 +56,14 @@ Snapshots can be marked with special states:
 ### Adding Snapshots
 
 **Every scene/dialogue page:**
+
 ```js
 // In displayDialoguePage(), displayScene(), etc.
 this.game.timeMachine.addCurrentState();
 ```
 
 **Major story beats:**
+
 ```js
 // Label important moments
 this.game.timeMachine.addCurrentState('[Echo Merge]', 'anchor');
@@ -65,6 +73,7 @@ this.game.timeMachine.addCurrentState('Ronnie Act 2 Start', 'high');
 ### Jumping to Snapshots
 
 **From UI (backlog menu):**
+
 ```js
 const entries = this.game.timeMachine.getEntries();
 
@@ -94,6 +103,7 @@ entries.forEach(entry => {
 ```
 
 **Dev console jump (ignoring rules):**
+
 ```js
 // Jump to any snapshot, bypassing all locks
 await game.timeMachine.jumpTo(entryId, { ignoreRules: true });
@@ -130,6 +140,7 @@ this.game.timeMachine.corruptEntriesWhere(
 ```
 
 **Corruption modes:**
+
 - `'despair'` - Despair tainted
 - `'echo'` - Echo interference
 - `'timeline-break'` - Reality fracture
@@ -166,11 +177,13 @@ if (insane) {
 The Time Machine Manager integrates with your visual cue system:
 
 **Successful jump:**
+
 ```js
 this.game.triggerSensoryFeedback('timelineGlitch', null, 'Time Machine jump');
 ```
 
 **Blocked jump:**
+
 ```js
 // Gentle denial for normal blocks
 this.game.triggerSensoryFeedback('denied', null, 'Time Machine jump denied');
@@ -192,6 +205,7 @@ game.timeMachine.inspect();
 ```
 
 Output:
+
 ```
 ⏰ TIME MACHINE INSPECTOR
 Total entries: 45/200
@@ -242,6 +256,7 @@ When the backlog reaches 200 entries, smart pruning activates:
 4. **Prune first:** Low priority
 
 Example:
+
 ```js
 // Mark tutorial dialogue as low priority
 this.game.timeMachine.addCurrentState('Tutorial Page 3', 'low');
@@ -258,12 +273,14 @@ The Time Machine Manager can coexist with the old backlog system. To migrate:
 
 1. **Keep old backlog for UI display** (for now)
 2. **Start recording to Time Machine:**
+
    ```js
    // In displayDialoguePage():
    if (this.timeMachine) {
        this.timeMachine.addCurrentState();
    }
    ```
+
 3. **Gradually migrate UI** to read from `timeMachine.getEntries()`
 4. **Remove old backlog** once migration is complete
 
@@ -337,6 +354,7 @@ this.game.timeMachine.corruptEntriesWhere(
 ```
 
 UI shows corrupted entries with:
+
 - Glitched font
 - Partial redactions
 - Scrambled timestamps
@@ -345,6 +363,7 @@ UI shows corrupted entries with:
 ### Time Decay (Insane Mode)
 
 Already implemented in `canJumpTo()`:
+
 - Normal mode: Can jump to any snapshot (unless burned/locked)
 - Insane mode: Can only jump to last 2 snapshots
 - Creates feeling: "The past is slipping away..."
@@ -354,12 +373,14 @@ Already implemented in `canJumpTo()`:
 ## Architecture Notes
 
 The Time Machine Manager is the **single source of truth** for:
+
 - Timeline state
 - Jump permissions
 - Narrative rules
 - Pruning logic
 
 **Benefits:**
+
 - No scattered backlog arrays
 - Easy to debug "why can't I jump here?"
 - Narrative-first API (burn, corrupt, lock)
@@ -367,6 +388,7 @@ The Time Machine Manager is the **single source of truth** for:
 - Dev-friendly (ignoreRules flag for testing)
 
 **Key Methods:**
+
 - `addCurrentState(label, priority)` - Record snapshot
 - `jumpTo(entryId, options)` - Attempt jump
 - `canJumpTo(entry, options)` - Check permissions

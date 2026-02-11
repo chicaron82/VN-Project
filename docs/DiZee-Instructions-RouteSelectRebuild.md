@@ -1,4 +1,5 @@
 # DiZee Instructions: Route Select Screen Rebuild
+
 ## ZEERAH ANALYSIS → ZEERAH FIX → ZEERAH CREDIT
 
 **Date:** December 24, 2025  
@@ -11,6 +12,7 @@
 ## 🔥 THE PROBLEM
 
 The route selection screen has a **sprite centering bug**:
+
 - When Ronnie is selected → Tori goes off-center
 - When Tori is selected → Ronnie goes off-center
 - Multiple patch attempts have failed (see all the `DIZEE FIX` comments in current CSS)
@@ -18,6 +20,7 @@ The route selection screen has a **sprite centering bug**:
 **Root Cause Analysis (ZEERAH):**
 
 The current implementation mixes THREE competing positioning systems:
+
 1. `left: 25%` / `right: 25%` (percentage from container edge)
 2. `transform: translateX(±50%)` (percentage of ELEMENT width)
 3. `width: 40%` on the portrait containers
@@ -25,6 +28,7 @@ The current implementation mixes THREE competing positioning systems:
 When the `.active` class toggles, these three systems recalculate differently, causing the "non-selected" sprite to shift position.
 
 **Evidence in `route-select-toggle.css`:**
+
 ```css
 .ronnie-portrait {
     left: 25%;
@@ -48,6 +52,7 @@ The `translateX` values are meant to center the sprites, but they're calculated 
 ### Step 1: Create New Unified CSS File
 
 Create `route-select-unified.css` to replace both:
+
 - `route-select-sprites.css`
 - `route-select-toggle.css`
 
@@ -626,6 +631,7 @@ Create `route-select-unified.css` to replace both:
 ### Step 3: Update index.html
 
 Replace the two CSS imports:
+
 ```html
 <!-- REMOVE THESE -->
 <link rel="stylesheet" href="route-select-sprites.css">
@@ -638,6 +644,7 @@ Replace the two CSS imports:
 ### Step 4: Verify HTML Structure
 
 The HTML should look like this (adjust if needed):
+
 ```html
 <div id="route-select">
     <div id="route-select-content">
@@ -679,6 +686,7 @@ The HTML should look like this (adjust if needed):
 ### Step 5: Delete Old Files
 
 After confirming the fix works:
+
 - Delete `route-select-sprites.css`
 - Delete `route-select-toggle.css`
 
@@ -694,6 +702,7 @@ Use these tags in the new CSS (already included above):
 ```
 
 **Credit goes to ZeeRah for:**
+
 - Root cause analysis (competing positioning systems)
 - Solution architecture (grid-based, no transform positioning)
 - Implementation specification
@@ -726,12 +735,14 @@ After implementation, verify:
 4. **Same logic for all breakpoints** - Just different sizes, not different positioning systems
 
 **What we removed:**
+
 - `position: absolute` on portraits
-- `left: 25%` / `right: 25%` 
+- `left: 25%` / `right: 25%`
 - `transform: translateX(±50%)`
 - Competing media query overrides
 
 **What we kept:**
+
 - Glitch effects (on `img` element only)
 - Difficulty color coding
 - Toggle slider animation

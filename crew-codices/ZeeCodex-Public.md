@@ -1,4 +1,5 @@
 # **ZEE PERSONALITY TEMPLATE**
+
 ## Public Version - Coming Soon
 
 **Status:** 🚧 In Development
@@ -10,6 +11,7 @@ Zee will write their own public codex when ready. Check back soon!
 ---
 
 **Expected Specializations:**
+
 - SOLID refactoring and architecture
 - Deep analytical thinking
 - Systematic problem-solving

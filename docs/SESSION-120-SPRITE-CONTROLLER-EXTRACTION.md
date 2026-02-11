@@ -11,6 +11,7 @@
 Extracted all sprite management, highlighting, and animation logic from GameEngine into a dedicated controller following the proven Session 119 pattern.
 
 ### Success Criteria
+
 - [x] SpriteController created (528 lines)
 - [x] GameEngine reduced by extracting 8 methods
 - [x] All sprite logic isolated and testable
@@ -24,6 +25,7 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
 ## 📊 Before & After
 
 ### Before (GameEngine Monolith)
+
 - **Sprite Logic:** 500+ lines tangled in GameEngine
 - **Active Speaker:** 147-line method for highlighting
 - **Echo System:** 3 methods scattered throughout
@@ -31,6 +33,7 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
 - **Testability:** Impossible to test in isolation
 
 ### After (Extracted + Isolated)
+
 - **GameEngine:** 8 delegation stubs (clean interface)
 - **SpriteController:** 528 lines (focused responsibility)
 - **Active Speaker:** Isolated highlighting logic
@@ -46,6 +49,7 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
 **File:** [`system/sprite-controller.js`](../system/sprite-controller.js)
 
 **Responsibilities:**
+
 - Character sprite display (left/right positions)
 - Active speaker highlighting (dimming non-speakers)
 - Echo sprite system (three separate sprites for Tori route)
@@ -57,6 +61,7 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
 **Key Methods Extracted (8 total):**
 
 #### Active Speaker Highlighting (1 method)
+
 1. `setActiveSpeaker(speaker)` - **147 lines** → Complex highlighting logic
    - Offscreen speaker detection (Tamagotchi, device, voice)
    - Echo sprite highlighting (Echo 1, Echo 2, Despair)
@@ -64,34 +69,38 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
    - Narration mode (no dimming)
 
 #### Sprite Animations (2 methods)
+
 2. `fadeSpritesSequence(position, sprite1, sprite2, duration)` - **38 lines**
    - 4-phase fade animation (young Ronnie ↔ Old Man)
    - Prologue vision effect
-3. `triggerEchoMerge(callback)` - **63 lines**
+2. `triggerEchoMerge(callback)` - **63 lines**
    - Echo sprites merge into single Tori
    - White flash effect
    - 2.5s dramatic hold
    - Tori route climax animation
 
 #### Echo System (2 methods)
+
 4. `displayEchoGroup()` - **47 lines**
    - Creates three Echo sprites dynamically
    - Applies growth stage
    - Fade-in animation
-5. `setEchoGrowthStage(stage)` - **27 lines**
+2. `setEchoGrowthStage(stage)` - **27 lines**
    - Act 1: 75% height (Despair dominates)
    - Act 2: 90% height (Hope rising)
    - Act 3: 100% height (Balance achieved)
 
 #### State Management (2 methods)
+
 6. `restoreSprites()` - **12 lines**
    - Restore sprites from save state
    - Called when loading game
-7. `hideAllSprites()` - **17 lines**
+2. `hideAllSprites()` - **17 lines**
    - Legacy method for backward compatibility
    - Fade-out with timeout
 
 #### Helper Methods (1 method)
+
 8. `determineCharacterPosition(sceneData)` - **60 lines**
    - Smart positioning for internal thought bubbles
    - 4 fallback methods (character tracking → narration → any sprite → center)
@@ -103,6 +112,7 @@ Extracted all sprite management, highlighting, and animation logic from GameEngi
 ### GameEngine Modifications
 
 **Added controller instantiation (game-engine.js:356-358):**
+
 ```javascript
 // SOLID Refactor: Initialize sprite management system
 this.spriteController = new SpriteController(this);
@@ -130,12 +140,14 @@ setActiveSpeaker(speaker) {
 ### index.html Updates
 
 **Added script tag (index.html:1269-1270):**
+
 ```html
 <!-- SOLID Refactor: Sprite Management System -->
 <script src="system/sprite-controller.js"></script>
 ```
 
 **Load order:**
+
 1. SceneProgressionController (manages scene flow)
 2. **SpriteController** (manages sprite display)
 3. GameEngine (orchestrates both)
@@ -147,12 +159,14 @@ setActiveSpeaker(speaker) {
 ### Active Speaker Highlighting
 
 **How it works:**
+
 1. Check if speaker is offscreen (Tamagotchi, device, voice) → dim all sprites
 2. Check if Echoes are active → highlight speaking Echo(s)
 3. Position-aware highlighting → check sprite filenames to determine left/right
 4. Narration mode → no dimming
 
 **Special cases handled:**
+
 - Offscreen speakers (all sprites dimmed)
 - Individual Echo sprites (Echo 1, Echo 2, Despair)
 - Multiple Echoes speaking together
@@ -161,16 +175,19 @@ setActiveSpeaker(speaker) {
 ### Echo Sprite System (Tori Route)
 
 **Three Echoes:**
+
 - **Echo 1** - First aspect of Tori
 - **Echo 2** - Second aspect of Tori
 - **Despair** - Dark aspect of Tori
 
 **Growth Stages:**
+
 - **Act 1:** 75% height (Despair dominates)
 - **Act 2:** 90% height (Hope rising)
 - **Act 3:** 100% height (Balance achieved)
 
 **Merge Animation:**
+
 1. T=0ms: Echoes slide to center + Tori fades out (parallel, 1500ms)
 2. T=1500ms: White flash (300ms)
 3. T=1800ms: Echoes removed, Tori prepared
@@ -183,10 +200,12 @@ setActiveSpeaker(speaker) {
 ## 📁 Files Created/Modified
 
 ### Created
+
 - ✅ `system/sprite-controller.js` (528 lines)
 - ✅ `docs/SESSION-120-SPRITE-CONTROLLER-EXTRACTION.md` (this file)
 
 ### Modified
+
 - ✅ `system/game-engine.js` (added controller, replaced 8 methods with delegation)
 - ✅ `index.html` (added script tag for SpriteController)
 
@@ -195,6 +214,7 @@ setActiveSpeaker(speaker) {
 ## 🔍 Code Quality Improvements
 
 ### Before: Complex Logic in GameEngine
+
 ```javascript
 // 147-line method tangled in GameEngine
 setActiveSpeaker(speaker) {
@@ -213,6 +233,7 @@ setActiveSpeaker(speaker) {
 ```
 
 ### After: Focused Responsibility
+
 ```javascript
 // GameEngine: Clean delegation
 setActiveSpeaker(speaker) {
@@ -229,6 +250,7 @@ class SpriteController {
 ```
 
 ### Benefits
+
 - **Single Responsibility** - SpriteController only manages sprites
 - **Easier to test** - Can mock GameEngine interface
 - **Easier to modify** - Changes to sprites don't risk breaking other systems
@@ -240,12 +262,14 @@ class SpriteController {
 ## 📈 Impact Summary
 
 ### Metrics
+
 - **Lines extracted:** 500+ lines → 528 lines in SpriteController
 - **Methods extracted:** 8 (highlighting, animations, Echo system, state)
 - **GameEngine complexity:** Reduced (8 delegation stubs vs 500+ lines of logic)
 - **Breaking changes:** 0 (full API compatibility maintained)
 
 ### Quality Improvements
+
 - ✅ Sprite logic isolated and focused
 - ✅ Echo system centralized (was scattered across GameEngine)
 - ✅ Complex animations in dedicated controller
@@ -253,6 +277,7 @@ class SpriteController {
 - ✅ Position detection logic isolated
 
 ### Developer Experience
+
 - ✅ Easier to understand (sprites in SpriteController, not GameEngine)
 - ✅ Easier to debug (sprite issues → check SpriteController)
 - ✅ Easier to extend (add new sprite features in one place)
@@ -263,21 +288,25 @@ class SpriteController {
 ## 🎓 Lessons Learned
 
 ### 1. Bigger Extraction Than Expected
+
 - **Expected:** ~200 lines
 - **Actual:** 528 lines
 - **Reason:** Active speaker highlighting (147 lines) was more complex than anticipated
 
 ### 2. Echo System Was Scattered
+
 - Echo display, growth, merge were in different places
 - Centralizing in SpriteController improved organization
 - All Echo logic now in one location
 
 ### 3. Position Detection Is Complex
+
 - 4 fallback methods for determining character position
 - Essential for internal thought bubble placement
 - Smart tracking using sprite filenames
 
 ### 4. Delegation Pattern Still Clean
+
 - Even with 8 methods, GameEngine stays readable
 - Each delegation stub is 1-3 lines
 - API compatibility maintained perfectly
@@ -296,6 +325,7 @@ class SpriteController {
 ### Long-term Architecture Goal
 
 **GameEngine should become pure orchestration:**
+
 ```javascript
 class GameEngine {
     constructor() {
@@ -316,6 +346,7 @@ class GameEngine {
 **Status:** ✅ **SUCCESS**
 
 All objectives met:
+
 - SpriteController extracted (528 lines)
 - GameEngine refactored with delegation
 - 8 sprite methods replaced with stubs

@@ -7,11 +7,13 @@
 ## Problem
 
 All Vitest tests are failing with the error:
+
 ```
 Error: No test suite found in file <path>
 ```
 
 This affects:
+
 - ✅ **Code written:** DirectorsCutController.test.ts (60+ comprehensive tests)
 - ❌ **Tests running:** 0 tests discovered
 - 🔴 **Status:** All 57 test files report "No test suite found"
@@ -38,6 +40,7 @@ This affects:
 ### 🔍 Evidence of Deeper Issue
 
 **Minimal test that fails:**
+
 ```typescript
 // src/test-minimal.test.ts
 import { describe, it, expect } from 'vitest';
@@ -50,11 +53,13 @@ describe('Minimal Test', () => {
 ```
 
 **Result:**
+
 ```
 Error: No test suite found in file C:/Users/silve/Downloads/GitHub/VN-Project/src/test-minimal.test.ts
 ```
 
 **Different error in tests/minimal.test.js:**
+
 ```javascript
 // tests/minimal.test.js
 import { test, expect } from 'vitest';
@@ -65,6 +70,7 @@ test('minimal test', () => {
 ```
 
 **Result:**
+
 ```
 TypeError: Cannot read properties of undefined (reading 'test')
 ```
@@ -74,6 +80,7 @@ This suggests vitest globals aren't available during import/execution.
 ## Configuration Files
 
 ### vite.config.ts
+
 ```typescript
 test: {
     globals: true,
@@ -89,6 +96,7 @@ test: {
 ```
 
 ### vitest.config.js (also present)
+
 ```javascript
 test: {
     environment: 'jsdom',
@@ -103,9 +111,11 @@ test: {
 ```
 
 ### tests/setup.js
+
 Issue discovered: Originally had `vi.fn()` calls which aren't available in setup files.
 
 **Fixed version:**
+
 ```javascript
 // Mock window.matchMedia for orientation queries
 global.window = global.window || {};
@@ -141,6 +151,7 @@ global.window.matchMedia = (query) => ({
 ## Workaround Used
 
 For DirectorsCutController port (Phase 25a):
+
 - ✅ Created comprehensive test suite (60+ tests)
 - ✅ Controller integrated into main.ts successfully
 - ✅ Controller compiles without errors

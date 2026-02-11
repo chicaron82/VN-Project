@@ -67,6 +67,7 @@ src/
 ### 1. No Audio - Intentional Design Decision
 
 Version 848 is intentionally audio-free. Instead, the game uses a **unified sensory feedback system**:
+
 - **Haptic feedback**: Vibration patterns on mobile
 - **Visual cues**: Chromatic aberration, glitch effects, screen pulses
 - **Sensory metadata**: Centralized config pairing haptics + visuals
@@ -76,6 +77,7 @@ This is the **PRIMARY feedback mechanism**, not optional polish.
 ### 2. Content as Data
 
 Game content (scenes, routes, dialogue) is stored as **JSON files**, not JavaScript functions:
+
 - Enables non-developers to edit content
 - Type-safe with JSON Schema validation
 - Easier to version control and diff
@@ -107,6 +109,7 @@ Game content (scenes, routes, dialogue) is stored as **JSON files**, not JavaScr
 ### EventBus
 
 Centralized event system for decoupled communication:
+
 - Type-safe event definitions
 - Pub/sub pattern
 - Event history for debugging
@@ -114,6 +117,7 @@ Centralized event system for decoupled communication:
 ### StateManager
 
 Reactive state management:
+
 - Subscription-based updates
 - Immutable state updates
 - State persistence support
@@ -121,6 +125,7 @@ Reactive state management:
 ### Haptic + Visual Cues System
 
 **PRIMARY FEEDBACK MECHANISM** replacing audio:
+
 - Pattern library (12+ haptic patterns)
 - Comfort intensity scaling (Gentle/Normal/Amped/INSANE)
 - Sensory metadata system (SENSORY_CUES)
@@ -129,6 +134,7 @@ Reactive state management:
 ### Content Schema
 
 JSON-based scene definitions with:
+
 - TypeScript interfaces
 - JSON Schema validation
 - Runtime validation on load
@@ -163,6 +169,7 @@ npm run test:coverage:v2  # Run tests with coverage
 ## Phase Status
 
 **Phase 1 - Foundation** ✅
+
 - [x] Project setup (Vite + TypeScript)
 - [x] Folder structure
 - [x] Architecture documentation

@@ -10,6 +10,7 @@
 ## 🐛 Bug Description
 
 When using the time machine (backlog time travel feature), the console displayed:
+
 ```
 Scene "[object Object]" not found. Falling back to displayCurrentPage.
 ```
@@ -33,10 +34,12 @@ this.history.push({
 ```
 
 **Why this happened:**
+
 - In [game-engine.js:1885](../system/game-engine.js#L1885), `this.currentScene = scene;` stores the full scene object
 - The scene ID string is separately stored in `this.gameState.progress.currentScene` (line 1895)
 
 When `jumpToScene(sceneId)` received the object, it couldn't find a matching scene function:
+
 ```javascript
 if (route[sceneId]) {  // Looking for route["[object Object]"]
     // Never matches!
@@ -76,6 +79,7 @@ this.history.push({
 ```
 
 **Benefits:**
+
 - Fixes root cause
 - Backlog entries now store correct data type
 - Prevents issue from spreading to other code
@@ -110,6 +114,7 @@ jumpToScene(sceneId, pageIndex) {
 ```
 
 **Benefits:**
+
 - Defensive coding - handles legacy bad data
 - Protects against similar bugs in the future
 - Graceful degradation if extraction fails
@@ -140,12 +145,14 @@ jumpToScene(sceneId, pageIndex) {
 ## 📊 Impact Analysis
 
 **Before Fix:**
+
 - Console warning on every time travel jump
 - Relied on fallback behavior (`displayCurrentPage`)
 - Incorrect data type stored in history entries
 - Potential for future bugs from bad data
 
 **After Fix:**
+
 - Clean console output
 - Correct scene jumping via scene function lookup
 - Proper data types in backlog entries
@@ -172,6 +179,7 @@ displayScene(scene, sceneId) {
 ```
 
 **Note:** This is intentional design:
+
 - `currentScene` holds the full scene object for display logic
 - `gameState.progress.currentScene` holds the scene ID string for save/load
 

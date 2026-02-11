@@ -1,6 +1,7 @@
 # DiZee Instructions: Insane Mode Red Color Scheme
 
 ## OVERVIEW
+
 In Insane Mode, change UI color scheme from cyan (#0ff) to red (#ff0066) to reinforce the horror/corruption aesthetic. Color scheme should dynamically activate when Insane Mode is active and revert to cyan when Insane Mode ends.
 
 **Thematic reasoning:** Cyan = stable digital space. Red = corrupted hostile system.
@@ -10,6 +11,7 @@ In Insane Mode, change UI color scheme from cyan (#0ff) to red (#ff0066) to rein
 ## IMPLEMENTATION STRATEGY
 
 Use a class-based approach:
+
 1. Add `insane-mode-active` class to game container when Insane Mode starts
 2. Remove class when Insane Mode ends
 3. CSS overrides all cyan UI elements to red when class is present
@@ -25,6 +27,7 @@ Use a class-based approach:
 Find the Insane Mode restoration block (approximately line 1096-1110).
 
 **CURRENT CODE:**
+
 ```javascript
 if (insaneLocked) {
     // Restore Insane Mode flags to gameState
@@ -59,6 +62,7 @@ if (insaneLocked) {
 ### Location 2: When Insane Mode Ends
 
 Need to remove the class when:
+
 - Player returns to main menu
 - Player completes/fails route
 - Player loads a non-Insane save
@@ -284,6 +288,7 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
 ## TESTING CHECKLIST
 
 ### Test Activation
+
 1. Main Menu → Settings → Commit to Insanity
 2. Route starts
 3. **Expected:** All UI elements red (choices, buttons, highlights)
@@ -296,12 +301,14 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
    - All interactive elements = red
 
 ### Test Deactivation
+
 1. Complete Insane Mode route (any ending)
 2. Return to main menu
 3. **Expected:** All UI elements revert to cyan
 4. Console shows: "💚 Deactivating Insane Mode color scheme"
 
 ### Test Save/Load
+
 1. Save during Insane Mode
 2. Return to menu (colors revert to cyan)
 3. Load Insane Mode save
@@ -310,6 +317,7 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
 6. **Expected:** Colors stay cyan
 
 ### Test Normal Mode (Sanity Check)
+
 1. Start route in Normal/Intense difficulty
 2. **Expected:** All UI remains cyan
 3. **Expected:** No red color scheme applied
@@ -319,18 +327,22 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
 ## EDGE CASES HANDLED
 
 **Case 1: Player loads non-Insane save while in Insane Mode**
+
 - Deactivation is called during save load
 - Colors revert to cyan
 
 **Case 2: Player returns to menu from Insane Mode**
+
 - Deactivation called in `returnToMainMenu()`
 - Colors revert to cyan
 
 **Case 3: Player completes Insane Mode and immediately starts new game**
+
 - Class is removed when returning to menu
 - New game starts with cyan colors
 
 **Case 4: Class persists after reload**
+
 - On page load, no class is added until Insane Mode actually activates
 - Fresh start always = cyan
 
@@ -338,12 +350,14 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
 
 ## WHAT CHANGES
 
-### Before:
+### Before
+
 - All UI = cyan regardless of difficulty
 - Insane Mode only differs by mechanics (no Hold On, tether cap)
 - Visual corruption is temporary effects only
 
-### After:
+### After
+
 - Normal modes = cyan UI (stable, safe)
 - Insane Mode = red UI (hostile, corrupted)
 - Color scheme reinforces narrative of system breakdown
@@ -353,13 +367,15 @@ if (this.game.gameState.flags && this.game.gameState.flags.insaneModeActive) {
 
 ## CRITICAL REQUIREMENTS
 
-### DO NOT:
+### DO NOT
+
 - ❌ Apply red colors to Normal/Intense modes
 - ❌ Make color changes permanent (must be class-based)
 - ❌ Forget to remove class when mode ends
 - ❌ Apply red to non-UI elements (dialogue text, narration)
 
-### DO:
+### DO
+
 - ✅ Use `!important` to override default cyan styling
 - ✅ Add class when Insane Mode activates
 - ✅ Remove class when Insane Mode ends

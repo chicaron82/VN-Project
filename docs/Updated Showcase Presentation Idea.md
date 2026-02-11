@@ -344,14 +344,14 @@ const savedScroll = sessionStorage.getItem(
 
 ### **Phase 2: Interaction (Core UX)**
 
-5. Add swipe gesture support
+1. Add swipe gesture support
 2. Implement smooth transitions
 3. Add keyboard navigation
 4. Connect shade/sidebar to tabs
 
 ### **Phase 3: Polish (Bougie Edition)**
 
-9. Lazy load tab content
+1. Lazy load tab content
 2. Add progress indicators
 3. Implement View Transitions
 4. Add swipe hints for first-time users
@@ -359,7 +359,7 @@ const savedScroll = sessionStorage.getItem(
 
 ### **Phase 4: Integration**
 
-14. Update UV7 status bar context
+1. Update UV7 status bar context
 2. Add breadcrumb support
 3. Connect to app switcher
 4. Analytics tracking per tab

@@ -1,4 +1,5 @@
 # Session Summary: December 7, 2025
+
 ## Continuation Session: Bootstrap Timeline + Secret Codes + Close Button Fix
 
 **Session Focus:** Bug fixes and corrections from previous session's implementation
@@ -12,6 +13,7 @@
 This session is a **continuation** of major work completed yesterday. Here's what was already implemented before today's bug fixes:
 
 ### ✅ Three Ending Paths System (Tori Route)
+
 - **File:** `routes/tori-route-endings.js`
 - **Implementation:** Three-way critical choice at climax:
   1. **[Accept the upload - stay digital]** → Bad ending path
@@ -21,6 +23,7 @@ This session is a **continuation** of major work completed yesterday. Here's wha
 - **Notes Unlocked:** ZR's Version 848 analysis unlocked before choice
 
 ### ✅ Global Keyboard Navigation System
+
 - **Files:** Multiple system files
 - **Implementation:** Full keyboard accessibility
   - Tab navigation through choices
@@ -31,7 +34,9 @@ This session is a **continuation** of major work completed yesterday. Here's wha
 - **Impact:** Fully keyboard-accessible VN
 
 ### ✅ Player Polish Features (Weekend 1)
+
 **File:** `system/secret-codes-manager.js`, `styles.css`, `index.html`
+
 - **Secret Code Input UX:**
   - Sparkle animation (✨) on valid codes
   - "CODE REGISTERED" text with fadeInUp animation
@@ -48,7 +53,9 @@ This session is a **continuation** of major work completed yesterday. Here's wha
   - No need to re-type known codes
 
 ### ✅ "Impress Jake" Code Quality Polish
+
 **Files:** Multiple system files with improved architecture
+
 - Console logging cleanup (organized categories)
 - Error handling improvements
 - Code documentation
@@ -60,7 +67,9 @@ This session is a **continuation** of major work completed yesterday. Here's wha
 ## 🎯 Today's Issues (December 7, 2025)
 
 ### 1. Bootstrap Timeline Incorrect Implementation ✅ FIXED
+
 ### 2. Secret Codes Not Re-Triggering Rewards ✅ FIXED
+
 ### 3. Close Button Jumping Bug ✅ FIXED (After multiple diagnostic rounds)
 
 ---
@@ -72,7 +81,9 @@ This session is a **continuation** of major work completed yesterday. Here's wha
 ## 🔧 ISSUE #1: Bootstrap Timeline Pre-Population
 
 ### The Problem
+
 **Original Implementation (WRONG):**
+
 - Bootstrap timeline started empty
 - Only showed player's personal failures
 - Missing narrative weight of 847 previous bootstrap iterations
@@ -81,9 +92,11 @@ This session is a **continuation** of major work completed yesterday. Here's wha
 > "the updated bootstrap idea was because the original had 800+ iterations showing. from failed attempts, that's a little too much to be hard coded. so the idea was to show the previous 5.. since we were starting at 848, 1-842 would be corrupted. 843-847 would show the failed attempts."
 
 ### The Fix
+
 **File:** `system/bootstrap-tracker.js`
 
 **Lines 61-74:** Pre-populate timeline with corrupted entries
+
 ```javascript
 // Default timeline - DIZEE FIX: Pre-populate with 5 corrupted attempts (843-847)
 // This creates the narrative weight of 847 failed iterations
@@ -102,6 +115,7 @@ return {
 ```
 
 **Lines 196-229:** Handle corrupted entries in display
+
 ```javascript
 // Check if this is a corrupted entry
 if (attempt.endingType === 'corrupted') {
@@ -120,6 +134,7 @@ if (attempt.endingType === 'corrupted') {
 ```
 
 **Lines 242-278:** Updated helper methods
+
 ```javascript
 getResultClass(result, endingType) {
     if (endingType === 'corrupted') {
@@ -140,6 +155,7 @@ getRouteName(route) {
 ```
 
 ### Impact
+
 - Players now see evidence of 847 previous failed bootstrap iterations from the start
 - Creates proper narrative weight for the "Version 848" title
 - Corrupted entries gradually get replaced with player's real attempts
@@ -150,21 +166,26 @@ getRouteName(route) {
 ## 🔧 ISSUE #2: Secret Codes Not Re-Triggering
 
 ### The Problem
+
 **User Explanation:**
 > "the point of it being clickable was for a player to click it and then show what was unlocked. so i enter torigatchi, shows overlay. populates unlocked list. i press torigatchi from the unlocked list, it should show the overlay again so i don't have to re-type torigatchi to see the overlay"
 
 **Current Behavior:**
+
 - Entering code → Shows reward → Populates "Discovered Codes" list
 - Clicking discovered code → Only showed info text
 - Had to re-type code to see reward again
 
 **Required Behavior:**
+
 - Clicking discovered code should re-trigger the full reward (overlay, website, etc.)
 
 ### The Fix
+
 **File:** `system/secret-codes-manager.js`
 
 **Lines 666-673:** Changed info display to reward re-trigger
+
 ```javascript
 showCodeInfo(code) {
     // DIZEE FIX: Re-trigger the reward instead of just showing info
@@ -177,6 +198,7 @@ showCodeInfo(code) {
 ```
 
 ### Impact
+
 - Discovered codes are now fully interactive
 - Players can re-access unlocked content without re-typing codes
 - Improves UX for revisiting secret content
@@ -186,10 +208,12 @@ showCodeInfo(code) {
 ## 🔧 ISSUE #3: Close Button Jumping Bug
 
 ### The Problem
+
 **User Report:**
 > "new issue. close and skip buttons are jumping. was in settings. i hit X to close, but then it jumps to a new position after, so i hit X again on its new position and then it closes. same thing happend when i skipped the opening logo animation."
 
 **Specific Behavior:**
+
 - Close button on Settings → Jumps to left of settings container after first click
 - Skip button on Logo → Jumps to bottom over tooltip after first click
 - Required two clicks to close (first click = focus, second click = close)
@@ -198,44 +222,52 @@ showCodeInfo(code) {
 ### Diagnostic Journey
 
 **Attempt #1: Scrollbar Gutter Fix** ❌ DIDN'T WORK
+
 - **Theory:** Scrollbar appearing/disappearing caused layout shift
 - **Fix Applied:** Added `scrollbar-gutter: stable` and `overflow-y: scroll` to html/body
 - **Result:** Still jumping (actually made it worse)
 - **File:** `styles.css` lines 14-22 (later removed)
 
 **Attempt #2: Transform Transitions** ❌ DIDN'T WORK
+
 - **Theory:** `transform: scale()` on hover/active causing position recalculation
 - **Fix Applied:** Removed transform transitions, only transition background/box-shadow
 - **Result:** Still jumping
 - **File:** `styles.css` lines 1693-1699, 98-122
 
 **Attempt #3: Z-Index Stacking** ❌ DIDN'T WORK
+
 - **Theory:** Other overlays (z-index: 10003) covering button
 - **Fix Applied:** Increased close button z-index to 10010
 - **Result:** Still jumping
 - **File:** `styles.css` line 1698
 
 **Attempt #4: Position Fixed → Absolute** ❌ DIDN'T WORK
+
 - **Theory:** `position: fixed` anchors to viewport, not parent modal
 - **Fix Applied:** Changed `.close-x` from `position: fixed` to `position: absolute`
 - **Result:** Still jumping
 - **File:** `styles.css` line 1669
 
 **Attempt #5: Remove Forced Scrollbar** ❌ DIDN'T WORK
+
 - **Theory:** Forced scrollbar from Attempt #1 was causing viewport width changes
 - **Fix Applied:** Removed the `overflow-y: scroll` and `scrollbar-gutter` rules
 - **Result:** Still jumping (but cleaner code)
 - **File:** `styles.css` lines 7-22 (deleted)
 
 **Attempt #6: Focus State Position Override** ✅ SUCCESS!
+
 - **Theory:** Global `button:focus` styles include `position: relative` which overrides button positioning
 - **Diagnostic:** User provided screenshots showing green focus outline appearing when button jumps
 - **Root Cause Found:** Global keyboard navigation styles override position
 
 ### The Real Fix
+
 **File:** `styles.css`
 
 **Added Lines 1702-1708:** Focus state override
+
 ```css
 /* ZEERAH FIX: Prevent focus state from changing close button position */
 .close-x:focus {
@@ -247,7 +279,9 @@ showCodeInfo(code) {
 ```
 
 ### Why This Works
+
 **The Problem Chain:**
+
 1. Global `button:focus` styles include `position: relative;` (for keyboard navigation accessibility)
 2. When you click `.close-x`, it gains focus
 3. `position: relative;` overrides `position: absolute;`
@@ -256,6 +290,7 @@ showCodeInfo(code) {
 6. Second click at new position actually triggered close handler
 
 **The Solution:**
+
 - Specific `.close-x:focus` rule overrides global focus styles
 - Preserves `position: absolute !important` even when focused
 - Still shows green accessibility outline for keyboard navigation
@@ -263,7 +298,9 @@ showCodeInfo(code) {
 - Closes on first click!
 
 ### Files Changed During Diagnostic
+
 **`styles.css`:**
+
 - Line 1669: Changed `position: fixed` → `position: absolute`
 - Lines 1693-1699: Removed transform transitions from `.close-x:hover` and `:active`
 - Line 1698: Increased z-index to 10010
@@ -272,6 +309,7 @@ showCodeInfo(code) {
 - Lines 30-31: Changed UV7 splash from `100vw/100vh` to `100%`
 
 ### Impact
+
 - All close buttons (Settings, Pause, Notes, Save/Load) now close on first click
 - No more position jumping
 - Accessibility features (green focus outline) still work
@@ -282,7 +320,9 @@ showCodeInfo(code) {
 ## 📊 Session Statistics
 
 ### Previous Session (Dec 6, 2025)
+
 **Major Features Implemented:**
+
 - Three ending paths for Tori route
 - Global keyboard navigation system
 - Player polish features (secret code UX, locked/unlocked display, haptics)
@@ -290,12 +330,15 @@ showCodeInfo(code) {
 - **Estimated Total:** 10-15 hours of implementation work
 
 ### Today's Session (Dec 7, 2025)
+
 **Files Modified:** 3
+
 - `system/bootstrap-tracker.js` (Bootstrap timeline pre-population)
 - `system/secret-codes-manager.js` (Secret codes re-trigger)
 - `styles.css` (Close button jumping fix + cleanup)
 
 **Lines Changed:**
+
 - Bootstrap Tracker: ~80 lines modified/added
 - Secret Codes: 8 lines modified
 - Styles: ~40 lines modified (net after removing failed attempts)
@@ -305,6 +348,7 @@ showCodeInfo(code) {
 **Root Cause:** Focus state position override
 
 ### Combined Session Impact
+
 **Total Features/Systems Implemented:** 6 major systems
 **Total Bugs Fixed:** 3 critical issues
 **Estimated Combined Time:** 12-18 hours across both sessions
@@ -314,18 +358,21 @@ showCodeInfo(code) {
 ## 🧪 Testing Checklist
 
 ### Bootstrap Timeline ✅
+
 - [x] Timeline shows 5 corrupted entries on first view (attempts 843-847)
 - [x] Corrupted entries display as "[DATA CORRUPTED]" with unreadable dates
 - [x] Player's attempts gradually replace corrupted entries
 - [x] Rolling window maintains only last 5 attempts
 
 ### Secret Codes ✅
+
 - [x] Entering code shows reward overlay
 - [x] Code appears in "Discovered Codes" list
 - [x] Clicking discovered code re-triggers full reward
 - [x] No need to re-type code to see reward again
 
 ### Close Buttons ✅
+
 - [x] Settings X closes on first click (no jumping)
 - [x] Pause menu X closes on first click
 - [x] Notes viewer X closes on first click
@@ -339,14 +386,17 @@ showCodeInfo(code) {
 ## 💡 Lessons Learned
 
 ### Bootstrap Timeline
+
 - **Lesson:** Always verify understanding of narrative intent before implementation
 - **Takeaway:** Pre-populated data creates stronger narrative weight than empty states
 
 ### Secret Codes
+
 - **Lesson:** "Discovered codes" should be fully interactive, not just informational
 - **Takeaway:** UX improvement = not forcing users to re-type known codes
 
 ### Close Button Bug
+
 - **Lesson:** Focus states can override positioning in unexpected ways
 - **Takeaway:** When debugging CSS, check for global state selectors (`:focus`, `:hover`, `:active`) that might override specific rules
 - **Diagnostic Process:**

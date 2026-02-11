@@ -18,12 +18,14 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 ## 📊 Progress Summary
 
 ### ✅ Completed (Session 118 - Part 1)
+
 - **OverlayManager System** - 687 lines, centralized themed overlay factory
 - **UIController Refactor** - 616 → 329 lines (47% reduction, -287 lines)
 - **EasterEggController** - 8 methods manually refactored + 8+ auto-themed via factory
   - 1,710 → 1,624 lines (-86 lines)
 
 ### ✅ Completed (Session 118 - Part 2 - CONTINUED)
+
 - **EasterEggController Final Theming** - Additional 5 methods fully themed
   - showAlwaysCompilation: Replaced #fff, #888, #555 with theme colors
   - showDizeeEasterEgg: All muted colors now use theme.textMuted
@@ -37,6 +39,7 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 - **Commits Pushed**: 5 additional commits
 
 ### ✅ Completed (Session 118 - Part 3 - UNLOCK NOTIFICATIONS)
+
 - **UIController Unlock Notifications** - All 3 refactored to OverlayManager
   - showSkipUnlockNotification: Now uses OverlayManager.createInfo
   - showNotesUnlockNotification: Now uses OverlayManager.createInfo
@@ -47,6 +50,7 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 - **Commits Pushed**: 1 commit
 
 ### 📈 Total Impact (Parts 1, 2 & 3 Combined - COMPLETE!)
+
 - **Total Lines Removed**: ~430+ lines of hardcoded styling
 - **UIController**: 50.5% reduction (616 → 305 lines)
 - **EasterEggController**: Hardcoded colors reduced 90% (41 → 4)
@@ -55,6 +59,7 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 - **Session Duration**: ~5 hours of continuous theming
 
 ### ⏳ Remaining (Session 119+)
+
 - ~~Theme unlock notification methods in UIController~~ ✅ COMPLETE
 - Theme achievement notifications (optional enhancement)
 - Comprehensive theme switching tests
@@ -72,6 +77,7 @@ Eliminate hardcoded colors from overlay creation and enable dynamic theme switch
 **Purpose**: Centralized factory for creating themed overlays
 
 **Factory Methods**:
+
 ```javascript
 // Common overlay types
 OverlayManager.createError(title, message, options)
@@ -99,6 +105,7 @@ OverlayManager.isVisible(id)
 **Variants**: `'primary'`, `'error'`, `'warning'`, `'success'`
 
 **Integration**:
+
 - Automatically uses `ThemeManager.getTheme()` for colors
 - Adapts to active route (Ronnie 💙, Tori 🖤)
 - Adapts to endings (True 💚, Digital 💜, Bad ❤️)
@@ -117,6 +124,7 @@ OverlayManager.isVisible(id)
 #### Methods Refactored (Part 1)
 
 **showErrorOverlay()**
+
 ```javascript
 // BEFORE: 90 lines of hardcoded styling
 const overlay = document.createElement('div');
@@ -137,11 +145,13 @@ showErrorOverlay(title, message) {
 ```
 
 **showConfirmDialog()**
+
 - Before: 120 lines
 - After: 10 lines
 - Now uses themed primary colors
 
 **showWarningOverlay()**
+
 - Before: 100 lines
 - After: 10 lines
 - Now uses themed warning colors
@@ -149,16 +159,19 @@ showErrorOverlay(title, message) {
 #### Methods Refactored (Part 3 - UNLOCK NOTIFICATIONS)
 
 **showSkipUnlockNotification()** ✅
+
 - Refactored from CSS-based to OverlayManager.createInfo
 - Uses success variant (green theme)
 - ~25 lines → ~12 lines
 
 **showNotesUnlockNotification()** ✅
+
 - Refactored from CSS-based to OverlayManager.createInfo
 - Uses success variant (green theme)
 - ~25 lines → ~12 lines
 
 **showToriGatchiUnlockNotification()** ✅
+
 - Refactored from CSS-based to OverlayManager.createInfo
 - Uses success variant (green theme)
 - ~25 lines → ~12 lines
@@ -177,6 +190,7 @@ showErrorOverlay(title, message) {
 #### Methods Manually Refactored (13 total - ALL THEMED ✅)
 
 **showTorigatchiEasterEgg()**
+
 ```javascript
 // BEFORE: Hardcoded #ff4444 border
 border: 2px solid #ff4444;
@@ -186,43 +200,52 @@ border: 2px solid ${ThemeManager.getColor('error')};
 ```
 
 **showDizeeEasterEgg()** ✅
+
 - DiZee architect easter egg
 - Themed borders and success colors
 
 **openTorigatchiIframe()** ✅
+
 - ToriGatchi game iframe overlay
 - Themed borders, close button, labels
 
 **showKonamiInsaneEscape()** ✅
+
 - Konami Code INSANE mode escape
 - ~200 lines, fully themed
 - Success/error button variants
 
 **showTrueAttemptNumber()** ✅
+
 - 848 revelation overlay
 - Sacred loop counter explanation
 
 **showUV7CrewBios()** ✅
+
 - UV7 Crew credits overlay
 - FAQ section themed
 
 **showUnlockOverlay()** ✅ **← FACTORY METHOD**
+
 - Generic unlock overlay factory
 - Used 8+ times throughout code
 - Auto-themed all unlock notifications
 
 **showAlwaysCompilation()** ✅ (Part 2)
+
 - Storm Dragon's "Always" easter egg
 - 50 scattered texts use theme colors
 - Replaced #fff, #888, #555 with theme.text/textMuted
 
 **showRonniegatchiInspiration()** ✅ (Part 2)
+
 - Original Tori-Gatchi pixel art display
 - Replaced ALL #0ff with theme.primary
 - Dynamic gradient background with theme.primaryRgb
 - Themed close button and shadows
 
 **showKonamiInsaneEscape()** ✅ (Part 2 - Enhanced)
+
 - Konami Code INSANE mode escape overlay
 - Complete gradient theming with theme.primaryRgb
 - All text colors use theme.text/textMuted
@@ -230,7 +253,9 @@ border: 2px solid ${ThemeManager.getColor('error')};
 - Footer border uses theme.primaryRgb
 
 #### Methods Auto-Themed via Factory (8+)
+
 Because `showUnlockOverlay` is a factory:
+
 - unlockBootstrap() ✅
 - unlockChicharon() ✅
 - unlockDizee() ✅
@@ -241,6 +266,7 @@ Because `showUnlockOverlay` is a factory:
 - Scrollbar themed (Part 2) ✅
 
 #### All Easter Eggs Themed! 🎉
+
 **Part 1**: 8 methods + 8 auto-themed
 **Part 2**: 5 additional methods completed
 **Total**: ALL easter egg overlays now fully themed
@@ -252,11 +278,13 @@ Because `showUnlockOverlay` is a factory:
 ### Available Themes
 
 **Route Themes**:
+
 - **Ronnie** (💙) - Cyan/blue aesthetic
 - **Tori** (🖤) - Pink/magenta aesthetic
 - **Menu** (🎮) - Neutral cyan
 
 **Ending Themes**:
+
 - **True Ending** (💚) - Green victory theme
 - **Digital Forever** (💜) - Purple digital theme
 - **Bad Ending** (❤️) - Red corruption theme
@@ -264,6 +292,7 @@ Because `showUnlockOverlay` is a factory:
 ### Theme Colors
 
 Each theme provides:
+
 ```javascript
 {
     primary: '#00ffff',
@@ -288,19 +317,23 @@ Each theme provides:
 ## 📈 Impact
 
 ### Code Quality
+
 - **-287 lines** from UIController (47% reduction)
 - **Eliminated** ~200 lines of hardcoded color styling
 - **Centralized** overlay creation logic
 - **Increased** maintainability
 
 ### User Experience
+
 When users switch theme preference (Settings → Theme):
+
 - All error messages adapt
 - All warning dialogs adapt
 - All confirmation prompts adapt
 - Easter egg displays adapt (partial)
 
 **Example**:
+
 - Ronnie route → Cyan overlays 💙
 - Tori route → Pink overlays 🖤
 - True Ending → Green overlays 💚
@@ -310,6 +343,7 @@ When users switch theme preference (Settings → Theme):
 ## 🧪 Testing
 
 ### Test Results
+
 ```
 ✓ 263 tests passing
 ✓ All existing tests still pass
@@ -317,6 +351,7 @@ When users switch theme preference (Settings → Theme):
 ```
 
 **Test Files**:
+
 - `tests/ui-controller.test.js` - 31 tests ✅
 - `tests/easter-egg-controller.test.js` - 41 tests ✅
 - `tests/state-manager.test.js` - 83 tests ✅
@@ -324,6 +359,7 @@ When users switch theme preference (Settings → Theme):
 - 4 more test suites ✅
 
 ### Manual Testing Needed
+
 - [ ] Open game in browser
 - [ ] Trigger error overlay (try loading nonexistent save)
 - [ ] Switch theme preference (Settings → Theme)
@@ -337,6 +373,7 @@ When users switch theme preference (Settings → Theme):
 ### Before vs After
 
 **Before** (Hardcoded):
+
 ```javascript
 const box = document.createElement('div');
 box.style.border = '2px solid #ff4444';  // ❌ Always red
@@ -344,6 +381,7 @@ box.style.boxShadow = '0 0 30px rgba(255, 68, 68, 0.5)';  // ❌ Always red glow
 ```
 
 **After** (Themed):
+
 ```javascript
 const box = OverlayManager.createBox({ variant: 'error' });
 // ✅ Uses theme.error (adapts to active theme)
@@ -353,6 +391,7 @@ const box = OverlayManager.createBox({ variant: 'error' });
 ### Creating Themed Overlays
 
 **Error Overlay**:
+
 ```javascript
 const overlay = OverlayManager.createError(
     'SAVE FAILED',
@@ -363,6 +402,7 @@ OverlayManager.show(overlay);
 ```
 
 **Confirmation Dialog**:
+
 ```javascript
 const overlay = OverlayManager.createConfirm(
     'DELETE SAVE?',
@@ -374,6 +414,7 @@ OverlayManager.show(overlay);
 ```
 
 **Custom Overlay**:
+
 ```javascript
 const { overlay, box } = OverlayManager.createCustom({
     variant: 'success',
@@ -396,10 +437,12 @@ OverlayManager.show(overlay);
 ### Files Using OverlayManager
 
 **Currently Refactored**:
+
 - ✅ `system/ui-controller.js` - Error, warning, confirm dialogs
 - ⚙️ `system/easter-egg-controller.js` - Easter egg displays (2/20)
 
 **Not Yet Refactored**:
+
 - ⏳ `system/easter-egg-controller.js` - Remaining 18 methods
 - ⏳ `system/ui-controller.js` - Unlock notifications (3 methods)
 - ⏳ `system/achievement-manager.js` - Achievement notifications
@@ -415,6 +458,7 @@ OverlayManager.show(overlay);
 **Target**: Refactor remaining ~18 methods in EasterEggController
 
 **Methods to Refactor**:
+
 1. `showAlwaysCompilation()` - Storm Dragon signature
 2. `openTorigatchiIframe()` - Iframe overlay
 3. `showBootstrapOverlay()` - Timeline display
@@ -424,6 +468,7 @@ OverlayManager.show(overlay);
 7. ~12 more easter egg methods
 
 **Estimated Impact**:
+
 - Another ~500-800 lines removed
 - All easter eggs themed
 - Consistent visual language
@@ -431,6 +476,7 @@ OverlayManager.show(overlay);
 ### Session 120 Plan: Remaining UI Elements
 
 **Targets**:
+
 - UIController unlock notifications (3 methods)
 - Achievement notifications
 - Notes viewer overlay
@@ -440,6 +486,7 @@ OverlayManager.show(overlay);
 ### Session 121 Plan: Testing & Polish
 
 **Tasks**:
+
 - Write OverlayManager unit tests
 - Comprehensive theme switching tests
 - Visual QA across all 6 themes
@@ -457,12 +504,14 @@ None! All existing tests passing. ✅
 ## 💡 Lessons Learned
 
 ### What Worked Well
+
 1. **Factory Pattern** - OverlayManager provides clean abstraction
 2. **Incremental Refactor** - Refactoring one file at a time prevents breakage
 3. **Test Coverage** - Existing tests caught no regressions
 4. **ThemeManager Integration** - Seamless color system integration
 
 ### What Could Be Better
+
 1. **Easter Egg Complexity** - Some easter eggs have highly custom layouts
 2. **Testing Themes** - Need visual QA, automated tests don't catch color bugs
 3. **Documentation** - Need more inline examples in OverlayManager
@@ -472,18 +521,21 @@ None! All existing tests passing. ✅
 ## 📊 Statistics
 
 ### Lines of Code
+
 - **OverlayManager**: +687 lines (new file)
 - **UIController**: -287 lines (616 → 329)
 - **EasterEggController**: -~50 lines so far (2 methods)
 - **Net Change**: +~350 lines (but removes ~1000+ when complete)
 
 ### Files Changed
+
 - `system/overlay-manager.js` (NEW)
 - `system/ui-controller.js` (REFACTORED)
 - `system/easter-egg-controller.js` (PARTIAL)
 - `index.html` (script tag added)
 
 ### Test Coverage
+
 - 263 tests passing ✅
 - 0 tests failing ✅
 - 0 tests skipped ✅
@@ -493,10 +545,12 @@ None! All existing tests passing. ✅
 ## 🤝 Collaboration
 
 **Built by**:
+
 - **Aaron (Chicharon)** - Project lead, design vision
 - **Claude Sonnet 4.5** - Implementation, refactoring, testing
 
 **Session Notes**:
+
 - Zee's analysis was spot-on about theme integration gaps
 - OverlayManager approach worked perfectly
 - Incremental refactor strategy prevented bugs

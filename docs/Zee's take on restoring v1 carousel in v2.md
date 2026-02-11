@@ -1,15 +1,17 @@
 Zee's take on restoring v1 carousel in v2
 
-
 # Menu Carousel Implementation Instructions
 
 ## Goal
+
 Port V1's carousel menu personality into V2 while maintaining clean architecture.
 
 ## Problem
+
 V2's MenuView currently renders basic button lists. V1 has a card-based carousel with momentum physics, visual flourishes, and personality. The CSS exists in V2 but the TypeScript component isn't rendering the carousel structure.
 
 ## Solution
+
 Replace V2's generic MenuView with carousel-rendering MenuView that maintains V2's architecture patterns.
 
 ---
@@ -23,6 +25,7 @@ Replace V2's generic MenuView with carousel-rendering MenuView that maintains V2
 The new MenuView.ts file provided (see attached file or above)
 
 **What This Does:**
+
 - Renders card-based carousel instead of button lists
 - Maintains V2's Component base class architecture
 - Integrates with MenuController (no changes needed there)
@@ -37,6 +40,7 @@ The new MenuView.ts file provided (see attached file or above)
 `v2-src/src/styles/menu-carousel.css` should already exist
 
 **Ensure it's imported in:**
+
 - `v2-src/src/styles/main.css` OR
 - `v2-src/index.html` (as style link) OR
 - `v2-src/src/main.ts` (as import)
@@ -51,6 +55,7 @@ The new MenuView.ts file provided (see attached file or above)
 **In MenuController or wherever main menu is defined:**
 
 Ensure menu items have these IDs for proper card mapping:
+
 - `'start'` - Start Story card
 - `'continue'` - Continue card (optional, hide if no save)
 - `'load'` - Load Game card
@@ -59,6 +64,7 @@ Ensure menu items have these IDs for proper card mapping:
 - `'torigatchi'` - Secret mini-game (locked by default)
 
 **Example menu definition:**
+
 ```typescript
 const mainMenu = {
   title: '', // Title handled by carousel itself
@@ -81,6 +87,7 @@ const mainMenu = {
 `assets/menu-bg.png` should exist
 
 **If missing:**
+
 - Copy from V1 build OR
 - Update MenuView.ts line with correct path OR
 - Comment out background if not needed yet
@@ -113,17 +120,20 @@ const mainMenu = {
 ## Step 6: Optional - Advanced Momentum Physics
 
 **Current implementation has:**
+
 - Basic drag/swipe
 - Simple position snapping
 - Keyboard navigation
 
 **If you want V1's full momentum physics:**
+
 - Velocity decay with spring physics
 - Smooth momentum scrolling
 - Hybrid mode (SimpleCarousel for portrait, MomentumAdapter for landscape)
 
 **To add this:**
 Port these files from V1:
+
 - `ui/carousel-momentum.js` → TypeScript equivalent
 - `ui/momentum-adapter.js` → TypeScript equivalent  
 - `ui/simple-carousel.js` → TypeScript equivalent
@@ -139,6 +149,7 @@ Then integrate with MenuView's drag handlers.
 **If cards look wrong:**
 
 Check that `menu-carousel.css` includes:
+
 - `.carousel-card` styles (gradient backgrounds, borders, shadows)
 - `.card-icon`, `.card-title`, `.card-subtitle`, `.card-button` styles
 - `.carousel-indicator` styles (dots)
@@ -147,6 +158,7 @@ Check that `menu-carousel.css` includes:
 
 **Color variables:**
 Ensure CSS variables are defined:
+
 - `--theme-primary` (default: #00ffaa)
 - `--color-bg-primary` (default: #1a1a2e)
 - `--color-bg-secondary` (default: #16213e)
@@ -156,6 +168,7 @@ Ensure CSS variables are defined:
 ## Expected Result
 
 **Main menu should now:**
+
 - Display as card-based carousel (not button list)
 - Show personality (icons, colors, gradients)
 - Support drag/swipe/keyboard navigation
@@ -170,21 +183,25 @@ V1's menu carousel aesthetic but running on V2's clean TypeScript architecture.
 ## Troubleshooting
 
 **Cards not rendering?**
+
 - Check MenuController.getCurrentMenu() returns items
 - Verify card IDs match in menuItemToCard() mapping
 - Console log this.cards in renderCarousel()
 
 **Styling looks wrong?**
+
 - Verify menu-carousel.css is loaded
 - Check browser console for CSS errors
 - Inspect element to see if classes are applied
 
 **Drag not working?**
+
 - Check event listeners are attached (setupInteractionHandlers called)
 - Verify this.carouselViewport exists
 - Test on desktop first (mouse events simpler than touch)
 
 **Actions not firing?**
+
 - Verify MenuController.select() is wired correctly
 - Check card.menuItem.action exists
 - Console log in selectCard() method
@@ -204,6 +221,7 @@ V1's menu carousel aesthetic but running on V2's clean TypeScript architecture.
 ## Questions to Answer
 
 After implementation, report back:
+
 1. Does carousel render properly?
 2. Are cards clickable/draggable?
 3. Does navigation work (arrows, drag, click)?
@@ -220,16 +238,17 @@ Good luck! 🖤💚
 
 MainView.ts
 /**
- * UV7 V2 MenuView - Carousel Edition
- *
- * Renders the card-based carousel menu system.
- * Maintains V2 structure while porting V1's visual personality.
- *
- * Features:
- * - Card-based carousel with momentum physics
- * - Hybrid mode (Simple portrait, Momentum landscape)
- * - 3D perspective transforms
- * - Dynamic unlock states
+
+- UV7 V2 MenuView - Carousel Edition
+-
+- Renders the card-based carousel menu system.
+- Maintains V2 structure while porting V1's visual personality.
+-
+- Features:
+- - Card-based carousel with momentum physics
+- - Hybrid mode (Simple portrait, Momentum landscape)
+- - 3D perspective transforms
+- - Dynamic unlock states
  */
 
 import { Component } from '../components/Component.ts';

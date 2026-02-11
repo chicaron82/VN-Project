@@ -7,17 +7,20 @@ A complete redesign of the Evolution section, focusing on **ONE compelling story
 ### Key Features
 
 #### 1. **The Breaking Point Story**
+
 - Opens with Day 23 narrative: the infamous circular dependency bug
 - Shows the emotional + technical impact
 - Sets up the "why" before diving into the "how"
 
 #### 2. **Interactive V1/V2 Code Toggle**
+
 - Smooth animated toggle button with slider
 - Side-by-side comparison (V1 chaos vs V2 clean)
 - Real code from the actual V1 and V2 codebases
 - Syntax highlighting with proper color coding
 
 #### 3. **Bug Annotations**
+
 - **V1 Code**: Red markers (`💥`, `🔄`) on problematic lines
 - Hover tooltips explain exactly what went wrong
 - Shows:
@@ -26,27 +29,32 @@ A complete redesign of the Evolution section, focusing on **ONE compelling story
   - Cascade failure risks
 
 #### 4. **Soul Preservation Highlights**
+
 - **V2 Code**: Green markers (`💚`) on clean architecture
 - Tooltips explain improvements
 - Shows zero dependencies, testability, EventBus pattern
 
 #### 5. **Complexity Metrics**
+
 - Displayed below each code block
 - V1: Complexity 47, Circular Dependencies, Not Testable
 - V2: Complexity 6, Zero Dependencies, 100% Testable
 
 #### 6. **Dependency Visualizations**
+
 - **V1 Side**: Animated spaghetti diagram with chaotic cross-connections
 - **V2 Side**: Clean hub-and-spoke with EventBus at center
 - SVG animations (pulsing lines, rotating circles)
 - Interactive hover states
 
 #### 7. **What Changed / What Stayed Cards**
+
 - Side-by-side comparison of technical changes vs preserved soul
 - **Changed**: Architecture, communication patterns, types, testing, performance
 - **Preserved**: Story, timing, feeling, easter eggs, characters, the 848
 
 #### 8. **Transformation Summary**
+
 - Concluding statement about evolution vs rewrite
 - Emphasizes soul preservation while fixing the foundation
 - Beautiful gradient styling with badge
@@ -54,10 +62,12 @@ A complete redesign of the Evolution section, focusing on **ONE compelling story
 ### Technical Implementation
 
 **Components:**
+
 - `EvolutionSectionV2.ts` - New component with full interactivity
 - `evolution-v2.css` - Complete styling system
 
 **Interactive Features:**
+
 - Toggle animation with cubic-bezier easing
 - Tooltip system triggered by hover
 - Scroll-triggered animations (IntersectionObserver)
@@ -65,6 +75,7 @@ A complete redesign of the Evolution section, focusing on **ONE compelling story
 - Fade-in transitions on code blocks
 
 **Styling Highlights:**
+
 - Syntax highlighting for JavaScript and TypeScript
 - Line numbers in code blocks
 - Background glows on bug/soul lines
@@ -103,6 +114,7 @@ A complete redesign of the Evolution section, focusing on **ONE compelling story
 ### Next Steps
 
 To activate:
+
 1. Build and run showcase
 2. Navigate to Evolution section
 3. Toggle between V1/V2 views

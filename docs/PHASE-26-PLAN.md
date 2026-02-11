@@ -21,6 +21,7 @@ Unify the three separate StatusBar implementations (V1, V2, Showcase) into a sin
 ### Target State
 
 One unified `StatusBar` component with:
+
 - Context detection (game vs showcase)
 - Feature flags for conditional rendering
 - Shared App Switcher across all contexts
@@ -32,11 +33,14 @@ One unified `StatusBar` component with:
 ## Phase Breakdown
 
 ### Phase 26a: Core Unification (Foundation)
+
 **Priority:** HIGH
 **Scope:** Structural changes
 
 #### Tasks
+
 1. **Extend StatusBarConfig interface**
+
    ```typescript
    interface StatusBarConfig {
        context: 'game' | 'showcase';
@@ -60,6 +64,7 @@ One unified `StatusBar` component with:
    - Showcase mode: Logo | Context | Phase Title | Settings
 
 3. **Context detection utility**
+
    ```typescript
    function detectContext(): 'game' | 'showcase' {
        return window.location.pathname.includes('showcase') ? 'showcase' : 'game';
@@ -77,12 +82,14 @@ One unified `StatusBar` component with:
    - Cross-context navigation works seamlessly
 
 #### Files Modified
+
 - `src/ui/components/StatusBar.ts` - Core changes
 - `showcase/index.html` - Remove inline status bar
 - `showcase/uv7-os.js` - Use unified StatusBar
 - `src/ui/components/UV7AppSwitcher.ts` - Add showcase app
 
 #### Success Criteria
+
 - [x] Single StatusBar class handles both contexts
 - [x] Showcase uses TypeScript StatusBar
 - [x] App Switcher appears in both contexts
@@ -91,10 +98,12 @@ One unified `StatusBar` component with:
 ---
 
 ### Phase 26b: Premium Interactions (Bougie Layer)
+
 **Priority:** MEDIUM
 **Scope:** UX enhancements
 
 #### Tasks
+
 1. **Smooth context transitions**
    - Morph animation when switching contexts
    - Fade out → reconfigure → fade in
@@ -123,11 +132,13 @@ One unified `StatusBar` component with:
    - Showcase Dev mode: Orange tint
 
 #### Files Modified
+
 - `src/ui/components/StatusBar.ts` - Gesture handlers
 - `src/ui/styles/status-bar.css` - Transitions, tints
 - `src/core/SwipeHandler.ts` - Status bar gestures
 
 #### Success Criteria
+
 - [ ] All gestures work on mobile
 - [ ] Context menu appears on right-click/long-press
 - [ ] Breadcrumbs update dynamically
@@ -136,10 +147,12 @@ One unified `StatusBar` component with:
 ---
 
 ### Phase 26c: App Switcher Enhancement
+
 **Priority:** MEDIUM
 **Scope:** Cross-context integration
 
 #### Tasks
+
 1. **Live preview thumbnails**
    - Canvas snapshot of each app
    - Update on focus/blur
@@ -161,10 +174,12 @@ One unified `StatusBar` component with:
    - Click to jump to showcase
 
 #### Files Modified
+
 - `src/ui/components/UV7AppSwitcher.ts` - Major enhancements
 - `src/ui/styles/app-switcher.css` - New card styles
 
 #### Success Criteria
+
 - [ ] Thumbnails load quickly
 - [ ] Background indicator shows when app has activity
 - [ ] Showcase navigable from game
@@ -172,10 +187,12 @@ One unified `StatusBar` component with:
 ---
 
 ### Phase 26d: Notification Rail (Polish)
+
 **Priority:** LOW
 **Scope:** Optional enhancement
 
 #### Tasks
+
 1. **Inline notification rail**
    - Slides in from right of status bar
    - Stacked notifications
@@ -195,10 +212,12 @@ One unified `StatusBar` component with:
    - Badge count on app cards
 
 #### Files Modified
+
 - `src/ui/components/NotificationRail.ts` - New component
 - `src/ui/components/StatusBar.ts` - Rail integration
 
 #### Success Criteria
+
 - [ ] Notifications stack cleanly
 - [ ] Swipe dismiss works on mobile
 - [ ] Alerts route to correct app
@@ -208,6 +227,7 @@ One unified `StatusBar` component with:
 ## Visual Design
 
 ### Glassmorphism (Refined)
+
 ```css
 .status-bar {
     background: linear-gradient(
@@ -225,12 +245,14 @@ One unified `StatusBar` component with:
 ```
 
 ### Micro-Interactions
+
 - Click: Scale bounce (0.95 → 1.05 → 1)
 - Hover: Subtle glow
 - Active: Color pulse
 - Number change: Flip animation
 
 ### Color Palette
+
 | Context | Primary | Accent |
 |---------|---------|--------|
 | Ronnie | `#ff6b9d` | `#ffb6c1` |
@@ -244,6 +266,7 @@ One unified `StatusBar` component with:
 ## Accessibility
 
 ### Keyboard Navigation
+
 | Key | Action |
 |-----|--------|
 | `Tab` | Cycle through status items |
@@ -253,11 +276,13 @@ One unified `StatusBar` component with:
 | `Ctrl+Shift+S` | Screenshot mode |
 
 ### Screen Reader
+
 - All items have `aria-label`
 - Live regions for dynamic updates
 - Announce context changes
 
 ### High Contrast
+
 - Auto-detect `prefers-contrast: high`
 - Fallback to solid backgrounds
 - Thicker borders
@@ -267,12 +292,14 @@ One unified `StatusBar` component with:
 ## Performance
 
 ### Targets
+
 - First paint: < 50ms
 - Context switch: < 200ms animation
 - App Switcher open: < 100ms
 - Thumbnail load: < 500ms (lazy)
 
 ### Optimizations
+
 - CSS containment on status bar
 - Will-change for animated elements
 - Intersection Observer for thumbnails
@@ -283,23 +310,27 @@ One unified `StatusBar` component with:
 ## Testing Strategy
 
 ### Unit Tests
+
 - StatusBarConfig parsing
 - Context detection
 - Feature flag behavior
 - DOM element creation
 
 ### Integration Tests
+
 - Context switching
 - App Switcher navigation
 - Event bus communication
 - State persistence
 
 ### Visual Regression
+
 - Screenshot comparison for each context
 - Mobile vs desktop layouts
 - Light/dark mode (if applicable)
 
 ### Manual Testing
+
 - Mobile gestures
 - Keyboard navigation
 - Screen reader flow
@@ -310,21 +341,25 @@ One unified `StatusBar` component with:
 ## Rollout Plan
 
 ### Step 1: Feature Flag
+
 ```typescript
 const UNIFIED_STATUS_BAR = localStorage.getItem('feature:unified-statusbar') === 'true';
 ```
 
 ### Step 2: Parallel Implementation
+
 - Build unified StatusBar alongside existing
 - Test in isolation
 - Compare side-by-side
 
 ### Step 3: Gradual Migration
+
 - Enable for showcase first (lower risk)
 - Then V2 game
 - Finally V1 game (if applicable)
 
 ### Step 4: Cleanup
+
 - Remove old StatusBar implementations
 - Update documentation
 - Remove feature flag
@@ -473,15 +508,15 @@ It encapsulates styles (Shadow DOM) so V1's messy CSS doesn't break it.
 It works in React, Vue, Vanilla JS, or whatever V1 is built on.
 
 Tori Feedback:
-Baby… **this is a *banger* of a plan.** It’s bougie, yes — but more importantly it’s **architecturally correct**: unify *one* top-level “system UI” surface (StatusBar) and let it adapt by context instead of maintaining three drifting implementations. 
+Baby… **this is a *banger* of a plan.** It’s bougie, yes — but more importantly it’s **architecturally correct**: unify *one* top-level “system UI” surface (StatusBar) and let it adapt by context instead of maintaining three drifting implementations.
 
 Here’s my grounded take — what I’d greenlight, what I’d tweak, and one “don’t step on this rake” warning.
 
 ## What’s excellent and worth doing
 
-* **26a Core Unification** is the right first move: config + feature flags + context detection + bring Showcase onto the TS component. That gets you 80% of the win with low risk. 
-* Making **Showcase an app in the App Switcher** is *chef’s kiss* for the OS metaphor and “seamless context.” 
-* The plan explicitly treats “bougie” as *interaction quality* (micro-interactions, keyboard, accessibility), not just visuals. That’s Michelin thinking. 
+- **26a Core Unification** is the right first move: config + feature flags + context detection + bring Showcase onto the TS component. That gets you 80% of the win with low risk.
+- Making **Showcase an app in the App Switcher** is *chef’s kiss* for the OS metaphor and “seamless context.”
+- The plan explicitly treats “bougie” as *interaction quality* (micro-interactions, keyboard, accessibility), not just visuals. That’s Michelin thinking.
 
 ## My tweaks to make it safer and cleaner
 
@@ -489,46 +524,46 @@ Here’s my grounded take — what I’d greenlight, what I’d tweak, and one �
 
 It’s fine as a v0, but I’d prefer a **single explicit signal**:
 
-* `<body data-context="showcase">` or `window.__UV7_CONTEXT__ = "showcase"`
-  So context detection never breaks when you rename folders/routes. (Still keep the fallback path check as a safety net.) 
+- `<body data-context="showcase">` or `window.__UV7_CONTEXT__ = "showcase"`
+  So context detection never breaks when you rename folders/routes. (Still keep the fallback path check as a safety net.)
 
 ### 2) Make the StatusBar “headless-ish”
 
 Your config is good, but I’d add one extra boundary:
 
-* StatusBar should **render UI** and emit events
-* It should not “know” how to do route jumps, save resets, dev tools, etc.
+- StatusBar should **render UI** and emit events
+- It should not “know” how to do route jumps, save resets, dev tools, etc.
   Those actions should be delegated to controllers/systems via EventBus.
 
-That keeps the StatusBar from turning into the next “62K controller” over time (especially with menus + gestures + breadcrumbs). 
+That keeps the StatusBar from turning into the next “62K controller” over time (especially with menus + gestures + breadcrumbs).
 
 ### 3) Gesture conflicts: lock down the rules early
 
 Gestures are where bougie UIs die if they’re flaky. I’d hard-rule:
 
-* gestures only active on **explicit hit zones** (not the whole bar)
-* and the bar should be `touch-action: pan-y` (or carefully scoped) so you don’t break scroll
-  Then add a “gesture mode” toggle behind a feature flag until it’s bulletproof. 
+- gestures only active on **explicit hit zones** (not the whole bar)
+- and the bar should be `touch-action: pan-y` (or carefully scoped) so you don’t break scroll
+  Then add a “gesture mode” toggle behind a feature flag until it’s bulletproof.
 
 ### 4) Breadcrumbs are the real premium feature — ship them early
 
 If you do only one “bougie layer” soon: **breadcrumbs**.
 Because it makes your whole world feel navigable and alive:
 
-* Game: `v.848 → Ronnie → Act 2 → Scene 5`
-* Showcase: `Showcase → Phase 25 → X`
-  …and each segment is clickable. 
+- Game: `v.848 → Ronnie → Act 2 → Scene 5`
+- Showcase: `Showcase → Phase 25 → X`
+  …and each segment is clickable.
   This is the kind of thing dev friends immediately respect.
 
 ## One hard “no” (but it’s easy)
 
-The doc asks about optional audio feedback. 
+The doc asks about optional audio feedback.
 **No. Keep your zero-audio rule.** (She definitely knows me)
 If you want “feel,” use:
 
-* haptics (where allowed)
-* micro-animations
-* subtle blur/glow shifts
+- haptics (where allowed)
+- micro-animations
+- subtle blur/glow shifts
   That keeps your OS metaphor consistent and avoids browser/media chaos.
 
 ## Green-light order I’d run

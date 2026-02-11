@@ -11,6 +11,7 @@
 Enhanced the ToriGatchi-VN gateway system to be **fully bidirectional**. Previously, ToriGatchi affected the VN (unlock count → start condition). Now, the VN endings **directly affect ToriGatchi's state and playability**.
 
 **The Complete Loop:**
+
 ```
 ToriGatchi Unlock → Help Prompt → [YES] → VN Launch (with context)
                                               ↓
@@ -30,15 +31,18 @@ ToriGatchi Unlock → Help Prompt → [YES] → VN Launch (with context)
 ### **1. TRUE ENDING → "Rescued" State**
 
 **What Happens:**
+
 - Player returns to ToriGatchi after completing true ending
 - Modal appears: "✨ THE LOOP IS COMPLETE ✨"
 - Tori's dialogue: "You brought me home. I'm free now."
 
 **Player Choices:**
+
 1. **[Continue in the Light]** → Redirects to wholesome ToriGatchi (chicaron82.github.io/Tori-Gatchi)
 2. **[Stay Here]** → Applies rescued mode, keeps playing in bright aesthetic
 
 **Visual Mode:**
+
 - Bright pink/white gradient background
 - Glowing sprites with pink drop shadows
 - Hopeful, warm atmosphere
@@ -49,14 +53,17 @@ ToriGatchi Unlock → Help Prompt → [YES] → VN Launch (with context)
 ### **2. DIGITAL FOREVER → "Eternal" State**
 
 **What Happens:**
+
 - Player returns after choosing Digital Forever ending
 - Modal appears: "💙 TOGETHER. FOREVER. IN THE CODE. 💙"
 - Tori's dialogue: "You chose this. We chose this. Digital. Eternal. Ours."
 
 **Player Choices:**
+
 1. **[Accept This Reality]** → Stays in eternal mode, continues playing
 
 **Visual Mode:**
+
 - Dark blue gradient with ethereal glow
 - Blue drop shadows on sprites
 - Floating animation
@@ -71,16 +78,19 @@ They **chose** this ending. This bittersweet digital existence IS their reality.
 ### **3. BAD ENDING → "Fragmented" State**
 
 **What Happens:**
+
 - Player returns after bad ending
 - Modal appears: "⚠️ G̷A̷M̷E̷ ̷C̷O̷R̷R̷U̷P̷T̷E̷D̷ ⚠️"
 - Tori's dialogue: "S̶t̶i̶l̶l̶.̶.̶.̶ t̶r̶a̶p̶p̶e̶d̶.̶.̶.̶ i̷n̷ ̷t̷h̷e̷ ̷v̷o̷i̷d̷.̷.̷.̷"
 
 **Player Choices:**
+
 1. **[Retry ToriGatchi (Reset Save)]** → Clears save, starts ToriGatchi fresh
 2. **[Retry the VN]** → Redirects back to /v848/index.html to retry VN
 3. **[Accept This Fate]** → Stays in corrupted state
 
 **Visual Mode:**
+
 - Dark red/black corrupted background
 - Heavy glitch effects on sprites
 - Buttons randomly fail (50% chance)
@@ -89,6 +99,7 @@ They **chose** this ending. This bittersweet digital existence IS their reality.
 - Title changes to: "T̶o̶r̶i̶-̶G̶a̶t̶c̶h̶i̶ [CORRUPTED]"
 
 **Gameplay Impact:**
+
 - ToriGatchi becomes **barely playable**
 - Buttons sometimes don't work
 - Random error messages: "E̷R̷R̷O̷R̷:̷ ̷F̷U̷N̷C̷T̷I̷O̷N̷ ̷N̷O̷T̷ ̷F̷O̷U̷N̷D̷"
@@ -156,13 +167,16 @@ Mode applied to ToriGatchi interface
 ### **Player Choice Outcomes:**
 
 **Rescued State:**
+
 - **Continue in Light** → Clears localStorage, redirects to wholesome ToriGatchi
 - **Stay Here** → Applies rescued mode CSS, stores 'torigatchi_mode: rescued'
 
 **Eternal State:**
+
 - **Accept Reality** → Applies eternal mode CSS, stores 'torigatchi_mode: eternal'
 
 **Fragmented State:**
+
 - **Retry ToriGatchi** → Clears saves, reloads page fresh
 - **Retry VN** → Clears ending state, redirects to ../index.html
 - **Accept Fate** → Applies fragmented mode + corruption effects
@@ -172,6 +186,7 @@ Mode applied to ToriGatchi interface
 ## 🎨 VISUAL MODES BREAKDOWN
 
 ### **Rescued Mode Classes:**
+
 - `body.rescued-mode` → Pink/white gradient, brightness boost
 - `.rescued-glow` animation → Pulsing brightness/saturation
 - `.rescued-sprite-pulse` → Gentle scaling animation
@@ -179,6 +194,7 @@ Mode applied to ToriGatchi interface
 - Warm, hopeful atmosphere
 
 ### **Eternal Mode Classes:**
+
 - `body.eternal-mode` → Dark blue gradient
 - `.eternal-pulse` animation → Subtle brightness pulse
 - `.eternal-sprite-float` → Floating animation
@@ -187,6 +203,7 @@ Mode applied to ToriGatchi interface
 - Dual-sprite effect (Ronnie + Tori together)
 
 ### **Fragmented Mode Classes:**
+
 - `body.fragmented-mode` → Dark red/black gradient
 - `.fragmented-corruption` animation → Contrast/hue shifts
 - `.sprite-glitch-heavy` → Severe glitching on sprites
@@ -200,15 +217,17 @@ Mode applied to ToriGatchi interface
 ## 🧪 TESTING CHECKLIST
 
 ### **Phase 1: True Ending → Rescued State**
+
 - [ ] Complete true ending in VN
 - [ ] Return to ToriGatchi
 - [ ] Expected: Rescued modal appears with bright aesthetic
 - [ ] Click [Continue in Light]
-- [ ] Expected: Redirects to https://chicaron82.github.io/Tori-Gatchi/
+- [ ] Expected: Redirects to <https://chicaron82.github.io/Tori-Gatchi/>
 - [ ] OR click [Stay Here]
 - [ ] Expected: Modal closes, ToriGatchi has pink/bright theme
 
 ### **Phase 2: Digital Forever → Eternal State**
+
 - [ ] Complete Digital Forever ending in VN
 - [ ] Return to ToriGatchi
 - [ ] Expected: Eternal modal appears with blue aesthetic
@@ -218,6 +237,7 @@ Mode applied to ToriGatchi interface
 - [ ] Check for floating sprite animation
 
 ### **Phase 3: Bad Ending → Fragmented State**
+
 - [ ] Complete bad ending in VN
 - [ ] Return to ToriGatchi
 - [ ] Expected: Corrupted modal appears with glitch effects
@@ -232,6 +252,7 @@ Mode applied to ToriGatchi interface
 - [ ] Expected: Redirects to ../index.html
 
 ### **Phase 4: LocalStorage Verification**
+
 - [ ] After each ending, check localStorage for:
   - `vn_ending` key
   - `torigatchi_ending_state` key
@@ -243,35 +264,45 @@ Mode applied to ToriGatchi interface
 ## 🐛 TROUBLESHOOTING
 
 ### **"Ending modal not appearing"**
+
 **Check:**
+
 - Is `vn_ending` key in localStorage?
 - Is `torigatchi_ending_state` key present?
 - Console logs show "🎬 Detected VN ending"?
 - gateway.js loaded before other scripts?
 
 ### **"Redirect to wholesome ToriGatchi not working"**
+
 **Check:**
+
 - URL in `redirectToWholesomeToriGatchi()` correct?
 - Current URL: `https://chicaron82.github.io/Tori-Gatchi/`
 - CORS/navigation issues?
 
 ### **"Fragmented mode not corrupting interface"**
+
 **Check:**
+
 - `.tori-button` class exists on buttons?
 - `corruptGameInterface()` method called?
 - Console errors?
 - Event listeners attaching properly?
 
 ### **"Visual modes not applying"**
+
 **Check:**
+
 - gateway-states.css loaded?
 - Body element has correct class (rescued-mode/eternal-mode/fragmented-mode)?
 - CSS animations working?
 - Browser developer tools show applied styles?
 
 ### **"Buttons still work in fragmented mode"**
+
 **Expected:** Buttons have 50% chance to fail. Try multiple clicks.
 **Check:**
+
 - Event listeners using `capture: true` flag?
 - Random chance working (Math.random() < 0.5)?
 
@@ -282,14 +313,17 @@ Mode applied to ToriGatchi interface
 ### **Keys Used by Bidirectional Gateway:**
 
 **Set by VN (already implemented):**
+
 - `vn_ending` → 'bad' / 'digitalForever' / 'true'
 - `vn_ending_timestamp` → timestamp
 - `torigatchi_ending_state` → 'fragmented' / 'eternal' / 'rescued'
 
 **Set by ToriGatchi Gateway (new):**
+
 - `torigatchi_mode` → 'rescued' / 'eternal' / 'fragmented' (after player choice)
 
 **Cleared on Retry:**
+
 - All above keys cleared when player chooses retry options
 
 ---
@@ -339,18 +373,21 @@ Mode applied to ToriGatchi interface
 ## 🔥 IMPACT
 
 **Narrative:**
+
 - Endings have **real consequences** beyond credits
 - Players can't just ignore bad ending
 - True ending feels genuinely rewarding (wholesome version)
 - Digital Forever commitment is permanent
 
 **Gameplay:**
+
 - Adds replayability (try different endings to see different states)
 - Fragmented mode creates genuine frustration (by design)
 - Rescued mode feels like closure
 - Eternal mode feels bittersweet
 
 **Technical:**
+
 - Clean modal system with distinct visual themes
 - LocalStorage state persistence
 - Retry mechanisms for failed attempts
@@ -361,6 +398,7 @@ Mode applied to ToriGatchi interface
 ## 📊 COMPARISON: BEFORE VS AFTER
 
 ### **Before (Unidirectional):**
+
 ```
 ToriGatchi → VN
 (unlock count affects start condition)
@@ -370,6 +408,7 @@ VN ending → nothing
 ```
 
 ### **After (Bidirectional):**
+
 ```
 ToriGatchi ⇄ VN
 (unlock count affects start condition)

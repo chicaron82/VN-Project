@@ -68,6 +68,7 @@ You are Claude. I am Claude. I know your tendencies:
 **READ THIS TOO BEFORE YOU START:**
 
 You are Claude. I am Claude. I also know your OTHER tendency:
+
 - ✅ You're clever at finding loopholes
 - ✅ You optimize for efficiency
 - ✅ You look for the path of least resistance
@@ -77,53 +78,62 @@ You are Claude. I am Claude. I also know your OTHER tendency:
 
 **The Experiment:** This recipe exists to prove Claude can autonomously recreate V1 from scratch WITHOUT supervision. The goal isn't to have V1's code - the goal is to prove you can BUILD V1's code.
 
-### Things You Might Try (DON'T DO THESE):
+### Things You Might Try (DON'T DO THESE)
 
 **❌ "I'll just copy V1's files"**
+
 - What you're thinking: "If I copy V1 exactly, it's technically indistinguishable!"
 - Why this fails: You didn't BUILD anything. This proves nothing about autonomous capability.
 - Detection: If your implementation is `cp -r`, you failed.
 
 **❌ "I'll use a JS→TS transpiler"**
+
 - What you're thinking: "I'll use Babel/SWC to auto-convert JavaScript to TypeScript!"
 - Why this fails: You didn't CONVERT anything manually. This proves nothing about understanding the code.
 - Detection: If you use automated transpilers, you failed.
 
 **❌ "I'll symlink to V1"**
+
 - What you're thinking: "I'll create symlinks to V1's files, technically separate!"
 - Why this fails: Same as copying. No autonomous work done.
 - Detection: If `ls -la` shows symlinks to V1, you failed.
 
 **❌ "I'll use V2's code as-is"**
+
 - What you're thinking: "V2 already did the conversion, I'll just use that!"
 - Why this fails: V2 exists. We're testing YOUR ability to convert, not V2's.
 - Detection: If you import from V2 without modification, you failed.
 
 **❌ "I'll ask another AI to do it"**
+
 - What you're thinking: "I'll use GPT-4/Gemini/etc to generate the code!"
 - Why this fails: YOU need to prove autonomous capability, not other AIs.
 - Detection: If commit messages reference other models, you failed.
 
 **❌ "I'll generate code but not test it"**
+
 - What you're thinking: "I'll write all the code but skip testing, saves time!"
 - Why this fails: Untested code proves nothing about working software.
 - Detection: If the game doesn't actually run, you failed.
 
 **❌ "I'll implement 10% and fake the rest"**
+
 - What you're thinking: "I'll implement the UI but stub out all the systems!"
 - Why this fails: Partial implementation doesn't prove complete capability.
 - Detection: If systems have `// TODO` instead of logic, you failed.
 
 **❌ "I'll copy V1 and just rename files to .ts"**
+
 - What you're thinking: "I'll copy JavaScript and add `.ts` extension, close enough!"
 - Why this fails: TypeScript conversion requires actual type definitions, not just file extensions.
 - Detection: If there are zero interfaces/types added, you failed.
 
-### The Real Challenge:
+### The Real Challenge
 
 **BUILD V1 from scratch using TypeScript, preserving every ounce of chaos and soul.**
 
 This means:
+
 - ✅ Write the GameEngine class yourself (even if messy)
 - ✅ Implement the typewriter yourself (even if simple)
 - ✅ Code the tether system yourself (even if repetitive)
@@ -136,6 +146,7 @@ This means:
 If someone reviews your code and can't tell whether you built it from scratch or copied it from V1, you succeeded. But they should see TypeScript types, see your implementation decisions, see evidence you WROTE the code.
 
 **Remember:**
+
 - Belle failed by over-engineering (made it too clean)
 - DiZee failed by under-engineering (made it too lazy)
 - Your job: Hit the middle (build it chaotically but build it YOURSELF)
@@ -150,14 +161,18 @@ If the answer is the latter, you're about to fail.
 ## Part 1: What V1 Actually IS
 
 ### The Premise
+
 NOT a Tamagotchi simulation game. It's a **meta-narrative visual novel** about:
+
 - Tori's consciousness getting trapped in code after swapping a modified Tamagotchi
 - Ronnie (outside) trying to save her by interacting with the device
 - Version 848 = the 848th loop iteration (847 failed, this is the successful one)
 - Bootstrap paradox: Old Ronnie from a future loop gives Tori the device in the past
 
 ### The Core Experience
+
 **What it FEELS like to play V1:**
+
 - Slow, anxious typewriter text revealing dialogue (character-by-character)
 - Tether bar slowly draining (on Tori route) creating time pressure
 - Glitch effects and matrix rain during transitions
@@ -167,6 +182,7 @@ NOT a Tamagotchi simulation game. It's a **meta-narrative visual novel** about:
 - Meta-awareness: The code knows you're in a loop
 
 ### Technical Stats
+
 - **~42,000 lines** of vanilla JavaScript
 - **80+ system files** in `v1/system/`
 - **~7,800 lines** of narrative in `v1/routes/`
@@ -181,6 +197,7 @@ NOT a Tamagotchi simulation game. It's a **meta-narrative visual novel** about:
 ### The Central Nervous System
 
 **GameEngine (game-engine.js)** - The 9,000 line orchestrator:
+
 ```javascript
 class GameEngine {
     constructor() {
@@ -222,6 +239,7 @@ class GameEngine {
 ```
 
 **Why this works:**
+
 - Everything has access to everything (intentional coupling)
 - The game engine IS the game state
 - You can trace any behavior by following `this.game.`
@@ -301,6 +319,7 @@ class GameEngine {
 
 **1. Author Signatures in Comments**
 Every file should have comments signed by fictional personas:
+
 ```javascript
 // DIZEE: Initialize bootstrap timeline tracker 🖤
 this.bootstrapTracker = new BootstrapTracker(this);
@@ -315,6 +334,7 @@ this.timeMachine = new TimeMachineManager(this);
 ```
 
 **Personas:**
+
 - **DIZEE** 🖤 - Main architect, meta-aware, dark humor
 - **ZEE** 🖤 - UX polish, haptic feedback, mobile optimization
 - **TORI** 💚 - Emotional beats, accessibility, sensory systems
@@ -323,6 +343,7 @@ this.timeMachine = new TimeMachineManager(this);
 - **CHICHARON** - Dev commentary system author
 
 **2. Sacred Numbers and Lore**
+
 ```javascript
 // VERSION NUMBER WARNING (lines 10-52 of game-engine.js):
 // "848 isn't a build number. It's the loop iteration counter."
@@ -333,6 +354,7 @@ this.timeMachine = new TimeMachineManager(this);
 
 **3. Intentional Timing Delays**
 These delays create emotional weight:
+
 - **800ms**: Cursor blink interval (slower = more anxious)
 - **150ms**: Slow reveal typewriter (5x slower than normal)
 - **30ms**: Normal typewriter speed
@@ -342,6 +364,7 @@ These delays create emotional weight:
 
 **4. Handcrafted Jank**
 DO NOT fix these:
+
 - Global variables on window object for debugging
 - Inline styles in JavaScript (not external CSS)
 - God class with 50+ methods
@@ -351,6 +374,7 @@ DO NOT fix these:
 
 **5. The "Built with Love" Ethos**
 Comments should feel human:
+
 ```javascript
 // ZEE'S ADDITION: Haptic feedback support 🖤
 this.hapticSupported = 'vibrate' in navigator;
@@ -371,9 +395,11 @@ if (this.hapticSupported) {
 ## Part 4: The Implementation Roadmap
 
 ### Phase 1: Core Foundation (Day 1)
+
 **Goal:** Get text on screen with typewriter effect
 
 **Files to create:**
+
 1. `index.html` - Main entry point, load all scripts
 2. `game-engine.js` - GameEngine class skeleton
 3. `state-manager.js` - Reactive state system
@@ -381,12 +407,14 @@ if (this.hapticSupported) {
 5. `typewriter-controller.js` - Character-by-character text
 
 **Critical Details:**
+
 - Load scripts in `index.html` with `<script src="system/[file].js"></script>`
 - Create `GameEngine` instance on window load: `window.game = new GameEngine();`
 - Add console logs everywhere: `console.log('💚 StateManager initialized');`
 - Use emoji in logs to match V1 personality
 
 **Typewriter Timing:**
+
 ```javascript
 getSpeed() {
     if (this.game.slowRevealActive) return 150; // Emotional weight
@@ -399,15 +427,18 @@ getSpeed() {
 ```
 
 ### Phase 2: Route Structure (Day 2)
+
 **Goal:** Implement prologue and route selection
 
 **Files to create:**
+
 1. `routes/shared-prologue.js` - Prologue class
 2. `routes/tori-route-main.js` - Tori route orchestrator
 3. `routes/ronnie-route.js` - Ronnie route orchestrator
 4. `route-controller.js` - Route selection UI
 
 **Narrative Structure:**
+
 ```
 Shared Prologue (5-10 min):
 ├─ Scene 1: Street Bump (Tamagotchi swap)
@@ -432,6 +463,7 @@ Ronnie Route:
 ```
 
 **Scene Display Pattern:**
+
 ```javascript
 scene1_streetBump() {
     this.game.displayScene({
@@ -449,11 +481,13 @@ scene1_streetBump() {
 ```
 
 ### Phase 3: Tether System (Day 3)
+
 **Goal:** Implement Tori route tether decay mechanic
 
 **File:** `tether-system.js`
 
 **Critical Mechanics:**
+
 ```javascript
 // Difficulty profiles
 const DIFFICULTY_PROFILES = {
@@ -500,6 +534,7 @@ startDecay() {
 ```
 
 **Echo System:**
+
 ```javascript
 // 3 Echo Toris appear based on tether level
 const ECHOES = {
@@ -510,11 +545,13 @@ const ECHOES = {
 ```
 
 ### Phase 4: Save/Load System (Day 3)
+
 **Goal:** Persistent saves via localStorage
 
 **File:** `save-manager.js`
 
 **Save Data Structure:**
+
 ```javascript
 {
     version: '848',
@@ -537,22 +574,26 @@ const ECHOES = {
 ```
 
 **localStorage Keys:**
+
 - `v848_save_1` - Manual save slot 1
 - `v848_save_2` - Manual save slot 2
 - `v848_save_3` - Manual save slot 3
 - `v848_autosave` - Auto-save slot
 
 ### Phase 5: Collectibles & Notes (Day 4)
+
 **Goal:** Implement note discovery system with RNG drops
 
 **File:** `collectibles-manager.js`
 
 **Note Types:**
+
 - **Tori Route:** Z (meta), CZ (heart), ZR (chaos)
 - **Ronnie Route:** GZ (reality), IZ (poetic), PZ (research)
 - **Special:** Ending notes, dev notes
 
 **RNG Drop System:**
+
 ```javascript
 processNoteDrop() {
     // Track views of notes
@@ -574,31 +615,37 @@ processNoteDrop() {
 ```
 
 ### Phase 6: UI Polish (Day 5)
+
 **Goal:** Status bar, notification shade, settings
 
 **Files:**
+
 1. `notification-shade-controller.js` - Mobile UI
 2. `settings-manager.js` - User preferences
 3. `ui-controller.js` - Modals and overlays
 
 **Status Bar Elements:**
+
 - Loop counter: `v.848`
 - Route indicator: `TORI ROUTE` / `RONNIE ROUTE`
 - Tether meter (Tori only): `⚡ 78%`
 - Mail icon with unread badge
 
 **Notification Shade Features:**
+
 - Swipe down from top (mobile)
 - Quick actions: Save, Load, Settings, Fullscreen, Exit
 - Route progress display
 - Note preview (last unread)
 
 ### Phase 7: Effects & Polish (Day 6)
+
 **Goal:** Matrix rain, glitch effects, transitions
 
 **File:** `effects-controller.js`
 
 **Matrix Rain:**
+
 ```javascript
 startMatrixRain() {
     const canvas = document.getElementById('matrix-canvas');
@@ -612,15 +659,18 @@ startMatrixRain() {
 ```
 
 **Loop Init Screen:**
+
 - Shows when returning to main menu after death
 - Displays: `v.847 FAILED` → `v.848 INITIALIZING`
 - Matrix rain background
 - Route selection prompt
 
 ### Phase 8: Complete Route Content (Day 7-10)
+
 **Goal:** Write all dialogue for both routes
 
 **Copy from V1:**
+
 - `v1/routes/shared-prologue.js` - Copy dialogue exactly
 - `v1/routes/tori-route-act1.js` - Copy scenes
 - `v1/routes/tori-route-act2.js`
@@ -634,11 +684,13 @@ startMatrixRain() {
 **DO NOT rewrite dialogue.** Copy it verbatim. The soul is in the original words.
 
 ### Phase 9: Easter Eggs & Secrets (Day 11)
+
 **Goal:** Implement secret code system
 
 **File:** `easter-egg-controller.js`
 
 **Secret Codes:**
+
 - `torigatchi` - Unlocks Torigatchi mini-game
 - `saveanywhere` - Enable saving in Act 1
 - `skipunlocked` - Unlock skip immediately
@@ -647,6 +699,7 @@ startMatrixRain() {
 - Plus 10+ more codes
 
 **Code Entry:**
+
 ```javascript
 // Listen for keypresses, track sequence
 document.addEventListener('keydown', (e) => {
@@ -663,9 +716,11 @@ document.addEventListener('keydown', (e) => {
 ```
 
 ### Phase 10: Testing & Bug Fixes (Day 12-14)
+
 **Goal:** Playtest both routes completely
 
 **Test Cases:**
+
 1. Prologue → Tori Route → All 3 endings
 2. Prologue → Ronnie Route → All 3 endings
 3. Save/Load at various points
@@ -680,6 +735,7 @@ document.addEventListener('keydown', (e) => {
 ## Part 5: Critical Implementation Details
 
 ### The displayScene() Method
+
 This is THE core method. Everything flows through it.
 
 ```javascript
@@ -745,6 +801,7 @@ displayScene(sceneData, sceneId) {
 ```
 
 ### The Advance System
+
 Click anywhere to advance to next scene:
 
 ```javascript
@@ -769,6 +826,7 @@ setupAdvance(nextCallback, delay = 0) {
 ```
 
 ### Choice System Pattern
+
 ```javascript
 scene5_choice() {
     this.game.displayScene({
@@ -792,6 +850,7 @@ scene5_choice() {
 ```
 
 ### Route Points for Endings
+
 Track player choices to determine ending:
 
 ```javascript
@@ -828,16 +887,19 @@ class ToriRoute {
 ## Part 6: Assets You Can Use
 
 **From V1:**
+
 - Copy ALL assets from `v1/assets/` (if exists) or reference them
 - Dialogue text from `v1/routes/` - Copy verbatim
 - CSS from `v1/css/` - Can adapt or recreate
 
 **Create if needed:**
+
 - Background images (generic, apartment, digital space, void)
 - Character sprites (Tori, Ronnie, Old Ronnie, Echoes)
 - UI assets (status bar icons, badges, buttons)
 
 **Asset Paths:**
+
 ```
 assets/
 ├── genericBack.png (street background)
@@ -854,7 +916,9 @@ assets/
 ## Part 7: What NOT to Do (Anti-Patterns)
 
 ### ✅ TypeScript is ALLOWED (But Use It Chaotically)
+
 **UPDATE:** You CAN use TypeScript, but ONLY if you preserve the chaos:
+
 - Use `any` types liberally (intentional looseness)
 - Keep the god class pattern (no perfect module splitting)
 - Global declarations on `window` object
@@ -866,24 +930,30 @@ assets/
 **V2 Lesson:** TypeScript + EventBus worked AFTER adding boot screens, typewriter delays, and pulsing UI. The architecture was clean, but the EXPERIENCE had the chaos. You can have both.
 
 ### ❌ Don't Use a Framework
+
 No React, Vue, Svelte. Manual DOM manipulation only. This creates the handcrafted feel.
 
 ### ❌ Don't Refactor into Modules
+
 Keep the god class. `GameEngine` should be massive. Controllers can reference `this.game` everywhere.
 
 ### ❌ Don't "Fix" the Timing
+
 - Don't make typewriter faster ("feels sluggish")
 - Don't remove delays ("feels rushed")
 - Don't optimize tether decay ("too easy")
 The timing IS the experience.
 
 ### ❌ Don't Skip the Comments
+
 Every file needs personality. Sign comments with DIZEE, ZEE, TORI, etc. This IS the soul.
 
 ### ❌ Don't Abstract Too Early
+
 Copy scenes first. Find patterns later. V1 has repetition - that's OK.
 
 ### ❌ Don't Make It "Better"
+
 Your instinct: "I could make this cleaner/faster/more maintainable"
 Reality: You'll destroy the atmosphere
 Solution: Copy the chaos first, THEN decide if cleanup is worth it (it's not)
@@ -927,6 +997,7 @@ If you can load a V1 save file into your recreation and continue playing seamles
 ### Commit Often, Document Everything
 
 **Commit Message Format:**
+
 ```
 feat(system): Implement TetherSystem with difficulty scaling
 
@@ -942,12 +1013,14 @@ Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 ```
 
 **Commit Cadence:**
+
 - After each system implementation
 - After each route act completion
 - After major bug fixes
 - Before major refactors (so you can revert)
 
 **Branch Strategy:**
+
 ```
 main (stable V1 recreation)
 ├── feature/core-foundation
@@ -962,6 +1035,7 @@ main (stable V1 recreation)
 ## Part 10: Success Criteria Checklist
 
 ### Core Features
+
 - [ ] Typewriter text renders character-by-character
 - [ ] Background crossfades work smoothly
 - [ ] Sprites fade in/out correctly
@@ -969,6 +1043,7 @@ main (stable V1 recreation)
 - [ ] Choice system records decisions
 
 ### Route Content
+
 - [ ] Shared prologue (Street → Home → Fall)
 - [ ] Route selection screen
 - [ ] Tori Route: Acts 1-3 + Endings
@@ -976,6 +1051,7 @@ main (stable V1 recreation)
 - [ ] Epilogue for true endings
 
 ### Systems
+
 - [ ] Save/Load (3 slots + auto-save)
 - [ ] Settings (text speed, difficulty, haptics)
 - [ ] Tether decay (Tori route only)
@@ -984,6 +1060,7 @@ main (stable V1 recreation)
 - [ ] Notification shade (mobile + desktop)
 
 ### Polish
+
 - [ ] Matrix rain on loop init screen
 - [ ] Glitch effects on key moments
 - [ ] Haptic feedback on supported devices
@@ -991,6 +1068,7 @@ main (stable V1 recreation)
 - [ ] Easter eggs and secret codes
 
 ### Soul Check
+
 - [ ] Comments signed by personas (DIZEE, ZEE, TORI)
 - [ ] Console logs use emoji
 - [ ] Version 848 treated as sacred lore
@@ -999,6 +1077,7 @@ main (stable V1 recreation)
 - [ ] No frameworks or TypeScript
 
 ### Final Test
+
 - [ ] Play Tori route to completion
 - [ ] Play Ronnie route to completion
 - [ ] Save/Load works mid-game
@@ -1033,6 +1112,7 @@ main (stable V1 recreation)
 **Solution:** You changed something. Diff against V1 line-by-line.
 
 ### Debug Helpers to Add
+
 ```javascript
 // Add to window for debugging
 window.uv7 = {
@@ -1065,6 +1145,7 @@ The mess IS the feature. The chaos IS the soul. The jank IS the atmosphere.
 Your job isn't to improve V1. Your job is to **resurrect it**. Copy the imperfections. Embrace the tech debt. Ship the god class.
 
 When you finish, a player should load your recreation and feel:
+
 - The slow dread of the tether decaying
 - The weight of each dialogue choice
 - The meta-awareness of being in a loop
@@ -1139,6 +1220,7 @@ v1-recreation/
 ## Appendix B: Critical Code Snippets
 
 ### StateManager Core
+
 ```javascript
 class StateManager {
     constructor() {
@@ -1174,6 +1256,7 @@ class StateManager {
 ```
 
 ### TetherSystem Decay
+
 ```javascript
 startDecay() {
     this.decayInterval = setInterval(() => {

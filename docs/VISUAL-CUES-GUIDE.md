@@ -29,6 +29,7 @@ this.game.triggerSensoryFeedback('toriHop', targetElement, 'Description for debu
 ### Story-Specific Cues
 
 #### `toriHop` - Body Hopping Effect
+
 **Visual:** Double flicker with chromatic aberration
 **Haptic:** `pulse` pattern [70, 40, 70]
 **Use for:** When Tori jumps between bodies/vessels
@@ -40,6 +41,7 @@ this.game.triggerSensoryFeedback('toriHop', this.game.dialogueBox, 'Tori vessel 
 ---
 
 #### `tamaPull` - Tether Pull
+
 **Visual:** Quick inward squeeze + sprite ripple
 **Haptic:** `medium` [35-50ms]
 **Use for:** Tamagotchi tether tugging on her consciousness
@@ -51,6 +53,7 @@ this.game.triggerSensoryFeedback('tamaPull', this.game.dialogueBox, 'Tether pull
 ---
 
 #### `tamaEmergency` - Emergency Alert
+
 **Visual:** Red warning flash
 **Haptic:** `warning` [100, 50, 100, 50, 100]
 **Use for:** Critical moments, danger, body dying
@@ -62,6 +65,7 @@ this.game.triggerSensoryFeedback('tamaEmergency', null, 'Body critical');
 ---
 
 #### `timelineGlitch` - Reality Break
+
 **Visual:** Timeline distortion with scan lines
 **Haptic:** `glitch` [10, 20, 5, 30, 15]
 **Use for:** Loop resets, timeline instability, reality glitches
@@ -73,6 +77,7 @@ this.game.triggerSensoryFeedback('timelineGlitch', null, 'Timeline fracture');
 ---
 
 #### `codeRipple` - Code Particles
+
 **Visual:** Burst of "0", "1", "8", "4" particles
 **Haptic:** `double` [25, 50, 25]
 **Use for:** Digital connections, code interactions, Tamagotchi activations
@@ -86,6 +91,7 @@ this.game.triggerSensoryFeedback('codeRipple', this.game.dialogueBox, 'Code acti
 ### UI Interaction Cues
 
 #### `buttonPress` - Button Feedback
+
 **Visual:** Scale down + micro-glow
 **Haptic:** `light` [10ms]
 **Use for:** Button presses, UI interactions
@@ -99,6 +105,7 @@ button.addEventListener('click', () => {
 ---
 
 #### `menuSelect` - Menu Selection
+
 **Visual:** Glow pulse
 **Haptic:** `light` [10ms]
 **Use for:** Menu item selections
@@ -110,6 +117,7 @@ this.game.triggerSensoryFeedback('menuSelect', menuItem, 'Menu item selected');
 ---
 
 #### `cardSnap` - Carousel Snap
+
 **Visual:** Scale pop
 **Haptic:** `medium` [25ms]
 **Use for:** Carousel card snapping into place
@@ -132,6 +140,7 @@ this.game.triggerSensoryFeedback('cardSnap', card, 'Card snapped');
 ### The Visual-Haptic Language
 
 Players will learn to associate:
+
 - **Buzz Buzz** = dimensional hop (toriHop)
 - **Single buzz** = tether tug (tamaPull)
 - **Micro flash** = glitch ripple (codeRipple)
@@ -184,6 +193,7 @@ body[data-comfort-mode="true"] .timeline-glitch {
 ```
 
 When comfort mode is enabled:
+
 - Glitch effects are disabled
 - Chromatic aberration removed
 - Only gentle pulses remain
@@ -220,13 +230,15 @@ When debug mode is enabled, sensory feedback logs to console:
 
 ## 💡 Best Practices
 
-### DO:
+### DO
+
 ✅ Use `triggerSensoryFeedback()` for unified haptic + visual
 ✅ Match visual intensity to story moment (gentle ripple vs emergency flash)
 ✅ Target specific elements when possible (sprites, dialogue box)
 ✅ Add descriptive labels for debug mode
 
-### DON'T:
+### DON'T
+
 ❌ Overuse effects (becomes distracting)
 ❌ Use emergency effects for minor moments
 ❌ Forget to test on desktop (no haptics, visual-only experience)

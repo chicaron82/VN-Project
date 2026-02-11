@@ -19,6 +19,7 @@ Belle identified why the display mode settings weren't working:
 Added CSS rules to physically rotate the game container when force classes are applied.
 
 #### Force Landscape on Portrait Device
+
 ```css
 @media screen and (orientation: portrait) {
     .force-landscape {
@@ -38,6 +39,7 @@ Added CSS rules to physically rotate the game container when force classes are a
 ```
 
 #### Force Portrait on Landscape Device
+
 ```css
 @media screen and (orientation: landscape) {
     .force-portrait {
@@ -55,6 +57,7 @@ Added CSS rules to physically rotate the game container when force classes are a
 ```
 
 **Key Concepts:**
+
 - `transform: rotate()` - Physically rotates the container
 - `transform-origin` - Sets the pivot point for rotation
 - Width/height swap - After rotation, dimensions must be swapped
@@ -69,6 +72,7 @@ Added CSS rules to physically rotate the game container when force classes are a
 Updated `isMobilePortrait()` to check user's setting BEFORE checking physical orientation.
 
 #### Original Code (Broken)
+
 ```javascript
 isMobilePortrait() {
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -80,6 +84,7 @@ isMobilePortrait() {
 **Problem:** Always checks physical dimensions, ignoring user preference.
 
 #### Fixed Code (Belle's Solution)
+
 ```javascript
 isMobilePortrait() {
     // BELLE FIX: Check if user is forcing a display mode via settings
@@ -98,6 +103,7 @@ isMobilePortrait() {
 ```
 
 **How It Works:**
+
 1. First check if user selected "Force Landscape" → return false (not portrait)
 2. Then check if user selected "Force Portrait" → return true (is portrait)
 3. Finally, if "Auto" mode → check physical device orientation (original behavior)
@@ -106,12 +112,14 @@ isMobilePortrait() {
 
 ## What This Fixes
 
-### Before Fix:
+### Before Fix
+
 - Display mode dropdown did nothing visually
 - Game logic ignored user preference
 - Selecting "Force Landscape" had zero effect
 
-### After Fix:
+### After Fix
+
 - **Visual:** Screen physically rotates when user forces orientation
 - **Logic:** Text pagination respects forced orientation
 - **Logic:** Sprite positioning respects forced orientation
@@ -158,6 +166,7 @@ These game systems now respect the display mode setting:
 ### Why Rotation is Complex
 
 When you rotate an element with CSS:
+
 1. The element rotates around a pivot point (`transform-origin`)
 2. Its width and height appear swapped to the viewer
 3. Its position in the document flow changes

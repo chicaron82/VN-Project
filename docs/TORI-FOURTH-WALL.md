@@ -19,7 +19,8 @@
 
 ### Tori's Reactions
 
-#### Making It Easier (Eased):
+#### Making It Easier (Eased)
+
 ```
 "Oh… it's lighter. I can… breathe again. Thank you."
 "Did something change? I… feel less afraid."
@@ -28,6 +29,7 @@
 ```
 
 **Visual Effects:**
+
 - No screen shake
 - Green glow on dialogue box (#00ffaa)
 - Tori's name in green
@@ -35,7 +37,8 @@
 
 **Player feels:** Protective, caring, like a guardian
 
-#### Making It Harder (Tightened):
+#### Making It Harder (Tightened)
+
 ```
 "…Wait. Something's wrong."
 "It's getting harder to hold on. Why… why now?"
@@ -45,6 +48,7 @@
 ```
 
 **Visual Effects:**
+
 - Screen shakes (300ms)
 - Tori's sprite flickers (100ms)
 - Pink/red glow on dialogue box (#ff6699)
@@ -60,6 +64,7 @@
 ### File Changes
 
 **[game-config.js](game-config.js#L55-L60)**
+
 ```javascript
 DIFFICULTY: {
     RELAXED: 0.5,   // 50% slower decay
@@ -69,23 +74,27 @@ DIFFICULTY: {
 ```
 
 **[tether-system.js](tether-system.js#L18)**
+
 - Added `difficultyModifier` property
 - Added `setDifficultyModifier(difficulty)` method
 - Applied modifier to decay calculation in `applyDecay()`
 
 **[settings-manager.js](settings-manager.js#L183-L211)**
+
 - Added `tetherDifficulty` to settings
 - Added `setTetherDifficulty(difficulty)` method
 - Added `getDifficultyChangeType()` helper
 - Triggers `game.triggerTetherReaction()` when changed mid-game
 
 **[game-engine.js](game-engine.js#L2668-L2761)**
+
 - Added `triggerTetherReaction(changeType)` - Main reaction handler
 - Added `showTetherReactionDialogue(text, changeType)` - Display system
 - Added `triggerScreenShake()` - Visual effect
 - Added `flickerSprite()` - Tori flicker effect
 
 **[styles.css](styles.css#L1537-L1542)**
+
 - Added `@keyframes screenShake` animation
 
 ---
@@ -93,18 +102,21 @@ DIFFICULTY: {
 ## The Difficulty Options
 
 ### Relaxed Mode
+
 - **Decay speed:** 50% slower
 - **For:** Players with slower reading speeds, accessibility needs
 - **Experience:** More time to read, less pressure
 - **Tori's perception:** Relief, gratitude
 
 ### Normal Mode (Default)
+
 - **Decay speed:** Standard
 - **For:** Balanced experience
 - **Experience:** Intended pacing
 - **Tori's perception:** Baseline
 
 ### Intense Mode
+
 - **Decay speed:** 50% faster
 - **For:** Players who want maximum tension
 - **Experience:** High pressure, quick decisions
@@ -115,6 +127,7 @@ DIFFICULTY: {
 ## Player Experience Flow
 
 ### Scenario 1: The Protective Player
+
 ```
 1. Player struggles with tether mechanic
 2. Opens Settings → "Tori's Route Difficulty"
@@ -126,6 +139,7 @@ DIFFICULTY: {
 ```
 
 ### Scenario 2: The Challenge Seeker
+
 ```
 1. Player wants more difficulty
 2. Opens Settings
@@ -141,6 +155,7 @@ DIFFICULTY: {
 ```
 
 ### Scenario 3: Community Discovery
+
 ```
 Reddit Post:
 "Guys... change the tether difficulty during Tori's route."
@@ -160,26 +175,31 @@ Comments:
 ## Why This Is Genius
 
 ### 1. Accessibility Becomes Narrative
+
 - Not just a toggle - it's an emotional choice
 - Players don't feel "weak" for using Relaxed mode
 - They feel **protective** and **caring**
 
 ### 2. Fourth Wall Integration
+
 - Tori is aware she's in code
 - She can feel when parameters change
 - Settings menu = part of her reality
 
 ### 3. Player Agency
+
 - Not just difficulty - it's **how you treat Tori**
 - Make it easier = protect her
 - Make it harder = test her (or hurt her)
 
 ### 4. Meta-Narrative Reinforcement
+
 - Fits Version 848's core theme
 - Bootstrap paradox awareness
 - Tori's consciousness exists in code
 
 ### 5. Replayability Hook
+
 - Players will try both directions
 - Streamers will showcase reactions
 - Community shares "did you try...?"
@@ -189,6 +209,7 @@ Comments:
 ## Future Enhancements (Optional)
 
 ### Persistent Memory
+
 ```javascript
 // Tori remembers if you've changed it before
 if (localStorage.getItem('hasChangedDifficulty')) {
@@ -197,6 +218,7 @@ if (localStorage.getItem('hasChangedDifficulty')) {
 ```
 
 ### Route-Specific Reactions
+
 ```javascript
 // Different reactions based on story progress
 if (this.game.currentScene === 'echo_confrontation') {
@@ -205,6 +227,7 @@ if (this.game.currentScene === 'echo_confrontation') {
 ```
 
 ### Achievement/Unlockable
+
 ```javascript
 // Secret code unlocked by never changing difficulty
 if (!localStorage.getItem('hasChangedDifficulty') && gameComplete) {

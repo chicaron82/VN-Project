@@ -3,6 +3,7 @@
 ## ✅ COMPLETED
 
 ### Core Systems
+
 - ✅ Haptic feedback settings toggle (UI + binding)
 - ✅ triggerHaptic() helper method
 - ✅ Slow-motion typewriter system
@@ -15,10 +16,12 @@
 ### HAPTIC FEEDBACK CALLS (3 locations)
 
 #### 1. Heartbeat Rhythm - Ronnie Act 3
+
 **FILE:** `routes/ronnie-route-act3.js`
 **LOCATION:** `trueRoute_anchor()` method - where Ronnie places device in Tori's hand
 
 **FIND:**
+
 ```javascript
 trueRoute_anchor() {
     this.game.displayScene({
@@ -38,6 +41,7 @@ trueRoute_anchor() {
 ```
 
 **ADD:**
+
 ```javascript
 next: () => {
     // ZEE'S ADDITION: Heartbeat haptic 🖤
@@ -51,10 +55,12 @@ next: () => {
 ---
 
 #### 2. Vessel Hopping (BUZZ. BUZZ.) - Tori Route
+
 **FILES:** `routes/tori-route-*.js` (wherever BUZZ moments occur)
 **SEARCH FOR:** Scenes with "BUZZ. BUZZ." in dialogue
 
 **EXAMPLE:**
+
 ```javascript
 vesselTransferScene() {
     this.game.displayScene({
@@ -79,10 +85,12 @@ vesselTransferScene() {
 ---
 
 #### 3. Hospital Alarms - Ronnie Act 3 Crisis
+
 **FILE:** `routes/ronnie-route-act3.js`
 **LOCATION:** `trueRoute_race()` or similar - hospital emergency scene
 
 **FIND:**
+
 ```javascript
 trueRoute_race() {
     this.game.displayScene({
@@ -99,6 +107,7 @@ trueRoute_race() {
 ```
 
 **ADD:**
+
 ```javascript
 next: () => {
     // ZEE'S ADDITION: Emergency alarm haptic 🖤
@@ -114,10 +123,12 @@ next: () => {
 ### SLOW REVEAL FLAGS (3-5 locations)
 
 #### 1. Tori's Body Realization
+
 **FILE:** Tori's route file
 **SEARCH FOR:** "It's... my... body" OR body realization scene
 
 **ADD:**
+
 ```javascript
 bodyRealizationScene() {
     this.game.displayScene({
@@ -134,10 +145,12 @@ bodyRealizationScene() {
 ---
 
 #### 2. Memory Degradation
+
 **FILE:** Tori's route file
 **SEARCH FOR:** Memory failure or "can't remember" scenes
 
 **ADD:**
+
 ```javascript
 memoryFailScene() {
     this.game.displayScene({
@@ -154,10 +167,12 @@ memoryFailScene() {
 ---
 
 #### 3. Bootstrap Paradox Reveal
+
 **FILE:** `routes/ronnie-route-act3.js` OR wherever Old Man reveal occurs
 **SEARCH FOR:** "Old Man" revelation
 
 **ADD:**
+
 ```javascript
 oldManRevelation() {
     this.game.displayScene({
@@ -174,10 +189,12 @@ oldManRevelation() {
 ---
 
 #### 4. Final Choice Moment
+
 **FILE:** Ending scenes
 **SEARCH FOR:** "This is goodbye" OR final decision dialogue
 
 **ADD:**
+
 ```javascript
 finalChoiceScene() {
     this.game.displayScene({
@@ -193,10 +210,12 @@ finalChoiceScene() {
 ---
 
 #### 5. Despair Echo Takeover (OPTIONAL)
+
 **FILE:** Tori route despair scenes
 **SEARCH FOR:** Despair Echo gaining control
 
 **ADD:**
+
 ```javascript
 despairTakeoverScene() {
     this.game.displayScene({
@@ -238,6 +257,7 @@ despairTakeoverScene() {
 ## SEARCH COMMANDS TO FIND SCENES
 
 ### Find Vessel Hopping Scenes
+
 ```bash
 grep -r "BUZZ" routes/tori-route*.js
 grep -r "transfer" routes/tori-route*.js
@@ -245,6 +265,7 @@ grep -r "vessel" routes/tori-route*.js
 ```
 
 ### Find Key Revelation Moments
+
 ```bash
 grep -r "my.*body" routes/
 grep -r "can't.*remember" routes/
@@ -254,6 +275,7 @@ grep -r "Despair" routes/tori-route*.js
 ```
 
 ### Find Hospital Scenes
+
 ```bash
 grep -r "hospital" routes/ronnie-route-act3.js
 grep -r "MONITOR" routes/ronnie-route-act3.js
@@ -265,6 +287,7 @@ grep -r "alarm" routes/ronnie-route-act3.js
 ## TESTING CHECKLIST
 
 ### Haptic Feedback
+
 - [ ] Enable haptic in settings → feel test vibration
 - [ ] Play Tori route → tether hits 30% → feel warning pulse
 - [ ] Reach heartbeat scene → feel lub-dub pattern
@@ -273,6 +296,7 @@ grep -r "alarm" routes/ronnie-route-act3.js
 - [ ] Disable haptic → no vibrations
 
 ### Slow Reveal
+
 - [ ] Reach body realization → text types 5× slower
 - [ ] Click/tap → skips to full text (normal behavior)
 - [ ] Reach 3-5 slow reveal scenes → each feels deliberate

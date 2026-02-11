@@ -1,6 +1,7 @@
 # Version 848 - File Reorganization Guide
 
 ## ✅ COMPLETED AUTOMATICALLY
+
 - ✅ Removed `cutscene-animations.css` link from vn-modular.html
 - ✅ Updated all script src paths in vn-modular.html to new folder structure
 
@@ -25,7 +26,9 @@ v848/
 ## 📦 FILES TO MOVE - STEP BY STEP
 
 ### STEP 1: Create New Folders
+
 Create these folders in `c:\Users\silve\Downloads\v848\`:
+
 - `routes/`
 - `system/`
 - `ui/`
@@ -36,6 +39,7 @@ Create these folders in `c:\Users\silve\Downloads\v848\`:
 ### STEP 2: Move Route Files to `routes/` folder
 
 Move these files from ROOT to `routes/`:
+
 - ✅ shared-prologue.js
 - ✅ ronnie-route.js
 - ✅ ronnie-route-act2.js
@@ -52,6 +56,7 @@ Move these files from ROOT to `routes/`:
 ### STEP 3: Move System Files to `system/` folder
 
 Move these files from ROOT to `system/`:
+
 - ✅ game-engine.js
 - ✅ game-config.js
 - ✅ settings-manager.js
@@ -65,6 +70,7 @@ Move these files from ROOT to `system/`:
 ### STEP 4: Move UI Files to `ui/` folder
 
 Move these files from ROOT to `ui/`:
+
 - ✅ standalone-notes-viewer.js
 - ✅ save-load-ui.js
 
@@ -73,6 +79,7 @@ Move these files from ROOT to `ui/`:
 ### STEP 5: Move Documentation to `docs/` folder
 
 Move these files from ROOT to `docs/`:
+
 - ✅ README.md
 - ✅ DEV-COMMANDS.md
 - ✅ TORI-FOURTH-WALL.md
@@ -82,6 +89,7 @@ Move these files from ROOT to `docs/`:
 - ✅ MAKING_OF_VERSION_848_ZEE_CONTRIBUTIONS_UPDATED.md
 
 Also move from `zeerah/` subfolder to `docs/`:
+
 - ✅ zeerah/ronnieNotePlacements.md
 - ✅ zeerah/ToriNotePlacements.md
 
@@ -92,6 +100,7 @@ Also move from `zeerah/` subfolder to `docs/`:
 Good news: Most assets are already in `assets/` folder!
 
 **Files currently DUPLICATED in ROOT and assets/ - DELETE from ROOT:**
+
 - menu-desktop.png
 - menu-mobile.png
 - menudesktop.png
@@ -130,6 +139,7 @@ Good news: Most assets are already in `assets/` folder!
 - trinity-tori-portrait.png
 
 **File to move to oldFiles:**
+
 - old-ronnie-sprite.png (currently in ROOT - move to oldFiles/)
 
 ---
@@ -137,6 +147,7 @@ Good news: Most assets are already in `assets/` folder!
 ### STEP 7: Clean Up Old/Unused Files
 
 **Move to oldFiles/ (currently in ROOT):**
+
 - ✅ game-engineOLD.js
 - ✅ stylesOLD.css
 - ✅ gateway.js (if not used)
@@ -147,6 +158,7 @@ Good news: Most assets are already in `assets/` folder!
 - ✅ cutscene-animations.css (DELETED - no longer referenced)
 
 **Delete from ROOT (after moving to oldFiles):**
+
 - cutscene-animations.css
 
 **Delete entire zeerah/ folder after moving .md files to docs/**
@@ -215,6 +227,7 @@ After moving files:
 8. ✅ Test settings menu
 
 If you get 404 errors, double-check that:
+
 - File names match exactly (case-sensitive on some systems)
 - Folder names are correct (routes/, system/, ui/, docs/, assets/)
 - vn-modular.html is in the ROOT (not in a subfolder)
@@ -230,6 +243,6 @@ If you get 404 errors, double-check that:
 
 ---
 
-## 💚 Ready to Reorganize!
+## 💚 Ready to Reorganize
 
 All code changes are complete. Just move the files according to this guide and you're done!

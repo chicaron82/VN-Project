@@ -1,4 +1,5 @@
 # Session Notes: Menu Carousel Integration + ToriGatchi Gateway Improvements
+
 **Date:** December 9, 2025
 **Focus:** UV7 Menu Carousel Glow-Up + Route Select Sprites + ToriGatchi Gateway Polish
 
@@ -11,6 +12,7 @@
 **Five major improvements to the ToriGatchi easter egg experience:**
 
 #### A. Main Menu Unlock System
+
 - **Persistent Unlock** - ToriGatchi button appears in main menu after first code use
 - **Smart Grid Layout** - Reorganized from 4×2+1 to clean 2×5 grid layout
 - **Button Positioning** - ToriGatchi in top row (5th), Contact moved to bottom row (5th)
@@ -18,12 +20,14 @@
 - **No Re-entry Needed** - Once unlocked, accessible from main menu permanently
 
 #### B. Unlock Notification
+
 - **Stylish Alert** - Shows notification on first code discovery
 - **Clear Message** - "NEW MAIN MENU OPTION UNLOCKED! 🎮"
 - **Visual Consistency** - Matches Skip/Notes unlock notification style
 - **User-Friendly** - Explains ToriGatchi now in main menu permanently
 
 #### C. Coherence Indicator on Help Prompts
+
 - **Visual Progress Bar** - Shows Tori's coherence percentage during gateway
 - **6 Color-Coded States:**
   - 100% - STABLE (Green) - Unlock 1, optimal
@@ -36,22 +40,28 @@
 - **Player Feedback** - Shows exact consequences of delaying help
 
 #### D. Ending Modal Clarity Hints
+
 **Rescued Ending:**
+
 - "What happens next? Continue in the Light - Play the wholesome standalone ToriGatchi / Stay Here - Keep playing with rescued visual mode applied"
 
 **Eternal Ending:**
+
 - "This is the path you chose. ToriGatchi will continue with blue ethereal visual mode. You and Tori exist together in the digital space."
 
 **Fragmented Ending:**
+
 - "You can try again: Retry ToriGatchi - Clear save and start fresh / Retry the VN - Go back and try for a different ending / Accept This Fate - Continue with corrupted gameplay (50% button failure)"
 
 #### E. Wholesome Redirect Confirmation Modal
+
 - **Intercepts Redirect** - Catches "Continue in the Light" button click
 - **Explains Context** - Leaving Version 848 for different website
 - **Allows Cancel** - Option to stay instead of redirecting
 - **Clear Message** - "Continue in the Light? You're about to leave this Version 848 ToriGatchi and open the wholesome standalone version..."
 
 **Files Modified (Earlier Session):**
+
 - index.html - Main menu structure to 2×5 grid
 - styles.css - Grid layout + notification + modal styling
 - system/game-engine.js - Unlock flag, notification methods, layout update
@@ -63,7 +73,9 @@
 ---
 
 ### 2. Menu Carousel System (Later Session)
+
 Replaced the old button grid main menu with a modern, swipeable card-based carousel featuring:
+
 - 10 interactive cards (routes, modes, extras)
 - Touch/swipe navigation on mobile
 - Arrow button navigation on desktop/landscape
@@ -73,7 +85,9 @@ Replaced the old button grid main menu with a modern, swipeable card-based carou
 - Haptic feedback on card press
 
 ### 3. Route Select Sprites
+
 Added character sprites (Ronnie & Tori) above route selection buttons:
+
 - Sprites positioned using CSS pseudo-elements
 - Hover effects with glow/lift animation
 - Fully responsive across all screen sizes
@@ -84,6 +98,7 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 ## Files Modified
 
 ### Earlier Session (ToriGatchi Gateway)
+
 - **index.html** - Main menu structure to 2×5 grid
 - **styles.css** - Grid layout + notification + modal styling
 - **system/game-engine.js** - Unlock flag, notification methods, layout update
@@ -91,6 +106,7 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 - **Tori-Gatchi/scripts/gateway-states.css** - Coherence + hint + modal styles
 
 ### Later Session (Menu Carousel)
+
 - **index.html** - Added CSS/JS links for carousel and sprites
 - **system/game-engine.js** - Added carousel initialization, unlock methods
 - **ui/menu-carousel.js** - Enhanced with haptic feedback, clickable cards
@@ -102,6 +118,7 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 ## Key Features Implemented
 
 ### Menu Carousel
+
 - **Swipe Navigation** - Natural touch gestures for mobile
 - **Arrow Buttons** - Visible in landscape mode for easier navigation
 - **Responsive Layout** - Portrait (swipe-first) vs Landscape (button-first) designs
@@ -113,6 +130,7 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 - **ToriGatchi Integration** - Unlocks when easter egg is found
 
 ### Route Select Sprites
+
 - **Character Sprites** - Ronnie (left) and Tori (right) above route buttons
 - **Hover Animation** - Sprites lift and glow cyan on hover
 - **Drop Shadow Effects** - Depth and polish
@@ -123,26 +141,31 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 ## Technical Challenges Solved
 
 ### Challenge 1: Carousel Not Appearing
+
 **Problem:** Carousel didn't show after integration, old grid remained
 **Root Cause:** User skips splash screen → calls `showMainMenu()` instead of `proceedToMenu()`
 **Solution:** Added carousel init to both methods
 
 ### Challenge 2: Landscape Media Query Mismatch
+
 **Problem:** Landscape styles not applying on user's devices (939×485 phone, 1265×720 desktop)
 **Root Cause:** Media query `@media (max-width: 768px)` excluded these widths
 **Solution:** Changed to `@media (max-height: 720px) and (orientation: landscape)`
 
 ### Challenge 3: Dots Appearing Beside Card
+
 **Problem:** Navigation dots displayed horizontally next to card instead of below
 **Root Cause:** Flexbox row layout placed all children in horizontal row
 **Solution:** Switched to CSS Grid with explicit row/column positioning
 
 ### Challenge 4: Card Size Optimization
+
 **Problem:** Card too large for phone landscape, tooltip cut off (needed scrolling)
 **Root Cause:** 280×280px card exceeded phone's 485px height with other elements
 **Solution:** Reduced to 240×240px, compacted all fonts/spacing by 10-15%
 
 ### Challenge 5: File Path Corrections
+
 **Problem:** Integration guide had incorrect file paths
 **Root Cause:** Guide assumed root location, actual files were in `ui/` and `assets/`
 **Solution:** Corrected paths in index.html and route-select-sprites.css
@@ -152,11 +175,13 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 ## Testing Scenarios Covered
 
 ### Device Testing
+
 - **Phone Portrait:** Swipe navigation, full card display
 - **Phone Landscape (939×485):** Square card, arrows visible, dots below, tooltip fits
 - **Desktop/TV (1265×720):** Same landscape layout, all elements visible
 
 ### Interaction Testing
+
 - **Card Clicks:** Entire card clickable, button still works independently
 - **Locked Cards:** Non-clickable with lock overlay
 - **Haptic Feedback:** 10ms vibration on supported devices
@@ -168,6 +193,7 @@ Added character sprites (Ronnie & Tori) above route selection buttons:
 ## Code Highlights
 
 ### ToriGatchi Integration
+
 ```javascript
 // In game-engine.js - Added unlock method (lines 5746-5750)
 unlockToriGatchiCarousel() {
@@ -200,6 +226,7 @@ unlockToriGatchi() {
 ```
 
 ### Haptic Feedback Implementation
+
 ```javascript
 // Haptic feedback on card press
 if (navigator.vibrate) {
@@ -208,6 +235,7 @@ if (navigator.vibrate) {
 ```
 
 ### Landscape Grid Layout
+
 ```css
 @media (max-height: 720px) and (orientation: landscape) {
     .menu-carousel {
@@ -222,6 +250,7 @@ if (navigator.vibrate) {
 ```
 
 ### Full Card Clickability
+
 ```javascript
 // Make entire card clickable
 cardDiv.style.cursor = 'pointer';
@@ -240,22 +269,27 @@ cardDiv.addEventListener('click', () => {
 ## Design Decisions
 
 ### Why Grid Over Flexbox?
+
 Grid provides precise 2D control needed for landscape layout:
+
 - Arrows flanking card horizontally
 - Dots spanning full width below card
 - Hint spanning full width below dots
 
 ### Why Square Cards in Landscape?
+
 - Maintains consistent aspect ratio across orientations
 - Easier to fit in height-constrained landscape views
 - Visually balanced with arrows on sides
 
 ### Why Entire Card Clickable?
+
 - Better UX on mobile (larger tap target)
 - More intuitive interaction (card = button)
 - Maintains button for accessibility (keyboard/screen readers)
 
 ### Why 10ms Haptic Duration?
+
 - Short enough to feel responsive, not intrusive
 - Matches system UI feedback patterns
 - Confirms action without being distracting
@@ -285,11 +319,13 @@ Grid provides precise 2D control needed for landscape layout:
 ## Next Session Prep
 
 ### Planned Tasks for Tomorrow
+
 1. **Route Selection Improvements** - TBD enhancements to route select screen
 2. **Ronnie Route Act 3 Cleanup** - Fix duplicate dialogue issues
 3. **Testing & Bug Fixes** - Address any issues found during user testing
 
 ### Potential Future Enhancements
+
 - Add card transition animations (slide/fade effects)
 - Implement card unlocking celebration animation
 - Add sound effects to match haptic feedback
@@ -297,6 +333,7 @@ Grid provides precise 2D control needed for landscape layout:
 - Explore card theming based on route progress
 
 ### Known Considerations
+
 - Sprite paths now corrected to `assets/` (not `assets/sprites/`)
 - Carousel initializes in both `showMainMenu()` and `proceedToMenu()`
 - Landscape layout works for screens up to 720px height
@@ -319,6 +356,7 @@ Grid provides precise 2D control needed for landscape layout:
 All features implemented and tested successfully:
 
 **Earlier Session (ToriGatchi Gateway):**
+
 - ✅ Main menu unlock system with 2×5 grid layout
 - ✅ Unlock notification matching game aesthetic
 - ✅ Coherence indicator with 6 visual states
@@ -327,6 +365,7 @@ All features implemented and tested successfully:
 - ✅ ~350+ lines of code added across 5 files
 
 **Later Session (Menu Carousel):**
+
 - ✅ Menu carousel fully integrated and functional
 - ✅ Route select sprites displaying correctly
 - ✅ Landscape/portrait layouts optimized

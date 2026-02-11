@@ -20,7 +20,9 @@ Clean, organized, professional settings with **3 tabs**:
 ## Tab Organization
 
 ### **Tab 1: GENERAL**
+
 Game settings and preferences
+
 - Text Speed (Slow, Normal, Fast, Instant)
 - Auto-Advance toggle + delay slider
 - Display Mode (Auto, Portrait, Landscape)
@@ -28,7 +30,9 @@ Game settings and preferences
 - Fullscreen button
 
 ### **Tab 2: SHORTCUTS**
+
 Keyboard controls reference (read-only, helpful)
+
 - Space/Enter - Advance dialogue
 - S - Skip typing animation
 - Ctrl - Hold to skip (when unlocked)
@@ -36,7 +40,9 @@ Keyboard controls reference (read-only, helpful)
 - Info about mobile tap controls
 
 ### **Tab 3: SECRET CODES**
+
 Code redemption system (not buried anymore!)
+
 - Input field for code entry
 - "Redeem Code" button
 - Discovered codes counter (X/7)
@@ -426,21 +432,25 @@ switchTab(tabName) {
 ## Benefits of Tabbed Design
 
 ### **Organization**
+
 - ✅ Clean separation of concerns
 - ✅ No overwhelming single panel
 - ✅ Easy to navigate
 
 ### **Discoverability**
+
 - ✅ Secret codes have dedicated tab (not hidden!)
 - ✅ Shortcuts reference always available
 - ✅ Settings grouped logically
 
 ### **Scalability**
+
 - ✅ Easy to add new tabs later (Audio, Accessibility, etc.)
 - ✅ Mobile-friendly (tabs stack on small screens)
 - ✅ Clean codebase organization
 
 ### **Professional Look**
+
 - ✅ Modern UI pattern
 - ✅ Matches game's clean aesthetic
 - ✅ Consistent with cyan/terminal theme
