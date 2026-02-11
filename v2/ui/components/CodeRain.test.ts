@@ -56,6 +56,7 @@ describe('CodeRain', () => {
     });
 
     it('should handle resize', () => {
+        new CodeRain(container);
 
         // Trigger resize
         window.dispatchEvent(new Event('resize'));
