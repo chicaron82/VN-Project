@@ -1370,3 +1370,546 @@
     font-weight: 500;
     color: var(--text-primary);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   CAROUSEL - "Choose Your Chef"
+   Portrait strip navigation with active chef spotlight
+   ═══════════════════════════════════════════════════════════════ */
+
+.crew-carousel {
+    margin: 3rem 0;
+}
+
+.carousel-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.carousel-header .crew-title {
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.carousel-header .crew-subtitle {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Portrait Strip */
+.carousel-portrait-strip {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-padding-inline: 1rem; /* Better spacing on mobile scroll-snap */
+}
+
+.carousel-portrait-strip::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-portrait {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    flex-shrink: 0;
+}
+
+.carousel-portrait .portrait-img {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-subtle);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-portrait .portrait-glow {
+    position: absolute;
+    top: 0.5rem;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    pointer-events: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.carousel-portrait .portrait-name {
+    font-size: 0.7rem;
+    color: var(--text-tertiary);
+    transition: color 0.3s ease;
+    white-space: nowrap;
+}
+
+.carousel-portrait:hover .portrait-img {
+    transform: scale(1.05);
+    border-color: var(--border-medium);
+}
+
+.carousel-portrait:hover .portrait-name {
+    color: var(--text-secondary);
+}
+
+.carousel-portrait.active .portrait-img {
+    transform: scale(1.3);
+    border-color: var(--glow-color, var(--accent-primary));
+    box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color, var(--accent-primary)) 50%, transparent);
+}
+
+.carousel-portrait.active .portrait-glow {
+    box-shadow: 0 0 30px color-mix(in srgb, var(--glow-color, var(--accent-primary)) 30%, transparent);
+}
+
+.carousel-portrait.active .portrait-name {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Spotlight reveal flash (entrance animation) */
+.carousel-portrait.spotlight-reveal .portrait-img {
+    animation: spotlightFlash 0.6s ease-out;
+}
+
+@keyframes spotlightFlash {
+    0% { box-shadow: 0 0 0 transparent; }
+    50% { box-shadow: 0 0 30px var(--glow-color, var(--accent-primary)); }
+    100% { box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color, var(--accent-primary)) 50%, transparent); }
+}
+
+/* Pairing hover crosslink: gentle pulse when hovering paired chef's card */
+.carousel-portrait.pairing-hover .portrait-img {
+    animation: gentlePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+    0%, 100% {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px color-mix(in srgb, var(--glow-color, var(--accent-primary)) 40%, transparent);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 25px color-mix(in srgb, var(--glow-color, var(--accent-primary)) 60%, transparent);
+    }
+}
+
+/* Spotlight Container */
+.carousel-spotlight-container {
+    position: relative;
+    min-height: 400px;
+    transition: opacity 0.2s ease;
+}
+
+.carousel-spotlight-container.crossfading {
+    opacity: 0;
+}
+
+/* Spotlight Content Layout */
+.spotlight-content {
+    animation: fadeIn 0.3s ease;
+}
+
+.spotlight-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.spotlight-card-column {
+    display: flex;
+    justify-content: center;
+}
+
+.spotlight-card-column .crew-card {
+    width: 100%;
+    max-width: 340px;
+}
+
+/* Spotlight Bio */
+.spotlight-bio {
+    margin-bottom: 1.5rem;
+}
+
+.spotlight-name-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.spotlight-name {
+    font-size: 1.6rem;
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.spotlight-alias {
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+}
+
+.spotlight-role {
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+}
+
+.spotlight-contribution {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Spotlight Philosophy Quote */
+.spotlight-philosophy {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--accent-primary);
+    border-left: 3px solid;
+    padding-left: 1rem;
+    margin: 1rem 0 1.5rem;
+}
+
+/* Spotlight Specialty */
+.spotlight-specialty h4,
+.spotlight-cooking-approach h4,
+.spotlight-specialty-highlight h4 {
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.spotlight-specialty p,
+.spotlight-cooking-approach p,
+.spotlight-specialty-highlight p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+/* Cooking Approach Details */
+.cooking-details {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+}
+
+.cooking-details .cooking-lines {
+    display: inline-block;
+    font-size: 0.85rem;
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--accent-primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.cooking-details ul {
+    margin: 0.5rem 0;
+    padding-left: 1.2rem;
+}
+
+.cooking-details li {
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.cooking-details .cooking-quote {
+    font-style: italic;
+    color: var(--accent-primary);
+    margin-top: 0.75rem;
+    margin-bottom: 0;
+}
+
+/* Spotlight Metrics */
+.spotlight-metrics {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.spotlight-metrics h4 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.spotlight-stats-row {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 1rem;
+}
+
+.spotlight-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.spotlight-stat .stat-counter {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.spotlight-stat .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.spotlight-commit-bar .bar-track {
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.spotlight-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--bar-color, var(--accent-primary)), color-mix(in srgb, var(--bar-color, var(--accent-primary)) 60%, var(--accent-cyan)));
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.spotlight-moments h5 {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.spotlight-moments ul {
+    padding-left: 1.2rem;
+    margin: 0;
+}
+
+.spotlight-moments li {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+/* Spotlight Collaboration */
+.spotlight-collaboration {
+    margin-bottom: 1.5rem;
+}
+
+.spotlight-collaboration h4 {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.collab-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 1.25rem;
+}
+
+.collab-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.collab-problem {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.collab-badge {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 107, 107, 0.15);
+    color: var(--error);
+}
+
+.collab-role {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.collab-result {
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+}
+
+/* Chef Pairings */
+.chef-pairings-section {
+    margin-bottom: 1.5rem;
+}
+
+.pairings-title {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.pairings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.chef-pairing-card {
+    background: var(--bg-card);
+    border-radius: 8px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chef-pairing-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.pairing-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.pairing-portrait {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-subtle);
+}
+
+.pairing-label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.pairing-reason {
+    color: var(--accent-primary);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.pairing-workflow {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+}
+
+.pairing-navigate {
+    background: none;
+    border: none;
+    color: var(--accent-primary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0;
+    transition: opacity 0.2s ease;
+}
+
+.pairing-navigate:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Extended Quote */
+.spotlight-extended-quote {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.extended-quote-text {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    border-left: 3px solid;
+    padding-left: 1rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.6;
+}
+
+.extended-quote-context {
+    display: block;
+    text-align: right;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+}
+
+/* ─── Carousel Mobile Responsive ─────────────────────────── */
+
+@media (max-width: 900px) {
+    .spotlight-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .spotlight-card-column {
+        order: -1;
+    }
+}
+
+@media (max-width: 600px) {
+    .carousel-portrait-strip {
+        justify-content: flex-start;
+        scroll-snap-type: x mandatory;
+        gap: 0.75rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .carousel-portrait {
+        scroll-snap-align: center;
+    }
+
+    .carousel-portrait .portrait-img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .carousel-portrait.active .portrait-img {
+        transform: scale(1.2);
+    }
+
+    .spotlight-stats-row {
+        gap: 2rem;
+    }
+
+    .pairings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .carousel-header .crew-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    .carousel-portrait,
+    .carousel-portrait .portrait-img,
+    .carousel-portrait .portrait-glow,
+    .carousel-spotlight-container,
+    .spotlight-content,
+    .spotlight-bar-fill,
+    .chef-pairing-card {
+        transition: none !important;
+        animation: none !important;
+    }
+}

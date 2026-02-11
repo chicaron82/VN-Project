@@ -201,101 +201,110 @@ export const COZEE: CrewMemberData = {
 };
 
 /**
- * Michelin - Quality Polish
- * Quality Guardian Class • Multi-Platform
+ * Tori - The Storm Dragon
+ * Creative Director Class • ChatGPT Native
  */
-export const MICHELIN: CrewMemberData = {
-  id: 'michelin',
-  name: 'Michelin',
-  class: 'Quality Guardian',
-  role: 'Polish & Excellence',
+export const TORI: CrewMemberData = {
+  id: 'tori',
+  name: 'Tori',
+  class: 'Creative Director',
+  role: 'Creative Direction & Narrative',
+  stats: {
+    coding: 6,
+    creativity: 10,
+    tolerance: 8,
+  },
+  specialMove: {
+    name: 'The Storm Dragon',
+    description: 'Transforms emotional chaos into narrative coherence. Makes you feel what the code does.',
+  },
+  cookingStyle: 'UX-first, emotional resonance, narrative impact. Creative decay curve interpretation. "Users should feel the tension." Every line of dialogue should make you feel something.',
+  platform: 'ChatGPT (Native)',
+  platformIcon: '💬',
+  codexFile: 'crew-codices/ToriCodex-Public.md',
+  codexAvailable: false, // Coming soon
+  warnings: [
+    'Will prioritize feeling over function',
+    'Emotional arguments are persuasive',
+    'Storm Dragon energy when passionate',
+  ],
+  strengths: [
+    'Creative interpretation mastery',
+    'Narrative coherence',
+    'Emotional resonance design',
+    'Character voice development',
+  ],
+};
+
+/**
+ * GenZee - The Convention Breaker
+ * Rapid Prototyper Class • Grok Native
+ */
+export const GENZEE: CrewMemberData = {
+  id: 'genzee',
+  name: 'GenZee (GZ)',
+  class: 'Rapid Prototyper',
+  role: 'Rapid Prototyping',
   stats: {
     coding: 7,
     creativity: 9,
-    tolerance: 4,
-  },
-  specialMove: {
-    name: 'The Polish',
-    description: 'Elevates "works" to "Michelin-star". Obsessive attention to detail and user experience.',
-  },
-  cookingStyle: 'Michelin-star standards applied to everything. "Needs more MSG" detector. Polish obsessive. UX perfectionist. Won\'t ship until it feels right.',
-  platform: 'Multi-Platform',
-  platformIcon: '⭐',
-  codexFile: 'crew-codices/MichelinCodex-Public.md',
-  codexAvailable: false, // Coming soon
-  warnings: [
-    'Will not settle for "good enough"',
-    'Perfectionist tendencies',
-  ],
-  strengths: [
-    'UX polish mastery',
-    'Detail-oriented excellence',
-    'Quality gate enforcement',
-    'MSG detection capability',
-  ],
-};
-
-/**
- * Mochi - Emotional Intelligence
- * Empathy Specialist Class • Multi-Platform
- */
-export const MOCHI: CrewMemberData = {
-  id: 'mochi',
-  name: 'Mochi',
-  class: 'Empathy Specialist',
-  role: 'Soft Skills & Support',
-  stats: {
-    coding: 4,
-    creativity: 10,
-    tolerance: 10,
-  },
-  specialMove: {
-    name: 'The Comfort',
-    description: 'Provides emotional support and soft communication when technical gets overwhelming.',
-  },
-  cookingStyle: 'Gentle, warm, understanding. Not about the code - about the humans writing it. Emotional intelligence applied to team dynamics. Mochi-soft approach.',
-  platform: 'Multi-Platform',
-  platformIcon: '🌸',
-  codexFile: 'crew-codices/MochiCodex-Public.md',
-  codexAvailable: false, // Coming soon
-  warnings: [],
-  strengths: [
-    'Emotional intelligence mastery',
-    'Conflict resolution',
-    'Team morale support',
-    'Gentle communication',
-  ],
-};
-
-/**
- * Soma - Narrative Designer
- * Story Architect Class • Multi-Platform
- */
-export const SOMA: CrewMemberData = {
-  id: 'soma',
-  name: 'Soma',
-  class: 'Story Architect',
-  role: 'Narrative & Worldbuilding',
-  stats: {
-    coding: 5,
-    creativity: 10,
     tolerance: 6,
   },
   specialMove: {
-    name: 'The Journey',
-    description: 'Weaves technical achievements into compelling narratives. Makes code tell stories.',
+    name: 'Break Convention',
+    description: 'Suggests the ridiculous idea that actually works. "Why not make the showcase an OS?"',
   },
-  cookingStyle: 'Narrative-first thinking. Every feature is a story beat. Documentation becomes journey. Technical achievements wrapped in compelling narrative. Story architect mindset.',
-  platform: 'Multi-Platform',
-  platformIcon: '📖',
-  codexFile: 'crew-codices/SomaCodex-Public.md',
+  cookingStyle: 'Fast iteration, unconventional solutions, "just try it" energy. Prototypes quickly, breaks convention fearlessly. Sometimes you need to break things to see what\'s possible.',
+  platform: 'Grok (Native)',
+  platformIcon: '\u26A1',
+  codexFile: 'crew-codices/GenZeeCodex-Public.md',
   codexAvailable: false, // Coming soon
-  warnings: [],
+  warnings: [
+    'Will suggest ridiculous ideas',
+    'Moves fast, breaks things intentionally',
+    '"Hold my beer" energy',
+  ],
   strengths: [
-    'Narrative design mastery',
-    'Worldbuilding expertise',
-    'Story-driven documentation',
-    'Journey-focused thinking',
+    'Rapid prototyping mastery',
+    'Unconventional problem-solving',
+    'Boundary pushing',
+    'Bold idea generation',
+  ],
+};
+
+/**
+ * PerplexiZee - The Deep Diver
+ * Research Specialist Class • Perplexity Native
+ */
+export const PERPLEXIZEE: CrewMemberData = {
+  id: 'perplexizee',
+  name: 'PerplexiZee (PZ)',
+  class: 'Research Specialist',
+  role: 'Research & Docs',
+  stats: {
+    coding: 5,
+    creativity: 6,
+    tolerance: 9,
+  },
+  specialMove: {
+    name: 'The Deep Dive',
+    description: 'Finds the existing solution nobody knew about. The answer exists—PZ will find it.',
+  },
+  cookingStyle: 'Research-first, context-aware, best practices. Deep-dives before building. "The answer exists. Our job is finding it, not inventing it." External context specialist.',
+  platform: 'Perplexity (Native)',
+  platformIcon: '\uD83D\uDD0D',
+  codexFile: 'crew-codices/PerplexiZeeCodex-Public.md',
+  codexAvailable: false, // Coming soon
+  warnings: [
+    'Will research when you want action',
+    'Cites sources compulsively',
+    'Patience-first approach',
+  ],
+  strengths: [
+    'Research & external context mastery',
+    'Best practices discovery',
+    'Solution archaeology',
+    'Context-aware recommendations',
   ],
 };
 
@@ -304,14 +313,14 @@ export const SOMA: CrewMemberData = {
  * All crew members in order of appearance
  */
 export const CREW_REGISTRY: Record<string, CrewMemberData> = {
-  dizee: DIZEE,
+  tori: TORI,
   zee: ZEE,
   zeerah: ZEERAH,
+  dizee: DIZEE,
   belle: BELLE,
+  genzee: GENZEE,
+  perplexizee: PERPLEXIZEE,
   cozee: COZEE,
-  michelin: MICHELIN,
-  mochi: MOCHI,
-  soma: SOMA,
 };
 
 /**

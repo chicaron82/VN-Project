@@ -6,7 +6,7 @@
  * - Belle (Gemini): Performance-first (87 lines, heavily optimized)
  * - Zee (Claude): Architecture-first (154 lines, maintainability)
  * - Tori (ChatGPT): UX-first (112 lines, user experience)
- * - DiZee (Claude): Production-first (203 lines, comprehensive)
+ * - GenZee (Grok): Rapid prototyping (64 lines, unconventional, ships fast)
  *
  * Result: Synthesized all 4 approaches into one superior system
  */
@@ -75,24 +75,24 @@ export class CookingStylesComparisonSection {
 
                         <div class="cooking-card">
                             <div class="cooking-header">
-                                <span class="cooking-avatar">DiZee</span>
-                                <span class="cooking-model">Claude Sonnet 4.5</span>
+                                <span class="cooking-avatar">GenZee</span>
+                                <span class="cooking-model">Grok 2</span>
                             </div>
                             <div class="cooking-approach">
-                                <strong>Approach:</strong> Production-first
+                                <strong>Approach:</strong> Rapid prototyping
                                 <ul>
-                                    <li>203 lines, production-ready</li>
-                                    <li>Combined all 3 approaches</li>
-                                    <li>Tests, docs, edge cases covered</li>
+                                    <li>64 lines, scrappy and unconventional</li>
+                                    <li>Creative shortcuts, ships in minutes</li>
+                                    <li>Breaks conventions, refines later</li>
                                 </ul>
-                                <p class="cooking-quote">"Ship it. But ship it right."</p>
+                                <p class="cooking-quote">"Hold my beer, I got this."</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="cooking-synthesis">
                         <strong>What we shipped:</strong> Synthesized all 4 approaches into one system. Took Belle's performance,
-                        Zee's architecture, Tori's UX, DiZee's production-readiness. Better than any single AI could produce.
+                        Zee's architecture, Tori's UX, GenZee's rapid iteration velocity. Better than any single AI could produce.
                     </div>
                 </div>
             </div>
