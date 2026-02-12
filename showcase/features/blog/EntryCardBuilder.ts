@@ -213,10 +213,10 @@ export function createEntryElement(entry: BlogEntry): HTMLElement {
     if (entry.modelId) {
         const names: Record<string, string> = { belle: 'Belle', dizee: 'DiZee', tori: 'Tori', genzee: 'Genzee' };
         const avatars: Record<string, string> = {
-            belle: 'assets/iz-portrait.png',
-            dizee: 'assets/dz-portrait.png',
-            tori: 'assets/tori-portrait.png',
-            genzee: 'assets/gz-portrait.png'
+            belle: '../assets/iz-portrait.png',
+            dizee: '../assets/dz-portrait.png',
+            tori: '../assets/tori-portrait.png',
+            genzee: '../assets/gz-portrait.png'
         };
         const avatarPath = avatars[entry.modelId];
         const authorName = names[entry.modelId] || entry.modelId;

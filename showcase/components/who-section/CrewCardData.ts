@@ -502,7 +502,7 @@ export function getCrewById(id: string): CrewCardData | undefined {
     return CREW_DATA.find(c => c.id === id);
 }
 
-/** Get crew portrait path from canonical assets folder */
+/** Get crew portrait path from canonical assets folder (relative to showcase/) */
 export function getCrewPortraitPath(portrait: string): string {
-    return `assets/${portrait}`;
+    return `../assets/${portrait}`;
 }
