@@ -26,11 +26,22 @@ export class CrewCarousel {
     private container: HTMLElement | null = null;
 
     constructor(crewData: CrewCardData[]) {
-        this.crewData = crewData;
+        // Randomize crew order to avoid implied hierarchy
+        this.crewData = this.shuffleArray([...crewData]);
         this.activeChefId = this.getChefFromUrlOrRandom();
         this.spotlight = new ChefSpotlight({
             onNavigate: (chefId: string) => this.setActiveChef(chefId),
         });
+    }
+
+    /** Fisher-Yates shuffle to randomize crew order */
+    private shuffleArray<T>(array: T[]): T[] {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
     }
 
     /** Render the carousel: portrait strip + spotlight container */
