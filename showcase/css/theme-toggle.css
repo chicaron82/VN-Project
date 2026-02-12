@@ -102,11 +102,7 @@ body.light-mode .roadmap-section h2 {
     color: var(--order-text) !important;
 }
 
-/* Home content wrapper for full-width background */
-body.light-mode .home-content-wrapper {
-    background: var(--order-bg) !important;
-    width: 100%;
-}
+
 
 
 
@@ -189,10 +185,4 @@ body.dark-mode .results-section h2,
 body.dark-mode .evolution-section h2,
 body.dark-mode .roadmap-section h2 {
     color: #e0e0e0 !important;
-}
-
-/* Home content wrapper for full-width background */
-body.dark-mode .home-content-wrapper {
-    background: #1a1a1a !important;
-    width: 100%;
 }

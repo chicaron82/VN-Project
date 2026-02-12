@@ -21,8 +21,12 @@
 /* Base styles: CSS variables, resets, typography */
 @import url('base.css');
 
+/* Unified color system: semantic variables for dark/light mode */
+@import url('colors.css');
+
 /* Theme system: light/dark mode */
 @import url('theme-toggle.css');
+
 
 /* Unified design tokens across V1/V2/showcase */
 @import url('unified-design.css');
@@ -67,7 +71,7 @@
 @import url('features/experiment-reflections.css');
 @import url('features/experiment-mimic.css');
 @import url('features/belle-path-comparison.css');
-@import url('features/light-mode-overrides.css');
+
 @import url('features/experiment-visual-contrast.css');
 
 /* --- Page Modules --- */
@@ -76,7 +80,6 @@
 @import url('pages/spotlight-bento.css');
 @import url('pages/workflow-methodology.css');
 @import url('pages/home-page.css');
-@import url('landing-page.css');
 
 /* Code comparison grid (Evolution section) */
 @import url('code-comparison.css');

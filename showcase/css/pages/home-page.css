@@ -10,9 +10,11 @@
    HOME SECTION - VERSION 848
    ========================================================================== */
 .home-section-container {
-    padding: 2rem 1rem;
+    padding: 6rem 2rem;
     max-width: 800px;
     margin: 0 auto;
+    background: var(--bg-primary);
+    min-height: 60vh;
 }
 
 .home-title {
@@ -100,8 +102,13 @@
     font-size: 1.1rem;
 }
 
-.route-card.ronnie h4 { color: var(--accent-pink); }
-.route-card.tori h4 { color: var(--accent-cyan); }
+.route-card.ronnie h4 {
+    color: var(--accent-pink);
+}
+
+.route-card.tori h4 {
+    color: var(--accent-cyan);
+}
 
 .route-card p {
     margin: 0;
@@ -309,7 +316,7 @@
 }
 
 .home-section-wrapper {
-    padding: 2rem 1rem;
+    padding: 6rem 2rem;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -362,7 +369,7 @@
     font-weight: 500;
 }
 
-.home-meta-gradient-box p + p {
+.home-meta-gradient-box p+p {
     margin-top: 1rem;
 }
 
@@ -408,70 +415,90 @@
     border-left-color: var(--accent-primary);
 }
 
-.v848-system-section.narrative strong { color: var(--accent-primary); }
+.v848-system-section.narrative strong {
+    color: var(--accent-primary);
+}
 
 .v848-system-section.mechanics {
     background: var(--gradient-green);
     border-left-color: var(--accent-cyan);
 }
 
-.v848-system-section.mechanics strong { color: var(--accent-cyan); }
+.v848-system-section.mechanics strong {
+    color: var(--accent-cyan);
+}
 
 .v848-system-section.cross-game {
     background: var(--gradient-purple);
     border-left-color: var(--accent-purple);
 }
 
-.v848-system-section.cross-game strong { color: var(--accent-purple); }
+.v848-system-section.cross-game strong {
+    color: var(--accent-purple);
+}
 
 .v848-system-section.memory {
     background: var(--gradient-pink);
     border-left-color: var(--accent-pink);
 }
 
-.v848-system-section.memory strong { color: var(--accent-pink); }
+.v848-system-section.memory strong {
+    color: var(--accent-pink);
+}
 
 .v848-system-section.ui {
     background: var(--gradient-green);
     border-left-color: var(--success);
 }
 
-.v848-system-section.ui strong { color: var(--success); }
+.v848-system-section.ui strong {
+    color: var(--success);
+}
 
 .v848-system-section.responsive {
     background: var(--gradient-orange);
     border-left-color: var(--warning);
 }
 
-.v848-system-section.responsive strong { color: var(--warning); }
+.v848-system-section.responsive strong {
+    color: var(--warning);
+}
 
 .v848-system-section.devtools {
     background: var(--gradient-orange);
     border-left-color: var(--accent-orange);
 }
 
-.v848-system-section.devtools strong { color: var(--accent-orange); }
+.v848-system-section.devtools strong {
+    color: var(--accent-orange);
+}
 
 .v848-system-section.architecture {
     background: var(--gradient-pink);
     border-left-color: var(--error);
 }
 
-.v848-system-section.architecture strong { color: var(--error); }
+.v848-system-section.architecture strong {
+    color: var(--error);
+}
 
 .v848-system-section.collectibles {
     background: var(--gradient-green);
     border-left-color: var(--accent-primary);
 }
 
-.v848-system-section.collectibles strong { color: var(--accent-primary); }
+.v848-system-section.collectibles strong {
+    color: var(--accent-primary);
+}
 
 .v848-system-section.testing {
     background: var(--gradient-purple);
     border-left-color: var(--accent-purple);
 }
 
-.v848-system-section.testing strong { color: var(--accent-purple); }
+.v848-system-section.testing strong {
+    color: var(--accent-purple);
+}
 
 /* Story card text */
 .story-text {
@@ -564,3 +591,291 @@
 }
 
 /* No more dark mode overrides - unified color system handles it! */
+
+/* ═══════════════════════════════════════════════════════════════
+   MENU SECTION - RESTAURANT TYPOGRAPHY
+   Migrated from landing-page.css → color-converted to unified system
+   ═══════════════════════════════════════════════════════════════ */
+.menu-section {
+    width: 100%;
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+.menu-divider {
+    color: color-mix(in srgb, var(--accent-primary) 30%, transparent);
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 2rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0.6;
+    letter-spacing: -0.05em;
+}
+
+.menu-header {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    text-align: center;
+    margin: 2rem 0 3rem;
+    letter-spacing: 0.15em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+}
+
+.menu-item {
+    display: flex;
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--border-subtle);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.menu-item:last-of-type {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    transform: translateX(8px);
+    padding-left: 1rem;
+}
+
+.menu-item:hover .menu-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.menu-number {
+    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+    font-weight: 300;
+    color: color-mix(in srgb, var(--accent-primary) 50%, transparent);
+    font-family: var(--header-font);
+    font-style: italic;
+    min-width: 50px;
+    padding-top: 0.25rem;
+}
+
+.menu-content {
+    flex: 1;
+}
+
+.menu-title {
+    font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.menu-subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    color: var(--accent-primary);
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.menu-cooking-time {
+    font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+    font-family: var(--code-font);
+    color: var(--text-tertiary);
+    font-style: italic;
+    margin-bottom: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.menu-description {
+    font-size: clamp(0.9rem, 1.8vw, 1rem);
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 300;
+    max-width: 700px;
+}
+
+.menu-arrow {
+    font-size: 1.5rem;
+    color: color-mix(in srgb, var(--accent-primary) 60%, transparent);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    padding-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+    .menu-section {
+        padding: 0 1.5rem;
+    }
+
+    .menu-item {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .menu-number {
+        min-width: auto;
+    }
+
+    .menu-arrow {
+        display: none;
+    }
+
+    .menu-item:hover {
+        transform: translateY(-4px);
+        padding-left: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .menu-divider {
+        font-size: 0.6rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARDS WITH MICHELIN SHADOWS
+   Migrated from landing-page.css → color-converted to unified system
+   ═══════════════════════════════════════════════════════════════ */
+.card {
+    position: relative;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 20px;
+    padding: 2rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--accent-primary) 10%, transparent), color-mix(in srgb, var(--accent-cyan) 10%, transparent));
+    opacity: 0;
+    transition: opacity 0.4s;
+    border-radius: 20px;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: var(--bg-card-hover);
+    border-color: color-mix(in srgb, var(--accent-primary) 45%, transparent);
+    box-shadow:
+        var(--shadow-lg),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        var(--shadow-glow);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:active {
+    transform: translateY(-4px) scale(1.01);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.badge-v2 {
+    background: color-mix(in srgb, var(--accent-primary) 20%, transparent);
+    color: var(--accent-primary);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent-primary) 30%, transparent);
+}
+
+.badge-showcase {
+    background: color-mix(in srgb, var(--accent-cyan) 20%, transparent);
+    color: var(--accent-cyan);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
+}
+
+.badge-legacy {
+    background: color-mix(in srgb, var(--error) 20%, transparent);
+    color: var(--error);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--error) 30%, transparent);
+}
+
+.card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-weight: 300;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE OVERRIDES FOR MIGRATED STYLES
+   Landing page was optimized for light mode by default
+   ═══════════════════════════════════════════════════════════════ */
+body.light-mode .card {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: #1a1a1a;
+}
+
+body.light-mode .card:hover {
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 255, 136, 0.6);
+}
+
+body.light-mode .card h2 {
+    color: #1a1a1a;
+}
+
+body.light-mode .card p {
+    color: #555;
+}
+
+body.light-mode .badge {
+    box-shadow: none;
+    border: 1px solid currentColor;
+}

@@ -17,17 +17,13 @@
    Hero banners provide color, content stays clean and consistent
    ========================================================================== */
 
-/* Light mode color variables */
-:root {
-    --text-primary: #1a1a1a;
-    --text-secondary: #4a4a4a;
-    --accent-blue: #4a9eff;
-}
+/* Color variables are now inherited from colors.css */
+/* No need to redefine them here */
 
 /* Home tab panel */
 .tab-panel[data-panel="home"] {
-    background: #ffffff !important;
-    color: #1a1a1a;
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 .journal-section,
@@ -35,52 +31,14 @@
 .results-section,
 .spotlight-section,
 .evolution-section {
-    background: #ffffff !important;
-    color: #1a1a1a;
+    background: var(--bg-primary);
+    color: var(--text-primary);
 }
 
-/* Dark mode via OS preference OR manual toggle */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --text-primary: #e0e0e0;
-        --text-secondary: #b0b0b0;
-        --accent-blue: #6ab9ff;
-    }
+/* Dark mode handled by colors.css [data-theme="dark"] */
+/* No need for media query overrides here */
 
-    .tab-panel[data-panel="home"] {
-        background: #1a1a1a !important;
-        color: #e0e0e0;
-    }
 
-    .journal-section,
-    .workflow-section,
-    .results-section,
-    .spotlight-section,
-    .evolution-section {
-        background: #1a1a1a !important;
-        color: #e0e0e0;
-    }
-}
-
-[data-theme="dark"] {
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-    --accent-blue: #6ab9ff;
-}
-
-[data-theme="dark"] .tab-panel[data-panel="home"] {
-    background: #1a1a1a !important;
-    color: #e0e0e0;
-}
-
-[data-theme="dark"] .journal-section,
-[data-theme="dark"] .workflow-section,
-[data-theme="dark"] .results-section,
-[data-theme="dark"] .spotlight-section,
-[data-theme="dark"] .evolution-section {
-    background: #1a1a1a !important;
-    color: #e0e0e0;
-}
 
 /* ==========================================================================
    2. BANNER FADE TRANSITIONS
@@ -94,35 +52,12 @@
     left: 0;
     right: 0;
     height: 80px;
-    background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #ffffff) 100%);
+    background: linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%);
     z-index: 4;
     pointer-events: none;
 }
 
-@media (prefers-color-scheme: dark) {
-    .hero-banner::after {
-        background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #1a1a1a) 100%);
-    }
-}
 
-[data-theme="dark"] .hero-banner::after {
-    background: linear-gradient(to bottom, transparent 0%, var(--section-bg-fade, #1a1a1a) 100%);
-}
-
-/* Section-specific fade colors (inherit from banners) */
-.hero-banner.home::after {
-    --section-bg-fade: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-    .hero-banner.home::after {
-        --section-bg-fade: #1a1a1a;
-    }
-}
-
-[data-theme="dark"] .hero-banner.home::after {
-    --section-bg-fade: #1a1a1a;
-}
 
 /* ==========================================================================
    3. CONTENT WIDTH CONSTRAINTS
@@ -207,37 +142,9 @@ section p {
             transparent 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-    .tab-panel:not(:last-child)::after {
-        background: linear-gradient(90deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.1) 20%,
-                rgba(255, 255, 255, 0.1) 80%,
-                transparent 100%);
-    }
-}
-
-[data-theme="dark"] .tab-panel:not(:last-child)::after {
-    background: linear-gradient(90deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.1) 20%,
-            rgba(255, 255, 255, 0.1) 80%,
-            transparent 100%);
-}
-
 /* Enhanced shadow separator for better depth */
 .tab-panel:not(:last-child) {
     box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.03);
-}
-
-@media (prefers-color-scheme: dark) {
-    .tab-panel:not(:last-child) {
-        box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.03);
-    }
-}
-
-[data-theme="dark"] .tab-panel:not(:last-child) {
-    box-shadow: 0 2px 0 0 rgba(255, 255, 255, 0.03);
 }
 
 /* ==========================================================================
@@ -258,18 +165,8 @@ section p {
     left: 0;
     right: 0;
     height: 60px;
-    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.05) 100%);
+    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.2) 100%);
     pointer-events: none;
-}
-
-@media (prefers-color-scheme: dark) {
-    .site-footer::before {
-        background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
-    }
-}
-
-[data-theme="dark"] .site-footer::before {
-    background: linear-gradient(to bottom, transparent 0%, rgba(10, 10, 10, 0.3) 100%);
 }
 
 /* Subtle scroll-triggered animation */
@@ -416,42 +313,31 @@ section:not(:first-child) {
    Ensure explicit visibility for Bento Grid items
    ═══════════════════════════════════════════════════════════════ */
 body.light-mode .technical-card {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-sm);
     border-radius: 12px;
     padding: 1.5rem;
 }
 
-body.light-mode .technical-card:hover {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    transform: translateY(-5px);
-    border-color: rgba(52, 152, 219, 0.3);
-}
-
 body.light-mode .tech-header h3 {
-    color: #1a1a1a;
+    color: var(--text-primary);
 }
 
 body.light-mode .tech-details p,
 body.light-mode .tech-details li {
-    color: #555;
-}
-
-body.light-mode .tech-icon {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    color: var(--text-secondary);
 }
 
 /* Fix code window in light mode */
 body.light-mode .code-window {
-    background: #1e1e1e;
-    /* Keep code dark even in light mode for contrast */
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: var(--bg-secondary);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-subtle);
 }
 
 body.light-mode .code-header {
-    background: #252526;
-    border-bottom: 1px solid #333;
-    color: #ccc;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-medium);
+    color: var(--text-tertiary);
 }

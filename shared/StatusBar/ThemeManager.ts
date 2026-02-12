@@ -33,7 +33,7 @@ export class ThemeManager {
             autoStorageKey: config.autoStorageKey ?? 'uv7-theme-auto',
             defaultTheme: config.defaultTheme ?? 'dark',
             defaultAuto: config.defaultAuto ?? true,
-            onThemeChange: config.onThemeChange ?? (() => {}),
+            onThemeChange: config.onThemeChange ?? (() => { }),
         };
 
         // Load initial state from storage
@@ -150,7 +150,8 @@ export class ThemeManager {
             }
 
             // Update toggle to reflect current mode
-            if (this.state.mode === 'dark') {
+            // Toggle should be "active" (green/on) when in LIGHT mode (non-default)
+            if (this.state.mode === 'light') {
                 this.toggleElement?.classList.add('active');
             } else {
                 this.toggleElement?.classList.remove('active');
@@ -165,11 +166,14 @@ export class ThemeManager {
     /** Apply current theme to document body */
     private applyTheme(): void {
         if (this.state.auto) {
-            // Let OS preference handle it
+            // Let OS preference handle it - remove data-theme to use CSS defaults
+            document.documentElement.removeAttribute('data-theme');
             document.body.classList.remove('light-mode', 'dark-mode');
         } else {
-            // Manual override - apply the stored preference
-            // FIXED: Check for 'dark' first, not 'light' (was inverted before)
+            // Manual override - set both data-theme attribute AND body classes
+            // data-theme for new CSS, body classes for legacy CSS
+            document.documentElement.setAttribute('data-theme', this.state.mode);
+
             if (this.state.mode === 'dark') {
                 document.body.classList.add('dark-mode');
                 document.body.classList.remove('light-mode');
