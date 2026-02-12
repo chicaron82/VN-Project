@@ -168,11 +168,13 @@ export class ThemeManager {
         if (this.state.auto) {
             // Let OS preference handle it - remove data-theme to use CSS defaults
             document.documentElement.removeAttribute('data-theme');
+            document.body.removeAttribute('data-theme');
             document.body.classList.remove('light-mode', 'dark-mode');
         } else {
-            // Manual override - set both data-theme attribute AND body classes
-            // data-theme for new CSS, body classes for legacy CSS
+            // Manual override - set data-theme on BOTH html and body for maximum compatibility
+            // Some CSS uses html[data-theme], some uses body[data-theme], some uses body.light-mode
             document.documentElement.setAttribute('data-theme', this.state.mode);
+            document.body.setAttribute('data-theme', this.state.mode);
 
             if (this.state.mode === 'dark') {
                 document.body.classList.add('dark-mode');

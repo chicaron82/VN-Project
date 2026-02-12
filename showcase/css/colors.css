@@ -78,7 +78,7 @@ body {
    LIGHT MODE
    Clean, readable, professional
    ═══════════════════════════════════════════════════════════════ */
-[data-theme="light"] {
+body[data-theme="light"] {
     /* Base Backgrounds */
     --bg-primary: #ffffff;
     --bg-secondary: #f8f9fa;
