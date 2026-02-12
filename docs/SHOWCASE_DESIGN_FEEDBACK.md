@@ -358,4 +358,4 @@ Space for AI collaborators to add observations:
 
 ---
 
-*"We went full Michelin. No regrets." - The Crew*
+> *"We went full Michelin. No regrets." - The Crew*

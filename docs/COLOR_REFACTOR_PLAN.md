@@ -12,7 +12,7 @@
 ### Critical Files with Hardcoded Colors
 
 | File | `color: #` | `background: #` | Priority |
-|------|------------|-----------------|----------|
+| ------ | ------------ | ----------------- | ---------- |
 | `uv7-system.css` | 40+ instances | 3 instances | HIGH |
 | `unified-design.css` | 11 instances | 9 instances (!important) | HIGH |
 | `pages.css` | Many instances | 10+ instances | HIGH |
@@ -150,7 +150,7 @@ Target: < 20 hardcoded colors total (only for special cases like status indicato
 
 ### Execution
 
-**Phase 1: Core Files**
+#### Phase 1: Core Files
 
 - [ ] Refactor `uv7-system.css`
   - [ ] Replace text colors with variables
@@ -165,13 +165,13 @@ Target: < 20 hardcoded colors total (only for special cases like status indicato
   - [ ] Replace text colors with variables
   - [ ] Test both themes
 
-**Phase 2: Section Files**
+#### Phase 2: Section Files
 
 - [ ] Refactor `pages/evolution-page.css`
 - [ ] Refactor `landing-page.css`
 - [ ] Refactor `theme-toggle.css`
 
-**Phase 3: Cleanup**
+#### Phase 3: Cleanup
 
 - [ ] Delete `features/light-mode-overrides.css`
 - [ ] Remove import from `showcase.css`
