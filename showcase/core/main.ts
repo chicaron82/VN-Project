@@ -474,10 +474,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     if (auto) {
                         // Clear overrides, let system preference win
+                        document.body.removeAttribute('data-theme');
+                        document.documentElement.removeAttribute('data-theme');
                         document.body.classList.remove('light-mode', 'dark-mode');
                         Logger.system('[Showcase] Applied auto theme (cleared overrides)');
                     } else {
-                        // Apply manual theme
+                        // Apply manual theme - set data-theme for unified color system + classes for legacy CSS
+                        document.body.setAttribute('data-theme', theme);
+                        document.documentElement.setAttribute('data-theme', theme);
                         if (theme === 'light') {
                             document.body.classList.add('light-mode');
                             document.body.classList.remove('dark-mode');
