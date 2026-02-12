@@ -14,13 +14,13 @@ import { Logger } from '@utils/Logger';
 import '@ui/styles/crew-screen.css';
 
 // Asset imports (Vite will bundle these correctly)
-import trinityZPortrait from '../../../assets/trinity-z-portrait.png';
-import trinityZRPortrait from '../../../assets/trinity-zr-portrait.png';
-import trinityCZPortrait from '../../../assets/trinity-cz-portrait.png';
-import trinityIZPortrait from '../../../assets/trinity-iz-portrait.png';
-import trinityPZPortrait from '../../../assets/trinity-pz-portrait.png';
-import trinityGZPortrait from '../../../assets/trinity-gz-portrait.png';
-import trinityToriPortrait from '../../../assets/trinity-tori-portrait.png';
+import trinityZPortrait from '../../../assets/z-portrait.png';
+import trinityZRPortrait from '../../../assets/zr-portrait.png';
+import trinityCZPortrait from '../../../assets/cz-portrait.png';
+import trinityIZPortrait from '../../../assets/iz-portrait.png';
+import trinityPZPortrait from '../../../assets/pz-portrait.png';
+import trinityGZPortrait from '../../../assets/gz-portrait.png';
+import trinityToriPortrait from '../../../assets/tori-portrait.png';
 import dzPortrait from '../../../assets/dz-portrait.webp';
 import uv7CrewPhoto from '../../../assets/the_UV7_crew.png';
 
