@@ -27,6 +27,47 @@ export interface TimelineData {
     entries: BlogEntry[];
 }
 
+// App State Management Types
+export interface AppPreview {
+    type: string;
+    gradient: [string, string];
+    effect: string;
+    badge: string;
+    title: string;
+    subtitle: string;
+}
+
+export interface AppSystemState {
+    activeTab?: string;
+    activeEntry?: string | number;
+    viewMode?: string;
+    scene?: string;
+    characters?: string[];
+    route?: string;
+    act?: string | number;
+    tether?: number;
+    mood?: string;
+    lastFed?: number;
+    scroll?: Record<string, number>;
+    [key: string]: unknown;
+}
+
+export interface StateChangeDetail {
+    appId: string;
+    state?: AppSystemState;
+    preview?: Partial<AppPreview>;
+}
+
+// App State Manager Central Type
+export interface AppStateManagerInterface {
+    loadAllStates(): Record<string, unknown>;
+    getAppState(appId: string): unknown | null;
+    clearAppState(appId: string): void;
+    restoreState(appId: string): Record<string, unknown> | null;
+    getNewContentCount(appId: string): number;
+    createScrollHandler(appId: string, tabId: string): (scrollPosition: number) => void;
+}
+
 // Window augmentations
 declare global {
     interface Window {
@@ -42,7 +83,7 @@ declare global {
         TIMELINE_DATA?: TimelineData;
 
         // App State Manager
-        UV7AppStateManager?: any;
+        UV7AppStateManager?: AppStateManagerInterface;
 
         // Chaos Typer
         updateBackgroundContext?: (phaseId: string) => void;
@@ -56,8 +97,8 @@ declare global {
     }
 
     interface WindowEventMap {
-        'uv7:state:changed': CustomEvent<any>;
-        'uv7:preview:updated': CustomEvent<any>;
+        'uv7:state:changed': CustomEvent<StateChangeDetail>;
+        'uv7:preview:updated': CustomEvent<{ appId: string; preview: AppPreview }>;
     }
 }
 
