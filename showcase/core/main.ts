@@ -189,11 +189,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     injectFooters();
 
     // =================================================================
-    // PHASE 3: BLOG ENHANCEMENTS
+    // PHASE 3: BLOG RENDERER & ENHANCEMENTS
     // =================================================================
-    // Blog features depend on the Journal section's DOM being rendered.
-    // BlogRenderer must initialize BEFORE deep linking wire-up.
+    // BlogRenderer must initialize FIRST — it populates .timeline-item entries.
+    // Blog enhancements query those entries, so they must come AFTER.
 
+    // Initialize BlogRenderer (Journal tab) - creates timeline entries in DOM
+    new BlogRenderer('#timeline-container');
+    Logger.system('✅ Blog renderer initialized');
+
+    // Blog enhancements (all use deferred patterns: event delegation, IntersectionObserver, RAF)
     const blogDeepLink = new BlogDeepLink();
     new BlogHoverPreview('.timeline-phases');
     new BlogParallax('.timeline-phases');
@@ -228,10 +233,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Note: Search and filter params would need integration with BlogRenderer
         // For now, deep linking only supports entry navigation
     });
-
-    // Initialize BlogRenderer (Journal tab) - must be after JournalSection renders
-    new BlogRenderer('#timeline-container');
-    Logger.system('✅ Blog renderer initialized');
 
     // Manually trigger initial breadcrumb update to ensure it shows
     const initialTab = tabController.getActiveTab();
