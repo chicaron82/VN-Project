@@ -24,10 +24,6 @@
 /* Unified color system: semantic variables for dark/light mode */
 @import url('colors.css');
 
-/* Theme system: light/dark mode */
-@import url('theme-toggle.css');
-
-
 /* Unified design tokens across V1/V2/showcase */
 @import url('unified-design.css');
 

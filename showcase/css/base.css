@@ -528,16 +528,10 @@ section h2 {
     width: 20px;
     height: 20px;
     background: #3498db;
-    border: 4px solid #fff;
+    border: 4px solid var(--bg-primary, #fff);
     border-radius: 50%;
     z-index: 2;
     box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
-}
-
-@media (prefers-color-scheme: dark) {
-    .timeline-marker {
-        border-color: #1a1a1a;
-    }
 }
 
 .timeline-item.highlight .timeline-marker {
@@ -560,18 +554,11 @@ section h2 {
 
 .timeline-content {
     width: 45%;
-    background: #fff;
+    background: var(--bg-secondary, #fff);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md, 0 10px 30px rgba(0, 0, 0, 0.1));
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-    .timeline-content {
-        background: #2a2a2a;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
 }
 
 .timeline-content:hover {
@@ -581,15 +568,9 @@ section h2 {
 
 .timeline-content h3 {
     font-size: 1.3rem;
-    color: #3498db;
+    color: var(--accent-cyan, #3498db);
     margin-bottom: 0.5rem;
     font-weight: 700;
-}
-
-@media (prefers-color-scheme: dark) {
-    .timeline-content h3 {
-        color: #5dade2;
-    }
 }
 
 .timeline-item.highlight .timeline-content h3 {
@@ -641,16 +622,10 @@ section h2 {
 .timeline-content p {
     font-size: 1rem;
     line-height: 1.6;
-    color: #555;
+    color: var(--text-secondary, #555);
     margin-bottom: 0.5rem;
     height: auto;
     display: block;
-}
-
-@media (prefers-color-scheme: dark) {
-    .timeline-content p {
-        color: #bbb;
-    }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -816,21 +791,16 @@ section h2 {
 .timeline-entry-footer {
     margin-top: 1.5rem;
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid var(--border-subtle, rgba(0, 0, 0, 0.1));
     font-size: 0.95rem;
-    color: #555;
+    color: var(--text-secondary, #555);
     display: flex;
     gap: 0.75rem;
     align-items: flex-start;
     animation: fadeIn 0.5s ease;
 }
 
-@media (prefers-color-scheme: dark) {
-    .timeline-entry-footer {
-        border-top-color: rgba(255, 255, 255, 0.1);
-        color: #aaa;
-    }
-}
+/* Dark mode handled by CSS variables from colors.css */
 
 .footer-icon {
     font-size: 1.2rem;
@@ -895,19 +865,12 @@ section h2 {
 }
 
 .sub-entry {
-    background: linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.05));
-    border: 1px solid rgba(52, 152, 219, 0.2);
+    background: var(--gradient-purple, linear-gradient(135deg, rgba(52, 152, 219, 0.08), rgba(155, 89, 182, 0.05)));
+    border: 1px solid var(--context-border, rgba(52, 152, 219, 0.2));
     border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 1rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-@media (prefers-color-scheme: dark) {
-    .sub-entry {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(155, 89, 182, 0.1));
-        border-color: rgba(52, 152, 219, 0.3);
-    }
 }
 
 .sub-entry:hover {
@@ -943,16 +906,10 @@ section h2 {
 }
 
 .sub-entry-summary {
-    color: #555;
+    color: var(--text-secondary, #555);
     font-size: 0.95rem;
     line-height: 1.5;
     margin-bottom: 1rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    .sub-entry-summary {
-        color: #bbb;
-    }
 }
 
 .sub-entry-features {
@@ -966,14 +923,8 @@ section h2 {
     padding-left: 1.5rem;
     margin-bottom: 0.5rem;
     font-size: 0.9rem;
-    color: #444;
+    color: var(--text-secondary, #444);
     line-height: 1.4;
-}
-
-@media (prefers-color-scheme: dark) {
-    .sub-entry-features li {
-        color: #ccc;
-    }
 }
 
 .sub-entry-features li::before {
@@ -995,13 +946,7 @@ section h2 {
 
 .sub-metric {
     font-size: 0.85rem;
-    color: #666;
-}
-
-@media (prefers-color-scheme: dark) {
-    .sub-metric {
-        color: #999;
-    }
+    color: var(--text-tertiary, #666);
 }
 
 .sub-metric strong {
@@ -1053,15 +998,9 @@ section h2 {
 
 .settings-carousel .carousel-label {
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-tertiary, #666);
     text-align: center;
     font-weight: 600;
-}
-
-@media (prefers-color-scheme: dark) {
-    .settings-carousel .carousel-label {
-        color: #aaa;
-    }
 }
 
 /* --- WORKFLOW SECTION --- */
