@@ -34,19 +34,12 @@ import { ExperimentSection } from '../components/ExperimentSection';
 import { WhoSection } from '../components/WhoSection';
 
 // Import blog enhancements
-import { BlogAnimations } from '../features/blog/BlogAnimations';
-
 import { BlogDeepLink } from '../features/blog/BlogDeepLink';
-import { BlogKeyboardNav } from '../features/blog/BlogKeyboardNav';
 import { BlogHoverPreview } from '../features/blog/BlogHoverPreview';
-import { BlogPlayback } from '../features/blog/BlogPlayback';
 import { BlogParallax } from '../features/blog/BlogParallax';
 import { BlogBackgrounds } from '../features/blog/BlogBackgrounds';
-import { BlogAudio } from '../features/blog/BlogAudio';
 import { BlogHaptics } from '../features/blog/BlogHaptics';
 import { BlogMeta } from '../features/blog/BlogMeta';
-import { BlogHeatmap } from '../features/blog/BlogHeatmap';
-import { BlogExport } from '../features/blog/BlogExport';
 import { GlobalSearch } from '../features/GlobalSearch';
 import { GentleNudges } from '../controllers/GentleNudges';
 import { BougieTracker } from '../controllers/BougieTracker';
@@ -201,20 +194,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Blog features depend on the Journal section's DOM being rendered.
     // BlogRenderer must initialize BEFORE deep linking wire-up.
 
-    new BlogAnimations('.timeline-phases');
-
     const blogDeepLink = new BlogDeepLink();
-    new BlogKeyboardNav('.timeline-phases', '.timeline-search');
     new BlogHoverPreview('.timeline-phases');
-    new BlogPlayback('.timeline-phases');
     new BlogParallax('.timeline-phases');
     new BlogBackgrounds('.timeline-phases');
-    new BlogAudio('.timeline-phases');
     new BlogHaptics('.timeline-phases');
     new BlogMeta();
-    new BlogHeatmap('.timeline-phases');
-    new BlogExport('.timeline-phases');
-    Logger.system('✅ Blog enhancements initialized (animations, stats, deep linking, keyboard nav, hover previews, playback, heatmap, export)');
+    Logger.system('✅ Blog enhancements initialized (deep linking, hover previews, parallax, backgrounds, haptics, meta)');
 
     // Initialize Global Search (replaces old blog-specific search)
     new GlobalSearch();

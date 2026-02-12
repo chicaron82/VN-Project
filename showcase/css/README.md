@@ -46,17 +46,12 @@ showcase.css (master)
 │   └── blog.css           - Timeline base layout
 │
 ├── 4. BLOG FEATURES (Timeline Enhancements)
-│   ├── blog-animations.css    - Fade-in, stagger, reveals
 │   ├── blog-stats.css         - Fun metrics dashboard
-│   ├── blog-scrubber.css      - Progress bar navigation
-│   ├── blog-search.css        - Filter interface
 │   ├── blog-hover-preview.css - Quick peek tooltips
-│   ├── blog-playback.css      - Auto-scroll mode
-│   ├── blog-heatmap.css       - Activity visualization
-│   └── blog-export.css        - Data export UI
+│   └── global-search.css      - Search everywhere
 │
 └── 5. EFFECTS & POLISH
-    ├── keyboard-shortcuts.css - Keyboard nav modal
+    ├── gentle-nudges.css      - Scroll inactivity hints
     └── cursor.css             - Custom cursor (disabled by default)
 ```
 

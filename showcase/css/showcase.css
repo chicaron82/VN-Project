@@ -91,13 +91,8 @@
    4. BLOG FEATURES (Timeline Enhancements)
    ═══════════════════════════════════════════════════════════════ */
 
-/* Timeline animations: fade-in, stagger, reveals */
-@import url('blog-animations.css');
-
 /* Stats dashboard: fun metrics, contribution graphs */
 @import url('blog-stats.css');
-
-
 
 /* Global search: search everywhere (blog, sections, crew) */
 @import url('global-search.css');
@@ -105,21 +100,9 @@
 /* Hover preview: quick peek at entry content */
 @import url('blog-hover-preview.css');
 
-/* Playback mode: auto-scroll through timeline */
-@import url('blog-playback.css');
-
-/* Heatmap: activity visualization */
-@import url('blog-heatmap.css');
-
-/* Export: save timeline data */
-@import url('blog-export.css');
-
 /* ═══════════════════════════════════════════════════════════════
    5. EFFECTS & POLISH
    ═══════════════════════════════════════════════════════════════ */
-
-/* Keyboard shortcuts: modal + key bindings */
-@import url('keyboard-shortcuts.css');
 
 /* Gentle nudges: scroll inactivity hints */
 @import url('gentle-nudges.css');
