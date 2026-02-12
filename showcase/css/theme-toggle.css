@@ -1,46 +1,14 @@
 /* ═══════════════════════════════════════════════════════════════
-   THEME TOGGLE OVERRIDES
-   Forces Light/Dark mode classes to override default media queries
+   THEME TOGGLE OVERRIDES - TIMELINE COMPONENT
+   Legacy component-specific overrides for timeline elements
+   NOTE: Most theme handling moved to colors.css unified system
    ═══════════════════════════════════════════════════════════════ */
 
-/* CSS Variables for Light Mode */
-body.light-mode {
-    --text-primary: #1a1a1a;
-    --text-secondary: #4a4a4a;
-    --text-tertiary: #6a6a6a;
-    --accent-blue: #4a9eff;
-    --order-bg: #f8f9fa;
-    --order-text: #1a1a1a;
-}
+/* --- LIGHT MODE TIMELINE OVERRIDES --- */
+/* DEPRECATED: Unified color system (colors.css) now handles light mode via [data-theme="light"] */
+/* body.light-mode section rules removed - CSS variables handle theming automatically */
 
-/* CSS Variables for Dark Mode */
-body.dark-mode {
-    --text-primary: #e0e0e0;
-    --text-secondary: #bbb;
-    --text-tertiary: #999;
-    --accent-blue: #5dade2;
-    --order-bg: #1a1a1a;
-    --order-text: #e0e0e0;
-}
-
-
-/* --- FORCE LIGHT MODE (User requested Light, System is Dark) --- */
-body.light-mode section:not(.workflow-section):not(.results-section):not(.journal-section):not(.evolution-section):not(.roadmap-section) {
-    background: var(--order-bg) !important;
-    color: var(--order-text) !important;
-}
-
-body.light-mode section h2 {
-    color: var(--order-text) !important;
-}
-
-body.light-mode .section-intro {
-    color: rgba(100, 100, 100, 1) !important;
-}
-
-body.light-mode .journal-section {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-}
+/* Section-specific overrides removed - colors.css handles via CSS variables */
 
 /* Timeline Overrides for Light Mode */
 body.light-mode .timeline-marker {
@@ -86,46 +54,15 @@ body.light-mode .timeline-entry-footer {
     color: #555 !important;
 }
 
-/* Theme rules for excluded sections */
-body.light-mode .workflow-section,
-body.light-mode .results-section,
-body.light-mode .evolution-section,
-body.light-mode .roadmap-section {
-    background: var(--order-bg) !important;
-    color: var(--order-text) !important;
-}
-
-body.light-mode .workflow-section h2,
-body.light-mode .results-section h2,
-body.light-mode .evolution-section h2,
-body.light-mode .roadmap-section h2 {
-    color: var(--order-text) !important;
-}
+/* Excluded section overrides removed - colors.css handles theming */
 
 
 
 
 
 /* --- FORCE DARK MODE (User requested Dark, System is Light) --- */
-/* Only needed if base styles are Light by default (which they are in base.css) */
-/* The existing media query handles system dark mode, but we need to force it if class is present */
-
-body.dark-mode section:not(.workflow-section):not(.results-section):not(.journal-section):not(.evolution-section):not(.roadmap-section) {
-    background: #1a1a1a !important;
-    color: #e0e0e0 !important;
-}
-
-body.dark-mode section h2 {
-    color: #e0e0e0 !important;
-}
-
-body.dark-mode .section-intro {
-    color: rgba(170, 170, 170, 1) !important;
-}
-
-body.dark-mode .journal-section {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
-}
+/* DEPRECATED: Unified color system (colors.css) handles dark mode via :root defaults */
+/* body.dark-mode section rules removed - CSS variables handle theming automatically */
 
 /* Timeline Overrides for Dark Mode */
 body.dark-mode .timeline-marker {
@@ -171,18 +108,4 @@ body.dark-mode .timeline-entry-footer {
     color: #aaa !important;
 }
 
-/* Theme rules for excluded sections */
-body.dark-mode .workflow-section,
-body.dark-mode .results-section,
-body.dark-mode .evolution-section,
-body.dark-mode .roadmap-section {
-    background: #1a1a1a !important;
-    color: #e0e0e0 !important;
-}
-
-body.dark-mode .workflow-section h2,
-body.dark-mode .results-section h2,
-body.dark-mode .evolution-section h2,
-body.dark-mode .roadmap-section h2 {
-    color: #e0e0e0 !important;
-}
+/* Excluded section dark mode overrides removed - colors.css handles theming */
