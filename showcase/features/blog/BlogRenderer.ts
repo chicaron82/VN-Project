@@ -8,7 +8,6 @@
  */
 
 import { TIMELINE_DATA, type BlogEntry } from '../../data/blog';
-import { timelineAnimations } from './BlogAnimations';
 import { FunMetricsDashboard } from './FunMetricsDashboard';
 import { createEntryElement } from './EntryCardBuilder';
 import { Logger } from '@utils/Logger';
@@ -219,21 +218,6 @@ export class BlogRenderer {
 
         // Dispatch content update event (for ScrollAnimator)
         window.dispatchEvent(new CustomEvent('uv7-content-updated'));
-
-        // Phase 1: Apply entrance animations to blog entries
-        timelineAnimations.refresh();
-        const items = Array.from(this.entriesContainer?.querySelectorAll('.blog-entry') || []) as HTMLElement[];
-        if (items.length > 0) {
-            timelineAnimations.animateItems(items, 100, 50);
-        }
-
-        // Add click-to-highlight for blog entries
-        items.forEach(item => {
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', () => {
-                timelineAnimations.scrollToElement(item, 100);
-            });
-        });
     }
 
     private loadMoreEntries(): void {
@@ -251,21 +235,6 @@ export class BlogRenderer {
         if (this.paginationEnabled && this.visibleCount < this.currentEntries.length) {
             this.renderPaginationControls();
         }
-
-        // Apply animations to new entries only
-        const items = Array.from(this.entriesContainer?.querySelectorAll('.blog-entry') || []) as HTMLElement[];
-        const newItems = items.slice(previousCount);
-        if (newItems.length > 0) {
-            timelineAnimations.animateItems(newItems, 100, 50);
-        }
-
-        // Add click handlers to new entries
-        newItems.forEach(item => {
-            item.style.cursor = 'pointer';
-            item.addEventListener('click', () => {
-                timelineAnimations.scrollToElement(item, 100);
-            });
-        });
 
         // Trigger Prism syntax highlight for new content
         if (window.Prism) window.Prism.highlightAll();
