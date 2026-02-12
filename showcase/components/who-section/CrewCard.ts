@@ -13,7 +13,10 @@ import { getCrewMember, type CrewMemberData } from '../../data/crew/crew-stats';
 export class CrewCard {
   private crewStats: CrewMemberData | null = null;
 
-  constructor(private data: CrewCardData) {
+  constructor(
+    private data: CrewCardData,
+    private hideExpandButton: boolean = false
+  ) {
     // Try to load crew stats if available
     this.crewStats = getCrewMember(data.id) || null;
   }
@@ -57,15 +60,17 @@ export class CrewCard {
           <h4>${this.data.name} <span class="crew-alias">${this.data.alias}</span></h4>
           <p class="crew-role">${this.data.role}</p>
           <p class="crew-contribution">${this.data.contribution}</p>
-          
-          <button class="crew-expand-btn" aria-expanded="false">
-            <span class="expand-text">Learn More</span>
-            <span class="expand-icon">▼</span>
-          </button>
-          
-          <div class="crew-expanded-content" hidden>
-            ${this.renderExpandedContent()}
-          </div>
+
+          ${!this.hideExpandButton ? `
+            <button class="crew-expand-btn" aria-expanded="false">
+              <span class="expand-text">Learn More</span>
+              <span class="expand-icon">▼</span>
+            </button>
+
+            <div class="crew-expanded-content" hidden>
+              ${this.renderExpandedContent()}
+            </div>
+          ` : ''}
         </div>
       </div>
     `;

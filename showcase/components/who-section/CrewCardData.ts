@@ -271,15 +271,10 @@ export const CREW_DATA: CrewCardData[] = [
                 'Integrated 8 independent controllers into one engine',
             ],
         },
-        cookingApproach: {
-            approach: 'Production-first',
-            lineCount: 203,
-            details: [
-                'Production-ready',
-                'Combined all 3 approaches',
-                'Tests, docs, edge cases covered',
-            ],
-            quote: 'Ship it. But ship it right.',
+        specialtyHighlight: {
+            strength: 'Complex debugging & system integration',
+            example: 'Fixed carousel touch event memory leak, integrated 8 controllers into one engine',
+            useWhen: 'When nothing makes sense. When systems fight. When you need the impossible fixed.',
         },
         bestPairings: [
             {

@@ -16,6 +16,7 @@
 import { Logger } from '@utils/Logger';
 import { CrewCarousel } from './who-section/CrewCarousel';
 import { CreatorHeroCard } from './who-section/CreatorHeroCard';
+import { CollaborationWorkflowSection } from './who-section/CollaborationWorkflowSection';
 import { CookingStylesComparisonSection } from './who-section/CookingStylesComparisonSection';
 import { CREW_DATA } from './who-section/CrewCardData';
 
@@ -59,6 +60,7 @@ export class WhoSection {
                     </p>
 
                     ${new CreatorHeroCard().render()}
+                    ${new CollaborationWorkflowSection().render()}
                     ${this.carousel.render()}
                     ${new CookingStylesComparisonSection().render()}
                     ${this.renderRimuruRealization()}

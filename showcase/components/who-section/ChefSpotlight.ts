@@ -74,7 +74,7 @@ export class ChefSpotlight {
             ...chef,
             portrait: getCrewPortraitPath(chef.portrait),
         };
-        const card = new CrewCard(cardData);
+        const card = new CrewCard(cardData, true); // Hide expand button in carousel spotlight
         return card.render();
     }
 
