@@ -4,7 +4,7 @@
  * Shows before/after code comparison for timeline entries
  */
 
-import type { CodeComparison } from '../data/blog/types';
+import type { CodeComparison } from '../types/types';
 import { Logger } from '@utils/Logger';
 
 export class CodeComparisonModal {

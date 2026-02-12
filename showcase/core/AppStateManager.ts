@@ -37,33 +37,31 @@ interface AppState {
     appId: string;
     version: number;
     lastVisited: number;
-    state: Record<string, unknown>;
+    state: {
+        activeTab?: string;
+        activeEntry?: string | number;
+        viewMode?: string;
+        scene?: string;
+        characters?: any[];
+        route?: string;
+        act?: string | number;
+        tether?: number;
+        mood?: string;
+        lastFed?: number;
+        scroll?: Record<string, number>;
+        [key: string]: any;
+    };
     preview: Preview;
 }
 
 interface StateChangeDetail {
     appId: string;
-    state?: Record<string, unknown>;
+    state?: AppState['state'];
     preview?: Partial<Preview>;
 }
 
-declare global {
-    interface Window {
-        UV7AppStateManager?: AppStateManager;
-        TIMELINE_DATA?: {
-            entries: Array<{
-                id?: string;
-                sortDate?: string;
-                [key: string]: unknown;
-            }>;
-        };
-    }
-
-    interface WindowEventMap {
-        'uv7:state:changed': CustomEvent<StateChangeDetail>;
-        'uv7:preview:updated': CustomEvent<{ appId: string; preview: Preview }>;
-    }
-}
+// Note: Window augmentation for TIMELINE_DATA and AppStateManager 
+// is now centrally managed in showcase/types/types.ts
 
 export class AppStateManager {
     private STORAGE_KEY = 'uv7-app-states';
@@ -161,7 +159,7 @@ export class AppStateManager {
     /**
      * Generate preview metadata for a card
      */
-    private generatePreview(appId: string, state?: Record<string, unknown>, customPreview?: Partial<Preview>): Preview {
+    private generatePreview(appId: string, state?: AppState['state'], customPreview?: Partial<Preview>): Preview {
         const theme = this.appThemes[appId] || this.appThemes.landing;
 
         // Use custom preview if provided, otherwise generate
@@ -183,7 +181,7 @@ export class AppStateManager {
     /**
      * Auto-generate preview from state
      */
-    private autoGeneratePreview(appId: string, state: Record<string, unknown> = {}, theme: AppTheme): Preview {
+    private autoGeneratePreview(appId: string, state: AppState['state'] = {}, theme: AppTheme): Preview {
         const preview: Preview = {
             type: 'gradient',
             gradient: [theme.primary, theme.secondary],

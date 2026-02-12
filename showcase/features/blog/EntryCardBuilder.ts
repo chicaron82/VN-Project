@@ -9,7 +9,7 @@
 import type { BlogEntry, CodeSnippet, Lesson, MetricGroup, QuoteDetail } from '../../data/blog';
 import { markdownToHtml } from './MarkdownParser';
 import { Logger } from '@utils/Logger';
-import { type CodeComparison } from '../../data/blog/types';
+import { type CodeComparison as UICodeComparison } from '../../types/types';
 
 // --- Utility Lookups (Pure Functions) ---
 
@@ -156,10 +156,18 @@ export function renderCodeComparison(entry: BlogEntry): HTMLElement | null {
     `;
 
     // Wrap for modal if strings were passed
-    const comparisonForModal: CodeComparison = {
-        ...entry.codeComparison,
-        before: beforeSnippet,
-        after: afterSnippet
+    const comparisonForModal: UICodeComparison = {
+        title: entry.codeComparison.title || 'Code Comparison',
+        before: {
+            title: beforeSnippet.title,
+            badge: beforeSnippet.badge,
+            code: beforeSnippet.code
+        },
+        after: {
+            title: afterSnippet.title,
+            badge: afterSnippet.badge,
+            code: afterSnippet.code
+        }
     };
 
     // Attach event listener
