@@ -323,7 +323,6 @@ export const CREW_DATA: CrewCardData[] = [
                 'Championed ARIA compliance throughout',
             ],
         },
-        mimicWeakness: true,
         cookingApproach: {
             approach: 'Performance-first',
             lineCount: 87,

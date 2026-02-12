@@ -60,6 +60,10 @@ export class CrewCarousel {
 
         this.attachPortraitListeners();
         this.attachKeyboardNav();
+
+        // Initialize flip card interactions for initial render
+        new CrewCardController();
+
         this.attachSpotlightListeners();
         this.playEntranceAnimation();
     }
