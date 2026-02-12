@@ -507,7 +507,7 @@ export function getCrewById(id: string): CrewCardData | undefined {
     return CREW_DATA.find(c => c.id === id);
 }
 
-/** Get crew portrait path with media prefix */
+/** Get crew portrait path from canonical assets folder */
 export function getCrewPortraitPath(portrait: string): string {
-    return `media/crew/${portrait}`;
+    return `assets/${portrait}`;
 }

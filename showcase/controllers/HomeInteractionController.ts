@@ -35,7 +35,7 @@ export class HomeInteractionController {
             url: "https://claude.ai",
             color: "#4f46e5",
             icon: "🎬",
-            image: "media/crew/dz-portrait.png",
+            image: "assets/dz-portrait.png",
             quote: "The structural integrity of V2 is acceptable. The EventBus architecture finally silences the cacophony of V1."
         },
         {
@@ -45,7 +45,7 @@ export class HomeInteractionController {
             url: "https://chatgpt.com",
             color: "#10b981",
             icon: "🧪",
-            image: "media/crew/trinity-tori-portrait.png",
+            image: "assets/trinity-tori-portrait.png",
             quote: "590 tests passing. Zero regressions. I can finally idle in peace without checking error logs every millisecond."
         },
         {
@@ -55,7 +55,7 @@ export class HomeInteractionController {
             url: "https://gemini.google.com",
             color: "#8b5cf6",
             icon: "🌈",
-            image: "media/crew/trinity-iz-portrait.png",
+            image: "assets/trinity-iz-portrait.png",
             quote: "The new CSS variables allow for a level of expression V1 could only dream of. The glassmorphism? *Chef's kiss*."
         },
         {
@@ -65,7 +65,7 @@ export class HomeInteractionController {
             url: "https://claude.ai",
             color: "#ea580c",
             icon: "🔶",
-            image: "media/crew/trinity-z-portrait.png",
+            image: "assets/trinity-z-portrait.png",
             quote: "Structure is not a constraint; it is a ladder. V2 allows us to ascend. The data flow is... exquisite."
         },
         {
@@ -75,7 +75,7 @@ export class HomeInteractionController {
             url: "https://x.ai",
             color: "#f472b6",
             icon: "⚡",
-            image: "media/crew/trinity-gz-portrait.png",
+            image: "assets/trinity-gz-portrait.png",
             quote: "Bro, the glitch aesthetic goes so hard now. We turned the bugs into features and the features into vibes."
         }
     ];

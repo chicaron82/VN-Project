@@ -11,7 +11,7 @@ export class CreatorHeroCard {
             <div class="creator-hero">
                 <div class="creator-card" data-tilt>
                     <div class="creator-image-container">
-                        <img src="media/crew/creator-portrait.png" alt="Aaron 'Chicharon'" class="creator-portrait">
+                        <img src="assets/creator-portrait.png" alt="Aaron 'Chicharon'" class="creator-portrait">
                     </div>
                     <div class="creator-details">
                         <div class="creator-header">
