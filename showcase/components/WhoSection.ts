@@ -86,7 +86,7 @@ export class WhoSection {
                 if (!phaseId) return;
 
                 const tabController = window.tabController;
-                if (tabController) tabController.navigateToTab('journey');
+                if (tabController) tabController.navigateToTab('journal');
 
                 setTimeout(() => {
                     const el = document.querySelector(`[data-id="${phaseId}"]`);

@@ -1888,8 +1888,8 @@ body.uv7-shell-mode .tab-bar-container {
    ======================================== */
 
 /* Assign unique view transition names to each tab panel */
-[data-panel="journey"] {
-    view-transition-name: tab-panel-journey;
+[data-panel="journal"] {
+    view-transition-name: tab-panel-journal;
 }
 
 [data-panel="workflow"] {
@@ -1913,8 +1913,8 @@ body.uv7-shell-mode .tab-bar-container {
 }
 
 /* Smooth cross-fade for View Transitions API */
-::view-transition-old(tab-panel-journey),
-::view-transition-new(tab-panel-journey),
+::view-transition-old(tab-panel-journal),
+::view-transition-new(tab-panel-journal),
 ::view-transition-old(tab-panel-workflow),
 ::view-transition-new(tab-panel-workflow),
 ::view-transition-old(tab-panel-results),

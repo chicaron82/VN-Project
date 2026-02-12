@@ -25,7 +25,7 @@ body.dark-mode {
 
 
 /* --- FORCE LIGHT MODE (User requested Light, System is Dark) --- */
-body.light-mode section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
+body.light-mode section:not(.workflow-section):not(.results-section):not(.journal-section):not(.evolution-section):not(.roadmap-section) {
     background: var(--order-bg) !important;
     color: var(--order-text) !important;
 }
@@ -38,7 +38,7 @@ body.light-mode .section-intro {
     color: rgba(100, 100, 100, 1) !important;
 }
 
-body.light-mode .journey-section {
+body.light-mode .journal-section {
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
 }
 
@@ -114,7 +114,7 @@ body.light-mode .home-content-wrapper {
 /* Only needed if base styles are Light by default (which they are in base.css) */
 /* The existing media query handles system dark mode, but we need to force it if class is present */
 
-body.dark-mode section:not(.workflow-section):not(.results-section):not(.journey-section):not(.evolution-section):not(.roadmap-section) {
+body.dark-mode section:not(.workflow-section):not(.results-section):not(.journal-section):not(.evolution-section):not(.roadmap-section) {
     background: #1a1a1a !important;
     color: #e0e0e0 !important;
 }
@@ -127,7 +127,7 @@ body.dark-mode .section-intro {
     color: rgba(170, 170, 170, 1) !important;
 }
 
-body.dark-mode .journey-section {
+body.dark-mode .journal-section {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%) !important;
 }
 

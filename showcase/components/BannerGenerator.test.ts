@@ -2,9 +2,9 @@ import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
 
 describe('BannerGenerator', () => {
     it('should create a banner with all required elements', () => {
-        const html = createBanner(BANNER_CONFIGS.journey);
+        const html = createBanner(BANNER_CONFIGS.journal);
 
-        expect(html).toContain('class="hero-banner journey"');
+        expect(html).toContain('class="hero-banner journal"');
         expect(html).toContain('class="hero-banner-image"');
         expect(html).toContain('class="hero-banner-particles"');
         expect(html).toContain('class="hero-banner-content"');
@@ -28,7 +28,7 @@ describe('BannerGenerator', () => {
     });
 
     it('should have configs for all sections', () => {
-        expect(BANNER_CONFIGS).toHaveProperty('journey');
+        expect(BANNER_CONFIGS).toHaveProperty('journal');
         expect(BANNER_CONFIGS).toHaveProperty('workflow');
         expect(BANNER_CONFIGS).toHaveProperty('results');
         expect(BANNER_CONFIGS).toHaveProperty('spotlight');

@@ -99,7 +99,7 @@ export class HomeSection {
 
                     <div class="card app-card" data-section="spotlight">
                         <div class="card-icon">🐉</div>
-                        <span class="badge badge-showcase">The Journey</span>
+                        <span class="badge badge-showcase">The Journal</span>
                         <h2>UV7 OS</h2>
                         <div class="menu-cooking-time">📍 Made to order—live and constantly updated</div>
                         <p>Full development timeline documenting the journey with 8 AI collaborators.</p>

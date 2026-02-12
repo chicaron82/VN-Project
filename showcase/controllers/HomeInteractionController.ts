@@ -94,7 +94,7 @@ export class HomeInteractionController {
 
     /**
      * Wire up demon lord blog link (30-Day Speedrun)
-     * Navigates to journey tab and scrolls to highlighted entry
+     * Navigates to journal tab and scrolls to highlighted entry
      */
     private wireDemonLordLink(): void {
         const demonLordLink = document.querySelector('.demon-lord-link');
@@ -104,8 +104,8 @@ export class HomeInteractionController {
             e.preventDefault();
             const entryId = (e.currentTarget as HTMLElement).dataset.entry;
 
-            // Navigate to journey tab
-            this.tabController.setActiveTab('journey');
+            // Navigate to journal tab
+            this.tabController.setActiveTab('journal');
 
             // Wait for tab to load, then scroll to entry
             setTimeout(() => {

@@ -20,8 +20,8 @@ export function initScrollAnimations(): () => void {
 
     document.querySelectorAll('section').forEach((section: Element) => {
         const sectionEl = section as HTMLElement;
-        // Skip journey-section to prevent clipping issues
-        if (section.classList.contains('journey-section')) {
+        // Skip journal-section to prevent clipping issues
+        if (section.classList.contains('journal-section')) {
             sectionEl.style.opacity = '1';
             sectionEl.style.transform = 'translateY(0)';
             return;

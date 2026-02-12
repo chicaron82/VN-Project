@@ -10,7 +10,7 @@ export interface BannerConfig {
     subtitle: string;
     image: string;
     alt: string;
-    section: string;  // Section identifier for CSS class (e.g., 'journey', 'workflow')
+    section: string;  // Section identifier for CSS class (e.g., 'journal', 'workflow')
 }
 
 function escapeHtml(text: string): string {
@@ -37,12 +37,12 @@ export function createBanner(config: BannerConfig): string {
 // Banner configurations for each section
 // Using absolute paths from base for proper Vite resolution
 export const BANNER_CONFIGS: Record<string, BannerConfig> = {
-    journey: {
+    journal: {
         title: 'The Journal',
         subtitle: 'From organic chaos to structured harmony in record time',
-        image: '/VN-Project/showcase/media/banners/banner-journey.png',
+        image: '/VN-Project/showcase/media/banners/banner-journal.png',
         alt: 'Journal Banner',
-        section: 'journey'
+        section: 'journal'
     },
     workflow: {
         title: 'The Workflow',

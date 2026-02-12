@@ -30,7 +30,7 @@ export class TabController {
     constructor() {
         this.tabs = [
             'home',
-            'journey',
+            'journal',
             'workflow',
             'spotlight',
             'evolution',
@@ -341,7 +341,7 @@ export class TabController {
     private updateStatusBar(tabId: string): void {
         const names: Record<string, string> = {
             home: 'UV7 Showcase',
-            journey: 'The Journal',
+            journal: 'The Journal',
             workflow: 'Workflow',
             spotlight: 'Tech Spotlight',
             evolution: 'Evolution',
@@ -417,7 +417,7 @@ export class TabController {
     private getTabDisplayName(tabId: string): string {
         const names: Record<string, string> = {
             home: 'Home',
-            journey: 'Journal',
+            journal: 'Journal',
             workflow: 'Workflow',
             spotlight: 'Spotlight',
             evolution: 'Evolution',

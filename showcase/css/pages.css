@@ -18,7 +18,7 @@
  * SECTION OVERVIEW:
  * -----------------
  * - Home: Landing page intro, meta-narrative explanation
- * - Journey: Timeline (not styled here - see blog.css)
+ * - Journal: Timeline (not styled here - see blog.css)
  * - Workflow: Development process showcase
  * - Spotlight: Technical highlights bento grid
  * - Evolution: V1 vs V2 comparison (deep-dive in evolution-v2.css)
@@ -1504,7 +1504,7 @@
     color: var(--text-primary);
 }
 
-[data-theme="light"] .journey-section,
+[data-theme="light"] .journal-section,
 [data-theme="light"] .workflow-section,
 [data-theme="light"] .results-section {
     background: var(--bg-secondary);

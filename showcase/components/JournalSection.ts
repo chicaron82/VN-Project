@@ -1,34 +1,34 @@
 import { createBanner, BANNER_CONFIGS } from './BannerGenerator';
 import { Logger } from '@utils/Logger';
 
-export class JourneySection {
+export class JournalSection {
     constructor() {
         this.render();
     }
 
     render(): void {
-        const mount = document.getElementById('uv7-journey-mount');
-        Logger.ui('[JourneySection] Mount point:', mount ? 'found' : 'NOT FOUND');
+        const mount = document.getElementById('uv7-journal-mount');
+        Logger.ui('[JournalSection] Mount point:', mount ? 'found' : 'NOT FOUND');
         if (!mount) return;
 
         mount.innerHTML = `
-            <section class="journey-section">
+            <section class="journal-section">
                 <!-- Hero Banner -->
-                ${createBanner(BANNER_CONFIGS.journey)}
+                ${createBanner(BANNER_CONFIGS.journal)}
 
                 <div class="section-content">
                     <!-- Opening Block - The Journal -->
-                    <div class="journey-opening">
-                        <h2 class="journey-opening-title">The Developer Journal</h2>
+                    <div class="journal-opening">
+                        <h2 class="journal-opening-title">The Developer Journal</h2>
 
-                        <p class="journey-opening-text">
+                        <p class="journal-opening-text">
                             Every day, another "what if" question. Every answer spawned three more. This is the complete
                             development timeline—the daily discoveries, debug sessions, breakthroughs, and experiments that
                             built Version 848 from nothing to a full visual novel in 50 days, then evolved it into V2's
                             sustainable architecture.
                         </p>
 
-                        <div class="journey-what-built">
+                        <div class="journal-what-built">
                             <p><strong>What got built:</strong></p>
                             <ul>
                                 <li>✅ Relationship simulator (ToriGatchi) — 12 days</li>
@@ -40,11 +40,11 @@ export class JourneySection {
                             </ul>
                         </div>
 
-                        <p class="journey-opening-quote">
+                        <p class="journal-opening-quote">
                             "Curiosity compounds when you don't know what's supposed to be impossible."
                         </p>
 
-                        <p class="journey-opening-text">
+                        <p class="journal-opening-text">
                             Each timeline entry below is a blog post documenting the journey—not polished retrospectives,
                             but real-time journal entries from someone who didn't know it was supposed to be hard.
                         </p>

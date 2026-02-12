@@ -31,10 +31,10 @@ export class GentleNudges {
             section: 'home',
             emoji: '✨',
             message: 'Ready for the next course? Swipe to',
-            nextSection: 'journey'
+            nextSection: 'journal'
         },
         {
-            section: 'journey',
+            section: 'journal',
             emoji: '👨‍🍳',
             message: 'Curious about the kitchen? Swipe to',
             nextSection: 'workflow'

@@ -77,7 +77,7 @@ export class GlobalSearch {
         // Index sections
         const sections = [
             { id: 'home', title: 'Home', icon: '🌐', description: 'UV7 OS Ecosystem overview' },
-            { id: 'journey', title: 'The Journal', icon: '🗺️', description: 'Development timeline and blog entries' },
+            { id: 'journal', title: 'The Journal', icon: '🗺️', description: 'Development timeline and blog entries' },
             { id: 'workflow', title: 'Workflow', icon: '⚙️', description: 'Development methodology and tools' },
             { id: 'spotlight', title: 'Tech Spotlight', icon: '💡', description: 'Technical deep dives and code examples' },
             { id: 'evolution', title: 'Evolution', icon: '🔄', description: 'V1 to V2 transformation story' },
@@ -480,7 +480,7 @@ export class GlobalSearch {
         if (result.type === 'blog') {
             // Navigate to journal tab and scroll to entry
             if (window.tabController) {
-                window.tabController.navigateToTab('journey');
+                window.tabController.navigateToTab('journal');
                 setTimeout(() => {
                     const entryEl = document.querySelector(`[data-id="${result.data.id}"]`);
                     if (entryEl) {

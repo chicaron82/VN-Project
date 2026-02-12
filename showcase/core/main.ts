@@ -26,7 +26,7 @@ import type { CodeComparison, CodeComparisonModal as ICodeComparisonModal } from
 
 // Import section renderers
 import { HomeSection } from '../components/HomeSection';
-import { JourneySection } from '../components/JourneySection';
+import { JournalSection } from '../components/JournalSection';
 import { WorkflowSection } from '../components/WorkflowSection';
 import { SpotlightSection } from '../components/SpotlightSection';
 import { EvolutionSection } from '../components/EvolutionSectionV2'; // V2: Deep-dive code comparison
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialize section renderers (these inject HTML into mount points)
     new HomeSection();
-    new JourneySection();
+    new JournalSection();
     new WorkflowSection();
     new SpotlightSection();
     new EvolutionSection();
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // For now, deep linking only supports entry navigation
     });
 
-    // Initialize BlogRenderer (Journal tab) - must be after JourneySection renders
+    // Initialize BlogRenderer (Journal tab) - must be after JournalSection renders
     new BlogRenderer('#timeline-container');
     Logger.system('✅ Blog renderer initialized');
 
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const scrollLeft = tabPanelsContainer.scrollLeft;
                 const panelWidth = tabPanelsContainer.clientWidth || window.innerWidth;
                 const currentIndex = Math.round(scrollLeft / panelWidth);
-                const tabs = ['home', 'journey', 'workflow', 'spotlight', 'evolution', 'experiment', 'who'];
+                const tabs = ['home', 'journal', 'workflow', 'spotlight', 'evolution', 'experiment', 'who'];
                 const expectedTab = tabs[currentIndex];
 
                 if (expectedTab && expectedTab !== tabController.getActiveTab()) {

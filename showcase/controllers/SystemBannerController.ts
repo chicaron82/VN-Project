@@ -73,7 +73,7 @@ export class SystemBannerController {
                 // Already in showcase, just scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             },
-            getPreview: () => 'UV7 Showcase - Project overview and journey timeline'
+            getPreview: () => 'UV7 Showcase - Project overview and journal timeline'
         }
     ];
 

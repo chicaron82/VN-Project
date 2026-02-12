@@ -33,7 +33,7 @@ showcase.css (master)
 │   │   └── home-page.css               - Landing content
 │   ├── FEATURES/ (modular)
 │   │   ├── cooking-metaphor.css        - Recipe comparison
-│   │   ├── soma-journey.css            - V1/V2 phases
+│   │   ├── soma-journal.css            - V1/V2 phases
 │   │   ├── experiment-design.css       - V3 cards
 │   │   ├── experiment-dashboard.css    - Scorecards
 │   │   ├── experiment-reflections.css  - Post-mortem

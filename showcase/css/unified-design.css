@@ -30,7 +30,7 @@
     color: #1a1a1a;
 }
 
-.journey-section,
+.journal-section,
 .workflow-section,
 .results-section,
 .spotlight-section,
@@ -52,7 +52,7 @@
         color: #e0e0e0;
     }
 
-    .journey-section,
+    .journal-section,
     .workflow-section,
     .results-section,
     .spotlight-section,
@@ -73,7 +73,7 @@
     color: #e0e0e0;
 }
 
-[data-theme="dark"] .journey-section,
+[data-theme="dark"] .journal-section,
 [data-theme="dark"] .workflow-section,
 [data-theme="dark"] .results-section,
 [data-theme="dark"] .spotlight-section,
@@ -303,8 +303,8 @@ section p {
     background: linear-gradient(90deg, #020024, #090979, #00d4ff) !important;
 }
 
-/* Journey - Chaos to Order (purple/pink) */
-.scroll-progress[data-section="journey"] {
+/* Journal - Chaos to Order (purple/pink) */
+.scroll-progress[data-section="journal"] {
     background: linear-gradient(90deg, #533483, #e94560, #ff6b35) !important;
 }
 
