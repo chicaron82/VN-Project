@@ -122,6 +122,11 @@ export const Logger = {
     console.info(formatPrefix('ui'), ...args);
   },
 
+  audio(...args: unknown[]): void {
+    if (!shouldLog('debug', 'audio')) return;
+    console.info(formatPrefix('audio'), ...args);
+  },
+
   effect(...args: unknown[]): void {
     if (!shouldLog('debug', 'effect')) return;
     console.info(formatPrefix('effect'), ...args);
